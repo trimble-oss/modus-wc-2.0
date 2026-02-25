@@ -11,25 +11,25 @@ A tree item component that represents a single node in a hierarchical tree struc
 
 ## Properties
 
-| Property             | Attribute           | Description                                                                                                         | Type                                  | Default     |
-| -------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
-| `checkbox`           | `checkbox`          | If true, renders a checkbox at the start of the tree item.                                                          | `boolean \| undefined`                | `false`     |
-| `customClass`        | `custom-class`      | Custom CSS class to apply to the li element.                                                                        | `string \| undefined`                 | `''`        |
-| `disabled`           | `disabled`          | The disabled state of the tree item.                                                                                | `boolean \| undefined`                | `undefined` |
-| `hasSubtree`         | `has-subtree`       | Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior. | `boolean \| undefined`                | `undefined` |
-| `label` _(required)_ | `label`             | The text label displayed for the tree item.                                                                         | `string`                              | `undefined` |
-| `selected`           | `selected`          | The selected state of the tree item.                                                                                | `boolean \| undefined`                | `undefined` |
-| `size`               | `size`              | The size of the tree item icons and actions.                                                                        | `"lg" \| "md" \| "sm"`                | `'sm'`      |
-| `treeItemActions`    | `tree-item-actions` | Actions to display for this tree item.                                                                              | `ModusTreeItemActions[] \| undefined` | `undefined` |
-| `value`              | `value`             | The unique identifying value of the tree item.                                                                      | `string`                              | `''`        |
+| Property             | Attribute           | Description                                                                                                         | Type                              | Default     |
+| -------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `checkbox`           | `checkbox`          | If true, renders a checkbox at the start of the tree item.                                                          | `boolean \| undefined`            | `false`     |
+| `customClass`        | `custom-class`      | Custom CSS class to apply to the li element.                                                                        | `string \| undefined`             | `''`        |
+| `disabled`           | `disabled`          | The disabled state of the tree item.                                                                                | `boolean \| undefined`            | `undefined` |
+| `hasSubtree`         | `has-subtree`       | Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior. | `boolean \| undefined`            | `undefined` |
+| `label` _(required)_ | `label`             | The text label displayed for the tree item.                                                                         | `string`                          | `undefined` |
+| `selected`           | `selected`          | The selected state of the tree item.                                                                                | `boolean \| undefined`            | `undefined` |
+| `size`               | `size`              | The size of the tree item icons and actions.                                                                        | `"lg" \| "md" \| "sm" \| "xs"`    | `'xs'`      |
+| `treeItemActions`    | `tree-item-actions` | Actions to display for this tree item.                                                                              | `ITreeItemActions[] \| undefined` | `undefined` |
+| `value`              | `value`             | The unique identifying value of the tree item.                                                                      | `string`                          | `''`        |
 
 
 ## Events
 
-| Event              | Description                                                         | Type                                                               |
-| ------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; selected?: boolean \| undefined; }>` |
-| `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>`                       |
+| Event              | Description                                                         | Type                                         |
+| ------------------ | ------------------------------------------------------------------- | -------------------------------------------- |
+| `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; }>`            |
+| `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>` |
 
 
 ## Methods
@@ -59,13 +59,15 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [modus-wc-button](../../modus-wc-button)
 - [modus-wc-icon](../../modus-wc-icon)
 - [modus-wc-checkbox](../../modus-wc-checkbox)
-- [modus-wc-tree-actions](../modus-wc-tree-actions)
+- modus-wc-tree-actions
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-tree-item --> modus-wc-button
   modus-wc-tree-item --> modus-wc-icon
   modus-wc-tree-item --> modus-wc-checkbox
   modus-wc-tree-item --> modus-wc-tree-actions

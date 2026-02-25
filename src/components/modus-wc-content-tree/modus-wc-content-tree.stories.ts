@@ -91,6 +91,69 @@ export const Default: Story = {
   },
 };
 
+export const EmptyState: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+      >
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const DisabledItems: Story = {
+  render: (args) => {
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Active Item"
+            value="active"
+            .selected=${true}
+          >
+            <modus-wc-icon
+              slot="start-icon"
+              name="description"
+              size="sm"
+            ></modus-wc-icon>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Disabled Item"
+            value="disabled"
+            .disabled=${true}
+          >
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${true}
+            value="projects"
+          >
+            <modus-wc-tree-view is-sub-list="true">
+              <modus-wc-tree-item label="Active Project" value="active-project">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Disabled Project"
+                value="disabled-project"
+                .disabled=${true}
+              >
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
 export const MultiSelect: Story = {
   render: (args) => {
     return html`

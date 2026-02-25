@@ -9,8 +9,8 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
-import { ModusSize } from '../../types';
 
 export interface ITreeItemActions {
   id: string; // Unique identifier for the action
@@ -24,6 +24,7 @@ export interface ITreeItemActions {
 /**
  * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
  * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+ * @internal
  */
 @Component({
   tag: 'modus-wc-tree-actions',
@@ -39,10 +40,10 @@ export class ModusWcTreeActions {
   @Element() el!: HTMLElement;
 
   /** List of actions to display */
-  @Prop({ mutable: true }) actions?: ITreeItemActions[];
+  @Prop() actions?: ITreeItemActions[];
 
   /** The size of the action buttons and icons. */
-  @Prop() size: ModusSize = 'md';
+  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' = 'xs';
 
   /** Internal state for dropdown visibility */
   @State() isDropdownOpen: boolean = false;
@@ -57,23 +58,29 @@ export class ModusWcTreeActions {
   }>;
 
   componentDidLoad() {
-    document.addEventListener('click', this.handleClickOutside);
+    this.updatePopperInstance();
   }
 
-  componentDidUpdate() {
-    if (this.actions && this.actions.length > 2) {
-      this.initializePopper();
-    } else if (this.popperInstance) {
+  @Watch('actions')
+  onActionsChange() {
+    this.updatePopperInstance();
+  }
+
+  disconnectedCallback() {
+    if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
     }
   }
 
-  disconnectedCallback() {
-    document.removeEventListener('click', this.handleClickOutside);
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
+  @Listen('click', { target: 'document' })
+  handleClickOutside(event: MouseEvent) {
+    if (!this.isDropdownOpen) return;
+
+    const target = event.target as HTMLElement;
+    const clickedButton = this.moreActionsButton?.contains(target);
+    if (!clickedButton) {
+      this.isDropdownOpen = false;
     }
   }
 
@@ -111,13 +118,12 @@ export class ModusWcTreeActions {
     }
   };
 
-  private handleClickOutside = (event: MouseEvent) => {
-    if (!this.isDropdownOpen) return;
-
-    const target = event.target as HTMLElement;
-    const clickedButton = this.moreActionsButton?.contains(target);
-    if (!clickedButton) {
-      this.isDropdownOpen = false;
+  private updatePopperInstance = () => {
+    if (this.actions && this.actions.length > 2) {
+      this.initializePopper();
+    } else if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
     }
   };
 

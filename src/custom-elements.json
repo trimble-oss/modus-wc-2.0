@@ -2377,7 +2377,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.\r\nIt supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.",
           "name": "ModusWcTreeActions",
           "members": [
             {
@@ -2387,6 +2387,18 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",
@@ -2411,6 +2423,10 @@
             },
             {
               "kind": "method",
+              "name": "onActionsChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2420,16 +2436,16 @@
               "fieldName": "actions",
               "description": "List of actions to display",
               "type": {
-                "text": "ModusTreeItemActions[]"
+                "text": "ITreeItemActions[]"
               }
             },
             {
               "name": "size",
               "fieldName": "size",
-              "default": "'md'",
+              "default": "'xs'",
               "description": "The size of the action buttons and icons.",
               "type": {
-                "text": "ModusSize"
+                "text": "'xs' | 'sm' | 'md' | 'lg'"
               }
             }
           ],
@@ -2456,14 +2472,6 @@
         }
       ],
       "exports": [
-        {
-          "kind": "js",
-          "name": "ModusWcTreeActions",
-          "declaration": {
-            "name": "ModusWcTreeActions",
-            "module": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx"
-          }
-        },
         {
           "kind": "custom-element-definition",
           "name": "modus-wc-tree-actions",
@@ -2588,10 +2596,10 @@
             {
               "name": "size",
               "fieldName": "size",
-              "default": "'sm'",
+              "default": "'xs'",
               "description": "The size of the tree item icons and actions.",
               "type": {
-                "text": "ModusSize"
+                "text": "'xs' | 'sm' | 'md' | 'lg'"
               }
             },
             {
@@ -2599,7 +2607,7 @@
               "fieldName": "treeItemActions",
               "description": "Actions to display for this tree item.",
               "type": {
-                "text": "ModusTreeItemActions[]"
+                "text": "ITreeItemActions[]"
               }
             },
             {
@@ -2618,7 +2626,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n  }>"
               },
               "description": "Event emitted when a tree item is selected."
             },

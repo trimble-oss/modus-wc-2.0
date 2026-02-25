@@ -5,12 +5,17 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+
 ## Properties
 
-| Property  | Attribute | Description                               | Type                                  | Default     |
-| --------- | --------- | ----------------------------------------- | ------------------------------------- | ----------- |
-| `actions` | `actions` | List of actions to display                | `ModusTreeItemActions[] \| undefined` | `undefined` |
-| `size`    | `size`    | The size of the action buttons and icons. | `"lg" \| "md" \| "sm"`                | `'md'`      |
+| Property  | Attribute | Description                               | Type                              | Default     |
+| --------- | --------- | ----------------------------------------- | --------------------------------- | ----------- |
+| `actions` | `actions` | List of actions to display                | `ITreeItemActions[] \| undefined` | `undefined` |
+| `size`    | `size`    | The size of the action buttons and icons. | `"lg" \| "md" \| "sm" \| "xs"`    | `'xs'`      |
 
 
 ## Events

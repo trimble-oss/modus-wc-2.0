@@ -167,6 +167,47 @@ describe('modus-wc-tree-item', () => {
     );
   });
 
+  it('toggle button click expands/collapses subtree', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-item label="Parent" value="parent" has-subtree>
+          <div class="modus-wc-tree-dropdown">Child content</div>
+        </modus-wc-tree-item>
+      `,
+    });
+
+    const submenu = page.root?.querySelector(
+      '.modus-wc-tree-dropdown'
+    ) as HTMLElement;
+    const button = page.root?.querySelector('modus-wc-button');
+
+    expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+      false
+    );
+
+    // Simulate button click by emitting buttonClick event
+    const mouseEvent = new MouseEvent('click', { bubbles: true });
+    const customEvent = new CustomEvent('buttonClick', {
+      detail: mouseEvent,
+      bubbles: true,
+    });
+    button?.dispatchEvent(customEvent);
+    await page.waitForChanges();
+
+    expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+      true
+    );
+
+    // Click again to collapse
+    button?.dispatchEvent(customEvent);
+    await page.waitForChanges();
+
+    expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+      false
+    );
+  });
+
   it('expandSubTree method expands the subtree', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
@@ -324,6 +365,26 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(treeItem.selected).toBe(true);
+  });
+
+  it('checkbox uses correct size - xs converts to sm', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Item" value="item" checkbox size="xs"></modus-wc-tree-item>`,
+    });
+
+    const checkbox = page.root?.querySelector('modus-wc-checkbox');
+    expect(checkbox?.getAttribute('size')).toBe('sm');
+  });
+
+  it('checkbox uses correct size - other sizes pass through', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Item" value="item" checkbox size="md"></modus-wc-tree-item>`,
+    });
+
+    const checkbox = page.root?.querySelector('modus-wc-checkbox');
+    expect(checkbox?.getAttribute('size')).toBe('md');
   });
 
   it('updates children selection when parent checkbox is clicked', async () => {

@@ -121,6 +121,61 @@ describe('modus-wc-tree-actions', () => {
     expect(eventSpy).toHaveBeenCalled();
   });
 
+  it('calls popperInstance.update when dropdown is opened and popper exists', async () => {
+    const actions = [
+      { id: '1', icon: 'edit', label: 'Edit' },
+      { id: '2', icon: 'delete', label: 'Delete' },
+      { id: '3', icon: 'copy', label: 'Copy' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeActions],
+      html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+    });
+
+    page.rootInstance.actions = actions;
+    await page.waitForChanges();
+
+    const treeActions = page.rootInstance;
+    const updateSpy = jest.fn();
+    treeActions.popperInstance = {
+      update: updateSpy,
+      destroy: jest.fn(),
+    } as unknown as ReturnType<typeof import('@popperjs/core').createPopper>;
+
+    treeActions['handleMoreActionsClick'](new MouseEvent('click'));
+    await page.waitForChanges();
+
+    expect(updateSpy).toHaveBeenCalled();
+    expect(treeActions.isDropdownOpen).toBe(true);
+  });
+
+  it('does not call popperInstance.update when popper is null', async () => {
+    const actions = [
+      { id: '1', icon: 'edit', label: 'Edit' },
+      { id: '2', icon: 'delete', label: 'Delete' },
+      { id: '3', icon: 'copy', label: 'Copy' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeActions],
+      html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+    });
+
+    page.rootInstance.actions = actions;
+    await page.waitForChanges();
+
+    const treeActions = page.rootInstance;
+    treeActions.popperInstance = null;
+
+    // Should not throw error
+    expect(() => {
+      treeActions['handleMoreActionsClick'](new MouseEvent('click'));
+    }).not.toThrow();
+
+    expect(treeActions.isDropdownOpen).toBe(true);
+  });
+
   it('closes dropdown when clicking outside', async () => {
     const actions = [
       { id: '1', icon: 'edit', label: 'Edit' },
@@ -245,22 +300,6 @@ describe('modus-wc-tree-actions', () => {
     expect(treeActions.isDropdownOpen).toBe(true);
   });
 
-  it('adds click event listener on componentDidLoad', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTreeActions],
-      html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
-    });
-
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-
-    page.rootInstance.componentDidLoad();
-
-    expect(addEventListenerSpy).toHaveBeenCalledWith(
-      'click',
-      expect.any(Function)
-    );
-  });
-
   it('initializes popper when more than 2 actions on componentDidUpdate', async () => {
     const actions = [
       { id: '1', icon: 'edit', label: 'Edit' },
@@ -279,8 +318,6 @@ describe('modus-wc-tree-actions', () => {
     treeActions.actions = actions;
     await page.waitForChanges();
 
-    treeActions.componentDidUpdate();
-
     expect(initializerSpy).toHaveBeenCalled();
   });
 
@@ -297,7 +334,6 @@ describe('modus-wc-tree-actions', () => {
     } as unknown as ReturnType<typeof import('@popperjs/core').createPopper>;
 
     treeActions.actions = [{ id: '1', icon: 'edit', label: 'Edit' }];
-    treeActions.componentDidUpdate();
 
     expect(destroySpy).toHaveBeenCalled();
     expect(treeActions.popperInstance).toBeNull();
@@ -493,13 +529,12 @@ describe('modus-wc-tree-actions', () => {
     expect(mockPopper.destroy).toHaveBeenCalled();
   });
 
-  it('removes event listener and destroys popper on disconnectedCallback when popper exists', async () => {
+  it('destroys popper on disconnectedCallback when popper exists', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeActions],
       html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
     });
 
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
     const treeActions = page.rootInstance;
 
     const destroySpy = jest.fn();
@@ -509,31 +544,22 @@ describe('modus-wc-tree-actions', () => {
 
     treeActions.disconnectedCallback();
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'click',
-      expect.any(Function)
-    );
     expect(destroySpy).toHaveBeenCalled();
     expect(treeActions.popperInstance).toBeNull();
   });
 
-  it('removes event listener on disconnectedCallback when popper is null', async () => {
+  it('disconnectedCallback sets popper to null when popper is null', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeActions],
       html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
     });
 
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
     const treeActions = page.rootInstance;
 
     treeActions.popperInstance = null;
 
     treeActions.disconnectedCallback();
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'click',
-      expect.any(Function)
-    );
     expect(treeActions.popperInstance).toBeNull();
   });
 

@@ -21,8 +21,8 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { ModusTreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
-import { ModusTreeItemActions as ModusTreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+import { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+import { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -40,8 +40,8 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { ModusTreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
-export { ModusTreeItemActions as ModusTreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+export { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+export { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -2020,15 +2020,19 @@ export namespace Components {
          */
         "tooltipId"?: string;
     }
+    /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
     interface ModusWcTreeActions {
         /**
           * List of actions to display
          */
-        "actions"?: ModusTreeItemActions[];
+        "actions"?: ITreeItemActions[];
         /**
           * The size of the action buttons and icons.
          */
-        "size": ModusSize;
+        "size": 'xs' | 'sm' | 'md' | 'lg';
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -2069,11 +2073,11 @@ export namespace Components {
         /**
           * The size of the tree item icons and actions.
          */
-        "size": ModusSize;
+        "size": 'xs' | 'sm' | 'md' | 'lg';
         /**
           * Actions to display for this tree item.
          */
-        "treeItemActions"?: ModusTreeItemActions1[];
+        "treeItemActions"?: ITreeItemActions1[];
         /**
           * The unique identifying value of the tree item.
          */
@@ -3154,6 +3158,10 @@ declare global {
     actionName: string;
   };
     }
+    /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
     interface HTMLModusWcTreeActionsElement extends Components.ModusWcTreeActions, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTreeActionsElementEventMap>(type: K, listener: (this: HTMLModusWcTreeActionsElement, ev: ModusWcTreeActionsCustomEvent<HTMLModusWcTreeActionsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3171,7 +3179,6 @@ declare global {
     interface HTMLModusWcTreeItemElementEventMap {
         "itemSelect": {
     value: string;
-    selected?: boolean;
   };
         "selectionsChange": {
     selectedValues: string[];
@@ -5587,11 +5594,15 @@ declare namespace LocalJSX {
          */
         "tooltipId"?: string;
     }
+    /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
     interface ModusWcTreeActions {
         /**
           * List of actions to display
          */
-        "actions"?: ModusTreeItemActions[];
+        "actions"?: ITreeItemActions[];
         /**
           * Event emitted when a dropdown is opened
          */
@@ -5606,7 +5617,7 @@ declare namespace LocalJSX {
         /**
           * The size of the action buttons and icons.
          */
-        "size"?: ModusSize;
+        "size"?: 'xs' | 'sm' | 'md' | 'lg';
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -5637,7 +5648,6 @@ declare namespace LocalJSX {
          */
         "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
     value: string;
-    selected?: boolean;
   }>) => void;
         /**
           * Event emitted when checkbox selection changes in multi-select mode.
@@ -5652,11 +5662,11 @@ declare namespace LocalJSX {
         /**
           * The size of the tree item icons and actions.
          */
-        "size"?: ModusSize;
+        "size"?: 'xs' | 'sm' | 'md' | 'lg';
         /**
           * Actions to display for this tree item.
          */
-        "treeItemActions"?: ModusTreeItemActions1[];
+        "treeItemActions"?: ITreeItemActions1[];
         /**
           * The unique identifying value of the tree item.
          */
@@ -6012,6 +6022,10 @@ declare module "@stencil/core" {
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            /**
+             * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+             * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+             */
             "modus-wc-tree-actions": LocalJSX.ModusWcTreeActions & JSXBase.HTMLAttributes<HTMLModusWcTreeActionsElement>;
             /**
              * A tree item component that represents a single node in a hierarchical tree structure.

@@ -24,6 +24,11 @@ modus-wc-tree-item {
       position: absolute;
     }
 
+    .modus-wc-tree-toggle-btn {
+      background-color: transparent;
+
+    }
+
     .modus-wc-tree-toggle-button-hidden {
       visibility: hidden;
     }
@@ -79,7 +84,7 @@ modus-wc-tree-item {
 
     &.modus-wc-tree-dropdown-show {
       display: block;
-      margin-inline-start: 1.5rem;
+      margin-inline-start: 1.6rem;
     }
   }
 

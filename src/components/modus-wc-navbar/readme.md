@@ -9,8 +9,7 @@
 
 A customizable navbar component used for top level navigation of all Trimble applications.
 
-The component supports a `<slot>` called 'main-menu', 'notifications', and 'apps' for injecting custom HTML menus.
-It also supports `<slot>` called 'start', 'center', and 'end' for injecting additional custom HTML.
+The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
 
 ## Properties
 

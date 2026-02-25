@@ -1,5 +1,3 @@
-import { ModusSize } from '../../types';
-
 export const convertPropsToClasses = ({
   disabled,
   selected,
@@ -7,7 +5,7 @@ export const convertPropsToClasses = ({
 }: {
   disabled?: boolean;
   selected?: boolean;
-  size?: ModusSize;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }): string => {
   let classes = '';
 

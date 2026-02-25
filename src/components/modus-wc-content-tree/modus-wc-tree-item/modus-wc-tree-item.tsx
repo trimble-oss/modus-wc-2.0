@@ -10,7 +10,6 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
-import { ModusSize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
@@ -63,7 +62,7 @@ export class ModusWcTreeItem {
   @Prop() treeItemActions?: ITreeItemActions[];
 
   /** The size of the tree item icons and actions. */
-  @Prop() size: ModusSize = 'sm';
+  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' = 'xs';
 
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
@@ -144,6 +143,7 @@ export class ModusWcTreeItem {
     const propClasses = convertPropsToClasses({
       disabled: this.disabled,
       selected: this.selected,
+      size: this.size,
     });
 
     if (propClasses) classList.push(propClasses);
@@ -152,7 +152,7 @@ export class ModusWcTreeItem {
     return classList.join(' ');
   }
 
-  private handleToggleClick = (event: MouseEvent) => {
+  private handleToggleClick = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
     if (!this.hasSubtree) return;
 
@@ -170,6 +170,7 @@ export class ModusWcTreeItem {
   private handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
+      e.stopPropagation();
       this.handleEmittedSelect();
     }
   };
@@ -278,19 +279,29 @@ export class ModusWcTreeItem {
           {...this.inheritedAttributes}
         >
           <div class={`modus-wc-tree-content`}>
-            <modus-wc-icon
-              name={this.isExpanded ? 'expand_more' : 'chevron_right'}
-              customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''} ${this.hasSubtree ? 'modus-wc-tree-toggle-button' : 'modus-wc-tree-toggle-button-hidden'}`}
+            <modus-wc-button
+              variant="borderless"
+              shape="circle"
               size={this.size}
-              onClick={this.handleToggleClick}
-            ></modus-wc-icon>
-
+              customClass="modus-wc-tree-toggle-btn"
+              aria-label={this.isExpanded ? 'Collapse' : 'Expand'}
+              disabled={!this.hasSubtree}
+              onButtonClick={(e) => {
+                this.handleToggleClick(e.detail);
+              }}
+            >
+              <modus-wc-icon
+                name={this.isExpanded ? 'expand_more' : 'chevron_right'}
+                customClass={`modus-wc-tree-toggle-icon ${this.isExpanded ? 'modus-wc-tree-toggle-expanded' : ''} ${this.hasSubtree ? 'modus-wc-tree-toggle-button' : 'modus-wc-tree-toggle-button-hidden'}`}
+                size={this.size}
+              ></modus-wc-icon>
+            </modus-wc-button>
             {this.checkbox && (
               <modus-wc-checkbox
                 aria-label="Checkbox"
                 disabled={this.disabled}
                 value={!!this.selected}
-                size={this.size}
+                size={this.size === 'xs' ? 'sm' : this.size}
                 indeterminate={this.isIndeterminate}
                 onClick={(e) => {
                   e.stopPropagation();
