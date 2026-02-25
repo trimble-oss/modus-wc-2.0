@@ -124,19 +124,14 @@ modus-wc-tabs .modus-wc-tabs {
     --tab-bg: var(--tabs-active-bg);
   }
 
-  // Active tab text color — boxed variant; fallback: --fallback-pc (DaisyUI primary-content, matches DaisyUI default)
+  // Active tab colors — boxed variant.
+  // text fallback: --fallback-pc (DaisyUI primary-content, matches DaisyUI default)
+  // bg fallback: --fallback-p (DaisyUI primary, matches DaisyUI default)
   &.modus-wc-tabs-boxed
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]) {
     color: var(--tabs-active-color, var(--fallback-pc, oklch(var(--pc) / 1)));
-  }
-
-  // Active tab background — boxed variant; fallback: --fallback-p (DaisyUI primary, matches DaisyUI default)
-  &.modus-wc-tabs-boxed
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
     background-color: var(
       --tabs-active-bg,
       var(--fallback-p, oklch(var(--p) / 1))
@@ -163,6 +158,7 @@ modus-wc-tabs .modus-wc-tabs {
         .modus-wc-tab-disabled
       ):not([disabled]) {
       background-color: var(--modus-wc-color-base-page);
+
       // Active tab border-bottom color — bordered variant; fallback: existing hardcoded primary color
       border-bottom-color: var(
         --tabs-active-border-color,
