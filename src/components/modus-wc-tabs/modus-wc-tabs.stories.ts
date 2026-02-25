@@ -130,6 +130,9 @@ export const Default: Story = { ...Template };
 
 export const CustomBackground: Story = {
   ...Template,
+  args: {
+    'tab-style': 'lifted',
+  },
   parameters: {
     docs: {
       description: {
@@ -139,20 +142,38 @@ export const CustomBackground: Story = {
       source: {
         transform: (_src, { args }) => `<style>
 .custom-tabs {
-  --tabs-inactive-color: #353a40;
-  --tabs-inactive-bg: #90939f;
+  /* Inactive tab text color for all variants. */
+  --tabs-inactive-color: #90939f;
+  /* Inactive tab background for lifted, boxed, and none variants. */
+  --tabs-inactive-bg: #353a40;
+  /* Keep none variant inactive background transparent in this custom story. */
+  --tabs-none-inactive-bg: transparent;
+  /* Active tab background for lifted, boxed, and none variants. */
   --tabs-active-bg: #171c1e;
+  /* Active tab text color for lifted, boxed, and none variants. */
   --tabs-active-color: #fec157;
+  /* Lifted active text override for themed lifted selectors. */
+  --tabs-lifted-active-color: #fec157;
+  /* Hover background for non-active, non-disabled tabs. */
   --tabs-hover-bg-color: #cbcdd6;
+  /* Hover text color for non-active, non-disabled tabs. */
   --tabs-hover-color: #000000;
+  /* Focus background for non-active, non-disabled tabs. */
   --tabs-focus-bg-color: #e0eccf;
+  /* Focus text color for non-active, non-disabled tabs. */
   --tabs-focus-color: #fec157;
+  /* Active bottom border color for bordered variant. */
+  --tabs-active-border-color: #fec157;
+  /* Focused active tab text color for bordered variant (yellow shade). */
+  --tabs-bordered-active-focus-color: var(
+    --modus-wc-color-yellow-light
+  );
 }
 </style>
 <modus-wc-tabs
   aria-label="Tab group"
   custom-class="custom-tabs"
-  tab-style="lifted"
+  tab-style="${ifDefined(args['tab-style'])}"
   size="md"
 ></modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
       },
@@ -162,20 +183,38 @@ export const CustomBackground: Story = {
     return html`
       <style>
         .custom-tabs {
+          /* Inactive tab text color for all variants. */
           --tabs-inactive-color: #353a40;
+          /* Inactive tab background for lifted, boxed, and none variants. */
           --tabs-inactive-bg: #90939f;
+          /* Keep none variant inactive background transparent in this custom story. */
+          --tabs-none-inactive-bg: transparent;
+          /* Active tab background for lifted, boxed, and none variants. */
           --tabs-active-bg: #171c1e;
+          /* Active tab text color for lifted, boxed, and none variants. */
           --tabs-active-color: #fec157;
+          /* Lifted active text override for themed lifted selectors. */
+          --tabs-lifted-active-color: #fec157;
+          /* Hover background for non-active, non-disabled tabs. */
           --tabs-hover-bg-color: #cbcdd6;
+          /* Hover text color for non-active, non-disabled tabs. */
           --tabs-hover-color: #000000;
+          /* Focus background for non-active, non-disabled tabs. */
           --tabs-focus-bg-color: #e0eccf;
+          /* Focus text color for non-active, non-disabled tabs. */
           --tabs-focus-color: #fec157;
+          /* Active bottom border color for bordered variant. */
+          --tabs-active-border-color: #fec157;
+          /* Focused active tab text color for bordered variant (yellow shade). */
+          --tabs-bordered-active-focus-color: var(
+            --modus-wc-color-yellow-light
+          );
         }
       </style>
       <modus-wc-tabs
         aria-label="Tab group"
         custom-class="custom-tabs"
-        tab-style="lifted"
+        tab-style="${ifDefined(args['tab-style'])}"
         .tabs=${args.tabs}
         size="${ifDefined(args.size)}"
       >
