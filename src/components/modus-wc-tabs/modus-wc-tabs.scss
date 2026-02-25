@@ -131,11 +131,11 @@ modus-wc-tabs .modus-wc-tabs {
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]) {
-    color: var(--tabs-active-color, var(--fallback-pc, oklch(var(--pc) / 1)));
     background-color: var(
       --tabs-active-bg,
       var(--fallback-p, oklch(var(--p) / 1))
     );
+    color: var(--tabs-active-color, var(--fallback-pc, oklch(var(--pc) / 1)));
   }
 
   // Active tab colors — none variant; fallbacks preserve default behavior.
