@@ -179,10 +179,7 @@ modus-wc-tabs .modus-wc-tabs {
     .modus-wc-tab:is(input:checked):hover {
       color: var(
         --tabs-bordered-active-hover-color,
-        var(
-          --tabs-bordered-active-focus-color,
-          var(--modus-wc-color-primary)
-        )
+        var(--tabs-bordered-active-focus-color, var(--modus-wc-color-primary))
       );
     }
 
