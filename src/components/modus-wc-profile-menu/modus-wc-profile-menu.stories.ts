@@ -29,7 +29,7 @@ const meta: Meta<ProfileMenuArgs> = {
   argTypes: {
     'profile-props': {
       description:
-        'Profile menu properties containing user information (profileImageUrl, headerName, userName, userEmail, manageTrimbleIdLink)',
+        'Profile menu properties containing user information (profileImageUrl, headerName, userName, userEmail, manageTrimbleId)',
     },
     'menu-one': {
       description: 'Configuration for the first menu including title and items',

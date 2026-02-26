@@ -144,9 +144,6 @@ export class ModusWcNavbar {
   /** Event emitted when a menu item inside the Profile menu is clicked. */
   @StencilEvent() menuItemClick!: EventEmitter<string>;
 
-  /** Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. */
-  @StencilEvent() myTrimbleClick!: EventEmitter<MouseEvent | KeyboardEvent>;
-
   /** Event emitted when the notifications button is clicked or activated via keyboard. */
   @StencilEvent() notificationsClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
