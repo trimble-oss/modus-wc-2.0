@@ -8,7 +8,7 @@ exports[`modus-wc-tree-item renders with checkbox 1`] = `
       <modus-wc-button aria-label="Expand" customclass="modus-wc-tree-toggle-btn" disabled="" shape="circle" size="xs" variant="borderless">
         <modus-wc-icon customclass="modus-wc-tree-toggle-icon  modus-wc-tree-toggle-button-hidden" name="chevron_right" size="xs"></modus-wc-icon>
       </modus-wc-button>
-      <modus-wc-checkbox aria-label="Checkbox" size="sm"></modus-wc-checkbox>
+      <modus-wc-checkbox aria-label="select item" size="sm"></modus-wc-checkbox>
       <div class="modus-wc-tree-item-labels">
         <div class="modus-wc-tree-item-label">
           Test Item

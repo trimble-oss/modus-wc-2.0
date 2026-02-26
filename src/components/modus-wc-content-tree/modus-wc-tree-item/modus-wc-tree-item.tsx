@@ -196,21 +196,19 @@ export class ModusWcTreeItem {
     const submenu = this.el.querySelector('.modus-wc-tree-dropdown');
     if (!submenu) return;
 
-    const childMenuItems = Array.from(submenu.children).filter(
-      (el) =>
-        el.tagName === 'MODUS-WC-TREE-ITEM' && (el as ITreeItemElement).checkbox
+    const descendants = Array.from(
+      submenu.querySelectorAll('modus-wc-tree-item')
     ) as ITreeItemElement[];
+    const checkboxItems = descendants.filter((item) => item.checkbox);
 
-    let selectedCount = 0;
+    if (!checkboxItems.length) return;
+    const selectedCount = checkboxItems.filter((item) => item.selected).length;
 
-    childMenuItems.forEach((item) => {
-      if (item.selected) selectedCount++;
-    });
+    const someSelected = selectedCount > 0;
+    const allSelected = selectedCount === checkboxItems.length;
 
-    this.isIndeterminate =
-      selectedCount > 0 && selectedCount < childMenuItems.length;
-
-    this.selected = selectedCount === childMenuItems.length;
+    this.selected = allSelected;
+    this.isIndeterminate = someSelected && !allSelected;
   };
 
   private updateChildrenSelection = (selected: boolean) => {
@@ -238,7 +236,6 @@ export class ModusWcTreeItem {
   };
 
   private handleEmittedSelect = () => {
-    if (this.checkbox) return;
     this.itemSelect.emit({ value: this.value });
   };
 
@@ -298,7 +295,7 @@ export class ModusWcTreeItem {
             </modus-wc-button>
             {this.checkbox && (
               <modus-wc-checkbox
-                aria-label="Checkbox"
+                aria-label="select item"
                 disabled={this.disabled}
                 value={!!this.selected}
                 size={this.size === 'xs' ? 'sm' : this.size}

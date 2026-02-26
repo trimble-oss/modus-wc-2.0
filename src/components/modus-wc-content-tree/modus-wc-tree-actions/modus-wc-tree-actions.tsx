@@ -142,7 +142,7 @@ export class ModusWcTreeActions {
       this.moreActionsDropdown,
       {
         placement: 'bottom',
-        strategy: 'absolute',
+        strategy: 'fixed',
         modifiers: [
           {
             name: 'offset',

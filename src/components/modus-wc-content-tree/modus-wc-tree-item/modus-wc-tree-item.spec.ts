@@ -76,23 +76,6 @@ describe('modus-wc-tree-item', () => {
     expect(itemSelectSpy.mock.calls[0][0].detail.value).toBe('test-value');
   });
 
-  it('does not emit itemSelect when checkbox is enabled', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTreeItem],
-      html: `<modus-wc-tree-item label="Test Item" value="test" checkbox></modus-wc-tree-item>`,
-    });
-
-    const itemSelectSpy = jest.fn();
-    page.root?.addEventListener('itemSelect', itemSelectSpy);
-
-    const li = page.root?.querySelector('li');
-    li?.click();
-
-    await page.waitForChanges();
-
-    expect(itemSelectSpy).not.toHaveBeenCalled();
-  });
-
   it('handles Enter key to emit itemSelect', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
@@ -537,6 +520,31 @@ describe('modus-wc-tree-item', () => {
     parent['updateIndeterminateState'](event);
 
     expect(parent.isIndeterminate).toBe(false);
+  });
+
+  it('updateIndeterminateState returns early when no checkbox items in children', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-item label="Parent" value="parent" has-subtree checkbox>
+          <ul class="modus-wc-tree-dropdown">
+            <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
+          </ul>
+        </modus-wc-tree-item>
+      `,
+    });
+
+    const parent = page.rootInstance;
+    const event = new CustomEvent('selectionsChange', { bubbles: true });
+    Object.defineProperty(event, 'target', {
+      value: page.root?.querySelector('modus-wc-tree-item[value="child"]'),
+      enumerable: true,
+    });
+
+    parent['updateIndeterminateState'](event);
+
+    expect(parent.isIndeterminate).toBe(false);
+    // expect(parent.selected).toBe(false);
   });
 
   it('updateChildrenSelection returns early when no subtree', async () => {
