@@ -43,8 +43,9 @@ modus-wc-tabs .modus-wc-tabs {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    --tab-color: var(--lifted-tab-color, var(--tab-color));
-    --tab-bg: var(--lifted-tab-bg, var(--tab-bg));
+    --tab-bg: var(--lifted-tab-bg, var(--modus-wc-color-gray-light));
+    background-color: var(--tab-bg);
+    color: var(--lifted-tab-color, var(--modus-wc-color-primary));
   }
 
   &.modus-wc-tabs-bordered {
@@ -66,8 +67,11 @@ modus-wc-tabs .modus-wc-tabs {
     .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
         .modus-wc-tab-disabled
       ):not([disabled]) {
-      background-color: var(--boxed-tab-selected-bg, var(--tab-bg));
-      color: var(--boxed-tab-selected-color, var(--tab-color));
+      background-color: var(
+        --boxed-tab-selected-bg,
+        var(--modus-wc-color-trimble-blue)
+      );
+      color: var(--boxed-tab-selected-color, var(--modus-wc-color-white));
     }
   }
 

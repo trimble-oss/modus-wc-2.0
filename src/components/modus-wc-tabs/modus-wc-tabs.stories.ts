@@ -144,7 +144,7 @@ export const CustomBackground: Story = {
 .custom-tabs {
   /* Base tab colors (including lifted active state). */
    --lifted-tab-color: #ffffff;
-   --lifted-tab-bg: #96badd;
+   --lifted-tab-bg: #518aed;
   /* Interactive states for all variants. */
   --tab-hover-bg: #e9eef5;
   --tab-hover-color: #1f2937;
@@ -175,7 +175,7 @@ export const CustomBackground: Story = {
         .custom-tabs {
           /* Base tab colors (including lifted active state). */
           --lifted-tab-color: #ffffff;
-          --lifted-tab-bg: #96badd;
+          --lifted-tab-bg: #518aed;
           /* Interactive states for all variants. */
           --tab-hover-bg: #e9eef5;
           --tab-hover-color: #1f2937;
