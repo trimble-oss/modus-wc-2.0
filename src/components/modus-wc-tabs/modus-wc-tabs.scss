@@ -44,6 +44,7 @@ modus-wc-tabs .modus-wc-tabs {
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
     --tab-bg: var(--lifted-tab-bg, var(--modus-wc-color-gray-light));
+
     background-color: var(--tab-bg);
     color: var(--lifted-tab-color, var(--modus-wc-color-primary));
   }
