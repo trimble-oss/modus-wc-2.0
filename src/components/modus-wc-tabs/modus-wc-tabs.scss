@@ -38,119 +38,13 @@ modus-wc-tabs .modus-wc-tabs {
     }
   }
 
-  // Inactive tab text color — all variants; fallback: inherit (CSS natural default, no visual change)
-  > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
-    color: var(--tabs-inactive-color, inherit);
-  }
-
-  // Hover text color — all variants
-  // Selector mirrors the inactive rule exactly + :hover, giving it one extra specificity
-  // point so it always beats the inactive color rule above (0,7,1 vs 0,6,1).
-  > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]):hover {
-    color: var(--tabs-hover-color, var(--modus-wc-color-primary));
-  }
-
-  // Focus text color — all variants (same specificity rationale as hover above)
-  // Ensures the focus ring (outline: 2px solid currentColor from DaisyUI) stays blue
-  // by keeping currentColor = primary on focus for all non-active, non-disabled tabs.
-  > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]):focus {
-    color: var(--tabs-focus-color, var(--modus-wc-color-primary));
-  }
-
-  // Inactive tab background — lifted variant.
-  // Skip hover/focus so generic hover/focus state rules can apply.
-  &.modus-wc-tabs-lifted
-    > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]):not(:hover):not(:focus) {
-    background-color: var(--tabs-inactive-bg, transparent);
-  }
-
-  // Inactive tab background — boxed variant.
-  // Skip hover/focus so generic hover/focus state rules can apply.
-  &.modus-wc-tabs-boxed
-    > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]):not(:hover):not(:focus) {
-    background-color: var(--tabs-inactive-bg, transparent);
-  }
-
-  // Inactive tab background — none variant.
-  // Skip hover/focus so generic hover/focus state rules can apply.
-  &:not(.modus-wc-tabs-lifted):not(.modus-wc-tabs-boxed):not(
-      .modus-wc-tabs-bordered
-    )
-    > .modus-wc-tab:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]):not(:hover):not(:focus) {
-    background-color: var(
-      --tabs-none-inactive-bg,
-      var(--tabs-inactive-bg, transparent)
-    );
-  }
-
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    // Active tab text color — lifted variant; fallback: existing hardcoded primary color
-    color: var(--tabs-active-color, var(--modus-wc-color-primary));
-  }
-
-  // Active tab background — lifted variant; fallback: --tab-bg (the value DaisyUI already uses)
-  &.modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
-    background-color: var(--tabs-active-bg, var(--tab-bg));
-  }
-
-  // Active tab ::before pseudo-element — lifted variant
-  // DaisyUI uses --tab-bg inside radial-gradient() for the wing connectors on ::before;
-  // setting --tab-bg here (without fallback) makes the wings inherit from the parent tab
-  // element when --tabs-active-bg is not set, so the default appearance is preserved.
-  &.modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled])::before,
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked)::before {
-    --tab-bg: var(--tabs-active-bg);
-  }
-
-  // Active tab colors — boxed variant.
-  // text fallback: --fallback-pc (DaisyUI primary-content, matches DaisyUI default)
-  // bg fallback: --fallback-p (DaisyUI primary, matches DaisyUI default)
-  &.modus-wc-tabs-boxed
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
-    background-color: var(
-      --tabs-active-bg,
-      var(--fallback-p, oklch(var(--p) / 1))
-    );
-    color: var(--tabs-active-color, var(--fallback-pc, oklch(var(--pc) / 1)));
-  }
-
-  // Active tab colors — none variant; fallbacks preserve default behavior.
-  &:not(.modus-wc-tabs-lifted):not(.modus-wc-tabs-boxed):not(
-      .modus-wc-tabs-bordered
-    )
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]),
-  &:not(.modus-wc-tabs-lifted):not(.modus-wc-tabs-boxed):not(
-      .modus-wc-tabs-bordered
-    )
-    > .modus-wc-tab:is(input:checked) {
-    background-color: var(--tabs-active-bg, var(--modus-wc-color-base-page));
-    color: var(--tabs-active-color, inherit);
+    --tab-color: var(--lifted-tab-color, var(--tab-color));
+    --tab-bg: var(--lifted-tab-bg, var(--tab-bg));
   }
 
   &.modus-wc-tabs-bordered {
@@ -158,37 +52,22 @@ modus-wc-tabs .modus-wc-tabs {
         .modus-wc-tab-disabled
       ):not([disabled]) {
       background-color: var(--modus-wc-color-base-page);
-
-      // Active tab border-bottom color — bordered variant; fallback: existing hardcoded primary color
       border-bottom-color: var(
-        --tabs-active-border-color,
+        --bordered-tab-active-border-bottom-color,
         var(--modus-wc-color-primary)
       );
       border-bottom-width: var(--modus-wc-border-width-lg);
     }
+  }
 
-    // Active + hovered text color — bordered variant.
-    // This overrides common-states hover text color for active bordered tabs.
+  &.modus-wc-tabs-boxed {
+    background-color: var(--boxed-tabs-bg, var(--modus-wc-color-base-200));
+
     .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
         .modus-wc-tab-disabled
-      ):not([disabled]):hover,
-    .modus-wc-tab:is(input:checked):hover {
-      color: var(
-        --tabs-bordered-active-hover-color,
-        var(--tabs-bordered-active-focus-color, var(--modus-wc-color-primary))
-      );
-    }
-
-    // Active + focused text color — bordered variant.
-    // This overrides common-states focus text color for active bordered tabs.
-    .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-        .modus-wc-tab-disabled
-      ):not([disabled]):focus,
-    .modus-wc-tab:is(input:checked):focus {
-      color: var(
-        --tabs-bordered-active-focus-color,
-        var(--modus-wc-color-primary)
-      );
+      ):not([disabled]) {
+      background-color: var(--boxed-tab-selected-bg, var(--tab-bg));
+      color: var(--boxed-tab-selected-color, var(--tab-color));
     }
   }
 
@@ -203,31 +82,19 @@ modus-wc-tabs .modus-wc-tab {
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
   height: inherit;
 
-  @include common-states;
-
-  // Hover background — all variants; color is handled in .modus-wc-tabs block (higher specificity)
-  &:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):hover {
-    background-color: var(
-      --tabs-hover-bg-color,
-      var(--modus-wc-color-base-100)
-    );
+  &:hover {
+    background-color: var(--tab-hover-bg, var(--modus-wc-color-base-100));
+    color: var(--tab-hover-color, var(--modus-wc-color-primary));
   }
 
-  // Focus background — all variants; color is handled in .modus-wc-tabs block (higher specificity)
-  &:not(.modus-wc-tab-active):not([aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):focus {
-    background-color: var(
-      --tabs-focus-bg-color,
-      var(--modus-wc-color-base-200)
-    );
+  &:focus {
+    background-color: var(--tab-focus-bg, var(--modus-wc-color-base-200));
+    color: var(--tab-focus-color, var(--modus-wc-color-primary));
   }
 
-  &-active {
-    background-color: var(--modus-wc-color-base-page);
-    color: inherit;
+  &:active {
+    background-color: var(--tab-active-bg, var(--modus-wc-color-primary-pale));
+    color: var(--tab-active-color, var(--modus-wc-color-primary));
   }
 
   &:disabled {
@@ -271,10 +138,7 @@ modus-wc-tabs .modus-wc-tab {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(
-      --tabs-lifted-active-color,
-      var(--modus-wc-color-white)
-    ) !important;
+    color: var(--modus-wc-color-white) !important;
   }
 }
 
@@ -315,6 +179,6 @@ modus-wc-tabs .modus-wc-tab {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--tabs-lifted-active-color, var(--modus-wc-color-white));
+    color: var(--modus-wc-color-white);
   }
 }
