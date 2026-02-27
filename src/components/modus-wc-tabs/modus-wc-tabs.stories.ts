@@ -137,7 +137,7 @@ export const CustomBackground: Story = {
     docs: {
       description: {
         story:
-          'The background color of the tabs can be customized by applying a custom class to the component and defining CSS variables for the desired colors.',
+          'The background color of the tabs can be customized by applying a custom class to the component and defining CSS variables for the desired colors. Custom colors are applied across all tab variants: boxed, bordered, lifted, and none.',
       },
       source: {
         transform: (_src, { args }) => `<style>
