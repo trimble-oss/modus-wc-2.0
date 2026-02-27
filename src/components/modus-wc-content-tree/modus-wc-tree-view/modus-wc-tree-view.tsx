@@ -31,6 +31,8 @@ export class ModusWcTreeView {
     const target = event.target as HTMLElement;
     if (!target) return;
 
+    console.log('target', target);
+
     const allContents = this.el.querySelectorAll('.modus-wc-tree-content');
     allContents.forEach((content) =>
       content.classList.remove('modus-wc-tree-item-active')
@@ -38,6 +40,16 @@ export class ModusWcTreeView {
 
     const targetContent = target.querySelector('.modus-wc-tree-content');
     targetContent?.classList.add('modus-wc-tree-item-active');
+
+    const allTreeItemLis = this.el.querySelectorAll('modus-wc-tree-item > li');
+    allTreeItemLis.forEach((li) =>
+      li.classList.remove('modus-wc-tree-item-li-active')
+    );
+
+    const targetLi = targetContent?.parentElement;
+    if (targetLi?.tagName === 'LI') {
+      targetLi.classList.add('modus-wc-tree-item-li-active');
+    }
   }
 
   private getClasses(): string {

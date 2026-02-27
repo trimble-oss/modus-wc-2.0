@@ -243,4 +243,140 @@ describe('modus-wc-tree-view', () => {
     expect(classes).toContain('modus-wc-tree-dropdown');
     expect(classes).toContain('my-custom-sublist');
   });
+
+  it('handles itemSelect event and adds class to li element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView],
+      html: `
+        <modus-wc-tree-view>
+          <modus-wc-tree-item>
+            <li>
+              <div class="modus-wc-tree-content">Item 1</div>
+            </li>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item>
+            <li>
+              <div class="modus-wc-tree-content">Item 2</div>
+            </li>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance;
+    const firstTreeItem = page.root?.querySelector(
+      'modus-wc-tree-item'
+    ) as HTMLElement;
+    const firstLi = firstTreeItem.querySelector('li');
+
+    const event = new CustomEvent('itemSelect', {
+      detail: { value: 'item1' },
+      bubbles: true,
+    });
+    Object.defineProperty(event, 'target', {
+      value: firstTreeItem,
+      enumerable: true,
+    });
+
+    treeView.handleItemSelect(event);
+    await page.waitForChanges();
+
+    expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
+      true
+    );
+  });
+
+  it('handles itemSelect event and removes class from previously selected li', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView],
+      html: `
+        <modus-wc-tree-view>
+          <modus-wc-tree-item>
+            <li>
+              <div class="modus-wc-tree-content">Item 1</div>
+            </li>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item>
+            <li>
+              <div class="modus-wc-tree-content">Item 2</div>
+            </li>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance;
+    const treeItems = page.root?.querySelectorAll('modus-wc-tree-item');
+    const firstTreeItem = treeItems?.[0] as HTMLElement;
+    const secondTreeItem = treeItems?.[1] as HTMLElement;
+    const firstLi = firstTreeItem.querySelector('li');
+    const secondLi = secondTreeItem.querySelector('li');
+
+    // Select first item
+    const event1 = new CustomEvent('itemSelect', {
+      detail: { value: 'item1' },
+      bubbles: true,
+    });
+    Object.defineProperty(event1, 'target', {
+      value: firstTreeItem,
+      enumerable: true,
+    });
+
+    treeView.handleItemSelect(event1);
+    await page.waitForChanges();
+
+    expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
+      true
+    );
+
+    // Select second item
+    const event2 = new CustomEvent('itemSelect', {
+      detail: { value: 'item2' },
+      bubbles: true,
+    });
+    Object.defineProperty(event2, 'target', {
+      value: secondTreeItem,
+      enumerable: true,
+    });
+
+    treeView.handleItemSelect(event2);
+    await page.waitForChanges();
+
+    // First li should no longer have the class
+    expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
+      false
+    );
+    // Second li should have the class
+    expect(secondLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
+      true
+    );
+  });
+
+  it('handles itemSelect event when content element has no parent li', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView],
+      html: `
+        <modus-wc-tree-view>
+          <div class="modus-wc-tree-item">
+            <div class="modus-wc-tree-content">Item without li</div>
+          </div>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance;
+    const item = page.root?.querySelector('.modus-wc-tree-item') as HTMLElement;
+
+    const event = new CustomEvent('itemSelect', {
+      detail: { value: 'item1' },
+      bubbles: true,
+    });
+    Object.defineProperty(event, 'target', {
+      value: item,
+      enumerable: true,
+    });
+
+    // Should not throw when parent is not an li element
+    expect(() => treeView.handleItemSelect(event)).not.toThrow();
+  });
 });
