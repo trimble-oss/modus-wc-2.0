@@ -8,7 +8,7 @@ modus-wc-tree-item {
     list-style: none;
   }
 
-  .modus-wc-tree-item-active {
+  .modus-wc-tree-item-selected > .modus-wc-tree-content {
     background-color: var(--modus-wc-color-blue-pale);
     border-radius: unset;
     color: var(--modus-wc-color-primary);

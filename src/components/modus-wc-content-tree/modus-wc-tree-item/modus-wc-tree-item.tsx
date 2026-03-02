@@ -16,6 +16,7 @@ import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions
 export interface ITreeItemElement extends HTMLElement {
   value: string;
   selected?: boolean;
+  checked?: boolean;
   checkbox?: boolean;
   hasSubtree?: boolean;
   isIndeterminate?: boolean;
@@ -51,6 +52,9 @@ export class ModusWcTreeItem {
 
   /** The selected state of the tree item. */
   @Prop({ mutable: true, reflect: true }) selected?: boolean;
+
+  /** The checked state of the tree item when checkbox is enabled. */
+  @Prop({ mutable: true, reflect: true }) checked?: boolean;
 
   /** The unique identifying value of the tree item. */
   @Prop() value: string = '';
@@ -202,13 +206,13 @@ export class ModusWcTreeItem {
     const checkboxItems = descendants.filter((item) => item.checkbox);
 
     if (!checkboxItems.length) return;
-    const selectedCount = checkboxItems.filter((item) => item.selected).length;
+    const checkedCount = checkboxItems.filter((item) => item.checked).length;
 
-    const someSelected = selectedCount > 0;
-    const allSelected = selectedCount === checkboxItems.length;
+    const someChecked = checkedCount > 0;
+    const allChecked = checkedCount === checkboxItems.length;
 
-    this.selected = allSelected;
-    this.isIndeterminate = someSelected && !allSelected;
+    this.checked = allChecked;
+    this.isIndeterminate = someChecked && !allChecked;
   };
 
   private updateChildrenSelection = (selected: boolean) => {
@@ -224,7 +228,7 @@ export class ModusWcTreeItem {
     descendants.forEach((item) => {
       if (!item.checkbox) return;
 
-      item.selected = selected;
+      item.checked = selected;
       item.isIndeterminate = false;
 
       const checkbox = item.querySelector('modus-wc-checkbox');
@@ -240,9 +244,9 @@ export class ModusWcTreeItem {
   };
 
   private handleCheckboxClick = () => {
-    const newValue = !this.selected || this.isIndeterminate;
+    const newValue = !this.checked || this.isIndeterminate;
 
-    this.selected = newValue;
+    this.checked = newValue;
     this.isIndeterminate = false;
     this.updateChildrenSelection(newValue);
 
@@ -255,7 +259,7 @@ export class ModusWcTreeItem {
         rootTreeView.querySelectorAll('modus-wc-tree-item')
       ) as ITreeItemElement[];
       const selectedValues = allTreeItems
-        .filter((item) => item.checkbox && item.selected)
+        .filter((item) => item.checkbox && item.checked)
         .map((item) => item.value);
 
       this.selectionsChange.emit({ selectedValues });
@@ -266,7 +270,15 @@ export class ModusWcTreeItem {
     return (
       <Host>
         <li
-          aria-selected={this.selected ? 'true' : 'false'}
+          aria-selected={
+            this.checkbox
+              ? this.checked
+                ? 'true'
+                : 'false'
+              : this.selected
+                ? 'true'
+                : 'false'
+          }
           aria-expanded={this.hasSubtree ? String(this.isExpanded) : undefined}
           class={this.getClasses()}
           onClick={this.handleItemSelect}
@@ -297,7 +309,7 @@ export class ModusWcTreeItem {
               <modus-wc-checkbox
                 aria-label="select item"
                 disabled={this.disabled}
-                value={!!this.selected}
+                value={!!this.checked}
                 size={this.size === 'xs' ? 'sm' : this.size}
                 indeterminate={this.isIndeterminate}
                 onClick={(e) => {

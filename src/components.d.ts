@@ -2043,6 +2043,10 @@ export namespace Components {
          */
         "checkbox"?: boolean;
         /**
+          * The checked state of the tree item when checkbox is enabled.
+         */
+        "checked"?: boolean;
+        /**
           * Public method to collapse the subtree if it's expanded
          */
         "collapseSubTree": () => Promise<void>;
@@ -5627,6 +5631,10 @@ declare namespace LocalJSX {
           * If true, renders a checkbox at the start of the tree item.
          */
         "checkbox"?: boolean;
+        /**
+          * The checked state of the tree item when checkbox is enabled.
+         */
+        "checked"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
          */

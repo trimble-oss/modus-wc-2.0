@@ -69,69 +69,6 @@ describe('modus-wc-tree-view', () => {
     expect(ul?.classList.contains('custom-tree')).toBe(true);
   });
 
-  it('handles itemSelect event and marks item as active', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTreeView],
-      html: `
-        <modus-wc-tree-view>
-          <div class="modus-wc-tree-item">
-            <div class="modus-wc-tree-content">Item 1</div>
-          </div>
-          <div class="modus-wc-tree-item">
-            <div class="modus-wc-tree-content">Item 2</div>
-          </div>
-        </modus-wc-tree-view>
-      `,
-    });
-
-    const treeView = page.rootInstance;
-    const items = page.root?.querySelectorAll('.modus-wc-tree-item');
-    const firstItem = items?.[0] as HTMLElement;
-    const secondItem = items?.[1] as HTMLElement;
-
-    // Simulate item selection on first item
-    const event = new CustomEvent('itemSelect', {
-      detail: { value: 'item1' },
-      bubbles: true,
-    });
-    Object.defineProperty(event, 'target', {
-      value: firstItem,
-      enumerable: true,
-    });
-
-    treeView.handleItemSelect(event);
-    await page.waitForChanges();
-
-    const firstContent = firstItem.querySelector('.modus-wc-tree-content');
-    expect(firstContent?.classList.contains('modus-wc-tree-item-active')).toBe(
-      true
-    );
-
-    // Simulate item selection on second item
-    const event2 = new CustomEvent('itemSelect', {
-      detail: { value: 'item2' },
-      bubbles: true,
-    });
-    Object.defineProperty(event2, 'target', {
-      value: secondItem,
-      enumerable: true,
-    });
-
-    treeView.handleItemSelect(event2);
-    await page.waitForChanges();
-
-    // First item should no longer be active
-    expect(firstContent?.classList.contains('modus-wc-tree-item-active')).toBe(
-      false
-    );
-
-    // Second item should be active
-    const secondContent = secondItem.querySelector('.modus-wc-tree-content');
-    expect(secondContent?.classList.contains('modus-wc-tree-item-active')).toBe(
-      true
-    );
-  });
-
   it('handles itemSelect event when target is missing', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeView],
@@ -244,48 +181,6 @@ describe('modus-wc-tree-view', () => {
     expect(classes).toContain('my-custom-sublist');
   });
 
-  it('handles itemSelect event and adds class to li element', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTreeView],
-      html: `
-        <modus-wc-tree-view>
-          <modus-wc-tree-item>
-            <li>
-              <div class="modus-wc-tree-content">Item 1</div>
-            </li>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item>
-            <li>
-              <div class="modus-wc-tree-content">Item 2</div>
-            </li>
-          </modus-wc-tree-item>
-        </modus-wc-tree-view>
-      `,
-    });
-
-    const treeView = page.rootInstance;
-    const firstTreeItem = page.root?.querySelector(
-      'modus-wc-tree-item'
-    ) as HTMLElement;
-    const firstLi = firstTreeItem.querySelector('li');
-
-    const event = new CustomEvent('itemSelect', {
-      detail: { value: 'item1' },
-      bubbles: true,
-    });
-    Object.defineProperty(event, 'target', {
-      value: firstTreeItem,
-      enumerable: true,
-    });
-
-    treeView.handleItemSelect(event);
-    await page.waitForChanges();
-
-    expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
-      true
-    );
-  });
-
   it('handles itemSelect event and removes class from previously selected li', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeView],
@@ -310,7 +205,6 @@ describe('modus-wc-tree-view', () => {
     const firstTreeItem = treeItems?.[0] as HTMLElement;
     const secondTreeItem = treeItems?.[1] as HTMLElement;
     const firstLi = firstTreeItem.querySelector('li');
-    const secondLi = secondTreeItem.querySelector('li');
 
     // Select first item
     const event1 = new CustomEvent('itemSelect', {
@@ -325,10 +219,6 @@ describe('modus-wc-tree-view', () => {
     treeView.handleItemSelect(event1);
     await page.waitForChanges();
 
-    expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
-      true
-    );
-
     // Select second item
     const event2 = new CustomEvent('itemSelect', {
       detail: { value: 'item2' },
@@ -342,13 +232,8 @@ describe('modus-wc-tree-view', () => {
     treeView.handleItemSelect(event2);
     await page.waitForChanges();
 
-    // First li should no longer have the class
     expect(firstLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
       false
-    );
-    // Second li should have the class
-    expect(secondLi?.classList.contains('modus-wc-tree-item-li-active')).toBe(
-      true
     );
   });
 

@@ -307,13 +307,13 @@ describe('modus-wc-tree-item', () => {
     });
 
     const treeItem = page.rootInstance;
-    expect(treeItem.selected).toBeFalsy();
+    expect(treeItem.checked).toBeFalsy();
 
     const checkbox = page.root?.querySelector('modus-wc-checkbox');
     checkbox?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
   });
 
   it('checkbox handles Enter key', async () => {
@@ -330,7 +330,7 @@ describe('modus-wc-tree-item', () => {
     );
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
   });
 
   it('checkbox handles Space key', async () => {
@@ -347,7 +347,7 @@ describe('modus-wc-tree-item', () => {
     );
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
   });
 
   it('checkbox uses correct size - xs converts to sm', async () => {
@@ -392,9 +392,9 @@ describe('modus-wc-tree-item', () => {
     checkbox?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
 
-    expect(parent.selected).toBe(true);
-    expect(children[0].selected).toBe(true);
-    expect(children[1].selected).toBe(true);
+    expect(parent.checked).toBe(true);
+    expect(children[0].checked).toBe(true);
+    expect(children[1].checked).toBe(true);
   });
 
   it('sets indeterminate state when some children are selected', async () => {
@@ -403,7 +403,7 @@ describe('modus-wc-tree-item', () => {
       html: `
         <modus-wc-tree-item label="Parent" value="parent" checkbox has-subtree>
           <div class="modus-wc-tree-dropdown">
-            <modus-wc-tree-item label="Child1" value="child1" checkbox selected></modus-wc-tree-item>
+            <modus-wc-tree-item label="Child1" value="child1" checkbox checked></modus-wc-tree-item>
             <modus-wc-tree-item label="Child2" value="child2" checkbox></modus-wc-tree-item>
           </div>
         </modus-wc-tree-item>
@@ -423,7 +423,7 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(parent.isIndeterminate).toBe(true);
-    expect(parent.selected).toBe(false);
+    expect(parent.checked).toBe(false);
   });
 
   it('sets selected state when all children are selected', async () => {
@@ -432,8 +432,8 @@ describe('modus-wc-tree-item', () => {
       html: `
         <modus-wc-tree-item label="Parent" value="parent" checkbox has-subtree>
           <div class="modus-wc-tree-dropdown">
-            <modus-wc-tree-item label="Child1" value="child1" checkbox selected></modus-wc-tree-item>
-            <modus-wc-tree-item label="Child2" value="child2" checkbox selected></modus-wc-tree-item>
+            <modus-wc-tree-item label="Child1" value="child1" checkbox checked></modus-wc-tree-item>
+            <modus-wc-tree-item label="Child2" value="child2" checkbox checked></modus-wc-tree-item>
           </div>
         </modus-wc-tree-item>
       `,
@@ -451,7 +451,7 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(parent.isIndeterminate).toBe(false);
-    expect(parent.selected).toBe(true);
+    expect(parent.checked).toBe(true);
   });
 
   it('updateIndeterminateState returns early when event target is self', async () => {
@@ -595,10 +595,10 @@ describe('modus-wc-tree-item', () => {
       submenu?.querySelectorAll('modus-wc-tree-item') || []
     ) as ITreeItemElement[];
 
-    // First child with checkbox should be selected
-    expect(children[0]?.selected).toBe(true);
-    // Second child without checkbox should remain unchanged (not selected)
-    expect(children[1]?.selected).toBeFalsy();
+    // First child with checkbox should be checked
+    expect(children[0]?.checked).toBe(true);
+    // Second child without checkbox should remain unchanged (not checked)
+    expect(children[1]?.checked).toBeFalsy();
   });
 
   it('adds event listener on componentDidLoad when has subtree', async () => {
@@ -769,7 +769,7 @@ describe('modus-wc-tree-item', () => {
     checkbox?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
     expect(treeItem.isIndeterminate).toBe(false);
   });
 
@@ -815,27 +815,27 @@ describe('modus-wc-tree-item', () => {
     expect(eventSpy).not.toHaveBeenCalled();
   });
 
-  it('handleCheckboxClick sets newValue to true when selected is false', async () => {
+  it('handleCheckboxClick sets newValue to true when checked is false', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
       html: `<modus-wc-tree-item label="Item" value="item" checkbox></modus-wc-tree-item>`,
     });
 
     const treeItem = page.rootInstance;
-    treeItem.selected = false;
+    treeItem.checked = false;
     treeItem.isIndeterminate = false;
 
     treeItem['handleCheckboxClick']();
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
     expect(treeItem.isIndeterminate).toBe(false);
   });
 
-  it('handleCheckboxClick sets newValue to false when selected is true and not indeterminate', async () => {
+  it('handleCheckboxClick sets newValue to false when checked is true and not indeterminate', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
-      html: `<modus-wc-tree-item label="Item" value="item" checkbox selected></modus-wc-tree-item>`,
+      html: `<modus-wc-tree-item label="Item" value="item" checkbox checked></modus-wc-tree-item>`,
     });
 
     const treeItem = page.rootInstance;
@@ -844,7 +844,7 @@ describe('modus-wc-tree-item', () => {
     treeItem['handleCheckboxClick']();
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(false);
+    expect(treeItem.checked).toBe(false);
     expect(treeItem.isIndeterminate).toBe(false);
   });
 
@@ -855,20 +855,20 @@ describe('modus-wc-tree-item', () => {
     });
 
     const treeItem = page.rootInstance;
-    treeItem.selected = false;
+    treeItem.checked = false;
     treeItem.isIndeterminate = true;
 
     treeItem['handleCheckboxClick']();
     await page.waitForChanges();
 
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
     expect(treeItem.isIndeterminate).toBe(false);
   });
 
-  it('handleCheckboxClick sets newValue to true when selected is true but isIndeterminate is also true', async () => {
+  it('handleCheckboxClick sets newValue to true when checked is true but isIndeterminate is also true', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
-      html: `<modus-wc-tree-item label="Item" value="item" checkbox selected></modus-wc-tree-item>`,
+      html: `<modus-wc-tree-item label="Item" value="item" checkbox checked></modus-wc-tree-item>`,
     });
 
     const treeItem = page.rootInstance;
@@ -878,7 +878,7 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     // When indeterminate is true, newValue should be true (OR condition)
-    expect(treeItem.selected).toBe(true);
+    expect(treeItem.checked).toBe(true);
     expect(treeItem.isIndeterminate).toBe(false);
   });
 
@@ -889,7 +889,7 @@ describe('modus-wc-tree-item', () => {
     });
 
     const treeItem = page.rootInstance;
-    treeItem.selected = false;
+    treeItem.checked = false;
     treeItem.isIndeterminate = true;
 
     expect(treeItem.isIndeterminate).toBe(true);

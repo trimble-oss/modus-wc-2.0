@@ -2553,6 +2553,14 @@
               }
             },
             {
+              "name": "checked",
+              "fieldName": "checked",
+              "description": "The checked state of the tree item when checkbox is enabled.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
