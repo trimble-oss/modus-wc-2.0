@@ -2,3 +2,96 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
+
+modus-wc-divider .modus-wc-divider {
+  &.modus-wc-divider-primary {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-primary);
+    }
+  }
+
+  // High-contrast variant
+  &.modus-wc-divider-accent {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-info-blue);
+    }
+  }
+}
+
+// Light Theme Styles
+[data-theme='modus-classic-light'] modus-wc-divider .modus-wc-divider,
+[data-theme='modus-modern-light'] modus-wc-divider .modus-wc-divider,
+[data-theme='connect-light'] modus-wc-divider .modus-wc-divider {
+  // Tertiary variant
+  &.modus-wc-divider-neutral {
+    &::before,
+    &::after {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-gray-10) 10%,
+        transparent
+      );
+    }
+  }
+
+  &.modus-wc-divider-success {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-green-dark);
+    }
+  }
+
+  &.modus-wc-divider-error {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-red-dark);
+    }
+  }
+
+  &.modus-wc-divider-warning {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-yellow-dark);
+    }
+  }
+}
+
+// Dark Theme Styles
+[data-theme='modus-classic-dark'] modus-wc-divider .modus-wc-divider,
+[data-theme='modus-modern-dark'] modus-wc-divider .modus-wc-divider,
+[data-theme='connect-dark'] modus-wc-divider .modus-wc-divider {
+  // Tertiary variant
+  &.modus-wc-divider-neutral {
+    &::before,
+    &::after {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-gray-light) 10%,
+        transparent
+      );
+    }
+  }
+
+  &.modus-wc-divider-success {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-green-light);
+    }
+  }
+
+  &.modus-wc-divider-error {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-red-light);
+    }
+  }
+
+  &.modus-wc-divider-warning {
+    &::before,
+    &::after {
+      background-color: var(--modus-wc-color-yellow-light);
+    }
+  }
+}
