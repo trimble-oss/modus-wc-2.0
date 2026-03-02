@@ -1,3 +1,5 @@
+import { DaisySize } from '../../types';
+
 export const convertPropsToClasses = ({
   disabled,
   selected,
@@ -5,7 +7,7 @@ export const convertPropsToClasses = ({
 }: {
   disabled?: boolean;
   selected?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: DaisySize;
 }): string => {
   let classes = '';
 

@@ -2445,7 +2445,7 @@
               "default": "'xs'",
               "description": "The size of the action buttons and icons.",
               "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg'"
+                "text": "DaisySize"
               }
             }
           ],
@@ -2607,7 +2607,7 @@
               "default": "'xs'",
               "description": "The size of the tree item icons and actions.",
               "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg'"
+                "text": "DaisySize"
               }
             },
             {

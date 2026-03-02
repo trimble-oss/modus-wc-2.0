@@ -11,6 +11,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { DaisySize } from '../../types';
 
 export interface ITreeItemActions {
   id: string; // Unique identifier for the action
@@ -43,7 +44,7 @@ export class ModusWcTreeActions {
   @Prop() actions?: ITreeItemActions[];
 
   /** The size of the action buttons and icons. */
-  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' = 'xs';
+  @Prop() size: DaisySize = 'xs';
 
   /** Internal state for dropdown visibility */
   @State() isDropdownOpen: boolean = false;
@@ -142,7 +143,7 @@ export class ModusWcTreeActions {
       this.moreActionsDropdown,
       {
         placement: 'bottom',
-        strategy: 'fixed',
+        strategy: 'absolute',
         modifiers: [
           {
             name: 'offset',
@@ -151,9 +152,32 @@ export class ModusWcTreeActions {
             },
           },
           {
+            name: 'preventOverflow',
+            options: {
+              padding: 8,
+              boundary: 'viewport',
+            },
+          },
+          {
             name: 'flip',
             options: {
               fallbackPlacements: ['top-start', 'bottom-end', 'top-end'],
+              padding: 8,
+              boundary: 'viewport',
+            },
+          },
+          {
+            name: 'computeStyles',
+            options: {
+              adaptive: true,
+              gpuAcceleration: true,
+            },
+          },
+          {
+            name: 'eventListeners',
+            options: {
+              scroll: true,
+              resize: true,
             },
           },
         ],

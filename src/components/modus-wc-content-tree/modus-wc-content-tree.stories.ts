@@ -1,6 +1,8 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { DaisySize } from '../types';
+import { ITreeItemActions } from './modus-wc-tree-actions/modus-wc-tree-actions';
 import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 
 interface ContentTreeArgs {
@@ -8,6 +10,17 @@ interface ContentTreeArgs {
   'search-placeholder'?: string;
   'include-search'?: boolean;
   'include-actions'?: boolean;
+  // Tree Item Props
+  disabled?: boolean;
+  checkbox?: boolean;
+  label?: string;
+  'custom-class-item'?: string;
+  selected?: boolean;
+  checked?: boolean;
+  value?: string;
+  'has-subtree'?: boolean;
+  'tree-item-actions'?: ITreeItemActions[];
+  size?: DaisySize;
 }
 
 const meta: Meta<ContentTreeArgs> = {
@@ -17,16 +30,64 @@ const meta: Meta<ContentTreeArgs> = {
     'search-placeholder': 'Search...',
     'include-search': true,
     'include-actions': true,
+    disabled: false,
+    checkbox: false,
+    label: 'Tree Item',
+    selected: false,
+    checked: false,
+    value: '',
+    'has-subtree': false,
+    size: 'xs',
   },
   argTypes: {
     'search-placeholder': {
       control: { type: 'text' },
+      table: { category: 'Content Tree' },
     },
     'include-search': {
       control: { type: 'boolean' },
+      table: { category: 'Content Tree' },
     },
     'include-actions': {
       control: { type: 'boolean' },
+      table: { category: 'Content Tree' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      table: { category: 'Tree Item' },
+    },
+    checkbox: {
+      control: { type: 'boolean' },
+      table: { category: 'Tree Item' },
+    },
+    label: {
+      control: { type: 'text' },
+      table: { category: 'Tree Item' },
+    },
+    'custom-class-item': {
+      control: { type: 'text' },
+      table: { category: 'Tree Item' },
+    },
+    selected: {
+      control: { type: 'boolean' },
+      table: { category: 'Tree Item' },
+    },
+    checked: {
+      control: { type: 'boolean' },
+      table: { category: 'Tree Item' },
+    },
+    value: {
+      control: { type: 'text' },
+      table: { category: 'Tree Item' },
+    },
+    'has-subtree': {
+      control: { type: 'boolean' },
+      table: { category: 'Tree Item' },
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg'],
+      table: { category: 'Tree Item' },
     },
   },
   decorators: [withActions],
@@ -120,6 +181,79 @@ export const Default: Story = {
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const TreeItem: Story = {
+  name: 'Tree Item',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A single tree item demonstrating all available properties. Use the controls to customize the tree item appearance and behavior.',
+      },
+      source: {
+        code: `
+<script>
+const treeItemActions = [
+  {
+    id: 'info',
+    label: 'Info',
+    icon: 'info',
+    ariaLabel: 'Info item',
+  },
+];
+</script>
+
+<modus-wc-content-tree search-placeholder="Search..." include-search="false" include-actions="false">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item 
+      label="Tree Item" 
+      disabled="false" 
+      checkbox="false" 
+      selected="false" 
+      checked="false" 
+      has-subtree="false" 
+      size="xs"
+    ></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+
+<script>
+const treeItem = document.querySelector('modus-wc-tree-item');
+treeItem.treeItemActions = treeItemActions;
+</script>
+`,
+      },
+    },
+  },
+  render: (args) => {
+    const defaultTreeItemActions: ITreeItemActions[] = [
+      {
+        id: 'info',
+        label: 'Info',
+        icon: 'info',
+        ariaLabel: 'Info item',
+      },
+    ];
+
+    return html`
+      <modus-wc-tree-view>
+        <modus-wc-tree-item
+          label=${args.label || 'Tree Item'}
+          value="item-1"
+          .disabled=${args.disabled}
+          .checkbox=${args.checkbox}
+          .selected=${args.selected}
+          .checked=${args.checked}
+          .hasSubtree=${args['has-subtree']}
+          .size=${args.size}
+          customClass=${args['custom-class-item']}
+          .treeItemActions=${args['tree-item-actions'] ||
+          defaultTreeItemActions}
+        ></modus-wc-tree-item>
+      </modus-wc-tree-view>
     `;
   },
 };
@@ -229,8 +363,8 @@ export const DisabledItems: Story = {
   },
 };
 
-export const MultiSelect: Story = {
-  name: 'Multi Select',
+export const CheckboxSelection: Story = {
+  name: 'Checkbox Selection',
   parameters: {
     docs: {
       description: {

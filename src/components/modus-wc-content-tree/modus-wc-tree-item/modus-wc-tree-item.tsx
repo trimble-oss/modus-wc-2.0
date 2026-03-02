@@ -10,9 +10,9 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
+import { DaisySize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
-import { DaisySize } from '../../types';
 
 export interface ITreeItemElement extends HTMLElement {
   value: string;
@@ -25,7 +25,7 @@ export interface ITreeItemElement extends HTMLElement {
   label: string;
   customClass?: string;
   treeItemActions?: ITreeItemActions[];
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: DaisySize;
   collapseSubTree(): Promise<void>;
   expandSubTree(): Promise<void>;
 }
@@ -299,7 +299,11 @@ export class ModusWcTreeItem {
               shape="circle"
               size={this.size}
               customClass="modus-wc-tree-toggle-btn"
-              aria-label={this.isExpanded ? 'Collapse' : 'Expand'}
+              aria-label={
+                this.isExpanded
+                  ? `Collapse ${this.label}`
+                  : `Expand ${this.label}`
+              }
               disabled={!this.hasSubtree}
               onButtonClick={(e) => {
                 this.handleToggleClick(e.detail);
@@ -313,7 +317,7 @@ export class ModusWcTreeItem {
             </modus-wc-button>
             {this.checkbox && (
               <modus-wc-checkbox
-                aria-label="select item"
+                aria-label={`Select ${this.label}`}
                 disabled={this.disabled}
                 value={!!this.checked}
                 size={this.size === 'xs' ? 'sm' : this.size}

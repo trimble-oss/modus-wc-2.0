@@ -2032,7 +2032,7 @@ export namespace Components {
         /**
           * The size of the action buttons and icons.
          */
-        "size": 'xs' | 'sm' | 'md' | 'lg';
+        "size": DaisySize;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -5621,7 +5621,7 @@ declare namespace LocalJSX {
         /**
           * The size of the action buttons and icons.
          */
-        "size"?: 'xs' | 'sm' | 'md' | 'lg';
+        "size"?: DaisySize;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
