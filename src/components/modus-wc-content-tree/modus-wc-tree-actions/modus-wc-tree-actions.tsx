@@ -172,7 +172,6 @@ export class ModusWcTreeActions {
               key={action.id}
               customClass="modus-wc-tree-action-button"
               disabled={action.disabled}
-              variant="borderless"
               size={this.size}
               shape="circle"
               onClick={(e) => this.handleActionClick(action, e)}
@@ -188,13 +187,13 @@ export class ModusWcTreeActions {
             <div class="modus-wc-tree-more-actions-wrapper">
               <modus-wc-button
                 customClass="modus-wc-tree-action-button"
-                variant="borderless"
                 size={this.size}
                 shape="circle"
                 ref={(el) => (this.moreActionsButton = el as HTMLElement)}
                 onClick={this.handleMoreActionsClick}
                 aria-expanded={this.isDropdownOpen ? 'true' : 'false'}
                 aria-haspopup="true"
+                aria-label="More actions"
               >
                 <modus-wc-icon
                   name="more_vertical"

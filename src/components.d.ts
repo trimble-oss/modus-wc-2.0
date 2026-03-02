@@ -2077,7 +2077,7 @@ export namespace Components {
         /**
           * The size of the tree item icons and actions.
          */
-        "size": 'xs' | 'sm' | 'md' | 'lg';
+        "size": DaisySize;
         /**
           * Actions to display for this tree item.
          */
@@ -5670,7 +5670,7 @@ declare namespace LocalJSX {
         /**
           * The size of the tree item icons and actions.
          */
-        "size"?: 'xs' | 'sm' | 'md' | 'lg';
+        "size"?: DaisySize;
         /**
           * Actions to display for this tree item.
          */

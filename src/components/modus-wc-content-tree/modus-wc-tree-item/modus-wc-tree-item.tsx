@@ -12,6 +12,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
+import { DaisySize } from '../../types';
 
 export interface ITreeItemElement extends HTMLElement {
   value: string;
@@ -20,6 +21,11 @@ export interface ITreeItemElement extends HTMLElement {
   checkbox?: boolean;
   hasSubtree?: boolean;
   isIndeterminate?: boolean;
+  disabled?: boolean;
+  label: string;
+  customClass?: string;
+  treeItemActions?: ITreeItemActions[];
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   collapseSubTree(): Promise<void>;
   expandSubTree(): Promise<void>;
 }
@@ -45,7 +51,7 @@ export class ModusWcTreeItem {
   @Prop() checkbox?: boolean = false;
 
   /** The text label displayed for the tree item. */
-  @Prop() label!: string;
+  @Prop({ reflect: true }) label!: string;
 
   /** Custom CSS class to apply to the li element. */
   @Prop() customClass?: string = '';
@@ -66,7 +72,7 @@ export class ModusWcTreeItem {
   @Prop() treeItemActions?: ITreeItemActions[];
 
   /** The size of the tree item icons and actions. */
-  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' = 'xs';
+  @Prop() size: DaisySize = 'xs';
 
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;

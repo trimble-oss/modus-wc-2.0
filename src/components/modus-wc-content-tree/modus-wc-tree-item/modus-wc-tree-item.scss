@@ -46,7 +46,7 @@ modus-wc-tree-item {
   }
 
   .modus-wc-tree-item-group {
-    border-left: 2px solid var(--modus-wc-color-primary);
+    border-inline-start: 2px solid var(--modus-wc-color-primary);
   }
 
   .modus-wc-tree-item-labels {
@@ -94,6 +94,11 @@ modus-wc-tree-item {
 
     .modus-wc-tree-content {
       cursor: not-allowed;
+    }
+
+    .modus-wc-tree-item-actions,
+    .modus-wc-tree-item-actions * {
+      pointer-events: auto;
     }
   }
 }

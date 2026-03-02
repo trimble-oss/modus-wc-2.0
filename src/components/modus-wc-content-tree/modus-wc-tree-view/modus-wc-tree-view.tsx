@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Listen, Prop } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
+import { ITreeItemElement } from '../modus-wc-tree-item/modus-wc-tree-item';
 
 /**
  * A wrapper component that provides the ul element for tree items.
@@ -32,13 +33,13 @@ export class ModusWcTreeView {
     if (!target) return;
 
     const allTreeItems = this.el.querySelectorAll('modus-wc-tree-item');
-    allTreeItems.forEach((item: HTMLModusWcTreeItemElement) => {
+    allTreeItems.forEach((item: ITreeItemElement) => {
       item.selected = false;
     });
 
     const targetTreeItem = target.closest('modus-wc-tree-item');
     if (targetTreeItem) {
-      (targetTreeItem as HTMLModusWcTreeItemElement).selected = true;
+      (targetTreeItem as ITreeItemElement).selected = true;
     }
   }
 
