@@ -207,6 +207,9 @@
     var(--modus-wc-color-black),
     var(--modus-wc-color-white)
   );
+  --modus-wc-color-base-content-high-contrast: var(
+    --modus-wc-color-base-content-hight-contrast
+  );
   --modus-wc-color-base-inverted: light-dark(
     var(--modus-wc-color-gray-10),
     var(--modus-wc-color-gray-light)
@@ -339,8 +342,19 @@
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
   --rounded-btn: 0.5rem;
   --rounded-box: 1rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
   --p: 48.6221% 0.128075 247.073947;
   --pc: 100% 0 0;
   --s: 80.3357% 0.161017 74.410202;
@@ -374,8 +388,19 @@
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
   --rounded-btn: 0.5rem;
   --rounded-box: 1rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
   --p: 65.9524% 0.159801 243.168715;
   --pc: 0% 0 0;
   --s: 84.7174% 0.139742 78.603787;
@@ -412,8 +437,19 @@
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
   --rounded-btn: 0.25rem;
   --rounded-box: 0.5rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
   --p: 48.6221% 0.128075 247.073947;
   --pc: 100% 0 0;
   --s: 53.8572% 0.017812 269.820069;
@@ -449,8 +485,19 @@
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
   --rounded-btn: 0.25rem;
   --rounded-box: 0.5rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
   --p: 48.6221% 0.128075 247.073947;
   --pc: 100% 0 0;
   --s: 80.3357% 0.161017 74.410202;
@@ -483,8 +530,18 @@
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 2px;
+  --border-btn: 1px;
+  --btn-focus-scale: 1;
   --rounded-btn: 2px;
   --rounded-box: 0;
+  --tab-radius: 0;
+  --alert-border-left-width: 0;
+  --alert-border-width: 0;
+  --alert-border-radius: 4px;
   --input-bottom-border-width: 2px;
   --input-radius: 2px;
   --p: 47.3235% 0.12603 247.547196;
@@ -515,11 +572,21 @@
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
-  --modus-wc-color-base-300: var(--modus-wc-color-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
 
+  --animation-btn: 0.3s;
+  --animation-input: .2s;
+  --tab-border: 1px;
+  --rounded-badge: 2px;
+  --border-btn: 1px;
+  --btn-focus-scale: 1;
   --rounded-btn: 2px;
   --rounded-box: 0;
+  --tab-radius: 0;
+  --alert-border-left-width: 0;
+  --alert-border-width: 0;
+  --alert-border-radius: 4px;
   --input-bottom-border-width: 2px;
   --input-radius: 2px;
   --p: 65.9524% 0.159801 243.168715;
