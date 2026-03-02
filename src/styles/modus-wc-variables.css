@@ -340,7 +340,7 @@
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 0.25rem;
   --border-btn: 1px;
@@ -386,7 +386,7 @@
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 0.25rem;
   --border-btn: 1px;
@@ -435,7 +435,7 @@
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 0.25rem;
   --border-btn: 1px;
@@ -483,7 +483,7 @@
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 0.25rem;
   --border-btn: 1px;
@@ -528,7 +528,7 @@
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 2px;
   --border-btn: 1px;
@@ -573,7 +573,7 @@
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
 
   --animation-btn: 0.3s;
-  --animation-input: .2s;
+  --animation-input: 0.2s;
   --tab-border: 1px;
   --rounded-badge: 2px;
   --border-btn: 1px;
