@@ -1,8 +1,6 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { DaisySize } from '../types';
-import { ITreeItemActions } from './modus-wc-tree-actions/modus-wc-tree-actions';
 import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 
 interface ContentTreeArgs {
@@ -10,34 +8,16 @@ interface ContentTreeArgs {
   'search-placeholder'?: string;
   'include-search'?: boolean;
   'include-actions'?: boolean;
-  // Tree Item Props
-  disabled?: boolean;
-  checkbox?: boolean;
-  label?: string;
-  'custom-class-item'?: string;
-  selected?: boolean;
-  checked?: boolean;
-  value?: string;
-  'has-subtree'?: boolean;
-  'tree-item-actions'?: ITreeItemActions[];
-  size?: DaisySize;
 }
 
 const meta: Meta<ContentTreeArgs> = {
   title: 'Components/Content Tree',
   component: 'modus-wc-content-tree',
   args: {
+    'custom-class': '',
     'search-placeholder': 'Search...',
     'include-search': true,
     'include-actions': true,
-    disabled: false,
-    checkbox: false,
-    label: 'Tree Item',
-    selected: false,
-    checked: false,
-    value: '',
-    'has-subtree': false,
-    size: 'xs',
   },
   argTypes: {
     'search-placeholder': {
@@ -51,43 +31,6 @@ const meta: Meta<ContentTreeArgs> = {
     'include-actions': {
       control: { type: 'boolean' },
       table: { category: 'Content Tree' },
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      table: { category: 'Tree Item' },
-    },
-    checkbox: {
-      control: { type: 'boolean' },
-      table: { category: 'Tree Item' },
-    },
-    label: {
-      control: { type: 'text' },
-      table: { category: 'Tree Item' },
-    },
-    'custom-class-item': {
-      control: { type: 'text' },
-      table: { category: 'Tree Item' },
-    },
-    selected: {
-      control: { type: 'boolean' },
-      table: { category: 'Tree Item' },
-    },
-    checked: {
-      control: { type: 'boolean' },
-      table: { category: 'Tree Item' },
-    },
-    value: {
-      control: { type: 'text' },
-      table: { category: 'Tree Item' },
-    },
-    'has-subtree': {
-      control: { type: 'boolean' },
-      table: { category: 'Tree Item' },
-    },
-    size: {
-      control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
-      table: { category: 'Tree Item' },
     },
   },
   decorators: [withActions],
@@ -181,79 +124,6 @@ export const Default: Story = {
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>
-    `;
-  },
-};
-
-export const TreeItem: Story = {
-  name: 'Tree Item',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A single tree item demonstrating all available properties. Use the controls to customize the tree item appearance and behavior.',
-      },
-      source: {
-        code: `
-<script>
-const treeItemActions = [
-  {
-    id: 'info',
-    label: 'Info',
-    icon: 'info',
-    ariaLabel: 'Info item',
-  },
-];
-</script>
-
-<modus-wc-content-tree search-placeholder="Search..." include-search="false" include-actions="false">
-  <modus-wc-tree-view>
-    <modus-wc-tree-item 
-      label="Tree Item" 
-      disabled="false" 
-      checkbox="false" 
-      selected="false" 
-      checked="false" 
-      has-subtree="false" 
-      size="xs"
-    ></modus-wc-tree-item>
-  </modus-wc-tree-view>
-</modus-wc-content-tree>
-
-<script>
-const treeItem = document.querySelector('modus-wc-tree-item');
-treeItem.treeItemActions = treeItemActions;
-</script>
-`,
-      },
-    },
-  },
-  render: (args) => {
-    const defaultTreeItemActions: ITreeItemActions[] = [
-      {
-        id: 'info',
-        label: 'Info',
-        icon: 'info',
-        ariaLabel: 'Info item',
-      },
-    ];
-
-    return html`
-      <modus-wc-tree-view>
-        <modus-wc-tree-item
-          label=${args.label || 'Tree Item'}
-          value="item-1"
-          .disabled=${args.disabled}
-          .checkbox=${args.checkbox}
-          .selected=${args.selected}
-          .checked=${args.checked}
-          .hasSubtree=${args['has-subtree']}
-          .size=${args.size}
-          customClass=${args['custom-class-item']}
-          .treeItemActions=${args['tree-item-actions'] ||
-          defaultTreeItemActions}
-        ></modus-wc-tree-item>
-      </modus-wc-tree-view>
     `;
   },
 };
@@ -715,5 +585,108 @@ contentTree.addEventListener('treeActionClick', handleTreeActionClick);
         </modus-wc-tree-view>
       </modus-wc-content-tree>
     `;
+  },
+};
+
+export const ApiReference: Story = {
+  name: 'API Reference',
+  parameters: {
+    docs: {
+      description: {
+        story: `
+### Props
+
+| Name              | Type       | Default      | Description                                       |
+|-------------------|------------|--------------|---------------------------------------------------|
+| customClass       | \`string\` | \`''\`       | Additional CSS class to apply to the component    |
+| searchPlaceholder | \`string\` | \`'Search...'\` | Placeholder text for the search input          |
+| includeSearch     | \`boolean\` | \`true\`    | Whether to display the search functionality       |
+| includeActions    | \`boolean\` | \`true\`    | Whether to display action buttons for tree items  |
+
+---
+
+### Tree View
+
+#### Props
+
+| Name        | Type       | Default   | Description                                           |
+|-------------|------------|-----------|-------------------------------------------------------|
+| customClass | \`string\` | \`''\`    | Additional CSS class to apply to the tree view        |
+| isSubList   | \`boolean\` | \`false\` | Whether the tree view is a sublist of another tree item |
+
+---
+
+### Tree Item
+
+#### Props
+
+| Name            | Type                                   | Default   | Description                                                  |
+|-----------------|----------------------------------------|-----------|--------------------------------------------------------------|
+| label           | \`string\`                             | -         | The label text for the tree item (required)                  |
+| value           | \`string\`                             | \`''\`    | The value associated with the tree item                      |
+| disabled        | \`boolean\`                            | \`false\` | Whether the tree item is disabled                            |
+| checkbox        | \`boolean\`                            | \`false\` | Whether to display a checkbox for the tree item              |
+| selected        | \`boolean\`                            | -         | Whether the tree item is selected (mutable, reflected)       |
+| checked         | \`boolean\`                            | -         | Whether the tree item checkbox is checked (mutable, reflected) |
+| hasSubtree      | \`boolean\`                            | \`false\` | Whether the tree item has a subtree                          |
+| treeItemActions | \`ITreeItemActions[]\`                 | -         | Array of actions to display for the tree item                |
+| size            | \`'xs' | 'sm' | 'md' | 'lg'\`    | \`'xs'\`  | The size of the tree item                                    |
+| customClass     | \`string\`                             | \`''\`    | Additional CSS class to apply to the tree item               |
+
+#### Events
+
+| Name             | Payload                          | Description                                     |
+|------------------|----------------------------------|-------------------------------------------------|
+| itemSelect       | \`{ value: string }\`            | Emitted when a tree item is selected            |
+| selectionsChange | \`{ selectedValues: string[] }\` | Emitted when the selection state changes        |
+
+#### Methods
+
+| Name            | Type                      | Description                |
+|-----------------|---------------------------|----------------------------|
+| collapseSubTree | \`() => Promise<void>\`   | Collapses the subtree      |
+| expandSubTree   | \`() => Promise<void>\`   | Expands the subtree        |
+
+---
+
+### Tree Actions
+
+#### Props
+
+| Name    | Type                                | Default  | Description                          |
+|---------|-------------------------------------|----------|--------------------------------------|
+| actions | \`ITreeItemActions[]\`              | -        | Array of actions to display          |
+| size    | \`'xs' | 'sm' | 'md' | 'lg'\` | \`'xs'\` | The size of the action buttons       |
+
+#### Events
+
+| Name            | Payload                                   | Description                                |
+|-----------------|-------------------------------------------|--------------------------------------------|
+| treeActionClick | \`{ actionId: string; actionName: string }\` | Emitted when an action is clicked       |
+| dropdownOpened  | \`HTMLElement\`                           | Emitted when the dropdown is opened        |
+
+---
+
+### Interfaces
+
+#### ITreeItemActions
+
+\`\`\`typescript
+interface ITreeItemActions {
+  id: string;                           // Unique identifier for the action
+  icon: string;                         // Icon name for the action, e.g., 'edit', 'trash'
+  iconVariant?: 'solid' | 'outlined';   // Optional variant for the icon
+  label: string;                        // Text label for the action
+  ariaLabel?: string;                   // Optional label for accessibility
+  disabled?: boolean;                   // Optional flag to disable the action
+}
+\`\`\`
+`,
+      },
+    },
+    controls: { disable: true },
+  },
+  render: () => {
+    return html``;
   },
 };

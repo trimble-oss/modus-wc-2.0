@@ -1,5 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeView } from './modus-wc-tree-view';
+import { ITreeItemElement } from '../modus-wc-tree-item/modus-wc-tree-item';
 
 describe('modus-wc-tree-view', () => {
   it('renders with default props', async () => {
@@ -115,6 +116,42 @@ describe('modus-wc-tree-view', () => {
 
     // Should not throw even when content element is missing
     expect(() => treeView.handleItemSelect(event)).not.toThrow();
+  });
+
+  it('does not handle itemSelect when isSubList is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView],
+      html: `
+        <modus-wc-tree-view is-sub-list="true">
+          <modus-wc-tree-item>
+            <li>
+              <div class="modus-wc-tree-content">Item 1</div>
+            </li>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance;
+    const treeItem = page.root?.querySelector(
+      'modus-wc-tree-item'
+    ) as HTMLElement;
+
+    const event = new CustomEvent('itemSelect', {
+      detail: { value: 'item1' },
+      bubbles: true,
+    });
+    Object.defineProperty(event, 'target', {
+      value: treeItem,
+      enumerable: true,
+    });
+
+    treeView.handleItemSelect(event);
+    await page.waitForChanges();
+
+    // When isSubList is true, the event should be ignored and item should not be selected
+    const treeItemElement = treeItem as ITreeItemElement;
+    expect(treeItemElement.selected).toBeFalsy();
   });
 
   it('inherits ARIA attributes', async () => {

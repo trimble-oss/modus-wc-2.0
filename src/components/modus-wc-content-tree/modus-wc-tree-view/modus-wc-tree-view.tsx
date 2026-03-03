@@ -29,6 +29,8 @@ export class ModusWcTreeView {
 
   @Listen('itemSelect')
   handleItemSelect(event: CustomEvent<{ value: string }>) {
+    if (this.isSubList) return;
+
     const target = event.target as HTMLElement;
     if (!target) return;
 
