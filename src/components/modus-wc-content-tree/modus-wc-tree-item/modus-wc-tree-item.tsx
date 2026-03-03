@@ -249,6 +249,16 @@ export class ModusWcTreeItem {
     this.itemSelect.emit({ value: this.value });
   };
 
+  private getRootTreeView(): HTMLElement | null {
+    let current: HTMLElement | null = this.el.closest('modus-wc-tree-view');
+
+    while (current?.parentElement?.closest('modus-wc-tree-view')) {
+      current = current.parentElement.closest('modus-wc-tree-view');
+    }
+
+    return current;
+  }
+
   private handleCheckboxClick = () => {
     const newValue = !this.checked || this.isIndeterminate;
 
@@ -257,9 +267,7 @@ export class ModusWcTreeItem {
     this.updateChildrenSelection(newValue);
 
     // Emit selectionChange event with all selected values for multi-select mode
-    const rootTreeView = this.el
-      .closest('modus-wc-content-tree')
-      ?.querySelector('modus-wc-tree-view');
+    const rootTreeView = this.getRootTreeView();
     if (rootTreeView) {
       const allTreeItems = Array.from(
         rootTreeView.querySelectorAll('modus-wc-tree-item')

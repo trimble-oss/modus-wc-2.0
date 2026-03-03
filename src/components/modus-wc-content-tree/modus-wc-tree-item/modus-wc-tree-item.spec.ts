@@ -799,6 +799,30 @@ describe('modus-wc-tree-item', () => {
     document.body.removeChild(contentTree);
   });
 
+  it('emits selectionsChange with selected values inside standalone tree view', async () => {
+    const treeView = document.createElement('modus-wc-tree-view');
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Item 1" value="item1" checkbox></modus-wc-tree-item>`,
+    });
+
+    treeView.appendChild(page.root as HTMLElement);
+    document.body.appendChild(treeView);
+
+    const eventSpy = jest.fn();
+    page.root?.addEventListener('selectionsChange', eventSpy);
+
+    const treeItem = page.rootInstance;
+    treeItem['handleCheckboxClick']();
+    await page.waitForChanges();
+
+    expect(eventSpy).toHaveBeenCalled();
+    expect(eventSpy.mock.calls[0][0].detail.selectedValues).toEqual(['item1']);
+
+    document.body.removeChild(treeView);
+  });
+
   it('does not emit selectionsChange when rootTreeView is not found', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
@@ -898,5 +922,88 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(treeItem.isIndeterminate).toBe(false);
+  });
+
+  it('getRootTreeView returns the closest tree-view when no parent tree-views exist', async () => {
+    const treeView = document.createElement('modus-wc-tree-view');
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Item" value="item"></modus-wc-tree-item>`,
+    });
+
+    treeView.appendChild(page.root as HTMLElement);
+    document.body.appendChild(treeView);
+
+    const treeItem = page.rootInstance;
+    const result = treeItem['getRootTreeView']();
+
+    expect(result).toBe(treeView);
+
+    document.body.removeChild(treeView);
+  });
+
+  it('getRootTreeView traverses up to find root tree-view in nested structure', async () => {
+    const rootTreeView = document.createElement('modus-wc-tree-view');
+    const parentItem = document.createElement('modus-wc-tree-item');
+    const nestedTreeView = document.createElement('modus-wc-tree-view');
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>`,
+    });
+
+    // Structure: rootTreeView > parentItem > nestedTreeView > childItem
+    nestedTreeView.appendChild(page.root as HTMLElement);
+    parentItem.appendChild(nestedTreeView);
+    rootTreeView.appendChild(parentItem);
+    document.body.appendChild(rootTreeView);
+
+    const treeItem = page.rootInstance;
+    const result = treeItem['getRootTreeView']();
+
+    expect(result).toBe(rootTreeView);
+
+    document.body.removeChild(rootTreeView);
+  });
+
+  it('getRootTreeView traverses multiple levels to find root tree-view', async () => {
+    const rootTreeView = document.createElement('modus-wc-tree-view');
+    const level1Item = document.createElement('modus-wc-tree-item');
+    const level2TreeView = document.createElement('modus-wc-tree-view');
+    const level2Item = document.createElement('modus-wc-tree-item');
+    const level3TreeView = document.createElement('modus-wc-tree-view');
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Deep Child" value="deep"></modus-wc-tree-item>`,
+    });
+
+    // Structure: rootTreeView > level1Item > level2TreeView > level2Item > level3TreeView > deepChild
+    level3TreeView.appendChild(page.root as HTMLElement);
+    level2Item.appendChild(level3TreeView);
+    level2TreeView.appendChild(level2Item);
+    level1Item.appendChild(level2TreeView);
+    rootTreeView.appendChild(level1Item);
+    document.body.appendChild(rootTreeView);
+
+    const treeItem = page.rootInstance;
+    const result = treeItem['getRootTreeView']();
+
+    expect(result).toBe(rootTreeView);
+
+    document.body.removeChild(rootTreeView);
+  });
+
+  it('getRootTreeView returns null when not inside any tree-view', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Item" value="item"></modus-wc-tree-item>`,
+    });
+
+    const treeItem = page.rootInstance;
+    const result = treeItem['getRootTreeView']();
+
+    expect(result).toBeNull();
   });
 });

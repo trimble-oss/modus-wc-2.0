@@ -36,7 +36,12 @@ const meta: Meta<ContentTreeArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['itemSelect', 'treeActionClick', 'selectionsChange'],
+      handles: [
+        'itemSelect',
+        'treeActionClick',
+        'selectionsChange',
+        'dropdownOpened',
+      ],
     },
   },
 };
@@ -128,6 +133,114 @@ export const Default: Story = {
   },
 };
 
+export const TreeItem: Story = {
+  name: 'Tree Item',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A comprehensive example showing tree item features: checkbox, start icon, and actions.',
+      },
+      source: {
+        code: `
+<modus-wc-tree-view>
+  <modus-wc-tree-item 
+    label="Project Folder" 
+    value="project" 
+    checkbox="true"
+    tree-item-actions='[
+      {"id":"edit","icon":"pencil","label":"Edit"},
+      {"id":"delete","icon":"trash","label":"Delete"}
+    ]'>
+    <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
+`,
+      },
+    },
+  },
+  render: () => {
+    const actions = [
+      { id: 'edit', icon: 'pencil', label: 'Edit' },
+      { id: 'delete', icon: 'trash', label: 'Delete' },
+    ];
+    return html`
+      <modus-wc-tree-view>
+        <modus-wc-tree-item
+          label="Project Folder"
+          value="project"
+          .checkbox=${true}
+          .treeItemActions=${actions}
+        >
+          <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    `;
+  },
+};
+
+export const TreeItemWithStartIcon: Story = {
+  name: 'Tree Item - With Start Icon',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tree items can display custom icons at the start using the start-icon slot. This is useful for representing file types, folders, or custom item types.',
+      },
+      source: {
+        code: `
+<modus-wc-tree-view>
+  <modus-wc-tree-item label="Folder" value="folder">
+    <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Document.pdf" value="document">
+    <modus-wc-icon slot="start-icon" name="description"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Image.png" value="image">
+    <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+    <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Code" value="code">
+        <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+      </modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
+`,
+      },
+    },
+  },
+  render: () => {
+    return html`
+      <modus-wc-tree-view>
+        <modus-wc-tree-item label="Folder" value="folder">
+          <modus-wc-icon slot="start-icon" name="folder_closed"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Document.pdf" value="document">
+          <modus-wc-icon slot="start-icon" name="file"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Image.png" value="image">
+          <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Projects"
+          .hasSubtree=${true}
+          value="projects"
+        >
+          <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Code" value="code">
+              <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    `;
+  },
+};
+
 export const EmptyState: Story = {
   name: 'Empty State',
   parameters: {
@@ -157,28 +270,35 @@ export const EmptyState: Story = {
   },
 };
 
-export const DisabledItems: Story = {
-  name: 'Disabled Items',
+export const SingleSelection: Story = {
+  name: 'Single Selection',
   parameters: {
     docs: {
       description: {
         story:
-          'This example demonstrates tree items with disabled state. Disabled items cannot be selected or interacted with.',
+          'Content tree with single selection mode. Click on any tree item to select it. Only one item can be selected at a time.',
       },
       source: {
         code: `
 <modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
   <modus-wc-tree-view>
-    <modus-wc-tree-item label="Active Item" value="active" selected="true">
-      <modus-wc-icon slot="start-icon" name="description" size="sm"></modus-wc-icon>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Disabled Item" value="disabled" disabled="true"></modus-wc-tree-item>
-    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
       <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Active Project" value="active-project"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Disabled Project" value="disabled-project" disabled="true"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
       </modus-wc-tree-view>
     </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Client Work" has-subtree="true" value="client-work">
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Design Mockups" value="mockups"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Resources" value="resources"></modus-wc-tree-item>
   </modus-wc-tree-view>
 </modus-wc-content-tree>
 `,
@@ -195,37 +315,38 @@ export const DisabledItems: Story = {
       >
         <modus-wc-tree-view>
           <modus-wc-tree-item
-            label="Active Item"
-            value="active"
-            .selected=${true}
+            label="Documents"
+            .hasSubtree=${true}
+            value="documents"
           >
-            <modus-wc-icon
-              slot="start-icon"
-              name="description"
-              size="sm"
-            ></modus-wc-icon>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Disabled Item"
-            value="disabled"
-            .disabled=${true}
-          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
           </modus-wc-tree-item>
           <modus-wc-tree-item
             label="Projects"
             .hasSubtree=${true}
             value="projects"
           >
-            <modus-wc-tree-view is-sub-list="true">
-              <modus-wc-tree-item label="Active Project" value="active-project">
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
               </modus-wc-tree-item>
               <modus-wc-tree-item
-                label="Disabled Project"
-                value="disabled-project"
-                .disabled=${true}
+                label="Client Work"
+                .hasSubtree=${true}
+                value="client-work"
               >
+                <modus-wc-tree-view .isSubList=${true}>
+                  <modus-wc-tree-item label="Design Mockups" value="mockups">
+                  </modus-wc-tree-item>
+                </modus-wc-tree-view>
               </modus-wc-tree-item>
             </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item label="Resources" value="resources">
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>
@@ -449,6 +570,72 @@ export const CheckboxSelection: Story = {
     `;
   },
 };
+
+export const DisabledSelection: Story = {
+  name: 'Disabled Selection',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example demonstrates tree items with disabled state. Disabled items cannot be selected or interacted with.',
+      },
+      source: {
+        code: `
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" value="documents"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" value="archives" disabled="true"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Legacy Project" value="legacy" disabled="true"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+`,
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item label="Documents" value="documents">
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archives"
+            value="archives"
+            .disabled=${true}
+          >
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${true}
+            value="projects"
+          >
+            <modus-wc-tree-view is-sub-list="true">
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Legacy Project"
+                value="legacy"
+                .disabled=${true}
+              >
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
 export const WithActions: Story = {
   name: 'With Actions',
   parameters: {

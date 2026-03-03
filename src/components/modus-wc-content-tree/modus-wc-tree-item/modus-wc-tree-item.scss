@@ -64,6 +64,28 @@ modus-wc-tree-item {
     margin-inline-start: auto;
   }
 
+  .modus-wc-tree-toggle-spacer {
+    display: inline-block;
+    flex-shrink: 0;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .modus-wc-tree-item-sm .modus-wc-tree-toggle-spacer {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  .modus-wc-tree-item-md .modus-wc-tree-toggle-spacer {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .modus-wc-tree-item-lg .modus-wc-tree-toggle-spacer {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
   button {
     align-items: center;
     background: transparent;
