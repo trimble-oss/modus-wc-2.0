@@ -21,8 +21,7 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
-import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
+import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 
 export interface INavbarTextOverrides {
@@ -74,6 +73,13 @@ export interface INavbarUserCard {
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
  *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+
+<strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+
+ 
+The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -91,6 +97,9 @@ export class ModusWcNavbar {
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'. */
+  @Prop() logoName?: LogoName = 'trimble';
 
   /** The open state of the apps menu. */
   @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
@@ -176,7 +185,11 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
+  /** Event emitted when the logo is clicked or activated via keyboard. */
+  @StencilEvent() logoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
+
+  /** @deprecated */
+  /** Deprecated: Use logoClick instead. This event will be removed in a future release.*/
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
@@ -361,9 +374,10 @@ export class ModusWcNavbar {
     this.signOutClick.emit(event.detail);
   };
 
-  private handleTrimbleLogoClick = (
+  private handleLogoClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
+    this.logoClick.emit(event.detail);
     this.trimbleLogoClick.emit(event.detail);
   };
 
@@ -416,6 +430,10 @@ export class ModusWcNavbar {
       this.visibility?.notifications ||
       this.visibility?.search;
 
+    const accessibleName = (this.logoName || 'trimble')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
@@ -441,17 +459,16 @@ export class ModusWcNavbar {
             )}
 
             <modus-wc-button
-              aria-label="Trimble logo"
-              customClass="trimble-logo"
-              onButtonClick={this.handleTrimbleLogoClick}
+              aria-label={`${accessibleName} logo`}
+              customClass="logo"
+              onButtonClick={this.handleLogoClick}
               size="sm"
               variant="borderless"
             >
-              {this.condensed ? (
-                <TrimbleLogoGlobeIcon />
-              ) : (
-                <TrimbleLogoFullIcon />
-              )}
+              <modus-wc-logo
+                name={this.logoName || 'trimble'}
+                emblem={this.condensed}
+              ></modus-wc-logo>
             </modus-wc-button>
 
             <slot name="start" />
