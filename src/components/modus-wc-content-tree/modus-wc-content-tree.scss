@@ -56,3 +56,15 @@ modus-wc-content-tree {
     }
   }
 }
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  modus-wc-content-tree {
+    .modus-wc-content-tree-actions {
+      .modus-wc-content-tree-action-icon {
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+  }
+}

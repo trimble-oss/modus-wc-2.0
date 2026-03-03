@@ -1069,6 +1069,10 @@ export namespace Components {
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
      * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
      */
     interface ModusWcNavbar {
         /**
@@ -1087,6 +1091,10 @@ export namespace Components {
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
+         */
+        "logoName"?: LogoName;
         /**
           * The open state of the main menu.
          */
@@ -2728,12 +2736,17 @@ declare global {
         "searchClick": MouseEvent | KeyboardEvent;
         "searchInputOpenChange": boolean;
         "signOutClick": MouseEvent | KeyboardEvent;
+        "logoClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
         "userMenuOpenChange": boolean;
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
      * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4422,6 +4435,10 @@ declare namespace LocalJSX {
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
      * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
      */
     interface ModusWcNavbar {
         /**
@@ -4440,6 +4457,10 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the host element.
          */
         "customClass"?: string;
+        /**
+          * The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
+         */
+        "logoName"?: LogoName;
         /**
           * The open state of the main menu.
          */
@@ -4468,6 +4489,10 @@ declare namespace LocalJSX {
           * Event emitted when the help button is clicked or activated via keyboard.
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Event emitted when the logo is clicked or activated via keyboard.
+         */
+        "onLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * Event emitted when the main menu open state changes.
          */
@@ -4501,7 +4526,7 @@ declare namespace LocalJSX {
          */
         "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * Event emitted when the Trimble logo is clicked or activated via keyboard.
+          * Deprecated: Use logoClick instead. This event will be removed in a future release.
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
@@ -5936,6 +5961,10 @@ declare module "@stencil/core" {
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
              * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+             * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+             * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+             * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+             * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**

@@ -129,14 +129,12 @@ modus-wc-tree-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-tree-item {
-    .modus-wc-tree-content {
-      &.modus-wc-tree-item-active {
-        background-color: color-mix(
-          in sRGB,
-          var(--modus-wc-color-primary) 30%,
-          transparent
-        );
-      }
+    .modus-wc-tree-item-selected > .modus-wc-tree-content {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-primary) 30%,
+        transparent
+      );
     }
   }
 }

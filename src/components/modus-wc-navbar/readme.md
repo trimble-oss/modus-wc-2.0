@@ -11,22 +11,30 @@ A customizable navbar component used for top level navigation of all Trimble app
 
 The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
 
+<strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
+
+
+The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
+Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
+The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+
 ## Properties
 
-| Property                | Attribute                 | Description                                                                                  | Type                                | Default                                                                                                                                                            |
-| ----------------------- | ------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `appsMenuOpen`          | `apps-menu-open`          | The open state of the apps menu.                                                             | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `condensed`             | `condensed`               | Applies condensed layout and styling.                                                        | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `condensedMenuOpen`     | `condensed-menu-open`     | The open state of the condensed menu.                                                        | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `customClass`           | `custom-class`            | Custom CSS class to apply to the host element.                                               | `string \| undefined`               | `''`                                                                                                                                                               |
-| `mainMenuOpen`          | `main-menu-open`          | The open state of the main menu.                                                             | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `notificationsMenuOpen` | `notifications-menu-open` | The open state of the notifications menu.                                                    | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `searchDebounceMs`      | `search-debounce-ms`      | Debounce time in milliseconds for search input changes. Default is 300ms.                    | `number \| undefined`               | `300`                                                                                                                                                              |
-| `searchInputOpen`       | `search-input-open`       | The open state of the search input.                                                          | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `textOverrides`         | `text-overrides`          | Text replacements for the navbar.                                                            | `INavbarTextOverrides \| undefined` | `undefined`                                                                                                                                                        |
-| `userCard` _(required)_ | `user-card`               | User information used to render the user card.                                               | `INavbarUserCard`                   | `undefined`                                                                                                                                                        |
-| `userMenuOpen`          | `user-menu-open`          | The open state of the user menu.                                                             | `boolean \| undefined`              | `false`                                                                                                                                                            |
-| `visibility`            | `visibility`              | The visibility of individual navbar buttons. Default is user profile visible, others hidden. | `INavbarVisibility \| undefined`    | `{     ai: false,     apps: false,     help: false,     mainMenu: false,     notifications: false,     search: false,     searchInput: false,     user: true,   }` |
+| Property                | Attribute                 | Description                                                                                                                | Type                                | Default                                                                                                                                                            |
+| ----------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `appsMenuOpen`          | `apps-menu-open`          | The open state of the apps menu.                                                                                           | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `condensed`             | `condensed`               | Applies condensed layout and styling.                                                                                      | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `condensedMenuOpen`     | `condensed-menu-open`     | The open state of the condensed menu.                                                                                      | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `customClass`           | `custom-class`            | Custom CSS class to apply to the host element.                                                                             | `string \| undefined`               | `''`                                                                                                                                                               |
+| `logoName`              | `logo-name`               | The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'. | `LogoName \| undefined`             | `'trimble'`                                                                                                                                                        |
+| `mainMenuOpen`          | `main-menu-open`          | The open state of the main menu.                                                                                           | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `notificationsMenuOpen` | `notifications-menu-open` | The open state of the notifications menu.                                                                                  | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `searchDebounceMs`      | `search-debounce-ms`      | Debounce time in milliseconds for search input changes. Default is 300ms.                                                  | `number \| undefined`               | `300`                                                                                                                                                              |
+| `searchInputOpen`       | `search-input-open`       | The open state of the search input.                                                                                        | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `textOverrides`         | `text-overrides`          | Text replacements for the navbar.                                                                                          | `INavbarTextOverrides \| undefined` | `undefined`                                                                                                                                                        |
+| `userCard` _(required)_ | `user-card`               | User information used to render the user card.                                                                             | `INavbarUserCard`                   | `undefined`                                                                                                                                                        |
+| `userMenuOpen`          | `user-menu-open`          | The open state of the user menu.                                                                                           | `boolean \| undefined`              | `false`                                                                                                                                                            |
+| `visibility`            | `visibility`              | The visibility of individual navbar buttons. Default is user profile visible, others hidden.                               | `INavbarVisibility \| undefined`    | `{     ai: false,     apps: false,     help: false,     mainMenu: false,     notifications: false,     search: false,     searchInput: false,     user: true,   }` |
 
 
 ## Events
@@ -38,6 +46,7 @@ The component supports a 'main-menu', 'notifications', and 'apps' <slot> for inj
 | `appsMenuOpenChange`          | Event emitted when the apps menu open state changes.                                              | `CustomEvent<boolean>`                     |
 | `condensedMenuOpenChange`     | Event emitted when the condensed menu open state changes.                                         | `CustomEvent<boolean>`                     |
 | `helpClick`                   | Event emitted when the help button is clicked or activated via keyboard.                          | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `logoClick`                   | Event emitted when the logo is clicked or activated via keyboard.                                 | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 | `mainMenuOpenChange`          | Event emitted when the main menu open state changes.                                              | `CustomEvent<boolean>`                     |
 | `myTrimbleClick`              | Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 | `notificationsClick`          | Event emitted when the notifications button is clicked or activated via keyboard.                 | `CustomEvent<KeyboardEvent \| MouseEvent>` |
@@ -46,7 +55,7 @@ The component supports a 'main-menu', 'notifications', and 'apps' <slot> for inj
 | `searchClick`                 | Event emitted when the search button is clicked or activated via keyboard.                        | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 | `searchInputOpenChange`       | Event emitted when the search input open state changes.                                           | `CustomEvent<boolean>`                     |
 | `signOutClick`                | Event emitted when the user profile sign out button is clicked or activated via keyboard.         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `trimbleLogoClick`            | Event emitted when the Trimble logo is clicked or activated via keyboard.                         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `trimbleLogoClick`            | Deprecated: Use logoClick instead. This event will be removed in a future release.                | `CustomEvent<KeyboardEvent \| MouseEvent>` |
 | `userMenuOpenChange`          | Event emitted when the user menu open state changes.                                              | `CustomEvent<boolean>`                     |
 
 
@@ -56,6 +65,7 @@ The component supports a 'main-menu', 'notifications', and 'apps' <slot> for inj
 
 - [modus-wc-toolbar](../modus-wc-toolbar)
 - [modus-wc-button](../modus-wc-button)
+- [modus-wc-logo](../modus-wc-logo)
 - [modus-wc-menu](../modus-wc-menu)
 - [modus-wc-menu-item](../modus-wc-menu-item)
 - [modus-wc-text-input](../modus-wc-text-input)
@@ -67,6 +77,7 @@ The component supports a 'main-menu', 'notifications', and 'apps' <slot> for inj
 graph TD;
   modus-wc-navbar --> modus-wc-toolbar
   modus-wc-navbar --> modus-wc-button
+  modus-wc-navbar --> modus-wc-logo
   modus-wc-navbar --> modus-wc-menu
   modus-wc-navbar --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-text-input

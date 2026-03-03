@@ -4557,7 +4557,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.\r\n\r\n<strong><span style=\"color: black\">⚠️ Deprecation Alert</span></strong>\r\n\r\n\r\nThe `trimbleLogoClick` event is deprecated and will be removed in a future major version.\r\nPlease use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.\r\nThe `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -4620,6 +4620,15 @@
               "description": "Custom CSS class to apply to the host element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "logo-name",
+              "fieldName": "logoName",
+              "default": "'trimble'",
+              "description": "The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.",
+              "type": {
+                "text": "LogoName"
               }
             },
             {
@@ -4737,6 +4746,14 @@
             },
             {
               "kind": "field",
+              "name": "logoClick",
+              "type": {
+                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
+              },
+              "description": "Event emitted when the logo is clicked or activated via keyboard."
+            },
+            {
+              "kind": "field",
               "name": "mainMenuOpenChange",
               "type": {
                 "text": "EventEmitter<boolean>"
@@ -4805,7 +4822,8 @@
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
-              "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+              "deprecated": "true",
+              "description": "Deprecated: Use logoClick instead. This event will be removed in a future release."
             },
             {
               "kind": "field",
