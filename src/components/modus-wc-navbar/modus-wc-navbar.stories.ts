@@ -3,13 +3,8 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { INavbarTextOverrides, INavbarVisibility } from './modus-wc-navbar';
-import { IProfileMenuProps } from '../modus-wc-profile-menu/modus-wc-profile-menu';
-import {
-  INavbarTextOverrides,
-  INavbarUserCard,
-  INavbarVisibility,
-} from './modus-wc-navbar';
 import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
+import { IProfileMenuProps } from '../modus-wc-profile-menu/modus-wc-profile-menu';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
