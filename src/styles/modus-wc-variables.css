@@ -369,7 +369,6 @@
 /* ===== Theme Overrides ===== */
 
 /* Modus Modern Themes */
-
 [data-theme='modus-modern-light']:root {
   color-scheme: light;
   --modus-wc-color-base-page: #fff;
@@ -379,7 +378,6 @@
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;
@@ -424,7 +422,6 @@
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;
@@ -460,9 +457,7 @@
   --erc: 0% 0 0;
 }
 
-
 /* Modus Classic Themes */
-
 [data-theme='modus-classic-light']:root {
   color-scheme: light;
   --modus-wc-color-base-page: #fff;
@@ -474,7 +469,6 @@
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;
@@ -521,7 +515,6 @@
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;
@@ -557,9 +550,7 @@
   --erc: 100% 0 0;
 }
 
-
 /* Connect Themes */
-
 [data-theme='connect-light']:root {
   color-scheme: light;
   --modus-wc-color-base-page: #fff;
@@ -567,7 +558,6 @@
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;
@@ -611,7 +601,6 @@
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
-
   --animation-btn: 0.3s;
   --animation-input: 0.2s;
   --tab-border: 1px;

@@ -95,9 +95,9 @@ const globalThemeBlocks = extractGlobalThemeBlocks(globalCSS);
 const themeOrder = [
   { name: 'modus-modern-light', comment: '/* Modus Modern Themes */' },
   { name: 'modus-modern-dark', comment: null },
-  { name: 'modus-classic-light', comment: '\n/* Modus Classic Themes */' },
+  { name: 'modus-classic-light', comment: '/* Modus Classic Themes */' },
   { name: 'modus-classic-dark', comment: null },
-  { name: 'connect-light', comment: '\n/* Connect Themes */' },
+  { name: 'connect-light', comment: '/* Connect Themes */' },
   { name: 'connect-dark', comment: null },
 ];
 
@@ -120,14 +120,9 @@ const themeBlocks = themeOrder
       )
       .join('\n');
 
-    const body = [globalVars, daisyVars].filter(Boolean).join('\n\n');
+    const body = [globalVars, daisyVars].filter(Boolean).join('\n');
 
-    return [
-      comment ? `${comment}\n` : '',
-      `[data-theme='${name}']:root {`,
-      body,
-      '}',
-    ]
+    return [comment || '', `[data-theme='${name}']:root {`, body, '}']
       .filter((s) => s !== '')
       .join('\n');
   })
