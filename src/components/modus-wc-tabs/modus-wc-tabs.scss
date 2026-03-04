@@ -43,7 +43,10 @@ modus-wc-tabs .modus-wc-tabs {
       .modus-wc-tab-disabled
     ):not([disabled]),
   .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-primary);
+    --tab-bg: var(--lifted-tab-bg, var(--modus-wc-color-gray-light));
+
+    background-color: var(--tab-bg);
+    color: var(--lifted-tab-color, var(--modus-wc-color-primary));
   }
 
   &.modus-wc-tabs-bordered {
@@ -51,8 +54,25 @@ modus-wc-tabs .modus-wc-tabs {
         .modus-wc-tab-disabled
       ):not([disabled]) {
       background-color: var(--modus-wc-color-base-page);
-      border-bottom-color: var(--modus-wc-color-primary);
+      border-bottom-color: var(
+        --bordered-tab-active-border-bottom-color,
+        var(--modus-wc-color-primary)
+      );
       border-bottom-width: var(--modus-wc-border-width-lg);
+    }
+  }
+
+  &.modus-wc-tabs-boxed {
+    background-color: var(--boxed-tabs-bg, var(--modus-wc-color-base-200));
+
+    .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
+        .modus-wc-tab-disabled
+      ):not([disabled]) {
+      background-color: var(
+        --boxed-tab-selected-bg,
+        var(--modus-wc-color-trimble-blue)
+      );
+      color: var(--boxed-tab-selected-color, var(--modus-wc-color-white));
     }
   }
 
@@ -67,11 +87,19 @@ modus-wc-tabs .modus-wc-tab {
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
   height: inherit;
 
-  @include common-states;
+  &:hover {
+    background-color: var(--tab-hover-bg, var(--modus-wc-color-base-100));
+    color: var(--tab-hover-color, var(--modus-wc-color-primary));
+  }
 
-  &-active {
-    background-color: var(--modus-wc-color-base-page);
-    color: inherit;
+  &:focus {
+    background-color: var(--tab-focus-bg, var(--modus-wc-color-base-200));
+    color: var(--tab-focus-color, var(--modus-wc-color-primary));
+  }
+
+  &:active {
+    background-color: var(--tab-active-bg, var(--modus-wc-color-primary-pale));
+    color: var(--tab-active-color, var(--modus-wc-color-primary));
   }
 
   &:disabled {

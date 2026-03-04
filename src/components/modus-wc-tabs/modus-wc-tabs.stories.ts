@@ -128,6 +128,81 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const CustomBackground: Story = {
+  ...Template,
+  args: {
+    'tab-style': 'lifted',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The background color of the tabs can be customized by applying a custom class to the component and overriding the CSS custom properties defined in the example below. Custom colors are applied across all tab variants: boxed, bordered, lifted, and none.',
+      },
+      source: {
+        transform: (_src, { args }) => `<style>
+.custom-tabs {
+  /* Base tab colors (including lifted active state). */
+   --lifted-tab-color: #ffffff;
+   --lifted-tab-bg: #518aed;
+  /* Interactive states for all variants. */
+  --tab-hover-bg: #e9eef5;
+  --tab-hover-color: #1f2937;
+  --tab-focus-bg: #dbeafe;
+  --tab-focus-color: #1e40af;
+  --tab-active-bg: #1f4b99;
+  --tab-active-color: #ffffff;
+  /* Boxed variant colors. */
+  --boxed-tabs-bg: #f4f6f8;
+  --boxed-tab-selected-bg: #1f4b99;
+  --boxed-tab-selected-color: #ffffff;
+  /* Bordered variant selected border-bottom color. */
+  --bordered-tab-active-border-bottom-color: #2f6fed;
+}
+</style>
+<modus-wc-tabs
+  aria-label="Tab group"
+  custom-class="custom-tabs"
+  tab-style="${ifDefined(args['tab-style'])}"
+  size="md"
+></modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
+  render: (args) => {
+    return html`
+      <style>
+        .custom-tabs {
+          /* Base tab colors (including lifted active state). */
+          --lifted-tab-color: #ffffff;
+          --lifted-tab-bg: #518aed;
+          /* Interactive states for all variants. */
+          --tab-hover-bg: #e9eef5;
+          --tab-hover-color: #1f2937;
+          --tab-focus-bg: #dbeafe;
+          --tab-focus-color: #1e40af;
+          --tab-active-bg: #1f4b99;
+          --tab-active-color: #ffffff;
+          /* Boxed variant colors. */
+          --boxed-tabs-bg: #f4f6f8;
+          --boxed-tab-selected-bg: #1f4b99;
+          --boxed-tab-selected-color: #ffffff;
+          /* Bordered variant selected border-bottom color. */
+          --bordered-tab-active-border-bottom-color: #2f6fed;
+        }
+      </style>
+      <modus-wc-tabs
+        aria-label="Tab group"
+        custom-class="custom-tabs"
+        tab-style="${ifDefined(args['tab-style'])}"
+        .tabs=${args.tabs}
+        size="${ifDefined(args.size)}"
+      >
+      </modus-wc-tabs>
+    `;
+  },
+};
+
 export const CustomContent: Story = {
   args: {
     tabs: [
