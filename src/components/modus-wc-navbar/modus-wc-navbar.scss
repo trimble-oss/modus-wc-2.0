@@ -94,17 +94,11 @@ modus-wc-navbar .modus-wc-navbar {
     }
 
     // Condensed menu
-    > modus-wc-menu {
+    modus-wc-menu {
       @extend %dropdown-menu;
 
       right: var(--modus-wc-spacing-2xl);
       z-index: 99;
-    }
-
-    modus-wc-profile-menu {
-      @extend %dropdown-menu;
-
-      right: 0;
     }
 
     // Notifications slot

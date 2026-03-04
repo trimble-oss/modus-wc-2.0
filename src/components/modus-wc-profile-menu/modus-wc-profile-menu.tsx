@@ -147,7 +147,7 @@ export class ModusWcProfileMenu {
 
                 <modus-wc-typography
                   customClass="email-text"
-                  weight="normal"
+                  weight="semibold"
                   size="xs"
                   label={this.profileProps.userEmail}
                 ></modus-wc-typography>
@@ -207,7 +207,7 @@ export class ModusWcProfileMenu {
               customClass="footer-text"
               hierarchy="p"
               size="sm"
-              weight="semibold"
+              weight="normal"
               label={`©${this.currentYear}, Trimble Inc.`}
             ></modus-wc-typography>
           </div>

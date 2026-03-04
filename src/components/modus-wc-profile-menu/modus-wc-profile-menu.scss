@@ -33,7 +33,7 @@ modus-wc-profile-menu {
       align-self: stretch;
       display: flex;
       flex-direction: column;
-      gap: var(--modus-wc-spacing-lg);
+      gap: var(--modus-wc-spacing-md);
 
       .text-container {
         align-self: stretch;
@@ -64,7 +64,7 @@ modus-wc-profile-menu {
 
         .email-text {
           color: var(--modus-wc-color-base-content);
-          line-height: 20px;
+          line-height: 16px;
           opacity: var(--modus-wc-opacity-overlay);
         }
       }
@@ -86,9 +86,8 @@ modus-wc-profile-menu {
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
 
     .footer-text {
-      color: var(--modus-wc-color-base-content);
+      color: var(--modus-wc-color-accent);
       line-height: var(--modus-wc-font-size-2xl);
-      opacity: var(--modus-wc-opacity-overlay);
     }
   }
 
@@ -103,14 +102,14 @@ modus-wc-profile-menu {
 
     .submenu-title {
       color: var(--modus-wc-color-base-content-low-contrast);
-      line-height: var(--modus-wc-line-height-h6);
+      line-height: var(--modus-wc-font-size-2xl);
     }
   }
 
   [slot='body'] modus-wc-menu {
     .modus-wc-menu-item {
       color: var(--modus-wc-color-base-content);
-      padding: var(--modus-wc-spacing-2xs);
+      padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
 
       .modus-wc-menu-item-labels {
         color: var(--modus-wc-color-base-content);
