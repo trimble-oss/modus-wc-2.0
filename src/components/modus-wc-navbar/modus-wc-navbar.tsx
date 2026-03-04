@@ -74,7 +74,7 @@ export interface INavbarUserCard {
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
  * ⚠️ **Deprecated**: The `user-card` prop will be replaced by the `modus-wc-profile-menu` component in an upcoming release.
- *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+ *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
