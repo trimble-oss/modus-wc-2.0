@@ -18,6 +18,7 @@ function App() {
 				</div>
 				<div className="grid">
 				<ModusReactExamples.Badge />
+				<ModusReactExamples.Date />
 				<ModusReactExamples.Icon />
 				<ModusReactExamples.Tabs />
 				<ModusWcLogo name="trimble" />
