@@ -54,7 +54,7 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
-/** @deprecated This interface will be replaced by `IProfileMenuProps` from `modus-wc-profile-menu` in an upcoming release. */
+/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -73,7 +73,7 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- * ⚠️ **Deprecated**: The `user-card` prop will be replaced by the `modus-wc-profile-menu` component in an upcoming release.
+ * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
  *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
@@ -124,7 +124,7 @@ export class ModusWcNavbar {
   @Prop() textOverrides?: INavbarTextOverrides;
 
   /** User information used to render the user card.
-   * @deprecated The `userCard` prop will be replaced by the `modus-wc-profile-menu` component in an upcoming release.
+   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
    */
   @Prop() userCard!: INavbarUserCard;
 
