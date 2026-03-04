@@ -9,10 +9,10 @@ modus-wc-profile-menu {
   .modus-wc-panel {
     background-color: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-gray-0);
-    border-radius: var(--modus-wc-border-radius-box);
+    border-radius: var(--rounded-box);
     box-shadow:
-      0 4px 6px -4px var(--modus-wc-color-gray-0),
-      0 10px 15px -3px var(--modus-wc-color-gray-0);
+      0 4px 6px -4px var(--modus-wc-color-base-200),
+      0 10px 15px -3px var(--modus-wc-color-base-200);
     display: block;
     height: auto;
     padding: 0 var(--modus-wc-spacing-sm);
