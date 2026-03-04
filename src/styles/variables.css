@@ -199,7 +199,7 @@
     var(--modus-wc-color-gray-8),
     var(--modus-wc-color-gray-3)
   );
-  --modus-wc-color-base-content-hight-contrast: light-dark(
+  --modus-wc-color-base-content-high-contrast: light-dark(
     var(--modus-wc-color-black),
     var(--modus-wc-color-white)
   );
