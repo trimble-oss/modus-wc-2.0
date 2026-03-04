@@ -28,15 +28,57 @@ const meta: Meta<ProfileMenuArgs> = {
   },
   argTypes: {
     'profile-props': {
-      description:
-        'Profile menu properties containing user information (profileImageUrl, headerName, userName, userEmail, manageTrimbleId)',
+      description: 'Profile menu properties containing user information',
+      table: {
+        type: {
+          detail: `
+            Interface: IProfileMenuProps
+            Properties:
+            - profileImageUrl (string): The URL of the profile image
+            - headerName (string): The header name of the profile menu
+            - userName (string): The name of the user
+            - userEmail (string): The email of the user
+            - manageTrimbleId (IManageTrimbleId, optional): The manage Trimble ID link configuration
+              - link (string): The URL for managing the user's Trimble ID
+              - target ('_blank' | '_self' | '_parent' | '_top', optional): The target for the link
+              - rel (string, optional): The rel attribute for the link. Defaults to 'noopener noreferrer' when target is '_blank'
+          `,
+        },
+      },
     },
     'menu-one': {
-      description: 'Configuration for the first menu including title and items',
+      description: 'Configuration for the first submenu section',
+      table: {
+        type: {
+          detail: `
+            Interface: ISubMenu
+            Properties:
+            - title (string, optional): Title for the submenu section
+            - items (IMenuItem[]): Array of menu items
+              - label (string): The display text for the menu item
+              - icon (string, optional): The name of the icon to display
+              - iconVariant ('solid' | 'outlined', optional): The variant of the icon
+              - value (string, optional): The value associated with the menu item, used for selection
+          `,
+        },
+      },
     },
     'menu-two': {
-      description:
-        'Configuration for the second menu including title and items',
+      description: 'Configuration for the second submenu section',
+      table: {
+        type: {
+          detail: `
+            Interface: ISubMenu
+            Properties:
+            - title (string, optional): Title for the submenu section
+            - items (IMenuItem[]): Array of menu items
+              - label (string): The display text for the menu item
+              - icon (string, optional): The name of the icon to display
+              - iconVariant ('solid' | 'outlined', optional): The variant of the icon
+              - value (string, optional): The value associated with the menu item, used for selection
+          `,
+        },
+      },
     },
   },
   parameters: {
@@ -156,9 +198,21 @@ export const WithOneSubmenu: Story = {
     'menu-one': {
       title: 'Recent Projects',
       items: [
-        { label: 'Project Alpha', icon: 'bug', iconVariant: 'solid' },
-        { label: 'Project Beta', icon: 'triangle_down', iconVariant: 'solid' },
-        { label: 'Project Gamma', icon: 'service_rep', iconVariant: 'solid' },
+        {
+          label: 'Project Alpha',
+          icon: 'bug',
+          iconVariant: 'solid',
+        },
+        {
+          label: 'Project Beta',
+          icon: 'triangle_down',
+          iconVariant: 'solid',
+        },
+        {
+          label: 'Project Gamma',
+          icon: 'service_rep',
+          iconVariant: 'solid',
+        },
       ],
     },
   },
@@ -182,16 +236,36 @@ export const WithTwoSubmenus: Story = {
     'menu-one': {
       title: 'Recent Projects',
       items: [
-        { label: 'Project Alpha', icon: 'bug', iconVariant: 'solid' },
-        { label: 'Project Beta', icon: 'triangle_down', iconVariant: 'solid' },
-        { label: 'Project Gamma', icon: 'antenna', iconVariant: 'solid' },
+        {
+          label: 'Project Alpha',
+          icon: 'bug',
+          iconVariant: 'solid',
+        },
+        {
+          label: 'Project Beta',
+          icon: 'triangle_down',
+          iconVariant: 'solid',
+        },
+        {
+          label: 'Project Gamma',
+          icon: 'antenna',
+          iconVariant: 'solid',
+        },
       ],
     },
     'menu-two': {
       title: 'Quick Actions',
       items: [
-        { label: 'Settings', icon: 'settings', iconVariant: 'solid' },
-        { label: 'Help Center', icon: 'help', iconVariant: 'solid' },
+        {
+          label: 'Settings',
+          icon: 'settings',
+          iconVariant: 'solid',
+        },
+        {
+          label: 'Help Center',
+          icon: 'help',
+          iconVariant: 'solid',
+        },
         { label: 'Support', icon: 'headset', iconVariant: 'solid' },
       ],
     },

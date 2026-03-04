@@ -85,12 +85,14 @@ const meta: Meta<NavbarArgs> = {
           detail: `
             Interface: IUserCard
             Properties:
-            - avatarAlt (string, optional): The alt value to set on the avatar
-            - avatarSrc (string, optional): The avatar image source value
-            - email (string): The email address of the user
-            - myTrimbleButton (string, optional): Text override for the Access MyTrimble button, allows for translation
-            - name (string): The name of the user
-            - signOutButton (string, optional): Text override for the Sign out button, allows for translation
+            - profileImageUrl (string): The URL of the profile image
+            - headerName (string): The header name of the profile menu
+            - userName (string): The name of the user
+            - userEmail (string): The email of the user
+            - manageTrimbleId (object, optional): The manage Trimble ID link configuration
+              - link (string): The URL for managing the user's Trimble ID
+              - target (string, optional): The target for the Manage my Trimble ID link
+              - rel (string, optional): The rel attribute for the Manage my Trimble ID link
           `,
         },
       },

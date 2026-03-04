@@ -9,20 +9,27 @@ import { ISubMenu } from '../modus-wc-profile-menu';
  */
 export const renderSubMenu = (
   subMenu?: ISubMenu,
-  onMenuItemClick?: (value: string) => void
+  onMenuItemClick?: (value: string) => void,
+  isMainMenu?: boolean
 ) => {
   if (!subMenu || !subMenu.items || subMenu.items.length === 0) {
     return null;
   }
 
   return (
-    <div class="submenu-section">
-      {subMenu.title && (
-        <modus-wc-typography
-          hierarchy="h6"
-          size="md"
-          label={subMenu.title}
-        ></modus-wc-typography>
+    <div class={isMainMenu ? 'main-menu-section' : 'submenu-section'}>
+      {!isMainMenu && (
+        <div class="submenu-title-container">
+          {subMenu.title && (
+            <modus-wc-typography
+              customClass="submenu-title"
+              hierarchy="p"
+              size="sm"
+              weight="bold"
+              label={subMenu.title}
+            ></modus-wc-typography>
+          )}
+        </div>
       )}
       <modus-wc-menu size="md">
         {subMenu.items.map((item) => (

@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
@@ -79,6 +80,11 @@ export class ModusWcProfileMenu {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  @Listen('itemSelect')
+  handleItemSelect(event: CustomEvent) {
+    event.stopPropagation();
+  }
+
   private handleMenuItemClick = (value: string) => {
     this.menuItemClick.emit(value);
   };
@@ -104,68 +110,81 @@ export class ModusWcProfileMenu {
         iconVariant: 'solid',
         value: 'support-center',
       },
-      { label: 'Admin settings', icon: 'download', value: 'admin-settings' },
+      {
+        label: 'Admin settings',
+        icon: 'download',
+        iconVariant: 'solid',
+        value: 'admin-settings',
+      },
     ],
   };
 
   render() {
     return (
       <Host {...this.inheritedAttributes}>
-        <modus-wc-panel height="auto" width="282px">
+        <modus-wc-panel height="auto" width="298px">
           <div class="profile-menu-header" slot="header">
-            <modus-wc-avatar
-              img-src={this.profileProps.profileImageUrl}
-              alt={this.profileProps.userName || 'Profile'}
-              size="md"
-            ></modus-wc-avatar>
-            <div class="text-container">
-              <modus-wc-typography
-                customClass="header-text"
-                weight="semibold"
-                size="xs"
-                label={this.profileProps.headerName}
-              ></modus-wc-typography>
-
-              <modus-wc-typography
-                customClass="user-name-text"
-                weight="semibold"
-                label={this.profileProps.userName}
-              ></modus-wc-typography>
-
-              <modus-wc-typography
-                customClass="email-text"
-                weight="semibold"
-                size="xs"
-                label={this.profileProps.userEmail}
-              ></modus-wc-typography>
-            </div>
-            {this.profileProps.manageTrimbleId ? (
-              <a
-                href={this.profileProps.manageTrimbleId.link}
-                target={this.profileProps.manageTrimbleId.target}
-                rel={
-                  this.profileProps.manageTrimbleId.rel ??
-                  (this.profileProps.manageTrimbleId.target === '_blank'
-                    ? 'noopener noreferrer'
-                    : undefined)
-                }
-              >
+            <div class="header-content">
+              <modus-wc-avatar
+                img-src={this.profileProps.profileImageUrl}
+                alt={this.profileProps.userName || 'Profile'}
+                size="sm"
+              ></modus-wc-avatar>
+              <div class="text-container">
                 <modus-wc-typography
-                  customClass="manage-link"
-                  hierarchy="p"
-                  label="Manage my Trimble ID"
+                  customClass="header-text"
+                  weight="semibold"
+                  size="xs"
+                  label={this.profileProps.headerName}
                 ></modus-wc-typography>
-              </a>
-            ) : (
-              <modus-wc-typography
-                customClass="manage-link"
-                hierarchy="p"
-                label="Manage my Trimble ID"
-              ></modus-wc-typography>
-            )}
+
+                <modus-wc-typography
+                  customClass="user-name-text"
+                  weight="semibold"
+                  size="md"
+                  label={this.profileProps.userName}
+                ></modus-wc-typography>
+
+                <modus-wc-typography
+                  customClass="email-text"
+                  weight="normal"
+                  size="xs"
+                  label={this.profileProps.userEmail}
+                ></modus-wc-typography>
+
+                {this.profileProps.manageTrimbleId ? (
+                  <a
+                    href={this.profileProps.manageTrimbleId.link}
+                    target={this.profileProps.manageTrimbleId.target}
+                    rel={
+                      this.profileProps.manageTrimbleId.rel ??
+                      (this.profileProps.manageTrimbleId.target === '_blank'
+                        ? 'noopener noreferrer'
+                        : undefined)
+                    }
+                  >
+                    <modus-wc-typography
+                      customClass="manage-link"
+                      hierarchy="p"
+                      size="sm"
+                      weight="normal"
+                      label="Manage my Trimble ID"
+                    ></modus-wc-typography>
+                  </a>
+                ) : (
+                  <modus-wc-typography
+                    customClass="manage-link"
+                    hierarchy="p"
+                    size="sm"
+                    weight="normal"
+                    label="Manage my Trimble ID"
+                  ></modus-wc-typography>
+                )}
+              </div>
+            </div>
           </div>
           <div slot="body">
-            {renderSubMenu(this.mainMenu, this.handleMenuItemClick)}
+            {renderSubMenu(this.mainMenu, this.handleMenuItemClick, true)}
             {this.menuOne &&
               renderSubMenu(this.menuOne, this.handleMenuItemClick)}
             {this.menuTwo &&
@@ -185,7 +204,10 @@ export class ModusWcProfileMenu {
           </div>
           <div slot="footer" class="profile-menu-footer">
             <modus-wc-typography
+              customClass="footer-text"
               hierarchy="p"
+              size="sm"
+              weight="semibold"
               label={`©${this.currentYear}, Trimble Inc.`}
             ></modus-wc-typography>
           </div>

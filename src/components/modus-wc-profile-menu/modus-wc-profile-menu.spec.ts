@@ -229,8 +229,10 @@ describe('modus-wc-profile-menu', () => {
     });
 
     const submenuSections = page.root?.querySelectorAll('.submenu-section');
-    // Should only have main menu, not additional submenus
-    expect(submenuSections?.length).toBe(1);
+    const mainMenuSection = page.root?.querySelectorAll('.main-menu-section');
+    // Should have main menu but no additional submenus
+    expect(mainMenuSection?.length).toBe(1);
+    expect(submenuSections?.length).toBe(0);
   });
 
   it('should render submenu with title', async () => {
@@ -309,7 +311,7 @@ describe('modus-wc-profile-menu', () => {
     });
 
     const panel = page.root?.querySelector('modus-wc-panel');
-    expect(panel?.getAttribute('width')).toBe('282px');
+    expect(panel?.getAttribute('width')).toBe('298px');
     expect(panel?.getAttribute('height')).toBe('auto');
   });
 
@@ -362,8 +364,10 @@ describe('modus-wc-profile-menu', () => {
     });
 
     const submenuSections = page.root?.querySelectorAll('.submenu-section');
-    // Should only have main menu, not the empty submenu
-    expect(submenuSections?.length).toBe(1);
+    const mainMenuSection = page.root?.querySelectorAll('.main-menu-section');
+    // Should have main menu but not the empty submenu
+    expect(mainMenuSection?.length).toBe(1);
+    expect(submenuSections?.length).toBe(0);
   });
 
   it('should not render submenu when undefined', async () => {
@@ -377,8 +381,10 @@ describe('modus-wc-profile-menu', () => {
     });
 
     const submenuSections = page.root?.querySelectorAll('.submenu-section');
-    // Should only have main menu
-    expect(submenuSections?.length).toBe(1);
+    const mainMenuSection = page.root?.querySelectorAll('.main-menu-section');
+    // Should have main menu but no submenus
+    expect(mainMenuSection?.length).toBe(1);
+    expect(submenuSections?.length).toBe(0);
   });
 
   it('should render with Profile alt text when userName is empty', async () => {
