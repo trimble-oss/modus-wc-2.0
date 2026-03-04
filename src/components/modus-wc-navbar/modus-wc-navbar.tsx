@@ -21,9 +21,7 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
-import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
-import { IProfileMenuProps } from '../modus-wc-profile-menu/modus-wc-profile-menu';
+import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 
 export interface INavbarTextOverrides {
@@ -77,6 +75,9 @@ export class ModusWcNavbar {
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'. */
+  @Prop() logoName?: LogoName = 'trimble';
 
   /** The open state of the apps menu. */
   @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
@@ -162,7 +163,8 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<void>;
 
-  /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
+  /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+   */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
@@ -404,6 +406,10 @@ export class ModusWcNavbar {
       this.visibility?.notifications ||
       this.visibility?.search;
 
+    const accessibleName = (this.logoName || 'trimble')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
@@ -429,17 +435,16 @@ export class ModusWcNavbar {
             )}
 
             <modus-wc-button
-              aria-label="Trimble logo"
-              customClass="trimble-logo"
+              aria-label={`${accessibleName} logo`}
+              customClass="logo"
               onButtonClick={this.handleTrimbleLogoClick}
               size="sm"
               variant="borderless"
             >
-              {this.condensed ? (
-                <TrimbleLogoGlobeIcon />
-              ) : (
-                <TrimbleLogoFullIcon />
-              )}
+              <modus-wc-logo
+                name={this.logoName || 'trimble'}
+                emblem={this.condensed}
+              ></modus-wc-logo>
             </modus-wc-button>
 
             <slot name="start" />

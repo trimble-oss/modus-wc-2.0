@@ -97,7 +97,6 @@ export const Default: Story = {
         <modus-wc-navbar
           app-title="Modus App"
           class="navbar"
-          logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
             profileImageUrl:
@@ -300,7 +299,6 @@ export const WithSubmenu: Story = {
           app-title="Modus App"
           class="navbar"
           id="main-navbar"
-          logo="/assets/logo.svg"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
             profileImageUrl:
