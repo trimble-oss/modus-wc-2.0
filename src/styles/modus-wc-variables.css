@@ -16,6 +16,7 @@
 
 /* ===== Font Declarations ===== */
 
+/* Open Sans Variable Font - Normal */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -25,6 +26,7 @@
   src: url(assets/fonts/open-sans/OpenSans-VariableFont.woff2) format('woff2');
 }
 
+/* Open Sans Variable Font - Italic */
 @font-face {
   font-family: 'Open Sans';
   font-style: italic;
@@ -38,6 +40,9 @@
 /* ===== CSS Variables ===== */
 
 :root {
+  /**
+  * The following variables should always match Modus
+  */
   color-scheme: light dark;
 
   /* Neutral Progression */
@@ -117,10 +122,15 @@
   --modus-wc-line-height-md: 1.5rem;
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
+
   --modus-wc-line-height-h6: 1.125rem;
+  /* 18px */
   --modus-wc-line-height-h3: 1.6875rem;
+  /* 27px */
   --modus-wc-line-height-h2: 1.875rem;
+  /* 30px */
   --modus-wc-line-height-h1: 2.25rem;
+  /* 36px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -129,14 +139,23 @@
 
   /* Font Sizes */
   --modus-wc-font-size-2xs: 0.5rem;
+  /* 8px */
   --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
   --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
   --modus-wc-font-size-md: 0.875rem;
+  /* 14px */
   --modus-wc-font-size-lg: 1rem;
+  /* 16px */
   --modus-wc-font-size-xl: 1.125rem;
+  /* 18px */
   --modus-wc-font-size-2xl: 1.25rem;
+  /* 20px */
   --modus-wc-font-size-3xl: 1.5rem;
+  /* 24px */
   --modus-wc-font-size-4xl: 1.875rem;
+  /* 30px */
 
   /* Font Weights */
   --modus-wc-font-weight-light: 300;
@@ -146,27 +165,45 @@
 
   /* Sizes */
   --modus-wc-size-xxs: 0.75rem;
+  /* 12px */
   --modus-wc-size-xs: 1.5rem;
+  /* 24px */
   --modus-wc-size-sm: 2rem;
+  /* 32px */
   --modus-wc-size-md: 2.5rem;
+  /* 40px */
   --modus-wc-size-lg: 3rem;
+  /* 48px */
   --modus-wc-size-xl: 3.5rem;
+  /* 56px */
   --modus-wc-size-xxl: 4.5rem;
+  /* 72px */
 
   /* Spacing */
   --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
   --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
   --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
   --modus-wc-spacing-md: 0.75rem;
+  /* 12px */
   --modus-wc-spacing-lg: 1rem;
+  /* 16px */
   --modus-wc-spacing-xl: 1.5rem;
+  /* 24px */
   --modus-wc-spacing-2xl: 2rem;
+  /* 32px */
   --modus-wc-spacing-3xl: 3rem;
+  /* 48px */
 
   /* Inputs */
   --modus-wc-input-height-sm: 1.5rem;
+  /* 24px */
   --modus-wc-input-height-md: 2rem;
+  /* 32px */
   --modus-wc-input-height-lg: 3rem;
+  /* 48px */
 
   /* Border Variables */
   --modus-wc-border-radius-badge: var(--modus-wc-border-radius-md);
@@ -211,6 +248,10 @@
     var(--modus-wc-color-gray-10),
     var(--modus-wc-color-gray-light)
   );
+
+  /**
+  * The following variables are applied to themes for applications to override.
+  */
 
   /* Primary Colors */
   --modus-wc-color-primary: light-dark(
@@ -328,9 +369,9 @@
 /* ===== Theme Overrides ===== */
 
 /* Modus Modern Themes */
+
 [data-theme='modus-modern-light']:root {
   color-scheme: light;
-
   --modus-wc-color-base-page: #fff;
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-0);
@@ -376,7 +417,6 @@
 
 [data-theme='modus-modern-dark']:root {
   color-scheme: dark;
-
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-9);
@@ -420,10 +460,11 @@
   --erc: 0% 0 0;
 }
 
+
 /* Modus Classic Themes */
+
 [data-theme='modus-classic-light']:root {
   color-scheme: light;
-
   --modus-wc-color-base-page: #fff;
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
@@ -471,7 +512,6 @@
 
 [data-theme='modus-classic-dark']:root {
   color-scheme: dark;
-
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
@@ -517,10 +557,11 @@
   --erc: 100% 0 0;
 }
 
+
 /* Connect Themes */
+
 [data-theme='connect-light']:root {
   color-scheme: light;
-
   --modus-wc-color-base-page: #fff;
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
@@ -565,7 +606,6 @@
 
 [data-theme='connect-dark']:root {
   color-scheme: dark;
-
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
