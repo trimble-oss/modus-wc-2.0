@@ -178,7 +178,8 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  /** Event emitted when the logo is clicked or activated via keyboard. */
+  /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+   */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
