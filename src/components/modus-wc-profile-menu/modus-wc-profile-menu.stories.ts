@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { IProfileMenuProps, ISubMenu } from './modus-wc-profile-menu';
 
 interface ProfileMenuArgs {
@@ -108,6 +109,7 @@ The component requires a \`profileProps\` object with user information and optio
   },
 };
 export default meta;
+
 type Story = StoryObj<ProfileMenuArgs>;
 const getSourceCode = (args: ProfileMenuArgs) => {
   const profilePropsCode = `const profileProps = ${JSON.stringify(args['profile-props'], null, 2)};`;
@@ -154,8 +156,8 @@ const Template: Story = {
 <div style="min-height: 600px;">
   <modus-wc-profile-menu
     .profileProps=${args['profile-props']}
-    .menuOne=${args['menu-one']}
-    .menuTwo=${args['menu-two']}
+    .menuOne=${ifDefined(args['menu-one'])}
+    .menuTwo=${ifDefined(args['menu-two'])}
     @signOutClick=${action('signOutClick')}
     @menuItemClick=${action('menuItemClick')}
   ></modus-wc-profile-menu>

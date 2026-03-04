@@ -95,16 +95,16 @@ const meta: Meta<NavbarArgs> = {
       table: {
         type: {
           detail: `
-            Interface: IUserCard
+            Interface: IProfileMenuProps
             Properties:
             - profileImageUrl (string): The URL of the profile image
             - headerName (string): The header name of the profile menu
             - userName (string): The name of the user
             - userEmail (string): The email of the user
-            - manageTrimbleId (object, optional): The manage Trimble ID link configuration
+            - manageTrimbleId (IManageTrimbleId, optional): The manage Trimble ID link configuration
               - link (string): The URL for managing the user's Trimble ID
-              - target (string, optional): The target for the Manage my Trimble ID link
-              - rel (string, optional): The rel attribute for the Manage my Trimble ID link
+              - target ('_blank' | '_self' | '_parent' | '_top', optional): The target for the Manage my Trimble ID link
+              - rel (string, optional): The rel attribute for the link. Defaults to 'noopener noreferrer' when target is '_blank'
           `,
         },
       },
