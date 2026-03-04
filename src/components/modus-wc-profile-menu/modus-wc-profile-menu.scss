@@ -8,7 +8,7 @@ modus-wc-profile-menu {
 
   .modus-wc-panel {
     background-color: var(--modus-wc-color-base-page);
-    border: 1px solid var(--modus-wc-color-gray-0);
+    border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow:
       0 4px 6px -4px var(--modus-wc-color-base-200),
@@ -21,7 +21,7 @@ modus-wc-profile-menu {
   .profile-menu-header {
     align-items: center;
     align-self: center;
-    border-bottom: 1px solid var(--modus-wc-color-gray-0);
+    border-bottom: 1px solid var(--modus-wc-color-base-200);
     display: flex;
     flex-direction: column;
     margin-inline: auto;
@@ -79,7 +79,7 @@ modus-wc-profile-menu {
 
   .profile-menu-footer {
     align-items: center;
-    border-top: 1px solid var(--modus-wc-color-gray-0);
+    border-top: 1px solid var(--modus-wc-color-base-200);
     display: flex;
     flex-direction: column;
     gap: var(--modus-wc-spacing-2xs);
@@ -94,7 +94,7 @@ modus-wc-profile-menu {
   .submenu-section {
     .submenu-title-container {
       align-items: flex-end;
-      border-bottom: 1px solid var(--modus-wc-color-gray-0);
+      border-bottom: 1px solid var(--modus-wc-color-base-200);
       display: flex;
       height: var(--modus-wc-line-height-h0);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
