@@ -2,32 +2,44 @@
 
 exports[`modus-wc-typography - label prop should render with label prop 1`] = `
 <modus-wc-typography label="Label text">
+  <!---->
   <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
-    Label text
+    <slot-fb>
+      Label text
+    </slot-fb>
   </p>
 </modus-wc-typography>
 `;
 
 exports[`modus-wc-typography should render headings 1`] = `
 <modus-wc-typography hierarchy="h1" label="Test content">
+  <!---->
   <h1 class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
-    Test content
+    <slot-fb>
+      Test content
+    </slot-fb>
   </h1>
 </modus-wc-typography>
 `;
 
 exports[`modus-wc-typography should render with custom props 1`] = `
 <modus-wc-typography custom-class="test-class" hierarchy="p" label="Test content" size="sm" weight="bold">
+  <!---->
   <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-bold test-class">
-    Test content
+    <slot-fb>
+      Test content
+    </slot-fb>
   </p>
 </modus-wc-typography>
 `;
 
 exports[`modus-wc-typography should render with default props 1`] = `
 <modus-wc-typography label="Test content">
+  <!---->
   <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
-    Test content
+    <slot-fb>
+      Test content
+    </slot-fb>
   </p>
 </modus-wc-typography>
 `;

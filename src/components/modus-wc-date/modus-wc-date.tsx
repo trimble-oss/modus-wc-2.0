@@ -179,6 +179,16 @@ export class ModusWcDate {
       return;
     }
 
+    // When the input has focus, the user is actively typing.
+    // Allow partial/incomplete values to pass through without validation
+    // so that controlled input patterns (e.g. React) work correctly.
+    if (this.hasFocus) {
+      if (this.inputRef) {
+        this.inputRef.value = newValue;
+      }
+      return;
+    }
+
     const parsed = this.parseISODate(newValue);
     if (!parsed) {
       if (this.value) {
@@ -373,6 +383,9 @@ export class ModusWcDate {
       return;
     }
 
+    // Clear hasFocus before setting value so the @Watch('value') handler
+    // takes the full validation path and dispatches the input event.
+    this.hasFocus = false;
     this.value = this.formatISODate(date);
 
     // If the selected date is from a different month, navigate to that month
@@ -388,7 +401,6 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
-    this.hasFocus = false;
     this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 

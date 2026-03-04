@@ -91,6 +91,32 @@ const options: ISelectOption[] = [
 const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
 ```
 
+## Testing with Jest
+
+If you are using the React integration package (`@trimble-oss/moduswebcomponents-react`), this package is published as ES modules. To use it in a Jest environment you need to configure Babel to transpile it.
+
+Add `transformIgnorePatterns` to your Jest config (`package.json` or `jest.config.js`):
+
+```json
+{
+  "jest": {
+    "transformIgnorePatterns": ["/node_modules/(?!(@trimble-oss|@stencil))"]
+  }
+}
+```
+
+Ensure your `babel.config.js` includes these presets:
+
+```js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', { targets: { node: 'current' } }],
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
+  ],
+};
+```
+
 ## Framework Integrations
 
 - ### [Angular](?path=/docs/documentation-frameworks-angular--docs)

@@ -7,6 +7,7 @@ import {
   INavbarUserCard,
   INavbarVisibility,
 } from './modus-wc-navbar';
+import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
@@ -46,6 +47,7 @@ interface NavbarArgs {
   'user-card': INavbarUserCard;
   'user-menu-open'?: boolean;
   visibility?: INavbarVisibility;
+  'logo-name': LogoName;
 }
 
 const meta: Meta<NavbarArgs> = {
@@ -57,6 +59,7 @@ const meta: Meta<NavbarArgs> = {
     'text-overrides': textOverrides,
     'user-card': userCard,
     visibility,
+    'logo-name': 'trimble',
   },
   argTypes: {
     'text-overrides': {
@@ -76,6 +79,15 @@ const meta: Meta<NavbarArgs> = {
       control: {
         type: 'object',
       },
+    },
+    'logo-name': {
+      description: 'The name of the logo to display. Defaults to "trimble".',
+      table: {
+        type: { summary: 'LogoName' },
+        defaultValue: { summary: 'trimble' },
+      },
+      control: { type: 'select' },
+      options: getAvailableLogos(),
     },
     'user-card': {
       description: 'User profile card information',
@@ -172,6 +184,7 @@ const Template: Story = {
   .userCard=${args['user-card']}
   ?user-menu-open=${args['user-menu-open']}
   .visibility=${args.visibility}
+  logo-name=${args['logo-name']}
 >
   <div slot="main-menu">Main menu contents</div>
   <div slot="notifications">Notification contents</div>
@@ -397,4 +410,77 @@ export const CustomMenuAndSlots: Story = {
       </script>
     `;
   },
+};
+export const CustomLogoSizes: Story = {
+  render: (args) => html`
+    <style>
+      .logo-small .modus-wc-logo {
+        width: 90px;
+      }
+
+      .logo-large .modus-wc-logo {
+        width: 140px;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        font-family: sans-serif;
+      }
+
+      .navbar-frame {
+        border: 1px dashed black;
+        height: 360px;
+        width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      .navbar-frame-outer {
+        border: 1px dashed black;
+      }
+
+      [slot='main-menu'] {
+        background-color: #0063a3;
+        color: white;
+        height: 400px;
+      }
+    </style>
+
+    <div class="wrapper">
+      <div>
+        <div class="navbar-frame-outer">
+          <div class="navbar-frame">
+            <modus-wc-navbar
+              search-debounce-ms="300"
+              logo-name="trimble"
+              custom-class="logo-small"
+              .userCard=${args['user-card']}
+            >
+              <div slot="main-menu">Main menu contents</div>
+              <div slot="notifications">Notification contents</div>
+              <div slot="apps">App drawer contents</div>
+            </modus-wc-navbar>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="navbar-frame-outer">
+          <div class="navbar-frame">
+            <modus-wc-navbar
+              search-debounce-ms="300"
+              logo-name="trimble"
+              custom-class="logo-large"
+              .userCard=${args['user-card']}
+            >
+              <div slot="main-menu">Main menu contents</div>
+              <div slot="notifications">Notification contents</div>
+              <div slot="apps">App drawer contents</div>
+            </modus-wc-navbar>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
 };
