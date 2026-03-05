@@ -44,27 +44,34 @@ jobs:
 
       - name: Validate version bump follows SemVer
         run: |
-          CURRENT=$(jq -r '.version' package.json)
-          INPUT="${{ github.event.inputs.version }}"
+          node - <<'EOF'
+          const semver = require('semver');
+          const pkg = require('./package.json');
 
-          CURRENT_MAJOR=$(echo $CURRENT | cut -d. -f1)
-          CURRENT_MINOR=$(echo $CURRENT | cut -d. -f2)
-          CURRENT_PATCH=$(echo $CURRENT | cut -d. -f3)
+          const current = pkg.version;
+          // Normalize input by stripping a leading 'v' if present
+          const input = '${{ github.event.inputs.version }}'.replace(/^v/, '');
 
-          EXPECTED_MAJOR="$((CURRENT_MAJOR + 1)).0.0"
-          EXPECTED_MINOR="${CURRENT_MAJOR}.$((CURRENT_MINOR + 1)).0"
-          EXPECTED_PATCH="${CURRENT_MAJOR}.${CURRENT_MINOR}.$((CURRENT_PATCH + 1))"
+          if (!semver.valid(input)) {
+            console.error(`❌ '${input}' is not a valid SemVer version.`);
+            process.exit(1);
+          }
 
-          if [ "$INPUT" != "$EXPECTED_MAJOR" ] && [ "$INPUT" != "$EXPECTED_MINOR" ] && [ "$INPUT" != "$EXPECTED_PATCH" ]; then
-            echo "❌ Invalid version bump: '$INPUT' is not a valid SemVer increment from '$CURRENT'."
-            echo "   Expected one of:"
-            echo "     MAJOR: $EXPECTED_MAJOR (breaking changes)"
-            echo "     MINOR: $EXPECTED_MINOR (new features)"
-            echo "     PATCH: $EXPECTED_PATCH (bug fixes)"
-            exit 1
-          fi
+          const expectedMajor = semver.inc(current, 'major');
+          const expectedMinor = semver.inc(current, 'minor');
+          const expectedPatch = semver.inc(current, 'patch');
 
-          echo "✅ Version bump from $CURRENT to $INPUT is valid."
+          if (input !== expectedMajor && input !== expectedMinor && input !== expectedPatch) {
+            console.error(`❌ Invalid version bump: '${input}' is not a valid SemVer increment from '${current}'.`);
+            console.error(`   Expected one of:`);
+            console.error(`     MAJOR: ${expectedMajor} (breaking changes)`);
+            console.error(`     MINOR: ${expectedMinor} (new features)`);
+            console.error(`     PATCH: ${expectedPatch} (bug fixes)`);
+            process.exit(1);
+          }
+
+          console.log(`✅ Version bump from ${current} to ${input} is valid.`);
+          EOF
 
       - name: Update package.json version
         run: |

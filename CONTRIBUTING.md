@@ -146,11 +146,11 @@ The release notes can be viewed on the [GitHub Releases](https://github.com/trim
 This project uses the following semantic versioning convention for the repository and changelog entries.
 Given a version number [MAJOR.MINOR.PATCH], increment the following:
 
-| Bump | When | PR Label | Example |
-|------|------|----------|---------|
-| **MAJOR** | Incompatible/breaking API changes (e.g. removing a prop, renaming an event, changing a prop type) | `breaking-change` | `1.2.3` → `2.0.0` |
+| Bump      | When                                                                                              | PR Label                                | Example           |
+| --------- | ------------------------------------------------------------------------------------------------- | --------------------------------------- | ----------------- |
+| **MAJOR** | Incompatible/breaking API changes (e.g. removing a prop, renaming an event, changing a prop type) | `breaking-change`                       | `1.2.3` → `2.0.0` |
 | **MINOR** | New backward-compatible functionality (e.g. adding a new optional prop, new component, new event) | `new-feature`, `feature`, `enhancement` | `1.2.3` → `1.3.0` |
-| **PATCH** | Backward-compatible bug fixes only | `fix`, `bugfix`, `bug` | `1.2.3` → `1.2.4` |
+| **PATCH** | Backward-compatible bug fixes only                                                                | `fix`, `bugfix`, `bug`                  | `1.2.3` → `1.2.4` |
 
 - When a release contains both new features and bug fixes, use the **highest** applicable bump (MINOR).
 - When a release contains a breaking change alongside anything else, always use **MAJOR**.
