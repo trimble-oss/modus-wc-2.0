@@ -58,6 +58,7 @@ const meta: Meta<ProfileMenuArgs> = {
             - items (IMenuItem[]): Array of menu items
               - label (string): The display text for the menu item
               - icon (string, optional): The name of the icon to display
+              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
               - iconVariant ('solid' | 'outlined', optional): The variant of the icon
               - value (string, optional): The value associated with the menu item, used for selection
           `,
