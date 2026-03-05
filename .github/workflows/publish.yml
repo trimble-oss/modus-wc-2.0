@@ -44,34 +44,36 @@ jobs:
 
       - name: Validate version bump follows SemVer
         run: |
-          node - <<'EOF'
-          const semver = require('semver');
-          const pkg = require('./package.json');
+          set -euo pipefail
 
-          const current = pkg.version;
-          // Normalize input by stripping a leading 'v' if present
-          const input = '${{ github.event.inputs.version }}'.replace(/^v/, '');
+          current="$(node -p "require('./package.json').version")"
 
-          if (!semver.valid(input)) {
-            console.error(`❌ '${input}' is not a valid SemVer version.`);
-            process.exit(1);
-          }
+          # Normalize input by stripping a leading 'v' if present
+          input='${{ github.event.inputs.version }}'
+          input="${input#v}"
 
-          const expectedMajor = semver.inc(current, 'major');
-          const expectedMinor = semver.inc(current, 'minor');
-          const expectedPatch = semver.inc(current, 'patch');
+          # Validate that the input is a valid SemVer version using the semver CLI
+          valid="$(npx --yes semver "$input" || true)"
+          if [ -z "$valid" ]; then
+            echo "❌ '$input' is not a valid SemVer version." >&2
+            exit 1
+          fi
 
-          if (input !== expectedMajor && input !== expectedMinor && input !== expectedPatch) {
-            console.error(`❌ Invalid version bump: '${input}' is not a valid SemVer increment from '${current}'.`);
-            console.error(`   Expected one of:`);
-            console.error(`     MAJOR: ${expectedMajor} (breaking changes)`);
-            console.error(`     MINOR: ${expectedMinor} (new features)`);
-            console.error(`     PATCH: ${expectedPatch} (bug fixes)`);
-            process.exit(1);
-          }
+          # Compute expected MAJOR / MINOR / PATCH increments from the current version
+          expectedMajor="$(npx --yes semver -i major "$current")"
+          expectedMinor="$(npx --yes semver -i minor "$current")"
+          expectedPatch="$(npx --yes semver -i patch "$current")"
 
-          console.log(`✅ Version bump from ${current} to ${input} is valid.`);
-          EOF
+          if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ]; then
+            echo "❌ Invalid version bump: '$input' is not a valid SemVer increment from '$current'." >&2
+            echo "   Expected one of:" >&2
+            echo "     MAJOR: $expectedMajor (breaking changes)" >&2
+            echo "     MINOR: $expectedMinor (new features)" >&2
+            echo "     PATCH: $expectedPatch (bug fixes)" >&2
+            exit 1
+          fi
+
+          echo "✅ Version bump from $current to $input is valid."
 
       - name: Update package.json version
         run: |

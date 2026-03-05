@@ -156,7 +156,7 @@ Given a version number [MAJOR.MINOR.PATCH], increment the following:
 - When a release contains a breaking change alongside anything else, always use **MAJOR**.
 - PATCH resets to `0` on a MINOR bump. Both MINOR and PATCH reset to `0` on a MAJOR bump.
 
-**Important:** Every PR must have one of the labels above applied before merging. The release drafter will automatically suggest the correct next version based on these labels.
+**Important:** To keep release notes accurate, each PR should have one of the labels above applied before merging. If no version-bump label is present, the release drafter will fall back to a PATCH bump by default when suggesting the next version.
 
 See: [semver.org](https://semver.org/spec/v2.0.0.html).
 
