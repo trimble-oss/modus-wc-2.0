@@ -90,7 +90,8 @@ const meta: Meta<NavbarArgs> = {
       options: getAvailableLogos(),
     },
     'user-card': {
-      description: 'User profile card information',
+      description:
+        '⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.',
       table: {
         type: {
           detail: `
