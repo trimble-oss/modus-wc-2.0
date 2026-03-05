@@ -37,31 +37,6 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
               <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>
-          <div class="hidden user">
-            <modus-wc-card>
-              <div slot="header">
-                <modus-wc-avatar alt=""></modus-wc-avatar>
-              </div>
-              <div slot="title"></div>
-              <div></div>
-              <div slot="actions">
-                <modus-wc-button>
-                  <!---->
-                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary my-trimble" tabindex="0" type="button">
-                    Access MyTrimble
-                  </button>
-                </modus-wc-button>
-              </div>
-              <div slot="footer">
-                <modus-wc-button>
-                  <!---->
-                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary sign-out" tabindex="0" type="button">
-                    Sign out
-                  </button>
-                </modus-wc-button>
-              </div>
-            </modus-wc-card>
-          </div>
         </div>
       </div>
     </div>
@@ -96,31 +71,6 @@ exports[`modus-wc-navbar should render with no props 1`] = `
               <modus-wc-avatar alt="" size="xs"></modus-wc-avatar>
             </button>
           </modus-wc-button>
-          <div class="hidden user">
-            <modus-wc-card>
-              <div slot="header">
-                <modus-wc-avatar alt=""></modus-wc-avatar>
-              </div>
-              <div slot="title"></div>
-              <div></div>
-              <div slot="actions">
-                <modus-wc-button>
-                  <!---->
-                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary my-trimble" tabindex="0" type="button">
-                    Access MyTrimble
-                  </button>
-                </modus-wc-button>
-              </div>
-              <div slot="footer">
-                <modus-wc-button>
-                  <!---->
-                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary sign-out" tabindex="0" type="button">
-                    Sign out
-                  </button>
-                </modus-wc-button>
-              </div>
-            </modus-wc-card>
-          </div>
         </div>
       </div>
     </div>

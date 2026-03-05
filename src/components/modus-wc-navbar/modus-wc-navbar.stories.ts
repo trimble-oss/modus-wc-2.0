@@ -2,12 +2,9 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import {
-  INavbarTextOverrides,
-  INavbarUserCard,
-  INavbarVisibility,
-} from './modus-wc-navbar';
+import { INavbarTextOverrides, INavbarVisibility } from './modus-wc-navbar';
 import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
+import { IProfileMenuProps } from '../modus-wc-profile-menu/modus-wc-profile-menu';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
@@ -16,11 +13,15 @@ const textOverrides: INavbarTextOverrides = {
   search: 'Search',
 };
 
-const userCard: INavbarUserCard = {
-  avatarAlt: 'Sonic',
-  avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-  email: 'sonic@trimble.com',
-  name: 'Sonic the Hedgehog',
+const userCard: IProfileMenuProps = {
+  profileImageUrl:
+    'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+  headerName: 'Sonic the Hedgehog',
+  userEmail: 'sonic@trimble.com',
+  userName: 'Sonic',
+  manageTrimbleId: {
+    link: '#',
+  },
 };
 
 const visibility: INavbarVisibility = {
@@ -44,7 +45,7 @@ interface NavbarArgs {
   'search-debounce-ms'?: number;
   'search-input-open'?: boolean;
   'text-overrides'?: INavbarTextOverrides;
-  'user-card': INavbarUserCard;
+  'user-card': IProfileMenuProps;
   'user-menu-open'?: boolean;
   visibility?: INavbarVisibility;
   'logo-name': LogoName;
@@ -90,19 +91,20 @@ const meta: Meta<NavbarArgs> = {
       options: getAvailableLogos(),
     },
     'user-card': {
-      description:
-        '⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.',
+      description: 'User profile card information',
       table: {
         type: {
           detail: `
-            Interface: IUserCard
+            Interface: IProfileMenuProps
             Properties:
-            - avatarAlt (string, optional): The alt value to set on the avatar
-            - avatarSrc (string, optional): The avatar image source value
-            - email (string): The email address of the user
-            - myTrimbleButton (string, optional): Text override for the Access MyTrimble button, allows for translation
-            - name (string): The name of the user
-            - signOutButton (string, optional): Text override for the Sign out button, allows for translation
+            - profileImageUrl (string): The URL of the profile image
+            - headerName (string): The header name of the profile menu
+            - userName (string): The name of the user
+            - userEmail (string): The email of the user
+            - manageTrimbleId (IManageTrimbleId, optional): The manage Trimble ID link configuration
+              - link (string): The URL for managing the user's Trimble ID
+              - target ('_blank' | '_self' | '_parent' | '_top', optional): The target for the Manage my Trimble ID link
+              - rel (string, optional): The rel attribute for the link. Defaults to 'noopener noreferrer' when target is '_blank'
           `,
         },
       },
@@ -137,6 +139,7 @@ const meta: Meta<NavbarArgs> = {
         'condensedMenuOpenChange',
         'helpClick',
         'mainMenuOpenChange',
+        'menuItemClick',
         'myTrimbleClick',
         'notificationsMenuOpenChange',
         'notificationsClick',
@@ -163,13 +166,13 @@ const Template: Story = {
 <style>
   div[id^='story--components-navbar--default'] {
     border: 1px dashed black;
-    height: 360px;
+    height: 480px;
     overflow: hidden;
   }
   [slot=main-menu] {
     background-color: #0063a3;
     color: white;
-    height: 400px;
+    height: 480px;
   }
 </style>
 <modus-wc-navbar

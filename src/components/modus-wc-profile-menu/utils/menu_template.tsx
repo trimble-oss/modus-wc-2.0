@@ -42,6 +42,7 @@ export const renderSubMenu = (
               <modus-wc-icon
                 slot="start-icon"
                 name={item.icon}
+                size={item.iconSize ?? 'sm'}
                 variant={item.iconVariant || 'solid'}
               ></modus-wc-icon>
             )}
