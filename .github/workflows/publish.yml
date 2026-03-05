@@ -56,16 +56,16 @@ jobs:
           fi
 
           # Validate that the input is a valid SemVer version using the semver CLI
-          valid="$(npx --yes semver "$input" || true)"
+          valid="$(npx --yes semver@7 "$input" || true)"
           if [ -z "$valid" ]; then
             echo "❌ '$input' is not a valid SemVer version." >&2
             exit 1
           fi
 
           # Compute expected MAJOR / MINOR / PATCH increments from the current version
-          expectedMajor="$(npx --yes semver -i major "$current")"
-          expectedMinor="$(npx --yes semver -i minor "$current")"
-          expectedPatch="$(npx --yes semver -i patch "$current")"
+          expectedMajor="$(npx --yes semver@7 -i major "$current")"
+          expectedMinor="$(npx --yes semver@7 -i minor "$current")"
+          expectedPatch="$(npx --yes semver@7 -i patch "$current")"
 
           if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ]; then
             echo "❌ Invalid version bump: '$input' is not a valid SemVer increment from '$current'." >&2
