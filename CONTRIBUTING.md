@@ -146,11 +146,19 @@ The release notes can be viewed on the [GitHub Releases](https://github.com/trim
 This project uses the following semantic versioning convention for the repository and changelog entries.
 Given a version number [MAJOR.MINOR.PATCH], increment the following:
 
-1. Major: to make incompatible API changes - updates containing new dependencies.
-2. Minor: to add functionality in a backwards compatible manner.
-3. Patch: to make backwards compatible bug fixes.
-   Example: Version 1.0.0 has a function added in accordance with a minor version update. The new version will be 1.1.0.
-   See: [semver.org](https://semver.org/spec/v2.0.0.html).
+| Bump | When | PR Label | Example |
+|------|------|----------|---------|
+| **MAJOR** | Incompatible/breaking API changes (e.g. removing a prop, renaming an event, changing a prop type) | `breaking-change` | `1.2.3` → `2.0.0` |
+| **MINOR** | New backward-compatible functionality (e.g. adding a new optional prop, new component, new event) | `new-feature`, `feature`, `enhancement` | `1.2.3` → `1.3.0` |
+| **PATCH** | Backward-compatible bug fixes only | `fix`, `bugfix`, `bug` | `1.2.3` → `1.2.4` |
+
+- When a release contains both new features and bug fixes, use the **highest** applicable bump (MINOR).
+- When a release contains a breaking change alongside anything else, always use **MAJOR**.
+- PATCH resets to `0` on a MINOR bump. Both MINOR and PATCH reset to `0` on a MAJOR bump.
+
+**Important:** Every PR must have one of the labels above applied before merging. The release drafter will automatically suggest the correct next version based on these labels.
+
+See: [semver.org](https://semver.org/spec/v2.0.0.html).
 
 ## Releasing
 

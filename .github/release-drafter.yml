@@ -1,9 +1,24 @@
-name-template: 'v$NEXT_PATCH_VERSION 🌈'
-tag-template: 'v$NEXT_PATCH_VERSION'
+name-template: 'v$NEXT_SEMVER_VERSION 🌈'
+tag-template: 'v$NEXT_SEMVER_VERSION'
 prerelease: true
 prerelease-identifier: 'alpha' # will create a prerelease with version number x.x.x-alpha.x
 exclude-labels:
   - 'skip-changelog'
+version-resolver:
+  major:
+    labels:
+      - 'breaking-change'
+  minor:
+    labels:
+      - 'new-feature'
+      - 'feature'
+      - 'enhancement'
+  patch:
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  default: patch
 categories:
   - title: '❗ Breaking Changes'
     labels:

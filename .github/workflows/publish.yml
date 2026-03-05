@@ -42,6 +42,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate version bump follows SemVer
+        run: |
+          CURRENT=$(jq -r '.version' package.json)
+          INPUT="${{ github.event.inputs.version }}"
+
+          CURRENT_MAJOR=$(echo $CURRENT | cut -d. -f1)
+          CURRENT_MINOR=$(echo $CURRENT | cut -d. -f2)
+          CURRENT_PATCH=$(echo $CURRENT | cut -d. -f3)
+
+          EXPECTED_MAJOR="$((CURRENT_MAJOR + 1)).0.0"
+          EXPECTED_MINOR="${CURRENT_MAJOR}.$((CURRENT_MINOR + 1)).0"
+          EXPECTED_PATCH="${CURRENT_MAJOR}.${CURRENT_MINOR}.$((CURRENT_PATCH + 1))"
+
+          if [ "$INPUT" != "$EXPECTED_MAJOR" ] && [ "$INPUT" != "$EXPECTED_MINOR" ] && [ "$INPUT" != "$EXPECTED_PATCH" ]; then
+            echo "❌ Invalid version bump: '$INPUT' is not a valid SemVer increment from '$CURRENT'."
+            echo "   Expected one of:"
+            echo "     MAJOR: $EXPECTED_MAJOR (breaking changes)"
+            echo "     MINOR: $EXPECTED_MINOR (new features)"
+            echo "     PATCH: $EXPECTED_PATCH (bug fixes)"
+            exit 1
+          fi
+
+          echo "✅ Version bump from $CURRENT to $INPUT is valid."
+
       - name: Update package.json version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
