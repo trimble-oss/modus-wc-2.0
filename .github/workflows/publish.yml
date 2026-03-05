@@ -48,9 +48,12 @@ jobs:
 
           current="$(node -p "require('./package.json').version")"
 
-          # Normalize input by stripping a leading 'v' if present
+          # Capture the raw input version and ensure it does not start with 'v'
           input='${{ github.event.inputs.version }}'
-          input="${input#v}"
+          if [ "${input#v}" != "$input" ]; then
+            echo "❌ Version '$input' must not start with 'v'. Please provide a bare SemVer like '1.2.3'." >&2
+            exit 1
+          fi
 
           # Validate that the input is a valid SemVer version using the semver CLI
           valid="$(npx --yes semver "$input" || true)"

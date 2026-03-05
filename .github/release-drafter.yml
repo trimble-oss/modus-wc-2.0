@@ -1,5 +1,5 @@
-name-template: 'v$NEXT_SEMVER_VERSION 🌈'
-tag-template: 'v$NEXT_SEMVER_VERSION'
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: 'v$RESOLVED_VERSION'
 prerelease: true
 prerelease-identifier: 'alpha' # will create a prerelease with version number x.x.x-alpha.x
 exclude-labels:
