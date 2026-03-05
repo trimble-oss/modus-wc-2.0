@@ -18,9 +18,18 @@
     "react": "^18.3",
     "react-dom": "^18.3"
   },
-  "main": "index.js",
+  "main": "index-cjs.js",
   "module": "index.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./index.js",
+      "require": "./index-cjs.js",
+      "default": "./index.js"
+    },
+    "./modus-wc-styles.css": "./modus-wc-styles.css"
+  },
   "scripts": {
     "prebuild": "npm run symlink",
     "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-assets && npm run copy-meta",
