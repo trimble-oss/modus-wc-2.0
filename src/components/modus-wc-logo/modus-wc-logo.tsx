@@ -29,19 +29,12 @@ function fetchSvgText(url: string): Promise<string> {
   return svgCache.get(url)!;
 }
 
-function sanitizeSvg(svgText: string): string {
-  return svgText
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/\bon\w+\s*=\s*"[^"]*"/gi, '')
-    .replace(/\bon\w+\s*=\s*'[^']*'/gi, '');
-}
-
 interface LogoSvgProps {
   svgText: string;
 }
 
 const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
-  <span innerHTML={sanitizeSvg(svgText)}></span>
+  <span innerHTML={svgText}></span>
 );
 
 /**
@@ -57,7 +50,6 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
-  private currentLoadId = 0;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -88,17 +80,13 @@ export class ModusWcLogo {
   }
 
   private async loadSvg(): Promise<void> {
-    const loadId = ++this.currentLoadId;
     const assetPath = this.getAssetFilePath();
     if (!assetPath) {
       this.svgContent = '';
       return;
     }
     const text = await fetchSvgText(assetPath);
-    // Only apply if this is still the latest request (prevents race conditions)
-    if (loadId === this.currentLoadId) {
-      this.svgContent = text;
-    }
+    this.svgContent = text;
   }
 
   private getAssetFilePath(): string {
@@ -133,10 +121,7 @@ export class ModusWcLogo {
   }
 
   render() {
-    const altText =
-      this.inheritedAttributes['aria-label'] ||
-      this.alt ||
-      this.name.replace(/_/g, ' ');
+    const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
 
     return (

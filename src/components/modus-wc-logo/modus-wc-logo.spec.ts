@@ -219,4 +219,31 @@ describe('modus-wc-logo', () => {
     const logoSpan = page.root?.querySelector('.modus-wc-logo');
     expect(logoSpan?.querySelector('svg')).toBeNull();
   });
+
+  it('should handle fetch rejection gracefully and evict cache', async () => {
+    globalThis.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
+    expect(svgCache.size).toBe(0);
+  });
+
+  it('should return empty string when fetch is undefined (SSR)', async () => {
+    const origFetch = globalThis.fetch;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (globalThis as any).fetch;
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
+
+    globalThis.fetch = origFetch;
+  });
 });
