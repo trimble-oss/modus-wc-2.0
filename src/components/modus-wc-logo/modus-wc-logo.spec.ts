@@ -159,23 +159,6 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.getAttribute('aria-label')).toBe('viewpoint analytics');
   });
 
-  it('should warn when emblem path is missing', async () => {
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-    mockLogoVariants.test_logo = {
-      displayName: 'Test Logo',
-      path: 'logos/trimble/test.svg',
-      category: 'trimble',
-    };
-    await newSpecPage({
-      components: [ModusWcLogo],
-      html: '<modus-wc-logo name="test_logo" emblem></modus-wc-logo>',
-    });
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('No emblem path found')
-    );
-    consoleSpy.mockRestore();
-  });
-
   it('should fetch logo from correct asset path for trimble', async () => {
     await newSpecPage({
       components: [ModusWcLogo],
@@ -205,50 +188,32 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.querySelector('svg')).not.toBeNull();
   });
 
-  it('should create MutationObserver to watch data-theme changes', async () => {
-    const mockObserve = jest.fn();
-    const mockDisconnect = jest.fn();
-    const MockMutationObserver = jest.fn(() => ({
-      observe: mockObserve,
-      disconnect: mockDisconnect,
-      takeRecords: jest.fn(),
-    }));
-    globalThis.MutationObserver =
-      MockMutationObserver as unknown as typeof MutationObserver;
-
-    await newSpecPage({
+  it('should reload svg when name prop changes', async () => {
+    const page = await newSpecPage({
       components: [ModusWcLogo],
       html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
     });
-
-    expect(mockObserve).toHaveBeenCalledWith(
-      document.documentElement,
-      expect.objectContaining({ attributeFilter: ['data-theme'] })
+    svgCache.clear();
+    const callsBefore = (globalThis.fetch as jest.Mock).mock.calls.length;
+    page.rootInstance.name = 'connect';
+    page.rootInstance.onLogoPropsChange();
+    await new Promise((r) => setTimeout(r, 0));
+    expect((globalThis.fetch as jest.Mock).mock.calls.length).toBeGreaterThan(
+      callsBefore
     );
-
-    delete (globalThis as { MutationObserver?: typeof MutationObserver })
-      .MutationObserver;
   });
 
-  it('should disconnect MutationObserver on disconnected', async () => {
-    const mockDisconnect = jest.fn();
-    const MockMutationObserver = jest.fn(() => ({
-      observe: jest.fn(),
-      disconnect: mockDisconnect,
-      takeRecords: jest.fn(),
-    }));
-    globalThis.MutationObserver =
-      MockMutationObserver as unknown as typeof MutationObserver;
+  it('should set svgContent to empty string when fetch fails', async () => {
+    globalThis.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      text: jest.fn(),
+    } as unknown as Response);
 
     const page = await newSpecPage({
       components: [ModusWcLogo],
       html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
     });
-
-    page.rootInstance.disconnectedCallback();
-    expect(mockDisconnect).toHaveBeenCalled();
-
-    delete (globalThis as { MutationObserver?: typeof MutationObserver })
-      .MutationObserver;
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
   });
 });

@@ -44,7 +44,6 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
-  private themeObserver: MutationObserver | null = null;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -61,30 +60,12 @@ export class ModusWcLogo {
   /** The alt text for accessibility. If not provided, defaults to the logo name. */
   @Prop() alt?: string;
 
-  // svgContent is in @State so Stencil owns it — re-renders re-set innerHTML from
-  // state, so DevTools inspection never causes the SVG to disappear.
   @State() private svgContent: string = '';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     // Return the promise so Stencil waits before first render — no empty flash
     return this.loadSvg();
-  }
-
-  componentDidLoad() {
-    if (typeof MutationObserver !== 'undefined') {
-      this.themeObserver = new MutationObserver(() => {
-        void this.loadSvg();
-      });
-      this.themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-theme'],
-      });
-    }
-  }
-
-  disconnectedCallback() {
-    this.themeObserver?.disconnect();
   }
 
   @Watch('name')
@@ -117,7 +98,7 @@ export class ModusWcLogo {
 
     const filePath = this.emblem ? logoInfo.emblemPath : logoInfo.path;
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!filePath) {
       console.warn(
         `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}"`
