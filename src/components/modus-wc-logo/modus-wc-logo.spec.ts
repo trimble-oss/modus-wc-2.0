@@ -58,6 +58,8 @@ const MOCK_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>';
 
 describe('modus-wc-logo', () => {
+  const originalFetch = globalThis.fetch;
+
   beforeEach(() => {
     Object.keys(mockLogoVariants).forEach(
       (key) => delete mockLogoVariants[key]
@@ -71,6 +73,7 @@ describe('modus-wc-logo', () => {
   });
 
   afterEach(() => {
+    globalThis.fetch = originalFetch;
     jest.restoreAllMocks();
   });
 

@@ -14,13 +14,26 @@ import { LOGO_VARIANTS, LogoName } from './logo-constants';
 import { svgCache } from './logo-svg-cache';
 
 function fetchSvgText(url: string): Promise<string> {
+  if (typeof fetch === 'undefined') return Promise.resolve('');
   if (!svgCache.has(url)) {
     svgCache.set(
       url,
-      fetch(url).then((r) => (r.ok ? r.text() : ''))
+      fetch(url)
+        .then((r) => (r.ok ? r.text() : ''))
+        .catch(() => {
+          svgCache.delete(url);
+          return '';
+        })
     );
   }
   return svgCache.get(url)!;
+}
+
+function sanitizeSvg(svgText: string): string {
+  return svgText
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/\bon\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\bon\w+\s*=\s*'[^']*'/gi, '');
 }
 
 interface LogoSvgProps {
@@ -28,7 +41,7 @@ interface LogoSvgProps {
 }
 
 const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
-  <span innerHTML={svgText}></span>
+  <span innerHTML={sanitizeSvg(svgText)}></span>
 );
 
 /**
@@ -44,6 +57,7 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
+  private currentLoadId = 0;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -64,7 +78,6 @@ export class ModusWcLogo {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    // Return the promise so Stencil waits before first render — no empty flash
     return this.loadSvg();
   }
 
@@ -75,13 +88,17 @@ export class ModusWcLogo {
   }
 
   private async loadSvg(): Promise<void> {
+    const loadId = ++this.currentLoadId;
     const assetPath = this.getAssetFilePath();
     if (!assetPath) {
       this.svgContent = '';
       return;
     }
     const text = await fetchSvgText(assetPath);
-    this.svgContent = text;
+    // Only apply if this is still the latest request (prevents race conditions)
+    if (loadId === this.currentLoadId) {
+      this.svgContent = text;
+    }
   }
 
   private getAssetFilePath(): string {
@@ -116,7 +133,10 @@ export class ModusWcLogo {
   }
 
   render() {
-    const altText = this.alt || this.name.replace(/_/g, ' ');
+    const altText =
+      this.inheritedAttributes['aria-label'] ||
+      this.alt ||
+      this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
 
     return (
