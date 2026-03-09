@@ -67,12 +67,24 @@ jobs:
           expectedMinor="$(npx --yes semver@7 -i minor "$current")"
           expectedPatch="$(npx --yes semver@7 -i patch "$current")"
 
-          if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ]; then
+          # Also allow prerelease increments (e.g. 1.3.0-alpha.1) to align with release-drafter prerelease config
+          expectedPremajor="$(npx --yes semver@7 -i premajor --preid alpha "$current")"
+          expectedPreminor="$(npx --yes semver@7 -i preminor --preid alpha "$current")"
+          expectedPrepatch="$(npx --yes semver@7 -i prepatch --preid alpha "$current")"
+          expectedPrerelease="$(npx --yes semver@7 -i prerelease --preid alpha "$current" || true)"
+
+          if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ] && \
+             [ "$input" != "$expectedPremajor" ] && [ "$input" != "$expectedPreminor" ] && [ "$input" != "$expectedPrepatch" ] && \
+             [ "$input" != "$expectedPrerelease" ]; then
             echo "❌ Invalid version bump: '$input' is not a valid SemVer increment from '$current'." >&2
             echo "   Expected one of:" >&2
-            echo "     MAJOR: $expectedMajor (breaking changes)" >&2
-            echo "     MINOR: $expectedMinor (new features)" >&2
-            echo "     PATCH: $expectedPatch (bug fixes)" >&2
+            echo "     MAJOR:      $expectedMajor (breaking changes)" >&2
+            echo "     MINOR:      $expectedMinor (new features)" >&2
+            echo "     PATCH:      $expectedPatch (bug fixes)" >&2
+            echo "     PREMAJOR:   $expectedPremajor (breaking prerelease)" >&2
+            echo "     PREMINOR:   $expectedPreminor (feature prerelease)" >&2
+            echo "     PREPATCH:   $expectedPrepatch (fix prerelease)" >&2
+            echo "     PRERELEASE: $expectedPrerelease (next prerelease iteration)" >&2
             exit 1
           fi
 
