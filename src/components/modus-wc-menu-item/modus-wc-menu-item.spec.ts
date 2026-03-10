@@ -1,5 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcMenuItem } from './modus-wc-menu-item';
+import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
 describe('modus-wc-menu-item', () => {
@@ -589,5 +590,233 @@ describe('modus-wc-menu-item', () => {
 
     expect(preventDefaultSpy).not.toHaveBeenCalled();
     expect(selectSpy).not.toHaveBeenCalled();
+  });
+
+  it('should deselect siblings in single selection mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstItem = menuItems[0] as HTMLElement & { selected?: boolean };
+    const secondItem = menuItems[1] as HTMLElement & { selected?: boolean };
+
+    // Click first item
+    firstItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstItem.selected).toBe(true);
+
+    // Click second item — first should be deselected
+    secondItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstItem.selected).toBe(false);
+    expect(secondItem.selected).toBe(true);
+  });
+
+  it('should render checkbox automatically in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+    const checkbox = menuItem.querySelector('modus-wc-checkbox');
+
+    expect(checkbox).not.toBeNull();
+  });
+
+  it('should toggle checked state in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const instance = (menuItem as any).__instance ?? page.rootInstance;
+
+    // Stencil spec pages: get the component instance from the inner host
+    const menuItemComponent = page.doc.querySelector('modus-wc-menu-item');
+    const componentInstance = (menuItemComponent as any).__stencil_component;
+
+    // Click to check
+    button.click();
+    await page.waitForChanges();
+
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-selected')
+    ).toBeTruthy();
+
+    // Click again to uncheck
+    button.click();
+    await page.waitForChanges();
+
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-selected')
+    ).toBeFalsy();
+  });
+
+  it('should emit itemSelect with checked state in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    // Click to check
+    button.click();
+    await page.waitForChanges();
+
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({
+      value: '1',
+      selected: true,
+    });
+
+    // Click to uncheck
+    button.click();
+    await page.waitForChanges();
+
+    expect(selectSpy).toHaveBeenCalledTimes(2);
+    expect(selectSpy.mock.calls[1][0].detail).toEqual({
+      value: '1',
+      selected: false,
+    });
+  });
+
+  it('should not set selected prop in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement & {
+      selected?: boolean;
+    };
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+
+    button.click();
+    await page.waitForChanges();
+
+    // selected prop should remain unset; only checked state is used
+    expect(menuItem.selected).toBeFalsy();
+  });
+
+  it('should allow multiple items to be checked in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstButton = menuItems[0].querySelector(
+      'button'
+    ) as HTMLButtonElement;
+    const secondButton = menuItems[1].querySelector(
+      'button'
+    ) as HTMLButtonElement;
+
+    // Check first item
+    firstButton.click();
+    await page.waitForChanges();
+
+    // Check second item
+    secondButton.click();
+    await page.waitForChanges();
+
+    // Both should have the selected class
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+    const thirdLi = menuItems[2].querySelector('li') as HTMLLIElement;
+
+    expect(
+      firstLi.classList.contains('modus-wc-menu-item-selected')
+    ).toBeTruthy();
+    expect(
+      secondLi.classList.contains('modus-wc-menu-item-selected')
+    ).toBeTruthy();
+    expect(
+      thirdLi.classList.contains('modus-wc-menu-item-selected')
+    ).toBeFalsy();
+  });
+
+  it('should handle selection gracefully when not inside a modus-wc-menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const button = menuItem.querySelector('button') as HTMLButtonElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    button.click();
+    await page.waitForChanges();
+
+    // Should still select itself and emit the event without errors
+    expect(selectSpy).toHaveBeenCalledTimes(1);
+    expect(selectSpy.mock.calls[0][0].detail).toEqual({
+      value: 'standalone',
+      selected: true,
+    });
+  });
+
+  it('should return early from deselectSiblings when no parent menu exists', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+    });
+
+    const instance = page.rootInstance;
+
+    // Calling deselectSiblings directly when there is no parent modus-wc-menu
+    expect(() => {
+      (instance as any).deselectSiblings();
+    }).not.toThrow();
   });
 });

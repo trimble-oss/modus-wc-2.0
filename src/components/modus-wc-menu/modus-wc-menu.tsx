@@ -9,7 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { ModusSize, Orientation } from '../types';
+import { ModusSize, Orientation, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -36,6 +36,9 @@ export class ModusWcMenu {
 
   /** The orientation of the menu. */
   @Prop() orientation?: Orientation = 'vertical';
+
+  /** The selection mode of the menu. */
+  @Prop() selectionMode?: SelectionMode = 'single';
 
   /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';

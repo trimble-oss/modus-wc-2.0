@@ -3,12 +3,13 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { ModusSize, Orientation } from '../types';
+import { ModusSize, Orientation, SelectionMode } from '../types';
 
 interface MenuArgs {
   bordered?: boolean;
   'custom-class'?: string;
   orientation?: Orientation;
+  'selection-mode'?: SelectionMode;
   size?: ModusSize;
 }
 
@@ -23,6 +24,10 @@ const meta: Meta<MenuArgs> = {
     orientation: {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
+    },
+    'selection-mode': {
+      control: { type: 'select' },
+      options: ['single', 'multiple'],
     },
     size: {
       control: { type: 'select' },
@@ -50,6 +55,7 @@ export const Default: Story = {
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   orientation=${ifDefined(args.orientation)}
+  selection-mode=${ifDefined(args['selection-mode'])}
   size=${ifDefined(args.size)}
 >
   <modus-wc-menu-item
@@ -90,6 +96,42 @@ export const Default: Story = {
     disabled="true"
   ></modus-wc-menu-item>
 </modus-wc-menu>
+    `;
+  },
+};
+
+export const MultiSelectMenu: Story = {
+  render: (args) => {
+    args['selection-mode'] = 'multiple';
+    // prettier-ignore
+    return html`
+<modus-wc-menu
+  aria-label="Menu"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  orientation=${ifDefined(args.orientation)}
+  selection-mode=${ifDefined(args['selection-mode'])}
+  size=${ifDefined(args.size)}
+>
+  <modus-wc-menu-item
+    label="Small"
+    value="1"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item label="Medium" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Large"
+    value="3"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Bordered"
+    value="3"
+    bordered="true"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="With Sub-label"
+    value="3"
+    sub-label="Sub-label"
+  ></modus-wc-menu-item>
     `;
   },
 };
@@ -200,6 +242,7 @@ export const CollapsibleMenu: Story = {
         <modus-wc-menu-item
           label="Charts"
           .hasSubmenu=${true}
+          checkbox="true"
           id="charts-menu"
           value="charts"
         >
