@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcMenuItem } from './modus-wc-menu-item';
-import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
+import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 
 describe('modus-wc-menu-item', () => {
   it('renders with default props', async () => {
@@ -654,11 +654,6 @@ describe('modus-wc-menu-item', () => {
       'modus-wc-menu-item'
     ) as HTMLElement;
     const button = menuItem.querySelector('button') as HTMLButtonElement;
-    const instance = (menuItem as any).__instance ?? page.rootInstance;
-
-    // Stencil spec pages: get the component instance from the inner host
-    const menuItemComponent = page.doc.querySelector('modus-wc-menu-item');
-    const componentInstance = (menuItemComponent as any).__stencil_component;
 
     // Click to check
     button.click();
@@ -815,8 +810,7 @@ describe('modus-wc-menu-item', () => {
     const instance = page.rootInstance;
 
     // Calling deselectSiblings directly when there is no parent modus-wc-menu
-    expect(() => {
-      (instance as any).deselectSiblings();
-    }).not.toThrow();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(() => (instance as any).deselectSiblings()).not.toThrow();
   });
 });
