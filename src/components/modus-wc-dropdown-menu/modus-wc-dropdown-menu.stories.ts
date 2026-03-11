@@ -146,6 +146,7 @@ const Template: Story = {
   ?menu-visible=${args['menu-visible']}
 >
   <div slot="button">
+    Button
     <modus-wc-icon name="expand_more" size="sm" />
   </div>
 
