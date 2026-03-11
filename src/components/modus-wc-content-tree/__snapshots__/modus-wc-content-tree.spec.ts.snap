@@ -9,7 +9,7 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
         <modus-wc-text-input customclass="modus-wc-content-tree-search-input" include-clear="" include-search="" placeholder="Search..." value=""></modus-wc-text-input>
       </div>
       <div class="modus-wc-content-tree-actions">
-        <modus-wc-button aria-label="Expand all" shape="circle" size="sm" variant="borderless">
+        <modus-wc-button aria-label="Expand all" customclass="modus-wc-content-tree-action-button" shape="circle" size="sm" variant="borderless">
           <modus-wc-icon customclass="modus-wc-content-tree-action-icon" decorative="" name="unfold_more" size="sm" variant="solid"></modus-wc-icon>
         </modus-wc-button>
       </div>
