@@ -10,13 +10,18 @@ modus-wc-tree-actions {
     .modus-wc-tree-action-button {
       background: transparent;
       border: none;
-      color: var(--modus-wc-color-black);
+      color: var(--modus-wc-color-base-content);
       cursor: pointer;
       visibility: hidden;
 
       &:hover {
         background: transparent;
-        color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-base-content);
+      }
+
+      &:active,
+      &[aria-pressed='true'] {
+        background: transparent;
       }
     }
   }
@@ -70,10 +75,10 @@ modus-wc-tree-actions {
 [data-theme='connect-dark'] {
   .modus-wc-tree-actions-container {
     .modus-wc-tree-action-button {
-      color: var(--modus-wc-color-gray-light);
+      color: var(--modus-wc-color-base-content);
 
       &:hover {
-        color: var(--modus-wc-color-white);
+        color: var(--modus-wc-color-base-content);
       }
     }
   }

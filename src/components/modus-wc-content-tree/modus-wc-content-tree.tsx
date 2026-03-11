@@ -228,6 +228,7 @@ export class ModusWcContentTree {
             {this.includeActions && (
               <div class="modus-wc-content-tree-actions">
                 <modus-wc-button
+                  customClass="modus-wc-content-tree-action-button"
                   variant="borderless"
                   size="sm"
                   shape="circle"

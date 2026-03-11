@@ -7,7 +7,7 @@ modus-wc-content-tree {
   background-color: var(--modus-wc-color-base-page);
   border: 1px solid var(--modus-wc-color-base-100);
   display: block;
-  min-width: 320px;
+  min-width: 290px;
   width: 100%;
 
   .modus-wc-content-tree-actions {
@@ -15,8 +15,17 @@ modus-wc-content-tree {
     display: flex;
     gap: var(--modus-wc-spacing-xs, 0.5rem);
     justify-content: flex-end;
-    margin-top: var(--modus-wc-spacing-md, 1rem);
-    padding-bottom: var(--modus-wc-spacing-sm, 0.75rem);
+    padding: var(--modus-wc-spacing-sm, 0.75rem);
+
+    .modus-wc-content-tree-action-button {
+      background-color: transparent;
+
+      &:hover,
+      &:active,
+      &[aria-pressed='true'] {
+        background-color: transparent;
+      }
+    }
 
     .modus-wc-content-tree-action-icon {
       color: var(--modus-wc-color-black);
@@ -33,7 +42,7 @@ modus-wc-content-tree {
   }
 
   .modus-wc-content-tree-header {
-    padding: var(--modus-wc-spacing-md, 1rem);
+    padding: var(--modus-wc-spacing-sm, 1rem);
   }
 
   .modus-wc-content-tree-empty {
