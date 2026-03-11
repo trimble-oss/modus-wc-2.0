@@ -54,6 +54,7 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
+/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -72,14 +73,8 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-
-<strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-
- 
-The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+ * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+ *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -128,7 +123,9 @@ export class ModusWcNavbar {
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** User information used to render the user card. */
+  /** User information used to render the user card.
+   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+   */
   @Prop() userCard!: INavbarUserCard;
 
   /** The open state of the user menu. */
@@ -185,11 +182,8 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  /** Event emitted when the logo is clicked or activated via keyboard. */
-  @StencilEvent() logoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
-
-  /** @deprecated */
-  /** Deprecated: Use logoClick instead. This event will be removed in a future release.*/
+  /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+   */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
@@ -374,10 +368,9 @@ export class ModusWcNavbar {
     this.signOutClick.emit(event.detail);
   };
 
-  private handleLogoClick = (
+  private handleTrimbleLogoClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
-    this.logoClick.emit(event.detail);
     this.trimbleLogoClick.emit(event.detail);
   };
 
@@ -461,7 +454,7 @@ export class ModusWcNavbar {
             <modus-wc-button
               aria-label={`${accessibleName} logo`}
               customClass="logo"
-              onButtonClick={this.handleLogoClick}
+              onButtonClick={this.handleTrimbleLogoClick}
               size="sm"
               variant="borderless"
             >

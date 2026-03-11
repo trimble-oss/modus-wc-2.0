@@ -25,16 +25,30 @@ You will need to import our styling in your main JavaScript or CSS file:
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
+#### Variables-Only CSS
+
+If you want Modus styling to apply only to your components and **not affect the rest of your application**, you can import the lightweight variables-only file instead:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-variables.css';
+```
+
+Modus components inside Shadow DOM will automatically inject their own class rules via `handleShadowDOMStyles()`, so they render correctly without the full stylesheet being loaded globally.
+
+> **Note:** Both imports work with Shadow DOM. We recommend `modus-wc-styles.css` for new applications. Consider `modus-wc-variables.css` for existing applications where you want to avoid global style changes.
+
 ### 2. Set the theme:
 
 The theme can be set manually or by using the `ThemeSwitcher` component. See the "Use a Theme" section of [Styling](/docs/documentation-styling--docs) for guidance.
 
 Available themes are:
 
-- `modus-classic-light`
-- `modus-classic-dark`
 - `modus-modern-light` (default)
 - `modus-modern-dark`
+- `modus-classic-light`
+- `modus-classic-dark`
+- `connect-light`
+- `connect-dark`
 
 ### 3. Register custom elements:
 
@@ -75,6 +89,32 @@ const options: ISelectOption[] = [
 ];
 
 const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
+```
+
+## Testing with Jest
+
+If you are using the React integration package (`@trimble-oss/moduswebcomponents-react`), this package is published as ES modules. To use it in a Jest environment you need to configure Babel to transpile it.
+
+Add `transformIgnorePatterns` to your Jest config (`package.json` or `jest.config.js`):
+
+```json
+{
+  "jest": {
+    "transformIgnorePatterns": ["/node_modules/(?!(@trimble-oss|@stencil))"]
+  }
+}
+```
+
+Ensure your `babel.config.js` includes these presets:
+
+```js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', { targets: { node: 'current' } }],
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
+  ],
+};
 ```
 
 ## Framework Integrations

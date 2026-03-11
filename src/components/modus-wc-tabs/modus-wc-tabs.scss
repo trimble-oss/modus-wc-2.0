@@ -38,14 +38,6 @@ modus-wc-tabs .modus-wc-tabs {
     }
   }
 
-  &.modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-primary);
-  }
-
   &.modus-wc-tabs-bordered {
     .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
         .modus-wc-tab-disabled
@@ -60,6 +52,22 @@ modus-wc-tabs .modus-wc-tabs {
     .modus-wc-tab:is(input:checked) {
       color: var(--modus-wc-color-primary);
     }
+  }
+}
+
+// Note: This is a workaround to apply the lifted style changes for the modern and connect themes. It will be removed in the future release with the classic theme lifted tab fixed.
+[data-theme='modus-modern-light'] modus-wc-tabs .modus-wc-tabs,
+[data-theme='modus-modern-dark'] modus-wc-tabs .modus-wc-tabs,
+[data-theme='connect-light'] modus-wc-tabs .modus-wc-tabs,
+[data-theme='connect-dark'] modus-wc-tabs .modus-wc-tabs {
+  &.modus-wc-tabs-lifted
+    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]),
+  &.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    --tab-bg: var(--modus-wc-color-base-page);
+
+    color: var(--modus-wc-color-primary);
   }
 }
 
