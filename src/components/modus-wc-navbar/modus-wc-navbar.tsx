@@ -54,6 +54,7 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
+/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -72,7 +73,8 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+ * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+ *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -121,7 +123,9 @@ export class ModusWcNavbar {
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** User information used to render the user card. */
+  /** User information used to render the user card.
+   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+   */
   @Prop() userCard!: INavbarUserCard;
 
   /** The open state of the user menu. */
