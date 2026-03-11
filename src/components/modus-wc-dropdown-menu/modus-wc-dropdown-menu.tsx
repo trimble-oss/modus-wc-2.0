@@ -44,7 +44,7 @@ export class ModusWcDropdownMenu {
     | 'danger' = 'primary';
 
   /** The shape of the button. */
-  @Prop() buttonShape: 'circle' | 'ellipse' | 'rectangle' | 'square' =
+  @Prop() buttonShape?: 'circle' | 'ellipse' | 'rectangle' | 'square' =
     'rectangle';
 
   /** The size of the button. */

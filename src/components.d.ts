@@ -650,7 +650,7 @@ export namespace Components {
         /**
           * The shape of the button.
          */
-        "buttonShape": 'circle' | 'ellipse' | 'rectangle' | 'square';
+        "buttonShape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */
