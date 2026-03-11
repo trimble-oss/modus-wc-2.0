@@ -7,6 +7,7 @@ import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 interface DropdownMenuArgs {
   'button-aria-label'?: string;
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  'button-shape'?: 'circle' | 'ellipse' | 'rectangle' | 'square';
   'button-size'?: DaisySize;
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'custom-class'?: string;
@@ -24,6 +25,7 @@ const meta: Meta<DropdownMenuArgs> = {
   args: {
     'button-aria-label': 'Dropdown menu button',
     'button-color': 'primary',
+    'button-shape': 'rectangle',
     'button-size': 'md',
     'button-variant': 'filled',
     disabled: false,
@@ -41,6 +43,10 @@ const meta: Meta<DropdownMenuArgs> = {
     'button-size': {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+    'button-shape': {
+      control: { type: 'select' },
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     'button-variant': {
       control: { type: 'select' },
@@ -128,6 +134,7 @@ const Template: Story = {
 <modus-wc-dropdown-menu
   button-aria-label=${ifDefined(args['button-aria-label'])}
   button-color=${ifDefined(args['button-color'])}
+  button-shape=${ifDefined(args['button-shape'])}
   button-size=${ifDefined(args['button-size'])}
   button-variant=${ifDefined(args['button-variant'])}
   custom-class=${ifDefined(args['custom-class'])}
@@ -139,7 +146,6 @@ const Template: Story = {
   ?menu-visible=${args['menu-visible']}
 >
   <div slot="button">
-    Button
     <modus-wc-icon name="expand_more" size="sm" />
   </div>
 
