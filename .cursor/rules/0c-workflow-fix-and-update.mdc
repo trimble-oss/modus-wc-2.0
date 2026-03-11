@@ -1,0 +1,238 @@
+---
+description: Workflow for fixing and updating existing Storybook tests for Modus WC 2.0
+globs: []
+alwaysApply: false
+---
+
+# Workflow: Fix and Update Tests
+
+**Routed from:** Master Orchestrator (File 0)
+**Use When:** Tests failing, snapshots outdated, or component changed
+
+## Prerequisites
+
+- ✅ Setup exists
+- ✅ Play functions exist for component
+- ⚠️ Tests failing OR snapshots outdated
+
+---
+
+## Step 1: Detect Intent (CRITICAL)
+
+**→ MUST Consult Rule 5 (Change Detection) FIRST before any update**
+
+```
+Agent Response:
+"I'll help update the tests for [ComponentName].
+
+First, let me analyze what changed...
+
+**→ Consulting Rule 5 (Change Detection) for intent analysis**
+
+**Git Analysis:**
+- Files changed: [list]
+- Last commit: "[commit message]" ([time] ago)
+
+**Impact Analysis:**
+- Failing tests: [count] stories
+- Test errors: [list error messages]
+
+**→ Rule 5 Confidence Score: [X]%** [intentional/unintentional]
+
+**Recommended Action:**
+[1. Update snapshots | 2. Fix test logic | 3. Investigate further]
+
+What would you like to do? (1/2/3/explain)
+```
+
+---
+
+## Step 2A: Update Snapshots (If Intentional Change)
+
+**→ Consult Rule 4 (Maintenance) for snapshot update workflow**
+
+```
+Agent Response:
+"Updating snapshots for [ComponentName]...
+
+**Command:**
+npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot
+
+Should I update these snapshots? (yes/no/show me first)
+```
+
+---
+
+## Step 2B: Fix Test Logic (If Test Error)
+
+**→ Consult Rule 2 (Testing Patterns) for correct patterns**
+
+```
+Agent Response:
+"Analyzing test failures...
+
+**Error:** [error message]
+
+**Root Cause:** [analysis]
+
+**Web Components Consideration:**
+[If timing issue] Web components render async — may need findBy* instead of getBy*
+[If Shadow DOM issue] Element might be inside Shadow DOM
+[If custom event issue] Custom events use different emission pattern
+
+**Recommended Fix:**
+[Show code diff]
+
+Should I apply this fix? (yes/no/explain more)
+```
+
+### Common Fix Patterns
+
+**Timing Issue (Web Components):**
+```typescript
+// Before (incorrect)
+const button = canvas.getByRole('button'); // May fail — not rendered yet
+
+// After (correct)
+const button = await canvas.findByRole('button'); // Waits for render
+```
+
+**Custom Event Issue:**
+```typescript
+// Before (incorrect — fn() won't capture custom events on web components)
+args.onClick
+
+// After (correct — listen for custom event directly)
+const element = await canvas.findByRole('button');
+const clickPromise = new Promise(resolve => {
+  element.addEventListener('buttonClick', resolve, { once: true });
+});
+await userEvent.click(element);
+await clickPromise;
+```
+
+**Selector Issue:**
+```typescript
+// Before (incorrect)
+const input = canvas.getByText('Username');
+
+// After (correct)
+const input = canvas.getByLabelText('Username');
+```
+
+---
+
+## Step 3: Apply Fix
+
+```
+Agent Response:
+"Applying fix to [component-name].stories.ts...
+
+**Changes:**
+[Show diff]
+
+Should I apply this fix? (yes/no)
+```
+
+---
+
+## Step 4: Verify Fix
+
+```
+Agent Response:
+"Re-running tests to verify fix...
+
+**Command:**
+npx test-storybook --url http://localhost:6006 --browsers chromium
+
+**Results:**
+✅ [ComponentName] — All tests now passing
+
+Fix complete! ✅
+```
+
+---
+
+## Step 5: Cross-Browser Verification (Optional)
+
+```
+Agent Response:
+"Tests passing on Chromium! ✅
+
+Should I verify on all browsers (Firefox, WebKit)? (yes/no/skip)
+```
+
+---
+
+## Common Scenarios & Solutions
+
+### Scenario 1: Visual Snapshot Mismatch
+**Cause:** Intentional visual change (styling, layout)
+**Solution:** Update visual snapshots (Step 2A)
+
+### Scenario 2: DOM Snapshot Mismatch
+**Cause:** HTML structure changed
+**Solution:** Update DOM snapshots (Step 2A)
+
+### Scenario 3: Interaction Test Failing
+**Cause:** Timing issue, selector issue, or logic change
+**Solution:** Fix test logic (Step 2B)
+
+### Scenario 4: Accessibility Test Failing
+**Cause:** Missing ARIA attributes or semantic HTML
+**Solution:** Usually requires component fix, not test update
+
+---
+
+## Decision Tree
+
+```
+Test Failure Detected
+    ↓
+Was component intentionally changed?
+    ↓
+YES → Confidence > 80%?
+    ↓               ↓
+    YES             NO
+    ↓               ↓
+Update snapshots    Ask user to confirm
+    ↓
+NO → Is it a timing/selector issue?
+    ↓               ↓
+    YES             NO
+    ↓               ↓
+Fix test logic      Investigate further
+```
+
+---
+
+## Safety Rules
+
+❌ **NEVER auto-update without approval when:**
+- Confidence score < 80%
+- Accessibility tests fail
+- Unknown error message
+
+✅ **CAN propose auto-update when:**
+- Confidence score > 90%
+- Visual change only
+- Clear commit message indicates intentional change
+
+**ALWAYS:**
+- Show what will change before updating
+- Wait for approval
+- Re-run tests after update
+- Update documentation
+
+---
+
+## Cross-References
+
+- **Intent detection:** → File 5 (Change Detection)
+- **Snapshot workflow:** → File 4 (Maintenance)
+- **Test patterns:** → File 2 (Testing Patterns)
+- **Web components issues:** → File 3 (Web Components Specifics)
+
+---
+
+## End of Fix and Update Workflow

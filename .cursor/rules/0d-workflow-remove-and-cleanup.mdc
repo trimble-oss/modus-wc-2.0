@@ -1,0 +1,188 @@
+---
+description: Workflow for removing tests and cleaning up orphaned files in Modus WC 2.0
+globs: []
+alwaysApply: false
+---
+
+# Workflow: Remove Tests and Cleanup
+
+**Routed from:** Master Orchestrator (File 0)
+**Use When:** Component deleted, tests orphaned, or cleanup needed
+
+## Prerequisites
+
+- ✅ Setup exists
+- ⚠️ Component deleted OR tests to be removed
+
+---
+
+## Step 1: Detect Orphaned Files
+
+```
+Agent Response:
+"Scanning for orphaned test files in Modus WC 2.0...
+
+**Analysis:**
+- Checking components in src/components/: [X] found
+- Checking story files: [X] found
+- Cross-referencing...
+
+**Orphaned Test Files:**
+[If found]
+1. src/components/[old-component]/[old-component].stories.ts (component deleted)
+   - Snapshot directory: __snapshots__/ ([X] files)
+
+[If none found]
+No orphaned test files found. ✅
+
+Should I delete these orphaned files? (yes/no/review)
+```
+
+### Detection Algorithm
+
+```typescript
+const detectOrphanedFiles = () => {
+  // Get all component .tsx files
+  const componentFiles = glob('src/components/*/*.tsx');
+  const componentNames = componentFiles.map(extractComponentName);
+
+  // Get all story files
+  const storyFiles = glob('src/components/*/*.stories.ts');
+
+  // Find stories without matching component
+  const orphanedStories = storyFiles.filter(storyFile => {
+    const storyComponentName = extractComponentName(storyFile);
+    return !componentNames.includes(storyComponentName);
+  });
+
+  return orphanedStories;
+};
+```
+
+---
+
+## Step 2: Review Files to Delete
+
+```
+Agent Response:
+"Found orphaned test files:
+
+**Orphaned Test Artifacts for: [ComponentName]**
+
+📄 **Story File:**
+   - src/components/[component-name]/[component-name].stories.ts
+   - Size: [X] KB
+
+📸 **Snapshots:** [X] files (if any)
+
+**Total files to delete:** [X] files
+
+These files will be permanently deleted (but recoverable via git).
+
+Should I delete these files? (yes/no/review individual)
+```
+
+---
+
+## Step 3: Confirm & Delete
+
+```
+Agent Response:
+"Deleting orphaned test files...
+
+✅ [component-name].stories.ts
+✅ __snapshots__/ ([X] files)
+
+**Deleted:** [X] files
+
+Files deleted successfully! ✅
+```
+
+---
+
+## Step 4: Update Documentation
+
+**→ Consult Rule 4 (Maintenance) for documentation requirements**
+
+```
+Agent Response:
+"Updating documentation...
+
+**COMPONENT_TEST_MATRIX.md:**
+- Removing: [ComponentName]
+- Adjusting component count
+
+Should I update COMPONENT_TEST_MATRIX.md? (yes/no)
+```
+
+---
+
+## Special Scenarios
+
+### Scenario 1: Component Renamed/Moved
+
+```
+Agent Response:
+"⚠️ Component appears to have been renamed/moved, not deleted.
+
+**Detected:**
+- Old: src/components/[old-name]/[old-name].tsx (deleted)
+- New: src/components/[new-name]/[new-name].tsx (created)
+- Story: src/components/[old-name]/[old-name].stories.ts (orphaned)
+
+What would you like to do?
+1. Move story file to match new location
+2. Delete story file (start fresh)
+3. Do nothing
+
+Choose: (1/2/3)
+```
+
+### Scenario 2: Component Still Exists
+
+```
+Agent Response:
+"⚠️ Component [component-name].tsx still exists.
+
+Are you sure you want to delete the tests?
+This will leave [ComponentName] untested.
+
+Confirm deletion? (yes/no/cancel)
+```
+
+---
+
+## Safety Rules
+
+❌ **NEVER delete without approval**
+⚠️ **ALWAYS confirm when component still exists**
+✅ **ALWAYS show complete list before deletion**
+✅ **ALWAYS remind that changes are recoverable via git**
+
+**NEVER:**
+- Delete component implementation files
+- Delete configuration files
+- Commit deletions automatically
+
+---
+
+## Recovery Instructions
+
+```bash
+# To recover deleted files:
+git restore src/components/[component-name]/[component-name].stories.ts
+
+# To see what was deleted:
+git diff --stat HEAD
+```
+
+---
+
+## Cross-References
+
+- **Documentation updates:** → File 4 (Maintenance)
+- **Component inventory:** → File 0a (Setup) for component discovery logic
+
+---
+
+## End of Remove and Cleanup Workflow

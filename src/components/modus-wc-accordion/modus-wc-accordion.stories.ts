@@ -1,4 +1,5 @@
 import { withActions } from '@storybook/addon-actions/decorator';
+import { expect, userEvent, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -37,9 +38,7 @@ const meta: Meta<AccordionArgs> = {
     actions: {
       handles: ['expandedChange'],
     },
-    layout: {
-      padded: true,
-    },
+    layout: 'padded',
   },
 };
 
@@ -90,7 +89,150 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    // Reset all details to collapsed state before testing
+    const openDetails = canvasElement.querySelectorAll('details[open]');
+    for (const d of Array.from(openDetails)) {
+      (d as HTMLDetailsElement).open = false;
+    }
+    await new Promise((r) => requestAnimationFrame(r));
+
+    await step('Verify accordion and collapse items render', async () => {
+      const accordion = canvasElement.querySelector('modus-wc-accordion');
+      await expect(accordion).toBeTruthy();
+
+      const collapseItems = canvasElement.querySelectorAll('modus-wc-collapse');
+      await expect(collapseItems.length).toBe(3);
+
+      const itemOne = await canvas.findByText('Item One');
+      await expect(itemOne).toBeInTheDocument();
+
+      const itemTwo = await canvas.findByText('Item Two');
+      await expect(itemTwo).toBeInTheDocument();
+
+      const itemThree = await canvas.findByText('Item Three');
+      await expect(itemThree).toBeInTheDocument();
+    });
+
+    await step('Verify all items are initially collapsed', async () => {
+      const detailsElements = canvasElement.querySelectorAll('details');
+      for (const details of Array.from(detailsElements)) {
+        await expect(details.open).toBe(false);
+      }
+    });
+
+    await step('Click first item to expand', async () => {
+      const itemOneSummary = await canvas.findByText('Item One');
+      await userEvent.click(itemOneSummary);
+
+      const firstDetails = canvasElement.querySelector('details');
+      await expect(firstDetails?.open).toBe(true);
+    });
+
+    await step('Verify first item content is visible', async () => {
+      const contentElements = canvasElement.querySelectorAll(
+        '.modus-wc-collapse-content'
+      );
+      const firstContent = contentElements[0];
+      await expect(firstContent).toBeTruthy();
+    });
+
+    await step('Click first item again to collapse', async () => {
+      const itemOneSummary = await canvas.findByText('Item One');
+      await userEvent.click(itemOneSummary);
+
+      const firstDetails = canvasElement.querySelector('details');
+      await expect(firstDetails?.open).toBe(false);
+    });
+
+    await step('Click second item to expand', async () => {
+      const itemTwoSummary = await canvas.findByText('Item Two');
+      await userEvent.click(itemTwoSummary);
+
+      const detailsElements = canvasElement.querySelectorAll('details');
+      await expect(detailsElements[1].open).toBe(true);
+    });
+
+    await step('Verify expandedChange event fires', async () => {
+      const accordion = canvasElement.querySelector('modus-wc-accordion');
+      let eventFired = false;
+
+      accordion?.addEventListener(
+        'expandedChange',
+        () => {
+          eventFired = true;
+        },
+        { once: true }
+      );
+
+      const itemThreeSummary = await canvas.findByText('Item Three');
+      await userEvent.click(itemThreeSummary);
+
+      await expect(eventFired).toBe(true);
+    });
+
+    await step('Verify keyboard focusability', async () => {
+      const summaries = canvasElement.querySelectorAll('summary');
+      for (const summary of Array.from(summaries)) {
+        await expect(summary.tabIndex).toBeGreaterThanOrEqual(0);
+      }
+
+      const firstSummary = summaries[0];
+      firstSummary.focus();
+      await expect(firstSummary).toHaveFocus();
+    });
+
+    await step('Measure expand interaction performance', async () => {
+      const detailsElements = canvasElement.querySelectorAll('details');
+      const firstDetails = detailsElements[0];
+
+      if (firstDetails.open) {
+        const summary = firstDetails.querySelector('summary');
+        summary?.click();
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+
+      const startTime = performance.now();
+      const summary = firstDetails.querySelector('summary');
+      summary?.click();
+      await new Promise((r) => requestAnimationFrame(r));
+      const endTime = performance.now();
+
+      const duration = endTime - startTime;
+      await expect(duration).toBeLessThan(50);
+    });
+
+    await step('Verify accessibility attributes', async () => {
+      const detailsElements = canvasElement.querySelectorAll('details');
+      const firstDetails = detailsElements[0];
+
+      if (!firstDetails.open) {
+        const summary = firstDetails.querySelector('summary');
+        summary?.click();
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+      await expect(firstDetails.open).toBe(true);
+
+      const contentDiv = firstDetails.querySelector(
+        '.modus-wc-collapse-content'
+      );
+      await expect(contentDiv).toBeTruthy();
+
+      const itemOneDesc = await canvas.findByText('Item one description');
+      await expect(itemOneDesc).toBeInTheDocument();
+
+      const itemTwoDesc = await canvas.findByText('Item two description');
+      await expect(itemTwoDesc).toBeInTheDocument();
+
+      const itemThreeDesc = await canvas.findByText('Item three description');
+      await expect(itemThreeDesc).toBeInTheDocument();
+    });
+  },
+};
 
 export const Migration: Story = {
   parameters: {

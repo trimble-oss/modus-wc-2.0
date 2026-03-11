@@ -1,0 +1,203 @@
+---
+description: Change detection and intentionality scoring for Modus WC 2.0 test updates
+globs: []
+alwaysApply: false
+---
+
+# Storybook Change Detection & Intent Analysis
+
+**Referenced by:** Workflow File 0c (Fix and Update)
+**Purpose:** Determine if test failures are due to intentional or unintentional changes
+
+---
+
+## Purpose
+
+When tests fail, the agent must determine:
+1. **Was the change intentional?** (Component updated on purpose)
+2. **Is snapshot update appropriate?** (Visual/structural change expected)
+3. **Or is it a bug?** (Unintended regression)
+
+---
+
+## Multi-Layer Detection System
+
+### Layer 1: Git Context Analysis
+
+```typescript
+const analyzeGitContext = async () => {
+  const lastCommit = await exec('git log -1 --pretty=format:"%H|%s|%an|%ar"');
+  const [hash, message, author, time] = lastCommit.split('|');
+  const changedFiles = await exec('git diff --name-only HEAD~1');
+  const diff = await exec('git diff HEAD~1');
+
+  return { commit: { hash, message, author, time }, files: changedFiles.split('\n'), diff };
+};
+```
+
+---
+
+## Confidence Scoring Algorithm (100 points max)
+
+### Factor 1: Commit Message Analysis (30 points max)
+
+**High Confidence (25-30 pts):**
+- `style:`, `design:`, `ui:`, `visual:`, `update design`, `redesign`
+
+**Medium Confidence (15-20 pts):**
+- `feat:`, `feature:`, `update`, `change`, `refactor:`
+
+**Low Confidence (5-10 pts):**
+- `fix:`, `bugfix:`, `test:`, `chore:`
+
+**Zero Confidence (0 pts):**
+- `merge`, `revert`, `Merge branch`
+
+### Factor 2: Files Changed Analysis (25 points max)
+
+| Files Changed | Points |
+|---|---|
+| Component `.tsx` + `.scss` changed | 25 pts |
+| Component `.tsx` only | 20 pts |
+| `.scss` only | 18 pts |
+| `.stories.ts` only (test file) | 5 pts |
+| Config files only | 0 pts |
+
+### Factor 3: Change Type Analysis (25 points max)
+
+| Change Type | Points |
+|---|---|
+| CSS/SCSS property changes | 25 pts |
+| Prop/type changes | 20 pts |
+| Logic changes | 12 pts |
+| Test-only changes | 3 pts |
+
+### Factor 4: Failure Pattern Analysis (20 points max)
+
+| Failure Pattern | Points |
+|---|---|
+| Snapshot-only failures | 20 pts |
+| Mixed failures (snapshot + interaction) | 12 pts |
+| Interaction-only failures | 8 pts |
+| Accessibility failures | 2 pts |
+
+---
+
+## Recommendation Logic
+
+```typescript
+const getRecommendation = (score: number, failures) => {
+  if (score >= 80 && !hasA11yFailures(failures)) return 'update_snapshots';
+  if (score >= 50 && score < 80) return 'investigate';
+  if (score < 50) return 'fix_test';
+  if (hasA11yFailures(failures)) return 'investigate';
+};
+```
+
+---
+
+## Confidence Score Matrix
+
+| Score | Interpretation | Agent Action |
+|---|---|---|
+| **90-100%** | Very high confidence | Propose auto-update with brief summary |
+| **80-89%** | High confidence | Propose update with reasoning |
+| **50-79%** | Medium confidence | Show diffs, ask for confirmation |
+| **20-49%** | Low confidence | Suggest investigation |
+| **0-19%** | Very low confidence | Likely bug, propose test fix |
+| **N/A** | A11y failure | Never auto-update, require fix |
+
+---
+
+## Agent Response Templates
+
+### High Confidence (80-100%)
+
+```
+"**→ Confidence Score: [X]% INTENTIONAL**
+
+**Reasoning:**
+✅ Commit message indicates [type] update ([X] pts)
+✅ Component files modified ([X] pts)
+✅ [Change type] detected ([X] pts)
+✅ Only [failure type] failing ([X] pts)
+
+**Recommendation:** Update snapshots
+
+Should I update? (yes/no/show me first)
+```
+
+### Medium Confidence (50-79%)
+
+```
+"**→ Confidence Score: [X]% — NEEDS REVIEW**
+
+Changes detected, but not fully certain they're intentional.
+Please review the diffs.
+
+Are these changes intentional? (yes/no/let me review)
+```
+
+### Low Confidence (0-49%)
+
+```
+"**→ Confidence Score: [X]% — LIKELY A BUG**
+
+This looks like a test logic issue, not an intentional component change.
+
+Should I analyze the test code and propose a fix? (yes/no)
+```
+
+### A11y Failure
+
+```
+"**→ ACCESSIBILITY ISSUES DETECTED**
+
+Accessibility violations must be fixed in the component, not bypassed in tests.
+
+Would you like me to:
+1. Show detailed a11y report
+2. Suggest component fixes
+3. Skip for now
+```
+
+---
+
+## Special Scenarios
+
+### Design System Update (batch changes)
+- Multiple components affected
+- All snapshot failures
+- **Recommendation:** Batch update after review
+
+### Storybook/Stencil Upgrade
+- Package.json version bumps
+- Snapshot format may change
+- **Recommendation:** Update snapshots
+
+### Test Refactoring
+- Only `.stories.ts` files changed
+- No component changes
+- **Recommendation:** Fix test logic
+
+---
+
+## File Type Detection for Modus WC 2.0
+
+```typescript
+const isComponentFile = (file: string) =>
+  file.match(/modus-wc-.*\.tsx$/) && !file.includes('.stories.') && !file.includes('.spec.');
+
+const isStyleFile = (file: string) =>
+  file.match(/modus-wc-.*\.scss$/);
+
+const isTestFile = (file: string) =>
+  file.includes('.stories.ts') || file.includes('.spec.ts');
+
+const isConfigFile = (file: string) =>
+  file.match(/(package\.json|stencil\.config|tsconfig|playwright)/);
+```
+
+---
+
+## End of Change Detection File

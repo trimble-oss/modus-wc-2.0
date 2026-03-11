@@ -1,0 +1,399 @@
+---
+description: Framework structure, setup, and configuration templates for Modus WC 2.0 Storybook testing
+globs: []
+alwaysApply: false
+---
+
+# Storybook Testing Architecture
+
+**Referenced by:** All workflow files (0, 0a, 0b, 0c, 0e)
+**Purpose:** Configuration templates, directory structure, setup patterns for Modus WC 2.0
+
+---
+
+## Project Context
+
+| Aspect | Value |
+|--------|-------|
+| **Framework** | Stencil JS (Web Components) |
+| **Storybook** | `@storybook/web-components-vite` v8.6.12 |
+| **Package Manager** | npm |
+| **Build System** | Wireit |
+| **Stories Format** | `.stories.ts` with `lit` html templates |
+
+---
+
+## Directory Structure
+
+```
+modus-wc-2.0/
+├── .storybook/
+│   ├── main.ts                    # Storybook config (already exists)
+│   ├── preview.ts                 # Global decorators (already exists)
+│   ├── test-runner.ts             # Playwright integration (to create)
+│   ├── theme.ts                   # Modus theme
+│   ├── manager.ts                 # Manager UI
+│   ├── a11yConfig.js              # Accessibility rules
+│   ├── preview-head.html
+│   ├── preview-body.html
+│   └── manager-head.html
+│
+├── src/
+│   └── components/
+│       ├── modus-wc-button/
+│       │   ├── modus-wc-button.tsx         # Component
+│       │   ├── modus-wc-button.scss        # Styles
+│       │   ├── modus-wc-button.spec.ts     # Unit tests (Jest/Stencil)
+│       │   ├── modus-wc-button.stories.ts  # Stories + play functions
+│       │   ├── modus-wc-button.tailwind.ts # Tailwind classes
+│       │   └── readme.md                   # Auto-generated docs
+│       │
+│       ├── modus-wc-icon/
+│       │   └── ... (same pattern)
+│       │
+│       └── ... (44 components total)
+│
+├── playwright.config.ts           # Browser matrix & workers (to create)
+├── package.json                   # npm scripts + Wireit config
+├── stencil.config.ts              # Stencil build config
+├── COMPONENT_TEST_MATRIX.md       # Test coverage tracking (to create)
+└── TESTING_GUIDE.md               # Developer documentation (to create)
+```
+
+---
+
+## Configuration Templates
+
+### Template 1: .storybook/main.ts (Existing — Update)
+
+The existing `main.ts` uses `@storybook/web-components-vite`. Only addition needed:
+
+```typescript
+import type { StorybookConfig } from '@storybook/web-components-vite';
+
+const config: StorybookConfig = {
+  stories: [
+    '../src/stories/*.mdx',
+    '../src/stories/frameworks/*.mdx',
+    '../src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
+  addons: [
+    '@storybook/addon-a11y',
+    '@storybook/addon-essentials',
+    '@storybook/addon-links',
+    '@storybook/addon-themes',
+    '@storybook/addon-interactions', // ADD THIS
+  ],
+  framework: {
+    name: '@storybook/web-components-vite',
+    options: {},
+  },
+  // ... rest of existing config
+};
+
+export default config;
+```
+
+---
+
+### Template 2: .storybook/test-runner.ts (New)
+
+```typescript
+import type { TestRunnerConfig } from '@storybook/test-runner';
+import { injectAxe, checkA11y } from 'axe-playwright';
+
+const config: TestRunnerConfig = {
+  async preVisit(page) {
+    await injectAxe(page);
+  },
+
+  async postVisit(page, context) {
+    // Accessibility testing
+    await checkA11y(page, '#storybook-root', {
+      detailedReport: true,
+      detailedReportOptions: {
+        html: true,
+      },
+    });
+  },
+};
+
+export default config;
+```
+
+---
+
+### Template 3: playwright.config.ts (New)
+
+```typescript
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './',
+  testMatch: /\.stories\.ts$/,
+
+  workers: process.env.CI ? 4 : 2,
+  fullyParallel: true,
+
+  retries: process.env.CI ? 2 : 0,
+
+  timeout: 30000,
+
+  use: {
+    baseURL: 'http://localhost:6006',
+    trace: 'on-first-retry',
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+
+  webServer: {
+    command: 'npm run storybook:start',
+    port: 6006,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+  },
+});
+```
+
+---
+
+## Wireit Configuration (package.json)
+
+### New Wireit Targets
+
+```json
+{
+  "scripts": {
+    "test:storybook": "wireit",
+    "test:storybook:all": "wireit",
+    "test:storybook:update": "wireit"
+  },
+  "wireit": {
+    "test:storybook": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium",
+      "dependencies": ["stencil:build"]
+    },
+    "test:storybook:all": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit",
+      "dependencies": ["stencil:build"]
+    },
+    "test:storybook:update": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot",
+      "dependencies": ["stencil:build"]
+    }
+  }
+}
+```
+
+---
+
+## Dependencies
+
+### Required Dev Dependencies
+
+```json
+{
+  "devDependencies": {
+    "@storybook/test-runner": "latest",
+    "@storybook/addon-interactions": "latest",
+    "@axe-core/playwright": "latest",
+    "axe-playwright": "latest",
+    "jest-image-snapshot": "latest"
+  }
+}
+```
+
+### Already Installed
+
+```json
+{
+  "devDependencies": {
+    "@storybook/web-components-vite": "8.6.12",
+    "@storybook/test": "installed",
+    "@storybook/addon-a11y": "installed",
+    "@storybook/addon-essentials": "installed",
+    "@storybook/addon-links": "installed",
+    "@storybook/addon-themes": "installed"
+  }
+}
+```
+
+---
+
+## CI/CD Integration
+
+### GitHub Actions Workflow
+
+```yaml
+name: Component Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Build Stencil
+        run: npm run build:ci
+
+      - name: Run Component Tests
+        run: npx test-storybook --browsers ${{ matrix.browser }}
+
+      - name: Upload Screenshots (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.browser }}
+          path: '**/__image_snapshots__/__diff_output__/**'
+```
+
+---
+
+## Command Reference
+
+### Development Commands
+
+```bash
+# Start Storybook dev server
+npm run start
+
+# Build Stencil components
+npm run build:ci
+
+# Build Storybook static
+npm run build
+```
+
+### Testing Commands
+
+```bash
+# Fast local testing (Chromium only)
+npx test-storybook --url http://localhost:6006 --browsers chromium
+
+# All browsers
+npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit
+
+# Update snapshots
+npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot
+
+# Via Wireit
+npm run test:storybook
+npm run test:storybook:all
+npm run test:storybook:update
+```
+
+### Existing Test Commands
+
+```bash
+# Unit tests (Jest/Stencil)
+npm test
+npm run test:coverage
+npm run test:update-snapshot
+npm run test:watch
+```
+
+---
+
+## Troubleshooting
+
+### Issue 1: Storybook server not starting
+
+```bash
+# Check if port is in use (Windows)
+netstat -ano | findstr :6006
+
+# Start with different port
+npx storybook dev --port 6007
+```
+
+### Issue 2: Playwright browsers not installed
+
+```bash
+npx playwright install
+npx playwright install chromium
+```
+
+### Issue 3: Web component not rendering in test
+
+Web components render asynchronously. Use `findBy*` queries:
+```typescript
+// Wrong
+const el = canvas.getByRole('button');
+
+// Correct
+const el = await canvas.findByRole('button');
+```
+
+### Issue 4: Custom events not captured
+
+Stencil custom events need direct event listeners:
+```typescript
+const el = await canvas.findByRole('button');
+const eventPromise = new Promise(resolve => {
+  el.addEventListener('buttonClick', resolve, { once: true });
+});
+await userEvent.click(el);
+await eventPromise;
+```
+
+---
+
+## Safety Boundaries
+
+### Files the Agent CAN Create/Modify:
+
+✅ `.storybook/test-runner.ts` (new)
+✅ `playwright.config.ts` (new)
+✅ `.storybook/main.ts` (add interactions addon)
+✅ `package.json` (Wireit targets, devDependencies)
+✅ `*.stories.ts` files (add play functions)
+✅ `COMPONENT_TEST_MATRIX.md` (new)
+✅ `TESTING_GUIDE.md` (new)
+
+### Files the Agent MUST NOT Modify:
+
+❌ Component implementation files (`modus-wc-*.tsx`)
+❌ Component styles (`modus-wc-*.scss`)
+❌ `stencil.config.ts`
+❌ `tsconfig.json`
+❌ `.gitignore`
+❌ Any files outside the project
+
+---
+
+## End of Architecture File

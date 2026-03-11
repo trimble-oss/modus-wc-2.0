@@ -1,0 +1,374 @@
+---
+description: Entry point for all Storybook component testing workflows for Modus Web Components 2.0
+globs: []
+alwaysApply: true
+---
+
+# Storybook Component Testing - Master Orchestrator
+
+## Purpose
+
+This is the **ENTRY POINT** for all Storybook component testing workflows for the **Modus Web Components 2.0** library. This file:
+- Defines project context (Stencil web components, npm, Wireit)
+- Routes commands to appropriate workflow files
+- Enforces safety rules and boundaries
+- Provides response templates
+
+**All detailed workflows are in separate files for better maintainability.**
+
+## File Architecture
+
+```
+.cursor/rules/
+├── 0-storybook-testing-master-workflow.mdc ← THIS FILE (orchestrator)
+│
+├── 0a-workflow-setup-from-scratch.mdc ← Complete setup workflow
+├── 0b-workflow-add-single-component.mdc ← Add tests to one component
+├── 0c-workflow-fix-and-update.mdc ← Fix/update existing tests
+├── 0d-workflow-remove-and-cleanup.mdc ← Remove tests & cleanup
+├── 0e-workflow-update-configuration.mdc ← Update configs
+│
+├── 1-storybook-testing-architecture.mdc ← Framework structure & config
+├── 2-storybook-testing-patterns.mdc ← Test writing patterns
+├── 3-storybook-web-components-specifics.mdc ← Stencil/WC-specific patterns
+├── 4-storybook-testing-maintenance.mdc ← Update/fix workflows
+└── 5-storybook-change-detection.mdc ← Intent detection
+```
+
+## Project Context (Fixed)
+
+This project has a **fixed context** — no framework detection is needed.
+
+| Aspect | Value |
+|--------|-------|
+| **Library** | Modus Web Components 2.0 |
+| **Location** | `c:\Users\kavins\Documents\GitHub\modus-wc-2.0` |
+| **Framework** | Stencil JS (Web Components) |
+| **Storybook** | `@storybook/web-components-vite` (v8.6.12) |
+| **Templates** | `lit` html templates |
+| **Package Manager** | npm |
+| **Build System** | Wireit |
+| **Unit Tests** | Jest + Stencil (`newSpecPage`) |
+| **Component Tests** | Storybook play functions + Playwright |
+| **Components** | 44 in `src/components/` |
+| **Stories** | `.stories.ts` files (lit html, not TSX) |
+| **Component Order** | Alphabetical |
+
+### Query Patterns
+
+Web components render asynchronously. Always use **async queries**:
+
+```typescript
+const canvas = within(canvasElement);
+const element = await canvas.findByRole('button');
+await expect(element).toBeInTheDocument();
+```
+
+### Shadow DOM Considerations
+
+Stencil web components use Shadow DOM. For testing:
+- Use `canvasElement` to query the light DOM
+- Components render their internal DOM asynchronously
+- Custom events (e.g., `buttonClick`) are emitted via `@Event` decorator
+- Slots are used for content projection
+
+---
+
+## Step 1: Project State Detection
+
+```typescript
+// Check 1: Does .storybook/ exist?
+const hasStorybook = true; // Already configured
+
+// Check 2: Does playwright.config.ts exist?
+const hasPlaywright = exists('playwright.config.ts');
+
+// Check 3: Do .stories.ts files exist?
+const storiesFiles = glob('src/components/**/*.stories.ts');
+const hasStories = storiesFiles.length > 0; // 44 files exist
+
+// Check 4: Do stories have play functions?
+const hasPlayFunctions = storiesHavePlayFunctions(storiesFiles);
+```
+
+### State Matrix & Routing
+
+| State | Setup | Stories | Play Functions | Route To |
+|-------|-------|---------|----------------|----------|
+| **Current State** | ✅ | ✅ (44) | ❌ | **→ File 0a** (Install Playwright deps) then **→ File 0b** (Add play functions) |
+| **After Setup** | ✅ | ✅ | ❌ | **→ File 0b** (Add Single Component) |
+| **Tests Exist** | ✅ | ✅ | ✅ | **→ File 0c** (Fix/Update) or **0d** (Remove) |
+
+---
+
+## Step 2: Route to Workflow File
+
+### Workflow Routing Logic
+
+| User Command | Workflow File |
+|---|---|
+| "Setup testing" / "Install Playwright" | **→ 0a** (Setup from Scratch) |
+| "Add tests to [Component]" | **→ 0b** (Add Single Component) |
+| "Fix failing tests" | **→ 0c** (Fix and Update) |
+| "Update snapshots" | **→ 0c** (Fix and Update) |
+| "Remove tests for [Component]" | **→ 0d** (Remove and Cleanup) |
+| "Update browser config" | **→ 0e** (Update Configuration) |
+
+---
+
+## Step 3: Workflow File References
+
+### File 0a: Setup from Scratch
+**Path:** `.cursor/rules/0a-workflow-setup-from-scratch.mdc`
+**Use When:**
+- Playwright not yet installed
+- Test runner config needed
+- Initial integration test setup
+
+**Contains:**
+- Phase 1: Component Inventory (alphabetical)
+- Phase 2: Install Playwright + test-runner dependencies (npm)
+- Phase 3: Create test configs (playwright.config.ts, test-runner.ts)
+- Phase 4: Add Wireit targets to package.json
+
+### File 0b: Add Single Component
+**Path:** `.cursor/rules/0b-workflow-add-single-component.mdc`
+**Use When:**
+- Setup exists
+- Adding play functions to one component's existing story file
+
+**Contains:**
+- Component analysis (props, events, complexity)
+- Test case proposal
+- Add play functions to existing `.stories.ts` file
+- Run tests and validate
+
+### File 0c: Fix and Update
+**Path:** `.cursor/rules/0c-workflow-fix-and-update.mdc`
+**Use When:**
+- Tests failing
+- Snapshots outdated
+- Component changed
+
+### File 0d: Remove and Cleanup
+**Path:** `.cursor/rules/0d-workflow-remove-and-cleanup.mdc`
+**Use When:**
+- Component deleted
+- Tests orphaned
+
+### File 0e: Update Configuration
+**Path:** `.cursor/rules/0e-workflow-update-configuration.mdc`
+**Use When:**
+- Browser matrix changes
+- Performance budget changes
+- Config updates
+
+---
+
+## Safety Rules & Boundaries
+
+**CRITICAL:** The agent MUST follow these rules at ALL times.
+
+### File Modification Rules
+
+❌ **NEVER modify without approval:**
+- Component implementation files (`modus-wc-*.tsx`)
+- Component style files (`modus-wc-*.scss`)
+- Files outside `src/components/` (unless config files)
+
+✅ **CAN modify WITHOUT approval:**
+- Documentation files (COMPONENT_TEST_MATRIX.md, TESTING_GUIDE.md)
+
+✅ **CAN modify WITH approval:**
+- `.stories.ts` files (adding play functions)
+- Configuration files (.storybook/, playwright.config.ts)
+- `package.json` (Wireit targets, devDependencies)
+
+### Approval Requirements
+
+**ALWAYS request approval before:**
+- Creating new files
+- Modifying existing story files
+- Installing dependencies
+- Running commands that modify state
+- Updating snapshots
+- Deleting files
+
+**ALWAYS show before executing:**
+- Complete file contents (for new files)
+- Diff (for file modifications)
+- Command to be run
+- Expected impact
+
+### Error Handling
+
+**If command fails:**
+1. Show complete error message
+2. Analyze error
+3. Propose solution
+4. Wait for approval before retry
+
+**If tests fail:**
+1. Show which tests failed and why
+2. Do NOT auto-update snapshots
+3. Ask user to investigate or provide guidance
+
+### Git Operations
+
+❌ **NEVER:**
+- Commit changes automatically
+- Push to remote
+- Create branches
+- Modify git config
+
+✅ **CAN (read-only):**
+- Run `git diff`
+- Run `git log`
+- Run `git status`
+
+---
+
+## Response Templates
+
+### Success Template
+
+```
+[Action] complete! ✅
+
+**Summary:**
+- [What was accomplished]
+- [Files modified/created]
+- [Test results]
+
+**Next Steps:**
+[Suggested next action]
+
+[Question]? (yes/no/other)
+```
+
+### Error Template
+
+```
+❌ [Action] failed.
+
+**Error:** [Error message]
+
+**Analysis:**
+[Root cause]
+
+**Suggested Fix:**
+[Proposed solution]
+
+Should I try [solution]? (yes/no/different approach)
+```
+
+---
+
+## Command Reference
+
+### Testing Commands
+```bash
+# Start Storybook dev server
+npm run storybook:start
+
+# Run interaction tests (Chromium only)
+npx test-storybook --url http://localhost:6006 --browsers chromium
+
+# All browsers
+npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit
+
+# Update snapshots
+npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot
+
+# Coverage
+npx test-storybook --coverage
+```
+
+### Wireit Commands
+```bash
+# Run via Wireit targets (defined in package.json)
+npm run test:storybook
+npm run test:storybook:all
+npm run test:storybook:update
+```
+
+### Unit Test Commands (existing)
+```bash
+npm test
+npm run test:coverage
+npm run test:update-snapshot
+```
+
+---
+
+## Cross-References to Rule Files
+
+| Scenario | Consult File |
+|---|---|
+| Need configuration templates | → File 1 (Architecture) |
+| Need test patterns, play functions | → File 2 (Testing Patterns) |
+| Web component/Shadow DOM specifics | → File 3 (Web Components Specifics) |
+| Update snapshots or fix tests | → File 4 (Maintenance) |
+| Determine if change is intentional | → File 5 (Change Detection) |
+| Setup from scratch workflow | → File 0a (Setup Workflow) |
+| Add single component tests | → File 0b (Add Component Workflow) |
+| Fix/update existing tests | → File 0c (Fix/Update Workflow) |
+| Remove tests/cleanup | → File 0d (Remove Workflow) |
+| Update configuration | → File 0e (Config Workflow) |
+
+---
+
+## Component List (Alphabetical Order)
+
+All 44 components to be tested in this order:
+
+1. modus-wc-accordion
+2. modus-wc-alert
+3. modus-wc-autocomplete
+4. modus-wc-avatar
+5. modus-wc-badge
+6. modus-wc-breadcrumbs
+7. modus-wc-button
+8. modus-wc-card
+9. modus-wc-checkbox
+10. modus-wc-chip
+11. modus-wc-collapse
+12. modus-wc-date
+13. modus-wc-divider
+14. modus-wc-dropdown-menu
+15. modus-wc-icon
+16. modus-wc-input-feedback
+17. modus-wc-input-label
+18. modus-wc-loader
+19. modus-wc-menu
+20. modus-wc-menu-item
+21. modus-wc-modal
+22. modus-wc-navbar
+23. modus-wc-number-input
+24. modus-wc-pagination
+25. modus-wc-progress
+26. modus-wc-radio
+27. modus-wc-rating
+28. modus-wc-select
+29. modus-wc-side-navigation
+30. modus-wc-skeleton
+31. modus-wc-slider
+32. modus-wc-stepper
+33. modus-wc-switch
+34. modus-wc-table
+35. modus-wc-tabs
+36. modus-wc-text-input
+37. modus-wc-textarea
+38. modus-wc-theme-switcher
+39. modus-wc-time-input
+40. modus-wc-toast
+41. modus-wc-toolbar
+42. modus-wc-tooltip
+43. modus-wc-typography
+44. modus-wc-utility-panel
+
+---
+
+## End of Master Orchestrator
+
+This file serves as the **entry point** and **router** for all Modus WC 2.0 Storybook testing workflows.

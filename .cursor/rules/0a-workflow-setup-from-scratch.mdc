@@ -1,0 +1,289 @@
+---
+description: Complete workflow for setting up Storybook component testing with Playwright for Modus WC 2.0
+globs: []
+alwaysApply: false
+---
+
+# Workflow: Setup Component Testing from Scratch
+
+**Routed from:** Master Orchestrator (File 0)
+**Use When:** Installing Playwright, creating test-runner config, setting up Wireit targets
+
+## Prerequisites
+
+- ✅ Storybook exists (`.storybook/` configured with `@storybook/web-components-vite`)
+- ✅ 44 story files exist in `src/components/`
+- ✅ Components use Stencil JS with lit html templates
+
+---
+
+## Phase 1: Component Inventory (Alphabetical)
+
+### Step 1.1: Scan and Categorize Components
+
+```
+Agent Response:
+"Analyzing the Modus WC 2.0 library...
+
+**Found:** 44 components in src/components/
+
+**Component Inventory (Alphabetical):**
+
+**Tier 1 - Simple Components:**
+- modus-wc-avatar, modus-wc-badge, modus-wc-divider, modus-wc-icon,
+  modus-wc-input-feedback, modus-wc-input-label, modus-wc-loader,
+  modus-wc-progress, modus-wc-skeleton, modus-wc-typography
+
+**Tier 2 - Interactive Components:**
+- modus-wc-accordion, modus-wc-alert, modus-wc-breadcrumbs, modus-wc-button,
+  modus-wc-card, modus-wc-checkbox, modus-wc-chip, modus-wc-collapse,
+  modus-wc-pagination, modus-wc-radio, modus-wc-rating, modus-wc-slider,
+  modus-wc-stepper, modus-wc-switch, modus-wc-tabs, modus-wc-toolbar
+
+**Tier 3 - Complex Components:**
+- modus-wc-autocomplete, modus-wc-date, modus-wc-dropdown-menu,
+  modus-wc-menu, modus-wc-menu-item, modus-wc-number-input,
+  modus-wc-select, modus-wc-text-input, modus-wc-textarea,
+  modus-wc-time-input, modus-wc-toast, modus-wc-tooltip
+
+**Tier 4 - Advanced Components:**
+- modus-wc-modal, modus-wc-navbar, modus-wc-side-navigation,
+  modus-wc-table, modus-wc-theme-switcher, modus-wc-utility-panel
+
+**Testing order:** Alphabetical (all tiers)
+
+Proceed with setup? (yes/no)
+```
+
+---
+
+## Phase 2: Install Dependencies
+
+### Step 2.1: Install Playwright & Test Runner
+
+```
+Agent Response:
+"Installing Storybook test-runner and Playwright dependencies...
+
+**Dependencies to install:**
+
+- @storybook/test-runner (test execution via Playwright)
+- @storybook/addon-interactions (interaction panel in Storybook)
+- @axe-core/playwright (accessibility testing)
+- axe-playwright (a11y integration)
+- jest-image-snapshot (visual regression)
+
+**Note:** @storybook/test is already installed.
+
+**Command:**
+```bash
+npm install -D @storybook/test-runner @storybook/addon-interactions @axe-core/playwright axe-playwright jest-image-snapshot
+```
+
+Should I run this installation? (yes/no)
+```
+
+### Step 2.2: Install Playwright Browsers
+
+```bash
+npx playwright install
+```
+
+---
+
+## Phase 3: Create Configuration Files
+
+### Step 3.1: Create test-runner.ts
+
+**→ Consult Rule 1 (Architecture) for template**
+
+```
+Agent Response:
+"Creating .storybook/test-runner.ts for Playwright integration.
+
+This file configures:
+- Accessibility testing (axe-core)
+- Visual regression snapshots
+- DOM snapshots
+- ARIA tree snapshots
+
+[Show complete file content]
+
+Should I create this file? (yes/no)
+```
+
+### Step 3.2: Create playwright.config.ts
+
+```
+Agent Response:
+"Creating playwright.config.ts for browser matrix.
+
+Configuration:
+- Browsers: Chromium, Firefox, WebKit
+- Workers: 2 (local), 4 (CI)
+- Timeouts: 30s
+- Web server: starts Storybook on port 6006
+
+[Show complete file content]
+
+Should I create this file? (yes/no)
+```
+
+### Step 3.3: Update .storybook/main.ts
+
+```
+Agent Response:
+"Updating .storybook/main.ts to add the interactions addon.
+
+**Change:**
+- Add '@storybook/addon-interactions' to addons array
+
+[Show diff]
+
+Should I update this file? (yes/no)
+```
+
+---
+
+## Phase 4: Add Wireit Targets
+
+### Step 4.1: Update package.json with Wireit test targets
+
+```
+Agent Response:
+"Adding Wireit test targets to package.json...
+
+**New scripts to add:**
+
+```json
+{
+  "scripts": {
+    "test:storybook": "wireit",
+    "test:storybook:all": "wireit",
+    "test:storybook:update": "wireit"
+  },
+  "wireit": {
+    "test:storybook": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium",
+      "dependencies": ["stencil:build"]
+    },
+    "test:storybook:all": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit",
+      "dependencies": ["stencil:build"]
+    },
+    "test:storybook:update": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot",
+      "dependencies": ["stencil:build"]
+    }
+  }
+}
+```
+
+Should I update package.json? (yes/no)
+```
+
+---
+
+## Phase 5: Create Documentation Files
+
+### Step 5.1: Create COMPONENT_TEST_MATRIX.md
+
+```
+Agent Response:
+"Creating COMPONENT_TEST_MATRIX.md to track testing progress.
+
+[Show template with all 44 components listed alphabetically]
+
+Should I create this file? (yes/no)
+```
+
+### Step 5.2: Create TESTING_GUIDE.md
+
+```
+Agent Response:
+"Creating TESTING_GUIDE.md for developer reference.
+
+[Show template with npm commands and web-components patterns]
+
+Should I create this file? (yes/no)
+```
+
+---
+
+## Phase 6: Setup Complete Summary
+
+```
+Agent Response:
+"Setup complete! ✅
+
+**What was created/updated:**
+✅ Installed test-runner + Playwright dependencies (npm)
+✅ Created .storybook/test-runner.ts
+✅ Created playwright.config.ts
+✅ Updated .storybook/main.ts (interactions addon)
+✅ Added Wireit targets to package.json
+✅ Created COMPONENT_TEST_MATRIX.md
+✅ Created TESTING_GUIDE.md
+
+**Project is now ready for play function tests!**
+
+**Next Steps:**
+Add play functions to components in alphabetical order,
+starting with modus-wc-accordion.
+
+Ready to start? (yes/no/pause)
+```
+
+---
+
+## Phase 7: Component-by-Component Testing
+
+**CRITICAL RULE:** Test ONE component at a time. Wait for user approval before moving to the next.
+
+### Step 7.1: Start with First Component (Alphabetical)
+
+```
+Agent Response:
+"Let's start adding play functions to stories!
+
+**Order:** Alphabetical
+1. modus-wc-accordion ← Start here
+2. modus-wc-alert
+3. modus-wc-autocomplete
+... (44 total)
+
+Which component should I start with? (1/other/pick)
+```
+
+### Step 7.2: Delegate to File 0b
+
+Once user picks a component, hand off to **File 0b (Add Single Component Workflow)**.
+
+### Step 7.3: Track Progress
+
+```
+Agent Response:
+"[ComponentName] testing complete! ✅
+
+**Progress:** [X]/44 components tested ([X]%)
+
+✅ [completed components]
+⏳ [next component] (next)
+⬜ [remaining components]
+
+Continue with [NextComponent]? (yes/no/pause/pick another)
+```
+
+---
+
+## Cross-References
+
+- **Component testing:** → File 0b (Add Single Component)
+- **Configuration templates:** → File 1 (Architecture)
+- **Test patterns:** → File 2 (Testing Patterns)
+- **Web components specifics:** → File 3 (Web Components Specifics)
+- **Documentation:** → File 4 (Maintenance)
+
+---
+
+## End of Setup Workflow

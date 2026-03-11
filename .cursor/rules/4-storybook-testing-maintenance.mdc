@@ -1,0 +1,256 @@
+---
+description: Test maintenance, snapshot updates, and documentation workflows for Modus WC 2.0
+globs: []
+alwaysApply: false
+---
+
+# Storybook Testing Maintenance
+
+**Referenced by:** Workflow files (0b, 0c, 0d)
+**Purpose:** How to maintain tests, update snapshots, and keep documentation current
+
+---
+
+## Documentation Requirements
+
+### Document 1: COMPONENT_TEST_MATRIX.md
+
+**Purpose:** Track which components have play function tests and their status
+
+**Template:**
+
+```markdown
+# Component Test Matrix — Modus WC 2.0
+
+Last Updated: [Date]
+
+## Summary
+
+- **Total Components:** 44
+- **Components with Play Functions:** [X]
+- **Last Test Run:** [Date/Time]
+
+## Component Status (Alphabetical)
+
+| # | Component | Variants | Play Functions | Status | Notes |
+|---|-----------|----------|----------------|--------|-------|
+| 1 | modus-wc-accordion | | | ⬜ | |
+| 2 | modus-wc-alert | | | ⬜ | |
+| 3 | modus-wc-autocomplete | | | ⬜ | |
+| 4 | modus-wc-avatar | | | ⬜ | |
+| 5 | modus-wc-badge | | | ⬜ | |
+| 6 | modus-wc-breadcrumbs | | | ⬜ | |
+| 7 | modus-wc-button | | | ⬜ | |
+| 8 | modus-wc-card | | | ⬜ | |
+| 9 | modus-wc-checkbox | | | ⬜ | |
+| 10 | modus-wc-chip | | | ⬜ | |
+| 11 | modus-wc-collapse | | | ⬜ | |
+| 12 | modus-wc-date | | | ⬜ | |
+| 13 | modus-wc-divider | | | ⬜ | |
+| 14 | modus-wc-dropdown-menu | | | ⬜ | |
+| 15 | modus-wc-icon | | | ⬜ | |
+| 16 | modus-wc-input-feedback | | | ⬜ | |
+| 17 | modus-wc-input-label | | | ⬜ | |
+| 18 | modus-wc-loader | | | ⬜ | |
+| 19 | modus-wc-menu | | | ⬜ | |
+| 20 | modus-wc-menu-item | | | ⬜ | |
+| 21 | modus-wc-modal | | | ⬜ | |
+| 22 | modus-wc-navbar | | | ⬜ | |
+| 23 | modus-wc-number-input | | | ⬜ | |
+| 24 | modus-wc-pagination | | | ⬜ | |
+| 25 | modus-wc-progress | | | ⬜ | |
+| 26 | modus-wc-radio | | | ⬜ | |
+| 27 | modus-wc-rating | | | ⬜ | |
+| 28 | modus-wc-select | | | ⬜ | |
+| 29 | modus-wc-side-navigation | | | ⬜ | |
+| 30 | modus-wc-skeleton | | | ⬜ | |
+| 31 | modus-wc-slider | | | ⬜ | |
+| 32 | modus-wc-stepper | | | ⬜ | |
+| 33 | modus-wc-switch | | | ⬜ | |
+| 34 | modus-wc-table | | | ⬜ | |
+| 35 | modus-wc-tabs | | | ⬜ | |
+| 36 | modus-wc-text-input | | | ⬜ | |
+| 37 | modus-wc-textarea | | | ⬜ | |
+| 38 | modus-wc-theme-switcher | | | ⬜ | |
+| 39 | modus-wc-time-input | | | ⬜ | |
+| 40 | modus-wc-toast | | | ⬜ | |
+| 41 | modus-wc-toolbar | | | ⬜ | |
+| 42 | modus-wc-tooltip | | | ⬜ | |
+| 43 | modus-wc-typography | | | ⬜ | |
+| 44 | modus-wc-utility-panel | | | ⬜ | |
+
+## Legend
+
+- ✅ All tests passing
+- ⚠️ Some tests failing
+- ❌ Tests broken
+- ⏳ Tests in progress
+- ⬜ No play functions yet
+
+## Recent Changes
+
+- [Date]: Initial setup
+```
+
+---
+
+### Document 2: TESTING_GUIDE.md
+
+**Purpose:** Developer reference for writing and running Storybook interaction tests
+
+**Template:**
+
+```markdown
+# Testing Guide — Modus WC 2.0
+
+## Quick Start
+
+### Running Interaction Tests
+
+```bash
+# Fast local testing (Chromium only)
+npm run test:storybook
+
+# All browsers
+npm run test:storybook:all
+
+# Update snapshots
+npm run test:storybook:update
+
+# Direct npx commands
+npx test-storybook --url http://localhost:6006 --browsers chromium
+```
+
+### Running Unit Tests (existing)
+
+```bash
+npm test
+npm run test:coverage
+npm run test:update-snapshot
+```
+
+## Writing Play Functions
+
+### Basic Structure
+
+```typescript
+import { expect, userEvent, within } from '@storybook/test';
+
+export const Default: Story = {
+  render: (args) => html`<modus-wc-button>Click</modus-wc-button>`,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify renders', async () => {
+      const el = await canvas.findByRole('button');
+      await expect(el).toBeInTheDocument();
+    });
+  },
+};
+```
+
+### Key Rules
+
+1. **Always use `findBy*`** (async queries) — web components render asynchronously
+2. **Custom events** — Use `addEventListener` for Stencil `@Event` testing
+3. **Slots** — Query slotted content in the light DOM
+4. **Shadow DOM** — Use ARIA roles when possible
+
+### Testing Custom Events
+
+```typescript
+const component = await canvas.findByRole('button');
+component.addEventListener('buttonClick', (e) => {
+  // event captured
+}, { once: true });
+await userEvent.click(component);
+```
+
+## Troubleshooting
+
+### Element Not Found
+- Web components render async — use `findBy*` not `getBy*`
+- Increase timeout: `findByRole('button', {}, { timeout: 5000 })`
+
+### Custom Event Not Captured
+- Use `addEventListener` with exact Stencil event name
+- Don't use `fn()` for custom events
+
+### Snapshot Mismatch
+- If intentional: `npm run test:storybook:update`
+- If not intentional: investigate the change
+```
+
+---
+
+## Snapshot Update Workflows
+
+### Scenario 1: Visual Change (Intentional)
+
+1. Run tests to see failures: `npm run test:storybook`
+2. Review visual diffs
+3. Update snapshots: `npm run test:storybook:update`
+4. Verify tests pass
+5. Update COMPONENT_TEST_MATRIX.md
+
+### Scenario 2: Component Behavior Changed
+
+1. Update play function to match new behavior
+2. Run tests: `npm run test:storybook`
+3. Update snapshots if needed
+4. Verify all browsers: `npm run test:storybook:all`
+
+### Scenario 3: Component Deleted
+
+1. Detect orphaned story file (→ File 0d workflow)
+2. Delete story file and snapshots
+3. Update COMPONENT_TEST_MATRIX.md
+
+---
+
+## Maintenance Checklist
+
+### After Component Changes
+
+- [ ] Update play function if behavior changed
+- [ ] Update snapshots if visuals changed
+- [ ] Verify tests pass
+- [ ] Update COMPONENT_TEST_MATRIX.md
+
+### Before Release
+
+- [ ] All play functions pass
+- [ ] All unit tests pass
+- [ ] Documentation up to date
+- [ ] No orphaned test files
+
+---
+
+## Git Workflow
+
+### Committing Test Changes
+
+```bash
+# New play functions
+git commit -m "test: add play functions for modus-wc-button"
+
+# Updated play functions
+git commit -m "test: update modus-wc-button tests for new variant"
+
+# Snapshot updates
+git commit -m "test: update snapshots after design update"
+
+# Fixed tests
+git commit -m "fix: correct modus-wc-button test timing issue"
+```
+
+### PR Requirements
+
+- [ ] All tests pass locally
+- [ ] Play functions reviewed and correct
+- [ ] Documentation updated
+- [ ] No console errors
+
+---
+
+## End of Maintenance File

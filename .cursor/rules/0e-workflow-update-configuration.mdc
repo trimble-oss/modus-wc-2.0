@@ -1,0 +1,223 @@
+---
+description: Workflow for updating testing configuration for Modus WC 2.0
+globs: []
+alwaysApply: false
+---
+
+# Workflow: Update Configuration
+
+**Routed from:** Master Orchestrator (File 0)
+**Use When:** Updating browser matrix, performance budgets, or test configuration
+
+## Prerequisites
+
+- ✅ Setup exists
+- ✅ Configuration files exist
+
+---
+
+## Step 1: Identify Configuration Change
+
+```
+Agent Response:
+"I'll help update the testing configuration for Modus WC 2.0.
+
+**Which configuration do you want to update?**
+
+1. Browser matrix (add/remove browsers, mobile browsers)
+2. Performance budgets (interaction timing, render timing)
+3. Accessibility rules (WCAG level, specific rules)
+4. Parallel workers (local/CI execution)
+5. Wireit targets in package.json
+6. Storybook addons
+7. Coverage thresholds
+8. Snapshot configuration
+9. Other
+
+Please specify: (1-9/explain)
+```
+
+---
+
+## Step 2: Configuration Update Scenarios
+
+### Scenario 1: Browser Matrix Update
+
+```
+Agent Response:
+"Updating browser matrix in playwright.config.ts...
+
+**Current browsers:**
+- Chromium ✅
+- Firefox ✅
+- WebKit ✅
+
+**Available options:**
+- Mobile Chrome (Android)
+- Mobile Safari (iOS)
+- Remove browser
+
+What would you like to do? (add mobile/remove/custom)
+```
+
+**If adding mobile browsers:**
+
+```typescript
+// playwright.config.ts — add to projects array:
+{
+  name: 'Mobile Chrome',
+  use: { ...devices['Pixel 5'] },
+},
+{
+  name: 'Mobile Safari',
+  use: { ...devices['iPhone 12'] },
+},
+```
+
+### Scenario 2: Performance Budget Update
+
+```
+Agent Response:
+"Current interaction timing budget: < 50ms
+
+New budget options:
+- 30ms (strict)
+- 50ms (current)
+- 100ms (relaxed)
+- Custom value
+
+Enter new budget: _
+```
+
+### Scenario 3: Accessibility Rules Update
+
+```
+Agent Response:
+"Current WCAG level: 2.1 AA
+
+Available:
+1. WCAG 2.0 AA
+2. WCAG 2.1 AA (current)
+3. WCAG 2.2 AA (latest)
+
+Choose: (1-3)
+```
+
+### Scenario 4: Parallel Workers Update
+
+```
+Agent Response:
+"Current workers:
+- Local: 2 workers
+- CI: 4 workers
+
+New values? (e.g., 'local:4, ci:8')
+```
+
+### Scenario 5: Wireit Targets Update
+
+```
+Agent Response:
+"Current Wireit targets in package.json:
+- test:storybook (Chromium only)
+- test:storybook:all (all browsers)
+- test:storybook:update (update snapshots)
+
+What target would you like to add/modify?
+```
+
+**Example new target:**
+```json
+{
+  "wireit": {
+    "test:storybook:mobile": {
+      "command": "npx test-storybook --url http://localhost:6006 --browsers mobile-chrome mobile-safari",
+      "dependencies": ["stencil:build"]
+    }
+  }
+}
+```
+
+---
+
+## Step 3: Apply Configuration Change
+
+```
+Agent Response:
+"Applying configuration changes...
+
+**Files to modify:**
+- [config-file-1]
+
+[Show complete diff]
+
+Should I apply these changes? (yes/no)
+```
+
+---
+
+## Step 4: Verify Configuration
+
+```
+Agent Response:
+"Configuration updated! ✅
+
+Testing new configuration...
+
+**Verification command:**
+npx test-storybook --url http://localhost:6006 --browsers [new-config]
+
+Results: [pass/fail]
+
+Should I update TESTING_GUIDE.md with new configuration? (yes/no)
+```
+
+---
+
+## Step 5: Update Documentation
+
+**→ Consult Rule 4 (Maintenance) for documentation requirements**
+
+```
+Agent Response:
+"Updating TESTING_GUIDE.md with:
+- [New commands]
+- [Updated configuration]
+
+[Show diff]
+
+Should I update the documentation? (yes/no)
+```
+
+---
+
+## Safety Rules
+
+❌ **NEVER modify without approval**
+⚠️ **ALWAYS explain impact** (execution time, resource usage)
+✅ **ALWAYS show diff before applying**
+✅ **ALWAYS verify after update**
+✅ **ALWAYS update documentation**
+
+---
+
+## Rollback Instructions
+
+```bash
+# Rollback config changes:
+git restore playwright.config.ts .storybook/test-runner.ts
+
+# Rollback package.json:
+git restore package.json
+```
+
+---
+
+## Cross-References
+
+- **Configuration templates:** → File 1 (Architecture)
+- **Documentation updates:** → File 4 (Maintenance)
+
+---
+
+## End of Update Configuration Workflow

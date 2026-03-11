@@ -1,0 +1,268 @@
+---
+description: Workflow for adding play function tests to a single Modus WC component
+globs: []
+alwaysApply: false
+---
+
+# Workflow: Add Tests to Single Component
+
+**Routed from:** Master Orchestrator (File 0) or Setup Workflow (File 0a)
+**Use When:** Adding play functions to one component's existing `.stories.ts` file
+
+## Prerequisites
+
+- ✅ Setup exists (`.storybook/`, `playwright.config.ts`)
+- ✅ Component exists with `.stories.ts` file
+- ✅ `@storybook/test` is installed
+
+---
+
+## Step 1: Analyze Component
+
+```
+Agent Response:
+"Analyzing [ComponentName]..."
+
+**→ Consulting Rule 2 (Patterns) for web-components testing patterns**
+**→ Consulting Rule 3 (Web Components Specifics) for Shadow DOM/Stencil patterns**
+
+**Component: [ComponentName]**
+File: src/components/[component-name]/[component-name].tsx
+
+**Props Analysis (from @Prop decorators):**
+- [propName]: [type] (default: [value])
+...
+
+**Events (from @Event decorators):**
+- [eventName]: [payload type]
+...
+
+**Complexity:** [Simple/Interactive/Complex/Advanced]
+**Shadow DOM:** Yes (Stencil default)
+**Slots:** [Yes/No - list slot names]
+
+**Existing Story Status:**
+✅ Found: [component-name].stories.ts
+- Current variants: [count]
+- Has play functions: [Yes/No]
+- Has interaction tests: [Yes/No]
+
+**Action:** UPDATE existing story file (add play functions)
+
+Shall I propose test cases? (yes/no)
+```
+
+**Agent Actions:**
+1. Read component `.tsx` file for props, events, methods
+2. Read existing `.stories.ts` file for current variants
+3. Check for Shadow DOM usage, slots, custom events
+4. Determine complexity tier
+
+---
+
+## Step 2: Propose Test Cases
+
+**→ Consult Rule 2 (Testing Patterns) for play function structure**
+
+```
+Agent Response:
+"Here are the test cases I recommend for [ComponentName]:
+
+**Play functions to add to existing stories:**
+
+1. [Variant Name] (e.g., Default)
+   **Play Function Tests:**
+   - ✅ Render check (component appears in DOM)
+   - ✅ [Interaction 1] (e.g., Click interaction)
+   - ✅ [Interaction 2] (e.g., Keyboard navigation)
+   - ✅ ARIA attributes verification
+2. [Variant Name 2]
+   **Play Function Tests:**
+   - ✅ Render check
+   - ✅ [Specific test for this variant]
+
+**Web Components Testing Approach:**
+✅ Using async queries (findBy*) — web components render asynchronously
+✅ Custom event testing via addEventListener
+✅ Shadow DOM awareness
+✅ Slot content verification
+
+**Example Play Function:**
+```typescript
+import { expect, userEvent, within, fn } from '@storybook/test';
+
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify component renders', async () => {
+    const element = await canvas.findByRole('button');
+    await expect(element).toBeInTheDocument();
+  });
+
+  await step('Click interaction', async () => {
+    const element = await canvas.findByRole('button');
+    await userEvent.click(element);
+  });
+}
+```
+
+Should I implement these tests? (yes/no/modify)
+```
+
+**Wait for user approval. Allow user to request modifications.**
+
+---
+
+## Step 3: Implement Tests (Update Existing Story File)
+
+**→ Consult Rule 2 (Testing Patterns) for play function implementation**
+**→ Consult Rule 3 (Web Components Specifics) for Stencil patterns**
+
+### Web Components Play Function Template
+
+```typescript
+import { expect, userEvent, within, fn } from '@storybook/test';
+
+// Add play function to existing story variant
+export const Default: Story = {
+  ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify component renders', async () => {
+      const element = await canvas.findByRole('[role]');
+      await expect(element).toBeInTheDocument();
+    });
+
+    await step('Verify props applied', async () => {
+      const element = await canvas.findByRole('[role]');
+      await expect(element).toHaveAttribute('[attr]', '[value]');
+    });
+  },
+};
+```
+
+### Story File Update Process
+
+```
+Agent Response:
+"Updating existing story file: [component-name].stories.ts
+
+**Changes I'll make:**
+- ✅ Add import: `{ expect, userEvent, within, fn } from '@storybook/test'`
+- ✅ Add play function to [Variant 1]
+- ✅ Add play function to [Variant 2]
+- ✅ Add fn() mock for custom event handlers (if applicable)
+
+**Code changes:**
+
+[Show complete diff with play functions added]
+
+Should I update [component-name].stories.ts? (yes/no)
+```
+
+**Agent Actions:**
+1. Import testing utilities from `@storybook/test`
+2. Add play functions to appropriate story variants
+3. Show diff before applying
+4. Wait for approval
+5. Write file on approval
+
+---
+
+## Step 4: Run Tests
+
+```
+Agent Response:
+"Running tests for [ComponentName]...
+
+**Command:**
+npx test-storybook --url http://localhost:6006 --browsers chromium
+
+**Test Results:**
+
+✅ [story-id-1] - PASSED (XXXms)
+   - Render check: ✅
+   - Click interaction: ✅
+
+✅ [story-id-2] - PASSED (XXXms)
+   - Render check: ✅
+
+**Summary:**
+- Total tests: [X]/[X] passed ✅
+- Execution time: [X]s
+
+All [ComponentName] tests passed on Chromium! ✅
+
+Should I run on all browsers (Firefox, WebKit)? (yes/no/skip)
+```
+
+---
+
+## Step 5: Cross-Browser Validation (If User Approves)
+
+```
+Agent Response:
+"Running [ComponentName] tests on all browsers...
+
+**Command:**
+npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit
+
+**Cross-Browser Results:**
+
+✅ Chromium: [X]/[X] passed
+✅ Firefox: [X]/[X] passed
+✅ WebKit: [X]/[X] passed
+
+All browsers passed! ✅
+```
+
+---
+
+## Step 6: Documentation Update
+
+**→ Consult Rule 4 (Maintenance) for documentation requirements**
+
+```
+Agent Response:
+"Updating documentation...
+
+**COMPONENT_TEST_MATRIX.md:**
+✅ [ComponentName] - [X] variants - [X] tests - Status: ✅
+
+**Files modified:**
+- [component-name].stories.ts (updated with play functions)
+- COMPONENT_TEST_MATRIX.md (updated)
+
+Documentation updated! ✅
+```
+
+---
+
+## Step 7: Completion
+
+```
+Agent Response:
+"[ComponentName] testing complete! ✅
+
+**Summary:**
+- Component: [ComponentName]
+- Variants tested: [X]
+- Play functions added: [X]
+- Accessibility: ✅ ARIA attributes verified
+
+Ready for next component!
+```
+
+---
+
+## Cross-References
+
+- **Test patterns:** → File 2 (Testing Patterns)
+- **Web components specifics:** → File 3 (Web Components Specifics)
+- **Documentation:** → File 4 (Maintenance)
+- **Back to setup workflow:** → File 0a (if part of initial setup)
+
+---
+
+## End of Single Component Workflow

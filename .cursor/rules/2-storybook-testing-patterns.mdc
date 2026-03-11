@@ -1,0 +1,536 @@
+---
+description: Test writing patterns for Modus WC 2.0 web components using Storybook play functions
+globs: []
+alwaysApply: false
+---
+
+# Storybook Testing Patterns
+
+**Referenced by:** Workflow files (0a, 0b, 0c)
+**Purpose:** How to write play functions, queries, and assertions for Stencil web components
+
+---
+
+## Story Structure (Modus WC 2.0)
+
+### Existing Story Pattern (lit html)
+
+Stories in this project use `lit` html templates with `@storybook/web-components`:
+
+```typescript
+import { Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+interface ComponentArgs {
+  prop1: string;
+  prop2: boolean;
+}
+
+const meta: Meta<ComponentArgs> = {
+  title: 'Components/ComponentName',
+  component: 'modus-wc-component-name',
+  args: {
+    prop1: 'default',
+    prop2: false,
+  },
+};
+
+export default meta;
+type Story = StoryObj<ComponentArgs>;
+```
+
+### Adding Play Functions to Existing Stories
+
+```typescript
+import { Meta, StoryObj } from '@storybook/web-components';
+import { expect, userEvent, within, fn } from '@storybook/test'; // ADD THIS
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+
+// ... existing meta and args ...
+
+export const Default: Story = {
+  render: (args) => html`
+    <modus-wc-component-name
+      prop1="${args.prop1}"
+      ?prop2="${args.prop2}"
+    >
+      Content
+    </modus-wc-component-name>
+  `,
+  play: async ({ canvasElement, step }) => {  // ADD PLAY FUNCTION
+    const canvas = within(canvasElement);
+
+    await step('Verify component renders', async () => {
+      const element = await canvas.findByRole('button');
+      await expect(element).toBeInTheDocument();
+    });
+  },
+};
+```
+
+---
+
+## Play Function Patterns
+
+### Pattern 1: Render Check
+
+**Purpose:** Verify web component renders in DOM
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify component renders', async () => {
+    const element = await canvas.findByRole('button');
+    await expect(element).toBeInTheDocument();
+  });
+}
+```
+
+**IMPORTANT:** Always use `findBy*` (async) — web components render asynchronously.
+
+### Pattern 2: Click Interaction
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Click button', async () => {
+    const button = await canvas.findByRole('button');
+    await userEvent.click(button);
+  });
+}
+```
+
+### Pattern 3: Custom Event Testing (Stencil @Event)
+
+Stencil components emit custom events (e.g., `buttonClick`, `inputChange`). Testing these requires direct event listeners:
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify custom event emits on click', async () => {
+    const button = await canvas.findByRole('button');
+    let eventFired = false;
+
+    button.addEventListener('buttonClick', () => {
+      eventFired = true;
+    }, { once: true });
+
+    await userEvent.click(button);
+    await expect(eventFired).toBe(true);
+  });
+}
+```
+
+### Pattern 4: Form Input
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Type in text input', async () => {
+    const input = await canvas.findByRole('textbox');
+    await userEvent.type(input, 'Test value');
+    await expect(input).toHaveValue('Test value');
+  });
+}
+```
+
+### Pattern 5: Keyboard Navigation
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Navigate with Tab', async () => {
+    const firstElement = await canvas.findByRole('button');
+    firstElement.focus();
+    await expect(firstElement).toHaveFocus();
+
+    await userEvent.keyboard('{Tab}');
+  });
+
+  await step('Activate with Enter', async () => {
+    await userEvent.keyboard('{Enter}');
+  });
+}
+```
+
+### Pattern 6: State Changes (Toggle/Switch)
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Toggle switch', async () => {
+    const toggle = await canvas.findByRole('switch');
+    await expect(toggle).not.toBeChecked();
+
+    await userEvent.click(toggle);
+    await expect(toggle).toBeChecked();
+  });
+}
+```
+
+### Pattern 7: Dropdown/Select
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Open dropdown', async () => {
+    const select = await canvas.findByRole('combobox');
+    await userEvent.click(select);
+  });
+
+  await step('Select option', async () => {
+    const option = await canvas.findByRole('option', { name: 'Option 2' });
+    await userEvent.click(option);
+  });
+}
+```
+
+### Pattern 8: Multi-Step Interaction
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Step 1: Open accordion', async () => {
+    const header = await canvas.findByRole('button', { name: /section 1/i });
+    await userEvent.click(header);
+  });
+
+  await step('Step 2: Verify content visible', async () => {
+    const content = await canvas.findByText('Accordion content');
+    await expect(content).toBeVisible();
+  });
+
+  await step('Step 3: Close accordion', async () => {
+    const header = await canvas.findByRole('button', { name: /section 1/i });
+    await userEvent.click(header);
+  });
+}
+```
+
+---
+
+## Accessibility Testing Patterns
+
+### Pattern 9: ARIA Attributes
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify ARIA attributes', async () => {
+    const button = await canvas.findByRole('button');
+    await expect(button).toHaveAttribute('aria-label', 'Close dialog');
+  });
+
+  await step('Verify ARIA state changes', async () => {
+    const button = await canvas.findByRole('button');
+    await userEvent.click(button);
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+  });
+}
+```
+
+### Pattern 10: Focus Management
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify focus management', async () => {
+    const input = await canvas.findByRole('textbox');
+    input.focus();
+    await expect(input).toHaveFocus();
+  });
+
+  await step('Tab to next element', async () => {
+    await userEvent.keyboard('{Tab}');
+    const nextElement = document.activeElement;
+    await expect(nextElement).toBeTruthy();
+  });
+}
+```
+
+---
+
+## Visual State Patterns
+
+### Pattern 11: Prop Coverage
+
+Test all important prop values in separate stories:
+
+```typescript
+export const PrimaryButton: Story = {
+  render: () => html`<modus-wc-button color="primary">Primary</modus-wc-button>`,
+};
+
+export const SecondaryButton: Story = {
+  render: () => html`<modus-wc-button color="secondary">Secondary</modus-wc-button>`,
+};
+
+export const DisabledButton: Story = {
+  render: () => html`<modus-wc-button disabled>Disabled</modus-wc-button>`,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify button is disabled', async () => {
+      const button = await canvas.findByRole('button');
+      await expect(button).toBeDisabled();
+    });
+  },
+};
+```
+
+### Pattern 12: Interaction Coverage
+
+```typescript
+export const AllInteractions: Story = {
+  render: () => html`<modus-wc-button>Click me</modus-wc-button>`,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Focus', async () => {
+      const button = await canvas.findByRole('button');
+      button.focus();
+      await expect(button).toHaveFocus();
+    });
+
+    await step('Click', async () => {
+      const button = await canvas.findByRole('button');
+      await userEvent.click(button);
+    });
+
+    await step('Keyboard Enter', async () => {
+      const button = await canvas.findByRole('button');
+      button.focus();
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Keyboard Space', async () => {
+      const button = await canvas.findByRole('button');
+      button.focus();
+      await userEvent.keyboard(' ');
+    });
+  },
+};
+```
+
+---
+
+## Error State Patterns
+
+### Pattern 13: Error States
+
+```typescript
+export const WithError: Story = {
+  render: () => html`
+    <modus-wc-text-input
+      error-text="Invalid input"
+      helper-text="Enter a valid value"
+    ></modus-wc-text-input>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify error message', async () => {
+      const error = await canvas.findByText('Invalid input');
+      await expect(error).toBeInTheDocument();
+    });
+  },
+};
+```
+
+---
+
+## Best Practices
+
+### Query Priority (Accessibility-First)
+
+Use queries in this order (most to least preferred):
+
+1. **Role queries** (best): `findByRole('button')`
+2. **Label queries**: `findByLabelText('Username')`
+3. **Text**: `findByText('Submit')`
+4. **Alt text**: `findByAltText('Profile picture')`
+5. **Test ID** (last resort): `findByTestId('submit-button')`
+
+### Always Use Async Queries
+
+Web components render asynchronously. **Always** use `findBy*`:
+
+```typescript
+// WRONG — may fail because component hasn't rendered yet
+const button = canvas.getByRole('button');
+
+// CORRECT — waits for element to appear
+const button = await canvas.findByRole('button');
+```
+
+### Step Organization
+
+Organize tests into logical steps:
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  // Good: Clear, descriptive steps
+  await step('Setup: Open dropdown', async () => { /* ... */ });
+  await step('Action: Select option', async () => { /* ... */ });
+  await step('Verify: Selection applied', async () => { /* ... */ });
+
+  // Bad: Vague or missing steps
+  await step('Test', async () => { /* everything in one step */ });
+}
+```
+
+### lit html Template Integration
+
+Play functions work alongside existing lit html `render` functions:
+
+```typescript
+export const Interactive: Story = {
+  render: (args) => html`
+    <modus-wc-button
+      color="${args.color}"
+      ?disabled="${args.disabled}"
+    >
+      Click me
+    </modus-wc-button>
+  `,
+  play: async ({ canvasElement, step }) => {
+    // Play function has access to the rendered output
+    const canvas = within(canvasElement);
+    const button = await canvas.findByRole('button');
+    await userEvent.click(button);
+  },
+};
+```
+
+---
+
+## Common Pitfalls
+
+### Pitfall 1: Using Sync Queries
+
+```typescript
+// Bad — sync query may fail for web components
+const button = canvas.getByRole('button');
+
+// Good — async query waits for render
+const button = await canvas.findByRole('button');
+```
+
+### Pitfall 2: Hard-Coded Timing
+
+```typescript
+// Bad — brittle timing
+await new Promise(resolve => setTimeout(resolve, 1000));
+
+// Good — wait for specific condition
+await canvas.findByText('Loaded');
+```
+
+### Pitfall 3: Testing Implementation Details
+
+```typescript
+// Bad — testing CSS class names
+expect(button).toHaveClass('btn-primary');
+
+// Good — testing behavior and ARIA
+expect(button).toHaveAttribute('aria-pressed', 'true');
+```
+
+### Pitfall 4: Not Handling Shadow DOM
+
+Some Stencil components render content inside Shadow DOM. The `within(canvasElement)` scope
+may not reach into Shadow DOM. For these cases, consult **File 3 (Web Components Specifics)**.
+
+---
+
+## Complete Example: Modus WC Button
+
+```typescript
+import { Meta, StoryObj } from '@storybook/web-components';
+import { expect, userEvent, within } from '@storybook/test';
+import { html } from 'lit';
+
+interface ButtonArgs {
+  color: 'primary' | 'secondary' | 'tertiary';
+  disabled: boolean;
+  variant: 'filled' | 'outlined' | 'borderless';
+}
+
+const meta: Meta<ButtonArgs> = {
+  title: 'Components/Button',
+  component: 'modus-wc-button',
+  args: {
+    color: 'primary',
+    disabled: false,
+    variant: 'filled',
+  },
+};
+
+export default meta;
+type Story = StoryObj<ButtonArgs>;
+
+export const Default: Story = {
+  render: (args) => html`
+    <modus-wc-button
+      color="${args.color}"
+      ?disabled="${args.disabled}"
+      variant="${args.variant}"
+    >
+      Click me
+    </modus-wc-button>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify button renders', async () => {
+      const button = await canvas.findByRole('button');
+      await expect(button).toBeInTheDocument();
+    });
+
+    await step('Click button', async () => {
+      const button = await canvas.findByRole('button');
+      let clicked = false;
+      button.addEventListener('buttonClick', () => { clicked = true; }, { once: true });
+      await userEvent.click(button);
+      await expect(clicked).toBe(true);
+    });
+
+    await step('Verify keyboard activation', async () => {
+      const button = await canvas.findByRole('button');
+      button.focus();
+      await expect(button).toHaveFocus();
+      await userEvent.keyboard('{Enter}');
+    });
+  },
+};
+
+export const Disabled: Story = {
+  render: () => html`
+    <modus-wc-button disabled>Disabled</modus-wc-button>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify button is disabled', async () => {
+      const button = await canvas.findByRole('button');
+      await expect(button).toBeDisabled();
+    });
+  },
+};
+```
+
+---
+
+## End of Testing Patterns File

@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components/Accordion Default play-test 1`] = `
+<div id="stable-id-0">
+  <div style="padding: 20px;">
+    <modus-wc-accordion class="hydrated">
+      <div class>
+        <modus-wc-collapse class="hydrated">
+          <details class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open"
+                   open
+          >
+            <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4"
+                     id="stable-id-1"
+            >
+              <div class="modus-wc-inline-flex modus-wc-items-center">
+                <modus-wc-icon class="modus-wc-flex modus-wc-items-center hydrated">
+                  <i aria-hidden="true"
+                     aria-label="Alert"
+                     class="modus-wc-icon modus-icons modus-wc-icon--md"
+                     tabindex="-1"
+                  >
+                    alert
+                  </i>
+                </modus-wc-icon>
+                Item One
+              </div>
+              <div class="description modus-wc-font-light modus-wc-text-base">
+                Item one description
+              </div>
+            </summary>
+            <div aria-labelledby="stable-id-1"
+                 class="modus-wc-collapse-content modus-wc-cursor-default"
+                 id="stable-id-2"
+            >
+              <div slot="content">
+                Collapse content
+              </div>
+            </div>
+          </details>
+        </modus-wc-collapse>
+        <modus-wc-collapse class="hydrated">
+          <details class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open"
+                   open
+          >
+            <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4"
+                     id="stable-id-3"
+            >
+              <div class="modus-wc-inline-flex modus-wc-items-center">
+                <modus-wc-icon class="modus-wc-flex modus-wc-items-center hydrated">
+                  <i aria-hidden="true"
+                     aria-label="Alert"
+                     class="modus-wc-icon modus-icons modus-wc-icon--md"
+                     tabindex="-1"
+                  >
+                    alert
+                  </i>
+                </modus-wc-icon>
+                Item Two
+              </div>
+              <div class="description modus-wc-font-light modus-wc-text-base">
+                Item two description
+              </div>
+            </summary>
+            <div aria-labelledby="stable-id-3"
+                 class="modus-wc-collapse-content modus-wc-cursor-default"
+                 id="stable-id-4"
+            >
+              <div slot="content">
+                Collapse content
+              </div>
+            </div>
+          </details>
+        </modus-wc-collapse>
+        <modus-wc-collapse class="hydrated">
+          <details class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open"
+                   open
+          >
+            <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4"
+                     id="stable-id-5"
+            >
+              <div class="modus-wc-inline-flex modus-wc-items-center">
+                <modus-wc-icon class="modus-wc-flex modus-wc-items-center hydrated">
+                  <i aria-hidden="true"
+                     aria-label="Alert"
+                     class="modus-wc-icon modus-icons modus-wc-icon--md"
+                     tabindex="-1"
+                  >
+                    alert
+                  </i>
+                </modus-wc-icon>
+                Item Three
+              </div>
+              <div class="description modus-wc-font-light modus-wc-text-base">
+                Item three description
+              </div>
+            </summary>
+            <div aria-labelledby="stable-id-5"
+                 class="modus-wc-collapse-content modus-wc-cursor-default"
+                 id="stable-id-6"
+            >
+              <div slot="content">
+                Collapse content
+              </div>
+            </div>
+          </details>
+        </modus-wc-collapse>
+      </div>
+    </modus-wc-accordion>
+  </div>
+</div>
+`;
+
+exports[`Components/Accordion Default play-test 2`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "label": "Alert",
+                                          "role": "i",
+                                        },
+                                      ],
+                                      "role": "modus-wc-icon",
+                                    },
+                                  ],
+                                  "role": "div",
+                                },
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "role": "summary",
+                            },
+                            {
+                              "children": [
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "label": "stable-id-0",
+                              "role": "div",
+                            },
+                          ],
+                          "role": "details",
+                        },
+                      ],
+                      "role": "modus-wc-collapse",
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "label": "Alert",
+                                          "role": "i",
+                                        },
+                                      ],
+                                      "role": "modus-wc-icon",
+                                    },
+                                  ],
+                                  "role": "div",
+                                },
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "role": "summary",
+                            },
+                            {
+                              "children": [
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "label": "stable-id-1",
+                              "role": "div",
+                            },
+                          ],
+                          "role": "details",
+                        },
+                      ],
+                      "role": "modus-wc-collapse",
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "label": "Alert",
+                                          "role": "i",
+                                        },
+                                      ],
+                                      "role": "modus-wc-icon",
+                                    },
+                                  ],
+                                  "role": "div",
+                                },
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "role": "summary",
+                            },
+                            {
+                              "children": [
+                                {
+                                  "role": "div",
+                                },
+                              ],
+                              "label": "stable-id-2",
+                              "role": "div",
+                            },
+                          ],
+                          "role": "details",
+                        },
+                      ],
+                      "role": "modus-wc-collapse",
+                    },
+                  ],
+                  "role": "div",
+                },
+              ],
+              "role": "modus-wc-accordion",
+            },
+          ],
+          "role": "div",
+        },
+      ],
+      "role": "div",
+    },
+  ],
+  "role": "div",
+}
+`;
+
+exports[`Components/Accordion Migration smoke-test 1`] = `
+<div id="stable-id-0">
+  <div>
+  </div>
+</div>
+`;
+
+exports[`Components/Accordion Migration smoke-test 2`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "role": "div",
+        },
+      ],
+      "role": "div",
+    },
+  ],
+  "role": "div",
+}
+`;

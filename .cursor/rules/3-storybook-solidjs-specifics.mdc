@@ -1,0 +1,347 @@
+---
+description: Stencil web component specific testing patterns for Shadow DOM, custom events, and slots
+globs: []
+alwaysApply: false
+---
+
+# Web Components (Stencil) Specific Testing Patterns
+
+**Referenced by:** Workflow files when testing Stencil web components
+**Purpose:** Handle Stencil-specific features (Shadow DOM, custom events, slots, @Prop, @Event)
+
+---
+
+## Why Stencil Web Components Are Different
+
+Stencil web components have unique characteristics that require specific testing patterns:
+
+1. **Asynchronous rendering** — Components render to the DOM asynchronously
+2. **Shadow DOM** — Internal DOM is encapsulated (though Stencil can use `scoped` mode)
+3. **Custom events** — Events use `@Event` decorator, emitting CustomEvent instances
+4. **Slots** — Content projection via `<slot>` elements
+5. **Properties vs Attributes** — Stencil maps props to both attributes and properties
+6. **Lifecycle hooks** — `componentDidLoad`, `componentWillLoad` affect timing
+
+---
+
+## Rule 1: Always Use Async Queries
+
+### ❌ Wrong
+
+```typescript
+play: async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const button = canvas.getByRole('button'); // May fail — not rendered yet
+  expect(button).toBeInTheDocument();
+}
+```
+
+### ✅ Correct
+
+```typescript
+play: async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const button = await canvas.findByRole('button'); // Waits for render
+  await expect(button).toBeInTheDocument();
+}
+```
+
+**Why:** Stencil components load asynchronously. The custom element is registered, but internal rendering happens after `componentDidLoad`.
+
+---
+
+## Rule 2: Custom Event Testing
+
+Stencil components use `@Event()` decorator to emit custom events (e.g., `buttonClick`, `inputChange`, `selectChange`). These are `CustomEvent` instances.
+
+### ❌ Wrong — Using fn() for Custom Events
+
+```typescript
+// fn() mocks don't automatically capture Stencil custom events
+export const ClickTest: Story = {
+  args: {
+    onClick: fn(), // Won't capture 'buttonClick' custom event
+  },
+};
+```
+
+### ✅ Correct — Using addEventListener
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify custom event fires', async () => {
+    const component = await canvas.findByRole('button');
+    let eventDetail = null;
+
+    component.addEventListener('buttonClick', (e: CustomEvent) => {
+      eventDetail = e.detail;
+    }, { once: true });
+
+    await userEvent.click(component);
+    await expect(eventDetail).not.toBeNull();
+  });
+}
+```
+
+### ✅ Alternative — Using Promise for Async Event
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Wait for custom event', async () => {
+    const component = await canvas.findByRole('button');
+
+    const eventPromise = new Promise<CustomEvent>((resolve) => {
+      component.addEventListener('buttonClick', (e) => {
+        resolve(e as CustomEvent);
+      }, { once: true });
+    });
+
+    await userEvent.click(component);
+
+    const event = await eventPromise;
+    await expect(event).toBeTruthy();
+  });
+}
+```
+
+### Common Stencil Custom Events
+
+| Component | Event Name | Payload |
+|---|---|---|
+| modus-wc-button | `buttonClick` | `MouseEvent` |
+| modus-wc-text-input | `inputChange` | `string` |
+| modus-wc-select | `selectChange` | `string \| string[]` |
+| modus-wc-checkbox | `checkboxChange` | `boolean` |
+| modus-wc-switch | `switchChange` | `boolean` |
+| modus-wc-radio | `radioChange` | `string` |
+| modus-wc-tabs | `tabChange` | `string` |
+| modus-wc-pagination | `pageChange` | `number` |
+| modus-wc-accordion | `accordionChange` | `boolean` |
+| modus-wc-modal | `modalClose` | `void` |
+
+---
+
+## Rule 3: Slot Content Testing
+
+Stencil components use `<slot>` for content projection. Slotted content lives in the light DOM.
+
+### Testing Default Slot
+
+```typescript
+export const WithSlotContent: Story = {
+  render: () => html`
+    <modus-wc-button>
+      <modus-wc-icon decorative name="notifications"></modus-wc-icon>
+      Click me
+    </modus-wc-button>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify slotted content renders', async () => {
+      const button = await canvas.findByRole('button');
+      await expect(button).toHaveTextContent('Click me');
+    });
+  },
+};
+```
+
+### Testing Named Slots
+
+```typescript
+export const WithNamedSlots: Story = {
+  render: () => html`
+    <modus-wc-card>
+      <span slot="header">Card Title</span>
+      <p slot="body">Card content here</p>
+    </modus-wc-card>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify header slot', async () => {
+      const header = await canvas.findByText('Card Title');
+      await expect(header).toBeInTheDocument();
+    });
+
+    await step('Verify body slot', async () => {
+      const body = await canvas.findByText('Card content here');
+      await expect(body).toBeInTheDocument();
+    });
+  },
+};
+```
+
+---
+
+## Rule 4: Shadow DOM Queries
+
+Stencil components render internal content inside Shadow DOM by default. The `within(canvasElement)` scope queries the **light DOM** (including the host element).
+
+### Light DOM Elements (Accessible via canvas)
+
+Elements accessible through `within(canvasElement)`:
+- The custom element host itself
+- Slotted content
+- Any ARIA attributes on the host
+
+### Shadow DOM Elements (May Need Special Handling)
+
+Internal implementation elements are inside Shadow DOM and may not be directly queryable via `within()`. However, ARIA roles and labels on the host element **are** accessible.
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Query by ARIA role (works across Shadow DOM)', async () => {
+    const button = await canvas.findByRole('button');
+    await expect(button).toBeInTheDocument();
+  });
+
+  await step('Query shadow DOM directly (if needed)', async () => {
+    const host = canvasElement.querySelector('modus-wc-button');
+    const shadowButton = host?.shadowRoot?.querySelector('button');
+    await expect(shadowButton).toBeTruthy();
+  });
+}
+```
+
+---
+
+## Rule 5: Property vs Attribute Testing
+
+Stencil maps `@Prop()` to both HTML attributes and JS properties. Some props only work as properties (complex types like objects/arrays).
+
+### Attribute Props (strings, booleans, numbers)
+
+```typescript
+play: async ({ canvasElement, step }) => {
+  const canvas = within(canvasElement);
+
+  await step('Verify attribute props', async () => {
+    const component = canvasElement.querySelector('modus-wc-button');
+    await expect(component).toHaveAttribute('color', 'primary');
+    await expect(component).toHaveAttribute('variant', 'filled');
+  });
+}
+```
+
+### Property Props (objects, arrays)
+
+```typescript
+// Set via lit .property syntax
+export const WithData: Story = {
+  render: () => html`
+    <modus-wc-table .data=${[{ id: 1, name: 'Row 1' }]}></modus-wc-table>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify data rendered', async () => {
+      const row = await canvas.findByText('Row 1');
+      await expect(row).toBeInTheDocument();
+    });
+  },
+};
+```
+
+---
+
+## Rule 6: Component Composition Testing
+
+Many Modus components are composed of other Modus components (e.g., navbar contains buttons, icons, menus).
+
+```typescript
+export const ComposedComponent: Story = {
+  render: () => html`
+    <modus-wc-navbar>
+      <modus-wc-button slot="start">Menu</modus-wc-button>
+      <span slot="title">App Title</span>
+    </modus-wc-navbar>
+  `,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify composed components render', async () => {
+      const button = await canvas.findByRole('button', { name: 'Menu' });
+      await expect(button).toBeInTheDocument();
+
+      const title = await canvas.findByText('App Title');
+      await expect(title).toBeInTheDocument();
+    });
+  },
+};
+```
+
+---
+
+## Debugging Web Component Tests
+
+### Issue 1: "Element not found" after render
+
+**Problem:** Component hasn't finished rendering.
+**Solution:** Use `findBy*` with optional timeout:
+
+```typescript
+const element = await canvas.findByRole('button', {}, { timeout: 5000 });
+```
+
+### Issue 2: Custom event not captured
+
+**Problem:** Using `fn()` or `args.onClick` for Stencil custom events.
+**Solution:** Use `addEventListener` with the exact Stencil event name.
+
+### Issue 3: Shadow DOM element not queryable
+
+**Problem:** Internal element is inside Shadow DOM.
+**Solution:** Query by ARIA role (propagated to host) or use `shadowRoot` directly.
+
+### Issue 4: Boolean attribute handling
+
+**Problem:** `disabled` attribute behavior in web components.
+**Solution:** Use `?disabled` in lit templates and `toBeDisabled()` in assertions:
+
+```typescript
+// In render
+html`<modus-wc-button ?disabled=${args.disabled}>Text</modus-wc-button>`
+
+// In play function
+const button = await canvas.findByRole('button');
+await expect(button).toBeDisabled();
+```
+
+---
+
+## Quick Reference
+
+| Aspect | Pattern |
+|--------|---------|
+| **Queries** | `findBy*` (async, always) |
+| **Expectations** | `await expect()` |
+| **Custom events** | `addEventListener('eventName', handler)` |
+| **Slots** | Query slotted content in light DOM |
+| **Shadow DOM** | Use ARIA roles or `shadowRoot` direct access |
+| **Boolean props** | `?prop` in lit, `toBeDisabled()` in assertions |
+| **Object props** | `.prop` syntax in lit templates |
+| **Timing** | `findBy*` handles waiting; avoid `setTimeout` |
+
+---
+
+## Checklist for Web Component Tests
+
+✅ All queries use `findBy*` (async)
+✅ All expectations use `await expect()`
+✅ Custom events tested via `addEventListener` (not `fn()`)
+✅ Slotted content verified in light DOM
+✅ Shadow DOM elements accessed via ARIA roles when possible
+✅ Boolean attributes use `?` prefix in lit templates
+✅ Complex props use `.` prefix in lit templates
+✅ No hard-coded timeouts (`setTimeout`)
+
+---
+
+## End of Web Components Specifics File
