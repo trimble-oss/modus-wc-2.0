@@ -18,7 +18,9 @@ modus-wc-tree-item {
       color: var(--modus-wc-color-base-content);
     }
 
-    modus-wc-tree-actions .modus-wc-tree-actions-container .modus-wc-tree-action-button {
+    modus-wc-tree-actions
+      .modus-wc-tree-actions-container
+      .modus-wc-tree-action-button {
       visibility: visible;
     }
   }
@@ -69,7 +71,9 @@ modus-wc-tree-item {
     &:hover {
       border-radius: unset;
 
-      modus-wc-tree-actions .modus-wc-tree-actions-container .modus-wc-tree-action-button {
+      modus-wc-tree-actions
+        .modus-wc-tree-actions-container
+        .modus-wc-tree-action-button {
         visibility: visible;
       }
     }
