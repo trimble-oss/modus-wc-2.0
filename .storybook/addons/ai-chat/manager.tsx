@@ -8,7 +8,9 @@ const ChatAddon: React.FC = () => {
 
   return (
     // Render nothing in the toolbar -- FAB is self-contained in ChatPanel
-    <div style={{ width: 0, height: 0, overflow: 'visible', position: 'static' }}>
+    <div
+      style={{ width: 0, height: 0, overflow: 'visible', position: 'static' }}
+    >
       <ChatPanel
         isOpen={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
