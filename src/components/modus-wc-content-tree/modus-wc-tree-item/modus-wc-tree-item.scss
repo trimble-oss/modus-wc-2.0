@@ -94,7 +94,7 @@ modus-wc-tree-item {
   .modus-wc-tree-item-actions {
     align-items: center;
     display: flex;
-    gap: var(--modus-wc-spacing-xs, 0.25rem);
+    gap: var(--modus-wc-spacing-xs);
     margin-inline-start: auto;
   }
 
@@ -126,9 +126,8 @@ modus-wc-tree-item {
     border: none;
     cursor: pointer;
     display: flex;
-    gap: var(--modus-wc-spacing-sm, 0.5rem);
-    padding: var(--modus-wc-spacing-xs, 0.25rem)
-      var(--modus-wc-spacing-sm, 0.5rem);
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
     text-align: start;
     width: 100%;
   }

@@ -13,9 +13,9 @@ modus-wc-content-tree {
   .modus-wc-content-tree-actions {
     align-items: center;
     display: flex;
-    gap: var(--modus-wc-spacing-xs, 0.5rem);
+    gap: var(--modus-wc-spacing-xs);
     justify-content: flex-end;
-    padding: var(--modus-wc-spacing-sm, 0.75rem);
+    padding: var(--modus-wc-spacing-sm);
 
     .modus-wc-content-tree-action-button {
       background-color: transparent;
@@ -42,25 +42,25 @@ modus-wc-content-tree {
   }
 
   .modus-wc-content-tree-header {
-    padding: var(--modus-wc-spacing-sm, 1rem);
+    padding: var(--modus-wc-spacing-sm);
   }
 
   .modus-wc-content-tree-empty {
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: var(--modus-wc-spacing-md, 1rem);
+    gap: var(--modus-wc-spacing-md);
     justify-content: center;
     min-height: 500px;
     padding: 1rem;
 
     .modus-wc-content-tree-empty-icon {
-      color: var(--modus-wc-color-text-secondary, #6b7280);
+      color: var(--modus-wc-color-gray-6);
     }
 
     .modus-wc-content-tree-empty-text {
-      color: var(--modus-wc-color-text-secondary, #6b7280);
-      font-size: var(--modus-wc-font-size-md, 1rem);
+      color: var(--modus-wc-color-gray-6);
+      font-size: var(--modus-wc-font-size-md);
       text-align: center;
     }
   }

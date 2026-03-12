@@ -46,11 +46,11 @@ modus-wc-tree-actions {
     align-items: center;
     background: transparent;
     border: none;
-    color: var(--modus-wc-color-base-content-hight-contrast);
+    color: var(--modus-wc-color-base-content-high-contrast);
     cursor: pointer;
     display: flex;
-    gap: var(--modus-wc-spacing-sm, 0.5rem);
-    padding: var(--modus-wc-spacing-sm, 0.5rem) var(--modus-wc-spacing-md, 1rem);
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
     text-align: start;
     width: 100%;
 
@@ -65,7 +65,7 @@ modus-wc-tree-actions {
     }
 
     span {
-      font-size: var(--modus-wc-font-size-sm, 0.875rem);
+      font-size: var(--modus-wc-font-size-sm);
     }
   }
 }
