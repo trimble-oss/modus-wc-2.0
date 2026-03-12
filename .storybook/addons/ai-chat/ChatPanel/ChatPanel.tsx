@@ -49,7 +49,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       },
       localization: {},
     }),
-    [theme],
+    [theme]
   );
 
   const getToken = useCallback(async (): Promise<string> => {
@@ -88,7 +88,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       iframeRef.current,
       CHAT_UI_URL,
       getConfig,
-      getToken,
+      getToken
     );
 
     const cleanupEvents = listenToChatUiEvents(CHAT_UI_URL, handleEvent);
@@ -111,7 +111,11 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           title="Modus Assistant"
           onClick={onToggle}
         >
-          <modus-wc-icon decorative name={isOpen ? 'close' : 'chat'} size="md" />
+          <modus-wc-icon
+            decorative
+            name={isOpen ? 'close' : 'chat'}
+            size="md"
+          />
         </modus-wc-button>
       </div>
 

@@ -131,6 +131,8 @@
   /* 30px */
   --modus-wc-line-height-h1: 2.25rem;
   /* 36px */
+  --modus-wc-line-height-h0: 2.75rem;
+  /* 44px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -214,6 +216,9 @@
   --modus-wc-border-radius-table: var(--modus-wc-border-radius-2xl);
   --modus-wc-border-radius-chip: var(--modus-wc-border-radius-lg);
   --modus-wc-border-radius-alert: var(--modus-wc-border-radius-md);
+
+  /* Opacity */
+  --modus-wc-opacity-overlay: 0.6;
 
   /* Dynamic Base Colors */
   --modus-wc-color-base-page: light-dark(

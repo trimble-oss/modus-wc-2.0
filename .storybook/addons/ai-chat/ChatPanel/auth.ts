@@ -20,7 +20,7 @@ async function generatePKCEPair() {
   const codeVerifier = base64UrlEncode(verifierBytes);
   const challengeBuffer = await crypto.subtle.digest(
     'SHA-256',
-    new TextEncoder().encode(codeVerifier),
+    new TextEncoder().encode(codeVerifier)
   );
   const codeChallenge = base64UrlEncode(new Uint8Array(challengeBuffer));
   return { codeVerifier, codeChallenge };
@@ -59,7 +59,7 @@ export async function openTidLogin(): Promise<string> {
     const popup = window.open(
       authUrl.toString(),
       'TID Login',
-      'width=500,height=700,left=200,top=100',
+      'width=500,height=700,left=200,top=100'
     );
 
     if (!popup) {
@@ -111,8 +111,8 @@ export async function openTidLogin(): Promise<string> {
             new Error(
               tokenData.error_description ||
                 tokenData.error ||
-                'Token exchange failed',
-            ),
+                'Token exchange failed'
+            )
           );
         }
       } catch (err) {
