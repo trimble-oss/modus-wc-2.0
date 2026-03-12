@@ -14,11 +14,39 @@ import { DaisySize } from '../../types';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions';
 
+export interface ITreeItemData {
+  /** Unique identifier for the tree item */
+  id: string;
+  /** Display label for the tree item */
+  label: string;
+  /** Optional nested children items */
+  children?: ITreeItemData[];
+}
+
+export type TreeViewItemId = string;
+
+export interface ITreeItemReorderPosition {
+  parentId: TreeViewItemId | null;
+  index: number;
+}
+
+export interface ITreeItemReorderParameters {
+  itemId: TreeViewItemId;
+  oldPosition: ITreeItemReorderPosition;
+  newPosition: ITreeItemReorderPosition;
+}
+
+export interface ITreeItemReorderedEventDetail {
+  parameters: ITreeItemReorderParameters;
+}
+
 export interface ITreeItemElement extends HTMLElement {
   value: string;
   selected?: boolean;
   checked?: boolean;
   checkbox?: boolean;
+  inlineLabelEdit?: boolean;
+  itemsReordering?: boolean;
   hasSubtree?: boolean;
   isIndeterminate?: boolean;
   disabled?: boolean;
@@ -39,7 +67,23 @@ export interface ITreeItemElement extends HTMLElement {
   shadow: false,
 })
 export class ModusWcTreeItem {
+  private static draggedItem: ModusWcTreeItem | null = null;
+  private static hasEmittedReorderForCurrentDrag = false;
   private inheritedAttributes: Attributes = {};
+  private dropPosition: 'top' | 'bottom' | null = null;
+
+  private resolveItemId(element: Element | null): TreeViewItemId | null {
+    if (!element) return null;
+    const treeItem = element as ITreeItemElement;
+    return treeItem.value || element.getAttribute('value');
+  }
+
+  private getSiblingTreeItems(parent: Element): ITreeItemElement[] {
+    return Array.from(parent.children).filter(
+      (child): child is ITreeItemElement =>
+        child.tagName === 'MODUS-WC-TREE-ITEM'
+    );
+  }
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -51,7 +95,7 @@ export class ModusWcTreeItem {
   @Prop() checkbox?: boolean = false;
 
   /** The text label displayed for the tree item. */
-  @Prop({ reflect: true }) label!: string;
+  @Prop({ mutable: true, reflect: true }) label!: string;
 
   /** Custom CSS class to apply to the li element. */
   @Prop() customClass?: string = '';
@@ -74,6 +118,12 @@ export class ModusWcTreeItem {
   /** The size of the tree item icons and actions. */
   @Prop() size: DaisySize = 'xs';
 
+  /** If true, shows a drag handle icon for item reordering UX. */
+  @Prop() itemsReordering?: boolean = false;
+
+  /** If true, renders an inline editable text input for the label. */
+  @Prop() inlineLabelEdit?: boolean = false;
+
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
 
@@ -90,6 +140,10 @@ export class ModusWcTreeItem {
   selectionsChange!: EventEmitter<{
     selectedValues: string[];
   }>;
+
+  /** Event emitted when an item is reordered via drag and drop. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemReordered!: EventEmitter<ITreeItemReorderedEventDetail>;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -190,6 +244,20 @@ export class ModusWcTreeItem {
     this.handleEmittedSelect();
   };
 
+  private handleInlineLabelInputChange = (event: CustomEvent) => {
+    const target = event.target as HTMLInputElement;
+    this.label = target.value;
+  };
+
+  private handleInlineLabelInteraction = (event: Event) => {
+    event.stopPropagation();
+  };
+
+  private handleInlineLabelBlur = (event: CustomEvent<FocusEvent>) => {
+    event.stopPropagation();
+    this.inlineLabelEdit = false;
+  };
+
   private handleCheckboxKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -280,28 +348,197 @@ export class ModusWcTreeItem {
     }
   };
 
+  private clearDropIndicator() {
+    this.dropPosition = null;
+    const li = this.el.querySelector('li');
+    li?.classList.remove('modus-wc-tree-drop-top', 'modus-wc-tree-drop-bottom');
+  }
+
+  private setDropIndicator(position: 'top' | 'bottom') {
+    this.dropPosition = position;
+    const li = this.el.querySelector('li');
+    if (!li) return;
+
+    li.classList.remove('modus-wc-tree-drop-top', 'modus-wc-tree-drop-bottom');
+    li.classList.add(
+      position === 'top'
+        ? 'modus-wc-tree-drop-top'
+        : 'modus-wc-tree-drop-bottom'
+    );
+  }
+
+  private handleDragStart = (event: DragEvent) => {
+    if (!this.itemsReordering || this.disabled) return;
+
+    ModusWcTreeItem.draggedItem = this;
+    ModusWcTreeItem.hasEmittedReorderForCurrentDrag = false;
+    event.stopPropagation();
+
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', this.value || this.label);
+    }
+  };
+
+  private handleDragOver = (event: DragEvent) => {
+    if (!this.itemsReordering || this.disabled) return;
+    if (!ModusWcTreeItem.draggedItem || ModusWcTreeItem.draggedItem === this) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const li = this.el.querySelector('li');
+    if (!li) return;
+
+    const rect = li.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    const position: 'top' | 'bottom' = event.clientY < midY ? 'top' : 'bottom';
+    this.setDropIndicator(position);
+
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+  };
+
+  private handleDragLeave = () => {
+    this.clearDropIndicator();
+  };
+
+  private handleDrop = (event: DragEvent) => {
+    if (!this.itemsReordering || this.disabled) return;
+    if (!ModusWcTreeItem.draggedItem || ModusWcTreeItem.draggedItem === this) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const sourceHost = ModusWcTreeItem.draggedItem.el;
+    const targetHost = this.el;
+    const sourceParent = sourceHost.parentElement;
+    const targetParent = targetHost.parentElement;
+
+    if (!sourceParent || !targetParent) {
+      this.clearDropIndicator();
+      return;
+    }
+    const sourceSiblingTreeItems = this.getSiblingTreeItems(sourceParent);
+    const previousIndex = sourceSiblingTreeItems.indexOf(
+      sourceHost as ITreeItemElement
+    );
+    const draggedValue = this.resolveItemId(sourceHost);
+    const oldParentTreeItem = sourceParent.closest(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement | null;
+    const newParentTreeItem = targetParent.closest(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement | null;
+    const oldParentId = this.resolveItemId(oldParentTreeItem);
+    const newParentId = this.resolveItemId(newParentTreeItem);
+
+    if (previousIndex === -1 || !draggedValue) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    if (this.dropPosition === 'top') {
+      targetParent.insertBefore(sourceHost, targetHost);
+    } else {
+      targetParent.insertBefore(sourceHost, targetHost.nextSibling);
+    }
+
+    const updatedSiblingTreeItems = this.getSiblingTreeItems(targetParent);
+    const currentIndex = updatedSiblingTreeItems.indexOf(
+      sourceHost as ITreeItemElement
+    );
+
+    if (currentIndex === -1) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    if (previousIndex === currentIndex) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    if (ModusWcTreeItem.hasEmittedReorderForCurrentDrag) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    this.itemReordered.emit({
+      parameters: {
+        itemId: draggedValue,
+        oldPosition: {
+          parentId: oldParentId,
+          index: previousIndex,
+        },
+        newPosition: {
+          parentId: newParentId,
+          index: currentIndex,
+        },
+      },
+    });
+    ModusWcTreeItem.hasEmittedReorderForCurrentDrag = true;
+
+    this.clearDropIndicator();
+  };
+
+  private handleDragEnd = () => {
+    ModusWcTreeItem.draggedItem = null;
+    ModusWcTreeItem.hasEmittedReorderForCurrentDrag = false;
+    this.clearDropIndicator();
+  };
+
   render() {
     return (
       <Host>
         <li
           aria-selected={
+            this.checkbox ? undefined : this.selected ? 'true' : 'false'
+          }
+          aria-checked={
             this.checkbox
-              ? this.checked
-                ? 'true'
-                : 'false'
-              : this.selected
-                ? 'true'
-                : 'false'
+              ? this.isIndeterminate
+                ? 'mixed'
+                : this.checked
+                  ? 'true'
+                  : 'false'
+              : undefined
           }
           aria-expanded={this.hasSubtree ? String(this.isExpanded) : undefined}
           class={this.getClasses()}
+          draggable={this.itemsReordering && !this.disabled}
           onClick={this.handleItemSelect}
+          onDragEnd={this.handleDragEnd}
+          onDragLeave={this.handleDragLeave}
+          onDragOver={this.handleDragOver}
+          onDragStart={this.handleDragStart}
+          onDrop={this.handleDrop}
           onKeyDown={this.handleKeyDown}
           role="treeitem"
           tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
-          <div class={`modus-wc-tree-content`}>
+          <div
+            class={
+              `modus-wc-tree-content` +
+              (this.hasSubtree ? ' modus-wc-sub-tree' : '')
+            }
+          >
+            {this.itemsReordering && (
+              <modus-wc-icon
+                name="drag_indicator"
+                size={this.size}
+                decorative={true}
+                customClass="modus-wc-tree-drag-handle"
+              ></modus-wc-icon>
+            )}
             <modus-wc-button
               variant="borderless"
               shape="circle"
@@ -341,7 +578,19 @@ export class ModusWcTreeItem {
             )}
             <slot name="start-icon"></slot>
             <div class="modus-wc-tree-item-labels">
-              <div class="modus-wc-tree-item-label">{this.label}</div>
+              <div class="modus-wc-tree-item-label">
+                {this.inlineLabelEdit ? (
+                  <modus-wc-text-input
+                    value={this.label}
+                    onInputBlur={this.handleInlineLabelBlur}
+                    onClick={this.handleInlineLabelInteraction}
+                    onInputChange={this.handleInlineLabelInputChange}
+                    onKeyDown={this.handleInlineLabelInteraction}
+                  ></modus-wc-text-input>
+                ) : (
+                  this.label
+                )}
+              </div>
             </div>
             <div class="modus-wc-tree-item-actions">
               <modus-wc-tree-actions

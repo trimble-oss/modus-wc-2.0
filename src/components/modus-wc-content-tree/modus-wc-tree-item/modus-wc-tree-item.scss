@@ -42,8 +42,9 @@ modus-wc-tree-item {
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-font-size-xs);
 
     .modus-wc-tree-drag-handle {
-      left: 0;
-      position: absolute;
+      color: var(--modus-wc-color-base-60);
+      cursor: grab;
+      flex-shrink: 0;
     }
 
     .modus-wc-tree-toggle-btn {
@@ -131,6 +132,33 @@ modus-wc-tree-item {
       var(--modus-wc-spacing-sm, 0.5rem);
     text-align: start;
     width: 100%;
+  }
+
+  li[draggable='true'] {
+    cursor: grab;
+  }
+
+  li.modus-wc-tree-drop-top,
+  li.modus-wc-tree-drop-bottom {
+    position: relative;
+  }
+
+  li.modus-wc-tree-drop-top::before,
+  li.modus-wc-tree-drop-bottom::after {
+    background-color: var(--modus-wc-color-primary);
+    content: '';
+    height: 2px;
+    inset-inline: 0;
+    position: absolute;
+    z-index: 1;
+  }
+
+  li.modus-wc-tree-drop-top::before {
+    top: -1px;
+  }
+
+  li.modus-wc-tree-drop-bottom::after {
+    bottom: -1px;
   }
 
   .modus-wc-tree-dropdown {

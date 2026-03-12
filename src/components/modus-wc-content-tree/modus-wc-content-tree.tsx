@@ -1,6 +1,26 @@
-import { Component, Element, h, Host, Prop, State } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event as StencilEvent,
+  EventEmitter,
+  h,
+  Host,
+  Listen,
+  Prop,
+  State,
+  Watch,
+} from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
+import {
+  ITreeItemData,
+  ITreeItemElement,
+  ITreeItemReorderParameters,
+  ITreeItemReorderedEventDetail,
+} from './modus-wc-tree-item/modus-wc-tree-item';
+import {
+  getReorderSignature,
+  reorderTreeItemsData,
+} from './modus-wc-content-tree.utils';
 
 /**
  * A customizable content tree component used to display hierarchical data in a tree structure.
@@ -13,8 +33,10 @@ import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
 export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
   private slotEl?: HTMLSlotElement;
+  private isSlotListenerAttached = false;
   private debounceTimer?: number;
   private cachedItems?: ITreeItemElement[];
+  private lastReorderSignature?: string;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -31,6 +53,19 @@ export class ModusWcContentTree {
   /** If true, displays the action buttons (expand/collapse all, etc.). */
   @Prop() includeActions?: boolean = true;
 
+  /** If true, enables reordering UI for data-driven `items` trees. */
+  @Prop() itemsReordering?: boolean = false;
+
+  /** Data-driven items to render as tree items. */
+  @Prop() items?: ITreeItemData[];
+
+  /** Emits reordered data for controlled updates/backend sync. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemsReordered!: EventEmitter<{
+    items: ITreeItemData[];
+    parameters: ITreeItemReorderParameters;
+  }>;
+
   /** Internal state to track if the tree has any content (used for empty state display) */
   @State() private hasSlotContent: boolean = false;
 
@@ -40,28 +75,129 @@ export class ModusWcContentTree {
   /** Internal state to track if all tree nodes are expanded or collapsed */
   @State() private areAllExpanded: boolean = false;
 
+  @Watch('items')
+  handleItemsChange() {
+    this.cachedItems = undefined;
+    this.updateContentPresence();
+  }
+
+  @Watch('itemsReordering')
+  handleItemsReorderingChange() {
+    this.applyItemsReorderingState();
+  }
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    // Check initial slot content
+    this.updateContentPresence();
+  }
+
+  componentDidLoad() {
+    this.syncSlotSubscription();
+    this.updateSlotContent();
+    this.applyItemsReorderingState();
+  }
+
+  componentDidRender() {
+    this.syncSlotSubscription();
+    this.applyItemsReorderingState();
+  }
+
+  disconnectedCallback() {
+    if (this.slotEl && this.isSlotListenerAttached) {
+      this.slotEl.removeEventListener('slotchange', this.updateSlotContent);
+      this.isSlotListenerAttached = false;
+    }
+
+    if (this.debounceTimer) {
+      window.clearTimeout(this.debounceTimer);
+    }
+  }
+
+  private get hasDataItems(): boolean {
+    return Array.isArray(this.items) && this.items.length > 0;
+  }
+
+  private get isReorderingEnabled(): boolean {
+    return this.hasDataItems && !!this.itemsReordering;
+  }
+
+  private setHasContent(value: boolean): void {
+    if (this.hasSlotContent !== value) {
+      this.hasSlotContent = value;
+    }
+  }
+
+  private syncSlotSubscription(): void {
+    const nextSlot = this.el.querySelector('slot') as HTMLSlotElement | null;
+
+    if (
+      this.slotEl &&
+      this.isSlotListenerAttached &&
+      (!nextSlot || this.slotEl !== nextSlot)
+    ) {
+      this.slotEl.removeEventListener('slotchange', this.updateSlotContent);
+      this.isSlotListenerAttached = false;
+    }
+
+    this.slotEl = nextSlot || undefined;
+
+    if (this.slotEl && !this.isSlotListenerAttached) {
+      this.slotEl.addEventListener('slotchange', this.updateSlotContent);
+      this.isSlotListenerAttached = true;
+    }
+  }
+
+  private updateContentPresence(): void {
+    if (this.hasDataItems) {
+      this.setHasContent(true);
+      return;
+    }
+
     const slotContent = Array.from(this.el.childNodes).filter(
       (node) =>
         node.nodeType === Node.ELEMENT_NODE &&
         (node as HTMLElement).tagName !== 'STYLE'
     );
-    this.hasSlotContent = slotContent.length > 0;
+
+    this.setHasContent(slotContent.length > 0);
   }
 
-  componentDidLoad() {
-    this.slotEl = this.el.querySelector('slot') as HTMLSlotElement;
-    this.updateSlotContent();
-    this.slotEl?.addEventListener('slotchange', this.updateSlotContent);
+  private applyItemsReorderingState(): void {
+    const treeItems = this.el.querySelectorAll('modus-wc-tree-item');
+    treeItems.forEach((item) => {
+      (item as ITreeItemElement).itemsReordering = this.isReorderingEnabled;
+    });
   }
 
-  disconnectedCallback() {
-    this.slotEl?.removeEventListener('slotchange', this.updateSlotContent);
-    if (this.debounceTimer) {
-      window.clearTimeout(this.debounceTimer);
+  @Listen('itemReordered')
+  handleItemReordered(event: CustomEvent<ITreeItemReorderedEventDetail>) {
+    // Prevent leaking the internal per-item reorder event to consumers.
+    event.stopPropagation();
+
+    if (!this.hasDataItems) {
+      return;
     }
+
+    const signature = getReorderSignature(event.detail.parameters);
+    if (this.lastReorderSignature === signature) {
+      return;
+    }
+    this.lastReorderSignature = signature;
+    queueMicrotask(() => {
+      if (this.lastReorderSignature === signature) {
+        this.lastReorderSignature = undefined;
+      }
+    });
+
+    const nextItems = reorderTreeItemsData(this.items!, event.detail.parameters);
+    if (!nextItems) {
+      return;
+    }
+
+    this.itemsReordered.emit({
+      items: nextItems,
+      parameters: event.detail.parameters,
+    });
   }
 
   private handleInputChange = (event: CustomEvent) => {
@@ -163,6 +299,12 @@ export class ModusWcContentTree {
   };
 
   private updateSlotContent = () => {
+    if (this.hasDataItems) {
+      this.setHasContent(true);
+      this.cachedItems = undefined;
+      return;
+    }
+
     if (!this.slotEl) return;
 
     const assigned = this.slotEl
@@ -173,7 +315,7 @@ export class ModusWcContentTree {
           (node as HTMLElement).tagName !== 'STYLE'
       );
 
-    this.hasSlotContent = assigned.length > 0;
+    this.setHasContent(assigned.length > 0);
     // Invalidate cache when content changes
     this.cachedItems = undefined;
   };
@@ -201,6 +343,29 @@ export class ModusWcContentTree {
     });
 
     await Promise.all(promises);
+  }
+
+  private renderTreeItems(items: ITreeItemData[]) {
+    return items.map((item) => {
+      const hasChildren =
+        Array.isArray(item.children) && item.children.length > 0;
+
+      return (
+        <modus-wc-tree-item
+          key={item.id}
+          label={item.label}
+          value={item.id}
+          itemsReordering={this.isReorderingEnabled}
+          hasSubtree={hasChildren}
+        >
+          {hasChildren && (
+            <modus-wc-tree-view isSubList={true}>
+              {this.renderTreeItems(item.children!)}
+            </modus-wc-tree-view>
+          )}
+        </modus-wc-tree-item>
+      );
+    });
   }
 
   render() {
@@ -249,7 +414,13 @@ export class ModusWcContentTree {
             )}
           </div>
           <div class="modus-wc-content-tree-content">
-            <slot></slot>
+            {this.hasDataItems ? (
+              <modus-wc-tree-view>
+                {this.renderTreeItems(this.items!)}
+              </modus-wc-tree-view>
+            ) : (
+              <slot></slot>
+            )}
             {!this.hasSlotContent && (
               <div class="modus-wc-content-tree-empty">
                 <modus-wc-icon

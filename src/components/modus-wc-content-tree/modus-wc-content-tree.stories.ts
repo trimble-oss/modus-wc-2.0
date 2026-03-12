@@ -1,13 +1,18 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
-import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
+import {
+  ITreeItemData,
+  ITreeItemElement,
+} from './modus-wc-tree-item/modus-wc-tree-item';
 
 interface ContentTreeArgs {
   'custom-class'?: string;
   'search-placeholder'?: string;
   'include-search'?: boolean;
   'include-actions'?: boolean;
+  'items-reordering'?: boolean;
+  items?: ITreeItemData[];
 }
 
 const meta: Meta<ContentTreeArgs> = {
@@ -18,6 +23,8 @@ const meta: Meta<ContentTreeArgs> = {
     'search-placeholder': 'Search...',
     'include-search': true,
     'include-actions': true,
+    'items-reordering': false,
+    items: undefined,
   },
   argTypes: {
     'search-placeholder': {
@@ -32,12 +39,18 @@ const meta: Meta<ContentTreeArgs> = {
       control: { type: 'boolean' },
       table: { category: 'Content Tree' },
     },
+    'items-reordering': {
+      control: { type: 'boolean' },
+      table: { category: 'Content Tree' },
+    },
   },
   decorators: [withActions],
   parameters: {
     actions: {
       handles: [
         'itemSelect',
+        'itemReordered',
+        'itemsReordered',
         'treeActionClick',
         'selectionsChange',
         'dropdownOpened',
@@ -49,6 +62,27 @@ const meta: Meta<ContentTreeArgs> = {
 export default meta;
 
 type Story = StoryObj<ContentTreeArgs>;
+
+const nestedItemsReorderingData: ITreeItemData[] = [
+  {
+    id: 'phase-1',
+    label: 'Phase 1',
+    children: [
+      { id: 'backlog', label: 'Backlog' },
+      { id: 'in-progress', label: 'In Progress' },
+      { id: 'review', label: 'Review' },
+    ],
+  },
+  {
+    id: 'phase-2',
+    label: 'Phase 2',
+    children: [
+      { id: 'qa', label: 'QA' },
+      { id: 'uat', label: 'UAT' },
+      { id: 'done', label: 'Done' },
+    ],
+  },
+];
 
 export const Default: Story = {
   parameters: {
@@ -91,6 +125,7 @@ export const Default: Story = {
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
+        .itemsReordering=${args['items-reordering']}
       >
         <modus-wc-tree-view>
           <modus-wc-tree-item
@@ -642,47 +677,79 @@ export const WithActions: Story = {
     docs: {
       description: {
         story:
-          'This example demonstrates tree items with custom actions. Actions can be used to perform operations like toggling visibility or deleting items.',
+          'This example demonstrates custom item actions including visibility toggle, inline edit, duplicate, add sibling, add child, and delete.',
       },
       source: {
         code: `
 <script>
-const getTreeItemActions = (isDisabled) => [
-  {
-    id: 'toggle-visibility',
-    label: isDisabled ? 'Hidden' : 'Visible',
-    icon: isDisabled ? 'visibility_off' : 'visibility_on',
-    ariaLabel: isDisabled ? 'Set item to visible' : 'Set item to hidden',
-    size: 'sm',
-  },
-  {
-    id: 'delete',
-    label: 'Delete',
-    icon: 'delete',
-    ariaLabel: 'Delete item',
-    size: 'sm',
-  },
+const getActions = (disabled) => [
+  { id: 'toggle-visibility', label: disabled ? 'Hidden' : 'Visible', icon: disabled ? 'visibility_off' : 'visibility_on' },
+  { id: 'edit-label', label: 'Edit Label', icon: 'pencil' },
+  { id: 'duplicate', label: 'Duplicate', icon: 'copy_content' },
+  { id: 'add-node-above', label: 'Add Node Above', icon: 'add' },
+  { id: 'add-node-below', label: 'Add Node Below', icon: 'add' },
+  { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right' },
+  { id: 'delete', label: 'Delete', icon: 'delete' }
 ];
 
-const handleTreeActionClick = (event) => {
-  const actionSource = event.target;
-  const treeItem = actionSource.closest('modus-wc-tree-item');
+const assignActions = (item) => {
+  item.inlineLabelEdit = false;
+  item.treeItemActions = getActions(!!item.disabled);
+  item.querySelectorAll('modus-wc-tree-item').forEach((child) => {
+    child.inlineLabelEdit = false;
+    child.treeItemActions = getActions(!!child.disabled);
+  });
+};
 
+const createNode = (label = 'New Node') => {
+  const node = document.createElement('modus-wc-tree-item');
+  node.label = label;
+  node.value = 'new-node-' + Date.now() + '-' + Math.random();
+  assignActions(node);
+  return node;
+};
+
+const handleAction = (event) => {
+  const treeItem = event.target.closest('modus-wc-tree-item');
   if (!treeItem) return;
 
-  if (event.detail.actionId === 'delete') {
-    treeItem.remove();
-    return;
+  switch (event.detail.actionId) {
+    case 'delete':
+      treeItem.remove();
+      return;
+    case 'duplicate':
+      treeItem.after(createNode(treeItem.label));
+      return;
+    case 'add-node-above':
+      treeItem.before(createNode());
+      return;
+    case 'add-node-below':
+      treeItem.after(createNode());
+      return;
+    case 'add-child': {
+      let subList = treeItem.querySelector(':scope > modus-wc-tree-view');
+      if (!subList) {
+        subList = document.createElement('modus-wc-tree-view');
+        subList.setAttribute('is-sub-list', 'true');
+        treeItem.appendChild(subList);
+      }
+      treeItem.hasSubtree = true;
+      subList.appendChild(createNode('New Child'));
+      return;
+    }
+    case 'toggle-visibility':
+      treeItem.disabled = !treeItem.disabled;
+      treeItem.treeItemActions = getActions(!!treeItem.disabled);
+      return;
+    case 'edit-label':
+      treeItem.inlineLabelEdit = true;
+      return;
   }
-
-  if (event.detail.actionId !== 'toggle-visibility') return;
-
-  treeItem.disabled = !treeItem.disabled;
-  treeItem.treeItemActions = getTreeItemActions(!!treeItem.disabled);
 };
+
 </script>
 
-<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+<modus-wc-content-tree include-search="true" include-actions="true">
   <modus-wc-tree-view>
     <modus-wc-tree-item label="Documents" value="documents"></modus-wc-tree-item>
     <modus-wc-tree-item label="Projects" value="projects"></modus-wc-tree-item>
@@ -691,25 +758,57 @@ const handleTreeActionClick = (event) => {
 </modus-wc-content-tree>
 
 <script>
-const contentTree = document.querySelector('modus-wc-content-tree');
-const treeItems = contentTree.querySelectorAll('modus-wc-tree-item');
-treeItems.forEach(item => {
-  item.treeItemActions = getTreeItemActions(false);
-});
-
-contentTree.addEventListener('treeActionClick', handleTreeActionClick);
+const tree = document.querySelector('modus-wc-content-tree');
+tree.querySelectorAll('modus-wc-tree-item').forEach((item) => assignActions(item));
+tree.addEventListener('treeActionClick', handleAction);
 </script>
 `,
       },
     },
   },
+
   render: (args) => {
-    const getTreeItemActions = (isDisabled: boolean) => [
+    const getActions = (disabled: boolean) => [
       {
         id: 'toggle-visibility',
-        label: isDisabled ? 'Hidden' : 'Visible',
-        icon: isDisabled ? 'visibility_off' : 'visibility_on',
-        ariaLabel: isDisabled ? 'Set item to visible' : 'Set item to hidden',
+        label: disabled ? 'Hidden' : 'Visible',
+        icon: disabled ? 'visibility_off' : 'visibility_on',
+        ariaLabel: disabled ? 'Set item to visible' : 'Set item to hidden',
+        size: 'sm',
+      },
+      {
+        id: 'edit-label',
+        label: 'Edit Label',
+        icon: 'pencil',
+        ariaLabel: 'Edit item label',
+        size: 'sm',
+      },
+      {
+        id: 'duplicate',
+        label: 'Duplicate',
+        icon: 'copy_content',
+        ariaLabel: 'Duplicate item',
+        size: 'sm',
+      },
+      {
+        id: 'add-node-above',
+        label: 'Add Node Above',
+        icon: 'add',
+        ariaLabel: 'Add node above',
+        size: 'sm',
+      },
+      {
+        id: 'add-node-below',
+        label: 'Add Node Below',
+        icon: 'add',
+        ariaLabel: 'Add node below',
+        size: 'sm',
+      },
+      {
+        id: 'add-child',
+        label: 'Add Child',
+        icon: 'subdirectory_arrow_right',
+        ariaLabel: 'Add child node',
         size: 'sm',
       },
       {
@@ -721,25 +820,175 @@ contentTree.addEventListener('treeActionClick', handleTreeActionClick);
       },
     ];
 
-    const handleTreeActionClick = (
-      event: CustomEvent<{ actionId: string }>
-    ) => {
-      const actionSource = event.target as HTMLElement;
-      const treeItem = actionSource.closest(
+    const assignActions = (item: ITreeItemElement) => {
+      item.inlineLabelEdit = false;
+      item.treeItemActions = getActions(!!item.disabled);
+
+      item.querySelectorAll('modus-wc-tree-item').forEach((child) => {
+        const treeChild = child as ITreeItemElement;
+        treeChild.inlineLabelEdit = false;
+        treeChild.treeItemActions = getActions(!!treeChild.disabled);
+      });
+    };
+
+    const createNode = (label = 'New Node') => {
+      const node = document.createElement(
         'modus-wc-tree-item'
       ) as ITreeItemElement;
+      node.label = label;
+      node.value = `new-node-${Date.now()}-${Math.random()}`;
+      assignActions(node);
+      return node;
+    };
 
+    let lastActionSignature: string | null = null;
+
+    const handleAction = (event: CustomEvent<{ actionId: string }>) => {
+      const source = event.target as HTMLElement;
+      const treeItem = source.closest(
+        'modus-wc-tree-item'
+      ) as ITreeItemElement | null;
       if (!treeItem) return;
 
-      if (event.detail.actionId === 'delete') {
-        treeItem.remove();
-        return;
+      const signature = `${event.detail.actionId}:${treeItem.value}:${event.timeStamp}`;
+      if (lastActionSignature === signature) return;
+      lastActionSignature = signature;
+      queueMicrotask(() => {
+        if (lastActionSignature === signature) {
+          lastActionSignature = null;
+        }
+      });
+
+      switch (event.detail.actionId) {
+        case 'delete':
+          treeItem.remove();
+          break;
+
+        case 'duplicate': {
+          const duplicateNode = createNode(treeItem.label);
+          treeItem.after(duplicateNode);
+          return;
+        }
+
+        case 'add-node-above':
+          treeItem.before(createNode());
+          break;
+
+        case 'add-node-below':
+          treeItem.after(createNode());
+          break;
+
+        case 'add-child': {
+          let subList = treeItem.querySelector(
+            ':scope > modus-wc-tree-view'
+          ) as HTMLElement | null;
+
+          if (!subList) {
+            subList = document.createElement('modus-wc-tree-view');
+            subList.setAttribute('is-sub-list', 'true');
+            treeItem.appendChild(subList);
+          }
+
+          treeItem.hasSubtree = true;
+          subList.appendChild(createNode('New Child'));
+          break;
+        }
+
+        case 'toggle-visibility':
+          treeItem.disabled = !treeItem.disabled;
+          treeItem.treeItemActions = getActions(!!treeItem.disabled);
+          break;
+
+        case 'edit-label':
+          treeItem.inlineLabelEdit = true;
+          break;
       }
+    };
 
-      if (event.detail.actionId !== 'toggle-visibility') return;
+    return html`
+      <modus-wc-content-tree
+        class="with-actions-tree"
+        search-placeholder=${args['search-placeholder']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+        @treeActionClick=${handleAction}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            value="documents"
+            .treeItemActions=${getActions(false)}
+          ></modus-wc-tree-item>
 
-      treeItem.disabled = !treeItem.disabled;
-      treeItem.treeItemActions = getTreeItemActions(treeItem.disabled);
+          <modus-wc-tree-item
+            label="Projects"
+            value="projects"
+            .treeItemActions=${getActions(false)}
+          ></modus-wc-tree-item>
+
+          <modus-wc-tree-item
+            label="Resources"
+            value="resources"
+            .treeItemActions=${getActions(false)}
+          ></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const ItemsReordering: Story = {
+  name: 'Items Reordering',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Enables drag-and-drop reordering with top/bottom drop-line indicators for data-driven `items` in the same level.',
+      },
+      source: {
+        code: `
+<script>
+const items = [
+  {
+    id: 'phase-1',
+    label: 'Phase 1',
+    children: [
+      { id: 'backlog', label: 'Backlog' },
+      { id: 'in-progress', label: 'In Progress' },
+      { id: 'review', label: 'Review' }
+    ]
+  },
+  {
+    id: 'phase-2',
+    label: 'Phase 2',
+    children: [
+      { id: 'qa', label: 'QA' },
+      { id: 'uat', label: 'UAT' },
+      { id: 'done', label: 'Done' }
+    ]
+  }
+];
+</script>
+
+<modus-wc-content-tree
+  include-search="false"
+  include-actions="false"
+  items-reordering="true"
+  .items={items}>
+</modus-wc-content-tree>
+`,
+      },
+    },
+  },
+  render: (args) => {
+    const items = args.items ?? nestedItemsReorderingData;
+
+    const handleItemsReordered = (
+      event: CustomEvent<{ items: ITreeItemData[] }>
+    ) => {
+      // Controlled usage: update bound items and optionally send event.detail.items to backend.
+      const tree = event.target as HTMLElement & { items?: ITreeItemData[] };
+      tree.items = event.detail.items;
     };
 
     return html`
@@ -748,29 +997,10 @@ contentTree.addEventListener('treeActionClick', handleTreeActionClick);
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
-        @treeActionClick=${handleTreeActionClick}
-      >
-        <modus-wc-tree-view>
-          <modus-wc-tree-item
-            label="Documents"
-            value="documents"
-            .treeItemActions=${getTreeItemActions(false)}
-          >
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Projects"
-            value="projects"
-            .treeItemActions=${getTreeItemActions(false)}
-          >
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Resources"
-            value="resources"
-            .treeItemActions=${getTreeItemActions(false)}
-          >
-          </modus-wc-tree-item>
-        </modus-wc-tree-view>
-      </modus-wc-content-tree>
+        .itemsReordering=${true}
+        .items=${items}
+        @itemsReordered=${handleItemsReordered}
+      ></modus-wc-content-tree>
     `;
   },
 };

@@ -29,7 +29,7 @@ modus-wc-tree-actions {
   .modus-wc-tree-more-actions-dropdown {
     background: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-100);
-    border-radius: 4px;
+    border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     display: none;
     min-width: 150px;
@@ -67,6 +67,38 @@ modus-wc-tree-actions {
     span {
       font-size: var(--modus-wc-font-size-sm, 0.875rem);
     }
+  }
+
+  .modus-wc-tree-delete-confirmation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+    max-width: 182px;
+    padding: var(--modus-wc-font-size-3xl);
+    text-align: center;
+  }
+
+  .modus-wc-tree-delete-confirmation-title {
+    color: var(--modus-wc-color-base-content-hight-contrast);
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: 700;
+  }
+
+  .modus-wc-tree-delete-confirmation-text {
+    color: var(--modus-wc-color-base-content-hight-contrast);
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 1.5;
+  }
+
+  .modus-wc-tree-delete-confirmation-actions {
+    display: flex;
+    gap: var(--modus-wc-spacing-md, 1rem);
+    justify-content: center;
+    margin-block-start: var(--modus-wc-spacing-xs, 0.25rem);
+  }
+
+  .modus-wc-tree-cancel-confirmation-button {
+    background-color: var(--modus-wc-color-base-100);
   }
 }
 

@@ -36,6 +36,14 @@ export class ModusWcTreeActions {
   private moreActionsButton!: HTMLElement;
   private moreActionsDropdown!: HTMLElement;
   private popperInstance: PopperInstance | null = null;
+  private readonly handleDocumentPointerDown = (event: Event) => {
+    if (!this.isDropdownOpen) return;
+
+    const target = event.target as Node | null;
+    if (!target || !this.el.contains(target)) {
+      this.isDropdownOpen = false;
+    }
+  };
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -48,6 +56,7 @@ export class ModusWcTreeActions {
 
   /** Internal state for dropdown visibility */
   @State() isDropdownOpen: boolean = false;
+  @State() pendingDeleteAction?: ITreeItemActions;
 
   /** Event emitted when a dropdown is opened */
   @StencilEvent() dropdownOpened!: EventEmitter<HTMLElement>;
@@ -60,6 +69,11 @@ export class ModusWcTreeActions {
 
   componentDidLoad() {
     this.updatePopperInstance();
+    document.addEventListener(
+      'pointerdown',
+      this.handleDocumentPointerDown,
+      true
+    );
   }
 
   @Watch('actions')
@@ -67,7 +81,30 @@ export class ModusWcTreeActions {
     this.updatePopperInstance();
   }
 
+  @Watch('isDropdownOpen')
+  onDropdownOpenChange() {
+    if (!this.isDropdownOpen) {
+      this.pendingDeleteAction = undefined;
+      return;
+    }
+
+    if (!this.isDropdownOpen || !this.popperInstance) {
+      return;
+    }
+
+    // Recalculate after the dropdown is rendered with `show` class.
+    requestAnimationFrame(() => {
+      void this.popperInstance?.update();
+    });
+  }
+
   disconnectedCallback() {
+    document.removeEventListener(
+      'pointerdown',
+      this.handleDocumentPointerDown,
+      true
+    );
+
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -97,11 +134,37 @@ export class ModusWcTreeActions {
     event.stopPropagation();
     if (action.disabled) return;
 
+    if (action.id === 'delete') {
+      this.pendingDeleteAction = action;
+      this.isDropdownOpen = true;
+      if (this.popperInstance) {
+        void this.popperInstance.update();
+      }
+      return;
+    }
+
     this.treeActionClick.emit({
       actionId: action.id,
       actionName: action.label,
     });
 
+    this.isDropdownOpen = false;
+  };
+
+  private handleDeleteCancel = (event: MouseEvent) => {
+    event.stopPropagation();
+    this.pendingDeleteAction = undefined;
+  };
+
+  private handleDeleteConfirm = (event: MouseEvent) => {
+    event.stopPropagation();
+    if (!this.pendingDeleteAction) return;
+
+    this.treeActionClick.emit({
+      actionId: this.pendingDeleteAction.id,
+      actionName: this.pendingDeleteAction.label,
+    });
+    this.pendingDeleteAction = undefined;
     this.isDropdownOpen = false;
   };
 
@@ -143,7 +206,7 @@ export class ModusWcTreeActions {
       this.moreActionsDropdown,
       {
         placement: 'bottom',
-        strategy: 'absolute',
+        strategy: 'fixed',
         modifiers: [
           {
             name: 'offset',
@@ -231,23 +294,54 @@ export class ModusWcTreeActions {
                 ref={(el) => (this.moreActionsDropdown = el as HTMLElement)}
                 role="menu"
               >
-                {remainingActions.map((action) => (
-                  <button
-                    key={action.id}
-                    class={`modus-wc-tree-dropdown-action ${action.disabled ? 'disabled' : ''}`}
-                    disabled={action.disabled}
-                    onClick={(e) => this.handleActionClick(action, e)}
-                    role="menuitem"
-                    aria-label={action.ariaLabel || action.label}
-                  >
-                    <modus-wc-icon
-                      name={action.icon}
-                      size={this.size}
-                      customClass="modus-wc-tree-action-icon"
-                    ></modus-wc-icon>
-                    {action.label}
-                  </button>
-                ))}
+                {this.pendingDeleteAction ? (
+                  <div class="modus-wc-tree-delete-confirmation">
+                    <div class="modus-wc-tree-delete-confirmation-title">
+                      Confirm Deletion
+                    </div>
+                    <div class="modus-wc-tree-delete-confirmation-text">
+                      Are you sure you want to delete this item?
+                    </div>
+                    <div class="modus-wc-tree-delete-confirmation-actions">
+                      <modus-wc-button
+                        color="tertiary"
+                        size="sm"
+                        customClass="modus-wc-tree-cancel-confirmation-button"
+                        onClick={this.handleDeleteCancel}
+                        aria-label="Cancel delete"
+                      >
+                        Cancel
+                      </modus-wc-button>
+                      <modus-wc-button
+                        color="danger"
+                        size="sm"
+                        customClass="modus-wc-tree-delete-confirmation-button"
+                        onClick={this.handleDeleteConfirm}
+                        aria-label="Confirm delete"
+                      >
+                        Delete
+                      </modus-wc-button>
+                    </div>
+                  </div>
+                ) : (
+                  remainingActions.map((action) => (
+                    <button
+                      key={action.id}
+                      class={`modus-wc-tree-dropdown-action ${action.disabled ? 'disabled' : ''}`}
+                      disabled={action.disabled}
+                      onClick={(e) => this.handleActionClick(action, e)}
+                      role="menuitem"
+                      aria-label={action.ariaLabel || action.label}
+                    >
+                      <modus-wc-icon
+                        name={action.icon}
+                        size={this.size}
+                        customClass="modus-wc-tree-action-icon"
+                      ></modus-wc-icon>
+                      {action.label}
+                    </button>
+                  ))
+                )}
               </div>
             </div>
           )}

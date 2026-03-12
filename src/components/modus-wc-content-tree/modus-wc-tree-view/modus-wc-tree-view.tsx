@@ -23,6 +23,9 @@ export class ModusWcTreeView {
   /** Indicates that this list is a nested sublist. */
   @Prop() isSubList?: boolean = false;
 
+  /** If true, shows the connector line for nested sublists. */
+  @Prop() showConnectorLine?: boolean = true;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -48,6 +51,9 @@ export class ModusWcTreeView {
   private getClasses(): string {
     if (this.isSubList) {
       const classList: string[] = ['modus-wc-tree-dropdown'];
+      if (!this.showConnectorLine) {
+        classList.push('modus-wc-tree-dropdown-no-line');
+      }
       if (this.customClass) classList.push(this.customClass);
       return classList.join(' ');
     }

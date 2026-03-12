@@ -18,6 +18,8 @@ A tree item component that represents a single node in a hierarchical tree struc
 | `customClass`        | `custom-class`      | Custom CSS class to apply to the li element.                                                                        | `string \| undefined`             | `''`        |
 | `disabled`           | `disabled`          | The disabled state of the tree item.                                                                                | `boolean \| undefined`            | `undefined` |
 | `hasSubtree`         | `has-subtree`       | Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior. | `boolean \| undefined`            | `undefined` |
+| `inlineLabelEdit`    | `inline-label-edit` | If true, renders an inline editable text input for the label.                                                       | `boolean \| undefined`            | `false`     |
+| `itemsReordering`    | `items-reordering`  | If true, shows a drag handle icon for item reordering UX.                                                           | `boolean \| undefined`            | `false`     |
 | `label` _(required)_ | `label`             | The text label displayed for the tree item.                                                                         | `string`                          | `undefined` |
 | `selected`           | `selected`          | The selected state of the tree item.                                                                                | `boolean \| undefined`            | `undefined` |
 | `size`               | `size`              | The size of the tree item icons and actions.                                                                        | `"lg" \| "md" \| "sm" \| "xs"`    | `'xs'`      |
@@ -29,6 +31,7 @@ A tree item component that represents a single node in a hierarchical tree struc
 
 | Event              | Description                                                         | Type                                         |
 | ------------------ | ------------------------------------------------------------------- | -------------------------------------------- |
+| `itemReordered`    | Event emitted when an item is reordered via drag and drop.          | `CustomEvent<ITreeItemReorderedEventDetail>` |
 | `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; }>`            |
 | `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>` |
 
@@ -58,23 +61,33 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-content-tree](..)
+
 ### Depends on
 
-- [modus-wc-button](../../modus-wc-button)
 - [modus-wc-icon](../../modus-wc-icon)
+- [modus-wc-button](../../modus-wc-button)
 - [modus-wc-checkbox](../../modus-wc-checkbox)
+- [modus-wc-text-input](../../modus-wc-text-input)
 - modus-wc-tree-actions
 
 ### Graph
 ```mermaid
 graph TD;
-  modus-wc-tree-item --> modus-wc-button
   modus-wc-tree-item --> modus-wc-icon
+  modus-wc-tree-item --> modus-wc-button
   modus-wc-tree-item --> modus-wc-checkbox
+  modus-wc-tree-item --> modus-wc-text-input
   modus-wc-tree-item --> modus-wc-tree-actions
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-input-feedback
+  modus-wc-input-feedback --> modus-wc-icon
   modus-wc-tree-actions --> modus-wc-button
   modus-wc-tree-actions --> modus-wc-icon
+  modus-wc-content-tree --> modus-wc-tree-item
   style modus-wc-tree-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
