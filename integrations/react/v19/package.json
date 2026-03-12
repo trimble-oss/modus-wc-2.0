@@ -40,6 +40,13 @@
     "copy-assets": "copyfiles -u 3 'node_modules/@trimble-oss/moduswebcomponents/assets/**/*' dist",
     "copy-meta": "copyfiles -f README.md package.json dist"
   },
+  "overrides": {
+    "ts-morph": {
+      "@ts-morph/common": {
+        "minimatch": "9.0.9"
+      }
+    }
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
