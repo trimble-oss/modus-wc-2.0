@@ -58,7 +58,7 @@ export interface INavbarVisibility {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- *The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
+ * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -162,7 +162,7 @@ export class ModusWcNavbar {
   @StencilEvent() searchInputOpenChange!: EventEmitter<boolean>;
 
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
-  @StencilEvent() signOutClick!: EventEmitter<void>;
+  @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
    */
@@ -266,15 +266,12 @@ export class ModusWcNavbar {
       const userButton = this.el.querySelector(
         'modus-wc-button:has([class*="user-button"])'
       );
-      const profileMenu = this.el.querySelector('modus-wc-profile-menu');
 
       if (
         this.userRef &&
         !this.userRef.contains(target) &&
         userButton !== target &&
-        !userButton?.contains(target) &&
-        profileMenu !== target &&
-        !profileMenu?.contains(target)
+        !userButton?.contains(target)
       ) {
         this.userMenuOpen = false;
         this.userMenuOpenChange.emit(false);
@@ -612,7 +609,7 @@ export class ModusWcNavbar {
                   variant="borderless"
                 >
                   <modus-wc-avatar
-                    alt={this.userCard?.headerName || ''}
+                    alt={this.userCard?.userName}
                     imgSrc={this.userCard?.profileImageUrl}
                     initials={this.userCard?.userName}
                     size="xs"

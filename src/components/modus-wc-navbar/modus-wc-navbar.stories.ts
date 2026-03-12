@@ -140,7 +140,6 @@ const meta: Meta<NavbarArgs> = {
         'helpClick',
         'mainMenuOpenChange',
         'menuItemClick',
-        'myTrimbleClick',
         'notificationsMenuOpenChange',
         'notificationsClick',
         'searchChange',
