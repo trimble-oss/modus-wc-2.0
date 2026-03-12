@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Signing in...</title></head>
+<body>
+<p>Signing in, please wait...</p>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const state = params.get('state');
+  const error = params.get('error');
+
+  if (window.opener) {
+    window.opener.postMessage(
+      { type: 'tid-callback', code, state, error },
+      window.location.origin
+    );
+  }
+</script>
+</body>
+</html>
