@@ -2,6 +2,17 @@
 <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
 <meta property="og:title" content="Modus Web Components Library 2.0" />
 <meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.css" />
+<script type="module" src="./modus-wc/modus-wc.esm.js"></script>
+<script>
+  // Load Modus styles in the manager context
+  const isLocal = window.location.hostname.includes('localhost');
+  const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssPath;
+  document.head.appendChild(link);
+</script>
 <style>
   html,
   body,
