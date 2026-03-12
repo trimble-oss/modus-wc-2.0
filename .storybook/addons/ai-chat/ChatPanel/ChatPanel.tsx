@@ -41,7 +41,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       uiConfig: {
         theme,
         contentVariant: ContentVariants.Chat,
-        variant: ChatUiVariants.Full,
+        variant: ChatUiVariants.Minimal,
         chatInput: {
           buttons: [],
           hideModelSelection: true,
