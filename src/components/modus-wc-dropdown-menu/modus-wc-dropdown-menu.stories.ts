@@ -192,3 +192,26 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const IconOnlyDropdownMenu: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  /* Storybook styling */
+  div[id^='story--components-dropdown-menu--icon-only-dropdown-menu'] {
+    height: 60px;
+  }
+</style>
+
+<modus-wc-dropdown-menu button-shape="square">
+  <div slot="button">
+    <modus-wc-icon decorative name="more_vertical"></modus-wc-icon>
+  </div>
+  <div slot="menu">
+    <modus-wc-menu-item label="Item One"></modus-wc-menu-item>
+  </div>
+</modus-wc-dropdown-menu>
+    `;
+  },
+};
