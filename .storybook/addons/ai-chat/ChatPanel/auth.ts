@@ -5,7 +5,19 @@ const PKCE_VERIFIER_KEY = 'agentic_chat_pkce_verifier';
 const TID_AUTH_URL = 'https://id.trimble.com';
 const TID_CLIENT_ID = '61abccab-10ea-47bf-a616-b1b9c48bfa7b';
 const TID_SCOPES = 'openid agents';
-const TID_REDIRECT_PATH = '/public/tid-callback.html';
+
+// Dynamically resolve the callback URL relative to the Storybook root,
+// so it works both locally (localhost:6006) and on GitHub Pages (e.g. trimble-oss.github.io/modus-wc-2.0/main/)
+function getCallbackUrl(): string {
+  const { origin, pathname } = window.location;
+  // Strip query/hash, then find the storybook root by removing the path segment after ?path=
+  // The Storybook URL looks like: /modus-wc-2.0/main/?path=/docs/...
+  // We want: /modus-wc-2.0/main/public/tid-callback.html
+  const base = pathname.replace(/\?.*$/, '').replace(/\/$/, '');
+  // If running locally with no sub-path, base will be '' or '/'
+  const root = base.includes('/') ? base : '';
+  return `${origin}${root}/public/tid-callback.html`;
+}
 
 function base64UrlEncode(array: Uint8Array): string {
   return btoa(String.fromCharCode(...array))
@@ -43,7 +55,7 @@ export async function openTidLogin(): Promise<string> {
   const { codeVerifier, codeChallenge } = await generatePKCEPair();
   sessionStorage.setItem(PKCE_VERIFIER_KEY, codeVerifier);
 
-  const redirectUri = window.location.origin + TID_REDIRECT_PATH;
+  const redirectUri = getCallbackUrl();
   const state = base64UrlEncode(crypto.getRandomValues(new Uint8Array(16)));
 
   const authUrl = new URL(`${TID_AUTH_URL}/oauth/authorize`);
