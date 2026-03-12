@@ -15,21 +15,15 @@ modus-wc-navbar .modus-wc-navbar {
     }
   }
 
-  &:not(.trimble-logo)
-    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  &:not(.logo) .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     background: var(--modus-wc-color-base-100);
     border: 0;
     box-shadow: none;
     color: var(--modus-wc-color-base-content);
   }
 
-  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.trimble-logo {
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.logo {
     background: transparent;
-  }
-
-  // Trimble logo button
-  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
-    fill: var(--modus-wc-color-primary);
   }
 
   // Common dropdown styles
@@ -71,11 +65,14 @@ modus-wc-navbar .modus-wc-navbar {
     }
 
     // Trimble logo button
-    .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+    .logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
       padding: 0;
 
-      svg {
-        height: 24px;
+      .modus-wc-logo {
+        img {
+          max-height: 32px;
+          max-width: 260px;
+        }
       }
     }
   }
@@ -193,14 +190,13 @@ modus-wc-navbar .modus-wc-navbar {
   background-color: var(--modus-wc-color-gray-10);
 
   // Common button styles
-  &:not(.trimble-logo)
-    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  &:not(.logo) .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     background: transparent;
     color: var(--modus-wc-color-white);
   }
 
   // Trimble logo button
-  .trimble-logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
+  .logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
     fill: var(--modus-wc-color-white);
   }
 
@@ -218,8 +214,7 @@ modus-wc-navbar .modus-wc-navbar {
   border-bottom: var(--modus-wc-border-width-xs) solid
     var(--modus-wc-color-base-200);
 
-  :not(.trimble-logo)
-    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
+  :not(.logo) .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     background: transparent;
   }
 }
