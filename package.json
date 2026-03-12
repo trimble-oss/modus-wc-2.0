@@ -109,6 +109,13 @@
     "vite": "^7.1.7",
     "wireit": "^0.14.12"
   },
+  "overrides": {
+    "ts-morph": {
+      "@ts-morph/common": {
+        "minimatch": "9.0.9"
+      }
+    }
+  },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.40.2",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
