@@ -188,7 +188,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   aria-label="Sign in with Trimble ID"
                   onClick={handleSignIn}
                 >
-                  <span>{isLoggingIn ? 'Signing in...' : 'Sign in with Trimble ID'}</span>
+                  <span>
+                    {isLoggingIn ? 'Signing in...' : 'Sign in with Trimble ID'}
+                  </span>
                 </modus-wc-button>
               </div>
             </div>
