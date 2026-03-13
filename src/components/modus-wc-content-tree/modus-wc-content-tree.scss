@@ -37,10 +37,6 @@ modus-wc-content-tree {
     min-height: 500px;
   }
 
-  li.modus-wc-tree-item-selected:not(.modus-wc-tree-dropdown-show li) {
-    border-inline-start: 2px solid var(--modus-wc-color-primary);
-  }
-
   .modus-wc-content-tree-header {
     padding: var(--modus-wc-spacing-sm);
   }

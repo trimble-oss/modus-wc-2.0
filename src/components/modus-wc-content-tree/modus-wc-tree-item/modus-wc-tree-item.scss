@@ -1,11 +1,39 @@
 /**
-* This component uses modus-wc-menu-item structure and DaisyUI menu classes.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
 modus-wc-tree-item {
   .content-tree-item {
     list-style: none;
+  }
+
+  .modus-wc-tree-item {
+    align-items: stretch;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    list-style: none;
+    position: relative;
+    user-select: none;
+  }
+
+  .modus-wc-tree-item-drag {
+    align-items: center;
+    color: var(--modus-wc-color-base-content);
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    z-index: 2;
+  }
+
+  .modus-wc-tree-item-selected {
+    border-inline-start: 2px solid var(--modus-wc-color-primary);
   }
 
   .modus-wc-tree-item-selected > .modus-wc-tree-content {
@@ -40,6 +68,11 @@ modus-wc-tree-item {
     display: flex;
     gap: var(--modus-wc-font-size-xs);
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-font-size-xs);
+    padding-inline-start: calc(
+      var(--modus-wc-tree-indent, 0) * 1.3rem + var(--modus-wc-font-size-xs)
+    );
+    position: relative;
+    width: 100%;
 
     .modus-wc-tree-drag-handle {
       left: 0;
@@ -69,6 +102,7 @@ modus-wc-tree-item {
     }
 
     &:hover {
+      background-color: var(--modus-wc-color-base-100);
       border-radius: unset;
 
       modus-wc-tree-actions
@@ -77,10 +111,6 @@ modus-wc-tree-item {
         visibility: visible;
       }
     }
-  }
-
-  .modus-wc-tree-item-group {
-    border-inline-start: 2px solid var(--modus-wc-color-primary);
   }
 
   .modus-wc-tree-item-labels {
@@ -135,10 +165,24 @@ modus-wc-tree-item {
   .modus-wc-tree-dropdown {
     display: none;
     list-style: none;
+    position: relative;
+
+    &::before {
+      background-color: var(--modus-wc-color-base-300);
+      bottom: 0.75rem;
+      content: '';
+      inset-inline-start: calc(
+        (var(--modus-wc-tree-indent, 0) + 1) * 1.3rem
+      );
+      opacity: 0.5;
+      position: absolute;
+      top: 0.75rem;
+      width: 1px;
+      z-index: 1;
+    }
 
     &.modus-wc-tree-dropdown-show {
       display: block;
-      margin-inline-start: 1.3rem;
     }
   }
 
@@ -156,18 +200,18 @@ modus-wc-tree-item {
       pointer-events: auto;
     }
   }
-}
 
-[data-theme='modus-classic-dark'],
-[data-theme='modus-modern-dark'],
-[data-theme='connect-dark'] {
-  modus-wc-tree-item {
-    .modus-wc-tree-item-selected > .modus-wc-tree-content {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-primary) 30%,
-        transparent
-      );
+  [data-theme='modus-classic-dark'],
+  [data-theme='modus-modern-dark'],
+  [data-theme='connect-dark'] {
+    modus-wc-tree-item {
+      .modus-wc-tree-item-selected > .modus-wc-tree-content {
+        background-color: color-mix(
+          in sRGB,
+          var(--modus-wc-color-primary) 30%,
+          transparent
+        );
+      }
     }
   }
 }

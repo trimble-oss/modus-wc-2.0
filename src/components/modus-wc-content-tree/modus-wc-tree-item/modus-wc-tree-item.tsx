@@ -91,8 +91,17 @@ export class ModusWcTreeItem {
     selectedValues: string[];
   }>;
 
+  private depth: number = 0;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    let parent = this.el.parentElement;
+    while (parent) {
+      if (parent.classList.contains('modus-wc-tree-dropdown')) {
+        this.depth++;
+      }
+      parent = parent.parentElement;
+    }
   }
 
   componentDidLoad() {
@@ -208,7 +217,7 @@ export class ModusWcTreeItem {
 
     const descendants = Array.from(
       submenu.querySelectorAll('modus-wc-tree-item')
-    ) as ITreeItemElement[];
+    );
     const checkboxItems = descendants.filter((item) => item.checkbox);
 
     if (!checkboxItems.length) return;
@@ -229,13 +238,13 @@ export class ModusWcTreeItem {
 
     const descendants = Array.from(
       submenu.querySelectorAll('modus-wc-tree-item')
-    ) as ITreeItemElement[];
+    );
 
     descendants.forEach((item) => {
       if (!item.checkbox) return;
 
       item.checked = selected;
-      item.isIndeterminate = false;
+      (item as ITreeItemElement).isIndeterminate = false;
 
       const checkbox = item.querySelector('modus-wc-checkbox');
       if (checkbox) {
@@ -271,7 +280,7 @@ export class ModusWcTreeItem {
     if (rootTreeView) {
       const allTreeItems = Array.from(
         rootTreeView.querySelectorAll('modus-wc-tree-item')
-      ) as ITreeItemElement[];
+      );
       const selectedValues = allTreeItems
         .filter((item) => item.checkbox && item.checked)
         .map((item) => item.value);
@@ -298,10 +307,21 @@ export class ModusWcTreeItem {
           onClick={this.handleItemSelect}
           onKeyDown={this.handleKeyDown}
           role="treeitem"
+          style={
+            { '--modus-wc-tree-indent': String(this.depth) } as Record<
+              string,
+              string
+            >
+          }
           tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
           <div class={`modus-wc-tree-content`}>
+            {this.selected && (
+              <div class="modus-wc-tree-item-drag">
+                <modus-wc-icon name="alert" size={this.size}></modus-wc-icon>
+              </div>
+            )}
             <modus-wc-button
               variant="borderless"
               shape="circle"

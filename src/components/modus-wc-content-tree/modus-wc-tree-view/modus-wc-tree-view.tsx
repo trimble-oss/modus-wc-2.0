@@ -52,7 +52,7 @@ export class ModusWcTreeView {
       return classList.join(' ');
     }
 
-    const classList: string[] = ['modus-wc-menu', 'modus-wc-tree-view'];
+    const classList: string[] = ['modus-wc-tree-view'];
     if (this.customClass) classList.push(this.customClass);
     return classList.join(' ');
   }
