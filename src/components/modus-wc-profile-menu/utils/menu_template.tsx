@@ -42,8 +42,8 @@ export const renderSubMenu = (
               <modus-wc-icon
                 slot="start-icon"
                 name={item.icon}
-                size={item.iconSize ?? 'sm'} //default to sm if value is not provided
-                variant={item.iconVariant || 'solid'} //default to solid if value is not provided
+                size={item.iconSize ?? 'sm'} // Fallback to 'sm' to provide a default icon size for both primary and secondary menus
+                variant={item.iconVariant || 'solid'} // Fallback to 'solid' to provide a default icon variant for both primary and secondary menus
               ></modus-wc-icon>
             )}
           </modus-wc-menu-item>
