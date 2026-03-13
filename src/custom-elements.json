@@ -2306,6 +2306,26 @@
             },
             {
               "kind": "method",
+              "name": "handleItemReordered",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<ITreeItemReorderedEventDetail>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemsChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemsReorderingChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2338,6 +2358,23 @@
               }
             },
             {
+              "name": "items",
+              "fieldName": "items",
+              "description": "Data-driven items to render as tree items.",
+              "type": {
+                "text": "ITreeItemData[]"
+              }
+            },
+            {
+              "name": "items-reordering",
+              "fieldName": "itemsReordering",
+              "default": "false",
+              "description": "If true, enables reordering UI for data-driven `items` trees.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "search-placeholder",
               "fieldName": "searchPlaceholder",
               "default": "'Search...'",
@@ -2348,7 +2385,16 @@
             }
           ],
           "tagName": "modus-wc-content-tree",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemsReordered",
+              "type": {
+                "text": "EventEmitter<{\r\n    items: ITreeItemData[];\r\n    parameters: ITreeItemReorderParameters;\r\n  }>"
+              },
+              "description": "Emits reordered data for controlled updates/backend sync."
+            }
+          ],
           "customElement": true
         }
       ],
@@ -2424,6 +2470,17 @@
             {
               "kind": "method",
               "name": "onActionsChange"
+            },
+            {
+              "kind": "method",
+              "name": "onDropdownOpenChange"
+            },
+            {
+              "kind": "field",
+              "name": "pendingDeleteAction",
+              "type": {
+                "text": "ITreeItemActions | undefined"
+              }
             },
             {
               "kind": "method",
@@ -2586,6 +2643,24 @@
               }
             },
             {
+              "name": "inline-label-edit",
+              "fieldName": "inlineLabelEdit",
+              "default": "false",
+              "description": "If true, renders an inline editable text input for the label.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "items-reordering",
+              "fieldName": "itemsReordering",
+              "default": "false",
+              "description": "If true, shows a drag handle icon for item reordering UX.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "label",
               "fieldName": "label",
               "description": "The text label displayed for the tree item.",
@@ -2632,9 +2707,17 @@
           "events": [
             {
               "kind": "field",
+              "name": "itemReordered",
+              "type": {
+                "text": "EventEmitter<ITreeItemReorderedEventDetail>"
+              },
+              "description": "Event emitted when an item is reordered via drag and drop."
+            },
+            {
+              "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\r\n    value: string;\r\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n    additive: boolean;\r\n    range: boolean;\r\n  }>"
               },
               "description": "Event emitted when a tree item is selected."
             },
@@ -2693,7 +2776,7 @@
                 {
                   "name": "event",
                   "type": {
-                    "text": "CustomEvent<{ value: string }>"
+                    "text": "CustomEvent<{ value: string; additive: boolean; range: boolean }>"
                   }
                 }
               ]
@@ -2721,10 +2804,36 @@
               "type": {
                 "text": "boolean"
               }
+            },
+            {
+              "name": "multi-select",
+              "fieldName": "multiSelect",
+              "default": "false",
+              "description": "If true, enables multi-select with Ctrl/Cmd and Shift keys.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "show-connector-line",
+              "fieldName": "showConnectorLine",
+              "default": "true",
+              "description": "If true, shows the connector line for nested sublists.",
+              "type": {
+                "text": "boolean"
+              }
             }
           ],
           "tagName": "modus-wc-tree-view",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedValues: string[];\r\n  }>"
+              }
+            }
+          ],
           "customElement": true
         }
       ],
@@ -4557,7 +4666,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.\r\n\r\n<strong><span style=\"color: black\">⚠️ Deprecation Alert</span></strong>\r\n\r\n\r\nThe `trimbleLogoClick` event is deprecated and will be removed in a future major version.\r\nPlease use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.\r\nThe `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\n⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.\r\nThe component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -4746,14 +4855,6 @@
             },
             {
               "kind": "field",
-              "name": "logoClick",
-              "type": {
-                "text": "EventEmitter<MouseEvent | KeyboardEvent>"
-              },
-              "description": "Event emitted when the logo is clicked or activated via keyboard."
-            },
-            {
-              "kind": "field",
               "name": "mainMenuOpenChange",
               "type": {
                 "text": "EventEmitter<boolean>"
@@ -4822,8 +4923,7 @@
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
-              "deprecated": "true",
-              "description": "Deprecated: Use logoClick instead. This event will be removed in a future release."
+              "description": "Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value."
             },
             {
               "kind": "field",
@@ -5291,6 +5391,157 @@
           "declaration": {
             "name": "ModusWcPanel",
             "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcProfileMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "menu-one",
+              "fieldName": "menuOne",
+              "description": "Configuration for the first menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "menu-two",
+              "fieldName": "menuTwo",
+              "description": "Configuration for the second menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "profile-props",
+              "fieldName": "profileProps",
+              "description": "Profile menu properties containing user information",
+              "type": {
+                "text": "IProfileMenuProps"
+              }
+            }
+          ],
+          "tagName": "modus-wc-profile-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuItemClick",
+              "type": {
+                "text": "EventEmitter<string>"
+              },
+              "description": "Emitted when any menu item is clicked, passing back the item value or label"
+            },
+            {
+              "kind": "field",
+              "name": "signOutClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Emitted when the Sign Out menu item is clicked"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcProfileMenu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-profile-menu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/utils/menu_template.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "renderSubMenu",
+          "parameters": [
+            {
+              "name": "subMenu",
+              "optional": true,
+              "type": {
+                "text": "ISubMenu"
+              },
+              "description": "The submenu configuration containing title and items"
+            },
+            {
+              "name": "onMenuItemClick",
+              "optional": true,
+              "type": {
+                "text": "(value: string) => void"
+              },
+              "description": "Callback function when a menu item is clicked"
+            },
+            {
+              "name": "isMainMenu",
+              "optional": true,
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "description": "Renders a submenu section with optional title and menu items",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "renderSubMenu",
+          "declaration": {
+            "name": "renderSubMenu",
+            "module": "src/components/modus-wc-profile-menu/utils/menu_template.tsx"
           }
         }
       ]

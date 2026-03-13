@@ -29,11 +29,11 @@ A tree item component that represents a single node in a hierarchical tree struc
 
 ## Events
 
-| Event              | Description                                                         | Type                                         |
-| ------------------ | ------------------------------------------------------------------- | -------------------------------------------- |
-| `itemReordered`    | Event emitted when an item is reordered via drag and drop.          | `CustomEvent<ITreeItemReorderedEventDetail>` |
-| `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; }>`            |
-| `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>` |
+| Event              | Description                                                         | Type                                                                 |
+| ------------------ | ------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `itemReordered`    | Event emitted when an item is reordered via drag and drop.          | `CustomEvent<ITreeItemReorderedEventDetail>`                         |
+| `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; additive: boolean; range: boolean; }>` |
+| `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>`                         |
 
 
 ## Methods

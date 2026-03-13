@@ -133,6 +133,8 @@ export class ModusWcTreeItem {
   /** Event emitted when a tree item is selected. */
   @StencilEvent({ bubbles: true, composed: true }) itemSelect!: EventEmitter<{
     value: string;
+    additive: boolean;
+    range: boolean;
   }>;
 
   /** Event emitted when checkbox selection changes in multi-select mode. */
@@ -235,13 +237,13 @@ export class ModusWcTreeItem {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       e.stopPropagation();
-      this.handleEmittedSelect();
+      this.handleEmittedSelect(e);
     }
   };
 
   private handleItemSelect = (event: MouseEvent) => {
     event.stopPropagation();
-    this.handleEmittedSelect();
+    this.handleEmittedSelect(event);
   };
 
   private handleInlineLabelInputChange = (event: CustomEvent) => {
@@ -313,8 +315,12 @@ export class ModusWcTreeItem {
     });
   };
 
-  private handleEmittedSelect = () => {
-    this.itemSelect.emit({ value: this.value });
+  private handleEmittedSelect = (event?: MouseEvent | KeyboardEvent) => {
+    this.itemSelect.emit({
+      value: this.value,
+      additive: !!(event?.ctrlKey || event?.metaKey),
+      range: !!event?.shiftKey,
+    });
   };
 
   private getRootTreeView(): HTMLElement | null {

@@ -1005,6 +1005,110 @@ const items = [
   },
 };
 
+export const MultiSelect: Story = {
+  name: 'Multi Select',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Enables multi-select on the tree view. Use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
+      },
+      source: {
+        code: `
+<modus-wc-tree-view multi-select="true">
+  <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Mobile App" value="mobile-app"></modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Resources" has-subtree="true" value="resources">
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Templates" value="templates"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Guidelines" value="guidelines"></modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Archives" has-subtree="true" value="archives">
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="2024" value="2024"></modus-wc-tree-item>
+      <modus-wc-tree-item label="2025" value="2025"></modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
+
+<script>
+  document.querySelector('modus-wc-tree-view')
+    .addEventListener('itemSelectionChange', (e) => {
+      console.log('Selected:', e.detail.selectedValues);
+    });
+</script>
+`,
+      },
+    },
+    actions: {
+      handles: ['itemSelect', 'itemSelectionChange'],
+    },
+  },
+  render: () => {
+    return html`
+      <modus-wc-tree-view .multiSelect=${true}>
+        <modus-wc-tree-item
+          label="Documents"
+          .hasSubtree=${true}
+          value="documents"
+        >
+          <modus-wc-tree-view .isSubList=${true}>
+            <modus-wc-tree-item label="Report.pdf" value="report">
+            </modus-wc-tree-item>
+            <modus-wc-tree-item label="Proposal.docx" value="proposal">
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Projects"
+          .hasSubtree=${true}
+          value="projects"
+        >
+          <modus-wc-tree-view .isSubList=${true}>
+            <modus-wc-tree-item label="Website Redesign" value="website">
+            </modus-wc-tree-item>
+            <modus-wc-tree-item label="Mobile App" value="mobile-app">
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Resources"
+          .hasSubtree=${true}
+          value="resources"
+        >
+          <modus-wc-tree-view .isSubList=${true}>
+            <modus-wc-tree-item label="Templates" value="templates">
+            </modus-wc-tree-item>
+            <modus-wc-tree-item label="Guidelines" value="guidelines">
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Archives"
+          .hasSubtree=${true}
+          value="archives"
+        >
+          <modus-wc-tree-view .isSubList=${true}>
+            <modus-wc-tree-item label="2024" value="2024"> </modus-wc-tree-item>
+            <modus-wc-tree-item label="2025" value="2025"> </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    `;
+  },
+};
+
 export const ApiReference: Story = {
   name: 'API Reference',
   parameters: {
