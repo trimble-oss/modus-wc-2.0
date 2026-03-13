@@ -101,6 +101,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-modern-dark']:root {
@@ -113,6 +114,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
 /* Modus Classic Themes */
@@ -128,6 +130,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-classic-dark']:root {
@@ -142,6 +145,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
 /* Connect Themes */
@@ -153,6 +157,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='connect-dark']:root {
@@ -163,4 +168,5 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
