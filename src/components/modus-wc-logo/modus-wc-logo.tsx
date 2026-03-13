@@ -1,18 +1,46 @@
 import {
   Component,
   Element,
+  FunctionalComponent,
   getAssetPath,
   h,
   Host,
   Prop,
   State,
+  Watch,
 } from '@stencil/core';
-import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS, LogoName } from './logo-constants';
+import { svgCache } from './logo-svg-cache';
+
+function fetchSvgText(url: string): Promise<string> {
+  if (typeof fetch === 'undefined') return Promise.resolve('');
+  if (!svgCache.has(url)) {
+    svgCache.set(
+      url,
+      fetch(url)
+        .then((r) => (r.ok ? r.text() : ''))
+        .catch(() => {
+          svgCache.delete(url);
+          return '';
+        })
+    );
+  }
+  return svgCache.get(url)!;
+}
+
+interface LogoSvgProps {
+  svgText: string;
+}
+
+const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
+  <span innerHTML={svgText}></span>
+);
 
 /**
  * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
  * Provides consistent branding across applications with various product logo options.
+ * Logo colors automatically adapt to the active Modus theme via CSS variables.
  */
 @Component({
   tag: 'modus-wc-logo',
@@ -22,7 +50,6 @@ import { LOGO_VARIANTS, LogoName } from './logo-constants';
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
-  private themeObserver: MutationObserver | null = null;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -39,36 +66,32 @@ export class ModusWcLogo {
   /** The alt text for accessibility. If not provided, defaults to the logo name. */
   @Prop() alt?: string;
 
-  @State() private isLight: boolean = true;
+  @State() private svgContent: string = '';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-
-    this.isLight = isLightMode();
-
-    // Watch for theme attribute changes (only in browser environment)
-    if (typeof MutationObserver !== 'undefined') {
-      this.themeObserver = new MutationObserver(() => {
-        this.isLight = isLightMode();
-      });
-
-      // Observe the html element for data-theme attribute changes
-      this.themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-theme'],
-      });
-    }
+    return this.loadSvg();
   }
 
-  disconnectedCallback() {
-    if (this.themeObserver) {
-      this.themeObserver.disconnect();
-    }
+  @Watch('name')
+  @Watch('emblem')
+  onLogoPropsChange() {
+    void this.loadSvg();
   }
 
-  private getLogoPath(): string {
+  private async loadSvg(): Promise<void> {
+    const assetPath = this.getAssetFilePath();
+    if (!assetPath) {
+      this.svgContent = '';
+      return;
+    }
+    const text = await fetchSvgText(assetPath);
+    this.svgContent = text;
+  }
+
+  private getAssetFilePath(): string {
     const logoKey = this.name.toLowerCase().replace(/\s+/g, '_');
-    const logoInfo = LOGO_VARIANTS[logoKey];
+    const logoInfo = LOGO_VARIANTS[logoKey as LogoName];
 
     if (!logoInfo) {
       console.warn(
@@ -78,44 +101,28 @@ export class ModusWcLogo {
       return '';
     }
 
-    // Determine which path to use based on emblem and theme
-    let path: string | undefined;
+    const filePath = this.emblem ? logoInfo.emblemPath : logoInfo.path;
 
-    if (this.emblem) {
-      // Emblem mode - check for dark emblem first if in dark theme
-      path =
-        !this.isLight && logoInfo.emblemPathDark
-          ? logoInfo.emblemPathDark
-          : logoInfo.emblemPath;
-    } else {
-      // Full logo mode - check for dark logo first if in dark theme
-      path =
-        !this.isLight && logoInfo.pathDark ? logoInfo.pathDark : logoInfo.path;
-    }
-    /* istanbul ignore if */
-    if (!path) {
+    /* istanbul ignore next */
+    if (!filePath) {
       console.warn(
-        `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}" in ${this.isLight ? 'light' : 'dark'} theme`
+        `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}"`
       );
       return '';
     }
 
-    // Use getAssetPath to resolve the correct path for all deployment scenarios
-    return getAssetPath(`assets/${path}`);
+    return getAssetPath(`assets/${filePath}`);
   }
 
   private getClasses(): string {
     const classList: string[] = [];
-
     if (this.customClass) classList.push(this.customClass);
-
     return classList.join(' ');
   }
 
   render() {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
-    const logoPath = this.getLogoPath();
 
     return (
       <Host>
@@ -125,7 +132,7 @@ export class ModusWcLogo {
           role="img"
           aria-label={altText}
         >
-          <img src={logoPath} alt={altText} />
+          <LogoSvg svgText={this.svgContent} />
         </span>
       </Host>
     );
