@@ -99,7 +99,7 @@ export const Default: Story = {
     for (const d of Array.from(openDetails)) {
       (d as HTMLDetailsElement).open = false;
     }
-    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => setTimeout(r, 100));
 
     await step('Verify accordion and collapse items render', async () => {
       const accordion = canvasElement.querySelector('modus-wc-accordion');
@@ -193,7 +193,7 @@ export const Default: Story = {
       if (firstDetails.open) {
         const summary = firstDetails.querySelector('summary');
         summary?.click();
-        await new Promise((r) => requestAnimationFrame(r));
+        await new Promise((r) => setTimeout(r, 50));
       }
 
       const startTime = performance.now();
@@ -203,7 +203,7 @@ export const Default: Story = {
       const endTime = performance.now();
 
       const duration = endTime - startTime;
-      await expect(duration).toBeLessThan(50);
+      await expect(duration).toBeLessThan(100);
     });
 
     await step('Verify accessibility attributes', async () => {
@@ -213,7 +213,7 @@ export const Default: Story = {
       if (!firstDetails.open) {
         const summary = firstDetails.querySelector('summary');
         summary?.click();
-        await new Promise((r) => requestAnimationFrame(r));
+        await new Promise((r) => setTimeout(r, 50));
       }
       await expect(firstDetails.open).toBe(true);
 

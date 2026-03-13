@@ -4,7 +4,7 @@ exports[`Components/Accordion Default play-test 1`] = `
 <div id="stable-id-0">
   <div style="padding: 20px;">
     <modus-wc-accordion class="hydrated">
-      <div class>
+      <div>
         <modus-wc-collapse class="hydrated">
           <details class="modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-open"
                    open

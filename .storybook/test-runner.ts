@@ -33,9 +33,9 @@ const config: TestRunnerConfig = {
   },
 
   async postVisit(page, context) {
-    expect.extend({ toMatchImageSnapshot });
+    const browserName = (page.context().browser()?.browserType().name()) ?? 'chromium';
 
-    // 1. Accessibility testing (Axe)
+    // 1. Accessibility testing (Axe) — all browsers
     await checkA11y(page, '#storybook-root', {
       detailedReport: true,
       detailedReportOptions: {
@@ -43,62 +43,67 @@ const config: TestRunnerConfig = {
       },
     });
 
-    // 2. DOM snapshot (with normalized IDs)
-    const elementHandler = await page.$('#storybook-root');
-    if (elementHandler) {
-      const innerHTML = await elementHandler.innerHTML();
-      expect(normalizeHtml(innerHTML)).toMatchSnapshot();
-    }
+    // Snapshots only on Chromium (cross-browser rendering differences cause false failures)
+    if (browserName === 'chromium') {
+      expect.extend({ toMatchImageSnapshot });
 
-    // 3. ARIA snapshot (with normalized labels)
-    const ariaTree = await page.evaluate(() => {
-      const root = document.querySelector('#storybook-root');
-      if (!root) return null;
+      // 2. DOM snapshot (with normalized IDs)
+      const elementHandler = await page.$('#storybook-root');
+      if (elementHandler) {
+        const innerHTML = await elementHandler.innerHTML();
+        expect(normalizeHtml(innerHTML)).toMatchSnapshot();
+      }
 
-      const idMap = new Map<string, string>();
-      let counter = 0;
+      // 3. ARIA snapshot (with normalized labels)
+      const ariaTree = await page.evaluate(() => {
+        const root = document.querySelector('#storybook-root');
+        if (!root) return null;
 
-      const stableId = (id: string): string => {
-        if (!idMap.has(id)) {
-          idMap.set(id, `stable-id-${counter++}`);
-        }
-        return idMap.get(id)!;
-      };
+        const idMap = new Map<string, string>();
+        let counter = 0;
 
-      const getAriaInfo = (el: Element): object | null => {
-        const role = el.getAttribute('role') || el.tagName.toLowerCase();
-        let label =
-          el.getAttribute('aria-label') ||
-          el.getAttribute('aria-labelledby') ||
-          '';
-
-        if (el.getAttribute('aria-labelledby')) {
-          label = stableId(label);
-        }
-
-        const children = Array.from(el.children)
-          .map(getAriaInfo)
-          .filter(Boolean);
-
-        return {
-          role,
-          ...(label && { label }),
-          ...(children.length > 0 && { children }),
+        const stableId = (id: string): string => {
+          if (!idMap.has(id)) {
+            idMap.set(id, `stable-id-${counter++}`);
+          }
+          return idMap.get(id)!;
         };
-      };
 
-      return getAriaInfo(root);
-    });
-    expect(ariaTree).toMatchSnapshot();
+        const getAriaInfo = (el: Element): object | null => {
+          const role = el.getAttribute('role') || el.tagName.toLowerCase();
+          let label =
+            el.getAttribute('aria-label') ||
+            el.getAttribute('aria-labelledby') ||
+            '';
 
-    // 4. Visual regression snapshot (image)
-    const image = await page.screenshot();
-    expect(image).toMatchImageSnapshot({
-      customSnapshotsDir: `${process.cwd()}/__image_snapshots__`,
-      customSnapshotIdentifier: context.id,
-      failureThreshold: 0.03,
-      failureThresholdType: 'percent',
-    });
+          if (el.getAttribute('aria-labelledby')) {
+            label = stableId(label);
+          }
+
+          const children = Array.from(el.children)
+            .map(getAriaInfo)
+            .filter(Boolean);
+
+          return {
+            role,
+            ...(label && { label }),
+            ...(children.length > 0 && { children }),
+          };
+        };
+
+        return getAriaInfo(root);
+      });
+      expect(ariaTree).toMatchSnapshot();
+
+      // 4. Visual regression snapshot (image)
+      const image = await page.screenshot();
+      expect(image).toMatchImageSnapshot({
+        customSnapshotsDir: `${process.cwd()}/__image_snapshots__`,
+        customSnapshotIdentifier: context.id,
+        failureThreshold: 0.03,
+        failureThresholdType: 'percent',
+      });
+    }
   },
 };
 

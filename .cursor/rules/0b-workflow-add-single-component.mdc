@@ -170,7 +170,17 @@ Should I update [component-name].stories.ts? (yes/no)
 
 ---
 
-## Step 4: Run Tests
+## Step 4: Run Tests & Generate Report
+
+**CRITICAL:** Always save JSON report to `test-results/` and generate a markdown report.
+
+### 4.1: Run on Chromium (fast feedback)
+
+```bash
+npx test-storybook --url http://localhost:6006 --verbose --json --outputFile ./test-results/[component-name]-report.json -- --testPathPattern="[ComponentTitle]"
+```
+
+### 4.2: Show report in terminal
 
 ```
 Agent Response:
@@ -182,14 +192,24 @@ npx test-storybook --url http://localhost:6006 --browsers chromium
 **Test Results:**
 
 ✅ [story-id-1] - PASSED (XXXms)
-   - Render check: ✅
-   - Click interaction: ✅
+   - [Step 1]: ✅
+   - [Step 2]: ✅
 
 ✅ [story-id-2] - PASSED (XXXms)
-   - Render check: ✅
+   - Smoke test: ✅
+
+**Accessibility (Axe):**
+   - [story-id-1]: No violations detected
+   - [story-id-2]: No violations detected
+
+**Snapshots (Chromium):**
+   - DOM: [X] matched
+   - ARIA: [X] matched
+   - Visual: [X] matched
 
 **Summary:**
 - Total tests: [X]/[X] passed ✅
+- Total snapshots: [X]/[X] passed
 - Execution time: [X]s
 
 All [ComponentName] tests passed on Chromium! ✅
@@ -201,21 +221,155 @@ Should I run on all browsers (Firefox, WebKit)? (yes/no/skip)
 
 ## Step 5: Cross-Browser Validation (If User Approves)
 
+```bash
+npx test-storybook --url http://localhost:6006 --verbose --browsers chromium firefox webkit --json --outputFile ./test-results/[component-name]-report.json -- --testPathPattern="[ComponentTitle]"
+```
+
 ```
 Agent Response:
 "Running [ComponentName] tests on all browsers...
 
-**Command:**
-npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit
-
 **Cross-Browser Results:**
 
-✅ Chromium: [X]/[X] passed
-✅ Firefox: [X]/[X] passed
-✅ WebKit: [X]/[X] passed
+| Browser  | [Story 1]        | [Story 2]          | Status |
+|----------|------------------|--------------------|--------|
+| Chromium | PASSED (XXXms)   | PASSED (XXXms)     | ✅     |
+| Firefox  | PASSED (XXXms)   | PASSED (XXXms)     | ✅     |
+| WebKit   | PASSED (XXXms)   | PASSED (XXXms)     | ✅     |
+
+**Accessibility (Axe):** No violations on any browser ✅
+**Snapshots (Chromium):** [X]/[X] passed ✅
 
 All browsers passed! ✅
 ```
+
+---
+
+## Step 5.1: Save Report to test-results/
+
+**MANDATORY:** After tests pass, create a markdown report file.
+
+**File:** `test-results/[component-name]-report.md`
+
+**Template:**
+
+```markdown
+# [ComponentName] Component Test Report
+
+**Component:** `modus-wc-[component-name]`
+**Date:** [YYYY-MM-DD]
+**Status:** [ALL PASSED / X FAILED]
+
+---
+
+## Cross-Browser Results
+
+| Browser  | [Story 1]        | [Story 2]          | Status |
+|----------|------------------|--------------------|--------|
+| Chromium | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+| Firefox  | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+| WebKit   | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+
+**Total:** [X]/[X] tests passed | Execution time: [X]s
+
+---
+
+## Play Function Steps ([Story Name])
+
+| # | Step | Chromium | Firefox | WebKit |
+|---|------|----------|---------|--------|
+| 1 | [Step description] | PASSED | PASSED | PASSED |
+...
+
+---
+
+## Accessibility (Axe)
+
+| Browser  | [Story 1]     | [Story 2]     |
+|----------|---------------|---------------|
+| Chromium | No violations | No violations |
+| Firefox  | No violations | No violations |
+| WebKit   | No violations | No violations |
+
+---
+
+## Snapshots (Chromium Baseline)
+
+| Type | [Story 1] | [Story 2] | Status |
+|------|-----------|-----------|--------|
+| DOM snapshot | PASSED | PASSED | Matched |
+| ARIA tree snapshot | PASSED | PASSED | Matched |
+| Visual regression | PASSED | PASSED | Matched |
+```
+
+**Agent Actions:**
+1. Create `test-results/[component-name]-report.md` using template above
+2. Ensure `test-results/[component-name]-report.json` exists from Step 4/5
+
+---
+
+## Step 5.2: Generate HTML Report
+
+**MANDATORY:** After tests pass, create/update the self-contained HTML report.
+
+**File:** `test-results/storybook-test-report.html`
+
+This is a **cumulative** report — each component tested should be added as a tab/section. When generating the report for a new component, preserve existing component sections.
+
+**HTML Report Requirements:**
+1. Self-contained single file (no external JS/CSS dependencies)
+2. Modern, clean UI with cards, tables, and badges
+3. Sections for: Summary stats, Cross-browser results, Detailed timing, Play function steps, Accessibility (Axe), Snapshots, Commands reference, Raw JSON (collapsible)
+4. Color-coded badges: green for PASSED, red for FAILED, orange for SKIPPED
+5. Component tabs at the top if multiple components are tested
+6. Embeds the raw JSON data inline (no external file references)
+
+**HTML Template Structure:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Modus WC — Storybook Test Report</title>
+  <style>
+    /* Inline CSS: cards, tables, badges, responsive layout */
+    /* Color scheme: --primary: #0063a3, --success: #1e8a44, --fail: #da291c */
+  </style>
+</head>
+<body>
+  <!-- Header with overall status badge -->
+  <div class="header">
+    <h1>Modus WC — Storybook Test Report</h1>
+    <span class="overall-badge">[ALL PASSED / X FAILED]</span>
+  </div>
+
+  <div class="container">
+    <!-- Summary Cards: Tests Passed, Failed, Browsers, Snapshots, A11y -->
+    <!-- Component Tabs (one per component) -->
+    <!-- Cross-Browser Results Table -->
+    <!-- Detailed Timing Table (per browser per story) -->
+    <!-- Play Function Steps Table (numbered steps, per browser) -->
+    <!-- Accessibility Axe Audit Table -->
+    <!-- Snapshots Table (DOM, ARIA, Visual) -->
+    <!-- Commands Reference Block -->
+    <!-- Raw JSON (collapsible) -->
+  </div>
+
+  <script>
+    // Embed raw JSON inline for reference
+    const jsonData = { /* test-runner JSON output */ };
+    document.getElementById('raw-json').textContent = JSON.stringify(jsonData, null, 2);
+  </script>
+</body>
+</html>
+```
+
+**Agent Actions:**
+1. Parse `test-results/[component-name]-report.json` for data
+2. Build HTML from template with real test results
+3. If `storybook-test-report.html` already exists with other components, add new component tab
+4. Write to `test-results/storybook-test-report.html`
 
 ---
 
@@ -249,7 +403,14 @@ Agent Response:
 - Component: [ComponentName]
 - Variants tested: [X]
 - Play functions added: [X]
-- Accessibility: ✅ ARIA attributes verified
+- Browsers: Chromium ✅ | Firefox ✅ | WebKit ✅
+- Accessibility (Axe): No violations ✅
+- Snapshots (DOM/ARIA/Visual): [X]/[X] passed ✅
+
+**Report Files:**
+- test-results/[component-name]-report.md (human-readable markdown)
+- test-results/[component-name]-report.json (raw JSON data)
+- test-results/storybook-test-report.html (interactive HTML report — open in browser)
 
 Ready for next component!
 ```
