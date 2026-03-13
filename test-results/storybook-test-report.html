@@ -1,604 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modus WC — Storybook Test Report</title>
-  <style>
-    :root {
-      --primary: #0063a3;
-      --primary-light: #e8f4fd;
-      --success: #1e8a44;
-      --success-bg: #e6f4ea;
-      --fail: #da291c;
-      --fail-bg: #fce8e6;
-      --warn: #e49325;
-      --warn-bg: #fef7e0;
-      --border: #d4d7dc;
-      --bg: #f7f8fa;
-      --text: #252a2e;
-      --text-secondary: #585c65;
-      --card-bg: #ffffff;
-      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-      --radius: 8px;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .header {
-      background: var(--primary);
-      color: white;
-      padding: 24px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .header h1 {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-    }
-
-    .header-meta {
-      display: flex;
-      gap: 20px;
-      font-size: 13px;
-      opacity: 0.9;
-    }
-
-    .header-meta span { display: flex; align-items: center; gap: 4px; }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .stat-card .stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .stat-card .stat-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    .stat-card.success .stat-value { color: var(--success); }
-    .stat-card.fail .stat-value { color: var(--fail); }
-    .stat-card.info .stat-value { color: var(--primary); }
-
-    .section {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .section-header {
-      padding: 16px 20px;
-      font-weight: 600;
-      font-size: 15px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .section-header:hover { background: var(--bg); }
-
-    .section-body { padding: 0; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    th {
-      text-align: left;
-      padding: 10px 16px;
-      background: var(--bg);
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: var(--text-secondary);
-      border-bottom: 1px solid var(--border);
-    }
-
-    td {
-      padding: 10px 16px;
-      border-bottom: 1px solid #eef0f2;
-      vertical-align: middle;
-    }
-
-    tr:last-child td { border-bottom: none; }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .badge-pass { background: var(--success-bg); color: var(--success); }
-    .badge-fail { background: var(--fail-bg); color: var(--fail); }
-    .badge-skip { background: var(--warn-bg); color: var(--warn); }
-
-    .duration {
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .browser-row td:first-child { font-weight: 600; }
-
-    .step-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .step-name {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .snapshot-file {
-      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      font-size: 12px;
-      color: var(--text-secondary);
-      word-break: break-all;
-    }
-
-    .commands-block {
-      padding: 16px 20px;
-      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      background: #1e1e2e;
-      color: #cdd6f4;
-    }
-
-    .commands-block .comment { color: #6c7086; }
-    .commands-block .cmd { color: #a6e3a1; }
-
-    .overall-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .overall-pass { background: rgba(255,255,255,0.15); color: #a6e3a1; }
-    .overall-fail { background: rgba(255,255,255,0.15); color: #f38ba8; }
-
-    .icon { font-size: 16px; }
-
-    .component-nav {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .component-tab {
-      padding: 8px 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .component-tab:hover { border-color: var(--primary); color: var(--primary); }
-    .component-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-    footer {
-      text-align: center;
-      padding: 24px;
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modus WC — Storybook Test Report</title>
+<style>
+:root{--primary:#0063a3;--primary-light:#e8f4fd;--success:#1e8a44;--success-bg:#e6f4ea;--fail:#da291c;--fail-bg:#fce8e6;--warn:#e49325;--warn-bg:#fef7e0;--border:#d4d7dc;--bg:#f7f8fa;--text:#252a2e;--text-secondary:#585c65;--card-bg:#fff;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);--radius:8px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:var(--primary);color:#fff;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:22px;font-weight:600}
+.header-meta{display:flex;gap:20px;font-size:13px;opacity:.9}
+.container{max-width:1100px;margin:0 auto;padding:24px}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:var(--card-bg);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center}
+.stat-card .stat-value{font-size:32px;font-weight:700;line-height:1.2}
+.stat-card .stat-label{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-top:4px}
+.stat-card.success .stat-value{color:var(--success)}
+.stat-card.fail .stat-value{color:var(--fail)}
+.stat-card.info .stat-value{color:var(--primary)}
+.section{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.section-header{padding:16px 20px;font-weight:600;font-size:15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.section-header:hover{background:var(--bg)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 16px;background:var(--bg);font-weight:600;font-size:12px;text-transform:uppercase;color:var(--text-secondary);border-bottom:1px solid var(--border)}
+td{padding:10px 16px;border-bottom:1px solid #eef0f2;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-pass{background:var(--success-bg);color:var(--success)}
+.badge-fail{background:var(--fail-bg);color:var(--fail)}
+.duration{font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.browser-row td:first-child{font-weight:600}
+.overall-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;font-weight:700;font-size:14px}
+.overall-pass{background:rgba(255,255,255,.15);color:#a6e3a1}
+.overall-fail{background:rgba(255,255,255,.15);color:#f38ba8}
+.error-block{padding:12px 16px;background:var(--fail-bg);border-left:4px solid var(--fail);margin:8px 0;border-radius:0 4px 4px 0;font-size:13px}
+.error-block code{font-family:Consolas,monospace;font-size:12px;display:block;margin-top:4px;white-space:pre-wrap;color:#333}
+.commands-block{padding:16px 20px;font-family:Consolas,monospace;font-size:13px;line-height:1.8;background:#1e1e2e;color:#cdd6f4}
+.commands-block .comment{color:#6c7086}
+.commands-block .cmd{color:#a6e3a1}
+footer{text-align:center;padding:24px;font-size:12px;color:var(--text-secondary)}
+</style>
 </head>
 <body>
-
-  <div class="header">
-    <div>
-      <h1>Modus WC — Storybook Test Report</h1>
-      <div class="header-meta">
-        <span>&#128197; 2026-03-12</span>
-        <span>&#9201; 21.17s total</span>
-        <span>&#127919; Storybook 8.6.12 + Playwright</span>
-      </div>
-    </div>
-    <div class="overall-badge overall-pass">&#10003; ALL PASSED</div>
+<div class="header">
+<div>
+  <h1>Modus WC — Storybook Test Report</h1>
+  <div class="header-meta">
+    <span>&#128197; 2026-03-13</span>
+    <span>&#9201; 20.16s total</span>
+    <span>&#127919; Storybook 8.6.12 + Playwright</span>
   </div>
+</div>
+<div class="overall-badge overall-pass">&#10003; ALL PASSED</div>
+</div>
 
-  <div class="container">
+<div class="container">
+<div class="summary-grid">
+  <div class="stat-card success"><div class="stat-value">6</div><div class="stat-label">Tests Passed</div></div>
+  <div class="stat-card fail"><div class="stat-value">0</div><div class="stat-label">Tests Failed</div></div>
+  <div class="stat-card info"><div class="stat-value">3</div><div class="stat-label">Browsers</div></div>
+  <div class="stat-card success"><div class="stat-value">6</div><div class="stat-label">Snapshots Matched</div></div>
+  <div class="stat-card success"><div class="stat-value">0</div><div class="stat-label">A11y Violations</div></div>
+</div>
 
-    <!-- Summary Cards -->
-    <div class="summary-grid">
-      <div class="stat-card success">
-        <div class="stat-value">6</div>
-        <div class="stat-label">Tests Passed</div>
-      </div>
-      <div class="stat-card fail">
-        <div class="stat-value">0</div>
-        <div class="stat-label">Tests Failed</div>
-      </div>
-      <div class="stat-card info">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Browsers</div>
-      </div>
-      <div class="stat-card info">
-        <div class="stat-value">6</div>
-        <div class="stat-label">Snapshots Matched</div>
-      </div>
-      <div class="stat-card success">
-        <div class="stat-value">0</div>
-        <div class="stat-label">A11y Violations</div>
-      </div>
-    </div>
+<div class="section">
+<div class="section-header"><span class="icon">&#127760;</span> Cross-Browser Results</div>
+<div class="section-body">
+<table>
+<thead><tr><th>Browser</th><th>play-test</th><th>smoke-test</th><th>Duration</th><th>Status</th></tr></thead>
+<tbody><tr class="browser-row"><td>Chromium</td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td class="duration">1.9s</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr class="browser-row"><td>Firefox</td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td class="duration">1.3s</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr class="browser-row"><td>WebKit</td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td><span class="badge badge-pass">&#10003; PASSED</span></td><td class="duration">1.2s</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
 
-    <!-- Component Tabs -->
-    <div class="component-nav">
-      <div class="component-tab active">Accordion</div>
-    </div>
+<div class="section">
+<div class="section-header"><span class="icon">&#9202;</span> Detailed Timing</div>
+<div class="section-body">
+<table>
+<thead><tr><th>Browser</th><th>Story</th><th>Duration</th><th>Status</th></tr></thead>
+<tbody><tr><td rowspan="2" style="font-weight:600; vertical-align:middle;">Chromium</td><td>Default &mdash; play-test</td><td class="duration">1,380 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr><td>Migration &mdash; smoke-test</td><td class="duration">542 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr><td rowspan="2" style="font-weight:600; vertical-align:middle;">Firefox</td><td>Default &mdash; play-test</td><td class="duration">992 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr><td>Migration &mdash; smoke-test</td><td class="duration">262 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr><td rowspan="2" style="font-weight:600; vertical-align:middle;">WebKit</td><td>Default &mdash; play-test</td><td class="duration">1,001 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+<tr><td>Migration &mdash; smoke-test</td><td class="duration">180 ms</td><td><span class="badge badge-pass">&#10003; PASSED</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
 
-    <!-- Cross-Browser Results -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#127760;</span> Cross-Browser Results
-      </div>
-      <div class="section-body">
-        <table>
-          <thead>
-            <tr>
-              <th>Browser</th>
-              <th>Default (play-test)</th>
-              <th>Migration (smoke-test)</th>
-              <th>Duration</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="browser-row">
-              <td>Chromium</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td class="duration">6.3s</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-            </tr>
-            <tr class="browser-row">
-              <td>Firefox</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td class="duration">4.8s</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-            </tr>
-            <tr class="browser-row">
-              <td>WebKit</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-              <td class="duration">4.7s</td>
-              <td><span class="badge badge-pass">&#10003; PASSED</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- Detailed Timing -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#9202;</span> Detailed Timing (per Browser)
-      </div>
-      <div class="section-body">
-        <table>
-          <thead>
-            <tr>
-              <th>Browser</th>
-              <th>Story</th>
-              <th>Duration</th>
-              <th>Passing Asserts</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td rowspan="2" style="font-weight:600; vertical-align:middle;">Chromium</td>
-              <td>Default &mdash; play-test</td>
-              <td class="duration">1,492 ms</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>Migration &mdash; smoke-test</td>
-              <td class="duration">661 ms</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td rowspan="2" style="font-weight:600; vertical-align:middle;">Firefox</td>
-              <td>Default &mdash; play-test</td>
-              <td class="duration">936 ms</td>
-              <td>&mdash;</td>
-            </tr>
-            <tr>
-              <td>Migration &mdash; smoke-test</td>
-              <td class="duration">296 ms</td>
-              <td>&mdash;</td>
-            </tr>
-            <tr>
-              <td rowspan="2" style="font-weight:600; vertical-align:middle;">WebKit</td>
-              <td>Default &mdash; play-test</td>
-              <td class="duration">1,142 ms</td>
-              <td>&mdash;</td>
-            </tr>
-            <tr>
-              <td>Migration &mdash; smoke-test</td>
-              <td class="duration">259 ms</td>
-              <td>&mdash;</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- Play Function Steps -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#9654;</span> Play Function Steps — Default Story
-      </div>
-      <div class="section-body">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:40px">#</th>
-              <th>Step</th>
-              <th>Chromium</th>
-              <th>Firefox</th>
-              <th>WebKit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="step-number">1</span></td>
-              <td>Verify accordion and collapse items render</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">2</span></td>
-              <td>Verify all items are initially collapsed</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">3</span></td>
-              <td>Click first item to expand</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">4</span></td>
-              <td>Verify first item content is visible</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">5</span></td>
-              <td>Click first item again to collapse</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">6</span></td>
-              <td>Click second item to expand</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">7</span></td>
-              <td>Verify expandedChange event fires</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">8</span></td>
-              <td>Verify keyboard focusability</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">9</span></td>
-              <td>Measure expand interaction performance (&lt; 100ms)</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td><span class="step-number">10</span></td>
-              <td>Verify accessibility attributes</td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="section">
+<div class="section-header"><span class="icon">&#9855;</span> Accessibility — Axe Audit</div>
+<div class="section-body">
+<table>
+<thead><tr><th>Browser</th><th>Status</th></tr></thead>
+<tbody><tr><td style="font-weight:600">Chromium</td><td><span class="badge badge-pass">&#10003; No violations</span></td></tr>
+<tr><td style="font-weight:600">Firefox</td><td><span class="badge badge-pass">&#10003; No violations</span></td></tr>
+<tr><td style="font-weight:600">WebKit</td><td><span class="badge badge-pass">&#10003; No violations</span></td></tr></tbody>
+</table>
+</div>
+</div>
 
-    <!-- Accessibility -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#9855;</span> Accessibility — Axe Audit
-      </div>
-      <div class="section-body">
-        <table>
-          <thead>
-            <tr>
-              <th>Browser</th>
-              <th>Default</th>
-              <th>Migration</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight:600">Chromium</td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight:600">Firefox</td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight:600">WebKit</td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-              <td><span class="badge badge-pass">&#10003; No violations</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="section">
+<div class="section-header"><span class="icon">&#128247;</span> Snapshots</div>
+<div class="section-body">
+<table>
+<thead><tr><th>Metric</th><th>Count</th></tr></thead>
+<tbody>
+<tr><td>Matched</td><td>6</td></tr>
+<tr><td>Failed</td><td>0</td></tr>
+<tr><td>Total</td><td>6</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 
-    <!-- Snapshots -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#128247;</span> Snapshots — Chromium Baseline
-      </div>
-      <div class="section-body">
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Default</th>
-              <th>Migration</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight:600">DOM Snapshot</td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight:600">ARIA Tree Snapshot</td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td style="font-weight:600">Visual Regression (Image)</td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003; Matched</span></td>
-              <td><span class="badge badge-pass">&#10003;</span></td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="padding: 12px 16px; border-top: 1px solid var(--border);">
-          <div class="snapshot-file" style="margin-bottom: 4px;">src/components/modus-wc-accordion/__snapshots__/modus-wc-accordion.stories.ts.snap</div>
-          <div class="snapshot-file" style="margin-bottom: 4px;">__image_snapshots__/components-accordion--default.png</div>
-          <div class="snapshot-file">__image_snapshots__/components-accordion--migration.png</div>
-        </div>
-      </div>
-    </div>
+<div class="section">
+<div class="section-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+<span class="icon">&#128196;</span> Raw JSON Data <span style="font-weight:400;font-size:12px;color:var(--text-secondary);">(click to toggle)</span>
+</div>
+<div class="section-body" style="display:none;">
+<pre style="padding:16px 20px;font-size:12px;line-height:1.6;overflow-x:auto;background:#f7f8fa;max-height:400px;overflow-y:auto;"><code id="raw-json"></code></pre>
+</div>
+</div>
+</div>
 
-    <!-- Commands -->
-    <div class="section">
-      <div class="section-header">
-        <span class="icon">&#128187;</span> Commands Reference
-      </div>
-      <div class="section-body">
-        <div class="commands-block">
-          <span class="comment"># Chromium only</span><br>
-          <span class="cmd">npx test-storybook --url http://localhost:6006 --browsers chromium -- --testPathPattern=Accordion</span><br><br>
-          <span class="comment"># All browsers</span><br>
-          <span class="cmd">npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit -- --testPathPattern=Accordion</span><br><br>
-          <span class="comment"># Update snapshots</span><br>
-          <span class="cmd">npx test-storybook --url http://localhost:6006 --updateSnapshot -- --testPathPattern=Accordion</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Raw JSON -->
-    <div class="section">
-      <div class="section-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-        <span class="icon">&#128196;</span> Raw JSON Data <span style="font-weight:400; font-size:12px; color:var(--text-secondary);">(click to toggle)</span>
-      </div>
-      <div class="section-body" style="display:none;">
-        <pre style="padding:16px 20px; font-size:12px; line-height:1.6; overflow-x:auto; background:#f7f8fa; max-height:400px; overflow-y:auto;"><code id="raw-json"></code></pre>
-      </div>
-    </div>
-
-  </div>
-
-  <footer>
-    Modus Web Components 2.0 &mdash; Storybook Component Test Report &mdash; Generated 2026-03-12
-  </footer>
-
-  <script>
-    const jsonData = {"numFailedTestSuites":0,"numFailedTests":0,"numPassedTestSuites":3,"numPassedTests":6,"numPendingTestSuites":0,"numPendingTests":0,"numRuntimeErrorTestSuites":0,"numTodoTests":0,"numTotalTestSuites":1,"numTotalTests":6,"snapshot":{"matched":6,"total":6,"unchecked":8},"testResults":[{"assertionResults":[{"ancestorTitles":["Components/Accordion","Default"],"duration":1492,"status":"passed","title":"play-test","numPassingAsserts":3},{"ancestorTitles":["Components/Accordion","Migration"],"duration":661,"status":"passed","title":"smoke-test","numPassingAsserts":3}],"status":"passed","name":"Chromium"},{"assertionResults":[{"ancestorTitles":["Components/Accordion","Default"],"duration":936,"status":"passed","title":"play-test"},{"ancestorTitles":["Components/Accordion","Migration"],"duration":296,"status":"passed","title":"smoke-test"}],"status":"passed","name":"Firefox"},{"assertionResults":[{"ancestorTitles":["Components/Accordion","Default"],"duration":1142,"status":"passed","title":"play-test"},{"ancestorTitles":["Components/Accordion","Migration"],"duration":259,"status":"passed","title":"smoke-test"}],"status":"passed","name":"WebKit"}]};
-
-    document.getElementById('raw-json').textContent = JSON.stringify(jsonData, null, 2);
-  </script>
-
+<footer>Modus Web Components 2.0 &mdash; Storybook Component Test Report &mdash; Generated 2026-03-13</footer>
+<script>
+const jsonData = {"numPassedTests":6,"numFailedTests":0,"numTotalTests":6,"snapshot":{"matched":6,"failed":0,"total":6},"testResults":[{"name":"Chromium","status":"passed","assertionResults":[{"title":"play-test","status":"passed","duration":1380},{"title":"smoke-test","status":"passed","duration":542}]},{"name":"Firefox","status":"passed","assertionResults":[{"title":"play-test","status":"passed","duration":992},{"title":"smoke-test","status":"passed","duration":262}]},{"name":"WebKit","status":"passed","assertionResults":[{"title":"play-test","status":"passed","duration":1001},{"title":"smoke-test","status":"passed","duration":180}]}]};
+document.getElementById('raw-json').textContent = JSON.stringify(jsonData, null, 2);
+</script>
 </body>
 </html>

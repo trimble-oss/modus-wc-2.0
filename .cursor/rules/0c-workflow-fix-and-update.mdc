@@ -142,9 +142,6 @@ Should I apply this fix? (yes/no)
 Agent Response:
 "Re-running tests to verify fix...
 
-**Command:**
-npx test-storybook --url http://localhost:6006 --browsers chromium
-
 **Results:**
 ✅ [ComponentName] — All tests now passing
 
@@ -161,6 +158,12 @@ Agent Response:
 
 Should I verify on all browsers (Firefox, WebKit)? (yes/no/skip)
 ```
+
+---
+
+## Step 6: Generate Reports
+
+**→ MUST follow File 0f (Reporting Workflow) — generates JSON, Markdown, and HTML reports**
 
 ---
 
@@ -232,6 +235,7 @@ Fix test logic      Investigate further
 - **Snapshot workflow:** → File 4 (Maintenance)
 - **Test patterns:** → File 2 (Testing Patterns)
 - **Web components issues:** → File 3 (Web Components Specifics)
+- **Reporting (JSON/MD/HTML):** → File 0f (Reporting Workflow)
 
 ---
 

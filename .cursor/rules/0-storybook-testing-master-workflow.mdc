@@ -27,6 +27,7 @@ This is the **ENTRY POINT** for all Storybook component testing workflows for th
 ├── 0c-workflow-fix-and-update.mdc ← Fix/update existing tests
 ├── 0d-workflow-remove-and-cleanup.mdc ← Remove tests & cleanup
 ├── 0e-workflow-update-configuration.mdc ← Update configs
+├── 0f-workflow-reporting.mdc ← Test reporting (JSON, MD, HTML)
 │
 ├── 1-storybook-testing-architecture.mdc ← Framework structure & config
 ├── 2-storybook-testing-patterns.mdc ← Test writing patterns
@@ -264,31 +265,37 @@ Should I try [solution]? (yes/no/different approach)
 
 ---
 
+## Mandatory Report Generation (ALL Workflows)
+
+**→ See File 0f (Reporting Workflow) for full details, templates, and HTML structure.**
+
+Reports are fully automated. Use the report commands and JSON + MD + HTML are all generated automatically.
+
+---
+
 ## Command Reference
 
-### Testing Commands
+### Testing with Auto-Reports (PREFERRED)
+```bash
+# Single component — tests + auto-generates all 3 reports
+npm run test:storybook:report -- Accordion
+
+# All components — tests + auto-generates all 3 reports
+npm run test:storybook:report:all
+```
+
+### Testing Only (no reports)
 ```bash
 # Start Storybook dev server
 npm run storybook:start
 
 # Run interaction tests (Chromium only)
-npx test-storybook --url http://localhost:6006 --browsers chromium
+npm run test:storybook
 
 # All browsers
-npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit
+npm run test:storybook:all
 
 # Update snapshots
-npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot
-
-# Coverage
-npx test-storybook --coverage
-```
-
-### Wireit Commands
-```bash
-# Run via Wireit targets (defined in package.json)
-npm run test:storybook
-npm run test:storybook:all
 npm run test:storybook:update
 ```
 
@@ -315,6 +322,7 @@ npm run test:update-snapshot
 | Fix/update existing tests | → File 0c (Fix/Update Workflow) |
 | Remove tests/cleanup | → File 0d (Remove Workflow) |
 | Update configuration | → File 0e (Config Workflow) |
+| Generate test reports (JSON/MD/HTML) | → File 0f (Reporting Workflow) |
 
 ---
 

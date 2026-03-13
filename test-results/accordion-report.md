@@ -1,75 +1,45 @@
 # Accordion Component Test Report
 
-**Component:** `modus-wc-accordion`
-**Date:** 2026-03-12
+**Component:** `modus-wc-Accordion`
+**Date:** 2026-03-13
 **Status:** ALL PASSED
 
 ---
 
 ## Cross-Browser Results
 
-| Browser  | Default (play-test) | Migration (smoke-test) | Status |
-|----------|--------------------|-----------------------|--------|
-| Chromium | PASSED (1492ms)    | PASSED (661ms)        | PASSED |
-| Firefox  | PASSED (936ms)     | PASSED (296ms)        | PASSED |
-| WebKit   | PASSED (1142ms)    | PASSED (259ms)        | PASSED |
+| Browser | play-test | smoke-test | Status |
+|---------|--------|--------|--------|
+| Chromium | PASSED (1380ms) | PASSED (542ms) | PASSED |
+| Firefox | PASSED (992ms) | PASSED (262ms) | PASSED |
+| WebKit | PASSED (1001ms) | PASSED (180ms) | PASSED |
 
-**Total:** 6/6 tests passed | Execution time: 21.17s
-
----
-
-## Play Function Steps (Default Story)
-
-| # | Step | Chromium | Firefox | WebKit |
-|---|------|----------|---------|--------|
-| 1 | Verify accordion and collapse items render | PASSED | PASSED | PASSED |
-| 2 | Verify all items are initially collapsed | PASSED | PASSED | PASSED |
-| 3 | Click first item to expand | PASSED | PASSED | PASSED |
-| 4 | Verify first item content is visible | PASSED | PASSED | PASSED |
-| 5 | Click first item again to collapse | PASSED | PASSED | PASSED |
-| 6 | Click second item to expand | PASSED | PASSED | PASSED |
-| 7 | Verify expandedChange event fires | PASSED | PASSED | PASSED |
-| 8 | Verify keyboard focusability | PASSED | PASSED | PASSED |
-| 9 | Measure expand interaction performance (< 100ms) | PASSED | PASSED | PASSED |
-| 10 | Verify accessibility attributes | PASSED | PASSED | PASSED |
+**Total:** 6/6 passed | 0/6 failed | Execution time: 20.16s
 
 ---
 
 ## Accessibility (Axe)
 
-| Browser  | Default          | Migration        |
-|----------|------------------|------------------|
-| Chromium | No violations    | No violations    |
-| Firefox  | No violations    | No violations    |
-| WebKit   | No violations    | No violations    |
+| Browser | Status |
+|---------|--------|
+| Chromium | No violations |
+| Firefox | No violations |
+| WebKit | No violations |
 
 ---
 
-## Snapshots (Chromium Baseline)
+## Snapshots
 
-| Type | Default | Migration | Status |
-|------|---------|-----------|--------|
-| DOM snapshot | PASSED | PASSED | Matched |
-| ARIA tree snapshot | PASSED | PASSED | Matched |
-| Visual regression (image) | PASSED | PASSED | Matched |
-| **Total** | **3** | **3** | **6 passed** |
-
-**Snapshot Files:**
-- `src/components/modus-wc-accordion/__snapshots__/modus-wc-accordion.stories.ts.snap`
-- `__image_snapshots__/components-accordion--default.png`
-- `__image_snapshots__/components-accordion--migration.png`
+| Metric | Count |
+|--------|-------|
+| Matched | 6 |
+| Failed | 0 |
+| Total | 6 |
 
 ---
 
-## Commands Used
+## Command Used
 
 ```bash
-# Chromium only
-npx test-storybook --url http://localhost:6006 --browsers chromium -- --testPathPattern=Accordion
-
-# All browsers
-npx test-storybook --url http://localhost:6006 --browsers chromium firefox webkit -- --testPathPattern=Accordion
-
-# Update snapshots
-npx test-storybook --url http://localhost:6006 --updateSnapshot -- --testPathPattern=Accordion
+npx test-storybook --url http://localhost:6006 --verbose --browsers chromium firefox webkit --json --outputFile ./test-results/accordion-report.json -- --testPathPattern="Accordion"
 ```

@@ -63,7 +63,9 @@
     "storybook:start": "wireit",
     "test:storybook": "wireit",
     "test:storybook:all": "wireit",
-    "test:storybook:update": "wireit"
+    "test:storybook:update": "wireit",
+    "test:storybook:report": "wireit",
+    "test:storybook:report:all": "wireit"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.1",
@@ -329,6 +331,18 @@
     },
     "test:storybook:update": {
       "command": "npx test-storybook --url http://localhost:6006 --browsers chromium --updateSnapshot",
+      "dependencies": [
+        "stencil:build"
+      ]
+    },
+    "test:storybook:report": {
+      "command": "node scripts/run-tests-with-report.js",
+      "dependencies": [
+        "stencil:build"
+      ]
+    },
+    "test:storybook:report:all": {
+      "command": "node scripts/run-tests-with-report.js --all",
       "dependencies": [
         "stencil:build"
       ]

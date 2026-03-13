@@ -259,6 +259,8 @@ Which component should I start with? (1/other/pick)
 
 Once user picks a component, hand off to **File 0b (Add Single Component Workflow)**.
 
+**IMPORTANT:** After each component test, follow **File 0f (Reporting Workflow)** to generate all reports.
+
 ### Step 7.3: Track Progress
 
 ```
@@ -270,6 +272,8 @@ Agent Response:
 ✅ [completed components]
 ⏳ [next component] (next)
 ⬜ [remaining components]
+
+**Reports:** Updated per File 0f (Reporting Workflow) ✅
 
 Continue with [NextComponent]? (yes/no/pause/pick another)
 ```
@@ -283,6 +287,7 @@ Continue with [NextComponent]? (yes/no/pause/pick another)
 - **Test patterns:** → File 2 (Testing Patterns)
 - **Web components specifics:** → File 3 (Web Components Specifics)
 - **Documentation:** → File 4 (Maintenance)
+- **Reporting (JSON/MD/HTML):** → File 0f (Reporting Workflow)
 
 ---
 

@@ -1,0 +1,434 @@
+---
+description: Mandatory test reporting workflow — generates JSON, Markdown, and HTML reports after every test execution
+globs: []
+alwaysApply: true
+---
+
+# Workflow: Test Reporting
+
+**Referenced by:** All workflow files (0a, 0b, 0c, 0d, 0e) and Master Orchestrator (File 0)
+**Triggered:** After EVERY test execution, regardless of which workflow initiated it
+
+## Universal Rule
+
+**After EVERY `test-storybook` execution, all three report files MUST be updated.** This is not optional — no test run is considered complete until reports are generated.
+
+**Report files:**
+1. `test-results/[component-name]-report.json` — Raw JSON data (auto-generated)
+2. `test-results/[component-name]-report.md` — Human-readable markdown (auto-generated)
+3. `test-results/storybook-test-report.html` — Self-contained interactive HTML (auto-generated)
+
+---
+
+## Automated Commands (USE THESE)
+
+Reports are now fully automated. Use these commands and all three files are generated automatically:
+
+```bash
+# Single component — runs tests + generates JSON, MD, and HTML reports
+npm run test:storybook:report -- Accordion
+
+# All components — runs all tests + generates JSON, MD, and HTML reports
+npm run test:storybook:report:all
+```
+
+**These commands:**
+1. Run `test-storybook` on Chromium, Firefox, and WebKit
+2. Output JSON to `test-results/[component]-report.json`
+3. Auto-generate `test-results/[component]-report.md` from JSON
+4. Auto-generate `test-results/storybook-test-report.html` from JSON
+
+**No manual steps needed.** Reports update every time the command runs.
+
+**Scripts involved:**
+- `scripts/run-tests-with-report.js` — Orchestrator (runs tests, then calls generate-report)
+- `scripts/generate-report.js` — Parses JSON, writes MD and HTML
+
+---
+
+## Manual Fallback (if needed)
+
+If tests are run without the report commands, generate reports manually:
+
+```bash
+# Step 1: Run tests with JSON output
+npx test-storybook --url http://localhost:6006 --verbose --browsers chromium firefox webkit --json --outputFile ./test-results/[component]-report.json -- --testPathPattern="[ComponentTitle]"
+
+# Step 2: Generate MD and HTML from the JSON
+node scripts/generate-report.js [ComponentName]
+```
+
+---
+
+## Step 2: Generate Markdown Report
+
+**File:** `test-results/[component-name]-report.md`
+
+Parse the JSON output and create the markdown report using this template:
+
+```markdown
+# [ComponentName] Component Test Report
+
+**Component:** `modus-wc-[component-name]`
+**Date:** [YYYY-MM-DD]
+**Status:** [ALL PASSED / X FAILED]
+
+---
+
+## Cross-Browser Results
+
+| Browser  | [Story 1]        | [Story 2]          | Status |
+|----------|------------------|--------------------|--------|
+| Chromium | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+| Firefox  | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+| WebKit   | PASSED (XXXms)   | PASSED (XXXms)     | PASSED |
+
+**Total:** [X]/[X] tests passed | Execution time: [X]s
+
+---
+
+## Play Function Steps ([Story Name])
+
+| # | Step | Chromium | Firefox | WebKit |
+|---|------|----------|---------|--------|
+| 1 | [Step description] | PASSED | PASSED | PASSED |
+| 2 | [Step description] | PASSED | PASSED | PASSED |
+...
+
+---
+
+## Accessibility (Axe)
+
+| Browser  | [Story 1]     | [Story 2]     |
+|----------|---------------|---------------|
+| Chromium | No violations | No violations |
+| Firefox  | No violations | No violations |
+| WebKit   | No violations | No violations |
+
+---
+
+## Snapshots (Chromium Baseline)
+
+| Type | [Story 1] | [Story 2] | Status |
+|------|-----------|-----------|--------|
+| DOM snapshot | PASSED | PASSED | Matched |
+| ARIA tree snapshot | PASSED | PASSED | Matched |
+| Visual regression | PASSED | PASSED | Matched |
+
+**Snapshot Files:**
+- `src/components/[component-name]/__snapshots__/[component-name].stories.ts.snap`
+- `__image_snapshots__/[story-id].png`
+
+---
+
+## Commands Used
+
+```bash
+# Commands that were executed
+[paste actual commands used]
+```
+```
+
+**Agent Actions:**
+1. Read `test-results/[component-name]-report.json`
+2. Extract: test results, durations, browser names, pass/fail status, snapshot counts
+3. Map play function step names from the `.stories.ts` file
+4. Write `test-results/[component-name]-report.md`
+
+---
+
+## Step 3: Generate HTML Report
+
+**File:** `test-results/storybook-test-report.html`
+
+This is a **cumulative** report. Each component gets its own tab. When re-testing a component, update its section; when testing a new component, add a new tab while preserving existing ones.
+
+### HTML Report Requirements
+
+1. **Self-contained** — single file, no external JS/CSS/fonts
+2. **Modern UI** — cards, tables, color-coded badges, responsive layout
+3. **Sections per component:**
+   - Summary stat cards (Tests Passed, Failed, Browsers, Snapshots, A11y Violations)
+   - Component tabs (one per tested component)
+   - Cross-browser results table
+   - Detailed timing table (per browser, per story)
+   - Play function steps table (numbered, per browser)
+   - Accessibility (Axe) audit table
+   - Snapshots table (DOM, ARIA, Visual)
+   - Commands reference block
+   - Raw JSON (collapsible)
+4. **Color scheme:**
+   - Primary: `#0063a3`
+   - Success (PASSED): `#1e8a44` on `#e6f4ea`
+   - Fail (FAILED): `#da291c` on `#fce8e6`
+   - Warning (SKIPPED): `#e49325` on `#fef7e0`
+5. **Badges:** `badge-pass`, `badge-fail`, `badge-skip`
+6. **Embeds raw JSON inline** in a `<script>` tag
+
+### HTML Template Structure
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modus WC — Storybook Test Report</title>
+  <style>
+    :root {
+      --primary: #0063a3;
+      --primary-light: #e8f4fd;
+      --success: #1e8a44;
+      --success-bg: #e6f4ea;
+      --fail: #da291c;
+      --fail-bg: #fce8e6;
+      --warn: #e49325;
+      --warn-bg: #fef7e0;
+      --border: #d4d7dc;
+      --bg: #f7f8fa;
+      --text: #252a2e;
+      --text-secondary: #585c65;
+      --card-bg: #ffffff;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --radius: 8px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header h1 { font-size: 22px; font-weight: 600; }
+
+    .header-meta {
+      display: flex; gap: 20px; font-size: 13px; opacity: 0.9;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .stat-card .stat-value { font-size: 32px; font-weight: 700; }
+    .stat-card .stat-label {
+      font-size: 12px; text-transform: uppercase;
+      color: var(--text-secondary); margin-top: 4px;
+    }
+    .stat-card.success .stat-value { color: var(--success); }
+    .stat-card.fail .stat-value { color: var(--fail); }
+    .stat-card.info .stat-value { color: var(--primary); }
+
+    .section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px 20px; font-weight: 600; font-size: 15px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+
+    .section-header:hover { background: var(--bg); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      text-align: left; padding: 10px 16px; background: var(--bg);
+      font-weight: 600; font-size: 12px; text-transform: uppercase;
+      color: var(--text-secondary); border-bottom: 1px solid var(--border);
+    }
+    td { padding: 10px 16px; border-bottom: 1px solid #eef0f2; }
+    tr:last-child td { border-bottom: none; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 12px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-pass { background: var(--success-bg); color: var(--success); }
+    .badge-fail { background: var(--fail-bg); color: var(--fail); }
+    .badge-skip { background: var(--warn-bg); color: var(--warn); }
+
+    .duration { font-size: 12px; color: var(--text-secondary); }
+
+    .step-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--primary-light); color: var(--primary);
+      font-size: 11px; font-weight: 700;
+    }
+
+    .component-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+
+    .component-tab {
+      padding: 8px 16px; background: var(--card-bg);
+      border: 1px solid var(--border); border-radius: 20px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .component-tab:hover { border-color: var(--primary); color: var(--primary); }
+    .component-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .commands-block {
+      padding: 16px 20px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 13px; line-height: 1.8;
+      background: #1e1e2e; color: #cdd6f4;
+    }
+    .commands-block .comment { color: #6c7086; }
+    .commands-block .cmd { color: #a6e3a1; }
+
+    .overall-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 20px;
+      font-weight: 700; font-size: 14px;
+    }
+    .overall-pass { background: rgba(255,255,255,0.15); color: #a6e3a1; }
+    .overall-fail { background: rgba(255,255,255,0.15); color: #f38ba8; }
+
+    .snapshot-file {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12px; color: var(--text-secondary); word-break: break-all;
+    }
+
+    footer {
+      text-align: center; padding: 24px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Modus WC — Storybook Test Report</h1>
+      <div class="header-meta">
+        <span>[date]</span>
+        <span>[total execution time]</span>
+        <span>Storybook 8.6.12 + Playwright</span>
+      </div>
+    </div>
+    <div class="overall-badge [overall-pass/overall-fail]">[status]</div>
+  </div>
+
+  <div class="container">
+    <!-- Summary Cards: Tests Passed, Failed, Browsers, Snapshots, A11y -->
+    <div class="summary-grid">...</div>
+
+    <!-- Component Tabs (one per tested component) -->
+    <div class="component-nav">
+      <div class="component-tab active">[ComponentName]</div>
+    </div>
+
+    <!-- Per-component sections (repeat for each component): -->
+    <!-- 1. Cross-Browser Results Table -->
+    <!-- 2. Detailed Timing Table -->
+    <!-- 3. Play Function Steps Table -->
+    <!-- 4. Accessibility Axe Audit Table -->
+    <!-- 5. Snapshots Table -->
+    <!-- 6. Commands Reference Block -->
+    <!-- 7. Raw JSON (collapsible) -->
+  </div>
+
+  <footer>Modus Web Components 2.0 — Generated [date]</footer>
+
+  <script>
+    const jsonData = { /* embed raw JSON inline */ };
+    document.getElementById('raw-json').textContent = JSON.stringify(jsonData, null, 2);
+  </script>
+</body>
+</html>
+```
+
+### Agent Actions for HTML Report
+
+1. Read `test-results/[component-name]-report.json` for data
+2. If `test-results/storybook-test-report.html` exists, read it to preserve existing component tabs
+3. Build/update HTML with real test results from JSON
+4. For new components: add a new component tab and section
+5. For re-tested components: replace that component's section with updated data
+6. Write to `test-results/storybook-test-report.html`
+
+---
+
+## Step 4: Terminal Report
+
+In addition to the files, always display a summary in the terminal/chat:
+
+```
+Agent Response:
+"Test execution complete! Reports updated.
+
+**Results:**
+✅ [story-1] - PASSED (XXXms)
+✅ [story-2] - PASSED (XXXms)
+
+**Accessibility (Axe):** No violations
+**Snapshots:** [X]/[X] matched
+
+**Report Files Updated:**
+- test-results/[component-name]-report.json ✅
+- test-results/[component-name]-report.md ✅
+- test-results/storybook-test-report.html ✅
+```
+
+---
+
+## When This Workflow Triggers
+
+| Source Workflow | Trigger Point |
+|---|---|
+| **0a** (Setup) | After Phase 7 component tests |
+| **0b** (Add Component) | After Steps 4 and 5 (test execution) |
+| **0c** (Fix/Update) | After Steps 2A, 4, or 5 (re-run/verify) |
+| **0e** (Config Update) | After verification tests |
+| **Direct test run** | Any manual `test-storybook` execution |
+
+---
+
+## Cumulative HTML Report Behavior
+
+When multiple components are tested across sessions:
+
+1. **First component:** Creates `storybook-test-report.html` with one tab
+2. **Second component:** Reads existing HTML, adds second tab, updates summary totals
+3. **Re-test same component:** Replaces that component's section with fresh data
+4. **Summary cards:** Always show aggregate totals across ALL tested components
+
+---
+
+## Existing Report Reference
+
+The current `test-results/storybook-test-report.html` uses the Accordion component data as the baseline. Use it as the reference for styling, layout, and structure when generating reports for additional components.
+
+---
+
+## End of Reporting Workflow
