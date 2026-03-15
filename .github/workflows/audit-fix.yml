@@ -22,51 +22,51 @@ jobs:
         include:
           - directory: '.'
             label: 'root'
-            needs-build: false
+            needsBuild: false
             parent: ''
           - directory: 'integrations/angular/ng17'
             label: 'angular-ng17'
-            needs-build: false
+            needsBuild: false
             parent: ''
           - directory: 'integrations/angular/ng18'
             label: 'angular-ng18'
-            needs-build: false
+            needsBuild: false
             parent: ''
           - directory: 'integrations/angular/ng19'
             label: 'angular-ng19'
-            needs-build: false
+            needsBuild: false
             parent: ''
           - directory: 'integrations/react/v17'
             label: 'react-v17'
-            needs-build: true
+            needsBuild: true
             parent: ''
           - directory: 'integrations/react/v18'
             label: 'react-v18'
-            needs-build: true
+            needsBuild: true
             parent: ''
           - directory: 'integrations/react/v19'
             label: 'react-v19'
-            needs-build: true
+            needsBuild: true
             parent: ''
           - directory: 'integrations/react/test-react-v17'
             label: 'react-test-v17'
-            needs-build: true
+            needsBuild: true
             parent: 'integrations/react/v17'
           - directory: 'integrations/react/test-react-v18'
             label: 'react-test-v18'
-            needs-build: true
+            needsBuild: true
             parent: 'integrations/react/v18'
           - directory: 'integrations/react/test-react-v19'
             label: 'react-test-v19'
-            needs-build: true
+            needsBuild: true
             parent: 'integrations/react/v19'
           - directory: 'integrations/vue/v-latest'
             label: 'vue-v-latest'
-            needs-build: true
+            needsBuild: true
             parent: ''
           - directory: 'integrations/vue/test-app'
             label: 'vue-test-app'
-            needs-build: true
+            needsBuild: true
             parent: 'integrations/vue/v-latest'
 
     steps:
@@ -80,7 +80,7 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies and build Stencil
-        if: ${{ matrix.needs-build }}
+        if: ${{ matrix.needsBuild }}
         run: npm ci && npm run build:ci
 
       - name: Build parent integration
