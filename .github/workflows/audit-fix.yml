@@ -5,18 +5,24 @@ on:
   schedule:
     - cron: '0 0 * * 1'
 
+concurrency:
+  group: npm-audit-fix
+  cancel-in-progress: false
+
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   audit-fix:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -25,7 +31,7 @@ jobs:
         run: npm audit --json > audit-output.json || true
 
       - name: Upload audit output as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: audit-output
           path: audit-output.json
@@ -33,13 +39,16 @@ jobs:
       - name: Apply npm audit fix
         run: npm audit fix || true
 
-      - name: Push fix branch
+      - name: Push fix branch and create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)"
+          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git add package-lock.json package.json
           git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
           git commit -m "fix: npm audit fix $(date +%Y-%m-%d)"
           git push origin "$BRANCH"
+          gh pr create --title "fix: npm audit fix $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
