@@ -1,0 +1,45 @@
+name: npm audit fix
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  audit-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit and save output
+        run: npm audit --json > audit-output.json || true
+
+      - name: Upload audit output as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-output
+          path: audit-output.json
+
+      - name: Apply npm audit fix
+        run: npm audit fix || true
+
+      - name: Push fix branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)"
+          git checkout -b "$BRANCH"
+          git add package-lock.json package.json
+          git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
+          git commit -m "fix: npm audit fix $(date +%Y-%m-%d)"
+          git push origin "$BRANCH"
