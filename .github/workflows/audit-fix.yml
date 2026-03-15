@@ -23,66 +23,72 @@ jobs:
           - directory: '.'
             label: 'root'
             needs-build: false
+            parent: ''
           - directory: 'integrations/angular/ng17'
             label: 'angular-ng17'
             needs-build: false
+            parent: ''
           - directory: 'integrations/angular/ng18'
             label: 'angular-ng18'
             needs-build: false
+            parent: ''
           - directory: 'integrations/angular/ng19'
             label: 'angular-ng19'
             needs-build: false
+            parent: ''
           - directory: 'integrations/react/v17'
             label: 'react-v17'
             needs-build: true
+            parent: ''
           - directory: 'integrations/react/v18'
             label: 'react-v18'
             needs-build: true
+            parent: ''
           - directory: 'integrations/react/v19'
             label: 'react-v19'
             needs-build: true
+            parent: ''
           - directory: 'integrations/react/test-react-v17'
             label: 'react-test-v17'
             needs-build: true
+            parent: 'integrations/react/v17'
           - directory: 'integrations/react/test-react-v18'
             label: 'react-test-v18'
             needs-build: true
+            parent: 'integrations/react/v18'
           - directory: 'integrations/react/test-react-v19'
             label: 'react-test-v19'
             needs-build: true
+            parent: 'integrations/react/v19'
           - directory: 'integrations/vue/v-latest'
             label: 'vue-v-latest'
             needs-build: true
+            parent: ''
           - directory: 'integrations/vue/test-app'
             label: 'vue-test-app'
             needs-build: true
+            parent: 'integrations/vue/v-latest'
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
-          node-version: '20'
+          node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Build Stencil components
+      - name: Install root dependencies and build Stencil
         if: ${{ matrix.needs-build }}
-        run: npm run build:ci
+        run: npm ci && npm run build:ci
+
+      - name: Build parent integration
+        if: ${{ matrix.parent != '' }}
+        working-directory: ${{ matrix.parent }}
+        run: npm ci && npm run build
 
       - name: Install dependencies
-        if: ${{ !matrix.needs-build }}
         working-directory: ${{ matrix.directory }}
         run: npm ci
-
-      # For packages with file: deps, use --package-lock-only to update the lockfile
-      # without needing the actual built dist artifacts present
-      - name: Install dependencies (lockfile only)
-        if: ${{ matrix.needs-build }}
-        working-directory: ${{ matrix.directory }}
-        run: npm install --package-lock-only --ignore-scripts
 
       - name: Run npm audit and save output
         working-directory: ${{ matrix.directory }}
@@ -96,7 +102,7 @@ jobs:
 
       - name: Apply npm audit fix
         working-directory: ${{ matrix.directory }}
-        run: npm audit fix ${{ matrix.needs-build && '--package-lock-only' || '' }} || true
+        run: npm audit fix || true
 
       - name: Push fix branch and create PR
         env:
