@@ -31,13 +31,13 @@ jobs:
         run: npm audit --json > audit-output.json || true
 
       - name: Upload audit output as artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: audit-output
           path: audit-output.json
 
       - name: Apply npm audit fix
-        run: npm audit fix
+        run: npm audit fix || true
 
       - name: Push fix branch and create PR
         env:
