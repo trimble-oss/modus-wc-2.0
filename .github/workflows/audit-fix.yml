@@ -71,6 +71,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
@@ -110,10 +112,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH="fix/npm-audit-fix-${{ matrix.label }}-$(date +%Y-%m-%d)-${{ github.run_id }}"
+          BRANCH="fix/npm-audit-fix-${{ matrix.label }}-$(date +%Y-%m-%d)-${{ github.run_id }}-${{ github.run_attempt }}"
           git checkout -b "$BRANCH"
           git add "${{ matrix.directory }}/package-lock.json" "${{ matrix.directory }}/package.json"
           git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
           git commit -m "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push origin "$BRANCH"
           gh pr create --title "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` for \`${{ matrix.directory }}\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
