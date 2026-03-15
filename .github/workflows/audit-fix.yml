@@ -19,19 +19,43 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        directory:
-          - '.'
-          - 'integrations/angular/ng17'
-          - 'integrations/angular/ng18'
-          - 'integrations/angular/ng19'
-          - 'integrations/react/v17'
-          - 'integrations/react/v18'
-          - 'integrations/react/v19'
-          - 'integrations/react/test-react-v17'
-          - 'integrations/react/test-react-v18'
-          - 'integrations/react/test-react-v19'
-          - 'integrations/vue/v-latest'
-          - 'integrations/vue/test-app'
+        include:
+          - directory: '.'
+            label: 'root'
+            needs-build: false
+          - directory: 'integrations/angular/ng17'
+            label: 'angular-ng17'
+            needs-build: false
+          - directory: 'integrations/angular/ng18'
+            label: 'angular-ng18'
+            needs-build: false
+          - directory: 'integrations/angular/ng19'
+            label: 'angular-ng19'
+            needs-build: false
+          - directory: 'integrations/react/v17'
+            label: 'react-v17'
+            needs-build: true
+          - directory: 'integrations/react/v18'
+            label: 'react-v18'
+            needs-build: true
+          - directory: 'integrations/react/v19'
+            label: 'react-v19'
+            needs-build: true
+          - directory: 'integrations/react/test-react-v17'
+            label: 'react-test-v17'
+            needs-build: true
+          - directory: 'integrations/react/test-react-v18'
+            label: 'react-test-v18'
+            needs-build: true
+          - directory: 'integrations/react/test-react-v19'
+            label: 'react-test-v19'
+            needs-build: true
+          - directory: 'integrations/vue/v-latest'
+            label: 'vue-v-latest'
+            needs-build: true
+          - directory: 'integrations/vue/test-app'
+            label: 'vue-test-app'
+            needs-build: true
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -39,10 +63,26 @@ jobs:
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Build Stencil components
+        if: ${{ matrix.needs-build }}
+        run: npm run build:ci
 
       - name: Install dependencies
+        if: ${{ !matrix.needs-build }}
         working-directory: ${{ matrix.directory }}
         run: npm ci
+
+      # For packages with file: deps, use --package-lock-only to update the lockfile
+      # without needing the actual built dist artifacts present
+      - name: Install dependencies (lockfile only)
+        if: ${{ matrix.needs-build }}
+        working-directory: ${{ matrix.directory }}
+        run: npm install --package-lock-only --ignore-scripts
 
       - name: Run npm audit and save output
         working-directory: ${{ matrix.directory }}
@@ -51,12 +91,12 @@ jobs:
       - name: Upload audit output as artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
-          name: audit-output-${{ matrix.directory == '.' && 'root' || matrix.directory }}
+          name: audit-output-${{ matrix.label }}
           path: ${{ matrix.directory }}/audit-output.json
 
       - name: Apply npm audit fix
         working-directory: ${{ matrix.directory }}
-        run: npm audit fix || true
+        run: npm audit fix ${{ matrix.needs-build && '--package-lock-only' || '' }} || true
 
       - name: Push fix branch and create PR
         env:
@@ -64,12 +104,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          DIR="${{ matrix.directory }}"
-          LABEL=$(echo "$DIR" | sed 's|/|-|g')
-          BRANCH="fix/npm-audit-fix-${LABEL}-$(date +%Y-%m-%d)-${{ github.run_id }}"
+          BRANCH="fix/npm-audit-fix-${{ matrix.label }}-$(date +%Y-%m-%d)-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git add "${{ matrix.directory }}/package-lock.json" "${{ matrix.directory }}/package.json"
           git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
-          git commit -m "fix: npm audit fix ${DIR} $(date +%Y-%m-%d)"
+          git commit -m "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)"
           git push origin "$BRANCH"
-          gh pr create --title "fix: npm audit fix ${DIR} $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` for \`${DIR}\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
+          gh pr create --title "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` for \`${{ matrix.directory }}\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
