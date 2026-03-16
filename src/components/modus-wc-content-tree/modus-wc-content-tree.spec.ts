@@ -352,7 +352,11 @@ describe('modus-wc-content-tree', () => {
   it('renders expand/collapse button with "Expand all" aria-label when collapsed', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
+      html: `
+        <modus-wc-content-tree>
+          <modus-wc-tree-item label="Item"></modus-wc-tree-item>
+        </modus-wc-content-tree>
+      `,
     });
 
     const tree = page.rootInstance;
@@ -369,7 +373,11 @@ describe('modus-wc-content-tree', () => {
   it('renders expand/collapse button with "Collapse all" aria-label when expanded', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
+      html: `
+        <modus-wc-content-tree>
+          <modus-wc-tree-item label="Item"></modus-wc-tree-item>
+        </modus-wc-content-tree>
+      `,
     });
 
     const tree = page.rootInstance;
