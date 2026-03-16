@@ -80,14 +80,17 @@ jobs:
 
       # --- Audit phase ---
 
-      - name: Run npm audit across all directories
+      - name: Run npm audit and apply fixes across all directories
         run: |
-          for DIR in . integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
+          DIRS=". integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
             integrations/react/v17 integrations/react/v18 integrations/react/v19 \
             integrations/react/test-react-v17 integrations/react/test-react-v18 integrations/react/test-react-v19 \
-            integrations/vue/v-latest integrations/vue/test-app; do
+            integrations/vue/v-latest integrations/vue/test-app"
+          for DIR in $DIRS; do
             echo "Auditing $DIR..."
-            npm audit --json --prefix "$DIR" > "${DIR}/audit-output.json" 2>/dev/null || true
+            npm audit --json --prefix "$DIR" > "${DIR}/audit-output.json" || true
+            echo "Fixing $DIR..."
+            npm audit fix --prefix "$DIR" || true
           done
 
       - name: Upload all audit outputs as artifact
@@ -108,17 +111,7 @@ jobs:
             integrations/vue/v-latest/audit-output.json
             integrations/vue/test-app/audit-output.json
 
-      - name: Apply npm audit fix across all directories
-        run: |
-          for DIR in . integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
-            integrations/react/v17 integrations/react/v18 integrations/react/v19 \
-            integrations/react/test-react-v17 integrations/react/test-react-v18 integrations/react/test-react-v19 \
-            integrations/vue/v-latest integrations/vue/test-app; do
-            echo "Fixing $DIR..."
-            npm audit fix --prefix "$DIR" || true
-          done
-
-      # --- Single PR phase ---
+      # --- PR phase ---
 
       - name: Push fix branch and create PR
         env:
