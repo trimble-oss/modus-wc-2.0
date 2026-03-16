@@ -320,11 +320,12 @@ describe('modus-wc-menu', () => {
       `,
     });
 
-    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
-
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const secondLi = page.doc
+      .querySelectorAll('modus-wc-menu-item')[1]
+      .querySelector('li') as HTMLLIElement;
     const focusSpy = jest.spyOn(secondLi, 'focus');
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
     const tabEvent = new KeyboardEvent('keydown', {
       key: 'Tab',
       bubbles: true,
