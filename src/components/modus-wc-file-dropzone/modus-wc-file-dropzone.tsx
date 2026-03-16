@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -13,6 +14,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * File dropzone component that allows users to drag and drop files for upload.
+ *
+ * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
  */
 
 @Component({
@@ -80,6 +83,23 @@ export class ModusWcFileDropzone {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  /**
+   * Reset the dropzone to its initial state, clearing all error and success states
+   */
+  @Method()
+  async reset() {
+    this.invalidFile = 'none';
+    this.errorMessage = '';
+    this.uploadSuccess = false;
+    this.isDraggingOver = false;
+
+    if (this.inputRef) {
+      this.inputRef.value = '';
+    }
+
+    return Promise.resolve();
   }
 
   // Generate error message based on validation type - called only when validation fails

@@ -1,7 +1,12 @@
 import { Fragment, h, JSX } from '@stencil/core';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { IAutocompleteItem, IAutocompleteNoResults, ModusSize } from '../types';
+import {
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+  IInputFeedbackProp,
+  ModusSize,
+} from '../types';
 import { KEY } from '../utils';
 import { Attributes } from '../utils';
 
@@ -17,6 +22,7 @@ export function getClasses(customClass?: string): string {
 export function getMultiSelectClasses(props: {
   bordered?: boolean;
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
   readOnly?: boolean;
   size?: ModusSize;
 }): string {
@@ -34,6 +40,8 @@ export function getMultiSelectClasses(props: {
     props.bordered && 'modus-wc-autocomplete-multi-select--bordered',
     props.disabled && 'modus-wc-autocomplete-multi-select--disabled',
     props.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
+    props.feedback &&
+      `modus-wc-autocomplete-multi-select--${props.feedback.level}`,
   ]
     .filter(Boolean)
     .join(' ');
@@ -698,6 +706,8 @@ interface RenderInputParams {
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
+  feedback?: IInputFeedbackProp;
+  customClass?: string;
   includeClear?: boolean;
   includeSearch?: boolean;
   inputId?: string;
@@ -712,6 +722,7 @@ interface RenderInputParams {
   customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
+  onClear?: (event: CustomEvent<void>) => void; // Optional handler for clear button click; not used in multiSelect mode where clear button is rendered separately
   onFocus: (event: CustomEvent<FocusEvent>) => void;
 }
 
@@ -719,12 +730,15 @@ export function renderInput(params: RenderInputParams): JSX.Element {
   return (
     <modus-wc-text-input
       bordered={params.bordered && !params.multiSelect}
+      customClass={params.customClass}
       disabled={params.disabled}
+      feedback={!params.multiSelect ? params.feedback : undefined}
       includeClear={!params.multiSelect && params.includeClear}
       includeSearch={!params.multiSelect && params.includeSearch}
       inputId={params.inputId}
       inputTabIndex={params.inputTabIndex}
       name={params.name}
+      onClearClick={params.onClear}
       onInputBlur={params.onBlur}
       onInputChange={params.onChange}
       onInputFocus={params.onFocus}

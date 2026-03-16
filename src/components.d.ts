@@ -326,7 +326,7 @@ export namespace Components {
         /**
           * The shape of the button.
          */
-        "shape": 'circle' | 'rectangle' | 'square';
+        "shape": 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */
@@ -387,9 +387,9 @@ export namespace Components {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
@@ -566,6 +566,10 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
+        /**
           * The size of the input.
          */
         "size"?: ModusSize;
@@ -715,6 +719,10 @@ export namespace Components {
           * Allow multiple file selection
          */
         "multiple"?: boolean;
+        /**
+          * Reset the dropzone to its initial state, clearing all error and success states
+         */
+        "reset": () => Promise<void>;
         /**
           * Success message displayed when files are uploaded successfully
          */
@@ -1113,6 +1121,27 @@ export namespace Components {
           * Size of the pagination buttons
          */
         "size": ModusSize;
+    }
+    /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface ModusWcPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+        /**
+          * Enable floating mode with elevated shadow.
+         */
+        "floating"?: boolean;
+        /**
+          * Height of the panel in pixels.
+         */
+        "height"?: string;
+        /**
+          * Width of the panel in pixels.
+         */
+        "width"?: string;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -1890,6 +1919,10 @@ export namespace Components {
          */
         "hierarchy": TypographyHierarchy;
         /**
+          * The text label to display.
+         */
+        "label": string;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
@@ -2085,6 +2118,7 @@ declare global {
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
         "chipsExpansionChange": { expanded: boolean };
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": Event;
         "inputFocus": FocusEvent;
@@ -2406,7 +2440,10 @@ declare global {
         new (): HTMLModusWcMenuElement;
     };
     interface HTMLModusWcMenuItemElementEventMap {
-        "itemSelect": { value: string };
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
     }
     /**
      * A customizable menu item component used to display the item portion of a menu
@@ -2512,6 +2549,15 @@ declare global {
     var HTMLModusWcPaginationElement: {
         prototype: HTMLModusWcPaginationElement;
         new (): HTMLModusWcPaginationElement;
+    };
+    /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface HTMLModusWcPanelElement extends Components.ModusWcPanel, HTMLStencilElement {
+    }
+    var HTMLModusWcPanelElement: {
+        prototype: HTMLModusWcPanelElement;
+        new (): HTMLModusWcPanelElement;
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -2729,6 +2775,7 @@ declare global {
         new (): HTMLModusWcTabsElement;
     };
     interface HTMLModusWcTextInputElementEventMap {
+        "clearClick": void;
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
@@ -2919,6 +2966,7 @@ declare global {
         "modus-wc-navbar": HTMLModusWcNavbarElement;
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
+        "modus-wc-panel": HTMLModusWcPanelElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-rating": HTMLModusWcRatingElement;
@@ -3094,6 +3142,10 @@ declare namespace LocalJSX {
          */
         "onChipsExpansionChange"?: (event: ModusWcAutocompleteCustomEvent<{ expanded: boolean }>) => void;
         /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcAutocompleteCustomEvent<void>) => void;
+        /**
           * Event emitted when the input loses focus.
          */
         "onInputBlur"?: (event: ModusWcAutocompleteCustomEvent<FocusEvent>) => void;
@@ -3250,7 +3302,7 @@ declare namespace LocalJSX {
         /**
           * The shape of the button.
          */
-        "shape"?: 'circle' | 'rectangle' | 'square';
+        "shape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
          */
@@ -3324,9 +3376,9 @@ declare namespace LocalJSX {
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
-          * Determines if the interior padding is compact or not
+          * Determines the interior padding size
          */
-        "padding"?: 'normal' | 'compact';
+        "padding"?: 'compact' | 'comfortable';
     }
     /**
      * A customizable checkbox component
@@ -3546,6 +3598,10 @@ declare namespace LocalJSX {
           * A value is required or must be checked for the form to be submittable.
          */
         "required"?: boolean;
+        /**
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+         */
+        "showWeekNumbers"?: boolean;
         /**
           * The size of the input.
          */
@@ -3874,7 +3930,10 @@ declare namespace LocalJSX {
         /**
           * Event emitted when a menu item is selected.
          */
-        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{ value: string }>) => void;
+        "onItemSelect"?: (event: ModusWcMenuItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
         /**
           * The selected state of the menu item.
          */
@@ -4182,6 +4241,27 @@ declare namespace LocalJSX {
           * Size of the pagination buttons
          */
         "size"?: ModusSize;
+    }
+    /**
+     * A customizable panel component used to organize content in a structured layout.
+     */
+    interface ModusWcPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
+        /**
+          * Enable floating mode with elevated shadow.
+         */
+        "floating"?: boolean;
+        /**
+          * Height of the panel in pixels.
+         */
+        "height"?: string;
+        /**
+          * Width of the panel in pixels.
+         */
+        "width"?: string;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -4781,6 +4861,10 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
+          * Event emitted when the clear button is clicked.
+         */
+        "onClearClick"?: (event: ModusWcTextInputCustomEvent<void>) => void;
+        /**
           * Event emitted when the input loses focus.
          */
         "onInputBlur"?: (event: ModusWcTextInputCustomEvent<FocusEvent>) => void;
@@ -5104,6 +5188,10 @@ declare namespace LocalJSX {
          */
         "hierarchy"?: TypographyHierarchy;
         /**
+          * The text label to display.
+         */
+        "label": string;
+        /**
           * The size of the font.
          */
         "size"?: TypographySize;
@@ -5161,6 +5249,7 @@ declare namespace LocalJSX {
         "modus-wc-navbar": ModusWcNavbar;
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
+        "modus-wc-panel": ModusWcPanel;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-rating": ModusWcRating;
@@ -5309,6 +5398,10 @@ declare module "@stencil/core" {
              * Pagination component to navigate through pages of content
              */
             "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
+            /**
+             * A customizable panel component used to organize content in a structured layout.
+             */
+            "modus-wc-panel": LocalJSX.ModusWcPanel & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle

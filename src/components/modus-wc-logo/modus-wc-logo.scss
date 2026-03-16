@@ -1,0 +1,25 @@
+.modus-wc-logo {
+  display: block;
+
+  svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .logo-emblem-trimble {
+    fill: var(--modus-wc-color-info-blue-on-dark);
+  }
+
+  .logo-accent {
+    fill: var(--modus-wc-color-primary);
+  }
+
+  .logo-text {
+    fill: var(--modus-wc-color-base-inverted);
+  }
+
+  .logo-secondary {
+    fill: var(--modus-wc-color-secondary);
+  }
+}

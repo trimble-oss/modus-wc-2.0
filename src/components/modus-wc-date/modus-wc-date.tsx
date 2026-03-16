@@ -12,6 +12,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import DatePickerCalendar from './utils/calendar';
@@ -117,8 +118,10 @@ export class ModusWcDate {
   @Prop() format?:
     | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
     | 'MMM DD, YYYY' = 'dd-mm-yyyy';
 
   /** The value of the control. */
@@ -126,6 +129,9 @@ export class ModusWcDate {
 
   /** The first day of the week for the calendar display */
   @Prop() weekStartDay?: WeekStartDay = 'sunday';
+
+  /** Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.*/
+  @Prop() showWeekNumbers?: boolean = false;
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
@@ -173,6 +179,16 @@ export class ModusWcDate {
       return;
     }
 
+    // When the input has focus, the user is actively typing.
+    // Allow partial/incomplete values to pass through without validation
+    // so that controlled input patterns (e.g. React) work correctly.
+    if (this.hasFocus) {
+      if (this.inputRef) {
+        this.inputRef.value = newValue;
+      }
+      return;
+    }
+
     const parsed = this.parseISODate(newValue);
     if (!parsed) {
       if (this.value) {
@@ -216,6 +232,9 @@ export class ModusWcDate {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Date input';
     }
@@ -364,6 +383,9 @@ export class ModusWcDate {
       return;
     }
 
+    // Clear hasFocus before setting value so the @Watch('value') handler
+    // takes the full validation path and dispatches the input event.
+    this.hasFocus = false;
     this.value = this.formatISODate(date);
 
     // If the selected date is from a different month, navigate to that month
@@ -379,7 +401,6 @@ export class ModusWcDate {
     }
 
     this.showCalendar = false;
-    this.hasFocus = false;
     this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
   };
 
@@ -803,7 +824,10 @@ export class ModusWcDate {
 
     return (
       <div class="calendar-body">
-        <div class="calendar-days-week">
+        <div
+          class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+        >
+          {this.showWeekNumbers && <div class="week-number-header"></div>}
           {this.calendar
             .getDaysOfWeek(
               'default',
@@ -813,10 +837,26 @@ export class ModusWcDate {
               return <div class="day-header">{d}</div>;
             })}
         </div>
-        <div class="calendar-dates">
-          {this.calendar.dates.map((date) => {
+        <div
+          class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+        >
+          {this.calendar.dates.map((date, index) => {
+            // Add week number at the start of each row (every 7 days)
+            const weekNumberElement =
+              this.showWeekNumbers && index % 7 === 0 ? (
+                <div
+                  class="week-number"
+                  aria-label={`Week ${this.calendar.getWeekNumber(date, WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay])}`}
+                >
+                  {this.calendar.getWeekNumber(
+                    date,
+                    WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
+                  )}
+                </div>
+              ) : null;
+
             if (!date) {
-              return null;
+              return weekNumberElement;
             }
 
             const isToday = this.compareDate(date, today) === 0;
@@ -826,7 +866,7 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
-            return (
+            const button = (
               <button
                 type="button"
                 class={{
@@ -845,6 +885,9 @@ export class ModusWcDate {
                 {date.getDate()}
               </button>
             );
+
+            // Only create array when week number exists
+            return weekNumberElement ? [weekNumberElement, button] : button;
           })}
         </div>
       </div>
@@ -909,6 +952,8 @@ export class ModusWcDate {
 
       if (this.format === 'dd-mm-yyyy' || this.format === 'dd/mm/yyyy') {
         [dayStr, monthStr, yearStr] = parts;
+      } else if (this.format === 'mm-dd-yyyy' || this.format === 'mm/dd/yyyy') {
+        [monthStr, dayStr, yearStr] = parts;
       } else {
         // yyyy-mm-dd or yyyy/mm/dd
         [yearStr, monthStr, dayStr] = parts;
@@ -950,8 +995,12 @@ export class ModusWcDate {
     switch (this.format) {
       case 'dd-mm-yyyy':
         return `${day}-${month}-${year}`;
+      case 'mm-dd-yyyy':
+        return `${month}-${day}-${year}`;
       case 'dd/mm/yyyy':
         return `${day}/${month}/${year}`;
+      case 'mm/dd/yyyy':
+        return `${month}/${day}/${year}`;
       case 'yyyy/mm/dd':
         return `${year}/${month}/${day}`;
       case 'MMM DD, YYYY': {
@@ -1127,7 +1176,10 @@ export class ModusWcDate {
         </div>
 
         {this.showCalendar && (
-          <div ref={(el) => (this.calendarRef = el)} class="calendar-container">
+          <div
+            ref={(el) => (this.calendarRef = el)}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+          >
             {this.renderCalendarHeader()}
             {this.renderCalendarBody()}
           </div>

@@ -1,5 +1,6 @@
 @import 'global.css';
 @import 'variables.css';
+@import 'fonts.css';
 
 @tailwind base;
 @tailwind components;
@@ -38,11 +39,6 @@
     font-size: var(--modus-wc-font-size-sm);
     font-weight: var(--modus-wc-font-weight-bold);
     line-height: var(--modus-wc-line-height-h6);
-  }
-
-  /* Paragraphs */
-  p {
-    margin-bottom: var(--modus-wc-spacing-2xl);
   }
 
   /* Blockquotes */

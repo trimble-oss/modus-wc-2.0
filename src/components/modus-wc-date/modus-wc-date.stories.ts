@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { WeekStartDay } from '../types';
 
@@ -13,9 +14,11 @@ interface DateArgs {
   format?:
     | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
     | 'MMM DD, YYYY'
     | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy';
+    | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -25,6 +28,7 @@ interface DateArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-week-numbers'?: boolean;
   size?: ModusSize;
   value: string;
   'week-start-day'?: WeekStartDay;
@@ -40,6 +44,7 @@ const meta: Meta<DateArgs> = {
     label: 'Label',
     'read-only': false,
     required: false,
+    'show-week-numbers': false,
     size: 'md',
     value: '',
     'week-start-day': 'sunday',
@@ -67,9 +72,11 @@ const meta: Meta<DateArgs> = {
       options: [
         'yyyy-mm-dd',
         'dd-mm-yyyy',
+        'mm-dd-yyyy',
         'MMM DD, YYYY',
         'yyyy/mm/dd',
         'dd/mm/yyyy',
+        'mm/dd/yyyy',
       ],
     },
     'week-start-day': {
@@ -103,7 +110,7 @@ export default meta;
 
 type Story = StoryObj<DateArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => {
     return html`
       <style>
@@ -128,6 +135,7 @@ export const Default: Story = {
         placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
+        ?show-week-numbers=${args['show-week-numbers']}
         size=${ifDefined(args.size)}
         .value=${args.value}
         week-start-day=${ifDefined(args['week-start-day'])}
@@ -136,28 +144,83 @@ export const Default: Story = {
   },
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
-  render: (args) => html`
-    <style>
-      div[id^='story--components-forms-date--with-error-feedback'] {
-        min-height: 400px;
-        width: 300px;
-      }
-    </style>
-    <modus-wc-date
-      aria-label="Date input"
-      .feedback=${errorFeedback}
-      label=${ifDefined(args.label)}
-      ?required=${true}
-      .value=${args.value}
-      week-start-day=${ifDefined(args['week-start-day'])}
-    ></modus-wc-date>
-  `,
+  ...Template,
+  args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src}
+<script>
+  const dateInputElement = document.querySelector('modus-wc-date');
+  dateInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for date component
+    if (!customElements.get('date-shadow-host')) {
+      const DateShadowHost = createShadowHostClass<DateArgs>({
+        componentTag: 'modus-wc-date',
+        propsMapper: (v: DateArgs, el: HTMLElement) => {
+          const dateEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            disabled: boolean;
+            feedback: IInputFeedbackProp;
+            format: string;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            max: string;
+            min: string;
+            name: string;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            showWeekNumbers: boolean;
+            size: string;
+            value: string;
+            weekStartDay: string;
+          };
+          dateEl.bordered = Boolean(v.bordered);
+          dateEl.customClass = v['custom-class'] || '';
+          dateEl.disabled = Boolean(v.disabled);
+          dateEl.format = v.format ?? '';
+          dateEl.inputId = v['input-id'] ?? '';
+          dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
+          dateEl.label = v.label ?? '';
+          dateEl.max = v.max ?? '';
+          dateEl.min = v.min ?? '';
+          dateEl.name = v.name ?? '';
+          dateEl.placeholder = v.placeholder ?? '';
+          dateEl.readOnly = Boolean(v['read-only']);
+          dateEl.required = Boolean(v.required);
+          dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);
+          dateEl.size = v.size ?? '';
+          dateEl.value = v.value ?? '';
+          dateEl.weekStartDay = v['week-start-day'] ?? '';
+        },
+      });
+      customElements.define('date-shadow-host', DateShadowHost);
+    }
+
+    return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {

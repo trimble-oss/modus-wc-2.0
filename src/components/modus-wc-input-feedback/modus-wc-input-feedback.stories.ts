@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IInputFeedbackLevel } from './modus-wc-input-feedback';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface InputFeedbackArgs {
@@ -67,5 +68,38 @@ export const WithCustomModusIcon: Story = {
 >
 </modus-wc-input-feedback>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for input-feedback component
+    if (!customElements.get('input-feedback-shadow-host')) {
+      const InputFeedbackShadowHost = createShadowHostClass<InputFeedbackArgs>({
+        componentTag: 'modus-wc-input-feedback',
+        propsMapper: (v: InputFeedbackArgs, el: HTMLElement) => {
+          const inputFeedbackEl = el as unknown as {
+            customClass: string;
+            icon: string;
+            level: string;
+            message: string;
+            size: string;
+          };
+          inputFeedbackEl.customClass = v['custom-class'] || '';
+          inputFeedbackEl.icon = v.icon ?? '';
+          inputFeedbackEl.level = v.level;
+          inputFeedbackEl.message = v.message ?? '';
+          inputFeedbackEl.size = v.size ?? 'md';
+        },
+      });
+      customElements.define(
+        'input-feedback-shadow-host',
+        InputFeedbackShadowHost
+      );
+    }
+
+    return html`<input-feedback-shadow-host
+      .props=${{ ...args }}
+    ></input-feedback-shadow-host>`;
   },
 };

@@ -21,8 +21,7 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
-import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
+import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
 
 export interface INavbarTextOverrides {
@@ -55,6 +54,7 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
+/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -73,8 +73,8 @@ export interface INavbarUserCard {
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
  *
- * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
- * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+ * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+ *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -92,6 +92,9 @@ export class ModusWcNavbar {
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'. */
+  @Prop() logoName?: LogoName = 'trimble';
 
   /** The open state of the apps menu. */
   @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
@@ -120,7 +123,9 @@ export class ModusWcNavbar {
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** User information used to render the user card. */
+  /** User information used to render the user card.
+   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+   */
   @Prop() userCard!: INavbarUserCard;
 
   /** The open state of the user menu. */
@@ -177,7 +182,8 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
+  /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+   */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
@@ -417,6 +423,10 @@ export class ModusWcNavbar {
       this.visibility?.notifications ||
       this.visibility?.search;
 
+    const accessibleName = (this.logoName || 'trimble')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
@@ -424,6 +434,7 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Main menu"
                   onButtonClick={this.toggleMainMenu}
                   shape="square"
                   size="sm"
@@ -441,16 +452,16 @@ export class ModusWcNavbar {
             )}
 
             <modus-wc-button
-              customClass="trimble-logo"
+              aria-label={`${accessibleName} logo`}
+              customClass="logo"
               onButtonClick={this.handleTrimbleLogoClick}
               size="sm"
               variant="borderless"
             >
-              {this.condensed ? (
-                <TrimbleLogoGlobeIcon />
-              ) : (
-                <TrimbleLogoFullIcon />
-              )}
+              <modus-wc-logo
+                name={this.logoName || 'trimble'}
+                emblem={this.condensed}
+              ></modus-wc-logo>
             </modus-wc-button>
 
             <slot name="start" />
@@ -466,6 +477,7 @@ export class ModusWcNavbar {
             {this.visibility?.ai && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="AI assistant"
                   customClass="ai"
                   onButtonClick={this.handleAiClick}
                   shape="square"
@@ -480,6 +492,7 @@ export class ModusWcNavbar {
             {this.condensed && condensedHasItems && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="More options"
                   onButtonClick={this.toggleCondensedMenu}
                   shape="square"
                   size="sm"
@@ -541,6 +554,7 @@ export class ModusWcNavbar {
                   />
                 )}
                 <modus-wc-button
+                  aria-label="Search"
                   onButtonClick={this.handleSearchClick}
                   shape="square"
                   size="sm"
@@ -554,6 +568,7 @@ export class ModusWcNavbar {
             {this.visibility?.notifications && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Notifications"
                   onButtonClick={this.handleNotificationsClick}
                   shape="square"
                   size="sm"
@@ -572,6 +587,7 @@ export class ModusWcNavbar {
 
             {this.visibility?.help && !this.condensed && (
               <modus-wc-button
+                aria-label="Help"
                 onButtonClick={this.handleHelpClick}
                 shape="square"
                 size="sm"
@@ -584,6 +600,7 @@ export class ModusWcNavbar {
             {this.visibility?.apps && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Apps"
                   onButtonClick={this.handleAppsClick}
                   shape="square"
                   size="sm"
@@ -603,6 +620,7 @@ export class ModusWcNavbar {
             {this.visibility?.user && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="User profile"
                   customClass="user-button"
                   onButtonClick={this.toggleUser}
                   shape="circle"

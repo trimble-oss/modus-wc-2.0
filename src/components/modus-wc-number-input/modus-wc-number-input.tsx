@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
@@ -92,6 +93,9 @@ export class ModusWcNumberInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.placeholder || 'Number input';
     }

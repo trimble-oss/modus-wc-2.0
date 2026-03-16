@@ -9,8 +9,8 @@
 
 A customizable navbar component used for top level navigation of all Trimble applications.
 
-The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
-It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
+The component supports a `<slot>` called 'main-menu', 'notifications', and 'apps' for injecting custom HTML menus.
+It also supports `<slot>` called 'start', 'center', and 'end' for injecting additional custom HTML.
 
 ## Properties
 
@@ -75,7 +75,6 @@ graph TD;
   modus-wc-navbar --> modus-wc-card
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
-  modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback

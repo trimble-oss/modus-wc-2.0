@@ -723,6 +723,77 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('');
   });
 
+  it('should pass through partial value without validation when input has focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Controlled input test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component['hasFocus'] = true;
+    component['handleValueChange']('2');
+    await page.waitForChanges();
+
+    expect(input.value).toBe('2');
+  });
+
+  it('should pass through partial value when input has focus but inputRef is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Null ref focus test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = true;
+    component['inputRef'] = undefined;
+    component['handleValueChange']('15-0');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+  });
+
+  it('should not clear value during controlled input typing sequence', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Typing sequence test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component['hasFocus'] = true;
+
+    const partialValues = [
+      '1',
+      '15',
+      '15-',
+      '15-0',
+      '15-06',
+      '15-06-',
+      '15-06-2025',
+    ];
+    for (const partial of partialValues) {
+      component['handleValueChange'](partial);
+      await page.waitForChanges();
+      expect(input.value).toBe(partial);
+    }
+  });
+
+  it('should validate value when input does not have focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Programmatic set test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = false;
+    component.value = 'invalid';
+    component['handleValueChange']('invalid');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+  });
+
   it('should navigate to selected date when opening calendar with value', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
@@ -2431,6 +2502,50 @@ describe('modus-wc-date', () => {
     });
     const component5 = page5.rootInstance as ModusWcDate;
     expect(component5['formatISODate'](date)).toBe('Oct 15, 2025');
+
+    // Test mm-dd-yyyy
+    const page6 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format mm-dd-yyyy" format="mm-dd-yyyy"></modus-wc-date>',
+    });
+    const component6 = page6.rootInstance as ModusWcDate;
+    expect(component6['formatISODate'](date)).toBe('10-15-2025');
+
+    // Test mm/dd/yyyy
+    const page7 = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Format mm/dd/yyyy" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component7 = page7.rootInstance as ModusWcDate;
+    expect(component7['formatISODate'](date)).toBe('10/15/2025');
+  });
+
+  it('should parse dates with mm-dd-yyyy format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse mm-dd-yyyy" format="mm-dd-yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const parsed = component['parseISODate']('10-15-2025');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
+  });
+
+  it('should parse dates with mm/dd/yyyy format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Parse mm/dd/yyyy" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const parsed = component['parseISODate']('10/15/2025');
+    expect(parsed).toBeDefined();
+    expect(parsed?.getFullYear()).toBe(2025);
+    expect(parsed?.getMonth()).toBe(9); // October (0-indexed)
+    expect(parsed?.getDate()).toBe(15);
   });
 
   it('should use default yyyy-mm-dd format for unknown format values', async () => {
@@ -2712,5 +2827,20 @@ describe('modus-wc-date', () => {
     expect(component['calendar'].selectedYear).toBe(2025);
     expect(component['calendar'].selectedMonth).toBe(9); // October
     expect(component['calendar']['firstDayOfWeek']).toBe(3); // Wednesday
+  });
+
+  it('should render weeknumber column when showWeekNumbers is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Week numbers test" show-week-numbers="true"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Open calendar to render week numbers
+    component['showCalendar'] = true;
+    await page.waitForChanges();
+
+    const weekNumbers = page.root!.querySelectorAll('.week-number');
+    expect(weekNumbers.length).toBeGreaterThan(0);
   });
 });

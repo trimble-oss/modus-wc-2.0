@@ -9,6 +9,8 @@
 
 File dropzone component that allows users to drag and drop files for upload.
 
+The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
+
 ## Properties
 
 | Property                      | Attribute                        | Description                                                           | Type                   | Default     |
@@ -32,6 +34,19 @@ File dropzone component that allows users to drag and drop files for upload.
 | Event        | Description                           | Type                    |
 | ------------ | ------------------------------------- | ----------------------- |
 | `fileSelect` | Event emitted when files are selected | `CustomEvent<FileList>` |
+
+
+## Methods
+
+### `reset() => Promise<void>`
+
+Reset the dropzone to its initial state, clearing all error and success states
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IAutocompleteItem, IAutocompleteNoResults } from '../types';
 import { ModusSize } from '../types';
 
@@ -146,6 +147,7 @@ interface AutocompleteArgs {
   'custom-class'?: string;
   'debounce-ms'?: number;
   disabled?: boolean;
+  feedback?: { level: 'error' | 'warning' | 'success'; message: string };
   'include-clear'?: boolean;
   'include-search'?: boolean;
   'input-id'?: string;
@@ -269,6 +271,7 @@ const meta: Meta<AutocompleteArgs> = {
       handles: [
         'chipRemove',
         'chipsExpansionChange',
+        'clearClick',
         'inputBlur',
         'inputChange',
         'inputFocus',
@@ -432,6 +435,7 @@ const Template: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
+  .feedback=${ifDefined(args.feedback)}
   ?include-clear=${args['include-clear']}
   ?include-search=${args['include-search']}
   input-id=${ifDefined(args['input-id'])}
@@ -455,7 +459,7 @@ const Template: Story = {
 <script>
 // Add Autocomplete items
 ${Items}
-// Adding this block to show how to set items via JS  
+// Adding this block to show how to set items via JS
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
 </script>
@@ -481,6 +485,7 @@ export const WithCustomIconSlot: Story = {
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
   ?disabled=${args.disabled}
+  .feedback=${ifDefined(args.feedback)}
   ?include-clear=${args['include-clear']}
   ?include-search=${args['include-search']}
   input-id=${ifDefined(args['input-id'])}
@@ -506,13 +511,61 @@ export const WithCustomIconSlot: Story = {
 <script>
 // Add Autocomplete items
 ${Items}
-// Adding this block to show how to set items via JS  
+// Adding this block to show how to set items via JS
 // const autocomplete = document.querySelector('modus-wc-autocomplete');
 // autocomplete.items = autocompleteItems;
 </script>
   `,
   args: {
     placeholder: 'Search fruits...',
+  },
+};
+
+export const WithFeedback: Story = {
+  render: (args) => html`
+    <style>
+      div[id^='story--components-forms-autocomplete--with-feedback'] {
+        height: 400px;
+      }
+    </style>
+    <modus-wc-autocomplete
+      aria-label="Fruit autocomplete with feedback"
+      ?bordered=${args.bordered}
+      .items=${args.items}
+      .feedback=${args.feedback}
+      label=${ifDefined(args.label)}
+      ?required=${args.required}
+    ></modus-wc-autocomplete>
+  `,
+  args: {
+    feedback: {
+      level: 'error',
+      message: 'This field is required',
+    },
+    label: 'With Feedback',
+    required: true,
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-autocomplete
+  aria-label="Fruit autocomplete with feedback"
+  label="With Feedback"
+  required
+></modus-wc-autocomplete>
+
+<script>
+  const autocomplete = document.querySelector('modus-wc-autocomplete');
+  autocomplete.feedback = {
+    level: 'error',
+    message: 'This field is required'
+  };
+  autocomplete.items = autocompleteItems;
+</script>
+        `,
+      },
+    },
   },
 };
 
@@ -713,7 +766,7 @@ export const MultiSelect: Story = {
           // const autocomplete = document.getElementById('fruit-autocomplete');
           // if (autocomplete) {
           //   autocomplete.items = itemsWithSelection;
-          // } 
+          // }
         </script>
     `;
   },
@@ -843,7 +896,7 @@ export const WithSpinner: Story = {
         //   autocomplete.removeEventListener('inputChange', handleInputChange);
         //   autocomplete.addEventListener('inputChange', handleInputChange);
         // }
-        
+
       </script>
     `;
   },
@@ -1925,14 +1978,12 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleSelectApple()"
-                variant="primary"
                 size="sm"
               >
                 Select Apple
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleSelectNull()"
-                variant="secondary"
                 size="sm"
               >
                 Clear Selection
@@ -1945,21 +1996,18 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleOpenMenu()"
-                variant="primary"
                 size="sm"
               >
                 Open Menu
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleCloseMenu()"
-                variant="primary"
                 size="sm"
               >
                 Close Menu
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleToggleMenu()"
-                variant="secondary"
                 size="sm"
               >
                 Toggle Menu
@@ -1972,14 +2020,12 @@ export const WithProgrammaticControl: Story = {
             <div class="button-row">
               <modus-wc-button
                 onclick="window.handleFocusInput()"
-                variant="primary"
                 size="sm"
               >
                 Focus Input
               </modus-wc-button>
               <modus-wc-button
                 onclick="window.handleClearInput()"
-                variant="danger"
                 size="sm"
               >
                 Clear All
@@ -2351,6 +2397,98 @@ export const DynamicOptions: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for autocomplete component
+    if (!customElements.get('autocomplete-shadow-host')) {
+      const AutocompleteShadowHost = createShadowHostClass<AutocompleteArgs>({
+        componentTag: 'modus-wc-autocomplete',
+        propsMapper: (v: AutocompleteArgs, el: HTMLElement) => {
+          const autocompleteEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            debounceMs: number;
+            disabled: boolean;
+            includeClear: boolean;
+            includeSearch: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            items: IAutocompleteItem[];
+            label: string;
+            leaveMenuOpen: boolean;
+            maxChips: number;
+            minChars: number;
+            minInputWidth: number;
+            multiSelect: boolean;
+            name: string;
+            noResults: IAutocompleteNoResults;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            showMenuOnFocus: boolean;
+            showSpinner: boolean;
+            size: string;
+            value: string;
+          };
+          autocompleteEl.bordered = Boolean(v.bordered);
+          autocompleteEl.customClass = v['custom-class'] || '';
+          if (typeof v['debounce-ms'] === 'number') {
+            autocompleteEl.debounceMs = v['debounce-ms'];
+          }
+          autocompleteEl.disabled = Boolean(v.disabled);
+          autocompleteEl.includeClear = Boolean(v['include-clear']);
+          autocompleteEl.includeSearch = Boolean(v['include-search']);
+          if (typeof v['input-id'] === 'string') {
+            autocompleteEl.inputId = v['input-id'];
+          }
+          if (typeof v['input-tab-index'] === 'number') {
+            autocompleteEl.inputTabIndex = v['input-tab-index'];
+          }
+          autocompleteEl.items = v.items;
+          if (typeof v.label === 'string') {
+            autocompleteEl.label = v.label;
+          }
+          if (typeof v['leave-menu-open'] === 'boolean') {
+            autocompleteEl.leaveMenuOpen = v['leave-menu-open'];
+          }
+          if (typeof v['max-chips'] === 'number') {
+            autocompleteEl.maxChips = v['max-chips'];
+          }
+          if (typeof v['min-chars'] === 'number') {
+            autocompleteEl.minChars = v['min-chars'];
+          }
+          if (typeof v['min-input-width'] === 'number') {
+            autocompleteEl.minInputWidth = v['min-input-width'];
+          }
+          autocompleteEl.multiSelect = Boolean(v['multi-select']);
+          if (typeof v.name === 'string') {
+            autocompleteEl.name = v.name;
+          }
+          autocompleteEl.noResults = v['no-results'];
+          if (typeof v.placeholder === 'string') {
+            autocompleteEl.placeholder = v.placeholder;
+          }
+          autocompleteEl.readOnly = Boolean(v['read-only']);
+          autocompleteEl.required = Boolean(v.required);
+          if (typeof v['show-menu-on-focus'] === 'boolean') {
+            autocompleteEl.showMenuOnFocus = v['show-menu-on-focus'];
+          }
+          autocompleteEl.showSpinner = Boolean(v['show-spinner']);
+          if (typeof v.size === 'string') {
+            autocompleteEl.size = v.size;
+          }
+          autocompleteEl.value = v.value;
+        },
+      });
+      customElements.define('autocomplete-shadow-host', AutocompleteShadowHost);
+    }
+
+    return html`<autocomplete-shadow-host
+      .props=${{ ...args }}
+    ></autocomplete-shadow-host>`;
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {
@@ -2375,7 +2513,7 @@ export const Migration: Story = {
 | disable-close-on-select       | leave-menu-open     |                                                             |
 | dropdown-max-height           |                     | Not carried over, use CSS instead                           |
 | dropdown-z-index              |                     | Not carried over, use CSS instead                           |
-| error-text                    | feedback.message    | Use feedback level                                          |
+| error-text                    | feedback            | feedback.level = 'error', feedback.message = 'Error message'|
 | filter-options                |                     | Rebind options                                              |
 | include-search-icon           | include-search      |                                                             |
 | label                         | label               |                                                             |

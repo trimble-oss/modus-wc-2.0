@@ -29,6 +29,7 @@
   --modus-wc-color-blue-dark: #0e416c;
   --modus-wc-color-info-blue: #004f83;
   --modus-wc-color-highlight-blue-pale: rgba(1, 154, 235, 0.5);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 
   /* Yellow Progression */
   --modus-wc-color-yellow-pale: #fff5e4;
@@ -73,6 +74,7 @@
   --modus-wc-border-radius-xl: 12px;
   --modus-wc-border-radius-2xl: 16px;
   --modus-wc-border-radius-3xl: 24px;
+  --modus-wc-border-radius-rounded: 1000px;
 
   /* Line heights */
   --modus-wc-line-height-xs: 0.5rem;
@@ -89,6 +91,8 @@
   /* 30px */
   --modus-wc-line-height-h1: 2.25rem;
   /* 36px */
+  --modus-wc-line-height-h0: 2.75rem;
+  /* 44px */
 
   /* Font Family */
   --modus-wc-font-family:
@@ -173,6 +177,9 @@
   --modus-wc-border-radius-chip: var(--modus-wc-border-radius-lg);
   --modus-wc-border-radius-alert: var(--modus-wc-border-radius-md);
 
+  /* Opacity */
+  --modus-wc-opacity-overlay: 0.6;
+
   /* Dynamic Base Colors */
   --modus-wc-color-base-page: light-dark(
     var(--modus-wc-color-white),
@@ -198,9 +205,13 @@
     var(--modus-wc-color-gray-8),
     var(--modus-wc-color-gray-3)
   );
-  --modus-wc-color-base-content-hight-contrast: light-dark(
+  --modus-wc-color-base-content-high-contrast: light-dark(
     var(--modus-wc-color-black),
     var(--modus-wc-color-white)
+  );
+  --modus-wc-color-base-inverted: light-dark(
+    var(--modus-wc-color-gray-10),
+    var(--modus-wc-color-gray-light)
   );
 
   /**

@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable card component used to group and display content in a way that is easily readable
+A customizable card component used to group and display content in a way that is easily readable.
+
+The component supports six `<slot>` called 'header' (for images/custom content), 'title', 'subtitle', default slot (main body), 'actions' (buttons/interactive elements), and 'footer'.
 
 ## Properties
 
@@ -17,7 +19,7 @@ A customizable card component used to group and display content in a way that is
 | `bordered`         | `bordered`          | Adds a hard border to the card                                | `boolean \| undefined`                    | `false`      |
 | `customClass`      | `custom-class`      | Custom CSS class to apply                                     | `string \| undefined`                     | `''`         |
 | `layout`           | `layout`            | Determines how the card is laid out                           | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `padding`          | `padding`           | Determines if the interior padding is compact or not          | `"compact" \| "normal" \| undefined`      | `'normal'`   |
+| `padding`          | `padding`           | Determines the interior padding size                          | `"comfortable" \| "compact" \| undefined` | `'compact'`  |
 
 
 ## Dependencies

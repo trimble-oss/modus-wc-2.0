@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface ButtonArgs {
@@ -10,7 +11,7 @@ interface ButtonArgs {
   disabled: boolean;
   'full-width': boolean;
   pressed: boolean;
-  shape: 'circle' | 'rectangle' | 'square';
+  shape: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
@@ -36,7 +37,7 @@ const meta: Meta<ButtonArgs> = {
     },
     shape: {
       control: { type: 'select' },
-      options: ['circle', 'rectangle', 'square'],
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     size: {
       control: { type: 'select' },
@@ -92,6 +93,11 @@ export const ButtonShapes: Story = {
   render: () => {
     // prettier-ignore
     return html`
+  <modus-wc-button
+    shape="rectangle"
+  >
+    Rectangle
+  </modus-wc-button>
 <modus-wc-button
   shape="circle"
 >
@@ -101,6 +107,11 @@ export const ButtonShapes: Story = {
   shape="square"
 >
   Square
+</modus-wc-button>
+<modus-wc-button
+  shape="ellipse"
+>
+  Ellipse
 </modus-wc-button>
     `;
   },
@@ -187,6 +198,49 @@ export const IconLeftAndRightButton: Story = {
   <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for button component
+    if (!customElements.get('button-shadow-host')) {
+      const ButtonShadowHost = createShadowHostClass<ButtonArgs>({
+        componentTag: 'modus-wc-button',
+        propsMapper: (v: ButtonArgs, el: HTMLElement) => {
+          const buttonEl = el as unknown as {
+            ariaLabel: string;
+            color: string;
+            shape: string;
+            size: string;
+            type: string;
+            variant: string;
+            customClass: string;
+            disabled: boolean;
+            fullWidth: boolean;
+            pressed: boolean;
+          };
+          buttonEl.ariaLabel = 'Click me button';
+          buttonEl.color = v.color;
+          buttonEl.shape = v.shape;
+          buttonEl.size = v.size;
+          buttonEl.type = v.type;
+          buttonEl.variant = v.variant;
+          buttonEl.customClass = v['custom-class'] || '';
+          buttonEl.disabled = Boolean(v.disabled);
+          buttonEl.fullWidth = Boolean(v['full-width']);
+          buttonEl.pressed = Boolean(v.pressed);
+          // DO NOT set textContent - it destroys the component's internal structure!
+          // Button content should be set via defaultContent in the helper config
+        },
+        defaultContent: 'Click me', // Set content here instead
+      });
+      customElements.define('button-shadow-host', ButtonShadowHost);
+    }
+
+    return html`<button-shadow-host
+      .props=${{ ...args }}
+    ></button-shadow-host>`;
   },
 };
 
