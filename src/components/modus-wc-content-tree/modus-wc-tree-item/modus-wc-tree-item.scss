@@ -11,12 +11,7 @@ modus-wc-tree-item {
   .modus-wc-tree-item-selected > .modus-wc-tree-content {
     background-color: var(--modus-wc-color-blue-pale);
     border-radius: unset;
-    color: var(--modus-wc-color-base-content);
-
-    .modus-wc-tree-item-label,
-    modus-wc-icon {
-      color: var(--modus-wc-color-base-content);
-    }
+    color: var(--modus-wc-color-trimble-blue);
 
     modus-wc-tree-actions
       .modus-wc-tree-actions-container
@@ -37,9 +32,14 @@ modus-wc-tree-item {
 
   .modus-wc-tree-content {
     align-items: center;
+    color: var(--modus-wc-color-base-content);
     display: flex;
-    gap: var(--modus-wc-font-size-xs);
+    gap: 0;
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-font-size-xs);
+
+    .modus-wc-tree-item-actions {
+      margin-inline-start: 4px;
+    }
 
     .modus-wc-tree-drag-handle {
       color: var(--modus-wc-color-base-60);
@@ -57,6 +57,14 @@ modus-wc-tree-item {
       }
     }
 
+    [slot='start-icon'] {
+      padding-inline: 10px;
+    }
+
+    modus-wc-checkbox {
+      padding-inline: 10px;
+    }
+
     .modus-wc-tree-toggle-icon {
       color: var(--modus-wc-color-base-content);
     }
@@ -70,6 +78,7 @@ modus-wc-tree-item {
     }
 
     &:hover {
+      background-color: var(--modus-wc-color-gray-0);
       border-radius: unset;
 
       modus-wc-tree-actions
@@ -86,6 +95,7 @@ modus-wc-tree-item {
 
   .modus-wc-tree-item-labels {
     flex: 1;
+    margin-inline-start: 4px;
 
     .modus-wc-tree-item-label {
       display: block;
@@ -95,8 +105,7 @@ modus-wc-tree-item {
   .modus-wc-tree-item-actions {
     align-items: center;
     display: flex;
-    gap: var(--modus-wc-spacing-xs, 0.25rem);
-    margin-inline-start: auto;
+    gap: var(--modus-wc-spacing-xs);
   }
 
   .modus-wc-tree-toggle-spacer {
@@ -119,19 +128,6 @@ modus-wc-tree-item {
   .modus-wc-tree-item-lg .modus-wc-tree-toggle-spacer {
     height: 2.25rem;
     width: 2.25rem;
-  }
-
-  button {
-    align-items: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    gap: var(--modus-wc-spacing-sm, 0.5rem);
-    padding: var(--modus-wc-spacing-xs, 0.25rem)
-      var(--modus-wc-spacing-sm, 0.5rem);
-    text-align: start;
-    width: 100%;
   }
 
   li[draggable='true'] {
@@ -191,6 +187,13 @@ modus-wc-tree-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-tree-item {
+    .modus-wc-tree-content {
+      &:hover {
+        background-color: var(--modus-wc-color-gray-9);
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+
     .modus-wc-tree-item-selected > .modus-wc-tree-content {
       background-color: color-mix(
         in sRGB,

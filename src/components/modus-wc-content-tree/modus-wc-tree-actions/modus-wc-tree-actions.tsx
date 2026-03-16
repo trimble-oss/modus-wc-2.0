@@ -287,6 +287,7 @@ export class ModusWcTreeActions {
                 <modus-wc-icon
                   name="more_vertical"
                   size={this.size}
+                  customClass="modus-wc-tree-action-icon"
                 ></modus-wc-icon>
               </modus-wc-button>
               <div

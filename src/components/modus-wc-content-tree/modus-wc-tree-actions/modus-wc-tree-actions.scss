@@ -7,7 +7,7 @@ modus-wc-tree-actions {
     align-items: center;
     display: flex;
 
-    .modus-wc-tree-action-button {
+    button.modus-wc-tree-action-button {
       background: transparent;
       border: none;
       color: var(--modus-wc-color-base-content);
@@ -46,11 +46,11 @@ modus-wc-tree-actions {
     align-items: center;
     background: transparent;
     border: none;
-    color: var(--modus-wc-color-base-content-hight-contrast);
+    color: var(--modus-wc-color-base-content-high-contrast);
     cursor: pointer;
     display: flex;
-    gap: var(--modus-wc-spacing-sm, 0.5rem);
-    padding: var(--modus-wc-spacing-sm, 0.5rem) var(--modus-wc-spacing-md, 1rem);
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
     text-align: start;
     width: 100%;
 
@@ -65,7 +65,7 @@ modus-wc-tree-actions {
     }
 
     span {
-      font-size: var(--modus-wc-font-size-sm, 0.875rem);
+      font-size: var(--modus-wc-font-size-sm);
     }
   }
 
@@ -109,7 +109,9 @@ modus-wc-tree-actions {
     .modus-wc-tree-action-button {
       color: var(--modus-wc-color-base-content);
 
-      &:hover {
+      &:hover,
+      &:active,
+      &[aria-pressed='true'] {
         color: var(--modus-wc-color-base-content);
       }
     }
@@ -123,6 +125,28 @@ modus-wc-tree-actions {
   .modus-wc-tree-dropdown-action {
     &:hover:not(.disabled) {
       background-color: var(--modus-wc-color-base-100);
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] {
+  .modus-wc-tree-actions-container {
+    .modus-wc-tree-action-icon {
+      color: var(--modus-wc-color-base-content);
+    }
+  }
+}
+
+[data-theme='modus-classic-light'],
+[data-theme='connect-light'] {
+  .modus-wc-tree-actions-container {
+    .modus-wc-tree-action-icon {
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &:hover {
+      background: transparent;
+      color: var(--modus-wc-color-base-content);
     }
   }
 }
