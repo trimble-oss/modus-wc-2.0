@@ -4,17 +4,8 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
 <modus-wc-content-tree>
   <!---->
   <div class="modus-wc-content-tree-wrapper">
-    <div class="modus-wc-content-tree-header">
-      <div class="modus-wc-content-tree-search">
-        <modus-wc-text-input customclass="modus-wc-content-tree-search-input" include-clear="" include-search="" placeholder="Search..." size="sm" value=""></modus-wc-text-input>
-      </div>
-    </div>
-    <div class="modus-wc-content-tree-content">
-      <div class="modus-wc-content-tree-empty">
-        <modus-wc-icon customclass="modus-wc-content-tree-empty-icon" name="folder_open" variant="solid"></modus-wc-icon>
-        <modus-wc-typography customclass="modus-wc-content-tree-empty-text" hierarchy="p" label="Empty Content Tree" size="lg" weight="normal"></modus-wc-typography>
-      </div>
-    </div>
+    <div class="modus-wc-content-tree-header"></div>
+    <div class="modus-wc-content-tree-content"></div>
   </div>
 </modus-wc-content-tree>
 `;

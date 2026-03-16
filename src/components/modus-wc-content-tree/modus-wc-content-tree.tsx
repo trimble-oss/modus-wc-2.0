@@ -32,8 +32,6 @@ import {
 })
 export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
-  private slotEl?: HTMLSlotElement;
-  private isSlotListenerAttached = false;
   private debounceTimer?: number;
   private cachedItems?: ITreeItemElement[];
   private lastReorderSignature?: string;
@@ -48,10 +46,10 @@ export class ModusWcContentTree {
   @Prop() searchPlaceholder?: string = 'Search...';
 
   /** If true, displays the search input to filter tree items. */
-  @Prop() includeSearch?: boolean = true;
+  @Prop() includeSearch?: boolean = false;
 
   /** If true, displays the action buttons (expand/collapse all, etc.). */
-  @Prop() includeActions?: boolean = true;
+  @Prop() includeActions?: boolean = false;
 
   /** If true, enables reordering UI for data-driven `items` trees. */
   @Prop() itemsReordering?: boolean = false;
@@ -66,9 +64,6 @@ export class ModusWcContentTree {
     parameters: ITreeItemReorderParameters;
   }>;
 
-  /** Internal state to track if the tree has any content (used for empty state display) */
-  @State() private hasSlotContent: boolean = false;
-
   /** Internal state to track the current search value for filtering tree items */
   @State() private searchValue: string = '';
 
@@ -78,7 +73,6 @@ export class ModusWcContentTree {
   @Watch('items')
   handleItemsChange() {
     this.cachedItems = undefined;
-    this.updateContentPresence();
   }
 
   @Watch('itemsReordering')
@@ -88,26 +82,17 @@ export class ModusWcContentTree {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    this.updateContentPresence();
   }
 
   componentDidLoad() {
-    this.syncSlotSubscription();
-    this.updateSlotContent();
     this.applyItemsReorderingState();
   }
 
   componentDidRender() {
-    this.syncSlotSubscription();
     this.applyItemsReorderingState();
   }
 
   disconnectedCallback() {
-    if (this.slotEl && this.isSlotListenerAttached) {
-      this.slotEl.removeEventListener('slotchange', this.updateSlotContent);
-      this.isSlotListenerAttached = false;
-    }
-
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
@@ -119,47 +104,6 @@ export class ModusWcContentTree {
 
   private get isReorderingEnabled(): boolean {
     return this.hasDataItems && !!this.itemsReordering;
-  }
-
-  private setHasContent(value: boolean): void {
-    if (this.hasSlotContent !== value) {
-      this.hasSlotContent = value;
-    }
-  }
-
-  private syncSlotSubscription(): void {
-    const nextSlot = this.el.querySelector('slot') as HTMLSlotElement | null;
-
-    if (
-      this.slotEl &&
-      this.isSlotListenerAttached &&
-      (!nextSlot || this.slotEl !== nextSlot)
-    ) {
-      this.slotEl.removeEventListener('slotchange', this.updateSlotContent);
-      this.isSlotListenerAttached = false;
-    }
-
-    this.slotEl = nextSlot || undefined;
-
-    if (this.slotEl && !this.isSlotListenerAttached) {
-      this.slotEl.addEventListener('slotchange', this.updateSlotContent);
-      this.isSlotListenerAttached = true;
-    }
-  }
-
-  private updateContentPresence(): void {
-    if (this.hasDataItems) {
-      this.setHasContent(true);
-      return;
-    }
-
-    const slotContent = Array.from(this.el.childNodes).filter(
-      (node) =>
-        node.nodeType === Node.ELEMENT_NODE &&
-        (node as HTMLElement).tagName !== 'STYLE'
-    );
-
-    this.setHasContent(slotContent.length > 0);
   }
 
   private applyItemsReorderingState(): void {
@@ -189,7 +133,10 @@ export class ModusWcContentTree {
       }
     });
 
-    const nextItems = reorderTreeItemsData(this.items!, event.detail.parameters);
+    const nextItems = reorderTreeItemsData(
+      this.items!,
+      event.detail.parameters
+    );
     if (!nextItems) {
       return;
     }
@@ -298,28 +245,6 @@ export class ModusWcContentTree {
     }
   };
 
-  private updateSlotContent = () => {
-    if (this.hasDataItems) {
-      this.setHasContent(true);
-      this.cachedItems = undefined;
-      return;
-    }
-
-    if (!this.slotEl) return;
-
-    const assigned = this.slotEl
-      .assignedNodes({ flatten: true })
-      .filter(
-        (node) =>
-          node.nodeType === Node.ELEMENT_NODE &&
-          (node as HTMLElement).tagName !== 'STYLE'
-      );
-
-    this.setHasContent(assigned.length > 0);
-    // Invalidate cache when content changes
-    this.cachedItems = undefined;
-  };
-
   private handleToggleClick = (): void => {
     void this.toggleExpandCollapse();
   };
@@ -390,8 +315,7 @@ export class ModusWcContentTree {
                 ></modus-wc-text-input>
               </div>
             )}
-
-            {this.includeActions && this.hasSlotContent && (
+            {this.includeActions && (
               <div class="modus-wc-content-tree-actions">
                 <modus-wc-button
                   customClass="modus-wc-content-tree-action-button"
@@ -421,22 +345,6 @@ export class ModusWcContentTree {
               </modus-wc-tree-view>
             ) : (
               <slot></slot>
-            )}
-            {!this.hasSlotContent && (
-              <div class="modus-wc-content-tree-empty">
-                <modus-wc-icon
-                  name="folder_open"
-                  variant="solid"
-                  customClass="modus-wc-content-tree-empty-icon"
-                ></modus-wc-icon>
-                <modus-wc-typography
-                  hierarchy="p"
-                  label="Empty Content Tree"
-                  size="lg"
-                  weight="normal"
-                  customClass="modus-wc-content-tree-empty-text"
-                ></modus-wc-typography>
-              </div>
             )}
           </div>
         </div>

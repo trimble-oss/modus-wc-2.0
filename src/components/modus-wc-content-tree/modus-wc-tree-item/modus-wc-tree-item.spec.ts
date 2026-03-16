@@ -58,6 +58,27 @@ describe('modus-wc-tree-item', () => {
     expect(li?.getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('emits itemLabelChange when inline label edit is completed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Updated Label" value="item-1" inline-label-edit></modus-wc-tree-item>`,
+    });
+
+    const itemLabelChangeSpy = jest.fn();
+    page.root?.addEventListener('itemLabelChange', itemLabelChangeSpy);
+
+    const treeItem = page.rootInstance;
+    const blurEvent = {
+      stopPropagation: jest.fn(),
+    } as unknown as CustomEvent<FocusEvent>;
+    treeItem['handleInlineLabelBlur'](blurEvent);
+    await page.waitForChanges();
+
+    expect(treeItem.inlineLabelEdit).toBe(false);
+    expect(itemLabelChangeSpy).toHaveBeenCalledTimes(1);
+    expect(itemLabelChangeSpy.mock.calls[0][0].detail).toBe('Updated Label');
+  });
+
   it('emits itemSelect event on click when no checkbox', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],

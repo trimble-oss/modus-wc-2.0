@@ -14,8 +14,8 @@ A customizable content tree component used to display hierarchical data in a tre
 | Property            | Attribute            | Description                                                       | Type                           | Default       |
 | ------------------- | -------------------- | ----------------------------------------------------------------- | ------------------------------ | ------------- |
 | `customClass`       | `custom-class`       | Custom CSS class to apply to the component.                       | `string \| undefined`          | `''`          |
-| `includeActions`    | `include-actions`    | If true, displays the action buttons (expand/collapse all, etc.). | `boolean \| undefined`         | `true`        |
-| `includeSearch`     | `include-search`     | If true, displays the search input to filter tree items.          | `boolean \| undefined`         | `true`        |
+| `includeActions`    | `include-actions`    | If true, displays the action buttons (expand/collapse all, etc.). | `boolean \| undefined`         | `false`       |
+| `includeSearch`     | `include-search`     | If true, displays the search input to filter tree items.          | `boolean \| undefined`         | `false`       |
 | `items`             | `items`              | Data-driven items to render as tree items.                        | `ITreeItemData[] \| undefined` | `undefined`   |
 | `itemsReordering`   | `items-reordering`   | If true, enables reordering UI for data-driven `items` trees.     | `boolean \| undefined`         | `false`       |
 | `searchPlaceholder` | `search-placeholder` | Placeholder text for the search input.                            | `string \| undefined`          | `'Search...'` |
@@ -37,7 +37,6 @@ A customizable content tree component used to display hierarchical data in a tre
 - [modus-wc-text-input](../modus-wc-text-input)
 - [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
-- [modus-wc-typography](../modus-wc-typography)
 
 ### Graph
 ```mermaid
@@ -47,7 +46,6 @@ graph TD;
   modus-wc-content-tree --> modus-wc-text-input
   modus-wc-content-tree --> modus-wc-button
   modus-wc-content-tree --> modus-wc-icon
-  modus-wc-content-tree --> modus-wc-typography
   modus-wc-tree-item --> modus-wc-icon
   modus-wc-tree-item --> modus-wc-button
   modus-wc-tree-item --> modus-wc-checkbox

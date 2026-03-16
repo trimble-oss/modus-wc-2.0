@@ -3285,6 +3285,7 @@ declare global {
     selectedValues: string[];
   };
         "itemReordered": ITreeItemReorderedEventDetail;
+        "itemLabelChange": string;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -5814,6 +5815,10 @@ declare namespace LocalJSX {
           * The text label displayed for the tree item.
          */
         "label": string;
+        /**
+          * Event emitted when inline label editing is completed.
+         */
+        "onItemLabelChange"?: (event: ModusWcTreeItemCustomEvent<string>) => void;
         /**
           * Event emitted when an item is reordered via drag and drop.
          */

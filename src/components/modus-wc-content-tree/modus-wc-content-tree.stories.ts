@@ -54,6 +54,7 @@ const meta: Meta<ContentTreeArgs> = {
         'treeActionClick',
         'selectionsChange',
         'dropdownOpened',
+        'itemLabelChange',
       ],
     },
   },
@@ -282,11 +283,46 @@ export const EmptyState: Story = {
     docs: {
       description: {
         story:
-          'This example shows the content tree when no items are present. An empty state message is displayed.',
+          'This example shows the content tree when no items are present. Consumers can provide a custom empty state through the default slot.',
       },
       source: {
         code: `
-<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+<style>
+  .modus-wc-content-tree-empty-story {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: center;
+    min-height: 500px;
+    padding: 1rem;
+  }
+
+  .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-icon {
+    color: #6a6e79;
+  }
+
+  .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+    color: #6a6e79;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+</style>
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" >
+  <div class="modus-wc-content-tree-empty-story">
+    <modus-wc-icon
+      name="folder_open"
+      variant="solid"
+      custom-class="modus-wc-content-tree-empty-icon"
+    ></modus-wc-icon>
+    <modus-wc-typography
+      hierarchy="p"
+      label="Empty Content Tree"
+      size="lg"
+      weight="normal"
+      custom-class="modus-wc-content-tree-empty-text"
+    ></modus-wc-typography>
+  </div>
 </modus-wc-content-tree>
 `,
       },
@@ -294,12 +330,46 @@ export const EmptyState: Story = {
   },
   render: (args) => {
     return html`
+      <style>
+        .modus-wc-content-tree-empty-story {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          justify-content: center;
+          min-height: 500px;
+          padding: 1rem;
+        }
+
+        .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-icon {
+          color: #6a6e79;
+        }
+
+        .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+          color: #6a6e79;
+          font-size: 0.875rem;
+          text-align: center;
+        }
+      </style>
       <modus-wc-content-tree
         search-placeholder=${args['search-placeholder']}
-        customClass=${args['custom-class']}
+        custom-class=${args['custom-class']}
         .includeSearch=${args['include-search']}
-        .includeActions=${args['include-actions']}
       >
+        <div class="modus-wc-content-tree-empty-story">
+          <modus-wc-icon
+            name="folder_open"
+            variant="solid"
+            custom-class="modus-wc-content-tree-empty-icon"
+          ></modus-wc-icon>
+          <modus-wc-typography
+            hierarchy="p"
+            label="Empty Content Tree"
+            size="lg"
+            weight="normal"
+            custom-class="modus-wc-content-tree-empty-text"
+          ></modus-wc-typography>
+        </div>
       </modus-wc-content-tree>
     `;
   },
@@ -344,7 +414,7 @@ export const SingleSelection: Story = {
     return html`
       <modus-wc-content-tree
         search-placeholder=${args['search-placeholder']}
-        customClass=${args['custom-class']}
+        custom-class=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
       >

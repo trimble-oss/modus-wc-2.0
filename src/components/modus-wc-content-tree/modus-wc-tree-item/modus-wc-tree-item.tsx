@@ -147,6 +147,10 @@ export class ModusWcTreeItem {
   @StencilEvent({ bubbles: true, composed: true })
   itemReordered!: EventEmitter<ITreeItemReorderedEventDetail>;
 
+  /** Event emitted when inline label editing is completed. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemLabelChange!: EventEmitter<string>;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -258,6 +262,7 @@ export class ModusWcTreeItem {
   private handleInlineLabelBlur = (event: CustomEvent<FocusEvent>) => {
     event.stopPropagation();
     this.inlineLabelEdit = false;
+    this.itemLabelChange.emit(this.label);
   };
 
   private handleCheckboxKeyDown = (e: KeyboardEvent) => {

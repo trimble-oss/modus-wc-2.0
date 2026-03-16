@@ -31,6 +31,7 @@ A tree item component that represents a single node in a hierarchical tree struc
 
 | Event              | Description                                                         | Type                                                                 |
 | ------------------ | ------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `itemLabelChange`  | Event emitted when inline label editing is completed.               | `CustomEvent<string>`                                                |
 | `itemReordered`    | Event emitted when an item is reordered via drag and drop.          | `CustomEvent<ITreeItemReorderedEventDetail>`                         |
 | `itemSelect`       | Event emitted when a tree item is selected.                         | `CustomEvent<{ value: string; additive: boolean; range: boolean; }>` |
 | `selectionsChange` | Event emitted when checkbox selection changes in multi-select mode. | `CustomEvent<{ selectedValues: string[]; }>`                         |

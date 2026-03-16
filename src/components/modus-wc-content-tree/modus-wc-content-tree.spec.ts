@@ -39,7 +39,7 @@ describe('modus-wc-content-tree', () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
       html: `
-      <modus-wc-content-tree>
+      <modus-wc-content-tree include-search="true">
         <modus-wc-tree-item label="Alpha"></modus-wc-tree-item>
         <modus-wc-tree-item label="Beta"></modus-wc-tree-item>
       </modus-wc-content-tree>
@@ -108,22 +108,6 @@ describe('modus-wc-content-tree', () => {
     expect(expandSubTreeMock).toHaveBeenCalled();
   });
 
-  it('updateSlotContent returns early if slotEl is not set', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
-    });
-
-    const tree = page.rootInstance;
-
-    tree.slotEl = undefined;
-
-    // Should not throw
-    tree.updateSlotContent();
-
-    expect(tree.hasSlotContent).toBe(false);
-  });
-
   it('detects subtree via property instead of attribute', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
@@ -161,43 +145,6 @@ describe('modus-wc-content-tree', () => {
     const tree = page.rootInstance;
 
     await expect(tree.toggleExpandCollapse()).resolves.not.toThrow();
-  });
-
-  it('removes event listener on disconnectedCallback', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    const mockRemoveEventListener = jest.fn();
-
-    // Set up slotEl with mock removeEventListener
-    tree.slotEl = {
-      removeEventListener: mockRemoveEventListener,
-    } as unknown as HTMLSlotElement;
-
-    // Call disconnectedCallback
-    tree.disconnectedCallback();
-
-    // Verify removeEventListener was called with correct arguments
-    expect(mockRemoveEventListener).toHaveBeenCalledWith(
-      'slotchange',
-      tree.updateSlotContent
-    );
-  });
-
-  it('disconnectedCallback handles missing slotEl gracefully', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    tree.slotEl = undefined;
-
-    // Should not throw when slotEl is undefined
-    expect(() => tree.disconnectedCallback()).not.toThrow();
   });
 
   it('clears debounce timer on disconnectedCallback', async () => {
@@ -240,35 +187,6 @@ describe('modus-wc-content-tree', () => {
     clearTimeoutSpy.mockRestore();
   });
 
-  it('clears both event listener and timer on disconnectedCallback', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    const mockRemoveEventListener = jest.fn();
-    const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
-
-    // Set up both slotEl and debounceTimer
-    tree.slotEl = {
-      removeEventListener: mockRemoveEventListener,
-    } as unknown as HTMLSlotElement;
-    tree['debounceTimer'] = 456 as unknown as number;
-
-    // Call disconnectedCallback
-    tree.disconnectedCallback();
-
-    // Verify both cleanup operations were performed
-    expect(mockRemoveEventListener).toHaveBeenCalledWith(
-      'slotchange',
-      tree.updateSlotContent
-    );
-    expect(clearTimeoutSpy).toHaveBeenCalledWith(456);
-
-    clearTimeoutSpy.mockRestore();
-  });
-
   it('renders without search when includeSearch is false', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
@@ -304,56 +222,40 @@ describe('modus-wc-content-tree', () => {
   it('uses custom search placeholder', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree search-placeholder="Find items..."></modus-wc-content-tree>',
+      html: '<modus-wc-content-tree include-search="true" search-placeholder="Find items..."></modus-wc-content-tree>',
     });
 
     const searchInput = page.root?.querySelector('modus-wc-text-input');
     expect(searchInput?.getAttribute('placeholder')).toBe('Find items...');
   });
 
-  it('shows empty state when hasSlotContent is false', async () => {
+  it('does not render a built-in empty state when there is no content', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
       html: '<modus-wc-content-tree></modus-wc-content-tree>',
     });
 
-    const tree = page.rootInstance;
-    tree.hasSlotContent = false;
-    await page.waitForChanges();
-
-    const emptyState = page.root?.querySelector('.modus-wc-content-tree-empty');
-    expect(emptyState).toBeDefined();
-
-    const emptyIcon = emptyState?.querySelector('modus-wc-icon');
-    expect(emptyIcon?.getAttribute('name')).toBe('folder_open');
-
-    const emptyText = emptyState?.querySelector('modus-wc-typography');
-    expect(emptyText?.getAttribute('label')).toBe('Empty Content Tree');
-  });
-
-  it('hides empty state when hasSlotContent is true', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: `
-        <modus-wc-content-tree>
-          <modus-wc-tree-item label="Item"></modus-wc-tree-item>
-        </modus-wc-content-tree>
-      `,
-    });
-
-    const tree = page.rootInstance;
-    tree.hasSlotContent = true;
-    await page.waitForChanges();
-
     const emptyState = page.root?.querySelector('.modus-wc-content-tree-empty');
     expect(emptyState).toBeNull();
+  });
+
+  it('renders actions when includeActions is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: '<modus-wc-content-tree></modus-wc-content-tree>',
+    });
+
+    const actionsDiv = page.root?.querySelector(
+      '.modus-wc-content-tree-actions'
+    );
+    expect(actionsDiv).toBeDefined();
   });
 
   it('renders expand/collapse button with "Expand all" aria-label when collapsed', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
       html: `
-        <modus-wc-content-tree>
+        <modus-wc-content-tree include-actions="true">
           <modus-wc-tree-item label="Item"></modus-wc-tree-item>
         </modus-wc-content-tree>
       `,
@@ -374,7 +276,7 @@ describe('modus-wc-content-tree', () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
       html: `
-        <modus-wc-content-tree>
+        <modus-wc-content-tree include-actions="true">
           <modus-wc-tree-item label="Item"></modus-wc-tree-item>
         </modus-wc-content-tree>
       `,
@@ -389,75 +291,6 @@ describe('modus-wc-content-tree', () => {
     );
     expect(button?.getAttribute('aria-label')).toBe('Collapse all');
     expect(tree.areAllExpanded).toBe(true);
-  });
-
-  it('componentWillLoad sets hasSlotContent based on child nodes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: `
-        <modus-wc-content-tree>
-          <modus-wc-tree-item label="Item"></modus-wc-tree-item>
-        </modus-wc-content-tree>
-      `,
-    });
-
-    expect(page.rootInstance.hasSlotContent).toBe(true);
-  });
-
-  it('componentWillLoad filters out STYLE nodes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: `
-        <modus-wc-content-tree>
-          <style>.test{}</style>
-        </modus-wc-content-tree>
-      `,
-    });
-
-    expect(page.rootInstance.hasSlotContent).toBe(false);
-  });
-
-  it('componentDidLoad handles missing slotEl gracefully', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    tree.slotEl = undefined;
-
-    // Should not throw when slotEl is undefined due to optional chaining
-    expect(() => tree.componentDidLoad()).not.toThrow();
-  });
-
-  it('componentDidLoad adds addEventListener when slotEl exists', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree><div>Content</div></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-
-    // Create a mock slot element with addEventListener spy
-    const addEventListenerSpy = jest.fn();
-    const mockSlot = {
-      addEventListener: addEventListenerSpy,
-      assignedNodes: jest
-        .fn()
-        .mockReturnValue([{ nodeType: Node.ELEMENT_NODE, tagName: 'DIV' }]),
-    } as unknown as HTMLSlotElement;
-
-    // Mock querySelector to return our mock slot
-    jest.spyOn(tree.el, 'querySelector').mockReturnValue(mockSlot);
-
-    // Call componentDidLoad
-    tree.componentDidLoad();
-
-    // Verify addEventListener was called
-    expect(addEventListenerSpy).toHaveBeenCalledWith(
-      'slotchange',
-      tree.updateSlotContent
-    );
   });
 
   it('filterNodes catches and handles expandSubTree errors gracefully', async () => {
@@ -520,45 +353,6 @@ describe('modus-wc-content-tree', () => {
     // Both should be called despite first one failing
     expect(expandMock1).toHaveBeenCalled();
     expect(expandMock2).toHaveBeenCalled();
-  });
-
-  it('updateSlotContent invalidates cached items', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    tree['cachedItems'] = [];
-
-    const mockSlot = {
-      assignedNodes: jest.fn().mockReturnValue([]),
-    } as unknown as HTMLSlotElement;
-
-    tree.slotEl = mockSlot;
-    tree.updateSlotContent();
-
-    expect(tree['cachedItems']).toBeUndefined();
-  });
-
-  it('updateSlotContent filters out STYLE nodes from assigned nodes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
-    });
-
-    const tree = page.rootInstance;
-    const styleNode = { nodeType: Node.ELEMENT_NODE, tagName: 'STYLE' };
-    const elementNode = { nodeType: Node.ELEMENT_NODE, tagName: 'DIV' };
-
-    const mockSlot = {
-      assignedNodes: jest.fn().mockReturnValue([styleNode, elementNode]),
-    } as unknown as HTMLSlotElement;
-
-    tree.slotEl = mockSlot;
-    tree.updateSlotContent();
-
-    expect(tree.hasSlotContent).toBe(true);
   });
 
   it('toggleExpandCollapse collapses when areAllExpanded is true', async () => {

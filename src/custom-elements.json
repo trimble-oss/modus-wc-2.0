@@ -2707,6 +2707,14 @@
           "events": [
             {
               "kind": "field",
+              "name": "itemLabelChange",
+              "type": {
+                "text": "EventEmitter<string>"
+              },
+              "description": "Event emitted when inline label editing is completed."
+            },
+            {
+              "kind": "field",
               "name": "itemReordered",
               "type": {
                 "text": "EventEmitter<ITreeItemReorderedEventDetail>"
