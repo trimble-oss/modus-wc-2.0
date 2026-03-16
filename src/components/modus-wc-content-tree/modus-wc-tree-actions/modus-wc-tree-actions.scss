@@ -85,16 +85,6 @@ modus-wc-tree-actions {
     }
   }
 
-  .modus-wc-tree-actions-container {
-    .modus-wc-tree-action-button {
-      color: var(--modus-wc-color-base-content);
-
-      &:hover {
-        color: var(--modus-wc-color-base-content);
-      }
-    }
-  }
-
   .modus-wc-tree-more-actions-dropdown {
     background: var(--modus-wc-color-trimble-gray);
     border-color: var(--modus-wc-color-gray-6);

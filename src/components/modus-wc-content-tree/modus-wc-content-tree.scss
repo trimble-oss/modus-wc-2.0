@@ -18,7 +18,7 @@ modus-wc-content-tree {
     padding: var(--modus-wc-spacing-sm);
     padding-top: var(--modus-wc-spacing-xs);
 
-    .modus-wc-content-tree-action-button {
+    button.modus-wc-content-tree-action-button {
       background-color: transparent;
 
       &:hover,
