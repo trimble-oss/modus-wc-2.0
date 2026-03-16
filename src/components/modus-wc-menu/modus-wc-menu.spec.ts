@@ -321,7 +321,6 @@ describe('modus-wc-menu', () => {
     });
 
     const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
-    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
 
     const focusSpy = jest.spyOn(secondLi, 'focus');
 
