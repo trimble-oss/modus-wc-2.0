@@ -661,7 +661,7 @@ describe('modus-wc-menu-item', () => {
 
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-checked')
     ).toBeTruthy();
 
     // Click again to uncheck
@@ -669,7 +669,7 @@ describe('modus-wc-menu-item', () => {
     await page.waitForChanges();
 
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-checked')
     ).toBeFalsy();
   });
 
@@ -763,19 +763,19 @@ describe('modus-wc-menu-item', () => {
     secondButton.click();
     await page.waitForChanges();
 
-    // Both should have the selected class
+    // Both should have the checked class
     const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
     const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
     const thirdLi = menuItems[2].querySelector('li') as HTMLLIElement;
 
     expect(
-      firstLi.classList.contains('modus-wc-menu-item-selected')
+      firstLi.classList.contains('modus-wc-menu-item-checked')
     ).toBeTruthy();
     expect(
-      secondLi.classList.contains('modus-wc-menu-item-selected')
+      secondLi.classList.contains('modus-wc-menu-item-checked')
     ).toBeTruthy();
     expect(
-      thirdLi.classList.contains('modus-wc-menu-item-selected')
+      thirdLi.classList.contains('modus-wc-menu-item-checked')
     ).toBeFalsy();
   });
 
@@ -809,8 +809,145 @@ describe('modus-wc-menu-item', () => {
 
     const instance = page.rootInstance;
 
-    // Calling deselectSiblings directly when there is no parent modus-wc-menu
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(() => (instance as any).deselectSiblings()).not.toThrow();
+    expect(() => instance.deselectSiblings()).not.toThrow();
+  });
+
+  it('should use role menuitemradio with aria-checked in single-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+
+    expect(liElement.getAttribute('role')).toBe('menuitemradio');
+    expect(liElement.getAttribute('aria-checked')).toBe('false');
+
+    // Click to select
+    menuItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(liElement.getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('should use role menuitemcheckbox with aria-checked in multi-select mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+
+    expect(liElement.getAttribute('role')).toBe('menuitemcheckbox');
+    expect(liElement.getAttribute('aria-checked')).toBe('false');
+
+    // Click to check
+    menuItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(liElement.getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('should use default role menuitem when not inside a menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+    });
+
+    const liElement = page.root?.querySelector('li') as HTMLLIElement;
+
+    expect(liElement.getAttribute('role')).toBe('menuitem');
+    expect(liElement.getAttribute('aria-checked')).toBeNull();
+  });
+
+  it('should not emit itemSelect when Enter key is pressed on a disabled item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Disabled" value="disabled" disabled="true"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+    const selectSpy = jest.fn();
+    menuItem.addEventListener('itemSelect', selectSpy);
+
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    liElement.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    expect(selectSpy).not.toHaveBeenCalled();
+  });
+
+  it('should handle disconnectedCallback when liElement is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test" value="test"></modus-wc-menu-item>',
+    });
+
+    const instance = page.rootInstance;
+    instance['liElement'] = undefined;
+
+    expect(() => instance.disconnectedCallback()).not.toThrow();
+  });
+
+  it('should handle componentDidLoad when li is not found', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test" value="test"></modus-wc-menu-item>',
+    });
+
+    const instance = page.rootInstance;
+    jest.spyOn(instance.el, 'querySelector').mockReturnValue(null);
+
+    expect(() => instance.componentDidLoad()).not.toThrow();
+  });
+
+  it('should update aria-checked to false for deselected siblings in single-select', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+
+    // Click first item
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstLi.getAttribute('aria-checked')).toBe('true');
+    expect(secondLi.getAttribute('aria-checked')).toBe('false');
+
+    // Click second item
+    menuItems[1].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstLi.getAttribute('aria-checked')).toBe('false');
+    expect(secondLi.getAttribute('aria-checked')).toBe('true');
   });
 });

@@ -2,12 +2,14 @@ import { ModusSize } from '../types';
 
 export const convertPropsToClasses = ({
   bordered,
+  checked,
   disabled,
   selected,
   focused,
   size,
 }: {
   bordered?: boolean;
+  checked?: boolean;
   disabled?: boolean;
   selected?: boolean;
   focused?: boolean;
@@ -25,6 +27,10 @@ export const convertPropsToClasses = ({
 
   if (selected) {
     classes = `${classes} modus-wc-menu-item-selected`;
+  }
+
+  if (checked) {
+    classes = `${classes} modus-wc-menu-item-checked`;
   }
 
   if (focused) {

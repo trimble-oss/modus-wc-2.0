@@ -73,6 +73,335 @@ describe('modus-wc-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should move focus to next item on ArrowDown', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+
+    // Focus the first item
+    firstLi.focus();
+
+    // Mock document.activeElement
+    Object.defineProperty(document, 'activeElement', {
+      value: firstLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(secondLi, 'focus');
+
+    // Dispatch ArrowDown on the ul
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should move focus to previous item on ArrowUp', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+
+    // Focus the second item
+    secondLi.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: secondLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstLi, 'focus');
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowUpEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should skip disabled items during arrow key navigation', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2" disabled="true"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const thirdLi = menuItems[2].querySelector('li') as HTMLLIElement;
+
+    firstLi.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(thirdLi, 'focus');
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should wrap focus from last to first item on ArrowDown', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+
+    secondLi.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: secondLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstLi, 'focus');
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should attach and detach event listeners on lifecycle', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const addSpy = jest.spyOn(ul, 'addEventListener');
+    const removeSpy = jest.spyOn(ul, 'removeEventListener');
+
+    // Re-trigger componentDidLoad manually
+    page.rootInstance.componentDidLoad();
+    expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    expect(addSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
+
+    // Trigger disconnectedCallback
+    page.rootInstance.disconnectedCallback();
+    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    expect(removeSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
+  });
+
+  it('should handle disconnectedCallback when ulElement is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu],
+      html: '<modus-wc-menu aria-label="Test menu"></modus-wc-menu>',
+    });
+
+    const instance = page.rootInstance;
+    instance['ulElement'] = undefined;
+
+    expect(() => instance.disconnectedCallback()).not.toThrow();
+  });
+
+  it('should handle componentDidLoad when ul is not found', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu],
+      html: '<modus-wc-menu aria-label="Test menu"></modus-wc-menu>',
+    });
+
+    const instance = page.rootInstance;
+    jest.spyOn(instance.el, 'querySelector').mockReturnValue(null);
+
+    expect(() => instance.componentDidLoad()).not.toThrow();
+  });
+
+  it('should handle ArrowDown when no element is focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    Object.defineProperty(document, 'activeElement', {
+      value: null,
+      writable: true,
+      configurable: true,
+    });
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+  });
+
+  it('should ignore non-arrow key events', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
+
+    const focusSpy = jest.spyOn(secondLi, 'focus');
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const tabEvent = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(tabEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not move focus when all items are disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1" disabled="true"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2" disabled="true"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowDownEvent);
+    await page.waitForChanges();
+
+    // No error should be thrown; nothing to focus
+  });
+
+  it('should wrap focus from first to last item on ArrowUp', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu aria-label="Test menu">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
+    const thirdLi = menuItems[2].querySelector('li') as HTMLLIElement;
+
+    firstLi.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(thirdLi, 'focus');
+
+    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    ul.dispatchEvent(arrowUpEvent);
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
   it('should stop propagation when focusout occurs on submenu', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],

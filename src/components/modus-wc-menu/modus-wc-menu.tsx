@@ -49,6 +49,8 @@ export class ModusWcMenu {
   /** Event emitted when the menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
+  private ulElement?: HTMLUListElement;
+
   componentWillLoad() {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
@@ -57,6 +59,17 @@ export class ModusWcMenu {
       this.el.ariaLabel = 'Menu';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    this.ulElement = this.el.querySelector('ul') as HTMLUListElement;
+    this.ulElement?.addEventListener('keydown', this.handleKeyDown);
+    this.ulElement?.addEventListener('focusout', this.handleFocusout);
+  }
+
+  disconnectedCallback() {
+    this.ulElement?.removeEventListener('keydown', this.handleKeyDown);
+    this.ulElement?.removeEventListener('focusout', this.handleFocusout);
   }
 
   private getClasses(): string {
@@ -83,6 +96,43 @@ export class ModusWcMenu {
     return classList.join(' ');
   }
 
+  private getMenuItems(): HTMLElement[] {
+    return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).filter(
+      (item) => item.closest('modus-wc-menu') === this.el
+    ) as HTMLElement[];
+  }
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+
+    e.preventDefault();
+
+    const items = this.getMenuItems();
+    const focusableItems = items.filter(
+      (item) => !(item as HTMLElement & { disabled?: boolean }).disabled
+    );
+
+    if (focusableItems.length === 0) return;
+
+    const activeEl = document.activeElement as HTMLElement;
+    const currentMenuItem = activeEl?.closest('modus-wc-menu-item');
+    const currentIndex = focusableItems.indexOf(currentMenuItem as HTMLElement);
+
+    let nextIndex: number;
+    if (e.key === 'ArrowDown') {
+      nextIndex =
+        currentIndex < focusableItems.length - 1 ? currentIndex + 1 : 0;
+    } else {
+      nextIndex =
+        currentIndex > 0 ? currentIndex - 1 : focusableItems.length - 1;
+    }
+
+    const nextLi = focusableItems[nextIndex].querySelector('li');
+    if (nextLi) {
+      nextLi.focus();
+    }
+  };
+
   private handleFocusout = (e: FocusEvent) => {
     // Check if the new focus target is still within this menu
     if (!this.el.contains(e.relatedTarget as Node)) {
@@ -105,7 +155,6 @@ export class ModusWcMenu {
         <ul
           aria-orientation={this.orientation}
           class={this.getClasses()}
-          onFocusout={this.handleFocusout}
           role={this.getMenuRole()}
           {...this.inheritedAttributes}
         >

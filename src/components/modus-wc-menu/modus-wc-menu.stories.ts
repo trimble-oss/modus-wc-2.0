@@ -100,9 +100,11 @@ export const Default: Story = {
   },
 };
 
-export const MultiSelectMenu: Story = {
+export const MultiSelect: Story = {
+  args: {
+    'selection-mode': 'multiple',
+  },
   render: (args) => {
-    args['selection-mode'] = 'multiple';
     // prettier-ignore
     return html`
 <modus-wc-menu
@@ -114,24 +116,25 @@ export const MultiSelectMenu: Story = {
   size=${ifDefined(args.size)}
 >
   <modus-wc-menu-item
-    label="Small"
+    label="Menu Item 1"
     value="1"
   ></modus-wc-menu-item>
-  <modus-wc-menu-item label="Medium" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Menu Item 2" value="2"></modus-wc-menu-item>
   <modus-wc-menu-item
-    label="Large"
+    label="Menu Item 3"
     value="3"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
-    label="Bordered"
+    label="Menu Item 4"
     value="3"
     bordered="true"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
-    label="With Sub-label"
+    label="Menu Item 5"
     value="3"
-    sub-label="Sub-label"
+    sub-label="Menu Item 5 Sub-label"
   ></modus-wc-menu-item>
+</modus-wc-menu>
     `;
   },
 };
@@ -242,7 +245,6 @@ export const CollapsibleMenu: Story = {
         <modus-wc-menu-item
           label="Charts"
           .hasSubmenu=${true}
-          checkbox="true"
           id="charts-menu"
           value="charts"
         >

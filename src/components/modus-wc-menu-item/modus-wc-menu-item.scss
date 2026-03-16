@@ -88,7 +88,7 @@ modus-wc-menu-item .modus-wc-menu-item {
       var(--modus-wc-color-base-100);
   }
 
-  &:not(.modus-wc-menu-item-selected) {
+  &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-checked) {
     color: var(--modus-wc-color-gray-10);
   }
 
@@ -96,6 +96,24 @@ modus-wc-menu-item .modus-wc-menu-item {
     background-color: var(--modus-wc-color-blue-pale);
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
+
+    &:focus {
+      background-color: var(--modus-wc-color-blue-pale);
+    }
+
+    button {
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        box-shadow: none;
+        color: inherit;
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-checked {
+    background-color: var(--modus-wc-color-blue-pale);
+    border-radius: inherit;
 
     &:focus {
       background-color: var(--modus-wc-color-blue-pale);
@@ -128,10 +146,10 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
-  // Focus states for non-selected items only
-  &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
-      :has(.modus-wc-menu-dropdown)
-    ) {
+  // Focus states for non-selected and non-checked items only
+  &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-checked):not(
+      .modus-wc-menu-item-disabled
+    ):not(:has(.modus-wc-menu-dropdown)) {
     &:focus:not(:focus-visible),
     &.modus-wc-arrow-focused {
       background-color: var(--modus-wc-color-gray-0);
@@ -152,7 +170,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
-    &:not(.modus-wc-menu-item-selected) {
+    &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-checked) {
       color: var(--modus-wc-color-gray-light);
     }
 
@@ -179,10 +197,18 @@ modus-wc-menu-item .modus-wc-menu-item {
       );
     }
 
-    // Focus states for non-selected items only
-    &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-disabled):not(
-        :has(.modus-wc-menu-dropdown)
-      ) {
+    &.modus-wc-menu-item-checked {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-primary) 30%,
+        transparent
+      );
+    }
+
+    // Focus states for non-selected and non-checked items only
+    &:not(.modus-wc-menu-item-selected):not(.modus-wc-menu-item-checked):not(
+        .modus-wc-menu-item-disabled
+      ):not(:has(.modus-wc-menu-dropdown)) {
       &:focus:not(:focus-visible),
       &.modus-wc-arrow-focused {
         background-color: var(--modus-wc-color-gray-9);
