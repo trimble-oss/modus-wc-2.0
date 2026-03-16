@@ -16,27 +16,94 @@ permissions:
 jobs:
   audit-fix:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - directory: '.'
+            label: 'root'
+            needsBuild: false
+            parent: ''
+          - directory: 'integrations/angular/ng17'
+            label: 'angular-ng17'
+            needsBuild: false
+            parent: ''
+          - directory: 'integrations/angular/ng18'
+            label: 'angular-ng18'
+            needsBuild: false
+            parent: ''
+          - directory: 'integrations/angular/ng19'
+            label: 'angular-ng19'
+            needsBuild: false
+            parent: ''
+          - directory: 'integrations/react/v17'
+            label: 'react-v17'
+            needsBuild: true
+            parent: ''
+          - directory: 'integrations/react/v18'
+            label: 'react-v18'
+            needsBuild: true
+            parent: ''
+          - directory: 'integrations/react/v19'
+            label: 'react-v19'
+            needsBuild: true
+            parent: ''
+          - directory: 'integrations/react/test-react-v17'
+            label: 'react-test-v17'
+            needsBuild: true
+            parent: 'integrations/react/v17'
+          - directory: 'integrations/react/test-react-v18'
+            label: 'react-test-v18'
+            needsBuild: true
+            parent: 'integrations/react/v18'
+          - directory: 'integrations/react/test-react-v19'
+            label: 'react-test-v19'
+            needsBuild: true
+            parent: 'integrations/react/v19'
+          - directory: 'integrations/vue/v-latest'
+            label: 'vue-v-latest'
+            needsBuild: true
+            parent: ''
+          - directory: 'integrations/vue/test-app'
+            label: 'vue-test-app'
+            needsBuild: true
+            parent: 'integrations/vue/v-latest'
+
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
-          node-version: '20'
+          node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
 
+      - name: Install root dependencies and build Stencil
+        if: ${{ matrix.needsBuild }}
+        run: npm ci && npm run build:ci
+
+      - name: Build parent integration
+        if: ${{ matrix.parent != '' }}
+        working-directory: ${{ matrix.parent }}
+        run: npm ci && npm run build
+
       - name: Install dependencies
+        working-directory: ${{ matrix.directory }}
         run: npm ci
 
       - name: Run npm audit and save output
+        working-directory: ${{ matrix.directory }}
         run: npm audit --json > audit-output.json || true
 
       - name: Upload audit output as artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
-          name: audit-output
-          path: audit-output.json
+          name: audit-output-${{ matrix.label }}
+          path: ${{ matrix.directory }}/audit-output.json
 
       - name: Apply npm audit fix
+        working-directory: ${{ matrix.directory }}
         run: npm audit fix || true
 
       - name: Push fix branch and create PR
@@ -45,10 +112,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)-${{ github.run_id }}"
+          BRANCH="fix/npm-audit-fix-${{ matrix.label }}-$(date +%Y-%m-%d)-${{ github.run_id }}-${{ github.run_attempt }}"
           git checkout -b "$BRANCH"
-          git add package-lock.json package.json
+          git add "${{ matrix.directory }}/package-lock.json" "${{ matrix.directory }}/package.json"
           git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
-          git commit -m "fix: npm audit fix $(date +%Y-%m-%d)"
+          git commit -m "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push origin "$BRANCH"
-          gh pr create --title "fix: npm audit fix $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
+          gh pr create --title "fix: npm audit fix ${{ matrix.directory }} $(date +%Y-%m-%d)" --body "Automated PR from \`npm audit fix\` for \`${{ matrix.directory }}\` run on $(date +%Y-%m-%d)." --base main --head "$BRANCH"
