@@ -13,6 +13,7 @@ import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-w
 import { LogoName } from "./components/modus-wc-logo/logo-constants";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+import { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
@@ -32,6 +33,7 @@ export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-w
 export { LogoName } from "./components/modus-wc-logo/logo-constants";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
+export { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
@@ -1068,11 +1070,8 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -1117,6 +1116,7 @@ export namespace Components {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
+          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -1263,6 +1263,20 @@ export namespace Components {
           * Width of the panel in pixels.
          */
         "width"?: string;
+    }
+    interface ModusWcProfileMenu {
+        /**
+          * Configuration for the first menu including title and items
+         */
+        "menuOne"?: ISubMenu;
+        /**
+          * Configuration for the second menu including title and items
+         */
+        "menuTwo"?: ISubMenu;
+        /**
+          * Profile menu properties containing user information
+         */
+        "profileProps": IProfileMenuProps;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -2223,6 +2237,10 @@ export interface ModusWcPaginationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcPaginationElement;
 }
+export interface ModusWcProfileMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcProfileMenuElement;
+}
 export interface ModusWcRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcRadioElement;
@@ -2736,17 +2754,13 @@ declare global {
         "searchClick": MouseEvent | KeyboardEvent;
         "searchInputOpenChange": boolean;
         "signOutClick": MouseEvent | KeyboardEvent;
-        "logoClick": MouseEvent | KeyboardEvent;
         "trimbleLogoClick": MouseEvent | KeyboardEvent;
         "userMenuOpenChange": boolean;
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2813,6 +2827,24 @@ declare global {
     var HTMLModusWcPanelElement: {
         prototype: HTMLModusWcPanelElement;
         new (): HTMLModusWcPanelElement;
+    };
+    interface HTMLModusWcProfileMenuElementEventMap {
+        "signOutClick": void;
+        "menuItemClick": string;
+    }
+    interface HTMLModusWcProfileMenuElement extends Components.ModusWcProfileMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcProfileMenuElementEventMap>(type: K, listener: (this: HTMLModusWcProfileMenuElement, ev: ModusWcProfileMenuCustomEvent<HTMLModusWcProfileMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcProfileMenuElementEventMap>(type: K, listener: (this: HTMLModusWcProfileMenuElement, ev: ModusWcProfileMenuCustomEvent<HTMLModusWcProfileMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcProfileMenuElement: {
+        prototype: HTMLModusWcProfileMenuElement;
+        new (): HTMLModusWcProfileMenuElement;
     };
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -3292,6 +3324,7 @@ declare global {
         "modus-wc-number-input": HTMLModusWcNumberInputElement;
         "modus-wc-pagination": HTMLModusWcPaginationElement;
         "modus-wc-panel": HTMLModusWcPanelElement;
+        "modus-wc-profile-menu": HTMLModusWcProfileMenuElement;
         "modus-wc-progress": HTMLModusWcProgressElement;
         "modus-wc-radio": HTMLModusWcRadioElement;
         "modus-wc-rating": HTMLModusWcRatingElement;
@@ -4434,11 +4467,8 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-     * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-     * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-     * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-     * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -4490,10 +4520,6 @@ declare namespace LocalJSX {
          */
         "onHelpClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * Event emitted when the logo is clicked or activated via keyboard.
-         */
-        "onLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
-        /**
           * Event emitted when the main menu open state changes.
          */
         "onMainMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
@@ -4526,7 +4552,7 @@ declare namespace LocalJSX {
          */
         "onSignOutClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
-          * Deprecated: Use logoClick instead. This event will be removed in a future release.
+          * Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
          */
         "onTrimbleLogoClick"?: (event: ModusWcNavbarCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
@@ -4547,6 +4573,7 @@ declare namespace LocalJSX {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
+          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -4709,6 +4736,28 @@ declare namespace LocalJSX {
           * Width of the panel in pixels.
          */
         "width"?: string;
+    }
+    interface ModusWcProfileMenu {
+        /**
+          * Configuration for the first menu including title and items
+         */
+        "menuOne"?: ISubMenu;
+        /**
+          * Configuration for the second menu including title and items
+         */
+        "menuTwo"?: ISubMenu;
+        /**
+          * Emitted when any menu item is clicked, passing back the item value or label
+         */
+        "onMenuItemClick"?: (event: ModusWcProfileMenuCustomEvent<string>) => void;
+        /**
+          * Emitted when the Sign Out menu item is clicked
+         */
+        "onSignOutClick"?: (event: ModusWcProfileMenuCustomEvent<void>) => void;
+        /**
+          * Profile menu properties containing user information
+         */
+        "profileProps": IProfileMenuProps;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -5803,6 +5852,7 @@ declare namespace LocalJSX {
         "modus-wc-number-input": ModusWcNumberInput;
         "modus-wc-pagination": ModusWcPagination;
         "modus-wc-panel": ModusWcPanel;
+        "modus-wc-profile-menu": ModusWcProfileMenu;
         "modus-wc-progress": ModusWcProgress;
         "modus-wc-radio": ModusWcRadio;
         "modus-wc-rating": ModusWcRating;
@@ -5960,11 +6010,8 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
-             * The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-             * <strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-             * The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-             * Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-             * The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
+             * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
+             * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
@@ -5980,6 +6027,7 @@ declare module "@stencil/core" {
              * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
              */
             "modus-wc-panel": LocalJSX.ModusWcPanel & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
+            "modus-wc-profile-menu": LocalJSX.ModusWcProfileMenu & JSXBase.HTMLAttributes<HTMLModusWcProfileMenuElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle.

@@ -16,6 +16,7 @@ modus-wc-content-tree {
     gap: var(--modus-wc-spacing-xs);
     justify-content: flex-end;
     padding: var(--modus-wc-spacing-sm);
+    padding-top: var(--modus-wc-spacing-xs);
 
     .modus-wc-content-tree-action-button {
       background-color: transparent;
@@ -70,6 +71,17 @@ modus-wc-content-tree {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-content-tree {
+    modus-wc-button
+      .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.modus-wc-content-tree-action-button {
+      color: var(--modus-wc-color-gray-light);
+
+      &:hover,
+      &:active,
+      &[aria-pressed='true'] {
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+
     .modus-wc-content-tree-actions {
       .modus-wc-content-tree-action-icon {
         color: var(--modus-wc-color-gray-light);

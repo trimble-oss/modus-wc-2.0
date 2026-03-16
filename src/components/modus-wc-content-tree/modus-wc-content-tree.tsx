@@ -218,6 +218,7 @@ export class ModusWcContentTree {
                   value={this.searchValue}
                   include-clear
                   include-search
+                  size="sm"
                   customClass="modus-wc-content-tree-search-input"
                   onKeyDown={this.handleInputKeyDown}
                   onInputChange={this.handleInputChange}
@@ -225,7 +226,7 @@ export class ModusWcContentTree {
               </div>
             )}
 
-            {this.includeActions && (
+            {this.includeActions && this.hasSlotContent && (
               <div class="modus-wc-content-tree-actions">
                 <modus-wc-button
                   customClass="modus-wc-content-tree-action-button"

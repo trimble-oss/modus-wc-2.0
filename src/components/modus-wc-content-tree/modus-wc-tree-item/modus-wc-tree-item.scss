@@ -11,7 +11,7 @@ modus-wc-tree-item {
   .modus-wc-tree-item-selected > .modus-wc-tree-content {
     background-color: var(--modus-wc-color-blue-pale);
     border-radius: unset;
-    color: var(--modus-wc-color-base-content);
+    color: var(--modus-wc-color-trimble-blue);
 
     .modus-wc-tree-item-label,
     modus-wc-icon {
@@ -37,8 +37,9 @@ modus-wc-tree-item {
 
   .modus-wc-tree-content {
     align-items: center;
+    color: var(--modus-wc-color-base-content);
     display: flex;
-    gap: var(--modus-wc-font-size-xs);
+    gap: var(--modus-wc-font-size-sm);
     padding: var(--modus-wc-spacing-xs) var(--modus-wc-font-size-xs);
 
     .modus-wc-tree-drag-handle {
@@ -69,6 +70,7 @@ modus-wc-tree-item {
     }
 
     &:hover {
+      background-color: var(--modus-wc-color-gray-0);
       border-radius: unset;
 
       modus-wc-tree-actions
@@ -162,6 +164,13 @@ modus-wc-tree-item {
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-tree-item {
+    .modus-wc-tree-content {
+      &:hover {
+        background-color: var(--modus-wc-color-gray-9);
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+
     .modus-wc-tree-item-selected > .modus-wc-tree-content {
       background-color: color-mix(
         in sRGB,
