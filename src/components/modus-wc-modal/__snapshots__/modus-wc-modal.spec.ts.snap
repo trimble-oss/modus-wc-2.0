@@ -5,17 +5,18 @@ exports[`modus-wc-modal renders with default props 1`] = `
   <!---->
   <dialog class="modus-wc-modal">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -33,17 +34,18 @@ exports[`modus-wc-modal should not render backdrop form when backdrop is static 
   <!---->
   <dialog class="modus-wc-modal" id="test7">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -56,8 +58,9 @@ exports[`modus-wc-modal should not render button when show-close is false 1`] = 
   <!---->
   <dialog class="modus-wc-modal" id="test4">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons"></div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons"></div>
+      </div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -75,17 +78,18 @@ exports[`modus-wc-modal should render backdrop form when backdrop is default 1`]
   <!---->
   <dialog class="modus-wc-modal" id="test6">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -103,17 +107,18 @@ exports[`modus-wc-modal should render button when show-close is true 1`] = `
   <!---->
   <dialog class="modus-wc-modal" id="test3">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -131,25 +136,26 @@ exports[`modus-wc-modal should render collapse icon when show-fullscreen-toggle 
   <!---->
   <dialog class="modus-wc-modal" id="test5">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg class="mi-expand mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.85 3.85 17.3 5.3l-2.18 2.16c-.39.39-.39 1.03 0 1.42s1.03.39 1.42 0L18.7 6.7l1.45 1.45a.5.5 0 0 0 .85-.36V3.5c0-.28-.22-.5-.5-.5h-4.29a.5.5 0 0 0-.36.85m-12 4.3L5.3 6.7l2.16 2.18c.39.39 1.03.39 1.42 0s.39-1.03 0-1.42L6.7 5.3l1.45-1.45A.5.5 0 0 0 7.79 3H3.5c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.36m4.3 12L6.7 18.7l2.18-2.16c.39-.39.39-1.03 0-1.42s-1.03-.39-1.42 0L5.3 17.3l-1.45-1.45a.5.5 0 0 0-.85.36v4.29c0 .28.22.5.5.5h4.29a.5.5 0 0 0 .36-.85m12-4.3L18.7 17.3l-2.16-2.18c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l2.18 2.16-1.45 1.45a.5.5 0 0 0 .36.85h4.29c.28 0 .5-.22.5-.5v-4.29a.5.5 0 0 0-.85-.36"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg class="mi-expand mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.85 3.85 17.3 5.3l-2.18 2.16c-.39.39-.39 1.03 0 1.42s1.03.39 1.42 0L18.7 6.7l1.45 1.45a.5.5 0 0 0 .85-.36V3.5c0-.28-.22-.5-.5-.5h-4.29a.5.5 0 0 0-.36.85m-12 4.3L5.3 6.7l2.16 2.18c.39.39 1.03.39 1.42 0s.39-1.03 0-1.42L6.7 5.3l1.45-1.45A.5.5 0 0 0 7.79 3H3.5c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.36m4.3 12L6.7 18.7l2.18-2.16c.39-.39.39-1.03 0-1.42s-1.03-.39-1.42 0L5.3 17.3l-1.45-1.45a.5.5 0 0 0-.85.36v4.29c0 .28.22.5.5.5h4.29a.5.5 0 0 0 .36-.85m12-4.3L18.7 17.3l-2.16-2.18c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l2.18 2.16-1.45 1.45a.5.5 0 0 0 .36.85h4.29c.28 0 .5-.22.5-.5v-4.29a.5.5 0 0 0-.85-.36"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -167,25 +173,26 @@ exports[`modus-wc-modal should render expand icon when show-fullscreen-toggle is
   <!---->
   <dialog class="modus-wc-modal" id="test5">
     <div class="modus-wc-modal-box">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg class="mi-expand mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.85 3.85 17.3 5.3l-2.18 2.16c-.39.39-.39 1.03 0 1.42s1.03.39 1.42 0L18.7 6.7l1.45 1.45a.5.5 0 0 0 .85-.36V3.5c0-.28-.22-.5-.5-.5h-4.29a.5.5 0 0 0-.36.85m-12 4.3L5.3 6.7l2.16 2.18c.39.39 1.03.39 1.42 0s.39-1.03 0-1.42L6.7 5.3l1.45-1.45A.5.5 0 0 0 7.79 3H3.5c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.36m4.3 12L6.7 18.7l2.18-2.16c.39-.39.39-1.03 0-1.42s-1.03-.39-1.42 0L5.3 17.3l-1.45-1.45a.5.5 0 0 0-.85.36v4.29c0 .28.22.5.5.5h4.29a.5.5 0 0 0 .36-.85m12-4.3L18.7 17.3l-2.16-2.18c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l2.18 2.16-1.45 1.45a.5.5 0 0 0 .36.85h4.29c.28 0 .5-.22.5-.5v-4.29a.5.5 0 0 0-.85-.36"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg class="mi-expand mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.85 3.85 17.3 5.3l-2.18 2.16c-.39.39-.39 1.03 0 1.42s1.03.39 1.42 0L18.7 6.7l1.45 1.45a.5.5 0 0 0 .85-.36V3.5c0-.28-.22-.5-.5-.5h-4.29a.5.5 0 0 0-.36.85m-12 4.3L5.3 6.7l2.16 2.18c.39.39 1.03.39 1.42 0s.39-1.03 0-1.42L6.7 5.3l1.45-1.45A.5.5 0 0 0 7.79 3H3.5c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.36m4.3 12L6.7 18.7l2.18-2.16c.39-.39.39-1.03 0-1.42s-1.03-.39-1.42 0L5.3 17.3l-1.45-1.45a.5.5 0 0 0-.85.36v4.29c0 .28.22.5.5.5h4.29a.5.5 0 0 0 .36-.85m12-4.3L18.7 17.3l-2.16-2.18c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l2.18 2.16-1.45 1.45a.5.5 0 0 0 .36.85h4.29c.28 0 .5-.22.5-.5v-4.29a.5.5 0 0 0-.85-.36"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
@@ -203,17 +210,18 @@ exports[`modus-wc-modal should render with custom props 1`] = `
   <!---->
   <dialog class="modus-wc-modal modus-wc-modal-top test-class" id="test2">
     <div class="modus-wc-modal-box modus-wc-modal-fullscreen">
-      <div class="modus-wc-modal-top-icon-buttons">
-        <modus-wc-button>
-          <!---->
-          <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-            <svg class="mi-collapse mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="m19.56 8.74-1.45-1.45 2.21-2.2a.96.96 0 0 0 0-1.35l-.07-.07a.96.96 0 0 0-1.35 0l-2.2 2.21-1.45-1.45a.5.5 0 0 0-.85.35v4.29c0 .28.22.5.5.5h4.29c.45 0 .67-.54.35-.85ZM8.74 4.45 7.29 5.9l-2.2-2.21a.96.96 0 0 0-1.35 0l-.07.07a.96.96 0 0 0 0 1.35l2.21 2.2-1.45 1.45a.5.5 0 0 0 .35.85h4.29c.28 0 .5-.22.5-.5V4.82c0-.45-.54-.67-.85-.35ZM4.45 15.27l1.45 1.45-2.21 2.2a.96.96 0 0 0 0 1.35l.07.07c.37.37.98.37 1.35 0l2.2-2.21 1.45 1.45a.5.5 0 0 0 .85-.35v-4.29c0-.28-.22-.5-.5-.5H4.82c-.45 0-.67.54-.35.85Zm10.82 4.29 1.45-1.45 2.2 2.21c.37.37.98.37 1.35 0l.07-.07a.96.96 0 0 0 0-1.35l-2.21-2.2 1.45-1.45a.5.5 0 0 0-.35-.85h-4.29c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.35Z"></path>
-            </svg>
-          </button>
-        </modus-wc-button>
+      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-top-icon-buttons">
+          <modus-wc-button>
+            <!---->
+            <button aria-label="Fullscreen toggle" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+              <svg class="mi-collapse mi-solid" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m19.56 8.74-1.45-1.45 2.21-2.2a.96.96 0 0 0 0-1.35l-.07-.07a.96.96 0 0 0-1.35 0l-2.2 2.21-1.45-1.45a.5.5 0 0 0-.85.35v4.29c0 .28.22.5.5.5h4.29c.45 0 .67-.54.35-.85ZM8.74 4.45 7.29 5.9l-2.2-2.21a.96.96 0 0 0-1.35 0l-.07.07a.96.96 0 0 0 0 1.35l2.21 2.2-1.45 1.45a.5.5 0 0 0 .35.85h4.29c.28 0 .5-.22.5-.5V4.82c0-.45-.54-.67-.85-.35ZM4.45 15.27l1.45 1.45-2.21 2.2a.96.96 0 0 0 0 1.35l.07.07c.37.37.98.37 1.35 0l2.2-2.21 1.45 1.45a.5.5 0 0 0 .85-.35v-4.29c0-.28-.22-.5-.5-.5H4.82c-.45 0-.67.54-.35.85Zm10.82 4.29 1.45-1.45 2.2 2.21c.37.37.98.37 1.35 0l.07-.07a.96.96 0 0 0 0-1.35l-2.21-2.2 1.45-1.45a.5.5 0 0 0-.35-.85h-4.29c-.28 0-.5.22-.5.5v4.29c0 .45.54.67.85.35Z"></path>
+              </svg>
+            </button>
+          </modus-wc-button>
+        </div>
       </div>
-      <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg"></div>
       <div class="modus-wc-modal-content modus-wc-py-4"></div>
       <div class="modus-wc-modal-action"></div>
     </div>
