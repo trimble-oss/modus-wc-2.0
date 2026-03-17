@@ -5,41 +5,143 @@ on:
   schedule:
     - cron: '0 0 * * 1'
 
+concurrency:
+  group: npm-audit-fix
+  cancel-in-progress: false
+
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   audit-fix:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          node-version: '20'
+          persist-credentials: false
 
-      - name: Install dependencies
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      # --- Build phase ---
+
+      - name: Install root dependencies and build Stencil
+        run: npm ci && npm run build:ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+
+      - name: Build React v17 integration
+        working-directory: integrations/react/v17
+        run: npm ci && npm run build
+
+      - name: Build React v18 integration
+        working-directory: integrations/react/v18
+        run: npm ci && npm run build
+
+      - name: Build React v19 integration
+        working-directory: integrations/react/v19
+        run: npm ci && npm run build
+
+      - name: Build Vue integration
+        working-directory: integrations/vue/v-latest
+        run: npm ci && npm run build
+
+      # --- Install remaining integration deps ---
+
+      - name: Install Angular ng17 dependencies
+        working-directory: integrations/angular/ng17
         run: npm ci
 
-      - name: Run npm audit and save output
-        run: npm audit --json > audit-output.json || true
+      - name: Install Angular ng18 dependencies
+        working-directory: integrations/angular/ng18
+        run: npm ci
 
-      - name: Upload audit output as artifact
-        uses: actions/upload-artifact@v4
+      - name: Install Angular ng19 dependencies
+        working-directory: integrations/angular/ng19
+        run: npm ci
+
+      - name: Install React test app v17 dependencies
+        working-directory: integrations/react/test-react-v17
+        run: npm ci
+
+      - name: Install React test app v18 dependencies
+        working-directory: integrations/react/test-react-v18
+        run: npm ci
+
+      - name: Install React test app v19 dependencies
+        working-directory: integrations/react/test-react-v19
+        run: npm ci
+
+      - name: Install Vue test app dependencies
+        working-directory: integrations/vue/test-app
+        run: npm ci
+
+      # --- Audit phase ---
+
+      - name: Run npm audit and apply fixes across all directories
+        run: |
+          DIRS=". integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
+            integrations/react/v17 integrations/react/v18 integrations/react/v19 \
+            integrations/react/test-react-v17 integrations/react/test-react-v18 integrations/react/test-react-v19 \
+            integrations/vue/v-latest integrations/vue/test-app"
+          for DIR in $DIRS; do
+            echo "Auditing $DIR..."
+            npm audit --json --prefix "$DIR" > "${DIR}/audit-output.json" || true
+            echo "Fixing $DIR..."
+            npm audit fix --prefix "$DIR" || true
+          done
+
+      - name: Upload all audit outputs as artifact
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
-          name: audit-output
-          path: audit-output.json
+          name: audit-output-all
+          path: |
+            audit-output.json
+            integrations/angular/ng17/audit-output.json
+            integrations/angular/ng18/audit-output.json
+            integrations/angular/ng19/audit-output.json
+            integrations/react/v17/audit-output.json
+            integrations/react/v18/audit-output.json
+            integrations/react/v19/audit-output.json
+            integrations/react/test-react-v17/audit-output.json
+            integrations/react/test-react-v18/audit-output.json
+            integrations/react/test-react-v19/audit-output.json
+            integrations/vue/v-latest/audit-output.json
+            integrations/vue/test-app/audit-output.json
 
-      - name: Apply npm audit fix
-        run: npm audit fix || true
+      # --- PR phase ---
 
-      - name: Push fix branch
+      - name: Push fix branch and create PR
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)"
+          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)-${{ github.run_id }}-${{ github.run_attempt }}"
           git checkout -b "$BRANCH"
-          git add package-lock.json package.json
+          git add \
+            package.json package-lock.json \
+            integrations/angular/ng17/package.json integrations/angular/ng17/package-lock.json \
+            integrations/angular/ng18/package.json integrations/angular/ng18/package-lock.json \
+            integrations/angular/ng19/package.json integrations/angular/ng19/package-lock.json \
+            integrations/react/v17/package.json integrations/react/v17/package-lock.json \
+            integrations/react/v18/package.json integrations/react/v18/package-lock.json \
+            integrations/react/v19/package.json integrations/react/v19/package-lock.json \
+            integrations/react/test-react-v17/package.json integrations/react/test-react-v17/package-lock.json \
+            integrations/react/test-react-v18/package.json integrations/react/test-react-v18/package-lock.json \
+            integrations/react/test-react-v19/package.json integrations/react/test-react-v19/package-lock.json \
+            integrations/vue/v-latest/package.json integrations/vue/v-latest/package-lock.json \
+            integrations/vue/test-app/package.json integrations/vue/test-app/package-lock.json
           git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
-          git commit -m "fix: npm audit fix $(date +%Y-%m-%d)"
+          git commit -m "fix: npm audit fix all packages $(date +%Y-%m-%d)"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push origin "$BRANCH"
+          gh pr create \
+            --title "fix: npm audit fix all packages $(date +%Y-%m-%d)" \
+            --body "Automated PR from \`npm audit fix\` across all packages on $(date +%Y-%m-%d)." \
+            --base main \
+            --head "$BRANCH"
