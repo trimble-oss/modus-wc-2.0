@@ -1027,4 +1027,400 @@ describe('modus-wc-tree-item', () => {
 
     expect(result).toBeNull();
   });
+
+  describe('getSiblingTreeItems', () => {
+    it('returns empty array when parent has no children', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+      });
+      const inst = page.rootInstance;
+      const parent = document.createElement('div');
+
+      const result = inst['getSiblingTreeItems'](parent);
+
+      expect(result).toEqual([]);
+    });
+
+    it('returns only modus-wc-tree-item children, filtering out other tags', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+      });
+      const inst = page.rootInstance;
+      const parent = document.createElement('div');
+
+      const treeItem1 = document.createElement('modus-wc-tree-item');
+      const treeItem2 = document.createElement('modus-wc-tree-item');
+      const div = document.createElement('div');
+      const span = document.createElement('span');
+
+      parent.appendChild(treeItem1);
+      parent.appendChild(div);
+      parent.appendChild(treeItem2);
+      parent.appendChild(span);
+
+      const result = inst['getSiblingTreeItems'](parent);
+
+      expect(result).toHaveLength(2);
+      expect(result[0]).toBe(treeItem1);
+      expect(result[1]).toBe(treeItem2);
+    });
+
+    it('returns all children when all are modus-wc-tree-item', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+      });
+      const inst = page.rootInstance;
+      const parent = document.createElement('div');
+
+      const items = ['a', 'b', 'c'].map((v) => {
+        const el = document.createElement('modus-wc-tree-item');
+        el.setAttribute('value', v);
+        parent.appendChild(el);
+        return el;
+      });
+
+      const result = inst['getSiblingTreeItems'](parent);
+
+      expect(result).toHaveLength(3);
+      expect(result).toEqual(items);
+    });
+  });
+
+  describe('drag handlers', () => {
+    // Access static drag state via class reference
+    type DragState = {
+      draggedItem: ModusWcTreeItem | null;
+      hasEmittedReorderForCurrentDrag: boolean;
+    };
+    const dragState = ModusWcTreeItem as unknown as DragState;
+
+    function makeDragEvent(overrides: {
+      clientY?: number;
+      dataTransfer?: DataTransfer | null;
+    }): DragEvent {
+      return {
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+        stopImmediatePropagation: jest.fn(),
+        clientY: overrides.clientY ?? 0,
+        dataTransfer:
+          overrides.dataTransfer !== undefined
+            ? overrides.dataTransfer
+            : ({
+                effectAllowed: '',
+                dropEffect: '',
+                setData: jest.fn(),
+              } as unknown as DataTransfer),
+      } as unknown as DragEvent;
+    }
+
+    function createMockHostEl(value: string): HTMLElement {
+      const el = document.createElement('modus-wc-tree-item');
+      el.setAttribute('value', value);
+      const li = document.createElement('li');
+      el.appendChild(li);
+      return el;
+    }
+
+    async function setupDropScenario() {
+      const container = document.createElement('div');
+      const sourceEl = createMockHostEl('src');
+      const targetEl = createMockHostEl('tgt');
+      container.appendChild(sourceEl);
+      container.appendChild(targetEl);
+
+      const [sourcePage, targetPage] = await Promise.all([
+        newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Source" value="src" items-reordering></modus-wc-tree-item>`,
+        }),
+        newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Target" value="tgt" items-reordering></modus-wc-tree-item>`,
+        }),
+      ]);
+
+      const sourceInst: ModusWcTreeItem = sourcePage.rootInstance;
+      const targetInst: ModusWcTreeItem = targetPage.rootInstance;
+
+      Object.defineProperty(sourceInst, 'el', {
+        value: sourceEl,
+        writable: true,
+      });
+      Object.defineProperty(targetInst, 'el', {
+        value: targetEl,
+        writable: true,
+      });
+
+      return { sourceInst, targetInst, sourceEl, targetEl, container };
+    }
+
+    beforeEach(() => {
+      dragState.draggedItem = null;
+      dragState.hasEmittedReorderForCurrentDrag = false;
+    });
+
+    describe('resolveItemId', () => {
+      it('resolveItemId: returns null for null element', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+        });
+        const inst = page.rootInstance;
+        expect(inst['resolveItemId'](null)).toBeNull();
+      });
+
+      it('resolveItemId: returns value property when set', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="my-val"></modus-wc-tree-item>`,
+        });
+        const inst = page.rootInstance;
+        const el = document.createElement('modus-wc-tree-item');
+        (el as unknown as { value: string }).value = 'my-val';
+        expect(inst['resolveItemId'](el)).toBe('my-val');
+      });
+
+      it('resolveItemId: falls back to getAttribute when value property is falsy', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="attr-val"></modus-wc-tree-item>`,
+        });
+        const inst = page.rootInstance;
+        const el = document.createElement('modus-wc-tree-item');
+        el.setAttribute('value', 'attr-val');
+        expect(inst['resolveItemId'](el)).toBe('attr-val');
+      });
+    });
+
+    describe('handleDragStart', () => {
+      it('handleDragStart: returns early when itemsReordering is false', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        // itemsReordering defaults to false
+
+        const event = makeDragEvent({});
+        inst['handleDragStart'](event);
+
+        expect(dragState.draggedItem).toBeNull();
+        expect(event.stopPropagation).not.toHaveBeenCalled();
+      });
+
+      it('handleDragStart: returns early when disabled', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering disabled></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+
+        const event = makeDragEvent({});
+        inst['handleDragStart'](event);
+
+        expect(dragState.draggedItem).toBeNull();
+        expect(event.stopPropagation).not.toHaveBeenCalled();
+      });
+
+      it('handleDragStart: sets static drag state and calls stopPropagation', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        dragState.hasEmittedReorderForCurrentDrag = true;
+
+        const event = makeDragEvent({});
+        inst['handleDragStart'](event);
+
+        expect(dragState.draggedItem).toBe(inst);
+        expect(dragState.hasEmittedReorderForCurrentDrag).toBe(false);
+        expect(event.stopPropagation).toHaveBeenCalled();
+      });
+
+      it('handleDragStart: sets dataTransfer properties when available', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="MyLabel" value="my-value" items-reordering></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+
+        const setData = jest.fn();
+        const dataTransfer = {
+          effectAllowed: '',
+          setData,
+        } as unknown as DataTransfer;
+        const event = makeDragEvent({ dataTransfer });
+        inst['handleDragStart'](event);
+
+        expect(dataTransfer.effectAllowed).toBe('move');
+        expect(setData).toHaveBeenCalledWith('text/plain', 'my-value');
+      });
+
+      it('handleDragStart: handles null dataTransfer gracefully', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+
+        const event = makeDragEvent({ dataTransfer: null });
+        expect(() => inst['handleDragStart'](event)).not.toThrow();
+        expect(dragState.draggedItem).toBe(inst);
+      });
+    });
+
+    describe('handleDragLeave', () => {
+      it('handleDragLeave: clears the drop indicator', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        const li = page.root!.querySelector('li')!;
+        li.classList.add('modus-wc-tree-drop-top');
+
+        inst['handleDragLeave']();
+
+        expect(li.classList.contains('modus-wc-tree-drop-top')).toBe(false);
+      });
+    });
+
+    describe('handleDragEnd', () => {
+      it('handleDragEnd: resets static drag state and clears indicator', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        const li = page.root!.querySelector('li')!;
+        dragState.draggedItem = inst;
+        dragState.hasEmittedReorderForCurrentDrag = true;
+        li.classList.add('modus-wc-tree-drop-bottom');
+
+        inst['handleDragEnd']();
+
+        expect(dragState.draggedItem).toBeNull();
+        expect(dragState.hasEmittedReorderForCurrentDrag).toBe(false);
+        expect(li.classList.contains('modus-wc-tree-drop-bottom')).toBe(false);
+      });
+    });
+
+    describe('handleDrop', () => {
+      it('handleDrop: returns early when itemsReordering is false', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v"></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        // itemsReordering defaults to false
+
+        const event = makeDragEvent({});
+        inst['handleDrop'](event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+      });
+
+      it('handleDrop: returns early when disabled', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering disabled></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+
+        const event = makeDragEvent({});
+        inst['handleDrop'](event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+      });
+
+      it('handleDrop: clears indicator when draggedItem is null', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        dragState.draggedItem = null;
+
+        const li = page.root!.querySelector('li')!;
+        li.classList.add('modus-wc-tree-drop-top');
+
+        const event = makeDragEvent({});
+        inst['handleDrop'](event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+        expect(li.classList.contains('modus-wc-tree-drop-top')).toBe(false);
+      });
+
+      it('handleDrop: clears indicator when draggedItem is the same instance', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTreeItem],
+          html: `<modus-wc-tree-item label="Item" value="v" items-reordering></modus-wc-tree-item>`,
+        });
+        const inst: ModusWcTreeItem = page.rootInstance;
+        dragState.draggedItem = inst;
+
+        const li = page.root!.querySelector('li')!;
+        li.classList.add('modus-wc-tree-drop-bottom');
+
+        const event = makeDragEvent({});
+        inst['handleDrop'](event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+        expect(li.classList.contains('modus-wc-tree-drop-bottom')).toBe(false);
+      });
+
+      it('handleDrop: clears indicator when hasEmittedReorderForCurrentDrag is true', async () => {
+        const container = document.createElement('div');
+        const sourceEl = createMockHostEl('src');
+        const middleEl = createMockHostEl('mid');
+        const targetEl = createMockHostEl('tgt');
+        container.appendChild(sourceEl);
+        container.appendChild(middleEl);
+        container.appendChild(targetEl);
+
+        const [sourcePage, targetPage] = await Promise.all([
+          newSpecPage({
+            components: [ModusWcTreeItem],
+            html: `<modus-wc-tree-item label="Source" value="src" items-reordering></modus-wc-tree-item>`,
+          }),
+          newSpecPage({
+            components: [ModusWcTreeItem],
+            html: `<modus-wc-tree-item label="Target" value="tgt" items-reordering></modus-wc-tree-item>`,
+          }),
+        ]);
+
+        const sourceInst: ModusWcTreeItem = sourcePage.rootInstance;
+        const targetInst: ModusWcTreeItem = targetPage.rootInstance;
+
+        Object.defineProperty(sourceInst, 'el', {
+          value: sourceEl,
+          writable: true,
+        });
+        Object.defineProperty(targetInst, 'el', {
+          value: targetEl,
+          writable: true,
+        });
+
+        dragState.draggedItem = sourceInst;
+        dragState.hasEmittedReorderForCurrentDrag = true;
+        targetInst['setDropIndicator']('bottom');
+
+        const spy = jest.fn();
+        targetEl.addEventListener('itemReordered', spy);
+
+        targetInst['handleDrop'](makeDragEvent({}));
+
+        expect(spy).not.toHaveBeenCalled();
+        const targetLi = targetEl.querySelector('li')!;
+        expect(targetLi.classList.contains('modus-wc-tree-drop-bottom')).toBe(
+          false
+        );
+      });
+    });
+  });
 });

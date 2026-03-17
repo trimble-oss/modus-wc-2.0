@@ -1,26 +1,26 @@
 import {
   Component,
   Element,
-  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Listen,
   Prop,
   State,
+  Event as StencilEvent,
   Watch,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import {
-  ITreeItemData,
-  ITreeItemElement,
-  ITreeItemReorderParameters,
-  ITreeItemReorderedEventDetail,
-} from './modus-wc-tree-item/modus-wc-tree-item';
-import {
   getReorderSignature,
   reorderTreeItemsData,
 } from './modus-wc-content-tree.utils';
+import {
+  ITreeItemData,
+  ITreeItemElement,
+  ITreeItemReorderedEventDetail,
+  ITreeItemReorderParameters,
+} from './modus-wc-tree-item/modus-wc-tree-item';
 
 /**
  * A customizable content tree component used to display hierarchical data in a tree structure.

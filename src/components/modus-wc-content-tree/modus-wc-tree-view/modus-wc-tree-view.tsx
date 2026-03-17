@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Listen,
   Prop,
+  Event as StencilEvent,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemElement } from '../modus-wc-tree-item/modus-wc-tree-item';

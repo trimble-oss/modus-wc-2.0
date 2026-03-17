@@ -391,7 +391,7 @@ function handleAction(event) {
     ];
 
     const handleAddNewItem = (event: Event) => {
-      const contentTree = (event.currentTarget as HTMLElement | null)?.closest(
+      const contentTree = (event.currentTarget as HTMLElement)?.closest(
         'modus-wc-content-tree'
       ) as HTMLModusWcContentTreeElement | null;
 
@@ -424,14 +424,14 @@ function handleAction(event) {
       switch (event.detail.actionId) {
         case 'delete':
           contentTree.items = contentTree.items.filter(
-            (i) => i.id !== treeItem.value
+            (i: ITreeItemData) => i.id !== treeItem.value
           );
           break;
 
         case 'add-node-below': {
           const newId = `new-item-${Date.now()}`;
           const idx = contentTree.items.findIndex(
-            (i) => i.id === treeItem.value
+            (i: ITreeItemData) => i.id === treeItem.value
           );
           const next = [...contentTree.items];
           next.splice(idx + 1, 0, {
@@ -1078,9 +1078,7 @@ document
           break;
 
         case 'add-child': {
-          let subList = treeItem.querySelector(
-            ':scope > modus-wc-tree-view'
-          ) as HTMLElement | null;
+          let subList = treeItem.querySelector(':scope > modus-wc-tree-view');
 
           if (!subList) {
             subList = document.createElement('modus-wc-tree-view');
