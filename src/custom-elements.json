@@ -2342,7 +2342,7 @@
             {
               "name": "include-actions",
               "fieldName": "includeActions",
-              "default": "true",
+              "default": "false",
               "description": "If true, displays the action buttons (expand/collapse all, etc.).",
               "type": {
                 "text": "boolean"
@@ -2351,7 +2351,7 @@
             {
               "name": "include-search",
               "fieldName": "includeSearch",
-              "default": "true",
+              "default": "false",
               "description": "If true, displays the search input to filter tree items.",
               "type": {
                 "text": "boolean"

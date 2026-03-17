@@ -280,6 +280,7 @@ export class ModusWcContentTree {
           key={item.id}
           label={item.label}
           value={item.id}
+          treeItemActions={item.treeItemActions}
           itemsReordering={this.isReorderingEnabled}
           hasSubtree={hasChildren}
         >

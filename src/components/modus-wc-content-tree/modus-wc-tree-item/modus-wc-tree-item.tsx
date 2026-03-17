@@ -19,6 +19,8 @@ export interface ITreeItemData {
   id: string;
   /** Display label for the tree item */
   label: string;
+  /** Optional actions shown in the tree item menu. */
+  treeItemActions?: ITreeItemActions[];
   /** Optional nested children items */
   children?: ITreeItemData[];
 }
