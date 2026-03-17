@@ -53,11 +53,17 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   );
 
   const getToken = useCallback(async (): Promise<string> => {
-    return getStoredToken() || '';
+    const stored = getStoredToken();
+    if (!stored) {
+      // Token expired -- reset to sign-in screen so user can re-authenticate
+      clearStoredToken();
+      setToken('');
+    }
+    return stored || '';
   }, []);
 
-  const handleEvent = useCallback((event: ChatUiEvent) => {
-    console.log('[Modus Assistant]', event.type, event.payload);
+  const handleEvent = useCallback((_event: ChatUiEvent) => {
+    // Chat UI events are handled silently; add handling here as needed
   }, []);
 
   const handleSignIn = useCallback(async () => {
@@ -66,9 +72,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     try {
       const newToken = await openTidLogin();
       if (newToken) setToken(newToken);
-    } catch (error: any) {
-      if (error?.message !== 'Login popup was closed') {
-        setLoginError(error?.message || 'Sign-in failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Sign-in failed';
+      if (message !== 'Login popup was closed') {
+        setLoginError(message);
       }
     } finally {
       setIsLoggingIn(false);

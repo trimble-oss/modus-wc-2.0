@@ -57,6 +57,7 @@ export async function openTidLogin(): Promise<string> {
 
   const redirectUri = getCallbackUrl();
   const state = base64UrlEncode(crypto.getRandomValues(new Uint8Array(16)));
+  sessionStorage.setItem('agentic_chat_oauth_state', state);
 
   const authUrl = new URL(`${TID_AUTH_URL}/oauth/authorize`);
   authUrl.searchParams.set('response_type', 'code');
@@ -80,12 +81,21 @@ export async function openTidLogin(): Promise<string> {
     }
 
     const handleMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
       if (event.data?.type !== 'tid-callback') return;
       window.removeEventListener('message', handleMessage);
       clearInterval(pollTimer);
       popup.close();
 
-      const { code, error } = event.data;
+      const { code, state: returnedState, error } = event.data;
+      const expectedState = sessionStorage.getItem('agentic_chat_oauth_state');
+      sessionStorage.removeItem('agentic_chat_oauth_state');
+
+      if (returnedState !== expectedState) {
+        reject(new Error('State mismatch – possible CSRF attack'));
+        return;
+      }
+
       if (error || !code) {
         reject(new Error(error || 'No authorization code received'));
         return;
