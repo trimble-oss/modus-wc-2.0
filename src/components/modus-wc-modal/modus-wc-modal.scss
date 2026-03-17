@@ -7,8 +7,8 @@ modus-wc-modal .modus-wc-modal {
     flex-direction: column;
 
     .modus-wc-modal-header {
-      display: flex;
       align-items: center;
+      display: flex;
 
       > span {
         border-radius: var(--rounded-box);
@@ -35,15 +35,7 @@ modus-wc-modal .modus-wc-modal {
     }
 
     .modus-wc-modal-action {
-      display: flex;
-      justify-content: flex-end;
       margin-top: auto;
-      gap: var(--modus-wc-spacing-sm);
-      padding-top: var(--modus-wc-spacing-lg);
-      padding-inline: 0;
-      > * {
-        margin: 0;
-      }
     }
   }
 }
@@ -57,6 +49,28 @@ modus-wc-modal .modus-wc-modal {
     border-radius: var(--rounded-box);
     display: block;
     height: 100%;
+  }
+}
+
+[data-theme^='modus-modern'] .modus-wc-modal-content,
+[data-theme^='connect'] .modus-wc-modal-content {
+  > span {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm);
+  }
+}
+
+[data-theme^='modus-modern'] .modus-wc-modal-action,
+[data-theme^='connect'] .modus-wc-modal-action {
+  display: flex;
+  gap: var(--modus-wc-spacing-sm);
+  justify-content: flex-end;
+  padding-inline: 0;
+  padding-top: var(--modus-wc-spacing-lg);
+
+  > :not([hidden]) ~ :not([hidden]) {
+    margin: 0;
   }
 }
 
