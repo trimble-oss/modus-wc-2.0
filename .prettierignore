@@ -5,4 +5,5 @@ src/custom-elements.json
 src/components/**/readme.md
 src/providers/**/readme.md
 src/styles/output.css
+src/styles/modus-wc-variables.css
 *.snap
