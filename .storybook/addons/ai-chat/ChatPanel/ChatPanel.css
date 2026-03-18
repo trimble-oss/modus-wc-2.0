@@ -87,11 +87,3 @@
   font-size: 13px;
   color: var(--modus-wc-color-error);
 }
-
-.chat-signin-preview-note {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.6;
-  text-align: center;
-  color: var(--modus-wc-color-trimble-gray);
-}
