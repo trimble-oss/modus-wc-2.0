@@ -479,6 +479,167 @@ describe('modus-wc-tree-actions', () => {
     expect(treeActions.isDropdownOpen).toBe(false);
   });
 
+  describe('handleActionClick with delete action', () => {
+    it('sets pendingDeleteAction when action id is delete', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleActionClick'](actions[1], mockEvent);
+
+      expect(treeActions.pendingDeleteAction).toBe(actions[1]);
+    });
+
+    it('keeps dropdown open when action id is delete', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = false;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleActionClick'](actions[1], mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(true);
+    });
+
+    it('updates popper instance when action id is delete and popper exists', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      const mockUpdate = jest.fn().mockResolvedValue(undefined);
+      const mockPopper = {
+        update: mockUpdate,
+        destroy: jest.fn(),
+      };
+      treeActions.popperInstance = mockPopper as unknown as ReturnType<
+        typeof import('@popperjs/core').createPopper
+      >;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleActionClick'](actions[1], mockEvent);
+
+      expect(mockUpdate).toHaveBeenCalled();
+    });
+
+    it('does not crash when action id is delete and no popper instance', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.popperInstance = null;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      expect(() => {
+        treeActions['handleActionClick'](actions[1], mockEvent);
+      }).not.toThrow();
+
+      expect(treeActions.pendingDeleteAction).toBe(actions[1]);
+    });
+
+    it('does not emit treeActionClick event when action id is delete', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      const eventSpy = jest.fn();
+      page.root?.addEventListener('treeActionClick', eventSpy);
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleActionClick'](actions[1], mockEvent);
+
+      expect(eventSpy).not.toHaveBeenCalled();
+    });
+
+    it('calls stopPropagation on the event when action id is delete', async () => {
+      const actions = [{ id: 'delete', icon: 'delete', label: 'Delete' }];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleActionClick'](actions[0], mockEvent);
+
+      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+    });
+  });
+
   it('initializePopper returns early when buttons are not available', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeActions],
@@ -623,5 +784,444 @@ describe('modus-wc-tree-actions', () => {
       actions[1],
       expect.any(MouseEvent)
     );
+  });
+
+  describe('handleDeleteCancel', () => {
+    it('calls stopPropagation on the event', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteCancel'](mockEvent);
+
+      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+    });
+
+    it('clears pendingDeleteAction', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
+      treeActions.pendingDeleteAction = pendingAction;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteCancel'](mockEvent);
+
+      expect(treeActions.pendingDeleteAction).toBeUndefined();
+    });
+  });
+
+  describe('handleDeleteConfirm', () => {
+    it('calls stopPropagation on the event', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
+      treeActions.pendingDeleteAction = pendingAction;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteConfirm'](mockEvent);
+
+      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+    });
+
+    it('returns early when pendingDeleteAction is undefined', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = undefined;
+
+      const eventSpy = jest.fn();
+      page.root?.addEventListener('treeActionClick', eventSpy);
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteConfirm'](mockEvent);
+
+      expect(eventSpy).not.toHaveBeenCalled();
+    });
+
+    it('emits treeActionClick event with correct actionId and actionName', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const pendingAction = {
+        id: 'delete-123',
+        icon: 'delete',
+        label: 'Delete Item',
+      };
+      treeActions.pendingDeleteAction = pendingAction;
+
+      const eventSpy = jest.fn();
+      page.root?.addEventListener('treeActionClick', eventSpy);
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteConfirm'](mockEvent);
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(eventSpy.mock.calls[0][0].detail).toEqual({
+        actionId: 'delete-123',
+        actionName: 'Delete Item',
+      });
+    });
+
+    it('clears pendingDeleteAction after emitting event', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
+      treeActions.pendingDeleteAction = pendingAction;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteConfirm'](mockEvent);
+
+      expect(treeActions.pendingDeleteAction).toBeUndefined();
+    });
+
+    it('closes dropdown after confirming delete', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
+      treeActions.pendingDeleteAction = pendingAction;
+      treeActions.isDropdownOpen = true;
+
+      const mockEvent = {
+        stopPropagation: jest.fn(),
+      } as unknown as MouseEvent;
+
+      treeActions['handleDeleteConfirm'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(false);
+    });
+  });
+
+  describe('handleDocumentPointerDown', () => {
+    it('returns early when dropdown is not open', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = false;
+
+      const mockEvent = {
+        target: document.createElement('div'),
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(false);
+    });
+
+    it('closes dropdown when clicking outside the component', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+
+      const outsideElement = document.createElement('div');
+      document.body.appendChild(outsideElement);
+
+      const mockEvent = {
+        target: outsideElement,
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(false);
+
+      document.body.removeChild(outsideElement);
+    });
+
+    it('keeps dropdown open when clicking inside the component', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+
+      const insideElement =
+        (page.root?.querySelector('.modus-wc-tree-actions') as HTMLElement) ||
+        (page.root as HTMLElement);
+
+      const mockEvent = {
+        target: insideElement,
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(true);
+    });
+
+    it('closes dropdown when event target is null', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+
+      const mockEvent = {
+        target: null,
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(false);
+    });
+
+    it('closes dropdown when event target is undefined', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+
+      const mockEvent = {
+        target: undefined,
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(false);
+    });
+
+    it('keeps dropdown open when clicking on a child element of the component', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: '2', icon: 'delete', label: 'Delete' },
+        { id: '3', icon: 'share', label: 'Share' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+
+      const childElement = page.root?.querySelector('modus-wc-button');
+
+      const mockEvent = {
+        target: childElement,
+      } as unknown as Event;
+
+      treeActions['handleDocumentPointerDown'](mockEvent);
+
+      expect(treeActions.isDropdownOpen).toBe(true);
+    });
+  });
+
+  describe('delete confirmation UI', () => {
+    it('renders delete confirmation when pendingDeleteAction is set', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+        { id: '3', icon: 'share', label: 'Share' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = actions[1];
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const confirmationDiv = page.root?.querySelector(
+        '.modus-wc-tree-delete-confirmation'
+      );
+      expect(confirmationDiv).toBeDefined();
+    });
+
+    it('displays confirmation title in delete confirmation UI', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = actions[1];
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const title = page.root?.querySelector(
+        '.modus-wc-tree-delete-confirmation-title'
+      );
+      expect(title?.textContent).toBe('Confirm Deletion');
+    });
+
+    it('displays confirmation text in delete confirmation UI', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = actions[1];
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const text = page.root?.querySelector(
+        '.modus-wc-tree-delete-confirmation-text'
+      );
+      expect(text?.textContent).toBe(
+        'Are you sure you want to delete this item?'
+      );
+    });
+
+    it('renders cancel button in delete confirmation UI', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = actions[1];
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const cancelButton = page.root?.querySelector(
+        '.modus-wc-tree-cancel-confirmation-button'
+      );
+      expect(cancelButton).toBeDefined();
+    });
+
+    it('does not render regular dropdown actions when pendingDeleteAction is set', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+        { id: '3', icon: 'share', label: 'Share' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.pendingDeleteAction = actions[1];
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const dropdownActions = page.root?.querySelectorAll(
+        '.modus-wc-tree-dropdown-action'
+      );
+      expect(dropdownActions?.length).toBe(0);
+    });
+
+    it('renders regular dropdown actions when pendingDeleteAction is not set', async () => {
+      const actions = [
+        { id: '1', icon: 'edit', label: 'Edit' },
+        { id: 'delete', icon: 'delete', label: 'Delete' },
+        { id: '3', icon: 'share', label: 'Share' },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      page.rootInstance.actions = actions;
+      await page.waitForChanges();
+
+      const treeActions = page.rootInstance;
+      treeActions.isDropdownOpen = true;
+      await page.waitForChanges();
+
+      const dropdownActions = page.root?.querySelectorAll(
+        '.modus-wc-tree-dropdown-action'
+      );
+      expect(dropdownActions?.length).toBeGreaterThan(0);
+
+      const confirmationDiv = page.root?.querySelector(
+        '.modus-wc-tree-delete-confirmation'
+      );
+      expect(confirmationDiv).toBeNull();
+    });
   });
 });

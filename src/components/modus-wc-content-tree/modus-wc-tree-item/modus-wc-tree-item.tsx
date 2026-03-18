@@ -7,6 +7,7 @@ import {
   Method,
   Prop,
   State,
+  Watch,
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
@@ -23,6 +24,8 @@ export interface ITreeItemData {
   treeItemActions?: ITreeItemActions[];
   /** Optional nested children items */
   children?: ITreeItemData[];
+  /** Indicates the item has children that can be lazily loaded. When true and getChildren is provided on the content tree, the expand chevron is shown before children are fetched. */
+  hasChildren?: boolean;
 }
 
 export type TreeViewItemId = string;
@@ -52,6 +55,7 @@ export interface ITreeItemElement extends HTMLElement {
   hasSubtree?: boolean;
   isIndeterminate?: boolean;
   disabled?: boolean;
+  lazyLoading?: boolean;
   label: string;
   customClass?: string;
   treeItemActions?: ITreeItemActions[];
@@ -126,6 +130,9 @@ export class ModusWcTreeItem {
   /** If true, renders an inline editable text input for the label. */
   @Prop() inlineLabelEdit?: boolean = false;
 
+  /** If true, shows a loader inside the expanded subtree, allowing consumers to signal async data fetching. Set to false once children are ready. */
+  @Prop({ mutable: true }) lazyLoading?: boolean = false;
+
   /** Internal state to track if subtree is expanded */
   @State() isExpanded: boolean = false;
 
@@ -152,6 +159,37 @@ export class ModusWcTreeItem {
   /** Event emitted when inline label editing is completed. */
   @StencilEvent({ bubbles: true, composed: true })
   itemLabelChange!: EventEmitter<string>;
+
+  /** Event emitted when a tree item is expanded, useful for triggering lazy data loading. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemExpand!: EventEmitter<string>;
+
+  @Watch('lazyLoading')
+  onLazyLoadingChange(newValue: boolean) {
+    if (!newValue && this.isExpanded) {
+      const submenu = this.el.querySelector(
+        '.modus-wc-tree-dropdown'
+      ) as HTMLElement;
+
+      if (submenu) {
+        submenu.classList.add('modus-wc-tree-dropdown-show');
+      } else {
+        // When a subtree is appended dynamically (lazy loading), the child
+        // modus-wc-tree-view hasn't completed its Stencil render yet, so its
+        // inner <ul class="modus-wc-tree-dropdown"> doesn't exist at this point.
+        // Stencil renders via microtasks, which run before setTimeout(0), so by
+        // the time this callback fires the dropdown element will be in the DOM.
+        setTimeout(() => {
+          const lazySubmenu = this.el.querySelector(
+            '.modus-wc-tree-dropdown'
+          ) as HTMLElement;
+          if (lazySubmenu) {
+            lazySubmenu.classList.add('modus-wc-tree-dropdown-show');
+          }
+        }, 0);
+      }
+    }
+  }
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -197,13 +235,16 @@ export class ModusWcTreeItem {
   @Method()
   expandSubTree(): Promise<void> {
     if (this.hasSubtree && !this.isExpanded) {
-      const submenu = this.el.querySelector(
-        '.modus-wc-tree-dropdown'
-      ) as HTMLElement;
+      this.isExpanded = true;
+      this.itemExpand.emit(this.value);
 
-      if (submenu) {
-        submenu.classList.add('modus-wc-tree-dropdown-show');
-        this.isExpanded = true;
+      if (!this.lazyLoading) {
+        const submenu = this.el.querySelector(
+          '.modus-wc-tree-dropdown'
+        ) as HTMLElement;
+        if (submenu) {
+          submenu.classList.add('modus-wc-tree-dropdown-show');
+        }
       }
     }
     return Promise.resolve();
@@ -234,8 +275,13 @@ export class ModusWcTreeItem {
       '.modus-wc-tree-dropdown'
     ) as HTMLElement;
 
-    if (submenu) {
-      submenu.classList.toggle('modus-wc-tree-dropdown-show');
+    if (this.isExpanded) {
+      this.itemExpand.emit(this.value);
+      if (!this.lazyLoading && submenu) {
+        submenu.classList.add('modus-wc-tree-dropdown-show');
+      }
+    } else if (submenu) {
+      submenu.classList.remove('modus-wc-tree-dropdown-show');
     }
   };
 
@@ -612,6 +658,15 @@ export class ModusWcTreeItem {
               ></modus-wc-tree-actions>
             </div>
           </div>
+          {this.lazyLoading && this.isExpanded && (
+            <div class="modus-wc-tree-loading">
+              <modus-wc-loader
+                size={this.size}
+                variant="spinner"
+                aria-label="Loading tree items"
+              ></modus-wc-loader>
+            </div>
+          )}
           <slot></slot>
         </li>
       </Host>

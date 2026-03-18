@@ -51,6 +51,7 @@ graph TD;
   modus-wc-tree-item --> modus-wc-checkbox
   modus-wc-tree-item --> modus-wc-text-input
   modus-wc-tree-item --> modus-wc-tree-actions
+  modus-wc-tree-item --> modus-wc-loader
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback

@@ -1423,4 +1423,223 @@ describe('modus-wc-tree-item', () => {
       });
     });
   });
+
+  describe('lazy loading', () => {
+    it('should show loader when lazyLoading is true and item is expanded', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      const loader = page.root?.querySelector('modus-wc-loader');
+      expect(loader).toBeTruthy();
+    });
+
+    it('should not show loader when lazyLoading is false', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      const loader = page.root?.querySelector('modus-wc-loader');
+      expect(loader).toBeNull();
+    });
+
+    it('should not show loader when item is collapsed even if lazyLoading is true', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const loader = page.root?.querySelector('modus-wc-loader');
+      expect(loader).toBeNull();
+    });
+
+    it('should emit itemExpand event when expanding', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const itemExpandSpy = jest.fn();
+      page.root?.addEventListener('itemExpand', itemExpandSpy);
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      expect(itemExpandSpy).toHaveBeenCalled();
+    });
+
+    it('should not emit itemExpand when collapsing', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+
+      // expand first
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      const itemExpandSpy = jest.fn();
+      page.root?.addEventListener('itemExpand', itemExpandSpy);
+
+      // collapse
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      expect(itemExpandSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not open submenu while lazyLoading is true', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const submenu = page.root?.querySelector(
+        '.modus-wc-tree-dropdown'
+      ) as HTMLElement;
+
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+        false
+      );
+    });
+
+    it('should reveal submenu when lazyLoading changes from true to false while expanded', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const submenu = page.root?.querySelector(
+        '.modus-wc-tree-dropdown'
+      ) as HTMLElement;
+
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+        false
+      );
+
+      treeItem.lazyLoading = false;
+      await page.waitForChanges();
+
+      expect(submenu.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+        true
+      );
+    });
+
+    it('should hide loader and reveal content after lazyLoading completes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+            <div class="modus-wc-tree-dropdown">Child content</div>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      expect(page.root?.querySelector('modus-wc-loader')).toBeTruthy();
+
+      treeItem.lazyLoading = false;
+      await page.waitForChanges();
+
+      expect(page.root?.querySelector('modus-wc-loader')).toBeNull();
+    });
+
+    it('should reveal dynamically appended submenu after lazyLoading completes', async () => {
+      jest.useFakeTimers();
+
+      const page = await newSpecPage({
+        components: [ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-item label="Parent" value="parent" has-subtree lazy-loading>
+          </modus-wc-tree-item>
+        `,
+      });
+
+      const treeItem = page.rootInstance;
+      const event = new MouseEvent('click', { bubbles: true });
+      treeItem['handleToggleClick'](event);
+      await page.waitForChanges();
+
+      // Dynamically append submenu (simulating lazy load completing)
+      const subList = document.createElement('div');
+      subList.className = 'modus-wc-tree-dropdown';
+      page.root?.appendChild(subList);
+
+      treeItem.lazyLoading = false;
+      await page.waitForChanges();
+
+      // Submenu should not be visible yet (setTimeout pending)
+      expect(subList.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+        false
+      );
+
+      // Advance timers to let the deferred reveal run
+      jest.runAllTimers();
+
+      expect(subList.classList.contains('modus-wc-tree-dropdown-show')).toBe(
+        true
+      );
+
+      jest.useRealTimers();
+    });
+  });
 });

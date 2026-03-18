@@ -165,6 +165,21 @@ modus-wc-tree-item {
       display: block;
       margin-inline-start: 1.3rem;
     }
+
+    li[draggable='true'] &.modus-wc-tree-dropdown-show {
+      margin-inline-start: 2.3rem;
+    }
+  }
+
+  .modus-wc-tree-loading {
+    align-items: center;
+    display: flex;
+    margin-inline-start: 1.3rem;
+    padding: var(--modus-wc-spacing-xs);
+  }
+
+  li[draggable='true'] .modus-wc-tree-loading {
+    margin-inline-start: 2.3rem;
   }
 
   .modus-wc-tree-item-disabled {

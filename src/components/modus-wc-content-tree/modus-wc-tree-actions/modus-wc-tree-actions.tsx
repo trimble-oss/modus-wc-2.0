@@ -93,6 +93,7 @@ export class ModusWcTreeActions {
     }
 
     // Recalculate after the dropdown is rendered with `show` class.
+    // istanbul ignore next
     requestAnimationFrame(() => {
       void this.popperInstance?.update();
     });

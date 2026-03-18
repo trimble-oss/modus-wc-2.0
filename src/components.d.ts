@@ -2113,6 +2113,10 @@ export namespace Components {
          */
         "label": string;
         /**
+          * If true, shows a loader inside the expanded subtree, allowing consumers to signal async data fetching. Set to false once children are ready.
+         */
+        "lazyLoading"?: boolean;
+        /**
           * The selected state of the tree item.
          */
         "selected"?: boolean;
@@ -3286,6 +3290,7 @@ declare global {
   };
         "itemReordered": ITreeItemReorderedEventDetail;
         "itemLabelChange": string;
+        "itemExpand": string;
     }
     /**
      * A tree item component that represents a single node in a hierarchical tree structure.
@@ -5815,6 +5820,14 @@ declare namespace LocalJSX {
           * The text label displayed for the tree item.
          */
         "label": string;
+        /**
+          * If true, shows a loader inside the expanded subtree, allowing consumers to signal async data fetching. Set to false once children are ready.
+         */
+        "lazyLoading"?: boolean;
+        /**
+          * Event emitted when a tree item is expanded, useful for triggering lazy data loading.
+         */
+        "onItemExpand"?: (event: ModusWcTreeItemCustomEvent<string>) => void;
         /**
           * Event emitted when inline label editing is completed.
          */

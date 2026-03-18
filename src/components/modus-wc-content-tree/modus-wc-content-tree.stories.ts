@@ -55,6 +55,7 @@ const meta: Meta<ContentTreeArgs> = {
         'selectionsChange',
         'dropdownOpened',
         'itemLabelChange',
+        'itemExpand',
       ],
     },
   },
@@ -1310,6 +1311,148 @@ export const MultiSelect: Story = {
   },
 };
 
+export const LazyLoading: Story = {
+  name: 'Lazy Loading',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates data-driven lazy loading using the \`itemExpand\` event and the \`items\` prop.
+
+Mark items that have unloaded children with \`hasChildren: true\` so the expand chevron appears. When the user expands an item the \`itemExpand\` event fires with the item ID. Fetch children, then update \`items\` with the result — the component shows a spinner automatically while waiting and reveals children as soon as the data arrives.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="lazy-tree"></modus-wc-content-tree>
+
+<script>
+const mockData = {
+  documents: [
+    { id: 'report',    label: 'Report.pdf' },
+    { id: 'proposal',  label: 'Proposal.docx' },
+    { id: 'notes',     label: 'Meeting Notes.txt' },
+  ],
+  projects: [
+    { id: 'website',   label: 'Website Redesign', hasChildren: true },
+    { id: 'mobile',    label: 'Mobile App' },
+    { id: 'api',       label: 'API Integration' },
+  ],
+  resources: [
+    { id: 'templates', label: 'Templates' },
+    { id: 'guide',     label: 'Style Guide' },
+  ],
+  website: [
+    { id: 'design',    label: 'Design Mockups' },
+    { id: 'dev',       label: 'Development' },
+  ],
+};
+
+// Recursively merges fetched children into the items array.
+function addChildren(items, parentId, children) {
+  return items.map((item) => {
+    if (item.id === parentId) return { ...item, children };
+    if (item.children) return { ...item, children: addChildren(item.children, parentId, children) };
+    return item;
+  });
+}
+
+const tree = document.getElementById('lazy-tree');
+
+tree.items = [
+  { id: 'documents', label: 'Documents', hasChildren: true },
+  { id: 'projects',  label: 'Projects',  hasChildren: true },
+  { id: 'resources', label: 'Resources', hasChildren: true },
+];
+
+tree.addEventListener('itemExpand', async (event) => {
+  const itemId = event.detail;
+
+  // Simulate an async fetch (e.g. an API call)
+  const children = await new Promise((resolve) =>
+    setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
+  );
+
+  // Provide children back — the spinner disappears and children are revealed.
+  tree.items = addChildren(tree.items, itemId, children);
+});
+</script>
+`,
+      },
+    },
+    actions: {
+      handles: ['itemExpand'],
+    },
+  },
+  render: (args) => {
+    const mockData: Record<string, ITreeItemData[]> = {
+      documents: [
+        { id: 'report', label: 'Report.pdf' },
+        { id: 'proposal', label: 'Proposal.docx' },
+        { id: 'notes', label: 'Meeting Notes.txt' },
+      ],
+      projects: [
+        { id: 'website', label: 'Website Redesign', hasChildren: true },
+        { id: 'mobile', label: 'Mobile App' },
+        { id: 'api', label: 'API Integration' },
+      ],
+      resources: [
+        { id: 'templates', label: 'Templates' },
+        { id: 'guide', label: 'Style Guide' },
+      ],
+      website: [
+        { id: 'design', label: 'Design Mockups' },
+        { id: 'dev', label: 'Development' },
+      ],
+    };
+
+    const addChildren = (
+      items: ITreeItemData[],
+      parentId: string,
+      children: ITreeItemData[]
+    ): ITreeItemData[] =>
+      items.map((item) => {
+        if (item.id === parentId) return { ...item, children };
+        if (item.children)
+          return {
+            ...item,
+            children: addChildren(item.children, parentId, children),
+          };
+        return item;
+      });
+
+    let currentItems: ITreeItemData[] = [
+      { id: 'documents', label: 'Documents', hasChildren: true },
+      { id: 'projects', label: 'Projects', hasChildren: true },
+      { id: 'resources', label: 'Resources', hasChildren: true },
+    ];
+
+    const handleItemExpand = async (
+      event: CustomEvent<string>,
+      treeEl: HTMLElement & { items?: ITreeItemData[] }
+    ) => {
+      const itemId = event.detail;
+      const children = await new Promise<ITreeItemData[]>((resolve) =>
+        setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
+      );
+      currentItems = addChildren(currentItems, itemId, children);
+      treeEl.items = currentItems;
+    };
+
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        .includeSearch=${false}
+        .includeActions=${args['include-actions']}
+        .items=${currentItems}
+        @itemExpand=${(e: CustomEvent<string>) =>
+          handleItemExpand(
+            e,
+            e.currentTarget as HTMLElement & { items?: ITreeItemData[] }
+          )}
+      ></modus-wc-content-tree>
+    `;
+  },
+};
+
 export const ApiReference: Story = {
   name: 'API Reference',
   parameters: {
@@ -1354,6 +1497,8 @@ export const ApiReference: Story = {
 | treeItemActions | \`ITreeItemActions[]\`                 | -         | Array of actions to display for the tree item                |
 | size            | \`'xs' | 'sm' | 'md' | 'lg'\`    | \`'xs'\`  | The size of the tree item                                    |
 | customClass     | \`string\`                             | \`''\`    | Additional CSS class to apply to the tree item               |
+| lazyLoading     | \`boolean\`                            | \`false\` | When \`true\` and the item is expanded, shows a spinner in place of children. Managed automatically by the content tree when \`getChildren\` is provided. |
+| hasChildren     | \`boolean\`                            | -         | Hint that the item has unloaded children. Used with \`getChildren\` on the content tree to show the expand chevron before children are fetched. |
 
 #### Events
 
@@ -1361,6 +1506,7 @@ export const ApiReference: Story = {
 |------------------|----------------------------------|-------------------------------------------------|
 | itemSelect       | \`{ value: string }\`            | Emitted when a tree item is selected            |
 | selectionsChange | \`{ selectedValues: string[] }\` | Emitted when the selection state changes        |
+| itemExpand       | \`string\`                       | Emitted with the item's \`value\` when it is expanded. Use this to trigger lazy data loading. |
 
 #### Methods
 

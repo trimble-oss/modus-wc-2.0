@@ -2306,6 +2306,18 @@
             },
             {
               "kind": "method",
+              "name": "handleItemExpand",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<string>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleItemReordered",
               "parameters": [
                 {
@@ -2596,6 +2608,18 @@
             },
             {
               "kind": "method",
+              "name": "onLazyLoadingChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2669,6 +2693,15 @@
               }
             },
             {
+              "name": "lazy-loading",
+              "fieldName": "lazyLoading",
+              "default": "false",
+              "description": "If true, shows a loader inside the expanded subtree, allowing consumers to signal async data fetching. Set to false once children are ready.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "selected",
               "fieldName": "selected",
               "description": "The selected state of the tree item.",
@@ -2705,6 +2738,14 @@
           ],
           "tagName": "modus-wc-tree-item",
           "events": [
+            {
+              "kind": "field",
+              "name": "itemExpand",
+              "type": {
+                "text": "EventEmitter<string>"
+              },
+              "description": "Event emitted when a tree item is expanded, useful for triggering lazy data loading."
+            },
             {
               "kind": "field",
               "name": "itemLabelChange",

@@ -70,9 +70,13 @@ export class ModusWcContentTree {
   /** Internal state to track if all tree nodes are expanded or collapsed */
   @State() private areAllExpanded: boolean = false;
 
+  /** IDs of items that have been expanded but whose children have not yet been provided by the consumer. */
+  @State() private pendingChildrenIds: Set<string> = new Set();
+
   @Watch('items')
   handleItemsChange() {
     this.cachedItems = undefined;
+    this.pendingChildrenIds = new Set();
   }
 
   @Watch('itemsReordering')
@@ -270,10 +274,21 @@ export class ModusWcContentTree {
     await Promise.all(promises);
   }
 
+  @Listen('itemExpand')
+  handleItemExpand(event: CustomEvent<string>) {
+    if (!this.hasDataItems) return;
+    this.pendingChildrenIds = new Set([
+      ...this.pendingChildrenIds,
+      event.detail,
+    ]);
+  }
+
   private renderTreeItems(items: ITreeItemData[]) {
     return items.map((item) => {
       const hasChildren =
         Array.isArray(item.children) && item.children.length > 0;
+      const hasChildrenHint = !hasChildren && !!item.hasChildren;
+      const isLoading = hasChildrenHint && this.pendingChildrenIds.has(item.id);
 
       return (
         <modus-wc-tree-item
@@ -282,7 +297,8 @@ export class ModusWcContentTree {
           value={item.id}
           treeItemActions={item.treeItemActions}
           itemsReordering={this.isReorderingEnabled}
-          hasSubtree={hasChildren}
+          hasSubtree={hasChildren || hasChildrenHint}
+          lazyLoading={isLoading}
         >
           {hasChildren && (
             <modus-wc-tree-view isSubList={true}>
