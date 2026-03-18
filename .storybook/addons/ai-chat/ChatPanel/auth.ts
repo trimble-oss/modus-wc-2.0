@@ -19,6 +19,12 @@ function getCallbackUrl(): string {
   return `${origin}${root}/public/tid-callback.html`;
 }
 
+// PR preview deployments (e.g. /pr-preview/pr-123/) cannot be registered
+// as TID redirect URIs since the path changes per PR.
+export function isPreviewDeployment(): boolean {
+  return window.location.pathname.includes('/pr-preview/');
+}
+
 function base64UrlEncode(array: Uint8Array): string {
   return btoa(String.fromCharCode(...array))
     .replace(/\+/g, '-')

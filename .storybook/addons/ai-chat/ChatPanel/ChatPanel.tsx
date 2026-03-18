@@ -9,7 +9,12 @@ import {
   type ChatUiEvent,
 } from '@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript';
 import { AGENT_ID } from '../constants';
-import { getStoredToken, clearStoredToken, openTidLogin } from './auth';
+import {
+  getStoredToken,
+  clearStoredToken,
+  openTidLogin,
+  isPreviewDeployment,
+} from './auth';
 import './ChatPanel.css';
 
 const ENVIRONMENT = 'prod' as const;
@@ -193,6 +198,29 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               title="Modus Assistant"
               allow="clipboard-write"
             />
+          ) : isPreviewDeployment() ? (
+            <div className="chat-signin-form">
+              <div className="chat-signin-inner">
+                <modus-wc-avatar
+                  alt="Modus Assistant"
+                  initials="Modus Assistant"
+                  size="lg"
+                  shape="circle"
+                />
+                <h3 className="chat-signin-title">Modus Assistant</h3>
+                <p className="chat-signin-preview-note">
+                  Sign-in is not available in PR preview deployments. Use the{' '}
+                  <a
+                    href="https://trimble-oss.github.io/modus-wc-2.0/main/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    main Storybook
+                  </a>{' '}
+                  or run locally to try the AI Assistant.
+                </p>
+              </div>
+            </div>
           ) : (
             <div className="chat-signin-form">
               <div className="chat-signin-inner">
