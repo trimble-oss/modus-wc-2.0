@@ -28,6 +28,7 @@ The component will extract the first letter of each word in the initials string.
 ### Used by
 
  - [modus-wc-navbar](../modus-wc-navbar)
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Depends on
 
@@ -38,6 +39,7 @@ The component will extract the first letter of each word in the initials string.
 graph TD;
   modus-wc-avatar --> modus-wc-icon
   modus-wc-navbar --> modus-wc-avatar
+  modus-wc-profile-menu --> modus-wc-avatar
   style modus-wc-avatar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

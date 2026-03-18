@@ -27,6 +27,7 @@ describe('modus-wc-dropdown-menu', () => {
     const page = await newSpecPage({
       components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
       html: `<modus-wc-dropdown-menu
+                button-shape="square"
                 button-size="sm"
                 button-variant="borderless"
                 custom-class="test-class"
