@@ -36,6 +36,7 @@ The component supports a `<slot>` for injecting custom li elements inside the ul
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-navbar](../modus-wc-navbar)
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Graph
 ```mermaid
@@ -43,6 +44,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-menu
   modus-wc-dropdown-menu --> modus-wc-menu
   modus-wc-navbar --> modus-wc-menu
+  modus-wc-profile-menu --> modus-wc-menu
   style modus-wc-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

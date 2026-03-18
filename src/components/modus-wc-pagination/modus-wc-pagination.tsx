@@ -8,13 +8,13 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ChevronDoubleLeftSolidIcon } from '../../icons/chevron-double-left-solid.icon';
 import { ChevronDoubleRightSolidIcon } from '../../icons/chevron-double-right-solid.icon';
 import { ChevronLeftSolidIcon } from '../../icons/chevron-left-solid.icon';
 import { ChevronRightSolidIcon } from '../../icons/chevron-right-solid.icon';
+import { ModusSize } from '../types';
 
 /** Aria label values for pagination buttons */
 export interface IAriaLabelValues {
