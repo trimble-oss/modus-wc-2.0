@@ -20,16 +20,16 @@ exports[`modus-wc-profile-menu should render with both menus 1`] = `
       <div class="main-menu-section">
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="My Profile" value="my-profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="info" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="My Products" value="my-products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Support center" value="support-center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="bar_graph" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Admin settings" value="admin-settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="download" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
@@ -39,7 +39,7 @@ exports[`modus-wc-profile-menu should render with both menus 1`] = `
         </div>
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="Item 1" value="Item 1">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
@@ -49,13 +49,13 @@ exports[`modus-wc-profile-menu should render with both menus 1`] = `
         </div>
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="Item A" value="Item A">
-            <modus-wc-icon name="settings" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="settings" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+          <modus-wc-icon name="sign_out" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
     </div>
@@ -86,16 +86,16 @@ exports[`modus-wc-profile-menu should render with menuOne 1`] = `
       <div class="main-menu-section">
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="My Profile" value="my-profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="info" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="My Products" value="my-products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Support center" value="support-center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="bar_graph" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Admin settings" value="admin-settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="download" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
@@ -105,16 +105,16 @@ exports[`modus-wc-profile-menu should render with menuOne 1`] = `
         </div>
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="Item 1" value="Item 1">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Item 2" value="Item 2">
-            <modus-wc-icon name="settings" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="settings" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+          <modus-wc-icon name="sign_out" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
     </div>
@@ -145,16 +145,16 @@ exports[`modus-wc-profile-menu should render with menuTwo 1`] = `
       <div class="main-menu-section">
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="My Profile" value="my-profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="info" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="My Products" value="my-products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Support center" value="support-center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="bar_graph" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Admin settings" value="admin-settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="download" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
@@ -169,7 +169,7 @@ exports[`modus-wc-profile-menu should render with menuTwo 1`] = `
       </div>
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+          <modus-wc-icon name="sign_out" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
     </div>
@@ -200,22 +200,22 @@ exports[`modus-wc-profile-menu should render with required props 1`] = `
       <div class="main-menu-section">
         <modus-wc-menu size="md">
           <modus-wc-menu-item label="My Profile" value="my-profile">
-            <modus-wc-icon name="info" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="info" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="My Products" value="my-products">
-            <modus-wc-icon name="home" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="home" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Support center" value="support-center">
-            <modus-wc-icon name="bar_graph" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="bar_graph" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
           <modus-wc-menu-item label="Admin settings" value="admin-settings">
-            <modus-wc-icon name="download" slot="start-icon" variant="solid"></modus-wc-icon>
+            <modus-wc-icon name="download" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
           </modus-wc-menu-item>
         </modus-wc-menu>
       </div>
       <modus-wc-menu>
         <modus-wc-menu-item label="Sign Out" size="md">
-          <modus-wc-icon name="sign_out" slot="start-icon"></modus-wc-icon>
+          <modus-wc-icon name="sign_out" size="sm" slot="start-icon" variant="solid"></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-menu>
     </div>

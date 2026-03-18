@@ -9,7 +9,7 @@
 
 A customizable card component used to group and display content in a way that is easily readable.
 
-The component supports six `<slot>` called 'header' (for images/custom content), 'title', 'subtitle', default slot (main body), 'actions' (buttons/interactive elements), and 'footer'.
+This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
 
 ## Properties
 

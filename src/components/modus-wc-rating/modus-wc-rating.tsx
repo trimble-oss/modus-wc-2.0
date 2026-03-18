@@ -7,13 +7,13 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 import {
   convertPropsToClasses,
   getIndexedRatingItemClass,
 } from './modus-wc-rating.tailwind';
-import { handleShadowDOMStyles } from '../base-component';
 
 export interface IRatingChange {
   newRating: number;
