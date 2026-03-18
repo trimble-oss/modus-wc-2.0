@@ -29,7 +29,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   theme = 'light',
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const prevFocusRef = useRef<HTMLElement | null>(null);
   const [token, setToken] = useState(() => getStoredToken() || '');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState('');
@@ -108,16 +107,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   }, [isOpen, hasToken, getConfig, getToken, handleEvent]);
 
   // Focus management and Escape key handling
-  useEffect(() => {
-    if (isOpen) {
-      prevFocusRef.current = document.activeElement as HTMLElement;
-      const overlayEl = document.querySelector<HTMLElement>('.chat-overlay');
-      overlayEl?.focus();
-    } else {
-      prevFocusRef.current?.focus();
-    }
-  }, [isOpen]);
-
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {

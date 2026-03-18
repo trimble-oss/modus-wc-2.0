@@ -53,10 +53,6 @@ export function clearStoredToken(): void {
   sessionStorage.removeItem(TOKEN_EXPIRY_KEY);
 }
 
-function clearPkceState(): void {
-  sessionStorage.removeItem(OAUTH_STATE_KEY);
-}
-
 export async function openTidLogin(): Promise<string> {
   const { codeVerifier, codeChallenge } = await generatePKCEPair();
   sessionStorage.setItem(PKCE_VERIFIER_KEY, codeVerifier);
@@ -82,8 +78,8 @@ export async function openTidLogin(): Promise<string> {
     );
 
     if (!popup) {
-      clearPkceState();
       sessionStorage.removeItem(PKCE_VERIFIER_KEY);
+      sessionStorage.removeItem(OAUTH_STATE_KEY);
       reject(new Error('Popup blocked. Please allow popups for this site.'));
       return;
     }
@@ -99,7 +95,7 @@ export async function openTidLogin(): Promise<string> {
 
       const { code, state: returnedState, error } = event.data;
       const expectedState = sessionStorage.getItem(OAUTH_STATE_KEY);
-      clearPkceState();
+      sessionStorage.removeItem(OAUTH_STATE_KEY);
 
       if (returnedState !== expectedState) {
         sessionStorage.removeItem(PKCE_VERIFIER_KEY);
@@ -161,8 +157,8 @@ export async function openTidLogin(): Promise<string> {
       if (popup.closed) {
         clearInterval(pollTimer);
         window.removeEventListener('message', handleMessage);
-        clearPkceState();
         sessionStorage.removeItem(PKCE_VERIFIER_KEY);
+        sessionStorage.removeItem(OAUTH_STATE_KEY);
         reject(new Error('Login popup was closed'));
       }
     }, 500);
