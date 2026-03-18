@@ -248,19 +248,12 @@ describe('modus-wc-chip', () => {
     expect(closeIcon).toBeTruthy();
   });
 
-  it('should set default aria-label when not provided', async () => {
+  it('should transfer aria-label from host to button', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
-      html: '<modus-wc-chip label="Test"></modus-wc-chip>',
+      html: '<modus-wc-chip aria-label="Custom label"></modus-wc-chip>',
     });
-    expect(page.root!.ariaLabel).toBe('Test');
-  });
-
-  it('should set default aria-label to Chip when no label is provided', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcChip],
-      html: '<modus-wc-chip></modus-wc-chip>',
-    });
-    expect(page.root!.ariaLabel).toBe('Chip');
+    const button = page.root!.querySelector('button');
+    expect(button!.getAttribute('aria-label')).toBe('Custom label');
   });
 });

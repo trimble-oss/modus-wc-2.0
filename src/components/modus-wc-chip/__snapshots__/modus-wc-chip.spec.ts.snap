@@ -15,7 +15,7 @@ exports[`modus-wc-chip should render remove icon when showRemove is true 1`] = `
 <modus-wc-chip show-remove="true">
   <!---->
   <button aria-label="Close chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip" tabindex="0" type="button">
-    <modus-wc-icon aria-label="Remove chip" custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
+    <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
   </button>
 </modus-wc-chip>
 `;
@@ -78,7 +78,7 @@ exports[`modus-wc-chip should render with label and remove icon together 1`] = `
     <span class="modus-wc-chip-label">
       Removable
     </span>
-    <modus-wc-icon aria-label="Remove chip" custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
+    <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
   </button>
 </modus-wc-chip>
 `;

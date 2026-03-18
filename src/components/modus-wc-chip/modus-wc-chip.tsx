@@ -138,7 +138,6 @@ export class ModusWcChip {
           {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           {this.showRemove && (
             <modus-wc-icon
-              aria-label="Remove chip"
               custom-class="modus-wc-chip-remove-icon"
               name="close"
               onClick={this.handleChipRemove}
