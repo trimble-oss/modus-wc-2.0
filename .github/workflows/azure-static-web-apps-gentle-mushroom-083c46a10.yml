@@ -30,6 +30,8 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
 
       - name: Build project
         run: npm run build
