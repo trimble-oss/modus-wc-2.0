@@ -124,10 +124,10 @@ const getSourceCode = (args: ProfileMenuArgs) => {
     ? `\nconst menuTwo = ${JSON.stringify(args['menu-two'], null, 2)};`
     : '';
 
-  return `<script>
-  ${profilePropsCode}${menuOneCode}${menuTwoCode}
+  return `<modus-wc-profile-menu></modus-wc-profile-menu>
 
-  <modus-wc-profile-menu></modus-wc-profile-menu>
+<script>
+  ${profilePropsCode}${menuOneCode}${menuTwoCode}
 
   const element = document.querySelector('modus-wc-profile-menu');
   element.profileProps = profileProps;${args['menu-one'] ? '\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\n  element.menuTwo = menuTwo;' : ''}
