@@ -43,6 +43,10 @@ export class ModusWcDropdownMenu {
     | 'warning'
     | 'danger' = 'primary';
 
+  /** The shape of the button. */
+  @Prop() buttonShape?: 'circle' | 'ellipse' | 'rectangle' | 'square' =
+    'rectangle';
+
   /** The size of the button. */
   @Prop() buttonSize?: DaisySize = 'md';
 
@@ -146,6 +150,7 @@ export class ModusWcDropdownMenu {
           color={this.buttonColor}
           disabled={this.disabled}
           onButtonClick={this.handleButtonClick}
+          shape={this.buttonShape}
           size={this.buttonSize}
           variant={this.buttonVariant}
         >

@@ -18,7 +18,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 | `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                            | `false`       |
 | `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`       |
 | `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`       |
-| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "rectangle" \| "square"`                             | `'rectangle'` |
+| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                | `'rectangle'` |
 | `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`        |
 | `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`    |
 | `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`    |
@@ -39,6 +39,7 @@ The component supports a `<slot>` for injecting content within the button, simil
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
+ - [modus-wc-handle](../modus-wc-handle)
  - [modus-wc-modal](../modus-wc-modal)
  - [modus-wc-navbar](../modus-wc-navbar)
 
@@ -49,6 +50,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-date --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
+  modus-wc-handle --> modus-wc-button
   modus-wc-modal --> modus-wc-button
   modus-wc-navbar --> modus-wc-button
   style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
