@@ -29,6 +29,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   theme = 'light',
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const prevFocusRef = useRef<HTMLElement | null>(null);
   const [token, setToken] = useState(() => getStoredToken() || '');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState('');
@@ -106,6 +107,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     };
   }, [isOpen, hasToken, getConfig, getToken, handleEvent]);
 
+  // Focus management and Escape key handling
+  useEffect(() => {
+    if (isOpen) {
+      prevFocusRef.current = document.activeElement as HTMLElement;
+      const overlayEl = document.querySelector<HTMLElement>('.chat-overlay');
+      overlayEl?.focus();
+    } else {
+      prevFocusRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <>
       <div className="chat-fab-container">
@@ -127,7 +148,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       </div>
 
       {isOpen && (
-        <div className="chat-overlay">
+        <div
+          className="chat-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="chat-overlay-title"
+          tabIndex={-1}
+        >
           <div className="chat-header">
             <div className="chat-header-title-group">
               <modus-wc-avatar
@@ -136,7 +163,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 size="xs"
                 shape="circle"
               />
-              <span className="chat-header-title">Modus Assistant</span>
+              <span id="chat-overlay-title" className="chat-header-title">
+                Modus Assistant
+              </span>
             </div>
             <div className="chat-header-actions">
               {hasToken && (

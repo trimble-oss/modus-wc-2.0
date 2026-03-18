@@ -13,7 +13,7 @@ const ChatAddon: React.FC = () => {
     >
       <ChatPanel
         isOpen={isOpen}
-        onToggle={() => setIsOpen(!isOpen)}
+        onToggle={() => setIsOpen((prev) => !prev)}
         onClose={() => setIsOpen(false)}
       />
     </div>

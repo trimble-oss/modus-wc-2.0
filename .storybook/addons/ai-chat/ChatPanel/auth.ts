@@ -1,21 +1,21 @@
 const TOKEN_STORAGE_KEY = 'agentic_chat_access_token';
 const TOKEN_EXPIRY_KEY = 'agentic_chat_token_expires_at';
 const PKCE_VERIFIER_KEY = 'agentic_chat_pkce_verifier';
+const OAUTH_STATE_KEY = 'agentic_chat_oauth_state';
 
 const TID_AUTH_URL = 'https://id.trimble.com';
 const TID_CLIENT_ID = '61abccab-10ea-47bf-a616-b1b9c48bfa7b';
 const TID_SCOPES = 'openid agents';
 
-// Dynamically resolve the callback URL relative to the Storybook root,
-// so it works both locally (localhost:6006) and on GitHub Pages (e.g. trimble-oss.github.io/modus-wc-2.0/main/)
+// Resolve the OAuth callback URL relative to the Storybook root.
+// Uses window.location.pathname (never includes query/hash), strips trailing
+// slash and any trailing index.html so it works on both local dev and
+// GitHub Pages subdirectory deployments.
 function getCallbackUrl(): string {
   const { origin, pathname } = window.location;
-  // Strip query/hash, then find the storybook root by removing the path segment after ?path=
-  // The Storybook URL looks like: /modus-wc-2.0/main/?path=/docs/...
-  // We want: /modus-wc-2.0/main/public/tid-callback.html
-  const base = pathname.replace(/\?.*$/, '').replace(/\/$/, '');
-  // If running locally with no sub-path, base will be '' or '/'
-  const root = base.includes('/') ? base : '';
+  const root = pathname
+    .replace(/\/index\.html$/, '') // strip trailing index.html
+    .replace(/\/$/, ''); // strip trailing slash
   return `${origin}${root}/public/tid-callback.html`;
 }
 
@@ -40,9 +40,11 @@ async function generatePKCEPair() {
 
 export function getStoredToken(): string | null {
   const token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
-  const expiresAt = sessionStorage.getItem(TOKEN_EXPIRY_KEY);
-  if (!token || !expiresAt) return null;
-  if (Date.now() >= parseInt(expiresAt, 10) - 60000) return null;
+  const expiresAtRaw = sessionStorage.getItem(TOKEN_EXPIRY_KEY);
+  if (!token || !expiresAtRaw) return null;
+  const expiresAt = parseInt(expiresAtRaw, 10);
+  // Treat malformed or missing expiry as expired
+  if (isNaN(expiresAt) || Date.now() >= expiresAt - 60000) return null;
   return token;
 }
 
@@ -51,13 +53,18 @@ export function clearStoredToken(): void {
   sessionStorage.removeItem(TOKEN_EXPIRY_KEY);
 }
 
+function clearPkceState(): void {
+  sessionStorage.removeItem(PKCE_VERIFIER_KEY);
+  sessionStorage.removeItem(OAUTH_STATE_KEY);
+}
+
 export async function openTidLogin(): Promise<string> {
   const { codeVerifier, codeChallenge } = await generatePKCEPair();
   sessionStorage.setItem(PKCE_VERIFIER_KEY, codeVerifier);
 
   const redirectUri = getCallbackUrl();
   const state = base64UrlEncode(crypto.getRandomValues(new Uint8Array(16)));
-  sessionStorage.setItem('agentic_chat_oauth_state', state);
+  sessionStorage.setItem(OAUTH_STATE_KEY, state);
 
   const authUrl = new URL(`${TID_AUTH_URL}/oauth/authorize`);
   authUrl.searchParams.set('response_type', 'code');
@@ -76,6 +83,7 @@ export async function openTidLogin(): Promise<string> {
     );
 
     if (!popup) {
+      clearPkceState();
       reject(new Error('Popup blocked. Please allow popups for this site.'));
       return;
     }
@@ -83,13 +91,15 @@ export async function openTidLogin(): Promise<string> {
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
       if (event.data?.type !== 'tid-callback') return;
+      // Validate that the message came from our popup window
+      if (event.source !== popup) return;
       window.removeEventListener('message', handleMessage);
       clearInterval(pollTimer);
       popup.close();
 
       const { code, state: returnedState, error } = event.data;
-      const expectedState = sessionStorage.getItem('agentic_chat_oauth_state');
-      sessionStorage.removeItem('agentic_chat_oauth_state');
+      const expectedState = sessionStorage.getItem(OAUTH_STATE_KEY);
+      clearPkceState();
 
       if (returnedState !== expectedState) {
         reject(new Error('State mismatch – possible CSRF attack'));
@@ -149,6 +159,7 @@ export async function openTidLogin(): Promise<string> {
       if (popup.closed) {
         clearInterval(pollTimer);
         window.removeEventListener('message', handleMessage);
+        clearPkceState();
         reject(new Error('Login popup was closed'));
       }
     }, 500);
