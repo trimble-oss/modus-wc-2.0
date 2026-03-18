@@ -9,7 +9,7 @@
 
 A customizable panel component used to organize content in a structured layout.
 
-The component supports `<slot>` called 'header', 'body', and 'footer' for injecting custom HTML.
+This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
 
 ## Properties
 
@@ -20,6 +20,19 @@ The component supports `<slot>` called 'header', 'body', and 'footer' for inject
 | `height`      | `height`       | Height of the panel in pixels.              | `string \| undefined`  | `'700px'` |
 | `width`       | `width`        | Width of the panel in pixels.               | `string \| undefined`  | `'350px'` |
 
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-profile-menu --> modus-wc-panel
+  style modus-wc-panel fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
