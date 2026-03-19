@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeView } from './modus-wc-tree-view';
 import {
-  ModusWcTreeItem,
   ITreeItemElement,
+  ModusWcTreeItem,
 } from '../modus-wc-tree-item/modus-wc-tree-item';
 
 describe('modus-wc-tree-view', () => {

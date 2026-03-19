@@ -1316,65 +1316,83 @@ export const LazyLoading: Story = {
   parameters: {
     docs: {
       description: {
-        story: `Demonstrates data-driven lazy loading using the \`itemExpand\` event and the \`items\` prop.
-
-Mark items that have unloaded children with \`hasChildren: true\` so the expand chevron appears. When the user expands an item the \`itemExpand\` event fires with the item ID. Fetch children, then update \`items\` with the result — the component shows a spinner automatically while waiting and reveals children as soon as the data arrives.`,
+        story: `Demonstrates lazy loading using the data-driven \`items\` prop and \`itemExpand\` event. Items with \`hasChildren: true\` and no \`children\` show an expand chevron; when expanded, the tree shows a loader until the consumer provides children by updating \`items\`. Expand "Documents", "Projects", or "Resources" to see the loading spinner and then the loaded children.`,
       },
       source: {
         code: `
-<modus-wc-content-tree id="lazy-tree"></modus-wc-content-tree>
-
 <script>
+const initialItems = [
+  { id: 'documents', label: 'Documents', hasChildren: true },
+  { id: 'projects', label: 'Projects', hasChildren: true },
+  { id: 'resources', label: 'Resources', hasChildren: true },
+];
+
 const mockData = {
   documents: [
-    { id: 'report',    label: 'Report.pdf' },
-    { id: 'proposal',  label: 'Proposal.docx' },
-    { id: 'notes',     label: 'Meeting Notes.txt' },
+    { id: 'report', label: 'Report.pdf' },
+    { id: 'proposal', label: 'Proposal.docx' },
+    { id: 'notes', label: 'Meeting Notes.txt' },
   ],
   projects: [
-    { id: 'website',   label: 'Website Redesign', hasChildren: true },
-    { id: 'mobile',    label: 'Mobile App' },
-    { id: 'api',       label: 'API Integration' },
+    { id: 'website', label: 'Website Redesign', hasChildren: true },
+    { id: 'mobile', label: 'Mobile App' },
+    { id: 'api', label: 'API Integration' },
   ],
   resources: [
     { id: 'templates', label: 'Templates' },
-    { id: 'guide',     label: 'Style Guide' },
+    { id: 'guide', label: 'Style Guide' },
   ],
   website: [
-    { id: 'design',    label: 'Design Mockups' },
-    { id: 'dev',       label: 'Development' },
+    { id: 'design', label: 'Design Mockups' },
+    { id: 'dev', label: 'Development' },
   ],
 };
 
-// Recursively merges fetched children into the items array.
-function addChildren(items, parentId, children) {
+function updateItem(items, parentId, updater) {
   return items.map((item) => {
-    if (item.id === parentId) return { ...item, children };
-    if (item.children) return { ...item, children: addChildren(item.children, parentId, children) };
+    if (item.id === parentId) return updater(item);
+    if (item.children) {
+      return {
+        ...item,
+        children: updateItem(item.children, parentId, updater),
+      };
+    }
     return item;
   });
 }
 
-const tree = document.getElementById('lazy-tree');
-
-tree.items = [
-  { id: 'documents', label: 'Documents', hasChildren: true },
-  { id: 'projects',  label: 'Projects',  hasChildren: true },
-  { id: 'resources', label: 'Resources', hasChildren: true },
-];
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = initialItems;
 
 tree.addEventListener('itemExpand', async (event) => {
   const itemId = event.detail;
 
-  // Simulate an async fetch (e.g. an API call)
+  const findItem = (items) => {
+    for (const item of items) {
+      if (item.id === itemId) return item;
+      if (item.children) {
+        const found = findItem(item.children);
+        if (found) return found;
+      }
+    }
+  };
+
+  const item = findItem(tree.items);
+  if (item?.children?.length) return;
+
   const children = await new Promise((resolve) =>
     setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
   );
 
-  // Provide children back — the spinner disappears and children are revealed.
-  tree.items = addChildren(tree.items, itemId, children);
+  tree.items = updateItem(tree.items, itemId, (item) => ({
+    ...item,
+    children,
+    hasChildren: children.length > 0,
+  }));
 });
 </script>
+
+<modus-wc-content-tree search-placeholder="Search..." include-search="true"></modus-wc-content-tree>
 `,
       },
     },
@@ -1383,6 +1401,12 @@ tree.addEventListener('itemExpand', async (event) => {
     },
   },
   render: (args) => {
+    const initialItems: ITreeItemData[] = [
+      { id: 'documents', label: 'Documents', hasChildren: true },
+      { id: 'projects', label: 'Projects', hasChildren: true },
+      { id: 'resources', label: 'Resources', hasChildren: true },
+    ];
+
     const mockData: Record<string, ITreeItemData[]> = {
       documents: [
         { id: 'report', label: 'Report.pdf' },
@@ -1404,50 +1428,62 @@ tree.addEventListener('itemExpand', async (event) => {
       ],
     };
 
-    const addChildren = (
+    const updateItem = (
       items: ITreeItemData[],
       parentId: string,
-      children: ITreeItemData[]
+      updater: (item: ITreeItemData) => ITreeItemData
     ): ITreeItemData[] =>
       items.map((item) => {
-        if (item.id === parentId) return { ...item, children };
+        if (item.id === parentId) return updater(item);
         if (item.children)
           return {
             ...item,
-            children: addChildren(item.children, parentId, children),
+            children: updateItem(item.children, parentId, updater),
           };
         return item;
       });
 
-    let currentItems: ITreeItemData[] = [
-      { id: 'documents', label: 'Documents', hasChildren: true },
-      { id: 'projects', label: 'Projects', hasChildren: true },
-      { id: 'resources', label: 'Resources', hasChildren: true },
-    ];
+    const findItem = (
+      items: ITreeItemData[],
+      id: string
+    ): ITreeItemData | undefined => {
+      for (const item of items) {
+        if (item.id === id) return item;
+        if (item.children) {
+          const found = findItem(item.children, id);
+          if (found) return found;
+        }
+      }
+      return undefined;
+    };
 
-    const handleItemExpand = async (
-      event: CustomEvent<string>,
-      treeEl: HTMLElement & { items?: ITreeItemData[] }
-    ) => {
+    const handleItemExpand = async (event: CustomEvent<string>) => {
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
       const itemId = event.detail;
+      const current = tree.items ?? initialItems;
+      const item = findItem(current, itemId);
+      if (item?.children?.length) return;
+
       const children = await new Promise<ITreeItemData[]>((resolve) =>
         setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
       );
-      currentItems = addChildren(currentItems, itemId, children);
-      treeEl.items = currentItems;
+
+      tree.items = updateItem(current, itemId, (i) => ({
+        ...i,
+        children,
+        hasChildren: children.length > 0,
+      }));
     };
 
     return html`
       <modus-wc-content-tree
         search-placeholder=${args['search-placeholder']}
-        .includeSearch=${false}
-        .includeActions=${args['include-actions']}
-        .items=${currentItems}
-        @itemExpand=${(e: CustomEvent<string>) =>
-          handleItemExpand(
-            e,
-            e.currentTarget as HTMLElement & { items?: ITreeItemData[] }
-          )}
+        .includeSearch=${args['include-search']}
+        .includeActions=${false}
+        .items=${initialItems}
+        @itemExpand=${handleItemExpand}
       ></modus-wc-content-tree>
     `;
   },

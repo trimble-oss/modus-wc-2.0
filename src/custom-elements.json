@@ -2608,18 +2608,6 @@
             },
             {
               "kind": "method",
-              "name": "onLazyLoadingChange",
-              "parameters": [
-                {
-                  "name": "newValue",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "render"
             }
           ],

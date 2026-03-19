@@ -176,11 +176,16 @@ export class ModusWcContentTree {
 
     const normalizedSearch = searchTerm.toLowerCase().trim();
 
-    // If search is empty, reset everything in batch
+    // If search is empty, reset visibility and collapse all subtrees
     if (!normalizedSearch) {
       for (const item of menuItems) {
         (item as HTMLElement).style.display = '';
       }
+      await Promise.all(
+        menuItems
+          .filter((item) => (item as ITreeItemElement).hasSubtree)
+          .map((item) => (item as ITreeItemElement).collapseSubTree().catch(() => {}))
+      );
       return;
     }
 
@@ -287,8 +292,10 @@ export class ModusWcContentTree {
     return items.map((item) => {
       const hasChildren =
         Array.isArray(item.children) && item.children.length > 0;
-      const hasChildrenHint = !hasChildren && !!item.hasChildren;
-      const isLoading = hasChildrenHint && this.pendingChildrenIds.has(item.id);
+      const hasSubtree =
+        hasChildren || !!item.hasChildren;
+      const isLoading =
+        !hasChildren && !!item.hasChildren && this.pendingChildrenIds.has(item.id);
 
       return (
         <modus-wc-tree-item
@@ -297,7 +304,7 @@ export class ModusWcContentTree {
           value={item.id}
           treeItemActions={item.treeItemActions}
           itemsReordering={this.isReorderingEnabled}
-          hasSubtree={hasChildren || hasChildrenHint}
+          hasSubtree={hasSubtree}
           lazyLoading={isLoading}
         >
           {hasChildren && (

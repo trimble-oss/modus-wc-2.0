@@ -7,7 +7,6 @@ import {
   Method,
   Prop,
   State,
-  Watch,
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
@@ -164,33 +163,6 @@ export class ModusWcTreeItem {
   @StencilEvent({ bubbles: true, composed: true })
   itemExpand!: EventEmitter<string>;
 
-  @Watch('lazyLoading')
-  onLazyLoadingChange(newValue: boolean) {
-    if (!newValue && this.isExpanded) {
-      const submenu = this.el.querySelector(
-        '.modus-wc-tree-dropdown'
-      ) as HTMLElement;
-
-      if (submenu) {
-        submenu.classList.add('modus-wc-tree-dropdown-show');
-      } else {
-        // When a subtree is appended dynamically (lazy loading), the child
-        // modus-wc-tree-view hasn't completed its Stencil render yet, so its
-        // inner <ul class="modus-wc-tree-dropdown"> doesn't exist at this point.
-        // Stencil renders via microtasks, which run before setTimeout(0), so by
-        // the time this callback fires the dropdown element will be in the DOM.
-        setTimeout(() => {
-          const lazySubmenu = this.el.querySelector(
-            '.modus-wc-tree-dropdown'
-          ) as HTMLElement;
-          if (lazySubmenu) {
-            lazySubmenu.classList.add('modus-wc-tree-dropdown-show');
-          }
-        }, 0);
-      }
-    }
-  }
-
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -217,14 +189,8 @@ export class ModusWcTreeItem {
   @Method()
   collapseSubTree(): Promise<void> {
     if (this.hasSubtree && this.isExpanded) {
-      const submenu = this.el.querySelector(
-        '.modus-wc-tree-dropdown'
-      ) as HTMLElement;
-
-      if (submenu) {
-        submenu.classList.remove('modus-wc-tree-dropdown-show');
-        this.isExpanded = false;
-      }
+      this.isExpanded = false;
+      this.syncDropdownShow();
     }
     return Promise.resolve();
   }
@@ -237,15 +203,7 @@ export class ModusWcTreeItem {
     if (this.hasSubtree && !this.isExpanded) {
       this.isExpanded = true;
       this.itemExpand.emit(this.value);
-
-      if (!this.lazyLoading) {
-        const submenu = this.el.querySelector(
-          '.modus-wc-tree-dropdown'
-        ) as HTMLElement;
-        if (submenu) {
-          submenu.classList.add('modus-wc-tree-dropdown-show');
-        }
-      }
+      this.syncDropdownShow();
     }
     return Promise.resolve();
   }
@@ -265,24 +223,37 @@ export class ModusWcTreeItem {
     return classList.join(' ');
   }
 
+  private syncDropdownShow() {
+    const submenu = this.el.querySelector(
+      '.modus-wc-tree-dropdown'
+    ) as HTMLElement;
+    if (submenu) {
+      if (this.isExpanded) {
+        submenu.classList.add('modus-wc-tree-dropdown-show');
+      } else {
+        submenu.classList.remove('modus-wc-tree-dropdown-show');
+      }
+      return;
+    }
+    if (this.isExpanded) {
+      setTimeout(() => this.syncDropdownShow(), 0);
+    }
+  }
+
   private handleToggleClick = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
     if (!this.hasSubtree) return;
 
-    this.isExpanded = !this.isExpanded;
+    if (this.lazyLoading && this.isExpanded) return;
 
-    const submenu = this.el.querySelector(
-      '.modus-wc-tree-dropdown'
-    ) as HTMLElement;
+    const nextExpanded = !this.isExpanded;
+    this.isExpanded = nextExpanded;
 
-    if (this.isExpanded) {
+    if (nextExpanded) {
       this.itemExpand.emit(this.value);
-      if (!this.lazyLoading && submenu) {
-        submenu.classList.add('modus-wc-tree-dropdown-show');
-      }
-    } else if (submenu) {
-      submenu.classList.remove('modus-wc-tree-dropdown-show');
     }
+
+    this.syncDropdownShow();
   };
 
   private handleKeyDown = (e: KeyboardEvent) => {
@@ -556,7 +527,13 @@ export class ModusWcTreeItem {
 
   render() {
     return (
-      <Host>
+      <Host
+        class={
+          this.itemsReordering
+            ? 'modus-wc-tree-item-reorder-enabled'
+            : undefined
+        }
+      >
         <li
           aria-selected={
             this.checkbox ? undefined : this.selected ? 'true' : 'false'
