@@ -2,32 +2,14 @@ import {
   Component,
   Element,
   FunctionalComponent,
-  getAssetPath,
   h,
   Host,
   Prop,
-  State,
   Watch,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS, LogoName } from './logo-constants';
-import { svgCache } from './logo-svg-cache';
-
-function fetchSvgText(url: string): Promise<string> {
-  if (typeof fetch === 'undefined') return Promise.resolve('');
-  if (!svgCache.has(url)) {
-    svgCache.set(
-      url,
-      fetch(url)
-        .then((r) => (r.ok ? r.text() : ''))
-        .catch(() => {
-          svgCache.delete(url);
-          return '';
-        })
-    );
-  }
-  return svgCache.get(url)!;
-}
+import { LOGO_SVGS } from './logo-svg-data';
 
 interface LogoSvgProps {
   svgText: string;
@@ -46,7 +28,6 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
   tag: 'modus-wc-logo',
   styleUrl: 'modus-wc-logo.scss',
   shadow: false,
-  assetsDirs: ['assets'],
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
@@ -66,30 +47,17 @@ export class ModusWcLogo {
   /** The alt text for accessibility. If not provided, defaults to the logo name. */
   @Prop() alt?: string;
 
-  @State() private svgContent: string = '';
-
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    return this.loadSvg();
   }
 
   @Watch('name')
   @Watch('emblem')
   onLogoPropsChange() {
-    void this.loadSvg();
+    // No-op: render() reads directly from LOGO_SVGS, re-render is triggered by Stencil
   }
 
-  private async loadSvg(): Promise<void> {
-    const assetPath = this.getAssetFilePath();
-    if (!assetPath) {
-      this.svgContent = '';
-      return;
-    }
-    const text = await fetchSvgText(assetPath);
-    this.svgContent = text;
-  }
-
-  private getAssetFilePath(): string {
+  private getSvgContent(): string {
     const logoKey = this.name.toLowerCase().replace(/\s+/g, '_');
     const logoInfo = LOGO_VARIANTS[logoKey as LogoName];
 
@@ -103,7 +71,6 @@ export class ModusWcLogo {
 
     const filePath = this.emblem ? logoInfo.emblemPath : logoInfo.path;
 
-    /* istanbul ignore next */
     if (!filePath) {
       console.warn(
         `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}"`
@@ -111,7 +78,7 @@ export class ModusWcLogo {
       return '';
     }
 
-    return getAssetPath(`assets/${filePath}`);
+    return LOGO_SVGS[filePath] || '';
   }
 
   private getClasses(): string {
@@ -123,6 +90,7 @@ export class ModusWcLogo {
   render() {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
+    const svgContent = this.getSvgContent();
 
     return (
       <Host>
@@ -132,7 +100,7 @@ export class ModusWcLogo {
           role="img"
           aria-label={altText}
         >
-          <LogoSvg svgText={this.svgContent} />
+          <LogoSvg svgText={svgContent} />
         </span>
       </Host>
     );
