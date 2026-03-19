@@ -2,25 +2,72 @@
  * Available logo names for the Modus Logo component
  */
 export type LogoName =
-  | 'trimble'
-  | 'siteworks'
-  | 'earthworks'
-  | 'financials'
-  | 'worksmanager'
-  | 'connect'
-  | 'unity_construct'
-  | 'trade_servicelive'
-  | 'buildable'
-  | 'livecount'
-  | 'supplier_xchange'
+  // Trimble Products
+  | 'accubid_anywhere'
+  | 'accubid_classic'
+  | 'advanced_image_manager'
+  | 'analytics'
   | 'app_xchange'
-  | 'trimble_unity'
-  | 'sketchup'
-  | 'pc_miler'
+  | 'appian'
+  | 'atlas'
+  | 'autobid'
+  | 'b2w'
+  | 'buildable_content'
+  | 'business_center'
+  | 'connect'
+  | 'connect2fab'
   | 'copilot'
-  | 'trimble_pay'
-  | 'projectsight'
   | 'demand_planning'
+  | 'earthworks'
+  | 'estimation_construct'
+  | 'estimation_desktop'
+  | 'fabrication'
+  | 'fabshop'
+  | 'field_points'
+  | 'fieldlink'
+  | 'financials'
+  | 'geosuite'
+  | 'infrastructure'
+  | 'innovative'
+  | 'livecount'
+  | 'materials'
+  | 'modus'
+  | 'modus_blueprint'
+  | 'nova'
+  | 'novapoint'
+  | 'pay'
+  | 'pc_miler'
+  | 'prodesign'
+  | 'projectsight'
+  | 'quadri'
+  | 'reality_capture'
+  | 'sitevision'
+  | 'siteworks'
+  | 'sketchup'
+  | 'sketchup_for_schools'
+  | 'sketchup_go'
+  | 'smart_workflow'
+  | 'stabicad'
+  | 'supplier_xchange'
+  | 'sysque'
+  | 'tekla'
+  | 'tekla_structures'
+  | 'terraflex'
+  | 'tms'
+  | 'tmt'
+  | 'tmw_suite'
+  | 'trade_service'
+  | 'trade_service_live'
+  | 'traqspera'
+  | 'trimble'
+  | 'truckmate'
+  | 'unity'
+  | 'unity_construct'
+  | 'unity_field'
+  | 'unity_maintain'
+  | 'unity_permit'
+  | 'winest'
+  | 'worksmanager'
   // Viewpoint Products
   | 'viewpoint'
   | 'viewpoint_analytics'
@@ -28,17 +75,17 @@ export type LogoName =
   | 'viewpoint_estimating'
   | 'viewpoint_field_management'
   | 'viewpoint_field_time'
+  | 'viewpoint_field_view'
   | 'viewpoint_financial_controls'
+  | 'viewpoint_for_projects'
   | 'viewpoint_hr_management'
   | 'viewpoint_jobpac_connect'
   | 'viewpoint_procontractor'
   | 'viewpoint_spectrum'
+  | 'viewpoint_spectrum_service_tech'
   | 'viewpoint_team'
   | 'viewpoint_vista'
-  | 'viewpoint_spectrum_service_tech'
-  | 'viewpoint_for_projects'
-  | 'viewpoint_vista_field_service'
-  | 'viewpoint_field_view';
+  | 'viewpoint_vista_field_service';
 
 /**
  * Logo information interface
@@ -59,70 +106,28 @@ export interface ILogoInfo {
  */
 export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   // Trimble Products
-  trimble: {
-    displayName: 'Trimble',
-    path: 'logos/trimble/trimble.svg',
-    emblemPath: 'logos/emblems/trimble-emblem.svg',
+  accubid_anywhere: {
+    displayName: 'Accubid Anywhere',
+    path: 'logos/trimble/accubid-anywhere.svg',
+    emblemPath: 'logos/emblems/accubid-anywhere-emblem.svg',
     category: 'trimble',
   },
-  siteworks: {
-    displayName: 'Trimble Siteworks',
-    path: 'logos/trimble/siteworks.svg',
-    emblemPath: 'logos/emblems/siteworks-emblem.svg',
+  accubid_classic: {
+    displayName: 'Accubid Classic',
+    path: 'logos/trimble/accubid-classic.svg',
+    emblemPath: 'logos/emblems/accubid-classic-emblem.svg',
     category: 'trimble',
   },
-  earthworks: {
-    displayName: 'Trimble Earthworks',
-    path: 'logos/trimble/earthworks.svg',
-    emblemPath: 'logos/emblems/earthworks-emblem.svg',
+  advanced_image_manager: {
+    displayName: 'Advanced Image Manager',
+    path: 'logos/trimble/advanced-image-manager.svg',
+    emblemPath: 'logos/emblems/advanced-image-manager-emblem.svg',
     category: 'trimble',
   },
-  financials: {
-    displayName: 'Trimble Financials',
-    path: 'logos/trimble/financials.svg',
-    emblemPath: 'logos/emblems/financials-emblem.svg',
-    category: 'trimble',
-  },
-  worksmanager: {
-    displayName: 'Trimble WorksManager',
-    path: 'logos/trimble/worksmanager.svg',
-    emblemPath: 'logos/emblems/worksmanager-emblem.svg',
-    category: 'trimble',
-  },
-  connect: {
-    displayName: 'Trimble Connect',
-    path: 'logos/trimble/connect.svg',
-    emblemPath: 'logos/emblems/connect-emblem.svg',
-    category: 'trimble',
-  },
-  unity_construct: {
-    displayName: 'Trimble Unity Construct',
-    path: 'logos/trimble/unity-construct.svg',
-    emblemPath: 'logos/emblems/unity-construct-emblem.svg',
-    category: 'trimble',
-  },
-  trade_servicelive: {
-    displayName: 'Trade ServiceLive',
-    path: 'logos/trimble/trade-servicelive.svg',
-    emblemPath: 'logos/emblems/trade-servicelive-emblem.svg',
-    category: 'trimble',
-  },
-  buildable: {
-    displayName: 'Buildable',
-    path: 'logos/trimble/buildable.svg',
-    emblemPath: 'logos/emblems/buildable-emblem.svg',
-    category: 'trimble',
-  },
-  livecount: {
-    displayName: 'LiveCount',
-    path: 'logos/trimble/livecount.svg',
-    emblemPath: 'logos/emblems/livecount-emblem.svg',
-    category: 'trimble',
-  },
-  supplier_xchange: {
-    displayName: 'Supplier Xchange',
-    path: 'logos/trimble/supplier-xchange.svg',
-    emblemPath: 'logos/emblems/supplier-xchange-emblem.svg',
+  analytics: {
+    displayName: 'Analytics',
+    path: 'logos/trimble/analytics.svg',
+    emblemPath: 'logos/emblems/analytics-emblem.svg',
     category: 'trimble',
   },
   app_xchange: {
@@ -131,22 +136,52 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/app-xchange-emblem.svg',
     category: 'trimble',
   },
-  trimble_unity: {
-    displayName: 'Trimble Unity',
-    path: 'logos/trimble/trimble-unity.svg',
-    emblemPath: 'logos/emblems/trimble-unity-emblem.svg',
+  appian: {
+    displayName: 'Appian',
+    path: 'logos/trimble/appian.svg',
+    emblemPath: 'logos/emblems/appian-emblem.svg',
     category: 'trimble',
   },
-  sketchup: {
-    displayName: 'SketchUp',
-    path: 'logos/trimble/sketchup.svg',
-    emblemPath: 'logos/emblems/sketchup-emblem.svg',
+  atlas: {
+    displayName: 'Atlas',
+    path: 'logos/trimble/atlas.svg',
+    emblemPath: 'logos/emblems/atlas-emblem.svg',
     category: 'trimble',
   },
-  pc_miler: {
-    displayName: 'PC Miler',
-    path: 'logos/trimble/pc-miler.svg',
-    emblemPath: 'logos/emblems/pc-miler-emblem.svg',
+  autobid: {
+    displayName: 'AutoBid',
+    path: 'logos/trimble/autobid.svg',
+    emblemPath: 'logos/emblems/autobid-emblem.svg',
+    category: 'trimble',
+  },
+  b2w: {
+    displayName: 'B2W',
+    path: 'logos/trimble/b2w.svg',
+    emblemPath: 'logos/emblems/b2w-emblem.svg',
+    category: 'trimble',
+  },
+  buildable_content: {
+    displayName: 'Buildable Content',
+    path: 'logos/trimble/buildable-content.svg',
+    emblemPath: 'logos/emblems/buildable-content-emblem.svg',
+    category: 'trimble',
+  },
+  business_center: {
+    displayName: 'Business Center',
+    path: 'logos/trimble/business-center.svg',
+    emblemPath: 'logos/emblems/business-center-emblem.svg',
+    category: 'trimble',
+  },
+  connect: {
+    displayName: 'Trimble Connect',
+    path: 'logos/trimble/connect.svg',
+    emblemPath: 'logos/emblems/connect-emblem.svg',
+    category: 'trimble',
+  },
+  connect2fab: {
+    displayName: 'Connect2Fab',
+    path: 'logos/trimble/connect2fab.svg',
+    emblemPath: 'logos/emblems/connect2fab-emblem.svg',
     category: 'trimble',
   },
   copilot: {
@@ -155,10 +190,130 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/copilot-emblem.svg',
     category: 'trimble',
   },
-  trimble_pay: {
-    displayName: 'Trimble Pay',
-    path: 'logos/trimble/trimble-pay.svg',
-    emblemPath: 'logos/emblems/trimble-pay-emblem.svg',
+  demand_planning: {
+    displayName: 'Demand Planning',
+    path: 'logos/trimble/demand-planning.svg',
+    emblemPath: 'logos/emblems/demand-planning-emblem.svg',
+    category: 'trimble',
+  },
+  earthworks: {
+    displayName: 'Trimble Earthworks',
+    path: 'logos/trimble/earthworks.svg',
+    emblemPath: 'logos/emblems/earthworks-emblem.svg',
+    category: 'trimble',
+  },
+  estimation_construct: {
+    displayName: 'Estimation Construct',
+    path: 'logos/trimble/estimation-construct.svg',
+    emblemPath: 'logos/emblems/estimation-construct-emblem.svg',
+    category: 'trimble',
+  },
+  estimation_desktop: {
+    displayName: 'Estimation Desktop',
+    path: 'logos/trimble/estimation-desktop.svg',
+    emblemPath: 'logos/emblems/estimation-desktop-emblem.svg',
+    category: 'trimble',
+  },
+  fabrication: {
+    displayName: 'Fabrication',
+    path: 'logos/trimble/fabrication.svg',
+    emblemPath: 'logos/emblems/fabrication-emblem.svg',
+    category: 'trimble',
+  },
+  fabshop: {
+    displayName: 'FabShop',
+    path: 'logos/trimble/fabshop.svg',
+    emblemPath: 'logos/emblems/fabshop-emblem.svg',
+    category: 'trimble',
+  },
+  field_points: {
+    displayName: 'Field Points',
+    path: 'logos/trimble/field-points.svg',
+    emblemPath: 'logos/emblems/field-points-emblem.svg',
+    category: 'trimble',
+  },
+  fieldlink: {
+    displayName: 'FieldLink',
+    path: 'logos/trimble/fieldlink.svg',
+    emblemPath: 'logos/emblems/fieldlink-emblem.svg',
+    category: 'trimble',
+  },
+  financials: {
+    displayName: 'Trimble Financials',
+    path: 'logos/trimble/financials.svg',
+    emblemPath: 'logos/emblems/financials-emblem.svg',
+    category: 'trimble',
+  },
+  geosuite: {
+    displayName: 'GeoSuite',
+    path: 'logos/trimble/geosuite.svg',
+    emblemPath: 'logos/emblems/geosuite-emblem.svg',
+    category: 'trimble',
+  },
+  infrastructure: {
+    displayName: 'Infrastructure',
+    path: 'logos/trimble/infrastructure.svg',
+    emblemPath: 'logos/emblems/infrastructure-emblem.svg',
+    category: 'trimble',
+  },
+  innovative: {
+    displayName: 'Innovative',
+    path: 'logos/trimble/innovative.svg',
+    emblemPath: 'logos/emblems/innovative-emblem.svg',
+    category: 'trimble',
+  },
+  livecount: {
+    displayName: 'LiveCount',
+    path: 'logos/trimble/livecount.svg',
+    emblemPath: 'logos/emblems/livecount-emblem.svg',
+    category: 'trimble',
+  },
+  materials: {
+    displayName: 'Materials',
+    path: 'logos/trimble/materials.svg',
+    emblemPath: 'logos/emblems/materials-emblem.svg',
+    category: 'trimble',
+  },
+  modus: {
+    displayName: 'Modus',
+    path: 'logos/trimble/modus.svg',
+    emblemPath: 'logos/emblems/modus-emblem.svg',
+    category: 'trimble',
+  },
+  modus_blueprint: {
+    displayName: 'Modus Blueprint',
+    path: 'logos/trimble/modus-blueprint.svg',
+    emblemPath: 'logos/emblems/modus-emblem.svg',
+    category: 'trimble',
+  },
+  nova: {
+    displayName: 'Nova',
+    path: 'logos/trimble/nova.svg',
+    emblemPath: 'logos/emblems/nova-emblem.svg',
+    category: 'trimble',
+  },
+  novapoint: {
+    displayName: 'Novapoint',
+    path: 'logos/trimble/novapoint.svg',
+    emblemPath: 'logos/emblems/novapoint-emblem.svg',
+    category: 'trimble',
+  },
+  pay: {
+    displayName: 'Pay',
+    path: 'logos/trimble/pay.svg',
+    emblemPath: 'logos/emblems/pay-emblem.svg',
+    category: 'trimble',
+  },
+  pc_miler: {
+    displayName: 'PC Miler',
+    path: 'logos/trimble/pc-miler.svg',
+    emblemPath: 'logos/emblems/pc-miler-emblem.svg',
+    category: 'trimble',
+  },
+  prodesign: {
+    displayName: 'ProDesign',
+    path: 'logos/trimble/prodesign.svg',
+    emblemPath: 'logos/emblems/prodesign-emblem.svg',
     category: 'trimble',
   },
   projectsight: {
@@ -167,10 +322,178 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/projectsight-emblem.svg',
     category: 'trimble',
   },
-  demand_planning: {
-    displayName: 'Demand Planning',
-    path: 'logos/trimble/demand-planning.svg',
-    emblemPath: 'logos/emblems/demand-planning-emblem.svg',
+  quadri: {
+    displayName: 'Quadri',
+    path: 'logos/trimble/quadri.svg',
+    emblemPath: 'logos/emblems/quadri-emblem.svg',
+    category: 'trimble',
+  },
+  reality_capture: {
+    displayName: 'Reality Capture',
+    path: 'logos/trimble/reality-capture.svg',
+    emblemPath: 'logos/emblems/reality-capture-emblem.svg',
+    category: 'trimble',
+  },
+  sitevision: {
+    displayName: 'SiteVision',
+    path: 'logos/trimble/sitevision.svg',
+    emblemPath: 'logos/emblems/sitevision-emblem.svg',
+    category: 'trimble',
+  },
+  siteworks: {
+    displayName: 'Trimble Siteworks',
+    path: 'logos/trimble/siteworks.svg',
+    emblemPath: 'logos/emblems/siteworks-emblem.svg',
+    category: 'trimble',
+  },
+  sketchup: {
+    displayName: 'SketchUp',
+    path: 'logos/trimble/sketchup.svg',
+    emblemPath: 'logos/emblems/sketchup-emblem.svg',
+    category: 'trimble',
+  },
+  sketchup_for_schools: {
+    displayName: 'SketchUp for Schools',
+    path: 'logos/trimble/sketchup-for-schools.svg',
+    emblemPath: 'logos/emblems/sketchup-emblem.svg',
+    category: 'trimble',
+  },
+  sketchup_go: {
+    displayName: 'SketchUp Go',
+    path: 'logos/trimble/sketchup-go.svg',
+    emblemPath: 'logos/emblems/sketchup-emblem.svg',
+    category: 'trimble',
+  },
+  smart_workflow: {
+    displayName: 'Smart Workflow',
+    path: 'logos/trimble/smart-workflow.svg',
+    emblemPath: 'logos/emblems/smart-workflow-emblem.svg',
+    category: 'trimble',
+  },
+  stabicad: {
+    displayName: 'Stabicad',
+    path: 'logos/trimble/stabicad.svg',
+    emblemPath: 'logos/emblems/stabicad-emblem.svg',
+    category: 'trimble',
+  },
+  supplier_xchange: {
+    displayName: 'Supplier Xchange',
+    path: 'logos/trimble/supplier-xchange.svg',
+    emblemPath: 'logos/emblems/supplier-xchange-emblem.svg',
+    category: 'trimble',
+  },
+  sysque: {
+    displayName: 'Sysque',
+    path: 'logos/trimble/sysque.svg',
+    emblemPath: 'logos/emblems/sysque-emblem.svg',
+    category: 'trimble',
+  },
+  tekla: {
+    displayName: 'Tekla',
+    path: 'logos/trimble/tekla.svg',
+    emblemPath: 'logos/emblems/tekla-emblem.svg',
+    category: 'trimble',
+  },
+  tekla_structures: {
+    displayName: 'Tekla Structures',
+    path: 'logos/trimble/tekla-structures.svg',
+    emblemPath: 'logos/emblems/tekla-emblem.svg',
+    category: 'trimble',
+  },
+  terraflex: {
+    displayName: 'TerraFlex',
+    path: 'logos/trimble/terraflex.svg',
+    emblemPath: 'logos/emblems/terraflex-emblem.svg',
+    category: 'trimble',
+  },
+  tms: {
+    displayName: 'TMS',
+    path: 'logos/trimble/tms.svg',
+    emblemPath: 'logos/emblems/tms-emblem.svg',
+    category: 'trimble',
+  },
+  tmt: {
+    displayName: 'TMT',
+    path: 'logos/trimble/tmt.svg',
+    emblemPath: 'logos/emblems/tmt-emblem.svg',
+    category: 'trimble',
+  },
+  tmw_suite: {
+    displayName: 'TMW Suite',
+    path: 'logos/trimble/tmw.suite.svg',
+    emblemPath: 'logos/emblems/tmw.suite-emblem.svg',
+    category: 'trimble',
+  },
+  trade_service: {
+    displayName: 'Trade Service',
+    path: 'logos/trimble/trade-service.svg',
+    emblemPath: 'logos/emblems/trade-service-live-emblem.svg',
+    category: 'trimble',
+  },
+  trade_service_live: {
+    displayName: 'Trade Service Live',
+    path: 'logos/trimble/trade-service-live.svg',
+    emblemPath: 'logos/emblems/trade-service-live-emblem.svg',
+    category: 'trimble',
+  },
+  traqspera: {
+    displayName: 'Traqspera',
+    path: 'logos/trimble/traqspera.svg',
+    emblemPath: 'logos/emblems/traqspera-emblem.svg',
+    category: 'trimble',
+  },
+  trimble: {
+    displayName: 'Trimble',
+    path: 'logos/trimble/trimble.svg',
+    emblemPath: 'logos/emblems/trimble-emblem.svg',
+    category: 'trimble',
+  },
+  truckmate: {
+    displayName: 'TruckMate',
+    path: 'logos/trimble/truckmate.svg',
+    emblemPath: 'logos/emblems/truckmate-emblem.svg',
+    category: 'trimble',
+  },
+  unity: {
+    displayName: 'Unity',
+    path: 'logos/trimble/unity.svg',
+    emblemPath: 'logos/emblems/unity-emblem.svg',
+    category: 'trimble',
+  },
+  unity_construct: {
+    displayName: 'Trimble Unity Construct',
+    path: 'logos/trimble/unity-construct.svg',
+    emblemPath: 'logos/emblems/unity-construct-emblem.svg',
+    category: 'trimble',
+  },
+  unity_field: {
+    displayName: 'Unity Field',
+    path: 'logos/trimble/unity-field.svg',
+    emblemPath: 'logos/emblems/unity-field-emblem.svg',
+    category: 'trimble',
+  },
+  unity_maintain: {
+    displayName: 'Unity Maintain',
+    path: 'logos/trimble/unity-maintain.svg',
+    emblemPath: 'logos/emblems/unity-emblem.svg',
+    category: 'trimble',
+  },
+  unity_permit: {
+    displayName: 'Unity Permit',
+    path: 'logos/trimble/unity-permit.svg',
+    emblemPath: 'logos/emblems/unity-emblem.svg',
+    category: 'trimble',
+  },
+  winest: {
+    displayName: 'WinEst',
+    path: 'logos/trimble/winest.svg',
+    emblemPath: 'logos/emblems/winest-emblem.svg',
+    category: 'trimble',
+  },
+  worksmanager: {
+    displayName: 'Trimble WorksManager',
+    path: 'logos/trimble/worksmanager.svg',
+    emblemPath: 'logos/emblems/worksmanager-emblem.svg',
     category: 'trimble',
   },
 
@@ -211,9 +534,21 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },
+  viewpoint_field_view: {
+    displayName: 'Viewpoint Field View',
+    path: 'logos/viewpoint/viewpoint-field-view.svg',
+    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    category: 'viewpoint',
+  },
   viewpoint_financial_controls: {
     displayName: 'Viewpoint Financial Controls',
     path: 'logos/viewpoint/viewpoint-financial-controls.svg',
+    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    category: 'viewpoint',
+  },
+  viewpoint_for_projects: {
+    displayName: 'Viewpoint For Projects',
+    path: 'logos/viewpoint/viewpoint-for-projects.svg',
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },
@@ -241,6 +576,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },
+  viewpoint_spectrum_service_tech: {
+    displayName: 'Viewpoint Spectrum Service Tech',
+    path: 'logos/viewpoint/viewpoint-spectrum-service-tech.svg',
+    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    category: 'viewpoint',
+  },
   viewpoint_team: {
     displayName: 'Viewpoint Team',
     path: 'logos/viewpoint/viewpoint-team.svg',
@@ -253,27 +594,9 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },
-  viewpoint_spectrum_service_tech: {
-    displayName: 'Viewpoint Spectrum Service Tech',
-    path: 'logos/viewpoint/viewpoint-spectrum-service-tech.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
-    category: 'viewpoint',
-  },
-  viewpoint_for_projects: {
-    displayName: 'Viewpoint For Projects',
-    path: 'logos/viewpoint/viewpoint-for-projects.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
-    category: 'viewpoint',
-  },
   viewpoint_vista_field_service: {
     displayName: 'Viewpoint Vista Field Service',
     path: 'logos/viewpoint/viewpoint-vista-field-service.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
-    category: 'viewpoint',
-  },
-  viewpoint_field_view: {
-    displayName: 'Viewpoint Field View',
-    path: 'logos/viewpoint/viewpoint-field-view.svg',
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },

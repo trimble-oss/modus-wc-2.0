@@ -69,9 +69,24 @@ modus-wc-navbar .modus-wc-navbar {
       padding: 0;
 
       .modus-wc-logo {
-        img {
+        svg {
           max-height: 32px;
           max-width: 260px;
+          min-height: 24px;
+        }
+
+        &.logo-combined {
+          .logo-combined-emblem svg {
+            height: 32px;
+            max-height: none;
+            max-width: none;
+            width: 32px;
+          }
+
+          .logo-combined-wordmark svg {
+            max-height: 32px;
+            max-width: 220px;
+          }
         }
       }
     }

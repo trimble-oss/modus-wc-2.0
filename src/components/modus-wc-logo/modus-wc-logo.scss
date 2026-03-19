@@ -22,4 +22,14 @@
   .logo-secondary {
     fill: var(--modus-wc-color-secondary);
   }
+
+  &.logo-combined {
+    align-items: center;
+    display: flex;
+  }
+
+  .logo-combined-wordmark svg {
+    height: auto;
+    width: auto;
+  }
 }
