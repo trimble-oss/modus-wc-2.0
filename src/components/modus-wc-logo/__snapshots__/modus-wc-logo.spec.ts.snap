@@ -2,48 +2,24 @@
 
 exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
 <modus-wc-logo name="siteworks">
-  <span aria-label="siteworks" class="logo-full modus-wc-logo" role="img">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10"></circle>
-      </svg>
-    </span>
-  </span>
+  <span aria-label="siteworks" class="logo-full modus-wc-logo" role="img" style="background-image: var(--modus-logo-siteworks);"></span>
 </modus-wc-logo>
 `;
 
 exports[`modus-wc-logo should render viewpoint logo 1`] = `
 <modus-wc-logo name="viewpoint_field_view">
-  <span aria-label="viewpoint field view" class="logo-full modus-wc-logo" role="img">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10"></circle>
-      </svg>
-    </span>
-  </span>
+  <span aria-label="viewpoint field view" class="logo-full modus-wc-logo" role="img" style="background-image: var(--modus-logo-viewpoint-field-view);"></span>
 </modus-wc-logo>
 `;
 
 exports[`modus-wc-logo should render with default props 1`] = `
 <modus-wc-logo name="trimble">
-  <span aria-label="trimble" class="logo-full modus-wc-logo" role="img">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10"></circle>
-      </svg>
-    </span>
-  </span>
+  <span aria-label="trimble" class="logo-full modus-wc-logo" role="img" style="background-image: var(--modus-logo-trimble);"></span>
 </modus-wc-logo>
 `;
 
 exports[`modus-wc-logo should render with emblem prop 1`] = `
 <modus-wc-logo emblem="" name="trimble">
-  <span aria-label="trimble" class="logo-emblem modus-wc-logo" role="img">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10"></circle>
-      </svg>
-    </span>
-  </span>
+  <span aria-label="trimble" class="logo-emblem modus-wc-logo" role="img" style="background-image: var(--modus-logo-emblem-trimble);"></span>
 </modus-wc-logo>
 `;

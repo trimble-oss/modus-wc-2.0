@@ -47,12 +47,12 @@ export const config: Config = {
           dest: 'dist/modus-wc-variables.css',
         },
         { src: './styles/modus-icons.css', dest: 'dist/modus-icons.css' },
+        {
+          src: './components/modus-wc-logo/logo-assets.css',
+          dest: 'dist/modus-logo-assets.css',
+        },
         { src: './styles/assets', dest: 'dist/styles/assets' },
         { src: './styles/assets', dest: 'dist/assets' },
-        {
-          src: './components/modus-wc-logo/assets',
-          dest: 'dist/assets',
-        },
         { src: '../README.md', dest: 'dist/README.md' },
         { src: '../LICENSE', dest: 'dist/LICENSE' },
         { src: '../package.json', dest: 'dist/package.json' },

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phosphor Icons CSS Vars - Quality Test</title>
+
+  <!-- Current Modus Icons webfont -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.css">
+
+  <!-- New Phosphor Icons CSS vars -->
+  <link rel="stylesheet" href="node_modules/phosphor-icons-css-vars/dist/phosphor-icons-regular.css">
+  <link rel="stylesheet" href="node_modules/phosphor-icons-css-vars/dist/phosphor-icons-fill.css">
+  <link rel="stylesheet" href="node_modules/phosphor-icons-css-vars/dist/phosphor-icons-duotone.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; background: #f5f5f5; color: #252a2e; }
+    h1 { margin-bottom: 8px; font-size: 24px; }
+    h2 { margin: 32px 0 16px; font-size: 18px; border-bottom: 2px solid #0063a3; padding-bottom: 8px; }
+    h3 { margin: 24px 0 12px; font-size: 15px; color: #585c65; }
+    .subtitle { color: #585c65; margin-bottom: 24px; }
+
+    .test-section { background: #fff; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .comparison-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .icon-pair { display: flex; align-items: center; gap: 16px; padding: 12px; border: 1px solid #e0e1e9; border-radius: 6px; }
+    .icon-pair .label { font-size: 11px; color: #90939f; min-width: 50px; text-align: center; }
+    .icon-pair .icon-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .icon-pair .name { font-size: 12px; color: #252a2e; font-weight: 500; }
+
+    .modus-icon-demo { font-family: 'modus-icons'; font-style: normal; font-weight: normal; font-size: 24px; line-height: 1; }
+    .modus-icon-solid-demo { font-family: 'modus-icons-solid'; font-style: normal; font-weight: normal; font-size: 24px; line-height: 1; }
+
+    .size-row { display: flex; align-items: end; gap: 24px; margin: 12px 0; }
+    .size-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .size-label { font-size: 11px; color: #90939f; }
+
+    .color-row { display: flex; align-items: center; gap: 24px; margin: 12px 0; flex-wrap: wrap; }
+    .color-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 6px; border: 1px solid #e0e1e9; }
+
+    .dark-bg { background: #252a2e; color: #fff; padding: 16px; border-radius: 6px; margin: 12px 0; }
+    .dark-bg .color-row { margin: 0; }
+
+    .perf-info { font-family: monospace; font-size: 13px; background: #f0f1f1; padding: 12px; border-radius: 4px; margin: 8px 0; }
+
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #e0e1e9; }
+    th { font-size: 12px; color: #585c65; font-weight: 600; }
+    td { font-size: 13px; }
+    .icon-td { font-size: 24px; }
+  </style>
+</head>
+<body>
+
+<h1>Phosphor Icons CSS Vars - Quality Test</h1>
+<p class="subtitle">Side-by-side comparison of current Modus webfont icons vs phosphor-icons-css-vars package (v0.0.2)</p>
+
+<!-- TEST 1: Side-by-side comparison of commonly used icons -->
+<div class="test-section">
+  <h2>1. Side-by-Side Comparison (Modus Outlined vs Phosphor Regular)</h2>
+  <p style="margin-bottom:16px; font-size:13px; color:#585c65;">Left = Modus webfont (current) | Right = Phosphor CSS mask (new). Phosphor names shown since Modus names will be remapped by design team.</p>
+
+  <table>
+    <thead>
+      <tr><th>Icon</th><th>Modus (webfont)</th><th>Phosphor (CSS mask)</th><th>Phosphor Name</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Close</td><td class="icon-td"><i class="modus-icon-demo">close</i></td><td class="icon-td"><i class="ph ph-x"></i></td><td><code>ph-x</code></td></tr>
+      <tr><td>Home</td><td class="icon-td"><i class="modus-icon-demo">home</i></td><td class="icon-td"><i class="ph ph-house"></i></td><td><code>ph-house</code></td></tr>
+      <tr><td>Search</td><td class="icon-td"><i class="modus-icon-demo">search</i></td><td class="icon-td"><i class="ph ph-magnifying-glass"></i></td><td><code>ph-magnifying-glass</code></td></tr>
+      <tr><td>Settings</td><td class="icon-td"><i class="modus-icon-demo">settings</i></td><td class="icon-td"><i class="ph ph-gear"></i></td><td><code>ph-gear</code></td></tr>
+      <tr><td>Notifications</td><td class="icon-td"><i class="modus-icon-demo">notifications</i></td><td class="icon-td"><i class="ph ph-bell"></i></td><td><code>ph-bell</code></td></tr>
+      <tr><td>Menu</td><td class="icon-td"><i class="modus-icon-demo">menu</i></td><td class="icon-td"><i class="ph ph-list"></i></td><td><code>ph-list</code></td></tr>
+      <tr><td>Help</td><td class="icon-td"><i class="modus-icon-demo">help</i></td><td class="icon-td"><i class="ph ph-question"></i></td><td><code>ph-question</code></td></tr>
+      <tr><td>Alert</td><td class="icon-td"><i class="modus-icon-demo">alert</i></td><td class="icon-td"><i class="ph ph-warning-circle"></i></td><td><code>ph-warning-circle</code></td></tr>
+      <tr><td>Check Circle</td><td class="icon-td"><i class="modus-icon-demo">check_circle</i></td><td class="icon-td"><i class="ph ph-check-circle"></i></td><td><code>ph-check-circle</code></td></tr>
+      <tr><td>Warning</td><td class="icon-td"><i class="modus-icon-demo">warning</i></td><td class="icon-td"><i class="ph ph-warning"></i></td><td><code>ph-warning</code></td></tr>
+      <tr><td>Info</td><td class="icon-td"><i class="modus-icon-demo">info</i></td><td class="icon-td"><i class="ph ph-info"></i></td><td><code>ph-info</code></td></tr>
+      <tr><td>Calendar</td><td class="icon-td"><i class="modus-icon-demo">calendar</i></td><td class="icon-td"><i class="ph ph-calendar"></i></td><td><code>ph-calendar</code></td></tr>
+      <tr><td>Filter</td><td class="icon-td"><i class="modus-icon-demo">filter</i></td><td class="icon-td"><i class="ph ph-funnel"></i></td><td><code>ph-funnel</code></td></tr>
+      <tr><td>Download</td><td class="icon-td"><i class="modus-icon-demo">download</i></td><td class="icon-td"><i class="ph ph-download"></i></td><td><code>ph-download</code></td></tr>
+      <tr><td>Upload</td><td class="icon-td"><i class="modus-icon-demo">cloud_upload</i></td><td class="icon-td"><i class="ph ph-cloud-arrow-up"></i></td><td><code>ph-cloud-arrow-up</code></td></tr>
+      <tr><td>Person</td><td class="icon-td"><i class="modus-icon-demo">person</i></td><td class="icon-td"><i class="ph ph-person"></i></td><td><code>ph-person</code></td></tr>
+      <tr><td>Chevron Left</td><td class="icon-td"><i class="modus-icon-demo">chevron_left</i></td><td class="icon-td"><i class="ph ph-caret-left"></i></td><td><code>ph-caret-left</code></td></tr>
+      <tr><td>Chevron Right</td><td class="icon-td"><i class="modus-icon-demo">chevron_right</i></td><td class="icon-td"><i class="ph ph-caret-right"></i></td><td><code>ph-caret-right</code></td></tr>
+      <tr><td>More Vertical</td><td class="icon-td"><i class="modus-icon-demo">more_vertical</i></td><td class="icon-td"><i class="ph ph-dots-three-vertical"></i></td><td><code>ph-dots-three-vertical</code></td></tr>
+      <tr><td>Heart</td><td class="icon-td"><i class="modus-icon-demo">heart</i></td><td class="icon-td"><i class="ph ph-heart"></i></td><td><code>ph-heart</code></td></tr>
+      <tr><td>Star</td><td class="icon-td"><i class="modus-icon-demo">star</i></td><td class="icon-td"><i class="ph ph-star"></i></td><td><code>ph-star</code></td></tr>
+      <tr><td>Delete</td><td class="icon-td"><i class="modus-icon-demo">delete</i></td><td class="icon-td"><i class="ph ph-trash"></i></td><td><code>ph-trash</code></td></tr>
+      <tr><td>Eye On</td><td class="icon-td"><i class="modus-icon-demo">visibility_on</i></td><td class="icon-td"><i class="ph ph-eye"></i></td><td><code>ph-eye</code></td></tr>
+      <tr><td>Eye Off</td><td class="icon-td"><i class="modus-icon-demo">visibility_off</i></td><td class="icon-td"><i class="ph ph-eye-slash"></i></td><td><code>ph-eye-slash</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TEST 2: Solid/Fill variant comparison -->
+<div class="test-section">
+  <h2>2. Solid/Fill Variant Comparison</h2>
+  <table>
+    <thead>
+      <tr><th>Icon</th><th>Modus Solid</th><th>Phosphor Fill</th><th>Phosphor Name</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Home</td><td class="icon-td"><i class="modus-icon-solid-demo">home</i></td><td class="icon-td"><i class="ph ph-house-fill"></i></td><td><code>ph-house-fill</code></td></tr>
+      <tr><td>Heart</td><td class="icon-td"><i class="modus-icon-solid-demo">heart</i></td><td class="icon-td"><i class="ph ph-heart-fill"></i></td><td><code>ph-heart-fill</code></td></tr>
+      <tr><td>Star</td><td class="icon-td"><i class="modus-icon-solid-demo">star</i></td><td class="icon-td"><i class="ph ph-star-fill"></i></td><td><code>ph-star-fill</code></td></tr>
+      <tr><td>Bell</td><td class="icon-td"><i class="modus-icon-solid-demo">notifications</i></td><td class="icon-td"><i class="ph ph-bell-fill"></i></td><td><code>ph-bell-fill</code></td></tr>
+      <tr><td>Person</td><td class="icon-td"><i class="modus-icon-solid-demo">person</i></td><td class="icon-td"><i class="ph ph-person-fill"></i></td><td><code>ph-person-fill</code></td></tr>
+      <tr><td>Check Circle</td><td class="icon-td"><i class="modus-icon-solid-demo">check_circle</i></td><td class="icon-td"><i class="ph ph-check-circle-fill"></i></td><td><code>ph-check-circle-fill</code></td></tr>
+      <tr><td>Search</td><td class="icon-td"><i class="modus-icon-solid-demo">search</i></td><td class="icon-td"><i class="ph ph-magnifying-glass-fill"></i></td><td><code>ph-magnifying-glass-fill</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TEST 3: Size scaling -->
+<div class="test-section">
+  <h2>3. Size Scaling Test</h2>
+  <h3>Phosphor icons at different sizes (should scale cleanly)</h3>
+  <div class="size-row">
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 12px;"></i>
+      <span class="size-label">12px</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 16px;"></i>
+      <span class="size-label">16px (xs)</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 20px;"></i>
+      <span class="size-label">20px (sm)</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 24px;"></i>
+      <span class="size-label">24px (md)</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 32px;"></i>
+      <span class="size-label">32px (lg)</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 48px;"></i>
+      <span class="size-label">48px</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart" style="font-size: 64px;"></i>
+      <span class="size-label">64px (xl)</span>
+    </div>
+  </div>
+
+  <h3>Modus icons at same sizes (for comparison)</h3>
+  <div class="size-row">
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 12px;">heart</i>
+      <span class="size-label">12px</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 16px;">heart</i>
+      <span class="size-label">16px (xs)</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 20px;">heart</i>
+      <span class="size-label">20px (sm)</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 24px;">heart</i>
+      <span class="size-label">24px (md)</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 32px;">heart</i>
+      <span class="size-label">32px (lg)</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 48px;">heart</i>
+      <span class="size-label">48px</span>
+    </div>
+    <div class="size-item">
+      <i class="modus-icon-demo" style="font-size: 64px;">heart</i>
+      <span class="size-label">64px (xl)</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEST 4: Color inheritance -->
+<div class="test-section">
+  <h2>4. Color Inheritance Test</h2>
+  <h3>Phosphor icons inheriting parent color</h3>
+  <div class="color-row">
+    <div class="color-item" style="color: #0063a3;">
+      <i class="ph ph-heart" style="font-size: 24px;"></i>
+      <span style="font-size: 12px;">Trimble Blue</span>
+    </div>
+    <div class="color-item" style="color: #1a8754;">
+      <i class="ph ph-check-circle" style="font-size: 24px;"></i>
+      <span style="font-size: 12px;">Success Green</span>
+    </div>
+    <div class="color-item" style="color: #da212c;">
+      <i class="ph ph-warning-circle" style="font-size: 24px;"></i>
+      <span style="font-size: 12px;">Danger Red</span>
+    </div>
+    <div class="color-item" style="color: #e49325;">
+      <i class="ph ph-warning" style="font-size: 24px;"></i>
+      <span style="font-size: 12px;">Warning Orange</span>
+    </div>
+    <div class="color-item" style="color: #585c65;">
+      <i class="ph ph-info" style="font-size: 24px;"></i>
+      <span style="font-size: 12px;">Gray</span>
+    </div>
+  </div>
+
+  <h3>On dark background</h3>
+  <div class="dark-bg">
+    <div class="color-row">
+      <div class="color-item" style="color: #fff; border-color: #585c65;">
+        <i class="ph ph-house" style="font-size: 24px;"></i>
+        <i class="ph ph-bell" style="font-size: 24px;"></i>
+        <i class="ph ph-gear" style="font-size: 24px;"></i>
+        <i class="ph ph-magnifying-glass" style="font-size: 24px;"></i>
+        <i class="ph ph-heart" style="font-size: 24px;"></i>
+        <span style="font-size: 12px;">White on dark</span>
+      </div>
+      <div class="color-item" style="color: #019aeb; border-color: #585c65;">
+        <i class="ph ph-house" style="font-size: 24px;"></i>
+        <i class="ph ph-bell" style="font-size: 24px;"></i>
+        <i class="ph ph-gear" style="font-size: 24px;"></i>
+        <span style="font-size: 12px;">Blue on dark</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEST 5: All 6 weight variants -->
+<div class="test-section">
+  <h2>5. Weight Variants (all 6)</h2>
+  <p style="margin-bottom:16px; font-size:13px; color:#585c65;">Same icon (heart) in all available weights.</p>
+  <div class="size-row" style="font-size: 32px;">
+    <div class="size-item">
+      <i class="ph ph-heart-thin"></i>
+      <span class="size-label">Thin</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart-light"></i>
+      <span class="size-label">Light</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart"></i>
+      <span class="size-label">Regular</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart-bold"></i>
+      <span class="size-label">Bold</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart-fill"></i>
+      <span class="size-label">Fill</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-heart-duotone"></i>
+      <span class="size-label">Duotone</span>
+    </div>
+  </div>
+
+  <div class="size-row" style="font-size: 32px;">
+    <div class="size-item">
+      <i class="ph ph-house-thin"></i>
+      <span class="size-label">Thin</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-house-light"></i>
+      <span class="size-label">Light</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-house"></i>
+      <span class="size-label">Regular</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-house-bold"></i>
+      <span class="size-label">Bold</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-house-fill"></i>
+      <span class="size-label">Fill</span>
+    </div>
+    <div class="size-item">
+      <i class="ph ph-house-duotone"></i>
+      <span class="size-label">Duotone</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEST 6: Inline with text -->
+<div class="test-section">
+  <h2>6. Inline with Text</h2>
+  <p style="font-size: 16px; margin: 8px 0;">
+    Phosphor: Click the <i class="ph ph-gear" style="font-size: 16px;"></i> settings icon to configure.
+  </p>
+  <p style="font-size: 16px; margin: 8px 0;">
+    Modus: Click the <i class="modus-icon-demo" style="font-size: 16px;">settings</i> settings icon to configure.
+  </p>
+  <p style="font-size: 14px; margin: 8px 0;">
+    Phosphor: <i class="ph ph-check-circle" style="font-size: 14px; color: #1a8754;"></i> Success! Your changes have been saved.
+  </p>
+  <p style="font-size: 14px; margin: 8px 0;">
+    Modus: <i class="modus-icon-demo" style="font-size: 14px; color: #1a8754;">check_circle</i> Success! Your changes have been saved.
+  </p>
+</div>
+
+<!-- TEST 7: Accessibility -->
+<div class="test-section">
+  <h2>7. Accessibility Check</h2>
+  <p style="font-size:13px; color:#585c65; margin-bottom:12px;">Icons should be decorative by default (hidden from screen readers). Non-decorative icons need aria-label.</p>
+
+  <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+    <div>
+      <h3>Decorative (aria-hidden)</h3>
+      <i class="ph ph-heart" style="font-size: 24px;" aria-hidden="true"></i>
+      <code style="font-size: 12px; margin-left: 8px;">aria-hidden="true"</code>
+    </div>
+    <div>
+      <h3>Informative (aria-label)</h3>
+      <i class="ph ph-warning-circle" style="font-size: 24px;" role="img" aria-label="Warning"></i>
+      <code style="font-size: 12px; margin-left: 8px;">role="img" aria-label="Warning"</code>
+    </div>
+  </div>
+</div>
+
+<!-- TEST 8: New icons not in Modus -->
+<div class="test-section">
+  <h2>8. New Icons (Phosphor-only, not in Modus)</h2>
+  <p style="margin-bottom:16px; font-size:13px; color:#585c65;">These are icons consumers gain access to that weren't available in Modus.</p>
+  <div class="size-row" style="font-size: 28px;">
+    <div class="size-item"><i class="ph ph-acorn"></i><span class="size-label">acorn</span></div>
+    <div class="size-item"><i class="ph ph-alien"></i><span class="size-label">alien</span></div>
+    <div class="size-item"><i class="ph ph-armchair"></i><span class="size-label">armchair</span></div>
+    <div class="size-item"><i class="ph ph-baby"></i><span class="size-label">baby</span></div>
+    <div class="size-item"><i class="ph ph-balloon"></i><span class="size-label">balloon</span></div>
+    <div class="size-item"><i class="ph ph-baseball-cap"></i><span class="size-label">baseball-cap</span></div>
+    <div class="size-item"><i class="ph ph-binoculars"></i><span class="size-label">binoculars</span></div>
+    <div class="size-item"><i class="ph ph-brain"></i><span class="size-label">brain</span></div>
+    <div class="size-item"><i class="ph ph-butterfly"></i><span class="size-label">butterfly</span></div>
+    <div class="size-item"><i class="ph ph-campfire"></i><span class="size-label">campfire</span></div>
+    <div class="size-item"><i class="ph ph-cat"></i><span class="size-label">cat</span></div>
+    <div class="size-item"><i class="ph ph-coffee"></i><span class="size-label">coffee</span></div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const perf = performance.getEntriesByType('resource');
+    const cssFiles = perf.filter(e => e.name.includes('phosphor-icons') || e.name.includes('modus-icons'));
+    const info = document.createElement('div');
+    info.className = 'test-section';
+    info.innerHTML = '<h2>9. Performance Info</h2>';
+    let html = '<div class="perf-info">';
+    cssFiles.forEach(f => {
+      const name = f.name.split('/').pop();
+      html += `${name}: ${Math.round(f.transferSize / 1024)}KB transferred, ${Math.round(f.duration)}ms load time<br>`;
+    });
+    html += '</div>';
+    info.innerHTML += html;
+    document.body.appendChild(info);
+  });
+</script>
+
+</body>
+</html>

@@ -1,41 +1,6 @@
-import {
-  Component,
-  Element,
-  FunctionalComponent,
-  getAssetPath,
-  h,
-  Host,
-  Prop,
-  State,
-  Watch,
-} from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS, LogoName } from './logo-constants';
-import { svgCache } from './logo-svg-cache';
-
-function fetchSvgText(url: string): Promise<string> {
-  if (typeof fetch === 'undefined') return Promise.resolve('');
-  if (!svgCache.has(url)) {
-    svgCache.set(
-      url,
-      fetch(url)
-        .then((r) => (r.ok ? r.text() : ''))
-        .catch(() => {
-          svgCache.delete(url);
-          return '';
-        })
-    );
-  }
-  return svgCache.get(url)!;
-}
-
-interface LogoSvgProps {
-  svgText: string;
-}
-
-const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
-  <span innerHTML={svgText}></span>
-);
 
 /**
  * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
@@ -46,7 +11,6 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
   tag: 'modus-wc-logo',
   styleUrl: 'modus-wc-logo.scss',
   shadow: false,
-  assetsDirs: ['assets'],
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
@@ -66,30 +30,11 @@ export class ModusWcLogo {
   /** The alt text for accessibility. If not provided, defaults to the logo name. */
   @Prop() alt?: string;
 
-  @State() private svgContent: string = '';
-
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    return this.loadSvg();
   }
 
-  @Watch('name')
-  @Watch('emblem')
-  onLogoPropsChange() {
-    void this.loadSvg();
-  }
-
-  private async loadSvg(): Promise<void> {
-    const assetPath = this.getAssetFilePath();
-    if (!assetPath) {
-      this.svgContent = '';
-      return;
-    }
-    const text = await fetchSvgText(assetPath);
-    this.svgContent = text;
-  }
-
-  private getAssetFilePath(): string {
+  private getCssVarName(): string {
     const logoKey = this.name.toLowerCase().replace(/\s+/g, '_');
     const logoInfo = LOGO_VARIANTS[logoKey as LogoName];
 
@@ -103,7 +48,6 @@ export class ModusWcLogo {
 
     const filePath = this.emblem ? logoInfo.emblemPath : logoInfo.path;
 
-    /* istanbul ignore next */
     if (!filePath) {
       console.warn(
         `No ${this.emblem ? 'emblem' : 'logo'} path found for "${this.name}"`
@@ -111,7 +55,18 @@ export class ModusWcLogo {
       return '';
     }
 
-    return getAssetPath(`assets/${filePath}`);
+    // Convert file path to CSS variable name
+    // e.g. logos/trimble/trimble.svg -> --modus-logo-trimble
+    // e.g. logos/emblems/trimble-emblem.svg -> --modus-logo-emblem-trimble
+    const parts = filePath.split('/');
+    const category = parts[1]; // trimble, viewpoint, emblems
+    const filename = parts[2].replace('.svg', '');
+
+    if (category === 'emblems') {
+      const name = filename.replace('-emblem', '');
+      return `--modus-logo-emblem-${name}`;
+    }
+    return `--modus-logo-${filename}`;
   }
 
   private getClasses(): string {
@@ -123,6 +78,7 @@ export class ModusWcLogo {
   render() {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
+    const cssVar = this.getCssVarName();
 
     return (
       <Host>
@@ -131,9 +87,8 @@ export class ModusWcLogo {
           {...this.inheritedAttributes}
           role="img"
           aria-label={altText}
-        >
-          <LogoSvg svgText={this.svgContent} />
-        </span>
+          style={cssVar ? { backgroundImage: `var(${cssVar})` } : {}}
+        ></span>
       </Host>
     );
   }
