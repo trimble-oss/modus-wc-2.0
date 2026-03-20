@@ -1422,6 +1422,14 @@ export const ApiReference: Story = {
 | searchPlaceholder | \`string\` | \`'Search...'\` | Placeholder text for the search input          |
 | includeSearch     | \`boolean\` | \`true\`    | Whether to display the search functionality       |
 | includeActions    | \`boolean\` | \`true\`    | Whether to display action buttons for tree items  |
+| items             | \`ITreeItemData[]\` | - | Data-driven tree data used to render items and nested children |
+| itemsReordering   | \`boolean\` | \`false\` | Enables drag-and-drop reordering for data-driven trees |
+
+#### Events
+
+| Name           | Payload                                                         | Description |
+|----------------|------------------------------------------------------------------|-------------|
+| itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata |
 
 ---
 
@@ -1433,6 +1441,14 @@ export const ApiReference: Story = {
 |-------------|------------|-----------|-------------------------------------------------------|
 | customClass | \`string\` | \`''\`    | Additional CSS class to apply to the tree view        |
 | isSubList   | \`boolean\` | \`false\` | Whether the tree view is a sublist of another tree item |
+| multiSelect | \`boolean\` | \`false\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior |
+| showConnectorLine | \`boolean\` | \`true\` | Shows or hides connector lines for nested sublists |
+
+#### Events
+
+| Name                | Payload                          | Description |
+|---------------------|----------------------------------|-------------|
+| itemSelectionChange | \`{ selectedValues: string[] }\` | Emitted when selected tree item values change |
 
 ---
 
@@ -1450,6 +1466,8 @@ export const ApiReference: Story = {
 | checked         | \`boolean\`                            | -         | Whether the tree item checkbox is checked (mutable, reflected) |
 | hasSubtree      | \`boolean\`                            | \`false\` | Whether the tree item has a subtree                          |
 | treeItemActions | \`ITreeItemActions[]\`                 | -         | Array of actions to display for the tree item                |
+| inlineLabelEdit | \`boolean\`                            | \`false\` | Enables inline text editing for the item label               |
+| itemsReordering | \`boolean\`                            | \`false\` | Shows drag handle and enables drag/drop item reordering      |
 | size            | \`'xs' | 'sm' | 'md' | 'lg'\`    | \`'xs'\`  | The size of the tree item                                    |
 | customClass     | \`string\`                             | \`''\`    | Additional CSS class to apply to the tree item               |
 | lazyLoading     | \`boolean\`                            | \`false\` | When \`true\` and the item is expanded, shows a spinner in place of children. Managed automatically by the content tree when \`getChildren\` is provided. |
@@ -1462,6 +1480,8 @@ export const ApiReference: Story = {
 | itemSelect       | \`{ value: string }\`            | Emitted when a tree item is selected            |
 | selectionsChange | \`{ selectedValues: string[] }\` | Emitted when the selection state changes        |
 | itemExpand       | \`string\`                       | Emitted with the item's \`value\` when it is expanded. Use this to trigger lazy data loading. |
+| itemLabelChange  | \`string\`                       | Emitted when inline label editing is committed |
+| itemReordered    | \`ITreeItemReorderedEventDetail\` | Emitted when a drag/drop reorder operation completes for the item |
 
 #### Methods
 
@@ -1480,6 +1500,13 @@ export const ApiReference: Story = {
 |---------|-------------------------------------|----------|--------------------------------------|
 | actions | \`ITreeItemActions[]\`              | -        | Array of actions to display          |
 | size    | \`'xs' | 'sm' | 'md' | 'lg'\` | \`'xs'\` | The size of the action buttons       |
+
+#### Behavior
+
+- Renders the first action as a direct icon button for fast access.
+- Renders remaining actions in a "More actions" dropdown menu.
+- When the \`delete\` action is clicked, a confirmation UI is shown before emitting \`treeActionClick\`.
+- Automatically closes other open tree-action dropdowns when a new one opens.
 
 #### Events
 

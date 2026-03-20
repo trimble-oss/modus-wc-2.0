@@ -923,12 +923,12 @@ describe('modus-wc-content-tree', () => {
       detail: eventDetail,
     } as unknown as CustomEvent;
 
-    // Mock reorderTreeItemsData to return undefined
+    // Mock reorderTreeItemsData to return null
     const reorderSpy = jest
       .spyOn(treeUtils, 'reorderTreeItemsData')
-      .mockReturnValue(undefined);
+      .mockReturnValue(null);
 
-    // Trigger the listener - should return early when nextItems is undefined
+    // Trigger the listener - should return early when nextItems is null
     instance.handleItemReordered(event);
     await page.waitForChanges();
 
