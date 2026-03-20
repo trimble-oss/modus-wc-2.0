@@ -93,7 +93,8 @@ export class ModusWcLogo {
     const logoInfo = LOGO_VARIANTS[logoKey];
     if (
       !this.emblem &&
-      logoInfo?.emblemPath &&
+      logoInfo &&
+      logoInfo.emblemPath &&
       logoKey !== 'trimble' &&
       !logoKey.startsWith('viewpoint')
     ) {

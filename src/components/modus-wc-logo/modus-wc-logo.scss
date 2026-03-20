@@ -4,6 +4,7 @@
   svg {
     display: block;
     height: 100%;
+    object-fit: contain;
     width: 100%;
   }
 
@@ -26,10 +27,5 @@
   &.logo-combined {
     align-items: center;
     display: flex;
-  }
-
-  .logo-combined-wordmark svg {
-    height: auto;
-    width: auto;
   }
 }
