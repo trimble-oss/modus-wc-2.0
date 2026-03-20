@@ -1,6 +1,21 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeItem } from './modus-wc-tree-item';
 
+type ITreeItemTestElement = HTMLElement & {
+  checkbox?: boolean;
+  checked?: boolean;
+  isIndeterminate?: boolean;
+  value?: string;
+  el?: HTMLElement;
+};
+
+type ITreeItemClassTestAccess = {
+  draggedItem: ModusWcTreeItem | { el: HTMLElement } | null;
+  hasEmittedReorderForCurrentDrag: boolean;
+};
+
+const treeItemClass = ModusWcTreeItem as unknown as ITreeItemClassTestAccess;
+
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
@@ -173,7 +188,7 @@ describe('modus-wc-tree-item', () => {
 
     expect(addSpy).toHaveBeenCalledWith(
       'selectionsChange',
-      (page.rootInstance as any).updateIndeterminateState
+      page.rootInstance.updateIndeterminateState
     );
   });
 
@@ -191,7 +206,7 @@ describe('modus-wc-tree-item', () => {
 
     expect(removeSpy).toHaveBeenCalledWith(
       'selectionsChange',
-      (page.rootInstance as any).updateIndeterminateState
+      page.rootInstance.updateIndeterminateState
     );
   });
 
@@ -203,7 +218,7 @@ describe('modus-wc-tree-item', () => {
 
     const timeoutSpy = jest.spyOn(globalThis, 'setTimeout');
     page.rootInstance.isExpanded = true;
-    (page.rootInstance as any).syncDropdownShow();
+    page.rootInstance.syncDropdownShow();
 
     expect(timeoutSpy).toHaveBeenCalled();
     timeoutSpy.mockRestore();
@@ -214,7 +229,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="node-1"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     instance.isExpanded = true;
 
     const timeoutSpy = jest
@@ -237,16 +252,16 @@ describe('modus-wc-tree-item', () => {
     });
     const event = { stopPropagation: jest.fn() } as unknown as MouseEvent;
 
-    const syncSpy = jest.spyOn(page.rootInstance as any, 'syncDropdownShow');
+    const syncSpy = jest.spyOn(page.rootInstance, 'syncDropdownShow');
 
     page.rootInstance.hasSubtree = false;
-    (page.rootInstance as any).handleToggleClick(event);
+    page.rootInstance.handleToggleClick(event);
     expect(syncSpy).not.toHaveBeenCalled();
 
     page.rootInstance.hasSubtree = true;
     page.rootInstance.lazyLoading = true;
     page.rootInstance.isExpanded = true;
-    (page.rootInstance as any).handleToggleClick(event);
+    page.rootInstance.handleToggleClick(event);
     expect(syncSpy).not.toHaveBeenCalled();
   });
 
@@ -257,10 +272,10 @@ describe('modus-wc-tree-item', () => {
     });
     const event = { stopPropagation: jest.fn() } as unknown as MouseEvent;
     const emitSpy = jest.spyOn(page.rootInstance.itemExpand, 'emit');
-    const syncSpy = jest.spyOn(page.rootInstance as any, 'syncDropdownShow');
+    const syncSpy = jest.spyOn(page.rootInstance, 'syncDropdownShow');
 
     page.rootInstance.isExpanded = false;
-    (page.rootInstance as any).handleToggleClick(event);
+    page.rootInstance.handleToggleClick(event);
 
     expect(page.rootInstance.isExpanded).toBe(true);
     expect(emitSpy).toHaveBeenCalledWith('node-1');
@@ -272,9 +287,10 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="node-1"></modus-wc-tree-item>',
     });
-    const event = { stopPropagation: jest.fn() } as unknown as Event;
-    (page.rootInstance as any).handleInlineLabelInteraction(event);
-    expect(event.stopPropagation).toHaveBeenCalled();
+    const stopPropagation = jest.fn();
+    const event = { stopPropagation } as unknown as Event;
+    page.rootInstance.handleInlineLabelInteraction(event);
+    expect(stopPropagation).toHaveBeenCalled();
   });
 
   it('checkbox keydown ignores non-trigger keys and handles Space', async () => {
@@ -282,28 +298,27 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="node-1"></modus-wc-tree-item>',
     });
-    const clickSpy = jest.spyOn(
-      page.rootInstance as any,
-      'handleCheckboxClick'
-    );
+    const clickSpy = jest.spyOn(page.rootInstance, 'handleCheckboxClick');
 
     const ignore = {
       key: 'Tab',
       preventDefault: jest.fn(),
       stopPropagation: jest.fn(),
     } as unknown as KeyboardEvent;
-    (page.rootInstance as any).handleCheckboxKeyDown(ignore);
+    page.rootInstance.handleCheckboxKeyDown(ignore);
     expect(clickSpy).not.toHaveBeenCalled();
 
+    const triggerPreventDefault = jest.fn();
+    const triggerStopPropagation = jest.fn();
     const trigger = {
       key: ' ',
-      preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
+      preventDefault: triggerPreventDefault,
+      stopPropagation: triggerStopPropagation,
     } as unknown as KeyboardEvent;
-    (page.rootInstance as any).handleCheckboxKeyDown(trigger);
+    page.rootInstance.handleCheckboxKeyDown(trigger);
     expect(clickSpy).toHaveBeenCalled();
-    expect(trigger.preventDefault).toHaveBeenCalled();
-    expect(trigger.stopPropagation).toHaveBeenCalled();
+    expect(triggerPreventDefault).toHaveBeenCalled();
+    expect(triggerStopPropagation).toHaveBeenCalled();
   });
 
   it('updateIndeterminateState handles all guard branches and computes state', async () => {
@@ -311,7 +326,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Parent" value="p1"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
 
     instance.updateIndeterminateState({
       target: page.root,
@@ -347,10 +362,10 @@ describe('modus-wc-tree-item', () => {
     } as unknown as Event);
     expect(instance.isIndeterminate).toBe(false);
 
-    const c1 = document.createElement('modus-wc-tree-item') as any;
+    const c1 = document.createElement('modus-wc-tree-item');
     c1.checkbox = true;
     c1.checked = true;
-    const c2 = document.createElement('modus-wc-tree-item') as any;
+    const c2 = document.createElement('modus-wc-tree-item');
     c2.checkbox = true;
     c2.checked = false;
     submenu.append(c1, c2);
@@ -374,8 +389,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Parent" value="p1"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
-
+    const instance = page.rootInstance;
     instance.updateChildrenSelection(true);
 
     instance.hasSubtree = true;
@@ -383,7 +397,9 @@ describe('modus-wc-tree-item', () => {
 
     const submenu = document.createElement('div');
     submenu.className = 'modus-wc-tree-dropdown';
-    const child = document.createElement('modus-wc-tree-item') as any;
+    const child = document.createElement(
+      'modus-wc-tree-item'
+    ) as ITreeItemTestElement;
     child.checkbox = true;
     child.checked = false;
     child.isIndeterminate = true;
@@ -404,9 +420,9 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item label="Parent" value="p1" checkbox="true"></modus-wc-tree-item>',
     });
 
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const rootTree = document.createElement('div');
-    const selectedItem = document.createElement('modus-wc-tree-item') as any;
+    const selectedItem = document.createElement('modus-wc-tree-item');
     selectedItem.checkbox = true;
     selectedItem.checked = true;
     selectedItem.value = 's1';
@@ -428,7 +444,7 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item label="Node" value="n1" checkbox="true"></modus-wc-tree-item>',
     });
     const emitSpy = jest.spyOn(page.rootInstance.selectionsChange, 'emit');
-    (page.rootInstance as any).handleCheckboxClick();
+    page.rootInstance.handleCheckboxClick();
     expect(emitSpy).not.toHaveBeenCalled();
   });
 
@@ -439,13 +455,13 @@ describe('modus-wc-tree-item', () => {
     });
     const li = page.root?.querySelector('li') as HTMLElement;
 
-    (page.rootInstance as any).setDropIndicator('top');
+    page.rootInstance.setDropIndicator('top');
     expect(li.classList.contains('modus-wc-tree-drop-top')).toBe(true);
 
-    (page.rootInstance as any).setDropIndicator('bottom');
+    page.rootInstance.setDropIndicator('bottom');
     expect(li.classList.contains('modus-wc-tree-drop-bottom')).toBe(true);
 
-    (page.rootInstance as any).clearDropIndicator();
+    page.rootInstance.clearDropIndicator();
     expect(li.classList.contains('modus-wc-tree-drop-top')).toBe(false);
     expect(li.classList.contains('modus-wc-tree-drop-bottom')).toBe(false);
   });
@@ -455,8 +471,8 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
     });
-    const target: any = targetPage.rootInstance;
-    const sourceHost = document.createElement('modus-wc-tree-item') as any;
+    const target = targetPage.rootInstance;
+    const sourceHost = document.createElement('modus-wc-tree-item');
     sourceHost.value = 'src';
     const parent = document.createElement('div');
     parent.append(sourceHost, targetPage.root as HTMLElement);
@@ -473,33 +489,37 @@ describe('modus-wc-tree-item', () => {
       dropEffect: '',
       setData: jest.fn(),
     } as unknown as DataTransfer;
+    const startStopPropagation = jest.fn();
     const startEvent = {
-      stopPropagation: jest.fn(),
+      stopPropagation: startStopPropagation,
       dataTransfer,
     } as unknown as DragEvent;
     target.handleDragStart(startEvent);
-    expect((ModusWcTreeItem as any).draggedItem).toBe(target);
-    expect(startEvent.stopPropagation).toHaveBeenCalled();
+    expect(treeItemClass.draggedItem).toBe(target);
+    expect(startStopPropagation).toHaveBeenCalled();
 
     // dragOver guard: same dragged item
     const overGuard = { clientY: 1 } as DragEvent;
     target.handleDragOver(overGuard);
 
     // dragOver success
-    (ModusWcTreeItem as any).draggedItem = {
+    treeItemClass.draggedItem = {
       el: document.createElement('div'),
     };
-    const li = targetPage.root?.querySelector('li') as any;
-    li.getBoundingClientRect = () => ({ top: 0, height: 20 });
+    const li = targetPage.root?.querySelector('li') as HTMLElement;
+    li.getBoundingClientRect = () =>
+      ({ top: 0, height: 20 }) as unknown as DOMRect;
+    const overPreventDefault = jest.fn();
+    const overStopPropagation = jest.fn();
     const overEvent = {
       clientY: 1,
-      preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
+      preventDefault: overPreventDefault,
+      stopPropagation: overStopPropagation,
       dataTransfer,
     } as unknown as DragEvent;
     target.handleDragOver(overEvent);
-    expect(overEvent.preventDefault).toHaveBeenCalled();
-    expect(overEvent.stopPropagation).toHaveBeenCalled();
+    expect(overPreventDefault).toHaveBeenCalled();
+    expect(overStopPropagation).toHaveBeenCalled();
 
     // dragLeave
     const clearSpy = jest.spyOn(target, 'clearDropIndicator');
@@ -507,22 +527,25 @@ describe('modus-wc-tree-item', () => {
     expect(clearSpy).toHaveBeenCalled();
 
     // drop: short-circuit when no dragged item
-    (ModusWcTreeItem as any).draggedItem = null;
+    treeItemClass.draggedItem = null;
     target.handleDrop({} as DragEvent);
 
     // drop: full success path with mocked helpers
-    (ModusWcTreeItem as any).draggedItem = { el: sourceHost };
+    treeItemClass.draggedItem = { el: sourceHost };
     target.dropPosition = 'bottom';
     const emitSpy = jest.spyOn(target.itemReordered, 'emit');
+    const preventDefault = jest.fn();
+    const stopPropagation = jest.fn();
+    const stopImmediatePropagation = jest.fn();
     const event = {
-      preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
-      stopImmediatePropagation: jest.fn(),
+      preventDefault,
+      stopPropagation,
+      stopImmediatePropagation,
     } as unknown as DragEvent;
     jest
       .spyOn(target, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, targetPage.root as any])
-      .mockReturnValueOnce([targetPage.root as any, sourceHost]);
+      .mockReturnValueOnce([sourceHost, targetPage.root])
+      .mockReturnValueOnce([targetPage.root, sourceHost]);
     jest.spyOn(target, 'resolveItemId').mockImplementation((el: unknown) => {
       const resolvedElement = el as Element | null;
       if (resolvedElement === sourceHost) return 'src';
@@ -531,12 +554,12 @@ describe('modus-wc-tree-item', () => {
     jest.spyOn(parent, 'insertBefore');
     target.handleDrop(event);
     expect(emitSpy).toHaveBeenCalled();
-    expect(event.preventDefault).toHaveBeenCalled();
-    expect(event.stopPropagation).toHaveBeenCalled();
-    expect(event.stopImmediatePropagation).toHaveBeenCalled();
+    expect(preventDefault).toHaveBeenCalled();
+    expect(stopPropagation).toHaveBeenCalled();
+    expect(stopImmediatePropagation).toHaveBeenCalled();
 
     target.handleDragEnd();
-    expect((ModusWcTreeItem as any).draggedItem).toBeNull();
+    expect(treeItemClass.draggedItem).toBeNull();
     parent.remove();
   });
 
@@ -545,11 +568,11 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="node-1"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
 
     expect(instance.resolveItemId(null)).toBeNull();
 
-    const other = document.createElement('modus-wc-tree-item') as any;
+    const other = document.createElement('modus-wc-tree-item');
     other.value = 'child-value';
     expect(instance.resolveItemId(other)).toBe('child-value');
 
@@ -570,9 +593,12 @@ describe('modus-wc-tree-item', () => {
     tv1.remove();
 
     const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
-    const clickEvent = { stopPropagation: jest.fn() } as unknown as MouseEvent;
+    const clickStopPropagation = jest.fn();
+    const clickEvent = {
+      stopPropagation: clickStopPropagation,
+    } as unknown as MouseEvent;
     instance.handleItemSelect(clickEvent);
-    expect(clickEvent.stopPropagation).toHaveBeenCalled();
+    expect(clickStopPropagation).toHaveBeenCalled();
     expect(emitSpy).toHaveBeenCalled();
   });
 
@@ -581,7 +607,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" checkbox="true" has-subtree="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const toggleSpy = jest.spyOn(instance, 'handleToggleClick');
     const checkboxKeySpy = jest.spyOn(instance, 'handleCheckboxKeyDown');
     const checkboxClickSpy = jest.spyOn(instance, 'handleCheckboxClick');
@@ -614,12 +640,12 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="" custom-class="my-class"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
 
     const el = document.createElement('div');
     el.setAttribute('value', 'attr-id');
     expect(instance.resolveItemId(el)).toBe('attr-id');
-    const elWithProp = document.createElement('modus-wc-tree-item') as any;
+    const elWithProp = document.createElement('modus-wc-tree-item');
     elWithProp.value = 'prop-id';
     expect(instance.resolveItemId(elWithProp)).toBe('prop-id');
 
@@ -651,7 +677,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
 
     (page.root as HTMLElement).innerHTML = '';
     instance.clearDropIndicator();
@@ -662,10 +688,11 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance2: any = page2.rootInstance;
-    const li = page2.root?.querySelector('li') as any;
-    li.getBoundingClientRect = () => ({ top: 0, height: 10 });
-    (ModusWcTreeItem as any).draggedItem = {
+    const instance2 = page2.rootInstance;
+    const li = page2.root?.querySelector('li') as HTMLElement;
+    li.getBoundingClientRect = () =>
+      ({ top: 0, height: 10 }) as unknown as DOMRect;
+    treeItemClass.draggedItem = {
       el: document.createElement('div'),
     };
     instance2.handleDragOver({
@@ -684,7 +711,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" checkbox="true" disabled="true" has-subtree="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     instance.isIndeterminate = true;
     instance.lazyLoading = true;
     instance.isExpanded = true;
@@ -695,7 +722,7 @@ describe('modus-wc-tree-item', () => {
     expect(li?.getAttribute('aria-checked')).toBe('mixed');
     expect(page.root?.querySelector('.modus-wc-tree-loading')).toBeTruthy();
 
-    (ModusWcTreeItem as any).draggedItem = {
+    treeItemClass.draggedItem = {
       el: document.createElement('div'),
     };
     const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
@@ -724,8 +751,8 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" items-reordering="true" disabled="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
-    (ModusWcTreeItem as any).draggedItem = {
+    const instance = page.rootInstance;
+    treeItemClass.draggedItem = {
       el: document.createElement('div'),
     };
     instance.handleDragOver({ clientY: 1 } as DragEvent);
@@ -734,9 +761,9 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance2: any = page2.rootInstance;
+    const instance2 = page2.rootInstance;
     (page2.root as HTMLElement).innerHTML = '';
-    (ModusWcTreeItem as any).draggedItem = {
+    treeItemClass.draggedItem = {
       el: document.createElement('div'),
     };
     instance2.handleDragOver({
@@ -751,13 +778,13 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Node" value="n1" checkbox="true" size="sm" has-subtree="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const checkbox = page.root?.querySelector('modus-wc-checkbox');
     expect(checkbox?.getAttribute('size')).toBe('sm');
 
     const submenu = document.createElement('div');
     submenu.className = 'modus-wc-tree-dropdown';
-    const child = document.createElement('modus-wc-tree-item') as any;
+    const child = document.createElement('modus-wc-tree-item');
     child.checkbox = false;
     submenu.appendChild(child);
     (page.root as HTMLElement).appendChild(submenu);
@@ -770,7 +797,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Fallback Label" value="" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const setData = jest.fn();
     instance.handleDragStart({
       stopPropagation: jest.fn(),
@@ -787,9 +814,9 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
-    (ModusWcTreeItem as any).draggedItem = {
+    treeItemClass.draggedItem = {
       el: document.createElement('modus-wc-tree-item'),
     };
 
@@ -807,14 +834,14 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const sourceHost = document.createElement('modus-wc-tree-item');
     const parent = document.createElement('div');
     parent.append(sourceHost, page.root as HTMLElement);
     document.body.appendChild(parent);
     const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
 
-    (ModusWcTreeItem as any).draggedItem = { el: sourceHost };
+    treeItemClass.draggedItem = { el: sourceHost };
     jest.spyOn(instance, 'getSiblingTreeItems').mockReturnValueOnce([]);
     jest.spyOn(instance, 'resolveItemId').mockReturnValueOnce(null);
     instance.handleDrop({
@@ -831,7 +858,7 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
     });
-    const instance: any = page.rootInstance;
+    const instance = page.rootInstance;
     const sourceHost = document.createElement('modus-wc-tree-item');
     const parent = document.createElement('div');
     parent.append(sourceHost, page.root as HTMLElement);
@@ -839,12 +866,13 @@ describe('modus-wc-tree-item', () => {
     const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
 
     // currentIndex === -1 branch
-    (ModusWcTreeItem as any).draggedItem = { el: sourceHost };
+    treeItemClass.draggedItem = { el: sourceHost };
+    const rootHost = page.root as ITreeItemTestElement;
     instance.dropPosition = 'top';
     jest
       .spyOn(instance, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, page.root as any])
-      .mockReturnValueOnce([page.root as any]);
+      .mockReturnValueOnce([sourceHost, rootHost])
+      .mockReturnValueOnce([rootHost]);
     jest
       .spyOn(instance, 'resolveItemId')
       .mockImplementation((el: unknown) =>
@@ -858,12 +886,12 @@ describe('modus-wc-tree-item', () => {
     expect(clearSpy).toHaveBeenCalled();
 
     // previousIndex === currentIndex branch
-    (ModusWcTreeItem as any).draggedItem = { el: sourceHost };
+    treeItemClass.draggedItem = { el: sourceHost };
     instance.dropPosition = 'top';
     jest
       .spyOn(instance, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, page.root as any])
-      .mockReturnValueOnce([sourceHost, page.root as any]);
+      .mockReturnValueOnce([sourceHost, rootHost])
+      .mockReturnValueOnce([sourceHost, rootHost]);
     jest
       .spyOn(instance, 'resolveItemId')
       .mockImplementation((el: unknown) =>
@@ -877,13 +905,13 @@ describe('modus-wc-tree-item', () => {
     expect(clearSpy).toHaveBeenCalled();
 
     // hasEmittedReorderForCurrentDrag branch
-    (ModusWcTreeItem as any).draggedItem = { el: sourceHost };
-    (ModusWcTreeItem as any).hasEmittedReorderForCurrentDrag = true;
+    treeItemClass.draggedItem = { el: sourceHost };
+    treeItemClass.hasEmittedReorderForCurrentDrag = true;
     instance.dropPosition = 'top';
     jest
       .spyOn(instance, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, page.root as any])
-      .mockReturnValueOnce([page.root as any, sourceHost]);
+      .mockReturnValueOnce([sourceHost, page.root])
+      .mockReturnValueOnce([page.root, sourceHost]);
     jest
       .spyOn(instance, 'resolveItemId')
       .mockImplementation((el: unknown) =>
@@ -897,6 +925,6 @@ describe('modus-wc-tree-item', () => {
     expect(clearSpy).toHaveBeenCalled();
 
     parent.remove();
-    (ModusWcTreeItem as any).hasEmittedReorderForCurrentDrag = false;
+    treeItemClass.hasEmittedReorderForCurrentDrag = false;
   });
 });
