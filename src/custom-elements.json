@@ -4228,7 +4228,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\r\nProvides consistent branding across applications with various product logo options.",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\r\nProvides consistent branding across applications with various product logo options.\r\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
           "name": "ModusWcLogo",
           "members": [
             {
@@ -4238,6 +4238,10 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "onLogoPropsChange"
             },
             {
               "kind": "method",
@@ -4712,7 +4716,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\n⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.\r\nThe component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.",
           "name": "ModusWcNavbar",
           "members": [
             {

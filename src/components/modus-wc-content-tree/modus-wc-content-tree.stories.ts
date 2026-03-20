@@ -342,10 +342,12 @@ function handleCreateNew(tree) {
     },
   },
   render: (args) => {
-    const focusEditMode = (
-      contentTree: HTMLModusWcContentTreeElement,
-      id: string
-    ) => {
+    type ContentTreeElement = HTMLElement & {
+      includeActions?: boolean;
+      items?: ITreeItemData[];
+    };
+
+    const focusEditMode = (contentTree: ContentTreeElement, id: string) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const treeItems = Array.from(
@@ -363,7 +365,7 @@ function handleCreateNew(tree) {
     const handleAddNewItem = (event: Event) => {
       const contentTree = (event.currentTarget as HTMLElement)?.closest(
         'modus-wc-content-tree'
-      ) as HTMLModusWcContentTreeElement | null;
+      ) as ContentTreeElement | null;
 
       if (!contentTree) return;
 

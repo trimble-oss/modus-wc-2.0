@@ -495,8 +495,9 @@ describe('modus-wc-tree-actions', () => {
       await page.waitForChanges();
 
       const treeActions = page.rootInstance;
+      const stopPropagation = jest.fn();
       const mockEvent = {
-        stopPropagation: jest.fn(),
+        stopPropagation,
       } as unknown as MouseEvent;
 
       treeActions['handleActionClick'](actions[1], mockEvent);
@@ -630,13 +631,14 @@ describe('modus-wc-tree-actions', () => {
       await page.waitForChanges();
 
       const treeActions = page.rootInstance;
+      const stopPropagation = jest.fn();
       const mockEvent = {
-        stopPropagation: jest.fn(),
+        stopPropagation,
       } as unknown as MouseEvent;
 
       treeActions['handleActionClick'](actions[0], mockEvent);
 
-      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+      expect(stopPropagation).toHaveBeenCalled();
     });
   });
 
@@ -794,13 +796,14 @@ describe('modus-wc-tree-actions', () => {
       });
 
       const treeActions = page.rootInstance;
+      const stopPropagation = jest.fn();
       const mockEvent = {
-        stopPropagation: jest.fn(),
+        stopPropagation,
       } as unknown as MouseEvent;
 
       treeActions['handleDeleteCancel'](mockEvent);
 
-      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+      expect(stopPropagation).toHaveBeenCalled();
     });
 
     it('clears pendingDeleteAction', async () => {
@@ -813,8 +816,9 @@ describe('modus-wc-tree-actions', () => {
       const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
       treeActions.pendingDeleteAction = pendingAction;
 
+      const stopPropagation = jest.fn();
       const mockEvent = {
-        stopPropagation: jest.fn(),
+        stopPropagation,
       } as unknown as MouseEvent;
 
       treeActions['handleDeleteCancel'](mockEvent);
@@ -834,13 +838,14 @@ describe('modus-wc-tree-actions', () => {
       const pendingAction = { id: 'delete-1', icon: 'delete', label: 'Delete' };
       treeActions.pendingDeleteAction = pendingAction;
 
+      const stopPropagation = jest.fn();
       const mockEvent = {
-        stopPropagation: jest.fn(),
+        stopPropagation,
       } as unknown as MouseEvent;
 
       treeActions['handleDeleteConfirm'](mockEvent);
 
-      expect(mockEvent.stopPropagation).toHaveBeenCalled();
+      expect(stopPropagation).toHaveBeenCalled();
     });
 
     it('returns early when pendingDeleteAction is undefined', async () => {

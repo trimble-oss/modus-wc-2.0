@@ -183,8 +183,8 @@ export class ModusWcContentTree {
       }
       await Promise.all(
         menuItems
-          .filter((item) => (item as ITreeItemElement).hasSubtree)
-          .map((item) => (item as ITreeItemElement).collapseSubTree().catch(() => {}))
+          .filter((item) => item.hasSubtree)
+          .map((item) => item.collapseSubTree().catch(() => {}))
       );
       return;
     }
@@ -292,10 +292,11 @@ export class ModusWcContentTree {
     return items.map((item) => {
       const hasChildren =
         Array.isArray(item.children) && item.children.length > 0;
-      const hasSubtree =
-        hasChildren || !!item.hasChildren;
+      const hasSubtree = hasChildren || !!item.hasChildren;
       const isLoading =
-        !hasChildren && !!item.hasChildren && this.pendingChildrenIds.has(item.id);
+        !hasChildren &&
+        !!item.hasChildren &&
+        this.pendingChildrenIds.has(item.id);
 
       return (
         <modus-wc-tree-item

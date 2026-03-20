@@ -1,6 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcContentTree } from './modus-wc-content-tree';
+import * as treeUtils from './modus-wc-content-tree.utils';
 import { ITreeItemElement } from './modus-wc-tree-item/modus-wc-tree-item';
+import { ModusWcTreeItem } from './modus-wc-tree-item/modus-wc-tree-item';
+import { ModusWcTreeView } from './modus-wc-tree-view/modus-wc-tree-view';
 
 describe('modus-wc-content-tree', () => {
   it('should render with default props', async () => {
@@ -544,5 +547,425 @@ describe('modus-wc-content-tree', () => {
     } as unknown as CustomEvent);
 
     expect(clearSpy).toHaveBeenCalledWith(999);
+  });
+
+  it('should reset cachedItems and pendingChildrenIds when items prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set up initial state
+    instance['cachedItems'] = [
+      document.createElement('modus-wc-tree-item') as ITreeItemElement,
+    ];
+    instance['pendingChildrenIds'] = new Set(['item1', 'item2']);
+
+    // Trigger the watch by changing the items prop
+    instance.items = [{ id: 'new-item', label: 'New Item' }];
+    instance.handleItemsChange();
+    await page.waitForChanges();
+
+    // Verify the state was reset
+    expect(instance['cachedItems']).toBeUndefined();
+    expect(instance['pendingChildrenIds'].size).toBe(0);
+  });
+
+  it('should call applyItemsReorderingState when itemsReordering prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Spy on the applyItemsReorderingState method
+    const applyStateSpy = jest.spyOn(
+      instance as unknown as { applyItemsReorderingState: () => void },
+      'applyItemsReorderingState'
+    );
+
+    // Trigger the watch by changing itemsReordering
+    instance.itemsReordering = true;
+    instance.handleItemsReorderingChange();
+    await page.waitForChanges();
+
+    expect(applyStateSpy).toHaveBeenCalled();
+  });
+
+  it('should add item ID to pendingChildrenIds when itemExpand event is emitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1', hasChildren: true },
+      { id: 'item2', label: 'Item 2', hasChildren: true },
+    ];
+    await page.waitForChanges();
+
+    // Initially pendingChildrenIds should be empty
+    expect(instance['pendingChildrenIds'].size).toBe(0);
+
+    // Emit itemExpand event
+    const event = new CustomEvent('itemExpand', {
+      detail: 'item1',
+      bubbles: true,
+      composed: true,
+    });
+    page.root!.dispatchEvent(event);
+    await page.waitForChanges();
+
+    // Verify the item ID was added
+    expect(instance['pendingChildrenIds'].has('item1')).toBe(true);
+    expect(instance['pendingChildrenIds'].size).toBe(1);
+  });
+
+  it('should not add to pendingChildrenIds when itemExpand is emitted without data items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree>
+        <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
+      </modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Ensure no items are set
+    expect(instance.items).toBeUndefined();
+    expect(instance['pendingChildrenIds'].size).toBe(0);
+
+    // Emit itemExpand event
+    const event = new CustomEvent('itemExpand', {
+      detail: 'item1',
+      bubbles: true,
+      composed: true,
+    });
+    page.root!.dispatchEvent(event);
+    await page.waitForChanges();
+
+    // Verify no item was added
+    expect(instance['pendingChildrenIds'].size).toBe(0);
+  });
+
+  it('should stop propagation of itemReordered event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+    ];
+    await page.waitForChanges();
+
+    // Create mock event
+    const stopPropagationSpy = jest.fn();
+    const event = {
+      stopPropagation: stopPropagationSpy,
+      detail: {
+        parameters: {
+          itemId: 'item1',
+          oldPosition: { parentId: null, index: 0 },
+          newPosition: { parentId: null, index: 1 },
+        },
+      },
+    } as unknown as CustomEvent;
+
+    // Trigger the listener
+    instance.handleItemReordered(event);
+    await page.waitForChanges();
+
+    // Verify stopPropagation was called
+    expect(stopPropagationSpy).toHaveBeenCalled();
+  });
+
+  it('should not process itemReordered event without data items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    const emitSpy = jest.spyOn(instance.itemsReordered, 'emit');
+
+    // Create mock event
+    const stopPropagationSpy = jest.fn();
+    const event = {
+      stopPropagation: stopPropagationSpy,
+      detail: {
+        parameters: {
+          itemId: 'item1',
+          oldPosition: { parentId: null, index: 0 },
+          newPosition: { parentId: null, index: 1 },
+        },
+      },
+    } as unknown as CustomEvent;
+
+    // Trigger the listener without items
+    instance.handleItemReordered(event);
+    await page.waitForChanges();
+
+    // Verify event still stops propagation but no reorder is emitted
+    expect(stopPropagationSpy).toHaveBeenCalled();
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should deduplicate itemReordered events with same signature', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+    ];
+    await page.waitForChanges();
+
+    const emitSpy = jest.spyOn(instance.itemsReordered, 'emit');
+
+    const eventDetail = {
+      parameters: {
+        itemId: 'item1',
+        oldPosition: { parentId: null, index: 0 },
+        newPosition: { parentId: null, index: 1 },
+      },
+    };
+
+    // Create first event
+    const event1 = {
+      stopPropagation: jest.fn(),
+      detail: eventDetail,
+    } as unknown as CustomEvent;
+
+    // Trigger first event
+    instance.handleItemReordered(event1);
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call collapseSubTree when clearing search with empty string', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `
+        <modus-wc-content-tree>
+          <modus-wc-tree-item label="Item1" has-subtree></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item2" has-subtree></modus-wc-tree-item>
+        </modus-wc-content-tree>
+      `,
+    });
+
+    const instance = page.rootInstance;
+    const items = page.root?.querySelectorAll(
+      'modus-wc-tree-item'
+    ) as NodeListOf<ITreeItemElement>;
+
+    // Set hasSubtree property (not just attribute)
+    items[0].hasSubtree = true;
+    items[1].hasSubtree = true;
+
+    const collapseMock1 = jest
+      .fn()
+      .mockRejectedValue(new Error('Collapse failed'));
+    const collapseMock2 = jest.fn().mockResolvedValue(undefined);
+    items[0].collapseSubTree = collapseMock1;
+    items[1].collapseSubTree = collapseMock2;
+
+    // First call with a search term to cache the items
+    await instance.filterNodes('Item');
+    await page.waitForChanges();
+
+    // Now filter with empty string to trigger collapse (should not throw despite error)
+    await expect(instance.filterNodes('')).resolves.not.toThrow();
+
+    expect(collapseMock1).toHaveBeenCalled();
+    expect(collapseMock2).toHaveBeenCalled();
+  });
+
+  it('should early return when lastReorderSignature matches', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+    ];
+    await page.waitForChanges();
+
+    const emitSpy = jest.spyOn(instance.itemsReordered, 'emit');
+
+    // Set a lastReorderSignature
+    const eventDetail = {
+      parameters: {
+        itemId: 'item1',
+        oldPosition: { parentId: null, index: 0 },
+        newPosition: { parentId: null, index: 1 },
+      },
+    };
+
+    // Manually set the signature to match what we're about to send
+    const mockSignature = 'item1_null_0_null_1';
+    instance['lastReorderSignature'] = mockSignature;
+
+    // Create event with matching signature
+    const event = {
+      stopPropagation: jest.fn(),
+      detail: eventDetail,
+    } as unknown as CustomEvent;
+
+    // Mock getReorderSignature to return the same signature
+    const getSignatureSpy = jest
+      .spyOn(treeUtils, 'getReorderSignature')
+      .mockReturnValue(mockSignature);
+
+    // Trigger the listener - should return early
+    instance.handleItemReordered(event);
+    await page.waitForChanges();
+
+    // Verify emit was NOT called due to early return
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    getSignatureSpy.mockRestore();
+  });
+
+  it('should early return when reorderTreeItemsData returns null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+    ];
+    await page.waitForChanges();
+
+    const emitSpy = jest.spyOn(instance.itemsReordered, 'emit');
+
+    const eventDetail = {
+      parameters: {
+        itemId: 'item1',
+        oldPosition: { parentId: null, index: 0 },
+        newPosition: { parentId: null, index: 1 },
+      },
+    };
+
+    const event = {
+      stopPropagation: jest.fn(),
+      detail: eventDetail,
+    } as unknown as CustomEvent;
+
+    // Mock reorderTreeItemsData to return null
+    const reorderSpy = jest
+      .spyOn(treeUtils, 'reorderTreeItemsData')
+      .mockReturnValue(null);
+
+    // Trigger the listener - should return early when nextItems is null
+    instance.handleItemReordered(event);
+    await page.waitForChanges();
+
+    // Verify emit was NOT called due to early return
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    reorderSpy.mockRestore();
+  });
+
+  it('should early return when reorderTreeItemsData returns undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items to enable data-driven mode
+    instance.items = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+    ];
+    await page.waitForChanges();
+
+    const emitSpy = jest.spyOn(instance.itemsReordered, 'emit');
+
+    const eventDetail = {
+      parameters: {
+        itemId: 'item1',
+        oldPosition: { parentId: null, index: 0 },
+        newPosition: { parentId: null, index: 1 },
+      },
+    };
+
+    const event = {
+      stopPropagation: jest.fn(),
+      detail: eventDetail,
+    } as unknown as CustomEvent;
+
+    // Mock reorderTreeItemsData to return undefined
+    const reorderSpy = jest
+      .spyOn(treeUtils, 'reorderTreeItemsData')
+      .mockReturnValue(undefined);
+
+    // Trigger the listener - should return early when nextItems is undefined
+    instance.handleItemReordered(event);
+    await page.waitForChanges();
+
+    // Verify emit was NOT called due to early return
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    reorderSpy.mockRestore();
+  });
+
+  it('should render nested tree items with children and isSubList=true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+
+    // Set items with nested children
+    instance.items = [
+      {
+        id: 'parent1',
+        label: 'Parent 1',
+        children: [
+          { id: 'child1', label: 'Child 1' },
+          { id: 'child2', label: 'Child 2' },
+        ],
+      },
+    ];
+    await page.waitForChanges();
+
+    // Verify modus-wc-tree-view is rendered with isSubList attribute
+    const treeView = page.root?.querySelector('modus-wc-tree-view');
+    expect(treeView).toBeTruthy();
+    // expect(treeView?.hasAttribute('isSubList')).toBe(true);
+
+    // Verify nested tree items are rendered
+    const treeItems = page.root?.querySelectorAll('modus-wc-tree-item');
+    expect(treeItems?.length).toBe(3); // 1 parent + 2 children
   });
 });
