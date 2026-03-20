@@ -5,7 +5,6 @@ import {
   h,
   Host,
   Prop,
-  Watch,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS, LogoName } from './logo-constants';
@@ -51,12 +50,6 @@ export class ModusWcLogo {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  @Watch('name')
-  @Watch('emblem')
-  onLogoPropsChange() {
-    // No-op: render() reads directly from LOGO_SVGS, re-render is triggered by Stencil
-  }
-
   private getSvgContent(): string {
     const logoKey = this.name.toLowerCase().replace(/\s+/g, '_');
     const logoInfo = LOGO_VARIANTS[logoKey as LogoName];
@@ -78,7 +71,17 @@ export class ModusWcLogo {
       return '';
     }
 
-    return LOGO_SVGS[filePath] || '';
+    const svgContent = LOGO_SVGS[filePath];
+
+    if (!svgContent) {
+      console.warn(
+        `SVG content not found for logo "${this.name}" at path "${filePath}".` +
+          ' This usually indicates a mismatch between LOGO_VARIANTS and LOGO_SVGS.'
+      );
+      return '';
+    }
+
+    return svgContent;
   }
 
   private getClasses(): string {

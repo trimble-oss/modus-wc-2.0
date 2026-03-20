@@ -240,7 +240,8 @@
       },
       "dependencies": [
         "build:cem-json",
-        "tailwind:watch"
+        "tailwind:watch",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
