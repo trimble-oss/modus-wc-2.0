@@ -675,12 +675,14 @@ describe('modus-wc-date', () => {
   it('should handle syncValueFromInput with empty input', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Sync empty test" value="15-10-2025"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Sync empty test" value="2025-10-15"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
     const input = page.root!.querySelector('input') as HTMLInputElement;
 
     await page.waitForChanges();
+
+    expect(component.value).toBe('2025-10-15');
 
     input.value = '   ';
     component['syncValueFromInput']();
