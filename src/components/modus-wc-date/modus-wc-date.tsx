@@ -195,16 +195,25 @@ export class ModusWcDate {
     // Only reformat strict ISO 8601 values set programmatically; all other
     // typed/partial input passes through unchanged.
     if (this.hasFocus) {
-      if (this.inputRef) {
-        const isISO = /^\d{4}-\d{2}-\d{2}$/.test(newValue);
-        if (isISO) {
-          const parsed = this.parseISODate(newValue);
-          this.inputRef.value = parsed
-            ? this.formatForDisplay(parsed)
-            : newValue;
-        } else {
+      const isISO = /^\d{4}-\d{2}-\d{2}$/.test(newValue);
+      if (isISO) {
+        const parsed = this.parseISODate(newValue);
+        if (parsed) {
+          const clamped = this.clampDate(parsed);
+          const formatted = this.formatISODate(clamped);
+          if (newValue !== formatted) {
+            // Value was outside min/max bounds — normalize it (triggers another handleValueChange)
+            this.value = formatted;
+            return;
+          }
+          if (this.inputRef) {
+            this.inputRef.value = this.formatForDisplay(clamped);
+          }
+        } else if (this.inputRef) {
           this.inputRef.value = newValue;
         }
+      } else if (this.inputRef) {
+        this.inputRef.value = newValue;
       }
       return;
     }
@@ -1019,21 +1028,27 @@ export class ModusWcDate {
       return undefined;
     }
 
-    // Extract numbers regardless of separator (/, -, or .)
-    const numbers = value.match(/\d+/g);
-    if (!numbers || numbers.length < 3) return undefined;
+    // Extract numbers separated by /, -, or . only (exactly 3 groups required)
+    const numbers = value.match(/^(\d+)[/\-.](\d+)[/\-.](\d+)$/);
+    if (!numbers) return undefined;
+
+    const [n1, n2, n3] = [
+      Number(numbers[1]),
+      Number(numbers[2]),
+      Number(numbers[3]),
+    ];
 
     let day: number, month: number, year: number;
     const guideLower = guide.toLowerCase();
 
     if (guideLower.startsWith('m')) {
-      [month, day, year] = numbers.map(Number);
+      [month, day, year] = [n1, n2, n3];
       month -= 1;
     } else if (guideLower.startsWith('y')) {
-      [year, month, day] = numbers.map(Number);
+      [year, month, day] = [n1, n2, n3];
       month -= 1;
     } else {
-      [day, month, year] = numbers.map(Number);
+      [day, month, year] = [n1, n2, n3];
       month -= 1;
     }
 
@@ -1224,7 +1239,7 @@ export class ModusWcDate {
             required={this.required}
             tabIndex={this.inputTabIndex}
             type="text"
-            value={this.inputDisplayValue}
+            value={this.hasFocus ? undefined : this.inputDisplayValue}
             {...this.inheritedAttributes}
           />
           <modus-wc-button

@@ -3045,4 +3045,95 @@ describe('modus-wc-date', () => {
     const weekNumbers = page.root!.querySelectorAll('.week-number');
     expect(weekNumbers.length).toBeGreaterThan(0);
   });
+
+  // --- Tests for parseISODate anchored-regex fix ---
+
+  it('should return undefined when value is a datetime string with time portion', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Datetime rejection test" format="dd-mm-yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    // Datetime strings produce more than 3 numeric groups so the anchored regex must reject them
+    expect(component['parseISODate']('2025-10-15T00:00')).toBeUndefined();
+    expect(component['parseISODate']('2025-10-15T13:30:00')).toBeUndefined();
+    expect(component['parseISODate']('2025-10-15T13:30:00Z')).toBeUndefined();
+  });
+
+  it('should return undefined when value has more than three numeric groups', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Extra groups test" format="dd-mm-yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    expect(component['parseISODate']('15-10-2025-00')).toBeUndefined();
+    expect(component['parseISODate']('2025-10-15-00-00')).toBeUndefined();
+  });
+
+  // --- Tests for handleValueChange clamp-while-focused fix ---
+
+  it('should clamp ISO value above maxDate when hasFocus is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Clamp above max focused test" format="dd-mm-yyyy" min="2025-01-01" max="2025-10-20"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = true;
+    component['handleValueChange']('2025-12-31');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('2025-10-20');
+  });
+
+  it('should clamp ISO value below minDate when hasFocus is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Clamp below min focused test" format="dd-mm-yyyy" min="2025-05-01" max="2025-10-20"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    component['hasFocus'] = true;
+    component['handleValueChange']('2025-01-01');
+    await page.waitForChanges();
+
+    expect(component.value).toBe('2025-05-01');
+  });
+
+  it('should not clamp and should format for display when ISO value is within bounds while focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="In-bounds focused test" format="dd-mm-yyyy" min="2025-01-01" max="2025-12-31"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    component['hasFocus'] = true;
+    component['handleValueChange']('2025-10-15');
+    await page.waitForChanges();
+
+    expect(input.value).toBe('15-10-2025');
+    expect(component.value).not.toBe('2025-01-01');
+    expect(component.value).not.toBe('2025-12-31');
+  });
+
+  it('should not overwrite in-progress typed text with empty inputDisplayValue when focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="No overwrite test" format="dd/mm/yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    // Simulate a partial typed value while the input is focused.
+    // The render binding uses value={undefined} when hasFocus=true, so Stencil does
+    // not overwrite the imperative inputRef.value set by handleValueChange.
+    component['hasFocus'] = true;
+    component['handleValueChange']('15/06');
+    await page.waitForChanges();
+
+    expect(input.value).toBe('15/06');
+  });
 });
