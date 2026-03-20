@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcLogo } from './modus-wc-logo';
+import * as logoConstants from './logo-constants';
+import * as logoSvgData from './logo-svg-data';
 
 describe('modus-wc-logo', () => {
   it('should render with default props', async () => {
@@ -104,6 +106,52 @@ describe('modus-wc-logo', () => {
     });
     const logoSpan = page.root?.querySelector('.modus-wc-logo');
     expect(logoSpan?.querySelector('svg')).toBeNull();
+    consoleSpy.mockRestore();
+  });
+
+  it('should warn when logo variant has no file path', async () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const original = logoConstants.LOGO_VARIANTS['trimble'];
+    (logoConstants.LOGO_VARIANTS as any)['test_no_path'] = {
+      displayName: 'Test',
+      path: '',
+      emblemPath: '',
+      category: 'trimble',
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="test_no_path"></modus-wc-logo>',
+    });
+    expect(consoleSpy).toHaveBeenCalledWith(
+      expect.stringContaining('No logo path found for "test_no_path"')
+    );
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
+
+    delete (logoConstants.LOGO_VARIANTS as any)['test_no_path'];
+    consoleSpy.mockRestore();
+  });
+
+  it('should warn when SVG data is missing for a valid path', async () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    (logoConstants.LOGO_VARIANTS as any)['test_missing_svg'] = {
+      displayName: 'Test Missing',
+      path: 'logos/trimble/nonexistent.svg',
+      category: 'trimble',
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="test_missing_svg"></modus-wc-logo>',
+    });
+    expect(consoleSpy).toHaveBeenCalledWith(
+      expect.stringContaining('SVG content not found for logo "test_missing_svg"')
+    );
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
+
+    delete (logoConstants.LOGO_VARIANTS as any)['test_missing_svg'];
     consoleSpy.mockRestore();
   });
 });
