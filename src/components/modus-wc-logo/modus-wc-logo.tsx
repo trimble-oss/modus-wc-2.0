@@ -140,7 +140,7 @@ export class ModusWcLogo {
   render() {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
-    const isCombined = !this.emblem && this.emblemSvgContent;
+    const isCombined = !this.emblem && !!this.emblemSvgContent;
 
     return (
       <Host>
