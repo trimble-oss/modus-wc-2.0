@@ -307,53 +307,15 @@ export const EmptyState: Story = {
   }
 </style>
 <script>
-const getActions = () => [
-  { id: 'edit-label', label: 'Edit Label', icon: 'pencil', size: 'sm' },
-  { id: 'add-node-below', label: 'Add Node Below', icon: 'add', size: 'sm' },
-  { id: 'delete', label: 'Delete', icon: 'delete', size: 'sm' }
-];
-
 function handleCreateNew(tree) {
   tree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
-  tree.includeActions = true;
-  tree.items = [{ id: 'new-item', label: 'New Item', treeItemActions: getActions() }];
-}
-
-function handleAction(event) {
-  const tree = event.target.closest('modus-wc-content-tree');
-  if (!tree || !tree.items) return;
-
-  const treeItem = event.target.closest('modus-wc-tree-item');
-  if (!treeItem) return;
-
-  switch (event.detail.actionId) {
-    case 'delete':
-      tree.items = tree.items.filter((i) => i.id !== treeItem.value);
-      break;
-
-    case 'add-node-below': {
-      const idx = tree.items.findIndex((i) => i.id === treeItem.value);
-      const next = [...tree.items];
-      next.splice(idx + 1, 0, {
-        id: 'new-item-' + Date.now(),
-        label: 'New Item',
-        treeItemActions: getActions()
-      });
-      tree.items = next;
-      break;
-    }
-
-    case 'edit-label':
-      treeItem.inlineLabelEdit = true;
-      break;
-  }
+  tree.items = [{ id: 'new-item', label: 'New Item' }];
 }
 </script>
 
 <modus-wc-content-tree
   search-placeholder="Search..."
   include-search="true"
-  ontreeActionClick="handleAction(event)"
 >
   <div class="modus-wc-content-tree-empty-story">
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -380,74 +342,41 @@ function handleAction(event) {
     },
   },
   render: (args) => {
-    const getActions = () => [
-      { id: 'edit-label', label: 'Edit Label', icon: 'pencil', size: 'sm' },
-      {
-        id: 'add-node-below',
-        label: 'Add Node Below',
-        icon: 'add',
-        size: 'sm',
-      },
-      { id: 'delete', label: 'Delete', icon: 'delete', size: 'sm' },
-    ];
+    const focusEditMode = (
+      contentTree: HTMLModusWcContentTreeElement,
+      id: string
+    ) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const treeItems = Array.from(
+            contentTree.querySelectorAll('modus-wc-tree-item')
+          ) as ITreeItemElement[];
+          const el = treeItems.find((item) => item.value === id);
+
+          if (el) {
+            el.inlineLabelEdit = true;
+          }
+        });
+      });
+    };
 
     const handleAddNewItem = (event: Event) => {
       const contentTree = (event.currentTarget as HTMLElement)?.closest(
         'modus-wc-content-tree'
       ) as HTMLModusWcContentTreeElement | null;
 
-      if (!contentTree) {
-        return;
-      }
+      if (!contentTree) return;
 
-      contentTree.includeActions = true;
+      const newId = `new-item-${Date.now()}`;
       contentTree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
       contentTree.items = [
         {
-          id: 'new-item',
+          id: newId,
           label: 'New Item',
-          treeItemActions: getActions(),
         },
       ];
-    };
 
-    const handleAction = (event: CustomEvent<{ actionId: string }>) => {
-      const contentTree = (event.target as HTMLElement)?.closest(
-        'modus-wc-content-tree'
-      ) as HTMLModusWcContentTreeElement | null;
-      if (!contentTree || !contentTree.items) return;
-
-      const treeItem = (event.target as HTMLElement)?.closest(
-        'modus-wc-tree-item'
-      ) as ITreeItemElement | null;
-      if (!treeItem) return;
-
-      switch (event.detail.actionId) {
-        case 'delete':
-          contentTree.items = contentTree.items.filter(
-            (i: ITreeItemData) => i.id !== treeItem.value
-          );
-          break;
-
-        case 'add-node-below': {
-          const newId = `new-item-${Date.now()}`;
-          const idx = contentTree.items.findIndex(
-            (i: ITreeItemData) => i.id === treeItem.value
-          );
-          const next = [...contentTree.items];
-          next.splice(idx + 1, 0, {
-            id: newId,
-            label: 'New Item',
-            treeItemActions: getActions(),
-          });
-          contentTree.items = next;
-          break;
-        }
-
-        case 'edit-label':
-          treeItem.inlineLabelEdit = true;
-          break;
-      }
+      focusEditMode(contentTree, newId);
     };
 
     return html`
@@ -473,22 +402,9 @@ function handleAction(event) {
         search-placeholder=${args['search-placeholder']}
         custom-class=${args['custom-class']}
         .includeSearch=${args['include-search']}
-        @treeActionClick=${handleAction}
+        .includeActions=${args['include-actions']}
       >
         <div class="modus-wc-content-tree-empty-story">
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
-              fill="#6A6E79"
-            />
-          </svg>
-
           <modus-wc-typography
             hierarchy="p"
             label="Empty Content Tree"
@@ -496,9 +412,10 @@ function handleAction(event) {
             weight="normal"
             custom-class="modus-wc-content-tree-empty-text"
           ></modus-wc-typography>
+
           <modus-wc-button variant="outline" @buttonClick=${handleAddNewItem}>
-            Create node</modus-wc-button
-          >
+            Create node
+          </modus-wc-button>
         </div>
       </modus-wc-content-tree>
     `;
