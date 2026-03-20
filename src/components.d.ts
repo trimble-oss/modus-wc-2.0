@@ -685,6 +685,10 @@ export namespace Components {
     | 'warning'
     | 'danger';
         /**
+          * The shape of the button.
+         */
+        "buttonShape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
         "buttonSize"?: DaisySize;
@@ -938,6 +942,7 @@ export namespace Components {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface ModusWcLogo {
         /**
@@ -1082,8 +1087,6 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -1128,7 +1131,6 @@ export namespace Components {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
-          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -2732,6 +2734,7 @@ declare global {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface HTMLModusWcLogoElement extends Components.ModusWcLogo, HTMLStencilElement {
     }
@@ -2813,8 +2816,6 @@ declare global {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4146,6 +4147,10 @@ declare namespace LocalJSX {
     | 'warning'
     | 'danger';
         /**
+          * The shape of the button.
+         */
+        "buttonShape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
+        /**
           * The size of the button.
          */
         "buttonSize"?: DaisySize;
@@ -4403,6 +4408,7 @@ declare namespace LocalJSX {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface ModusWcLogo {
         /**
@@ -4554,8 +4560,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -4660,7 +4664,6 @@ declare namespace LocalJSX {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
-          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -6115,6 +6118,7 @@ declare module "@stencil/core" {
             /**
              * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
              * Provides consistent branding across applications with various product logo options.
+             * Logo colors automatically adapt to the active Modus theme via CSS variables.
              */
             "modus-wc-logo": LocalJSX.ModusWcLogo & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
             /**
@@ -6134,8 +6138,6 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
-             * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-             * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**

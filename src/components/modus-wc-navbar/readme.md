@@ -9,15 +9,6 @@
 
 A customizable navbar component used for top level navigation of all Trimble applications.
 
-The component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.
-
-<strong><span style="color: black">⚠️ Deprecation Alert</span></strong>
-
-
-The `trimbleLogoClick` event is deprecated and will be removed in a future major version.
-Please use the `logoClick` event instead, which serves the same purpose and is not tied to a specific logo name.
-The `logoClick` event will be emitted whenever the logo is clicked, regardless of the `logoName` prop value.
-
 ## Properties
 
 | Property                | Attribute                 | Description                                                                                                                | Type                                | Default                                                                                                                                                            |
@@ -39,24 +30,23 @@ The `logoClick` event will be emitted whenever the logo is clicked, regardless o
 
 ## Events
 
-| Event                         | Description                                                                                       | Type                                       |
-| ----------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `aiClick`                     | Event emitted when the AI button is clicked or activated via keyboard.                            | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `appsClick`                   | Event emitted when the apps button is clicked or activated via keyboard.                          | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `appsMenuOpenChange`          | Event emitted when the apps menu open state changes.                                              | `CustomEvent<boolean>`                     |
-| `condensedMenuOpenChange`     | Event emitted when the condensed menu open state changes.                                         | `CustomEvent<boolean>`                     |
-| `helpClick`                   | Event emitted when the help button is clicked or activated via keyboard.                          | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `logoClick`                   | Event emitted when the logo is clicked or activated via keyboard.                                 | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `mainMenuOpenChange`          | Event emitted when the main menu open state changes.                                              | `CustomEvent<boolean>`                     |
-| `myTrimbleClick`              | Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `notificationsClick`          | Event emitted when the notifications button is clicked or activated via keyboard.                 | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `notificationsMenuOpenChange` | Event emitted when the notifications menu open state changes.                                     | `CustomEvent<boolean>`                     |
-| `searchChange`                | Event emitted when the search input value is changed.                                             | `CustomEvent<{ value: string; }>`          |
-| `searchClick`                 | Event emitted when the search button is clicked or activated via keyboard.                        | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `searchInputOpenChange`       | Event emitted when the search input open state changes.                                           | `CustomEvent<boolean>`                     |
-| `signOutClick`                | Event emitted when the user profile sign out button is clicked or activated via keyboard.         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `trimbleLogoClick`            | Deprecated: Use logoClick instead. This event will be removed in a future release.                | `CustomEvent<KeyboardEvent \| MouseEvent>` |
-| `userMenuOpenChange`          | Event emitted when the user menu open state changes.                                              | `CustomEvent<boolean>`                     |
+| Event                         | Description                                                                                                      | Type                                       |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `aiClick`                     | Event emitted when the AI button is clicked or activated via keyboard.                                           | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `appsClick`                   | Event emitted when the apps button is clicked or activated via keyboard.                                         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `appsMenuOpenChange`          | Event emitted when the apps menu open state changes.                                                             | `CustomEvent<boolean>`                     |
+| `condensedMenuOpenChange`     | Event emitted when the condensed menu open state changes.                                                        | `CustomEvent<boolean>`                     |
+| `helpClick`                   | Event emitted when the help button is clicked or activated via keyboard.                                         | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `mainMenuOpenChange`          | Event emitted when the main menu open state changes.                                                             | `CustomEvent<boolean>`                     |
+| `myTrimbleClick`              | Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.                | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `notificationsClick`          | Event emitted when the notifications button is clicked or activated via keyboard.                                | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `notificationsMenuOpenChange` | Event emitted when the notifications menu open state changes.                                                    | `CustomEvent<boolean>`                     |
+| `searchChange`                | Event emitted when the search input value is changed.                                                            | `CustomEvent<{ value: string; }>`          |
+| `searchClick`                 | Event emitted when the search button is clicked or activated via keyboard.                                       | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `searchInputOpenChange`       | Event emitted when the search input open state changes.                                                          | `CustomEvent<boolean>`                     |
+| `signOutClick`                | Event emitted when the user profile sign out button is clicked or activated via keyboard.                        | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `trimbleLogoClick`            | Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value. | `CustomEvent<KeyboardEvent \| MouseEvent>` |
+| `userMenuOpenChange`          | Event emitted when the user menu open state changes.                                                             | `CustomEvent<boolean>`                     |
 
 
 ## Dependencies

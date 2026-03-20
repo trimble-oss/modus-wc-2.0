@@ -3416,6 +3416,15 @@
               }
             },
             {
+              "name": "button-shape",
+              "fieldName": "buttonShape",
+              "default": "'rectangle'",
+              "description": "The shape of the button.",
+              "type": {
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
+              }
+            },
+            {
               "name": "button-size",
               "fieldName": "buttonSize",
               "default": "'md'",

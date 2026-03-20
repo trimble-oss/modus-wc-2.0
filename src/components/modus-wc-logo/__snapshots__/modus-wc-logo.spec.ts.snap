@@ -3,7 +3,11 @@
 exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
 <modus-wc-logo name="siteworks">
   <span aria-label="siteworks" class="logo-full modus-wc-logo" role="img">
-    <img alt="siteworks" src="/assets/logos/trimble/siteworks.svg">
+    <span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"></circle>
+      </svg>
+    </span>
   </span>
 </modus-wc-logo>
 `;
@@ -11,7 +15,11 @@ exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
 exports[`modus-wc-logo should render viewpoint logo 1`] = `
 <modus-wc-logo name="viewpoint_field_view">
   <span aria-label="viewpoint field view" class="logo-full modus-wc-logo" role="img">
-    <img alt="viewpoint field view" src="/assets/logos/viewpoint/viewpoint-field-view.svg">
+    <span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"></circle>
+      </svg>
+    </span>
   </span>
 </modus-wc-logo>
 `;
@@ -19,7 +27,11 @@ exports[`modus-wc-logo should render viewpoint logo 1`] = `
 exports[`modus-wc-logo should render with default props 1`] = `
 <modus-wc-logo name="trimble">
   <span aria-label="trimble" class="logo-full modus-wc-logo" role="img">
-    <img alt="trimble" src="/assets/logos/trimble/trimble.svg">
+    <span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"></circle>
+      </svg>
+    </span>
   </span>
 </modus-wc-logo>
 `;
@@ -27,7 +39,11 @@ exports[`modus-wc-logo should render with default props 1`] = `
 exports[`modus-wc-logo should render with emblem prop 1`] = `
 <modus-wc-logo emblem="" name="trimble">
   <span aria-label="trimble" class="logo-emblem modus-wc-logo" role="img">
-    <img alt="trimble" src="/assets/logos/emblems/trimble-emblem.svg">
+    <span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"></circle>
+      </svg>
+    </span>
   </span>
 </modus-wc-logo>
 `;
