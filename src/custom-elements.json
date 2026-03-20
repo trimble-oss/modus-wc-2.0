@@ -2342,6 +2342,11 @@
             },
             {
               "kind": "method",
+              "name": "handleFormatChange",
+              "description": "Re-displays the stored ISO value in the new format when the `format` prop changes."
+            },
+            {
+              "kind": "method",
               "name": "handleMaxChange",
               "parameters": [
                 {
@@ -2427,10 +2432,9 @@
             {
               "name": "format",
               "fieldName": "format",
-              "default": "'dd-mm-yyyy'",
-              "description": "The date format for display and input.",
+              "description": "The date format used for both display and user input. Automatically derived from the\r\nuser's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric\r\nseparators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`).\r\nExamples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.",
               "type": {
-                "text": "| 'yyyy-mm-dd'\r\n    | 'dd-mm-yyyy'\r\n    | 'mm-dd-yyyy'\r\n    | 'yyyy/mm/dd'\r\n    | 'dd/mm/yyyy'\r\n    | 'mm/dd/yyyy'\r\n    | 'MMM DD, YYYY'"
+                "text": "string"
               }
             },
             {
@@ -2503,7 +2507,7 @@
               "name": "show-week-numbers",
               "fieldName": "showWeekNumbers",
               "default": "false",
-              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.",
               "type": {
                 "text": "boolean"
               }
@@ -3622,7 +3626,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\r\nProvides consistent branding across applications with various product logo options.",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\r\nProvides consistent branding across applications with various product logo options.\r\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
           "name": "ModusWcLogo",
           "members": [
             {
@@ -3632,6 +3636,10 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "onLogoPropsChange"
             },
             {
               "kind": "method",
@@ -4106,7 +4114,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\n⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.\r\nThe component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.",
           "name": "ModusWcNavbar",
           "members": [
             {

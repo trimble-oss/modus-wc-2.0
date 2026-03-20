@@ -537,15 +537,9 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * The date format for display and input.
+          * The date format used for both display and user input. Automatically derived from the user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`). Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
          */
-        "format"?: | 'yyyy-mm-dd'
-    | 'dd-mm-yyyy'
-    | 'mm-dd-yyyy'
-    | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy'
-    | 'MMM DD, YYYY';
+        "format"?: string;
         /**
           * The ID of the input element.
          */
@@ -579,7 +573,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -905,6 +899,7 @@ export namespace Components {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface ModusWcLogo {
         /**
@@ -1049,8 +1044,6 @@ export namespace Components {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -1095,7 +1088,6 @@ export namespace Components {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
-          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -2559,6 +2551,7 @@ declare global {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface HTMLModusWcLogoElement extends Components.ModusWcLogo, HTMLStencilElement {
     }
@@ -2640,8 +2633,6 @@ declare global {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface HTMLModusWcNavbarElement extends Components.ModusWcNavbar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcNavbarElementEventMap>(type: K, listener: (this: HTMLModusWcNavbarElement, ev: ModusWcNavbarCustomEvent<HTMLModusWcNavbarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3724,15 +3715,9 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * The date format for display and input.
+          * The date format used for both display and user input. Automatically derived from the user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`). Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
          */
-        "format"?: | 'yyyy-mm-dd'
-    | 'dd-mm-yyyy'
-    | 'mm-dd-yyyy'
-    | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy'
-    | 'MMM DD, YYYY';
+        "format"?: string;
         /**
           * The ID of the input element.
          */
@@ -3786,7 +3771,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -4116,6 +4101,7 @@ declare namespace LocalJSX {
     /**
      * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
      * Provides consistent branding across applications with various product logo options.
+     * Logo colors automatically adapt to the active Modus theme via CSS variables.
      */
     interface ModusWcLogo {
         /**
@@ -4267,8 +4253,6 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable navbar component used for top level navigation of all Trimble applications.
-     * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-     * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
      */
     interface ModusWcNavbar {
         /**
@@ -4373,7 +4357,6 @@ declare namespace LocalJSX {
         "textOverrides"?: INavbarTextOverrides;
         /**
           * User information used to render the user card.
-          * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
          */
         "userCard": INavbarUserCard;
         /**
@@ -5687,6 +5670,7 @@ declare module "@stencil/core" {
             /**
              * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
              * Provides consistent branding across applications with various product logo options.
+             * Logo colors automatically adapt to the active Modus theme via CSS variables.
              */
             "modus-wc-logo": LocalJSX.ModusWcLogo & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
             /**
@@ -5706,8 +5690,6 @@ declare module "@stencil/core" {
             "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
-             * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-             * The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
              */
             "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
