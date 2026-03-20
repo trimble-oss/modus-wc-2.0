@@ -57,6 +57,7 @@ export class ModusWcDate {
   private popperInstance: PopperInstance | null = null;
   private inputRef?: HTMLInputElement;
   private calendarRef?: HTMLElement;
+  private locale: string = 'en-US';
   private minDate?: Date;
   private maxDate?: Date;
 
@@ -114,15 +115,13 @@ export class ModusWcDate {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /** The date format for display and input. */
-  @Prop() format?:
-    | 'yyyy-mm-dd'
-    | 'dd-mm-yyyy'
-    | 'mm-dd-yyyy'
-    | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy'
-    | 'MMM DD, YYYY' = 'dd-mm-yyyy';
+  /**
+   * The date format used for both display and user input. Automatically derived from the
+   * user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric
+   * separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`).
+   * Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
+   */
+  @Prop({ mutable: true }) format?: string;
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -130,7 +129,7 @@ export class ModusWcDate {
   /** The first day of the week for the calendar display */
   @Prop() weekStartDay?: WeekStartDay = 'sunday';
 
-  /** Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.*/
+  /** Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week. */
   @Prop() showWeekNumbers?: boolean = false;
 
   /** Event emitted when the input loses focus. */
@@ -147,6 +146,17 @@ export class ModusWcDate {
 
   /** Event emitted when the calendar year selection changes. */
   @StencilEvent() calendarYearChange!: EventEmitter<number>;
+
+  /** Re-displays the stored ISO value in the new format when the `format` prop changes. */
+  @Watch('format')
+  handleFormatChange() {
+    if (this.value && this.inputRef) {
+      const parsed = this.parseISODate(this.value);
+      if (parsed) {
+        this.inputRef.value = this.formatForDisplay(parsed);
+      }
+    }
+  }
 
   @Watch('min')
   handleMinChange(newValue?: string) {
@@ -182,9 +192,19 @@ export class ModusWcDate {
     // When the input has focus, the user is actively typing.
     // Allow partial/incomplete values to pass through without validation
     // so that controlled input patterns (e.g. React) work correctly.
+    // Only reformat strict ISO 8601 values set programmatically; all other
+    // typed/partial input passes through unchanged.
     if (this.hasFocus) {
       if (this.inputRef) {
-        this.inputRef.value = newValue;
+        const isISO = /^\d{4}-\d{2}-\d{2}$/.test(newValue);
+        if (isISO) {
+          const parsed = this.parseISODate(newValue);
+          this.inputRef.value = parsed
+            ? this.formatForDisplay(parsed)
+            : newValue;
+        } else {
+          this.inputRef.value = newValue;
+        }
       }
       return;
     }
@@ -206,7 +226,7 @@ export class ModusWcDate {
     }
 
     if (this.inputRef) {
-      this.inputRef.value = formatted;
+      this.inputRef.value = this.formatForDisplay(clamped);
       const event = new Event('input', { bubbles: true });
       this.inputRef.dispatchEvent(event);
     }
@@ -239,6 +259,13 @@ export class ModusWcDate {
       this.el.ariaLabel = 'Date input';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    this.locale =
+      document.documentElement.lang || navigator.language || 'en-US';
+
+    if (!this.format) {
+      this.format = this.getLocaleFormatGuide();
+    }
 
     // Initialize calendar with the correct first day of week
     const firstDayOfWeek =
@@ -918,99 +945,142 @@ export class ModusWcDate {
     return date1.getDate() - date2.getDate();
   }
 
+  /** Generates a localized guide for the placeholder (e.g., "mm/dd/yyyy") */
+  private getLocaleFormatGuide(): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    };
+    const parts = new Intl.DateTimeFormat(this.locale, options).formatToParts(
+      new Date(2026, 11, 31)
+    );
+    return parts
+      .map((part) => {
+        switch (part.type) {
+          case 'day':
+            return 'dd';
+          case 'month':
+            return 'mm';
+          case 'year':
+            return 'yyyy';
+          default:
+            return part.value;
+        }
+      })
+      .join('');
+  }
+
+  /**
+   * Parses a date string into a `Date`. Accepts pure ISO 8601 (`YYYY-MM-DD`), abbreviated month
+   * name strings matching the `MMM DD, YYYY` token pattern (e.g. `Oct 15, 2025`), and any
+   * numeric format whose day/month/year order is resolved from `this.format` or the locale guide.
+   */
   private parseISODate(value?: string): Date | undefined {
-    if (!value) {
-      return undefined;
-    }
+    if (!value) return undefined;
 
-    let yearStr: string, monthStr: string | number, dayStr: string;
-
-    if (this.format === 'MMM DD, YYYY') {
-      // Parse "Jan 01, 2025" format
-      const match = value.match(/^([A-Za-z]{3})\s+(\d{1,2}),\s+(\d{4})$/);
-      if (!match) {
-        return undefined;
-      }
-      const [, monthName, day, year] = match;
-      // Case-insensitive month name lookup
-      monthStr = MONTH_SHORT_NAMES.findIndex(
-        (m) => m.toLowerCase() === monthName.toLowerCase()
+    const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoMatch) {
+      const date = new Date(
+        Number(isoMatch[1]),
+        Number(isoMatch[2]) - 1,
+        Number(isoMatch[3])
       );
-      if (monthStr === -1) {
-        return undefined;
+      if (
+        date.getFullYear() === Number(isoMatch[1]) &&
+        date.getMonth() === Number(isoMatch[2]) - 1 &&
+        date.getDate() === Number(isoMatch[3])
+      ) {
+        return this.cloneDate(date);
       }
-      dayStr = day;
-      yearStr = year;
+      return undefined;
+    }
+
+    const guide = this.format || this.getLocaleFormatGuide();
+
+    // Handle abbreviated month name format (e.g. "MMM DD, YYYY" → "Oct 15, 2025")
+    if (guide.includes('MMM')) {
+      const mmmMatch = value.match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})$/);
+      if (!mmmMatch) return undefined;
+      const monthIdx = MONTH_SHORT_NAMES.findIndex(
+        (m) => m.toLowerCase() === mmmMatch[1].toLowerCase()
+      );
+      if (monthIdx === -1) return undefined;
+      const dayNum = Number(mmmMatch[2]);
+      const yearNum = Number(mmmMatch[3]);
+      const date = new Date(yearNum, monthIdx, dayNum);
+      if (
+        date.getFullYear() === yearNum &&
+        date.getMonth() === monthIdx &&
+        date.getDate() === dayNum
+      ) {
+        return this.cloneDate(date);
+      }
+      return undefined;
+    }
+
+    // Extract numbers regardless of separator (/, -, or .)
+    const numbers = value.match(/\d+/g);
+    if (!numbers || numbers.length < 3) return undefined;
+
+    let day: number, month: number, year: number;
+    const guideLower = guide.toLowerCase();
+
+    if (guideLower.startsWith('m')) {
+      [month, day, year] = numbers.map(Number);
+      month -= 1;
+    } else if (guideLower.startsWith('y')) {
+      [year, month, day] = numbers.map(Number);
+      month -= 1;
     } else {
-      // istanbul ignore next (unreachable code)
-      const separator = this.format?.includes('/') ? '/' : '-';
-      const parts = value.split(separator);
-
-      if (parts.length !== 3) {
-        return undefined;
-      }
-
-      if (this.format === 'dd-mm-yyyy' || this.format === 'dd/mm/yyyy') {
-        [dayStr, monthStr, yearStr] = parts;
-      } else if (this.format === 'mm-dd-yyyy' || this.format === 'mm/dd/yyyy') {
-        [monthStr, dayStr, yearStr] = parts;
-      } else {
-        // yyyy-mm-dd or yyyy/mm/dd
-        [yearStr, monthStr, dayStr] = parts;
-      }
-    }
-
-    // istanbul ignore next (unreachable code)
-    if (yearStr == null || monthStr == null || dayStr == null) {
-      return undefined;
-    }
-
-    const year = Number(yearStr);
-    const month =
-      typeof monthStr === 'number' ? monthStr : Number(monthStr) - 1;
-    const day = Number(dayStr);
-
-    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) {
-      return undefined;
+      [day, month, year] = numbers.map(Number);
+      month -= 1;
     }
 
     const date = new Date(year, month, day);
-
     if (
-      date.getFullYear() !== year ||
-      date.getMonth() !== month ||
-      date.getDate() !== day
+      date.getFullYear() === year &&
+      date.getMonth() === month &&
+      date.getDate() === day
     ) {
-      return undefined;
+      return this.cloneDate(date);
     }
 
-    return this.cloneDate(date);
+    return undefined;
   }
 
+  /** Formats date as ISO 8601 (YYYY-MM-DD) for the value prop */
   private formatISODate(date: Date): string {
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
-    switch (this.format) {
-      case 'dd-mm-yyyy':
-        return `${day}-${month}-${year}`;
-      case 'mm-dd-yyyy':
-        return `${month}-${day}-${year}`;
-      case 'dd/mm/yyyy':
-        return `${day}/${month}/${year}`;
-      case 'mm/dd/yyyy':
-        return `${month}/${day}/${year}`;
-      case 'yyyy/mm/dd':
-        return `${year}/${month}/${day}`;
-      case 'MMM DD, YYYY': {
-        const monthName = MONTH_SHORT_NAMES[date.getMonth()];
-        return `${monthName} ${day}, ${year}`;
-      }
-      default:
-        // yyyy-mm-dd
-        return `${year}-${month}-${day}`;
+  /** Returns the current value formatted for display, or empty string if value is absent or unparseable. */
+  private get inputDisplayValue(): string {
+    if (!this.value) return '';
+    const parsed = this.parseISODate(this.value);
+    return parsed ? this.formatForDisplay(parsed) : '';
+  }
+
+  /** Formats date for display in the input using the selected format pattern */
+  private formatForDisplay(date: Date): string {
+    const fmt = this.format || this.getLocaleFormatGuide();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear());
+
+    // Handle abbreviated month name format (e.g. "MMM DD, YYYY" → "Oct 15, 2025")
+    if (fmt.includes('MMM')) {
+      const monthName = MONTH_SHORT_NAMES[date.getMonth()];
+      return fmt
+        .replace('YYYY', year)
+        .replace('MMM', monthName)
+        .replace('DD', day);
     }
+
+    return fmt.replace('yyyy', year).replace('mm', month).replace('dd', day);
   }
 
   private cloneDate(date: Date): Date {
@@ -1117,14 +1187,13 @@ export class ModusWcDate {
     const parsed = this.parseISODate(value);
 
     if (!parsed) {
-      this.inputRef.value = this.value || '';
+      this.inputRef.value = this.inputDisplayValue;
       return;
     }
 
     const clamped = this.clampDate(parsed);
-    const formatted = this.formatISODate(clamped);
-    this.value = formatted;
-    this.inputRef.value = formatted;
+    this.value = this.formatISODate(clamped);
+    this.inputRef.value = this.formatForDisplay(clamped);
   }
 
   render() {
@@ -1155,7 +1224,7 @@ export class ModusWcDate {
             required={this.required}
             tabIndex={this.inputTabIndex}
             type="text"
-            value={this.value}
+            value={this.inputDisplayValue}
             {...this.inheritedAttributes}
           />
           <modus-wc-button

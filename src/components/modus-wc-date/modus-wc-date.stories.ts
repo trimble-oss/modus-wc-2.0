@@ -3,29 +3,20 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { IInputFeedbackProp, ModusSize } from '../types';
-import { WeekStartDay } from '../types';
+import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 
 interface DateArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
-  format?:
-    | 'yyyy-mm-dd'
-    | 'dd-mm-yyyy'
-    | 'mm-dd-yyyy'
-    | 'MMM DD, YYYY'
-    | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy';
+  format?: string;
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
   max?: string;
   min?: string;
   name?: string;
-  placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
   'show-week-numbers'?: boolean;
@@ -51,7 +42,6 @@ const meta: Meta<DateArgs> = {
   },
   argTypes: {
     feedback: {
-      description: 'Feedback prop for input components',
       table: {
         type: {
           detail: `
@@ -70,13 +60,14 @@ const meta: Meta<DateArgs> = {
     format: {
       control: { type: 'select' },
       options: [
-        'yyyy-mm-dd',
-        'dd-mm-yyyy',
-        'mm-dd-yyyy',
-        'MMM DD, YYYY',
-        'yyyy/mm/dd',
-        'dd/mm/yyyy',
         'mm/dd/yyyy',
+        'dd/mm/yyyy',
+        'yyyy-mm-dd',
+        'dd.mm.yyyy',
+        'mm-dd-yyyy',
+        'dd-mm-yyyy',
+        'yyyy/mm/dd',
+        'MMM DD, YYYY',
       ],
     },
     'week-start-day': {
@@ -132,7 +123,6 @@ const Template: Story = {
         max=${ifDefined(args.max)}
         min=${ifDefined(args.min)}
         name=${ifDefined(args.name)}
-        placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
         ?show-week-numbers=${args['show-week-numbers']}
@@ -189,7 +179,6 @@ export const ShadowDomParent: Story = {
             max: string;
             min: string;
             name: string;
-            placeholder: string;
             readOnly: boolean;
             required: boolean;
             showWeekNumbers: boolean;
@@ -207,7 +196,6 @@ export const ShadowDomParent: Story = {
           dateEl.max = v.max ?? '';
           dateEl.min = v.min ?? '';
           dateEl.name = v.name ?? '';
-          dateEl.placeholder = v.placeholder ?? '';
           dateEl.readOnly = Boolean(v['read-only']);
           dateEl.required = Boolean(v.required);
           dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);
