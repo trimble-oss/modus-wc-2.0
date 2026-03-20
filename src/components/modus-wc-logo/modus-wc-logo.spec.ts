@@ -135,6 +135,33 @@ describe('modus-wc-logo', () => {
     consoleSpy.mockRestore();
   });
 
+  it('should warn when logo variant has no emblem path and emblem is true', async () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_no_emblem_path'
+    ] = {
+      displayName: 'Test Emblem',
+      path: 'logos/trimble/trimble.svg',
+      emblemPath: '',
+      category: 'trimble',
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="test_no_emblem_path" emblem></modus-wc-logo>',
+    });
+    expect(consoleSpy).toHaveBeenCalledWith(
+      expect.stringContaining('No emblem path found for "test_no_emblem_path"')
+    );
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('svg')).toBeNull();
+
+    delete (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_no_emblem_path'
+    ];
+    consoleSpy.mockRestore();
+  });
+
   it('should warn when SVG data is missing for a valid path', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
     (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
