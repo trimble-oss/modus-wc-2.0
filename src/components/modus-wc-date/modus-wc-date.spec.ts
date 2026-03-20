@@ -7,7 +7,7 @@ describe('modus-wc-date', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Default date"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Default date" format="dd/mm/yyyy"></modus-wc-date>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -23,11 +23,12 @@ describe('modus-wc-date', () => {
         bordered="false"
         custom-class="test-class"
         disabled="true"
+        format="dd/mm/yyyy"
         input-id="custom-id"
         input-tab-index="1"
         label="Test label"
-        max="11/25/2024"
-        min="11/20/2024"
+        max="2024-11-25"
+        min="2024-11-20"
         name="test-name"
         readonly="true"
         required="true"
@@ -45,7 +46,7 @@ describe('modus-wc-date', () => {
     };
     const page = await newSpecPage({
       components: [ModusWcDate, ModusWcInputFeedback],
-      html: '<modus-wc-date aria-label="Error input"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Error input" format="dd/mm/yyyy"></modus-wc-date>',
     });
 
     // Set feedback attribute
