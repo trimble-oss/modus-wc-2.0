@@ -50,7 +50,10 @@ for (const { rel, full } of files.sort((a, b) => a.rel.localeCompare(b.rel))) {
     .replace(/\n/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  const escaped = svg.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+  const escaped = svg
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\$/g, '\\$');
   lines.push(`  'logos/${rel}': \`${escaped}\`,`);
 }
 
