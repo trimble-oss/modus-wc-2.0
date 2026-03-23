@@ -29,6 +29,19 @@ providing your own custom values for the size or weight properties from the avai
 | `weight`             | `weight`       | The weight of the text.                              | `"bold" \| "light" \| "normal" \| "semibold" \| undefined`            | `'normal'`  |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-profile-menu --> modus-wc-typography
+  style modus-wc-typography fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
