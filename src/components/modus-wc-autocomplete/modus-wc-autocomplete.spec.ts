@@ -6311,6 +6311,15 @@ it('should update menuItem.selected to false when removing a chip', async () => 
   expect(autocomplete['selectionOrder']).toEqual(['item2']);
 });
 
+it('should set autocomplete attribute on input when autoComplete prop is provided', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+    html: '<modus-wc-autocomplete aria-label="Autocomplete test" auto-complete="off"></modus-wc-autocomplete>',
+  });
+  const input = page.root!.querySelector('input');
+  expect(input?.getAttribute('autocomplete')).toBe('off');
+});
+
 describe('feedback prop', () => {
   const items: IAutocompleteItem[] = [
     { label: 'Item 1', value: '1', visibleInMenu: true },
