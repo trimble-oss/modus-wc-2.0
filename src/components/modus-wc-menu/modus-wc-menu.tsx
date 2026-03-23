@@ -39,7 +39,7 @@ export class ModusWcMenu {
   @Prop() orientation?: Orientation = 'vertical';
 
   /** The selection mode of the menu. */
-  @Prop({ reflect: true }) selectionMode?: SelectionMode = 'single';
+  @Prop({ reflect: true }) selectionMode?: SelectionMode;
 
   /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';

@@ -18,7 +18,6 @@ const meta: Meta<MenuArgs> = {
   component: 'modus-wc-menu',
   args: {
     orientation: 'vertical',
-    'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
