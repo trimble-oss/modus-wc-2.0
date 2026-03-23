@@ -44,9 +44,6 @@ export class ModusWcMenuItem {
   /** The text rendered in the menu item. */
   @Prop() label: string = '';
 
-  /** The modus icon name to render on the start of the menu item. */
-  @Prop() startIcon?: string;
-
   /** The selected state of the menu item. */
   @Prop() selected?: boolean;
 
