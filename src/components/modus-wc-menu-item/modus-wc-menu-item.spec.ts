@@ -592,34 +592,27 @@ describe('modus-wc-menu-item', () => {
     expect(selectSpy).not.toHaveBeenCalled();
   });
 
-  it('should deselect siblings in single selection mode', async () => {
+  it('should set selected and emit itemSelect in single selection mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
         <modus-wc-menu selection-mode="single">
           <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
         </modus-wc-menu>
       `,
     });
 
-    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
-    const firstItem = menuItems[0] as HTMLElement & { selected?: boolean };
-    const secondItem = menuItems[1] as HTMLElement & { selected?: boolean };
+    const menuItem = page.doc.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement & { selected?: boolean };
+    const selectSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', selectSpy);
 
-    // Click first item
-    firstItem.querySelector('button')?.click();
+    menuItem.querySelector('button')?.click();
     await page.waitForChanges();
 
-    expect(firstItem.selected).toBe(true);
-
-    // Click second item — first should be deselected
-    secondItem.querySelector('button')?.click();
-    await page.waitForChanges();
-
-    expect(firstItem.selected).toBe(false);
-    expect(secondItem.selected).toBe(true);
+    expect(menuItem.selected).toBe(true);
+    expect(selectSpy).toHaveBeenCalled();
   });
 
   it('should render checkbox automatically in multi-select mode', async () => {
@@ -801,14 +794,13 @@ describe('modus-wc-menu-item', () => {
     });
   });
 
-  it('should return early from deselectSiblings when no parent menu exists', async () => {
+  it('should handle deselectSiblings gracefully when not inside a modus-wc-menu', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
     });
 
     const instance = page.rootInstance;
-
     expect(() => instance.deselectSiblings()).not.toThrow();
   });
 
@@ -860,6 +852,193 @@ describe('modus-wc-menu-item', () => {
     await page.waitForChanges();
 
     expect(liElement.getAttribute('aria-checked')).toBe('true');
+  });
+
+  describe('MutationObserver and handleSelectionModeChange', () => {
+    let originalMutationObserver: typeof MutationObserver;
+
+    beforeEach(() => {
+      originalMutationObserver = globalThis.MutationObserver;
+    });
+
+    afterEach(() => {
+      globalThis.MutationObserver = originalMutationObserver;
+    });
+
+    it('should set up MutationObserver on parent menu in componentDidLoad', async () => {
+      const observeSpy = jest.fn();
+      const disconnectSpy = jest.fn();
+      globalThis.MutationObserver = jest.fn(() => ({
+        observe: observeSpy,
+        disconnect: disconnectSpy,
+        takeRecords: jest.fn(),
+      })) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const parentMenu = page.doc.querySelector('modus-wc-menu');
+      expect(globalThis.MutationObserver).toHaveBeenCalled();
+      expect(observeSpy).toHaveBeenCalledWith(parentMenu, { attributes: true });
+    });
+
+    it('should reset selected and checked when selection-mode attribute changes', async () => {
+      let mutationCallback: MutationCallback;
+      const observeSpy = jest.fn();
+      const disconnectSpy = jest.fn();
+      globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+        mutationCallback = cb;
+        return {
+          observe: observeSpy,
+          disconnect: disconnectSpy,
+          takeRecords: jest.fn(),
+        };
+      }) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="multiple">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const button = menuItem.querySelector('button') as HTMLButtonElement;
+
+      button.click();
+      await page.waitForChanges();
+
+      const instance = (menuItem as unknown as { __instance: ModusWcMenuItem }).__instance ?? page.rootInstance;
+      const menuItemInstances = Array.from(page.doc.querySelectorAll('modus-wc-menu-item'));
+      const targetEl = menuItemInstances[0];
+      const targetInstance = (targetEl as any).__stencil_instance ?? (targetEl as any).__instance;
+
+      mutationCallback!(
+        [{ attributeName: 'selection-mode' } as MutationRecord],
+        {} as MutationObserver,
+      );
+      await page.waitForChanges();
+
+      const li = menuItem.querySelector('li') as HTMLLIElement;
+      expect(li.classList.contains('modus-wc-menu-item-checked')).toBeFalsy();
+    });
+
+    it('should disconnect MutationObserver on disconnectedCallback', async () => {
+      const disconnectSpy = jest.fn();
+      globalThis.MutationObserver = jest.fn(() => ({
+        observe: jest.fn(),
+        disconnect: disconnectSpy,
+        takeRecords: jest.fn(),
+      })) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItem = page.doc.querySelector('modus-wc-menu-item');
+      menuItem?.remove();
+      await page.waitForChanges();
+
+      expect(disconnectSpy).toHaveBeenCalled();
+    });
+
+    it('should not set up MutationObserver when menu-item is standalone', async () => {
+      const observeSpy = jest.fn();
+      globalThis.MutationObserver = jest.fn(() => ({
+        observe: observeSpy,
+        disconnect: jest.fn(),
+        takeRecords: jest.fn(),
+      })) as unknown as typeof MutationObserver;
+
+      await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+      });
+
+      expect(observeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should reset selected to undefined when it has a defined value', async () => {
+      let mutationCallback: MutationCallback;
+      globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+        mutationCallback = cb;
+        return {
+          observe: jest.fn(),
+          disconnect: jest.fn(),
+          takeRecords: jest.fn(),
+        };
+      }) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1" selected="true"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItem = page.doc.querySelector(
+        'modus-wc-menu-item'
+      ) as HTMLElement & { selected?: boolean };
+
+      expect(menuItem.selected).toBe(true);
+
+      mutationCallback!(
+        [{ attributeName: 'selection-mode' } as MutationRecord],
+        {} as MutationObserver,
+      );
+      await page.waitForChanges();
+
+      expect(menuItem.selected).toBeUndefined();
+    });
+
+    it('should ignore mutations for non-selection-mode attributes', async () => {
+      let mutationCallback: MutationCallback;
+      globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+        mutationCallback = cb;
+        return {
+          observe: jest.fn(),
+          disconnect: jest.fn(),
+          takeRecords: jest.fn(),
+        };
+      }) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1" selected="true"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const li = menuItem.querySelector('li') as HTMLLIElement;
+
+      expect(li.classList.contains('modus-wc-menu-item-selected')).toBeTruthy();
+
+      mutationCallback!(
+        [{ attributeName: 'orientation' } as MutationRecord],
+        {} as MutationObserver,
+      );
+      await page.waitForChanges();
+
+      expect(li.classList.contains('modus-wc-menu-item-selected')).toBeTruthy();
+    });
   });
 
   it('should use default role menuitem when not inside a menu', async () => {

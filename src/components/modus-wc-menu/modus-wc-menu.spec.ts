@@ -41,7 +41,7 @@ describe('modus-wc-menu', () => {
     const component = page.rootInstance;
     const emitSpy = jest.spyOn(component.menuFocusout, 'emit');
 
-    const menu = page.root!.querySelector('ul');
+    const menu = page.root?.querySelector('ul');
 
     const focusoutEvent = new FocusEvent('focusout', {
       bubbles: true,
@@ -66,10 +66,10 @@ describe('modus-wc-menu', () => {
 
     await page.waitForChanges();
 
-    const menu = page.root!.querySelector('ul');
+    const menu = page.root?.querySelector('ul');
     expect(menu).not.toBeNull();
-    expect(menu!.className).toContain('modus-wc-menu-dropdown');
-    expect(menu!.className).toContain('test-submenu-class');
+    expect(menu?.className).toContain('modus-wc-menu-dropdown');
+    expect(menu?.className).toContain('test-submenu-class');
     expect(page.root).toMatchSnapshot();
   });
 
@@ -102,7 +102,7 @@ describe('modus-wc-menu', () => {
     const focusSpy = jest.spyOn(secondLi, 'focus');
 
     // Dispatch ArrowDown on the ul
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       bubbles: true,
@@ -142,7 +142,7 @@ describe('modus-wc-menu', () => {
 
     const focusSpy = jest.spyOn(firstLi, 'focus');
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowUpEvent = new KeyboardEvent('keydown', {
       key: 'ArrowUp',
       bubbles: true,
@@ -181,7 +181,7 @@ describe('modus-wc-menu', () => {
 
     const focusSpy = jest.spyOn(thirdLi, 'focus');
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       bubbles: true,
@@ -219,7 +219,7 @@ describe('modus-wc-menu', () => {
 
     const focusSpy = jest.spyOn(firstLi, 'focus');
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       bubbles: true,
@@ -249,7 +249,7 @@ describe('modus-wc-menu', () => {
       configurable: true,
     });
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       bubbles: true,
@@ -271,7 +271,7 @@ describe('modus-wc-menu', () => {
       `,
     });
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const secondLi = page.doc
       .querySelectorAll('modus-wc-menu-item')[1]
       .querySelector('li') as HTMLLIElement;
@@ -300,7 +300,7 @@ describe('modus-wc-menu', () => {
       `,
     });
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       bubbles: true,
@@ -339,7 +339,7 @@ describe('modus-wc-menu', () => {
 
     const focusSpy = jest.spyOn(thirdLi, 'focus');
 
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
     const arrowUpEvent = new KeyboardEvent('keydown', {
       key: 'ArrowUp',
       bubbles: true,
@@ -350,6 +350,34 @@ describe('modus-wc-menu', () => {
     await page.waitForChanges();
 
     expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should deselect siblings in single-select mode when an item is selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstItem = menuItems[0] as HTMLElement & { selected?: boolean };
+    const secondItem = menuItems[1] as HTMLElement & { selected?: boolean };
+
+    firstItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstItem.selected).toBe(true);
+
+    secondItem.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(firstItem.selected).toBe(false);
+    expect(secondItem.selected).toBe(true);
   });
 
   it('should stop propagation when focusout occurs on submenu', async () => {
@@ -365,7 +393,7 @@ describe('modus-wc-menu', () => {
     const component = page.rootInstance;
     const emitSpy = jest.spyOn(component.menuFocusout, 'emit');
 
-    const menu = page.root!.querySelector('ul');
+    const menu = page.root?.querySelector('ul');
 
     // Create a mock stopPropagation function
     const stopPropagationSpy = jest.fn();

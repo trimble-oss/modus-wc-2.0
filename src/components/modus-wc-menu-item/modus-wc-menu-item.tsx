@@ -27,6 +27,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcMenuItem {
   private inheritedAttributes: Attributes = {};
+  private parentMenuObserver?: MutationObserver;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -46,7 +47,7 @@ export class ModusWcMenuItem {
   @Prop() label: string = '';
 
   /** The selected state of the menu item. */
-  @Prop() selected?: boolean;
+  @Prop({ mutable: true }) selected?: boolean;
 
   /** The focused state of the menu item. */
   @Prop() focused?: boolean;
@@ -73,7 +74,6 @@ export class ModusWcMenuItem {
   /** Internal state to track if submenu is expanded */
   @State() isExpanded: boolean = false;
 
-  /** Internal state to track checkbox value in multi-select mode */
   @State() checked: boolean = false;
 
   /** Event emitted when a menu item is selected. */
@@ -84,8 +84,33 @@ export class ModusWcMenuItem {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    if (typeof MutationObserver === 'undefined') return;
+
+    const parentMenu = this.el.closest('modus-wc-menu');
+    if (parentMenu) {
+      this.parentMenuObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === 'selection-mode') {
+            this.handleSelectionModeChange();
+            break;
+          }
+        }
+      });
+      this.parentMenuObserver.observe(parentMenu, { attributes: true });
+    }
+  }
+
+  disconnectedCallback() {
+    this.parentMenuObserver?.disconnect();
+  }
+
+  private handleSelectionModeChange(): void {
+    this.selected = this.selected === undefined ? false : undefined;
+    this.checked = false;
   }
 
   @Listen('keydown')
@@ -118,56 +143,6 @@ export class ModusWcMenuItem {
     return Promise.resolve();
   }
 
-  private isMultiSelect(): boolean {
-    return this.getSelectionMode() === 'multiple';
-  }
-
-  private getClasses(): string {
-    const classList: string[] = ['modus-wc-menu-item'];
-    const isMulti = this.isMultiSelect();
-
-    const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
-      disabled: this.disabled,
-      selected: this.hasSubmenu ? false : isMulti ? false : this.selected,
-      checked: this.hasSubmenu ? false : isMulti ? this.checked : false,
-      focused: this.focused,
-      size: this.size,
-    });
-
-    // The order CSS classes are added matters to CSS specificity
-    if (propClasses) classList.push(propClasses);
-    if (this.customClass) classList.push(this.customClass);
-
-    return classList.join(' ');
-  }
-
-  private getButtonClasses(): string {
-    return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
-  }
-
-  private getSelectionMode() {
-    return (
-      this.el.closest('modus-wc-menu') as HTMLElement & {
-        selectionMode?: SelectionMode;
-      }
-    )?.selectionMode;
-  }
-
-  private getRole(): string {
-    const mode = this.getSelectionMode();
-    if (mode === 'multiple') return 'menuitemcheckbox';
-    if (mode === 'single') return 'menuitemradio';
-    return 'menuitem';
-  }
-
-  private getAriaChecked(): string | undefined {
-    const mode = this.getSelectionMode();
-    if (mode === 'multiple') return this.checked ? 'true' : 'false';
-    if (mode === 'single') return this.selected ? 'true' : 'false';
-    return undefined;
-  }
-
   private deselectSiblings(): void {
     const menu = this.el.closest('modus-wc-menu');
     if (!menu) return;
@@ -180,8 +155,52 @@ export class ModusWcMenuItem {
     });
   }
 
+  private resolveSelectionMode() {
+    return (
+      this.el.closest('modus-wc-menu') as HTMLElement & {
+        selectionMode?: SelectionMode;
+      }
+    )?.selectionMode;
+  }
+
+  private getClasses(mode?: SelectionMode): string {
+    const classList: string[] = ['modus-wc-menu-item'];
+
+    const isSelected = !this.hasSubmenu && mode !== 'multiple' && this.selected;
+    const isChecked = !this.hasSubmenu && mode === 'multiple' && this.checked;
+
+    const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
+      disabled: this.disabled,
+      selected: isSelected,
+      checked: isChecked,
+      focused: this.focused,
+      size: this.size,
+    });
+
+    if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
+  private getButtonClasses(): string {
+    return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
+  }
+
+  private getRole(mode?: SelectionMode): string {
+    if (mode === 'multiple') return 'menuitemcheckbox';
+    if (mode === 'single') return 'menuitemradio';
+    return 'menuitem';
+  }
+
+  private getAriaChecked(mode?: SelectionMode): string | undefined {
+    if (mode === 'multiple') return this.checked ? 'true' : 'false';
+    if (mode === 'single') return this.selected ? 'true' : 'false';
+    return undefined;
+  }
+
   private handleItemSelect = () => {
-    // For submenu items, handle the toggle
     if (this.hasSubmenu) {
       // Check if side nav is expanded (if this menu is inside a side nav)
       const sideNav = this.el.closest('modus-wc-side-navigation');
@@ -222,15 +241,11 @@ export class ModusWcMenuItem {
           }
         }
       }
-    }
-    // Multi-select mode: toggle checkbox without selecting the menu item
-    else if (this.isMultiSelect()) {
+    } else if (this.resolveSelectionMode() === 'multiple') {
       this.checked = !this.checked;
       this.itemSelect.emit({ value: this.value, selected: this.checked });
       return;
-    }
-    // For checkbox items, provide immediate visual feedback
-    else if (this.checkbox) {
+    } else if (this.checkbox) {
       const liElement = this.el.querySelector('li');
       const checkboxElement = this.el.querySelector('modus-wc-checkbox');
 
@@ -251,27 +266,27 @@ export class ModusWcMenuItem {
 
         this.selected = true;
       }
-    }
-    // For regular menu items
-    else {
-      if (this.getSelectionMode() === 'single') {
+    } else {
+      if (this.resolveSelectionMode() === 'single') {
         this.deselectSiblings();
       }
       this.selected = true;
     }
 
-    // Always emit the event with current selection state
     this.itemSelect.emit({ value: this.value, selected: this.selected });
   };
 
   render() {
+    const mode = this.resolveSelectionMode();
+    const isMulti = mode === 'multiple';
+
     return (
       <Host>
         <li
-          aria-checked={this.getAriaChecked()}
+          aria-checked={this.getAriaChecked(mode)}
           aria-disabled={this.disabled}
-          class={this.getClasses()}
-          role={this.getRole()}
+          class={this.getClasses(mode)}
+          role={this.getRole(mode)}
           tabIndex={this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
@@ -283,12 +298,12 @@ export class ModusWcMenuItem {
             type="button"
           >
             <div class="modus-wc-menu-item-content">
-              {(this.checkbox || this.isMultiSelect()) && (
+              {(this.checkbox || isMulti) && (
                 <modus-wc-checkbox
                   aria-label="Checkbox"
                   disabled={this.disabled}
                   size={this.size}
-                  value={this.isMultiSelect() ? this.checked : !!this.selected}
+                  value={isMulti ? this.checked : !!this.selected}
                 />
               )}
               <slot name="start-icon"></slot>
