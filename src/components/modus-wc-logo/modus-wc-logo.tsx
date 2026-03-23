@@ -95,8 +95,8 @@ export class ModusWcLogo {
       !this.emblem &&
       logoInfo &&
       logoInfo.emblemPath &&
-      logoKey !== 'trimble' &&
-      !logoKey.startsWith('viewpoint')
+      logoInfo.category !== 'trimble_brand' &&
+      logoInfo.category !== 'viewpoint'
     ) {
       this.emblemSvgContent = await fetchSvgText(
         getAssetPath(`assets/${logoInfo.emblemPath}`)

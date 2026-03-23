@@ -98,7 +98,7 @@ export interface ILogoInfo {
   /** Path to the emblem SVG asset (icon only) */
   emblemPath?: string;
   /** Category of the logo */
-  category: 'trimble' | 'viewpoint';
+  category: 'trimble' | 'trimble_brand' | 'viewpoint';
 }
 
 /**
@@ -446,7 +446,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     displayName: 'Trimble',
     path: 'logos/trimble/trimble.svg',
     emblemPath: 'logos/emblems/trimble-emblem.svg',
-    category: 'trimble',
+    category: 'trimble_brand',
   },
   truckmate: {
     displayName: 'TruckMate',
@@ -613,7 +613,7 @@ export function getAvailableLogos(): LogoName[] {
  * Get logos by category
  */
 export function getLogosByCategory(
-  category: 'trimble' | 'viewpoint'
+  category: 'trimble' | 'trimble_brand' | 'viewpoint'
 ): LogoName[] {
   return Object.entries(LOGO_VARIANTS)
     .filter(([, info]) => info.category === category)
