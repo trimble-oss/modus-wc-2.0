@@ -76,6 +76,10 @@ export class ModusWcTreeActions {
     );
   }
 
+  componentDidRender() {
+    this.updatePopperInstance();
+  }
+
   @Watch('actions')
   onActionsChange() {
     this.updatePopperInstance();
@@ -184,12 +188,26 @@ export class ModusWcTreeActions {
   };
 
   private updatePopperInstance = () => {
-    if (this.actions && this.actions.length > 2) {
-      this.initializePopper();
-    } else if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
+    const hasDropdownActions = (this.actions?.length ?? 0) > 1;
+
+    if (!hasDropdownActions) {
+      if (this.popperInstance) {
+        this.popperInstance.destroy();
+        this.popperInstance = null;
+      }
+      return;
     }
+
+    if (!this.moreActionsButton || !this.moreActionsDropdown) {
+      return;
+    }
+
+    if (!this.popperInstance) {
+      this.initializePopper();
+      return;
+    }
+
+    void this.popperInstance.update();
   };
 
   private initializePopper = () => {

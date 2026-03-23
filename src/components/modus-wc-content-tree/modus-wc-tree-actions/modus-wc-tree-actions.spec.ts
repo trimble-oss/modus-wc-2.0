@@ -300,7 +300,7 @@ describe('modus-wc-tree-actions', () => {
     expect(treeActions.isDropdownOpen).toBe(true);
   });
 
-  it('initializes popper when more than 2 actions on componentDidUpdate', async () => {
+  it('initializes popper when dropdown actions exist', async () => {
     const actions = [
       { id: '1', icon: 'edit', label: 'Edit' },
       { id: '2', icon: 'delete', label: 'Delete' },
@@ -321,7 +321,27 @@ describe('modus-wc-tree-actions', () => {
     expect(initializerSpy).toHaveBeenCalled();
   });
 
-  it('destroys popper when actions are 2 or less on componentDidUpdate', async () => {
+  it('initializes popper when there are exactly 2 actions', async () => {
+    const actions = [
+      { id: '1', icon: 'edit', label: 'Edit' },
+      { id: '2', icon: 'delete', label: 'Delete' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcTreeActions],
+      html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+    });
+
+    const treeActions = page.rootInstance;
+    const initializerSpy = jest.spyOn(treeActions, 'initializePopper' as never);
+
+    treeActions.actions = actions;
+    await page.waitForChanges();
+
+    expect(initializerSpy).toHaveBeenCalled();
+  });
+
+  it('destroys popper when actions are 1 or less', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeActions],
       html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,

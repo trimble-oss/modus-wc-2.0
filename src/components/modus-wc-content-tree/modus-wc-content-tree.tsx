@@ -189,60 +189,38 @@ export class ModusWcContentTree {
       return;
     }
 
-    // First pass: identify matches and collect items to show/hide
-    const matchingItems = new Set<HTMLElement>();
-    const itemsToExpand: ITreeItemElement[] = [];
-    const processedParents = new Set<HTMLElement>();
+    const visibleItems = new Set<HTMLElement>();
+    const itemsToExpand = new Set<ITreeItemElement>();
 
-    // Build match set efficiently
     for (const item of menuItems) {
       const label = item.getAttribute('label') || '';
-      if (label.toLowerCase().includes(normalizedSearch)) {
-        matchingItems.add(item as HTMLElement);
+      if (!label.toLowerCase().includes(normalizedSearch)) continue;
+
+      const itemElement = item as HTMLElement;
+      visibleItems.add(itemElement);
+
+      let parent = itemElement.parentElement;
+      while (parent && parent !== this.el) {
+        if (parent.tagName === 'MODUS-WC-TREE-ITEM') {
+          const parentTreeItem = parent as ITreeItemElement;
+          visibleItems.add(parentTreeItem as HTMLElement);
+          itemsToExpand.add(parentTreeItem);
+        }
+        parent = parent.parentElement;
       }
     }
 
-    // Second pass: determine visibility and expansion needs
     for (const item of menuItems) {
       const itemElement = item as HTMLElement;
-      const isDirectMatch = matchingItems.has(itemElement);
-
-      if (isDirectMatch) {
-        itemElement.style.display = '';
-
-        // Process ancestors only once
-        let parent = item.parentElement;
-        while (parent && parent !== this.el) {
-          if (
-            parent.tagName === 'MODUS-WC-TREE-ITEM' &&
-            !processedParents.has(parent)
-          ) {
-            processedParents.add(parent);
-            parent.style.display = '';
-            itemsToExpand.push(parent as ITreeItemElement);
-          }
-          parent = parent.parentElement;
-        }
-      } else {
-        // Check descendants using pre-computed match set
-        const descendants = itemElement.querySelectorAll('modus-wc-tree-item');
-        const hasMatchingChild = Array.from(descendants).some((child) =>
-          matchingItems.has(child as HTMLElement)
-        );
-
-        if (hasMatchingChild) {
-          itemElement.style.display = '';
-          itemsToExpand.push(item);
-        } else {
-          itemElement.style.display = 'none';
-        }
-      }
+      itemElement.style.display = visibleItems.has(itemElement) ? '' : 'none';
     }
 
     // Batch all expand operations
-    if (itemsToExpand.length > 0) {
+    if (itemsToExpand.size > 0) {
       await Promise.all(
-        itemsToExpand.map((item) => item.expandSubTree().catch(() => {}))
+        Array.from(itemsToExpand).map((item) =>
+          item.expandSubTree().catch(() => {})
+        )
       );
     }
   }

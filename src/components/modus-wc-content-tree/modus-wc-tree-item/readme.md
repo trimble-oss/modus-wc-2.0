@@ -1,4 +1,4 @@
-# modus-wc-content-tree-item
+# modus-wc-tree-item
 
 
 

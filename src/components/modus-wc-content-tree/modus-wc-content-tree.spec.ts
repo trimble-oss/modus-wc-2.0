@@ -18,24 +18,36 @@ describe('modus-wc-content-tree', () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
       html: `<modus-wc-content-tree include-search="true">
-                <modus-wc-tree-item value="item1">Item 1</modus-wc-tree-item>
-                <modus-wc-tree-item value="item2">Item 2</modus-wc-tree-item>
-                <modus-wc-tree-item value="item3">Item 3</modus-wc-tree-item>
+                <modus-wc-tree-item label="Item 1" value="item1">Item 1</modus-wc-tree-item>
+                <modus-wc-tree-item label="Item 2" value="item2">Item 2</modus-wc-tree-item>
+                <modus-wc-tree-item label="Item 3" value="item3">Item 3</modus-wc-tree-item>
               </modus-wc-content-tree>`,
     });
 
-    const searchInput = page.root!.querySelector('input[type="search"]');
-    expect(searchInput as HTMLInputElement).toBeDefined();
-    if (searchInput) {
-      (searchInput as HTMLInputElement).value = 'Item 2';
-      searchInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-      const visibleItems = page.root!.querySelectorAll(
-        'modus-wc-tree-item:not([hidden])'
-      );
-      expect(visibleItems.length).toBe(1);
-      expect(visibleItems[0].getAttribute('value')).toBe('item2');
-    }
+    const searchInput = page.root!.querySelector(
+      'modus-wc-text-input'
+    ) as HTMLElement & {
+      value?: string;
+    };
+    expect(searchInput).not.toBeNull();
+
+    searchInput.value = 'Item 2';
+    searchInput.dispatchEvent(
+      new CustomEvent('inputChange', {
+        bubbles: true,
+        composed: true,
+      })
+    );
+    await new Promise((resolve) => setTimeout(resolve, 180));
+    await page.waitForChanges();
+
+    const items = Array.from(
+      page.root!.querySelectorAll('modus-wc-tree-item')
+    ) as HTMLElement[];
+    const visibleItems = items.filter((item) => item.style.display !== 'none');
+
+    expect(visibleItems.length).toBe(1);
+    expect(visibleItems[0].getAttribute('value')).toBe('item2');
   });
 
   it('clears filter on Escape key', async () => {
