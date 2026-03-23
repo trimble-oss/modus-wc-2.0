@@ -897,30 +897,6 @@ describe('modus-wc-menu-item', () => {
     expect(selectSpy).not.toHaveBeenCalled();
   });
 
-  it('should handle disconnectedCallback when liElement is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcMenuItem],
-      html: '<modus-wc-menu-item label="Test" value="test"></modus-wc-menu-item>',
-    });
-
-    const instance = page.rootInstance;
-    instance['liElement'] = undefined;
-
-    expect(() => instance.disconnectedCallback()).not.toThrow();
-  });
-
-  it('should handle componentDidLoad when li is not found', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcMenuItem],
-      html: '<modus-wc-menu-item label="Test" value="test"></modus-wc-menu-item>',
-    });
-
-    const instance = page.rootInstance;
-    jest.spyOn(instance.el, 'querySelector').mockReturnValue(null);
-
-    expect(() => instance.componentDidLoad()).not.toThrow();
-  });
-
   it('should update aria-checked to false for deselected siblings in single-select', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],

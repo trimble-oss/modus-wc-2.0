@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Method,
   Prop,
   State,
@@ -11,7 +12,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { ModusSize } from '../types';
+import { ModusSize, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -81,32 +82,21 @@ export class ModusWcMenuItem {
     selected?: boolean;
   }>;
 
-  private liElement?: HTMLLIElement;
-
   componentWillLoad() {
-    // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  componentDidLoad() {
-    this.liElement = this.el.querySelector('li') as HTMLLIElement;
-    this.liElement?.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  disconnectedCallback() {
-    this.liElement?.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  private handleKeyDown = (e: KeyboardEvent) => {
+  @Listen('keydown')
+  handleKeyDown(e: KeyboardEvent) {
     if (this.disabled) return;
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       this.handleItemSelect();
     }
-  };
+  }
 
   /**
    * Public method to collapse the submenu if it's expanded
@@ -156,10 +146,10 @@ export class ModusWcMenuItem {
     return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
   }
 
-  private getSelectionMode(): 'single' | 'multiple' | undefined {
+  private getSelectionMode() {
     return (
       this.el.closest('modus-wc-menu') as HTMLElement & {
-        selectionMode?: 'single' | 'multiple';
+        selectionMode?: SelectionMode;
       }
     )?.selectionMode;
   }

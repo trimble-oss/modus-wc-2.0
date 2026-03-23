@@ -18,6 +18,7 @@ const meta: Meta<MenuArgs> = {
   component: 'modus-wc-menu',
   args: {
     orientation: 'vertical',
+    'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
@@ -126,12 +127,12 @@ export const MultiSelect: Story = {
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 4"
-    value="3"
+    value="4"
     bordered="true"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 5"
-    value="3"
+    value="5"
     sub-label="Menu Item 5 Sub-label"
   ></modus-wc-menu-item>
 </modus-wc-menu>

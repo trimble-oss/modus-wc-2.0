@@ -43,9 +43,9 @@ describe('modus-wc-menu', () => {
 
     const menu = page.root!.querySelector('ul');
 
-    // Simulate focusout by dispatching the event
     const focusoutEvent = new FocusEvent('focusout', {
-      relatedTarget: document.body, // Focus moving outside the menu
+      bubbles: true,
+      relatedTarget: document.body,
     });
 
     menu?.dispatchEvent(focusoutEvent);
@@ -230,55 +230,6 @@ describe('modus-wc-menu', () => {
     await page.waitForChanges();
 
     expect(focusSpy).toHaveBeenCalled();
-  });
-
-  it('should attach and detach event listeners on lifecycle', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcMenu, ModusWcMenuItem],
-      html: `
-        <modus-wc-menu aria-label="Test menu">
-          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
-        </modus-wc-menu>
-      `,
-    });
-
-    const ul = page.root!.querySelector('ul') as HTMLUListElement;
-    const addSpy = jest.spyOn(ul, 'addEventListener');
-    const removeSpy = jest.spyOn(ul, 'removeEventListener');
-
-    // Re-trigger componentDidLoad manually
-    page.rootInstance.componentDidLoad();
-    expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
-    expect(addSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
-
-    // Trigger disconnectedCallback
-    page.rootInstance.disconnectedCallback();
-    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
-    expect(removeSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
-  });
-
-  it('should handle disconnectedCallback when ulElement is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcMenu],
-      html: '<modus-wc-menu aria-label="Test menu"></modus-wc-menu>',
-    });
-
-    const instance = page.rootInstance;
-    instance['ulElement'] = undefined;
-
-    expect(() => instance.disconnectedCallback()).not.toThrow();
-  });
-
-  it('should handle componentDidLoad when ul is not found', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcMenu],
-      html: '<modus-wc-menu aria-label="Test menu"></modus-wc-menu>',
-    });
-
-    const instance = page.rootInstance;
-    jest.spyOn(instance.el, 'querySelector').mockReturnValue(null);
-
-    expect(() => instance.componentDidLoad()).not.toThrow();
   });
 
   it('should handle ArrowDown when no element is focused', async () => {

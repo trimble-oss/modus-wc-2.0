@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
@@ -49,27 +50,13 @@ export class ModusWcMenu {
   /** Event emitted when the menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
-  private ulElement?: HTMLUListElement;
-
   componentWillLoad() {
-    // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Menu';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-  }
-
-  componentDidLoad() {
-    this.ulElement = this.el.querySelector('ul') as HTMLUListElement;
-    this.ulElement?.addEventListener('keydown', this.handleKeyDown);
-    this.ulElement?.addEventListener('focusout', this.handleFocusout);
-  }
-
-  disconnectedCallback() {
-    this.ulElement?.removeEventListener('keydown', this.handleKeyDown);
-    this.ulElement?.removeEventListener('focusout', this.handleFocusout);
   }
 
   private getClasses(): string {
@@ -102,7 +89,8 @@ export class ModusWcMenu {
     ) as HTMLElement[];
   }
 
-  private handleKeyDown = (e: KeyboardEvent) => {
+  @Listen('keydown')
+  handleKeyDown(e: KeyboardEvent) {
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
 
     e.preventDefault();
@@ -131,20 +119,18 @@ export class ModusWcMenu {
     if (nextLi) {
       nextLi.focus();
     }
-  };
+  }
 
-  private handleFocusout = (e: FocusEvent) => {
-    // Check if the new focus target is still within this menu
+  @Listen('focusout')
+  handleFocusout(e: FocusEvent) {
     if (!this.el.contains(e.relatedTarget as Node)) {
-      // Focus has left the menu entirely
       this.menuFocusout.emit(e);
 
-      // Stop propagation for submenus to prevent double emission
       if (this.isSubMenu) {
         e.stopPropagation();
       }
     }
-  };
+  }
 
   private getMenuRole = (): string =>
     this.orientation === 'horizontal' ? 'menubar' : 'menu';
