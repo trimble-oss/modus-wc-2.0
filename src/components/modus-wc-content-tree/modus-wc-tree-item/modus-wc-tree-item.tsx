@@ -52,13 +52,13 @@ export interface ITreeItemElement extends HTMLElement {
   inlineLabelEdit?: boolean;
   itemsReordering?: boolean;
   hasSubtree?: boolean;
-  isIndeterminate?: boolean;
   disabled?: boolean;
   lazyLoading?: boolean;
   label: string;
   customClass?: string;
   treeItemActions?: ITreeItemActions[];
   size?: DaisySize;
+  setIndeterminateState(indeterminate: boolean): Promise<void>;
   collapseSubTree(): Promise<void>;
   expandSubTree(): Promise<void>;
 }
@@ -208,6 +208,15 @@ export class ModusWcTreeItem {
     return Promise.resolve();
   }
 
+  /**
+   * Public method to set the checkbox indeterminate state.
+   */
+  @Method()
+  setIndeterminateState(indeterminate: boolean): Promise<void> {
+    this.isIndeterminate = indeterminate;
+    return Promise.resolve();
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-tree-item'];
 
@@ -329,7 +338,9 @@ export class ModusWcTreeItem {
       if (!item.checkbox) return;
 
       item.checked = selected;
-      item.isIndeterminate = false;
+      if (typeof item.setIndeterminateState === 'function') {
+        void item.setIndeterminateState(false);
+      }
 
       const checkbox = item.querySelector('modus-wc-checkbox');
       if (checkbox) {

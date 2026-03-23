@@ -61,6 +61,22 @@ Type: `Promise<void>`
 
 
 
+### `setIndeterminateState(indeterminate: boolean) => Promise<void>`
+
+Public method to set the checkbox indeterminate state.
+
+#### Parameters
+
+| Name            | Type      | Description |
+| --------------- | --------- | ----------- |
+| `indeterminate` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 

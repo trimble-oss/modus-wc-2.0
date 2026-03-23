@@ -79,13 +79,13 @@ modus-wc-tree-actions {
   }
 
   .modus-wc-tree-delete-confirmation-title {
-    color: var(--modus-wc-color-base-content-hight-contrast);
+    color: var(--modus-wc-color-base-content-high-contrast);
     font-size: var(--modus-wc-font-size-md);
     font-weight: 700;
   }
 
   .modus-wc-tree-delete-confirmation-text {
-    color: var(--modus-wc-color-base-content-hight-contrast);
+    color: var(--modus-wc-color-base-content-high-contrast);
     font-size: var(--modus-wc-font-size-sm);
     line-height: 1.5;
   }
@@ -105,48 +105,54 @@ modus-wc-tree-actions {
 [data-theme='modus-classic-dark'],
 [data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
-  .modus-wc-tree-actions-container {
-    .modus-wc-tree-action-button {
-      color: var(--modus-wc-color-base-content);
-
-      &:hover,
-      &:active,
-      &[aria-pressed='true'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-button {
         color: var(--modus-wc-color-base-content);
+
+        &:hover,
+        &:active,
+        &[aria-pressed='true'] {
+          color: var(--modus-wc-color-base-content);
+        }
       }
     }
-  }
 
-  .modus-wc-tree-more-actions-dropdown {
-    background: var(--modus-wc-color-trimble-gray);
-    border-color: var(--modus-wc-color-gray-6);
-  }
+    .modus-wc-tree-more-actions-dropdown {
+      background: var(--modus-wc-color-trimble-gray);
+      border-color: var(--modus-wc-color-gray-6);
+    }
 
-  .modus-wc-tree-dropdown-action {
-    &:hover:not(.disabled) {
-      background-color: var(--modus-wc-color-base-100);
+    .modus-wc-tree-dropdown-action {
+      &:hover:not(.disabled) {
+        background-color: var(--modus-wc-color-base-100);
+      }
     }
   }
 }
 
 [data-theme='modus-classic-dark'] {
-  .modus-wc-tree-actions-container {
-    .modus-wc-tree-action-icon {
-      color: var(--modus-wc-color-base-content);
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
     }
   }
 }
 
 [data-theme='modus-classic-light'],
 [data-theme='connect-light'] {
-  .modus-wc-tree-actions-container {
-    .modus-wc-tree-action-icon {
-      color: var(--modus-wc-color-base-content);
-    }
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
 
-    &:hover {
-      background: transparent;
-      color: var(--modus-wc-color-base-content);
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-base-content);
+      }
     }
   }
 }

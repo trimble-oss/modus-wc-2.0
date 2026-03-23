@@ -30,7 +30,7 @@ modus-wc-tree-item {
 
   .modus-wc-tree-item:focus-visible > .modus-wc-tree-content {
     border-radius: 0;
-    outline: 2px solid #0063a3;
+    outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: 0;
   }
 

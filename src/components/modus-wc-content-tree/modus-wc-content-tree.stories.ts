@@ -1489,6 +1489,7 @@ export const ApiReference: Story = {
 |-----------------|---------------------------|----------------------------|
 | collapseSubTree | \`() => Promise<void>\`   | Collapses the subtree      |
 | expandSubTree   | \`() => Promise<void>\`   | Expands the subtree        |
+| setIndeterminateState | \`(indeterminate: boolean) => Promise<void>\` | Sets checkbox indeterminate state |
 
 ---
 

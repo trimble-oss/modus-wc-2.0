@@ -245,13 +245,13 @@ describe('modus-wc-content-tree', () => {
   it('renders actions when includeActions is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
-      html: '<modus-wc-content-tree></modus-wc-content-tree>',
+      html: '<modus-wc-content-tree include-actions="true"></modus-wc-content-tree>',
     });
 
     const actionsDiv = page.root?.querySelector(
       '.modus-wc-content-tree-actions'
     );
-    expect(actionsDiv).toBeDefined();
+    expect(actionsDiv).not.toBeNull();
   });
 
   it('renders expand/collapse button with "Expand all" aria-label when collapsed', async () => {

@@ -2123,6 +2123,10 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
+          * Public method to set the checkbox indeterminate state.
+         */
+        "setIndeterminateState": (indeterminate: boolean) => Promise<void>;
+        /**
           * The size of the tree item icons and actions.
          */
         "size": DaisySize;

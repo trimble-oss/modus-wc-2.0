@@ -4,7 +4,7 @@ import { ModusWcTreeItem } from './modus-wc-tree-item';
 type ITreeItemTestElement = HTMLElement & {
   checkbox?: boolean;
   checked?: boolean;
-  isIndeterminate?: boolean;
+  setIndeterminateState(indeterminate: boolean): Promise<void>;
   value?: string;
   el?: HTMLElement;
 };
@@ -384,7 +384,7 @@ describe('modus-wc-tree-item', () => {
     expect(instance.isIndeterminate).toBe(false);
   });
 
-  it('updateChildrenSelection updates eligible descendants and checkbox attrs', async () => {
+  it('updateChildrenSelection updates eligible descendants and clears indeterminate via API', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item label="Parent" value="p1"></modus-wc-tree-item>',
@@ -397,21 +397,29 @@ describe('modus-wc-tree-item', () => {
 
     const submenu = document.createElement('div');
     submenu.className = 'modus-wc-tree-dropdown';
+    const clearIndeterminateSpy = jest.spyOn(
+      ModusWcTreeItem.prototype as unknown as {
+        setIndeterminateState: (indeterminate: boolean) => Promise<void>;
+      },
+      'setIndeterminateState'
+    );
     const child = document.createElement(
       'modus-wc-tree-item'
     ) as ITreeItemTestElement;
     child.checkbox = true;
     child.checked = false;
-    child.isIndeterminate = true;
     const childCheckbox = document.createElement('modus-wc-checkbox');
     child.appendChild(childCheckbox);
     submenu.appendChild(child);
     (page.root as HTMLElement).appendChild(submenu);
 
     instance.updateChildrenSelection(true);
+    await page.waitForChanges();
+
     expect(child.checked).toBe(true);
-    expect(child.isIndeterminate).toBe(false);
+    expect(clearIndeterminateSpy).toHaveBeenCalledWith(false);
     expect(childCheckbox.getAttribute('value')).toBe('true');
+    clearIndeterminateSpy.mockRestore();
   });
 
   it('handleCheckboxClick emits selected values from root tree view', async () => {
