@@ -910,20 +910,17 @@ describe('modus-wc-menu-item', () => {
         `,
       });
 
-      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const menuItem = page.doc.querySelector(
+        'modus-wc-menu-item'
+      ) as HTMLElement;
       const button = menuItem.querySelector('button') as HTMLButtonElement;
 
       button.click();
       await page.waitForChanges();
 
-      const instance = (menuItem as unknown as { __instance: ModusWcMenuItem }).__instance ?? page.rootInstance;
-      const menuItemInstances = Array.from(page.doc.querySelectorAll('modus-wc-menu-item'));
-      const targetEl = menuItemInstances[0];
-      const targetInstance = (targetEl as any).__stencil_instance ?? (targetEl as any).__instance;
-
       mutationCallback!(
         [{ attributeName: 'selection-mode' } as MutationRecord],
-        {} as MutationObserver,
+        {} as MutationObserver
       );
       await page.waitForChanges();
 
@@ -999,7 +996,7 @@ describe('modus-wc-menu-item', () => {
 
       mutationCallback!(
         [{ attributeName: 'selection-mode' } as MutationRecord],
-        {} as MutationObserver,
+        {} as MutationObserver
       );
       await page.waitForChanges();
 
@@ -1026,14 +1023,16 @@ describe('modus-wc-menu-item', () => {
         `,
       });
 
-      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const menuItem = page.doc.querySelector(
+        'modus-wc-menu-item'
+      ) as HTMLElement;
       const li = menuItem.querySelector('li') as HTMLLIElement;
 
       expect(li.classList.contains('modus-wc-menu-item-selected')).toBeTruthy();
 
       mutationCallback!(
         [{ attributeName: 'orientation' } as MutationRecord],
-        {} as MutationObserver,
+        {} as MutationObserver
       );
       await page.waitForChanges();
 
