@@ -2929,6 +2929,36 @@ describe('modus-wc-date', () => {
     }
   });
 
+  it('should fall back to en-US locale when Intl.DateTimeFormat throws for an invalid locale', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Invalid locale fallback test" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const originalLang = document.documentElement.lang;
+    const originalIntl = globalThis.Intl;
+    const OriginalDateTimeFormat = Intl.DateTimeFormat;
+
+    document.documentElement.lang = 'invalid-locale';
+    globalThis.Intl = {
+      ...originalIntl,
+      DateTimeFormat: function (locale: string) {
+        if (locale === 'invalid-locale') {
+          throw new RangeError('Incorrect locale information provided');
+        }
+        return new OriginalDateTimeFormat(locale);
+      },
+    } as typeof Intl;
+
+    component.componentWillLoad();
+
+    expect(component['locale']).toBe('en-US');
+
+    document.documentElement.lang = originalLang;
+    globalThis.Intl = originalIntl;
+  });
+
   it('should reinitialize calendar when weekStartDay changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],

@@ -269,8 +269,13 @@ export class ModusWcDate {
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
-    this.locale =
-      document.documentElement.lang || navigator.language || 'en-US';
+    try {
+      this.locale =
+        document.documentElement.lang || navigator.language || 'en-US';
+      new Intl.DateTimeFormat(this.locale);
+    } catch {
+      this.locale = 'en-US';
+    }
 
     if (!this.format) {
       this.format = this.getLocaleFormatGuide();
