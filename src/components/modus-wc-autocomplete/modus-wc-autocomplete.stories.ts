@@ -3,8 +3,12 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { IAutocompleteItem, IAutocompleteNoResults } from '../types';
-import { ModusSize } from '../types';
+import {
+  AutocompleteTypes,
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+  ModusSize,
+} from '../types';
 
 // Updated items array includes an optional "focused" property.
 const items: IAutocompleteItem[] = [
@@ -143,6 +147,7 @@ const items: IAutocompleteItem[] = [
 
 interface AutocompleteArgs {
   visibleItems: IAutocompleteItem[];
+  'auto-complete'?: AutocompleteTypes;
   bordered?: boolean;
   'custom-class'?: string;
   'debounce-ms'?: number;
@@ -179,6 +184,7 @@ const meta: Meta<AutocompleteArgs> = {
   title: 'Components/Forms/Autocomplete',
   component: 'modus-wc-autocomplete',
   args: {
+    'auto-complete': undefined,
     bordered: true,
     'debounce-ms': 300,
     disabled: false,
@@ -202,6 +208,9 @@ const meta: Meta<AutocompleteArgs> = {
     value: '',
   },
   argTypes: {
+    'auto-complete': {
+      control: { type: 'text' },
+    },
     items: {
       description: 'Array of items for the autocomplete component',
       table: {
@@ -431,6 +440,7 @@ const Template: Story = {
 </style>
 <modus-wc-autocomplete
   aria-label="Fruit autocomplete"
+  auto-complete=${ifDefined(args['auto-complete'])}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}

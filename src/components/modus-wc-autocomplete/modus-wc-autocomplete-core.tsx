@@ -2,6 +2,7 @@ import { Fragment, h, JSX } from '@stencil/core';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import {
+  AutocompleteTypes,
   IAutocompleteItem,
   IAutocompleteNoResults,
   IInputFeedbackProp,
@@ -703,6 +704,7 @@ export function renderMoreChipsIndicator(
 }
 
 interface RenderInputParams {
+  autoComplete?: AutocompleteTypes;
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
@@ -729,6 +731,7 @@ interface RenderInputParams {
 export function renderInput(params: RenderInputParams): JSX.Element {
   return (
     <modus-wc-text-input
+      autoComplete={params.autoComplete}
       bordered={params.bordered && !params.multiSelect}
       customClass={params.customClass}
       disabled={params.disabled}
