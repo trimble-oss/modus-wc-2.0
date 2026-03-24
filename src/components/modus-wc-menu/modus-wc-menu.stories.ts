@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize, Orientation, SelectionMode } from '../types';
 
@@ -18,6 +19,7 @@ const meta: Meta<MenuArgs> = {
   component: 'modus-wc-menu',
   args: {
     orientation: 'vertical',
+    'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
@@ -37,7 +39,7 @@ const meta: Meta<MenuArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['menuFocusout'],
+      handles: ['menuFocusout', 'menuSelectionChange', 'itemSelect'],
     },
   },
 };
@@ -105,6 +107,19 @@ export const MultiSelect: Story = {
     'selection-mode': 'multiple',
   },
   render: (args) => {
+    let outputEl: Element | undefined;
+
+    const handleSelectionChange = (
+      e: CustomEvent<{ selectedItems: HTMLElement[] }>
+    ) => {
+      if (!outputEl) return;
+      const { selectedItems } = e.detail;
+      outputEl.textContent =
+        selectedItems.length > 0
+          ? `Selected: ${selectedItems.map((i) => i.getAttribute('value')).join(', ')}`
+          : 'Selected: none';
+    };
+
     // prettier-ignore
     return html`
 <modus-wc-menu
@@ -114,6 +129,7 @@ export const MultiSelect: Story = {
   orientation=${ifDefined(args.orientation)}
   selection-mode=${ifDefined(args['selection-mode'])}
   size=${ifDefined(args.size)}
+  @menuSelectionChange=${handleSelectionChange}
 >
   <modus-wc-menu-item
     label="Menu Item 1"
@@ -135,6 +151,7 @@ export const MultiSelect: Story = {
     sub-label="Menu Item 5 Sub-label"
   ></modus-wc-menu-item>
 </modus-wc-menu>
+<p ${ref((el) => { outputEl = el; })} style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--modus-wc-color-gray-6);">Selected: none</p>
     `;
   },
 };

@@ -380,6 +380,149 @@ describe('modus-wc-menu', () => {
     expect(secondItem.selected).toBe(true);
   });
 
+  it('should emit menuSelectionChange with the selected item when an item is checked in multiple mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+    const { selectedItems } = emitSpy.mock.calls[0][0] as {
+      selectedItems: HTMLElement[];
+    };
+    expect(selectedItems).toHaveLength(1);
+    expect(selectedItems[0]).toBe(menuItems[0]);
+  });
+
+  it('should accumulate all selected items in the menuSelectionChange payload', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 3" value="3"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    menuItems[2].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenCalledTimes(2);
+
+    const { selectedItems } = emitSpy.mock.calls[1][0] as {
+      selectedItems: HTMLElement[];
+    };
+    expect(selectedItems).toHaveLength(2);
+    expect(selectedItems[0]).toBe(menuItems[0]);
+    expect(selectedItems[1]).toBe(menuItems[2]);
+  });
+
+  it('should remove an item from menuSelectionChange payload when it is unchecked in multiple mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+
+    // Check both items
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+    menuItems[1].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    // Uncheck the first item
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenCalledTimes(3);
+    const { selectedItems } = emitSpy.mock.calls[2][0] as {
+      selectedItems: HTMLElement[];
+    };
+    expect(selectedItems).toHaveLength(1);
+    expect(selectedItems[0]).toBe(menuItems[1]);
+  });
+
+  it('should not emit menuSelectionChange when selectionMode is single', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should clear selected items when selectionMode changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="multiple">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+
+    const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+    menuItems[0].querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+    expect(component.selectedItems).toHaveLength(1);
+
+    // Change selection mode — should clear internal tracking
+    page.root!.setAttribute('selection-mode', 'single');
+    await page.waitForChanges();
+
+    expect(component.selectedItems).toHaveLength(0);
+  });
+
   it('should stop propagation when focusout occurs on submenu', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],

@@ -7,6 +7,7 @@ import {
   Listen,
   Prop,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
@@ -25,6 +26,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcMenu {
   private inheritedAttributes: Attributes = {};
+  private selectedItems: HTMLElement[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -39,7 +41,12 @@ export class ModusWcMenu {
   @Prop() orientation?: Orientation = 'vertical';
 
   /** The selection mode of the menu. */
-  @Prop({ reflect: true }) selectionMode?: SelectionMode;
+  @Prop({ reflect: true }) selectionMode?: SelectionMode = 'single';
+
+  @Watch('selectionMode')
+  onSelectionModeChange() {
+    this.selectedItems = [];
+  }
 
   /** The size of the menu. */
   @Prop() size?: ModusSize = 'md';
@@ -49,6 +56,11 @@ export class ModusWcMenu {
 
   /** Event emitted when the menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
+
+  /** Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements. */
+  @StencilEvent() menuSelectionChange!: EventEmitter<{
+    selectedItems: HTMLElement[];
+  }>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -87,6 +99,22 @@ export class ModusWcMenu {
     return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).filter(
       (item) => item.closest('modus-wc-menu') === this.el
     ) as HTMLElement[];
+  }
+
+  @Listen('itemSelect')
+  handleItemSelect(e: CustomEvent<{ value: string; selected?: boolean }>) {
+    if (this.selectionMode !== 'multiple') return;
+
+    const item = e.target as HTMLElement;
+    const isCurrentlySelected = this.selectedItems.includes(item);
+
+    if (e.detail.selected && !isCurrentlySelected) {
+      this.selectedItems = [...this.selectedItems, item];
+    } else if (!e.detail.selected && isCurrentlySelected) {
+      this.selectedItems = this.selectedItems.filter((i) => i !== item);
+    }
+
+    this.menuSelectionChange.emit({ selectedItems: this.selectedItems });
   }
 
   @Listen('keydown')
