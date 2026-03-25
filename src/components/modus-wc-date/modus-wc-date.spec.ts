@@ -3251,22 +3251,42 @@ describe('modus-wc-date', () => {
     expect(spy.mock.calls[0][0].detail.target.value).toBe('');
   });
 
-  it('should not override input value during render when hasFocus is true and inputRef is null', async () => {
+  it('should preserve typed value during re-render when hasFocus is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="hasFocus render test" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+
+    // Simulate user focusing and partially typing a date
+    input.dispatchEvent(new FocusEvent('focus'));
+    input.value = '12/25';
+    await page.waitForChanges();
+
+    // Trigger a @State re-render while hasFocus is true — the render uses
+    // this.inputRef.value to preserve the in-progress typed value.
+    component['showCalendar'] = true;
+    await page.waitForChanges();
+
+    expect(input.value).toBe('12/25');
+  });
+
+  it('should render empty string when hasFocus is true and inputRef is null', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
       html: '<modus-wc-date aria-label="Null inputRef test" value="2025-06-15"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    const displayedValue = input.value;
-
     component['hasFocus'] = true;
     component['inputRef'] = undefined;
+    // Trigger a @State re-render so the render function reads this.inputRef?.value ?? ''
+    // with inputRef=undefined, covering the ?? '' fallback branch.
+    component['showCalendar'] = true;
     await page.waitForChanges();
 
-    // When hasFocus is true, render uses value={undefined} so Stencil does not
-    // overwrite the live DOM input — the display value is preserved as-is.
-    expect(input.value).toBe(displayedValue);
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    expect(input.value).toBe('');
   });
 });
