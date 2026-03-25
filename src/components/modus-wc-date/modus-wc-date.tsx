@@ -115,13 +115,15 @@ export class ModusWcDate {
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
 
-  /**
-   * The date format used for both display and user input. Automatically derived from the
-   * user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric
-   * separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`).
-   * Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
-   */
-  @Prop({ mutable: true }) format?: string;
+  /** The date format for display and input. */
+  @Prop() format?:
+    | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
+    | 'MMM DD, YYYY';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -199,15 +201,10 @@ export class ModusWcDate {
       if (isISO) {
         const parsed = this.parseISODate(newValue);
         if (parsed) {
-          const clamped = this.clampDate(parsed);
-          const formatted = this.formatISODate(clamped);
-          if (newValue !== formatted) {
-            // Value was outside min/max bounds — normalize it (triggers another handleValueChange)
-            this.value = formatted;
-            return;
-          }
+          // Clamp for display only — do not write back to this.value to avoid
+          // re-triggering this watcher and risking a loop in controlled-input patterns.
           if (this.inputRef) {
-            this.inputRef.value = this.formatForDisplay(clamped);
+            this.inputRef.value = this.formatForDisplay(this.clampDate(parsed));
           }
         } else if (this.inputRef) {
           this.inputRef.value = newValue;
@@ -218,22 +215,18 @@ export class ModusWcDate {
       return;
     }
 
+    // Prop-driven change (no focus). Parse and update the display.
+    // The parent is responsible for providing a valid value; we clamp only
+    // the display here and never write back to this.value from the watcher.
     const parsed = this.parseISODate(newValue);
     if (!parsed) {
-      if (this.value) {
-        this.value = '';
+      if (this.inputRef) {
+        this.inputRef.value = '';
       }
       return;
     }
 
     const clamped = this.clampDate(parsed);
-    const formatted = this.formatISODate(clamped);
-
-    if (newValue !== formatted) {
-      this.value = formatted;
-      return;
-    }
-
     if (this.inputRef) {
       this.inputRef.value = this.formatForDisplay(clamped);
       const event = new Event('input', { bubbles: true });
@@ -275,10 +268,6 @@ export class ModusWcDate {
       new Intl.DateTimeFormat(this.locale);
     } catch {
       this.locale = 'en-US';
-    }
-
-    if (!this.format) {
-      this.format = this.getLocaleFormatGuide();
     }
 
     // Initialize calendar with the correct first day of week
@@ -959,6 +948,10 @@ export class ModusWcDate {
     return date1.getDate() - date2.getDate();
   }
 
+  private get effectiveFormat(): string {
+    return this.format || this.getLocaleFormatGuide();
+  }
+
   /** Generates a localized guide for the placeholder (e.g., "mm/dd/yyyy") */
   private getLocaleFormatGuide(): string {
     const options: Intl.DateTimeFormatOptions = {
@@ -1010,7 +1003,7 @@ export class ModusWcDate {
       return undefined;
     }
 
-    const guide = this.format || this.getLocaleFormatGuide();
+    const guide = this.effectiveFormat;
 
     // Handle abbreviated month name format (e.g. "MMM DD, YYYY" → "Oct 15, 2025")
     if (guide.includes('MMM')) {
@@ -1086,21 +1079,22 @@ export class ModusWcDate {
 
   /** Formats date for display in the input using the selected format pattern */
   private formatForDisplay(date: Date): string {
-    const fmt = this.format || this.getLocaleFormatGuide();
+    const fmt = this.effectiveFormat;
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = String(date.getFullYear());
+    const monthName = MONTH_SHORT_NAMES[date.getMonth()];
 
-    // Handle abbreviated month name format (e.g. "MMM DD, YYYY" → "Oct 15, 2025")
-    if (fmt.includes('MMM')) {
-      const monthName = MONTH_SHORT_NAMES[date.getMonth()];
-      return fmt
-        .replace('YYYY', year)
-        .replace('MMM', monthName)
-        .replace('DD', day);
-    }
+    const map: Record<string, string> = {
+      yyyy: year,
+      YYYY: year,
+      mm: month,
+      dd: day,
+      DD: day,
+      MMM: monthName,
+    };
 
-    return fmt.replace('yyyy', year).replace('mm', month).replace('dd', day);
+    return fmt.replace(/yyyy|YYYY|mm|dd|DD|MMM/g, (matched) => map[matched]);
   }
 
   private cloneDate(date: Date): Date {
@@ -1239,7 +1233,7 @@ export class ModusWcDate {
             onFocus={this.handleFocus}
             onInput={this.handleInput}
             onKeyDown={this.handleInputKeyDown}
-            placeholder={this.format}
+            placeholder={this.effectiveFormat}
             readonly={this.readOnly}
             required={this.required}
             tabIndex={this.inputTabIndex}

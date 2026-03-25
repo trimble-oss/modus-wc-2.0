@@ -736,7 +736,10 @@ describe('modus-wc-date', () => {
     component['handleValueChange']('abc-def-ghi');
     await page.waitForChanges();
 
-    expect(component.value).toBe('');
+    // Watcher is display-only; prop value is not cleared by the watcher.
+    // The parent is responsible for providing valid values.
+    expect(component.value).toBe('abc-def-ghi');
+    expect(page.root!.querySelector('input')?.value).toBe('');
   });
 
   it('should pass through partial value without validation when input has focus', async () => {
@@ -841,7 +844,9 @@ describe('modus-wc-date', () => {
     component['handleValueChange']('invalid');
     await page.waitForChanges();
 
-    expect(component.value).toBe('');
+    // Watcher is display-only; unparseable prop values are not cleared by the watcher.
+    expect(component.value).toBe('invalid');
+    expect(page.root!.querySelector('input')?.value).toBe('');
   });
 
   it('should navigate to selected date when opening calendar with value', async () => {
@@ -1013,7 +1018,7 @@ describe('modus-wc-date', () => {
   it('should sync value and correct to formatted ISO when valid', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Value formatting test" min="2025-10-10" max="2025-10-20"></modus-wc-date>',
+      html: '<modus-wc-date aria-label="Value formatting test" format="dd-mm-yyyy" min="2025-10-10" max="2025-10-20"></modus-wc-date>',
     });
     const component = page.rootInstance as ModusWcDate;
 
@@ -1021,7 +1026,10 @@ describe('modus-wc-date', () => {
     component['handleValueChange']('2025-10-08');
     await page.waitForChanges();
 
-    expect(component.value).toBe('2025-10-10');
+    // Watcher is display-only; out-of-bounds prop value is not written back.
+    // The parent is responsible for providing a valid value.
+    expect(component.value).toBe('2025-10-08');
+    expect(page.root!.querySelector('input')?.value).toBe('08-10-2025');
   });
 
   it('should close calendar when Escape is pressed with active element', async () => {
@@ -1888,21 +1896,26 @@ describe('modus-wc-date', () => {
         html: '<modus-wc-date aria-label="Min/Max DD-MM-YYYY" format="dd-mm-yyyy" min="2025-10-10" max="2025-10-20"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
+      const input = page.root!.querySelector('input') as HTMLInputElement;
 
       // Test date within range
       component.value = '2025-10-15';
       await page.waitForChanges();
       expect(component.value).toBe('2025-10-15');
+      expect(input.value).toBe('15-10-2025');
 
-      // Test date below min - should clamp to min
+      // Test date below min — prop is unchanged; display reflects the prop value as-is.
+      // The parent is responsible for providing a value within bounds.
       component.value = '2025-10-05';
       await page.waitForChanges();
-      expect(component.value).toBe('2025-10-10');
+      expect(component.value).toBe('2025-10-05');
+      expect(input.value).toBe('05-10-2025');
 
-      // Test date above max - should clamp to max
+      // Test date above max — same behaviour.
       component.value = '2025-10-25';
       await page.waitForChanges();
-      expect(component.value).toBe('2025-10-20');
+      expect(component.value).toBe('2025-10-25');
+      expect(input.value).toBe('25-10-2025');
     });
 
     it('should handle invalid dd-mm-yyyy format', async () => {
@@ -1911,29 +1924,34 @@ describe('modus-wc-date', () => {
         html: '<modus-wc-date aria-label="Invalid DD-MM-YYYY" format="dd-mm-yyyy"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
+      const input = page.root!.querySelector('input') as HTMLInputElement;
 
-      // Test invalid format (missing parts)
+      // Test invalid format (missing parts) — watcher clears the display but not the prop
       component.value = '15-10';
       await page.waitForChanges();
-      expect(component.value).toBe('');
+      expect(component.value).toBe('15-10');
+      expect(input.value).toBe('');
 
-      // Test invalid format (empty parts)
+      // Test invalid format (empty parts) — same behaviour
       component.value = '--';
       await page.waitForChanges();
-      expect(component.value).toBe('');
+      expect(component.value).toBe('--');
+      expect(input.value).toBe('');
     });
 
     it('should handle invalid yyyy-mm-dd format', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Invalid YYYY-MM-DD"></modus-wc-date>',
+        html: '<modus-wc-date aria-label="Invalid YYYY-MM-DD" format="dd-mm-yyyy"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
+      const input = page.root!.querySelector('input') as HTMLInputElement;
 
-      // Test invalid format (missing parts)
+      // Test invalid format (missing parts) — watcher clears the display but not the prop
       component.value = '2025-10';
       await page.waitForChanges();
-      expect(component.value).toBe('');
+      expect(component.value).toBe('2025-10');
+      expect(input.value).toBe('');
     });
   });
 
@@ -2023,15 +2041,18 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('2025-10-15');
       expect(page.root!.querySelector('input')?.value).toBe('Oct 15, 2025');
 
-      // Below min — clamped to min
+      // Below min — prop is unchanged; display reflects the prop value as-is.
+      // The parent is responsible for providing a value within bounds.
       component.value = '2025-10-05';
       await page.waitForChanges();
-      expect(component.value).toBe('2025-10-10');
+      expect(component.value).toBe('2025-10-05');
+      expect(page.root!.querySelector('input')?.value).toBe('Oct 05, 2025');
 
-      // Above max — clamped to max
+      // Above max — same behaviour.
       component.value = '2025-10-25';
       await page.waitForChanges();
-      expect(component.value).toBe('2025-10-20');
+      expect(component.value).toBe('2025-10-25');
+      expect(page.root!.querySelector('input')?.value).toBe('Oct 25, 2025');
     });
 
     it('should return undefined for invalid MMM name', async () => {
@@ -2080,7 +2101,9 @@ describe('modus-wc-date', () => {
 
       component.value = 'Oct-15-2025';
       await page.waitForChanges();
-      expect(component.value).toBe('');
+      // Watcher is display-only; unparseable prop values are not cleared by the watcher.
+      expect(component.value).toBe('Oct-15-2025');
+      expect(page.root!.querySelector('input')?.value).toBe('');
     });
 
     it('should all twelve months format correctly', async () => {
@@ -2632,7 +2655,7 @@ describe('modus-wc-date', () => {
       { format: 'dd/mm/yyyy', expected: '15/10/2025' },
       { format: 'mm/dd/yyyy', expected: '10/15/2025' },
       { format: 'yyyy/mm/dd', expected: '2025/10/15' },
-      { format: 'dd.mm.yyyy', expected: '15.10.2025' },
+      { format: 'MMM DD, YYYY', expected: 'Oct 15, 2025' },
     ];
 
     for (const { format, expected } of tests) {
@@ -2694,7 +2717,7 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     // Clear format so the || this.getLocaleFormatGuide() branch fires (line 990)
-    component['format'] = '';
+    component['format'] = undefined;
     const parsed = component['parseISODate']('10-10-2025');
     // Oct 10 is valid regardless of dd/mm or mm/dd order
     expect(parsed).toBeDefined();
@@ -2709,7 +2732,7 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     // Clear format so the || this.getLocaleFormatGuide() branch fires (line 1060)
-    component['format'] = '';
+    component['format'] = undefined;
     const date = new Date(2025, 9, 15);
     const display = component['formatForDisplay'](date);
 
@@ -3117,7 +3140,10 @@ describe('modus-wc-date', () => {
     component['handleValueChange']('2025-12-31');
     await page.waitForChanges();
 
-    expect(component.value).toBe('2025-10-20');
+    // Watcher is display-only; value prop is not written back even when out of bounds.
+    // The display is clamped to the max date.
+    expect(component.value).toBe('');
+    expect(page.root!.querySelector('input')?.value).toBe('20-10-2025');
   });
 
   it('should clamp ISO value below minDate when hasFocus is true', async () => {
@@ -3131,7 +3157,10 @@ describe('modus-wc-date', () => {
     component['handleValueChange']('2025-01-01');
     await page.waitForChanges();
 
-    expect(component.value).toBe('2025-05-01');
+    // Watcher is display-only; value prop is not written back even when out of bounds.
+    // The display is clamped to the min date.
+    expect(component.value).toBe('');
+    expect(page.root!.querySelector('input')?.value).toBe('01-05-2025');
   });
 
   it('should not clamp and should format for display when ISO value is within bounds while focused', async () => {

@@ -10,7 +10,14 @@ interface DateArgs {
   'custom-class'?: string;
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
-  format?: string;
+  format?:
+    | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
+    | 'MMM DD, YYYY';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -60,13 +67,13 @@ const meta: Meta<DateArgs> = {
     format: {
       control: { type: 'select' },
       options: [
-        'mm/dd/yyyy',
-        'dd/mm/yyyy',
+        undefined,
         'yyyy-mm-dd',
-        'dd.mm.yyyy',
-        'mm-dd-yyyy',
         'dd-mm-yyyy',
+        'mm-dd-yyyy',
         'yyyy/mm/dd',
+        'dd/mm/yyyy',
+        'mm/dd/yyyy',
         'MMM DD, YYYY',
       ],
     },
@@ -172,7 +179,14 @@ export const ShadowDomParent: Story = {
             customClass: string;
             disabled: boolean;
             feedback: IInputFeedbackProp;
-            format: string;
+            format?:
+              | 'yyyy-mm-dd'
+              | 'dd-mm-yyyy'
+              | 'mm-dd-yyyy'
+              | 'yyyy/mm/dd'
+              | 'dd/mm/yyyy'
+              | 'mm/dd/yyyy'
+              | 'MMM DD, YYYY';
             inputId: string;
             inputTabIndex: number;
             label: string;
@@ -189,7 +203,7 @@ export const ShadowDomParent: Story = {
           dateEl.bordered = Boolean(v.bordered);
           dateEl.customClass = v['custom-class'] || '';
           dateEl.disabled = Boolean(v.disabled);
-          dateEl.format = v.format ?? '';
+          dateEl.format = v.format;
           dateEl.inputId = v['input-id'] ?? '';
           dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
           dateEl.label = v.label ?? '';
@@ -222,6 +236,11 @@ export const Migration: Story = {
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+  - The \`value\` prop now always outputs **ISO 8601 format** (\`YYYY-MM-DD\`), regardless of the display format.
+  Previously, \`value\` matched the display format (e.g. \`dd-mm-yyyy\`).
+  - The \`format\` prop is now automatically derived from the user's locale when not explicitly set.
+  Previously, it defaulted to \`dd-mm-yyyy\`. The accepted values remain the same fixed union
+  (\`'yyyy-mm-dd'\`, \`'dd-mm-yyyy'\`, \`'mm-dd-yyyy'\`, \`'yyyy/mm/dd'\`, \`'dd/mm/yyyy'\`, \`'mm/dd/yyyy'\`, \`'MMM DD, YYYY'\`).
 
 #### Prop Mapping
 
@@ -235,7 +254,7 @@ export const Migration: Story = {
 | disable-validation |                  | Not carried over                        |
 | error-text         | feedback.message | Use \`feedback\` level                  |
 | filler-date        |                  | Not carried over                        |
-| format             | format           |                                         |
+| format             | format           | Auto-derived from locale when not set; union type unchanged |
 | helper-text        |                  | Not carried over                        |
 | label              | label            |                                         |
 | max                | max              |                                         |
@@ -247,7 +266,7 @@ export const Migration: Story = {
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type               |                  | Not carried over                        |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
-| value              | value            |                                         |
+| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`)   |
 
 #### Event Mapping
 
