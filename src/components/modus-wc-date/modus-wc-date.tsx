@@ -137,7 +137,7 @@ export class ModusWcDate {
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /** Event emitted when the input value changes. */
+  /** Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
   /** Event emitted when the input gains focus. */
@@ -339,7 +339,12 @@ export class ModusWcDate {
   };
 
   private handleInput = (event: InputEvent) => {
-    this.inputChange.emit(event);
+    const rawValue = (event.target as HTMLInputElement)?.value ?? '';
+    const parsed = this.parseISODate(rawValue);
+    const isoValue = parsed ? this.formatISODate(this.clampDate(parsed)) : '';
+    this.inputChange.emit({
+      target: { value: isoValue },
+    } as unknown as InputEvent);
   };
 
   private handleInputKeyDown = (event: KeyboardEvent) => {
@@ -1238,7 +1243,11 @@ export class ModusWcDate {
             required={this.required}
             tabIndex={this.inputTabIndex}
             type="text"
-            value={this.hasFocus ? undefined : this.inputDisplayValue}
+            value={
+              this.hasFocus
+                ? (this.inputRef?.value ?? '')
+                : this.inputDisplayValue
+            }
             {...this.inheritedAttributes}
           />
           <modus-wc-button

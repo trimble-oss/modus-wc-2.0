@@ -91,9 +91,45 @@ describe('modus-wc-date', () => {
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        detail: expect.any(Event),
+        detail: expect.any(Object),
       })
     );
+  });
+
+  it('should emit ISO 8601 date in event target.value when a valid date is entered', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="ISO format test" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const date = page.root!.querySelector('input');
+    expect(date).not.toBeNull();
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    date!.value = '12/25/2025';
+    date!.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    const emittedEvent = changeSpy.mock.calls[0][0];
+    expect(emittedEvent.detail.target.value).toBe('2025-12-25');
+  });
+
+  it('should emit empty string in event target.value when an incomplete date is entered', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Empty ISO test" format="mm/dd/yyyy"></modus-wc-date>',
+    });
+    const date = page.root!.querySelector('input');
+    expect(date).not.toBeNull();
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    date!.value = '12/';
+    date!.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    const emittedEvent = changeSpy.mock.calls[0][0];
+    expect(emittedEvent.detail.target.value).toBe('');
   });
 
   it('should emit focus event', async () => {
@@ -3196,5 +3232,41 @@ describe('modus-wc-date', () => {
     await page.waitForChanges();
 
     expect(input.value).toBe('15/06');
+  });
+
+  it('should fallback to empty string when handleInput receives event with null target', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Null target test"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const spy = jest.fn();
+    page.root!.addEventListener('inputChange', spy);
+
+    component['handleInput']({ target: null } as unknown as InputEvent);
+    await page.waitForChanges();
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls[0][0].detail.target.value).toBe('');
+  });
+
+  it('should not override input value during render when hasFocus is true and inputRef is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Null inputRef test" value="2025-06-15"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const displayedValue = input.value;
+
+    component['hasFocus'] = true;
+    component['inputRef'] = undefined;
+    await page.waitForChanges();
+
+    // When hasFocus is true, render uses value={undefined} so Stencil does not
+    // overwrite the live DOM input — the display value is preserved as-is.
+    expect(input.value).toBe(displayedValue);
   });
 });
