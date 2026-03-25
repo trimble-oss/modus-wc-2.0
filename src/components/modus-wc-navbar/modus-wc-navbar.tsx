@@ -448,7 +448,7 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            {this.visibility?.logo && (
+            {this.visibility?.logo !== false && (
               <modus-wc-button
                 aria-label={`${accessibleName} logo`}
                 customClass="logo"
