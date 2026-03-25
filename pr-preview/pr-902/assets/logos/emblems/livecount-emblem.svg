@@ -1,8 +1,5 @@
-<svg width="24" height="32" viewBox="12 8 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M18 8L12 11.5532V34.6718L20.997 40L27 36.4499L18 31.1217V8Z" class="logo-emblem-trimble"/>
-<path d="M30 24.0154L36 20.4653L30 16.9121V24.0154Z" class="logo-emblem-trimble"/>
-<path d="M27 12.4699V25.7935L36 31.1217L29.997 34.6718L21 29.3436V16.02L27 12.4699Z" class="logo-emblem-trimble"/>
-
-
-</g></svg>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5 4L7 6.66487V24.0038L13.7477 28L18.25 25.3374L11.5 21.3413V4Z" class="logo-accent"/>
+<path d="M20.5 16.0115L25 13.349L20.5 10.6841V16.0115Z" class="logo-accent"/>
+<path d="M18.25 7.35243V17.3451L25 21.3413L20.4977 24.0038L13.75 20.0077V10.015L18.25 7.35243Z" class="logo-accent"/>
+</svg>
