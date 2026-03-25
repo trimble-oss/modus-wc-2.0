@@ -33,19 +33,19 @@ A customizable content tree component used to display hierarchical data in a tre
 ### Depends on
 
 - [modus-wc-tree-item](modus-wc-tree-item)
+- [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-tree-view](modus-wc-tree-view)
 - [modus-wc-text-input](../modus-wc-text-input)
 - [modus-wc-button](../modus-wc-button)
-- [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-content-tree --> modus-wc-tree-item
+  modus-wc-content-tree --> modus-wc-icon
   modus-wc-content-tree --> modus-wc-tree-view
   modus-wc-content-tree --> modus-wc-text-input
   modus-wc-content-tree --> modus-wc-button
-  modus-wc-content-tree --> modus-wc-icon
   modus-wc-tree-item --> modus-wc-icon
   modus-wc-tree-item --> modus-wc-button
   modus-wc-tree-item --> modus-wc-checkbox

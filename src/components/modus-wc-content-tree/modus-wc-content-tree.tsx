@@ -281,11 +281,15 @@ export class ModusWcContentTree {
           key={item.id}
           label={item.label}
           value={item.id}
+          checkbox={item.checkbox}
           treeItemActions={item.treeItemActions}
           itemsReordering={this.isReorderingEnabled}
           hasSubtree={hasSubtree}
           lazyLoading={isLoading}
         >
+          {item.startIcon && (
+            <modus-wc-icon slot="start-icon" name={item.startIcon}></modus-wc-icon>
+          )}
           {hasChildren && (
             <modus-wc-tree-view isSubList={true}>
               {this.renderTreeItems(item.children!)}

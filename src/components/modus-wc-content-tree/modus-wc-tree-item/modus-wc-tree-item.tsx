@@ -19,6 +19,10 @@ export interface ITreeItemData {
   id: string;
   /** Display label for the tree item */
   label: string;
+  /** If true, renders a checkbox at the start of the tree item. */
+  checkbox?: boolean;
+  /** Optional icon name rendered in the start icon slot. */
+  startIcon?: string;
   /** Optional actions shown in the tree item menu. */
   treeItemActions?: ITreeItemActions[];
   /** Optional nested children items */
