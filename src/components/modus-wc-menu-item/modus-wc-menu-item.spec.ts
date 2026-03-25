@@ -968,7 +968,7 @@ describe('modus-wc-menu-item', () => {
       expect(observeSpy).not.toHaveBeenCalled();
     });
 
-    it('should reset selected to undefined when it has a defined value', async () => {
+    it('should reset selected to false when selection-mode attribute changes', async () => {
       let mutationCallback: MutationCallback;
       globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
         mutationCallback = cb;
@@ -1000,7 +1000,75 @@ describe('modus-wc-menu-item', () => {
       );
       await page.waitForChanges();
 
-      expect(menuItem.selected).toBeUndefined();
+      expect(menuItem.selected).toBe(false);
+    });
+
+    it('should seed _selectionMode from parent menu in componentWillLoad', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const liElement = menuItem.querySelector('li') as HTMLLIElement;
+
+      // role and aria-checked are derived from _selectionMode — if seeded correctly they reflect the parent mode
+      expect(liElement.getAttribute('role')).toBe('menuitemradio');
+      expect(liElement.getAttribute('aria-checked')).toBe('false');
+    });
+
+    it('should update rendered role for all items when selection-mode attribute changes', async () => {
+      let mutationCallbacks: MutationCallback[] = [];
+      globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+        mutationCallbacks.push(cb);
+        return {
+          observe: jest.fn(),
+          disconnect: jest.fn(),
+          takeRecords: jest.fn(),
+        };
+      }) as unknown as typeof MutationObserver;
+
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+
+      // Select first item — makes item 2 have selected=false via deselectSiblings
+      (menuItems[0] as HTMLElement).querySelector('button')?.click();
+      await page.waitForChanges();
+
+      // Update parent menu's selectionMode prop to simulate a runtime mode change
+      const parentMenu = page.doc.querySelector('modus-wc-menu') as HTMLElement & {
+        selectionMode?: string;
+      };
+      parentMenu.selectionMode = 'multiple';
+
+      // Fire mutation callback for all observed menu items
+      const record = [{ attributeName: 'selection-mode' } as MutationRecord];
+      const observer = {} as MutationObserver;
+      mutationCallbacks.forEach((cb) => cb(record, observer));
+      await page.waitForChanges();
+
+      // Both items must re-render with the new mode's role
+      const li1 = menuItems[0].querySelector('li') as HTMLLIElement;
+      const li2 = menuItems[1].querySelector('li') as HTMLLIElement;
+      expect(li1.getAttribute('role')).toBe('menuitemcheckbox');
+      expect(li2.getAttribute('role')).toBe('menuitemcheckbox');
+
+      // Both selected and checked states must be cleared
+      expect((menuItems[0] as HTMLElement & { selected?: boolean }).selected).toBe(false);
+      expect((menuItems[1] as HTMLElement & { selected?: boolean }).selected).toBe(false);
     });
 
     it('should ignore mutations for non-selection-mode attributes', async () => {

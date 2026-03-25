@@ -76,6 +76,8 @@ export class ModusWcMenuItem {
 
   @State() checked: boolean = false;
 
+  @State() private _selectionMode?: SelectionMode;
+
   /** Event emitted when a menu item is selected. */
   @StencilEvent() itemSelect!: EventEmitter<{
     value: string;
@@ -85,12 +87,14 @@ export class ModusWcMenuItem {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this._selectionMode = this.resolveSelectionMode();
   }
 
   componentDidLoad() {
     if (typeof MutationObserver === 'undefined') return;
 
     const parentMenu = this.el.closest('modus-wc-menu');
+
     if (parentMenu) {
       this.parentMenuObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
@@ -109,7 +113,8 @@ export class ModusWcMenuItem {
   }
 
   private handleSelectionModeChange(): void {
-    this.selected = this.selected === undefined ? false : undefined;
+    this._selectionMode = this.resolveSelectionMode();
+    this.selected = false;
     this.checked = false;
   }
 
@@ -277,7 +282,7 @@ export class ModusWcMenuItem {
   };
 
   render() {
-    const mode = this.resolveSelectionMode();
+    const mode = this._selectionMode;
     const isMulti = mode === 'multiple';
 
     return (
