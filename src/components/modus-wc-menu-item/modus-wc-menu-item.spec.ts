@@ -1013,7 +1013,9 @@ describe('modus-wc-menu-item', () => {
         `,
       });
 
-      const menuItem = page.doc.querySelector('modus-wc-menu-item') as HTMLElement;
+      const menuItem = page.doc.querySelector(
+        'modus-wc-menu-item'
+      ) as HTMLElement;
       const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
       // role and aria-checked are derived from _selectionMode — if seeded correctly they reflect the parent mode
@@ -1049,7 +1051,9 @@ describe('modus-wc-menu-item', () => {
       await page.waitForChanges();
 
       // Update parent menu's selectionMode prop to simulate a runtime mode change
-      const parentMenu = page.doc.querySelector('modus-wc-menu') as HTMLElement & {
+      const parentMenu = page.doc.querySelector(
+        'modus-wc-menu'
+      ) as HTMLElement & {
         selectionMode?: string;
       };
       parentMenu.selectionMode = 'multiple';
@@ -1067,8 +1071,12 @@ describe('modus-wc-menu-item', () => {
       expect(li2.getAttribute('role')).toBe('menuitemcheckbox');
 
       // Both selected and checked states must be cleared
-      expect((menuItems[0] as HTMLElement & { selected?: boolean }).selected).toBe(false);
-      expect((menuItems[1] as HTMLElement & { selected?: boolean }).selected).toBe(false);
+      expect(
+        (menuItems[0] as HTMLElement & { selected?: boolean }).selected
+      ).toBe(false);
+      expect(
+        (menuItems[1] as HTMLElement & { selected?: boolean }).selected
+      ).toBe(false);
     });
 
     it('should ignore mutations for non-selection-mode attributes', async () => {
