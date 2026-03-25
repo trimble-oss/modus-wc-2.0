@@ -67,6 +67,7 @@ export class ModusWcLogo {
   @Prop() alt?: string;
 
   @State() private svgContent: string = '';
+  @State() private emblemSvgContent: string = '';
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -83,10 +84,26 @@ export class ModusWcLogo {
     const assetPath = this.getAssetFilePath();
     if (!assetPath) {
       this.svgContent = '';
+      this.emblemSvgContent = '';
       return;
     }
-    const text = await fetchSvgText(assetPath);
-    this.svgContent = text;
+    this.svgContent = await fetchSvgText(assetPath);
+
+    const logoKey = this.name.toLowerCase().replace(/\s+/g, '_') as LogoName;
+    const logoInfo = LOGO_VARIANTS[logoKey];
+    if (
+      !this.emblem &&
+      logoInfo &&
+      logoInfo.emblemPath &&
+      logoInfo.category !== 'trimble_brand' &&
+      logoInfo.category !== 'viewpoint'
+    ) {
+      this.emblemSvgContent = await fetchSvgText(
+        getAssetPath(`assets/${logoInfo.emblemPath}`)
+      );
+    } else {
+      this.emblemSvgContent = '';
+    }
   }
 
   private getAssetFilePath(): string {
@@ -123,16 +140,24 @@ export class ModusWcLogo {
   render() {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
+    const isCombined = !this.emblem && !!this.emblemSvgContent;
 
     return (
       <Host>
         <span
-          class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'}`}
+          class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'} ${isCombined ? 'logo-combined' : ''}`}
           {...this.inheritedAttributes}
           role="img"
           aria-label={altText}
         >
-          <LogoSvg svgText={this.svgContent} />
+          {isCombined && (
+            <span class="logo-combined-emblem">
+              <LogoSvg svgText={this.emblemSvgContent} />
+            </span>
+          )}
+          <span class={isCombined ? 'logo-combined-wordmark' : ''}>
+            <LogoSvg svgText={this.svgContent} />
+          </span>
         </span>
       </Host>
     );
