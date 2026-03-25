@@ -84,6 +84,23 @@ export class ModusWcLogo {
     return svgContent;
   }
 
+  private getEmblemSvgContent(): string {
+    const logoKey = this.name.toLowerCase().replace(/\s+/g, '_');
+    const logoInfo = LOGO_VARIANTS[logoKey as LogoName];
+
+    if (
+      !this.emblem &&
+      logoInfo &&
+      logoInfo.emblemPath &&
+      logoInfo.category !== 'trimble_brand' &&
+      logoInfo.category !== 'viewpoint'
+    ) {
+      return LOGO_SVGS[logoInfo.emblemPath] || '';
+    }
+
+    return '';
+  }
+
   private getClasses(): string {
     const classList: string[] = [];
     if (this.customClass) classList.push(this.customClass);
@@ -94,16 +111,25 @@ export class ModusWcLogo {
     const altText = this.alt || this.name.replace(/_/g, ' ');
     const classes = this.getClasses();
     const svgContent = this.getSvgContent();
+    const emblemSvgContent = this.getEmblemSvgContent();
+    const isCombined = !this.emblem && !!emblemSvgContent;
 
     return (
       <Host>
         <span
-          class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'}`}
+          class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'} ${isCombined ? 'logo-combined' : ''}`}
           {...this.inheritedAttributes}
           role="img"
           aria-label={altText}
         >
-          <LogoSvg svgText={svgContent} />
+          {isCombined && (
+            <span class="logo-combined-emblem">
+              <LogoSvg svgText={emblemSvgContent} />
+            </span>
+          )}
+          <span class={isCombined ? 'logo-combined-wordmark' : ''}>
+            <LogoSvg svgText={svgContent} />
+          </span>
         </span>
       </Host>
     );

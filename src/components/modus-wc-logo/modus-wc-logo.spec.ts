@@ -32,6 +32,37 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.classList.contains('logo-full')).toBe(true);
   });
 
+  it('should render combined emblem and wordmark for product logos', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="sketchup"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(true);
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
+    expect(page.root?.querySelector('.logo-combined-wordmark')).not.toBeNull();
+  });
+
+  it('should not render combined for trimble logo', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+  });
+
+  it('should not render combined for viewpoint logos', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="viewpoint_analytics"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+  });
+
   it('should render viewpoint logo', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
@@ -65,6 +96,8 @@ describe('modus-wc-logo', () => {
     });
     const logoSpan = page.root?.querySelector('.modus-wc-logo');
     expect(logoSpan?.classList.contains('logo-emblem')).toBe(true);
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
   });
 
   it('should handle invalid logo name gracefully', async () => {
@@ -187,6 +220,94 @@ describe('modus-wc-logo', () => {
     delete (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
       'test_missing_svg'
     ];
+    consoleSpy.mockRestore();
+  });
+
+  it('should not render combined when switching to viewpoint', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="connect"></modus-wc-logo>',
+    });
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
+
+    page.rootInstance.name = 'viewpoint_field_view';
+    await page.waitForChanges();
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+  });
+
+  it('should not render combined when emblem prop is set to true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="connect"></modus-wc-logo>',
+    });
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
+
+    page.rootInstance.emblem = true;
+    await page.waitForChanges();
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+    expect(
+      page.root
+        ?.querySelector('.modus-wc-logo')
+        ?.classList.contains('logo-emblem')
+    ).toBe(true);
+  });
+
+  it('should not render combined when logo has no emblem path', async () => {
+    (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_no_emblem'
+    ] = {
+      displayName: 'Test No Emblem',
+      path: 'logos/trimble/trimble.svg',
+      category: 'trimble',
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="test_no_emblem"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+
+    delete (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_no_emblem'
+    ];
+  });
+
+  it('should not render combined when emblem svg data is missing', async () => {
+    (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_missing_emblem_svg'
+    ] = {
+      displayName: 'Test Missing Emblem SVG',
+      path: 'logos/trimble/trimble.svg',
+      emblemPath: 'logos/emblems/nonexistent-emblem.svg',
+      category: 'trimble',
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="test_missing_emblem_svg"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+
+    delete (logoConstants.LOGO_VARIANTS as Record<string, ILogoInfo>)[
+      'test_missing_emblem_svg'
+    ];
+  });
+
+  it('should not render combined when name is invalid', async () => {
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="connect"></modus-wc-logo>',
+    });
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
+
+    page.rootInstance.name = 'nonexistent';
+    await page.waitForChanges();
+    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
     consoleSpy.mockRestore();
   });
 });
