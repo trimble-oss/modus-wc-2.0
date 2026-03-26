@@ -9,6 +9,7 @@
 
 A component for displaying Trimble product logos with support for both fixed and scalable sizing.
 Provides consistent branding across applications with various product logo options.
+Logo colors automatically adapt to the active Modus theme via CSS variables.
 
 ## Properties
 
