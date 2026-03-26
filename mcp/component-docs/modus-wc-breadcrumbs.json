@@ -1,0 +1,75 @@
+{
+  "description": "A customizable breadcrumbs component used to help users navigate through a website.",
+  "properties": [
+    {
+      "name": "items",
+      "type": "IBreadcrumb[]",
+      "description": "The breadcrumbs to render.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the breadcrumbs.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 41
+    }
+  ],
+  "events": [
+    {
+      "name": "breadcrumbClick",
+      "detail": "IBreadcrumb",
+      "description": "Event emitted when a breadcrumb is clicked.",
+      "end_line": 44
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-breadcrumbs\n  aria-label=\"Breadcrumbs\"\n  custom-class=${ifDefined(args['custom-class'])}\n  .items=${args.items}\n  size=${ifDefined(args.size)}\n></modus-wc-breadcrumbs>\n<script>\n  const items = [\n    {\n      label: 'Root',\n      url: '#',\n    },\n    {\n      label: 'Subpage',\n      url: '#',\n    },\n    {\n      label: 'Current Page',\n      url: '#',\n    },\n  ];\n  // Adding this block to show how to set options via JS \n  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');\n  // breadcrumbs.items = items;\n</script>",
+    "variations": [],
+    "args": {
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "breadcrumbClick"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-breadcrumbs ></modus-wc-breadcrumbs>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-breadcrumbs onBreadcrumbClick={(e) => handleBreadcrumbClick(e.detail)}></modus-wc-breadcrumbs>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-breadcrumbs",
+  "storyExample": {
+    "template": "<modus-wc-breadcrumbs\n  aria-label=\"Breadcrumbs\"\n  custom-class=${ifDefined(args['custom-class'])}\n  .items=${args.items}\n  size=${ifDefined(args.size)}\n></modus-wc-breadcrumbs>\n<script>\n  const items = [\n    {\n      label: 'Root',\n      url: '#',\n    },\n    {\n      label: 'Subpage',\n      url: '#',\n    },\n    {\n      label: 'Current Page',\n      url: '#',\n    },\n  ];\n  // Adding this block to show how to set options via JS \n  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');\n  // breadcrumbs.items = items;\n</script>",
+    "args": {
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "breadcrumbClick"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IBreadcrumb } from './modus-wc-breadcrumbs';\nimport { DaisySize } from '../types';\n\nconst items: IBreadcrumb[] = [\n  {\n    label: 'Root',\n    url: '#',\n  },\n  {\n    label: 'Subpage',\n    url: '#',\n  },\n  {\n    label: 'Current Page',\n    url: '#',\n  },\n];\n\ninterface BreadcrumbArgs {\n  'custom-class'?: string;\n  items: IBreadcrumb[];\n  size?: DaisySize;\n}\n\nconst meta: Meta<BreadcrumbArgs> = {\n  title: 'Components/Breadcrumbs',\n  component: 'modus-wc-breadcrumbs',\n  args: {\n    items,\n    size: 'md',\n  },\n  argTypes: {\n    items: {\n      description: 'Array of items for the breadcrumbs component',\n      table: {\n        type: {\n          detail: `\n            Interface: IBreadcrumb\n            Properties:\n            - label (string): The text to render in the breadcrumb\n            - url (string, optional): The URL emitted when the breadcrumb is clicked\n          `,\n        },\n      },\n    },\n    size: {\n      control: {\n        type: 'select',\n      },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['breadcrumbClick'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<BreadcrumbArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-breadcrumbs\n  aria-label=\"Breadcrumbs\"\n  custom-class=${ifDefined(args['custom-class'])}\n  .items=${args.items}\n  size=${ifDefined(args.size)}\n></modus-wc-breadcrumbs>\n<script>\n  const items = [\n    {\n      label: 'Root',\n      url: '#',\n    },\n    {\n      label: 'Subpage',\n      url: '#',\n    },\n    {\n      label: 'Current Page',\n      url: '#',\n    },\n  ];\n  // Adding this block to show how to set options via JS \n  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');\n  // breadcrumbs.items = items;\n</script>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const UnderlineLinks: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .underline-links a {\n    text-decoration: underline;\n  }\n</style>\n<modus-wc-breadcrumbs\n  custom-class=\"underline-links\"\n  .items=${args.items}\n  size=${ifDefined(args.size)}\n></modus-wc-breadcrumbs>\n<script>\n  const items = [\n    {\n      label: 'Root',\n      url: '#',\n    },\n    {\n      label: 'Subpage',\n      url: '#',\n    },\n    {\n      label: 'Current Page',\n      url: '#',\n    },\n  ];\n  // Adding this block to show how to set options via JS \n  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');\n  // breadcrumbs.items = items;\n</script>\n    `;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - The structure of the breadcrumb \\`items\\` has changed from \\`Crumb\\` interface to \\`IBreadcrumb\\` interface.\n  - Underlined links are now applied using a custom class rather than a dedicated prop.\n\n#### Prop Mapping\n\n| 1.0 Prop        | 2.0 Prop      | Notes                                               |\n|-----------------|---------------|-----------------------------------------------------|\n| aria-label      | aria-label    |                                                     |\n| crumbs          | items         | Interface changed from \\`Crumb\\` to \\`IBreadcrumb\\` |\n| underline-links |               | Not carried over, use CSS instead                   |\n\n#### Event Mapping\n\n| 1.0 Event  | 2.0 Event       | Notes                                             |\n|------------|-----------------|---------------------------------------------------|\n| crumbClick | breadcrumbClick | Payload changed from \\`Crumb\\` to \\`IBreadcrumb\\` |\n\n#### Interfaces\n\n##### 1.0:\n\\`\\`\\`typescript\ninterface Crumb {\n  display: string;\n  id: string;\n}\n\\`\\`\\`\n\n##### 2.0:\n\\`\\`\\`typescript\ninterface IBreadcrumb {\n  label: string;\n  url?: string;\n}\n\\`\\`\\`\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
