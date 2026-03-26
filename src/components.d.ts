@@ -537,9 +537,15 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * The date format used for both display and user input. Automatically derived from the user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`). Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
+          * The date format for display and input.
          */
-        "format"?: string;
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -573,7 +579,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -3715,9 +3721,15 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
-          * The date format used for both display and user input. Automatically derived from the user's locale when not explicitly set. Supported tokens: `dd`, `mm`, `yyyy` (numeric separators /, -, .) and `MMM DD, YYYY` for abbreviated month names (e.g. `Oct 15, 2025`). Examples: `'dd/mm/yyyy'`, `'mm-dd-yyyy'`, `'yyyy.mm.dd'`, `'MMM DD, YYYY'`.
+          * The date format for display and input.
          */
-        "format"?: string;
+        "format"?: | 'yyyy-mm-dd'
+    | 'dd-mm-yyyy'
+    | 'mm-dd-yyyy'
+    | 'yyyy/mm/dd'
+    | 'dd/mm/yyyy'
+    | 'mm/dd/yyyy'
+    | 'MMM DD, YYYY';
         /**
           * The ID of the input element.
          */
@@ -3771,7 +3783,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
