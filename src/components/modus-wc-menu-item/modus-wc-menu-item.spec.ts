@@ -105,7 +105,7 @@ describe('modus-wc-menu-item', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should toggle selected class when checkbox item is clicked', async () => {
+  it('should toggle active class when checkbox item is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Test label" value="Test value" checkbox="true"></modus-wc-menu-item>',
@@ -116,31 +116,31 @@ describe('modus-wc-menu-item', () => {
     const button = menuItem.querySelector('button') as HTMLButtonElement;
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
-    // Initially the item should not have the selected class
+    // Initially the item should not have the active class
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
 
     // Click the menu item
     button.click();
     await page.waitForChanges();
 
-    // After click, it should have the selected class
+    // After click, it should have the active class
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
 
     // Click again to toggle off
     button.click();
     await page.waitForChanges();
 
-    // Should no longer have the selected class
+    // Should no longer have the active class
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
   });
 
-  it('should update checkbox value when clicked', async () => {
+  it('should toggle selected prop when checkbox item is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],
       html: '<modus-wc-menu-item label="Test label" value="Test value" checkbox="true"></modus-wc-menu-item>',
@@ -151,18 +151,18 @@ describe('modus-wc-menu-item', () => {
     const button = menuItem.querySelector('button') as HTMLButtonElement;
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
-    // Initially the item should not have the selected class
+    // Initially the item should not have the active class
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
 
     // Click the menu item
     button.click();
     await page.waitForChanges();
 
-    // After click, it should have the selected class and selected prop should be true
+    // After click, it should have the active class and selected prop should be true
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
     expect(page.rootInstance.selected).toBe(true);
 
@@ -170,11 +170,11 @@ describe('modus-wc-menu-item', () => {
     button.click();
     await page.waitForChanges();
 
-    // After second click, should not have the selected class but selected prop remains true
+    // After second click, should not have the active class and selected prop should be false
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
-    expect(page.rootInstance.selected).toBe(true);
+    expect(page.rootInstance.selected).toBe(false);
   });
 
   it('should handle checkbox items that are initially selected', async () => {
@@ -187,30 +187,21 @@ describe('modus-wc-menu-item', () => {
     const menuItem = page.root as HTMLElement;
     const button = menuItem.querySelector('button') as HTMLButtonElement;
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
-    const checkbox = menuItem.querySelector('modus-wc-checkbox') as HTMLElement;
 
-    // Ensure the selected item has the selected class
+    // Ensure the selected item has the active class
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
-
-    // In the component, when rendering, it does:
-    // <modus-wc-checkbox value={!!this.selected} />
-    // So the value should be "true" when this.selected is true
-    // Set the value attribute manually to check our handler updates it
-    checkbox.setAttribute('value', 'true');
-    await page.waitForChanges();
-    expect(checkbox.getAttribute('value')).toBe('true');
 
     // Click the menu item to toggle off
     button.click();
     await page.waitForChanges();
 
-    // After click, it should not have the selected class and checkbox value should be "false"
+    // After click, it should not have the active class and selected should be false
     expect(
-      liElement.classList.contains('modus-wc-menu-item-selected')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
-    expect(checkbox.getAttribute('value')).toBe('false');
+    expect(page.rootInstance.selected).toBe(false);
   });
 
   it('should toggle submenu visibility when a menu item with submenu is clicked', async () => {
@@ -633,7 +624,7 @@ describe('modus-wc-menu-item', () => {
     expect(checkbox).not.toBeNull();
   });
 
-  it('should toggle checked state in multi-select mode', async () => {
+  it('should toggle active state in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
@@ -648,21 +639,21 @@ describe('modus-wc-menu-item', () => {
     ) as HTMLElement;
     const button = menuItem.querySelector('button') as HTMLButtonElement;
 
-    // Click to check
+    // Click to select
     button.click();
     await page.waitForChanges();
 
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
     expect(
-      liElement.classList.contains('modus-wc-menu-item-checked')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
 
-    // Click again to uncheck
+    // Click again to deselect
     button.click();
     await page.waitForChanges();
 
     expect(
-      liElement.classList.contains('modus-wc-menu-item-checked')
+      liElement.classList.contains('modus-wc-menu-item-active')
     ).toBeFalsy();
   });
 
@@ -704,7 +695,7 @@ describe('modus-wc-menu-item', () => {
     });
   });
 
-  it('should not set selected prop in multi-select mode', async () => {
+  it('should set selected prop in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
@@ -724,11 +715,17 @@ describe('modus-wc-menu-item', () => {
     button.click();
     await page.waitForChanges();
 
-    // selected prop should remain unset; only checked state is used
-    expect(menuItem.selected).toBeFalsy();
+    // selected prop should be true after clicking
+    expect(menuItem.selected).toBe(true);
+
+    button.click();
+    await page.waitForChanges();
+
+    // selected prop should toggle back to false
+    expect(menuItem.selected).toBe(false);
   });
 
-  it('should allow multiple items to be checked in multi-select mode', async () => {
+  it('should allow multiple items to be selected in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
@@ -748,28 +745,26 @@ describe('modus-wc-menu-item', () => {
       'button'
     ) as HTMLButtonElement;
 
-    // Check first item
+    // Select first item
     firstButton.click();
     await page.waitForChanges();
 
-    // Check second item
+    // Select second item
     secondButton.click();
     await page.waitForChanges();
 
-    // Both should have the checked class
+    // Both should have the active class
     const firstLi = menuItems[0].querySelector('li') as HTMLLIElement;
     const secondLi = menuItems[1].querySelector('li') as HTMLLIElement;
     const thirdLi = menuItems[2].querySelector('li') as HTMLLIElement;
 
     expect(
-      firstLi.classList.contains('modus-wc-menu-item-checked')
+      firstLi.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
     expect(
-      secondLi.classList.contains('modus-wc-menu-item-checked')
+      secondLi.classList.contains('modus-wc-menu-item-active')
     ).toBeTruthy();
-    expect(
-      thirdLi.classList.contains('modus-wc-menu-item-checked')
-    ).toBeFalsy();
+    expect(thirdLi.classList.contains('modus-wc-menu-item-active')).toBeFalsy();
   });
 
   it('should handle selection gracefully when not inside a modus-wc-menu', async () => {
@@ -804,7 +799,7 @@ describe('modus-wc-menu-item', () => {
     expect(() => instance.deselectSiblings()).not.toThrow();
   });
 
-  it('should use role menuitemradio with aria-checked in single-select mode', async () => {
+  it('should use role menuitemradio with aria-selected in single-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
@@ -820,13 +815,14 @@ describe('modus-wc-menu-item', () => {
     const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
     expect(liElement.getAttribute('role')).toBe('menuitemradio');
-    expect(liElement.getAttribute('aria-checked')).toBe('false');
+    expect(liElement.getAttribute('aria-selected')).toBe('false');
+    expect(liElement.getAttribute('aria-checked')).toBeNull();
 
     // Click to select
     menuItem.querySelector('button')?.click();
     await page.waitForChanges();
 
-    expect(liElement.getAttribute('aria-checked')).toBe('true');
+    expect(liElement.getAttribute('aria-selected')).toBe('true');
   });
 
   it('should use role menuitemcheckbox with aria-checked in multi-select mode', async () => {
@@ -888,7 +884,7 @@ describe('modus-wc-menu-item', () => {
       expect(observeSpy).toHaveBeenCalledWith(parentMenu, { attributes: true });
     });
 
-    it('should reset selected and checked when selection-mode attribute changes', async () => {
+    it('should reset selected when selection-mode attribute changes', async () => {
       let mutationCallback: MutationCallback;
       const observeSpy = jest.fn();
       const disconnectSpy = jest.fn();
@@ -925,7 +921,7 @@ describe('modus-wc-menu-item', () => {
       await page.waitForChanges();
 
       const li = menuItem.querySelector('li') as HTMLLIElement;
-      expect(li.classList.contains('modus-wc-menu-item-checked')).toBeFalsy();
+      expect(li.classList.contains('modus-wc-menu-item-active')).toBeFalsy();
     });
 
     it('should disconnect MutationObserver on disconnectedCallback', async () => {
@@ -966,6 +962,16 @@ describe('modus-wc-menu-item', () => {
       });
 
       expect(observeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should handle disconnectedCallback when no MutationObserver was created', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+      });
+
+      const menuItem = page.root;
+      expect(() => menuItem?.remove()).not.toThrow();
     });
 
     it('should reset selected to false when selection-mode attribute changes', async () => {
@@ -1018,9 +1024,9 @@ describe('modus-wc-menu-item', () => {
       ) as HTMLElement;
       const liElement = menuItem.querySelector('li') as HTMLLIElement;
 
-      // role and aria-checked are derived from _selectionMode — if seeded correctly they reflect the parent mode
+      // role and aria-selected are derived from _selectionMode — if seeded correctly they reflect the parent mode
       expect(liElement.getAttribute('role')).toBe('menuitemradio');
-      expect(liElement.getAttribute('aria-checked')).toBe('false');
+      expect(liElement.getAttribute('aria-selected')).toBe('false');
     });
 
     it('should update rendered role for all items when selection-mode attribute changes', async () => {
@@ -1104,7 +1110,7 @@ describe('modus-wc-menu-item', () => {
       ) as HTMLElement;
       const li = menuItem.querySelector('li') as HTMLLIElement;
 
-      expect(li.classList.contains('modus-wc-menu-item-selected')).toBeTruthy();
+      expect(li.classList.contains('modus-wc-menu-item-active')).toBeTruthy();
 
       mutationCallback!(
         [{ attributeName: 'orientation' } as MutationRecord],
@@ -1112,7 +1118,7 @@ describe('modus-wc-menu-item', () => {
       );
       await page.waitForChanges();
 
-      expect(li.classList.contains('modus-wc-menu-item-selected')).toBeTruthy();
+      expect(li.classList.contains('modus-wc-menu-item-active')).toBeTruthy();
     });
   });
 
@@ -1151,7 +1157,7 @@ describe('modus-wc-menu-item', () => {
     expect(selectSpy).not.toHaveBeenCalled();
   });
 
-  it('should update aria-checked to false for deselected siblings in single-select', async () => {
+  it('should update aria-selected to false for deselected siblings in single-select', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],
       html: `
@@ -1170,14 +1176,247 @@ describe('modus-wc-menu-item', () => {
     menuItems[0].querySelector('button')?.click();
     await page.waitForChanges();
 
-    expect(firstLi.getAttribute('aria-checked')).toBe('true');
-    expect(secondLi.getAttribute('aria-checked')).toBe('false');
+    expect(firstLi.getAttribute('aria-selected')).toBe('true');
+    expect(secondLi.getAttribute('aria-selected')).toBe('false');
 
     // Click second item
     menuItems[1].querySelector('button')?.click();
     await page.waitForChanges();
 
-    expect(firstLi.getAttribute('aria-checked')).toBe('false');
-    expect(secondLi.getAttribute('aria-checked')).toBe('true');
+    expect(firstLi.getAttribute('aria-selected')).toBe('false');
+    expect(secondLi.getAttribute('aria-selected')).toBe('true');
+  });
+
+  describe('cross-hierarchy single-select', () => {
+    it('should deselect items across nested menus when selecting in single-select mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Charts" value="charts" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Bar Chart" value="bar-chart"></modus-wc-menu-item>
+                <modus-wc-menu-item label="Line Chart" value="line-chart"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const allItems = Array.from(
+        page.doc.querySelectorAll('modus-wc-menu-item')
+      ) as (HTMLElement & { selected?: boolean; value: string })[];
+
+      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
+      const calendar = allItems.find((i) => i.value === 'calendar')!;
+
+      // Select "Bar Chart" in the submenu
+      barChart.querySelector('button')?.click();
+      await page.waitForChanges();
+
+      expect(barChart.selected).toBe(true);
+      expect(calendar.selected).toBeFalsy();
+
+      // Select "Calendar" in the root menu — should deselect "Bar Chart"
+      calendar.querySelector('button')?.click();
+      await page.waitForChanges();
+
+      expect(calendar.selected).toBe(true);
+      expect(barChart.selected).toBe(false);
+    });
+
+    it('should deselect items across different submenus in single-select mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Charts" value="charts" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Bar Chart" value="bar-chart"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Reports" value="reports" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Monthly Report" value="monthly-report"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const allItems = Array.from(
+        page.doc.querySelectorAll('modus-wc-menu-item')
+      ) as (HTMLElement & { selected?: boolean; value: string })[];
+
+      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
+      const monthlyReport = allItems.find((i) => i.value === 'monthly-report')!;
+
+      // Select "Bar Chart"
+      barChart.querySelector('button')?.click();
+      await page.waitForChanges();
+
+      expect(barChart.selected).toBe(true);
+
+      // Select "Monthly Report" in a different submenu — should deselect "Bar Chart"
+      monthlyReport.querySelector('button')?.click();
+      await page.waitForChanges();
+
+      expect(monthlyReport.selected).toBe(true);
+      expect(barChart.selected).toBe(false);
+    });
+
+    it('should not apply active class to submenu headers when child is selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Charts" value="charts" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Bar Chart" value="bar-chart"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const allItems = Array.from(
+        page.doc.querySelectorAll('modus-wc-menu-item')
+      ) as (HTMLElement & { selected?: boolean; value: string })[];
+
+      const chartsHeader = allItems.find((i) => i.value === 'charts')!;
+      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
+
+      // Select "Bar Chart"
+      barChart.querySelector('button')?.click();
+      await page.waitForChanges();
+
+      expect(barChart.selected).toBe(true);
+
+      // The submenu header should NOT have the active class
+      const headerLi = chartsHeader.querySelector('li') as HTMLLIElement;
+      expect(
+        headerLi.classList.contains('modus-wc-menu-item-active')
+      ).toBeFalsy();
+    });
+
+    it('should keep only the last selected item active across the full hierarchy', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Charts" value="charts" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Bar Chart" value="bar-chart"></modus-wc-menu-item>
+                <modus-wc-menu-item label="Line Chart" value="line-chart"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+            <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Reports" value="reports" has-submenu="true">
+              <modus-wc-menu is-sub-menu="true" class="modus-wc-menu-dropdown">
+                <modus-wc-menu-item label="Monthly Report" value="monthly-report"></modus-wc-menu-item>
+                <modus-wc-menu-item label="Annual Report" value="annual-report"></modus-wc-menu-item>
+              </modus-wc-menu>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const allItems = Array.from(
+        page.doc.querySelectorAll('modus-wc-menu-item')
+      ) as (HTMLElement & { selected?: boolean; value: string })[];
+
+      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
+      const calendar = allItems.find((i) => i.value === 'calendar')!;
+      const monthlyReport = allItems.find((i) => i.value === 'monthly-report')!;
+
+      // Select Bar Chart
+      barChart.querySelector('button')?.click();
+      await page.waitForChanges();
+      expect(barChart.selected).toBe(true);
+
+      // Select Calendar — Bar Chart deselected
+      calendar.querySelector('button')?.click();
+      await page.waitForChanges();
+      expect(calendar.selected).toBe(true);
+      expect(barChart.selected).toBe(false);
+
+      // Select Monthly Report — Calendar deselected
+      monthlyReport.querySelector('button')?.click();
+      await page.waitForChanges();
+      expect(monthlyReport.selected).toBe(true);
+      expect(calendar.selected).toBe(false);
+      expect(barChart.selected).toBeFalsy();
+
+      // Verify active class on li elements
+      const monthlyLi = monthlyReport.querySelector('li') as HTMLLIElement;
+      const calendarLi = calendar.querySelector('li') as HTMLLIElement;
+      const barChartLi = barChart.querySelector('li') as HTMLLIElement;
+
+      expect(
+        monthlyLi.classList.contains('modus-wc-menu-item-active')
+      ).toBeTruthy();
+      expect(
+        calendarLi.classList.contains('modus-wc-menu-item-active')
+      ).toBeFalsy();
+      expect(
+        barChartLi.classList.contains('modus-wc-menu-item-active')
+      ).toBeFalsy();
+    });
+
+    it('should handle getRootMenu returning null for standalone items', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenuItem],
+        html: '<modus-wc-menu-item label="Standalone" value="standalone"></modus-wc-menu-item>',
+      });
+
+      const instance = page.rootInstance;
+      expect(instance.getRootMenu()).toBeNull();
+      expect(() => instance.deselectSiblings()).not.toThrow();
+    });
+
+    it('should handle getRootMenu when menu has no parentElement', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcMenu, ModusWcMenuItem],
+        html: `
+          <modus-wc-menu selection-mode="single">
+            <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+          </modus-wc-menu>
+        `,
+      });
+
+      const menu = page.doc.querySelector('modus-wc-menu') as HTMLElement;
+
+      Object.defineProperty(menu, 'parentElement', {
+        get: () => null,
+        configurable: true,
+      });
+
+      const menuItems = page.doc.querySelectorAll('modus-wc-menu-item');
+      const firstButton = menuItems[0].querySelector(
+        'button'
+      ) as HTMLButtonElement;
+      const secondButton = menuItems[1].querySelector(
+        'button'
+      ) as HTMLButtonElement;
+
+      firstButton.click();
+      await page.waitForChanges();
+
+      expect(
+        (menuItems[0] as HTMLElement & { selected?: boolean }).selected
+      ).toBe(true);
+
+      secondButton.click();
+      await page.waitForChanges();
+
+      expect(
+        (menuItems[1] as HTMLElement & { selected?: boolean }).selected
+      ).toBe(true);
+      expect(
+        (menuItems[0] as HTMLElement & { selected?: boolean }).selected
+      ).toBe(false);
+    });
   });
 });
