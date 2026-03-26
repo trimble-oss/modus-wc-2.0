@@ -157,6 +157,16 @@ jobs:
           workflow: publish-vue.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
+  trigger-mcp-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger MCP Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.2
+        with:
+          workflow: publish-mcp.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
   release-wc:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
