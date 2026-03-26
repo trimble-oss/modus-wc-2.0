@@ -5788,7 +5788,7 @@ describe('modus-wc-autocomplete', () => {
       .mockImplementation((selector: string) => {
         if (
           selector === '.modus-wc-menu-item-focused' ||
-          selector === '.modus-wc-menu-item-selected'
+          selector === '.modus-wc-menu-item-active'
         ) {
           return {
             scrollIntoView: mockScrollIntoView,
@@ -5871,7 +5871,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === '.modus-wc-menu-item-selected') {
+        if (selector === '.modus-wc-menu-item-active') {
           return {
             scrollIntoView: mockScrollIntoView,
           } as unknown as Element;
@@ -5933,7 +5933,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === '.modus-wc-menu-item-selected') {
+        if (selector === '.modus-wc-menu-item-active') {
           return {
             scrollIntoView: mockScrollIntoView,
           } as unknown as Element;
@@ -6025,7 +6025,7 @@ describe('modus-wc-autocomplete', () => {
     menuEl.classList.add('modus-wc-menu');
 
     const targetItem = document.createElement('div');
-    targetItem.classList.add('modus-wc-menu-item-selected');
+    targetItem.classList.add('modus-wc-menu-item-active');
 
     (menuEl as HTMLElement).getBoundingClientRect = () =>
       ({
@@ -6068,7 +6068,7 @@ describe('modus-wc-autocomplete', () => {
     jest.spyOn(menuEl, 'querySelector').mockImplementation(function (
       selector: string
     ) {
-      if (selector === '.modus-wc-menu-item-selected') return targetItem;
+      if (selector === '.modus-wc-menu-item-active') return targetItem;
       if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
       return null;
     });
