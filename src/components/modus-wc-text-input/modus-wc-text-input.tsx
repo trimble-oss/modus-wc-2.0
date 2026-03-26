@@ -10,6 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   AutocompleteTypes,
   IInputFeedbackProp,
@@ -25,6 +26,8 @@ import {
 
 /**
  * A customizable input component used to create text inputs with types.
+ *
+ * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
  */
 @Component({
   tag: 'modus-wc-text-input',
@@ -123,6 +126,9 @@ export class ModusWcTextInput {
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
+  /** Event emitted when the clear button is clicked. */
+  @StencilEvent() clearClick!: EventEmitter<void>;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -133,6 +139,9 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
@@ -182,6 +191,7 @@ export class ModusWcTextInput {
   private handleClearText = (event: MouseEvent | KeyboardEvent) => {
     this.value = '';
     this.inputChange.emit(event as unknown as InputEvent);
+    this.clearClick.emit();
   };
 
   private handleFocus = (event: FocusEvent) => {

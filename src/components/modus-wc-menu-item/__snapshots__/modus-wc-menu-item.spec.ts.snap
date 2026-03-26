@@ -3,8 +3,8 @@
 exports[`modus-wc-menu-item renders with default props 1`] = `
 <modus-wc-menu-item label="Test label" value="Test value">
   <!---->
-  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <div>
@@ -20,8 +20,8 @@ exports[`modus-wc-menu-item renders with default props 1`] = `
 exports[`modus-wc-menu-item should render with a start-icon slot 1`] = `
 <modus-wc-menu-item label="Test label" value="Test value">
   <!---->
-  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="check" slot="start-icon">
           <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
@@ -42,8 +42,8 @@ exports[`modus-wc-menu-item should render with a start-icon slot 1`] = `
 exports[`modus-wc-menu-item should render with checkbox 1`] = `
 <modus-wc-menu-item checkbox="true" label="Test label" value="Test value">
   <!---->
-  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-    <button type="button">
+  <li aria-checked="false" class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <modus-wc-checkbox aria-label="Checkbox" size="md"></modus-wc-checkbox>
         <div class="modus-wc-menu-item-labels">
@@ -60,8 +60,8 @@ exports[`modus-wc-menu-item should render with checkbox 1`] = `
 exports[`modus-wc-menu-item should render with checkbox and selected 1`] = `
 <modus-wc-menu-item checkbox="true" label="Test label" selected="true" value="Test value">
   <!---->
-  <li aria-current="" class="modus-wc-menu-item modus-wc-menu-item-md modus-wc-menu-item-selected" role="menuitem">
-    <button type="button">
+  <li aria-checked="true" class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <modus-wc-checkbox aria-label="Checkbox" size="md" value=""></modus-wc-checkbox>
         <div class="modus-wc-menu-item-labels">
@@ -78,8 +78,8 @@ exports[`modus-wc-menu-item should render with checkbox and selected 1`] = `
 exports[`modus-wc-menu-item should render with custom props 1`] = `
 <modus-wc-menu-item bordered="true" custom-class="test-class" disabled="true" label="Test label" selected="true" size="lg" sub-label="Test sub-label" value="Test value">
   <!---->
-  <li aria-current="" aria-disabled="" class="modus-wc-menu-item modus-wc-menu-item-bordered modus-wc-menu-item-disabled modus-wc-menu-item-lg modus-wc-menu-item-selected test-class" role="menuitem">
-    <button disabled="" type="button">
+  <li aria-disabled="" class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-bordered modus-wc-menu-item-disabled modus-wc-menu-item-lg test-class" role="menuitem" tabindex="-1">
+    <button disabled="" tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <div>
@@ -88,13 +88,6 @@ exports[`modus-wc-menu-item should render with custom props 1`] = `
           <div class="modus-wc-menu-item-sublabel">
             Test sub-label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-              check
-            </i>
-          </modus-wc-icon>
         </div>
       </div>
     </button>
@@ -105,16 +98,13 @@ exports[`modus-wc-menu-item should render with custom props 1`] = `
 exports[`modus-wc-menu-item should render with size lg 1`] = `
 <modus-wc-menu-item label="Test label" selected="true" size="lg" value="Test value">
   <!---->
-  <li aria-current="" class="modus-wc-menu-item modus-wc-menu-item-lg modus-wc-menu-item-selected" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-lg" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <div>
             Test label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="md"></modus-wc-icon>
         </div>
       </div>
     </button>
@@ -125,16 +115,13 @@ exports[`modus-wc-menu-item should render with size lg 1`] = `
 exports[`modus-wc-menu-item should render with size md 1`] = `
 <modus-wc-menu-item label="Test label" selected="true" size="md" value="Test value">
   <!---->
-  <li aria-current="" class="modus-wc-menu-item modus-wc-menu-item-md modus-wc-menu-item-selected" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <div>
             Test label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="sm"></modus-wc-icon>
         </div>
       </div>
     </button>
@@ -145,16 +132,13 @@ exports[`modus-wc-menu-item should render with size md 1`] = `
 exports[`modus-wc-menu-item should render with size sm 1`] = `
 <modus-wc-menu-item label="Test label" selected="true" size="sm" value="Test value">
   <!---->
-  <li aria-current="" class="modus-wc-menu-item modus-wc-menu-item-selected modus-wc-menu-item-sm" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-sm" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <div>
             Test label
           </div>
-        </div>
-        <div class="modus-wc-menu-item-selected-icon">
-          <modus-wc-icon decorative="" name="check" size="xs"></modus-wc-icon>
         </div>
       </div>
     </button>
@@ -165,8 +149,8 @@ exports[`modus-wc-menu-item should render with size sm 1`] = `
 exports[`modus-wc-menu-item should render with tooltip 1`] = `
 <modus-wc-menu-item label="Test label" tooltip-content="Test tooltip" value="Test value">
   <!---->
-  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem">
-    <button type="button">
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <button tabindex="-1" type="button">
       <div class="modus-wc-menu-item-content">
         <div class="modus-wc-menu-item-labels">
           <modus-wc-tooltip content="Test tooltip" customclass="modus-wc-menu-item-tooltip" position="auto">

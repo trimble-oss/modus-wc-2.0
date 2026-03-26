@@ -1,0 +1,14 @@
+name: QA Approval
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  qa-approval:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    environment: qa-review # This creates the approval gate
+    steps:
+      - name: QA Approved
+        run: echo "QA has approved this PR"

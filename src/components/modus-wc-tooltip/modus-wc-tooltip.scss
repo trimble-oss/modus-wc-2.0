@@ -3,6 +3,11 @@
 * Only add styles here that should not be applied by Tailwind or the theme.
 */
 
+/* Reset popover UA styles so they don't interfere with Popper positioning */
+.modus-wc-tooltip-content[popover] {
+  overflow: visible;
+}
+
 /* Tooltip content styling for PopperJS */
 .modus-wc-tooltip-content {
   background-color: var(--modus-wc-color-neutral-content);

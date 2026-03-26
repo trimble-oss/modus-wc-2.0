@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
+                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events",
+          "description": "A customizable alert component used to inform the user about important events.\n\nThe component supports `<slot>` elements for injecting custom content and buttons.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
+                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  feedback?: IInputFeedbackProp;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
               }
             }
           ]
@@ -332,7 +332,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n  initialNavigation: boolean;\r\n  visibleItems: IAutocompleteItem[];\r\n  onUpdateFocus: (value: string) => void;\r\n  onSetInitialNavigation: (value: boolean) => void;\r\n}"
+                "text": "{\n  initialNavigation: boolean;\n  visibleItems: IAutocompleteItem[];\n  onUpdateFocus: (value: string) => void;\n  onSetInitialNavigation: (value: boolean) => void;\n}"
               }
             }
           ]
@@ -355,7 +355,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    multiSelect?: boolean;\r\n    selectionOrder: string[];\r\n    items?: IAutocompleteItem[];\r\n    onChipRemove: (item: IAutocompleteItem) => void;\r\n  }"
+                "text": "{\n    multiSelect?: boolean;\n    selectionOrder: string[];\n    items?: IAutocompleteItem[];\n    onChipRemove: (item: IAutocompleteItem) => void;\n  }"
               }
             }
           ]
@@ -365,7 +365,7 @@
           "name": "processChipRemoval",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedSelectionOrder: string[];\r\n}"
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedSelectionOrder: string[];\n}"
             }
           },
           "parameters": [
@@ -378,7 +378,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    selectionOrder: string[];\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    selectionOrder: string[];\n  }"
               }
             }
           ]
@@ -388,7 +388,7 @@
           "name": "processInputChange",
           "return": {
             "type": {
-              "text": "{\r\n  inputValue: string;\r\n  shouldShowMenu: boolean;\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  shouldResetNavigation: boolean;\r\n}"
+              "text": "{\n  inputValue: string;\n  shouldShowMenu: boolean;\n  updatedItems: IAutocompleteItem[] | undefined;\n  shouldResetNavigation: boolean;\n}"
             }
           },
           "parameters": [
@@ -401,7 +401,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customInputChange?: (value: string) => void;\r\n    showMenuOnFocus?: boolean;\r\n    minChars: number;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    debounceMs?: number;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customInputChange?: (value: string) => void;\n    showMenuOnFocus?: boolean;\n    minChars: number;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    debounceMs?: number;\n  }"
               }
             }
           ]
@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n}"
+              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n}"
             }
           },
           "parameters": [
@@ -424,7 +424,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    leaveMenuOpen?: boolean;\r\n    selectionOrder: string[];\r\n    maxChips?: number;\r\n    customItemSelect?: (item: IAutocompleteItem) => void;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    leaveMenuOpen?: boolean;\n    selectionOrder: string[];\n    maxChips?: number;\n    customItemSelect?: (item: IAutocompleteItem) => void;\n  }"
               }
             }
           ]
@@ -447,7 +447,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customKeyDown?: (event: KeyboardEvent) => void;\r\n  }"
+                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customKeyDown?: (event: KeyboardEvent) => void;\n  }"
               }
             }
           ]
@@ -809,7 +809,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nThe component supports a `<slot>` for injecting custom content.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -952,7 +952,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -964,6 +964,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback state for the input field.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -1004,7 +1012,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -1163,6 +1171,14 @@
             },
             {
               "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
+            {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -1175,7 +1191,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -1222,7 +1238,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable avatar component used to create avatars with different images or user initials.\r\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\r\nThe component will extract the first letter of each word in the initials string.",
+          "description": "A customizable avatar component used to create avatars with different images or user initials.\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\nThe component will extract the first letter of each word in the initials string.",
           "name": "ModusWcAvatar",
           "members": [
             {
@@ -1323,7 +1339,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -1346,7 +1362,7 @@
               "default": "'primary'",
               "description": "The color variant of the badge.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
               }
             },
             {
@@ -1486,11 +1502,152 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-button-group/modus-wc-button-group.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable buttongroup component that groups multiple Modus buttons together.\n\nThe component supports a `<slot>` for injecting content within the buttongroup.",
+          "name": "ModusWcButtonGroup",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleButtonClick",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePropChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSelectionTypeChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "color",
+              "fieldName": "color",
+              "description": "Color to apply to all buttons within the button group",
+              "type": {
+                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "default": "false",
+              "description": "Disables all buttons within the button group",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'horizontal'",
+              "description": "Orientation of the button group: horizontal or vertical",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "selection-type",
+              "fieldName": "selectionType",
+              "default": "'default'",
+              "description": "Selection type for button group",
+              "type": {
+                "text": "'default' | 'single' | 'multiple'"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'outlined'",
+              "description": "Style variant to apply to all buttons within the button group",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-button-group",
+          "events": [
+            {
+              "name": "buttonGroupClick",
+              "type": {
+                "text": "EventEmitter<{\n    button: HTMLElement;\n    isSelected: boolean;\n  }>"
+              },
+              "description": "Event emitted when any button in the group is clicked"
+            },
+            {
+              "name": "buttonSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\n    selectedButtons: HTMLElement[];\n  }>"
+              },
+              "description": "Event emitted when button selection changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcButtonGroup",
+          "declaration": {
+            "name": "ModusWcButtonGroup",
+            "module": "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-button-group",
+          "declaration": {
+            "name": "ModusWcButtonGroup",
+            "module": "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-button/modus-wc-button.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -1558,7 +1715,7 @@
               "default": "'rectangle'",
               "description": "The shape of the button.",
               "type": {
-                "text": "'circle' | 'rectangle' | 'square'"
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
               }
             },
             {
@@ -1627,7 +1784,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component used to group and display content in a way that is easily readable",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -1683,10 +1840,10 @@
             {
               "name": "padding",
               "fieldName": "padding",
-              "default": "'normal'",
-              "description": "Determines if the interior padding is compact or not",
+              "default": "'compact'",
+              "description": "Determines the interior padding size",
               "type": {
-                "text": "'normal' | 'compact'"
+                "text": "'compact' | 'comfortable'"
               }
             }
           ],
@@ -1880,7 +2037,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component used to display information in a compact area",
+          "description": "A customizable chip component used to display information in a compact area\n\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -2024,7 +2181,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.\r\nDo not set",
+          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -2091,7 +2248,7 @@
             {
               "name": "options",
               "fieldName": "options",
-              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "ICollapseOptions"
               }
@@ -2136,7 +2293,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable date picker component used to create date inputs.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcDate",
           "members": [
             {
@@ -2146,6 +2303,85 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleArrowKeys",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEscapeKey",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleMaxChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleMinChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleValueChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleWeekStartDayChange"
             },
             {
               "kind": "method",
@@ -2186,6 +2422,15 @@
               "description": "Feedback to render below the input.",
               "type": {
                 "text": "IInputFeedbackProp"
+              }
+            },
+            {
+              "name": "format",
+              "fieldName": "format",
+              "default": "'dd-mm-yyyy'",
+              "description": "The date format for display and input.",
+              "type": {
+                "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
               }
             },
             {
@@ -2255,6 +2500,15 @@
               }
             },
             {
+              "name": "show-week-numbers",
+              "fieldName": "showWeekNumbers",
+              "default": "false",
+              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -2267,14 +2521,39 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the control (yyyy-mm-dd).",
+              "description": "The value of the control.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "week-start-day",
+              "fieldName": "weekStartDay",
+              "default": "'sunday'",
+              "description": "The first day of the week for the calendar display",
+              "type": {
+                "text": "WeekStartDay"
               }
             }
           ],
           "tagName": "modus-wc-date",
           "events": [
+            {
+              "kind": "field",
+              "name": "calendarMonthChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the calendar month selection changes."
+            },
+            {
+              "kind": "field",
+              "name": "calendarYearChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the calendar year selection changes."
+            },
             {
               "kind": "field",
               "name": "inputBlur",
@@ -2351,7 +2630,7 @@
               "default": "'tertiary'",
               "description": "The color of the divider line.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
               }
             },
             {
@@ -2460,7 +2739,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable dropdown menu component used to render a button and toggleable menu.\r\n\r\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
+          "description": "A customizable dropdown menu component used to render a button and toggleable menu.\n\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
           "name": "ModusWcDropdownMenu",
           "members": [
             {
@@ -2527,7 +2806,16 @@
               "default": "'primary'",
               "description": "The color variant of the button.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-shape",
+              "fieldName": "buttonShape",
+              "default": "'rectangle'",
+              "description": "The shape of the button.",
+              "type": {
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
               }
             },
             {
@@ -2647,11 +2935,328 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "File dropzone component that allows users to drag and drop files for upload.\n\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
+          "name": "ModusWcFileDropzone",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleFileChange",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Reset the dropzone to its initial state, clearing all error and success states"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "accept-file-types",
+              "fieldName": "acceptFileTypes",
+              "description": "Accepted file types (e.g. '.jpg,.png' or 'image/*')",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the file dropzone element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "Disable the file input",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "file-dragged-over-instructions",
+              "fieldName": "fileDraggedOverInstructions",
+              "description": "Custom instructions shown when files are dragged over the dropzone",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "include-state-icon",
+              "fieldName": "includeStateIcon",
+              "default": "true",
+              "description": "Include state icon (upload, success, error)",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "instructions",
+              "fieldName": "instructions",
+              "description": "Custom instructions shown as the default dropzone message",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "invalid-file-type-message",
+              "fieldName": "invalidFileTypeMessage",
+              "description": "Custom error message displayed when an invalid file type is selected",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "max-file-count",
+              "fieldName": "maxFileCount",
+              "description": "Maximum number of files allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-file-name-length",
+              "fieldName": "maxFileNameLength",
+              "description": "Maximum allowed length of filename, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "max-total-file-size-bytes",
+              "fieldName": "maxTotalFileSizeBytes",
+              "description": "Maximum total file size in bytes allowed, will show error if exceeded",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "description": "Allow multiple file selection",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "success-message",
+              "fieldName": "successMessage",
+              "description": "Success message displayed when files are uploaded successfully",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-file-dropzone",
+          "events": [
+            {
+              "kind": "field",
+              "name": "fileSelect",
+              "type": {
+                "text": "EventEmitter<FileList>"
+              },
+              "description": "Event emitted when files are selected"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcFileDropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-file-dropzone",
+          "declaration": {
+            "name": "ModusWcFileDropzone",
+            "module": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-handle/modus-wc-handle.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A draggable handle component for resizing adjacent elements",
+          "name": "ModusWcHandle",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "button-color",
+              "fieldName": "buttonColor",
+              "default": "'tertiary'",
+              "description": "The color of the button.",
+              "type": {
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-size",
+              "fieldName": "buttonSize",
+              "default": "'md'",
+              "description": "The size of the button.",
+              "type": {
+                "text": "DaisySize"
+              }
+            },
+            {
+              "name": "button-variant",
+              "fieldName": "buttonVariant",
+              "default": "'filled'",
+              "description": "The variant of the button.",
+              "type": {
+                "text": "'borderless' | 'filled' | 'outlined'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the handle element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "default-split",
+              "fieldName": "defaultSplit",
+              "default": "50",
+              "description": "The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "default": "'comfortable'",
+              "description": "The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).",
+              "type": {
+                "text": "'compact' | 'comfortable' | 'relaxed'"
+              }
+            },
+            {
+              "name": "left-target",
+              "fieldName": "leftTarget",
+              "description": "The left target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'horizontal'",
+              "description": "The orientation of the handle.",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "right-target",
+              "fieldName": "rightTarget",
+              "description": "The right target element to resize (CSS selector or HTMLElement)",
+              "type": {
+                "text": "string | HTMLElement"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'default'",
+              "description": "The size of the handle.",
+              "type": {
+                "text": "'default' | 'lg' | 'xl' | '2xl'"
+              }
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "default": "'bar'",
+              "description": "The type of handle to display.",
+              "type": {
+                "text": "'bar' | 'button'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-handle",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcHandle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-handle",
+          "declaration": {
+            "name": "ModusWcHandle",
+            "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-icon/modus-wc-icon.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -2742,7 +3347,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable feedback component used to provide additional context related to form input interactions.\r\n\r\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable feedback component used to provide additional context related to form input interactions.\n\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcInputFeedback",
           "members": [
             {
@@ -2834,7 +3439,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text",
+          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -3013,12 +3618,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx",
+      "path": "src/components/modus-wc-logo/modus-wc-logo.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu item component used to display the item portion of a menu",
-          "name": "ModusWcMenuItem",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
+          "name": "ModusWcLogo",
           "members": [
             {
               "kind": "field",
@@ -3027,6 +3632,107 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "description": "The alt text for accessibility. If not provided, defaults to the logo name.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the logo container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "emblem",
+              "fieldName": "emblem",
+              "default": "false",
+              "description": "Show emblem version (icon only) instead of full logo",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "description": "The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc.",
+              "type": {
+                "text": "LogoName"
+              }
+            }
+          ],
+          "tagName": "modus-wc-logo",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcLogo",
+          "declaration": {
+            "name": "ModusWcLogo",
+            "module": "src/components/modus-wc-logo/modus-wc-logo.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-logo",
+          "declaration": {
+            "name": "ModusWcLogo",
+            "module": "src/components/modus-wc-logo/modus-wc-logo.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable menu item component used to display the item portion of a menu.\n\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
+          "name": "ModusWcMenuItem",
+          "members": [
+            {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the submenu if it's expanded"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if submenu is expanded"
             },
             {
               "kind": "method",
@@ -3070,6 +3776,14 @@
               "name": "focused",
               "fieldName": "focused",
               "description": "The focused state of the menu item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-submenu",
+              "fieldName": "hasSubmenu",
+              "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
               "type": {
                 "text": "boolean"
               }
@@ -3149,7 +3863,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{ value: string }>"
+                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -3182,7 +3896,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -3214,6 +3928,14 @@
               "description": "Custom CSS class to apply to the ul element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-menu",
+              "fieldName": "isSubMenu",
+              "description": "Indicates that this menu is a submenu (dropdown).",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -3274,7 +3996,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThe component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML",
+          "description": "A customizable modal component used to display content in a dialog.\n\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -3295,7 +4017,7 @@
               "name": "backdrop",
               "fieldName": "backdrop",
               "default": "'default'",
-              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
+              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
               "type": {
                 "text": "'default' | 'static'"
               }
@@ -3384,7 +4106,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\r\n\r\nThe component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.\r\nIt also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -3447,6 +4169,15 @@
               "description": "Custom CSS class to apply to the host element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "logo-name",
+              "fieldName": "logoName",
+              "default": "'trimble'",
+              "description": "The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.",
+              "type": {
+                "text": "LogoName"
               }
             },
             {
@@ -3632,7 +4363,7 @@
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
-              "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+              "description": "Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value."
             },
             {
               "kind": "field",
@@ -4022,11 +4753,246 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-panel/modus-wc-panel.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable panel component used to organize content in a structured layout.\n\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
+          "name": "ModusWcPanel",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "floating",
+              "fieldName": "floating",
+              "default": "false",
+              "description": "Enable floating mode with elevated shadow.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "height",
+              "fieldName": "height",
+              "default": "'700px'",
+              "description": "Height of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "width",
+              "fieldName": "width",
+              "default": "'350px'",
+              "description": "Width of the panel in pixels.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-panel",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcPanel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-panel",
+          "declaration": {
+            "name": "ModusWcPanel",
+            "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcProfileMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "menu-one",
+              "fieldName": "menuOne",
+              "description": "Configuration for the first menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "menu-two",
+              "fieldName": "menuTwo",
+              "description": "Configuration for the second menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "profile-props",
+              "fieldName": "profileProps",
+              "description": "Profile menu properties containing user information",
+              "type": {
+                "text": "IProfileMenuProps"
+              }
+            }
+          ],
+          "tagName": "modus-wc-profile-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuItemClick",
+              "type": {
+                "text": "EventEmitter<string>"
+              },
+              "description": "Emitted when any menu item is clicked, passing back the item value or label"
+            },
+            {
+              "kind": "field",
+              "name": "signOutClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Emitted when the Sign Out menu item is clicked"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcProfileMenu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-profile-menu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/utils/menu_template.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "renderSubMenu",
+          "parameters": [
+            {
+              "name": "subMenu",
+              "optional": true,
+              "type": {
+                "text": "ISubMenu"
+              },
+              "description": "The submenu configuration containing title and items"
+            },
+            {
+              "name": "onMenuItemClick",
+              "optional": true,
+              "type": {
+                "text": "(value: string) => void"
+              },
+              "description": "Callback function when a menu item is clicked"
+            },
+            {
+              "name": "isMainMenu",
+              "optional": true,
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "description": "Renders a submenu section with optional title and menu items",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "renderSubMenu",
+          "declaration": {
+            "name": "renderSubMenu",
+            "module": "src/components/modus-wc-profile-menu/utils/menu_template.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-progress/modus-wc-progress.tsx",
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -4581,7 +5547,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.",
+          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\n\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
           "name": "ModusWcSideNavigation",
           "members": [
             {
@@ -5467,7 +6433,7 @@
               "kind": "field",
               "name": "cellEditCommit",
               "type": {
-                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n    newValue: unknown;\r\n    updatedRow: Record<string, unknown>;\r\n  }>"
+                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n    newValue: unknown;\n    updatedRow: Record<string, unknown>;\n  }>"
               },
               "description": "Emits when cell editing is committed with the new value."
             },
@@ -5475,7 +6441,7 @@
               "kind": "field",
               "name": "cellEditStart",
               "type": {
-                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n  }>"
+                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n  }>"
               },
               "description": "Emits when cell editing starts."
             },
@@ -5491,7 +6457,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\r\n    row: Record<string, unknown>;\r\n    index: number;\r\n  }>"
+                "text": "EventEmitter<{\n    row: Record<string, unknown>;\n    index: number;\n  }>"
               },
               "description": "Emits when a row is clicked."
             },
@@ -5499,7 +6465,7 @@
               "kind": "field",
               "name": "rowSelectionChange",
               "type": {
-                "text": "EventEmitter<{\r\n    selectedRows: Record<string, unknown>[];\r\n    selectedRowIds: string[];\r\n  }>"
+                "text": "EventEmitter<{\n    selectedRows: Record<string, unknown>[];\n    selectedRowIds: string[];\n  }>"
               },
               "description": "Emits when row selection changes with the selected rows and their IDs."
             },
@@ -5540,7 +6506,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.",
+          "description": "A customizable tabs component used to create groups of tabs.\n\nThe component supports a `<slot>` for injecting custom tab content.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -5606,7 +6572,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
+                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
@@ -5639,7 +6605,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.",
+          "description": "A customizable input component used to create text inputs with types.\n\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -5661,7 +6627,7 @@
               "fieldName": "autoCapitalize",
               "description": "Controls automatic capitalization in inputted text.",
               "type": {
-                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
+                "text": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'"
               }
             },
             {
@@ -5721,7 +6687,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
               }
             },
             {
@@ -5865,6 +6831,14 @@
           "events": [
             {
               "kind": "field",
+              "name": "clearClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the clear button is clicked."
+            },
+            {
+              "kind": "field",
               "name": "inputBlur",
               "type": {
                 "text": "EventEmitter<FocusEvent>"
@@ -5973,7 +6947,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
+                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
               }
             },
             {
@@ -6141,7 +7115,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\n\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {
@@ -6256,7 +7230,7 @@
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document.",
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
               }
@@ -6357,7 +7331,7 @@
               "name": "show-seconds",
               "fieldName": "showSeconds",
               "default": "false",
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute.",
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute.",
               "type": {
                 "text": "boolean"
               }
@@ -6374,7 +7348,7 @@
             {
               "name": "step",
               "fieldName": "step",
-              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided.",
+              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided.",
               "type": {
                 "text": "number"
               }
@@ -6383,7 +7357,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`.",
+              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
@@ -6444,7 +7418,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
           "name": "ModusWcToast",
           "members": [
             {
@@ -6539,7 +7513,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toolbar component used to organize content across the entire page.",
+          "description": "A customizable toolbar component used to organize content across the entire page.\n\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcToolbar",
           "members": [
             {
@@ -6596,7 +7570,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -6757,7 +7731,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\n\nNote:\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\nproviding your own custom values for the size or weight properties from the available options.\n\n\n- If both slot content and `label` are provided, only the slot content will be rendered\n- Use the `label` prop when you need to dynamically update the text.",
           "name": "ModusWCTypography",
           "members": [
             {
@@ -6790,6 +7764,14 @@
               "description": "The hierarchy of the typography component.",
               "type": {
                 "text": "TypographyHierarchy"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text label to display.",
+              "type": {
+                "text": "string"
               }
             },
             {

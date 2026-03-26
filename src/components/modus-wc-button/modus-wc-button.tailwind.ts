@@ -4,6 +4,7 @@ export const convertPropsToClasses = ({
   color,
   disabled,
   fullWidth,
+  pressed,
   shape,
   size,
   variant,
@@ -11,7 +12,8 @@ export const convertPropsToClasses = ({
   color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   disabled?: boolean;
   fullWidth?: boolean;
-  shape?: 'circle' | 'rectangle' | 'square';
+  pressed?: boolean;
+  shape?: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size?: DaisySize;
   variant?: 'borderless' | 'filled' | 'outlined';
 }): string => {
@@ -45,10 +47,17 @@ export const convertPropsToClasses = ({
     classes = `${classes} modus-wc-btn-block`;
   }
 
+  if (pressed) {
+    classes = `${classes} modus-wc-btn-active`;
+  }
+
   if (shape) {
     switch (shape) {
       case 'circle':
         classes = `${classes} modus-wc-btn-circle`;
+        break;
+      case 'ellipse':
+        classes = `${classes} modus-wc-btn-ellipse`;
         break;
       case 'square':
         classes = `${classes} modus-wc-btn-square`;

@@ -1,12 +1,12 @@
 {
   "name": "@trimble-oss/moduswebcomponents",
-  "version": "0.0.0-beta.3",
+  "version": "1.0.2",
   "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
   "keywords": [
     "trimble",
     "modus"
   ],
-  "homepage": "https://trimble-oss.github.io/modus-wc-2.0/prod",
+  "homepage": "https://modus-web-components-v2.trimble.com",
   "license": "MIT",
   "author": "Trimble Inc.",
   "contributors": [
@@ -122,6 +122,13 @@
     "vite": "^7.1.7",
     "wireit": "^0.14.12"
   },
+  "overrides": {
+    "ts-morph": {
+      "@ts-morph/common": {
+        "minimatch": "9.0.9"
+      }
+    }
+  },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.40.2",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
@@ -217,7 +224,8 @@
       "dependencies": [
         "build:cem-json",
         "tailwind:build",
-        "embed:css"
+        "embed:css",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -245,7 +253,8 @@
       },
       "dependencies": [
         "build:cem-json",
-        "tailwind:watch"
+        "tailwind:watch",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -283,9 +292,11 @@
       "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ],
       "output": [
@@ -293,17 +304,31 @@
       ]
     },
     "embed:css": {
-      "command": "node scripts/embed-css.js",
+      "command": "node scripts/embed-css.js && node scripts/generate-variables-css.js",
       "dependencies": [
         "tailwind:build"
       ],
       "files": [
         "src/styles/output.css",
         "src/styles/global.css",
-        "scripts/embed-css.js"
+        "src/styles/variables.css",
+        "src/styles/fonts.css",
+        "scripts/embed-css.js",
+        "scripts/generate-variables-css.js"
       ],
       "output": [
-        "src/providers/theme/css-content.ts"
+        "src/providers/theme/css-content.ts",
+        "src/styles/modus-wc-variables.css"
+      ]
+    },
+    "generate:logo-data": {
+      "command": "node scripts/generate-logo-data.js",
+      "files": [
+        "src/components/modus-wc-logo/assets/logos/**/*.svg",
+        "scripts/generate-logo-data.js"
+      ],
+      "output": [
+        "src/components/modus-wc-logo/logo-svg-data.ts"
       ]
     },
     "tailwind:watch": {
@@ -311,9 +336,11 @@
       "service": true,
       "files": [
         "src/**/*.scss",
+        "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind.css",
         "src/styles/variables.css",
+        "src/styles/assets/fonts/**",
         "tailwind.config.js"
       ]
     },

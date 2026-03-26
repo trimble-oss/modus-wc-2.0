@@ -3,6 +3,7 @@ import { expect, userEvent, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ICollapseOptions } from '../modus-wc-collapse/modus-wc-collapse';
 
 interface AccordionArgs {
@@ -50,6 +51,19 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
+<div style="padding: 20px;">
+  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>
+    <modus-wc-collapse .options=${collapseOptions[0]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse .options=${collapseOptions[1]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse .options=${collapseOptions[2]}>
+      <div slot="content">Collapse content</div>
+    </modus-wc-collapse>
+  </modus-wc-accordion>
+</div>
 <script>
   const collapseOptions = [
     {
@@ -71,20 +85,12 @@ const Template: Story = {
       title: 'Item Three',
     },
   ];
+ // Adding this block to show how to set options via JS 
+  // const items = document.querySelectorAll('modus-wc-collapse');
+  // items.forEach((item, index) => {
+  //  item.options = collapseOptions[index];
+  // });
 </script>
-<div style="padding: 20px;">
-  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>
-    <modus-wc-collapse .options=${collapseOptions[0]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-    <modus-wc-collapse .options=${collapseOptions[1]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-    <modus-wc-collapse .options=${collapseOptions[2]}>
-      <div slot="content">Collapse content</div>
-    </modus-wc-collapse>
-  </modus-wc-accordion>
-</div>
     `;
   },
 };
@@ -231,6 +237,42 @@ export const Default: Story = {
       const itemThreeDesc = await canvas.findByText('Item three description');
       await expect(itemThreeDesc).toBeInTheDocument();
     });
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: () => {
+    // Create a unique shadow host for accordion component
+    if (!customElements.get('accordion-shadow-host')) {
+      const AccordionShadowHost = createShadowHostClass<AccordionArgs>({
+        componentTag: 'modus-wc-accordion',
+        propsMapper: (v: AccordionArgs, el: HTMLElement) => {
+          const accordionEl = el as unknown as {
+            customClass: string;
+          };
+          accordionEl.customClass = v['custom-class'] || '';
+
+          // Create and append collapse elements (no whitespace between to avoid gaps)
+          el.innerHTML = '';
+          collapseOptions.forEach((options) => {
+            const collapse = document.createElement('modus-wc-collapse');
+            (collapse as unknown as { options: ICollapseOptions }).options =
+              options;
+            const contentDiv = document.createElement('div');
+            contentDiv.setAttribute('slot', 'content');
+            contentDiv.textContent = 'Collapse content';
+            collapse.appendChild(contentDiv);
+            el.appendChild(collapse);
+          });
+        },
+      });
+      customElements.define('accordion-shadow-host', AccordionShadowHost);
+    }
+
+    return html`<accordion-shadow-host
+      style="display: block; padding: 20px;"
+      .props=${{}}
+    ></accordion-shadow-host>`;
   },
 };
 

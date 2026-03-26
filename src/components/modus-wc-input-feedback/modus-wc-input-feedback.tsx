@@ -1,10 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-input-feedback.tailwind';
 import { CheckCircleOutlineIcon } from '../../icons/check-circle-outline.icon';
 import { InfoOutlineIcon } from '../../icons/info-outline.icon';
 import { WarningOutlineIcon } from '../../icons/warning-outline.icon';
+import { handleShadowDOMStyles } from '../base-component';
+import { ModusSize } from '../types';
 
 export type IInputFeedbackLevel = 'error' | 'info' | 'success' | 'warning';
 
@@ -41,6 +42,9 @@ export class ModusWcInputFeedback {
   @Prop() size?: ModusSize = 'md';
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

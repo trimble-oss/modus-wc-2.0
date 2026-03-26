@@ -1,14 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-menu renders with default props 1`] = `
-<modus-wc-menu>
+<modus-wc-menu selection-mode="single">
   <!---->
   <ul aria-label="Default menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
 </modus-wc-menu>
 `;
 
+exports[`modus-wc-menu should add customClass to classList in submenu mode 1`] = `
+<modus-wc-menu class="modus-wc-menu-submenu" custom-class="test-submenu-class" is-sub-menu="true" selection-mode="single">
+  <!---->
+  <ul aria-label="Submenu test" aria-orientation="vertical" class="modus-wc-menu-dropdown test-submenu-class" role="menu"></ul>
+</modus-wc-menu>
+`;
+
 exports[`modus-wc-menu should render with custom props 1`] = `
-<modus-wc-menu bordered="true" custom-class="test-class" orientation="horizontal" size="lg">
+<modus-wc-menu bordered="true" custom-class="test-class" orientation="horizontal" selection-mode="single" size="lg">
   <!---->
   <ul aria-label="Test menu" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-horizontal modus-wc-menu-lg modus-wc-w-full test-class" role="menubar"></ul>
 </modus-wc-menu>

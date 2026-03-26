@@ -34,6 +34,24 @@ body {
   background-color: var(--modus-wc-color-base-page);
 }
 
+/*
+  Modal Scrollbar Behavior Override
+  Tailwind/DaisyUI applies `scrollbar-gutter: stable` to :root when a modal is open
+  (e.g., `:root:has(.modus-wc-modal-open, ...)`). This reserves space for the
+  scrollbar, leaving a visible empty gutter beside the content. We override it to
+  `auto` so the layout reflows naturally and the gutter disappears.
+*/
+:root:has(
+    :is(
+      .modus-wc-modal-open,
+      .modus-wc-modal:target,
+      .modus-wc-modal-toggle:checked + .modus-wc-modal,
+      .modus-wc-modal[open]
+    )
+  ) {
+  scrollbar-gutter: auto !important;
+}
+
 .modus-wc-border {
   border-color: var(--modus-wc-color-base-200);
   border-radius: 1px;
@@ -41,7 +59,6 @@ body {
 }
 
 modus-wc-text-input .modus-wc-text-input,
-modus-wc-select,
 modus-wc-textarea .modus-wc-textarea,
 modus-wc-time-input .modus-wc-time-input,
 modus-wc-date .modus-wc-date {
@@ -49,6 +66,12 @@ modus-wc-date .modus-wc-date {
 
   background: transparent;
   padding: 0 var(--modus-wc-spacing-sm);
+}
+
+modus-wc-select {
+  --fallback-b1: transparent;
+
+  background: transparent;
 }
 
 modus-wc-number-input .modus-wc-number-input {
@@ -78,6 +101,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-modern-dark']:root {
@@ -90,6 +114,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
 /* Modus Classic Themes */
@@ -105,6 +130,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-classic-dark']:root {
@@ -119,6 +145,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
 /* Connect Themes */
@@ -130,6 +157,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='connect-dark']:root {
@@ -138,6 +166,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-page: #000;
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
-  --modus-wc-color-base-300: var(--modus-wc-color-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }

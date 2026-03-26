@@ -27,10 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
@@ -39,6 +41,54 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Validate version bump follows SemVer
+        run: |
+          set -euo pipefail
+
+          current="$(node -p "require('./package.json').version")"
+
+          # Capture the raw input version and ensure it does not start with 'v'
+          input='${{ github.event.inputs.version }}'
+          if [ "${input#v}" != "$input" ]; then
+            echo "❌ Version '$input' must not start with 'v'. Please provide a bare SemVer like '1.2.3'." >&2
+            exit 1
+          fi
+
+          # Validate that the input is a valid SemVer version using the semver CLI
+          valid="$(npx --yes semver@7 "$input" || true)"
+          if [ -z "$valid" ]; then
+            echo "❌ '$input' is not a valid SemVer version." >&2
+            exit 1
+          fi
+
+          # Compute expected MAJOR / MINOR / PATCH increments from the current version
+          expectedMajor="$(npx --yes semver@7 -i major "$current")"
+          expectedMinor="$(npx --yes semver@7 -i minor "$current")"
+          expectedPatch="$(npx --yes semver@7 -i patch "$current")"
+
+          # Also allow prerelease increments (e.g. 1.3.0-alpha.1) to align with release-drafter prerelease config
+          expectedPremajor="$(npx --yes semver@7 -i premajor --preid alpha "$current")"
+          expectedPreminor="$(npx --yes semver@7 -i preminor --preid alpha "$current")"
+          expectedPrepatch="$(npx --yes semver@7 -i prepatch --preid alpha "$current")"
+          expectedPrerelease="$(npx --yes semver@7 -i prerelease --preid alpha "$current" || true)"
+
+          if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ] && \
+             [ "$input" != "$expectedPremajor" ] && [ "$input" != "$expectedPreminor" ] && [ "$input" != "$expectedPrepatch" ] && \
+             [ "$input" != "$expectedPrerelease" ]; then
+            echo "❌ Invalid version bump: '$input' is not a valid SemVer increment from '$current'." >&2
+            echo "   Expected one of:" >&2
+            echo "     MAJOR:      $expectedMajor (breaking changes)" >&2
+            echo "     MINOR:      $expectedMinor (new features)" >&2
+            echo "     PATCH:      $expectedPatch (bug fixes)" >&2
+            echo "     PREMAJOR:   $expectedPremajor (breaking prerelease)" >&2
+            echo "     PREMINOR:   $expectedPreminor (feature prerelease)" >&2
+            echo "     PREPATCH:   $expectedPrepatch (fix prerelease)" >&2
+            echo "     PRERELEASE: $expectedPrerelease (next prerelease iteration)" >&2
+            exit 1
+          fi
+
+          echo "✅ Version bump from $current to $input is valid."
 
       - name: Update package.json version
         run: |
@@ -58,7 +108,7 @@ jobs:
         id: npm_pack
 
       - name: Upload tarball as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: npm-tarball
           path: 'dist/*.tgz'
@@ -112,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download tarball artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: npm-tarball
           path: .

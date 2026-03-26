@@ -7,6 +7,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 import {
@@ -72,6 +73,9 @@ export class ModusWcRating {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Rating scale component';
     }

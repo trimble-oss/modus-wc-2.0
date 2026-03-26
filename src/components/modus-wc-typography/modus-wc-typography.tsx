@@ -11,9 +11,14 @@ export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 /**
  * A customizable typography component used to render text with different sizes, hierarchy, and weights.
  *
- * Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+ * Note:
+ * - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
  * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
  * providing your own custom values for the size or weight properties from the available options.
+ *
+
+ * - If both slot content and `label` are provided, only the slot content will be rendered
+ * - Use the `label` prop when you need to dynamically update the text.
  */
 @Component({
   tag: 'modus-wc-typography',
@@ -31,6 +36,9 @@ export class ModusWCTypography {
 
   /** The hierarchy of the typography component. */
   @Prop() hierarchy: TypographyHierarchy = 'p';
+
+  /** The text label to display. */
+  @Prop() label!: string;
 
   /** The size of the font. */
   @Prop() size?: TypographySize = 'md';
@@ -74,7 +82,7 @@ export class ModusWCTypography {
     return (
       <Host>
         <Element class={this.getClasses()} {...this.inheritedAttributes}>
-          <slot></slot>
+          <slot>{this.label}</slot>
         </Element>
       </Host>
     );

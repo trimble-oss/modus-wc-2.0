@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
@@ -81,6 +82,9 @@ export class ModusWcSelect {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Select';
     }
@@ -113,6 +117,7 @@ export class ModusWcSelect {
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLSelectElement).value;
     this.inputChange.emit(event);
   };
 

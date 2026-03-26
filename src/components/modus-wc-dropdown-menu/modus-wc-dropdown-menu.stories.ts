@@ -7,6 +7,7 @@ import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 interface DropdownMenuArgs {
   'button-aria-label'?: string;
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  'button-shape'?: 'circle' | 'ellipse' | 'rectangle' | 'square';
   'button-size'?: DaisySize;
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'custom-class'?: string;
@@ -24,6 +25,7 @@ const meta: Meta<DropdownMenuArgs> = {
   args: {
     'button-aria-label': 'Dropdown menu button',
     'button-color': 'primary',
+    'button-shape': 'rectangle',
     'button-size': 'md',
     'button-variant': 'filled',
     disabled: false,
@@ -41,6 +43,10 @@ const meta: Meta<DropdownMenuArgs> = {
     'button-size': {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
+    },
+    'button-shape': {
+      control: { type: 'select' },
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     'button-variant': {
       control: { type: 'select' },
@@ -123,31 +129,12 @@ const Template: Story = {
   }
 </style>
 
-<script>
-  let selectedValue = '';
 
-  const handleItemSelect = (event: CustomEvent) => {
-    // Update the "Selected Value" label
-    selectedValue = event.detail.value;
-    const displayElement = document.querySelector('#selected-value');
-    if (displayElement) {
-      displayElement.textContent = selectedValue;
-    }
-
-    // Close the dropdown menu when an item is selected
-    const dropdownMenu = event.target as HTMLElement;
-    const dropdownMenuElement = dropdownMenu.closest(
-      'modus-wc-dropdown-menu'
-    );
-    if (dropdownMenuElement) {
-      dropdownMenuElement.menuVisible = false;
-    }
-  };
-</script>
 
 <modus-wc-dropdown-menu
   button-aria-label=${ifDefined(args['button-aria-label'])}
   button-color=${ifDefined(args['button-color'])}
+  button-shape=${ifDefined(args['button-shape'])}
   button-size=${ifDefined(args['button-size'])}
   button-variant=${ifDefined(args['button-variant'])}
   custom-class=${ifDefined(args['custom-class'])}
@@ -169,6 +156,32 @@ const Template: Story = {
     <modus-wc-menu-item label="Item Three" value="3" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
   </div>
 </modus-wc-dropdown-menu>
+<script>
+  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.
+  // let selectedValue = '';
+
+  // const handleItemSelect = (event) => {
+  // //  Update the "Selected Value" label
+  //   selectedValue = event.detail.value;
+  //   const displayElement = document.querySelector('#selected-value');
+  //   if (displayElement) {
+  //     displayElement.textContent = selectedValue;
+  //   }
+
+  //   // Close the dropdown menu when an item is selected
+  //   const dropdownMenu = event.target;
+  //   const dropdownMenuElement = dropdownMenu.closest(
+  //     'modus-wc-dropdown-menu'
+  //   );
+  //   if (dropdownMenuElement) {
+  //     dropdownMenuElement.menuVisible = false;
+  //   }
+  // };
+  //  const menuItems = document.querySelectorAll('modus-wc-menu-item');
+  //   menuItems.forEach(item => {
+  //     item.addEventListener('itemSelect', handleItemSelect);
+  //   });
+</script>
 
 <div class="value">
   Selected Value:
@@ -179,3 +192,26 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const IconOnlyDropdownMenu: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  /* Storybook styling */
+  div[id^='story--components-dropdown-menu--icon-only-dropdown-menu'] {
+    height: 60px;
+  }
+</style>
+
+<modus-wc-dropdown-menu button-shape="square">
+  <div slot="button">
+    <modus-wc-icon decorative name="more_vertical"></modus-wc-icon>
+  </div>
+  <div slot="menu">
+    <modus-wc-menu-item label="Item One"></modus-wc-menu-item>
+  </div>
+</modus-wc-dropdown-menu>
+    `;
+  },
+};

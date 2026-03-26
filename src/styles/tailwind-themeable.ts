@@ -21,11 +21,20 @@ const themeable = [
   'modus-wc-btn-sm',
   'modus-wc-btn-md',
   'modus-wc-btn-lg',
+  //group
+  'modus-wc-join',
+  'modus-wc-join-item',
+  'modus-wc-join-vertical',
   // Checkbox
   'modus-wc-checkbox-xs',
   'modus-wc-checkbox-sm',
   'modus-wc-checkbox-md',
   'modus-wc-checkbox-lg',
+  //File Input
+  'modus-wc-file-input-xs',
+  'modus-wc-file-input-sm',
+  'modus-wc-file-input-md',
+  'modus-wc-file-input-lg',
   // Font
   'modus-wc-font-bold',
   'modus-wc-font-light',

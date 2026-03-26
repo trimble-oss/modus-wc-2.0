@@ -1,0 +1,650 @@
+/**
+ * Modus Web Components - Variables Only
+ *
+ * Lightweight alternative to modus-wc-styles.css for legacy apps.
+ * Contains ONLY CSS variables, theme definitions, and font declarations.
+ * No Tailwind reset, no DaisyUI classes, no utility classes.
+ *
+ * Use this when:
+ * - Your app uses Modus components inside Shadow DOM
+ * - You want to avoid the Tailwind Preflight reset causing style regressions
+ * - The handleShadowDOMStyles() injection handles class rules inside shadow roots
+ *
+ * Usage:
+ *   import '@trimble-oss/moduswebcomponents/modus-wc-variables.css';
+ */
+
+/* ===== Font Declarations ===== */
+
+/* Open Sans Variable Font - Normal */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(assets/fonts/open-sans/OpenSans-VariableFont.woff2) format('woff2');
+}
+
+/* Open Sans Variable Font - Italic */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(assets/fonts/open-sans/OpenSans-Italic-VariableFont.woff2)
+    format('woff2');
+}
+
+/* ===== CSS Variables ===== */
+
+:root {
+  /**
+  * The following variables should always match Modus
+  */
+  color-scheme: light dark;
+
+  /* Neutral Progression */
+  --modus-wc-color-white: #fff;
+  --modus-wc-color-gray-light: #f1f1f6;
+  --modus-wc-color-gray-0: #e0e1e9;
+  --modus-wc-color-gray-1: #cbcdd6;
+  --modus-wc-color-gray-2: #b7b9c3;
+  --modus-wc-color-gray-3: #a3a6b1;
+  --modus-wc-color-gray-4: #90939f;
+  --modus-wc-color-gray-5: #7d808d;
+  --modus-wc-color-gray-6: #6a6e79;
+  --modus-wc-color-gray-7: #585c65;
+  --modus-wc-color-gray-8: #464b52;
+  --modus-wc-color-gray-9: #353a40;
+  --modus-wc-color-gray-10: #171c1e;
+  --modus-wc-color-trimble-gray: #252a2e;
+  --modus-wc-color-black: #000;
+
+  /* Blue Progression */
+  --modus-wc-color-blue-pale: #dcedf9;
+  --modus-wc-color-highlight-blue: #019aeb;
+  --modus-wc-color-blue-light: #217cbb;
+  --modus-wc-color-trimble-blue: #0063a3;
+  --modus-wc-color-blue-dark: #0e416c;
+  --modus-wc-color-info-blue: #004f83;
+  --modus-wc-color-highlight-blue-pale: rgba(1, 154, 235, 0.5);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
+
+  /* Yellow Progression */
+  --modus-wc-color-yellow-pale: #fff5e4;
+  --modus-wc-color-yellow-light: #fec157;
+  --modus-wc-color-yellow: #fbad26;
+  --modus-wc-color-yellow-dark: #e49325;
+
+  /* Red Progression */
+  --modus-wc-color-red-pale: #fbd4d7;
+  --modus-wc-color-red-light: #e86363;
+  --modus-wc-color-red: #da212c;
+  --modus-wc-color-red-dark: #ab1f26;
+
+  /* Green Progression */
+  --modus-wc-color-green-pale: #e0eccf;
+  --modus-wc-color-green-light: #4ea646;
+  --modus-wc-color-green: #1e8a44;
+  --modus-wc-color-green-dark: #006638;
+
+  /* In-Field */
+  --modus-wc-in-field-success-dark-bg: #00fe00;
+  --modus-wc-in-field-success-light-bg: #00d22f;
+  --modus-wc-in-field-warning: #ff8b00;
+  --modus-wc-in-field-error: #da212c;
+  --modus-wc-in-field-info: #019aeb;
+  --modus-wc-in-field-avoidance: #df4eb2;
+  --modus-wc-in-field-black: #000;
+
+  /* Border width */
+  --modus-wc-border-width-xs: 1px;
+  --modus-wc-border-width-sm: 2px;
+  --modus-wc-border-width-md: 3px;
+  --modus-wc-border-width-lg: 4px;
+  --modus-wc-border-width-xl: 8px;
+  --modus-wc-border-width-2xl: 12px;
+  --modus-wc-border-width-3xl: 24px;
+
+  /* Border radius */
+  --modus-wc-border-radius-sm: 2px;
+  --modus-wc-border-radius-md: 4px;
+  --modus-wc-border-radius-lg: 8px;
+  --modus-wc-border-radius-xl: 12px;
+  --modus-wc-border-radius-2xl: 16px;
+  --modus-wc-border-radius-3xl: 24px;
+  --modus-wc-border-radius-rounded: 1000px;
+
+  /* Line heights */
+  --modus-wc-line-height-xs: 0.5rem;
+  --modus-wc-line-height-sm: 1rem;
+  --modus-wc-line-height-md: 1.5rem;
+  --modus-wc-line-height-lg: 2rem;
+  --modus-wc-line-height-xl: 3rem;
+
+  --modus-wc-line-height-h6: 1.125rem;
+  /* 18px */
+  --modus-wc-line-height-h3: 1.6875rem;
+  /* 27px */
+  --modus-wc-line-height-h2: 1.875rem;
+  /* 30px */
+  --modus-wc-line-height-h1: 2.25rem;
+  /* 36px */
+  --modus-wc-line-height-h0: 2.75rem;
+  /* 44px */
+
+  /* Font Family */
+  --modus-wc-font-family:
+    'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial',
+    sans-serif;
+
+  /* Font Sizes */
+  --modus-wc-font-size-2xs: 0.5rem;
+  /* 8px */
+  --modus-wc-font-size-xs: 0.625rem;
+  /* 10px */
+  --modus-wc-font-size-sm: 0.75rem;
+  /* 12px */
+  --modus-wc-font-size-md: 0.875rem;
+  /* 14px */
+  --modus-wc-font-size-lg: 1rem;
+  /* 16px */
+  --modus-wc-font-size-xl: 1.125rem;
+  /* 18px */
+  --modus-wc-font-size-2xl: 1.25rem;
+  /* 20px */
+  --modus-wc-font-size-3xl: 1.5rem;
+  /* 24px */
+  --modus-wc-font-size-4xl: 1.875rem;
+  /* 30px */
+
+  /* Font Weights */
+  --modus-wc-font-weight-light: 300;
+  --modus-wc-font-weight-normal: 400;
+  --modus-wc-font-weight-semibold: 600;
+  --modus-wc-font-weight-bold: 700;
+
+  /* Sizes */
+  --modus-wc-size-xxs: 0.75rem;
+  /* 12px */
+  --modus-wc-size-xs: 1.5rem;
+  /* 24px */
+  --modus-wc-size-sm: 2rem;
+  /* 32px */
+  --modus-wc-size-md: 2.5rem;
+  /* 40px */
+  --modus-wc-size-lg: 3rem;
+  /* 48px */
+  --modus-wc-size-xl: 3.5rem;
+  /* 56px */
+  --modus-wc-size-xxl: 4.5rem;
+  /* 72px */
+
+  /* Spacing */
+  --modus-wc-spacing-2xs: 0.125rem;
+  /* 2px */
+  --modus-wc-spacing-xs: 0.25rem;
+  /* 4px */
+  --modus-wc-spacing-sm: 0.5rem;
+  /* 8px */
+  --modus-wc-spacing-md: 0.75rem;
+  /* 12px */
+  --modus-wc-spacing-lg: 1rem;
+  /* 16px */
+  --modus-wc-spacing-xl: 1.5rem;
+  /* 24px */
+  --modus-wc-spacing-2xl: 2rem;
+  /* 32px */
+  --modus-wc-spacing-3xl: 3rem;
+  /* 48px */
+
+  /* Inputs */
+  --modus-wc-input-height-sm: 1.5rem;
+  /* 24px */
+  --modus-wc-input-height-md: 2rem;
+  /* 32px */
+  --modus-wc-input-height-lg: 3rem;
+  /* 48px */
+
+  /* Border Variables */
+  --modus-wc-border-radius-badge: var(--modus-wc-border-radius-md);
+  --modus-wc-border-radius-btn: var(--modus-wc-border-radius-lg);
+  --modus-wc-border-radius-box: var(--modus-wc-border-radius-2xl);
+  --modus-wc-border-radius-tab: var(--modus-wc-border-radius-lg);
+  --modus-wc-border-radius-input: var(--modus-wc-border-radius-lg);
+  --modus-wc-border-radius-table: var(--modus-wc-border-radius-2xl);
+  --modus-wc-border-radius-chip: var(--modus-wc-border-radius-lg);
+  --modus-wc-border-radius-alert: var(--modus-wc-border-radius-md);
+
+  /* Opacity */
+  --modus-wc-opacity-overlay: 0.6;
+
+  /* Dynamic Base Colors */
+  --modus-wc-color-base-page: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-base-100: light-dark(
+    var(--modus-wc-color-gray-light),
+    var(--modus-wc-color-trimble-gray)
+  );
+  --modus-wc-color-base-200: light-dark(
+    var(--modus-wc-color-gray-1),
+    var(--modus-wc-color-gray-10)
+  );
+  --modus-wc-color-base-300: light-dark(
+    var(--modus-wc-color-gray-2),
+    var(--modus-wc-color-gray-9)
+  );
+  --modus-wc-color-base-content: light-dark(
+    var(--modus-wc-color-gray-10),
+    var(--modus-wc-color-gray-1)
+  );
+  --modus-wc-color-base-content-low-contrast: light-dark(
+    var(--modus-wc-color-gray-8),
+    var(--modus-wc-color-gray-3)
+  );
+  --modus-wc-color-base-content-high-contrast: light-dark(
+    var(--modus-wc-color-black),
+    var(--modus-wc-color-white)
+  );
+  --modus-wc-color-base-inverted: light-dark(
+    var(--modus-wc-color-gray-10),
+    var(--modus-wc-color-gray-light)
+  );
+
+  /**
+  * The following variables are applied to themes for applications to override.
+  */
+
+  /* Primary Colors */
+  --modus-wc-color-primary: light-dark(
+    var(--modus-wc-color-trimble-blue),
+    var(--modus-wc-color-highlight-blue)
+  );
+  --modus-wc-color-primary-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-primary-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-highlight-blue-pale)
+  );
+
+  /* Secondary Colors */
+  --modus-wc-color-secondary: light-dark(
+    var(--modus-wc-color-yellow),
+    var(--modus-wc-color-yellow-light)
+  );
+  --modus-wc-color-secondary-content: light-dark(
+    var(--modus-wc-color-black),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-secondary-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
+  );
+
+  /* Accent Colors */
+  --modus-wc-color-accent: light-dark(
+    var(--modus-wc-color-gray-6),
+    var(--modus-wc-color-gray-4)
+  );
+  --modus-wc-color-accent-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-accent-pale: light-dark(
+    var(--modus-wc-color-gray-6),
+    var(--modus-wc-color-gray-4)
+  );
+
+  /* Neutral Colors */
+  --modus-wc-color-neutral: light-dark(
+    var(--modus-wc-color-base-100),
+    var(--modus-wc-color-base-100)
+  );
+  --modus-wc-color-neutral-content: light-dark(
+    var(--modus-wc-color-base-content),
+    var(--modus-wc-color-base-content)
+  );
+  --modus-wc-color-neutral-pale: light-dark(
+    var(--modus-wc-color-base-100),
+    var(--modus-wc-color-base-100)
+  );
+
+  /* Info Colors */
+  --modus-wc-color-info: light-dark(
+    var(--modus-wc-color-blue-dark),
+    var(--modus-wc-color-blue-light)
+  );
+  --modus-wc-color-info-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-white)
+  );
+  --modus-wc-color-info-pale: light-dark(
+    var(--modus-wc-color-blue-pale),
+    var(--modus-wc-color-blue-pale)
+  );
+
+  /* Success Colors */
+  --modus-wc-color-success: light-dark(
+    var(--modus-wc-color-green),
+    var(--modus-wc-color-green-light)
+  );
+  --modus-wc-color-success-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-success-pale: light-dark(
+    var(--modus-wc-color-green-pale),
+    var(--modus-wc-color-green-pale)
+  );
+
+  /* Warning Colors */
+  --modus-wc-color-warning: light-dark(
+    var(--modus-wc-color-yellow-dark),
+    var(--modus-wc-color-yellow-light)
+  );
+  --modus-wc-color-warning-content: light-dark(
+    var(--modus-wc-color-black),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-warning-pale: light-dark(
+    var(--modus-wc-color-yellow-pale),
+    var(--modus-wc-color-yellow-pale)
+  );
+
+  /* Error Colors */
+  --modus-wc-color-error: light-dark(
+    var(--modus-wc-color-red),
+    var(--modus-wc-color-red-light)
+  );
+  --modus-wc-color-error-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
+  --modus-wc-color-error-pale: light-dark(
+    var(--modus-wc-color-red-pale),
+    var(--modus-wc-color-red-pale)
+  );
+}
+
+/* ===== Theme Overrides ===== */
+
+/* Modus Modern Themes */
+[data-theme='modus-modern-light']:root {
+  color-scheme: light;
+  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-0);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-primary-content: var(--modus-wc-color-white);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
+  --rounded-btn: 0.5rem;
+  --rounded-box: 1rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
+  --p: 48.6221% 0.128075 247.073947;
+  --pc: 100% 0 0;
+  --s: 80.3357% 0.161017 74.410202;
+  --sc: 0% 0 0;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 84.9436% 0.012605 276.068713;
+  --nc: 28.1705% 0.01025 242.054501;
+  --b1: 100% 0 0;
+  --b2: 84.9436% 0.012605 276.068713;
+  --b3: 78.7221% 0.014241 277.004909;
+  --bc: 28.1705% 0.01025 242.054501;
+  --in: 48.6221% 0.128075 247.073947;
+  --inc: 100% 0 0;
+  --su: 55.824% 0.14148 150.027193;
+  --suc: 100% 0 0;
+  --wa: 72.9405% 0.149372 67.994075;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 57.1169% 0.215546 25.349404;
+  --erc: 100% 0 0;
+}
+
+[data-theme='modus-modern-dark']:root {
+  color-scheme: dark;
+  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
+  --modus-wc-color-primary-content: var(--modus-wc-color-black);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
+  --rounded-btn: 0.5rem;
+  --rounded-box: 1rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
+  --p: 65.9524% 0.159801 243.168715;
+  --pc: 0% 0 0;
+  --s: 84.7174% 0.139742 78.603787;
+  --sc: 0% 0 0;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 34.6043% 0.012501 252.973394;
+  --nc: 100% 0 0;
+  --b1: 22.215% 0.008445 223.858126;
+  --b2: 34.6043% 0.012501 252.973394;
+  --b3: 41.0842% 0.013405 256.755726;
+  --bc: 100% 0 0;
+  --in: 56.5592% 0.127092 244.53102;
+  --inc: 100% 0 0;
+  --su: 64.9048% 0.158119 142.023063;
+  --suc: 0% 0 0;
+  --wa: 84.7174% 0.139742 78.603787;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 66.6026% 0.165819 22.664876;
+  --erc: 0% 0 0;
+}
+
+/* Modus Classic Themes */
+[data-theme='modus-classic-light']:root {
+  color-scheme: light;
+  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-success: var(--modus-wc-color-green);
+  --modus-wc-color-error: var(--modus-wc-color-red);
+  --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
+  --rounded-btn: 0.25rem;
+  --rounded-box: 0.5rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
+  --p: 48.6221% 0.128075 247.073947;
+  --pc: 100% 0 0;
+  --s: 53.8572% 0.017812 269.820069;
+  --sc: 100% 0 0;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 84.9436% 0.012605 276.068713;
+  --nc: 28.1705% 0.01025 242.054501;
+  --b1: 100% 0 0;
+  --b2: 84.9436% 0.012605 276.068713;
+  --b3: 78.7221% 0.014241 277.004909;
+  --bc: 28.1705% 0.01025 242.054501;
+  --in: 48.6221% 0.128075 247.073947;
+  --inc: 100% 0 0;
+  --su: 55.824% 0.14148 150.027193;
+  --suc: 100% 0 0;
+  --wa: 80.3357% 0.161017 74.410202;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 57.1169% 0.215546 25.349404;
+  --erc: 100% 0 0;
+}
+
+[data-theme='modus-classic-dark']:root {
+  color-scheme: dark;
+  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-success: var(--modus-wc-color-green);
+  --modus-wc-color-error: var(--modus-wc-color-red);
+  --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 0.25rem;
+  --border-btn: 1px;
+  --btn-focus-scale: 0.98;
+  --rounded-btn: 0.25rem;
+  --rounded-box: 0.5rem;
+  --tab-radius: 0.25rem;
+  --alert-border-left-width: 0.5rem;
+  --alert-border-width: 1px;
+  --alert-border-radius: 0.5rem;
+  --input-bottom-border-width: 1px;
+  --p: 48.6221% 0.128075 247.073947;
+  --pc: 100% 0 0;
+  --s: 80.3357% 0.161017 74.410202;
+  --sc: 28.1705% 0.01025 242.054501;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 34.6043% 0.012501 252.973394;
+  --nc: 100% 0 0;
+  --b1: 22.215% 0.008445 223.858126;
+  --b2: 34.6043% 0.012501 252.973394;
+  --b3: 41.0842% 0.013405 256.755726;
+  --bc: 100% 0 0;
+  --in: 48.6221% 0.128075 247.073947;
+  --inc: 100% 0 0;
+  --su: 55.824% 0.14148 150.027193;
+  --suc: 100% 0 0;
+  --wa: 80.3357% 0.161017 74.410202;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 57.1169% 0.215546 25.349404;
+  --erc: 100% 0 0;
+}
+
+/* Connect Themes */
+[data-theme='connect-light']:root {
+  color-scheme: light;
+  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 2px;
+  --border-btn: 1px;
+  --btn-focus-scale: 1;
+  --rounded-btn: 2px;
+  --rounded-box: 0;
+  --tab-radius: 0;
+  --alert-border-left-width: 0;
+  --alert-border-width: 0;
+  --alert-border-radius: 4px;
+  --input-bottom-border-width: 2px;
+  --input-radius: 2px;
+  --p: 47.3235% 0.12603 247.547196;
+  --pc: 100% 0 0;
+  --s: 52.6234% 0.020228 289.216784;
+  --sc: 100% 0 0;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 84.9436% 0.012605 276.068713;
+  --nc: 28.1705% 0.01025 242.054501;
+  --b1: 100% 0 0;
+  --b2: 84.9436% 0.012605 276.068713;
+  --b3: 78.7221% 0.014241 277.004909;
+  --bc: 28.1705% 0.01025 242.054501;
+  --in: 48.6221% 0.128075 247.073947;
+  --inc: 100% 0 0;
+  --su: 66.4599% 0.13954 132.331914;
+  --suc: 100% 0 0;
+  --wa: 83.8398% 0.172209 83.573967;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 56.8372% 0.205089 24.549972;
+  --erc: 100% 0 0;
+}
+
+[data-theme='connect-dark']:root {
+  color-scheme: dark;
+  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
+  --animation-btn: 0.3s;
+  --animation-input: 0.2s;
+  --tab-border: 1px;
+  --rounded-badge: 2px;
+  --border-btn: 1px;
+  --btn-focus-scale: 1;
+  --rounded-btn: 2px;
+  --rounded-box: 0;
+  --tab-radius: 0;
+  --alert-border-left-width: 0;
+  --alert-border-width: 0;
+  --alert-border-radius: 4px;
+  --input-bottom-border-width: 2px;
+  --input-radius: 2px;
+  --p: 65.9524% 0.159801 243.168715;
+  --pc: 0% 0 0;
+  --s: 95.9569% 0.006653 286.273689;
+  --sc: 0% 0 0;
+  --a: 53.8572% 0.017812 269.820069;
+  --ac: 100% 0 0;
+  --n: 34.6043% 0.012501 252.973394;
+  --nc: 100% 0 0;
+  --b1: 22.215% 0.008445 223.858126;
+  --b2: 34.6043% 0.012501 252.973394;
+  --b3: 41.0842% 0.013405 256.755726;
+  --bc: 100% 0 0;
+  --in: 56.5592% 0.127092 244.53102;
+  --inc: 100% 0 0;
+  --su: 64.9048% 0.158119 142.023063;
+  --suc: 0% 0 0;
+  --wa: 84.7174% 0.139742 78.603787;
+  --wac: 28.1705% 0.01025 242.054501;
+  --er: 66.6026% 0.165819 22.664876;
+  --erc: 0% 0 0;
+}

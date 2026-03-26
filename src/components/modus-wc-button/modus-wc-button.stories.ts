@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface ButtonArgs {
@@ -10,7 +11,7 @@ interface ButtonArgs {
   disabled: boolean;
   'full-width': boolean;
   pressed: boolean;
-  shape: 'circle' | 'rectangle' | 'square';
+  shape: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
@@ -36,7 +37,7 @@ const meta: Meta<ButtonArgs> = {
     },
     shape: {
       control: { type: 'select' },
-      options: ['circle', 'rectangle', 'square'],
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     size: {
       control: { type: 'select' },
@@ -92,6 +93,11 @@ export const ButtonShapes: Story = {
   render: () => {
     // prettier-ignore
     return html`
+  <modus-wc-button
+    shape="rectangle"
+  >
+    Rectangle
+  </modus-wc-button>
 <modus-wc-button
   shape="circle"
 >
@@ -101,6 +107,11 @@ export const ButtonShapes: Story = {
   shape="square"
 >
   Square
+</modus-wc-button>
+<modus-wc-button
+  shape="ellipse"
+>
+  Ellipse
 </modus-wc-button>
     `;
   },
@@ -125,6 +136,8 @@ export const DynamicTextUpdate: Story = {
     const input = document.getElementById('btn-text-input');
     btnText.textContent = input.value;
   }
+  // Call updateButtonText function using the button's click event
+  // Example:  <modus-wc-button color="primary" variant="filled" buttonClick="updateButtonText()"></modus-wc-button>
 </script>
 
 <div>
@@ -140,7 +153,6 @@ export const DynamicTextUpdate: Story = {
     `;
   },
 };
-
 export const IconOnlyButton: Story = {
   render: () => {
     // prettier-ignore
@@ -191,40 +203,42 @@ export const IconLeftAndRightButton: Story = {
 
 export const ShadowDomParent: Story = {
   render: (args) => {
-    if (!customElements.get('shadow-dom-parent')) {
-      class ShadowDomParent extends HTMLElement {
-        shadowRootRef;
-        buttonEl;
-
-        constructor() {
-          super();
-          this.shadowRootRef = this.attachShadow({ mode: 'open' });
-          const wrapper = document.createElement('div');
-          this.buttonEl = document.createElement('modus-wc-button');
-          wrapper.appendChild(this.buttonEl);
-          this.shadowRootRef.appendChild(wrapper);
-        }
-
-        set props(v) {
-          if (!this.buttonEl) return;
-          // Use properties so Stencil updates without remount
-          this.buttonEl.ariaLabel = 'Click me button';
-          this.buttonEl.color = v.color;
-          this.buttonEl.shape = v.shape;
-          this.buttonEl.size = v.size;
-          this.buttonEl.type = v.type;
-          this.buttonEl.variant = v.variant;
-          this.buttonEl.customClass = v['custom-class'] || '';
-          this.buttonEl.disabled = Boolean(v.disabled);
-          this.buttonEl.fullWidth = Boolean(v['full-width']);
-          this.buttonEl.pressed = Boolean(v.pressed);
-          this.buttonEl.textContent = 'Click me';
-        }
-      }
-      customElements.define('shadow-dom-parent', ShadowDomParent);
+    // Create a unique shadow host for button component
+    if (!customElements.get('button-shadow-host')) {
+      const ButtonShadowHost = createShadowHostClass<ButtonArgs>({
+        componentTag: 'modus-wc-button',
+        propsMapper: (v: ButtonArgs, el: HTMLElement) => {
+          const buttonEl = el as unknown as {
+            ariaLabel: string;
+            color: string;
+            shape: string;
+            size: string;
+            type: string;
+            variant: string;
+            customClass: string;
+            disabled: boolean;
+            fullWidth: boolean;
+            pressed: boolean;
+          };
+          buttonEl.ariaLabel = 'Click me button';
+          buttonEl.color = v.color;
+          buttonEl.shape = v.shape;
+          buttonEl.size = v.size;
+          buttonEl.type = v.type;
+          buttonEl.variant = v.variant;
+          buttonEl.customClass = v['custom-class'] || '';
+          buttonEl.disabled = Boolean(v.disabled);
+          buttonEl.fullWidth = Boolean(v['full-width']);
+          buttonEl.pressed = Boolean(v.pressed);
+        },
+        defaultContent: 'Click me',
+      });
+      customElements.define('button-shadow-host', ButtonShadowHost);
     }
 
-    return html`<shadow-dom-parent .props=${{ ...args }}></shadow-dom-parent>`;
+    return html`<button-shadow-host
+      .props=${{ ...args }}
+    ></button-shadow-host>`;
   },
 };
 
