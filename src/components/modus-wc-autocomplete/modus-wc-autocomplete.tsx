@@ -15,6 +15,7 @@ import {
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { handleShadowDOMStyles } from '../base-component';
 import {
+  AutocompleteTypes,
   IAutocompleteItem,
   IAutocompleteNoResults,
   IInputFeedbackProp,
@@ -69,6 +70,9 @@ export class ModusWcAutocomplete {
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** Hint for form autofill feature. */
+  @Prop() autoComplete?: AutocompleteTypes;
 
   /** Indicates that the autocomplete should have a border. */
   @Prop() bordered?: boolean = true;
@@ -336,7 +340,7 @@ export class ModusWcAutocomplete {
       const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
       if (menuEl) {
         const targetItem = menuEl.querySelector(
-          '.modus-wc-menu-item-selected'
+          '.modus-wc-menu-item-active'
         ) as HTMLElement;
 
         const scrollContainer = menuEl.querySelector(
@@ -909,6 +913,7 @@ export class ModusWcAutocomplete {
                 isChipsExpanded: this.isChipsExpanded,
               })}
               {renderInput({
+                autoComplete: this.autoComplete,
                 bordered: this.bordered,
                 multiSelect: this.multiSelect,
                 disabled: this.disabled,
@@ -955,6 +960,7 @@ export class ModusWcAutocomplete {
         ) : (
           <Fragment>
             {renderInput({
+              autoComplete: this.autoComplete,
               bordered: this.bordered,
               multiSelect: this.multiSelect,
               disabled: this.disabled,

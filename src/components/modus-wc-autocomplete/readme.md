@@ -15,6 +15,7 @@ The component supports a `<slot>` for injecting custom content.
 
 | Property            | Attribute             | Description                                                                                                          | Type                                               | Default                                                                                                                              |
 | ------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `autoComplete`      | `auto-complete`       | Hint for form autofill feature.                                                                                      | `AutocompleteTypes \| undefined`                   | `undefined`                                                                                                                          |
 | `bordered`          | `bordered`            | Indicates that the autocomplete should have a border.                                                                | `boolean \| undefined`                             | `true`                                                                                                                               |
 | `customBlur`        | `custom-blur`         | Custom blur handler - if provided, overrides default blur behavior                                                   | `((event: FocusEvent) => void) \| undefined`       | `undefined`                                                                                                                          |
 | `customClass`       | `custom-class`        | Custom CSS class to apply to host element.                                                                           | `string \| undefined`                              | `''`                                                                                                                                 |
@@ -23,6 +24,7 @@ The component supports a `<slot>` for injecting custom content.
 | `customKeyDown`     | `custom-key-down`     | Custom key down handler - if provided, overrides default keyboard navigation                                         | `((event: KeyboardEvent) => void) \| undefined`    | `undefined`                                                                                                                          |
 | `debounceMs`        | `debounce-ms`         | The debounce timeout in milliseconds. Set to 0 to disable debouncing.                                                | `number \| undefined`                              | `300`                                                                                                                                |
 | `disabled`          | `disabled`            | Whether the form control is disabled.                                                                                | `boolean \| undefined`                             | `false`                                                                                                                              |
+| `feedback`          | `feedback`            | Feedback state for the input field.                                                                                  | `IInputFeedbackProp \| undefined`                  | `undefined`                                                                                                                          |
 | `includeClear`      | `include-clear`       | Show the clear button within the input field.                                                                        | `boolean \| undefined`                             | `false`                                                                                                                              |
 | `includeSearch`     | `include-search`      | Show the search icon within the input field.                                                                         | `boolean \| undefined`                             | `false`                                                                                                                              |
 | `inputId`           | `input-id`            | The ID of the input element.                                                                                         | `string \| undefined`                              | `undefined`                                                                                                                          |
@@ -132,6 +134,7 @@ Type: `Promise<void>`
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-input-feedback](../modus-wc-input-feedback)
 - [modus-wc-menu](../modus-wc-menu)
 - [modus-wc-chip](../modus-wc-chip)
 - [modus-wc-button](../modus-wc-button)
@@ -144,6 +147,7 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   modus-wc-autocomplete --> modus-wc-input-label
+  modus-wc-autocomplete --> modus-wc-input-feedback
   modus-wc-autocomplete --> modus-wc-menu
   modus-wc-autocomplete --> modus-wc-chip
   modus-wc-autocomplete --> modus-wc-button
@@ -151,9 +155,9 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-text-input
   modus-wc-autocomplete --> modus-wc-loader
   modus-wc-autocomplete --> modus-wc-menu-item
+  modus-wc-input-feedback --> modus-wc-icon
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback
-  modus-wc-input-feedback --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-checkbox --> modus-wc-input-label

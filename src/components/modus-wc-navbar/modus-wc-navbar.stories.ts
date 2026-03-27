@@ -27,6 +27,7 @@ const visibility: INavbarVisibility = {
   ai: true,
   apps: true,
   help: true,
+  logo: true,
   mainMenu: true,
   notifications: true,
   search: true,
@@ -90,8 +91,6 @@ const meta: Meta<NavbarArgs> = {
       options: getAvailableLogos(),
     },
     'user-card': {
-      description:
-        '⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.',
       table: {
         type: {
           detail: `
@@ -117,6 +116,7 @@ const meta: Meta<NavbarArgs> = {
             - ai (boolean, optional): Controls visibility of the AI button
             - apps (boolean, optional): Controls visibility of the apps button
             - help (boolean, optional): Controls visibility of the help button
+            - logo (boolean, optional): Controls visibility of the logo button; omit for visible
             - mainMenu (boolean, optional): Controls visibility of the main menu button
             - notifications (boolean, optional): Controls visibility of the notifications button
             - search (boolean, optional): Controls visibility of the search button
@@ -197,6 +197,7 @@ const Template: Story = {
 //     ai: true,
 //     apps: true,
 //     help: true,
+//     logo: true,
 //     mainMenu: true,
 //     notifications: true,
 //     search: true,
@@ -401,6 +402,7 @@ export const CustomMenuAndSlots: Story = {
         //     ai: false,
         //     apps: false,
         //     help: false,
+        //     logo: true,
         //     mainMenu: false,
         //     notifications: false,
         //     search: false,

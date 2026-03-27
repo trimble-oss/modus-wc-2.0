@@ -8,6 +8,7 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
+import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { renderSubMenu } from './utils/menu_template';
 
@@ -18,6 +19,8 @@ export interface IMenuItem {
   icon?: string;
   /** The variant of the icon to use, such as 'solid' or 'outlined' (optional). */
   iconVariant?: 'solid' | 'outlined';
+  /** The size of the icon to use, such as 'xs', 'sm', 'md' or 'lg' (optional). */
+  iconSize?: DaisySize;
   /** The value associated with the menu item, used for selection (optional). */
   value?: string;
 }
@@ -96,24 +99,28 @@ export class ModusWcProfileMenu {
         label: 'My Profile',
         icon: 'info',
         iconVariant: 'solid',
+        iconSize: 'sm',
         value: 'my-profile',
       },
       {
         label: 'My Products',
         icon: 'home',
         iconVariant: 'solid',
+        iconSize: 'sm',
         value: 'my-products',
       },
       {
         label: 'Support center',
         icon: 'bar_graph',
         iconVariant: 'solid',
+        iconSize: 'sm',
         value: 'support-center',
       },
       {
         label: 'Admin settings',
         icon: 'download',
         iconVariant: 'solid',
+        iconSize: 'sm',
         value: 'admin-settings',
       },
     ],
@@ -198,6 +205,8 @@ export class ModusWcProfileMenu {
                 <modus-wc-icon
                   slot="start-icon"
                   name="sign_out"
+                  size="sm"
+                  variant="solid"
                 ></modus-wc-icon>
               </modus-wc-menu-item>
             </modus-wc-menu>
