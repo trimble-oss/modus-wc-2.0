@@ -155,15 +155,26 @@ jobs:
       - name: Publish to GitHub Packages
         run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
-      - name: Commit version data back to repository
+      - name: Open PR with version data
         if: steps.check-version.outputs.generate == 'true'
         working-directory: .
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          VERSION="${{ github.event.inputs.version }}"
+          BRANCH="chore/mcp-docs-v${VERSION}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
           git add mcp/versions/
-          git diff --cached --quiet || git commit -m "chore: add MCP docs for v${{ github.event.inputs.version }}"
-          git push
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: add MCP docs for v${VERSION}"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --title "chore: add MCP docs for v${VERSION}" \
+            --body "Auto-generated versioned documentation for MCP server v${VERSION}." \
+            --base main \
+            --head "$BRANCH"
 
   release-mcp:
     needs: build-and-publish-mcp
