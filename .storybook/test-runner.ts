@@ -33,7 +33,8 @@ const config: TestRunnerConfig = {
   },
 
   async postVisit(page, context) {
-    const browserName = (page.context().browser()?.browserType().name()) ?? 'chromium';
+    const browserName =
+      page.context().browser()?.browserType().name() ?? 'chromium';
 
     // 1. Accessibility testing (Axe) — all browsers
     await checkA11y(page, '#storybook-root', {

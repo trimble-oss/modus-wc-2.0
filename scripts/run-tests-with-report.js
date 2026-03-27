@@ -16,9 +16,7 @@ if (!existsSync(resultsDir)) {
 const args = process.argv.slice(2);
 const isAll = args.includes('--all');
 
-const component = isAll
-  ? null
-  : args.find((a) => !a.startsWith('--')) || null;
+const component = isAll ? null : args.find((a) => !a.startsWith('--')) || null;
 
 if (!isAll && !component) {
   globalThis.console.log('Usage:');
@@ -43,7 +41,9 @@ if (component) {
 }
 
 globalThis.console.log(`\n=== Modus WC Test Runner ===\n`);
-globalThis.console.log(`Mode:      ${isAll ? 'All Components' : `Single Component (${component})`}`);
+globalThis.console.log(
+  `Mode:      ${isAll ? 'All Components' : `Single Component (${component})`}`
+);
 globalThis.console.log(`Browsers:  Chromium, Firefox, WebKit`);
 globalThis.console.log(`JSON out:  ${jsonPath}`);
 globalThis.console.log(`\nRunning tests...\n`);
@@ -53,7 +53,9 @@ try {
   execSync(testCmd, { cwd: rootDir, stdio: 'inherit' });
 } catch (err) {
   testExitCode = err.status || 1;
-  globalThis.console.log(`\nTests exited with code ${testExitCode} (failures detected).`);
+  globalThis.console.log(
+    `\nTests exited with code ${testExitCode} (failures detected).`
+  );
 }
 
 globalThis.console.log(`\n=== Generating Reports ===\n`);

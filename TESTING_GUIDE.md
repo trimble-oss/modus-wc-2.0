@@ -85,9 +85,13 @@ await step('Verify custom event fires', async () => {
   const button = await canvas.findByRole('button');
   let eventFired = false;
 
-  button.addEventListener('buttonClick', () => {
-    eventFired = true;
-  }, { once: true });
+  button.addEventListener(
+    'buttonClick',
+    () => {
+      eventFired = true;
+    },
+    { once: true }
+  );
 
   await userEvent.click(button);
   await expect(eventFired).toBe(true);

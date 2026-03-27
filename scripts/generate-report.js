@@ -21,7 +21,9 @@ const jsonPath = join(resultsDir, jsonFileName);
 
 if (!existsSync(jsonPath)) {
   globalThis.console.error(`JSON report not found: ${jsonPath}`);
-  globalThis.console.error('Run tests first with --json --outputFile to generate it.');
+  globalThis.console.error(
+    'Run tests first with --json --outputFile to generate it.'
+  );
   process.exit(1);
 }
 
@@ -61,12 +63,14 @@ const snapshotsMatched = raw.snapshot?.matched || 0;
 const snapshotsFailed = raw.snapshot?.unmatched || 0;
 const snapshotsTotal = raw.snapshot?.total || 0;
 const startTime = raw.startTime || 0;
-const endTime = browserResults.length > 0
-  ? Math.max(...browserResults.map((s) => s.endTime || 0))
-  : 0;
+const endTime =
+  browserResults.length > 0
+    ? Math.max(...browserResults.map((s) => s.endTime || 0))
+    : 0;
 const durationSec = ((endTime - startTime) / 1000).toFixed(2);
 const dateStr = new Date().toISOString().split('T')[0];
-const overallStatus = totalFailed === 0 ? 'ALL PASSED' : `${totalFailed} FAILED`;
+const overallStatus =
+  totalFailed === 0 ? 'ALL PASSED' : `${totalFailed} FAILED`;
 const componentTitle = componentArg || 'All Components';
 
 // --- MARKDOWN ---
@@ -81,12 +85,16 @@ function generateMarkdown() {
   md += `| Browser | `;
   const storyNames = browsers[0]?.stories.map((s) => s.title) || [];
   md += storyNames.map((n) => n).join(' | ') + ' | Status |\n';
-  md += `|---------|` + storyNames.map(() => '--------').join('|') + '|--------|\n';
+  md +=
+    `|---------|` + storyNames.map(() => '--------').join('|') + '|--------|\n';
 
   for (const b of browsers) {
     md += `| ${b.name} | `;
     md += b.stories
-      .map((s) => `${s.status === 'passed' ? 'PASSED' : 'FAILED'} (${s.duration}ms)`)
+      .map(
+        (s) =>
+          `${s.status === 'passed' ? 'PASSED' : 'FAILED'} (${s.duration}ms)`
+      )
       .join(' | ');
     md += ` | ${b.status === 'passed' ? 'PASSED' : 'FAILED'} |\n`;
   }
@@ -135,7 +143,11 @@ function generateMarkdown() {
 // --- HTML ---
 
 function esc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function badge(status, label) {
@@ -156,7 +168,9 @@ function generateHtml() {
     for (const s of b.stories) {
       browserRowsHtml += `<td>${badge(s.status, `${s.status === 'passed' ? 'PASSED' : 'FAILED'}`)}</td>`;
     }
-    const totalDur = (b.stories.reduce((a, s) => a + s.duration, 0) / 1000).toFixed(1);
+    const totalDur = (
+      b.stories.reduce((a, s) => a + s.duration, 0) / 1000
+    ).toFixed(1);
     browserRowsHtml += `<td class="duration">${totalDur}s</td>`;
     browserRowsHtml += `<td>${badge(b.status)}</td></tr>\n`;
   }
@@ -199,7 +213,11 @@ function generateHtml() {
     numPassedTests: totalPassed,
     numFailedTests: totalFailed,
     numTotalTests: totalTests,
-    snapshot: { matched: snapshotsMatched, failed: snapshotsFailed, total: snapshotsTotal },
+    snapshot: {
+      matched: snapshotsMatched,
+      failed: snapshotsFailed,
+      total: snapshotsTotal,
+    },
     testResults: browsers.map((b) => ({
       name: b.name,
       status: b.status,
@@ -353,7 +371,11 @@ globalThis.console.log(`Markdown report: test-results/${mdFileName}`);
 
 const htmlPath = join(resultsDir, 'storybook-test-report.html');
 writeFileSync(htmlPath, generateHtml(), 'utf8');
-globalThis.console.log(`HTML report:     test-results/storybook-test-report.html`);
+globalThis.console.log(
+  `HTML report:     test-results/storybook-test-report.html`
+);
 
 globalThis.console.log(`\nReports generated for: ${componentTitle}`);
-globalThis.console.log(`Status: ${overallStatus} (${totalPassed}/${totalTests} passed, ${durationSec}s)`);
+globalThis.console.log(
+  `Status: ${overallStatus} (${totalPassed}/${totalTests} passed, ${durationSec}s)`
+);
