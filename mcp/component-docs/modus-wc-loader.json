@@ -1,0 +1,72 @@
+{
+  "description": "A customizable loader component used to indicate the loading of content",
+  "properties": [
+    {
+      "name": "color",
+      "type": "LoaderColor",
+      "description": "The color of the loader.",
+      "default": "'primary'",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the loader element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "size",
+      "type": "DaisySize",
+      "description": "The size of the loader.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "variant",
+      "type": "LoaderVariant",
+      "description": "The variant of the loader.",
+      "default": "'spinner'",
+      "mutable": false,
+      "end_line": 47
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-loader\n        aria-label=\"Loading spinner\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"${args.size}\"\n        variant=\"${args.variant}\"\n      ></modus-wc-loader>",
+    "variations": [],
+    "args": {
+      "color": "'primary'",
+      "class": "''",
+      "size": "'md'",
+      "variant": "'spinner'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-loader ></modus-wc-loader>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-loader",
+  "storyExample": {
+    "template": "<modus-wc-loader\n        aria-label=\"Loading spinner\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"${args.size}\"\n        variant=\"${args.variant}\"\n      ></modus-wc-loader>",
+    "args": {
+      "color": "'primary'",
+      "class": "''",
+      "size": "'md'",
+      "variant": "'spinner'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { LoaderColor, LoaderVariant } from './modus-wc-loader';\nimport { DaisySize } from '../types';\n\ninterface LoaderArgs {\n  color: LoaderColor;\n  'custom-class'?: string;\n  size: DaisySize;\n  variant: LoaderVariant;\n}\n\nconst meta: Meta<LoaderArgs> = {\n  title: 'Components/Loader',\n  component: 'modus-wc-loader',\n  args: {\n    color: 'primary',\n    'custom-class': '',\n    size: 'md',\n    variant: 'spinner',\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: [\n        'primary',\n        'secondary',\n        'accent',\n        'neutral',\n        'info',\n        'success',\n        'warning',\n        'error',\n      ],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['ball', 'bars', 'dots', 'infinity', 'ring', 'spinner'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<LoaderArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading spinner\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"${args.size}\"\n        variant=\"${args.variant}\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\nexport const Ball: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading ball\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"md\"\n        variant=\"ball\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\nexport const Bars: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading bars\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"md\"\n        variant=\"bars\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\nexport const Dots: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading dots\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"md\"\n        variant=\"dots\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\n// eslint-disable-next-line no-shadow-restricted-names\nexport const Infinity: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading infinity symbol\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"md\"\n        variant=\"infinity\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\nexport const Ring: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-loader\n        aria-label=\"Loading ring\"\n        color=\"${args.color}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        size=\"md\"\n        variant=\"ring\"\n      ></modus-wc-loader>\n    `;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - **Color value changes**: \\`dark\\` and \\`tertiary\\` values from 1.0 have been removed.\n  1.0 value \\`danger\\` has been renamed to \\`error\\` in 2.0. Values \\`accent\\`, \\`info\\`, and \\`neutral\\` are new options in 2.0.\n  - In 1.0 \\`size\\` used direct CSS size value strings (e.g., \\`'12rem'\\`). In 2.0 \\`size\\` is now defined by predefined values (\\`xs\\`, \\`sm\\`, \\`md\\`, \\`lg\\`), and CSS can be used for custom sizes.\n  - Added new \\`variant\\` prop to specify the loader type in 2.0.\n\n#### Prop Mapping\n\n| 1.0 Prop | 2.0 Prop | Notes                                                                                                  |\n|----------|----------|--------------------------------------------------------------------------------------------------------|\n| color    | color    | \\`dark\\` and \\`tertiary\\` from version 1.0 have been removed, \\`danger\\` has been renamed to \\`error\\` |\n| size     | size     | Now uses predefined sizes (\\`xs\\`, \\`sm\\`, \\`md\\`, \\`lg\\`), use CSS for custom sizes.                  |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

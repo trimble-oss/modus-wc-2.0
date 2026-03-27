@@ -3,8 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { IInputFeedbackProp, ModusSize } from '../types';
-import { WeekStartDay } from '../types';
+import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 
 interface DateArgs {
   bordered?: boolean;
@@ -15,17 +14,16 @@ interface DateArgs {
     | 'yyyy-mm-dd'
     | 'dd-mm-yyyy'
     | 'mm-dd-yyyy'
-    | 'MMM DD, YYYY'
     | 'yyyy/mm/dd'
     | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy';
+    | 'mm/dd/yyyy'
+    | 'MMM DD, YYYY';
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
   max?: string;
   min?: string;
   name?: string;
-  placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
   'show-week-numbers'?: boolean;
@@ -51,7 +49,6 @@ const meta: Meta<DateArgs> = {
   },
   argTypes: {
     feedback: {
-      description: 'Feedback prop for input components',
       table: {
         type: {
           detail: `
@@ -70,13 +67,14 @@ const meta: Meta<DateArgs> = {
     format: {
       control: { type: 'select' },
       options: [
+        undefined,
         'yyyy-mm-dd',
         'dd-mm-yyyy',
         'mm-dd-yyyy',
-        'MMM DD, YYYY',
         'yyyy/mm/dd',
         'dd/mm/yyyy',
         'mm/dd/yyyy',
+        'MMM DD, YYYY',
       ],
     },
     'week-start-day': {
@@ -132,7 +130,6 @@ const Template: Story = {
         max=${ifDefined(args.max)}
         min=${ifDefined(args.min)}
         name=${ifDefined(args.name)}
-        placeholder=${ifDefined(args.placeholder)}
         ?read-only=${args['read-only']}
         ?required=${args.required}
         ?show-week-numbers=${args['show-week-numbers']}
@@ -182,14 +179,20 @@ export const ShadowDomParent: Story = {
             customClass: string;
             disabled: boolean;
             feedback: IInputFeedbackProp;
-            format: string;
+            format?:
+              | 'yyyy-mm-dd'
+              | 'dd-mm-yyyy'
+              | 'mm-dd-yyyy'
+              | 'yyyy/mm/dd'
+              | 'dd/mm/yyyy'
+              | 'mm/dd/yyyy'
+              | 'MMM DD, YYYY';
             inputId: string;
             inputTabIndex: number;
             label: string;
             max: string;
             min: string;
             name: string;
-            placeholder: string;
             readOnly: boolean;
             required: boolean;
             showWeekNumbers: boolean;
@@ -200,14 +203,13 @@ export const ShadowDomParent: Story = {
           dateEl.bordered = Boolean(v.bordered);
           dateEl.customClass = v['custom-class'] || '';
           dateEl.disabled = Boolean(v.disabled);
-          dateEl.format = v.format ?? '';
+          dateEl.format = v.format;
           dateEl.inputId = v['input-id'] ?? '';
           dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
           dateEl.label = v.label ?? '';
           dateEl.max = v.max ?? '';
           dateEl.min = v.min ?? '';
           dateEl.name = v.name ?? '';
-          dateEl.placeholder = v.placeholder ?? '';
           dateEl.readOnly = Boolean(v['read-only']);
           dateEl.required = Boolean(v.required);
           dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);
@@ -234,6 +236,11 @@ export const Migration: Story = {
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+  - The \`value\` prop now always outputs **ISO 8601 format** (\`YYYY-MM-DD\`), regardless of the display format.
+  Previously, \`value\` matched the display format (e.g. \`dd-mm-yyyy\`).
+  - The \`format\` prop is now automatically derived from the user's locale when not explicitly set.
+  Previously, it defaulted to \`dd-mm-yyyy\`. The accepted values remain the same fixed union
+  (\`'yyyy-mm-dd'\`, \`'dd-mm-yyyy'\`, \`'mm-dd-yyyy'\`, \`'yyyy/mm/dd'\`, \`'dd/mm/yyyy'\`, \`'mm/dd/yyyy'\`, \`'MMM DD, YYYY'\`).
 
 #### Prop Mapping
 
@@ -247,7 +254,7 @@ export const Migration: Story = {
 | disable-validation |                  | Not carried over                        |
 | error-text         | feedback.message | Use \`feedback\` level                  |
 | filler-date        |                  | Not carried over                        |
-| format             | format           |                                         |
+| format             | format           | Auto-derived from locale when not set; union type unchanged |
 | helper-text        |                  | Not carried over                        |
 | label              | label            |                                         |
 | max                | max              |                                         |
@@ -259,7 +266,7 @@ export const Migration: Story = {
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type               |                  | Not carried over                        |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
-| value              | value            |                                         |
+| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`)   |
 
 #### Event Mapping
 
