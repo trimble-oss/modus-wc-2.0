@@ -129,6 +129,24 @@ jobs:
         working-directory: dist
         run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
+      - name: Commit version bump and open PR to main
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          BRANCH="chore/version-bump-${{ github.event.inputs.version }}"
+          git checkout -b "$BRANCH"
+          git add package.json
+          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: bump version to ${{ github.event.inputs.version }}" \
+            --body "Automated version bump after publishing \`${{ github.event.inputs.version }}\` to npm." \
+            --base main \
+            --head "$BRANCH"
+
   trigger-angular-publish:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
