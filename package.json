@@ -212,7 +212,8 @@
       "dependencies": [
         "build:cem-json",
         "tailwind:build",
-        "embed:css"
+        "embed:css",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -240,7 +241,8 @@
       },
       "dependencies": [
         "build:cem-json",
-        "tailwind:watch"
+        "tailwind:watch",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -305,6 +307,16 @@
       "output": [
         "src/providers/theme/css-content.ts",
         "src/styles/modus-wc-variables.css"
+      ]
+    },
+    "generate:logo-data": {
+      "command": "node scripts/generate-logo-data.js",
+      "files": [
+        "src/components/modus-wc-logo/assets/logos/**/*.svg",
+        "scripts/generate-logo-data.js"
+      ],
+      "output": [
+        "src/components/modus-wc-logo/logo-svg-data.ts"
       ]
     },
     "tailwind:watch": {

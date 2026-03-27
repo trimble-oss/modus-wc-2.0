@@ -42,6 +42,8 @@ export interface INavbarVisibility {
   apps?: boolean;
   /** Controls visibility of the help button. */
   help?: boolean;
+  /** Controls visibility of the product / Trimble logo button. Defaults to visible when omitted. */
+  logo?: boolean;
   /** Controls visibility of the main menu button. */
   mainMenu?: boolean;
   /** Controls visibility of the notifications button. */
@@ -130,6 +132,7 @@ export class ModusWcNavbar {
     ai: false,
     apps: false,
     help: false,
+    logo: true,
     mainMenu: false,
     notifications: false,
     search: false,
@@ -445,18 +448,20 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            <modus-wc-button
-              aria-label={`${accessibleName} logo`}
-              customClass="logo"
-              onButtonClick={this.handleTrimbleLogoClick}
-              size="sm"
-              variant="borderless"
-            >
-              <modus-wc-logo
-                name={this.logoName || 'trimble'}
-                emblem={this.condensed}
-              ></modus-wc-logo>
-            </modus-wc-button>
+            {this.visibility?.logo !== false && (
+              <modus-wc-button
+                aria-label={`${accessibleName} logo`}
+                customClass="logo"
+                onButtonClick={this.handleTrimbleLogoClick}
+                size="sm"
+                variant="borderless"
+              >
+                <modus-wc-logo
+                  name={this.logoName || 'trimble'}
+                  emblem={this.condensed}
+                ></modus-wc-logo>
+              </modus-wc-button>
+            )}
 
             <slot name="start" />
           </div>
