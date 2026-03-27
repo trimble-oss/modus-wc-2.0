@@ -12,6 +12,7 @@ permissions:
   contents: write
   actions: write
   packages: write
+  pull-requests: write
 
 jobs:
   build-and-publish-mcp:
@@ -163,18 +164,29 @@ jobs:
         run: |
           VERSION="${{ github.event.inputs.version }}"
           BRANCH="chore/mcp-docs-v${VERSION}"
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
           git add mcp/versions/
           git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          # Use -B so re-runs overwrite an existing local branch
+          git checkout -B "$BRANCH"
           git commit -m "chore: add MCP docs for v${VERSION}"
-          git push -u origin "$BRANCH"
-          gh pr create \
-            --title "chore: add MCP docs for v${VERSION}" \
-            --body "Auto-generated versioned documentation for MCP server v${VERSION}." \
-            --base main \
-            --head "$BRANCH"
+          git push -u origin "$BRANCH" --force
+
+          # Create PR only if one doesn't already exist for this branch
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #${EXISTING_PR} already exists for ${BRANCH} – skipping creation."
+          else
+            gh pr create \
+              --title "chore: add MCP docs for v${VERSION}" \
+              --body "Auto-generated versioned documentation for MCP server v${VERSION}." \
+              --base "$DEFAULT_BRANCH" \
+              --head "$BRANCH"
+          fi
 
   release-mcp:
     needs: build-and-publish-mcp
