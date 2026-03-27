@@ -31,6 +31,8 @@ jobs:
 
       - name: Install root dependencies and build Stencil
         run: npm ci && npm run build:ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
 
       - name: Build React v17 integration
         working-directory: integrations/react/v17
