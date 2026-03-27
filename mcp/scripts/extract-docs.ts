@@ -87,7 +87,6 @@ interface ComponentDoc {
   methods: MethodInfo[];
   slots: SlotInfo[];
   examples: StoryExamples;
-  scripts: Array<{ title: string; code: string; description: string }>;
   tag: string;
   storyExample?: {
     template: string;
@@ -307,12 +306,30 @@ function extractStoryExamples(storyContent: string): StoryExamples {
     usage: [],
   };
 
-  // Default args block
-  const argsMatch = storyContent.match(/args:\s*{([^}]+)}/s);
-  if (argsMatch) {
-    const argMatches = [...argsMatch[1].matchAll(/'?(\w+)'?\s*:\s*([^,\n]+)/g)];
-    for (const [, key, value] of argMatches) {
-      examples.args[key] = value.trim().replace(/,$/, '');
+  // Default args block -- uses depth tracking to extract only top-level
+  // key/value pairs, skipping nested arrays/objects entirely.
+  const argsStart = storyContent.match(/\bargs:\s*{/s);
+  if (argsStart && argsStart.index !== undefined) {
+    const startIdx = argsStart.index + argsStart[0].length;
+    let depth = 0;
+    let i = startIdx;
+    while (i < storyContent.length) {
+      const ch = storyContent[i];
+      if (ch === '{' || ch === '[') { depth++; i++; continue; }
+      if (ch === '}' || ch === ']') {
+        if (depth === 0) break;
+        depth--; i++; continue;
+      }
+      if (depth > 0) { i++; continue; }
+      // At top level: try to match a key: simpleValue pair
+      const kvMatch = storyContent.slice(i).match(/^'?([\w-]+)'?\s*:\s*([^,\n[{}\]]+)/);
+      if (kvMatch) {
+        const val = kvMatch[2].trim().replace(/,$/, '');
+        if (val) examples.args[kvMatch[1]] = val;
+        i += kvMatch[0].length;
+      } else {
+        i++;
+      }
     }
   }
 
@@ -343,51 +360,6 @@ function extractStoryExamples(storyContent: string): StoryExamples {
   }
 
   return examples;
-}
-
-// ---------------------------------------------------------------------------
-// Usage scripts generator
-// ---------------------------------------------------------------------------
-
-function generateUsageScripts(
-  doc: Omit<ComponentDoc, 'scripts'>,
-): Array<{ title: string; code: string; description: string }> {
-  const scripts: Array<{ title: string; code: string; description: string }> = [];
-  const tag = doc.tag;
-
-  // Basic usage
-  const requiredProps = doc.properties
-    .filter((p) => p.default === null && !p.type.includes('?'))
-    .map((p) => `${p.name}="example-${p.name}"`);
-  scripts.push({
-    title: 'Basic Usage',
-    code: `<${tag} ${requiredProps.join(' ')}></${tag}>`,
-    description: 'Minimal required properties',
-  });
-
-  // Event handling
-  if (doc.events.length > 0) {
-    const handlers = doc.events.map((e) => {
-      const upper = e.name[0].toUpperCase() + e.name.slice(1);
-      return `on${upper}={(e) => handle${upper}(e.detail)}`;
-    });
-    scripts.push({
-      title: 'Event Handling',
-      code: `<${tag} ${handlers.join(' ')}></${tag}>`,
-      description: 'Handling component events',
-    });
-  }
-
-  // Method calling
-  if (doc.methods.length > 0) {
-    let code = `// Get component reference\nconst component = document.querySelector('${tag}');\n\n// Call methods`;
-    for (const m of doc.methods) {
-      code += `\nawait component.${m.name}(${m.parameters});`;
-    }
-    scripts.push({ title: 'Calling Methods', code, description: 'How to call component methods' });
-  }
-
-  return scripts;
 }
 
 // ---------------------------------------------------------------------------
@@ -428,7 +400,7 @@ function parseStencilComponent(
 
   const slots = extractSlots(lines);
 
-  const partial: Omit<ComponentDoc, 'scripts'> = {
+  const doc: ComponentDoc = {
     description,
     properties,
     events,
@@ -438,23 +410,20 @@ function parseStencilComponent(
     tag: componentName,
   };
 
-  // Story examples
   const storyFile = join(componentDir, `${componentName}.stories.ts`);
   if (existsSync(storyFile)) {
     const storyContent = readFileSync(storyFile, 'utf-8');
-    partial.examples = extractStoryExamples(storyContent);
-    partial.storyExample = {
-      template: partial.examples.basic ?? '',
-      args: partial.examples.args,
-      argTypes: partial.examples.argTypes,
-      events: partial.examples.events ?? [],
+    doc.examples = extractStoryExamples(storyContent);
+    doc.storyExample = {
+      template: doc.examples.basic ?? '',
+      args: doc.examples.args,
+      argTypes: doc.examples.argTypes,
+      events: doc.examples.events ?? [],
       fullContent: storyContent,
     };
   }
 
-  const scripts = generateUsageScripts(partial);
-
-  return { ...partial, scripts };
+  return doc;
 }
 
 // ---------------------------------------------------------------------------

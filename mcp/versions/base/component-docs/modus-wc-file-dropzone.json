@@ -126,9 +126,9 @@
     "basic": null,
     "variations": [],
     "args": {
-      "types": "'.doc",
+      "accept-file-types": "'.doc",
       "disabled": "false",
-      "icon": "true",
+      "include-state-icon": "true",
       "instructions": "'Drag files here or browse to upload'"
     },
     "argTypes": {},
@@ -141,9 +141,9 @@
   "storyExample": {
     "template": "",
     "args": {
-      "types": "'.doc",
+      "accept-file-types": "'.doc",
       "disabled": "false",
-      "icon": "true",
+      "include-state-icon": "true",
       "instructions": "'Drag files here or browse to upload'"
     },
     "argTypes": {},
@@ -151,22 +151,5 @@
       "fileSelect"
     ],
     "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface FileDropzoneArgs {\n  'accept-file-types'?: string;\n  'custom-class'?: string;\n  disabled?: boolean;\n  'file-dragged-over-instructions'?: string;\n  'include-state-icon'?: boolean;\n  instructions?: string;\n  'invalid-file-type-message'?: string;\n  'max-file-name-length'?: number;\n  'max-file-count'?: number;\n  'max-total-file-size-bytes'?: number;\n  multiple?: boolean;\n  'success-message'?: string;\n  reset?: () => Promise<void>;\n}\n\nconst meta: Meta<FileDropzoneArgs> = {\n  title: 'Components/File Dropzone',\n  component: 'modus-wc-file-dropzone',\n  args: {\n    'accept-file-types': '.doc, .docx, .pdf',\n    disabled: false,\n    'include-state-icon': true,\n    instructions: 'Drag files here or browse to upload',\n  },\n  argTypes: {\n    'accept-file-types': {\n      control: 'text',\n      description: \"Accepted file types (e.g. '.jpg,.png' or 'image/*')\",\n    },\n    'custom-class': {\n      control: 'text',\n      description: 'Custom CSS class to apply to the file dropzone element',\n    },\n    disabled: {\n      control: 'boolean',\n      description: 'Disable the file input',\n      table: {\n        defaultValue: { summary: 'false' },\n      },\n    },\n    instructions: {\n      control: 'text',\n      description: 'Default instructions displayed in the dropzone',\n    },\n    'invalid-file-type-message': {\n      control: 'text',\n      description:\n        'Custom error message displayed when an invalid file type is selected',\n    },\n    'max-file-name-length': {\n      control: 'number',\n      description:\n        'Maximum allowed length of filename, will show error if exceeded',\n    },\n    'max-file-count': {\n      control: 'number',\n      description:\n        'Maximum number of files allowed, will show error if exceeded',\n    },\n    'max-total-file-size-bytes': {\n      control: 'number',\n      description:\n        'Maximum total file size in bytes allowed, will show error if exceeded',\n    },\n    multiple: {\n      control: 'boolean',\n      description: 'Allow multiple file selection',\n      table: {\n        defaultValue: { summary: 'false' },\n      },\n    },\n    reset: {\n      description:\n        'Reset the dropzone to its initial state, clearing all error and success states',\n      table: {\n        category: 'Methods',\n        type: { summary: '() => Promise<void>' },\n      },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['fileSelect'],\n    },\n  },\n};\n\nexport default meta;\ntype Story = StoryObj;\n\nexport const Default: Story = {\n  render: (args) => html`\n    <modus-wc-file-dropzone\n      accept-file-types=${ifDefined(args['accept-file-types'])}\n      custom-class=${ifDefined(args['custom-class'])}\n      ?disabled=${args.disabled}\n      file-dragged-over-instructions=${ifDefined(\n        args['file-dragged-over-instructions']\n      )}\n      ?include-state-icon=${args['include-state-icon']}\n      instructions=${ifDefined(args['instructions'])}\n      invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}\n      max-file-name-length=${ifDefined(args['max-file-name-length'])}\n      max-file-count=${ifDefined(args['max-file-count'])}\n      max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}\n      ?multiple=${args.multiple}\n      success-message=${ifDefined(args['success-message'])}\n    ></modus-wc-file-dropzone>\n  `,\n};\n\nexport const customContent: Story = {\n  args: {\n    'accept-file-types': '.pdf, .doc, .docx',\n    'success-message': 'Files uploaded successfully!',\n  },\n\n  parameters: {\n    docs: {\n      source: {\n        code: `<div style=\"display: flex; flex-direction: column; gap: 1rem;\">\n  <modus-wc-file-dropzone\n    id=\"custom-dropzone\"\n    accept-file-types=\".pdf, .doc, .docx\"\n    success-message=\"Files uploaded successfully!\"\n    instructions=\"Drag files here or browse to upload\"\n  >\n    <div slot=\"dropzone\" style=\"width: 300px; margin-top: 1rem;\">\n      <modus-wc-progress value=\"70\" label=\"70% Uploaded\"></modus-wc-progress>\n    </div>\n  </modus-wc-file-dropzone>\n\n  <modus-wc-button id=\"reset-button\">\n    Reset Dropzone\n  </modus-wc-button>\n</div>\n\n<script>\n  const dropzone = document.getElementById('custom-dropzone');\n  const resetButton = document.getElementById('reset-button');\n  \n  resetButton.addEventListener('click', () => {\n    if (dropzone?.reset) {\n      dropzone.reset();\n    }\n  });\n</script>`,\n      },\n    },\n  },\n\n  render: (args) => html`\n    <div style=\"display: flex; flex-direction: column; gap: 1rem;\">\n      <modus-wc-file-dropzone\n        id=\"custom-dropzone\"\n        accept-file-types=${ifDefined(args['accept-file-types'])}\n        success-message=${ifDefined(args['success-message'])}\n        instructions=\"Drag files here or browse to upload\"\n      >\n        <div slot=\"dropzone\" style=\"width: 300px; margin-top: 1rem;\">\n          <modus-wc-progress\n            value=\"70\"\n            label=\"70% Uploaded\"\n          ></modus-wc-progress>\n        </div>\n      </modus-wc-file-dropzone>\n\n      <modus-wc-button\n        @buttonClick=${() => {\n          const dropzone = document.getElementById(\n            'custom-dropzone'\n          ) as HTMLElement & {\n            reset?: () => Promise<void>;\n          };\n          if (dropzone?.reset) {\n            void dropzone.reset();\n          }\n        }}\n      >\n        Reset Dropzone\n      </modus-wc-button>\n    </div>\n  `,\n};\n\nexport const fileValidations: Story = {\n  args: {\n    multiple: true,\n    'max-file-name-length': 20,\n    'max-file-count': 3,\n    'max-total-file-size-bytes': 10485760, // 10MB\n    'invalid-file-type-message':\n      'Invalid file format. Please upload correct file type.',\n  },\n  render: (args) => html`\n    <modus-wc-file-dropzone\n      accept-file-types=${ifDefined(args['accept-file-types'])}\n      invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}\n      max-file-name-length=${ifDefined(args['max-file-name-length'])}\n      max-file-count=${ifDefined(args['max-file-count'])}\n      max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}\n      ?multiple=${args.multiple}\n      instructions=\"Upload files (max 3 files, 10MB total, filename ≤ 20 chars)\"\n    ></modus-wc-file-dropzone>\n  `,\n};\n\nexport const multipleFiles: Story = {\n  args: {\n    multiple: true,\n    'accept-file-types': 'image/*',\n  },\n  render: (args) => html`\n    <modus-wc-file-dropzone\n      accept-file-types=${ifDefined(args['accept-file-types'])}\n      multiple=${args.multiple}\n      instructions=\"Select multiple image files\"\n    ></modus-wc-file-dropzone>\n  `,\n};\n"
-  },
-  "scripts": [
-    {
-      "title": "Basic Usage",
-      "code": "<modus-wc-file-dropzone acceptFileTypes=\"example-acceptFileTypes\" disabled=\"example-disabled\" fileDraggedOverInstructions=\"example-fileDraggedOverInstructions\" instructions=\"example-instructions\" invalidFileTypeMessage=\"example-invalidFileTypeMessage\" maxFileNameLength=\"example-maxFileNameLength\" maxFileCount=\"example-maxFileCount\" maxTotalFileSizeBytes=\"example-maxTotalFileSizeBytes\" multiple=\"example-multiple\" successMessage=\"example-successMessage\"></modus-wc-file-dropzone>",
-      "description": "Minimal required properties"
-    },
-    {
-      "title": "Event Handling",
-      "code": "<modus-wc-file-dropzone onFileSelect={(e) => handleFileSelect(e.detail)}></modus-wc-file-dropzone>",
-      "description": "Handling component events"
-    },
-    {
-      "title": "Calling Methods",
-      "code": "// Get component reference\nconst component = document.querySelector('modus-wc-file-dropzone');\n\n// Call methods\nawait component.reset();",
-      "description": "How to call component methods"
-    }
-  ]
+  }
 }
