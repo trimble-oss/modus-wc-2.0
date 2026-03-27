@@ -129,7 +129,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
       <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_80" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <div class="modus-wc-autocomplete-no-results">
@@ -159,7 +159,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
       <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_90" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <div class="modus-wc-autocomplete-no-results">

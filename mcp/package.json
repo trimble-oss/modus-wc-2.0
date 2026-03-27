@@ -1,0 +1,38 @@
+{
+  "name": "@trimble-oss/moduswebcomponents-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Modus Web Components documentation",
+  "type": "module",
+  "bin": {
+    "moduswebcomponents-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "docs",
+    "component-docs"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "mcp",
+    "modus",
+    "trimble",
+    "web-components",
+    "documentation"
+  ],
+  "license": "MIT"
+}
