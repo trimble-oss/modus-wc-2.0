@@ -1,0 +1,144 @@
+{
+  "description": "A customizable chip component used to display information in a compact area The component supports a `<slot>` for injecting custom content such as avatar and icons.",
+  "properties": [
+    {
+      "name": "active",
+      "type": "boolean",
+      "description": "Active state of chip.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Whether the chip is disabled.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "hasError",
+      "type": "boolean",
+      "description": "Whether the chip has an error.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The label to display in the chip.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "showRemove",
+      "type": "boolean",
+      "description": "Whether to show the close icon on right side of the chip.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 47
+    },
+    {
+      "name": "shape",
+      "type": "'rectangle' | 'circle'",
+      "description": "The shape of the chip: 'rectangle' (default) or 'circle'.",
+      "default": "'rectangle'",
+      "mutable": false,
+      "end_line": 50
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the chip.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "variant",
+      "type": "'filled' | 'outline'",
+      "description": "The variant of the chip.",
+      "default": "'filled'",
+      "mutable": false,
+      "end_line": 56
+    }
+  ],
+  "events": [
+    {
+      "name": "chipClick",
+      "detail": "MouseEvent | KeyboardEvent",
+      "description": "Event emitted when the chip is clicked or activated via keyboard.",
+      "end_line": 59
+    },
+    {
+      "name": "chipRemove",
+      "detail": "MouseEvent | KeyboardEvent",
+      "description": "Event emitted when the close chip icon button is clicked.",
+      "end_line": 62
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-chip\n      aria-label=\"Chip example\"\n      active=${ifDefined(args.active)}\n      disabled=${ifDefined(args.disabled)}\n      has-error=${ifDefined(args['has-error'])}\n      label=${args.label}\n      shape=${args.shape}\n      show-remove=${ifDefined(args['show-remove'])}\n      size=${args.size}\n      variant=${args.variant}\n    />",
+    "variations": [],
+    "args": {
+      "label": "'Chip'",
+      "remove": "true",
+      "shape": "'rectangle'",
+      "size": "'md'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "chipClick",
+      "chipRemove"
+    ]
+  },
+  "tag": "modus-wc-chip",
+  "storyExample": {
+    "template": "<modus-wc-chip\n      aria-label=\"Chip example\"\n      active=${ifDefined(args.active)}\n      disabled=${ifDefined(args.disabled)}\n      has-error=${ifDefined(args['has-error'])}\n      label=${args.label}\n      shape=${args.shape}\n      show-remove=${ifDefined(args['show-remove'])}\n      size=${args.size}\n      variant=${args.variant}\n    />",
+    "args": {
+      "label": "'Chip'",
+      "remove": "true",
+      "shape": "'rectangle'",
+      "size": "'md'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "events": [
+      "chipClick",
+      "chipRemove"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\n\ninterface ChipArgs {\n  active?: boolean;\n  'custom-class'?: string;\n  disabled?: boolean;\n  'has-error'?: boolean;\n  label: string;\n  shape?: 'rectangle' | 'circle';\n  'show-remove'?: boolean;\n  size: ModusSize;\n  variant: 'filled' | 'outline';\n}\n\nconst meta: Meta<ChipArgs> = {\n  title: 'Components/Chip',\n  component: 'modus-wc-chip',\n  args: {\n    label: 'Chip',\n    'show-remove': true,\n    shape: 'rectangle',\n    size: 'md',\n    variant: 'filled',\n  },\n  argTypes: {\n    shape: {\n      control: { type: 'select' },\n      options: ['rectangle', 'circle'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['filled', 'outline'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['chipClick', 'chipRemove'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ChipArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html` <modus-wc-chip\n      aria-label=\"Chip example\"\n      active=${ifDefined(args.active)}\n      disabled=${ifDefined(args.disabled)}\n      has-error=${ifDefined(args['has-error'])}\n      label=${args.label}\n      shape=${args.shape}\n      show-remove=${ifDefined(args['show-remove'])}\n      size=${args.size}\n      variant=${args.variant}\n    />`;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const AvatarChip: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-chip\n  aria-label=\"Chip example\"\n  active=${ifDefined(args.active)}\n  disabled=${ifDefined(args.disabled)}\n  has-error=${ifDefined(args['has-error'])}\n  label=${args.label}\n  shape=${args.shape}\n  show-remove=${ifDefined(args['show-remove'])}\n  size=${args.size}\n  variant=${args.variant}\n>\n  <modus-wc-avatar\n    img-src=\"https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg\"\n    alt=\"sonic the hedgehog\"\n  ></modus-wc-avatar>\n</modus-wc-chip>\n    `;\n  },\n};\n\nexport const CheckIconChip: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-chip\n  aria-label=\"Chip example\"\n  active=${ifDefined(args.active)}\n  disabled=${ifDefined(args.disabled)}\n  has-error=${ifDefined(args['has-error'])}\n  label=${args.label}\n  shape=${args.shape}\n  show-remove=${ifDefined(args['show-remove'])}\n  size=${args.size}\n  variant=${args.variant}\n>\n  <modus-wc-icon name=\"check\" size=\"xs\"></modus-wc-icon>\n</modus-wc-chip>\n    `;\n  },\n};\n\n// prettier-ignore\nexport const Composable: Story = {\n  render: (args) => {\n    return html`\n<modus-wc-chip\n  aria-label=\"Chip example\"\n  active=${ifDefined(args.active)}\n  disabled=${ifDefined(args.disabled)}\n  has-error=${ifDefined(args['has-error'])}\n  shape=${args.shape}\n  size=${args.size}\n  variant=${args.variant}\n>\n  <modus-wc-icon name=\"heart\" size=\"xs\"></modus-wc-icon>\n  Chip\n</modus-wc-chip>\n\n<modus-wc-chip\n  aria-label=\"Chip example\"\n  active=${ifDefined(args.active)}\n  disabled=${ifDefined(args.disabled)}\n  has-error=${ifDefined(args['has-error'])}\n  shape=${args.shape}\n  show-remove=\"true\"\n  size=${args.size}\n  variant=${args.variant}\n>\n  <modus-wc-icon name=\"heart\" size=\"xs\"></modus-wc-icon>\n  Chip\n</modus-wc-chip>\n\n<modus-wc-chip\n  aria-label=\"Chip example\"\n  active=${ifDefined(args.active)}\n  disabled=${ifDefined(args.disabled)}\n  has-error=${ifDefined(args['has-error'])}\n  shape=${args.shape}\n  size=${args.size}\n  variant=${args.variant}\n>\n  <modus-wc-icon name=\"heart\" size=\"xs\"></modus-wc-icon>\n  Chip\n  <modus-wc-icon name=\"heart\" size=\"xs\"></modus-wc-icon>\n</modus-wc-chip>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for chip component\n    if (!customElements.get('chip-shadow-host')) {\n      const ChipShadowHost = createShadowHostClass<ChipArgs>({\n        componentTag: 'modus-wc-chip',\n        propsMapper: (v: ChipArgs, el: HTMLElement) => {\n          const chipEl = el as unknown as {\n            ariaLabel: string;\n            active: boolean;\n            customClass: string;\n            disabled: boolean;\n            hasError: boolean;\n            label: string;\n            shape: string;\n            showRemove: boolean;\n            size: string;\n            variant: string;\n          };\n          chipEl.ariaLabel = 'Click me chip';\n          chipEl.active = Boolean(v.active);\n          chipEl.shape = v.shape || 'rectangle';\n          chipEl.size = v.size;\n          chipEl.variant = v.variant;\n          chipEl.customClass = v['custom-class'] || '';\n          chipEl.disabled = Boolean(v.disabled);\n          chipEl.hasError = Boolean(v['has-error']);\n          chipEl.label = v.label;\n          chipEl.showRemove = Boolean(v['show-remove']);\n        },\n      });\n      customElements.define('chip-shadow-host', ChipShadowHost);\n    }\n\n    return html`<chip-shadow-host .props=${{ ...args }}></chip-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - \\`chip-style\\` prop has been renamed to \\`variant\\` and values changed from \\`solid\\` to \\`filled\\`.\n  - \\`closeClick\\` event has been renamed to \\`chipRemove\\`.\n  - \\`show-close\\` prop has been renamed to \\`show-remove\\`.\n  - Size values have changed from verbose names (\\`medium\\`, \\`small\\`) to abbreviations (\\`md\\`, \\`sm\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop       | 2.0 Prop    | Notes                                             |\n|----------------|-------------|---------------------------------------------------|\n| active         | active      |                                                   |\n| advanced-chip  |             | Not carried over                                  |\n| aria-label     | aria-label  |                                                   |\n| chip-id        |             | Not carried over                                  |\n| chip-style     | variant     | \\`solid\\` → \\`filled\\`, \\`outline\\` → \\`outline\\` |\n| disabled       | disabled    |                                                   |\n| has-error      | has-error   |                                                   |\n| image-url      |             | Not carried over, use slot instead                |\n| max-width      |             | Not carried over, use CSS instead                 |\n| show-checkmark |             | Not carried over, use slot instead                |\n| show-close     | show-remove |                                                   |\n| size           | size        | \\`medium\\` → \\`md\\`, \\`small\\` → \\`sm\\`           |\n| value          | label       |                                                   |\n|                | shape       | New in 2.0: \\`rectangle\\` (default), \\`circle\\` |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event   | Notes |\n|-------------|-------------|-------|\n| chipClick  | chipClick  |       |\n| closeClick | chipRemove |       |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-chip ></modus-wc-chip>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-chip onChipClick={(e) => handleChipClick(e.detail)} onChipRemove={(e) => handleChipRemove(e.detail)}></modus-wc-chip>",
+      "description": "Handling component events"
+    }
+  ]
+}

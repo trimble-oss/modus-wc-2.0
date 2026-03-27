@@ -1,0 +1,68 @@
+{
+  "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing. Provides consistent branding across applications with various product logo options.",
+  "properties": [
+    {
+      "name": "name",
+      "type": "LogoName",
+      "description": "The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc.",
+      "default": null,
+      "mutable": false,
+      "end_line": 30
+    },
+    {
+      "name": "emblem",
+      "type": "boolean",
+      "description": "Show emblem version (icon only) instead of full logo",
+      "default": "false",
+      "mutable": false,
+      "end_line": 33
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the logo container.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "The alt text for accessibility. If not provided, defaults to the logo name.",
+      "default": null,
+      "mutable": false,
+      "end_line": 39
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-logo\n        name=\"${args.name}\"\n        ?emblem=\"${args.emblem}\"\n        alt=\"${ifDefined(args.alt)}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n      ></modus-wc-logo>",
+    "variations": [],
+    "args": {
+      "name": "'trimble'",
+      "emblem": "false"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-logo",
+  "storyExample": {
+    "template": "<modus-wc-logo\n        name=\"${args.name}\"\n        ?emblem=\"${args.emblem}\"\n        alt=\"${ifDefined(args.alt)}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n      ></modus-wc-logo>",
+    "args": {
+      "name": "'trimble'",
+      "emblem": "false"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { getAvailableLogos, LogoName } from './logo-constants';\n\ninterface LogoArgs {\n  name: LogoName;\n  emblem: boolean;\n  alt?: string;\n  'custom-class'?: string;\n}\n\nconst meta: Meta<LogoArgs> = {\n  title: 'Components/Logo',\n  component: 'modus-wc-logo',\n  args: {\n    name: 'trimble',\n    emblem: false,\n  },\n  argTypes: {\n    name: {\n      control: { type: 'select' },\n      options: getAvailableLogos(),\n    },\n    emblem: {\n      control: { type: 'boolean' },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<LogoArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-logo\n        name=\"${args.name}\"\n        ?emblem=\"${args.emblem}\"\n        alt=\"${ifDefined(args.alt)}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n      ></modus-wc-logo>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const CustomSizeWithClass: Story = {\n  render: () => {\n    return html`\n      <style>\n        .logo-small {\n          width: 80px;\n        }\n        .logo-medium {\n          width: 150px;\n        }\n        .logo-large {\n          width: 250px;\n        }\n        .emblem-xs {\n          width: 80px;\n          height: 80px;\n        }\n        .emblem-sm {\n          width: 150px;\n          height: 150px;\n        }\n        .emblem-lg {\n          width: 250px;\n          height: 250px;\n        }\n      </style>\n      <div style=\"display: flex; flex-direction: column; gap: 3rem;\">\n        <div>\n          <h4>Full Logos - Custom Sizes</h4>\n          <div\n            style=\"display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;\"\n          >\n            <modus-wc-logo\n              name=\"trimble\"\n              custom-class=\"logo-small\"\n            ></modus-wc-logo>\n            <modus-wc-logo\n              name=\"trimble\"\n              custom-class=\"logo-medium\"\n            ></modus-wc-logo>\n            <modus-wc-logo\n              name=\"trimble\"\n              custom-class=\"logo-large\"\n            ></modus-wc-logo>\n          </div>\n        </div>\n\n        <div>\n          <h4>Emblems - Custom Sizes</h4>\n          <div\n            style=\"display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;\"\n          >\n            <modus-wc-logo\n              name=\"trimble\"\n              emblem\n              custom-class=\"emblem-xs\"\n            ></modus-wc-logo>\n            <modus-wc-logo\n              name=\"trimble\"\n              emblem\n              custom-class=\"emblem-sm\"\n            ></modus-wc-logo>\n            <modus-wc-logo\n              name=\"trimble\"\n              emblem\n              custom-class=\"emblem-lg\"\n            ></modus-wc-logo>\n          </div>\n        </div>\n        </div>\n      </div>\n    `;\n  },\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-logo name=\"example-name\" alt=\"example-alt\"></modus-wc-logo>",
+      "description": "Minimal required properties"
+    }
+  ]
+}

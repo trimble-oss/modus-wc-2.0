@@ -1,0 +1,105 @@
+{
+  "description": "A customizable card component used to group and display content in a way that is easily readable. This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
+  "properties": [
+    {
+      "name": "backgroundFigure",
+      "type": "boolean",
+      "description": "Makes any \\<figure> in the 'header' slot cover the background",
+      "default": "false",
+      "mutable": false,
+      "end_line": 21
+    },
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Adds a hard border to the card",
+      "default": "false",
+      "mutable": false,
+      "end_line": 24
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply",
+      "default": "''",
+      "mutable": false,
+      "end_line": 27
+    },
+    {
+      "name": "layout",
+      "type": "'vertical' | 'horizontal'",
+      "description": "Determines how the card is laid out",
+      "default": "'vertical'",
+      "mutable": false,
+      "end_line": 30
+    },
+    {
+      "name": "padding",
+      "type": "'compact' | 'comfortable'",
+      "description": "Determines the interior padding size",
+      "default": "'compact'",
+      "mutable": false,
+      "end_line": 33
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "header",
+      "description": "Slot for header content"
+    },
+    {
+      "name": "title",
+      "description": "Slot for title content"
+    },
+    {
+      "name": "subtitle",
+      "description": "Slot for subtitle content"
+    },
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    },
+    {
+      "name": "actions",
+      "description": "Slot for actions content"
+    },
+    {
+      "name": "footer",
+      "description": "Slot for footer content"
+    }
+  ],
+  "examples": {
+    "basic": "<style>\n  .modus-wc-card {\n    width: 400px;\n  }\n</style>\n<modus-wc-card\n  ?background-figure=${args['background-figure']}\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <span slot=\"title\">Card Title</span>\n  <span slot=\"subtitle\">Card Subtitle</span>\n  <p>This is a sample card content. You can place any content here.</p>\n  <div slot=\"actions\" class=\"modus-wc-justify-end\">\n    <modus-wc-button aria-label=\"Click me\">Click me</modus-wc-button>\n  </div>\n</modus-wc-card>",
+    "variations": [],
+    "args": {
+      "figure": "false",
+      "bordered": "false",
+      "layout": "'vertical'",
+      "padding": "'compact'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-card",
+  "storyExample": {
+    "template": "<style>\n  .modus-wc-card {\n    width: 400px;\n  }\n</style>\n<modus-wc-card\n  ?background-figure=${args['background-figure']}\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <span slot=\"title\">Card Title</span>\n  <span slot=\"subtitle\">Card Subtitle</span>\n  <p>This is a sample card content. You can place any content here.</p>\n  <div slot=\"actions\" class=\"modus-wc-justify-end\">\n    <modus-wc-button aria-label=\"Click me\">Click me</modus-wc-button>\n  </div>\n</modus-wc-card>",
+    "args": {
+      "figure": "false",
+      "bordered": "false",
+      "layout": "'vertical'",
+      "padding": "'compact'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface CardArgs {\n  'background-figure'?: boolean;\n  bordered?: boolean;\n  'custom-class'?: string;\n  layout?: 'vertical' | 'horizontal';\n  padding?: 'compact' | 'comfortable';\n}\n\nconst meta: Meta<CardArgs> = {\n  title: 'Components/Card',\n  component: 'modus-wc-card',\n  args: {\n    'background-figure': false,\n    bordered: false,\n    layout: 'vertical',\n    padding: 'compact',\n  },\n  argTypes: {\n    layout: {\n      control: { type: 'select' },\n      options: ['vertical', 'horizontal'],\n    },\n    padding: {\n      control: { type: 'select' },\n      options: ['compact', 'comfortable'],\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<CardArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .modus-wc-card {\n    width: 400px;\n  }\n</style>\n<modus-wc-card\n  ?background-figure=${args['background-figure']}\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <span slot=\"title\">Card Title</span>\n  <span slot=\"subtitle\">Card Subtitle</span>\n  <p>This is a sample card content. You can place any content here.</p>\n  <div slot=\"actions\" class=\"modus-wc-justify-end\">\n    <modus-wc-button aria-label=\"Click me\">Click me</modus-wc-button>\n  </div>\n</modus-wc-card>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n};\n\nexport const SimpleCard: Story = {\n  ...Template,\n  // prettier-ignore\n  render: () => html`\n<modus-wc-card>\n  Raw card content.\n</modus-wc-card>\n  `,\n};\n\nexport const SlotsLayout: Story = {\n  ...Template,\n  // prettier-ignore\n  render: (args) => html`\n<style>\n  .slot-box {\n    background: #ccccff;\n    border: 2px solid purple;\n    color: purple;\n    display: flex;\n    justify-content: center;\n  }\n</style>\n<modus-wc-card\n  ?background-figure=${args['background-figure']}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <div slot=\"header\" class=\"slot-box\">Header Slot</div>\n  <div slot=\"title\" class=\"slot-box\">Title Slot</div>\n  <div slot=\"subtitle\" class=\"slot-box\">Subtitle Slot</div>\n  <div class=\"slot-box\">Default (Body) Slot</div>\n  <div slot=\"actions\" class=\"slot-box\">Actions Slot</div>\n  <div slot=\"footer\" class=\"slot-box\">Footer Slot</div>\n</modus-wc-card>\n  `,\n};\n\nexport const ComplexCard: Story = {\n  ...Template,\n  // prettier-ignore\n  render: (args) => html`\n<style>\n  #complex-card > .modus-wc-card:hover {\n    box-shadow:\n      0 20px 25px -5px rgba(0, 0, 0, 0.1),\n      0 8px 10px -6px rgba(0, 0, 0, 0.1);\n  }\n</style>\n<modus-wc-card\n  id=\"complex-card\"\n  ?background-figure=${args['background-figure']}\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <figure slot=\"header\">\n    <img\n      src=\"https://picsum.photos/id/643/750/300\"\n      alt=\"Header Image with Shadow\"\n    />\n  </figure>\n  <span slot=\"title\">Complex Card</span>\n  <span slot=\"subtitle\">With Shadow</span>\n  <p>\n    This is a more of a traditional Card, featuring a header image, content,\n    multiple buttons, and a larger shadow that appears on hover.\n  </p>\n  <div slot=\"actions\" class=\"modus-wc-justify-end\">\n    <modus-wc-button aria-label=\"Action 1\">Action 1</modus-wc-button>\n    <modus-wc-button aria-label=\"Action 2\">Action 2</modus-wc-button>\n  </div>\n</modus-wc-card>\n  `,\n};\n\nexport const HorizontalImage: Story = {\n  ...Template,\n  // prettier-ignore\n  render: (args) => html`\n<modus-wc-card\n  ?background-figure=${args['background-figure']}\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=\"horizontal\"\n  padding=${ifDefined(args.padding)}\n>\n  <figure slot=\"header\">\n    <img src=\"https://picsum.photos/id/1025/200/300\" alt=\"Horizontal Image\" />\n  </figure>\n  <p>This card uses a horizontal layout.</p>\n</modus-wc-card>\n  `,\n};\n\nexport const BackgroundFigureImage: Story = {\n  ...Template,\n  // prettier-ignore\n  render: (args) => html`\n<modus-wc-card\n  background-figure\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  layout=${ifDefined(args.layout)}\n  padding=${ifDefined(args.padding)}\n>\n  <figure slot=\"header\">\n    <img src=\"https://picsum.photos/id/1045/600/400\" alt=\"Full Image\" />\n  </figure>\n  <span slot=\"title\">Full Image Card</span>\n  <p>This card has a figure image in the background.</p>\n</modus-wc-card>\n  `,\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0, card dimensions were controlled via direct props. In 2.0, styling should be handled through CSS.\n  - Shadow effects on hover are now controlled via CSS rather than props.\n  - The card component in 2.0 focuses on layout and structure rather than specific styling.\n\n#### Prop Mapping\n\n| 1.0 Prop             | 2.0 Prop            | Notes                                |\n|----------------------|---------------------|--------------------------------------|\n| border-radius        |                     | Not carried over, use CSS instead    |\n| height               |                     | Not carried over, use CSS instead    |\n| show-card-border     | bordered            |                                      |\n| show-shadow-on-hover |                     | Not carried over, use CSS instead    |\n| width                |                     | Not carried over, use CSS instead    |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-card ></modus-wc-card>",
+      "description": "Minimal required properties"
+    }
+  ]
+}

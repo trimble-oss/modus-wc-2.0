@@ -1,0 +1,83 @@
+{
+  "description": "A customizable panel component used to organize content in a structured layout. This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the outer div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 21
+    },
+    {
+      "name": "width",
+      "type": "string",
+      "description": "Width of the panel in pixels.",
+      "default": "'350px'",
+      "mutable": false,
+      "end_line": 24
+    },
+    {
+      "name": "height",
+      "type": "string",
+      "description": "Height of the panel in pixels.",
+      "default": "'700px'",
+      "mutable": false,
+      "end_line": 27
+    },
+    {
+      "name": "floating",
+      "type": "boolean",
+      "description": "Enable floating mode with elevated shadow.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 30
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "header",
+      "description": "Slot for header content"
+    },
+    {
+      "name": "body",
+      "description": "Slot for body content"
+    },
+    {
+      "name": "footer",
+      "description": "Slot for footer content"
+    }
+  ],
+  "examples": {
+    "basic": "<style>\n  .panel-section {\n    padding: 12px;\n  }\n</style>\n<modus-wc-panel custom-class=\"${ifDefined(args['custom-class'])}\" width=\"${ifDefined(args.width)}\" height=\"${ifDefined(args.height)}\" ?floating=\"${args.floating}\">\n  <modus-wc-menu slot=\"header\">  \n    <modus-wc-menu-item label=\"Home\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"home\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu size=\"lg\" slot=\"body\">\n    <modus-wc-menu-item label=\"Dashboard\" value=\"dashboard\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Projects\" value=\"projects\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Team\" value=\"team\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Calendar\" value=\"calendar\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Documents\" value=\"documents\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Reports\" value=\"reports\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Analytics\" value=\"analytics\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Messages\" value=\"messages\"></modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu slot=\"footer\">   \n    <modus-wc-menu-item label=\"Settings\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"settings\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n</modus-wc-panel>",
+    "variations": [],
+    "args": {
+      "width": "'250px'",
+      "height": "'500px'",
+      "floating": "false"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-panel",
+  "storyExample": {
+    "template": "<style>\n  .panel-section {\n    padding: 12px;\n  }\n</style>\n<modus-wc-panel custom-class=\"${ifDefined(args['custom-class'])}\" width=\"${ifDefined(args.width)}\" height=\"${ifDefined(args.height)}\" ?floating=\"${args.floating}\">\n  <modus-wc-menu slot=\"header\">  \n    <modus-wc-menu-item label=\"Home\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"home\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu size=\"lg\" slot=\"body\">\n    <modus-wc-menu-item label=\"Dashboard\" value=\"dashboard\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Projects\" value=\"projects\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Team\" value=\"team\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Calendar\" value=\"calendar\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Documents\" value=\"documents\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Reports\" value=\"reports\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Analytics\" value=\"analytics\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Messages\" value=\"messages\"></modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu slot=\"footer\">   \n    <modus-wc-menu-item label=\"Settings\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"settings\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n</modus-wc-panel>",
+    "args": {
+      "width": "'250px'",
+      "height": "'500px'",
+      "floating": "false"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface PanelArgs {\n  'custom-class'?: string;\n  width?: string;\n  height?: string;\n  floating?: boolean;\n}\n\nconst meta: Meta<PanelArgs> = {\n  title: 'Components/Panel',\n  component: 'modus-wc-panel',\n  parameters: {\n    layout: 'padded',\n  },\n  argTypes: {\n    floating: {\n      control: { type: 'boolean' },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<PanelArgs>;\n\nexport const Default: Story = {\n  args: {\n    width: '250px',\n    height: '500px',\n    floating: false,\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .panel-section {\n    padding: 12px;\n  }\n</style>\n<modus-wc-panel custom-class=\"${ifDefined(args['custom-class'])}\" width=\"${ifDefined(args.width)}\" height=\"${ifDefined(args.height)}\" ?floating=\"${args.floating}\">\n  <modus-wc-menu slot=\"header\">  \n    <modus-wc-menu-item label=\"Home\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"home\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu size=\"lg\" slot=\"body\">\n    <modus-wc-menu-item label=\"Dashboard\" value=\"dashboard\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Projects\" value=\"projects\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Team\" value=\"team\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Calendar\" value=\"calendar\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Documents\" value=\"documents\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Reports\" value=\"reports\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Analytics\" value=\"analytics\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Messages\" value=\"messages\"></modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu slot=\"footer\">   \n    <modus-wc-menu-item label=\"Settings\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"settings\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n</modus-wc-panel>\n    `;\n  },\n};\n\nexport const Floating: Story = {\n  args: {\n    width: '250px',\n    height: '500px',\n    floating: true,\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .panel-section {\n    padding: 12px;\n  }\n</style>\n<modus-wc-panel custom-class=\"${ifDefined(args['custom-class'])}\" width=\"${ifDefined(args.width)}\" height=\"${ifDefined(args.height)}\" ?floating=\"${args.floating}\">\n  <modus-wc-menu slot=\"header\">\n    <modus-wc-menu-item label=\"Menu\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"menu\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu size=\"lg\" slot=\"body\">\n    <modus-wc-menu-item label=\"Files\" value=\"files\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Inbox\" value=\"inbox\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Starred\" value=\"starred\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Recent\" value=\"recent\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Shared\" value=\"shared\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Archive\" value=\"archive\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Trash\" value=\"trash\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Settings\" value=\"settings\"></modus-wc-menu-item>\n  </modus-wc-menu>\n\n  <modus-wc-menu slot=\"footer\">\n    <modus-wc-menu-item label=\"Help\" custom-class=\"panel-section\">\n      <modus-wc-icon slot=\"start-icon\" name=\"help\"></modus-wc-icon>\n    </modus-wc-menu-item>\n  </modus-wc-menu>\n</modus-wc-panel>\n    `;\n  },\n};\n\nexport const BodyOnly: Story = {\n  args: {\n    width: '250px',\n    height: 'auto',\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-panel custom-class=\"${ifDefined(args['custom-class'])}\" width=\"${ifDefined(args.width)}\" height=\"${ifDefined(args.height)}\" ?floating=\"${args.floating}\">\n  <modus-wc-menu size=\"lg\" slot=\"body\">\n    <modus-wc-menu-item label=\"Dashboard\" value=\"dashboard\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Projects\" value=\"projects\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Team\" value=\"team\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Calendar\" value=\"calendar\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Documents\" value=\"documents\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Reports\" value=\"reports\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Analytics\" value=\"analytics\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Messages\" value=\"messages\"></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Tasks\" value=\"tasks\"></modus-wc-menu-item>\n  </modus-wc-menu>\n</modus-wc-panel>\n    `;\n  },\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-panel ></modus-wc-panel>",
+      "description": "Minimal required properties"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights. Note: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying the default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by providing your own custom values for the size or weight properties from the available options.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the typography element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 29
+    },
+    {
+      "name": "hierarchy",
+      "type": "TypographyHierarchy",
+      "description": "The hierarchy of the typography component.",
+      "default": "'p'",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text label to display.",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "size",
+      "type": "TypographySize",
+      "description": "The size of the font.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "weight",
+      "type": "TypographyWeight",
+      "description": "The weight of the text.",
+      "default": "'normal'",
+      "mutable": false,
+      "end_line": 41
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-typography\n  custom-class=${ifDefined(args['custom-class'])}\n  hierarchy=${args.hierarchy}\n  label=${args.label}\n  size=${ifDefined(args.size)}\n  weight=${ifDefined(args.weight)}\n  ></modus-wc-typography>",
+    "variations": [],
+    "args": {
+      "hierarchy": "'p'",
+      "label": "content",
+      "size": "'md'",
+      "weight": "'normal'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-typography",
+  "storyExample": {
+    "template": "<modus-wc-typography\n  custom-class=${ifDefined(args['custom-class'])}\n  hierarchy=${args.hierarchy}\n  label=${args.label}\n  size=${ifDefined(args.size)}\n  weight=${ifDefined(args.weight)}\n  ></modus-wc-typography>",
+    "args": {
+      "hierarchy": "'p'",
+      "label": "content",
+      "size": "'md'",
+      "weight": "'normal'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport {\n  TypographyHierarchy,\n  TypographySize,\n  TypographyWeight,\n} from './modus-wc-typography';\n\nconst content = 'The quick brown fox jumps over the lazy dog';\n\ninterface TypographyArgs {\n  'custom-class'?: string;\n  hierarchy: TypographyHierarchy;\n  label: string;\n  size?: TypographySize;\n  weight?: TypographyWeight;\n}\n\nconst meta: Meta<TypographyArgs> = {\n  title: 'Components/Typography',\n  component: 'modus-wc-typography',\n  args: {\n    hierarchy: 'p',\n    label: content,\n    size: 'md',\n    weight: 'normal',\n  },\n  argTypes: {\n    hierarchy: {\n      control: { type: 'select' },\n      options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: [\n        'xs',\n        'sm',\n        'md',\n        'lg',\n        'xl',\n        '2xl',\n        '3xl',\n        '4xl',\n        '5xl',\n        '6xl',\n        '7xl',\n        '8xl',\n        '9xl',\n      ],\n    },\n    weight: {\n      control: { type: 'select' },\n      options: ['light', 'normal', 'semibold', 'bold'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TypographyArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-typography\n  custom-class=${ifDefined(args['custom-class'])}\n  hierarchy=${args.hierarchy}\n  label=${args.label}\n  size=${ifDefined(args.size)}\n  weight=${ifDefined(args.weight)}\n  ></modus-wc-typography>\n   `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const Heading1: Story = {\n  ...Template,\n  args: { hierarchy: 'h1', label: content },\n};\n\nexport const Heading2: Story = {\n  ...Template,\n  args: { hierarchy: 'h2', label: content },\n};\n\nexport const Heading3: Story = {\n  ...Template,\n  args: { hierarchy: 'h3', label: content },\n};\n\nexport const Heading4: Story = {\n  ...Template,\n  args: { hierarchy: 'h4', label: content },\n};\n\nexport const Heading5: Story = {\n  ...Template,\n  args: { hierarchy: 'h5', label: content },\n};\n\nexport const Heading6: Story = {\n  ...Template,\n  args: { hierarchy: 'h6', label: content },\n};\n\nexport const Paragraph: Story = {\n  ...Template,\n  args: { hierarchy: 'p', label: content },\n};\n\nexport const WithLabel: Story = {\n  ...Template,\n  args: {\n    hierarchy: 'p',\n    label: 'This text is set via the label prop',\n  },\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-typography label=\"example-label\"></modus-wc-typography>",
+      "description": "Minimal required properties"
+    }
+  ]
+}

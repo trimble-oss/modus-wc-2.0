@@ -1,0 +1,100 @@
+{
+  "description": "A customizable tabs component used to create groups of tabs. The component supports a `<slot>` for injecting custom tab content.",
+  "properties": [
+    {
+      "name": "activeTabIndex",
+      "type": "number",
+      "description": "The current active tab",
+      "default": "0",
+      "mutable": true,
+      "end_line": 54
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 57
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the tabs.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 60
+    },
+    {
+      "name": "tabs",
+      "type": "ITab[]",
+      "description": "The tabs to display.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 63
+    },
+    {
+      "name": "tabStyle",
+      "type": "'boxed' | 'bordered' | 'lifted' | 'none'",
+      "description": "Additional styling for the tabs.",
+      "default": "'bordered'",
+      "mutable": false,
+      "end_line": 66
+    }
+  ],
+  "events": [
+    {
+      "name": "tabChange",
+      "detail": "{ previousTab: number; newTab: number; }",
+      "description": "When a tab is switched to, this event outputs the relevant indices",
+      "end_line": 72
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-tabs\n  active-tab-index=\"${ifDefined(args.activeTabIndex)}\"\n  aria-label=\"Tab group\"\n  tab-style=\"${ifDefined(args['tab-style'])}\"\n  .tabs=${args.tabs}\n  size=\"${ifDefined(args.size)}\"\n>\n</modus-wc-tabs>",
+    "variations": [],
+    "args": {
+      "size": "'md'",
+      "tabs": "[",
+      "label": "'Tab 1'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "tabChange"
+    ]
+  },
+  "tag": "modus-wc-tabs",
+  "storyExample": {
+    "template": "<modus-wc-tabs\n  active-tab-index=\"${ifDefined(args.activeTabIndex)}\"\n  aria-label=\"Tab group\"\n  tab-style=\"${ifDefined(args['tab-style'])}\"\n  .tabs=${args.tabs}\n  size=\"${ifDefined(args.size)}\"\n>\n</modus-wc-tabs>",
+    "args": {
+      "size": "'md'",
+      "tabs": "[",
+      "label": "'Tab 1'"
+    },
+    "argTypes": {},
+    "events": [
+      "tabChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ITab } from './modus-wc-tabs';\nimport { DaisySize } from '../types';\n\ninterface TabsArgs {\n  activeTabIndex?: number;\n  'custom-class'?: string;\n  size?: DaisySize;\n  tabs: ITab[];\n  'tab-style': 'boxed' | 'bordered' | 'lifted' | 'none';\n}\n\nconst meta: Meta<TabsArgs> = {\n  title: 'Components/Tabs',\n  component: 'modus-wc-tabs',\n  args: {\n    size: 'md',\n    tabs: [\n      { label: 'Tab 1' },\n      { label: 'Tab 2' },\n      { label: 'Tab 3', disabled: true },\n      { icon: 'home' },\n    ],\n    'tab-style': 'bordered',\n  },\n  argTypes: {\n    tabs: {\n      description: 'Array of tab objects defining the tabs to display',\n      table: {\n        type: {\n          detail: `\n            Interface: ITab\n            Properties:\n            - customClass (string, optional): Custom CSS class for the inner button\n            - disabled (boolean, optional): Whether the tab is disabled\n            - icon (string, optional): A Modus Icon name to display\n            - iconPosition ('left' | 'right', optional): The position of the icon\n            - label (string, optional): The content to display in the tab\n            - slotName (string, optional): The slot name to use for custom tab header content\n          `,\n        },\n      },\n    },\n    'tab-style': {\n      control: { type: 'select' },\n      options: ['boxed', 'bordered', 'lifted', 'none'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n  },\n  decorators: [\n    withActions,\n    (story, context) => {\n      // Normalize tabs before rendering the story\n      const { tabs } = context.args ?? {};\n\n      if (Array.isArray(tabs)) {\n        context.args.tabs = normalizeTabs(tabs);\n      }\n\n      return story();\n    },\n  ],\n  parameters: {\n    actions: {\n      handles: ['tabChange'],\n    },\n  },\n};\n\nexport default meta;\n\n// Shared normalization function used by both decorator and source code\nconst normalizeTabs = (tabs: ITab[]) => {\n  return tabs.map((tab) => {\n    const normalized = { ...tab };\n    // Only keep disabled when it is explicitly true\n    if (normalized.disabled !== true) {\n      delete normalized.disabled;\n    }\n    return normalized;\n  });\n};\n\nconst getSourceCode = (tabs: ITab[]) => {\n  const normalizedTabs = normalizeTabs(tabs);\n  return `\n<script>\n  const tabs = ${JSON.stringify(normalizedTabs, null, 2)};\n  const tabElement = document.querySelector('modus-wc-tabs');\n  tabElement.tabs = tabs;\n</script>`;\n};\n\ntype Story = StoryObj<TabsArgs>;\n\nconst Template: Story = {\n  parameters: {\n    docs: {\n      source: {\n        transform: (_src, { args }) => `<modus-wc-tabs\n  aria-label=\"Tab group\"\n  tab-style=\"${ifDefined(args['tab-style'])}\"\n  size=\"${ifDefined(args.size)}\">\n</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tabs\n  active-tab-index=\"${ifDefined(args.activeTabIndex)}\"\n  aria-label=\"Tab group\"\n  tab-style=\"${ifDefined(args['tab-style'])}\"\n  .tabs=${args.tabs}\n  size=\"${ifDefined(args.size)}\"\n>\n</modus-wc-tabs>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const CustomContent: Story = {\n  args: {\n    tabs: [\n      {\n        icon: 'home',\n        iconPosition: 'left',\n        label: 'Home',\n        slotName: 'home-tab-content',\n      },\n      {\n        icon: 'clipboard',\n        iconPosition: 'right',\n        label: 'Tasks',\n      },\n      {\n        slotName: 'actions-tab-content',\n      },\n      {\n        slotName: 'notifications-tab-content',\n      },\n    ],\n  },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases.',\n      },\n      source: {\n        transform: (_src, { args }) => `<style>\n  .red-icon {\n    color: red;\n  }\n  /* Style for disabled badge and icon components */\n  modus-wc-badge[disabled=\"true\"],\n  modus-wc-icon[disabled=\"true\"] ,\n  button[disabled] modus-wc-badge,\n  button[disabled] modus-wc-icon {\n    opacity: 0.3;\n    pointer-events: none;\n  }\n</style>\n<modus-wc-tabs\n  size=\"md\"\n  tab-style=\"bordered\"\n  aria-label=\"Custom tab group\"\n>\n  <span\n    slot=\"home-tab-content\"\n    style=\"display: inline-flex; align-items: center;padding-top: 6px\"\n  >\n    <modus-wc-badge\n      color=\"warning\"\n      size=\"md\"\n      variant=\"filled\"\n    >\n      <modus-wc-icon decorative=\"\" name=\"home\" size=\"xs\"></modus-wc-icon>\n      Home\n    </modus-wc-badge>\n  </span>\n  <span\n    slot=\"actions-tab-content\"\n    style=\"display: inline-flex; align-items: center; gap: 8px;\"\n  >\n    Actions\n    <modus-wc-icon\n      name=\"warning\"\n      variant=\"solid\"\n      size=\"md\"\n      custom-class=\"red-icon\"\n    ></modus-wc-icon>\n  </span>\n  <span\n    slot=\"notifications-tab-content\"\n    style=\"display: inline-flex; align-items: center; gap: 8px;\"\n  >\n    Notifications\n    <modus-wc-badge\n      color=\"primary\"\n      size=\"md\"\n      variant=\"counter\"\n      >5</modus-wc-badge\n    >\n  </span>\n</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,\n      },\n    },\n  },\n\n  // prettier-ignore\n  render: (args) => {\n    return html`\n    <style>\n      .red-icon {\n        color: red;\n      }\n      /* Style for disabled badge and icon components */\n      modus-wc-badge[disabled=\"true\"],\n      modus-wc-icon[disabled=\"true\"] ,\n      button[disabled] modus-wc-badge,\n      button[disabled] modus-wc-icon {\n        opacity: 0.3;\n        pointer-events: none;\n      }\n    </style>\n    <modus-wc-tabs\n      .tabs=${args.tabs}\n      size=\"${ifDefined(args.size)}\"\n      tab-style=\"${ifDefined(args['tab-style'])}\"\n      active-tab-index=\"${ifDefined(args.activeTabIndex)}\"\n      aria-label=\"Custom tab group\"\n    >\n      <span\n        slot=\"home-tab-content\"\n        style=\"display: inline-flex; align-items: center;padding-top: 6px\"\n      >\n        <modus-wc-badge\n          color=\"warning\"\n          size=\"${ifDefined(args.size)}\"\n          variant=\"filled\"\n        >\n          <modus-wc-icon decorative=\"\" name=\"home\" size=\"xs\"></modus-wc-icon>\n          Home\n        </modus-wc-badge>\n      </span>\n      <span\n        slot=\"actions-tab-content\"\n        style=\"display: inline-flex; align-items: center; gap: 8px;\"\n      >\n        Actions\n        <modus-wc-icon\n          name=\"warning\"\n          variant=\"solid\"\n          size=\"${ifDefined(args.size)}\"\n          custom-class=\"red-icon\"\n        ></modus-wc-icon>\n      </span>\n      <span\n        slot=\"notifications-tab-content\"\n        style=\"display: inline-flex; align-items: center; gap: 8px;\"\n      >\n        Notifications\n        <modus-wc-badge\n          color=\"primary\"\n          size=\"${ifDefined(args.size)}\"\n          variant=\"counter\"\n          >5</modus-wc-badge\n        >\n      </span>\n    </modus-wc-tabs>\n    \n  `;\n  },\n};\n\nexport const ActiveAndDisabled: Story = {\n  ...Template,\n  args: {\n    activeTabIndex: 1,\n    tabs: [\n      { label: 'Normal' },\n      { label: 'Active' },\n      { label: 'Disabled', disabled: true },\n    ],\n  },\n};\n\nexport const Icons: Story = {\n  ...Template,\n  args: {\n    tabs: [\n      { icon: 'home' },\n      { icon: 'settings', iconPosition: 'left', label: 'Settings' },\n      {\n        icon: 'alert',\n        iconPosition: 'right',\n        label: 'Alerts',\n      },\n    ],\n  },\n};\n\nexport const TabsWithPanel: Story = {\n  parameters: {\n    docs: {\n      source: {\n        transform: (_src, { args }) => `<modus-wc-tabs\n  aria-label=\"Tab group\"\n  tab-style=\"bordered\"\n  size=\"md\"\n>\n  <p slot=\"tab-0\">\n    Modus (noun) : a mode of procedure : a way of doing something\n  </p>\n  <p slot=\"tab-1\">\n    input (noun) : information fed into a data processing system or computer\n  </p>\n  <p slot=\"tab-2\">\n    secret (noun) : kept from knowledge or view : hidden\n  </p>\n  <p slot=\"tab-3\">\n    snapshot (noun) : an impression or view of something brief or transitory\n  </p>\n</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tabs\n  active-tab-index=\"${ifDefined(args.activeTabIndex)}\"\n  aria-label=\"Tab group\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  ?img-src=\"${args['img-src']}\"\n  tab-style=\"${ifDefined(args['tab-style'])}\"\n  .tabs=${args.tabs}\n  size=\"${ifDefined(args.size)}\"\n>\n  <p slot=\"tab-0\">\n    Modus (noun) : a mode of procedure : a way of doing something\n  </p>\n  <p slot=\"tab-1\">\n    input (noun) : information fed into a data processing system or computer\n  </p>\n  <p slot=\"tab-2\">\n    secret (noun) : kept from knowledge or view : hidden\n  </p>\n  <p slot=\"tab-3\">\n    snapshot (noun) : an impression or view of something brief or transitory\n  </p>\n</modus-wc-tabs>\n    `;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 2.0 tabs use the \\`ITab\\` interface, see details of interface changes below.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`) to abbreviations (\\`xs\\`, \\`sm\\`, \\`md\\`, \\`lg\\`).\n  - The \\`tabChange\\` event now emits an object with both previous and new tab indices, rather than just the tab ID.\n\n#### Prop Mapping\n\n| 1.0 Prop     | 2.0 Prop           | Notes                                                          |\n|--------------|--------------------|----------------------------------------------------------------|\n| aria-label   | aria-label         |                                                                |\n| full-width   |                    | Not carried over, use CSS instead                              |\n| size         | size               | \\`small\\` → \\`sm\\`, \\`medium\\` → \\`md\\`                        |\n| tabs         | tabs               | Tab object structure has changed. See Interface changes below. |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event | Notes                                                 |\n|-------------|-----------|-------------------------------------------------------|\n| tabChange   | tabChange | Now emits \\`{ previousTab: number; newTab: number }\\` |\n\n#### Interfaces\n\n##### 1.0\n\n\\`\\`\\`typescript\nexport interface Tab {\n  active?: boolean;\n  iconOnly?: string;\n  id: string;\n  label?: string;\n  leftIcon?: string;\n  rightIcon?: string;\n}\n\\`\\`\\`\n\n##### 2.0\n\n\\`\\`\\`typescript\nexport interface ITab {\n  customClass?: string;\n  disabled?: boolean;\n  icon?: string;\n  iconPosition?: 'left' | 'right';\n  label?: string;\n}\n\\`\\`\\`\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-tabs ></modus-wc-tabs>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-tabs onTabChange={(e) => handleTabChange(e.detail)}></modus-wc-tabs>",
+      "description": "Handling component events"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "description": "A customizable switch component",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 30
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "The disabled state of the switch.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 33
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "description": "The indeterminate state of the switch.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 36
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the input element.",
+      "default": null,
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "The tabindex of the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 45
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 54
+    },
+    {
+      "name": "value",
+      "type": "boolean",
+      "description": "The value of the switch.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 57
+    }
+  ],
+  "events": [
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input loses focus.",
+      "end_line": 60
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Emitted when the input value changes.",
+      "end_line": 63
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input gains focus.",
+      "end_line": 66
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-switch\n        aria-label=\"Toggle\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-switch>",
+    "variations": [],
+    "args": {
+      "class": "''",
+      "disabled": "false",
+      "indeterminate": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ]
+  },
+  "tag": "modus-wc-switch",
+  "storyExample": {
+    "template": "<modus-wc-switch\n        aria-label=\"Toggle\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-switch>",
+    "args": {
+      "class": "''",
+      "disabled": "false",
+      "indeterminate": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\n\ninterface SwitchArgs {\n  'custom-class'?: string;\n  disabled?: boolean;\n  indeterminate?: boolean;\n  'input-id'?: string;\n  'input-tab-index'?: number;\n  label?: string;\n  name?: string;\n  required?: boolean;\n  size?: ModusSize;\n  value: boolean;\n}\n\nconst meta: Meta<SwitchArgs> = {\n  title: 'Components/Forms/Switch',\n  component: 'modus-wc-switch',\n  args: {\n    'custom-class': '',\n    disabled: false,\n    indeterminate: false,\n    label: 'Label',\n    name: '',\n    required: false,\n    size: 'md',\n    value: true,\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['inputBlur', 'inputChange', 'inputFocus'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<SwitchArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-switch\n        aria-label=\"Toggle\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-switch>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for switch component\n    if (!customElements.get('switch-shadow-host')) {\n      const SwitchShadowHost = createShadowHostClass<SwitchArgs>({\n        componentTag: 'modus-wc-switch',\n        propsMapper: (v: SwitchArgs, el: HTMLElement) => {\n          const switchEl = el as unknown as {\n            customClass: string;\n            disabled: boolean;\n            indeterminate: boolean;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            name: string;\n            required: boolean;\n            size: string;\n            value: boolean;\n          };\n          switchEl.customClass = v['custom-class'] || '';\n          switchEl.disabled = Boolean(v.disabled);\n          switchEl.indeterminate = Boolean(v.indeterminate);\n          switchEl.inputId = v['input-id'] || '';\n          switchEl.inputTabIndex = v['input-tab-index'] || 0;\n          switchEl.label = v.label || '';\n          switchEl.name = v.name || '';\n          switchEl.required = Boolean(v.required);\n          switchEl.size = v.size || 'md';\n          switchEl.value = Boolean(v.value);\n        },\n      });\n      customElements.define('switch-shadow-host', SwitchShadowHost);\n    }\n\n    return html`<switch-shadow-host\n      .props=${{ ...args }}\n    ></switch-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs documentation for additional info and examples.\n  - \\`checked\\` prop has been renamed to \\`value\\` to maintain consistency across form components.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop         | 2.0 Prop            | Notes                                                       |\n|------------------|---------------------|-------------------------------------------------------------|\n| aria-label       | aria-label          |                                                             |\n| checked          | value               |                                                             |\n| disabled         | disabled            |                                                             |\n| label            | label               |                                                             |\n| size             | size                | \\`small\\` → \\`sm\\`, \\`medium\\` → \\`md\\`                     |\n\n#### Event Mapping\n\n| 1.0 Event      | 2.0 Event      | Notes                                                 |\n|----------------|----------------|-------------------------------------------------------|\n| switchClick    | inputChange    |                                                       |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-switch inputId=\"example-inputId\" inputTabIndex=\"example-inputTabIndex\" label=\"example-label\"></modus-wc-switch>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-switch onInputBlur={(e) => handleInputBlur(e.detail)} onInputChange={(e) => handleInputChange(e.detail)} onInputFocus={(e) => handleInputFocus(e.detail)}></modus-wc-switch>",
+      "description": "Handling component events"
+    }
+  ]
+}
