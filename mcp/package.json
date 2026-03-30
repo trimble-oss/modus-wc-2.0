@@ -9,12 +9,12 @@
   "main": "./dist/index.js",
   "files": [
     "dist",
-    "docs",
-    "component-docs"
+    "versions"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "extract-docs": "tsx scripts/extract-docs.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   },
   "publishConfig": {

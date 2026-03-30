@@ -12,6 +12,7 @@ permissions:
   contents: write
   actions: write
   packages: write
+  pull-requests: write
 
 jobs:
   build-and-publish-mcp:
@@ -22,13 +23,15 @@ jobs:
         working-directory: mcp
 
     env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN_MCP }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          persist-credentials: false
+          # persist-credentials required so we can git push the generated version data
+          persist-credentials: true
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
@@ -38,15 +41,89 @@ jobs:
           cache-dependency-path: |
             mcp/package-lock.json
 
-      - name: Bundle docs from src/stories into mcp/docs
-        working-directory: .
-        run: |
-          mkdir -p mcp/docs
-          cp src/stories/*.mdx mcp/docs/
-          cp src/stories/frameworks/*.mdx mcp/docs/
-
       - name: Install MCP dependencies
         run: npm ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+
+      - name: Check if version data already exists
+        id: check-version
+        working-directory: .
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          BASE_VERSION="1.0.6"
+
+          # Guard: base version must always live in mcp/versions/base only.
+          if [ "$VERSION" = "$BASE_VERSION" ]; then
+            echo "generate=false" >> $GITHUB_OUTPUT
+            echo "Version $VERSION is the configured base version; skipping generation."
+            if [ -d "mcp/versions/$BASE_VERSION" ]; then
+              echo "❌ Forbidden folder exists: mcp/versions/$BASE_VERSION (base must be mcp/versions/base)." >&2
+              exit 1
+            fi
+          elif [ -d "mcp/versions/$VERSION" ]; then
+            echo "generate=false" >> $GITHUB_OUTPUT
+            echo "Version $VERSION already has doc data – skipping generation."
+          else
+            echo "generate=true" >> $GITHUB_OUTPUT
+            echo "Version $VERSION needs doc data generation."
+          fi
+
+      - name: Generate version documentation (delta from base)
+        if: steps.check-version.outputs.generate == 'true'
+        working-directory: .
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          TMPDIR=$(mktemp -d)
+
+          # Extract full docs to temp dir
+          npx tsx mcp/scripts/extract-docs.ts \
+            --source-dir src/components \
+            --output-dir "$TMPDIR/component-docs"
+          mkdir -p "$TMPDIR/docs"
+          cp src/stories/*.mdx "$TMPDIR/docs/"
+          cp src/stories/frameworks/*.mdx "$TMPDIR/docs/"
+          node -e "const fs=require('fs');const p='$TMPDIR/docs';const docs=fs.readdirSync(p).filter(f=>f.endsWith('.mdx')).map(f=>f.replace('.mdx','')).sort();fs.writeFileSync(p+'/_all_docs.json',JSON.stringify({total:docs.length,docs},null,2));"
+
+          # Create version folder with only files that differ from base
+          mkdir -p "mcp/versions/${VERSION}/component-docs"
+          mkdir -p "mcp/versions/${VERSION}/docs"
+
+          # Always copy _all_components.json (per-version gatekeeper)
+          cp "$TMPDIR/component-docs/_all_components.json" \
+             "mcp/versions/${VERSION}/component-docs/"
+          # Always copy _all_docs.json (per-version gatekeeper)
+          cp "$TMPDIR/docs/_all_docs.json" \
+             "mcp/versions/${VERSION}/docs/"
+
+          # Copy only changed component files
+          for f in "$TMPDIR/component-docs/"*.json; do
+            fname=$(basename "$f")
+            [ "$fname" = "_all_components.json" ] && continue
+            basefile="mcp/versions/base/component-docs/$fname"
+            if [ ! -f "$basefile" ] || ! diff -q "$f" "$basefile" >/dev/null 2>&1; then
+              cp "$f" "mcp/versions/${VERSION}/component-docs/"
+            fi
+          done
+
+          # Copy only changed doc files
+          for f in "$TMPDIR/docs/"*.mdx; do
+            fname=$(basename "$f")
+            basefile="mcp/versions/base/docs/$fname"
+            if [ ! -f "$basefile" ] || ! diff -q "$f" "$basefile" >/dev/null 2>&1; then
+              cp "$f" "mcp/versions/${VERSION}/docs/"
+            fi
+          done
+
+          rm -rf "$TMPDIR"
+
+      - name: Guard against accidental base version folder
+        working-directory: .
+        run: |
+          if [ -d "mcp/versions/1.0.6" ]; then
+            echo "❌ Forbidden folder exists: mcp/versions/1.0.6 (must use mcp/versions/base)." >&2
+            exit 1
+          fi
 
       - name: Update package.json version
         run: |
@@ -70,7 +147,7 @@ jobs:
         run: rm -f *.tgz
 
       - name: Set npm Registry Auth Token
-        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN_MCP }}
 
       - name: Publish to npm
         run: npm publish
@@ -80,6 +157,38 @@ jobs:
 
       - name: Publish to GitHub Packages
         run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
+
+      - name: Open PR with version data
+        if: steps.check-version.outputs.generate == 'true'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          BRANCH="chore/mcp-docs-v${VERSION}"
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add mcp/versions/
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          # Use -B so re-runs overwrite an existing local branch
+          git checkout -B "$BRANCH"
+          git commit -m "chore: add MCP docs for v${VERSION}"
+          git push -u origin "$BRANCH" --force
+
+          # Create PR only if one doesn't already exist for this branch
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #${EXISTING_PR} already exists for ${BRANCH} – skipping creation."
+          else
+            gh pr create \
+              --title "chore: add MCP docs for v${VERSION}" \
+              --body "Auto-generated versioned documentation for MCP server v${VERSION}." \
+              --base "$DEFAULT_BRANCH" \
+              --head "$BRANCH"
+          fi
 
   release-mcp:
     needs: build-and-publish-mcp

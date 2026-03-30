@@ -1,0 +1,86 @@
+{
+  "description": "A customizable progress component used to show the progress of a task or show the passing of time. The radial variant supports slotting in custom HTML to be displayed within the progress circle.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the progress element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 21
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "description": "The indeterminate state of the progress component.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 24
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "A text label to render within the progress bar",
+      "default": null,
+      "mutable": false,
+      "end_line": 27
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "The progress component's maximum value.",
+      "default": "100",
+      "mutable": false,
+      "end_line": 30
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "The value of the progress component.",
+      "default": "0",
+      "mutable": true,
+      "end_line": 33
+    },
+    {
+      "name": "variant",
+      "type": "'default' | 'radial'",
+      "description": "The variant of the progress component.",
+      "default": "'default'",
+      "mutable": false,
+      "end_line": 36
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-progress\n        aria-label=\"Progress bar\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?indeterminate=${args.indeterminate}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        value=${args.value}\n        variant=${ifDefined(args.variant)}\n      ></modus-wc-progress>",
+    "variations": [],
+    "args": {
+      "indeterminate": "false",
+      "max": "100",
+      "value": "70",
+      "variant": "'default'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-progress",
+  "storyExample": {
+    "template": "<modus-wc-progress\n        aria-label=\"Progress bar\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?indeterminate=${args.indeterminate}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        value=${args.value}\n        variant=${ifDefined(args.variant)}\n      ></modus-wc-progress>",
+    "args": {
+      "indeterminate": "false",
+      "max": "100",
+      "value": "70",
+      "variant": "'default'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface ProgressArgs {\n  'custom-class'?: string;\n  indeterminate: boolean;\n  label?: string;\n  max?: number;\n  value: number;\n  variant?: 'default' | 'radial';\n}\n\nconst meta: Meta<ProgressArgs> = {\n  title: 'Components/Progress',\n  component: 'modus-wc-progress',\n  args: {\n    indeterminate: false,\n    max: 100,\n    value: 70,\n    variant: 'default',\n  },\n  argTypes: {\n    variant: {\n      control: { type: 'select' },\n      options: ['default', 'radial'],\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ProgressArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-progress\n        aria-label=\"Progress bar\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?indeterminate=${args.indeterminate}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        value=${args.value}\n        variant=${ifDefined(args.variant)}\n      ></modus-wc-progress>\n    `;\n  },\n};\n\nexport const Indeterminate: Story = {\n  render: () => {\n    return html` <modus-wc-progress indeterminate=\"true\"></modus-wc-progress> `;\n  },\n};\n\nexport const SizeVariations: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  modus-wc-progress.modus-wc-progress-container .size-small {\n    height: 0.5rem;\n  }\n  modus-wc-progress.modus-wc-progress-container .size-compact {\n    height: 0.25rem;\n  }\n</style>\n<div>\n  <div>\n    Default size\n    <modus-wc-progress value=${args.value}></modus-wc-progress>\n  </div>\n  <div>\n    Small size\n    <modus-wc-progress\n      value=${args.value}\n      custom-class=\"size-small\"\n    ></modus-wc-progress>\n  </div>\n  <div>\n    Compact size\n    <modus-wc-progress\n      value=${args.value}\n      custom-class=\"size-compact\"\n    ></modus-wc-progress>\n  </div>\n</div>\n    `;\n  },\n};\n\nexport const LabelTextColor: Story = {\n  args: {\n    label: 'Loading...',\n    value: 50,\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  modus-wc-progress .modus-wc-progress-label.custom-label-color {\n    color: #f00;\n  }\n</style>\n<modus-wc-progress\n  value=${args.value}\n  label=${ifDefined(args.label)}\n  custom-class=\"custom-label-color\"\n></modus-wc-progress>\n    `;\n  },\n};\n\nexport const CustomBarColor: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  modus-wc-progress .modus-wc-progress.custom-bar-color::-webkit-progress-value {\n    background-color: #f48;\n  }\n  modus-wc-progress .modus-wc-progress.custom-bar-color::-moz-progress-bar {\n    background-color: #f48;\n  }\n</style>\n<modus-wc-progress\n  value=${args.value}\n  custom-class=\"custom-bar-color\"\n></modus-wc-progress>\n    `;\n  },\n};\n\nexport const CustomBackgroundColor: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  modus-wc-progress .modus-wc-progress.custom-bg-color {\n    background-color: #f00;\n  }\n</style>\n<modus-wc-progress\n  value=${args.value}\n  custom-class=\"custom-bg-color\"\n></modus-wc-progress>\n    `;\n  },\n};\n\nexport const RadialWithSlottedContent: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  #radial-icon {\n    justify-content: center;\n  }\n</style>\n<modus-wc-progress\n  aria-label=\"progress radial\"\n  ?indeterminate=${args.indeterminate}\n  max=${ifDefined(args.max)}\n  variant=\"radial\"\n  value=${args.value}\n>\n  <modus-wc-icon id=\"radial-icon\" name=\"clipboard\" size=\"md\"></modus-wc-icon>\n  ${args.value}%\n</modus-wc-progress>\n    `;\n  },\n  parameters: {\n    layout: 'centered',\n  },\n};\n\nexport const RadialWithCustomSizeAndThickness: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .radial-progress--lg {\n    --size: 12rem;\n  }\n  .radial-progress--thin {\n    --thickness: 0.5rem;\n  }\n</style>\n<modus-wc-progress\n  aria-label=\"progress radial\"\n  custom-class=\"radial-progress--lg\"\n  ?indeterminate=${args.indeterminate}\n  max=${ifDefined(args.max)}\n  variant=\"radial\"\n  value=${args.value}\n>\n  ${args.value}%\n</modus-wc-progress>\n<modus-wc-progress\n  aria-label=\"progress radial\"\n  custom-class=\"radial-progress--lg radial-progress--thin\"\n  ?indeterminate=${args.indeterminate}\n  max=${ifDefined(args.max)}\n  variant=\"radial\"\n  value=${args.value}\n>\n  ${args.value}%\n</modus-wc-progress>\n    `;\n  },\n  parameters: {\n    layout: 'centered',\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - Colors and sizes are now handled through CSS instead of direct props.\n  - The \\`mode\\` prop has been replaced with an \\`indeterminate\\` boolean prop.\n\n#### Prop Mapping\n\n| 1.0 Prop          | 2.0 Prop      | Notes                                                |\n|-------------------|---------------|------------------------------------------------------|\n| aria-label        | aria-label    |                                                      |\n| background-color  |               | Not carried over, use CSS instead                    |\n| color             |               | Not carried over, use CSS instead                    |\n| max-value         | max           |                                                      |\n| min-value         |               | Not carried over                                     |\n| mode              | indeterminate | 1.0: \\`determinate\\`/\\`indeterminate\\`, 2.0: boolean |\n| size              |               | Not carried over, use CSS instead                    |\n| text              | label         |                                                      |\n| text-color        |               | Not carried over, use CSS instead                    |\n| value             | value         |                                                      |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
