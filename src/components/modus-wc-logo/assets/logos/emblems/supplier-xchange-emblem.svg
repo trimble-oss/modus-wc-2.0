@@ -1,8 +1,8 @@
-<svg width="30.79" height="34.93" viewBox="15.42 6 30.79 34.93" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M30.8107 6L35.9451 8.91094L30.8141 11.8219L25.683 8.91094L30.8107 6Z" class="logo-emblem-trimble"/>
-<path d="M32.5244 30.259V24.4338L37.6452 21.5295L37.6555 27.3481L32.5244 30.259Z" class="logo-emblem-trimble"/>
-<path d="M29.1037 30.2589V24.4371L15.4209 16.6723V22.4942L29.1037 30.2589Z" class="logo-emblem-trimble"/>
-<path d="M30.8141 21.526H30.8106L17.1312 13.7613L22.2623 10.8503L35.9451 18.6117L30.8141 21.526Z" class="logo-emblem-trimble"/>
-<path d="M46.2073 14.7327L39.3658 10.8503V10.8537L34.2621 13.7478L34.2348 13.7613L41.0762 17.6436V35.1093L46.2073 32.1983V14.7327Z" class="logo-emblem-trimble"/>
-<path d="M15.4209 26.3766L30.8141 35.1094L37.6555 31.2304V37.0523L30.8141 40.9312L15.4209 32.1985V26.3766Z" class="logo-emblem-trimble"/>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.4977 4L19 6L15.5 8L12 6L15.4977 4Z" class="logo-accent"/>
+<path d="M16.6667 20.6675V16.6652L20.1597 14.6698L20.1667 18.6675L16.6667 20.6675Z" class="logo-accent"/>
+<path d="M14.3333 20.6674V16.6674L5 11.3326V15.3326L14.3333 20.6674Z" class="logo-accent"/>
+<path d="M15.5 14.6674H15.4977L6.16666 9.33249L9.66666 7.33249L19 12.6651L15.5 14.6674Z" class="logo-accent"/>
+<path d="M26 9.99993L21.3333 7.33249V7.3348L17.852 9.32326L17.8333 9.33249L22.5 11.9999V23.9999L26 21.9999V9.99993Z" class="logo-accent"/>
+<path d="M5 18L15.5 24L20.1667 21.3349V25.3349L15.5 28L5 22V18Z" class="logo-accent"/>
 </svg>

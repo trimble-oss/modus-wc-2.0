@@ -1,0 +1,92 @@
+{
+  "description": "A customizable divider component used to separate content horizontally or vertically",
+  "properties": [
+    {
+      "name": "color",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'high-contrast'     | 'success'     | 'warning'     | 'danger'",
+      "description": "The color of the divider line.",
+      "default": "'tertiary'",
+      "mutable": false,
+      "end_line": 27
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "description": "The content to display in the divider.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 30
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the divider element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 33
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider.",
+      "default": "'vertical'",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "position",
+      "type": "'center' | 'end' | 'start'",
+      "description": "The position of the divider.",
+      "default": "'center'",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "responsive",
+      "type": "boolean",
+      "description": "Whether the divider is responsive or not.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 42
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "color": "'tertiary'",
+      "content": "''",
+      "class": "''",
+      "orientation": "'vertical'",
+      "position": "'center'",
+      "responsive": "true"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-divider ></modus-wc-divider>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-divider",
+  "storyExample": {
+    "template": null,
+    "args": {
+      "color": "'tertiary'",
+      "content": "''",
+      "class": "''",
+      "orientation": "'vertical'",
+      "position": "'center'",
+      "responsive": "true"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { Orientation } from '../types';\n\ninterface DividerArgs {\n  color:\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger';\n  content: string;\n  'custom-class'?: string;\n  orientation: Orientation;\n  position: 'center' | 'end' | 'start';\n  responsive: boolean;\n}\n\nconst meta: Meta<DividerArgs> = {\n  title: 'Components/Divider',\n  component: 'modus-wc-divider',\n  args: {\n    color: 'tertiary',\n    content: '',\n    'custom-class': '',\n    orientation: 'vertical',\n    position: 'center',\n    responsive: true,\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: [\n        'primary',\n        'secondary',\n        'tertiary',\n        'high-contrast',\n        'success',\n        'warning',\n        'danger',\n      ],\n    },\n    content: {\n      control: 'text',\n    },\n    'custom-class': {\n      control: 'text',\n    },\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    position: {\n      control: { type: 'select' },\n      options: ['start', 'center', 'end'],\n    },\n    responsive: {\n      control: { type: 'boolean' },\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<DividerArgs>;\n\nconst Template: Story = {\n  render: (args) => html`\n    <modus-wc-divider\n      color=\"${args.color}\"\n      content=\"${args.content}\"\n      custom-class=\"${ifDefined(args['custom-class'])}\"\n      orientation=\"${args.orientation}\"\n      position=\"${args.position}\"\n      responsive=\"${args.responsive}\"\n      style=\"${args.orientation === 'horizontal'\n        ? 'display: flex; height: 100px'\n        : ''}\"\n    ></modus-wc-divider>\n  `,\n};\n\nexport const Default: Story = { ...Template };\n"
+  }
+}
