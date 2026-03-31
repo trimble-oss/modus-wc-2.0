@@ -453,7 +453,9 @@ export class ModusWcTreeItem {
 
   private handleDrop = (event: DragEvent) => {
     if (!this.itemsReordering || this.disabled) return;
-    if (!ModusWcTreeItem.draggedItem || ModusWcTreeItem.draggedItem === this) {
+
+    const dragged = ModusWcTreeItem.draggedItem;
+    if (!dragged || dragged === this) {
       this.clearDropIndicator();
       return;
     }
@@ -462,7 +464,7 @@ export class ModusWcTreeItem {
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    const sourceHost = ModusWcTreeItem.draggedItem.el;
+    const sourceHost = dragged.el;
     const targetHost = this.el;
     const sourceParent = sourceHost.parentElement;
     const targetParent = targetHost.parentElement;
@@ -471,42 +473,48 @@ export class ModusWcTreeItem {
       this.clearDropIndicator();
       return;
     }
-    const sourceSiblingTreeItems = this.getSiblingTreeItems(sourceParent);
-    const previousIndex = sourceSiblingTreeItems.indexOf(
+
+    if (!targetParent.contains(targetHost)) {
+      this.clearDropIndicator();
+      return;
+    }
+
+    const sourceSiblings = this.getSiblingTreeItems(sourceParent);
+    const previousIndex = sourceSiblings.indexOf(
       sourceHost as ITreeItemElement
     );
+
     const draggedValue = this.resolveItemId(sourceHost);
-    const oldParentTreeItem = sourceParent.closest(
-      'modus-wc-tree-item'
-    ) as ITreeItemElement | null;
-    const newParentTreeItem = targetParent.closest(
-      'modus-wc-tree-item'
-    ) as ITreeItemElement | null;
-    const oldParentId = this.resolveItemId(oldParentTreeItem);
-    const newParentId = this.resolveItemId(newParentTreeItem);
 
-    if (previousIndex === -1 || !draggedValue) {
+    if (previousIndex === -1 || !draggedValue || !this.dropPosition) {
       this.clearDropIndicator();
       return;
     }
 
-    if (this.dropPosition === 'top') {
-      targetParent.insertBefore(sourceHost, targetHost);
-    } else {
-      targetParent.insertBefore(sourceHost, targetHost.nextSibling);
+    const targetSiblings = this.getSiblingTreeItems(targetParent);
+    const targetIndex = targetSiblings.indexOf(targetHost as ITreeItemElement);
+
+    if (targetIndex === -1) {
+      this.clearDropIndicator();
+      return;
     }
 
-    const updatedSiblingTreeItems = this.getSiblingTreeItems(targetParent);
-    const currentIndex = updatedSiblingTreeItems.indexOf(
-      sourceHost as ITreeItemElement
+    const oldParentId = this.resolveItemId(
+      sourceParent.closest('modus-wc-tree-item') as ITreeItemElement | null
     );
 
-    if (currentIndex === -1) {
-      this.clearDropIndicator();
-      return;
+    const newParentId = this.resolveItemId(
+      targetParent.closest('modus-wc-tree-item') as ITreeItemElement | null
+    );
+
+    let computedIndex =
+      this.dropPosition === 'top' ? targetIndex : targetIndex + 1;
+
+    if (sourceParent === targetParent && previousIndex < computedIndex) {
+      computedIndex -= 1;
     }
 
-    if (previousIndex === currentIndex) {
+    if (previousIndex === computedIndex && oldParentId === newParentId) {
       this.clearDropIndicator();
       return;
     }
@@ -525,7 +533,7 @@ export class ModusWcTreeItem {
         },
         newPosition: {
           parentId: newParentId,
-          index: currentIndex,
+          index: computedIndex,
         },
       },
     });

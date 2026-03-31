@@ -57,6 +57,9 @@ export class ModusWcContentTree {
   /** Data-driven items to render as tree items. */
   @Prop() items?: ITreeItemData[];
 
+  /** Internal tree data used for rendering and local reorder updates. */
+  @State() private renderItems?: ITreeItemData[];
+
   /** Emits reordered data for controlled updates/backend sync. */
   @StencilEvent({ bubbles: true, composed: true })
   itemsReordered!: EventEmitter<{
@@ -75,6 +78,7 @@ export class ModusWcContentTree {
 
   @Watch('items')
   handleItemsChange() {
+    this.renderItems = this.items;
     this.cachedItems = undefined;
     this.pendingChildrenIds = new Set();
   }
@@ -86,6 +90,7 @@ export class ModusWcContentTree {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.renderItems = this.items;
   }
 
   componentDidLoad() {
@@ -103,7 +108,7 @@ export class ModusWcContentTree {
   }
 
   private get hasDataItems(): boolean {
-    return Array.isArray(this.items) && this.items.length > 0;
+    return Array.isArray(this.renderItems) && this.renderItems.length > 0;
   }
 
   private get isReorderingEnabled(): boolean {
@@ -111,6 +116,12 @@ export class ModusWcContentTree {
   }
 
   private applyItemsReorderingState(): void {
+    // In data-driven mode, `itemsReordering` is passed declaratively in render.
+    // Avoid imperative prop writes that can race reconciliation while reordering.
+    if (this.hasDataItems) {
+      return;
+    }
+
     const treeItems = this.el.querySelectorAll('modus-wc-tree-item');
     treeItems.forEach((item) => {
       (item as ITreeItemElement).itemsReordering = this.isReorderingEnabled;
@@ -138,12 +149,14 @@ export class ModusWcContentTree {
     });
 
     const nextItems = reorderTreeItemsData(
-      this.items!,
+      this.renderItems!,
       event.detail.parameters
     );
     if (!nextItems) {
       return;
     }
+
+    this.renderItems = JSON.parse(JSON.stringify(nextItems));
 
     this.itemsReordered.emit({
       items: nextItems,
@@ -278,7 +291,7 @@ export class ModusWcContentTree {
 
       return (
         <modus-wc-tree-item
-          key={item.id}
+          data-key={item.id}
           label={item.label}
           value={item.id}
           checkbox={item.checkbox}
@@ -288,7 +301,10 @@ export class ModusWcContentTree {
           lazyLoading={isLoading}
         >
           {item.startIcon && (
-            <modus-wc-icon slot="start-icon" name={item.startIcon}></modus-wc-icon>
+            <modus-wc-icon
+              slot="start-icon"
+              name={item.startIcon}
+            ></modus-wc-icon>
           )}
           {hasChildren && (
             <modus-wc-tree-view isSubList={true}>
@@ -348,7 +364,7 @@ export class ModusWcContentTree {
           <div class="modus-wc-content-tree-content">
             {this.hasDataItems ? (
               <modus-wc-tree-view>
-                {this.renderTreeItems(this.items!)}
+                {this.renderTreeItems(this.renderItems!)}
               </modus-wc-tree-view>
             ) : (
               <slot></slot>

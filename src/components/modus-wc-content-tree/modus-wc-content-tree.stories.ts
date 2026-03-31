@@ -1098,14 +1098,23 @@ const items = [
     },
   },
   render: (args) => {
-    const items = args.items ?? nestedItemsReorderingData;
+    const state = {
+      items: [...(args.items ?? nestedItemsReorderingData)],
+    };
 
     const handleItemsReordered = (
-      event: CustomEvent<{ items: ITreeItemData[] }>
+      event: CustomEvent<{
+        items: ITreeItemData[];
+        parameters: {
+          itemId: string;
+          oldPosition: { parentId: string | null; index: number };
+          newPosition: { parentId: string | null; index: number };
+        };
+      }>
     ) => {
-      // Controlled usage: update bound items and optionally send event.detail.items to backend.
-      const tree = event.target as HTMLElement & { items?: ITreeItemData[] };
-      tree.items = event.detail.items;
+      state.items = [...event.detail.items];
+      const tree = event.currentTarget as HTMLElement & { items?: ITreeItemData[] };
+      tree.items = state.items;
     };
 
     return html`
@@ -1115,7 +1124,7 @@ const items = [
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
         .itemsReordering=${true}
-        .items=${items}
+        .items=${state.items}
         @itemsReordered=${handleItemsReordered}
       ></modus-wc-content-tree>
     `;
