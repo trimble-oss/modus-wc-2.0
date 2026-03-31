@@ -963,6 +963,7 @@ describe('modus-wc-content-tree', () => {
       {
         id: 'parent1',
         label: 'Parent 1',
+        startIcon: 'folder',
         children: [
           { id: 'child1', label: 'Child 1' },
           { id: 'child2', label: 'Child 2' },
@@ -979,5 +980,11 @@ describe('modus-wc-content-tree', () => {
     // Verify nested tree items are rendered
     const treeItems = page.root?.querySelectorAll('modus-wc-tree-item');
     expect(treeItems?.length).toBe(3); // 1 parent + 2 children
+
+    const startIcon = page.root?.querySelector(
+      'modus-wc-icon[slot="start-icon"]'
+    );
+    expect(startIcon).toBeTruthy();
+    expect(startIcon?.getAttribute('name')).toBe('folder');
   });
 });

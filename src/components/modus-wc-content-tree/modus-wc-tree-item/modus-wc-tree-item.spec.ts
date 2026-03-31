@@ -540,7 +540,7 @@ describe('modus-wc-tree-item', () => {
 
     // drop: full success path with mocked helpers
     treeItemClass.draggedItem = { el: sourceHost };
-    target.dropPosition = 'bottom';
+    target.dropPosition = 'top';
     const emitSpy = jest.spyOn(target.itemReordered, 'emit');
     const preventDefault = jest.fn();
     const stopPropagation = jest.fn();
@@ -552,14 +552,13 @@ describe('modus-wc-tree-item', () => {
     } as unknown as DragEvent;
     jest
       .spyOn(target, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, targetPage.root])
+      .mockReturnValueOnce([targetPage.root, sourceHost])
       .mockReturnValueOnce([targetPage.root, sourceHost]);
     jest.spyOn(target, 'resolveItemId').mockImplementation((el: unknown) => {
       const resolvedElement = el as Element | null;
       if (resolvedElement === sourceHost) return 'src';
       return null;
     });
-    jest.spyOn(parent, 'insertBefore');
     target.handleDrop(event);
     expect(emitSpy).toHaveBeenCalled();
     expect(preventDefault).toHaveBeenCalled();
@@ -738,6 +737,101 @@ describe('modus-wc-tree-item', () => {
     expect(clearSpy).not.toHaveBeenCalled();
   });
 
+  it('covers handleDrop early returns for target contains and missing target index', async () => {
+    const sourcePage = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Source" value="src" items-reordering="true"></modus-wc-tree-item>',
+    });
+    const targetPage = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
+    });
+
+    const sourceHost = sourcePage.root as HTMLElement;
+    const targetHost = targetPage.root as HTMLElement;
+    const targetInstance = targetPage.rootInstance;
+    targetInstance.dropPosition = 'top';
+    treeItemClass.draggedItem = { el: sourceHost };
+
+    // Branch: if (!targetParent.contains(targetHost)) { clear; return; }
+    const targetParent = targetHost.parentElement as HTMLElement;
+    jest.spyOn(targetParent, 'contains').mockReturnValue(false);
+    const clearSpy = jest.spyOn(targetInstance, 'clearDropIndicator');
+    targetInstance.handleDrop({
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      stopImmediatePropagation: jest.fn(),
+    } as unknown as DragEvent);
+    expect(clearSpy).toHaveBeenCalled();
+
+    // Branch: if (targetIndex === -1) { clear; return; }
+    (targetParent.contains as jest.Mock).mockRestore();
+    clearSpy.mockClear();
+    jest
+      .spyOn(targetInstance, 'getSiblingTreeItems')
+      .mockReturnValueOnce([sourceHost as unknown as ITreeItemTestElement])
+      .mockReturnValueOnce([sourceHost as unknown as ITreeItemTestElement]);
+    jest
+      .spyOn(targetInstance, 'resolveItemId')
+      .mockImplementation((...args: unknown[]) => {
+        const el = (args[0] as Element | null) ?? null;
+        return el === sourceHost ? 'src' : 'parent-id';
+      });
+    targetInstance.handleDrop({
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      stopImmediatePropagation: jest.fn(),
+    } as unknown as DragEvent);
+    expect(clearSpy).toHaveBeenCalled();
+  });
+
+  it('covers emitted-reorder guard and handleDragEnd reset', async () => {
+    const sourcePage = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Source" value="src" items-reordering="true"></modus-wc-tree-item>',
+    });
+    const targetPage = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
+    });
+
+    const sourceHost = sourcePage.root as HTMLElement;
+    const targetHost = targetPage.root as HTMLElement;
+    const targetInstance = targetPage.rootInstance;
+    targetInstance.dropPosition = 'top';
+
+    treeItemClass.draggedItem = { el: sourceHost };
+    treeItemClass.hasEmittedReorderForCurrentDrag = true;
+
+    const clearSpy = jest.spyOn(targetInstance, 'clearDropIndicator');
+    const emitSpy = jest.spyOn(targetInstance.itemReordered, 'emit');
+    jest
+      .spyOn(targetInstance, 'getSiblingTreeItems')
+      .mockReturnValueOnce([sourceHost as unknown as ITreeItemTestElement])
+      .mockReturnValueOnce([targetHost as unknown as ITreeItemTestElement]);
+    jest
+      .spyOn(targetInstance, 'resolveItemId')
+      .mockImplementation((...args: unknown[]) => {
+        const el = (args[0] as Element | null) ?? null;
+        if (el === sourceHost) return 'src';
+        return 'parent-id';
+      });
+
+    targetInstance.handleDrop({
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      stopImmediatePropagation: jest.fn(),
+    } as unknown as DragEvent);
+
+    expect(clearSpy).toHaveBeenCalled();
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    targetInstance.handleDragEnd();
+    expect(treeItemClass.draggedItem).toBeNull();
+    expect(treeItemClass.hasEmittedReorderForCurrentDrag).toBe(false);
+    expect(clearSpy).toHaveBeenCalled();
+  });
+
   it('covers selected and checked true aria branches', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],
@@ -912,27 +1006,83 @@ describe('modus-wc-tree-item', () => {
     } as unknown as DragEvent);
     expect(clearSpy).toHaveBeenCalled();
 
-    // hasEmittedReorderForCurrentDrag branch
+    parent.remove();
+  });
+
+  it('handleDrop clears indicator when target index is invalid', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
+    });
+    const instance = page.rootInstance;
+    const sourceHost = document.createElement('modus-wc-tree-item');
+    const sourceParent = document.createElement('div');
+    const targetParent = document.createElement('div');
+    const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
+
+    sourceParent.appendChild(sourceHost);
+    targetParent.appendChild(page.root as HTMLElement);
+
     treeItemClass.draggedItem = { el: sourceHost };
-    treeItemClass.hasEmittedReorderForCurrentDrag = true;
-    instance.dropPosition = 'top';
+    instance.dropPosition = 'bottom';
     jest
       .spyOn(instance, 'getSiblingTreeItems')
-      .mockReturnValueOnce([sourceHost, page.root])
-      .mockReturnValueOnce([page.root, sourceHost]);
+      .mockReturnValueOnce([sourceHost])
+      .mockReturnValueOnce([]);
     jest
       .spyOn(instance, 'resolveItemId')
       .mockImplementation((el: unknown) =>
         (el as Element | null) === sourceHost ? 'src' : null
       );
+
     instance.handleDrop({
       preventDefault: jest.fn(),
       stopPropagation: jest.fn(),
       stopImmediatePropagation: jest.fn(),
     } as unknown as DragEvent);
-    expect(clearSpy).toHaveBeenCalled();
 
-    parent.remove();
+    expect(clearSpy).toHaveBeenCalled();
+    treeItemClass.draggedItem = null;
+  });
+
+  it('handleDrop clears indicator after reorder was already emitted for the drag', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item label="Target" value="tgt" items-reordering="true"></modus-wc-tree-item>',
+    });
+    const instance = page.rootInstance;
+    const sourceHost = document.createElement('modus-wc-tree-item');
+    const sourceParent = document.createElement('div');
+    const targetParent = document.createElement('div');
+    const clearSpy = jest.spyOn(instance, 'clearDropIndicator');
+    const emitSpy = jest.spyOn(instance.itemReordered, 'emit');
+
+    sourceParent.appendChild(sourceHost);
+    targetParent.appendChild(page.root as HTMLElement);
+
+    treeItemClass.draggedItem = { el: sourceHost };
+    treeItemClass.hasEmittedReorderForCurrentDrag = true;
+    instance.dropPosition = 'bottom';
+    jest
+      .spyOn(instance, 'getSiblingTreeItems')
+      .mockReturnValueOnce([sourceHost])
+      .mockReturnValueOnce([page.root as HTMLElement]);
+    jest
+      .spyOn(instance, 'resolveItemId')
+      .mockImplementation((el: unknown) =>
+        (el as Element | null) === sourceHost ? 'src' : null
+      );
+
+    instance.handleDrop({
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      stopImmediatePropagation: jest.fn(),
+    } as unknown as DragEvent);
+
+    expect(clearSpy).toHaveBeenCalled();
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    treeItemClass.draggedItem = null;
     treeItemClass.hasEmittedReorderForCurrentDrag = false;
   });
 });

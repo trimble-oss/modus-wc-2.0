@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { ITreeItemData, ITreeItemReorderParameters } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
@@ -27,7 +27,7 @@ import { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tr
 import { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { ITreeItemReorderedEventDetail } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { ITreeItemData, ITreeItemReorderParameters } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
@@ -99,6 +99,10 @@ export namespace Components {
      * The component supports a `<slot>` for injecting custom content.
      */
     interface ModusWcAutocomplete {
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: AutocompleteTypes;
         /**
           * Indicates that the autocomplete should have a border.
          */
@@ -616,7 +620,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -984,6 +988,10 @@ export namespace Components {
          */
         "orientation"?: Orientation;
         /**
+          * The selection mode of the menu.
+         */
+        "selectionMode"?: SelectionMode;
+        /**
           * The size of the menu.
          */
         "size"?: ModusSize;
@@ -1030,10 +1038,6 @@ export namespace Components {
           * The size of the menu item.
          */
         "size"?: ModusSize;
-        /**
-          * The modus icon name to render on the start of the menu item.
-         */
-        "startIcon"?: string;
         /**
           * The text rendered beneath the label.
          */
@@ -2748,6 +2752,9 @@ declare global {
     };
     interface HTMLModusWcMenuElementEventMap {
         "menuFocusout": FocusEvent;
+        "menuSelectionChange": {
+    selectedItems: HTMLElement[];
+  };
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
@@ -3490,6 +3497,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: AutocompleteTypes;
+        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -4066,7 +4077,7 @@ declare namespace LocalJSX {
          */
         "onInputBlur"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Event emitted when the input value changes.
+          * Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
          */
         "onInputChange"?: (event: ModusWcDateCustomEvent<InputEvent>) => void;
         /**
@@ -4082,7 +4093,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -4454,9 +4465,19 @@ declare namespace LocalJSX {
          */
         "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
         /**
+          * Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements.
+         */
+        "onMenuSelectionChange"?: (event: ModusWcMenuCustomEvent<{
+    selectedItems: HTMLElement[];
+  }>) => void;
+        /**
           * The orientation of the menu.
          */
         "orientation"?: Orientation;
+        /**
+          * The selection mode of the menu.
+         */
+        "selectionMode"?: SelectionMode;
         /**
           * The size of the menu.
          */
@@ -4507,10 +4528,6 @@ declare namespace LocalJSX {
           * The size of the menu item.
          */
         "size"?: ModusSize;
-        /**
-          * The modus icon name to render on the start of the menu item.
-         */
-        "startIcon"?: string;
         /**
           * The text rendered beneath the label.
          */

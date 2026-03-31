@@ -1113,7 +1113,9 @@ const items = [
       }>
     ) => {
       state.items = [...event.detail.items];
-      const tree = event.currentTarget as HTMLElement & { items?: ITreeItemData[] };
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
       tree.items = state.items;
     };
 
