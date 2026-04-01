@@ -28,33 +28,48 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-error {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-red-pale) 80%,
-      var(--modus-wc-color-gray-light)
-    );
+    // Fallback for Chrome <111: --modus-wc-color-red-pale (#fbd4d7) at 80% opacity
+    background-color: rgba(251, 212, 215, 0.8);
     border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-color-gray-10);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red-pale) 80%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 
   &.modus-wc-alert-success {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-success-pale) 80%,
-      var(--modus-wc-color-gray-light)
-    );
+    // Fallback for Chrome <111: --modus-wc-color-green-pale (#e0eccf) at 80% opacity
+    background-color: rgba(224, 236, 207, 0.8);
     border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-color-gray-10);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-success-pale) 80%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 
   &.modus-wc-alert-warning {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-yellow-pale) 60%,
-      var(--modus-wc-color-gray-light)
-    );
+    // Fallback for Chrome <111: --modus-wc-color-yellow-pale (#fff5e4) at 60% opacity
+    background-color: rgba(255, 245, 228, 0.6);
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-yellow-pale) 60%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 }
 
@@ -106,38 +121,58 @@ modus-wc-alert .modus-wc-alert {
   color: var(--modus-wc-color-gray-light);
 
   &.modus-wc-alert-info {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-highlight-blue) 30%,
-      transparent
-    );
+    // Fallback for Chrome <111: --modus-wc-color-highlight-blue (#019aeb) at 30% opacity
+    background-color: rgba(1, 154, 235, 0.3);
     border-color: var(--modus-wc-color-highlight-blue);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-error {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-red) 50%,
-      transparent
-    );
+    // Fallback for Chrome <111: --modus-wc-color-red (#da212c) at 50% opacity
+    background-color: rgba(218, 33, 44, 0.5);
     border-color: var(--modus-wc-color-red-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red) 50%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-success {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-green) 50%,
-      transparent
-    );
+    // Fallback for Chrome <111: --modus-wc-color-green (#1e8a44) at 50% opacity
+    background-color: rgba(30, 138, 68, 0.5);
     border-color: var(--modus-wc-color-green-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-green) 50%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-warning {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-yellow) 50%,
-      transparent
-    );
+    // Fallback for Chrome <111: --modus-wc-color-yellow (#fbad26) at 50% opacity
+    background-color: rgba(251, 173, 38, 0.5);
     border-color: var(--modus-wc-color-yellow-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-yellow) 50%,
+        transparent
+      );
+    }
   }
 }
