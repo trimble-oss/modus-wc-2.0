@@ -28,33 +28,45 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-error {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-red-pale) 80%,
-      var(--modus-wc-color-gray-light)
-    );
+    background-color: #fce0e2;
     border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-color-gray-10);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red-pale) 80%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 
   &.modus-wc-alert-success {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-success-pale) 80%,
-      var(--modus-wc-color-gray-light)
-    );
+    background-color: #e6efd9;
     border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-color-gray-10);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-success-pale) 80%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 
   &.modus-wc-alert-warning {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-yellow-pale) 60%,
-      var(--modus-wc-color-gray-light)
-    );
+    background-color: #f9f0e8;
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-yellow-pale) 60%,
+        var(--modus-wc-color-gray-light)
+      );
+    }
   }
 }
 
@@ -106,38 +118,54 @@ modus-wc-alert .modus-wc-alert {
   color: var(--modus-wc-color-gray-light);
 
   &.modus-wc-alert-info {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-highlight-blue) 30%,
-      transparent
-    );
+    background-color: rgba(1, 154, 235, 0.3);
     border-color: var(--modus-wc-color-highlight-blue);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-error {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-red) 50%,
-      transparent
-    );
+    background-color: rgba(218, 33, 44, 0.5);
     border-color: var(--modus-wc-color-red-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red) 50%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-success {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-green) 50%,
-      transparent
-    );
+    background-color: rgba(30, 138, 68, 0.5);
     border-color: var(--modus-wc-color-green-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-green) 50%,
+        transparent
+      );
+    }
   }
 
   &.modus-wc-alert-warning {
-    background-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-yellow) 50%,
-      transparent
-    );
+    background-color: rgba(251, 173, 38, 0.5);
     border-color: var(--modus-wc-color-yellow-light);
+
+    @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-yellow) 50%,
+        transparent
+      );
+    }
   }
 }

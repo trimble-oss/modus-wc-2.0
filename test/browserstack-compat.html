@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modus WC – Chrome Compat Test</title>
+    <link rel="stylesheet" href="../dist/modus-wc-styles.css" />
+    <link rel="stylesheet" href="../dist/modus-wc-variables.css" />
+    <link rel="stylesheet" href="../dist/modus-icons.css" />
+    <script type="module">
+      import { defineCustomElements } from '../dist/loader/index.js';
+      defineCustomElements();
+    </script>
+    <style>
+      body { font-family: 'Open Sans', sans-serif; margin: 0; padding: 0; }
+      .page { padding: 24px; }
+      h2 { font-size: 15px; font-weight: 700; margin: 24px 0 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 6px; }
+      h3 { font-size: 12px; color: #6b7280; margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+      .label { background: #f3f4f6; border-radius: 3px; color: #6b7280; font-size: 10px; padding: 2px 6px; min-width: 90px; }
+      .section { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+      .themes { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+      .tbtn { border: 1px solid #d1d5db; border-radius: 4px; cursor: pointer; font-size: 11px; padding: 4px 10px; background: #fff; }
+      .tbtn.active { background: #0063a3; border-color: #0063a3; color: #fff; }
+      .dark-bg { background: #252a2e; padding: 16px; border-radius: 8px; }
+      .feature-box { border-radius: 6px; padding: 8px 12px; font-size: 12px; margin-bottom: 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="root">
+
+      <!-- THEME SWITCHER -->
+      <div class="themes">
+        <button class="tbtn active" onclick="setTheme(event, '')">No theme</button>
+        <button class="tbtn" onclick="setTheme(event, 'modus-modern-light')">Modern Light</button>
+        <button class="tbtn" onclick="setTheme(event, 'modus-modern-dark')">Modern Dark</button>
+        <button class="tbtn" onclick="setTheme(event, 'modus-classic-light')">Classic Light</button>
+        <button class="tbtn" onclick="setTheme(event, 'modus-classic-dark')">Classic Dark</button>
+      </div>
+
+      <!-- CSS FEATURE DETECTION -->
+      <div id="feature-detection" style="margin-bottom:20px;">
+        <div id="fd-oklch" class="feature-box"></div>
+        <div id="fd-colormix" class="feature-box"></div>
+        <div id="fd-lightdark" class="feature-box"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ BUTTON ═══════ -->
+      <h2>Button — filled (DaisyUI oklch affected)</h2>
+      <div class="section">
+        <h3>All colors</h3>
+        <div class="row">
+          <span class="label">primary</span>
+          <modus-wc-button color="primary" variant="filled" size="sm">Small</modus-wc-button>
+          <modus-wc-button color="primary" variant="filled" size="md">Medium</modus-wc-button>
+          <modus-wc-button color="primary" variant="filled" size="lg">Large</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">secondary</span>
+          <modus-wc-button color="secondary" variant="filled" size="sm">Small</modus-wc-button>
+          <modus-wc-button color="secondary" variant="filled" size="md">Medium</modus-wc-button>
+          <modus-wc-button color="secondary" variant="filled" size="lg">Large</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">tertiary</span>
+          <modus-wc-button color="tertiary" variant="filled" size="sm">Small</modus-wc-button>
+          <modus-wc-button color="tertiary" variant="filled" size="md">Medium</modus-wc-button>
+          <modus-wc-button color="tertiary" variant="filled" size="lg">Large</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">warning</span>
+          <modus-wc-button color="warning" variant="filled" size="sm">Small</modus-wc-button>
+          <modus-wc-button color="warning" variant="filled" size="md">Medium</modus-wc-button>
+          <modus-wc-button color="warning" variant="filled" size="lg">Large</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">danger</span>
+          <modus-wc-button color="danger" variant="filled" size="sm">Small</modus-wc-button>
+          <modus-wc-button color="danger" variant="filled" size="md">Medium</modus-wc-button>
+          <modus-wc-button color="danger" variant="filled" size="lg">Large</modus-wc-button>
+        </div>
+        <h3>Outlined + Borderless</h3>
+        <div class="row">
+          <span class="label">outlined</span>
+          <modus-wc-button color="primary" variant="outlined">Primary</modus-wc-button>
+          <modus-wc-button color="secondary" variant="outlined">Secondary</modus-wc-button>
+          <modus-wc-button color="danger" variant="outlined">Danger</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">borderless</span>
+          <modus-wc-button color="primary" variant="borderless">Primary</modus-wc-button>
+          <modus-wc-button color="secondary" variant="borderless">Secondary</modus-wc-button>
+          <modus-wc-button color="danger" variant="borderless">Danger</modus-wc-button>
+        </div>
+        <h3>States</h3>
+        <div class="row">
+          <span class="label">disabled</span>
+          <modus-wc-button disabled color="primary" variant="filled">Disabled</modus-wc-button>
+          <modus-wc-button disabled color="primary" variant="outlined">Disabled</modus-wc-button>
+        </div>
+        <div class="row">
+          <span class="label">pressed</span>
+          <modus-wc-button pressed color="primary" variant="filled">Pressed</modus-wc-button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ COLLAPSE ═════ -->
+      <h2>Collapse — open state (color-mix on classic-dark title bg)</h2>
+      <p style="font-size:11px;color:#6b7280;margin:-8px 0 12px">
+        Switch to <strong>Classic Dark</strong> theme above, then look at the expanded title background.
+        Should be blue-tinted (<code>rgba(1,154,235,0.3)</code>) not transparent/dark.
+      </p>
+      <div class="section">
+        <h3>Pre-expanded (no click needed)</h3>
+        <div id="collapse-container">
+          <modus-wc-collapse expanded id="test-collapse">
+            <span slot="header">Collapse Title — check background color</span>
+            <div slot="content" style="padding:8px">
+              If you see a blue-tinted header above this content on Classic Dark, the color-mix fallback is working.
+            </div>
+          </modus-wc-collapse>
+        </div>
+        <h3>Collapsed (for comparison)</h3>
+        <modus-wc-collapse>
+          <span slot="header">Collapsed — click to expand</span>
+          <div slot="content" style="padding:8px">Content</div>
+        </modus-wc-collapse>
+      </div>
+
+      <!-- ═══════════════════════════════════════ ALERT ════════ -->
+      <h2>Alert — backgrounds (color-mix fallback)</h2>
+      <div class="section">
+        <div class="row"><modus-wc-alert variant="info" alert-title="Info alert — should have blue-pale background"></modus-wc-alert></div>
+        <div class="row"><modus-wc-alert variant="success" alert-title="Success — should have green-pale background"></modus-wc-alert></div>
+        <div class="row"><modus-wc-alert variant="warning" alert-title="Warning — should have yellow-pale background"></modus-wc-alert></div>
+        <div class="row"><modus-wc-alert variant="error" alert-title="Error — should have red-pale background"></modus-wc-alert></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ CHIP ════════ -->
+      <h2>Chip — active state (color-mix fallback on classic themes)</h2>
+      <div class="section">
+        <div class="row">
+          <span class="label">default</span>
+          <modus-wc-chip label="Default"></modus-wc-chip>
+        </div>
+        <div class="row">
+          <span class="label">active (filled)</span>
+          <modus-wc-chip label="Active Filled" active></modus-wc-chip>
+        </div>
+        <div class="row">
+          <span class="label">outline active</span>
+          <modus-wc-chip label="Outline Active" variant="outline" active></modus-wc-chip>
+        </div>
+        <div class="row">
+          <span class="label">has-error</span>
+          <modus-wc-chip label="Error State" has-error></modus-wc-chip>
+        </div>
+        <div class="row">
+          <span class="label">disabled</span>
+          <modus-wc-chip label="Disabled" disabled></modus-wc-chip>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ TOOLBAR ══════ -->
+      <h2>Toolbar — box-shadow (color-mix fallback)</h2>
+      <div class="section">
+        <modus-wc-toolbar>
+          <modus-wc-button slot="start" variant="borderless"><modus-wc-icon decorative name="menu"></modus-wc-icon></modus-wc-button>
+          <span slot="center" style="font-weight:600;font-size:14px">App Title</span>
+          <modus-wc-button slot="end" variant="borderless"><modus-wc-icon decorative name="account_circle"></modus-wc-icon></modus-wc-button>
+        </modus-wc-toolbar>
+      </div>
+
+      <!-- ═══════════════════════════════════════ DIVIDER ══════ -->
+      <h2>Divider — neutral variant (color-mix on border)</h2>
+      <div class="section">
+        <div style="margin-bottom:8px"><modus-wc-divider></modus-wc-divider></div>
+        <div style="margin-bottom:8px"><modus-wc-divider content="With Label"></modus-wc-divider></div>
+        <div><modus-wc-divider color="neutral"></modus-wc-divider></div>
+      </div>
+
+    </div><!-- end #root -->
+
+    <script>
+      function setTheme(e, theme) {
+        var html = document.documentElement;
+        if (theme) html.setAttribute('data-theme', theme);
+        else html.removeAttribute('data-theme');
+        document.querySelectorAll('.tbtn').forEach(function(b) { b.classList.remove('active'); });
+        e.target.classList.add('active');
+
+        // Update body bg for dark themes
+        var isDark = theme && theme.indexOf('dark') !== -1;
+        document.body.style.background = isDark ? '#171c1e' : '#fff';
+        document.body.style.color = isDark ? '#cbcdd6' : '#252a2e';
+      }
+
+      // Feature detection
+      (function() {
+        function set(id, ok, label) {
+          var el = document.getElementById(id);
+          el.textContent = (ok ? '✅ ' : '❌ ') + label;
+          el.style.background = ok ? '#d1fae5' : '#fee2e2';
+          el.style.color = ok ? '#065f46' : '#991b1b';
+        }
+        set('fd-oklch',    CSS.supports('color','oklch(0% 0 0)'),              'oklch() — DaisyUI theme colors');
+        set('fd-colormix', CSS.supports('color','color-mix(in sRGB,red 50%,blue)'), 'color-mix() — chip/alert/collapse/divider/toolbar states');
+        set('fd-lightdark',CSS.supports('color','light-dark(#000,#fff)'),      'light-dark() — dynamic base colors (needs explicit theme)');
+      })();
+    </script>
+  </body>
+</html>

@@ -180,11 +180,15 @@ modus-wc-menu-item .modus-wc-menu-item {
     &:active:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
       ) {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-primary) 30%,
-        transparent
-      );
+      background-color: rgba(1, 154, 235, 0.3);
+
+      @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+        background-color: color-mix(
+          in sRGB,
+          var(--modus-wc-color-primary) 30%,
+          transparent
+        );
+      }
 
       button {
         background-color: transparent;

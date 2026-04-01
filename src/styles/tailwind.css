@@ -161,3 +161,32 @@
     display: list-item;
   }
 }
+
+/* Override DaisyUI's default oklch fallbacks with Modus theme colors.
+   Uses hardcoded hex values from modus-modern-light because var() references
+   to --modus-wc-color-* resolve via light-dark() which also requires Chrome 123+.
+   Must come after @tailwind utilities so it wins over DaisyUI's
+   @supports not (color: oklch(0% 0 0)) block. */
+@supports not (color: oklch(0% 0 0)) {
+  :root {
+    --fallback-p: #0063a3;
+    --fallback-pc: #ffffff;
+    --fallback-s: #fbad26;
+    --fallback-sc: #000000;
+    --fallback-a: #6a6e79;
+    --fallback-ac: #ffffff;
+    --fallback-n: #cbcdd6;
+    --fallback-nc: #252a2e;
+    --fallback-b1: #ffffff;
+    --fallback-b2: #cbcdd6;
+    --fallback-b3: #b7b9c3;
+    --fallback-in: #0063a3;
+    --fallback-inc: #ffffff;
+    --fallback-su: #1e8a44;
+    --fallback-suc: #ffffff;
+    --fallback-wa: #e49325;
+    --fallback-wac: #252a2e;
+    --fallback-er: #da212c;
+    --fallback-erc: #ffffff;
+  }
+}

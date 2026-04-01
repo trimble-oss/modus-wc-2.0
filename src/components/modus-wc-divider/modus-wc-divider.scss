@@ -28,11 +28,15 @@ modus-wc-divider .modus-wc-divider {
   &.modus-wc-divider-neutral {
     &::before,
     &::after {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-gray-10) 10%,
-        transparent
-      );
+      background-color: rgba(23, 28, 30, 0.1);
+
+      @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+        background-color: color-mix(
+          in sRGB,
+          var(--modus-wc-color-gray-10) 10%,
+          transparent
+        );
+      }
     }
   }
 
@@ -66,11 +70,15 @@ modus-wc-divider .modus-wc-divider {
   &.modus-wc-divider-neutral {
     &::before,
     &::after {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-gray-light) 10%,
-        transparent
-      );
+      background-color: rgba(241, 241, 246, 0.1);
+
+      @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+        background-color: color-mix(
+          in sRGB,
+          var(--modus-wc-color-gray-light) 10%,
+          transparent
+        );
+      }
     }
   }
 

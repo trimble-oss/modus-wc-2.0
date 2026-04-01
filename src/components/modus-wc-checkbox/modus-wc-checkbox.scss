@@ -61,11 +61,15 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:focus {
-    outline-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-highlight-blue) 75%,
-      transparent
-    );
+    outline-color: rgba(1, 154, 235, 0.75);
+
+    @supports (outline-color: color-mix(in sRGB, red 50%, blue)) {
+      outline-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 75%,
+        transparent
+      );
+    }
   }
 
   &:hover {
@@ -146,11 +150,15 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:focus {
-    outline-color: color-mix(
-      in sRGB,
-      var(--modus-wc-color-highlight-blue) 75%,
-      transparent
-    );
+    outline-color: rgba(1, 154, 235, 0.75);
+
+    @supports (outline-color: color-mix(in sRGB, red 50%, blue)) {
+      outline-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 75%,
+        transparent
+      );
+    }
   }
 
   &:hover {

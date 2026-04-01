@@ -137,12 +137,16 @@ modus-wc-date {
 
         .week-number {
           align-items: center;
-          border-inline-end: 1px solid
-            color-mix(
-              in sRGB,
-              var(--modus-wc-color-base-inverted) 10%,
-              transparent
-            );
+          border-inline-end: 1px solid rgba(23, 28, 30, 0.1);
+
+          @supports (border-color: color-mix(in sRGB, red 50%, blue)) {
+            border-inline-end: 1px solid
+              color-mix(
+                in sRGB,
+                var(--modus-wc-color-base-inverted) 10%,
+                transparent
+              );
+          }
           display: flex;
           font-size: var(--modus-wc-font-size-sm);
           font-weight: var(--modus-wc-font-weight-bold);
