@@ -41,10 +41,14 @@ body {
   scrollbar, leaving a visible empty gutter beside the content. We override it to
   `auto` so the layout reflows naturally and the gutter disappears.
 */
-:root:has( :is(.modus-wc-modal-open,
-    .modus-wc-modal:target,
-    .modus-wc-modal-toggle:checked + .modus-wc-modal,
-    .modus-wc-modal[open])) {
+:root:has(
+    :is(
+      .modus-wc-modal-open,
+      .modus-wc-modal:target,
+      .modus-wc-modal-toggle:checked + .modus-wc-modal,
+      .modus-wc-modal[open]
+    )
+  ) {
   scrollbar-gutter: auto !important;
 }
 
@@ -78,7 +82,8 @@ modus-wc-number-input .modus-wc-number-input {
 
 /* Utility Panel Content Push Classes */
 .modus-wc-utility-panel-push-target {
-  transition: margin-inline-end var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
+  transition: margin-inline-end
+    var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
 }
 
 .modus-wc-utility-panel-push-target.modus-wc-utility-panel-pushed {
