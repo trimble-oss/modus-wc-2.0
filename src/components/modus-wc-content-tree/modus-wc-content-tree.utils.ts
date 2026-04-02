@@ -3,6 +3,137 @@ import {
   ITreeItemReorderParameters,
 } from './modus-wc-tree-item/modus-wc-tree-item';
 
+/** Returns the parent ID of the item with the given ID, or null if it is a root item. Returns undefined if not found. */
+export const findItemParentId = (
+  items: ITreeItemData[],
+  itemId: string,
+  parentId: string | null = null
+): string | null | undefined => {
+  for (const item of items) {
+    if (item.id === itemId) return parentId;
+    if (item.children?.length) {
+      const found = findItemParentId(item.children, itemId, item.id);
+      if (found !== undefined) return found;
+    }
+  }
+  return undefined;
+};
+
+/** Adds a new child node to the item with the given parentId. */
+export const addChildToTree = (
+  items: ITreeItemData[],
+  parentId: string,
+  newItem: ITreeItemData
+): ITreeItemData[] => {
+  return items.map((item) => {
+    if (item.id === parentId) {
+      return { ...item, children: [...(item.children ?? []), newItem] };
+    }
+    if (item.children?.length) {
+      return {
+        ...item,
+        children: addChildToTree(item.children, parentId, newItem),
+      };
+    }
+    return item;
+  });
+};
+
+/** Inserts a new item immediately above the item with the given siblingId. */
+export const addAboveInTree = (
+  items: ITreeItemData[],
+  siblingId: string,
+  newItem: ITreeItemData
+): ITreeItemData[] => {
+  const idx = items.findIndex((i) => i.id === siblingId);
+  if (idx !== -1) {
+    const updated = [...items];
+    updated.splice(idx, 0, newItem);
+    return updated;
+  }
+  return items.map((item) => {
+    if (item.children?.length) {
+      return {
+        ...item,
+        children: addAboveInTree(item.children, siblingId, newItem),
+      };
+    }
+    return item;
+  });
+};
+
+/** Inserts a new item immediately below the item with the given siblingId. */
+export const addBelowInTree = (
+  items: ITreeItemData[],
+  siblingId: string,
+  newItem: ITreeItemData
+): ITreeItemData[] => {
+  const idx = items.findIndex((i) => i.id === siblingId);
+  if (idx !== -1) {
+    const updated = [...items];
+    updated.splice(idx + 1, 0, newItem);
+    return updated;
+  }
+  return items.map((item) => {
+    if (item.children?.length) {
+      return {
+        ...item,
+        children: addBelowInTree(item.children, siblingId, newItem),
+      };
+    }
+    return item;
+  });
+};
+
+/** Removes the item with the given ID from the tree. */
+export const deleteFromTree = (
+  items: ITreeItemData[],
+  itemId: string
+): ITreeItemData[] => {
+  return items
+    .filter((item) => item.id !== itemId)
+    .map((item) => {
+      if (item.children?.length) {
+        return { ...item, children: deleteFromTree(item.children, itemId) };
+      }
+      return item;
+    });
+};
+
+/** Recursively assigns new unique IDs to a node and all its descendants. */
+const assignNewIds = (item: ITreeItemData): ITreeItemData => {
+  const updated: ITreeItemData = { ...item, id: crypto.randomUUID() };
+  if (updated.children?.length) {
+    updated.children = updated.children.map(assignNewIds);
+  }
+  return updated;
+};
+
+/** Deep-clones the item with the given ID, assigns new IDs to the clone and all its descendants, and inserts it below the original. */
+export const duplicateInTree = (
+  items: ITreeItemData[],
+  itemId: string
+): ITreeItemData[] => {
+  const idx = items.findIndex((i) => i.id === itemId);
+  if (idx !== -1) {
+    const clone = assignNewIds(
+      JSON.parse(JSON.stringify(items[idx])) as ITreeItemData
+    );
+    const updated = [...items];
+    updated.splice(idx + 1, 0, clone);
+    return updated;
+  }
+  return items.map((item) => {
+    if (item.children?.length) {
+      return {
+        ...item,
+        children: duplicateInTree(item.children, itemId),
+      };
+    }
+    return item;
+  });
+};
+
 export const getReorderSignature = (
   parameters: ITreeItemReorderParameters
 ): string => JSON.stringify(parameters);

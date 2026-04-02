@@ -62,7 +62,8 @@ export class ModusWcTreeActions {
   @StencilEvent() dropdownOpened!: EventEmitter<HTMLElement>;
 
   /** Event emitted when an action is clicked */
-  @StencilEvent() treeActionClick!: EventEmitter<{
+  @StencilEvent({ bubbles: true, composed: true })
+  treeActionClick!: EventEmitter<{
     actionId: string;
     actionName: string;
   }>;
@@ -273,23 +274,28 @@ export class ModusWcTreeActions {
     return (
       <Host>
         <div class="modus-wc-tree-actions-container">
-          {this.actions?.slice(0, 1).map((action) => (
-            <modus-wc-button
-              key={action.id}
-              customClass="modus-wc-tree-action-button"
-              disabled={action.disabled}
-              size={this.size}
-              shape="circle"
-              variant="borderless"
-              onClick={(e) => this.handleActionClick(action, e)}
-            >
-              <modus-wc-icon
-                name={action.icon}
-                size={this.size}
-                customClass="modus-wc-tree-action-icon"
-              ></modus-wc-icon>
-            </modus-wc-button>
-          ))}
+          {this.actions?.slice(0, 1).map(
+            (action) => (
+              console.log('action', action, this.actions),
+              (
+                <modus-wc-button
+                  key={action.id}
+                  customClass="modus-wc-tree-action-button"
+                  disabled={action.disabled === true}
+                  size={this.size}
+                  shape="circle"
+                  variant="borderless"
+                  onClick={(e) => this.handleActionClick(action, e)}
+                >
+                  <modus-wc-icon
+                    name={action.icon}
+                    size={this.size}
+                    customClass="modus-wc-tree-action-icon"
+                  ></modus-wc-icon>
+                </modus-wc-button>
+              )
+            )
+          )}
           {remainingActions.length > 0 && (
             <div class="modus-wc-tree-more-actions-wrapper">
               <modus-wc-button
@@ -345,8 +351,9 @@ export class ModusWcTreeActions {
                   </div>
                 ) : (
                   remainingActions.map((action) => (
-                    <button
+                    <modus-wc-button
                       key={action.id}
+                      variant="borderless"
                       class={`modus-wc-tree-dropdown-action ${action.disabled ? 'disabled' : ''}`}
                       disabled={action.disabled}
                       onClick={(e) => this.handleActionClick(action, e)}
@@ -359,7 +366,7 @@ export class ModusWcTreeActions {
                         customClass="modus-wc-tree-action-icon"
                       ></modus-wc-icon>
                       {action.label}
-                    </button>
+                    </modus-wc-button>
                   ))
                 )}
               </div>

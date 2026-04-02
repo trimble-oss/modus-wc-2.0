@@ -29,6 +29,8 @@ export interface ITreeItemData {
   children?: ITreeItemData[];
   /** Indicates the item has children that can be lazily loaded. When true and getChildren is provided on the content tree, the expand chevron is shown before children are fetched. */
   hasChildren?: boolean;
+  /** If true, shows a loading spinner inside the expanded subtree. Set to true while fetching children, false once data is ready. */
+  lazyLoading?: boolean;
 }
 
 export type TreeViewItemId = string;

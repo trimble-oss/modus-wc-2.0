@@ -8,17 +8,17 @@ modus-wc-tree-actions {
     display: flex;
 
     button.modus-wc-tree-action-button {
-      background: transparent;
-      border: none;
-      color: var(--modus-wc-color-base-content);
-      cursor: pointer;
       visibility: hidden;
 
       &:hover {
         background: transparent;
         color: var(--modus-wc-color-base-content);
       }
-
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: grayscale(100%);
+      }
       &:active,
       &[aria-pressed='true'] {
         background: transparent;

@@ -352,7 +352,7 @@ function handleCreateNew(tree) {
         requestAnimationFrame(() => {
           const treeItems = Array.from(
             contentTree.querySelectorAll('modus-wc-tree-item')
-          ) as ITreeItemElement[];
+          );
           const el = treeItems.find((item) => item.value === id);
 
           if (el) {
@@ -365,7 +365,7 @@ function handleCreateNew(tree) {
     const handleAddNewItem = (event: Event) => {
       const contentTree = (event.currentTarget as HTMLElement)?.closest(
         'modus-wc-content-tree'
-      ) as ContentTreeElement | null;
+      );
 
       if (!contentTree) return;
 
@@ -964,9 +964,7 @@ document
 
     const handleAction = (event: CustomEvent<{ actionId: string }>) => {
       const source = event.target as HTMLElement;
-      const treeItem = source.closest(
-        'modus-wc-tree-item'
-      ) as ITreeItemElement | null;
+      const treeItem = source.closest('modus-wc-tree-item');
       if (!treeItem) return;
 
       const signature = `${event.detail.actionId}:${treeItem.value}:${event.timeStamp}`;
@@ -1415,6 +1413,450 @@ tree.addEventListener('itemExpand', async (event) => {
         .items=${initialItems}
         @itemExpand=${handleItemExpand}
       ></modus-wc-content-tree>
+    `;
+  },
+};
+
+export const WithBuiltInActions: Story = {
+  name: 'With Built-in Actions',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates built-in Add Child, Add Above, Add Below, Duplicate, and Delete actions.
+When the \`items\` prop is used, every node automatically receives default action buttons.
+The tree handles all structural mutations internally and emits \`itemAdded\`, \`itemDeleted\`, or \`itemDuplicated\` so the consumer only needs to handle server persistence.
+If the consumer updates \`items\` (e.g. after server confirmation or rollback), the tree always adopts the new data.
+No \`treeItemActions\` configuration is required -- action buttons appear out of the box.`,
+      },
+    },
+    actions: {
+      handles: ['itemAdded', 'itemDeleted', 'itemDuplicated', 'itemsReordered'],
+    },
+  },
+  render: (args) => {
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'root-1',
+        label: 'Design System',
+        children: [
+          { id: 'child-1', label: 'Components' },
+          { id: 'child-2', label: 'Tokens' },
+        ],
+      },
+      {
+        id: 'root-2',
+        label: 'Documentation',
+        children: [{ id: 'child-3', label: 'Getting Started' }],
+      },
+      { id: 'root-3', label: 'Changelog' },
+    ];
+
+    return html`
+      <div style="width: 320px">
+        <modus-wc-content-tree
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
+export const WithBuiltInActionsAndLazyLoading: Story = {
+  name: 'With Built-in Actions + Lazy Loading',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates lazy loading with built-in actions.
+
+**During lazy loading**, all actions except Delete are disabled on the loading node to prevent data merge conflicts. Once children arrive and the spinner clears, all actions become available again.
+
+The consumer controls the spinner via the \`lazyLoading\` field on \`ITreeItemData\` -- set it to \`true\` when fetching starts, then provide \`children\` and set it to \`false\` once data arrives.
+
+**Two approaches for handling Add Child during lazy loading:**
+
+**Approach A (used here -- safest):** Disable Add Child while loading. User must wait for data to arrive. No merge conflicts possible.
+
+**Approach B (consumer-managed):** Allow Add Child during loading. Consumer must merge optimistic children with server children in the \`itemExpand\` handler using \`...(current.children ?? [])\`. Risk: if the consumer does not merge correctly, optimistic children can be lost.
+
+Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe the disabled actions.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="lazy-actions-tree"></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#lazy-actions-tree');
+
+  const setItem = (items, id, patch) =>
+    items.map(item =>
+      item.id === id
+        ? { ...item, ...patch }
+        : { ...item, children: item.children ? setItem(item.children, id, patch) : undefined }
+    );
+
+  const disabledActions = [
+    { id: 'add-child', icon: 'add', label: 'Add Child', disabled: true },
+    { id: 'add-above', icon: 'arrow_upward', label: 'Add Above', disabled: true },
+    { id: 'add-below', icon: 'arrow_downward', label: 'Add Below', disabled: true },
+    { id: 'duplicate', icon: 'content_copy', label: 'Duplicate', disabled: true },
+    { id: 'delete', icon: 'delete', label: 'Delete' },
+  ];
+
+  tree.items = [
+    { id: 'design', label: 'Design System', children: [
+      { id: 'components', label: 'Components' },
+      { id: 'tokens', label: 'Tokens' },
+    ]},
+    { id: 'projects', label: 'Projects', hasChildren: true },
+    { id: 'resources', label: 'Resources', hasChildren: true },
+  ];
+
+  tree.addEventListener('itemExpand', async (e) => {
+    const id = e.detail;
+    // Show spinner immediately via lazyLoading flag
+    tree.items = setItem(tree.items, id, { lazyLoading: true });
+    // Simulate 2 second server fetch
+    await new Promise(r => setTimeout(r, 2000));
+    // Provide children and clear spinner
+    tree.items = setItem(tree.items, id, {
+      lazyLoading: false,
+      hasChildren: true,
+      children: [
+        { id: id + '-child-1', label: 'Item 1' },
+        { id: id + '-child-2', label: 'Item 2' },
+      ],
+    });
+  });
+
+  const loadedIds = new Set();
+
+  tree.addEventListener('itemExpand', async (e) => {
+    const id = e.detail;
+    const found = tree.items.find(i => i.id === id);
+    if (!found?.hasChildren || loadedIds.has(id)) return;
+    if (found.children?.length) return;
+
+    loadedIds.add(id);
+
+    tree.items = setItem(tree.items, id, {
+      lazyLoading: true,
+      treeItemActions: disabledActions,
+    });
+
+    await new Promise(r => setTimeout(r, 2000));
+
+    tree.items = setItem(tree.items, id, current => ({
+      lazyLoading: false,
+      hasChildren: true,
+      treeItemActions: undefined,
+      children: [
+        ...(current.children ?? []),
+        { id: id + '-server-1', label: 'Server Item 1' },
+        { id: id + '-server-2', label: 'Server Item 2' },
+      ],
+    }));
+  });
+</script>`,
+      },
+    },
+    actions: {
+      handles: ['itemAdded', 'itemDeleted', 'itemDuplicated', 'itemExpand'],
+    },
+  },
+  render: (args) => {
+    const setItem = (
+      items: ITreeItemData[],
+      id: string,
+      patch:
+        | Partial<ITreeItemData>
+        | ((current: ITreeItemData) => Partial<ITreeItemData>)
+    ): ITreeItemData[] =>
+      items.map((item) => {
+        if (item.id === id) {
+          const resolved = typeof patch === 'function' ? patch(item) : patch;
+          return { ...item, ...resolved };
+        }
+        return {
+          ...item,
+          children: item.children
+            ? setItem(item.children, id, patch)
+            : undefined,
+        };
+      });
+
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'design',
+        label: 'Design System',
+        children: [
+          { id: 'components', label: 'Components' },
+          { id: 'tokens', label: 'Tokens' },
+        ],
+      },
+      { id: 'projects', label: 'Projects', hasChildren: true },
+      { id: 'resources', label: 'Resources', hasChildren: true },
+    ];
+
+    const loadedIds = new Set<string>();
+
+    const findItem = (
+      items: ITreeItemData[],
+      id: string
+    ): ITreeItemData | null => {
+      for (const item of items) {
+        if (item.id === id) return item;
+        if (item.children) {
+          const found = findItem(item.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    // Actions with all non-delete actions disabled -- used while a node is loading.
+    const disabledActions = [
+      { id: 'add-child', icon: 'add', label: 'Add Child', disabled: true },
+      {
+        id: 'add-above',
+        icon: 'arrow_upward',
+        label: 'Add Above',
+        disabled: true,
+      },
+      {
+        id: 'add-below',
+        icon: 'arrow_downward',
+        label: 'Add Below',
+        disabled: true,
+      },
+      {
+        id: 'duplicate',
+        icon: 'content_copy',
+        label: 'Duplicate',
+        disabled: true,
+      },
+      { id: 'delete', icon: 'delete', label: 'Delete' },
+    ];
+
+    const handleItemExpand = async (e: CustomEvent<string>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      const id = e.detail;
+
+      const item = findItem(tree.items, id);
+      if (!item?.hasChildren || loadedIds.has(id)) return;
+      if (item.children && item.children.length > 0) return;
+
+      loadedIds.add(id);
+
+      // Show spinner and disable actions while loading
+      tree.items = setItem(tree.items, id, {
+        lazyLoading: true,
+        treeItemActions: disabledActions,
+      });
+
+      await new Promise((r) => setTimeout(r, 2000));
+
+      // Provide children, clear spinner, and restore default actions
+      tree.items = setItem(tree.items, id, (current: ITreeItemData) => ({
+        lazyLoading: false,
+        hasChildren: true,
+        treeItemActions: undefined,
+        children: [
+          ...(current.children ?? []),
+          { id: `${id}-child-1`, label: 'Server Item 1' },
+          { id: `${id}-child-2`, label: 'Server Item 2' },
+        ],
+      }));
+    };
+
+    return html`
+      <div style="width: 320px">
+        <modus-wc-content-tree
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+          @itemExpand=${handleItemExpand}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
+export const LazyLoadingWithActionsEnabled: Story = {
+  name: 'Lazy Loading - Actions Enabled During Load',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates the case where all actions remain enabled while a node is lazy loading.
+The user can add/delete/duplicate nodes while the spinner is showing.
+When server data arrives, the consumer merges the server children with any user-added children so nothing is lost.
+
+The key pattern: \`syncItems\` keeps \`tree.items\` always in sync after every action event.
+When lazy load completes, \`tree.items\` already reflects all user changes, so the merge just appends server data.
+
+This approach gives maximum flexibility at the cost of the consumer handling the merge logic.
+Compare with the "With Built-in Actions + Lazy Loading" story where actions are disabled during loading.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="tree"></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#tree');
+
+  // Patch a single item by id. Accepts a patch object or a function receiving the current item.
+  const setItem = (items, id, patch) =>
+    items.map(item => {
+      if (item.id === id) {
+        const resolved = typeof patch === 'function' ? patch(item) : patch;
+        return { ...item, ...resolved };
+      }
+      return { ...item, children: item.children ? setItem(item.children, id, patch) : undefined };
+    });
+
+  tree.items = [
+    { id: 'design', label: 'Design System', children: [
+      { id: 'components', label: 'Components' },
+      { id: 'tokens', label: 'Tokens' },
+    ]},
+    { id: 'projects', label: 'Projects', hasChildren: true },
+    { id: 'resources', label: 'Resources', hasChildren: true },
+  ];
+
+  const loadedIds = new Set();
+
+  tree.addEventListener('itemExpand', async (e) => {
+    const id = e.detail;
+    const item = tree.items.find(i => i.id === id);
+    if (!item?.hasChildren || loadedIds.has(id)) return;
+    if (item.children?.length) return;
+
+    loadedIds.add(id);
+    tree.items = setItem(tree.items, id, { lazyLoading: true });
+    await new Promise(r => setTimeout(r, 3000));
+
+    // tree.items already reflects all user changes made during loading
+    // because syncItems kept it up to date. Append server data after.
+    tree.items = setItem(tree.items, id, current => ({
+      lazyLoading: false,
+      hasChildren: true,
+      children: [
+        ...(current.children ?? []),
+        { id: id + '-server-1', label: 'Server Item 1' },
+        { id: id + '-server-2', label: 'Server Item 2' },
+      ],
+    }));
+  });
+
+  // Keep tree.items in sync after every action.
+  // This ensures lazy load merge always works off the latest state.
+  const syncItems = (e) => { tree.items = e.detail.items; };
+  tree.addEventListener('itemAdded', syncItems);
+  tree.addEventListener('itemDeleted', syncItems);
+  tree.addEventListener('itemDuplicated', syncItems);
+</script>`,
+      },
+    },
+    actions: {
+      handles: ['itemAdded', 'itemDeleted', 'itemDuplicated', 'itemExpand'],
+    },
+  },
+  render: (args) => {
+    const setItem = (
+      items: ITreeItemData[],
+      id: string,
+      patch:
+        | Partial<ITreeItemData>
+        | ((current: ITreeItemData) => Partial<ITreeItemData>)
+    ): ITreeItemData[] =>
+      items.map((item) => {
+        if (item.id === id) {
+          const resolved = typeof patch === 'function' ? patch(item) : patch;
+          return { ...item, ...resolved };
+        }
+        return {
+          ...item,
+          children: item.children
+            ? setItem(item.children, id, patch)
+            : undefined,
+        };
+      });
+
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'design',
+        label: 'Design System',
+        children: [
+          { id: 'components', label: 'Components' },
+          { id: 'tokens', label: 'Tokens' },
+        ],
+      },
+      { id: 'projects', label: 'Projects', hasChildren: true },
+      { id: 'resources', label: 'Resources', hasChildren: true },
+    ];
+
+    const loadedIds = new Set<string>();
+
+    const findItem = (
+      items: ITreeItemData[],
+      id: string
+    ): ITreeItemData | null => {
+      for (const item of items) {
+        if (item.id === id) return item;
+        if (item.children) {
+          const found = findItem(item.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const handleItemExpand = async (e: CustomEvent<string>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      const id = e.detail;
+
+      const item = findItem(tree.items, id);
+      if (!item?.hasChildren || loadedIds.has(id)) return;
+      if (item.children && item.children.length > 0) return;
+
+      loadedIds.add(id);
+      tree.items = setItem(tree.items, id, { lazyLoading: true });
+      await new Promise((r) => setTimeout(r, 3000));
+
+      // tree.items already reflects any adds/deletes the user did while loading
+      // because itemAdded/Deleted/Duplicated handlers below kept it in sync.
+      // Append server data after the current children.
+      tree.items = setItem(tree.items, id, (current: ITreeItemData) => ({
+        lazyLoading: false,
+        hasChildren: true,
+        children: [
+          ...(current.children ?? []),
+          { id: `${id}-server-1`, label: 'Server Item 1' },
+          { id: `${id}-server-2`, label: 'Server Item 2' },
+        ],
+      }));
+    };
+
+    // Keep tree.items in sync after every action so lazy load merges correctly.
+    const syncItems = (e: CustomEvent<{ items: ITreeItemData[] }>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      tree.items = e.detail.items;
+    };
+
+    return html`
+      <div style="width: 320px">
+        <modus-wc-content-tree
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+          @itemExpand=${handleItemExpand}
+          @itemAdded=${syncItems}
+          @itemDeleted=${syncItems}
+          @itemDuplicated=${syncItems}
+        ></modus-wc-content-tree>
+      </div>
     `;
   },
 };

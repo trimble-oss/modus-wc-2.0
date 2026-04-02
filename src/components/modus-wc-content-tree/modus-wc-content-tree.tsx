@@ -12,6 +12,11 @@ import {
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import {
+  addAboveInTree,
+  addBelowInTree,
+  addChildToTree,
+  deleteFromTree,
+  duplicateInTree,
   getReorderSignature,
   reorderTreeItemsData,
 } from './modus-wc-content-tree.utils';
@@ -65,6 +70,27 @@ export class ModusWcContentTree {
   itemsReordered!: EventEmitter<{
     items: ITreeItemData[];
     parameters: ITreeItemReorderParameters;
+  }>;
+
+  /** Emitted after a built-in add action. UI is already updated; use for server persistence. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemAdded!: EventEmitter<{
+    item: ITreeItemData;
+    targetItemId: string;
+    position: 'child' | 'above' | 'below';
+    items: ITreeItemData[];
+  }>;
+
+  /** Emitted after a built-in delete action. UI is already updated; use for server persistence. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemDeleted!: EventEmitter<{ itemId: string; items: ITreeItemData[] }>;
+
+  /** Emitted after a built-in duplicate action. UI is already updated; use for server persistence. */
+  @StencilEvent({ bubbles: true, composed: true })
+  itemDuplicated!: EventEmitter<{
+    item: ITreeItemData;
+    itemId: string;
+    items: ITreeItemData[];
   }>;
 
   /** Internal state to track the current search value for filtering tree items */
@@ -279,23 +305,165 @@ export class ModusWcContentTree {
     ]);
   }
 
+  @Listen('treeActionClick')
+  handleTreeActionClick(
+    event: CustomEvent<{ actionId: string; actionName: string }>
+  ) {
+    if (!this.hasDataItems) return;
+
+    const { actionId } = event.detail;
+    const builtInIds = [
+      'add-child',
+      'add-above',
+      'add-below',
+      'delete',
+      'duplicate',
+    ];
+    if (!builtInIds.includes(actionId)) return;
+
+    // Resolve which tree item emitted the action
+    const treeItemEl =
+      (event.target as HTMLElement)?.closest?.('modus-wc-tree-item') ??
+      (event.target as HTMLElement)?.parentElement?.closest?.(
+        'modus-wc-tree-item'
+      );
+    const itemId = treeItemEl?.getAttribute('data-key');
+    if (!itemId) return;
+
+    event.stopPropagation();
+
+    const newId = crypto.randomUUID();
+    let nextItems: ITreeItemData[] | null = null;
+
+    if (actionId === 'add-child') {
+      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      nextItems = addChildToTree(this.renderItems!, itemId, newItem);
+      if (nextItems) {
+        this.renderItems = JSON.parse(JSON.stringify(nextItems));
+        this.itemAdded.emit({
+          item: newItem,
+          targetItemId: itemId,
+          position: 'child',
+          items: nextItems,
+        });
+      }
+      return;
+    }
+
+    if (actionId === 'add-above') {
+      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      nextItems = addAboveInTree(this.renderItems!, itemId, newItem);
+      if (nextItems) {
+        this.renderItems = JSON.parse(JSON.stringify(nextItems));
+        this.itemAdded.emit({
+          item: newItem,
+          targetItemId: itemId,
+          position: 'above',
+          items: nextItems,
+        });
+      }
+      return;
+    }
+
+    if (actionId === 'add-below') {
+      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      nextItems = addBelowInTree(this.renderItems!, itemId, newItem);
+      if (nextItems) {
+        this.renderItems = JSON.parse(JSON.stringify(nextItems));
+        this.itemAdded.emit({
+          item: newItem,
+          targetItemId: itemId,
+          position: 'below',
+          items: nextItems,
+        });
+      }
+      return;
+    }
+
+    if (actionId === 'delete') {
+      nextItems = deleteFromTree(this.renderItems!, itemId);
+      this.renderItems = JSON.parse(JSON.stringify(nextItems));
+      if (this.pendingChildrenIds.has(itemId)) {
+        const updated = new Set(this.pendingChildrenIds);
+        updated.delete(itemId);
+        this.pendingChildrenIds = updated;
+      }
+      this.itemDeleted.emit({ itemId, items: nextItems });
+      return;
+    }
+
+    if (actionId === 'duplicate') {
+      nextItems = duplicateInTree(this.renderItems!, itemId);
+      if (nextItems) {
+        // The clone is inserted right after the original; find it by scanning for the first new ID.
+        const originalIds = new Set(this.collectIds(this.renderItems!));
+        const clonedItem = this.findFirstNewItem(nextItems, originalIds);
+        this.renderItems = JSON.parse(JSON.stringify(nextItems));
+        this.itemDuplicated.emit({
+          item: clonedItem ?? { id: '', label: '' },
+          itemId,
+          items: nextItems,
+        });
+      }
+      return;
+    }
+  }
+
+  private collectIds(items: ITreeItemData[]): string[] {
+    const ids: string[] = [];
+    for (const item of items) {
+      ids.push(item.id);
+      if (item.children?.length) {
+        ids.push(...this.collectIds(item.children));
+      }
+    }
+    return ids;
+  }
+
+  private findFirstNewItem(
+    items: ITreeItemData[],
+    knownIds: Set<string>
+  ): ITreeItemData | undefined {
+    for (const item of items) {
+      if (!knownIds.has(item.id)) return item;
+      if (item.children?.length) {
+        const found = this.findFirstNewItem(item.children, knownIds);
+        if (found) return found;
+      }
+    }
+    return undefined;
+  }
+
+  private readonly defaultTreeItemActions = [
+    { id: 'add-child', icon: 'add', label: 'Add Child' },
+    { id: 'add-above', icon: 'arrow_upward', label: 'Add Above' },
+    { id: 'add-below', icon: 'arrow_downward', label: 'Add Below' },
+    { id: 'duplicate', icon: 'content_copy', label: 'Duplicate' },
+    { id: 'delete', icon: 'delete', label: 'Delete' },
+  ];
+
   private renderTreeItems(items: ITreeItemData[]) {
     return items.map((item) => {
       const hasChildren =
         Array.isArray(item.children) && item.children.length > 0;
       const hasSubtree = hasChildren || !!item.hasChildren;
       const isLoading =
-        !hasChildren &&
-        !!item.hasChildren &&
-        this.pendingChildrenIds.has(item.id);
+        item.lazyLoading !== undefined
+          ? item.lazyLoading
+          : !hasChildren &&
+            !!item.hasChildren &&
+            this.pendingChildrenIds.has(item.id);
+
+      const actions = item.treeItemActions ?? this.defaultTreeItemActions;
 
       return (
         <modus-wc-tree-item
+          key={item.id}
           data-key={item.id}
           label={item.label}
           value={item.id}
           checkbox={item.checkbox}
-          treeItemActions={item.treeItemActions}
+          treeItemActions={actions}
           itemsReordering={this.isReorderingEnabled}
           hasSubtree={hasSubtree}
           lazyLoading={isLoading}
