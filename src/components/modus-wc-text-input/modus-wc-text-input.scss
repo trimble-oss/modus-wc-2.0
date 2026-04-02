@@ -8,6 +8,10 @@ modus-wc-text-input .modus-wc-input {
 
   @include feedback-levels;
   @include sizing-tokens;
+
+  & input {
+    background-color: var(--modus-wc-color-base-page);
+  }
 }
 
 modus-wc-text-input {
@@ -18,6 +22,7 @@ modus-wc-text-input {
   // Icon sizes
   .modus-wc-text-input {
     &.modus-wc-input {
+      background-color: var(--modus-wc-color-base-page);
       padding: 0 var(--modus-wc-spacing-sm);
 
       &.modus-wc-input-sm {

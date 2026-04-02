@@ -41,14 +41,10 @@ body {
   scrollbar, leaving a visible empty gutter beside the content. We override it to
   `auto` so the layout reflows naturally and the gutter disappears.
 */
-:root:has(
-    :is(
-      .modus-wc-modal-open,
-      .modus-wc-modal:target,
-      .modus-wc-modal-toggle:checked + .modus-wc-modal,
-      .modus-wc-modal[open]
-    )
-  ) {
+:root:has( :is(.modus-wc-modal-open,
+    .modus-wc-modal:target,
+    .modus-wc-modal-toggle:checked + .modus-wc-modal,
+    .modus-wc-modal[open])) {
   scrollbar-gutter: auto !important;
 }
 
@@ -64,26 +60,25 @@ modus-wc-time-input .modus-wc-time-input,
 modus-wc-date .modus-wc-date {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
   padding: 0 var(--modus-wc-spacing-sm);
 }
 
 modus-wc-select {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 modus-wc-number-input .modus-wc-number-input {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 /* Utility Panel Content Push Classes */
 .modus-wc-utility-panel-push-target {
-  transition: margin-inline-end
-    var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
+  transition: margin-inline-end var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
 }
 
 .modus-wc-utility-panel-push-target.modus-wc-utility-panel-pushed {

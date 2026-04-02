@@ -4,7 +4,7 @@
 }
 
 modus-wc-date .modus-wc-date-input {
-  background-color: inherit;
+  background-color: var(--modus-wc-color-base-page);
 
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
@@ -22,6 +22,10 @@ modus-wc-date {
 
   position: relative;
 
+  &.modus-wc-date-input {
+    background-color: var(--modus-wc-color-base-page);
+  }
+
   .date-input-container {
     align-items: center;
     display: inline-flex;
@@ -33,10 +37,10 @@ modus-wc-date {
       display: flex;
       justify-content: center;
       position: absolute;
-      right: var(--modus-wc-spacing-xs);
+      right: var(--modus-wc-spacing-md);
 
       :hover {
-        color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-primary);
       }
 
       :disabled {
@@ -47,8 +51,8 @@ modus-wc-date {
   }
 
   .calendar-container {
-    background: var(--modus-wc-color-white);
-    border: 1px solid var(--modus-wc-color-gray-4);
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--modus-wc-border-radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     height: 327px;
@@ -64,7 +68,7 @@ modus-wc-date {
     .calendar-header {
       align-items: center;
       background-color: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-white);
+      color: var(--modus-wc-color-base-page);
       display: flex;
       gap: var(--modus-wc-spacing-sm);
       justify-content: center;
@@ -72,12 +76,12 @@ modus-wc-date {
 
       .nav-btn {
         i {
-          color: var(--modus-wc-color-white);
+          color: var(--modus-wc-color-primary-content);
         }
 
         &:hover {
           i {
-            color: var(--modus-wc-color-blue-dark);
+            color: var(--modus-wc-color-primary);
           }
         }
       }
@@ -92,8 +96,8 @@ modus-wc-date {
         }
 
         select option {
-          background-color: var(--modus-wc-color-white);
-          color: var(--modus-wc-color-gray-9);
+          background-color: var(--modus-wc-color-base-page);
+          color: var(--modus-wc-color-base-content);
         }
       }
     }
@@ -163,24 +167,24 @@ modus-wc-date {
           width: 32px;
 
           &:hover {
-            background-color: var(--modus-wc-color-blue-light);
+            background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-white);
           }
 
           &:focus {
-            background-color: var(--modus-wc-color-blue-light);
+            background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-white);
             outline: none;
           }
 
           &.current-day {
-            border: 2px solid var(--modus-wc-color-blue-light);
+            border: 2px solid var(--modus-wc-color-primary);
             outline: none;
           }
 
           &.selected {
-            background-color: var(--modus-wc-color-blue-light);
-            color: var(--modus-wc-color-white);
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-primary-content);
             font-weight: var(--modus-wc-font-weight-semibold);
           }
 
@@ -189,8 +193,8 @@ modus-wc-date {
             opacity: 0.5;
 
             &:hover {
-              background-color: var(--modus-wc-color-gray-2);
-              color: var(--modus-wc-color-gray-6);
+              background-color: var(--modus-wc-color-base-200);
+              color: var(--modus-wc-color-base-content);
             }
           }
 
