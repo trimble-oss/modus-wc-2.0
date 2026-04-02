@@ -90,7 +90,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       var(--modus-wc-color-base-200);
   }
 
-<<<<<<< css-improvements
   &:not(.modus-wc-menu-item-selected) {
     color: var(--modus-wc-color-base-content);
   }
@@ -101,17 +100,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       var(--modus-wc-color-primary-pale) 50%,
       transparent
     );
-=======
-  &:not(.modus-wc-menu-item-active) {
-    color: var(--modus-wc-color-gray-10);
-  }
-
-  &.modus-wc-menu-item-active,
-  &:active:not(.modus-wc-menu-item-disabled):not(
-      :has(.modus-wc-menu-dropdown)
-    ) {
-    background-color: var(--modus-wc-color-blue-pale);
->>>>>>> main
     border-radius: inherit;
     color: var(--modus-wc-color-primary);
 
