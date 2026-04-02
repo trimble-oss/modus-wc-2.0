@@ -22,6 +22,8 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+import { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+import { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -40,6 +42,8 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
+export { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
+export { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
@@ -514,6 +518,27 @@ export namespace Components {
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
         "options"?: ICollapseOptions;
+    }
+    /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Custom CSS class to apply to the component.
+         */
+        "customClass"?: string;
+        /**
+          * If true, displays the action buttons (expand/collapse all, etc.).
+         */
+        "includeActions"?: boolean;
+        /**
+          * If true, displays the search input to filter tree items.
+         */
+        "includeSearch"?: boolean;
+        /**
+          * Placeholder text for the search input.
+         */
+        "searchPlaceholder"?: string;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -2020,6 +2045,87 @@ export namespace Components {
         "tooltipId"?: string;
     }
     /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
+    interface ModusWcTreeActions {
+        /**
+          * List of actions to display
+         */
+        "actions"?: ITreeItemActions[];
+        /**
+          * The size of the action buttons and icons.
+         */
+        "size": DaisySize;
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * The checked state of the tree item when checkbox is enabled.
+         */
+        "checked"?: boolean;
+        /**
+          * Public method to collapse the subtree if it's expanded
+         */
+        "collapseSubTree": () => Promise<void>;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * Public method to expand the subtree if it's collapsed
+         */
+        "expandSubTree": () => Promise<void>;
+        /**
+          * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubtree"?: boolean;
+        /**
+          * The text label displayed for the tree item.
+         */
+        "label": string;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item icons and actions.
+         */
+        "size": DaisySize;
+        /**
+          * Actions to display for this tree item.
+         */
+        "treeItemActions"?: ITreeItemActions1[];
+        /**
+          * The unique identifying value of the tree item.
+         */
+        "value": string;
+    }
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface ModusWcTreeView {
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this list is a nested sublist.
+         */
+        "isSubList"?: boolean;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
      * Note:
      * - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
@@ -2188,6 +2294,14 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcTreeActionsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeActionsElement;
+}
+export interface ModusWcTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeItemElement;
 }
 export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2429,6 +2543,15 @@ declare global {
     var HTMLModusWcCollapseElement: {
         prototype: HTMLModusWcCollapseElement;
         new (): HTMLModusWcCollapseElement;
+    };
+    /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     */
+    interface HTMLModusWcContentTreeElement extends Components.ModusWcContentTree, HTMLStencilElement {
+    }
+    var HTMLModusWcContentTreeElement: {
+        prototype: HTMLModusWcContentTreeElement;
+        new (): HTMLModusWcContentTreeElement;
     };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
@@ -3078,6 +3201,66 @@ declare global {
         prototype: HTMLModusWcTooltipElement;
         new (): HTMLModusWcTooltipElement;
     };
+    interface HTMLModusWcTreeActionsElementEventMap {
+        "dropdownOpened": HTMLElement;
+        "treeActionClick": {
+    actionId: string;
+    actionName: string;
+  };
+    }
+    /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
+    interface HTMLModusWcTreeActionsElement extends Components.ModusWcTreeActions, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeActionsElementEventMap>(type: K, listener: (this: HTMLModusWcTreeActionsElement, ev: ModusWcTreeActionsCustomEvent<HTMLModusWcTreeActionsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeActionsElementEventMap>(type: K, listener: (this: HTMLModusWcTreeActionsElement, ev: ModusWcTreeActionsCustomEvent<HTMLModusWcTreeActionsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeActionsElement: {
+        prototype: HTMLModusWcTreeActionsElement;
+        new (): HTMLModusWcTreeActionsElement;
+    };
+    interface HTMLModusWcTreeItemElementEventMap {
+        "itemSelect": {
+    value: string;
+  };
+        "selectionsChange": {
+    selectedValues: string[];
+  };
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     */
+    interface HTMLModusWcTreeItemElement extends Components.ModusWcTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeItemElement: {
+        prototype: HTMLModusWcTreeItemElement;
+        new (): HTMLModusWcTreeItemElement;
+    };
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface HTMLModusWcTreeViewElement extends Components.ModusWcTreeView, HTMLStencilElement {
+    }
+    var HTMLModusWcTreeViewElement: {
+        prototype: HTMLModusWcTreeViewElement;
+        new (): HTMLModusWcTreeViewElement;
+    };
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
      * Note:
@@ -3124,6 +3307,7 @@ declare global {
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
+        "modus-wc-content-tree": HTMLModusWcContentTreeElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
@@ -3161,6 +3345,9 @@ declare global {
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
+        "modus-wc-tree-actions": HTMLModusWcTreeActionsElement;
+        "modus-wc-tree-item": HTMLModusWcTreeItemElement;
+        "modus-wc-tree-view": HTMLModusWcTreeViewElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
@@ -3698,6 +3885,27 @@ declare namespace LocalJSX {
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
         "options"?: ICollapseOptions;
+    }
+    /**
+     * A customizable content tree component used to display hierarchical data in a tree structure.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Custom CSS class to apply to the component.
+         */
+        "customClass"?: string;
+        /**
+          * If true, displays the action buttons (expand/collapse all, etc.).
+         */
+        "includeActions"?: boolean;
+        /**
+          * If true, displays the search input to filter tree items.
+         */
+        "includeSearch"?: boolean;
+        /**
+          * Placeholder text for the search input.
+         */
+        "searchPlaceholder"?: string;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -5468,6 +5676,102 @@ declare namespace LocalJSX {
         "tooltipId"?: string;
     }
     /**
+     * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+     * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+     */
+    interface ModusWcTreeActions {
+        /**
+          * List of actions to display
+         */
+        "actions"?: ITreeItemActions[];
+        /**
+          * Event emitted when a dropdown is opened
+         */
+        "onDropdownOpened"?: (event: ModusWcTreeActionsCustomEvent<HTMLElement>) => void;
+        /**
+          * Event emitted when an action is clicked
+         */
+        "onTreeActionClick"?: (event: ModusWcTreeActionsCustomEvent<{
+    actionId: string;
+    actionName: string;
+  }>) => void;
+        /**
+          * The size of the action buttons and icons.
+         */
+        "size"?: DaisySize;
+    }
+    /**
+     * A tree item component that represents a single node in a hierarchical tree structure.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * The checked state of the tree item when checkbox is enabled.
+         */
+        "checked"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubtree"?: boolean;
+        /**
+          * The text label displayed for the tree item.
+         */
+        "label": string;
+        /**
+          * Event emitted when a tree item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
+    value: string;
+  }>) => void;
+        /**
+          * Event emitted when checkbox selection changes in multi-select mode.
+         */
+        "onSelectionsChange"?: (event: ModusWcTreeItemCustomEvent<{
+    selectedValues: string[];
+  }>) => void;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item icons and actions.
+         */
+        "size"?: DaisySize;
+        /**
+          * Actions to display for this tree item.
+         */
+        "treeItemActions"?: ITreeItemActions1[];
+        /**
+          * The unique identifying value of the tree item.
+         */
+        "value"?: string;
+    }
+    /**
+     * A wrapper component that provides the ul element for tree items.
+     * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+     */
+    interface ModusWcTreeView {
+        /**
+          * Custom CSS class to apply to the ul element.
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this list is a nested sublist.
+         */
+        "isSubList"?: boolean;
+    }
+    /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
      * Note:
      * - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
@@ -5533,6 +5837,7 @@ declare namespace LocalJSX {
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
+        "modus-wc-content-tree": ModusWcContentTree;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
@@ -5570,6 +5875,9 @@ declare namespace LocalJSX {
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-actions": ModusWcTreeActions;
+        "modus-wc-tree-item": ModusWcTreeItem;
+        "modus-wc-tree-view": ModusWcTreeView;
         "modus-wc-typography": ModusWcTypography;
         "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
@@ -5637,6 +5945,10 @@ declare module "@stencil/core" {
              * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
+            /**
+             * A customizable content tree component used to display hierarchical data in a tree structure.
+             */
+            "modus-wc-content-tree": LocalJSX.ModusWcContentTree & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
@@ -5797,6 +6109,20 @@ declare module "@stencil/core" {
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            /**
+             * ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.
+             * It supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.
+             */
+            "modus-wc-tree-actions": LocalJSX.ModusWcTreeActions & JSXBase.HTMLAttributes<HTMLModusWcTreeActionsElement>;
+            /**
+             * A tree item component that represents a single node in a hierarchical tree structure.
+             */
+            "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
+            /**
+             * A wrapper component that provides the ul element for tree items.
+             * This component uses the modus-wc-menu structure to wrap tree items in a proper list structure.
+             */
+            "modus-wc-tree-view": LocalJSX.ModusWcTreeView & JSXBase.HTMLAttributes<HTMLModusWcTreeViewElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
              * Note:

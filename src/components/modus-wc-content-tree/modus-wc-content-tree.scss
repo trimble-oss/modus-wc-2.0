@@ -1,0 +1,91 @@
+/**
+ * This component uses menu items for the tree structure.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+modus-wc-content-tree {
+  background-color: var(--modus-wc-color-base-page);
+  border: 1px solid var(--modus-wc-color-base-100);
+  display: block;
+  min-width: 290px;
+  width: 100%;
+
+  .modus-wc-content-tree-actions {
+    align-items: center;
+    display: flex;
+    gap: var(--modus-wc-spacing-xs);
+    justify-content: flex-end;
+    padding: var(--modus-wc-spacing-sm);
+    padding-top: var(--modus-wc-spacing-xs);
+
+    button.modus-wc-content-tree-action-button {
+      background-color: transparent;
+
+      &:hover,
+      &:active,
+      &[aria-pressed='true'] {
+        background-color: transparent;
+      }
+    }
+
+    .modus-wc-content-tree-action-icon {
+      color: var(--modus-wc-color-black);
+      cursor: pointer;
+    }
+  }
+
+  .modus-wc-content-tree-content {
+    min-height: 500px;
+  }
+
+  li.modus-wc-tree-item-selected:not(.modus-wc-tree-dropdown-show li) {
+    border-inline-start: 2px solid var(--modus-wc-color-primary);
+  }
+
+  .modus-wc-content-tree-header {
+    padding: var(--modus-wc-spacing-sm);
+  }
+
+  .modus-wc-content-tree-empty {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-md);
+    justify-content: center;
+    min-height: 500px;
+    padding: 1rem;
+
+    .modus-wc-content-tree-empty-icon {
+      color: var(--modus-wc-color-gray-6);
+    }
+
+    .modus-wc-content-tree-empty-text {
+      color: var(--modus-wc-color-gray-6);
+      font-size: var(--modus-wc-font-size-md);
+      text-align: center;
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  modus-wc-content-tree {
+    modus-wc-button
+      .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.modus-wc-content-tree-action-button {
+      color: var(--modus-wc-color-gray-light);
+
+      &:hover,
+      &:active,
+      &[aria-pressed='true'] {
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+
+    .modus-wc-content-tree-actions {
+      .modus-wc-content-tree-action-icon {
+        color: var(--modus-wc-color-gray-light);
+      }
+    }
+  }
+}

@@ -2289,6 +2289,466 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable content tree component used to display hierarchical data in a tree structure.",
+          "name": "ModusWcContentTree",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the component.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "include-actions",
+              "fieldName": "includeActions",
+              "default": "true",
+              "description": "If true, displays the action buttons (expand/collapse all, etc.).",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "include-search",
+              "fieldName": "includeSearch",
+              "default": "true",
+              "description": "If true, displays the search input to filter tree items.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "search-placeholder",
+              "fieldName": "searchPlaceholder",
+              "default": "'Search...'",
+              "description": "Placeholder text for the search input.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-content-tree",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcContentTree",
+          "declaration": {
+            "name": "ModusWcContentTree",
+            "module": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-content-tree",
+          "declaration": {
+            "name": "ModusWcContentTree",
+            "module": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "ModusWcTreeActions is a component that renders action buttons for tree items in the Modus content tree.\r\nIt supports displaying a primary action and grouping additional actions in a dropdown menu if there are more than two actions.",
+          "name": "ModusWcTreeActions",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleOtherDropdownOpened",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<HTMLElement>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isDropdownOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state for dropdown visibility"
+            },
+            {
+              "kind": "method",
+              "name": "onActionsChange"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "actions",
+              "fieldName": "actions",
+              "description": "List of actions to display",
+              "type": {
+                "text": "ITreeItemActions[]"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'xs'",
+              "description": "The size of the action buttons and icons.",
+              "type": {
+                "text": "DaisySize"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-actions",
+          "events": [
+            {
+              "kind": "field",
+              "name": "dropdownOpened",
+              "type": {
+                "text": "EventEmitter<HTMLElement>"
+              },
+              "description": "Event emitted when a dropdown is opened"
+            },
+            {
+              "kind": "field",
+              "name": "treeActionClick",
+              "type": {
+                "text": "EventEmitter<{\r\n    actionId: string;\r\n    actionName: string;\r\n  }>"
+              },
+              "description": "Event emitted when an action is clicked"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-actions",
+          "declaration": {
+            "name": "ModusWcTreeActions",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A tree item component that represents a single node in a hierarchical tree structure.",
+          "name": "ModusWcTreeItem",
+          "members": [
+            {
+              "kind": "method",
+              "name": "collapseSubTree",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the subtree if it's expanded"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "expandSubTree",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to expand the subtree if it's collapsed"
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if subtree is expanded"
+            },
+            {
+              "kind": "field",
+              "name": "isIndeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if checkbox is in indeterminate state"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "default": "false",
+              "description": "If true, renders a checkbox at the start of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "checked",
+              "fieldName": "checked",
+              "description": "The checked state of the tree item when checkbox is enabled.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the li element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "The disabled state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-subtree",
+              "fieldName": "hasSubtree",
+              "description": "Whether this tree item has a collapsible subtree. When true, the item will show a caret and handle toggle behavior.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "description": "The text label displayed for the tree item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "selected",
+              "fieldName": "selected",
+              "description": "The selected state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'xs'",
+              "description": "The size of the tree item icons and actions.",
+              "type": {
+                "text": "DaisySize"
+              }
+            },
+            {
+              "name": "tree-item-actions",
+              "fieldName": "treeItemActions",
+              "description": "Actions to display for this tree item.",
+              "type": {
+                "text": "ITreeItemActions[]"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "''",
+              "description": "The unique identifying value of the tree item.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-item",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<{\r\n    value: string;\r\n  }>"
+              },
+              "description": "Event emitted when a tree item is selected."
+            },
+            {
+              "kind": "field",
+              "name": "selectionsChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedValues: string[];\r\n  }>"
+              },
+              "description": "Event emitted when checkbox selection changes in multi-select mode."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeItem",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-item",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A wrapper component that provides the ul element for tree items.\r\nThis component uses the modus-wc-menu structure to wrap tree items in a proper list structure.",
+          "name": "ModusWcTreeView",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent<{ value: string }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the ul element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-list",
+              "fieldName": "isSubList",
+              "default": "false",
+              "description": "Indicates that this list is a nested sublist.",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-view",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeView",
+          "declaration": {
+            "name": "ModusWcTreeView",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-view",
+          "declaration": {
+            "name": "ModusWcTreeView",
+            "module": "src/components/modus-wc-content-tree/modus-wc-tree-view/modus-wc-tree-view.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-date/modus-wc-date.tsx",
       "declarations": [
         {
