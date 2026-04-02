@@ -1,0 +1,94 @@
+{
+  "description": "A customizable tooltip component used to create tooltips with different content. The tooltip can be dismissed by pressing the Escape key when hovering over it. When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
+  "properties": [
+    {
+      "name": "content",
+      "type": "string",
+      "description": "The text content of the tooltip.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables displaying the tooltip on hover",
+      "default": "false",
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "forceOpen",
+      "type": "boolean",
+      "description": "Use this attribute to force the tooltip to remain open.",
+      "default": null,
+      "mutable": false,
+      "end_line": 45
+    },
+    {
+      "name": "tooltipId",
+      "type": "string",
+      "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements.",
+      "default": null,
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "position",
+      "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+      "description": "The position that the tooltip will render in relation to the element.",
+      "default": "'auto'",
+      "mutable": false,
+      "end_line": 51
+    }
+  ],
+  "events": [
+    {
+      "name": "dismissEscape",
+      "detail": "void",
+      "description": "An event that fires when the tooltip is dismissed via Escape key",
+      "end_line": 194
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>",
+    "variations": [],
+    "args": {
+      "content": "'Tooltip content'",
+      "position": "'auto'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "dismissEscape"
+    ]
+  },
+  "tag": "modus-wc-tooltip",
+  "storyExample": {
+    "template": "<modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>",
+    "args": {
+      "content": "'Tooltip content'",
+      "position": "'auto'"
+    },
+    "argTypes": {},
+    "events": [
+      "dismissEscape"
+    ],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface TooltipArgs {\n  content?: string;\n  'custom-class'?: string;\n  disabled?: boolean;\n  'force-open'?: boolean;\n  'tooltip-id'?: string;\n  position: 'auto' | 'top' | 'right' | 'bottom' | 'left';\n}\n\nconst meta: Meta<TooltipArgs> = {\n  title: 'Components/Tooltip',\n  component: 'modus-wc-tooltip',\n  args: {\n    content: 'Tooltip content',\n    position: 'auto',\n  },\n  argTypes: {\n    position: {\n      control: { type: 'select' },\n      options: ['auto', 'top', 'right', 'left', 'bottom'],\n    },\n  },\n  parameters: {\n    docs: {\n      description: {\n        component: `\nA customizable tooltip component used to create tooltips with different content.\n\\nThe component supports a \\`<slot>\\` for injecting custom tooltip content.\n\n### Features\n- **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key\n- **Auto-positioning**: Automatically positions the tooltip to avoid viewport edges\n- **Customizable**: Supports custom CSS classes and positioning\n\n### Keyboard Interaction\n- Press **Escape** to dismiss the tooltip while it's visible\n- The tooltip will automatically re-enable on mouse enter\n        `,\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TooltipArgs>;\n\nconst Template: Story = {\n  parameters: {\n    actions: {\n      handles: ['dismissEscape'],\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n      <modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 tooltip positioning was handled by Popper.js. In 2.0, positioning is handled using CSS.\n  - The \\`text\\` prop has been renamed to \\`content\\`.\n\n#### Prop Mapping\n\n| 1.0 Prop    | 2.0 Prop    | Notes                                    |\n|-------------|-------------|------------------------------------------|\n| aria-label  | aria-label  |                                          |\n| disabled    | disabled    |                                          |\n| position    | position    | Added \\`auto\\` option as default value   |\n| text        | content     |                                          |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

@@ -5788,7 +5788,7 @@ describe('modus-wc-autocomplete', () => {
       .mockImplementation((selector: string) => {
         if (
           selector === '.modus-wc-menu-item-focused' ||
-          selector === '.modus-wc-menu-item-selected'
+          selector === '.modus-wc-menu-item-active'
         ) {
           return {
             scrollIntoView: mockScrollIntoView,
@@ -5871,7 +5871,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === '.modus-wc-menu-item-selected') {
+        if (selector === '.modus-wc-menu-item-active') {
           return {
             scrollIntoView: mockScrollIntoView,
           } as unknown as Element;
@@ -5933,7 +5933,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === '.modus-wc-menu-item-selected') {
+        if (selector === '.modus-wc-menu-item-active') {
           return {
             scrollIntoView: mockScrollIntoView,
           } as unknown as Element;
@@ -6025,7 +6025,7 @@ describe('modus-wc-autocomplete', () => {
     menuEl.classList.add('modus-wc-menu');
 
     const targetItem = document.createElement('div');
-    targetItem.classList.add('modus-wc-menu-item-selected');
+    targetItem.classList.add('modus-wc-menu-item-active');
 
     (menuEl as HTMLElement).getBoundingClientRect = () =>
       ({
@@ -6068,7 +6068,7 @@ describe('modus-wc-autocomplete', () => {
     jest.spyOn(menuEl, 'querySelector').mockImplementation(function (
       selector: string
     ) {
-      if (selector === '.modus-wc-menu-item-selected') return targetItem;
+      if (selector === '.modus-wc-menu-item-active') return targetItem;
       if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
       return null;
     });
@@ -6309,6 +6309,15 @@ it('should update menuItem.selected to false when removing a chip', async () => 
   expect(autocomplete.items[2].selected).toBe(false); // item3 should remain not selected
 
   expect(autocomplete['selectionOrder']).toEqual(['item2']);
+});
+
+it('should set autocomplete attribute on input when autoComplete prop is provided', async () => {
+  const page = await newSpecPage({
+    components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
+    html: '<modus-wc-autocomplete aria-label="Autocomplete test" auto-complete="off"></modus-wc-autocomplete>',
+  });
+  const input = page.root!.querySelector('input');
+  expect(input?.getAttribute('autocomplete')).toBe('off');
 });
 
 describe('feedback prop', () => {
