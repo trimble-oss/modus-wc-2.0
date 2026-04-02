@@ -14,11 +14,13 @@ modus-wc-tree-actions {
         background: transparent;
         color: var(--modus-wc-color-base-content);
       }
+
       &:disabled {
-        opacity: 0.5;
         cursor: not-allowed;
         filter: grayscale(100%);
+        opacity: 0.5;
       }
+
       &:active,
       &[aria-pressed='true'] {
         background: transparent;
