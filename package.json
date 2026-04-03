@@ -83,6 +83,7 @@
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.15",
     "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
+    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.3",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
