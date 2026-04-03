@@ -2258,6 +2258,88 @@ Note: "Add Above" is intentionally omitted from the action list here to demonstr
   },
 };
 
+export const WithCheckboxAndDelete: Story = {
+  name: 'Data-Driven Checkbox + Bulk Delete',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates data-driven tree with checkboxes on every node.
+When one or more items are checked, a Delete button appears in the toolbar.
+Clicking it deletes all checked items and emits \`itemDeleted\` with the updated \`items\` array.
+The consumer sets \`tree.items = e.detail.items\` to apply the change.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="tree" include-actions></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#tree');
+  tree.items = [
+    { id: 'docs', label: 'Documents', checkbox: true, children: [
+      { id: 'reports', label: 'Reports', checkbox: true },
+      { id: 'presentations', label: 'Presentations', checkbox: true },
+    ]},
+    { id: 'projects', label: 'Projects', checkbox: true, children: [
+      { id: 'alpha', label: 'Project Alpha', checkbox: true },
+      { id: 'beta', label: 'Project Beta', checkbox: true },
+    ]},
+    { id: 'archive', label: 'Archive', checkbox: true },
+  ];
+
+  const applyUpdate = (e) => { tree.items = e.detail.items; };
+  tree.addEventListener('itemAdded', applyUpdate);
+  tree.addEventListener('itemDeleted', applyUpdate);
+  tree.addEventListener('itemDuplicated', applyUpdate);
+</script>`,
+      },
+    },
+    actions: {
+      handles: ['itemAdded', 'itemDeleted', 'itemDuplicated'],
+    },
+  },
+  render: (args) => {
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'docs',
+        label: 'Documents',
+        checkbox: true,
+        children: [
+          { id: 'reports', label: 'Reports', checkbox: true },
+          { id: 'presentations', label: 'Presentations', checkbox: true },
+        ],
+      },
+      {
+        id: 'projects',
+        label: 'Projects',
+        checkbox: true,
+        children: [
+          { id: 'alpha', label: 'Project Alpha', checkbox: true },
+          { id: 'beta', label: 'Project Beta', checkbox: true },
+        ],
+      },
+      { id: 'archive', label: 'Archive', checkbox: true },
+    ];
+
+    const applyUpdate = (e: CustomEvent<{ items: ITreeItemData[] }>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      tree.items = e.detail.items;
+    };
+
+    return html`
+      <div style="width: 320px">
+        <modus-wc-content-tree
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+          @itemAdded=${applyUpdate}
+          @itemDeleted=${applyUpdate}
+          @itemDuplicated=${applyUpdate}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
 export const WithMixedActions: Story = {
   name: 'Mixed Built-in + Custom Actions',
   parameters: {

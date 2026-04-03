@@ -31,6 +31,8 @@ export interface ITreeItemData {
   hasChildren?: boolean;
   /** If true, shows a loading spinner inside the expanded subtree. Set to true while fetching children, false once data is ready. */
   lazyLoading?: boolean;
+  /** If true, the item label starts in inline edit mode. */
+  inlineLabelEdit?: boolean;
 }
 
 export type TreeViewItemId = string;
@@ -291,6 +293,13 @@ export class ModusWcTreeItem {
 
   private handleInlineLabelInteraction = (event: Event) => {
     event.stopPropagation();
+    if (
+      event instanceof KeyboardEvent &&
+      (event.key === 'Enter' || event.key === 'Escape')
+    ) {
+      this.inlineLabelEdit = false;
+      this.itemLabelChange.emit(this.label);
+    }
   };
 
   private handleInlineLabelBlur = (event: CustomEvent<FocusEvent>) => {

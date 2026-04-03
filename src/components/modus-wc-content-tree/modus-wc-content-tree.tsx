@@ -66,6 +66,9 @@ export class ModusWcContentTree {
   /** Internal tree data used for rendering and local reorder updates. */
   @State() private renderItems?: ITreeItemData[];
 
+  /** Tracks checked item IDs when checkbox mode is active. */
+  @State() private checkedItemIds: string[] = [];
+
   /** Emits reordered data for controlled updates/backend sync. */
   @StencilEvent({ bubbles: true, composed: true })
   itemsReordered!: EventEmitter<{
@@ -306,6 +309,11 @@ export class ModusWcContentTree {
     ]);
   }
 
+  @Listen('selectionsChange')
+  handleSelectionsChange(event: CustomEvent<{ selectedValues: string[] }>) {
+    this.checkedItemIds = event.detail.selectedValues;
+  }
+
   @Listen('treeActionClick')
   handleTreeActionClick(
     event: CustomEvent<{ actionId: string; actionName: string }>
@@ -337,7 +345,11 @@ export class ModusWcContentTree {
     let nextItems: ITreeItemData[] | null = null;
 
     if (actionId === 'add-child') {
-      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      const newItem: ITreeItemData = {
+        id: newId,
+        label: 'New Item',
+        inlineLabelEdit: true,
+      };
       nextItems = addChildToTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
         this.itemAdded.emit({
@@ -351,7 +363,11 @@ export class ModusWcContentTree {
     }
 
     if (actionId === 'add-above') {
-      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      const newItem: ITreeItemData = {
+        id: newId,
+        label: 'New Item',
+        inlineLabelEdit: true,
+      };
       nextItems = addAboveInTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
         this.itemAdded.emit({
@@ -365,7 +381,11 @@ export class ModusWcContentTree {
     }
 
     if (actionId === 'add-below') {
-      const newItem: ITreeItemData = { id: newId, label: 'New Item' };
+      const newItem: ITreeItemData = {
+        id: newId,
+        label: 'New Item',
+        inlineLabelEdit: true,
+      };
       nextItems = addBelowInTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
         this.itemAdded.emit({
@@ -497,6 +517,24 @@ export class ModusWcContentTree {
     return Promise.resolve(duplicateInTree(this.renderItems, itemId));
   }
 
+  private handleCheckedDelete = () => {
+    if (!this.checkedItemIds.length) return;
+    const deletedIds = [...this.checkedItemIds];
+    this.checkedItemIds = [];
+
+    if (this.renderItems) {
+      let next = this.renderItems;
+      for (const id of deletedIds) {
+        next = deleteFromTree(next, id);
+      }
+      this.itemDeleted.emit({ itemId: deletedIds.join(','), items: next });
+    } else {
+      for (const id of deletedIds) {
+        this.el.querySelector(`modus-wc-tree-item[value="${id}"]`)?.remove();
+      }
+    }
+  };
+
   private readonly defaultTreeItemActions = [
     { id: 'add-child', icon: 'add', label: 'Add Child' },
     { id: 'add-above', icon: 'arrow_upward', label: 'Add Above' },
@@ -530,6 +568,7 @@ export class ModusWcContentTree {
           itemsReordering={this.isReorderingEnabled}
           hasSubtree={hasSubtree}
           lazyLoading={isLoading}
+          inlineLabelEdit={item.inlineLabelEdit}
         >
           {item.startIcon && (
             <modus-wc-icon
@@ -571,6 +610,24 @@ export class ModusWcContentTree {
             )}
             {this.includeActions && (
               <div class="modus-wc-content-tree-actions">
+                {this.checkedItemIds.length > 0 && (
+                  <modus-wc-button
+                    customClass="modus-wc-content-tree-action-button"
+                    variant="borderless"
+                    size="sm"
+                    shape="circle"
+                    color="danger"
+                    onButtonClick={this.handleCheckedDelete}
+                    aria-label={`Delete ${this.checkedItemIds.length} selected item${this.checkedItemIds.length > 1 ? 's' : ''}`}
+                  >
+                    <modus-wc-icon
+                      customClass="modus-wc-content-tree-action-icon"
+                      decorative={true}
+                      name="delete"
+                      size="sm"
+                    ></modus-wc-icon>
+                  </modus-wc-button>
+                )}
                 <modus-wc-button
                   customClass="modus-wc-content-tree-action-button"
                   variant="borderless"
