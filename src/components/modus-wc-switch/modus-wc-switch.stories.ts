@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { ModusSize } from '../types';
+import { DaisySize } from '../types';
 
 interface SwitchArgs {
   'custom-class'?: string;
@@ -14,7 +14,7 @@ interface SwitchArgs {
   label?: string;
   name?: string;
   required?: boolean;
-  size?: ModusSize;
+  size?: DaisySize;
   value: boolean;
 }
 
@@ -34,7 +34,7 @@ const meta: Meta<SwitchArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
   },
   decorators: [withActions],
