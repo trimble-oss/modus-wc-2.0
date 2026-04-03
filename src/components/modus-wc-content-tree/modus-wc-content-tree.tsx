@@ -5,6 +5,7 @@ import {
   h,
   Host,
   Listen,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -339,7 +340,6 @@ export class ModusWcContentTree {
       const newItem: ITreeItemData = { id: newId, label: 'New Item' };
       nextItems = addChildToTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
-        this.renderItems = JSON.parse(JSON.stringify(nextItems));
         this.itemAdded.emit({
           item: newItem,
           targetItemId: itemId,
@@ -354,7 +354,6 @@ export class ModusWcContentTree {
       const newItem: ITreeItemData = { id: newId, label: 'New Item' };
       nextItems = addAboveInTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
-        this.renderItems = JSON.parse(JSON.stringify(nextItems));
         this.itemAdded.emit({
           item: newItem,
           targetItemId: itemId,
@@ -369,7 +368,6 @@ export class ModusWcContentTree {
       const newItem: ITreeItemData = { id: newId, label: 'New Item' };
       nextItems = addBelowInTree(this.renderItems!, itemId, newItem);
       if (nextItems) {
-        this.renderItems = JSON.parse(JSON.stringify(nextItems));
         this.itemAdded.emit({
           item: newItem,
           targetItemId: itemId,
@@ -382,7 +380,6 @@ export class ModusWcContentTree {
 
     if (actionId === 'delete') {
       nextItems = deleteFromTree(this.renderItems!, itemId);
-      this.renderItems = JSON.parse(JSON.stringify(nextItems));
       if (this.pendingChildrenIds.has(itemId)) {
         const updated = new Set(this.pendingChildrenIds);
         updated.delete(itemId);
@@ -395,10 +392,8 @@ export class ModusWcContentTree {
     if (actionId === 'duplicate') {
       nextItems = duplicateInTree(this.renderItems!, itemId);
       if (nextItems) {
-        // The clone is inserted right after the original; find it by scanning for the first new ID.
         const originalIds = new Set(this.collectIds(this.renderItems!));
         const clonedItem = this.findFirstNewItem(nextItems, originalIds);
-        this.renderItems = JSON.parse(JSON.stringify(nextItems));
         this.itemDuplicated.emit({
           item: clonedItem ?? { id: '', label: '' },
           itemId,
@@ -432,6 +427,74 @@ export class ModusWcContentTree {
       }
     }
     return undefined;
+  }
+
+  /**
+   * Public method to add a new item as a child of the specified parent.
+   * Returns the updated items array without mutating the component state.
+   * Set tree.items = result to apply the change.
+   */
+  @Method()
+  addChild(
+    parentId: string,
+    newItem: ITreeItemData
+  ): Promise<ITreeItemData[] | null> {
+    if (!this.renderItems) return Promise.resolve(null);
+    return Promise.resolve(addChildToTree(this.renderItems, parentId, newItem));
+  }
+
+  /**
+   * Public method to add a new item above the specified sibling.
+   * Returns the updated items array without mutating the component state.
+   * Set tree.items = result to apply the change.
+   */
+  @Method()
+  addAbove(
+    siblingId: string,
+    newItem: ITreeItemData
+  ): Promise<ITreeItemData[] | null> {
+    if (!this.renderItems) return Promise.resolve(null);
+    return Promise.resolve(
+      addAboveInTree(this.renderItems, siblingId, newItem)
+    );
+  }
+
+  /**
+   * Public method to add a new item below the specified sibling.
+   * Returns the updated items array without mutating the component state.
+   * Set tree.items = result to apply the change.
+   */
+  @Method()
+  addBelow(
+    siblingId: string,
+    newItem: ITreeItemData
+  ): Promise<ITreeItemData[] | null> {
+    if (!this.renderItems) return Promise.resolve(null);
+    return Promise.resolve(
+      addBelowInTree(this.renderItems, siblingId, newItem)
+    );
+  }
+
+  /**
+   * Public method to delete an item from the tree by its id.
+   * Returns the updated items array without mutating the component state.
+   * Set tree.items = result to apply the change.
+   */
+  @Method()
+  deleteItem(itemId: string): Promise<ITreeItemData[]> {
+    if (!this.renderItems) return Promise.resolve([]);
+    return Promise.resolve(deleteFromTree(this.renderItems, itemId));
+  }
+
+  /**
+   * Public method to duplicate an item in the tree by its id.
+   * Returns the updated items array without mutating the component state.
+   * Set tree.items = result to apply the change.
+   */
+  @Method()
+  duplicateItem(itemId: string): Promise<ITreeItemData[] | null> {
+    if (!this.renderItems) return Promise.resolve(null);
+    return Promise.resolve(duplicateInTree(this.renderItems, itemId));
   }
 
   private readonly defaultTreeItemActions = [

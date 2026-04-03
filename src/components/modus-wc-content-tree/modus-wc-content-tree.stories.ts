@@ -1424,9 +1424,33 @@ export const WithBuiltInActions: Story = {
       description: {
         story: `Demonstrates built-in Add Child, Add Above, Add Below, Duplicate, and Delete actions.
 When the \`items\` prop is used, every node automatically receives default action buttons.
-The tree handles all structural mutations internally and emits \`itemAdded\`, \`itemDeleted\`, or \`itemDuplicated\` so the consumer only needs to handle server persistence.
-If the consumer updates \`items\` (e.g. after server confirmation or rollback), the tree always adopts the new data.
+The tree emits \`itemAdded\`, \`itemDeleted\`, or \`itemDuplicated\` with the proposed new \`items\` array.
+The consumer updates \`tree.items\` to apply the change -- this is the single source of truth.
 No \`treeItemActions\` configuration is required -- action buttons appear out of the box.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="tree"></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#tree');
+
+  tree.items = [
+    { id: 'root-1', label: 'Design System', children: [
+      { id: 'child-1', label: 'Components' },
+      { id: 'child-2', label: 'Tokens' },
+    ]},
+    { id: 'root-2', label: 'Documentation', children: [
+      { id: 'child-3', label: 'Getting Started' },
+    ]},
+    { id: 'root-3', label: 'Changelog' },
+  ];
+
+  // Single source of truth: update tree.items from event payload.
+  const applyUpdate = (e) => { tree.items = e.detail.items; };
+  tree.addEventListener('itemAdded', applyUpdate);
+  tree.addEventListener('itemDeleted', applyUpdate);
+  tree.addEventListener('itemDuplicated', applyUpdate);
+</script>`,
       },
     },
     actions: {
@@ -1451,6 +1475,11 @@ No \`treeItemActions\` configuration is required -- action buttons appear out of
       { id: 'root-3', label: 'Changelog' },
     ];
 
+    const applyUpdate = (e: CustomEvent<{ items: ITreeItemData[] }>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      tree.items = e.detail.items;
+    };
+
     return html`
       <div style="width: 320px">
         <modus-wc-content-tree
@@ -1458,6 +1487,9 @@ No \`treeItemActions\` configuration is required -- action buttons appear out of
           .includeSearch=${args['include-search']}
           .includeActions=${true}
           .items=${initialItems}
+          @itemAdded=${applyUpdate}
+          @itemDeleted=${applyUpdate}
+          @itemDuplicated=${applyUpdate}
         ></modus-wc-content-tree>
       </div>
     `;
@@ -1469,17 +1501,13 @@ export const WithBuiltInActionsAndLazyLoading: Story = {
   parameters: {
     docs: {
       description: {
-        story: `Demonstrates lazy loading with built-in actions.
+        story: `Demonstrates lazy loading with built-in actions using a controlled pattern.
 
-**During lazy loading**, all actions except Delete are disabled on the loading node to prevent data merge conflicts. Once children arrive and the spinner clears, all actions become available again.
+**During lazy loading**, the consumer disables actions on the loading node via \`treeItemActions\` to prevent data merge conflicts. Once children arrive and the spinner clears, actions are re-enabled.
 
 The consumer controls the spinner via the \`lazyLoading\` field on \`ITreeItemData\` -- set it to \`true\` when fetching starts, then provide \`children\` and set it to \`false\` once data arrives.
 
-**Two approaches for handling Add Child during lazy loading:**
-
-**Approach A (used here -- safest):** Disable Add Child while loading. User must wait for data to arrive. No merge conflicts possible.
-
-**Approach B (consumer-managed):** Allow Add Child during loading. Consumer must merge optimistic children with server children in the \`itemExpand\` handler using \`...(current.children ?? [])\`. Risk: if the consumer does not merge correctly, optimistic children can be lost.
+The consumer owns all state: every \`itemAdded\`, \`itemDeleted\`, or \`itemDuplicated\` event is applied by setting \`tree.items = e.detail.items\`.
 
 Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe the disabled actions.`,
       },
@@ -1513,23 +1541,6 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
     { id: 'resources', label: 'Resources', hasChildren: true },
   ];
 
-  tree.addEventListener('itemExpand', async (e) => {
-    const id = e.detail;
-    // Show spinner immediately via lazyLoading flag
-    tree.items = setItem(tree.items, id, { lazyLoading: true });
-    // Simulate 2 second server fetch
-    await new Promise(r => setTimeout(r, 2000));
-    // Provide children and clear spinner
-    tree.items = setItem(tree.items, id, {
-      lazyLoading: false,
-      hasChildren: true,
-      children: [
-        { id: id + '-child-1', label: 'Item 1' },
-        { id: id + '-child-2', label: 'Item 2' },
-      ],
-    });
-  });
-
   const loadedIds = new Set();
 
   tree.addEventListener('itemExpand', async (e) => {
@@ -1558,6 +1569,12 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
       ],
     }));
   });
+
+  // Consumer owns the state: apply every action by updating tree.items.
+  const applyUpdate = (e) => { tree.items = e.detail.items; };
+  tree.addEventListener('itemAdded', applyUpdate);
+  tree.addEventListener('itemDeleted', applyUpdate);
+  tree.addEventListener('itemDuplicated', applyUpdate);
 </script>`,
       },
     },
@@ -1649,7 +1666,6 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
 
       loadedIds.add(id);
 
-      // Show spinner and disable actions while loading
       tree.items = setItem(tree.items, id, {
         lazyLoading: true,
         treeItemActions: disabledActions,
@@ -1657,7 +1673,6 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
 
       await new Promise((r) => setTimeout(r, 2000));
 
-      // Provide children, clear spinner, and restore default actions
       tree.items = setItem(tree.items, id, (current: ITreeItemData) => ({
         lazyLoading: false,
         hasChildren: true,
@@ -1670,6 +1685,11 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
       }));
     };
 
+    const applyUpdate = (e: CustomEvent<{ items: ITreeItemData[] }>) => {
+      const tree = e.currentTarget as HTMLElement & { items: ITreeItemData[] };
+      tree.items = e.detail.items;
+    };
+
     return html`
       <div style="width: 320px">
         <modus-wc-content-tree
@@ -1678,6 +1698,9 @@ Expand "Projects" or "Resources" to trigger the 2-second lazy load, then observe
           .includeActions=${true}
           .items=${initialItems}
           @itemExpand=${handleItemExpand}
+          @itemAdded=${applyUpdate}
+          @itemDeleted=${applyUpdate}
+          @itemDuplicated=${applyUpdate}
         ></modus-wc-content-tree>
       </div>
     `;
@@ -1693,7 +1716,7 @@ export const LazyLoadingWithActionsEnabled: Story = {
 The user can add/delete/duplicate nodes while the spinner is showing.
 When server data arrives, the consumer merges the server children with any user-added children so nothing is lost.
 
-The key pattern: \`syncItems\` keeps \`tree.items\` always in sync after every action event.
+The consumer owns all state via \`tree.items\`. Every \`itemAdded\`, \`itemDeleted\`, or \`itemDuplicated\` event is applied by setting \`tree.items = e.detail.items\`.
 When lazy load completes, \`tree.items\` already reflects all user changes, so the merge just appends server data.
 
 This approach gives maximum flexibility at the cost of the consumer handling the merge logic.
@@ -1861,6 +1884,484 @@ Compare with the "With Built-in Actions + Lazy Loading" story where actions are 
   },
 };
 
+export const WithManualActions: Story = {
+  name: 'Manual Control via @Method()',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates the "State Manager pattern" where the consumer has full control.
+
+\`includeActions\` is set to \`false\` -- no built-in action buttons render on tree nodes.
+The consumer provides their own external toolbar and calls the element's public \`@Method()\` utilities
+to compute a new items array, then sets \`tree.items\` to apply the change.
+
+Available methods on the element:
+- \`tree.addChild(parentId, newItem)\` — adds a new child under the given parent
+- \`tree.addAbove(siblingId, newItem)\` — inserts a new item above the given sibling
+- \`tree.addBelow(siblingId, newItem)\` — inserts a new item below the given sibling
+- \`tree.deleteItem(itemId)\` — removes the item from the tree
+- \`tree.duplicateItem(itemId)\` — clones the item (and all its children) after itself
+
+All methods return a \`Promise<ITreeItemData[] | null>\` with the proposed new items array.
+The consumer decides whether to apply it by setting \`tree.items = result\`.`,
+      },
+      source: {
+        code: `
+<div style="display: flex; flex-direction: column; gap: 8px; width: 320px">
+  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+    <modus-wc-button id="btn-add-child">Add Child</modus-wc-button>
+    <modus-wc-button id="btn-add-above">Add Above</modus-wc-button>
+    <modus-wc-button id="btn-add-below">Add Below</modus-wc-button>
+    <modus-wc-button id="btn-duplicate">Duplicate</modus-wc-button>
+    <modus-wc-button id="btn-delete">Delete</modus-wc-button>
+  </div>
+  <modus-wc-content-tree id="tree" include-actions="false"></modus-wc-content-tree>
+</div>
+<script>
+  const tree = document.querySelector('#tree');
+  let selectedId = null;
+
+  tree.items = [
+    { id: 'root-1', label: 'Design System', children: [
+      { id: 'child-1', label: 'Components' },
+      { id: 'child-2', label: 'Tokens' },
+    ]},
+    { id: 'root-2', label: 'Documentation' },
+    { id: 'root-3', label: 'Changelog' },
+  ];
+
+  tree.addEventListener('itemSelect', (e) => {
+    selectedId = e.detail.value;
+  });
+
+  document.querySelector('#btn-add-child').addEventListener('click', async () => {
+    if (!selectedId) return;
+    const newItems = await tree.addChild(selectedId, { id: crypto.randomUUID(), label: 'New Child' });
+    if (newItems) tree.items = newItems;
+  });
+
+  document.querySelector('#btn-add-above').addEventListener('click', async () => {
+    if (!selectedId) return;
+    const newItems = await tree.addAbove(selectedId, { id: crypto.randomUUID(), label: 'New Item' });
+    if (newItems) tree.items = newItems;
+  });
+
+  document.querySelector('#btn-add-below').addEventListener('click', async () => {
+    if (!selectedId) return;
+    const newItems = await tree.addBelow(selectedId, { id: crypto.randomUUID(), label: 'New Item' });
+    if (newItems) tree.items = newItems;
+  });
+
+  document.querySelector('#btn-duplicate').addEventListener('click', async () => {
+    if (!selectedId) return;
+    const newItems = await tree.duplicateItem(selectedId);
+    if (newItems) tree.items = newItems;
+  });
+
+  document.querySelector('#btn-delete').addEventListener('click', async () => {
+    if (!selectedId) return;
+    const newItems = await tree.deleteItem(selectedId);
+    tree.items = newItems;
+    selectedId = null;
+  });
+</script>`,
+      },
+    },
+  },
+  render: (args) => {
+    type TreeEl = HTMLElement & {
+      items: ITreeItemData[];
+      addChild: (
+        parentId: string,
+        newItem: ITreeItemData
+      ) => Promise<ITreeItemData[] | null>;
+      addAbove: (
+        siblingId: string,
+        newItem: ITreeItemData
+      ) => Promise<ITreeItemData[] | null>;
+      addBelow: (
+        siblingId: string,
+        newItem: ITreeItemData
+      ) => Promise<ITreeItemData[] | null>;
+      deleteItem: (itemId: string) => Promise<ITreeItemData[]>;
+      duplicateItem: (itemId: string) => Promise<ITreeItemData[] | null>;
+    };
+
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'root-1',
+        label: 'Design System',
+        treeItemActions: [],
+        children: [
+          { id: 'child-1', label: 'Components', treeItemActions: [] },
+          { id: 'child-2', label: 'Tokens', treeItemActions: [] },
+        ],
+      },
+      { id: 'root-2', label: 'Documentation', treeItemActions: [] },
+      { id: 'root-3', label: 'Changelog', treeItemActions: [] },
+    ];
+
+    const treeId = 'manual-actions-tree';
+    let selectedId: string | null = null;
+
+    const getTree = (): TreeEl | null =>
+      document.getElementById(treeId) as TreeEl | null;
+
+    const onItemSelect = (e: CustomEvent<{ value: string }>) => {
+      selectedId = e.detail.value;
+    };
+
+    const onAddChild = async () => {
+      if (!selectedId) return;
+      const tree = getTree();
+      if (!tree) return;
+      const newItems = await tree.addChild(selectedId, {
+        id: crypto.randomUUID(),
+        label: 'New Child',
+        treeItemActions: [],
+      });
+      if (newItems) tree.items = newItems;
+    };
+
+    const onAddAbove = async () => {
+      if (!selectedId) return;
+      const tree = getTree();
+      if (!tree) return;
+      const newItems = await tree.addAbove(selectedId, {
+        id: crypto.randomUUID(),
+        label: 'New Item',
+        treeItemActions: [],
+      });
+      if (newItems) tree.items = newItems;
+    };
+
+    const onAddBelow = async () => {
+      if (!selectedId) return;
+      const tree = getTree();
+      if (!tree) return;
+      const newItems = await tree.addBelow(selectedId, {
+        id: crypto.randomUUID(),
+        label: 'New Item',
+        treeItemActions: [],
+      });
+      if (newItems) tree.items = newItems;
+    };
+
+    const onDuplicate = async () => {
+      if (!selectedId) return;
+      const tree = getTree();
+      if (!tree) return;
+      const newItems = await tree.duplicateItem(selectedId);
+      if (newItems) tree.items = newItems;
+    };
+
+    const onDelete = async () => {
+      if (!selectedId) return;
+      const tree = getTree();
+      if (!tree) return;
+      const newItems = await tree.deleteItem(selectedId);
+      tree.items = newItems;
+      selectedId = null;
+    };
+
+    return html`
+      <div style="height: 50px">
+        <modus-wc-typography>
+          Select a node to complete an action
+        </modus-wc-typography>
+      </div>
+      <div
+        style="display: flex; flex-direction: column; gap: 8px; width: 320px"
+      >
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <modus-wc-button @buttonClick=${onAddChild}
+            >Add Child</modus-wc-button
+          >
+          <modus-wc-button @buttonClick=${onAddAbove}
+            >Add Above</modus-wc-button
+          >
+          <modus-wc-button @buttonClick=${onAddBelow}
+            >Add Below</modus-wc-button
+          >
+          <modus-wc-button @buttonClick=${onDuplicate}
+            >Duplicate</modus-wc-button
+          >
+          <modus-wc-button @buttonClick=${onDelete}>Delete</modus-wc-button>
+        </div>
+        <modus-wc-content-tree
+          id=${treeId}
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${false}
+          .items=${initialItems}
+          @itemSelect=${onItemSelect}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
+export const WithManualActionsViaEvents: Story = {
+  name: 'Manual Control via @Method() + treeActionClick',
+  parameters: {
+    docs: {
+      description: {
+        story: `Same as "Manual Control via @Method()" but the actions are triggered from \`treeActionClick\` events on the tree nodes rather than an external toolbar.
+
+\`includeActions\` is \`true\` and each item has \`treeItemActions\` with custom IDs that the built-in handler ignores.
+The consumer listens to \`treeActionClick\`, reads the item id from the event, calls the element's \`@Method()\` utility, and sets \`tree.items = result\`.
+
+This is the "State Manager pattern": action buttons on nodes, consumer intercepts every action, calls utility functions, owns the final state.
+
+Note: "Add Above" is intentionally omitted from the action list here to demonstrate that the consumer has full control over which actions to expose -- you only show what makes sense for your use case.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="tree"></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#tree');
+
+  const actions = [
+    { id: 'my-add-child', icon: 'add', label: 'Add Child' },
+    { id: 'my-add-below', icon: 'arrow_downward', label: 'Add Below' },
+    { id: 'my-duplicate', icon: 'content_copy', label: 'Duplicate' },
+    { id: 'my-delete', icon: 'delete', label: 'Delete' },
+  ];
+
+  tree.items = [
+    { id: 'root-1', label: 'Design System', treeItemActions: actions, children: [
+      { id: 'child-1', label: 'Components', treeItemActions: actions },
+      { id: 'child-2', label: 'Tokens', treeItemActions: actions },
+    ]},
+    { id: 'root-2', label: 'Documentation', treeItemActions: actions },
+    { id: 'root-3', label: 'Changelog', treeItemActions: actions },
+  ];
+
+  tree.addEventListener('treeActionClick', async (e) => {
+    const itemEl = e.target.closest('modus-wc-tree-item');
+    const itemId = itemEl?.getAttribute('data-key');
+    if (!itemId) return;
+
+    const { actionId } = e.detail;
+    let newItems = null;
+
+    if (actionId === 'my-add-child') {
+      newItems = await tree.addChild(itemId, { id: crypto.randomUUID(), label: 'New Child', treeItemActions: actions });
+    } else if (actionId === 'my-add-below') {
+      newItems = await tree.addBelow(itemId, { id: crypto.randomUUID(), label: 'New Item', treeItemActions: actions });
+    } else if (actionId === 'my-duplicate') {
+      newItems = await tree.duplicateItem(itemId);
+    } else if (actionId === 'my-delete') {
+      newItems = await tree.deleteItem(itemId);
+    }
+
+    if (newItems) tree.items = newItems;
+  });
+</script>`,
+      },
+    },
+  },
+  render: (args) => {
+    type TreeEl = HTMLElement & {
+      items: ITreeItemData[];
+      addChild: (
+        parentId: string,
+        newItem: ITreeItemData
+      ) => Promise<ITreeItemData[] | null>;
+      addBelow: (
+        siblingId: string,
+        newItem: ITreeItemData
+      ) => Promise<ITreeItemData[] | null>;
+      deleteItem: (itemId: string) => Promise<ITreeItemData[]>;
+      duplicateItem: (itemId: string) => Promise<ITreeItemData[] | null>;
+    };
+
+    const treeId = 'manual-events-tree';
+
+    const actions = [
+      { id: 'my-add-child', icon: 'add', label: 'Add Child' },
+      { id: 'my-add-below', icon: 'arrow_downward', label: 'Add Below' },
+      { id: 'my-duplicate', icon: 'content_copy', label: 'Duplicate' },
+      { id: 'my-delete', icon: 'delete', label: 'Delete' },
+    ];
+
+    const withActions = (item: ITreeItemData): ITreeItemData => ({
+      ...item,
+      treeItemActions: actions,
+      children: item.children?.map(withActions),
+    });
+
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'root-1',
+        label: 'Design System',
+        children: [
+          { id: 'child-1', label: 'Components' },
+          { id: 'child-2', label: 'Tokens' },
+        ],
+      },
+      { id: 'root-2', label: 'Documentation' },
+      { id: 'root-3', label: 'Changelog' },
+    ].map(withActions);
+
+    const handleActionClick = async (e: CustomEvent<{ actionId: string }>) => {
+      const tree = document.getElementById(treeId) as TreeEl | null;
+      if (!tree) return;
+
+      const itemEl = (e.target as HTMLElement).closest('modus-wc-tree-item');
+      const itemId = itemEl?.getAttribute('data-key');
+      if (!itemId) return;
+
+      const { actionId } = e.detail;
+      let newItems: ITreeItemData[] | null = null;
+
+      if (actionId === 'my-add-child') {
+        newItems = await tree.addChild(itemId, {
+          id: crypto.randomUUID(),
+          label: 'New Child',
+          treeItemActions: actions,
+        });
+      } else if (actionId === 'my-add-below') {
+        newItems = await tree.addBelow(itemId, {
+          id: crypto.randomUUID(),
+          label: 'New Item',
+          treeItemActions: actions,
+        });
+      } else if (actionId === 'my-duplicate') {
+        newItems = await tree.duplicateItem(itemId);
+      } else if (actionId === 'my-delete') {
+        newItems = await tree.deleteItem(itemId);
+      }
+
+      if (newItems) tree.items = newItems;
+    };
+
+    return html`
+      <div style="height: 100px; text-align: center; width: 320px;">
+        <modus-wc-typography>
+          Note: "Add Above" is intentionally omitted from the action list here
+          to demonstrate that the consumer has full control over which actions
+          to expose
+        </modus-wc-typography>
+      </div>
+      <div style="width: 320px; text-align: center;">
+        <modus-wc-content-tree
+          id=${treeId}
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+          @treeActionClick=${handleActionClick}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
+export const WithMixedActions: Story = {
+  name: 'Mixed Built-in + Custom Actions',
+  parameters: {
+    docs: {
+      description: {
+        story: `Demonstrates mixing built-in actions with a consumer-defined custom action on the same node.
+Each item has \`treeItemActions\` containing both built-in IDs (\`add-child\`, \`delete\`) and a custom ID (\`my-rename\`).
+The component handles \`add-child\` and \`delete\` automatically and emits \`itemAdded\` / \`itemDeleted\`.
+The custom \`my-rename\` action reaches the consumer via \`treeActionClick\` and triggers inline label editing.
+Built-in actions use \`stopPropagation\` so they never appear in \`treeActionClick\` -- the consumer only sees their own custom IDs.`,
+      },
+      source: {
+        code: `
+<modus-wc-content-tree id="tree"></modus-wc-content-tree>
+<script>
+  const tree = document.querySelector('#tree');
+  const actions = [
+    { id: 'add-child', icon: 'add', label: 'Add Child' },
+    { id: 'my-rename', icon: 'edit', label: 'Rename' },
+    { id: 'delete', icon: 'delete', label: 'Delete' },
+  ];
+  tree.items = [
+    { id: 'root-1', label: 'Design System', treeItemActions: actions, children: [
+      { id: 'child-1', label: 'Components', treeItemActions: actions },
+      { id: 'child-2', label: 'Tokens', treeItemActions: actions },
+    ]},
+    { id: 'root-2', label: 'Documentation', treeItemActions: actions },
+    { id: 'root-3', label: 'Changelog', treeItemActions: actions },
+  ];
+  // built-in actions (add-child, delete) are handled by the component automatically
+  const applyUpdate = (e) => { tree.items = e.detail.items; };
+  tree.addEventListener('itemAdded', applyUpdate);
+  tree.addEventListener('itemDeleted', applyUpdate);
+  // custom action -- only my-rename reaches here
+  tree.addEventListener('treeActionClick', (e) => {
+    if (e.detail.actionId !== 'my-rename') return;
+    const itemEl = e.target.closest('modus-wc-tree-item');
+    if (itemEl) itemEl.inlineLabelEdit = true;
+  });
+</script>`,
+      },
+    },
+  },
+  render: (args) => {
+    const treeId = 'mixed-actions-tree';
+    const actions = [
+      { id: 'add-child', icon: 'add', label: 'Add Child' },
+      { id: 'my-rename', icon: 'edit', label: 'Rename' },
+      { id: 'delete', icon: 'delete', label: 'Delete' },
+    ];
+    const withActions = (item: ITreeItemData): ITreeItemData => ({
+      ...item,
+      treeItemActions: actions,
+      children: item.children?.map(withActions),
+    });
+    const initialItems: ITreeItemData[] = [
+      {
+        id: 'root-1',
+        label: 'Design System',
+        children: [
+          { id: 'child-1', label: 'Components' },
+          { id: 'child-2', label: 'Tokens' },
+        ],
+      },
+      { id: 'root-2', label: 'Documentation' },
+      { id: 'root-3', label: 'Changelog' },
+    ].map(withActions);
+    const applyUpdate = (e: CustomEvent<{ items: ITreeItemData[] }>) => {
+      const tree = document.getElementById(treeId) as HTMLElement & {
+        items: ITreeItemData[];
+      };
+      if (tree) tree.items = e.detail.items;
+    };
+    const handleActionClick = (e: CustomEvent<{ actionId: string }>) => {
+      if (e.detail.actionId !== 'my-rename') return;
+      const itemEl = (e.target as HTMLElement).closest('modus-wc-tree-item') as
+        | (HTMLElement & { inlineLabelEdit: boolean })
+        | null;
+      if (itemEl) itemEl.inlineLabelEdit = true;
+    };
+    return html`
+      <div style="height: 70px; text-align: center; width: 320px;">
+        <modus-wc-typography>
+          This demonstrates mixing built-in actions with a consumer-defined
+          custom action. <br />
+          Built-in: Add Child, Delete ; Consumer: Rename
+        </modus-wc-typography>
+      </div>
+      <div style="width: 320px">
+        <modus-wc-content-tree
+          id=${treeId}
+          search-placeholder=${args['search-placeholder']}
+          .includeSearch=${args['include-search']}
+          .includeActions=${true}
+          .items=${initialItems}
+          @itemAdded=${applyUpdate}
+          @itemDeleted=${applyUpdate}
+          @treeActionClick=${handleActionClick}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
 export const ApiReference: Story = {
   name: 'API Reference',
   parameters: {
@@ -1883,6 +2384,19 @@ export const ApiReference: Story = {
 | Name           | Payload                                                         | Description |
 |----------------|------------------------------------------------------------------|-------------|
 | itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata |
+| itemAdded      | \`{ item: ITreeItemData; targetItemId: string; position: 'child' \\| 'above' \\| 'below'; items: ITreeItemData[] }\` | Emitted when a built-in add action completes. Set \`tree.items = e.detail.items\` to apply. |
+| itemDeleted    | \`{ itemId: string; items: ITreeItemData[] }\` | Emitted when a built-in delete action completes. Set \`tree.items = e.detail.items\` to apply. |
+| itemDuplicated | \`{ item: ITreeItemData; itemId: string; items: ITreeItemData[] }\` | Emitted when a built-in duplicate action completes. Set \`tree.items = e.detail.items\` to apply. |
+
+#### Methods
+
+| Name            | Signature                                                              | Description |
+|-----------------|------------------------------------------------------------------------|-------------|
+| \`addChild\`    | \`(parentId: string, newItem: ITreeItemData) => Promise<ITreeItemData[] \\| null>\` | Returns updated items with \`newItem\` added as a child of \`parentId\`. |
+| \`addAbove\`    | \`(siblingId: string, newItem: ITreeItemData) => Promise<ITreeItemData[] \\| null>\` | Returns updated items with \`newItem\` inserted above \`siblingId\`. |
+| \`addBelow\`    | \`(siblingId: string, newItem: ITreeItemData) => Promise<ITreeItemData[] \\| null>\` | Returns updated items with \`newItem\` inserted below \`siblingId\`. |
+| \`deleteItem\`  | \`(itemId: string) => Promise<ITreeItemData[]>\` | Returns updated items with the specified item removed. |
+| \`duplicateItem\` | \`(itemId: string) => Promise<ITreeItemData[] \\| null>\` | Returns updated items with a clone of the item inserted after it. |
 
 ---
 
