@@ -120,7 +120,7 @@ jobs:
 
       - name: Publish npm Package Publicly
         working-directory: dist
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         working-directory: dist
