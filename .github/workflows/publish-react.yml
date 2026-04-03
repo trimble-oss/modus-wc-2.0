@@ -109,7 +109,7 @@ jobs:
 
       - name: Publish distribution
         working-directory: integrations/react/v${{ matrix.react-version }}/dist
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         working-directory: integrations/react/v${{ matrix.react-version }}/dist

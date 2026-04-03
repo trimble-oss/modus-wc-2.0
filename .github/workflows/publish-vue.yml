@@ -104,7 +104,7 @@ jobs:
 
       - name: Publish distribution
         working-directory: integrations/vue/v-latest/dist
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         working-directory: integrations/vue/v-latest/dist
