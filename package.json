@@ -230,7 +230,8 @@
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
-        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/blazor/stencil-generated/**"
       ]
     },
     "stencil:watch": {

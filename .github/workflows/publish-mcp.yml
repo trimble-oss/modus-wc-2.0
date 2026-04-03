@@ -150,7 +150,7 @@ jobs:
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN_MCP }}
 
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
