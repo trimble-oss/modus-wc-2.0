@@ -1,4 +1,3 @@
-import { createPopper, Instance as PopperInstance } from '@popperjs/core';
 import {
   Component,
   Element,
@@ -9,7 +8,6 @@ import {
   Prop,
   State,
   Event as StencilEvent,
-  Watch,
 } from '@stencil/core';
 import { DaisySize } from '../../types';
 
@@ -33,18 +31,6 @@ export interface ITreeItemActions {
   shadow: false,
 })
 export class ModusWcTreeActions {
-  private moreActionsButton!: HTMLElement;
-  private moreActionsDropdown!: HTMLElement;
-  private popperInstance: PopperInstance | null = null;
-  private readonly handleDocumentPointerDown = (event: Event) => {
-    if (!this.isDropdownOpen) return;
-
-    const target = event.target as Node | null;
-    if (!target || !this.el.contains(target)) {
-      this.isDropdownOpen = false;
-    }
-  };
-
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -54,9 +40,8 @@ export class ModusWcTreeActions {
   /** The size of the action buttons and icons. */
   @Prop() size: DaisySize = 'xs';
 
-  /** Internal state for dropdown visibility */
-  @State() isDropdownOpen: boolean = false;
   @State() pendingDeleteAction?: ITreeItemActions;
+  @State() menuVisible: boolean = false;
 
   /** Event emitted when a dropdown is opened */
   @StencilEvent() dropdownOpened!: EventEmitter<HTMLElement>;
@@ -68,84 +53,32 @@ export class ModusWcTreeActions {
     actionName: string;
   }>;
 
-  componentDidLoad() {
-    this.updatePopperInstance();
-    document.addEventListener(
-      'pointerdown',
-      this.handleDocumentPointerDown,
-      true
-    );
-  }
-
-  componentDidRender() {
-    this.updatePopperInstance();
-  }
-
-  @Watch('actions')
-  onActionsChange() {
-    this.updatePopperInstance();
-  }
-
-  @Watch('isDropdownOpen')
-  onDropdownOpenChange() {
-    if (!this.isDropdownOpen) {
-      this.pendingDeleteAction = undefined;
-      return;
-    }
-
-    if (!this.isDropdownOpen || !this.popperInstance) {
-      return;
-    }
-
-    // Recalculate after the dropdown is rendered with `show` class.
-    // istanbul ignore next
-    requestAnimationFrame(() => {
-      void this.popperInstance?.update();
-    });
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener(
-      'pointerdown',
-      this.handleDocumentPointerDown,
-      true
-    );
-
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
-    }
-  }
-
-  @Listen('click', { target: 'document' })
-  handleClickOutside(event: MouseEvent) {
-    if (!this.isDropdownOpen) return;
-
-    const target = event.target as HTMLElement;
-    const clickedButton = this.moreActionsButton?.contains(target);
-    if (!clickedButton) {
-      this.isDropdownOpen = false;
-    }
-  }
-
   @Listen('dropdownOpened', { target: 'document' })
   handleOtherDropdownOpened(event: CustomEvent<HTMLElement>) {
-    // Close this dropdown if another one was opened
-    if (event.detail !== this.el && this.isDropdownOpen) {
-      this.isDropdownOpen = false;
+    if (event.detail !== this.el && this.menuVisible) {
+      this.menuVisible = false;
+      this.pendingDeleteAction = undefined;
     }
   }
 
-  private handleActionClick = (action: ITreeItemActions, event: MouseEvent) => {
+  @Listen('menuVisibilityChange')
+  handleMenuVisibilityChange(event: CustomEvent<{ isVisible: boolean }>) {
+    if (!event.detail.isVisible) {
+      this.pendingDeleteAction = undefined;
+    }
+    this.menuVisible = event.detail.isVisible;
+    if (this.menuVisible) {
+      this.dropdownOpened.emit(this.el);
+    }
+  }
+
+  private handleActionClick = (action: ITreeItemActions, event: Event) => {
     event.stopPropagation();
     if (action.disabled) return;
 
     if (action.id === 'delete') {
       this.pendingDeleteAction = action;
-      this.isDropdownOpen = true;
-      if (this.popperInstance) {
-        void this.popperInstance.update();
-      }
+      this.menuVisible = true;
       return;
     }
 
@@ -154,15 +87,16 @@ export class ModusWcTreeActions {
       actionName: action.label,
     });
 
-    this.isDropdownOpen = false;
+    this.menuVisible = false;
   };
 
-  private handleDeleteCancel = (event: MouseEvent) => {
+  private handleDeleteCancel = (event: Event) => {
     event.stopPropagation();
     this.pendingDeleteAction = undefined;
+    this.menuVisible = false;
   };
 
-  private handleDeleteConfirm = (event: MouseEvent) => {
+  private handleDeleteConfirm = (event: Event) => {
     event.stopPropagation();
     if (!this.pendingDeleteAction) return;
 
@@ -171,101 +105,7 @@ export class ModusWcTreeActions {
       actionName: this.pendingDeleteAction.label,
     });
     this.pendingDeleteAction = undefined;
-    this.isDropdownOpen = false;
-  };
-
-  private handleMoreActionsClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    this.isDropdownOpen = !this.isDropdownOpen;
-
-    if (this.isDropdownOpen) {
-      // Emit event to close other dropdowns
-      this.dropdownOpened.emit(this.el);
-
-      if (this.popperInstance) {
-        void this.popperInstance.update();
-      }
-    }
-  };
-
-  private updatePopperInstance = () => {
-    const hasDropdownActions = (this.actions?.length ?? 0) > 1;
-
-    if (!hasDropdownActions) {
-      if (this.popperInstance) {
-        this.popperInstance.destroy();
-        this.popperInstance = null;
-      }
-      return;
-    }
-
-    if (!this.moreActionsButton || !this.moreActionsDropdown) {
-      return;
-    }
-
-    if (!this.popperInstance) {
-      this.initializePopper();
-      return;
-    }
-
-    void this.popperInstance.update();
-  };
-
-  private initializePopper = () => {
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
-    }
-
-    if (!this.moreActionsButton || !this.moreActionsDropdown) {
-      return;
-    }
-
-    this.popperInstance = createPopper(
-      this.moreActionsButton,
-      this.moreActionsDropdown,
-      {
-        placement: 'bottom',
-        strategy: 'fixed',
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 8],
-            },
-          },
-          {
-            name: 'preventOverflow',
-            options: {
-              padding: 8,
-              boundary: 'viewport',
-            },
-          },
-          {
-            name: 'flip',
-            options: {
-              fallbackPlacements: ['top-start', 'bottom-end', 'top-end'],
-              padding: 8,
-              boundary: 'viewport',
-            },
-          },
-          {
-            name: 'computeStyles',
-            options: {
-              adaptive: true,
-              gpuAcceleration: true,
-            },
-          },
-          {
-            name: 'eventListeners',
-            options: {
-              scroll: true,
-              resize: true,
-            },
-          },
-        ],
-      }
-    );
+    this.menuVisible = false;
   };
 
   render() {
@@ -274,52 +114,40 @@ export class ModusWcTreeActions {
     return (
       <Host>
         <div class="modus-wc-tree-actions-container">
-          {this.actions?.slice(0, 1).map(
-            (action) => (
-              console.log('action', action, this.actions),
-              (
-                <modus-wc-button
-                  key={action.id}
-                  customClass="modus-wc-tree-action-button"
-                  disabled={action.disabled === true}
-                  size={this.size}
-                  shape="circle"
-                  variant="borderless"
-                  onClick={(e) => this.handleActionClick(action, e)}
-                >
-                  <modus-wc-icon
-                    name={action.icon}
-                    size={this.size}
-                    customClass="modus-wc-tree-action-icon"
-                  ></modus-wc-icon>
-                </modus-wc-button>
-              )
-            )
-          )}
-          {remainingActions.length > 0 && (
-            <div class="modus-wc-tree-more-actions-wrapper">
-              <modus-wc-button
-                customClass="modus-wc-tree-action-button"
+          {this.actions?.slice(0, 1).map((action) => (
+            <modus-wc-button
+              key={action.id}
+              customClass="modus-wc-tree-action-button"
+              disabled={action.disabled === true}
+              size={this.size}
+              shape="circle"
+              variant="borderless"
+              onClick={(e) => this.handleActionClick(action, e)}
+            >
+              <modus-wc-icon
+                name={action.icon}
                 size={this.size}
-                shape="circle"
-                variant="borderless"
-                ref={(el) => (this.moreActionsButton = el as HTMLElement)}
-                onClick={this.handleMoreActionsClick}
-                aria-expanded={this.isDropdownOpen ? 'true' : 'false'}
-                aria-haspopup="true"
-                aria-label="More actions"
-              >
-                <modus-wc-icon
-                  name="more_vertical"
-                  size={this.size}
-                  customClass="modus-wc-tree-action-icon"
-                ></modus-wc-icon>
-              </modus-wc-button>
-              <div
-                class={`modus-wc-tree-more-actions-dropdown ${this.isDropdownOpen ? 'show' : ''}`}
-                ref={(el) => (this.moreActionsDropdown = el as HTMLElement)}
-                role="menu"
-              >
+                customClass="modus-wc-tree-action-icon"
+              ></modus-wc-icon>
+            </modus-wc-button>
+          ))}
+          {remainingActions.length > 0 && (
+            <modus-wc-dropdown-menu
+              customClass="modus-wc-tree-more-actions-wrapper"
+              buttonShape="circle"
+              buttonSize={this.size}
+              buttonVariant="borderless"
+              buttonAriaLabel="More actions"
+              menuPlacement="bottom-start"
+              menuVisible={this.menuVisible}
+            >
+              <modus-wc-icon
+                slot="button"
+                name="more_vertical"
+                size={this.size}
+                customClass="modus-wc-tree-action-icon"
+              ></modus-wc-icon>
+              <div slot="menu">
                 {this.pendingDeleteAction ? (
                   <div class="modus-wc-tree-delete-confirmation">
                     <div class="modus-wc-tree-delete-confirmation-title">
@@ -351,26 +179,25 @@ export class ModusWcTreeActions {
                   </div>
                 ) : (
                   remainingActions.map((action) => (
-                    <modus-wc-button
+                    <modus-wc-menu-item
                       key={action.id}
-                      variant="borderless"
-                      class={`modus-wc-tree-dropdown-action ${action.disabled ? 'disabled' : ''}`}
+                      label={action.label}
+                      value={action.id}
                       disabled={action.disabled}
-                      onClick={(e) => this.handleActionClick(action, e)}
-                      role="menuitem"
-                      aria-label={action.ariaLabel || action.label}
+                      customClass="modus-wc-tree-dropdown-action"
+                      onItemSelect={(e) => this.handleActionClick(action, e)}
                     >
                       <modus-wc-icon
+                        slot="start-icon"
                         name={action.icon}
                         size={this.size}
                         customClass="modus-wc-tree-action-icon"
                       ></modus-wc-icon>
-                      {action.label}
-                    </modus-wc-button>
+                    </modus-wc-menu-item>
                   ))
                 )}
               </div>
-            </div>
+            </modus-wc-dropdown-menu>
           )}
         </div>
       </Host>

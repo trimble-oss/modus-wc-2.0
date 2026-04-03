@@ -108,6 +108,12 @@ graph TD;
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-tree-actions --> modus-wc-button
   modus-wc-tree-actions --> modus-wc-icon
+  modus-wc-tree-actions --> modus-wc-dropdown-menu
+  modus-wc-tree-actions --> modus-wc-menu-item
+  modus-wc-dropdown-menu --> modus-wc-button
+  modus-wc-dropdown-menu --> modus-wc-menu
+  modus-wc-menu-item --> modus-wc-checkbox
+  modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-content-tree --> modus-wc-tree-item
   style modus-wc-tree-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

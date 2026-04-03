@@ -38,6 +38,10 @@ The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML 
 
 ## Dependencies
 
+### Used by
+
+ - modus-wc-tree-actions
+
 ### Depends on
 
 - [modus-wc-button](../modus-wc-button)
@@ -48,6 +52,7 @@ The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML 
 graph TD;
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-menu
+  modus-wc-tree-actions --> modus-wc-dropdown-menu
   style modus-wc-dropdown-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
