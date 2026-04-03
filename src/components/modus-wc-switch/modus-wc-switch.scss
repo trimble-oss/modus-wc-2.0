@@ -210,14 +210,14 @@ modus-wc-switch.modus-wc-switch-host {
       --fallback-b1: var(--modus-wc-color-primary);
     }
 
-      &:focus-visible {
-        outline: 2px solid var(--modus-wc-color-highlight-blue-on-dark);
-        outline-offset: 2px;
-      }
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-highlight-blue-on-dark);
+      outline-offset: 2px;
+    }
 
     &:disabled {
       --fallback-b1: var(--modus-wc-color-gray-light);
-      }
+    }
 
     // Sizes
     &.modus-wc-toggle-xs {
