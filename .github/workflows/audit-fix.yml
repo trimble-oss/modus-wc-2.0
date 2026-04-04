@@ -39,70 +39,48 @@ jobs:
       - name: Build React v17 integration
         working-directory: integrations/react/v17
         run: npm ci && npm run build
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build React v18 integration
         working-directory: integrations/react/v18
         run: npm ci && npm run build
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build React v19 integration
         working-directory: integrations/react/v19
         run: npm ci && npm run build
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Vue integration
         working-directory: integrations/vue/v-latest
         run: npm ci && npm run build
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # --- Install remaining integration deps ---
 
       - name: Install Angular ng17 dependencies
         working-directory: integrations/angular/ng17
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Angular ng18 dependencies
         working-directory: integrations/angular/ng18
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Angular ng19 dependencies
         working-directory: integrations/angular/ng19
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install React test app v17 dependencies
         working-directory: integrations/react/test-react-v17
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install React test app v18 dependencies
         working-directory: integrations/react/test-react-v18
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install React test app v19 dependencies
         working-directory: integrations/react/test-react-v19
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Vue test app dependencies
         working-directory: integrations/vue/test-app
         run: npm ci
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # --- Audit phase ---
 
