@@ -104,7 +104,8 @@ export const config: Config = {
       customElementsDir: 'components',
     }),
     blazorOutputTarget({
-      outDir: './integrations/blazor/stencil-generated/ModusWebComponents.Blazor',
+      outDir:
+        './integrations/blazor/stencil-generated/ModusWebComponents.Blazor',
       packageName: 'ModusWebComponents.Blazor',
       namespace: 'ModusWebComponents.Blazor',
     }),
