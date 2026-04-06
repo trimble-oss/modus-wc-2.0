@@ -58,6 +58,7 @@ const meta: Meta<ProfileMenuArgs> = {
             - items (IMenuItem[]): Array of menu items
               - label (string): The display text for the menu item
               - icon (string, optional): The name of the icon to display
+              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
               - iconVariant ('solid' | 'outlined', optional): The variant of the icon
               - value (string, optional): The value associated with the menu item, used for selection
           `,
@@ -75,6 +76,7 @@ const meta: Meta<ProfileMenuArgs> = {
             - items (IMenuItem[]): Array of menu items
               - label (string): The display text for the menu item
               - icon (string, optional): The name of the icon to display
+              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
               - iconVariant ('solid' | 'outlined', optional): The variant of the icon
               - value (string, optional): The value associated with the menu item, used for selection
           `,
@@ -122,9 +124,11 @@ const getSourceCode = (args: ProfileMenuArgs) => {
     ? `\nconst menuTwo = ${JSON.stringify(args['menu-two'], null, 2)};`
     : '';
 
-  return `<script>
+  return `<modus-wc-profile-menu></modus-wc-profile-menu>
+
+<script>
   ${profilePropsCode}${menuOneCode}${menuTwoCode}
-  
+
   const element = document.querySelector('modus-wc-profile-menu');
   element.profileProps = profileProps;${args['menu-one'] ? '\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\n  element.menuTwo = menuTwo;' : ''}
 
@@ -137,8 +141,7 @@ const getSourceCode = (args: ProfileMenuArgs) => {
   });
 
 </script>
-
-<modus-wc-profile-menu></modus-wc-profile-menu>`;
+`;
 };
 
 const Template: Story = {

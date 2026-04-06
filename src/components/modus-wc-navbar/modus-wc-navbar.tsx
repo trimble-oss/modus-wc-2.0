@@ -42,6 +42,8 @@ export interface INavbarVisibility {
   apps?: boolean;
   /** Controls visibility of the help button. */
   help?: boolean;
+  /** Controls visibility of the product / Trimble logo button. Defaults to visible when omitted. */
+  logo?: boolean;
   /** Controls visibility of the main menu button. */
   mainMenu?: boolean;
   /** Controls visibility of the notifications button. */
@@ -54,7 +56,6 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
-/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -72,9 +73,6 @@ export interface INavbarUserCard {
 
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
- *
- * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
- *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -123,9 +121,7 @@ export class ModusWcNavbar {
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** User information used to render the user card.
-   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-   */
+  /** User information used to render the user card. */
   @Prop() userCard!: INavbarUserCard;
 
   /** The open state of the user menu. */
@@ -136,6 +132,7 @@ export class ModusWcNavbar {
     ai: false,
     apps: false,
     help: false,
+    logo: true,
     mainMenu: false,
     notifications: false,
     search: false,
@@ -451,18 +448,20 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            <modus-wc-button
-              aria-label={`${accessibleName} logo`}
-              customClass="logo"
-              onButtonClick={this.handleTrimbleLogoClick}
-              size="sm"
-              variant="borderless"
-            >
-              <modus-wc-logo
-                name={this.logoName || 'trimble'}
-                emblem={this.condensed}
-              ></modus-wc-logo>
-            </modus-wc-button>
+            {this.visibility?.logo !== false && (
+              <modus-wc-button
+                aria-label={`${accessibleName} logo`}
+                customClass="logo"
+                onButtonClick={this.handleTrimbleLogoClick}
+                size="sm"
+                variant="borderless"
+              >
+                <modus-wc-logo
+                  name={this.logoName || 'trimble'}
+                  emblem={this.condensed}
+                ></modus-wc-logo>
+              </modus-wc-button>
+            )}
 
             <slot name="start" />
           </div>

@@ -2,13 +2,15 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { ModusSize, Orientation } from '../types';
+import { ModusSize, Orientation, SelectionMode } from '../types';
 
 interface MenuArgs {
   bordered?: boolean;
   'custom-class'?: string;
   orientation?: Orientation;
+  'selection-mode'?: SelectionMode;
   size?: ModusSize;
 }
 
@@ -17,12 +19,17 @@ const meta: Meta<MenuArgs> = {
   component: 'modus-wc-menu',
   args: {
     orientation: 'vertical',
+    'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
     orientation: {
       control: { type: 'select' },
       options: ['horizontal', 'vertical'],
+    },
+    'selection-mode': {
+      control: { type: 'select' },
+      options: ['single', 'multiple'],
     },
     size: {
       control: { type: 'select' },
@@ -32,7 +39,7 @@ const meta: Meta<MenuArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['menuFocusout'],
+      handles: ['menuFocusout', 'menuSelectionChange', 'itemSelect'],
     },
   },
 };
@@ -50,6 +57,7 @@ export const Default: Story = {
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   orientation=${ifDefined(args.orientation)}
+  selection-mode=${ifDefined(args['selection-mode'])}
   size=${ifDefined(args.size)}
 >
   <modus-wc-menu-item
@@ -90,6 +98,60 @@ export const Default: Story = {
     disabled="true"
   ></modus-wc-menu-item>
 </modus-wc-menu>
+    `;
+  },
+};
+
+export const MultiSelect: Story = {
+  args: {
+    'selection-mode': 'multiple',
+  },
+  render: (args) => {
+    let outputEl: Element | undefined;
+
+    const handleSelectionChange = (
+      e: CustomEvent<{ selectedItems: HTMLElement[] }>
+    ) => {
+      if (!outputEl) return;
+      const { selectedItems } = e.detail;
+      outputEl.textContent =
+        selectedItems.length > 0
+          ? `Selected: ${selectedItems.map((i) => i.getAttribute('value')).join(', ')}`
+          : 'Selected: none';
+    };
+
+    // prettier-ignore
+    return html`
+<modus-wc-menu
+  aria-label="Menu"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  orientation=${ifDefined(args.orientation)}
+  selection-mode=${ifDefined(args['selection-mode'])}
+  size=${ifDefined(args.size)}
+  @menuSelectionChange=${handleSelectionChange}
+>
+  <modus-wc-menu-item
+    label="Menu Item 1"
+    value="1"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item label="Menu Item 2" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Menu Item 3"
+    value="3"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Menu Item 4"
+    value="4"
+    bordered="true"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Menu Item 5"
+    value="5"
+    sub-label="Menu Item 5 Sub-label"
+  ></modus-wc-menu-item>
+</modus-wc-menu>
+<p ${ref((el) => { outputEl = el; })} style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--modus-wc-color-gray-6);">Selected: none</p>
     `;
   },
 };

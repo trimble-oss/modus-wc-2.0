@@ -32,7 +32,9 @@ A customizable icon component used to render Modus icons.
  - [modus-wc-collapse](../modus-wc-collapse)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-file-dropzone](../modus-wc-file-dropzone)
+ - [modus-wc-handle](../modus-wc-handle)
  - [modus-wc-input-feedback](../modus-wc-input-feedback)
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
  - [modus-wc-table](../modus-wc-table)
  - [modus-wc-tabs](../modus-wc-tabs)
 
@@ -45,7 +47,9 @@ graph TD;
   modus-wc-collapse --> modus-wc-icon
   modus-wc-date --> modus-wc-icon
   modus-wc-file-dropzone --> modus-wc-icon
+  modus-wc-handle --> modus-wc-icon
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-profile-menu --> modus-wc-icon
   modus-wc-table --> modus-wc-icon
   modus-wc-tabs --> modus-wc-icon
   style modus-wc-icon fill:#f9f,stroke:#333,stroke-width:4px

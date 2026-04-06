@@ -9,6 +9,8 @@ export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
 
+export type SelectionMode = 'single' | 'multiple';
+
 export type WeekStartDay =
   | 'sunday'
   | 'monday'
