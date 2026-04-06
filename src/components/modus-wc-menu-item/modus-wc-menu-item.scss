@@ -156,7 +156,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   // Tab navigation focus state (outline only)
   &:focus-visible {
     background-color: transparent;
-    outline: 2px solid var(--modus-wc-color-base-primary);
+    outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
 }
