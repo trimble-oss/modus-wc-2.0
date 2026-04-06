@@ -11,6 +11,7 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-links',
     '@storybook/addon-themes',
+    './addons/ai-chat/manager',
   ],
   framework: {
     name: '@storybook/web-components-vite',

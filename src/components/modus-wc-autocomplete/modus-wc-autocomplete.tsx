@@ -340,7 +340,7 @@ export class ModusWcAutocomplete {
       const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
       if (menuEl) {
         const targetItem = menuEl.querySelector(
-          '.modus-wc-menu-item-selected'
+          '.modus-wc-menu-item-active'
         ) as HTMLElement;
 
         const scrollContainer = menuEl.querySelector(
