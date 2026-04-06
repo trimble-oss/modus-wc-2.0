@@ -40,15 +40,16 @@ modus-wc-side-navigation {
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
     padding-inline-end: var(--modus-wc-spacing-xs);
-    padding-inline-start: var(--modus-wc-spacing-2xs);
+    padding-inline-start: var(--modus-wc-spacing-xs);
 
     &.modus-wc-menu-dropdown-toggle {
       max-height: 32px;
+      padding-inline-start: var(--modus-wc-spacing-xs);
     }
 
     &:not(.modus-wc-menu-dropdown-toggle) {
       max-height: 32px;
-      padding-inline-start: 0.2rem;
+      padding-inline-start: var(--modus-wc-spacing-xs);
     }
   }
 }
@@ -90,16 +91,6 @@ modus-wc-side-navigation {
       display: none;
       padding: 0;
       padding-inline-end: var(--modus-wc-spacing-md);
-    }
-
-    & > button .modus-wc-menu-item-content [slot='start-icon'] {
-      padding-inline-end: 0;
-      padding-inline-start: 0.1rem;
-    }
-
-    & > button.modus-wc-menu-dropdown-toggle {
-      padding-inline-end: var(--modus-wc-spacing-md);
-      padding-inline-start: var(--modus-wc-spacing-2xs);
     }
   }
 }
