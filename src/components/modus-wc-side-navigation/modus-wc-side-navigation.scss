@@ -39,8 +39,6 @@ modus-wc-side-navigation {
 
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
-
-    // padding: var(--modus-wc-spacing-xs) 1.25rem;
     padding-inline-end: var(--modus-wc-spacing-xs);
     padding-inline-start: var(--modus-wc-spacing-2xs);
 
@@ -50,8 +48,6 @@ modus-wc-side-navigation {
 
     &:not(.modus-wc-menu-dropdown-toggle) {
       max-height: 32px;
-
-      // padding: var(--modus-wc-spacing-2xs) 1.25rem;
       padding-inline-start: 0.2rem;
     }
   }
