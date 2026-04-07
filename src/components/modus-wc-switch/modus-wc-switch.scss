@@ -195,14 +195,17 @@ modus-wc-switch.modus-wc-switch-host {
 
     border: none;
     box-shadow:
-      var(--handleoffsetcalculator) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
+      var(--handleoffsetcalculator) 0 0 var(--modus-wc-border-width-md)
+        var(--fallback-b1) inset,
       0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
     color: var(--modus-wc-color-white);
 
     &:indeterminate {
       box-shadow:
-        calc(var(--handleoffset) / 2) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
-        calc(var(--handleoffset) / -2) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
+        calc(var(--handleoffset) / 2) 0 0 var(--modus-wc-border-width-md)
+          var(--fallback-b1) inset,
+        calc(var(--handleoffset) / -2) 0 0 var(--modus-wc-border-width-md)
+          var(--fallback-b1) inset,
         0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
     }
 
