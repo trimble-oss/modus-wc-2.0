@@ -1,15 +1,18 @@
 import { DaisySize } from '../types';
 
+export type CollapseVariant = 'ghost' | 'border';
+
 export const convertPropsToClasses = ({
-  bordered,
   expanded,
+  variant,
 }: {
-  bordered?: boolean;
   expanded?: boolean;
+  variant: CollapseVariant;
 }): string => {
   let classes = '';
+  const hasBorder = variant === 'border';
 
-  if (bordered) {
+  if (hasBorder) {
     classes = `${classes} modus-wc-border`;
   }
 

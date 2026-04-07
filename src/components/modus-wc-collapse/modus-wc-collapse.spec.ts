@@ -22,10 +22,10 @@ describe('modus-wc-collapse', () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
       html: `<modus-wc-collapse
-              bordered="false"
               collapse-id="123"
               custom-class="test-class"
               expanded="true"
+              variant="ghost"
               size="sm">
             </modus-wc-collapse>`,
     });

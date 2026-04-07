@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import {
+  CollapseVariant,
   convertPropsToClasses,
   convertPropsToDescriptionDivClasses,
   convertPropsToTitleChildDivClasses,
@@ -49,8 +50,8 @@ export class ModusWcCollapse {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Indicates that the component should have a border. */
-  @Prop() bordered?: boolean = false;
+  /** Visual style of the collapse component. */
+  @Prop() variant: CollapseVariant = 'border';
 
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
@@ -101,8 +102,8 @@ export class ModusWcCollapse {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
-      bordered: this.bordered,
       expanded: this.expanded,
+      variant: this.variant,
     });
 
     // The order CSS classes are added matters to CSS specificity

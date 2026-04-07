@@ -8,8 +8,9 @@ modus-wc-collapse details.modus-wc-collapse > summary {
 }
 
 modus-wc-collapse .modus-wc-collapse {
-  background-color: var(--modus-wc-color-base-100);
-  border-color: transparent;
+  background-color: var(--modus-wc-color-base-page);
+  border: none;
+  border-radius: 0;
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
@@ -20,7 +21,7 @@ modus-wc-collapse .modus-wc-collapse {
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
-      var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+      var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl);
     width: auto;
 
     @include common-states;
@@ -37,8 +38,10 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.modus-wc-border {
     background: var(--modus-wc-color-base-page);
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
-    border-radius: var(--modus-wc-border-radius-box);
+    border: none;
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200);
+    border-radius: 0;
   }
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
@@ -61,6 +64,33 @@ modus-wc-collapse .modus-wc-collapse {
 
 .modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
   top: 50% !important;
+}
+
+.modus-wc-collapse-arrow > .modus-wc-collapse-title::before {
+  --tw-rotate: 45deg;
+  --tw-translate-y: -100%;
+  box-shadow: 2px 2px;
+  content: '';
+  display: block;
+  height: 0.5rem;
+  inset-inline-start: var(--modus-wc-spacing-lg);
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform-origin: 75% 75%;
+  transition-duration: 0.2s;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  width: 0.5rem;
+}
+
+.modus-wc-collapse-arrow.modus-wc-collapse-open
+  > .modus-wc-collapse-title::before {
+  --tw-rotate: 225deg;
+  --tw-translate-y: -50%;
 }
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,

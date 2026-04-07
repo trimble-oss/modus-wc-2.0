@@ -3,14 +3,15 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ICollapseOptions } from './modus-wc-collapse';
+import { CollapseVariant } from './modus-wc-collapse.tailwind';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
-  bordered?: boolean;
   'custom-class'?: string;
   expanded?: boolean;
   id?: string;
   options?: ICollapseOptions;
+  variant?: CollapseVariant;
 }
 
 const options: ICollapseOptions = {
@@ -23,8 +24,12 @@ const options: ICollapseOptions = {
 const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
-  args: { bordered: false, expanded: false, options },
+  args: { expanded: false, options, variant: 'border' },
   argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: ['ghost', 'border'],
+    },
     options: {
       description: 'Configuration options for the collapse component',
       table: {
@@ -55,11 +60,11 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-collapse
-  ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id=${ifDefined(args.id)}
   .options=${args.options}
+  variant=${ifDefined(args.variant)}
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
@@ -96,10 +101,10 @@ export const WithCustomClickableHeader = {
   }
 </style>
 <modus-wc-collapse
-  ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id="123"
+  variant=${ifDefined(args.variant)}
 >
   <div slot="header" class="modus-wc-collapse-title" id="123">
     <div class="clickable-div">
@@ -131,20 +136,20 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-collapse',
         propsMapper: (v: CollapseArgs, el: HTMLElement) => {
           const collapseEl = el as unknown as {
-            bordered: boolean;
             customClass: string;
             expanded: boolean;
             id: string;
             options: ICollapseOptions;
+            variant: CollapseVariant;
           };
           // Only set innerHTML once on initial creation
           if (!el.querySelector('[slot="content"]')) {
             el.innerHTML = '<div slot="content">Collapse content</div>';
           }
-          collapseEl.bordered = Boolean(v.bordered);
           collapseEl.customClass = v['custom-class'] || '';
           collapseEl.expanded = Boolean(v.expanded);
           collapseEl.id = v.id ?? '';
+          collapseEl.variant = v.variant ?? 'border';
           if (v.options) {
             collapseEl.options = v.options; // Conditional assignment only if provided
           }

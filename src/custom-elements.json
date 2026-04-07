@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -74,7 +74,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable alert component used to inform the user about important events.\n\nThe component supports `<slot>` elements for injecting custom content and buttons.",
+          "description": "A customizable alert component used to inform the user about important events.\r\n\r\nThe component supports `<slot>` elements for injecting custom content and buttons.",
           "name": "ModusWcAlert",
           "members": [
             {
@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  feedback?: IInputFeedbackProp;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
+                "text": "{\r\n  bordered?: boolean;\r\n  disabled?: boolean;\r\n  feedback?: IInputFeedbackProp;\r\n  readOnly?: boolean;\r\n  size?: ModusSize;\r\n}"
               }
             }
           ]
@@ -332,7 +332,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n  initialNavigation: boolean;\n  visibleItems: IAutocompleteItem[];\n  onUpdateFocus: (value: string) => void;\n  onSetInitialNavigation: (value: boolean) => void;\n}"
+                "text": "{\r\n  initialNavigation: boolean;\r\n  visibleItems: IAutocompleteItem[];\r\n  onUpdateFocus: (value: string) => void;\r\n  onSetInitialNavigation: (value: boolean) => void;\r\n}"
               }
             }
           ]
@@ -355,7 +355,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    multiSelect?: boolean;\n    selectionOrder: string[];\n    items?: IAutocompleteItem[];\n    onChipRemove: (item: IAutocompleteItem) => void;\n  }"
+                "text": "{\r\n    multiSelect?: boolean;\r\n    selectionOrder: string[];\r\n    items?: IAutocompleteItem[];\r\n    onChipRemove: (item: IAutocompleteItem) => void;\r\n  }"
               }
             }
           ]
@@ -365,7 +365,7 @@
           "name": "processChipRemoval",
           "return": {
             "type": {
-              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedSelectionOrder: string[];\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedSelectionOrder: string[];\r\n}"
             }
           },
           "parameters": [
@@ -378,7 +378,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    selectionOrder: string[];\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    selectionOrder: string[];\r\n  }"
               }
             }
           ]
@@ -388,7 +388,7 @@
           "name": "processInputChange",
           "return": {
             "type": {
-              "text": "{\n  inputValue: string;\n  shouldShowMenu: boolean;\n  updatedItems: IAutocompleteItem[] | undefined;\n  shouldResetNavigation: boolean;\n}"
+              "text": "{\r\n  inputValue: string;\r\n  shouldShowMenu: boolean;\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  shouldResetNavigation: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -401,7 +401,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customInputChange?: (value: string) => void;\n    showMenuOnFocus?: boolean;\n    minChars: number;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    debounceMs?: number;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customInputChange?: (value: string) => void;\r\n    showMenuOnFocus?: boolean;\r\n    minChars: number;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    debounceMs?: number;\r\n  }"
               }
             }
           ]
@@ -411,7 +411,7 @@
           "name": "processItemSelection",
           "return": {
             "type": {
-              "text": "{\n  updatedItems: IAutocompleteItem[] | undefined;\n  updatedValue: string | undefined;\n  updatedSelectionOrder: string[];\n  shouldExpandChips: boolean;\n  shouldCloseMenu: boolean;\n}"
+              "text": "{\r\n  updatedItems: IAutocompleteItem[] | undefined;\r\n  updatedValue: string | undefined;\r\n  updatedSelectionOrder: string[];\r\n  shouldExpandChips: boolean;\r\n  shouldCloseMenu: boolean;\r\n}"
             }
           },
           "parameters": [
@@ -424,7 +424,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    items?: IAutocompleteItem[];\n    multiSelect?: boolean;\n    leaveMenuOpen?: boolean;\n    selectionOrder: string[];\n    maxChips?: number;\n    customItemSelect?: (item: IAutocompleteItem) => void;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    items?: IAutocompleteItem[];\r\n    multiSelect?: boolean;\r\n    leaveMenuOpen?: boolean;\r\n    selectionOrder: string[];\r\n    maxChips?: number;\r\n    customItemSelect?: (item: IAutocompleteItem) => void;\r\n  }"
               }
             }
           ]
@@ -447,7 +447,7 @@
             {
               "name": "params",
               "type": {
-                "text": "{\n    disabled?: boolean;\n    readOnly?: boolean;\n    customKeyDown?: (event: KeyboardEvent) => void;\n  }"
+                "text": "{\r\n    disabled?: boolean;\r\n    readOnly?: boolean;\r\n    customKeyDown?: (event: KeyboardEvent) => void;\r\n  }"
               }
             }
           ]
@@ -809,7 +809,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable autocomplete component used to create searchable text inputs.\n\nThe component supports a `<slot>` for injecting custom content.",
+          "description": "A customizable autocomplete component used to create searchable text inputs.\r\n\r\nThe component supports a `<slot>` for injecting custom content.",
           "name": "ModusWcAutocomplete",
           "members": [
             {
@@ -899,6 +899,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
+              "type": {
+                "text": "AutocompleteTypes"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "default": "true",
@@ -952,7 +960,7 @@
               "name": "debounce-ms",
               "fieldName": "debounceMs",
               "default": "300",
-              "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing.",
+              "description": "The debounce timeout in milliseconds.\r\nSet to 0 to disable debouncing.",
               "type": {
                 "text": "number"
               }
@@ -1012,7 +1020,7 @@
               "name": "items",
               "fieldName": "items",
               "default": "[]",
-              "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render.",
+              "description": "The items to display in the menu.\r\nCreating a new array of items will ensure proper component re-render.",
               "type": {
                 "text": "IAutocompleteItem[]"
               }
@@ -1191,7 +1199,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+              "description": "Event emitted when the input value changes.\r\nThis event is debounced based on the debounceMs prop."
             },
             {
               "kind": "field",
@@ -1238,7 +1246,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable avatar component used to create avatars with different images or user initials.\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\nThe component will extract the first letter of each word in the initials string.",
+          "description": "A customizable avatar component used to create avatars with different images or user initials.\r\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\r\nThe component will extract the first letter of each word in the initials string.",
           "name": "ModusWcAvatar",
           "members": [
             {
@@ -1339,7 +1347,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.",
+          "description": "A customizable badge component used to create badges with different sizes, types, and colors.\r\n\r\nThe component supports a `<slot>` for injecting content within the badge.",
           "name": "ModusWcBadge",
           "members": [
             {
@@ -1362,7 +1370,7 @@
               "default": "'primary'",
               "description": "The color variant of the badge.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -1506,7 +1514,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable buttongroup component that groups multiple Modus buttons together.\n\nThe component supports a `<slot>` for injecting content within the buttongroup.",
+          "description": "A customizable buttongroup component that groups multiple Modus buttons together.\r\n\r\nThe component supports a `<slot>` for injecting content within the buttongroup.",
           "name": "ModusWcButtonGroup",
           "members": [
             {
@@ -1607,14 +1615,14 @@
             {
               "name": "buttonGroupClick",
               "type": {
-                "text": "EventEmitter<{\n    button: HTMLElement;\n    isSelected: boolean;\n  }>"
+                "text": "EventEmitter<{\r\n    button: HTMLElement;\r\n    isSelected: boolean;\r\n  }>"
               },
               "description": "Event emitted when any button in the group is clicked"
             },
             {
               "name": "buttonSelectionChange",
               "type": {
-                "text": "EventEmitter<{\n    selectedButtons: HTMLElement[];\n  }>"
+                "text": "EventEmitter<{\r\n    selectedButtons: HTMLElement[];\r\n  }>"
               },
               "description": "Event emitted when button selection changes"
             }
@@ -1647,7 +1655,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
+          "description": "A customizable button component used to create buttons with different sizes, variants, and types.\r\n\r\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
           "name": "ModusWcButton",
           "members": [
             {
@@ -1784,7 +1792,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
+          "description": "A customizable card component used to group and display content in a way that is easily readable.\r\n\r\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
           "name": "ModusWcCard",
           "members": [
             {
@@ -2037,7 +2045,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable chip component used to display information in a compact area\n\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
+          "description": "A customizable chip component used to display information in a compact area\r\n\r\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
           "name": "ModusWcChip",
           "members": [
             {
@@ -2181,7 +2189,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
+          "description": "A customizable collapse component used for showing and hiding content.\r\n\r\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
           "name": "ModusWcCollapse",
           "members": [
             {
@@ -2211,15 +2219,6 @@
           ],
           "attributes": [
             {
-              "name": "bordered",
-              "fieldName": "bordered",
-              "default": "false",
-              "description": "Indicates that the component should have a border.",
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "collapse-id",
               "fieldName": "collapseId",
               "description": "A unique identifier used to set the id attributes of various elements.",
@@ -2248,9 +2247,18 @@
             {
               "name": "options",
               "fieldName": "options",
-              "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot.",
+              "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "ICollapseOptions"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'border'",
+              "description": "Visual style of the collapse component.",
+              "type": {
+                "text": "CollapseVariant"
               }
             }
           ],
@@ -2293,7 +2301,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable date picker component used to create date inputs.\n\nAdheres to WCAG 2.2 standards.",
+          "description": "A customizable date picker component used to create date inputs.\r\n\r\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcDate",
           "members": [
             {
@@ -2339,6 +2347,11 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFormatChange",
+              "description": "Re-displays the stored ISO value in the new format when the `format` prop changes."
             },
             {
               "kind": "method",
@@ -2427,10 +2440,9 @@
             {
               "name": "format",
               "fieldName": "format",
-              "default": "'dd-mm-yyyy'",
               "description": "The date format for display and input.",
               "type": {
-                "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
+                "text": "| 'yyyy-mm-dd'\r\n    | 'dd-mm-yyyy'\r\n    | 'mm-dd-yyyy'\r\n    | 'yyyy/mm/dd'\r\n    | 'dd/mm/yyyy'\r\n    | 'mm/dd/yyyy'\r\n    | 'MMM DD, YYYY'"
               }
             },
             {
@@ -2503,7 +2515,7 @@
               "name": "show-week-numbers",
               "fieldName": "showWeekNumbers",
               "default": "false",
-              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.",
               "type": {
                 "text": "boolean"
               }
@@ -2568,7 +2580,7 @@
               "type": {
                 "text": "EventEmitter<InputEvent>"
               },
-              "description": "Event emitted when the input value changes."
+              "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid."
             },
             {
               "kind": "field",
@@ -2630,7 +2642,7 @@
               "default": "'tertiary'",
               "description": "The color of the divider line.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'high-contrast'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -2739,7 +2751,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable dropdown menu component used to render a button and toggleable menu.\n\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
+          "description": "A customizable dropdown menu component used to render a button and toggleable menu.\r\n\r\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
           "name": "ModusWcDropdownMenu",
           "members": [
             {
@@ -2806,7 +2818,7 @@
               "default": "'primary'",
               "description": "The color variant of the button.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -2939,7 +2951,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "File dropzone component that allows users to drag and drop files for upload.\n\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
+          "description": "File dropzone component that allows users to drag and drop files for upload.\r\n\r\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
           "name": "ModusWcFileDropzone",
           "members": [
             {
@@ -3134,7 +3146,7 @@
               "default": "'tertiary'",
               "description": "The color of the button.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
@@ -3256,7 +3268,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -3347,7 +3359,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable feedback component used to provide additional context related to form input interactions.\n\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable feedback component used to provide additional context related to form input interactions.\r\n\r\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcInputFeedback",
           "members": [
             {
@@ -3439,7 +3451,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -3622,7 +3634,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\r\nProvides consistent branding across applications with various product logo options.\r\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
           "name": "ModusWcLogo",
           "members": [
             {
@@ -3704,7 +3716,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu item component used to display the item portion of a menu.\n\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
+          "description": "A customizable menu item component used to display the item portion of a menu.\r\n\r\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
           "name": "ModusWcMenuItem",
           "members": [
             {
@@ -3724,6 +3736,18 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
             },
             {
               "kind": "field",
@@ -3815,14 +3839,6 @@
               }
             },
             {
-              "name": "start-icon",
-              "fieldName": "startIcon",
-              "description": "The modus icon name to render on the start of the menu item.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "sub-label",
               "fieldName": "subLabel",
               "description": "The text rendered beneath the label.",
@@ -3863,7 +3879,7 @@
               "kind": "field",
               "name": "itemSelect",
               "type": {
-                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
+                "text": "EventEmitter<{\r\n    value: string;\r\n    selected?: boolean;\r\n  }>"
               },
               "description": "Event emitted when a menu item is selected."
             }
@@ -3896,7 +3912,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
+          "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\r\n\r\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
           "name": "ModusWcMenu",
           "members": [
             {
@@ -3906,6 +3922,46 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleFocusout",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "FocusEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSelectionModeChange"
             },
             {
               "kind": "method",
@@ -3948,6 +4004,15 @@
               }
             },
             {
+              "name": "selection-mode",
+              "fieldName": "selectionMode",
+              "default": "'single'",
+              "description": "The selection mode of the menu.",
+              "type": {
+                "text": "SelectionMode"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -3966,6 +4031,14 @@
                 "text": "EventEmitter<FocusEvent>"
               },
               "description": "Event emitted when the menu loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "menuSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedItems: HTMLElement[];\r\n  }>"
+              },
+              "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
             }
           ],
           "customElement": true
@@ -3996,7 +4069,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable modal component used to display content in a dialog.\n\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable modal component used to display content in a dialog.\r\n\r\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcModal",
           "members": [
             {
@@ -4017,7 +4090,7 @@
               "name": "backdrop",
               "fieldName": "backdrop",
               "default": "'default'",
-              "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
+              "description": "The modal's backdrop.\r\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.",
               "type": {
                 "text": "'default' | 'static'"
               }
@@ -4244,7 +4317,7 @@
             {
               "name": "visibility",
               "fieldName": "visibility",
-              "default": "{ ai: false, apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+              "default": "{ ai: false, apps: false, help: false, logo: true, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
               "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden.",
               "type": {
                 "text": "INavbarVisibility"
@@ -4757,7 +4830,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable panel component used to organize content in a structured layout.\n\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable panel component used to organize content in a structured layout.\r\n\r\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcPanel",
           "members": [
             {
@@ -4992,7 +5065,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
+          "description": "A customizable progress component used to show the progress of a task or show the passing of time.\r\n\r\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
           "name": "ModusWcProgress",
           "members": [
             {
@@ -5547,7 +5620,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\n\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
+          "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\r\n\r\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
           "name": "ModusWcSideNavigation",
           "members": [
             {
@@ -6433,7 +6506,7 @@
               "kind": "field",
               "name": "cellEditCommit",
               "type": {
-                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n    newValue: unknown;\n    updatedRow: Record<string, unknown>;\n  }>"
+                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n    newValue: unknown;\r\n    updatedRow: Record<string, unknown>;\r\n  }>"
               },
               "description": "Emits when cell editing is committed with the new value."
             },
@@ -6441,7 +6514,7 @@
               "kind": "field",
               "name": "cellEditStart",
               "type": {
-                "text": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n  }>"
+                "text": "EventEmitter<{\r\n    rowIndex: number;\r\n    colId: string;\r\n  }>"
               },
               "description": "Emits when cell editing starts."
             },
@@ -6457,7 +6530,7 @@
               "kind": "field",
               "name": "rowClick",
               "type": {
-                "text": "EventEmitter<{\n    row: Record<string, unknown>;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    row: Record<string, unknown>;\r\n    index: number;\r\n  }>"
               },
               "description": "Emits when a row is clicked."
             },
@@ -6465,7 +6538,7 @@
               "kind": "field",
               "name": "rowSelectionChange",
               "type": {
-                "text": "EventEmitter<{\n    selectedRows: Record<string, unknown>[];\n    selectedRowIds: string[];\n  }>"
+                "text": "EventEmitter<{\r\n    selectedRows: Record<string, unknown>[];\r\n    selectedRowIds: string[];\r\n  }>"
               },
               "description": "Emits when row selection changes with the selected rows and their IDs."
             },
@@ -6506,7 +6579,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tabs component used to create groups of tabs.\n\nThe component supports a `<slot>` for injecting custom tab content.",
+          "description": "A customizable tabs component used to create groups of tabs.\r\n\r\nThe component supports a `<slot>` for injecting custom tab content.",
           "name": "ModusWcTabs",
           "members": [
             {
@@ -6572,7 +6645,7 @@
               "kind": "field",
               "name": "tabChange",
               "type": {
-                "text": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>"
+                "text": "EventEmitter<{\r\n    previousTab: number;\r\n    newTab: number;\r\n  }>"
               },
               "description": "When a tab is switched to, this event outputs the relevant indices"
             }
@@ -6605,7 +6678,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create text inputs with types.\n\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
+          "description": "A customizable input component used to create text inputs with types.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
           "name": "ModusWcTextInput",
           "members": [
             {
@@ -6627,7 +6700,7 @@
               "fieldName": "autoCapitalize",
               "description": "Controls automatic capitalization in inputted text.",
               "type": {
-                "text": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'"
+                "text": "| 'off'\r\n    | 'none'\r\n    | 'on'\r\n    | 'sentences'\r\n    | 'words'\r\n    | 'characters'"
               }
             },
             {
@@ -6687,7 +6760,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -6947,7 +7020,7 @@
               "fieldName": "enterkeyhint",
               "description": "A hint to the browser for which enter key to display.",
               "type": {
-                "text": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'"
+                "text": "| 'enter'\r\n    | 'done'\r\n    | 'go'\r\n    | 'next'\r\n    | 'previous'\r\n    | 'search'\r\n    | 'send'"
               }
             },
             {
@@ -7115,7 +7188,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A theme switcher component used to toggle the application theme and/or mode.\n\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
+          "description": "A theme switcher component used to toggle the application theme and/or mode.\r\n\r\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
           "name": "ModusWcThemeSwitcher",
           "members": [
             {
@@ -7230,7 +7303,7 @@
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document.",
+              "description": "ID of a `<datalist>` element that contains pre-defined time options.\r\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
               }
@@ -7331,7 +7404,7 @@
               "name": "show-seconds",
               "fieldName": "showSeconds",
               "default": "false",
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute.",
+              "description": "Displays the time input format as `HH:mm:ss` if `true`.\r\nInternally sets the `step` to 1 second.\r\nIf a `step` value is provided, it will override this attribute.",
               "type": {
                 "text": "boolean"
               }
@@ -7348,7 +7421,7 @@
             {
               "name": "step",
               "fieldName": "step",
-              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided.",
+              "description": "Specifies the granularity that the `value` must adhere to.\r\nValue of step given in seconds. Default value is 60 seconds.\r\nOverrides the `seconds` attribute if both are provided.",
               "type": {
                 "text": "number"
               }
@@ -7357,7 +7430,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`.",
+              "description": "The value of the time input.\r\nAlways in 24-hour format that includes leading zeros:\r\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\r\nto be selected based on user's locale (or by the user agent).\r\nIf time includes seconds the format is always `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
@@ -7418,7 +7491,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
+          "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
           "name": "ModusWcToast",
           "members": [
             {
@@ -7513,7 +7586,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable toolbar component used to organize content across the entire page.\n\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
+          "description": "A customizable toolbar component used to organize content across the entire page.\r\n\r\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
           "name": "ModusWcToolbar",
           "members": [
             {
@@ -7570,7 +7643,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\r\n\r\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\r\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -7731,7 +7804,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\n\nNote:\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\nproviding your own custom values for the size or weight properties from the available options.\n\n\n- If both slot content and `label` are provided, only the slot content will be rendered\n- Use the `label` prop when you need to dynamically update the text.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\r\n\r\nNote:\r\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\r\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\r\nproviding your own custom values for the size or weight properties from the available options.\r\n\r\n\r\n- If both slot content and `label` are provided, only the slot content will be rendered\r\n- Use the `label` prop when you need to dynamically update the text.",
           "name": "ModusWCTypography",
           "members": [
             {
