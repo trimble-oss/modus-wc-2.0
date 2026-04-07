@@ -195,15 +195,15 @@ modus-wc-switch.modus-wc-switch-host {
 
     border: none;
     box-shadow:
-      var(--handleoffsetcalculator) 0 0 3px var(--fallback-b1) inset,
-      0 0 0 3px var(--fallback-b1) inset;
+      var(--handleoffsetcalculator) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
+      0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
     color: var(--modus-wc-color-white);
 
     &:indeterminate {
       box-shadow:
-        calc(var(--handleoffset) / 2) 0 0 3px var(--fallback-b1) inset,
-        calc(var(--handleoffset) / -2) 0 0 3px var(--fallback-b1) inset,
-        0 0 0 3px var(--fallback-b1) inset;
+        calc(var(--handleoffset) / 2) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
+        calc(var(--handleoffset) / -2) 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset,
+        0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
     }
 
     &:checked {
@@ -211,8 +211,8 @@ modus-wc-switch.modus-wc-switch-host {
     }
 
     &:focus-visible {
-      outline: 2px solid var(--modus-wc-color-highlight-blue-on-dark);
-      outline-offset: 2px;
+      outline: var(--modus-wc-border-width-sm) solid #38bdf8;
+      outline-offset: var(--modus-wc-border-width-sm);
     }
 
     &:disabled {
@@ -221,10 +221,10 @@ modus-wc-switch.modus-wc-switch-host {
 
     // Sizes
     &.modus-wc-toggle-xs {
-      --handleoffset: 0.5rem;
+      --handleoffset: var(--modus-wc-spacing-sm);
 
-      height: 1rem;
-      width: 1.5rem;
+      height: var(--modus-wc-spacing-lg);
+      width: var(--modus-wc-spacing-xl);
 
       & ~ modus-wc-input-label .modus-wc-input-label {
         font-size: var(--modus-wc-font-size-sm);
@@ -233,10 +233,10 @@ modus-wc-switch.modus-wc-switch-host {
     }
 
     &.modus-wc-toggle-sm {
-      --handleoffset: 0.75rem;
+      --handleoffset: var(--modus-wc-spacing-md);
 
       height: 1.25rem;
-      width: 2rem;
+      width: var(--modus-wc-spacing-2xl);
 
       & ~ modus-wc-input-label .modus-wc-input-label {
         font-size: var(--modus-wc-font-size-md);
@@ -245,10 +245,10 @@ modus-wc-switch.modus-wc-switch-host {
     }
 
     &.modus-wc-toggle-md {
-      --handleoffset: 1rem;
+      --handleoffset: var(--modus-wc-spacing-lg);
 
-      height: 1.5rem;
-      width: 2.5rem;
+      height: var(--modus-wc-spacing-xl);
+      width: var(--modus-wc-size-md);
 
       & ~ modus-wc-input-label .modus-wc-input-label {
         font-size: var(--modus-wc-font-size-lg);
@@ -257,10 +257,10 @@ modus-wc-switch.modus-wc-switch-host {
     }
 
     &.modus-wc-toggle-lg {
-      --handleoffset: 1.5rem;
+      --handleoffset: var(--modus-wc-spacing-xl);
 
-      height: 2rem;
-      width: 3.5rem;
+      height: var(--modus-wc-spacing-2xl);
+      width: var(--modus-wc-size-xl);
 
       & ~ modus-wc-input-label .modus-wc-input-label {
         font-size: var(--modus-wc-font-size-xl);
