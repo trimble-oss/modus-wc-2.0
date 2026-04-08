@@ -1,0 +1,22 @@
+@attribute [Stories("Inputs/Text Input")]
+
+<Stories TComponent="ModusWcTextInput">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcTextInput Label="Your name" Placeholder="Enter your name…" />
+        </Template>
+    </Story>
+
+    <Story Name="Text Input - AutoCorrect On">
+        <Template>
+            <ModusWcTextInput AutoCorrect="on" Label="Your name" Placeholder="Enter your name…" />
+        </Template>
+    </Story>
+
+    <Story Name="Text Input - AutoCorrect Off">
+        <Template>
+            <ModusWcTextInput AutoCorrect="off" Label="Your name" Placeholder="Enter your name…" />
+        </Template>
+    </Story>
+</Stories>

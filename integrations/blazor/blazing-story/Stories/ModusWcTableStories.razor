@@ -1,0 +1,26 @@
+@attribute [Stories("Display/Table")]
+
+<Stories TComponent="ModusWcTable">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcTable Columns="@_columns" Data="@_data" Hover="true" Sortable="true" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+
+    private object[] _columns = [
+        new { id = "id",    header = "ID",    accessor = "id",    width = "60px" },
+        new { id = "name",  header = "Name",  accessor = "name",  width = "140px" },
+        new { id = "email", header = "Email", accessor = "email", width = "200px" },
+        new { id = "role",  header = "Role",  accessor = "role",  width = "100px" },
+    ];
+    private object[] _data = [
+        new { id = "1", name = "Alice Martin",  email = "alice@example.com",  role = "Admin" },
+        new { id = "2", name = "Bob Chen",      email = "bob@example.com",    role = "Editor" },
+        new { id = "3", name = "Carol Davis",   email = "carol@example.com",  role = "Viewer" },
+    ];
+}

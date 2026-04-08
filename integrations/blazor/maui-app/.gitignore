@@ -1,0 +1,7 @@
+# Build artifacts copied from the repo's dist/ by MSBuild before each build.
+wwwroot/dist/
+wwwroot/css/modus-wc-styles.css
+
+# .NET build output
+obj/
+bin/

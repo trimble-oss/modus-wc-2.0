@@ -1,0 +1,21 @@
+@attribute [Stories("Inputs/Autocomplete")]
+
+<Stories TComponent="ModusWcAutocomplete">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcAutocomplete Label="Search fruit" Options="@_options" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+
+    private object[] _options = [
+        new { label = "Apple",  value = "apple" },
+        new { label = "Banana", value = "banana" },
+        new { label = "Cherry", value = "cherry" },
+        new { label = "Date",   value = "date" },
+    ];
+}

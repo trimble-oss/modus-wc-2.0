@@ -1,0 +1,19 @@
+@attribute [Stories("Layout/Modal")]
+
+<Stories TComponent="ModusWcModal">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcButton>Open Modal</ModusWcButton>
+<ModusWcModal ModalId="demo-modal">
+    <div slot="header">Modal Title</div>
+    <p>Modal body content goes here.</p>
+    <div slot="footer">
+        <ModusWcButton Variant="outlined">Cancel</ModusWcButton>
+        <ModusWcButton>Confirm</ModusWcButton>
+    </div>
+</ModusWcModal>
+        </Template>
+    </Story>
+
+</Stories>

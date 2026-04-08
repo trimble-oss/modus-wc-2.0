@@ -1,0 +1,20 @@
+@attribute [Stories("Navigation/Breadcrumbs")]
+
+<Stories TComponent="ModusWcBreadcrumbs">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcBreadcrumbs Items="@_items" Size="md" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+
+    private object[] _items = [
+        new { label = "Home", url = "#" },
+        new { label = "Products", url = "#" },
+        new { label = "Current Page", url = "#" },
+    ];
+}

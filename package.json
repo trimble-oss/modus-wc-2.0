@@ -93,13 +93,18 @@
     "lint:prettier": "wireit",
     "lint:stylelint": "wireit",
     "format": "wireit",
-    "prettier": "prettier --write \"src/**/*.*\"",
+    "prettier": "prettier --write \"stencil.config.ts\"",
     "start": "wireit",
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
-    "test:vue": "npm -C integrations/vue/v-latest run dev"
+    "test:vue": "npm -C integrations/vue/v-latest run dev",
+    "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
+    "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",
+    "start:blazor": "dotnet run --project integrations/blazor/blazing-story/BlazingStoryApp.csproj",
+    "build:maui-android": "dotnet build integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android",
+    "publish:maui-android": "dotnet publish integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",

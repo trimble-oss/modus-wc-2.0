@@ -1,0 +1,16 @@
+@attribute [Stories("Navigation/Navbar")]
+
+<Stories TComponent="ModusWcNavbar">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcNavbar AppTitle="@_appTitle" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+
+    private string _appTitle = "Modus App";
+}

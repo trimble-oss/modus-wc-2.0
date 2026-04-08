@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-android</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ModusWebComponents.MauiApp</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ApplicationId>com.trimble.moduswebcomponents.mauiapp</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.20" />
+    <PackageReference Include="BlazingStory" Version="1.0.0-preview.75" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\stencil-generated\ModusWebComponents.Blazor\ModusWebComponents.Blazor.csproj" />
+  </ItemGroup>
+
+  <!--
+    Copy the Stencil ESM bundle into wwwroot before each build so the
+    BlazorWebView can serve it to the web engine.
+  -->
+  <PropertyGroup>
+    <StencilEsmDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)','..','..','..','dist','esm'))</StencilEsmDir>
+    <WwwrootDistDir>$(MSBuildProjectDirectory)\wwwroot\dist\esm</WwwrootDistDir>
+    <StencilStylesDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)','..','..','..','dist'))</StencilStylesDir>
+  </PropertyGroup>
+
+  <Target Name="CopyStencilBundle" BeforeTargets="Build">
+    <ItemGroup>
+      <StencilFiles Include="$(StencilEsmDir)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(StencilFiles)"
+          DestinationFiles="@(StencilFiles->'$(WwwrootDistDir)\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(StencilStylesDir)\modus-wc-styles.css"
+          DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\css"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(StencilStylesDir)\modus-wc-styles.css')" />
+  </Target>
+
+</Project>

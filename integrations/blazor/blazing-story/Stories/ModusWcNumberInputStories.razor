@@ -1,0 +1,22 @@
+@attribute [Stories("Inputs/Number Input")]
+
+<Stories TComponent="ModusWcNumberInput">
+
+    <Story Name="Default">
+        <Template>
+            <ModusWcNumberInput Label="Enter a number" />
+        </Template>
+    </Story>
+
+    <Story Name="Number Input - Type Number">
+        <Template>
+            <ModusWcNumberInput Type="number" Label="Enter a number" />
+        </Template>
+    </Story>
+
+    <Story Name="Number Input - Type Range">
+        <Template>
+            <ModusWcNumberInput Type="range" Label="Enter a number" />
+        </Template>
+    </Story>
+</Stories>
