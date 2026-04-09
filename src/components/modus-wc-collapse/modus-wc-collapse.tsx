@@ -132,7 +132,9 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getTitleClasses(): string {
-    const classList: string[] = ['modus-wc-collapse-title modus-wc-min-h-4'];
+    const classList: string[] = [
+      'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
+    ];
 
     const paddingClass = convertPropsToTitleDivClasses({
       size: this.options?.size,
@@ -197,7 +199,7 @@ export class ModusWcCollapse {
                     size={this.options.size}
                   ></modus-wc-icon>
                 )}
-                <div class="modus-wc-title-main-content modus-wc-inline-flex modus-wc-flex-col">
+                <div class="modus-wc-title-main-content">
                   <div class={this.getTitleChildDivClasses()}>
                     {this.options.icon && (
                       <modus-wc-icon
@@ -211,7 +213,7 @@ export class ModusWcCollapse {
                   </div>
                 </div>
                 {this.options.endIcon && (
-                  <div class="modus-wc-title-end-content modus-wc-inline-flex modus-wc-items-center">
+                  <div class="modus-wc-title-end-content">
                     <modus-wc-icon
                       aria-label={this.options.endIconAriaLabel}
                       class="title-end-icon"

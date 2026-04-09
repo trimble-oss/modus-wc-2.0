@@ -11,17 +11,17 @@ exports[`modus-wc-accordion should render with collapse elements 1`] = `
         <modus-wc-collapse collapse-id="123" hidden="" options="{options[2]}">
           <!---->
           <details class="modus-wc-border modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close no-leading-icons">
-            <summary class="modus-wc-collapse-title modus-wc-min-h-4" id="123-title"></summary>
+            <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></summary>
             <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
           </details>
         </modus-wc-collapse>
         <details class="modus-wc-border modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close no-leading-icons">
-          <summary class="modus-wc-collapse-title modus-wc-min-h-4" id="123-title"></summary>
+          <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></summary>
           <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
         </details>
       </modus-wc-collapse>
       <details class="modus-wc-border modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-arrow modus-wc-collapse-close no-leading-icons">
-        <summary class="modus-wc-collapse-title modus-wc-min-h-4" id="123-title"></summary>
+        <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title"></summary>
         <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
       </details>
     </modus-wc-collapse>

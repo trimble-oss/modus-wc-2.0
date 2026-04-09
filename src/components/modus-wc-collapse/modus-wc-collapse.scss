@@ -39,7 +39,9 @@ modus-wc-collapse .modus-wc-collapse {
   }
 
   .modus-wc-title-main-content {
+    display: inline-flex;
     flex: 1;
+    flex-direction: column;
     min-width: 0;
   }
 
@@ -62,11 +64,13 @@ modus-wc-collapse .modus-wc-collapse {
 
     &::before,
     &::after {
-      display: none !important;
+      display: none;
     }
   }
 
   .modus-wc-title-end-content {
+    align-items: center;
+    display: inline-flex;
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
@@ -78,7 +82,7 @@ modus-wc-collapse .modus-wc-collapse {
 
   .title-start-icon {
     height: 24px;
-    inset-inline-start: var(--modus-wc-spacing-sm);
+    inset-inline-start: var(--modus-wc-spacing-lg);
     pointer-events: none;
     position: absolute;
     top: calc(var(--modus-wc-spacing-md) + 12px);
@@ -103,11 +107,15 @@ modus-wc-collapse .modus-wc-collapse {
   }
 
   &.has-start-icon > .modus-wc-collapse-title {
-    padding-inline-start: var(--modus-wc-spacing-3xl);
+    padding-inline-start: var(--modus-wc-size-xxl);
 
     &::before {
-      inset-inline-start: var(--modus-wc-spacing-2xl);
+      inset-inline-start: calc(--modus-wc-size-lg + 1px);
     }
+  }
+
+  &.has-start-icon > .modus-wc-collapse-description {
+    padding-inline-start: var(--modus-wc-size-xxs);
   }
 
   &.no-leading-icons > .modus-wc-collapse-title,
@@ -118,7 +126,7 @@ modus-wc-collapse .modus-wc-collapse {
 
 .modus-wc-collapse-arrow.modus-wc-chevron-right
   > .modus-wc-collapse-title::after {
-  top: calc(var(--modus-wc-spacing-md) + 12px) !important;
+  top: calc(var(--modus-wc-spacing-md) + 12px);
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-left
@@ -176,11 +184,6 @@ modus-wc-collapse .modus-wc-collapse {
 
     .modus-wc-collapse-title {
       font-weight: var(--modus-wc-font-weight-normal);
-      padding-inline-start: var(--modus-wc-spacing-md);
-    }
-
-    &.has-start-icon .modus-wc-collapse-title {
-      padding-inline-start: var(--modus-wc-spacing-3xl);
     }
 
     &.no-leading-icons .modus-wc-collapse-title,
@@ -201,14 +204,6 @@ modus-wc-collapse .modus-wc-collapse {
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-highlight-blue);
-
-    .modus-wc-collapse-title {
-      padding-inline-start: var(--modus-wc-spacing-md);
-    }
-
-    &.has-start-icon .modus-wc-collapse-title {
-      padding-inline-start: var(--modus-wc-spacing-3xl);
-    }
 
     &.no-leading-icons .modus-wc-collapse-title,
     &.no-leading-icons .modus-wc-collapse-description {
