@@ -501,6 +501,10 @@ export namespace Components {
      */
     interface ModusWcCollapse {
         /**
+          * Controls chevron placement.
+         */
+        "chevronPosition": 'left' | 'right';
+        /**
           * A unique identifier used to set the id attributes of various elements.
          */
         "collapseId"?: string;
@@ -3687,6 +3691,10 @@ declare namespace LocalJSX {
      * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
      */
     interface ModusWcCollapse {
+        /**
+          * Controls chevron placement.
+         */
+        "chevronPosition"?: 'left' | 'right';
         /**
           * A unique identifier used to set the id attributes of various elements.
          */

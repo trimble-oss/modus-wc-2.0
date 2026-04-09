@@ -2219,6 +2219,15 @@
           ],
           "attributes": [
             {
+              "name": "chevron-position",
+              "fieldName": "chevronPosition",
+              "default": "'right'",
+              "description": "Controls chevron placement.",
+              "type": {
+                "text": "'left' | 'right'"
+              }
+            },
+            {
               "name": "collapse-id",
               "fieldName": "collapseId",
               "description": "A unique identifier used to set the id attributes of various elements.",

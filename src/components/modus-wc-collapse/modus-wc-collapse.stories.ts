@@ -7,6 +7,7 @@ import { CollapseVariant } from './modus-wc-collapse.tailwind';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
+  'chevron-position'?: 'left' | 'right';
   'custom-class'?: string;
   expanded?: boolean;
   id?: string;
@@ -17,15 +18,37 @@ interface CollapseArgs {
 const options: ICollapseOptions = {
   title: 'Collapse Title',
   description: 'Collapse description',
+  endIcon: 'more_vertical',
+  endIconAriaLabel: 'More actions',
   icon: 'alert',
   iconAriaLabel: 'Alert',
+};
+
+const optionsWithStartIcon: ICollapseOptions = {
+  title: 'Collapse Title',
+  description: 'Collapse description',
+  endIcon: 'more_vertical',
+  endIconAriaLabel: 'More actions',
+  icon: 'alert',
+  iconAriaLabel: 'Alert',
+  startIcon: 'alert',
+  startIconAriaLabel: 'alert',
 };
 
 const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
-  args: { expanded: false, options, variant: 'border' },
+  args: {
+    'chevron-position': 'right',
+    expanded: false,
+    options,
+    variant: 'border',
+  },
   argTypes: {
+    'chevron-position': {
+      control: { type: 'select' },
+      options: ['left', 'right'],
+    },
     variant: {
       control: { type: 'select' },
       options: ['ghost', 'border'],
@@ -38,8 +61,12 @@ const meta: Meta<CollapseArgs> = {
             Interface: ICollapseOptions
             Properties:
             - description (string, optional): The description to render in the collapse header
+            - endIcon (string, optional): The Modus icon name to render at the end of the header
+            - endIconAriaLabel (string, optional): The end icon's aria-label
             - icon (string, optional): The Modus icon name to render in the collapse header
             - iconAriaLabel (string, optional): The icon's aria-label
+            - startIcon (string, optional): The Modus icon name to render first, before the chevron
+            - startIconAriaLabel (string, optional): The start icon's aria-label
             - size (DaisySize, optional): The size of the collapse header
             - title (string): The title to render in the collapse header
           `,
@@ -60,6 +87,7 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-collapse
+  chevron-position=${ifDefined(args['chevron-position'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id=${ifDefined(args.id)}
@@ -73,10 +101,15 @@ const Template: Story = {
 // const options = {
 //   title: 'Collapse Title',
 //   description: 'Collapse description',
+//   endIcon: 'more_vertical',
+//   endIconAriaLabel: 'More actions',
 //   icon: 'alert',
 //   iconAriaLabel: 'Alert',
+//   startIcon: 'alert',
+//   startIconAriaLabel: 'More actions',
 // };
 //   const collapse = document.querySelector('modus-wc-collapse');
+//   collapse.chevronPosition = 'right';
 //   collapse.options = options;
 </script>
     `;
@@ -84,6 +117,36 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const WithStartIconBeforeChevron: Story = {
+  ...Template,
+  args: {
+    'chevron-position': 'left',
+    expanded: false,
+    options: optionsWithStartIcon,
+    variant: 'border',
+  },
+};
+
+export const ChevronLeft: Story = {
+  ...Template,
+  args: {
+    'chevron-position': 'left',
+    expanded: false,
+    options,
+    variant: 'border',
+  },
+};
+
+export const ChevronRight: Story = {
+  ...Template,
+  args: {
+    'chevron-position': 'right',
+    expanded: false,
+    options,
+    variant: 'border',
+  },
+};
 
 export const WithCustomClickableHeader = {
   render: (args) => {
@@ -101,6 +164,7 @@ export const WithCustomClickableHeader = {
   }
 </style>
 <modus-wc-collapse
+  chevron-position=${ifDefined(args['chevron-position'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id="123"
@@ -136,6 +200,7 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-collapse',
         propsMapper: (v: CollapseArgs, el: HTMLElement) => {
           const collapseEl = el as unknown as {
+            chevronPosition: 'left' | 'right';
             customClass: string;
             expanded: boolean;
             id: string;
@@ -146,6 +211,7 @@ export const ShadowDomParent: Story = {
           if (!el.querySelector('[slot="content"]')) {
             el.innerHTML = '<div slot="content">Collapse content</div>';
           }
+          collapseEl.chevronPosition = v['chevron-position'] ?? 'right';
           collapseEl.customClass = v['custom-class'] || '';
           collapseEl.expanded = Boolean(v.expanded);
           collapseEl.id = v.id ?? '';

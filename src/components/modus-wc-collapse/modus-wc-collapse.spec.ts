@@ -67,6 +67,28 @@ describe('modus-wc-collapse', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should add has-start-icon class when startIcon exists and chevron position is left', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse, ModusWcIcon],
+      html: `<modus-wc-collapse
+              collapse-id="123"
+              chevron-position="left">
+            </modus-wc-collapse>`,
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.options = {
+      ...options,
+      startIcon: 'add',
+      startIconAriaLabel: 'Start icon',
+    };
+
+    await page.waitForChanges();
+
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    expect(details.classList.contains('has-start-icon')).toBe(true);
+  });
+
   it('should emit expandedChange event when collapse is expanded', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],
