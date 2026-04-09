@@ -14,7 +14,7 @@ exports[`modus-wc-collapse should render in expanded state 1`] = `
         </div>
       </div>
     </summary>
-    <div class="description modus-wc-collapse-description modus-wc-collapse-title modus-wc-font-light modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-text-base">
+    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base">
       Collapse description
     </div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content">
@@ -62,7 +62,7 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
         </div>
       </div>
     </summary>
-    <div class="description modus-wc-collapse-description modus-wc-collapse-title modus-wc-font-light modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 modus-wc-text-base">
+    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base">
       Collapse description
     </div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>

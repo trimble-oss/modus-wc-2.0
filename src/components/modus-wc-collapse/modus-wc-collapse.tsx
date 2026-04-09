@@ -10,7 +10,6 @@ import {
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import {
-  CollapseVariant,
   convertPropsToClasses,
   convertPropsToDescriptionDivClasses,
   convertPropsToTitleChildDivClasses,
@@ -20,7 +19,7 @@ import { DaisySize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 
 export interface ICollapseOptions {
-  /** The description to render in the collapse header. */
+  /** The description to render below the collapse header, visible only when the component is expanded. */
   description?: string;
   /** The Modus icon name to render at the end of the header. */
   endIcon?: string;
@@ -58,10 +57,10 @@ export class ModusWcCollapse {
   @Element() el!: HTMLElement;
 
   /** Visual style of the collapse component. */
-  @Prop() variant: CollapseVariant = 'border';
+  @Prop() variant?: 'ghost' | 'border' = 'border';
 
   /** Controls chevron placement. */
-  @Prop() chevronPosition: 'left' | 'right' = 'right';
+  @Prop() chevronPosition?: 'left' | 'right' = 'right';
 
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';

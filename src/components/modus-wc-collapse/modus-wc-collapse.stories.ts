@@ -3,7 +3,6 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ICollapseOptions } from './modus-wc-collapse';
-import { CollapseVariant } from './modus-wc-collapse.tailwind';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
@@ -12,7 +11,7 @@ interface CollapseArgs {
   expanded?: boolean;
   id?: string;
   options?: ICollapseOptions;
-  variant?: CollapseVariant;
+  variant?: 'ghost' | 'border';
 }
 
 const options: ICollapseOptions = {
@@ -205,7 +204,7 @@ export const ShadowDomParent: Story = {
             expanded: boolean;
             id: string;
             options: ICollapseOptions;
-            variant: CollapseVariant;
+            variant?: 'ghost' | 'border';
           };
           // Only set innerHTML once on initial creation
           if (!el.querySelector('[slot="content"]')) {

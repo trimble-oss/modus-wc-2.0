@@ -7,7 +7,6 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-import { CollapseVariant } from "./components/modus-wc-collapse/modus-wc-collapse.tailwind";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
@@ -26,7 +25,6 @@ import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
-export { CollapseVariant } from "./components/modus-wc-collapse/modus-wc-collapse.tailwind";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
@@ -503,7 +501,7 @@ export namespace Components {
         /**
           * Controls chevron placement.
          */
-        "chevronPosition": 'left' | 'right';
+        "chevronPosition"?: 'left' | 'right';
         /**
           * A unique identifier used to set the id attributes of various elements.
          */
@@ -523,7 +521,7 @@ export namespace Components {
         /**
           * Visual style of the collapse component.
          */
-        "variant": CollapseVariant;
+        "variant"?: 'ghost' | 'border';
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3718,7 +3716,7 @@ declare namespace LocalJSX {
         /**
           * Visual style of the collapse component.
          */
-        "variant"?: CollapseVariant;
+        "variant"?: 'ghost' | 'border';
     }
     /**
      * A customizable date picker component used to create date inputs.

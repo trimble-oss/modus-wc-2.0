@@ -2267,7 +2267,7 @@
               "default": "'border'",
               "description": "Visual style of the collapse component.",
               "type": {
-                "text": "CollapseVariant"
+                "text": "'ghost' | 'border'"
               }
             }
           ],

@@ -13,14 +13,14 @@ The component supports a 'header' and 'content' `<slot>` for injecting custom HT
 
 ## Properties
 
-| Property          | Attribute          | Description                                                                                                                           | Type                            | Default     |
-| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ----------- |
-| `chevronPosition` | `chevron-position` | Controls chevron placement.                                                                                                           | `"left" \| "right"`             | `'right'`   |
-| `collapseId`      | `collapse-id`      | A unique identifier used to set the id attributes of various elements.                                                                | `string \| undefined`           | `undefined` |
-| `customClass`     | `custom-class`     | Custom CSS class to apply to the outer div.                                                                                           | `string \| undefined`           | `''`        |
-| `expanded`        | `expanded`         | Controls whether the collapse is expanded or not.                                                                                     | `boolean \| undefined`          | `false`     |
-| `options`         | `options`          | Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot. | `ICollapseOptions \| undefined` | `undefined` |
-| `variant`         | `variant`          | Visual style of the collapse component.                                                                                               | `"border" \| "ghost"`           | `'border'`  |
+| Property          | Attribute          | Description                                                                                                                           | Type                               | Default     |
+| ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `chevronPosition` | `chevron-position` | Controls chevron placement.                                                                                                           | `"left" \| "right" \| undefined`   | `'right'`   |
+| `collapseId`      | `collapse-id`      | A unique identifier used to set the id attributes of various elements.                                                                | `string \| undefined`              | `undefined` |
+| `customClass`     | `custom-class`     | Custom CSS class to apply to the outer div.                                                                                           | `string \| undefined`              | `''`        |
+| `expanded`        | `expanded`         | Controls whether the collapse is expanded or not.                                                                                     | `boolean \| undefined`             | `false`     |
+| `options`         | `options`          | Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot. | `ICollapseOptions \| undefined`    | `undefined` |
+| `variant`         | `variant`          | Visual style of the collapse component.                                                                                               | `"border" \| "ghost" \| undefined` | `'border'`  |
 
 
 ## Events
