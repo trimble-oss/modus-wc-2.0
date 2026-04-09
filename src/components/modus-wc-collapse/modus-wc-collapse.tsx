@@ -230,7 +230,7 @@ export class ModusWcCollapse {
           </summary>
           {this.expanded && this.options?.description && (
             <div
-              class={`modus-wc-collapse-description ${this.getTitleClasses()} ${this.getDescriptionDivClasses()}`}
+              class={`modus-wc-collapse-description ${this.getDescriptionDivClasses()}`}
             >
               {this.options.description}
             </div>

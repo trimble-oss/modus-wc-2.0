@@ -36,6 +36,7 @@ modus-wc-collapse .modus-wc-collapse {
 
   .description {
     font-size: var(--modus-wc-font-size-sm);
+    padding-inline-start: 16px;
   }
 
   .modus-wc-title-main-content {
@@ -56,16 +57,6 @@ modus-wc-collapse .modus-wc-collapse {
   .modus-wc-title-main-row > modus-wc-icon {
     height: 24px;
     margin-inline-end: var(--modus-wc-spacing-sm);
-  }
-
-  .modus-wc-collapse-description {
-    margin-top: calc(var(--modus-wc-spacing-sm) * -1);
-    padding-top: 0;
-
-    &::before,
-    &::after {
-      display: none;
-    }
   }
 
   .modus-wc-title-end-content {
@@ -110,12 +101,8 @@ modus-wc-collapse .modus-wc-collapse {
     padding-inline-start: var(--modus-wc-size-xxl);
 
     &::before {
-      inset-inline-start: calc(--modus-wc-size-lg + 1px);
+      inset-inline-start: 49px;
     }
-  }
-
-  &.has-start-icon > .modus-wc-collapse-description {
-    padding-inline-start: var(--modus-wc-size-xxs);
   }
 
   &.no-leading-icons > .modus-wc-collapse-title,
