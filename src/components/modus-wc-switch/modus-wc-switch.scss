@@ -26,6 +26,18 @@ modus-wc-switch.modus-wc-switch-host {
   --fallback-b1: var(--modus-wc-color-gray-4);
 
   // Sizes
+  &.modus-wc-toggle-xs {
+    --handleoffset: var(--modus-wc-spacing-sm);
+
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-xl);
+
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: var(--modus-wc-font-size-2xl);
+    }
+  }
+
   &.modus-wc-toggle-sm {
     --handleoffset: 1rem;
 
@@ -110,6 +122,18 @@ modus-wc-switch.modus-wc-switch-host {
   --fallback-b1: var(--modus-wc-color-gray-4);
 
   // Sizes
+  &.modus-wc-toggle-xs {
+    --handleoffset: var(--modus-wc-spacing-sm);
+
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-xl);
+
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: var(--modus-wc-font-size-2xl);
+    }
+  }
+
   &.modus-wc-toggle-sm {
     --handleoffset: 1rem;
 

@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { DaisySize } from '../types';
+import { ModusSize } from '../types';
 
 interface SwitchArgs {
   'custom-class'?: string;
@@ -14,7 +14,7 @@ interface SwitchArgs {
   label?: string;
   name?: string;
   required?: boolean;
-  size?: DaisySize;
+  size?: ModusSize;
   value: boolean;
 }
 

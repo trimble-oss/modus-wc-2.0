@@ -10,7 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-switch.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
-import { DaisySize } from '../types';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -52,7 +52,7 @@ export class ModusWcSwitch {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: ModusSize = 'md';
 
   /** The value of the switch. */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;
