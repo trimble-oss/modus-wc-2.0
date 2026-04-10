@@ -193,7 +193,7 @@ export class ModusWcCollapse {
                   <modus-wc-icon
                     aria-label={this.options.startIconAriaLabel}
                     class="title-start-icon"
-                    decorative={true}
+                    decorative={!this.options.startIconAriaLabel}
                     name={this.options.startIcon}
                     size={this.options.size}
                   ></modus-wc-icon>
@@ -203,7 +203,7 @@ export class ModusWcCollapse {
                     {this.options.icon && (
                       <modus-wc-icon
                         aria-label={this.options.iconAriaLabel}
-                        decorative={true}
+                        decorative={!this.options.iconAriaLabel}
                         name={this.options.icon}
                         size={this.options.size}
                       ></modus-wc-icon>
@@ -216,7 +216,7 @@ export class ModusWcCollapse {
                     <modus-wc-icon
                       aria-label={this.options.endIconAriaLabel}
                       class="title-end-icon"
-                      decorative={true}
+                      decorative={!this.options.endIconAriaLabel}
                       name={this.options.endIcon}
                       size={this.options.size}
                     ></modus-wc-icon>

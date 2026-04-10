@@ -14,6 +14,13 @@ interface CollapseArgs {
   variant?: 'ghost' | 'border';
 }
 
+const defaultOptions: ICollapseOptions = {
+  title: 'Collapse Title',
+  description: 'Collapse description',
+  icon: 'alert',
+  iconAriaLabel: 'Alert',
+};
+
 const options: ICollapseOptions = {
   title: 'Collapse Title',
   description: 'Collapse description',
@@ -100,12 +107,8 @@ const Template: Story = {
 // const options = {
 //   title: 'Collapse Title',
 //   description: 'Collapse description',
-//   endIcon: 'more_vertical',
-//   endIconAriaLabel: 'More actions',
 //   icon: 'alert',
 //   iconAriaLabel: 'Alert',
-//   startIcon: 'alert',
-//   startIconAriaLabel: 'More actions',
 // };
 //   const collapse = document.querySelector('modus-wc-collapse');
 //   collapse.chevronPosition = 'right';
@@ -115,34 +118,52 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
-
-export const WithStartIconBeforeChevron: Story = {
-  ...Template,
-  args: {
-    'chevron-position': 'left',
-    expanded: false,
-    options: optionsWithStartIcon,
-    variant: 'border',
-  },
-};
-
-export const ChevronLeft: Story = {
-  ...Template,
-  args: {
-    'chevron-position': 'left',
-    expanded: false,
-    options,
-    variant: 'border',
-  },
-};
-
-export const ChevronRight: Story = {
+export const Default: Story = {
   ...Template,
   args: {
     'chevron-position': 'right',
     expanded: false,
-    options,
+    options: defaultOptions,
+    variant: 'border',
+  },
+};
+
+export const WithStartIcon: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-collapse
+  chevron-position=${ifDefined(args['chevron-position'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?expanded=${args.expanded}
+  id=${ifDefined(args.id)}
+  .options=${args.options}
+  variant=${ifDefined(args.variant)}
+>
+  <div slot="content">Collapse content</div>
+</modus-wc-collapse>
+<script>
+// Adding this block to show how to set options via JS.
+// const options = {
+//   title: 'Collapse Title',
+//   description: 'Collapse description',
+//   endIcon: 'more_vertical',
+//   endIconAriaLabel: 'More actions',
+//   icon: 'alert',
+//   iconAriaLabel: 'Alert',
+//   startIcon: 'alert',
+//   startIconAriaLabel: 'alert',
+// };
+//   const collapse = document.querySelector('modus-wc-collapse');
+//   collapse.chevronPosition = 'left';
+//   collapse.options = options;
+</script>
+    `;
+  },
+  args: {
+    'chevron-position': 'left',
+    expanded: false,
+    options: optionsWithStartIcon,
     variant: 'border',
   },
 };

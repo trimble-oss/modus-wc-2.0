@@ -15,7 +15,7 @@ modus-wc-collapse .modus-wc-collapse {
   transition: none;
 
   .modus-wc-collapse-title {
-    font-size: var(--modus-wc-font-size-md);
+    font-size: var(--modus-wc-font-size-2xl);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
@@ -76,7 +76,7 @@ modus-wc-collapse .modus-wc-collapse {
     inset-inline-start: var(--modus-wc-spacing-lg);
     pointer-events: none;
     position: absolute;
-    top: calc(var(--modus-wc-spacing-md) + 12px);
+    top: 50%;
     transform: translateY(-50%);
   }
 
@@ -113,7 +113,13 @@ modus-wc-collapse .modus-wc-collapse {
 
 .modus-wc-collapse-arrow.modus-wc-chevron-right
   > .modus-wc-collapse-title::after {
-  top: calc(var(--modus-wc-spacing-md) + 12px);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.modus-wc-collapse-arrow.modus-wc-chevron-right.modus-wc-collapse-open
+  > .modus-wc-collapse-title::after {
+  transform: translateY(-50%) rotate(225deg);
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-left
@@ -125,8 +131,8 @@ modus-wc-collapse .modus-wc-collapse {
   inset-inline-start: var(--modus-wc-spacing-lg);
   pointer-events: none;
   position: absolute;
-  top: calc(var(--modus-wc-spacing-md) + 12px);
-  transform: translateY(-100%) rotate(45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
   transform-origin: 75% 75%;
   transition-duration: 0.2s;
   transition-property: transform;
