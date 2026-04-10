@@ -214,7 +214,8 @@ modus-wc-switch.modus-wc-switch-host {
     }
 
     &:focus-visible {
-      outline: var(--modus-wc-border-width-sm) solid #38bdf8;
+      outline: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-primary);
       outline-offset: var(--modus-wc-border-width-sm);
     }
 
@@ -231,14 +232,14 @@ modus-wc-switch.modus-wc-switch-host {
 
       & ~ modus-wc-input-label .modus-wc-input-label {
         font-size: var(--modus-wc-font-size-sm);
-        line-height: 1.25rem;
+        line-height: var(--modus-wc-font-size-2xl);
       }
     }
 
     &.modus-wc-toggle-sm {
       --handleoffset: var(--modus-wc-spacing-md);
 
-      height: 1.25rem;
+      height: var(--modus-wc-font-size-2xl);
       width: var(--modus-wc-spacing-2xl);
 
       & ~ modus-wc-input-label .modus-wc-input-label {
