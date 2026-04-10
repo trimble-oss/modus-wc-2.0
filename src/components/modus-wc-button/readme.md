@@ -37,22 +37,28 @@ The component supports a `<slot>` for injecting content within the button, simil
 
  - [modus-wc-alert](../modus-wc-alert)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-handle](../modus-wc-handle)
  - [modus-wc-modal](../modus-wc-modal)
  - [modus-wc-navbar](../modus-wc-navbar)
+ - modus-wc-tree-actions
+ - [modus-wc-tree-item](../modus-wc-content-tree/modus-wc-tree-item)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-button
+  modus-wc-content-tree --> modus-wc-button
   modus-wc-date --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-handle --> modus-wc-button
   modus-wc-modal --> modus-wc-button
   modus-wc-navbar --> modus-wc-button
+  modus-wc-tree-actions --> modus-wc-button
+  modus-wc-tree-item --> modus-wc-button
   style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

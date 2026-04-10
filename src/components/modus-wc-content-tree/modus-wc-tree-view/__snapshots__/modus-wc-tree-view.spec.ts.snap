@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-view renders as a sublist when isSubList is true 1`] = `
+<modus-wc-tree-view class="modus-wc-tree-submenu" is-sub-list="true">
+  <!---->
+  <ul class="modus-wc-tree-dropdown" role="group"></ul>
+</modus-wc-tree-view>
+`;
+
+exports[`modus-wc-tree-view renders with custom props 1`] = `
+<modus-wc-tree-view custom-class="test-class">
+  <!---->
+  <ul class="modus-wc-menu modus-wc-tree-view test-class" role="tree"></ul>
+</modus-wc-tree-view>
+`;
+
+exports[`modus-wc-tree-view renders with default props 1`] = `
+<modus-wc-tree-view>
+  <!---->
+  <ul class="modus-wc-menu modus-wc-tree-view" role="tree"></ul>
+</modus-wc-tree-view>
+`;

@@ -1,0 +1,115 @@
+/**
+* Tree actions component styles
+*/
+
+modus-wc-tree-actions {
+  .modus-wc-tree-actions-container {
+    align-items: center;
+    display: flex;
+
+    button.modus-wc-tree-action-button {
+      visibility: hidden;
+
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-base-content);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        filter: grayscale(100%);
+        opacity: 0.5;
+      }
+
+      &:active,
+      &[aria-pressed='true'] {
+        background: transparent;
+      }
+    }
+  }
+
+  .modus-wc-tree-dropdown-action {
+    li {
+      font-size: var(--modus-wc-font-size-sm);
+    }
+  }
+
+  .modus-wc-tree-delete-confirmation {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+    padding: var(--modus-wc-font-size-3xl);
+    text-align: center;
+    width: 100%;
+  }
+
+  .modus-wc-tree-delete-confirmation-title {
+    color: var(--modus-wc-color-base-content-high-contrast);
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: 700;
+  }
+
+  .modus-wc-tree-delete-confirmation-text {
+    color: var(--modus-wc-color-base-content-high-contrast);
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .modus-wc-tree-delete-confirmation-actions {
+    display: flex;
+    gap: var(--modus-wc-spacing-md, 1rem);
+    justify-content: center;
+    margin-block-start: var(--modus-wc-spacing-xs, 0.25rem);
+  }
+
+  .modus-wc-tree-cancel-confirmation-button {
+    background-color: var(--modus-wc-color-base-100);
+  }
+}
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-button {
+        color: var(--modus-wc-color-base-content);
+
+        &:hover,
+        &:active,
+        &[aria-pressed='true'] {
+          color: var(--modus-wc-color-base-content);
+        }
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-light'],
+[data-theme='connect-light'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
+
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-base-content);
+      }
+    }
+  }
+}
