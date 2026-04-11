@@ -43,10 +43,6 @@
     <Copy SourceFiles="@(StencilFiles)"
           DestinationFiles="@(StencilFiles->'$(WwwrootDistDir)\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
-    <Copy SourceFiles="$(StencilStylesDir)\modus-wc-styles.css"
-          DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\css"
-          SkipUnchangedFiles="true"
-          Condition="Exists('$(StencilStylesDir)\modus-wc-styles.css')" />
   </Target>
 
 </Project>
