@@ -101,9 +101,8 @@ const COMPONENT_OVERRIDES = {
         new { label = "Option 1", value = "option1" },
         new { label = "Option 2", value = "option2" },
         new { label = "Option 3", value = "option3" },
-    ];
-    private string _selectedValue = "option1";`,
-    defaultTemplate: `<ModusWcSelect Label="Choose an option" Options="@_options" Value="@_selectedValue" />`,
+    ];`,
+    defaultTemplate: `<ModusWcSelect Label="Choose an option" Options="@_options" />`,
   },
   ModusWcTabs: {
     codeBlock: `
@@ -141,9 +140,7 @@ const COMPONENT_OVERRIDES = {
     defaultTemplate: `<ModusWcStepper Steps="@_steps" Orientation="horizontal" />`,
   },
   ModusWcNavbar: {
-    codeBlock: `
-    private string _appTitle = "Modus App";`,
-    defaultTemplate: `<ModusWcNavbar AppTitle="@_appTitle" />`,
+    defaultTemplate: `<ModusWcNavbar />`,
   },
   ModusWcProfileMenu: {
     codeBlock: `
@@ -151,10 +148,8 @@ const COMPONENT_OVERRIDES = {
     defaultTemplate: `<ModusWcProfileMenu ProfileProps="@_profileProps" />`,
   },
   ModusWcSideNavigation: {
-    codeBlock: `
-    private bool _expanded = true;`,
     defaultTemplate: `
-<ModusWcSideNavigation Expanded="@_expanded" Mode="overlay" MaxWidth="256px">
+<ModusWcSideNavigation Mode="overlay" MaxWidth="256px">
     <ModusWcMenu Size="lg">
         <ModusWcMenuItem Label="Home">
             <ModusWcIcon Name="home" Slot="start-icon" />
@@ -280,10 +275,7 @@ const COMPONENT_OVERRIDES = {
     defaultTemplate: `<ModusWcAutocomplete Label="Search fruit" Options="@_options" />`,
   },
   ModusWcPagination: {
-    codeBlock: `
-    private double _currentPage = 1;
-    private double _totalPages = 10;`,
-    defaultTemplate: `<ModusWcPagination CurrentPage="@_currentPage" TotalPages="@_totalPages" />`,
+    defaultTemplate: `<ModusWcPagination />`,
   },
 };
 
@@ -319,6 +311,18 @@ const SIMPLE_DEFAULTS = {
   ModusWcTimeInput: `<ModusWcTimeInput Label="Select time" />`,
   ModusWcToast: `<ModusWcToast Message="Operation completed successfully!" Variant="success" />`,
   ModusWcTypography: `<ModusWcTypography Variant="h2">Modus Heading</ModusWcTypography>`,
+};
+
+// ── Default slot content for the interactive story per component ──────────
+// These are used inside the <ComponentName @attributes="context.Args">…</ComponentName>
+// wrapper so the component renders with visible child content.
+const INTERACTIVE_CHILD_CONTENT = {
+  ModusWcButton: 'Click Me',
+  ModusWcBadge: '42',
+  ModusWcChip: 'Label',
+  ModusWcTypography: 'Heading Text',
+  ModusWcCollapse: '<p>Collapsible content goes here.</p>',
+  ModusWcUtilityPanel: '<p>Panel content goes here.</p>',
 };
 
 // ── Parser ─────────────────────────────────────────────────────────────────
@@ -526,12 +530,100 @@ function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+/**
+ * Extract the child content between the opening and closing tags of `compName`
+ * from an existing template string, so the interactive story can reuse it.
+ */
+function extractInnerContent(templateHtml, compName) {
+  const regex = new RegExp(`<${compName}[^>]*>([\\s\\S]*?)<\\/${compName}>`, 'i');
+  const match = templateHtml.match(regex);
+  return match ? match[1].trim() : null;
+}
+
+/**
+ * Build the <Arguments>…</Arguments> block that seeds the Controls panel with
+ * the component's default parameter values.  Only simple (string?, bool?,
+ * double?) params with non-empty defaults are included; complex object? params
+ * and RenderFragment/Dictionary params are skipped.
+ */
+function buildArgumentsBlock(comp) {
+  const lines = [];
+
+  for (const param of comp.parameters) {
+    const { name, type, defaultVal } = param;
+
+    if (type === 'object?' || type === 'object') continue;
+    if (type.startsWith('RenderFragment')) continue;
+    if (type.startsWith('Dictionary')) continue;
+    if (type.startsWith('EventCallback')) continue;
+    if (defaultVal === null || defaultVal === '') continue;
+
+    let valueExpr;
+    if (type === 'bool?' || type === 'bool') {
+      valueExpr = `"@${defaultVal}"`;
+    } else if (type === 'double?' || type === 'double') {
+      valueExpr = `"@(${defaultVal})"`;
+    } else {
+      // string? — wrap in a C# expression so Blazor infers the correct type
+      valueExpr = `'@("${defaultVal}")'`;
+    }
+
+    lines.push(`            <Arg For="_ => _.${name}" Value=${valueExpr} />`);
+  }
+
+  if (lines.length === 0) return '';
+  return `        <Arguments>\n${lines.join('\n')}\n        </Arguments>\n`;
+}
+
+/**
+ * Build the interactive <Template> markup that uses @attributes="context.Args"
+ * so BlazingStory's Controls panel drives all simple parameters live.
+ *
+ * Complex (object?) parameters that have backing fields in COMPONENT_OVERRIDES
+ * are bound explicitly after @attributes so they override any stale value the
+ * controls panel might set.
+ */
+function buildInteractiveTemplate(comp) {
+  const override = COMPONENT_OVERRIDES[comp.name];
+  const tag = comp.name;
+
+  // Complex params need explicit backing-field bindings
+  const complexParams = comp.parameters.filter(
+    (p) => p.type === 'object?' || p.type === 'object',
+  );
+  const explicitAttrs = [];
+  if (override?.codeBlock) {
+    for (const param of complexParams) {
+      const field = `_${param.name.charAt(0).toLowerCase() + param.name.slice(1)}`;
+      if (override.codeBlock.includes(field)) {
+        explicitAttrs.push(`${param.name}="@${field}"`);
+      }
+    }
+  }
+
+  const attrsParts = ['@attributes="context.Args"', ...explicitAttrs];
+  const attrsStr = attrsParts.join('\n        ');
+
+  // Determine child content: prefer the explicit map, then extract from override
+  // template, then fall back to nothing (self-close).
+  let childContent = INTERACTIVE_CHILD_CONTENT[comp.name] ?? null;
+  if (childContent === null && override?.defaultTemplate) {
+    childContent = extractInnerContent(override.defaultTemplate, tag);
+  }
+
+  if (childContent !== null) {
+    return `<${tag} ${attrsStr}>\n    ${childContent}\n</${tag}>`;
+  }
+  return `<${tag} ${attrsStr} />`;
+}
+
 /** Generate full story file content */
 function generateStoryFile(comp) {
   const category = getCategory(comp.name);
   const display = displayName(comp.name);
   const codeBlock = buildCodeBlock(comp);
-  const defaultTemplate = buildDefaultTemplate(comp);
+  const argumentsBlock = buildArgumentsBlock(comp);
+  const interactiveTemplate = buildInteractiveTemplate(comp);
   const variantStories = buildVariantStories(comp);
 
   const hasCode = !!codeBlock.trim();
@@ -542,8 +634,8 @@ function generateStoryFile(comp) {
 <Stories TComponent="${comp.name}">
 
     <Story Name="Default">
-        <Template>
-            ${defaultTemplate}
+${argumentsBlock}        <Template>
+            ${interactiveTemplate}
         </Template>
     </Story>
 ${variantStories}
