@@ -218,7 +218,7 @@ parameter to receive documentation matching their installed version. If their ve
 below 1.0.6 (minimum supported), advise them to update their dependency.
 
 Available documents:
-- Framework Integration: "angular", "react", "vue"
+- Framework Integration: "angular", "blazor", "react", "vue"
 - Guides: "getting-started", "accessibility", "form-inputs", "modus-icon-usage", "styling", "testing"`,
   {
     docs_name: z.string().describe(
@@ -290,6 +290,9 @@ server.tool(
   `Looks up and parses component documentation for Modus Web Components.
 
 Retrieves component properties, events, methods, slots, usage examples, and story documentation.
+For Blazor / MAUI projects the response also includes a 'blazor' section with PascalCase
+C# parameter names, csharpType, EventCallback event names, RenderFragment slot names,
+the generated .razor template, and a ready-to-use Razor usage example.
 
 IMPORTANT: Before calling this tool, check the user's project package.json for the
 @trimble-oss/moduswebcomponents dependency version. Pass that version as the 'version'
@@ -297,7 +300,7 @@ parameter to receive documentation matching their installed version. If their ve
 below 1.0.6 (minimum supported), advise them to update their dependency.
 
 Special component names:
-- "_all_components" - Returns catalog of all available components
+- "_all_components" - Returns catalog of all available components (includes blazor_components list)
 
 Component naming format: "modus-wc-{component-name}"
 Examples: "modus-wc-table", "modus-wc-button", "modus-wc-alert"`,

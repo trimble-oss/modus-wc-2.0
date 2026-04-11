@@ -1,0 +1,250 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Frameworks/Blazor" />
+
+# Blazor / MAUI Integration
+
+This guide covers using the Modus Web Components library in **Blazor WebAssembly**, **Blazor Server**, and **.NET MAUI Blazor Hybrid** projects via the auto-generated `ModusWebComponents.Blazor` Razor component wrappers.
+
+## Installation
+
+### NuGet Package
+
+```bash
+dotnet add package ModusWebComponents.Blazor
+```
+
+### Register in `_Imports.razor`
+
+```razor
+@using ModusWebComponents.Blazor
+```
+
+### Load the Stencil Bundle and Styles
+
+Add the following to your `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.cshtml` / `App.razor` (Blazor Server):
+
+```html
+<!-- Modus Web Components Stencil bundle -->
+<script type="module" src="_content/ModusWebComponents.Blazor/esm/modus-wc.esm.js"></script>
+
+<!-- Modus styles (tokens + component styles) -->
+<link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+```
+
+> **Note:** The NuGet package includes the pre-built Stencil ESM bundle and CSS as static web assets, so no additional npm install is needed in Blazor projects.
+
+---
+
+## Basic Usage
+
+Once the package is installed and imports are registered, use any component by its PascalCase Razor tag:
+
+```razor
+<ModusWcButton Color="primary" Variant="filled" OnButtonClick="@HandleClick">
+    Click me
+</ModusWcButton>
+
+@code {
+    private void HandleClick(object? detail) =>
+        Console.WriteLine("Button clicked");
+}
+```
+
+All component tags follow the pattern `ModusWc{ComponentName}` — matching the underlying HTML custom element `modus-wc-{component-name}`.
+
+---
+
+## Parameter Binding
+
+### String Parameters
+
+String parameters are bound directly:
+
+```razor
+<ModusWcBadge Color="primary" Size="md" Type="counter" />
+```
+
+### Boolean Parameters
+
+Boolean parameters are just normal C# `bool?` from your perspective — bind them as you would any other Blazor parameter:
+
+```razor
+<ModusWcButton Disabled="@isDisabled" FullWidth="true">
+    Save
+</ModusWcButton>
+
+@code {
+    private bool isDisabled = false;
+}
+```
+
+> **Implementation note:** Internally the generated wrapper renders `"true"` / `"false"` as lowercase string attributes because C#'s `bool.ToString()` produces `"True"` / `"False"` (capitalised), which the Stencil runtime would misinterpret. This is handled automatically inside the wrapper — you never need to write the ternary yourself.
+
+### Number Parameters
+
+Numeric parameters use `double?`:
+
+```razor
+<ModusWcNavbar SearchDebounceMs="500" />
+```
+
+### Complex Object Parameters (`object?`)
+
+Some components accept complex data (arrays of items, configuration objects) via `object?` parameters. Pass a C# object that will be serialized to JSON via JS interop:
+
+```razor
+<ModusWcBreadcrumbs Items="@_items" />
+
+@code {
+    private object[] _items =
+    [
+        new { label = "Home",     url = "/" },
+        new { label = "Products", url = "/products" },
+        new { label = "Current Page" },
+    ];
+}
+```
+
+---
+
+## Events
+
+Events are exposed as `EventCallback<T>` parameters prefixed with `On`. The generic type is usually `object?` (the raw JS event detail deserialized from JSON) or a specific type like `bool`.
+
+```razor
+<ModusWcTextInput
+    Label="Search"
+    OnInputChange="@HandleChange"
+    OnInputBlur="@HandleBlur" />
+
+@code {
+    private void HandleChange(object? detail) =>
+        Console.WriteLine($"Value changed: {detail}");
+
+    private void HandleBlur(object? detail) { }
+}
+```
+
+### Event Name Mapping
+
+| Stencil event (JS) | Blazor EventCallback parameter |
+|--------------------|-------------------------------|
+| `buttonClick`      | `OnButtonClick`               |
+| `inputChange`      | `OnInputChange`               |
+| `inputBlur`        | `OnInputBlur`                 |
+| `chipClose`        | `OnChipClose`                 |
+
+The pattern is always: prepend `On` + PascalCase the original event name.
+
+---
+
+## Slots (Child Content)
+
+Components that accept child content expose a `ChildContent` parameter, which maps to the web component's default `<slot>`. Use it just like any other Blazor child content:
+
+```razor
+<ModusWcCard>
+    <ModusWcTypography Variant="h4">Card Title</ModusWcTypography>
+    <p>Card body content goes here.</p>
+</ModusWcCard>
+```
+
+```razor
+<ModusWcModal>
+    <p>Are you sure you want to delete this item?</p>
+    <ModusWcButton Color="danger">Delete</ModusWcButton>
+    <ModusWcButton Variant="outlined">Cancel</ModusWcButton>
+</ModusWcModal>
+```
+
+---
+
+## Additional Attributes (aria-*, data-*, id, etc.)
+
+All components support `AdditionalAttributes` (`[Parameter(CaptureUnmatchedValues = true)]`). Pass any HTML attribute not defined as an explicit parameter — including ARIA attributes, `data-*`, `id`, `class`, and `style`:
+
+```razor
+<ModusWcButton
+    Color="primary"
+    aria-label="Submit form"
+    data-testid="submit-btn"
+    id="main-submit">
+    Submit
+</ModusWcButton>
+```
+
+---
+
+## Theme
+
+Use `ModusWcThemeProvider` to apply a Modus theme to a subtree:
+
+```razor
+<ModusWcThemeProvider Theme="modus-classic-dark">
+    <ModusWcButton>Dark themed button</ModusWcButton>
+</ModusWcThemeProvider>
+```
+
+Or use the interactive switcher:
+
+```razor
+<ModusWcThemeSwitcher OnThemeChange="@HandleThemeChange" />
+```
+
+---
+
+## MAUI Blazor Hybrid
+
+The same `ModusWebComponents.Blazor` package works in `.NET MAUI Blazor Hybrid` apps. Add the NuGet package to your MAUI project and load the bundle from the package's static assets in `wwwroot/index.html`:
+
+```html
+<script type="module" src="_content/ModusWebComponents.Blazor/esm/modus-wc.esm.js"></script>
+<link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+```
+
+Then use components in any `.razor` page exactly as in a web app. The MAUI WebView hosts the Blazor runtime and renders all custom elements natively.
+
+---
+
+## Querying Component Data via MCP
+
+Use the `get_modus_component_data` MCP tool to look up the Blazor-specific binding information for any component. The response includes a `blazor` section with:
+
+- `parameters` — PascalCase C# parameter names, `csharpType`, defaults, and allowed values
+- `events` — `EventCallback<T>` parameter names and callback types
+- `slots` — `RenderFragment` slot parameters
+- `razorTemplate` — the internal `.razor` template (for understanding the binding)
+- `usageExample` — a ready-to-use Razor snippet
+
+```
+get_modus_component_data("modus-wc-button")
+→ data.blazor.parameters   // PascalCase params
+→ data.blazor.events        // EventCallback names
+→ data.blazor.usageExample  // Ready-to-paste Razor
+```
+
+---
+
+## Troubleshooting
+
+### Custom elements not rendering
+
+Ensure the Stencil ESM bundle script tag is present in `index.html` and uses `type="module"`. Without it, custom element tags render as unknown HTML elements.
+
+### `NoServiceRegistered, System.Net.Http.HttpClient`
+
+Register `HttpClient` in `Program.cs` before building the host:
+
+```csharp
+builder.Services.AddScoped(sp =>
+    new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+```
+
+### Events not firing
+
+Events require JS interop initialisation that runs in `OnAfterRenderAsync`. If you subscribe to an event before the component has rendered (e.g. in `OnInitialized`), it will not yet be wired up. Subscribe via `EventCallback` parameters instead of direct DOM event listeners.
+
+### Boolean attributes always true / always false
+
+You are likely setting a boolean attribute as a raw string on the underlying `<modus-wc-*>` HTML element. Use the Razor wrapper (`<ModusWcButton>`) which handles the `"true"`/`"false"` encoding automatically.
