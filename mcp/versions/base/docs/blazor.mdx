@@ -232,15 +232,6 @@ get_modus_component_data("modus-wc-button")
 
 Ensure the Stencil ESM bundle script tag is present in `index.html` and uses `type="module"`. Without it, custom element tags render as unknown HTML elements.
 
-### `NoServiceRegistered, System.Net.Http.HttpClient`
-
-Register `HttpClient` in `Program.cs` before building the host:
-
-```csharp
-builder.Services.AddScoped(sp =>
-    new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-```
-
 ### Events not firing
 
 Events require JS interop initialisation that runs in `OnAfterRenderAsync`. If you subscribe to an event before the component has rendered (e.g. in `OnInitialized`), it will not yet be wired up. Subscribe via `EventCallback` parameters instead of direct DOM event listeners.

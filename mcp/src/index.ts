@@ -212,9 +212,10 @@ server.tool(
 
 Retrieves framework integration guides, getting started guides, and general documentation.
 
-IMPORTANT: Before calling this tool, check the user's project package.json for the
-@trimble-oss/moduswebcomponents dependency version. Pass that version as the 'version'
-parameter to receive documentation matching their installed version. If their version is
+IMPORTANT: Before calling this tool, check the user's project for the installed package version:
+- For JavaScript/TypeScript projects: check package.json for @trimble-oss/moduswebcomponents
+- For Blazor / MAUI projects: check the .csproj for the ModusWebComponents.Blazor NuGet package version
+Pass that version as the 'version' parameter to receive matching documentation. If their version is
 below 1.0.6 (minimum supported), advise them to update their dependency.
 
 Available documents:
@@ -225,8 +226,9 @@ Available documents:
       "The name of the document to retrieve (without .mdx extension). Examples: 'angular', 'react', 'vue', 'getting-started'"
     ),
     version: z.string().optional().describe(
-      "The version of @trimble-oss/moduswebcomponents installed in the user's project (e.g. '1.1.1'). " +
-      "Check the user's package.json before calling. Defaults to the latest available version."
+      "The version of @trimble-oss/moduswebcomponents (npm) or ModusWebComponents.Blazor (NuGet) " +
+      "installed in the user's project (e.g. '1.1.1'). " +
+      "Check the user's package.json or .csproj before calling. Defaults to the latest available version."
     ),
   },
   ({ docs_name, version }) => {
@@ -309,8 +311,9 @@ Examples: "modus-wc-table", "modus-wc-button", "modus-wc-alert"`,
       "The name of the Modus component (e.g., 'modus-wc-table') or '_all_components' for the full catalog"
     ),
     version: z.string().optional().describe(
-      "The version of @trimble-oss/moduswebcomponents installed in the user's project (e.g. '1.1.1'). " +
-      "Check the user's package.json before calling. Defaults to the latest available version."
+      "The version of @trimble-oss/moduswebcomponents (npm) or ModusWebComponents.Blazor (NuGet) " +
+      "installed in the user's project (e.g. '1.1.1'). " +
+      "Check the user's package.json or .csproj before calling. Defaults to the latest available version."
     ),
   },
   ({ component_name, version }) => {

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env node */
 /**
  * Generator script: creates BlazingStory .razor story files for every
  * Blazor wrapper component found in
@@ -520,10 +521,6 @@ function buildVariantStories(comp) {
   }
 
   return stories.join('\n');
-}
-
-function paramToHtmlAttr(name) {
-  return name.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '');
 }
 
 function capitalize(s) {

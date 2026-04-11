@@ -2,6 +2,9 @@
 # Never commit these – they are regenerated automatically.
 wwwroot/dist/
 wwwroot/css/modus-wc-styles.css
+wwwroot/css/assets/
+wwwroot/css/fonts/
+wwwroot/css/*.svg
 
 # .NET build output
 obj/
