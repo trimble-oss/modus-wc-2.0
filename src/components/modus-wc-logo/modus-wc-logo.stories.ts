@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { getAvailableLogos, LogoName } from './logo-constants';
+import { getAvailableLogos } from './logo-constants';
+import { LogoName } from '../types';
 
 interface LogoArgs {
   name: LogoName;

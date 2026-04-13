@@ -3,9 +3,100 @@ import { IInputFeedbackLevel } from './modus-wc-input-feedback/modus-wc-input-fe
 // These are the supported sizes in DaisyUI
 export type DaisySize = 'xs' | 'sm' | 'md' | 'lg';
 
+/**
+ * Available logo names for the Modus Logo component
+ */
+export type LogoName =
+  // Trimble Products
+  | 'accubid_anywhere'
+  | 'accubid_classic'
+  | 'advanced_image_manager'
+  | 'analytics'
+  | 'app_xchange'
+  | 'appian'
+  | 'atlas'
+  | 'autobid'
+  | 'b2w'
+  | 'buildable_content'
+  | 'business_center'
+  | 'connect'
+  | 'connect2fab'
+  | 'copilot'
+  | 'demand_planning'
+  | 'earthworks'
+  | 'estimation_construct'
+  | 'estimation_desktop'
+  | 'fabrication'
+  | 'fabshop'
+  | 'field_points'
+  | 'fieldlink'
+  | 'financials'
+  | 'geosuite'
+  | 'infrastructure'
+  | 'innovative'
+  | 'livecount'
+  | 'materials'
+  | 'modus'
+  | 'modus_blueprint'
+  | 'nova'
+  | 'novapoint'
+  | 'pay'
+  | 'pc_miler'
+  | 'prodesign'
+  | 'projectsight'
+  | 'quadri'
+  | 'reality_capture'
+  | 'sitevision'
+  | 'siteworks'
+  | 'sketchup'
+  | 'sketchup_for_schools'
+  | 'sketchup_go'
+  | 'smart_workflow'
+  | 'stabicad'
+  | 'supplier_xchange'
+  | 'sysque'
+  | 'tekla'
+  | 'tekla_structures'
+  | 'terraflex'
+  | 'tms'
+  | 'tmt'
+  | 'tmw_suite'
+  | 'trade_service'
+  | 'trade_service_live'
+  | 'traqspera'
+  | 'trimble'
+  | 'truckmate'
+  | 'unity'
+  | 'unity_construct'
+  | 'unity_field'
+  | 'unity_maintain'
+  | 'unity_permit'
+  | 'winest'
+  | 'worksmanager'
+  // Viewpoint Products
+  | 'viewpoint'
+  | 'viewpoint_analytics'
+  | 'viewpoint_epayments'
+  | 'viewpoint_estimating'
+  | 'viewpoint_field_management'
+  | 'viewpoint_field_time'
+  | 'viewpoint_field_view'
+  | 'viewpoint_financial_controls'
+  | 'viewpoint_for_projects'
+  | 'viewpoint_hr_management'
+  | 'viewpoint_jobpac_connect'
+  | 'viewpoint_procontractor'
+  | 'viewpoint_spectrum'
+  | 'viewpoint_spectrum_service_tech'
+  | 'viewpoint_team'
+  | 'viewpoint_vista'
+  | 'viewpoint_vista_field_service';
+
 export type Density = 'comfortable' | 'compact' | 'relaxed';
 
 export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
+
+export type AppName = LogoName;
 
 export type Orientation = 'horizontal' | 'vertical';
 

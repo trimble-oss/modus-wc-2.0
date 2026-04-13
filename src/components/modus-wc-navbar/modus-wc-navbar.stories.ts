@@ -7,7 +7,8 @@ import {
   INavbarUserCard,
   INavbarVisibility,
 } from './modus-wc-navbar';
-import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
+import { getAvailableLogos } from '../modus-wc-logo/logo-constants';
+import { LogoName } from '../types';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
