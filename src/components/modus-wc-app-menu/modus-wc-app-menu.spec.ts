@@ -1147,6 +1147,32 @@ describe('modus-wc-app-menu', () => {
     gridMenu?.dispatchEvent(dropEvent);
   });
 
+  it('should use fallback section index 0 when grid container drop fires without draggedItemPos', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: JSON.parse(JSON.stringify(mockSections)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = null;
+
+    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
+    const dropEvent = new Event('drop', {
+      bubbles: true,
+      cancelable: true,
+    }) as DragEvent;
+    gridMenu?.dispatchEvent(dropEvent);
+
+    expect(component.draggedItemPos).toBeNull();
+  });
+
   it('should handle sections prop being undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
