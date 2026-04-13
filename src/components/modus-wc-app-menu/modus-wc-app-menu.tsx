@@ -1,13 +1,13 @@
 import {
   Component,
   Element,
+  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Prop,
   State,
   Watch,
-  Event as StencilEvent,
 } from '@stencil/core';
 import { AppName } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
