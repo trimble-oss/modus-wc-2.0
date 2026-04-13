@@ -224,7 +224,9 @@ export class ModusWcAppMenu {
       <div
         class="grid-menu"
         onDragOver={(e) => this.handleDragOver(e)}
-        onDrop={(e) => this.handleContainerDrop(e, 0)}
+        onDrop={(e) =>
+          this.handleContainerDrop(e, this.draggedItemPos?.sectionIdx ?? 0)
+        }
       >
         <div class="grid-row" role="list">
           {allItems.map(({ item, sIdx, iIdx }) => (
