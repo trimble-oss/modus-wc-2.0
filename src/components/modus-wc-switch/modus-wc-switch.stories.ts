@@ -14,7 +14,7 @@ interface SwitchArgs {
   label?: string;
   name?: string;
   required?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs';
   value: boolean;
 }
 
