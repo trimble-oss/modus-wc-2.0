@@ -97,16 +97,29 @@ export class ModusWcAppMenu {
     e.preventDefault();
   }
 
+  private cloneSections(): IAppMenuSection[] | null {
+    const sections = this.sections ?? [];
+    const { sectionIdx, itemIdx } = this.draggedItemPos!;
+
+    if (!sections[sectionIdx] || itemIdx >= sections[sectionIdx].items.length) {
+      this.draggedItemPos = null;
+      return null;
+    }
+
+    return sections.map((s) => ({ ...s, items: [...s.items] }));
+  }
+
   handleDrop(e: DragEvent, targetSectionIdx: number, targetItemIdx: number) {
     if (!this.isEditMode || !this.draggedItemPos) return;
     e.preventDefault();
     e.stopPropagation();
 
     const { sectionIdx: sIdx, itemIdx: iIdx } = this.draggedItemPos;
-
-    const newSections = [
-      ...(this.sections ?? []).map((s) => ({ ...s, items: [...s.items] })),
-    ];
+    const newSections = this.cloneSections();
+    if (!newSections || !newSections[targetSectionIdx]) {
+      this.draggedItemPos = null;
+      return;
+    }
 
     const [movedItem] = newSections[sIdx].items.splice(iIdx, 1);
     newSections[targetSectionIdx].items.splice(targetItemIdx, 0, movedItem);
@@ -120,10 +133,11 @@ export class ModusWcAppMenu {
     e.preventDefault();
 
     const { sectionIdx: sIdx, itemIdx: iIdx } = this.draggedItemPos;
-
-    const newSections = [
-      ...(this.sections ?? []).map((s) => ({ ...s, items: [...s.items] })),
-    ];
+    const newSections = this.cloneSections();
+    if (!newSections || !newSections[sectionIdx]) {
+      this.draggedItemPos = null;
+      return;
+    }
 
     const [movedItem] = newSections[sIdx].items.splice(iIdx, 1);
     newSections[sectionIdx].items.push(movedItem);
@@ -135,7 +149,11 @@ export class ModusWcAppMenu {
   renderListLayout() {
     const sections = this.sections ?? [];
     return sections.map((section, sIdx) => (
-      <div class="app-menu-section">
+      <div
+        class="app-menu-section"
+        role="group"
+        aria-label={section.title ?? ''}
+      >
         <div class="submenu-title-container">
           <modus-wc-typography
             size="md"
@@ -164,6 +182,7 @@ export class ModusWcAppMenu {
               >
                 {this.isEditMode && (
                   <modus-wc-button
+                    aria-label="Drag to reorder"
                     shape="square"
                     size="xs"
                     variant="borderless"
@@ -202,14 +221,16 @@ export class ModusWcAppMenu {
         onDragOver={(e) => this.handleDragOver(e)}
         onDrop={(e) => this.handleContainerDrop(e, 0)}
       >
-        <div class="grid-row">
+        <div class="grid-row" role="list">
           {allItems.map(({ item, sIdx, iIdx }) => (
             <div
+              aria-label={item.appName}
               class={`grid-item ${this.isEditMode ? 'draggable-item' : ''}`}
               draggable={this.isEditMode}
               onDragStart={(e) => this.handleDragStart(e, sIdx, iIdx)}
               onDragOver={(e) => this.handleDragOver(e)}
               onDrop={(e) => this.handleDrop(e, sIdx, iIdx)}
+              role="listitem"
             >
               {this.isEditMode && (
                 <modus-wc-icon
@@ -255,6 +276,7 @@ export class ModusWcAppMenu {
                 <slot name="header-end-content"></slot>
                 {!this.isEditMode ? (
                   <modus-wc-button
+                    aria-label="Edit app order"
                     shape="square"
                     size="sm"
                     variant="filled"

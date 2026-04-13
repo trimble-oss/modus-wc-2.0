@@ -1,6 +1,7 @@
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAppMenuSection, ModusWcAppMenu } from './modus-wc-app-menu';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 
 describe('modus-wc-app-menu', () => {
   const mockSections: IAppMenuSection[] = [
@@ -304,6 +305,29 @@ describe('modus-wc-app-menu', () => {
     const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
     itemRows?.forEach((row) => {
       expect(row.classList.contains('draggable-item')).toBe(true);
+    });
+  });
+
+  it('should set an accessible name on list layout drag handle buttons in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu, ModusWcButton],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: mockSections,
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.handleEdit();
+    await page.waitForChanges();
+
+    const handleButtons = page.root?.querySelectorAll(
+      '.app-menu-item-row modus-wc-button button'
+    );
+    expect(handleButtons?.length).toBe(4);
+    handleButtons?.forEach((btn) => {
+      expect(btn.getAttribute('aria-label')).toBe('Drag to reorder');
     });
   });
 
@@ -1115,7 +1139,7 @@ describe('modus-wc-app-menu', () => {
     expect(gridItems?.length).toBe(0);
   });
 
-  it('should throw when handleDrop runs after sections becomes nullish', async () => {
+  it('should fail gracefully when handleDrop runs after sections becomes nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () => h('modus-wc-app-menu', { sections: mockSections }),
@@ -1132,12 +1156,13 @@ describe('modus-wc-app-menu', () => {
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
     const stopPropagationSpy = jest.spyOn(mockDragEvent, 'stopPropagation');
 
-    expect(() => component.handleDrop(mockDragEvent, 0, 0)).toThrow();
+    expect(() => component.handleDrop(mockDragEvent, 0, 0)).not.toThrow();
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(stopPropagationSpy).toHaveBeenCalled();
+    expect(component.draggedItemPos).toBeNull();
   });
 
-  it('should throw when handleContainerDrop runs after sections becomes nullish', async () => {
+  it('should fail gracefully when handleContainerDrop runs after sections becomes nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () => h('modus-wc-app-menu', { sections: mockSections }),
@@ -1153,8 +1178,9 @@ describe('modus-wc-app-menu', () => {
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
 
-    expect(() => component.handleContainerDrop(mockDragEvent, 0)).toThrow();
+    expect(() => component.handleContainerDrop(mockDragEvent, 0)).not.toThrow();
     expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(component.draggedItemPos).toBeNull();
   });
 
   it('should render list layout when sections is null at render time', async () => {
