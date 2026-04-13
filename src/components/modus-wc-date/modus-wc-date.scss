@@ -24,6 +24,8 @@ modus-wc-date {
 
   &.modus-wc-date-input {
     background-color: var(--modus-wc-color-base-page);
+    border-radius: var(--modus-wc-border-radius-input);
+    color: var(--modus-wc-color-base-content);
   }
 
   .date-input-container {
@@ -53,7 +55,7 @@ modus-wc-date {
   .calendar-container {
     background: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-200);
-    border-radius: var(--modus-wc-border-radius-md);
+    border-radius: var(--rounded-box);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     height: 327px;
     overflow: hidden;
@@ -93,6 +95,15 @@ modus-wc-date {
 
         select {
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          color: var(--modus-wc-color-base-content);
+        }
+
+        .month-select {
+          border-radius: var(--modus-wc-border-radius-input);
+        }
+
+        .year-select {
+          border-radius: var(--modus-wc-border-radius-input);
         }
 
         select option {
@@ -220,6 +231,7 @@ modus-wc-date {
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
+    color: var(--modus-wc-color-base-content);
 
     // TODO - add support for xs and xl once added to Modus Figma
 
@@ -262,7 +274,6 @@ modus-wc-date {
 
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   color-scheme: dark; // needed to ensure the calendar icon button is visible in dark mode
-
   &.modus-wc-input:focus {
     border-color: var(--modus-wc-color-highlight-blue);
   }
@@ -273,19 +284,18 @@ modus-wc-date {
   @include connect-input-styles;
 }
 
-[data-theme='connect-dark'] modus-wc-date,
 [data-theme='modus-modern-dark'] modus-wc-date,
 [data-theme='modus-classic-dark'] modus-wc-date {
   .calendar-container .calendar-header {
     .nav-btn {
       i {
-        color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-primary-content);
       }
     }
 
     .calendar-selects select {
       background-color: unset;
-      color: var(--modus-wc-color-black);
+      color: var(--modus-wc-color-base-content);
       font-weight: 600;
 
       option {

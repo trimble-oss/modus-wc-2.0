@@ -899,6 +899,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
+              "type": {
+                "text": "AutocompleteTypes"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "default": "true",
@@ -2342,6 +2350,11 @@
             },
             {
               "kind": "method",
+              "name": "handleFormatChange",
+              "description": "Re-displays the stored ISO value in the new format when the `format` prop changes."
+            },
+            {
+              "kind": "method",
               "name": "handleMaxChange",
               "parameters": [
                 {
@@ -2427,7 +2440,6 @@
             {
               "name": "format",
               "fieldName": "format",
-              "default": "'dd-mm-yyyy'",
               "description": "The date format for display and input.",
               "type": {
                 "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
@@ -2503,7 +2515,7 @@
               "name": "show-week-numbers",
               "fieldName": "showWeekNumbers",
               "default": "false",
-              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.",
               "type": {
                 "text": "boolean"
               }
@@ -2568,7 +2580,7 @@
               "type": {
                 "text": "EventEmitter<InputEvent>"
               },
-              "description": "Event emitted when the input value changes."
+              "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid."
             },
             {
               "kind": "field",
@@ -3635,10 +3647,6 @@
             },
             {
               "kind": "method",
-              "name": "onLogoPropsChange"
-            },
-            {
-              "kind": "method",
               "name": "render"
             }
           ],
@@ -3730,6 +3738,18 @@
               "description": "Reference to the host element"
             },
             {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "isExpanded",
               "type": {
@@ -3819,14 +3839,6 @@
               }
             },
             {
-              "name": "start-icon",
-              "fieldName": "startIcon",
-              "description": "The modus icon name to render on the start of the menu item.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "sub-label",
               "fieldName": "subLabel",
               "description": "The text rendered beneath the label.",
@@ -3913,6 +3925,46 @@
             },
             {
               "kind": "method",
+              "name": "handleFocusout",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "FocusEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSelectionModeChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3952,6 +4004,15 @@
               }
             },
             {
+              "name": "selection-mode",
+              "fieldName": "selectionMode",
+              "default": "'single'",
+              "description": "The selection mode of the menu.",
+              "type": {
+                "text": "SelectionMode"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -3970,6 +4031,14 @@
                 "text": "EventEmitter<FocusEvent>"
               },
               "description": "Event emitted when the menu loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "menuSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>"
+              },
+              "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
             }
           ],
           "customElement": true
@@ -4248,7 +4317,7 @@
             {
               "name": "visibility",
               "fieldName": "visibility",
-              "default": "{ ai: false, apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+              "default": "{ ai: false, apps: false, help: false, logo: true, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
               "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden.",
               "type": {
                 "text": "INavbarVisibility"

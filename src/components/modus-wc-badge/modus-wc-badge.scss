@@ -4,11 +4,15 @@
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
+
 modus-wc-badge .modus-wc-badge {
+  display: flex;
   font-weight: var(--modus-wc-font-weight-semibold);
+  height: fit-content;
 
   &.modus-wc-badge-sm {
     font-size: var(--modus-wc-font-size-xs);
+    max-height: var(--modus-wc-size-xs);
   }
 
   &.modus-wc-badge-md {
@@ -30,6 +34,35 @@ modus-wc-badge .modus-wc-badge {
   &.modus-wc-badge-text {
     background-color: transparent;
     border: none;
+
+    // Colors
+    &.modus-wc-badge-primary {
+      color: var(--modus-wc-color-trimble-blue);
+    }
+
+    &.modus-wc-badge-secondary {
+      color: var(--modus-wc-color-secondary);
+    }
+
+    &.modus-wc-badge-neutral {
+      color: var(--modus-wc-color-gray-1);
+    }
+
+    &.modus-wc-badge-high-contrast {
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &.modus-wc-badge-success {
+      color: var(--modus-wc-color-green-dark);
+    }
+
+    &.modus-wc-badge-warning {
+      color: var(--modus-wc-color-warning);
+    }
+
+    &.modus-wc-badge-error {
+      color: var(--modus-wc-color-error);
+    }
   }
 
   &.modus-wc-badge-outlined {

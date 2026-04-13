@@ -5,6 +5,7 @@
 
 modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-base-page);
+  color: var(--modus-wc-color-base-content);
 
   @include sizing-tokens;
   @include feedback-levels;
@@ -16,8 +17,6 @@ modus-wc-select .modus-wc-select {
 
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
-  border-radius: var(--modus-wc-border-radius-md);
-
   // TODO - add support for xs and xl once added to Modus Figma
 
   &.modus-wc-select-sm {
