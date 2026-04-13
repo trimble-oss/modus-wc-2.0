@@ -183,154 +183,90 @@
   --modus-wc-opacity-overlay: 0.6;
 
   /* Dynamic Base Colors */
-  --modus-wc-color-base-page: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-trimble-gray)
-  );
-  --modus-wc-color-base-100: light-dark(
-    var(--modus-wc-color-gray-lighter),
-    var(--modus-wc-color-gray-8)
-  );
-  --modus-wc-color-base-200: light-dark(
-    var(--modus-wc-color-gray-light),
-    var(--modus-wc-color-gray-10)
-  );
-  --modus-wc-color-base-300: light-dark(
-    var(--modus-wc-color-gray-0),
-    var(--modus-wc-color-gray-10)
-  );
-  --modus-wc-color-base-content: light-dark(
-    var(--modus-wc-color-gray-10),
-    var(--modus-wc-color-gray-1)
-  );
-  --modus-wc-color-base-content-low-contrast: light-dark(
-    var(--modus-wc-color-gray-8),
-    var(--modus-wc-color-gray-3)
-  );
-  --modus-wc-color-base-content-high-contrast: light-dark(
-    var(--modus-wc-color-black),
-    var(--modus-wc-color-white)
-  );
-  --modus-wc-color-base-inverted: light-dark(
-    var(--modus-wc-color-gray-10),
-    var(--modus-wc-color-gray-light)
-  );
+  --modus-wc-color-base-page: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-trimble-gray));
+  --modus-wc-color-base-100: light-dark(var(--modus-wc-color-gray-lighter),
+      var(--modus-wc-color-gray-8));
+  --modus-wc-color-base-200: light-dark(var(--modus-wc-color-gray-light),
+      var(--modus-wc-color-gray-10));
+  --modus-wc-color-base-300: light-dark(var(--modus-wc-color-gray-0),
+      var(--modus-wc-color-gray-10));
+  --modus-wc-color-base-content: light-dark(var(--modus-wc-color-gray-10),
+      var(--modus-wc-color-gray-1));
+  --modus-wc-color-base-content-low-contrast: light-dark(var(--modus-wc-color-gray-8),
+      var(--modus-wc-color-gray-3));
+  --modus-wc-color-base-content-high-contrast: light-dark(var(--modus-wc-color-black),
+      var(--modus-wc-color-white));
+  --modus-wc-color-base-inverted: light-dark(var(--modus-wc-color-gray-10),
+      var(--modus-wc-color-gray-light));
 
   /**
   * The following variables are applied to themes for applications to override.
   */
 
   /* Primary Colors */
-  --modus-wc-color-primary: light-dark(
-    var(--modus-wc-color-trimble-blue),
-    var(--modus-wc-color-highlight-blue)
-  );
-  --modus-wc-color-primary-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-primary-pale: light-dark(
-    var(--modus-wc-color-blue-pale),
-    var(--modus-wc-color-highlight-blue-pale)
-  );
+  --modus-wc-color-primary: light-dark(var(--modus-wc-color-trimble-blue),
+      var(--modus-wc-color-highlight-blue));
+  --modus-wc-color-primary-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
+  --modus-wc-color-primary-pale: light-dark(var(--modus-wc-color-blue-pale),
+      var(--modus-wc-color-highlight-blue-pale));
 
   /* Secondary Colors */
-  --modus-wc-color-secondary: light-dark(
-    var(--modus-wc-color-yellow),
-    var(--modus-wc-color-yellow-light)
-  );
-  --modus-wc-color-secondary-content: light-dark(
-    var(--modus-wc-color-black),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-secondary-pale: light-dark(
-    var(--modus-wc-color-yellow-pale),
-    var(--modus-wc-color-yellow-pale)
-  );
+  --modus-wc-color-secondary: light-dark(var(--modus-wc-color-yellow),
+      var(--modus-wc-color-yellow-light));
+  --modus-wc-color-secondary-content: light-dark(var(--modus-wc-color-black),
+      var(--modus-wc-color-black));
+  --modus-wc-color-secondary-pale: light-dark(var(--modus-wc-color-yellow-pale),
+      var(--modus-wc-color-yellow-pale));
 
   /* Accent Colors */
-  --modus-wc-color-accent: light-dark(
-    var(--modus-wc-color-gray-6),
-    var(--modus-wc-color-gray-4)
-  );
-  --modus-wc-color-accent-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-accent-pale: light-dark(
-    var(--modus-wc-color-gray-6),
-    var(--modus-wc-color-gray-4)
-  );
+  --modus-wc-color-accent: light-dark(var(--modus-wc-color-gray-6),
+      var(--modus-wc-color-gray-4));
+  --modus-wc-color-accent-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
+  --modus-wc-color-accent-pale: light-dark(var(--modus-wc-color-gray-6),
+      var(--modus-wc-color-gray-4));
 
   /* Neutral Colors */
-  --modus-wc-color-neutral: light-dark(
-    var(--modus-wc-color-base-100),
-    var(--modus-wc-color-base-100)
-  );
-  --modus-wc-color-neutral-content: light-dark(
-    var(--modus-wc-color-base-content),
-    var(--modus-wc-color-base-content)
-  );
-  --modus-wc-color-neutral-pale: light-dark(
-    var(--modus-wc-color-base-100),
-    var(--modus-wc-color-base-100)
-  );
+  --modus-wc-color-neutral: light-dark(var(--modus-wc-color-base-100),
+      var(--modus-wc-color-base-100));
+  --modus-wc-color-neutral-content: light-dark(var(--modus-wc-color-base-content),
+      var(--modus-wc-color-base-content));
+  --modus-wc-color-neutral-pale: light-dark(var(--modus-wc-color-base-100),
+      var(--modus-wc-color-base-100));
 
   /* Info Colors */
-  --modus-wc-color-info: light-dark(
-    var(--modus-wc-color-blue-dark),
-    var(--modus-wc-color-blue-light)
-  );
-  --modus-wc-color-info-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-white)
-  );
-  --modus-wc-color-info-pale: light-dark(
-    var(--modus-wc-color-blue-pale),
-    var(--modus-wc-color-blue-pale)
-  );
+  --modus-wc-color-info: light-dark(var(--modus-wc-color-blue-dark),
+      var(--modus-wc-color-blue-light));
+  --modus-wc-color-info-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-white));
+  --modus-wc-color-info-pale: light-dark(var(--modus-wc-color-blue-pale),
+      var(--modus-wc-color-blue-pale));
 
   /* Success Colors */
-  --modus-wc-color-success: light-dark(
-    var(--modus-wc-color-green),
-    var(--modus-wc-color-green-light)
-  );
-  --modus-wc-color-success-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-success-pale: light-dark(
-    var(--modus-wc-color-green-pale),
-    var(--modus-wc-color-green-pale)
-  );
+  --modus-wc-color-success: light-dark(var(--modus-wc-color-green),
+      var(--modus-wc-color-green-light));
+  --modus-wc-color-success-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
+  --modus-wc-color-success-pale: light-dark(var(--modus-wc-color-green-pale),
+      var(--modus-wc-color-green-pale));
 
   /* Warning Colors */
-  --modus-wc-color-warning: light-dark(
-    var(--modus-wc-color-yellow-dark),
-    var(--modus-wc-color-yellow-light)
-  );
-  --modus-wc-color-warning-content: light-dark(
-    var(--modus-wc-color-black),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-warning-pale: light-dark(
-    var(--modus-wc-color-yellow-pale),
-    var(--modus-wc-color-yellow-pale)
-  );
+  --modus-wc-color-warning: light-dark(var(--modus-wc-color-yellow-dark),
+      var(--modus-wc-color-yellow-light));
+  --modus-wc-color-warning-content: light-dark(var(--modus-wc-color-black),
+      var(--modus-wc-color-black));
+  --modus-wc-color-warning-pale: light-dark(var(--modus-wc-color-yellow-pale),
+      var(--modus-wc-color-yellow-pale));
 
   /* Error Colors */
-  --modus-wc-color-error: light-dark(
-    var(--modus-wc-color-red),
-    var(--modus-wc-color-red-light)
-  );
-  --modus-wc-color-error-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
-  --modus-wc-color-error-pale: light-dark(
-    var(--modus-wc-color-red-pale),
-    var(--modus-wc-color-red-pale)
-  );
+  --modus-wc-color-error: light-dark(var(--modus-wc-color-red),
+      var(--modus-wc-color-red-light));
+  --modus-wc-color-error-content: light-dark(var(--modus-wc-color-white),
+      var(--modus-wc-color-black));
+  --modus-wc-color-error-pale: light-dark(var(--modus-wc-color-red-pale),
+      var(--modus-wc-color-red-pale));
 
   /* Tailwind Colors */
   /* Slate */
@@ -453,14 +389,14 @@
   --tw-purple-950: #3b0764;
 
   /* Fuchsia */
-  --tw-fuchsia-50: #fdf4ff;
-  --tw-fuchsia-100: #fce7f3;
-  --tw-fuchsia-200: #fad1e8;
-  --tw-fuchsia-300: #f0abfc;
-  --tw-fuchsia-400: #e879f9;
-  --tw-fuchsia-500: #d946ef;
-  --tw-fuchsia-600: #c026d3;
-  --tw-fuchsia-700: #a21caf;
+  --tw-fuchsia-50: #FDF4FF;
+  --tw-fuchsia-100: #FAE8FF;
+  --tw-fuchsia-200: #F5D0FE;
+  --tw-fuchsia-300: #F0ABFC;
+  --tw-fuchsia-400: #E879F9;
+  --tw-fuchsia-500: #D946EF;
+  --tw-fuchsia-600: #C026D3;
+  --tw-fuchsia-700: #A21CAF;
   --tw-fuchsia-800: #86198f;
   --tw-fuchsia-900: #701a75;
   --tw-fuchsia-950: #4a044e;
@@ -494,40 +430,24 @@
   /* Tailwind Dynamic Colors */
 
   /* Orange */
-  --modus-tw-color-orange-100: light-dark(
-    var(--tw-orange-600),
-    var(--tw-orange-100)
-  );
-  --modus-tw-color-orange-200: light-dark(
-    var(--tw-orange-700),
-    var(--tw-orange-200)
-  );
-  --modus-tw-color-orange-300: light-dark(
-    var(--tw-orange-800),
-    var(--tw-orange-300)
-  );
-  --modus-tw-color-orange-400: light-dark(
-    var(--tw-orange-900),
-    var(--tw-orange-400)
-  );
+  --modus-tw-color-orange-100: light-dark(var(--tw-orange-600),
+      var(--tw-orange-100));
+  --modus-tw-color-orange-200: light-dark(var(--tw-orange-700),
+      var(--tw-orange-200));
+  --modus-tw-color-orange-300: light-dark(var(--tw-orange-800),
+      var(--tw-orange-300));
+  --modus-tw-color-orange-400: light-dark(var(--tw-orange-900),
+      var(--tw-orange-400));
 
   /* Amber */
-  --modus-tw-color-amber-100: light-dark(
-    var(--tw-amber-600),
-    var(--tw-amber-100)
-  );
-  --modus-tw-color-amber-200: light-dark(
-    var(--tw-amber-700),
-    var(--tw-amber-200)
-  );
-  --modus-tw-color-amber-300: light-dark(
-    var(--tw-amber-800),
-    var(--tw-amber-300)
-  );
-  --modus-tw-color-amber-400: light-dark(
-    var(--tw-amber-900),
-    var(--tw-amber-400)
-  );
+  --modus-tw-color-amber-100: light-dark(var(--tw-amber-600),
+      var(--tw-amber-100));
+  --modus-tw-color-amber-200: light-dark(var(--tw-amber-700),
+      var(--tw-amber-200));
+  --modus-tw-color-amber-300: light-dark(var(--tw-amber-800),
+      var(--tw-amber-300));
+  --modus-tw-color-amber-400: light-dark(var(--tw-amber-900),
+      var(--tw-amber-400));
 
   /* Lime */
   --modus-tw-color-lime-100: light-dark(var(--tw-lime-600), var(--tw-lime-100));
@@ -536,22 +456,14 @@
   --modus-tw-color-lime-400: light-dark(var(--tw-lime-900), var(--tw-lime-400));
 
   /* Emerald */
-  --modus-tw-color-emerald-100: light-dark(
-    var(--tw-emerald-600),
-    var(--tw-emerald-100)
-  );
-  --modus-tw-color-emerald-200: light-dark(
-    var(--tw-emerald-700),
-    var(--tw-emerald-200)
-  );
-  --modus-tw-color-emerald-300: light-dark(
-    var(--tw-emerald-800),
-    var(--tw-emerald-300)
-  );
-  --modus-tw-color-emerald-400: light-dark(
-    var(--tw-emerald-900),
-    var(--tw-emerald-400)
-  );
+  --modus-tw-color-emerald-100: light-dark(var(--tw-emerald-600),
+      var(--tw-emerald-100));
+  --modus-tw-color-emerald-200: light-dark(var(--tw-emerald-700),
+      var(--tw-emerald-200));
+  --modus-tw-color-emerald-300: light-dark(var(--tw-emerald-800),
+      var(--tw-emerald-300));
+  --modus-tw-color-emerald-400: light-dark(var(--tw-emerald-900),
+      var(--tw-emerald-400));
 
   /* Teal */
   --modus-tw-color-teal-100: light-dark(var(--tw-teal-600), var(--tw-teal-100));
@@ -566,76 +478,44 @@
   --modus-tw-color-cyan-400: light-dark(var(--tw-cyan-900), var(--tw-cyan-400));
 
   /* Indigo */
-  --modus-tw-color-indigo-100: light-dark(
-    var(--tw-indigo-600),
-    var(--tw-indigo-100)
-  );
-  --modus-tw-color-indigo-200: light-dark(
-    var(--tw-indigo-700),
-    var(--tw-indigo-200)
-  );
-  --modus-tw-color-indigo-300: light-dark(
-    var(--tw-indigo-800),
-    var(--tw-indigo-300)
-  );
-  --modus-tw-color-indigo-400: light-dark(
-    var(--tw-indigo-900),
-    var(--tw-indigo-400)
-  );
+  --modus-tw-color-indigo-100: light-dark(var(--tw-indigo-600),
+      var(--tw-indigo-100));
+  --modus-tw-color-indigo-200: light-dark(var(--tw-indigo-700),
+      var(--tw-indigo-200));
+  --modus-tw-color-indigo-300: light-dark(var(--tw-indigo-800),
+      var(--tw-indigo-300));
+  --modus-tw-color-indigo-400: light-dark(var(--tw-indigo-900),
+      var(--tw-indigo-400));
 
   /* Violet */
-  --modus-tw-color-violet-100: light-dark(
-    var(--tw-violet-600),
-    var(--tw-violet-100)
-  );
-  --modus-tw-color-violet-200: light-dark(
-    var(--tw-violet-700),
-    var(--tw-violet-200)
-  );
-  --modus-tw-color-violet-300: light-dark(
-    var(--tw-violet-800),
-    var(--tw-violet-300)
-  );
-  --modus-tw-color-violet-400: light-dark(
-    var(--tw-violet-900),
-    var(--tw-violet-400)
-  );
+  --modus-tw-color-violet-100: light-dark(var(--tw-violet-600),
+      var(--tw-violet-100));
+  --modus-tw-color-violet-200: light-dark(var(--tw-violet-700),
+      var(--tw-violet-200));
+  --modus-tw-color-violet-300: light-dark(var(--tw-violet-800),
+      var(--tw-violet-300));
+  --modus-tw-color-violet-400: light-dark(var(--tw-violet-900),
+      var(--tw-violet-400));
 
   /* Purple */
-  --modus-tw-color-purple-100: light-dark(
-    var(--tw-purple-600),
-    var(--tw-purple-100)
-  );
-  --modus-tw-color-purple-200: light-dark(
-    var(--tw-purple-700),
-    var(--tw-purple-200)
-  );
-  --modus-tw-color-purple-300: light-dark(
-    var(--tw-purple-800),
-    var(--tw-purple-300)
-  );
-  --modus-tw-color-purple-400: light-dark(
-    var(--tw-purple-900),
-    var(--tw-purple-400)
-  );
+  --modus-tw-color-purple-100: light-dark(var(--tw-purple-600),
+      var(--tw-purple-100));
+  --modus-tw-color-purple-200: light-dark(var(--tw-purple-700),
+      var(--tw-purple-200));
+  --modus-tw-color-purple-300: light-dark(var(--tw-purple-800),
+      var(--tw-purple-300));
+  --modus-tw-color-purple-400: light-dark(var(--tw-purple-900),
+      var(--tw-purple-400));
 
   /* Fuchsia */
-  --modus-tw-color-fuchsia-100: light-dark(
-    var(--tw-fuchsia-600),
-    var(--tw-fuchsia-100)
-  );
-  --modus-tw-color-fuchsia-200: light-dark(
-    var(--tw-fuchsia-700),
-    var(--tw-fuchsia-200)
-  );
-  --modus-tw-color-fuchsia-300: light-dark(
-    var(--tw-fuchsia-800),
-    var(--tw-fuchsia-300)
-  );
-  --modus-tw-color-fuchsia-400: light-dark(
-    var(--tw-fuchsia-900),
-    var(--tw-fuchsia-400)
-  );
+  --modus-tw-color-fuchsia-100: light-dark(var(--tw-fuchsia-600),
+      var(--tw-fuchsia-100));
+  --modus-tw-color-fuchsia-200: light-dark(var(--tw-fuchsia-700),
+      var(--tw-fuchsia-200));
+  --modus-tw-color-fuchsia-300: light-dark(var(--tw-fuchsia-800),
+      var(--tw-fuchsia-300));
+  --modus-tw-color-fuchsia-400: light-dark(var(--tw-fuchsia-900),
+      var(--tw-fuchsia-400));
 
   /* Pink */
   --modus-tw-color-pink-100: light-dark(var(--tw-pink-600), var(--tw-pink-100));
