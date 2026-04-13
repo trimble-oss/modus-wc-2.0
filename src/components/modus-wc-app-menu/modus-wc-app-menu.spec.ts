@@ -277,10 +277,10 @@ describe('modus-wc-app-menu', () => {
     const labels = page.root?.querySelectorAll(
       '.grid-item modus-wc-typography'
     );
-    expect(labels?.[0]?.getAttribute('label')).toBe('connect');
-    expect(labels?.[1]?.getAttribute('label')).toBe('viewpoint');
-    expect(labels?.[2]?.getAttribute('label')).toBe('sketchup');
-    expect(labels?.[3]?.getAttribute('label')).toBe('tekla');
+    expect(labels?.[0]?.getAttribute('label')).toBe('Trimble Connect');
+    expect(labels?.[1]?.getAttribute('label')).toBe('Viewpoint');
+    expect(labels?.[2]?.getAttribute('label')).toBe('SketchUp');
+    expect(labels?.[3]?.getAttribute('label')).toBe('Tekla');
   });
 
   it('should show drag indicators in list layout when in edit mode', async () => {
@@ -805,7 +805,7 @@ describe('modus-wc-app-menu', () => {
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBe(1);
-    expect(menuItems?.[0]?.getAttribute('label')).toBe('connect');
+    expect(menuItems?.[0]?.getAttribute('label')).toBe('Trimble Connect');
   });
 
   it('should render empty grid when sections have no items', async () => {

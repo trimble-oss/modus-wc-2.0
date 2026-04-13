@@ -9,6 +9,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { LOGO_VARIANTS } from '../modus-wc-logo/logo-constants';
 import { AppName } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -64,13 +65,17 @@ export class ModusWcAppMenu {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  private getDisplayName(appName: AppName): string {
+    return LOGO_VARIANTS[appName]?.displayName ?? appName;
+  }
+
   @Watch('layout')
   protected onLayoutChange(newLayout: 'list' | 'grid') {
     this.layoutChange.emit({ layout: newLayout });
   }
 
   handleEdit() {
-    this.previousSections = JSON.parse(JSON.stringify(this.sections));
+    this.previousSections = JSON.parse(JSON.stringify(this.sections ?? []));
     this.isEditMode = true;
   }
 
@@ -193,7 +198,7 @@ export class ModusWcAppMenu {
                     ></modus-wc-icon>
                   </modus-wc-button>
                 )}
-                <modus-wc-menu-item label={item.appName}>
+                <modus-wc-menu-item label={this.getDisplayName(item.appName)}>
                   <modus-wc-logo
                     name={item.appName}
                     custom-class="app-logo"
@@ -224,7 +229,7 @@ export class ModusWcAppMenu {
         <div class="grid-row" role="list">
           {allItems.map(({ item, sIdx, iIdx }) => (
             <div
-              aria-label={item.appName}
+              aria-label={this.getDisplayName(item.appName)}
               class={`grid-item ${this.isEditMode ? 'draggable-item' : ''}`}
               draggable={this.isEditMode}
               onDragStart={(e) => this.handleDragStart(e, sIdx, iIdx)}
@@ -248,7 +253,7 @@ export class ModusWcAppMenu {
                 custom-class="grid-item-text-label"
                 size="xs"
                 weight="normal"
-                label={item.appName}
+                label={this.getDisplayName(item.appName)}
               ></modus-wc-typography>
             </div>
           ))}
