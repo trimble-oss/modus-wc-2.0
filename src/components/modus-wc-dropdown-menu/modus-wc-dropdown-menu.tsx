@@ -13,6 +13,7 @@ import {
 } from '@stencil/core';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+import { handleShadowDOMStyles } from '../base-component';
 
 /**
  * A customizable dropdown menu component used to render a button and toggleable menu.
@@ -110,6 +111,9 @@ export class ModusWcDropdownMenu {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

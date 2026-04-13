@@ -21,9 +21,9 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
-
 export interface INavbarTextOverrides {
   /** Replaces the text for "Apps" in the condensed menu. */
   apps?: string;
@@ -192,6 +192,9 @@ export class ModusWcNavbar {
   private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     this.isLight = isLightMode();

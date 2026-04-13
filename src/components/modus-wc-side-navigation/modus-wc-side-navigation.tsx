@@ -9,6 +9,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -67,6 +68,9 @@ export class ModusWcSideNavigation {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

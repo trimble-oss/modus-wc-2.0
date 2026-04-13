@@ -215,3 +215,131 @@ export const IconOnlyDropdownMenu: Story = {
     `;
   },
 };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('dropdown-menu-shadow-host')) {
+      customElements.define(
+        'dropdown-menu-shadow-host',
+        class extends HTMLElement {
+          private dropdownEl!: HTMLElement;
+          private _props: DropdownMenuArgs | undefined;
+          private themeObserver: MutationObserver | null = null;
+
+          constructor() {
+            super();
+            const root = this.attachShadow({ mode: 'open' });
+
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'contents';
+            const syncTheme = () => {
+              const theme =
+                document.documentElement.getAttribute('data-theme');
+              if (theme) wrapper.setAttribute('data-theme', theme);
+            };
+            syncTheme();
+            this.themeObserver = new MutationObserver(syncTheme);
+            this.themeObserver.observe(document.documentElement, {
+              attributes: true,
+              attributeFilter: ['data-theme'],
+            });
+
+            // Dropdown
+            this.dropdownEl =
+              document.createElement('modus-wc-dropdown-menu');
+
+            const buttonSlot = document.createElement('div');
+            buttonSlot.setAttribute('slot', 'button');
+            buttonSlot.style.cssText =
+              'display: flex; align-items: center; gap: 4px;';
+            buttonSlot.appendChild(document.createTextNode('Button'));
+            const expandIcon = document.createElement('modus-wc-icon');
+            expandIcon.setAttribute('name', 'expand_more');
+            expandIcon.setAttribute('size', 'sm');
+            buttonSlot.appendChild(expandIcon);
+
+            const menuSlot = document.createElement('div');
+            menuSlot.setAttribute('slot', 'menu');
+            [
+              { label: 'Item One', value: '1' },
+              { label: 'Item Two', value: '2' },
+              { label: 'Item Three', value: '3' },
+            ].forEach(({ label, value }) => {
+              const item = document.createElement('modus-wc-menu-item');
+              item.setAttribute('label', label);
+              item.setAttribute('value', value);
+              menuSlot.appendChild(item);
+            });
+
+            this.dropdownEl.appendChild(buttonSlot);
+            this.dropdownEl.appendChild(menuSlot);
+
+            // Selected value display
+            const valueDiv = document.createElement('div');
+            valueDiv.style.cssText = 'font-size: 14px; padding-top: 12px;';
+            valueDiv.textContent = 'Selected Value: ';
+            const valueSpan = document.createElement('span');
+            valueDiv.appendChild(valueSpan);
+
+            this.dropdownEl.addEventListener('itemSelect', (e: Event) => {
+              const custom = e as CustomEvent<{ value: string }>;
+              valueSpan.textContent = custom.detail?.value ?? '';
+              (
+                this.dropdownEl as unknown as { menuVisible: boolean }
+              ).menuVisible = false;
+            });
+
+            wrapper.appendChild(this.dropdownEl);
+            wrapper.appendChild(valueDiv);
+            root.appendChild(wrapper);
+          }
+
+          set props(value: DropdownMenuArgs) {
+            this._props = value;
+            const el = this.dropdownEl as unknown as {
+              buttonAriaLabel: string;
+              buttonColor: string;
+              buttonShape: string;
+              buttonSize: DaisySize;
+              buttonVariant: string;
+              customClass: string;
+              disabled: boolean;
+              menuBordered: boolean;
+              menuOffset: number;
+              menuPlacement: PopoverPlacement;
+              menuSize: ModusSize;
+              menuVisible: boolean;
+            };
+            el.buttonAriaLabel = value['button-aria-label'] || '';
+            el.buttonColor = value['button-color'] || 'primary';
+            el.buttonShape = value['button-shape'] || 'rectangle';
+            el.buttonSize = value['button-size'] as DaisySize;
+            el.buttonVariant = value['button-variant'] || 'filled';
+            el.customClass = value['custom-class'] || '';
+            el.disabled = Boolean(value.disabled);
+            el.menuBordered = Boolean(value['menu-bordered']);
+            el.menuOffset = value['menu-offset'] ?? 10;
+            el.menuPlacement = value['menu-placement'] as PopoverPlacement;
+            el.menuSize = value['menu-size'] as ModusSize;
+            el.menuVisible = Boolean(value['menu-visible']);
+          }
+
+          get props() {
+            return this._props || ({} as DropdownMenuArgs);
+          }
+
+          disconnectedCallback() {
+            if (this.themeObserver) {
+              this.themeObserver.disconnect();
+              this.themeObserver = null;
+            }
+          }
+        }
+      );
+    }
+
+    return html`<dropdown-menu-shadow-host
+      .props=${{ ...args }}
+    ></dropdown-menu-shadow-host>`;
+  },
+};
