@@ -11,9 +11,9 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import { handleShadowDOMStyles } from '../base-component';
 
 /**
  * A customizable dropdown menu component used to render a button and toggleable menu.

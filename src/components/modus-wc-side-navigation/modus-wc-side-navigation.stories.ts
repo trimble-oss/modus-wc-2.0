@@ -589,36 +589,14 @@ export const ShadowDomParent: Story = {
             });
             this.navEl.appendChild(menu);
 
-            // Side nav's document-level handleClickOutside uses event.target
-            // (retargeted to shadow host), so it fires incorrectly for clicks
-            // both on the hamburger and inside the nav. Disable it and handle
-            // all click logic ourselves inside the shadow root where
-            // composedPath() correctly resolves every element.
-            (
-              this.navEl as unknown as { collapseOnClickOutside: boolean }
-            ).collapseOnClickOutside = false;
-
-            root.addEventListener('click', (e: Event) => {
-              const path = e.composedPath() as Element[];
-              const nav = this.navEl as unknown as { expanded: boolean };
-
-              // Hamburger button: toggle
-              const hamburgerLabel = 'Main menu';
-              const isHamburger = path.some(
-                (el) =>
-                  (el as EventTarget as Element).getAttribute?.(
-                    'aria-label'
-                  ) === hamburgerLabel
-              );
-              if (isHamburger) {
-                nav.expanded = !nav.expanded;
-                return;
-              }
-
-              // Click outside side nav: close
-              if (nav.expanded && !path.includes(this.navEl)) {
-                nav.expanded = false;
-              }
+            // Wire navbar's mainMenuOpenChange to toggle side nav expanded state.
+            // Now that navbar's handleClickOutside uses composedPath(), it
+            // correctly identifies hamburger clicks inside shadow DOM and emits
+            // the right true/false detail value on each click.
+            navbar.addEventListener('mainMenuOpenChange', (e: Event) => {
+              const custom = e as CustomEvent<boolean>;
+              (this.navEl as unknown as { expanded: boolean }).expanded =
+                custom.detail;
             });
 
             // Panel content
@@ -688,7 +666,9 @@ export const ShadowDomParent: Story = {
             nav.customClass = value['custom-class'] || '';
             nav.expanded = Boolean(value.expanded);
             nav.maxWidth = value['max-width'] || '256px';
-            nav.collapseOnClickOutside = false; // handled by shadow root listener
+            nav.collapseOnClickOutside = Boolean(
+              value['collapse-on-click-outside']
+            );
             nav.mode = value.mode || 'overlay';
             nav.targetContent = value['target-content'] || '';
           }

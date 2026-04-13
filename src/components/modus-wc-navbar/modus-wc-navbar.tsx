@@ -219,7 +219,7 @@ export class ModusWcNavbar {
 
   @Listen('click', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+    const path = event.composedPath ? event.composedPath() : [event.target];
 
     if (this.appsMenuOpen) {
       const appsButton = this.el.querySelector(
@@ -227,9 +227,8 @@ export class ModusWcNavbar {
       );
       if (
         this.appsRef &&
-        !this.appsRef.contains(target) &&
-        appsButton !== target &&
-        !appsButton?.contains(target)
+        !path.includes(this.appsRef) &&
+        !path.includes(appsButton)
       ) {
         this.appsMenuOpen = false;
         this.appsMenuOpenChange.emit(false);
@@ -242,9 +241,8 @@ export class ModusWcNavbar {
       );
       if (
         this.condensedMenuRef &&
-        !this.condensedMenuRef.contains(target) &&
-        condenseMenuButton !== target &&
-        !condenseMenuButton?.contains(target)
+        !path.includes(this.condensedMenuRef) &&
+        !path.includes(condenseMenuButton)
       ) {
         this.condensedMenuOpen = false;
         this.condensedMenuOpenChange.emit(false);
@@ -257,9 +255,8 @@ export class ModusWcNavbar {
       );
       if (
         this.menuRef &&
-        !this.menuRef.contains(target) &&
-        menuButton !== target &&
-        !menuButton?.contains(target)
+        !path.includes(this.menuRef) &&
+        !path.includes(menuButton)
       ) {
         this.mainMenuOpen = false;
       }
@@ -271,9 +268,8 @@ export class ModusWcNavbar {
       );
       if (
         this.notificationsRef &&
-        !this.notificationsRef.contains(target) &&
-        notificationsButton !== target &&
-        !notificationsButton?.contains(target)
+        !path.includes(this.notificationsRef) &&
+        !path.includes(notificationsButton)
       ) {
         this.notificationsMenuOpen = false;
         this.notificationsMenuOpenChange.emit(false);
@@ -286,9 +282,8 @@ export class ModusWcNavbar {
       );
       if (
         this.userRef &&
-        !this.userRef.contains(target) &&
-        userButton !== target &&
-        !userButton?.contains(target)
+        !path.includes(this.userRef) &&
+        !path.includes(userButton)
       ) {
         this.userMenuOpen = false;
         this.userMenuOpenChange.emit(false);

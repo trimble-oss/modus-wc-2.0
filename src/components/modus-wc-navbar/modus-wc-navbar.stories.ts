@@ -7,8 +7,8 @@ import {
   INavbarUserCard,
   INavbarVisibility,
 } from './modus-wc-navbar';
-import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
+import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
@@ -529,16 +529,8 @@ export const ShadowDomParent: Story = {
             el.appendChild(notifications);
             el.appendChild(apps);
 
-            // Inject slot styles and click interceptor into shadow root.
-            // The navbar's document-level handleClickOutside uses event.target
-            // (retargeted to shadow host) so it closes every menu immediately
-            // after opening. Stopping propagation at the shadow root keeps
-            // clicks inside the shadow DOM — navbar toggle logic still runs
-            // because onButtonClick fires synchronously before bubbling.
+            // Inject slot styles into shadow root (matches Default story styling)
             const shadowRoot = el.getRootNode() as ShadowRoot;
-            shadowRoot.addEventListener('click', (e) => {
-              e.stopPropagation();
-            });
             const styleEl = document.createElement('style');
             styleEl.textContent = `
               :host {

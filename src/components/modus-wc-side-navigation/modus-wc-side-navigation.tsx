@@ -108,7 +108,10 @@ export class ModusWcSideNavigation {
   };
 
   private setTargetContentMargin(isExpanded, mode, target) {
-    const content = document.querySelector(target);
+    const root = this.el.getRootNode() as ShadowRoot | Document;
+    const content =
+      (root instanceof ShadowRoot ? root : document).querySelector(target) ??
+      document.querySelector(target);
     if (content && 'style' in content) {
       (content as HTMLElement).style.marginLeft =
         isExpanded && mode === 'push' ? this.maxWidth : this.minWidth;
