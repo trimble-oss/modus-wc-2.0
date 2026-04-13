@@ -1056,6 +1056,11 @@ document
 
 export const ItemsReordering: Story = {
   name: 'Items Reordering',
+  args: {
+    'include-search': false,
+    'include-actions': false,
+    'items-reordering': true,
+  },
   parameters: {
     docs: {
       description: {
@@ -1065,7 +1070,7 @@ export const ItemsReordering: Story = {
       source: {
         code: `
 <script>
-const items = [
+let items = [
   {
     id: 'phase-1',
     label: 'Phase 1',
@@ -1085,22 +1090,27 @@ const items = [
     ]
   }
 ];
+
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = items;
+
+tree.addEventListener('itemsReordered', (event) => {
+  items = [...event.detail.items];
+  tree.items = items;
+});
 </script>
 
 <modus-wc-content-tree
   include-search="false"
   include-actions="false"
   items-reordering="true"
-  .items={items}>
-</modus-wc-content-tree>
+></modus-wc-content-tree>
 `,
       },
     },
   },
   render: (args) => {
-    const state = {
-      items: [...(args.items ?? nestedItemsReorderingData)],
-    };
+    const initialItems = [...(args.items ?? nestedItemsReorderingData)];
 
     const handleItemsReordered = (
       event: CustomEvent<{
@@ -1112,11 +1122,10 @@ const items = [
         };
       }>
     ) => {
-      state.items = [...event.detail.items];
       const tree = event.currentTarget as HTMLElement & {
         items?: ITreeItemData[];
       };
-      tree.items = state.items;
+      tree.items = [...event.detail.items];
     };
 
     return html`
@@ -1125,8 +1134,8 @@ const items = [
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
-        .itemsReordering=${true}
-        .items=${state.items}
+        .itemsReordering=${args['items-reordering']}
+        .items=${initialItems}
         @itemsReordered=${handleItemsReordered}
       ></modus-wc-content-tree>
     `;

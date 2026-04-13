@@ -57,9 +57,6 @@ export class ModusWcContentTree {
   /** Data-driven items to render as tree items. */
   @Prop() items?: ITreeItemData[];
 
-  /** Internal tree data used for rendering and local reorder updates. */
-  @State() private renderItems?: ITreeItemData[];
-
   /** Emits reordered data for controlled updates/backend sync. */
   @StencilEvent({ bubbles: true, composed: true })
   itemsReordered!: EventEmitter<{
@@ -78,7 +75,6 @@ export class ModusWcContentTree {
 
   @Watch('items')
   handleItemsChange() {
-    this.renderItems = this.items;
     this.cachedItems = undefined;
     this.pendingChildrenIds = new Set();
   }
@@ -90,7 +86,6 @@ export class ModusWcContentTree {
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    this.renderItems = this.items;
   }
 
   componentDidLoad() {
@@ -108,7 +103,7 @@ export class ModusWcContentTree {
   }
 
   private get hasDataItems(): boolean {
-    return Array.isArray(this.renderItems) && this.renderItems.length > 0;
+    return Array.isArray(this.items) && this.items.length > 0;
   }
 
   private get isReorderingEnabled(): boolean {
@@ -148,15 +143,10 @@ export class ModusWcContentTree {
       }
     });
 
-    const nextItems = reorderTreeItemsData(
-      this.renderItems!,
-      event.detail.parameters
-    );
+    const nextItems = reorderTreeItemsData(this.items!, event.detail.parameters);
     if (!nextItems) {
       return;
     }
-
-    this.renderItems = JSON.parse(JSON.stringify(nextItems));
 
     this.itemsReordered.emit({
       items: nextItems,
@@ -364,7 +354,7 @@ export class ModusWcContentTree {
           <div class="modus-wc-content-tree-content">
             {this.hasDataItems ? (
               <modus-wc-tree-view>
-                {this.renderTreeItems(this.renderItems!)}
+                {this.renderTreeItems(this.items!)}
               </modus-wc-tree-view>
             ) : (
               <slot></slot>
