@@ -61,6 +61,9 @@ export class ModusWcAppMenu {
   @State() draggedItemPos: { sectionIdx: number; itemIdx: number } | null =
     null;
 
+  @State() grabbedItemPos: { sectionIdx: number; itemIdx: number } | null =
+    null;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -101,12 +104,222 @@ export class ModusWcAppMenu {
 
   handleDone() {
     this.isEditMode = false;
+    this.grabbedItemPos = null;
     this.itemsOrderChange.emit(this.sections);
   }
 
   handleCancel() {
     this.sections = [...this.previousSections];
     this.isEditMode = false;
+    this.grabbedItemPos = null;
+  }
+
+  handleKeyDown(e: KeyboardEvent, sectionIdx: number, itemIdx: number) {
+    if (!this.isEditMode) return;
+
+    switch (e.key) {
+      case ' ':
+      case 'Enter':
+        e.preventDefault();
+        if (this.grabbedItemPos) {
+          this.grabbedItemPos = null;
+        } else {
+          this.grabbedItemPos = { sectionIdx, itemIdx };
+        }
+        break;
+
+      case 'ArrowUp':
+        if (this.grabbedItemPos) {
+          e.preventDefault();
+          if (this.layout === 'grid') {
+            this.moveGridItemByKeyboard(-this.getGridColumnCount());
+          } else {
+            this.moveListItemByKeyboard(-1);
+          }
+        }
+        break;
+
+      case 'ArrowDown':
+        if (this.grabbedItemPos) {
+          e.preventDefault();
+          if (this.layout === 'grid') {
+            this.moveGridItemByKeyboard(this.getGridColumnCount());
+          } else {
+            this.moveListItemByKeyboard(1);
+          }
+        }
+        break;
+
+      case 'ArrowLeft':
+        if (this.grabbedItemPos && this.layout === 'grid') {
+          e.preventDefault();
+          this.moveGridItemByKeyboard(-1);
+        }
+        break;
+
+      case 'ArrowRight':
+        if (this.grabbedItemPos && this.layout === 'grid') {
+          e.preventDefault();
+          this.moveGridItemByKeyboard(1);
+        }
+        break;
+
+      case 'Escape':
+        if (this.grabbedItemPos) {
+          e.preventDefault();
+          this.grabbedItemPos = null;
+        }
+        break;
+    }
+  }
+
+  private getGridColumnCount(): number {
+    const items = this.el.querySelectorAll('.grid-item');
+    if (items.length <= 1) return 1;
+
+    const firstTop = (items[0] as HTMLElement).offsetTop;
+    let count = 1;
+    for (let i = 1; i < items.length; i++) {
+      if ((items[i] as HTMLElement).offsetTop === firstTop) {
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    return count;
+  }
+
+  private moveListItemByKeyboard(direction: -1 | 1) {
+    if (!this.grabbedItemPos) return;
+
+    const sections = this.sections ?? [];
+    const { sectionIdx, itemIdx } = this.grabbedItemPos;
+    const section = sections[sectionIdx];
+    if (!section) return;
+
+    const targetIdx = itemIdx + direction;
+
+    if (targetIdx >= 0 && targetIdx < section.items.length) {
+      const newSections = sections.map((s) => ({
+        ...s,
+        items: [...s.items],
+      }));
+      const items = newSections[sectionIdx].items;
+      [items[itemIdx], items[targetIdx]] = [items[targetIdx], items[itemIdx]];
+
+      this.sections = newSections;
+      this.grabbedItemPos = { sectionIdx, itemIdx: targetIdx };
+
+      requestAnimationFrame(() => {
+        this.focusItemAt(sectionIdx, targetIdx);
+      });
+    } else {
+      this.moveItemAcrossSections(direction, sections, sectionIdx, itemIdx);
+    }
+  }
+
+  private moveItemAcrossSections(
+    direction: -1 | 1,
+    sections: IAppMenuSection[],
+    sectionIdx: number,
+    itemIdx: number
+  ) {
+    const targetSectionIdx = sectionIdx + direction;
+    if (targetSectionIdx < 0 || targetSectionIdx >= sections.length) return;
+
+    const newSections = sections.map((s) => ({
+      ...s,
+      items: [...s.items],
+    }));
+
+    const [movedItem] = newSections[sectionIdx].items.splice(itemIdx, 1);
+    const targetItemIdx =
+      direction === 1 ? 0 : newSections[targetSectionIdx].items.length;
+    newSections[targetSectionIdx].items.splice(targetItemIdx, 0, movedItem);
+
+    this.sections = newSections;
+    this.grabbedItemPos = {
+      sectionIdx: targetSectionIdx,
+      itemIdx: targetItemIdx,
+    };
+
+    requestAnimationFrame(() => {
+      this.focusItemAt(targetSectionIdx, targetItemIdx);
+    });
+  }
+
+  private moveGridItemByKeyboard(offset: number) {
+    if (!this.grabbedItemPos) return;
+
+    const sections = this.sections ?? [];
+    const { sectionIdx, itemIdx } = this.grabbedItemPos;
+
+    const sectionSizes = sections.map((s) => s.items.length);
+    const flatItems: IAppMenuItem[] = [];
+    for (const section of sections) {
+      flatItems.push(...section.items.map((item) => ({ ...item })));
+    }
+
+    let currentFlatIdx = 0;
+    for (let s = 0; s < sectionIdx; s++) {
+      currentFlatIdx += sectionSizes[s];
+    }
+    currentFlatIdx += itemIdx;
+
+    const targetFlatIdx = currentFlatIdx + offset;
+    if (targetFlatIdx < 0 || targetFlatIdx >= flatItems.length) return;
+
+    const [movedItem] = flatItems.splice(currentFlatIdx, 1);
+    flatItems.splice(targetFlatIdx, 0, movedItem);
+
+    let remaining = [...flatItems];
+    const newSections = sections.map((s, idx) => ({
+      ...s,
+      items: remaining.splice(0, sectionSizes[idx]),
+    }));
+
+    let newSectionIdx = 0;
+    let newItemIdx = targetFlatIdx;
+    for (let s = 0; s < sectionSizes.length; s++) {
+      if (newItemIdx < sectionSizes[s]) {
+        newSectionIdx = s;
+        break;
+      }
+      newItemIdx -= sectionSizes[s];
+    }
+
+    this.sections = newSections;
+    this.grabbedItemPos = { sectionIdx: newSectionIdx, itemIdx: newItemIdx };
+
+    requestAnimationFrame(() => {
+      this.focusItemAt(newSectionIdx, newItemIdx);
+    });
+  }
+
+  private focusItemAt(sectionIdx: number, itemIdx: number) {
+    const selector =
+      this.layout === 'grid'
+        ? '.grid-item[tabindex]'
+        : '.app-menu-item-row[tabindex]';
+    const items = this.el.querySelectorAll(selector);
+
+    let flatIdx = 0;
+    const sections = this.sections ?? [];
+    for (let s = 0; s < sectionIdx; s++) {
+      flatIdx += sections[s]?.items.length ?? 0;
+    }
+    flatIdx += itemIdx;
+
+    const target = items[flatIdx] as HTMLElement;
+    target?.focus();
+  }
+
+  private isGrabbed(sectionIdx: number, itemIdx: number): boolean {
+    return (
+      this.grabbedItemPos?.sectionIdx === sectionIdx &&
+      this.grabbedItemPos?.itemIdx === itemIdx
+    );
   }
 
   handleDragStart(e: DragEvent, sectionIdx: number, itemIdx: number) {
@@ -199,15 +412,28 @@ export class ModusWcAppMenu {
           <modus-wc-menu>
             {section.items.map((item, iIdx) => (
               <div
-                class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''}`}
+                aria-grabbed={
+                  this.isEditMode
+                    ? this.isGrabbed(sIdx, iIdx)
+                      ? 'true'
+                      : 'false'
+                    : undefined
+                }
+                aria-roledescription={
+                  this.isEditMode ? 'reorderable item' : undefined
+                }
+                class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(sIdx, iIdx) ? 'grabbed-item' : ''}`}
                 draggable={this.isEditMode}
                 onDragStart={(e) => this.handleDragStart(e, sIdx, iIdx)}
                 onDragOver={(e) => this.handleDragOver(e)}
                 onDrop={(e) => this.handleDrop(e, sIdx, iIdx)}
+                onKeyDown={(e) => this.handleKeyDown(e, sIdx, iIdx)}
+                role={this.isEditMode ? 'option' : undefined}
+                tabindex={this.isEditMode ? 0 : undefined}
               >
                 {this.isEditMode && (
                   <modus-wc-button
-                    aria-label="Drag to reorder"
+                    aria-label="Reorder"
                     shape="square"
                     size="xs"
                     variant="borderless"
@@ -248,16 +474,28 @@ export class ModusWcAppMenu {
           this.handleContainerDrop(e, this.draggedItemPos?.sectionIdx ?? 0)
         }
       >
-        <div class="grid-row" role="list">
+        <div class="grid-row" role={this.isEditMode ? 'listbox' : 'list'}>
           {allItems.map(({ item, sIdx, iIdx }) => (
             <div
+              aria-grabbed={
+                this.isEditMode
+                  ? this.isGrabbed(sIdx, iIdx)
+                    ? 'true'
+                    : 'false'
+                  : undefined
+              }
               aria-label={this.getDisplayName(item.appName)}
-              class={`grid-item ${this.isEditMode ? 'draggable-item' : ''}`}
+              aria-roledescription={
+                this.isEditMode ? 'reorderable item' : undefined
+              }
+              class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(sIdx, iIdx) ? 'grabbed-item' : ''}`}
               draggable={this.isEditMode}
               onDragStart={(e) => this.handleDragStart(e, sIdx, iIdx)}
               onDragOver={(e) => this.handleDragOver(e)}
               onDrop={(e) => this.handleDrop(e, sIdx, iIdx)}
-              role="listitem"
+              onKeyDown={(e) => this.handleKeyDown(e, sIdx, iIdx)}
+              role={this.isEditMode ? 'option' : 'listitem'}
+              tabindex={this.isEditMode ? 0 : undefined}
             >
               {this.isEditMode && (
                 <modus-wc-icon
@@ -288,6 +526,7 @@ export class ModusWcAppMenu {
       </div>
     );
   }
+
   render() {
     return (
       <Host

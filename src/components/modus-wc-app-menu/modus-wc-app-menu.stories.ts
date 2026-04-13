@@ -7,6 +7,7 @@ import { IAppMenuSection } from './modus-wc-app-menu';
 interface AppMenuArgs {
   'custom-class'?: string;
   draggedItemPos?: unknown;
+  grabbedItemPos?: unknown;
   isEditMode?: unknown;
   layout?: 'list' | 'grid';
   previousSections?: unknown;
@@ -80,6 +81,9 @@ const meta: Meta<AppMenuArgs> = {
       control: 'object',
     },
     draggedItemPos: {
+      table: { disable: true },
+    },
+    grabbedItemPos: {
       table: { disable: true },
     },
     isEditMode: {

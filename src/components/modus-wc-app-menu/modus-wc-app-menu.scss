@@ -163,7 +163,14 @@ modus-wc-app-menu {
 
     .draggable-item {
       cursor: grab;
-      transition: box-shadow 0.2s ease;
+      transition:
+        box-shadow 0.2s ease,
+        outline 0.2s ease;
+
+      &:focus-visible {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
+      }
 
       &:active {
         box-shadow:
@@ -171,6 +178,15 @@ modus-wc-app-menu {
           0 2px 4px -2px rgba(0, 0, 0, 0.1);
         cursor: grabbing;
       }
+    }
+
+    .grabbed-item {
+      background-color: var(--modus-wc-color-base-200);
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
     }
   }
 }
