@@ -15,6 +15,7 @@ modus-wc-collapse .modus-wc-collapse {
   transition: none;
 
   .modus-wc-collapse-title {
+    cursor: pointer;
     font-size: var(--modus-wc-font-size-2xl);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
@@ -24,19 +25,18 @@ modus-wc-collapse .modus-wc-collapse {
     width: auto;
 
     @include common-states;
-  }
 
-  .modus-wc-collapse-title:hover,
-  .modus-wc-collapse-title:active,
-  .modus-wc-collapse-title:focus {
-    background-color: transparent;
-    color: var(--modus-wc-color-base-content);
-    cursor: pointer;
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: transparent;
+      color: var(--modus-wc-color-base-content);
+    }
   }
 
   .description {
     font-size: var(--modus-wc-font-size-lg);
-    padding-inline-start: 16px;
+    padding-inline-start: var(--modus-wc-spacing-lg);
   }
 
   .modus-wc-title-main-content {
