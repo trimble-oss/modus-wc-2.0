@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 
 interface DropdownMenuArgs {
@@ -219,32 +220,43 @@ export const IconOnlyDropdownMenu: Story = {
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('dropdown-menu-shadow-host')) {
-      customElements.define(
-        'dropdown-menu-shadow-host',
-        class extends HTMLElement {
-          private dropdownEl!: HTMLElement;
-          private _props: DropdownMenuArgs | undefined;
-          private themeObserver: MutationObserver | null = null;
+      const DropdownMenuShadowHost = createShadowHostClass<DropdownMenuArgs>({
+        componentTag: 'modus-wc-dropdown-menu',
+        propsMapper: (v: DropdownMenuArgs, el: HTMLElement) => {
+          const dropdownEl = el as unknown as {
+            buttonAriaLabel: string;
+            buttonColor: string;
+            buttonShape: string;
+            buttonSize: DaisySize;
+            buttonVariant: string;
+            customClass: string;
+            disabled: boolean;
+            menuBordered: boolean;
+            menuOffset: number;
+            menuPlacement: PopoverPlacement;
+            menuSize: ModusSize;
+            menuVisible: boolean;
+          };
+          dropdownEl.buttonAriaLabel = v['button-aria-label'] || '';
+          dropdownEl.buttonColor = v['button-color'] || 'primary';
+          dropdownEl.buttonShape = v['button-shape'] || 'rectangle';
+          dropdownEl.buttonSize = v['button-size'] as DaisySize;
+          dropdownEl.buttonVariant = v['button-variant'] || 'filled';
+          dropdownEl.customClass = v['custom-class'] || '';
+          dropdownEl.disabled = Boolean(v.disabled);
+          dropdownEl.menuBordered = Boolean(v['menu-bordered']);
+          dropdownEl.menuOffset = v['menu-offset'] ?? 10;
+          dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
+          dropdownEl.menuSize = v['menu-size'] as ModusSize;
+          dropdownEl.menuVisible = Boolean(v['menu-visible']);
 
-          constructor() {
-            super();
-            const root = this.attachShadow({ mode: 'open' });
+          // On first render: add slot content and append the Selected Value
+          // display as a sibling of el inside the helper's display:contents
+          // wrapper — both become direct layout children of the shadow root.
+          if (!el.hasAttribute('data-layout-built')) {
+            el.setAttribute('data-layout-built', '');
 
-            const wrapper = document.createElement('div');
-            wrapper.style.display = 'contents';
-            const syncTheme = () => {
-              const theme = document.documentElement.getAttribute('data-theme');
-              if (theme) wrapper.setAttribute('data-theme', theme);
-            };
-            syncTheme();
-            this.themeObserver = new MutationObserver(syncTheme);
-            this.themeObserver.observe(document.documentElement, {
-              attributes: true,
-              attributeFilter: ['data-theme'],
-            });
-
-            // Dropdown
-            this.dropdownEl = document.createElement('modus-wc-dropdown-menu');
+            const wrapper = el.parentElement!;
 
             const buttonSlot = document.createElement('div');
             buttonSlot.setAttribute('slot', 'button');
@@ -269,70 +281,28 @@ export const ShadowDomParent: Story = {
               menuSlot.appendChild(item);
             });
 
-            this.dropdownEl.appendChild(buttonSlot);
-            this.dropdownEl.appendChild(menuSlot);
+            el.appendChild(buttonSlot);
+            el.appendChild(menuSlot);
 
-            // Selected value display
+            // Selected value display as sibling in wrapper
             const valueDiv = document.createElement('div');
             valueDiv.style.cssText = 'font-size: 14px; padding-top: 12px;';
             valueDiv.textContent = 'Selected Value: ';
             const valueSpan = document.createElement('span');
             valueDiv.appendChild(valueSpan);
+            wrapper.appendChild(valueDiv);
 
-            this.dropdownEl.addEventListener('itemSelect', (e: Event) => {
+            el.addEventListener('itemSelect', (e: Event) => {
               const custom = e as CustomEvent<{ value: string }>;
               valueSpan.textContent = custom.detail?.value ?? '';
-              (
-                this.dropdownEl as unknown as { menuVisible: boolean }
-              ).menuVisible = false;
+              (el as unknown as { menuVisible: boolean }).menuVisible = false;
             });
-
-            wrapper.appendChild(this.dropdownEl);
-            wrapper.appendChild(valueDiv);
-            root.appendChild(wrapper);
           }
-
-          set props(value: DropdownMenuArgs) {
-            this._props = value;
-            const el = this.dropdownEl as unknown as {
-              buttonAriaLabel: string;
-              buttonColor: string;
-              buttonShape: string;
-              buttonSize: DaisySize;
-              buttonVariant: string;
-              customClass: string;
-              disabled: boolean;
-              menuBordered: boolean;
-              menuOffset: number;
-              menuPlacement: PopoverPlacement;
-              menuSize: ModusSize;
-              menuVisible: boolean;
-            };
-            el.buttonAriaLabel = value['button-aria-label'] || '';
-            el.buttonColor = value['button-color'] || 'primary';
-            el.buttonShape = value['button-shape'] || 'rectangle';
-            el.buttonSize = value['button-size'] as DaisySize;
-            el.buttonVariant = value['button-variant'] || 'filled';
-            el.customClass = value['custom-class'] || '';
-            el.disabled = Boolean(value.disabled);
-            el.menuBordered = Boolean(value['menu-bordered']);
-            el.menuOffset = value['menu-offset'] ?? 10;
-            el.menuPlacement = value['menu-placement'] as PopoverPlacement;
-            el.menuSize = value['menu-size'] as ModusSize;
-            el.menuVisible = Boolean(value['menu-visible']);
-          }
-
-          get props() {
-            return this._props || ({} as DropdownMenuArgs);
-          }
-
-          disconnectedCallback() {
-            if (this.themeObserver) {
-              this.themeObserver.disconnect();
-              this.themeObserver = null;
-            }
-          }
-        }
+        },
+      });
+      customElements.define(
+        'dropdown-menu-shadow-host',
+        DropdownMenuShadowHost
       );
     }
 

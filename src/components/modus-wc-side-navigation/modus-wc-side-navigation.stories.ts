@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface SideNavigationArgs {
   'custom-class'?: string;
@@ -519,143 +520,11 @@ export const WithSubmenu: Story = {
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('side-navigation-shadow-host')) {
-      customElements.define(
-        'side-navigation-shadow-host',
-        class extends HTMLElement {
-          private navEl!: HTMLElement;
-          private _props: SideNavigationArgs | undefined;
-          private themeObserver: MutationObserver | null = null;
-
-          constructor() {
-            super();
-            const root = this.attachShadow({ mode: 'open' });
-
-            const wrapper = document.createElement('div');
-            wrapper.style.display = 'contents';
-            const syncTheme = () => {
-              const theme = document.documentElement.getAttribute('data-theme');
-              if (theme) wrapper.setAttribute('data-theme', theme);
-            };
-            syncTheme();
-            this.themeObserver = new MutationObserver(syncTheme);
-            this.themeObserver.observe(document.documentElement, {
-              attributes: true,
-              attributeFilter: ['data-theme'],
-            });
-
-            // Navbar
-            const navbar = document.createElement('modus-wc-navbar');
-            navbar.setAttribute('style', 'z-index: 2;');
-            navbar.className = 'navbar';
-            (navbar as unknown as { userCard: object }).userCard = {
-              avatarAlt: 'User Avatar',
-              avatarSrc:
-                'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-              email: 'user@trimble.com',
-              name: 'Sonic the Hedgehog',
-            };
-            (navbar as unknown as { visibility: object }).visibility = {
-              ai: true,
-              apps: true,
-              help: true,
-              mainMenu: true,
-              notifications: true,
-              search: true,
-              searchInput: false,
-              user: true,
-            };
-
-            // Side navigation
-            this.navEl = document.createElement('modus-wc-side-navigation');
-            this.navEl.className = 'side-navigation';
-            this.navEl.style.cssText =
-              'height: 500px; align-self: flex-start; position: relative;';
-
-            const menu = document.createElement('modus-wc-menu');
-            menu.setAttribute('size', 'lg');
-            [
-              { label: 'home', icon: 'home', selected: true },
-              { label: 'profile', icon: 'person', selected: false },
-              { label: 'settings', icon: 'gears', selected: false },
-            ].forEach(({ label, icon, selected }) => {
-              const item = document.createElement('modus-wc-menu-item');
-              item.setAttribute('label', label);
-              if (selected) item.setAttribute('selected', '');
-              const ic = document.createElement('modus-wc-icon');
-              ic.setAttribute('slot', 'start-icon');
-              ic.setAttribute('name', icon);
-              item.appendChild(ic);
-              menu.appendChild(item);
-            });
-            this.navEl.appendChild(menu);
-
-            // Wire navbar's mainMenuOpenChange to toggle side nav expanded state.
-            // Now that navbar's handleClickOutside uses composedPath(), it
-            // correctly identifies hamburger clicks inside shadow DOM and emits
-            // the right true/false detail value on each click.
-            navbar.addEventListener('mainMenuOpenChange', (e: Event) => {
-              const custom = e as CustomEvent<boolean>;
-              (this.navEl as unknown as { expanded: boolean }).expanded =
-                custom.detail;
-            });
-
-            // Panel content
-            const panelContent = document.createElement('div');
-            panelContent.className = 'panel-content';
-            const po1 = document.createElement('p');
-            po1.textContent =
-              'The side navigation of an application provides context through accessible menu options and positions a consistent component to connect to various pages in the application.';
-            const po2 = document.createElement('p');
-            po2.textContent =
-              'The side navigation is a collapsible side content of the site\'s pages. It is located alongside the page\'s primary content. The component is designed to add side content to a fullscreen application. It is activated through the "hamburger" menu in the Navbar.';
-            panelContent.appendChild(po1);
-            panelContent.appendChild(po2);
-
-            const mainContentRow = document.createElement('div');
-            mainContentRow.className = 'main-content-row';
-            mainContentRow.appendChild(this.navEl);
-            mainContentRow.appendChild(panelContent);
-
-            const layout = document.createElement('div');
-            layout.className = 'layout-with-navbar';
-            layout.appendChild(navbar);
-            layout.appendChild(mainContentRow);
-
-            wrapper.appendChild(layout);
-            root.appendChild(wrapper);
-
-            // Inject layout styles into shadow root
-            const styleEl = document.createElement('style');
-            styleEl.textContent = `
-              .layout-with-navbar {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-              }
-              .main-content-row {
-                display: flex;
-                flex: 1;
-                overflow: hidden;
-              }
-              .navbar {
-                box-shadow: none;
-              }
-              .panel-content {
-                margin-left: 4rem;
-                padding: 10px;
-              }
-              .side-navigation {
-                height: 500px;
-                align-self: flex-start;
-                position: relative;
-              }
-            `;
-            root.appendChild(styleEl);
-          }
-
-          set props(value: SideNavigationArgs) {
-            this._props = value;
-            const nav = this.navEl as unknown as {
+      const SideNavigationShadowHost =
+        createShadowHostClass<SideNavigationArgs>({
+          componentTag: 'modus-wc-side-navigation',
+          propsMapper: (v: SideNavigationArgs, el: HTMLElement) => {
+            const navEl = el as unknown as {
               customClass: string;
               expanded: boolean;
               maxWidth: string;
@@ -663,27 +532,137 @@ export const ShadowDomParent: Story = {
               mode: string;
               targetContent: string;
             };
-            nav.customClass = value['custom-class'] || '';
-            nav.expanded = Boolean(value.expanded);
-            nav.maxWidth = value['max-width'] || '256px';
-            nav.collapseOnClickOutside = Boolean(
-              value['collapse-on-click-outside']
+            navEl.customClass = v['custom-class'] || '';
+            navEl.expanded = Boolean(v.expanded);
+            navEl.maxWidth = v['max-width'] || '256px';
+            navEl.collapseOnClickOutside = Boolean(
+              v['collapse-on-click-outside']
             );
-            nav.mode = value.mode || 'overlay';
-            nav.targetContent = value['target-content'] || '';
-          }
+            navEl.mode = v.mode || 'overlay';
+            navEl.targetContent = v['target-content'] || '';
 
-          get props() {
-            return this._props || ({} as SideNavigationArgs);
-          }
+            // Build full layout on first render: move el into a navbar + content
+            // layout inside the wrapper. The helper's wrapper has display:contents
+            // so the layout becomes a direct layout child of the shadow root.
+            if (!el.hasAttribute('data-layout-built')) {
+              el.setAttribute('data-layout-built', '');
 
-          disconnectedCallback() {
-            if (this.themeObserver) {
-              this.themeObserver.disconnect();
-              this.themeObserver = null;
+              const shadowRoot = el.getRootNode() as ShadowRoot;
+              const wrapper = el.parentElement!;
+
+              el.className = 'side-navigation';
+              el.style.cssText =
+                'height: 500px; align-self: flex-start; position: relative;';
+
+              // Navbar
+              const navbar = document.createElement('modus-wc-navbar');
+              navbar.setAttribute('style', 'z-index: 2;');
+              navbar.className = 'navbar';
+              (navbar as unknown as { userCard: object }).userCard = {
+                avatarAlt: 'User Avatar',
+                avatarSrc:
+                  'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+                email: 'user@trimble.com',
+                name: 'Sonic the Hedgehog',
+              };
+              (navbar as unknown as { visibility: object }).visibility = {
+                ai: true,
+                apps: true,
+                help: true,
+                mainMenu: true,
+                notifications: true,
+                search: true,
+                searchInput: false,
+                user: true,
+              };
+
+              // Menu items
+              const menu = document.createElement('modus-wc-menu');
+              menu.setAttribute('size', 'lg');
+              [
+                { label: 'home', icon: 'home', selected: true },
+                { label: 'profile', icon: 'person', selected: false },
+                { label: 'settings', icon: 'gears', selected: false },
+              ].forEach(({ label, icon, selected }) => {
+                const item = document.createElement('modus-wc-menu-item');
+                item.setAttribute('label', label);
+                if (selected) item.setAttribute('selected', '');
+                const ic = document.createElement('modus-wc-icon');
+                ic.setAttribute('slot', 'start-icon');
+                ic.setAttribute('name', icon);
+                item.appendChild(ic);
+                menu.appendChild(item);
+              });
+              el.appendChild(menu);
+
+              // Wire navbar's mainMenuOpenChange to toggle side nav.
+              // Now that navbar's handleClickOutside uses composedPath(), it
+              // correctly identifies hamburger clicks inside shadow DOM and emits
+              // the right true/false detail value on each click.
+              navbar.addEventListener('mainMenuOpenChange', (e: Event) => {
+                const custom = e as CustomEvent<boolean>;
+                (el as unknown as { expanded: boolean }).expanded =
+                  custom.detail;
+              });
+
+              // Panel content
+              const panelContent = document.createElement('div');
+              panelContent.className = 'panel-content';
+              const po1 = document.createElement('p');
+              po1.textContent =
+                'The side navigation of an application provides context through accessible menu options and positions a consistent component to connect to various pages in the application.';
+              const po2 = document.createElement('p');
+              po2.textContent =
+                'The side navigation is a collapsible side content of the site\'s pages. It is located alongside the page\'s primary content. The component is designed to add side content to a fullscreen application. It is activated through the "hamburger" menu in the Navbar.';
+              panelContent.appendChild(po1);
+              panelContent.appendChild(po2);
+
+              // Move el into layout (appendChild moves an existing node)
+              const mainContentRow = document.createElement('div');
+              mainContentRow.className = 'main-content-row';
+              mainContentRow.appendChild(el);
+              mainContentRow.appendChild(panelContent);
+
+              const layout = document.createElement('div');
+              layout.className = 'layout-with-navbar';
+              layout.appendChild(navbar);
+              layout.appendChild(mainContentRow);
+
+              wrapper.appendChild(layout);
+
+              // Layout styles
+              const styleEl = document.createElement('style');
+              styleEl.textContent = `
+                .layout-with-navbar {
+                  display: flex;
+                  flex-direction: column;
+                  height: 100%;
+                }
+                .main-content-row {
+                  display: flex;
+                  flex: 1;
+                  overflow: hidden;
+                }
+                .navbar {
+                  box-shadow: none;
+                }
+                .panel-content {
+                  margin-left: 4rem;
+                  padding: 10px;
+                }
+                .side-navigation {
+                  height: 500px;
+                  align-self: flex-start;
+                  position: relative;
+                }
+              `;
+              shadowRoot.appendChild(styleEl);
             }
-          }
-        }
+          },
+        });
+      customElements.define(
+        'side-navigation-shadow-host',
+        SideNavigationShadowHost
       );
     }
 

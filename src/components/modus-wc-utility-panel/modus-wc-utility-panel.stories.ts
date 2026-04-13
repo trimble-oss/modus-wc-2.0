@@ -1,6 +1,7 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
   expanded: boolean;
@@ -587,81 +588,25 @@ export const WithoutHeaderFooter: Story = {
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('utility-panel-shadow-host')) {
-      customElements.define(
-        'utility-panel-shadow-host',
-        class extends HTMLElement {
-          private panelEl!: HTMLElement;
-          private _props: UtilityPanelArgs | undefined;
-          private themeObserver: MutationObserver | null = null;
+      const UtilityPanelShadowHost = createShadowHostClass<UtilityPanelArgs>({
+        componentTag: 'modus-wc-utility-panel',
+        propsMapper: (v: UtilityPanelArgs, el: HTMLElement) => {
+          (el as unknown as { expanded: boolean }).expanded = Boolean(
+            v.expanded
+          );
+          (el as unknown as { pushContent: boolean }).pushContent = Boolean(
+            v['push-content']
+          );
 
-          constructor() {
-            super();
-            const root = this.attachShadow({ mode: 'open' });
+          // Build full layout on first render: add slot content to el, then
+          // move el into the demo layout inside the helper's wrapper.
+          if (!el.hasAttribute('data-layout-built')) {
+            el.setAttribute('data-layout-built', '');
 
-            const wrapper = document.createElement('div');
-            wrapper.style.display = 'contents';
-            const syncTheme = () => {
-              const theme = document.documentElement.getAttribute('data-theme');
-              if (theme) wrapper.setAttribute('data-theme', theme);
-            };
-            syncTheme();
-            this.themeObserver = new MutationObserver(syncTheme);
-            this.themeObserver.observe(document.documentElement, {
-              attributes: true,
-              attributeFilter: ['data-theme'],
-            });
+            const shadowRoot = el.getRootNode() as ShadowRoot;
+            const wrapper = el.parentElement!;
 
-            // Navbar with toggle button
-            const navbar = document.createElement('modus-wc-navbar');
-            (navbar as unknown as { visibility: object }).visibility = {
-              user: false,
-            };
-            (navbar as unknown as { userCard: object }).userCard = {
-              name: '',
-              email: '',
-            };
-            const endSlot = document.createElement('div');
-            endSlot.setAttribute('slot', 'end');
-            const tooltip = document.createElement('modus-wc-tooltip');
-            tooltip.setAttribute('content', 'Toggle Utility Panel');
-            tooltip.setAttribute('position', 'left');
-            const toggleBtn = document.createElement('modus-wc-button');
-            toggleBtn.setAttribute('color', 'primary');
-            toggleBtn.setAttribute('size', 'sm');
-            toggleBtn.setAttribute('variant', 'outlined');
-            const menuIcon = document.createElement('modus-wc-icon');
-            menuIcon.setAttribute('name', 'menu');
-            toggleBtn.appendChild(menuIcon);
-            tooltip.appendChild(toggleBtn);
-            endSlot.appendChild(tooltip);
-            navbar.appendChild(endSlot);
-
-            // Main content
-            const mainContent = document.createElement('div');
-            mainContent.className = 'main-content';
-            const h1 = document.createElement('h1');
-            h1.textContent = 'Main Content Area';
-            const p1 = document.createElement('p');
-            p1.textContent =
-              'This is the main content area below the navbar. When the utility panel opens with pushContent=true, this content will be pushed to the left.';
-            const p2 = document.createElement('p');
-            p2.textContent =
-              'This is an example of how the utility panel interacts with the main content. When the panel opens with push content enabled, this area will shift to the left to make room for the panel.';
-            const p3 = document.createElement('p');
-            p3.textContent =
-              'The content area maintains its full functionality while the panel is open. Users can continue to interact with the main content while accessing the utility panel features.';
-            mainContent.appendChild(h1);
-            mainContent.appendChild(p1);
-            mainContent.appendChild(p2);
-            mainContent.appendChild(p3);
-
-            const contentWrapper = document.createElement('div');
-            contentWrapper.className = 'main-content-wrapper';
-            contentWrapper.appendChild(mainContent);
-
-            // Utility panel
-            this.panelEl = document.createElement('modus-wc-utility-panel');
-
+            // Slot content
             const header = document.createElement('div');
             header.setAttribute('slot', 'header');
             header.className = 'modus-wc-utility-panel-header';
@@ -696,18 +641,64 @@ export const ShadowDomParent: Story = {
             footer.appendChild(cancelBtn);
             footer.appendChild(saveBtn);
 
-            this.panelEl.appendChild(header);
-            this.panelEl.appendChild(body);
-            this.panelEl.appendChild(footer);
-            contentWrapper.appendChild(this.panelEl);
+            el.appendChild(header);
+            el.appendChild(body);
+            el.appendChild(footer);
 
-            // Wire up toggle button
+            // Navbar with toggle button
+            const navbar = document.createElement('modus-wc-navbar');
+            (navbar as unknown as { visibility: object }).visibility = {
+              user: false,
+            };
+            (navbar as unknown as { userCard: object }).userCard = {
+              name: '',
+              email: '',
+            };
+            const endSlot = document.createElement('div');
+            endSlot.setAttribute('slot', 'end');
+            const tooltip = document.createElement('modus-wc-tooltip');
+            tooltip.setAttribute('content', 'Toggle Utility Panel');
+            tooltip.setAttribute('position', 'left');
+            const toggleBtn = document.createElement('modus-wc-button');
+            toggleBtn.setAttribute('color', 'primary');
+            toggleBtn.setAttribute('size', 'sm');
+            toggleBtn.setAttribute('variant', 'outlined');
+            const menuIcon = document.createElement('modus-wc-icon');
+            menuIcon.setAttribute('name', 'menu');
+            toggleBtn.appendChild(menuIcon);
+            tooltip.appendChild(toggleBtn);
+            endSlot.appendChild(tooltip);
+            navbar.appendChild(endSlot);
             toggleBtn.addEventListener('buttonClick', () => {
-              const panel = this.panelEl as unknown as {
-                expanded: boolean;
-              };
-              panel.expanded = !panel.expanded;
+              (el as unknown as { expanded: boolean }).expanded = !(
+                el as unknown as { expanded: boolean }
+              ).expanded;
             });
+
+            // Main content
+            const mainContent = document.createElement('div');
+            mainContent.className = 'main-content';
+            const h1 = document.createElement('h1');
+            h1.textContent = 'Main Content Area';
+            const p1 = document.createElement('p');
+            p1.textContent =
+              'This is the main content area below the navbar. When the utility panel opens with pushContent=true, this content will be pushed to the left.';
+            const p2 = document.createElement('p');
+            p2.textContent =
+              'This is an example of how the utility panel interacts with the main content. When the panel opens with push content enabled, this area will shift to the left to make room for the panel.';
+            const p3 = document.createElement('p');
+            p3.textContent =
+              'The content area maintains its full functionality while the panel is open. Users can continue to interact with the main content while accessing the utility panel features.';
+            mainContent.appendChild(h1);
+            mainContent.appendChild(p1);
+            mainContent.appendChild(p2);
+            mainContent.appendChild(p3);
+
+            // Move el into the content wrapper
+            const contentWrapper = document.createElement('div');
+            contentWrapper.className = 'main-content-wrapper';
+            contentWrapper.appendChild(mainContent);
+            contentWrapper.appendChild(el);
 
             const container = document.createElement('div');
             container.className = 'demo-container';
@@ -715,39 +706,21 @@ export const ShadowDomParent: Story = {
             container.appendChild(contentWrapper);
 
             wrapper.appendChild(container);
-            root.appendChild(wrapper);
 
-            // Inject layout styles into shadow root
             const styleEl = document.createElement('style');
             styleEl.textContent = utilityPanelStyles;
-            root.appendChild(styleEl);
+            shadowRoot.appendChild(styleEl);
 
             requestAnimationFrame(() => {
-              (
-                this.panelEl as unknown as { targetElement: HTMLElement }
-              ).targetElement = mainContent;
+              (el as unknown as { targetElement: HTMLElement }).targetElement =
+                mainContent;
             });
           }
-
-          set props(value: UtilityPanelArgs) {
-            this._props = value;
-            (this.panelEl as unknown as { expanded: boolean }).expanded =
-              Boolean(value.expanded);
-            (this.panelEl as unknown as { pushContent: boolean }).pushContent =
-              Boolean(value['push-content']);
-          }
-
-          get props(): UtilityPanelArgs | undefined {
-            return this._props;
-          }
-
-          disconnectedCallback() {
-            if (this.themeObserver) {
-              this.themeObserver.disconnect();
-              this.themeObserver = null;
-            }
-          }
-        }
+        },
+      });
+      customElements.define(
+        'utility-panel-shadow-host',
+        UtilityPanelShadowHost
       );
     }
 
