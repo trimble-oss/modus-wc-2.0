@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -5,40 +6,57 @@ import { IAppMenuSection } from './modus-wc-app-menu';
 
 interface AppMenuArgs {
   'custom-class'?: string;
+  draggedItemPos?: unknown;
+  isEditMode?: unknown;
   layout?: 'list' | 'grid';
+  previousSections?: unknown;
   sections?: IAppMenuSection[];
 }
 
 const defaultSections: IAppMenuSection[] = [
   {
-    title: 'Construction',
-    subtitle: 'Project management tools',
+    title: 'Section 1',
+    subtitle: 'Section 1 subtitle',
     items: [
+      { appName: 'trimble' },
+      { appName: 'siteworks' },
+      { appName: 'earthworks' },
+    ],
+  },
+  {
+    title: 'Section 2',
+    subtitle: 'Section 2 subtitle',
+    items: [
+      { appName: 'worksmanager' },
       { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'b2w' },
-      { appName: 'geosuite' },
+      { appName: 'unity' },
     ],
   },
   {
-    title: 'Design & Engineering',
-    subtitle: 'Modeling and design tools',
+    title: 'Section 3',
+    subtitle: 'Section 3 subtitle',
     items: [
-      { appName: 'sketchup' },
-      { appName: 'novapoint' },
-      { appName: 'reality_capture' },
-      { appName: 'nova' },
-      { appName: 'novapoint' },
+      { appName: 'trade_service_live' },
+      { appName: 'livecount' },
+      { appName: 'supplier_xchange' },
     ],
   },
   {
-    title: 'Project Management',
-    subtitle: 'Project management tools',
+    title: 'Section 4',
+    subtitle: 'Section 4 subtitle',
     items: [
       { appName: 'projectsight' },
-      { appName: 'sitevision' },
-      { appName: 'siteworks' },
+      { appName: 'app_xchange' },
+      { appName: 'sketchup' },
+    ],
+  },
+  {
+    title: 'Section 5',
+    subtitle: 'Section 5 subtitle',
+    items: [
+      { appName: 'pay' },
+      { appName: 'copilot' },
+      { appName: 'stabicad' },
     ],
   },
 ];
@@ -61,8 +79,21 @@ const meta: Meta<AppMenuArgs> = {
     sections: {
       control: 'object',
     },
+    draggedItemPos: {
+      table: { disable: true },
+    },
+    isEditMode: {
+      table: { disable: true },
+    },
+    previousSections: {
+      table: { disable: true },
+    },
   },
+  decorators: [withActions],
   parameters: {
+    actions: {
+      handles: ['layoutChange', 'itemsOrderChange'],
+    },
     docs: {
       description: {
         component: `
@@ -126,9 +157,6 @@ const Template: Story = {
           custom-class=${ifDefined(args['custom-class'])}
           layout=${ifDefined(args.layout)}
           .sections=${args.sections}
-          @layoutChange=${(e: CustomEvent) => console.log('Layout changed:', e.detail)}
-          @itemsOrderChange=${(e: CustomEvent) =>
-            console.log('Items order changed:', e.detail)}
         ></modus-wc-app-menu>
       </div>
     `;

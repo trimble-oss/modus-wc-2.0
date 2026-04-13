@@ -265,6 +265,58 @@ describe('modus-wc-app-menu', () => {
     expect(logos?.length).toBe(4);
   });
 
+  it('should not have tooltipContent on list layout menu items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: mockSections,
+          layout: 'list',
+        }),
+    });
+
+    const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
+    menuItems?.forEach((item) => {
+      expect(item.hasAttribute('tooltipcontent')).toBe(false);
+    });
+  });
+
+  it('should wrap grid layout labels with modus-wc-tooltip', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: mockSections,
+          layout: 'grid',
+        }),
+    });
+
+    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
+    expect(tooltips?.length).toBe(4);
+    expect(tooltips?.[0]?.getAttribute('content')).toBe('Trimble Connect');
+    expect(tooltips?.[1]?.getAttribute('content')).toBe('Viewpoint');
+    expect(tooltips?.[2]?.getAttribute('content')).toBe('SketchUp');
+    expect(tooltips?.[3]?.getAttribute('content')).toBe('Tekla');
+  });
+
+  it('should disable grid tooltips when text is not truncated', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: mockSections,
+          layout: 'grid',
+        }),
+    });
+
+    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
+    tooltips?.forEach((tooltip) => {
+      expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
+        true
+      );
+    });
+  });
+
   it('should render grid layout with item labels', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],

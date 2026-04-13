@@ -65,6 +65,26 @@ export class ModusWcAppMenu {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  componentDidRender() {
+    this.updateGridTooltips();
+  }
+
+  private updateGridTooltips() {
+    const tooltips = this.el.querySelectorAll('.grid-item modus-wc-tooltip');
+    tooltips.forEach((tooltip) => {
+      const label = tooltip.querySelector(
+        '.grid-item-text-label'
+      ) as HTMLElement;
+      if (label) {
+        const isTruncated =
+          label.scrollWidth > label.clientWidth ||
+          label.scrollHeight > label.clientHeight;
+        (tooltip as HTMLElement & { disabled: boolean }).disabled =
+          !isTruncated;
+      }
+    });
+  }
+
   private getDisplayName(appName: AppName): string {
     return LOGO_VARIANTS[appName]?.displayName ?? appName;
   }
@@ -251,12 +271,17 @@ export class ModusWcAppMenu {
                 custom-class="grid-emblem"
                 emblem={true}
               ></modus-wc-logo>
-              <modus-wc-typography
-                custom-class="grid-item-text-label"
-                size="xs"
-                weight="normal"
-                label={this.getDisplayName(item.appName)}
-              ></modus-wc-typography>
+              <modus-wc-tooltip
+                content={this.getDisplayName(item.appName)}
+                position="auto"
+              >
+                <modus-wc-typography
+                  custom-class="grid-item-text-label"
+                  size="xs"
+                  weight="normal"
+                  label={this.getDisplayName(item.appName)}
+                ></modus-wc-typography>
+              </modus-wc-tooltip>
             </div>
           ))}
         </div>
@@ -269,7 +294,7 @@ export class ModusWcAppMenu {
         {...this.inheritedAttributes}
         class={this.customClass ? this.customClass : undefined}
       >
-        <modus-wc-panel height="600px" width="320px">
+        <modus-wc-panel height="568px" width="320px">
           <div slot="body">
             <div class="menu-header">
               <div class="header-title">

@@ -3,7 +3,7 @@
 exports[`modus-wc-app-menu should render with custom class 1`] = `
 <modus-wc-app-menu class="my-custom-class">
   <!---->
-  <modus-wc-panel height="600px" width="320px">
+  <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
@@ -65,7 +65,7 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
 exports[`modus-wc-app-menu should render with default props 1`] = `
 <modus-wc-app-menu>
   <!---->
-  <modus-wc-panel height="600px" width="320px">
+  <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
@@ -86,7 +86,7 @@ exports[`modus-wc-app-menu should render with default props 1`] = `
 exports[`modus-wc-app-menu should render with sections in grid layout 1`] = `
 <modus-wc-app-menu>
   <!---->
-  <modus-wc-panel height="600px" width="320px">
+  <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
@@ -103,19 +103,27 @@ exports[`modus-wc-app-menu should render with sections in grid layout 1`] = `
           <div class="grid-row" role="list">
             <div aria-label="Trimble Connect" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="connect"></modus-wc-logo>
-              <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="xs" weight="normal"></modus-wc-typography>
+              <modus-wc-tooltip content="Trimble Connect" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
             </div>
             <div aria-label="Viewpoint" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="viewpoint"></modus-wc-logo>
-              <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="xs" weight="normal"></modus-wc-typography>
+              <modus-wc-tooltip content="Viewpoint" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
             </div>
             <div aria-label="SketchUp" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="sketchup"></modus-wc-logo>
-              <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="xs" weight="normal"></modus-wc-typography>
+              <modus-wc-tooltip content="SketchUp" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
             </div>
             <div aria-label="Tekla" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="tekla"></modus-wc-logo>
-              <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="xs" weight="normal"></modus-wc-typography>
+              <modus-wc-tooltip content="Tekla" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
             </div>
           </div>
         </div>
@@ -128,7 +136,7 @@ exports[`modus-wc-app-menu should render with sections in grid layout 1`] = `
 exports[`modus-wc-app-menu should render with sections in list layout 1`] = `
 <modus-wc-app-menu>
   <!---->
-  <modus-wc-panel height="600px" width="320px">
+  <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
