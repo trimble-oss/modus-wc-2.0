@@ -1,12 +1,12 @@
 import {
   Component,
   Element,
-  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
   Prop,
   State,
+  Event as StencilEvent,
   Watch,
 } from '@stencil/core';
 import { AppName } from '../types';
@@ -51,7 +51,7 @@ export class ModusWcAppMenu {
   }>;
 
   /** Emitted when reordering is confirmed via "Done" */
-  @StencilEvent() sectionsOrderChange!: EventEmitter<IAppMenuSection[]>;
+  @StencilEvent() itemsOrderChange!: EventEmitter<IAppMenuSection[]>;
 
   @State() isEditMode = false;
 
@@ -76,7 +76,7 @@ export class ModusWcAppMenu {
 
   handleDone() {
     this.isEditMode = false;
-    this.sectionsOrderChange.emit(this.sections);
+    this.itemsOrderChange.emit(this.sections);
   }
 
   handleCancel() {

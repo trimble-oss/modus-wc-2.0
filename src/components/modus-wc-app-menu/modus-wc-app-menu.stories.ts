@@ -75,7 +75,7 @@ A customizable app menu component that displays categorized application links in
 
 ### Events
 - **layoutChange**: Emitted when the \`layout\` prop changes between list and grid
-- **sectionsOrderChange**: Emitted when the user confirms reordering in edit mode (Done)
+- **itemsOrderChange**: Emitted when the user confirms reordering in edit mode (Done)
 
 ### Usage
 The component accepts a \`sections\` array of \`IAppMenuSection\` objects.
@@ -102,8 +102,8 @@ const getSourceCode = (args: AppMenuArgs) => {
   element.addEventListener('layoutChange', (event) => {
     console.log('Layout changed:', event.detail);
   });
-  element.addEventListener('sectionsOrderChange', (event) => {
-    console.log('Sections order changed:', event.detail);
+  element.addEventListener('itemsOrderChange', (event) => {
+    console.log('Items order changed:', event.detail);
   });
 </script>
 `;
@@ -127,6 +127,8 @@ const Template: Story = {
           layout=${ifDefined(args.layout)}
           .sections=${args.sections}
           @layoutChange=${(e: CustomEvent) => console.log('Layout changed:', e.detail)}
+          @itemsOrderChange=${(e: CustomEvent) =>
+            console.log('Items order changed:', e.detail)}
         ></modus-wc-app-menu>
       </div>
     `;

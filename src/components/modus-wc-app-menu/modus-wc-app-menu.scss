@@ -5,7 +5,7 @@ modus-wc-app-menu {
       0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -4px rgba(0, 0, 0, 0.1);
     gap: var(--modus-wc-spacing-lg);
-    padding: var(--modus-wc-spacing-lg, --modus-wc-font-size-lg);
+    padding: var(--modus-wc-spacing-lg, var(--modus-wc-font-size-lg));
 
     [slot='body'] {
       display: flex;
@@ -21,7 +21,7 @@ modus-wc-app-menu {
       display: flex;
       flex-wrap: wrap;
       gap: var(--modus-wc-spacing-sm);
-      padding: 0 var(--modus-wc-spacing-lg, --modus-wc-spacing-lg);
+      padding: 0 var(--modus-wc-spacing-lg);
 
       .header-title {
         align-content: flex-start;

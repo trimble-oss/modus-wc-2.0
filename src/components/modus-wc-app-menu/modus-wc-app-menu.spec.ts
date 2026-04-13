@@ -51,6 +51,29 @@ describe('modus-wc-app-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should emit layoutChange when layout prop changes after load', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: mockSections,
+          layout: 'list',
+        }),
+    });
+
+    const layoutChangeSpy = jest.fn();
+    page.root?.addEventListener('layoutChange', layoutChangeSpy);
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.layout = 'grid';
+    await page.waitForChanges();
+
+    expect(layoutChangeSpy).toHaveBeenCalledTimes(1);
+    expect(layoutChangeSpy.mock.calls[0][0].detail).toEqual({
+      layout: 'grid',
+    });
+  });
+
   it('should render with custom class', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
@@ -339,14 +362,14 @@ describe('modus-wc-app-menu', () => {
     expect(component.previousSections).toEqual(mockSections);
   });
 
-  it('should exit edit mode and emit sectionsOrderChange when handleDone is called', async () => {
+  it('should exit edit mode and emit itemsOrderChange when handleDone is called', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () => h('modus-wc-app-menu', { sections: mockSections }),
     });
 
     const orderChangeSpy = jest.fn();
-    page.root?.addEventListener('sectionsOrderChange', orderChangeSpy);
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const component = page.rootInstance as ModusWcAppMenu;
     component.handleEdit();
@@ -880,7 +903,7 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     const orderChangeSpy = jest.fn();
-    page.root?.addEventListener('sectionsOrderChange', orderChangeSpy);
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const buttons = Array.from(
       page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
@@ -1092,7 +1115,7 @@ describe('modus-wc-app-menu', () => {
     expect(gridItems?.length).toBe(0);
   });
 
-  it('should use fallback empty array in handleDrop when sections is nullish', async () => {
+  it('should throw when handleDrop runs after sections becomes nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () => h('modus-wc-app-menu', { sections: mockSections }),
@@ -1106,13 +1129,15 @@ describe('modus-wc-app-menu', () => {
     component.sections = null as unknown as undefined;
 
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-    jest.spyOn(mockDragEvent, 'preventDefault');
-    jest.spyOn(mockDragEvent, 'stopPropagation');
+    const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
+    const stopPropagationSpy = jest.spyOn(mockDragEvent, 'stopPropagation');
 
     expect(() => component.handleDrop(mockDragEvent, 0, 0)).toThrow();
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(stopPropagationSpy).toHaveBeenCalled();
   });
 
-  it('should use fallback empty array in handleContainerDrop when sections is nullish', async () => {
+  it('should throw when handleContainerDrop runs after sections becomes nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () => h('modus-wc-app-menu', { sections: mockSections }),
@@ -1126,9 +1151,10 @@ describe('modus-wc-app-menu', () => {
     component.sections = null as unknown as undefined;
 
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-    jest.spyOn(mockDragEvent, 'preventDefault');
+    const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
 
     expect(() => component.handleContainerDrop(mockDragEvent, 0)).toThrow();
+    expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
   it('should render list layout when sections is null at render time', async () => {
