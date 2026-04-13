@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAppMenuSection, ModusWcAppMenu } from './modus-wc-app-menu';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { AppName } from '../types';
 
 describe('modus-wc-app-menu', () => {
   const mockSections: IAppMenuSection[] = [
@@ -283,6 +284,27 @@ describe('modus-wc-app-menu', () => {
     expect(labels?.[3]?.getAttribute('label')).toBe('Tekla');
   });
 
+  it('should fall back to raw appName when displayName is not found', async () => {
+    const unknownSections: IAppMenuSection[] = [
+      {
+        title: 'Unknown',
+        items: [{ appName: 'unknown_app' as AppName }],
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: unknownSections,
+          layout: 'list',
+        }),
+    });
+
+    const menuItem = page.root?.querySelector('modus-wc-menu-item');
+    expect(menuItem?.getAttribute('label')).toBe('unknown_app');
+  });
+
   it('should show drag indicators in list layout when in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
@@ -384,6 +406,20 @@ describe('modus-wc-app-menu', () => {
 
     expect(component.isEditMode).toBe(true);
     expect(component.previousSections).toEqual(mockSections);
+  });
+
+  it('should enter edit mode safely when sections is nullish', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () => h('modus-wc-app-menu', {}),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.sections = null as unknown as undefined;
+
+    expect(() => component.handleEdit()).not.toThrow();
+    expect(component.isEditMode).toBe(true);
+    expect(component.previousSections).toEqual([]);
   });
 
   it('should exit edit mode and emit itemsOrderChange when handleDone is called', async () => {
