@@ -318,7 +318,7 @@ export class ModusWcAppMenu {
   private isGrabbed(sectionIdx: number, itemIdx: number): boolean {
     return (
       this.grabbedItemPos?.sectionIdx === sectionIdx &&
-      this.grabbedItemPos?.itemIdx === itemIdx
+      this.grabbedItemPos.itemIdx === itemIdx
     );
   }
 
