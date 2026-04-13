@@ -85,36 +85,36 @@ export class ModusWcModal {
           <div
             class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
           >
-            <div class="modus-wc-modal-top-icon-buttons">
-              {this.showFullscreenToggle && (
-                <modus-wc-button
-                  aria-label="Fullscreen toggle"
-                  onButtonClick={() => (this.fullscreen = !this.fullscreen)}
-                  shape="square"
-                  size="sm"
-                  variant="borderless"
-                >
-                  {this.fullscreen ? (
-                    <CollapseSolidIcon />
-                  ) : (
-                    <ExpandSolidIcon />
-                  )}
-                </modus-wc-button>
-              )}
-              {this.showClose && (
-                <modus-wc-button
-                  aria-label="Close modal"
-                  onButtonClick={() => this.closeDialog()}
-                  shape="square"
-                  size="sm"
-                  variant="borderless"
-                >
-                  <CloseSolidIcon />
-                </modus-wc-button>
-              )}
-            </div>
             <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
               <slot name="header" />
+              <div class="modus-wc-modal-top-icon-buttons">
+                {this.showFullscreenToggle && (
+                  <modus-wc-button
+                    aria-label="Fullscreen toggle"
+                    onButtonClick={() => (this.fullscreen = !this.fullscreen)}
+                    shape="square"
+                    size="sm"
+                    variant="borderless"
+                  >
+                    {this.fullscreen ? (
+                      <CollapseSolidIcon />
+                    ) : (
+                      <ExpandSolidIcon />
+                    )}
+                  </modus-wc-button>
+                )}
+                {this.showClose && (
+                  <modus-wc-button
+                    aria-label="Close modal"
+                    onButtonClick={() => this.closeDialog()}
+                    shape="square"
+                    size="sm"
+                    variant="borderless"
+                  >
+                    <CloseSolidIcon />
+                  </modus-wc-button>
+                )}
+              </div>
             </div>
             <div class="modus-wc-modal-content modus-wc-py-4">
               <slot name="content" />

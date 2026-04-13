@@ -1,0 +1,149 @@
+{
+  "description": "A customizable checkbox component",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 29
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "The disabled state of the checkbox.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "description": "The indeterminate state of the checkbox.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 35
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the input element.",
+      "default": null,
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "The tabindex of the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 47
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 50
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "value",
+      "type": "boolean",
+      "description": "The value of the checkbox.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 56
+    }
+  ],
+  "events": [
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input loses focus.",
+      "end_line": 59
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Emitted when the input value changes.",
+      "end_line": 62
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input gains focus.",
+      "end_line": 65
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-checkbox\n        aria-label=\"Checkbox\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-checkbox>",
+    "variations": [],
+    "args": {
+      "custom-class": "''",
+      "disabled": "false",
+      "indeterminate": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ]
+  },
+  "tag": "modus-wc-checkbox",
+  "storyExample": {
+    "template": "<modus-wc-checkbox\n        aria-label=\"Checkbox\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-checkbox>",
+    "args": {
+      "custom-class": "''",
+      "disabled": "false",
+      "indeterminate": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\n\ninterface CheckboxArgs {\n  'custom-class'?: string;\n  disabled?: boolean;\n  indeterminate?: boolean;\n  'input-id'?: string;\n  'input-tab-index'?: number;\n  label?: string;\n  name?: string;\n  required?: boolean;\n  size?: ModusSize;\n  value: boolean;\n}\n\nconst meta: Meta<CheckboxArgs> = {\n  title: 'Components/Forms/Checkbox',\n  component: 'modus-wc-checkbox',\n  args: {\n    'custom-class': '',\n    disabled: false,\n    indeterminate: false,\n    label: 'Label',\n    name: '',\n    required: false,\n    size: 'md',\n    value: true,\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['inputBlur', 'inputChange', 'inputFocus'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<CheckboxArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-checkbox\n        aria-label=\"Checkbox\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        .indeterminate=${args.indeterminate}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        .value=${args.value}\n      ></modus-wc-checkbox>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for checkbox component\n    if (!customElements.get('checkbox-shadow-host')) {\n      const CheckboxShadowHost = createShadowHostClass<CheckboxArgs>({\n        componentTag: 'modus-wc-checkbox',\n        propsMapper: (v: CheckboxArgs, el: HTMLElement) => {\n          const checkboxEl = el as unknown as {\n            customClass: string;\n            disabled: boolean;\n            indeterminate: boolean;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            name: string;\n            required: boolean;\n            size: string;\n            value: boolean;\n          };\n          checkboxEl.customClass = v['custom-class'] || '';\n          checkboxEl.disabled = Boolean(v.disabled);\n          checkboxEl.indeterminate = Boolean(v.indeterminate);\n          checkboxEl.inputId = v['input-id'] ?? '';\n          checkboxEl.inputTabIndex = v['input-tab-index'] ?? 0;\n          checkboxEl.label = v.label ?? '';\n          checkboxEl.name = v.name ?? '';\n          checkboxEl.required = Boolean(v.required);\n          checkboxEl.size = v.size ?? '';\n          checkboxEl.value = Boolean(v.value);\n        },\n      });\n      customElements.define('checkbox-shadow-host', CheckboxShadowHost);\n    }\n\n    return html`<checkbox-shadow-host\n      .props=${{ ...args }}\n    ></checkbox-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for\n  additional info and examples.\n  - The \\`checked\\` prop is now \\`value\\` in 2.0.\n  - The \\`checkboxClick\\` event is now \\`inputChange\\` in 2.0.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop         | 2.0 Prop      | Notes                                   |\n|------------------|---------------|-----------------------------------------|\n| aria-label       | aria-label    |                                         |\n| checked          | value         |                                         |\n| disabled         | disabled      |                                         |\n| indeterminate    | indeterminate |                                         |\n| label            | label         |                                         |\n| size             | size          | \\`small\\` → \\`sm\\`, \\`medium\\` → \\`md\\` |\n| stop-propagation |               | Not carried over                        |\n\n#### Event Mapping\n\n| 1.0 Event     | 2.0 Event   | Notes                                                 |\n|---------------|-------------|-------------------------------------------------------|\n| checkboxClick | inputChange | Event now emits \\`InputEvent\\` instead of \\`boolean\\` |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

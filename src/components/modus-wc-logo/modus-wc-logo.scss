@@ -22,4 +22,9 @@
   .logo-secondary {
     fill: var(--modus-wc-color-secondary);
   }
+
+  &.logo-combined {
+    align-items: center;
+    display: flex;
+  }
 }

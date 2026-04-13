@@ -1,0 +1,163 @@
+{
+  "description": "A customizable slider component",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 29
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "The disabled state of the slider.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the input element.",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "The tabindex of the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "The maximum slider value.",
+      "default": null,
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "description": "The minimum slider value.",
+      "default": null,
+      "mutable": false,
+      "end_line": 47
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 50
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 56
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "description": "The increment of the slider.",
+      "default": null,
+      "mutable": false,
+      "end_line": 59
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "The value of the slider.",
+      "default": "0",
+      "mutable": true,
+      "end_line": 62
+    }
+  ],
+  "events": [
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input loses focus.",
+      "end_line": 65
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Emitted when the input value changes.",
+      "end_line": 68
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input gains focus.",
+      "end_line": 71
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-slider\n        aria-label=\"Slider\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        step=${ifDefined(args.step)}\n        .value=${args.value}\n      ></modus-wc-slider>",
+    "variations": [],
+    "args": {
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ]
+  },
+  "tag": "modus-wc-slider",
+  "storyExample": {
+    "template": "<modus-wc-slider\n        aria-label=\"Slider\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        step=${ifDefined(args.step)}\n        .value=${args.value}\n      ></modus-wc-slider>",
+    "args": {
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "name": "''",
+      "required": "false",
+      "size": "'md'",
+      "value": "true"
+    },
+    "argTypes": {},
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\n\ninterface SliderArgs {\n  'custom-class'?: string;\n  disabled?: boolean;\n  'input-id'?: string;\n  'input-tab-index'?: number;\n  label?: string;\n  max?: number;\n  min?: number;\n  name?: string;\n  required?: boolean;\n  size?: ModusSize;\n  step?: number;\n  value: boolean;\n}\n\nconst meta: Meta<SliderArgs> = {\n  title: 'Components/Forms/Slider',\n  component: 'modus-wc-slider',\n  args: {\n    'custom-class': '',\n    disabled: false,\n    label: 'Label',\n    name: '',\n    required: false,\n    size: 'md',\n    value: true,\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['inputBlur', 'inputChange', 'inputFocus'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<SliderArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-slider\n        aria-label=\"Slider\"\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?required=${args.required}\n        size=${ifDefined(args.size)}\n        step=${ifDefined(args.step)}\n        .value=${args.value}\n      ></modus-wc-slider>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for slider component\n    if (!customElements.get('slider-shadow-host')) {\n      const SliderShadowHost = createShadowHostClass<SliderArgs>({\n        componentTag: 'modus-wc-slider',\n        propsMapper: (v: SliderArgs, el: HTMLElement) => {\n          const sliderEl = el as unknown as {\n            customClass: string;\n            disabled: boolean;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            max: number;\n            min: number;\n            name: string;\n            required: boolean;\n            size: string;\n            step: number;\n            value: number;\n          };\n          sliderEl.customClass = v['custom-class'] || '';\n          sliderEl.disabled = Boolean(v.disabled);\n          sliderEl.inputId = v['input-id'] ?? '';\n          sliderEl.inputTabIndex = v['input-tab-index'] ?? 0;\n          sliderEl.label = v.label ?? '';\n          sliderEl.max = v.max ?? 100;\n          sliderEl.min = v.min ?? 0;\n          sliderEl.name = v.name ?? '';\n          sliderEl.required = Boolean(v.required);\n          sliderEl.size = v.size ?? 'md';\n          sliderEl.step = v.step ?? 1;\n          sliderEl.value = typeof v.value === 'number' ? v.value : 0;\n        },\n      });\n      customElements.define('slider-shadow-host', SliderShadowHost);\n    }\n\n    return html`<slider-shadow-host\n      .props=${{ ...args }}\n    ></slider-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for additional info and examples.\n  - Property names have changed: \\`max-value\\` → \\`max\\`, \\`min-value\\` → \\`min\\`.\n\n#### Prop Mapping\n\n| 1.0 Prop    | 2.0 Prop     | Notes |\n|-------------|--------------|-------|\n| aria-label  | aria-label   |       |\n| disabled    | disabled     |       |\n| label       | label        |       |\n| max-value   | max          |       |\n| min-value   | min          |       |\n| value       | value        |       |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event   | Notes            |\n|-------------|-------------|------------------|\n| valueChange |             | Not carried over |\n| valueInput  | inputChange |                  |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
