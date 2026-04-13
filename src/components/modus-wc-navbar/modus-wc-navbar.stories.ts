@@ -508,8 +508,7 @@ export const ShadowDomParent: Story = {
           navbarEl.customClass = v['custom-class'] || '';
           navbarEl.logoName = v['logo-name'];
           navbarEl.searchDebounceMs = v['search-debounce-ms'] ?? 300;
-          navbarEl.textOverrides =
-            v['text-overrides'] as INavbarTextOverrides;
+          navbarEl.textOverrides = v['text-overrides'] as INavbarTextOverrides;
           navbarEl.userCard = v['user-card'];
           navbarEl.visibility = v.visibility as INavbarVisibility;
 

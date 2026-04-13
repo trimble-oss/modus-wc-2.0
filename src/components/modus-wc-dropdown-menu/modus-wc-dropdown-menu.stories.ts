@@ -233,8 +233,7 @@ export const ShadowDomParent: Story = {
             const wrapper = document.createElement('div');
             wrapper.style.display = 'contents';
             const syncTheme = () => {
-              const theme =
-                document.documentElement.getAttribute('data-theme');
+              const theme = document.documentElement.getAttribute('data-theme');
               if (theme) wrapper.setAttribute('data-theme', theme);
             };
             syncTheme();
@@ -245,8 +244,7 @@ export const ShadowDomParent: Story = {
             });
 
             // Dropdown
-            this.dropdownEl =
-              document.createElement('modus-wc-dropdown-menu');
+            this.dropdownEl = document.createElement('modus-wc-dropdown-menu');
 
             const buttonSlot = document.createElement('div');
             buttonSlot.setAttribute('slot', 'button');
