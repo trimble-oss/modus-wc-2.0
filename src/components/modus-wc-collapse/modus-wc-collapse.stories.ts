@@ -6,26 +6,17 @@ import { ICollapseOptions } from './modus-wc-collapse';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
+  bordered?: boolean;
   'chevron-position'?: 'left' | 'right';
   'custom-class'?: string;
   expanded?: boolean;
   id?: string;
   options?: ICollapseOptions;
-  variant?: 'ghost' | 'border';
 }
-
-const defaultOptions: ICollapseOptions = {
-  title: 'Collapse Title',
-  description: 'Collapse description',
-  icon: 'alert',
-  iconAriaLabel: 'Alert',
-};
 
 const options: ICollapseOptions = {
   title: 'Collapse Title',
   description: 'Collapse description',
-  endIcon: 'more_vertical',
-  endIconAriaLabel: 'More actions',
   icon: 'alert',
   iconAriaLabel: 'Alert',
 };
@@ -45,19 +36,15 @@ const meta: Meta<CollapseArgs> = {
   title: 'Components/Collapse',
   component: 'modus-wc-collapse',
   args: {
+    bordered: false,
     'chevron-position': 'right',
     expanded: false,
     options,
-    variant: 'border',
   },
   argTypes: {
     'chevron-position': {
       control: { type: 'select' },
       options: ['left', 'right'],
-    },
-    variant: {
-      control: { type: 'select' },
-      options: ['ghost', 'border'],
     },
     options: {
       description: 'Configuration options for the collapse component',
@@ -93,12 +80,12 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-collapse
+  ?bordered=${args.bordered}
   chevron-position=${ifDefined(args['chevron-position'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id=${ifDefined(args.id)}
   .options=${args.options}
-  variant=${ifDefined(args.variant)}
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
@@ -118,27 +105,19 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = {
-  ...Template,
-  args: {
-    'chevron-position': 'right',
-    expanded: false,
-    options: defaultOptions,
-    variant: 'border',
-  },
-};
+export const Default: Story = { ...Template };
 
 export const WithStartIcon: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
 <modus-wc-collapse
+  ?bordered=${args.bordered}
   chevron-position=${ifDefined(args['chevron-position'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id=${ifDefined(args.id)}
   .options=${args.options}
-  variant=${ifDefined(args.variant)}
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
@@ -161,10 +140,10 @@ export const WithStartIcon: Story = {
     `;
   },
   args: {
+    bordered: false,
     'chevron-position': 'left',
     expanded: false,
     options: optionsWithStartIcon,
-    variant: 'border',
   },
 };
 
@@ -184,11 +163,11 @@ export const WithCustomClickableHeader = {
   }
 </style>
 <modus-wc-collapse
+  ?bordered=${args.bordered}
   chevron-position=${ifDefined(args['chevron-position'])}
   custom-class=${ifDefined(args['custom-class'])}
   ?expanded=${args.expanded}
   id="123"
-  variant=${ifDefined(args.variant)}
 >
   <div slot="header" class="modus-wc-collapse-title" id="123">
     <div class="clickable-div">
@@ -220,22 +199,22 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-collapse',
         propsMapper: (v: CollapseArgs, el: HTMLElement) => {
           const collapseEl = el as unknown as {
+            bordered: boolean;
             chevronPosition: 'left' | 'right';
             customClass: string;
             expanded: boolean;
             id: string;
             options: ICollapseOptions;
-            variant?: 'ghost' | 'border';
           };
           // Only set innerHTML once on initial creation
           if (!el.querySelector('[slot="content"]')) {
             el.innerHTML = '<div slot="content">Collapse content</div>';
           }
+          collapseEl.bordered = Boolean(v.bordered);
           collapseEl.chevronPosition = v['chevron-position'] ?? 'right';
           collapseEl.customClass = v['custom-class'] || '';
           collapseEl.expanded = Boolean(v.expanded);
           collapseEl.id = v.id ?? '';
-          collapseEl.variant = v.variant ?? 'border';
           if (v.options) {
             collapseEl.options = v.options; // Conditional assignment only if provided
           }

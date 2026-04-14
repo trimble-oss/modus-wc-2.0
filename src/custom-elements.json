@@ -1,4 +1,4 @@
-﻿{
+{
   "schemaVersion": "1.0.0",
   "readme": "",
   "modules": [
@@ -2219,6 +2219,15 @@
           ],
           "attributes": [
             {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "default": "false",
+              "description": "When true, renders a border-bottom on the collapse component.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "chevron-position",
               "fieldName": "chevronPosition",
               "default": "'right'",
@@ -2259,15 +2268,6 @@
               "description": "Configuration options for rendering the pre-laid out collapse component.\r\nDo not set this prop if you intend to use the 'header' slot.",
               "type": {
                 "text": "ICollapseOptions"
-              }
-            },
-            {
-              "name": "variant",
-              "fieldName": "variant",
-              "default": "'border'",
-              "description": "Visual style of the collapse component.",
-              "type": {
-                "text": "'ghost' | 'border'"
               }
             }
           ],

@@ -1,16 +1,15 @@
 import { DaisySize } from '../types';
 
 export const convertPropsToClasses = ({
+  bordered,
   expanded,
-  variant,
 }: {
+  bordered?: boolean;
   expanded?: boolean;
-  variant?: 'ghost' | 'border';
 }): string => {
   let classes = '';
-  const hasBorder = (variant ?? 'border') === 'border';
 
-  if (hasBorder) {
+  if (bordered) {
     classes = `${classes} modus-wc-border`;
   }
 

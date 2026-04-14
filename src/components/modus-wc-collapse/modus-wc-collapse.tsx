@@ -56,8 +56,8 @@ export class ModusWcCollapse {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Visual style of the collapse component. */
-  @Prop() variant?: 'ghost' | 'border' = 'border';
+  /** When true, renders a border-bottom on the collapse component. */
+  @Prop() bordered?: boolean = false;
 
   /** Controls chevron placement. */
   @Prop() chevronPosition?: 'left' | 'right' = 'right';
@@ -111,8 +111,8 @@ export class ModusWcCollapse {
     const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
 
     const propClasses = convertPropsToClasses({
+      bordered: this.bordered,
       expanded: this.expanded,
-      variant: this.variant,
     });
 
     // The order CSS classes are added matters to CSS specificity

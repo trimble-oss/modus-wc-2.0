@@ -499,6 +499,10 @@ export namespace Components {
      */
     interface ModusWcCollapse {
         /**
+          * When true, renders a border-bottom on the collapse component.
+         */
+        "bordered"?: boolean;
+        /**
           * Controls chevron placement.
          */
         "chevronPosition"?: 'left' | 'right';
@@ -518,10 +522,6 @@ export namespace Components {
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
         "options"?: ICollapseOptions;
-        /**
-          * Visual style of the collapse component.
-         */
-        "variant"?: 'ghost' | 'border';
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3690,6 +3690,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcCollapse {
         /**
+          * When true, renders a border-bottom on the collapse component.
+         */
+        "bordered"?: boolean;
+        /**
           * Controls chevron placement.
          */
         "chevronPosition"?: 'left' | 'right';
@@ -3713,10 +3717,6 @@ declare namespace LocalJSX {
           * Configuration options for rendering the pre-laid out collapse component. Do not set this prop if you intend to use the 'header' slot.
          */
         "options"?: ICollapseOptions;
-        /**
-          * Visual style of the collapse component.
-         */
-        "variant"?: 'ghost' | 'border';
     }
     /**
      * A customizable date picker component used to create date inputs.
