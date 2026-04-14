@@ -372,6 +372,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/unity-emblem.svg',
     category: 'trimble',
   },
+  unity_adms: {
+    displayName: 'Unity ADMS',
+    path: 'logos/trimble/unity-adms.svg',
+    emblemPath: 'logos/emblems/unity-emblem.svg',
+    category: 'trimble',
+  },
   unity_construct: {
     displayName: 'Trimble Unity Construct',
     path: 'logos/trimble/unity-construct.svg',
