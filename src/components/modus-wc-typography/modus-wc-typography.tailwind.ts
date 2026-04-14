@@ -1,4 +1,4 @@
-import { TypographySize, TypographyWeight } from './modus-wc-typography';
+import { TypographySize, TypographyWeight } from '../types';
 
 export const convertPropsToClasses = ({
   size,
