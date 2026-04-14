@@ -3,27 +3,27 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-radio .modus-wc-radio {
-  &.modus-wc-radio-host {
-    align-items: center;
-    display: flex;
+modus-wc-radio.modus-wc-radio-host {
+  align-items: center;
+  display: flex;
 
-    .modus-wc-input-label {
-      font-weight: var(--modus-wc-font-weight-normal);
-      padding-inline-start: var(--modus-wc-spacing-md);
+  .modus-wc-input-label {
+    font-weight: var(--modus-wc-font-weight-normal);
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+
+  [type='radio'].modus-wc-radio {
+    &:checked {
+      --fallback-bc: var(--modus-wc-color-primary);
     }
-  }
 
-  &:checked {
-    --fallback-bc: var(--modus-wc-color-primary);
-  }
+    &:focus {
+      outline-color: var(--modus-wc-color-primary);
+    }
 
-  &:focus {
-    outline-color: var(--modus-wc-color-primary);
-  }
-
-  &:hover {
-    --fallback-bc: var(--modus-wc-color-primary);
+    &:hover {
+      --fallback-bc: var(--modus-wc-color-primary);
+    }
   }
 }
 
