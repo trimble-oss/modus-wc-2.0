@@ -22,10 +22,10 @@ describe('modus-wc-collapse', () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
       html: `<modus-wc-collapse
-              bordered="false"
               collapse-id="123"
               custom-class="test-class"
               expanded="true"
+              variant="ghost"
               size="sm">
             </modus-wc-collapse>`,
     });
@@ -65,6 +65,70 @@ describe('modus-wc-collapse', () => {
     await page.waitForChanges();
 
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should add has-start-icon class when startIcon exists and chevron position is left', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse, ModusWcIcon],
+      html: `<modus-wc-collapse
+              collapse-id="123"
+              chevron-position="left">
+            </modus-wc-collapse>`,
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.options = {
+      ...options,
+      startIcon: 'add',
+      startIconAriaLabel: 'Start icon',
+    };
+
+    await page.waitForChanges();
+
+    const details = page.root!.querySelector('details') as HTMLDetailsElement;
+    expect(details.classList.contains('has-start-icon')).toBe(true);
+  });
+
+  it('should render end icon container when endIcon is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse, ModusWcIcon],
+      html: '<modus-wc-collapse collapse-id="123"></modus-wc-collapse>',
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.options = {
+      ...options,
+      endIcon: 'add',
+      endIconAriaLabel: 'End icon',
+    };
+
+    await page.waitForChanges();
+
+    const endIconContainer = page.root!.querySelector(
+      '.modus-wc-title-end-content'
+    );
+    expect(endIconContainer).not.toBeNull();
+  });
+
+  it('should render end icon container when endIcon is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse, ModusWcIcon],
+      html: '<modus-wc-collapse collapse-id="123"></modus-wc-collapse>',
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.options = {
+      ...options,
+      endIcon: 'add',
+      endIconAriaLabel: 'End icon',
+    };
+
+    await page.waitForChanges();
+
+    const endIconContainer = page.root!.querySelector(
+      '.modus-wc-title-end-content'
+    );
+    expect(endIconContainer).not.toBeNull();
   });
 
   it('should emit expandedChange event when collapse is expanded', async () => {

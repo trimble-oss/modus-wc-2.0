@@ -8,37 +8,83 @@ modus-wc-collapse details.modus-wc-collapse > summary {
 }
 
 modus-wc-collapse .modus-wc-collapse {
-  background-color: var(--modus-wc-color-base-100);
-  border-color: transparent;
+  background: var(--modus-wc-color-base-page);
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
   transition: none;
 
   .modus-wc-collapse-title {
-    font-size: var(--modus-wc-font-size-md);
+    cursor: pointer;
+    font-size: var(--modus-wc-font-size-2xl);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
-      var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+      var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl);
+    position: relative;
     width: auto;
 
     @include common-states;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: transparent;
+      color: var(--modus-wc-color-base-content);
+    }
   }
 
   .description {
-    font-size: var(--modus-wc-font-size-sm);
+    font-size: var(--modus-wc-font-size-lg);
+    padding-inline-start: var(--modus-wc-spacing-lg);
   }
 
-  summary > .modus-wc-inline-flex.modus-wc-items-center > modus-wc-icon {
+  .modus-wc-title-main-content {
+    display: inline-flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .modus-wc-summary-main-content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    min-height: 1rem;
+    width: 100%;
+  }
+
+  .modus-wc-title-main-row > modus-wc-icon {
     height: 24px;
     margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
+  .modus-wc-title-end-content {
+    align-items: center;
+    display: inline-flex;
+    margin-inline-end: var(--modus-wc-spacing-sm);
+  }
+
+  .title-end-icon {
+    height: 24px;
+    margin-inline-start: var(--modus-wc-spacing-sm);
+    pointer-events: none;
+  }
+
+  .title-start-icon {
+    height: 24px;
+    inset-inline-start: var(--modus-wc-spacing-lg);
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   &.modus-wc-border {
-    background: var(--modus-wc-color-base-page);
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
-    border-radius: var(--modus-wc-border-radius-box);
+    border: none;
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200);
+    border-radius: 0;
   }
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
@@ -47,20 +93,61 @@ modus-wc-collapse .modus-wc-collapse {
     }
 
     .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-primary-pale);
-      color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-base-content);
     }
   }
 
-  &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {
-    .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-base-100);
+  &.has-start-icon > .modus-wc-collapse-title {
+    padding-inline-start: var(--modus-wc-size-xxl);
+
+    &::before {
+      inset-inline-start: 49px;
     }
+  }
+
+  &.no-leading-icons > .modus-wc-collapse-title,
+  &.no-leading-icons > .modus-wc-collapse-description {
+    padding-inline-start: var(--modus-wc-spacing-lg);
   }
 }
 
-.modus-wc-collapse-arrow > .modus-wc-collapse-title::after {
-  top: 50% !important;
+.modus-wc-collapse-arrow.modus-wc-chevron-right
+  > .modus-wc-collapse-title::after {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.modus-wc-collapse-arrow.modus-wc-chevron-right.modus-wc-collapse-open
+  > .modus-wc-collapse-title::after {
+  transform: translateY(-50%) rotate(225deg);
+}
+
+.modus-wc-collapse-arrow.modus-wc-chevron-left
+  > .modus-wc-collapse-title::before {
+  box-shadow: 2px 2px;
+  content: '';
+  display: block;
+  height: 0.5rem;
+  inset-inline-start: var(--modus-wc-spacing-lg);
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  transform-origin: 75% 75%;
+  transition-duration: 0.2s;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  width: 0.5rem;
+}
+
+.modus-wc-collapse-arrow.modus-wc-chevron-left.modus-wc-collapse-open
+  > .modus-wc-collapse-title::before {
+  transform: translateY(-50%) rotate(225deg);
+}
+
+.modus-wc-collapse-arrow.modus-wc-chevron-left
+  > .modus-wc-collapse-title::after {
+  display: none;
 }
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
@@ -89,14 +176,18 @@ modus-wc-collapse .modus-wc-collapse {
       var(--modus-wc-color-trimble-blue);
 
     .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-blue-pale);
       font-weight: var(--modus-wc-font-weight-normal);
-      padding-inline-start: var(--modus-wc-spacing-md);
+    }
+
+    &.no-leading-icons .modus-wc-collapse-title,
+    &.no-leading-icons .modus-wc-collapse-description {
+      padding-inline-start: var(--modus-wc-spacing-lg);
     }
   }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
+  background-color: var(--modus-wc-color-trimble-gray);
   color: inherit;
 
   .description {
@@ -107,13 +198,9 @@ modus-wc-collapse .modus-wc-collapse {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-highlight-blue);
 
-    .modus-wc-collapse-title {
-      background-color: color-mix(
-        in sRGB,
-        var(--modus-wc-color-highlight-blue) 30%,
-        transparent
-      );
-      padding-inline-start: var(--modus-wc-spacing-md);
+    &.no-leading-icons .modus-wc-collapse-title,
+    &.no-leading-icons .modus-wc-collapse-description {
+      padding-inline-start: var(--modus-wc-spacing-lg);
     }
   }
 }
@@ -121,4 +208,8 @@ modus-wc-collapse .modus-wc-collapse {
 [data-theme='connect-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='connect-dark'] modus-wc-collapse .modus-wc-collapse {
   @include outline-styles;
+}
+
+[data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
+  background-color: var(--modus-wc-color-trimble-gray);
 }
