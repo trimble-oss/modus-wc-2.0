@@ -107,7 +107,7 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const WithStartIcon: Story = {
+export const WithStartAndEndIcons: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
