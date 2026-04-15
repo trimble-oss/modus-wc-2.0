@@ -1,3 +1,4 @@
+import { expect, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -18,7 +19,7 @@ const meta: Meta<AvatarArgs> = {
   args: {
     alt: 'Example avatar',
     'img-src':
-      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',
+      'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     shape: 'circle',
     initials: '',
     size: 'md',
@@ -54,4 +55,19 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify avatar host, wrapper, and image', async () => {
+      const image = await canvas.findByRole('img', { name: 'Example avatar' });
+      await expect(image).toBeInTheDocument();
+      await expect(image.getAttribute('src')).toContain('data:image/');
+
+      const host = image.closest('modus-wc-avatar');
+      await expect(host).toBeTruthy();
+      await expect(host?.querySelector('.modus-wc-avatar')).toBeTruthy();
+    });
+  },
+};

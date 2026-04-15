@@ -1,4 +1,5 @@
 import { withActions } from '@storybook/addon-actions/decorator';
+import { expect, userEvent, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -67,7 +68,60 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify alert renders with title and description', async () => {
+      const region = await canvas.findByRole('status');
+      await expect(region).toBeInTheDocument();
+      await expect(await canvas.findByText('New message!')).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('You have 3 new messages.')
+      ).toBeInTheDocument();
+    });
+  },
+};
+
+export const Dismissible: Story = {
+  ...Template,
+  args: {
+    dismissible: true,
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify dismiss control is present', async () => {
+      const dismissBtn = await canvas.findByRole('button', {
+        name: /notification button/i,
+      });
+      await expect(dismissBtn).toBeInTheDocument();
+    });
+
+    await step('Click dismiss emits dismissClick and removes alert', async () => {
+      const host = canvasElement.querySelector('modus-wc-alert');
+      await expect(host).toBeTruthy();
+
+      let eventFired = false;
+      host?.addEventListener(
+        'dismissClick',
+        () => {
+          eventFired = true;
+        },
+        { once: true }
+      );
+
+      const dismissBtn = await canvas.findByRole('button', {
+        name: /notification button/i,
+      });
+      await userEvent.click(dismissBtn);
+
+      await expect(eventFired).toBe(true);
+      await expect(canvasElement.querySelector('modus-wc-alert')).toBeNull();
+    });
+  },
+};
 
 export const CustomButton: Story = {
   render: (args) => {
@@ -91,6 +145,18 @@ export const CustomButton: Story = {
   >View Messages</modus-wc-button>
 </modus-wc-alert>
     `;
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify slot button renders and is clickable', async () => {
+      const actionBtn = await canvas.findByRole('button', {
+        name: /view messages/i,
+      });
+      await expect(actionBtn).toBeInTheDocument();
+      await userEvent.click(actionBtn);
+      await expect(actionBtn).toBeInTheDocument();
+    });
   },
 };
 

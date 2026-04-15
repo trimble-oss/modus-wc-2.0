@@ -1,4 +1,5 @@
 import { withActions } from '@storybook/addon-actions/decorator';
+import { expect, userEvent, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -99,7 +100,47 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify breadcrumbs nav and items render', async () => {
+      const nav = await canvas.findByRole('navigation', { name: /breadcrumbs/i });
+      await expect(nav).toBeInTheDocument();
+
+      await expect(await canvas.findByText('Root')).toBeInTheDocument();
+      await expect(await canvas.findByText('Subpage')).toBeInTheDocument();
+      await expect(await canvas.findByText('Current Page')).toBeInTheDocument();
+    });
+
+    await step('Current page is not a link', async () => {
+      const current = await canvas.findByText('Current Page');
+      await expect(current.tagName.toLowerCase()).toBe('span');
+    });
+
+    await step('Clicking a crumb emits breadcrumbClick', async () => {
+      const host = canvasElement.querySelector('modus-wc-breadcrumbs');
+      await expect(host).toBeTruthy();
+
+      let payload: { label?: string } | null = null;
+      host?.addEventListener(
+        'breadcrumbClick',
+        ((ev: CustomEvent) => {
+          payload = ev.detail;
+        }) as EventListener,
+        { once: true }
+      );
+
+      const rootLink = await canvas.findByRole('link', { name: /^root$/i });
+      await userEvent.click(rootLink);
+
+      await expect(payload).toEqual(
+        expect.objectContaining({ label: 'Root', url: '#' })
+      );
+    });
+  },
+};
 
 export const UnderlineLinks: Story = {
   render: (args) => {

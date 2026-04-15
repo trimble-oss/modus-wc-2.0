@@ -1,3 +1,4 @@
+import { expect, within } from '@storybook/test';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -71,6 +72,18 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify badge renders with label and status role', async () => {
+      const host = canvasElement.querySelector('modus-wc-badge');
+      await expect(host).toBeTruthy();
+
+      const badge = await canvas.findByRole('status');
+      await expect(badge).toBeInTheDocument();
+      await expect(badge).toHaveTextContent('Badge');
+    });
+  },
 };
 
 export const WithIcon: Story = {
@@ -87,6 +100,18 @@ export const WithIcon: Story = {
   Item
 </modus-wc-badge>
     `;
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Verify badge with icon and slotted text render', async () => {
+      const host = canvasElement.querySelector('modus-wc-badge');
+      await expect(host).toBeTruthy();
+
+      await expect(await canvas.findByText('Item')).toBeInTheDocument();
+      const icon = host?.querySelector('modus-wc-icon[name="check"]');
+      await expect(icon).toBeTruthy();
+    });
   },
 };
 
