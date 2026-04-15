@@ -205,4 +205,51 @@ describe('modus-wc-side-navigation', () => {
       newTarget
     );
   });
+
+  it('setTargetContentMargin queries shadow root when inside shadow DOM', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: '<modus-wc-side-navigation mode="push" target-content=".shadow-content"></modus-wc-side-navigation>',
+    });
+    const instance = page.rootInstance;
+
+    // Create a real ShadowRoot and place the target element inside it
+    const host = document.createElement('div');
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    const shadowContent = document.createElement('div');
+    shadowContent.className = 'shadow-content';
+    shadowRoot.appendChild(shadowContent);
+
+    // Simulate the component being hosted inside a shadow root
+    jest.spyOn(instance.el, 'getRootNode').mockReturnValue(shadowRoot);
+
+    instance.expanded = true;
+    await page.waitForChanges();
+
+    expect(shadowContent.style.marginLeft).toBe(instance.maxWidth);
+  });
+
+  it('setTargetContentMargin falls back to document when shadow root querySelector returns null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: '<modus-wc-side-navigation mode="push" target-content=".fallback-content"></modus-wc-side-navigation>',
+    });
+    const instance = page.rootInstance;
+
+    // Shadow root does NOT contain the target — fallback to document
+    const host = document.createElement('div');
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+    const docContent = document.createElement('div');
+    docContent.className = 'fallback-content';
+    document.body.appendChild(docContent);
+
+    jest.spyOn(instance.el, 'getRootNode').mockReturnValue(shadowRoot);
+
+    instance.expanded = true;
+    await page.waitForChanges();
+
+    expect(docContent.style.marginLeft).toBe(instance.maxWidth);
+
+    document.body.removeChild(docContent);
+  });
 });
