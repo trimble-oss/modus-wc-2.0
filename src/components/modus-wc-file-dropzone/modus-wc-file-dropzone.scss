@@ -5,9 +5,9 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 
   .dropzone-content {
     align-items: center;
-    background-color: var(--modus-wc-color-gray-light);
-    border: 0.125rem dashed var(--modus-wc-color-gray-6);
-    color: var(--modus-wc-color-gray-6);
+    background-color: var(--modus-wc-color-base-page);
+    border: 0.125rem dashed var(--modus-wc-color-base-200);
+    color: var(--modus-wc-color-base-content);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -19,29 +19,29 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
     width: 431px;
 
     &.dragging-over {
-      background-color: var(--modus-wc-color-blue-pale);
-      border-color: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-gray-10);
+      background-color: var(--modus-wc-color-primary-pale);
+      border-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-primary);
     }
 
     &.invalid-file-type {
       background-color: color-mix(
         in sRGB,
-        var(--modus-wc-color-red-pale) 80%,
+        var(--modus-wc-color-error-pale) 80%,
         transparent
       );
-      border-color: var(--modus-wc-color-red-dark);
-      color: var(--modus-wc-color-gray-10);
+      border-color: var(--modus-wc-color-error);
+      color: var(--modus-wc-color-error);
     }
 
     &.upload-success {
       background-color: color-mix(
         in sRGB,
-        var(--modus-wc-color-green-pale) 80%,
+        var(--modus-wc-color-success-pale) 80%,
         transparent
       );
-      border-color: var(--modus-wc-color-green-dark);
-      color: var(--modus-wc-color-gray-10);
+      border-color: var(--modus-wc-color-success);
+      color: var(--modus-wc-color-success);
     }
 
     .default-content {
@@ -58,9 +58,9 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 
   &:has(input:disabled) {
     .dropzone-content {
-      background-color: var(--modus-wc-color-gray-0);
-      border-color: var(--modus-wc-color-gray-6);
-      color: var(--modus-wc-color-gray-6);
+      background-color: var(--modus-wc-color-base-100);
+      border-color: var(--modus-wc-color-base-100);
+      color: var(--modus-wc-color-base-200);
       cursor: not-allowed;
     }
   }
@@ -69,7 +69,6 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
 [data-theme='modus-classic-dark']
   modus-wc-file-dropzone
   .modus-wc-file-dropzone,
-[data-theme='modus-modern-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone,
 [data-theme='connect-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone {
   .dropzone-content {
     background-color: var(--modus-wc-color-gray-10);

@@ -5,12 +5,12 @@
 
 modus-wc-alert .modus-wc-alert {
   align-content: center;
-  background-color: var(--modus-wc-color-gray-light);
-  border-color: var(--modus-wc-color-gray-0);
+  background-color: var(--modus-wc-color-base-page);
+  border-color: var(--modus-wc-color-base-200);
   border-width: var(--alert-border-width);
   border-left-width: var(--alert-border-left-width);
   border-radius: var(--alert-border-radius);
-  color: var(--modus-wc-color-gray-10);
+  color: var(--modus-wc-color-base-content);
 
   .title {
     font-size: var(--modus-wc-font-size-md);
