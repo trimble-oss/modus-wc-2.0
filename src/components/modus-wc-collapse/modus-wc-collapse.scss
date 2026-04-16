@@ -22,8 +22,6 @@ modus-wc-collapse .modus-wc-collapse {
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
       var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
     width: auto;
-
-    @include common-states;
   }
 
   .description {
@@ -43,13 +41,11 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
-      padding: var(--modus-wc-spacing-lg);
+      padding: 0 var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md)
+        var(--modus-wc-spacing-lg);
     }
 
-    .modus-wc-collapse-title {
-      background-color: var(--modus-wc-color-primary-pale);
-      color: var(--modus-wc-color-primary);
-    }
+    font-size: var(--modus-wc-font-size-md);
   }
 
   &.modus-wc-collapse-arrow.modus-wc-border.modus-wc-collapse-open {

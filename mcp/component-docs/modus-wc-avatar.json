@@ -1,0 +1,90 @@
+{
+  "description": "A customizable avatar component used to create avatars with different images or user initials. When no image is provided, the component can display initials (up to 3 characters) from the initials prop. The component will extract the first letter of each word in the initials string.",
+  "properties": [
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "The image alt attribute for accessibility.",
+      "default": null,
+      "mutable": false,
+      "end_line": 22
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 25
+    },
+    {
+      "name": "imgSrc",
+      "type": "string",
+      "description": "The location of the image.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 28
+    },
+    {
+      "name": "initials",
+      "type": "string",
+      "description": "The initials to display when no image is provided.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 31
+    },
+    {
+      "name": "shape",
+      "type": "'circle' | 'square'",
+      "description": "The shape of the avatar.",
+      "default": "'circle'",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "size",
+      "type": "DaisySize",
+      "description": "The size of the avatar.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 39
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>",
+    "variations": [],
+    "args": {
+      "alt": "'Example avatar'",
+      "src": "'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg'",
+      "shape": "'circle'",
+      "initials": "''",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-avatar alt=\"example-alt\"></modus-wc-avatar>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-avatar",
+  "storyExample": {
+    "template": "<modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>",
+    "args": {
+      "alt": "'Example avatar'",
+      "src": "'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg'",
+      "shape": "'circle'",
+      "initials": "''",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { DaisySize } from '../types';\n\ninterface AvatarArgs {\n  alt: string;\n  'custom-class'?: string;\n  'img-src': string;\n  initials: string;\n  shape: string;\n  size: DaisySize;\n}\n\nconst meta: Meta<AvatarArgs> = {\n  title: 'Components/Avatar',\n  component: 'modus-wc-avatar',\n  args: {\n    alt: 'Example avatar',\n    'img-src':\n      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',\n    shape: 'circle',\n    initials: '',\n    size: 'md',\n  },\n  argTypes: {\n    shape: {\n      control: { type: 'select' },\n      options: ['circle', 'square'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<AvatarArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n"
+  }
+}

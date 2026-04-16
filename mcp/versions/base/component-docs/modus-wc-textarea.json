@@ -1,0 +1,215 @@
+{
+  "description": "A customizable textarea component.",
+  "properties": [
+    {
+      "name": "autoCorrect",
+      "type": "'on' | 'off'",
+      "description": "Controls automatic correction in inputted text. Support by browser varies.",
+      "default": null,
+      "mutable": false,
+      "end_line": 29
+    },
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Indicates that the input should have a border.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the textarea (supports DaisyUI).",
+      "default": "''",
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "The disabled state of the textarea.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "enterkeyhint",
+      "type": "| 'enter'     | 'done'     | 'go'     | 'next'     | 'previous'     | 'search'     | 'send'",
+      "description": "A hint to the browser for which enter key to display.",
+      "default": null,
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "feedback",
+      "type": "IInputFeedbackProp",
+      "description": "Feedback to render below the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the input element.",
+      "default": null,
+      "mutable": false,
+      "end_line": 54
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "The tabindex of the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 57
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 60
+    },
+    {
+      "name": "maxLength",
+      "type": "number",
+      "description": "The maximum number of characters allowed in the textarea.",
+      "default": null,
+      "mutable": false,
+      "end_line": 63
+    },
+    {
+      "name": "minLength",
+      "type": "number",
+      "description": "The minimum number of characters required in the textarea.",
+      "default": null,
+      "mutable": false,
+      "end_line": 66
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+      "default": null,
+      "mutable": false,
+      "end_line": 69
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "The placeholder text for the textarea.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 72
+    },
+    {
+      "name": "readonly",
+      "type": "boolean",
+      "description": "The readonly state of the textarea.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 75
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 78
+    },
+    {
+      "name": "rows",
+      "type": "number",
+      "description": "The number of visible text lines for the textarea.",
+      "default": null,
+      "mutable": false,
+      "end_line": 81
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 84
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The value of the textarea.",
+      "default": "''",
+      "mutable": true,
+      "end_line": 87
+    }
+  ],
+  "events": [
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input loses focus.",
+      "end_line": 90
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Emitted when the input value changes.",
+      "end_line": 93
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Emitted when the input gains focus.",
+      "end_line": 96
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-textarea\n        aria-label=\"Textarea input\"\n        auto-correct=${ifDefined(args['auto-correct'])}\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        enterkeyhint=${ifDefined(args.enterkeyhint)}\n        ?disabled=${args.disabled}\n        .feedback=${args.feedback}\n        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max-length=${ifDefined(args['max-length'])}\n        min-length=${ifDefined(args['min-length'])}\n        name=${ifDefined(args.name)}\n        placeholder=${ifDefined(args.placeholder)}\n        ?readonly=${args.readonly}\n        ?required=${args.required}\n        rows=${ifDefined(args.rows)}\n        size=${ifDefined(args.size)}\n        spellcheck=${ifDefined(args.spellcheck)}\n        .value=${args.value}\n      ></modus-wc-textarea>",
+    "variations": [],
+    "args": {
+      "bordered": "true",
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "readonly": "false",
+      "required": "false",
+      "size": "'md'",
+      "spellcheck": "false",
+      "value": "''"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ]
+  },
+  "tag": "modus-wc-textarea",
+  "storyExample": {
+    "template": "<modus-wc-textarea\n        aria-label=\"Textarea input\"\n        auto-correct=${ifDefined(args['auto-correct'])}\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        enterkeyhint=${ifDefined(args.enterkeyhint)}\n        ?disabled=${args.disabled}\n        .feedback=${args.feedback}\n        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max-length=${ifDefined(args['max-length'])}\n        min-length=${ifDefined(args['min-length'])}\n        name=${ifDefined(args.name)}\n        placeholder=${ifDefined(args.placeholder)}\n        ?readonly=${args.readonly}\n        ?required=${args.required}\n        rows=${ifDefined(args.rows)}\n        size=${ifDefined(args.size)}\n        spellcheck=${ifDefined(args.spellcheck)}\n        .value=${args.value}\n      ></modus-wc-textarea>",
+    "args": {
+      "bordered": "true",
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "readonly": "false",
+      "required": "false",
+      "size": "'md'",
+      "spellcheck": "false",
+      "value": "''"
+    },
+    "argTypes": {},
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { IInputFeedbackProp, ModusSize } from '../types';\n\ninterface TextAreaArgs {\n  'auto-correct': 'on' | 'off';\n  bordered?: boolean;\n  'custom-class'?: string;\n  disabled?: boolean;\n  enterkeyhint?:\n    | 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send';\n  feedback?: IInputFeedbackProp;\n  'input-aria-invalid'?: 'grammar' | 'spelling' | 'true' | 'false';\n  'input-id'?: string;\n  'input-tab-index'?: number;\n  label?: string;\n  'max-length'?: number;\n  'min-length'?: number;\n  name?: string;\n  placeholder?: string;\n  readonly?: boolean;\n  required?: boolean;\n  rows?: number;\n  size?: ModusSize;\n  spellcheck?: boolean;\n  value: string;\n}\n\nconst meta: Meta<TextAreaArgs> = {\n  title: 'Components/Forms/Textarea',\n  component: 'modus-wc-textarea',\n  args: {\n    bordered: true,\n    'custom-class': '',\n    disabled: false,\n    label: 'Label',\n    readonly: false,\n    required: false,\n    size: 'md',\n    spellcheck: false,\n    value: '',\n  },\n  argTypes: {\n    'auto-correct': {\n      options: ['on', 'off'],\n    },\n    enterkeyhint: {\n      options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],\n    },\n    feedback: {\n      description: 'Feedback prop for input components',\n      table: {\n        type: {\n          detail: `\n            Interface: IInputFeedbackProp\n            Properties:\n            - level ('error' | 'info' | 'success' | 'warning'): The feedback level\n            - message (string, optional): The feedback message\n          `,\n        },\n      },\n    },\n    'input-aria-invalid': {\n      control: {\n        type: 'select',\n      },\n      options: ['grammar', 'spelling', 'true', 'false'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    spellcheck: {\n      description:\n        'Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.',\n      table: {\n        category: 'attributes',\n        defaultValue: { summary: 'false' },\n      },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['inputBlur', 'inputChange', 'inputFocus'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TextAreaArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-textarea\n        aria-label=\"Textarea input\"\n        auto-correct=${ifDefined(args['auto-correct'])}\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        enterkeyhint=${ifDefined(args.enterkeyhint)}\n        ?disabled=${args.disabled}\n        .feedback=${args.feedback}\n        input-aria-invalid=${ifDefined(args['input-aria-invalid'])}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max-length=${ifDefined(args['max-length'])}\n        min-length=${ifDefined(args['min-length'])}\n        name=${ifDefined(args.name)}\n        placeholder=${ifDefined(args.placeholder)}\n        ?readonly=${args.readonly}\n        ?required=${args.required}\n        rows=${ifDefined(args.rows)}\n        size=${ifDefined(args.size)}\n        spellcheck=${ifDefined(args.spellcheck)}\n        .value=${args.value}\n      ></modus-wc-textarea>\n    `;\n  },\n};\n\nconst errorFeedback: IInputFeedbackProp = {\n  level: 'error',\n  message: 'Value is required.',\n};\n\nexport const WithErrorFeedback: Story = {\n  render: (args) => html`\n    <modus-wc-textarea\n      aria-label=\"Textarea input\"\n      .feedback=${errorFeedback}\n      id=\"error-input\"\n      label=${ifDefined(args.label)}\n      ?required=${true}\n      .value=${args.value}\n    ></modus-wc-textarea>\n    <script>\n      // Adding this block to show how to set feedback via JS\n      //const input = document.getElementById('error-input');\n      //input.feedback = { level: 'error', message: 'Value is required.' };\n    </script>\n  `,\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for textarea component\n    if (!customElements.get('textarea-shadow-host')) {\n      const TextareaShadowHost = createShadowHostClass<TextAreaArgs>({\n        componentTag: 'modus-wc-textarea',\n        propsMapper: (v: TextAreaArgs, el: HTMLElement) => {\n          const textareaEl = el as unknown as {\n            autoCorrect: string;\n            bordered: boolean;\n            customClass: string;\n            disabled: boolean;\n            enterkeyhint: string;\n            feedback: IInputFeedbackProp;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            maxLength: number;\n            minLength: number;\n            name: string;\n            placeholder: string;\n            readonly: boolean;\n            required: boolean;\n            rows: number;\n            size: string;\n          };\n          textareaEl.autoCorrect = v['auto-correct'];\n          textareaEl.bordered = Boolean(v.bordered);\n          textareaEl.customClass = v['custom-class'] || '';\n          textareaEl.disabled = Boolean(v.disabled);\n          textareaEl.enterkeyhint = v.enterkeyhint || '';\n\n          textareaEl.inputId = v['input-id'] || '';\n          textareaEl.inputTabIndex = v['input-tab-index'] || 0;\n          textareaEl.label = v.label || '';\n          textareaEl.maxLength = v['max-length'] || 100;\n          textareaEl.minLength = v['min-length'] || 0;\n          textareaEl.name = v.name || '';\n          textareaEl.placeholder = v.placeholder || '';\n          textareaEl.readonly = Boolean(v.readonly);\n          textareaEl.required = Boolean(v.required);\n          textareaEl.rows = typeof v.rows === 'number' ? v.rows : 2;\n          textareaEl.size = v.size || '';\n        },\n      });\n      customElements.define('textarea-shadow-host', TextareaShadowHost);\n    }\n\n    return html`<textarea-shadow-host\n      .props=${{ ...args }}\n    ></textarea-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for\n  additional info and examples.\n  - Size values have changed from verbose names (\\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop                     | 2.0 Prop            | Notes                                                       |\n|------------------------------|---------------------|-------------------------------------------------------------|\n| aria-label                   | aria-label          |                                                             |\n| autocorrect                  | auto-correct        |                                                             |\n| auto-focus-input             |                     | Not carried over                                            |\n| clearable                    |                     | Not carried over                                            |\n| disabled                     | disabled            |                                                             |\n| enterkeyhint                 | enterkeyhint        |                                                             |\n| error-text                   | feedback.message    | Use \\`feedback\\` level                                      |\n| helper-text                  |                     | Not carried over                                            |\n| label                        | label               |                                                             |\n| max-length                   | max-length          |                                                             |\n| min-length                   | min-length          |                                                             |\n| placeholder                  | placeholder         |                                                             |\n| read-only                    | readonly            |                                                             |\n| rows                         | rows                |                                                             |\n| required                     | required            |                                                             |\n| size                         | size                | \\`medium\\` → \\`md\\`, \\`large\\` → \\`lg\\`                     |\n| spellcheck                   | spellcheck          |                                                             |\n| text-align                   |                     | Not carried over, use CSS instead                           |\n| valid-text                   | feedback.message    | Use \\`feedback\\` level                                      |\n| value                        | value               |                                                             |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event   | Notes            |\n|-------------|-------------|------------------|\n| valueChange | inputChange |                  |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
