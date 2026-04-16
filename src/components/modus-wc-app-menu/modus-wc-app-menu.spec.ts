@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAppMenuSection, ModusWcAppMenu } from './modus-wc-app-menu';
@@ -108,7 +109,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const headerTitle = page.root?.querySelector(
@@ -140,7 +141,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const buttons = Array.from(
@@ -321,7 +322,6 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).updateGridTooltips();
 
     tooltips?.forEach((tooltip) => {
@@ -353,7 +353,6 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).updateGridTooltips();
 
     tooltips?.forEach((tooltip) => {
@@ -414,7 +413,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const dragIcons = page.root?.querySelectorAll(
@@ -439,7 +438,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const handleButtons = page.root?.querySelectorAll(
@@ -478,7 +477,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const dragIcons = page.root?.querySelectorAll(
@@ -499,7 +498,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(true);
@@ -515,7 +514,7 @@ describe('modus-wc-app-menu', () => {
     const component = page.rootInstance as ModusWcAppMenu;
     component.sections = null as unknown as undefined;
 
-    expect(() => component.handleEdit()).not.toThrow();
+    expect(() => (component as any).handleEdit()).not.toThrow();
     expect(component.isEditMode).toBe(true);
     expect(component.previousSections).toEqual([]);
   });
@@ -530,10 +529,10 @@ describe('modus-wc-app-menu', () => {
     page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.handleDone();
+    (component as any).handleDone();
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
@@ -551,7 +550,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const originalSections = JSON.parse(
@@ -566,7 +565,7 @@ describe('modus-wc-app-menu', () => {
     ];
     await page.waitForChanges();
 
-    component.handleCancel();
+    (component as any).handleCancel();
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
@@ -580,7 +579,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const mockDragEvent = new Event('dragstart') as DragEvent;
@@ -588,7 +587,7 @@ describe('modus-wc-app-menu', () => {
       value: { effectAllowed: '' },
     });
 
-    component.handleDragStart(mockDragEvent, 0, 1);
+    (component as any).handleDragStart(mockDragEvent, 0, 1);
 
     expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 1 });
   });
@@ -602,7 +601,7 @@ describe('modus-wc-app-menu', () => {
     const component = page.rootInstance as ModusWcAppMenu;
     const mockDragEvent = new Event('dragstart') as DragEvent;
 
-    component.handleDragStart(mockDragEvent, 0, 1);
+    (component as any).handleDragStart(mockDragEvent, 0, 1);
 
     expect(component.draggedItemPos).toBeNull();
   });
@@ -614,7 +613,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const mockDragEvent = new Event('dragover', {
@@ -622,7 +621,7 @@ describe('modus-wc-app-menu', () => {
     }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
 
-    component.handleDragOver(mockDragEvent);
+    (component as any).handleDragOver(mockDragEvent);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
@@ -639,7 +638,7 @@ describe('modus-wc-app-menu', () => {
     }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
 
-    component.handleDragOver(mockDragEvent);
+    (component as any).handleDragOver(mockDragEvent);
 
     expect(preventDefaultSpy).not.toHaveBeenCalled();
   });
@@ -665,7 +664,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -674,7 +673,7 @@ describe('modus-wc-app-menu', () => {
     jest.spyOn(mockDragEvent, 'preventDefault');
     jest.spyOn(mockDragEvent, 'stopPropagation');
 
-    component.handleDrop(mockDragEvent, 0, 2);
+    (component as any).handleDrop(mockDragEvent, 0, 2);
     await page.waitForChanges();
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
@@ -696,7 +695,7 @@ describe('modus-wc-app-menu', () => {
     const originalSections = JSON.parse(JSON.stringify(component.sections));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    component.handleDrop(mockDragEvent, 0, 1);
+    (component as any).handleDrop(mockDragEvent, 0, 1);
 
     expect(component.sections).toEqual(originalSections);
   });
@@ -711,13 +710,13 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const originalSections = JSON.parse(JSON.stringify(component.sections));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    component.handleDrop(mockDragEvent, 0, 1);
+    (component as any).handleDrop(mockDragEvent, 0, 1);
 
     expect(component.sections).toEqual(originalSections);
   });
@@ -743,7 +742,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -752,7 +751,7 @@ describe('modus-wc-app-menu', () => {
     jest.spyOn(mockDragEvent, 'preventDefault');
     jest.spyOn(mockDragEvent, 'stopPropagation');
 
-    component.handleDrop(mockDragEvent, 1, 1);
+    (component as any).handleDrop(mockDragEvent, 1, 1);
     await page.waitForChanges();
 
     expect(component.sections?.[0].items.length).toBe(0);
@@ -781,7 +780,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -789,7 +788,7 @@ describe('modus-wc-app-menu', () => {
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     jest.spyOn(mockDragEvent, 'preventDefault');
 
-    component.handleContainerDrop(mockDragEvent, 1);
+    (component as any).handleContainerDrop(mockDragEvent, 1);
     await page.waitForChanges();
 
     expect(component.sections?.[0].items.length).toBe(1);
@@ -811,7 +810,7 @@ describe('modus-wc-app-menu', () => {
     const originalSections = JSON.parse(JSON.stringify(component.sections));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    component.handleContainerDrop(mockDragEvent, 0);
+    (component as any).handleContainerDrop(mockDragEvent, 0);
 
     expect(component.sections).toEqual(originalSections);
   });
@@ -826,13 +825,13 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const originalSections = JSON.parse(JSON.stringify(component.sections));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    component.handleContainerDrop(mockDragEvent, 0);
+    (component as any).handleContainerDrop(mockDragEvent, 0);
 
     expect(component.sections).toEqual(originalSections);
   });
@@ -844,7 +843,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const dataTransfer = { effectAllowed: '' };
@@ -853,7 +852,7 @@ describe('modus-wc-app-menu', () => {
       value: dataTransfer,
     });
 
-    component.handleDragStart(mockDragEvent, 0, 0);
+    (component as any).handleDragStart(mockDragEvent, 0, 0);
 
     expect(dataTransfer.effectAllowed).toBe('move');
   });
@@ -865,13 +864,13 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const mockDragEvent = new Event('dragstart') as DragEvent;
     Object.defineProperty(mockDragEvent, 'dataTransfer', { value: null });
 
-    component.handleDragStart(mockDragEvent, 0, 0);
+    (component as any).handleDragStart(mockDragEvent, 0, 0);
 
     expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
@@ -887,7 +886,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
@@ -907,7 +906,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
@@ -1014,16 +1013,6 @@ describe('modus-wc-app-menu', () => {
     expect(menuHeader).not.toBeNull();
   });
 
-  it('should render body slot inside panel', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
-    });
-
-    const bodySlot = page.root?.querySelector('[slot="body"]');
-    expect(bodySlot).not.toBeNull();
-  });
-
   it('should render header-end-content container', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
@@ -1057,7 +1046,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const orderChangeSpy = jest.fn();
@@ -1086,7 +1075,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const buttons = Array.from(
@@ -1112,7 +1101,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
@@ -1152,7 +1141,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1185,7 +1174,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
@@ -1225,7 +1214,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1256,7 +1245,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = null;
@@ -1306,7 +1295,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1316,7 +1305,9 @@ describe('modus-wc-app-menu', () => {
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
     const stopPropagationSpy = jest.spyOn(mockDragEvent, 'stopPropagation');
 
-    expect(() => component.handleDrop(mockDragEvent, 0, 0)).not.toThrow();
+    expect(() =>
+      (component as any).handleDrop(mockDragEvent, 0, 0)
+    ).not.toThrow();
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(stopPropagationSpy).toHaveBeenCalled();
     expect(component.draggedItemPos).toBeNull();
@@ -1329,7 +1320,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1338,7 +1329,9 @@ describe('modus-wc-app-menu', () => {
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
 
-    expect(() => component.handleContainerDrop(mockDragEvent, 0)).not.toThrow();
+    expect(() =>
+      (component as any).handleContainerDrop(mockDragEvent, 0)
+    ).not.toThrow();
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(component.draggedItemPos).toBeNull();
   });
@@ -1382,7 +1375,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const spaceEvent = new KeyboardEvent('keydown', {
@@ -1390,7 +1383,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(spaceEvent, 0, 0);
+    (component as any).handleKeyDown(spaceEvent, 0, 0);
 
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
@@ -1406,7 +1399,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1415,7 +1408,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(enterEvent, 0, 0);
+    (component as any).handleKeyDown(enterEvent, 0, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
@@ -1442,7 +1435,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1451,7 +1444,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowDownEvent, 0, 0);
+    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
     expect(component.sections?.[0].items[1].appName).toBe('connect');
@@ -1480,7 +1473,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
@@ -1489,7 +1482,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowUpEvent, 0, 1);
+    (component as any).handleKeyDown(arrowUpEvent, 0, 1);
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
     expect(component.sections?.[0].items[1].appName).toBe('connect');
@@ -1507,7 +1500,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1516,7 +1509,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(escapeEvent, 0, 0);
+    (component as any).handleKeyDown(escapeEvent, 0, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
@@ -1539,7 +1532,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1548,7 +1541,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowUpEvent, 0, 0);
+    (component as any).handleKeyDown(arrowUpEvent, 0, 0);
 
     expect(component.sections?.[0].items[0].appName).toBe('connect');
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
@@ -1570,7 +1563,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(spaceEvent, 0, 0);
+    (component as any).handleKeyDown(spaceEvent, 0, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
@@ -1586,7 +1579,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const originalSections = JSON.parse(JSON.stringify(component.sections));
@@ -1595,7 +1588,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowDownEvent, 0, 0);
+    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
 
     expect(component.sections).toEqual(originalSections);
     expect(component.grabbedItemPos).toBeNull();
@@ -1611,11 +1604,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.handleDone();
+    (component as any).handleDone();
     await page.waitForChanges();
 
     expect(component.grabbedItemPos).toBeNull();
@@ -1631,11 +1624,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.handleCancel();
+    (component as any).handleCancel();
     await page.waitForChanges();
 
     expect(component.grabbedItemPos).toBeNull();
@@ -1652,7 +1645,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1660,7 +1653,6 @@ describe('modus-wc-app-menu', () => {
 
     const firstRow = page.root?.querySelector('.app-menu-item-row');
     expect(firstRow?.classList.contains('grabbed-item')).toBe(true);
-    expect(firstRow?.getAttribute('aria-grabbed')).toBe('true');
   });
 
   it('should add tabindex to items in edit mode for list layout', async () => {
@@ -1674,7 +1666,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const rows = page.root?.querySelectorAll('.app-menu-item-row');
@@ -1694,7 +1686,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
@@ -1725,7 +1717,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1734,7 +1726,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowRightEvent, 0, 0);
+    (component as any).handleKeyDown(arrowRightEvent, 0, 0);
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
     expect(component.sections?.[0].items[1].appName).toBe('connect');
@@ -1763,7 +1755,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
@@ -1772,7 +1764,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowLeftEvent, 0, 1);
+    (component as any).handleKeyDown(arrowLeftEvent, 0, 1);
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
     expect(component.sections?.[0].items[1].appName).toBe('connect');
@@ -1797,7 +1789,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
@@ -1806,9 +1798,91 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowRightEvent, 0, 0);
+    (component as any).handleKeyDown(arrowRightEvent, 0, 0);
 
     expect(component.sections?.[0].items[0].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+  });
+
+  it('should route ArrowUp to moveGridItemByKeyboard in grid layout', async () => {
+    const sections: IAppMenuSection[] = [
+      {
+        title: 'Section 1',
+        items: [
+          { appName: 'connect' },
+          { appName: 'viewpoint' },
+          { appName: 'tekla' },
+          { appName: 'sketchup' },
+        ],
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: JSON.parse(JSON.stringify(sections)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 3 };
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      cancelable: true,
+      bubbles: true,
+    });
+    const preventDefaultSpy = jest.spyOn(arrowUpEvent, 'preventDefault');
+    (component as any).handleKeyDown(arrowUpEvent, 0, 3);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(component.sections?.[0].items[0].appName).toBe('connect');
+    expect(component.sections?.[0].items[3].appName).toBe('sketchup');
+    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 3 });
+  });
+
+  it('should route ArrowDown to moveGridItemByKeyboard in grid layout', async () => {
+    const sections: IAppMenuSection[] = [
+      {
+        title: 'Section 1',
+        items: [
+          { appName: 'connect' },
+          { appName: 'viewpoint' },
+          { appName: 'tekla' },
+          { appName: 'sketchup' },
+        ],
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          sections: JSON.parse(JSON.stringify(sections)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    const preventDefaultSpy = jest.spyOn(arrowDownEvent, 'preventDefault');
+    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(component.sections?.[0].items[0].appName).toBe('connect');
+    expect(component.sections?.[0].items[3].appName).toBe('sketchup');
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
 
@@ -1837,11 +1911,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(3);
 
     expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
@@ -1876,11 +1949,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 3 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(-3);
 
     expect(component.sections?.[0].items[0].appName).toBe('sketchup');
@@ -1910,11 +1982,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(-3);
 
     expect(component.sections?.[0].items[0].appName).toBe('connect');
@@ -1951,11 +2022,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(3);
 
     expect(component.sections?.[0].items.length).toBe(3);
@@ -1986,7 +2056,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
@@ -1995,7 +2065,7 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowDownEvent, 0, 1);
+    (component as any).handleKeyDown(arrowDownEvent, 0, 1);
 
     expect(component.sections?.[0].items.length).toBe(1);
     expect(component.sections?.[0].items[0].appName).toBe('connect');
@@ -2026,7 +2096,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 1, itemIdx: 0 };
@@ -2035,39 +2105,13 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowUpEvent, 1, 0);
+    (component as any).handleKeyDown(arrowUpEvent, 1, 0);
 
     expect(component.sections?.[0].items.length).toBe(3);
     expect(component.sections?.[0].items[2].appName).toBe('sketchup');
     expect(component.sections?.[1].items.length).toBe(1);
     expect(component.sections?.[1].items[0].appName).toBe('tekla');
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 2 });
-  });
-
-  it('should not move item beyond first section boundary', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    component.handleKeyDown(arrowUpEvent, 0, 0);
-
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
 
   it('should not move item beyond last section boundary', async () => {
@@ -2081,7 +2125,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const lastSectionIdx = (component.sections?.length ?? 1) - 1;
@@ -2097,86 +2141,16 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    component.handleKeyDown(arrowDownEvent, lastSectionIdx, lastItemIdx);
+    (component as any).handleKeyDown(
+      arrowDownEvent,
+      lastSectionIdx,
+      lastItemIdx
+    );
 
     expect(component.grabbedItemPos).toEqual({
       sectionIdx: lastSectionIdx,
       itemIdx: lastItemIdx,
     });
-  });
-
-  it('should handle ArrowUp via handleKeyDown in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-        ],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 3 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    component.handleKeyDown(arrowUpEvent, 0, 3);
-
-    expect(component.grabbedItemPos).not.toBeNull();
-  });
-
-  it('should handle ArrowDown via handleKeyDown in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-        ],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    component.handleKeyDown(arrowDownEvent, 0, 0);
-
-    expect(component.grabbedItemPos).not.toBeNull();
   });
 
   it('should move grid item grabbed from second section via moveGridItemByKeyboard', async () => {
@@ -2205,11 +2179,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 1, itemIdx: 1 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(-1);
 
     expect(component.sections?.[1].items[0].appName).toBe('tekla');
@@ -2241,11 +2214,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.handleKeyDown(
+    (component as any).handleKeyDown(
       new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }),
       0,
       0
@@ -2283,11 +2256,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.handleKeyDown(
+    (component as any).handleKeyDown(
       new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }),
       0,
       0
@@ -2322,11 +2295,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(1);
 
     expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
@@ -2344,7 +2316,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const firstRow = page.root?.querySelector(
@@ -2371,7 +2343,7 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
@@ -2417,7 +2389,6 @@ describe('modus-wc-app-menu', () => {
       Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const colCount = (component as any).getGridColumnCount();
     expect(colCount).toBe(2);
   });
@@ -2440,7 +2411,6 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).getGridColumnCount()).toBe(1);
   });
 
@@ -2455,11 +2425,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveListItemByKeyboard(-1);
     expect(component.grabbedItemPos).toBeNull();
   });
@@ -2475,11 +2444,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 99, itemIdx: 0 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveListItemByKeyboard(-1);
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 99, itemIdx: 0 });
   });
@@ -2495,11 +2463,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(1);
     expect(component.grabbedItemPos).toBeNull();
   });
@@ -2515,10 +2482,9 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => (component as any).focusItemAt(99, 99)).not.toThrow();
   });
 
@@ -2534,7 +2500,6 @@ describe('modus-wc-app-menu', () => {
 
     const component = page.rootInstance as ModusWcAppMenu;
     component.grabbedItemPos = null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).isGrabbed(0, 0)).toBe(false);
   });
 
@@ -2549,10 +2514,9 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => (component as any).focusItemAt(0, 0)).not.toThrow();
   });
 
@@ -2567,12 +2531,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
     component.sections = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveListItemByKeyboard(-1);
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
@@ -2588,12 +2551,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
     component.sections = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (component as any).moveGridItemByKeyboard(1);
     expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
@@ -2609,11 +2571,10 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     await page.waitForChanges();
 
     component.sections = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => (component as any).focusItemAt(0, 0)).not.toThrow();
   });
 
@@ -2629,7 +2590,6 @@ describe('modus-wc-app-menu', () => {
 
     const component = page.rootInstance as ModusWcAppMenu;
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 5 };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((component as any).isGrabbed(0, 0)).toBe(false);
   });
 
@@ -2644,12 +2604,11 @@ describe('modus-wc-app-menu', () => {
     });
 
     const gridItem = page.root?.querySelector('.grid-item');
-    expect(gridItem?.getAttribute('aria-grabbed')).toBeNull();
     expect(gridItem?.getAttribute('aria-roledescription')).toBeNull();
     expect(gridItem?.getAttribute('role')).toBe('listitem');
   });
 
-  it('should render grid items with grabbed aria attributes in edit mode', async () => {
+  it('should render grid items with correct aria attributes in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
@@ -2660,18 +2619,15 @@ describe('modus-wc-app-menu', () => {
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.handleEdit();
+    (component as any).handleEdit();
     component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
     await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
     const firstItem = gridItems?.[0];
-    expect(firstItem?.getAttribute('aria-grabbed')).toBe('true');
+    expect(firstItem?.getAttribute('draggable')).toBe('true');
     expect(firstItem?.getAttribute('aria-roledescription')).toBe(
       'reorderable item'
     );
-
-    const secondItem = gridItems?.[1];
-    expect(secondItem?.getAttribute('aria-grabbed')).toBe('false');
   });
 });

@@ -93,28 +93,28 @@ export class ModusWcAppMenu {
   }
 
   @Watch('layout')
-  protected onLayoutChange(newLayout: 'list' | 'grid') {
+  onLayoutChange(newLayout: 'list' | 'grid') {
     this.layoutChange.emit({ layout: newLayout });
   }
 
-  handleEdit() {
+  private handleEdit() {
     this.previousSections = JSON.parse(JSON.stringify(this.sections ?? []));
     this.isEditMode = true;
   }
 
-  handleDone() {
+  private handleDone() {
     this.isEditMode = false;
     this.grabbedItemPos = null;
     this.itemsOrderChange.emit(this.sections);
   }
 
-  handleCancel() {
+  private handleCancel() {
     this.sections = [...this.previousSections];
     this.isEditMode = false;
     this.grabbedItemPos = null;
   }
 
-  handleKeyDown(e: KeyboardEvent, sectionIdx: number, itemIdx: number) {
+  private handleKeyDown(e: KeyboardEvent, sectionIdx: number, itemIdx: number) {
     if (!this.isEditMode) return;
 
     switch (e.key) {
@@ -322,7 +322,7 @@ export class ModusWcAppMenu {
     );
   }
 
-  handleDragStart(e: DragEvent, sectionIdx: number, itemIdx: number) {
+  private handleDragStart(e: DragEvent, sectionIdx: number, itemIdx: number) {
     if (!this.isEditMode) return;
     this.draggedItemPos = { sectionIdx, itemIdx };
     if (e.dataTransfer) {
@@ -330,7 +330,7 @@ export class ModusWcAppMenu {
     }
   }
 
-  handleDragOver(e: DragEvent) {
+  private handleDragOver(e: DragEvent) {
     if (!this.isEditMode) return;
     e.preventDefault();
   }
@@ -347,7 +347,11 @@ export class ModusWcAppMenu {
     return sections.map((s) => ({ ...s, items: [...s.items] }));
   }
 
-  handleDrop(e: DragEvent, targetSectionIdx: number, targetItemIdx: number) {
+  private handleDrop(
+    e: DragEvent,
+    targetSectionIdx: number,
+    targetItemIdx: number
+  ) {
     if (!this.isEditMode || !this.draggedItemPos) return;
     e.preventDefault();
     e.stopPropagation();
@@ -366,7 +370,7 @@ export class ModusWcAppMenu {
     this.draggedItemPos = null;
   }
 
-  handleContainerDrop(e: DragEvent, sectionIdx: number) {
+  private handleContainerDrop(e: DragEvent, sectionIdx: number) {
     if (!this.isEditMode || !this.draggedItemPos) return;
     e.preventDefault();
 
@@ -384,7 +388,7 @@ export class ModusWcAppMenu {
     this.draggedItemPos = null;
   }
 
-  renderListLayout() {
+  private renderListLayout() {
     const sections = this.sections ?? [];
     return sections.map((section, sIdx) => (
       <div
@@ -412,13 +416,6 @@ export class ModusWcAppMenu {
           <modus-wc-menu>
             {section.items.map((item, iIdx) => (
               <div
-                aria-grabbed={
-                  this.isEditMode
-                    ? this.isGrabbed(sIdx, iIdx)
-                      ? 'true'
-                      : 'false'
-                    : undefined
-                }
                 aria-roledescription={
                   this.isEditMode ? 'reorderable item' : undefined
                 }
@@ -460,7 +457,7 @@ export class ModusWcAppMenu {
     ));
   }
 
-  renderGridLayout() {
+  private renderGridLayout() {
     const sections = this.sections ?? [];
     const allItems = sections.flatMap((section, sIdx) =>
       section.items.map((item, iIdx) => ({ item, sIdx, iIdx }))
@@ -477,13 +474,6 @@ export class ModusWcAppMenu {
         <div class="grid-row" role={this.isEditMode ? 'listbox' : 'list'}>
           {allItems.map(({ item, sIdx, iIdx }) => (
             <div
-              aria-grabbed={
-                this.isEditMode
-                  ? this.isGrabbed(sIdx, iIdx)
-                    ? 'true'
-                    : 'false'
-                  : undefined
-              }
               aria-label={this.getDisplayName(item.appName)}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined

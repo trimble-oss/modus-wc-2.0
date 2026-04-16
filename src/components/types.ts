@@ -67,6 +67,7 @@ export type LogoName =
   | 'trimble'
   | 'truckmate'
   | 'unity'
+  | 'unity_adms'
   | 'unity_construct'
   | 'unity_field'
   | 'unity_maintain'

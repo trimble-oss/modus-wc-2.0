@@ -26,7 +26,6 @@ modus-wc-app-menu {
       .header-title {
         align-content: flex-start;
         align-items: flex-start;
-        border-radius: var(--modus-wc-border-radius-button);
         display: flex;
         flex: 1 0 0;
         flex-wrap: wrap;
@@ -187,6 +186,51 @@ modus-wc-app-menu {
         0 2px 4px -2px rgba(0, 0, 0, 0.1);
       outline: 2px solid var(--modus-wc-color-primary);
       outline-offset: -2px;
+    }
+
+    .drag-source {
+      opacity: 0.3;
+    }
+
+    .empty-section-drop-zone {
+      min-height: 48px;
+    }
+
+    .app-menu-items.edit-mode {
+      padding-bottom: var(--modus-wc-spacing-lg);
+    }
+
+    .app-menu-item-row.drop-indicator::before {
+      background-color: var(--modus-wc-color-primary);
+      border-radius: 1px;
+      content: '';
+      height: 2px;
+      inset-inline: 0;
+      position: absolute;
+      top: -1px;
+      z-index: 2;
+    }
+
+    .app-menu-item-row.drop-indicator-end::after {
+      background-color: var(--modus-wc-color-primary);
+      border-radius: 1px;
+      bottom: -1px;
+      content: '';
+      height: 2px;
+      inset-inline: 0;
+      position: absolute;
+      z-index: 2;
+    }
+
+    .grid-item.drop-indicator::before {
+      background-color: var(--modus-wc-color-primary);
+      border-radius: 1px;
+      content: '';
+      inset-block: 0;
+      inset-inline-start: -1px;
+      position: absolute;
+      width: 2px;
+      z-index: 2;
     }
   }
 }

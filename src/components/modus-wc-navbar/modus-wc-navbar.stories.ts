@@ -7,9 +7,9 @@ import {
   INavbarUserCard,
   INavbarVisibility,
 } from './modus-wc-navbar';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { getAvailableLogos } from '../modus-wc-logo/logo-constants';
 import { LogoName } from '../types';
-import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 const textOverrides: INavbarTextOverrides = {
   apps: 'Apps',
