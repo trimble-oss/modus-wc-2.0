@@ -1,6 +1,7 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
   expanded: boolean;
@@ -582,4 +583,149 @@ export const WithoutHeaderFooter: Story = {
       </modus-wc-utility-panel>
     </div>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('utility-panel-shadow-host')) {
+      const UtilityPanelShadowHost = createShadowHostClass<UtilityPanelArgs>({
+        componentTag: 'modus-wc-utility-panel',
+        propsMapper: (v: UtilityPanelArgs, el: HTMLElement) => {
+          (el as unknown as { expanded: boolean }).expanded = Boolean(
+            v.expanded
+          );
+          (el as unknown as { pushContent: boolean }).pushContent = Boolean(
+            v['push-content']
+          );
+
+          // Build full layout on first render: add slot content to el, then
+          // move el into the demo layout inside the helper's wrapper.
+          if (!el.hasAttribute('data-layout-built')) {
+            el.setAttribute('data-layout-built', '');
+
+            const shadowRoot = el.getRootNode() as ShadowRoot;
+            const wrapper = el.parentElement!;
+
+            // Slot content
+            const header = document.createElement('div');
+            header.setAttribute('slot', 'header');
+            header.className = 'modus-wc-utility-panel-header';
+            header.textContent = 'Utility Panel Header';
+
+            const body = document.createElement('div');
+            body.setAttribute('slot', 'body');
+            body.className = 'modus-wc-utility-panel-body';
+            const bp1 = document.createElement('p');
+            bp1.textContent = 'This is the utility panel body content.';
+            const bp2 = document.createElement('p');
+            bp2.textContent =
+              'You can add any content here including forms, lists, or other components.';
+            const input = document.createElement('modus-wc-text-input');
+            input.setAttribute('label', 'Example Input');
+            input.setAttribute('placeholder', 'Enter text...');
+            body.appendChild(bp1);
+            body.appendChild(bp2);
+            body.appendChild(input);
+
+            const footer = document.createElement('div');
+            footer.setAttribute('slot', 'footer');
+            footer.className = 'modus-wc-utility-panel-footer';
+            const cancelBtn = document.createElement('modus-wc-button');
+            cancelBtn.setAttribute('color', 'tertiary');
+            cancelBtn.setAttribute('size', 'sm');
+            cancelBtn.textContent = 'Cancel';
+            const saveBtn = document.createElement('modus-wc-button');
+            saveBtn.setAttribute('color', 'primary');
+            saveBtn.setAttribute('size', 'sm');
+            saveBtn.textContent = 'Save';
+            footer.appendChild(cancelBtn);
+            footer.appendChild(saveBtn);
+
+            el.appendChild(header);
+            el.appendChild(body);
+            el.appendChild(footer);
+
+            // Navbar with toggle button
+            const navbar = document.createElement('modus-wc-navbar');
+            (navbar as unknown as { visibility: object }).visibility = {
+              user: false,
+            };
+            (navbar as unknown as { userCard: object }).userCard = {
+              name: '',
+              email: '',
+            };
+            const endSlot = document.createElement('div');
+            endSlot.setAttribute('slot', 'end');
+            const tooltip = document.createElement('modus-wc-tooltip');
+            tooltip.setAttribute('content', 'Toggle Utility Panel');
+            tooltip.setAttribute('position', 'left');
+            const toggleBtn = document.createElement('modus-wc-button');
+            toggleBtn.setAttribute('color', 'primary');
+            toggleBtn.setAttribute('size', 'sm');
+            toggleBtn.setAttribute('variant', 'outlined');
+            const menuIcon = document.createElement('modus-wc-icon');
+            menuIcon.setAttribute('name', 'menu');
+            toggleBtn.appendChild(menuIcon);
+            tooltip.appendChild(toggleBtn);
+            endSlot.appendChild(tooltip);
+            navbar.appendChild(endSlot);
+            toggleBtn.addEventListener('buttonClick', () => {
+              (el as unknown as { expanded: boolean }).expanded = !(
+                el as unknown as { expanded: boolean }
+              ).expanded;
+            });
+
+            // Main content
+            const mainContent = document.createElement('div');
+            mainContent.className = 'main-content';
+            const h1 = document.createElement('h1');
+            h1.textContent = 'Main Content Area';
+            const p1 = document.createElement('p');
+            p1.textContent =
+              'This is the main content area below the navbar. When the utility panel opens with pushContent=true, this content will be pushed to the left.';
+            const p2 = document.createElement('p');
+            p2.textContent =
+              'This is an example of how the utility panel interacts with the main content. When the panel opens with push content enabled, this area will shift to the left to make room for the panel.';
+            const p3 = document.createElement('p');
+            p3.textContent =
+              'The content area maintains its full functionality while the panel is open. Users can continue to interact with the main content while accessing the utility panel features.';
+            mainContent.appendChild(h1);
+            mainContent.appendChild(p1);
+            mainContent.appendChild(p2);
+            mainContent.appendChild(p3);
+
+            // Move el into the content wrapper
+            const contentWrapper = document.createElement('div');
+            contentWrapper.className = 'main-content-wrapper';
+            contentWrapper.appendChild(mainContent);
+            contentWrapper.appendChild(el);
+
+            const container = document.createElement('div');
+            container.className = 'demo-container';
+            container.appendChild(navbar);
+            container.appendChild(contentWrapper);
+
+            wrapper.appendChild(container);
+
+            const styleEl = document.createElement('style');
+            styleEl.textContent = utilityPanelStyles;
+            shadowRoot.appendChild(styleEl);
+
+            requestAnimationFrame(() => {
+              (el as unknown as { targetElement: HTMLElement }).targetElement =
+                mainContent;
+            });
+          }
+        },
+      });
+      customElements.define(
+        'utility-panel-shadow-host',
+        UtilityPanelShadowHost
+      );
+    }
+
+    return html`<utility-panel-shadow-host
+      .props=${{ ...args }}
+    ></utility-panel-shadow-host>`;
+  },
 };
