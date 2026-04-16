@@ -11,6 +11,20 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     font-weight: var(--modus-wc-font-weight-normal);
     padding-inline-start: var(--modus-wc-spacing-md);
   }
+
+  [type='checkbox'].modus-wc-checkbox {
+    &:checked {
+      --fallback-bc: var(--modus-wc-color-primary);
+    }
+
+    &:focus {
+      outline-color: var(--modus-wc-color-primary);
+    }
+
+    &:hover {
+      --fallback-bc: var(--modus-wc-color-primary);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
