@@ -11,6 +11,7 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -110,6 +111,9 @@ export class ModusWcDropdownMenu {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

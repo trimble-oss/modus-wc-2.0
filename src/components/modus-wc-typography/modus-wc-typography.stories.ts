@@ -5,7 +5,7 @@ import {
   TypographyHierarchy,
   TypographySize,
   TypographyWeight,
-} from './modus-wc-typography';
+} from '../types';
 
 const content = 'The quick brown fox jumps over the lazy dog';
 
