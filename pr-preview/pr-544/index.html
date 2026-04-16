@@ -70,35 +70,28 @@
     
     <link href="./sb-addons/themes-11/manager-bundle.js" rel="modulepreload" />
     
-    <link href="./sb-addons/storybook-12/manager-bundle.js" rel="modulepreload" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
-/>
-<link rel="icon" type="image/x-icon" href="public/favicon.ico" />
-<link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
+    <link href="./sb-addons/storybook-addons-ai-chat-12/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/storybook-13/manager-bundle.js" rel="modulepreload" />
+      <link rel="icon" type="image/x-icon" href="./public/favicon.ico" />
+<link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
 <meta property="og:title" content="Modus Web Components Library 2.0" />
 <meta name="robots" content="noindex, nofollow" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.css"
+/>
+<script type="module" src="./modus-wc/modus-wc.esm.js"></script>
+<script>
+  // Load Modus styles in the manager context
+  const isLocal = window.location.hostname.includes('localhost');
+  const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssPath;
+  document.head.appendChild(link);
+</script>
 <style>
-  @font-face {
-    font-family: 'Nunito Sans';
-    font-weight: 400;
-    src:
-      local('Open Sans'), local('system-ui'), local('Segoe UI'),
-      local('Roboto'), local('Helvetica Neue'), local('Noto Sans'),
-      local('Liberation Sans'), local('Arial');
-  }
-
-  @font-face {
-    font-family: 'Nunito Sans';
-    font-weight: 700;
-    src:
-      local('Open Sans'), local('system-ui'), local('Segoe UI'),
-      local('Roboto'), local('Helvetica Neue'), local('Noto Sans'),
-      local('Liberation Sans'), local('Arial');
-  }
-
   html,
   body,
   body > *,
@@ -123,6 +116,8 @@
       }
     </style>
 
+    
+    <link href="./sb-addons/storybook-addons-ai-chat-12/manager-bundle.css" rel="stylesheet" />
     
   </head>
   <body>
@@ -220,7 +215,9 @@
       
         import './sb-addons/themes-11/manager-bundle.js';
       
-        import './sb-addons/storybook-12/manager-bundle.js';
+        import './sb-addons/storybook-addons-ai-chat-12/manager-bundle.js';
+      
+        import './sb-addons/storybook-13/manager-bundle.js';
       
       
       import './sb-manager/runtime.js';
