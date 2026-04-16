@@ -9,6 +9,7 @@
 
 | Property               | Attribute                 | Description                                                                                      | Type                                                                  | Default         |
 | ---------------------- | ------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | --------------- |
+| `caption`              | `caption`                 | Accessibility caption for the table (visually hidden but available to screen readers).           | `string \| undefined`                                                 | `undefined`     |
 | `columns` _(required)_ | `columns`                 | An array of column definitions.                                                                  | `ITableColumn[]`                                                      | `undefined`     |
 | `currentPage`          | `current-page`            | The current page number in pagination (1-based index).                                           | `number`                                                              | `1`             |
 | `customClass`          | `custom-class`            | Custom CSS class to apply to the inner div.                                                      | `string \| undefined`                                                 | `''`            |

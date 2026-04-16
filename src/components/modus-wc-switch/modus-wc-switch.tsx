@@ -8,12 +8,13 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-switch.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable checkbox component
+ * A customizable switch component
  */
 @Component({
   tag: 'modus-wc-switch',
@@ -76,6 +77,9 @@ export class ModusWcSwitch {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Switch button';
     }
@@ -118,10 +122,12 @@ export class ModusWcSwitch {
           class={this.getClasses()}
           disabled={this.disabled}
           id={this.inputId}
+          name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
           required={this.required}
+          role="switch"
           tabIndex={this.inputTabIndex}
           type="checkbox"
           {...this.inheritedAttributes}

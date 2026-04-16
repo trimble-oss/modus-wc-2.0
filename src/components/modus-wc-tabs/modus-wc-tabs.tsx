@@ -30,10 +30,15 @@ export interface ITab {
 
   /** The content to display in the tab. */
   label?: string;
+
+  /** The slot name for custom tab content. */
+  slotName?: string;
 }
 
 /**
  * A customizable tabs component used to create groups of tabs.
+ *
+ * The component supports a `<slot>` for injecting custom tab content.
  */
 @Component({
   tag: 'modus-wc-tabs',
@@ -136,12 +141,17 @@ export class ModusWcTabs {
       <button
         role="tab"
         aria-disabled={tab.disabled}
-        aria-label={(tab.label ?? tab.icon) + ' tab'}
+        aria-label={tab.label ?? tab.icon}
         class={this.getTabClasses(tab, index)}
+        disabled={tab.disabled}
         id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
       >
-        {renderTabContent(tab)}
+        {tab.slotName ? (
+          <slot name={tab.slotName}></slot>
+        ) : (
+          renderTabContent(tab)
+        )}
       </button>
     ));
 

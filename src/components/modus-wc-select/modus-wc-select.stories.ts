@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ISelectOption } from './modus-wc-select';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 
 const options: ISelectOption[] = [
@@ -105,6 +106,16 @@ export const Default: Story = {
       size=${ifDefined(args.size)}
       .value=${args.value}
     ></modus-wc-select>
+    <script>
+      const options = [
+        { label: 'Option 1', value: '1' },
+        { label: 'Option 2', value: '2' },
+        { label: 'Option 3', value: '3' },
+      ];
+      // Adding this block to show how to set options via JS
+      // const select = document.querySelector('modus-wc-select');
+      // select.options = options;
+    </script>
   `,
 };
 
@@ -118,12 +129,61 @@ export const WithErrorFeedback: Story = {
     <modus-wc-select
       aria-label="Select input"
       .feedback=${errorFeedback}
+      id="error-select"
       label=${ifDefined(args.label)}
       .options=${[]}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-select>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      // const select = document.getElementById('error-select');
+      // select.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for select component
+    if (!customElements.get('select-shadow-host')) {
+      const SelectShadowHost = createShadowHostClass<SelectArgs>({
+        componentTag: 'modus-wc-select',
+        propsMapper: (v: SelectArgs, el: HTMLElement) => {
+          const selectEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            disabled: boolean;
+            feedback: IInputFeedbackProp;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            name: string;
+            options: ISelectOption[];
+            required: boolean;
+            size: string;
+            value: string;
+          };
+          selectEl.bordered = Boolean(v.bordered);
+          selectEl.customClass = v['custom-class'] || '';
+          selectEl.disabled = Boolean(v.disabled);
+          selectEl.inputId = v['input-id'] || '';
+          selectEl.inputTabIndex = v['input-tab-index'] || 0;
+          selectEl.label = v.label || '';
+          selectEl.name = v.name || '';
+          selectEl.options = v.options;
+          selectEl.required = Boolean(v.required);
+          selectEl.size = v.size || 'md';
+          selectEl.value = v.value;
+        },
+      });
+      customElements.define('select-shadow-host', SelectShadowHost);
+    }
+
+    return html`<select-shadow-host
+      .props=${{ ...args }}
+    ></select-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {

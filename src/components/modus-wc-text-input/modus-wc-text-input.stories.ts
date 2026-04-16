@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextInputArgs {
@@ -30,7 +31,7 @@ interface TextInputArgs {
   'include-clear'?: boolean;
   'include-search'?: boolean;
   'input-id'?: string;
-  'input-mode':
+  inputmode?:
     | 'decimal'
     | 'email'
     | 'none'
@@ -62,7 +63,7 @@ const meta: Meta<TextInputArgs> = {
     disabled: false,
     'include-clear': false,
     'include-search': false,
-    'input-mode': 'text',
+    inputmode: 'text',
     label: 'Label',
     size: 'md',
     spellcheck: false,
@@ -95,7 +96,8 @@ const meta: Meta<TextInputArgs> = {
         },
       },
     },
-    'input-mode': {
+    inputmode: {
+      control: { type: 'select' },
       options: [
         'decimal',
         'email',
@@ -125,7 +127,7 @@ const meta: Meta<TextInputArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['inputBlur', 'inputChange', 'inputFocus'],
+      handles: ['clearClick', 'inputBlur', 'inputChange', 'inputFocus'],
     },
   },
 };
@@ -134,7 +136,7 @@ export default meta;
 
 type Story = StoryObj<TextInputArgs>;
 
-export const Default: Story = {
+const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
       aria-label="Text input"
@@ -151,7 +153,7 @@ export const Default: Story = {
       include-search=${ifDefined(args['include-search'])}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
-      input-mode=${args['input-mode']}
+      inputmode=${ifDefined(args.inputmode)}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max-length=${ifDefined(args['max-length'])}
@@ -169,21 +171,138 @@ export const Default: Story = {
   `,
 };
 
+export const Default: Story = { ...Template };
+
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
   message: 'Value is required.',
 };
 
 export const WithErrorFeedback: Story = {
+  // prettier-ignore
   render: (args) => html`
     <modus-wc-text-input
-      aria-label="Text input"
+      aria-label="Text input with error feedback"
       .feedback=${errorFeedback}
+      id="error-input"
       label=${ifDefined(args.label)}
       ?required=${true}
       .value=${args.value}
     ></modus-wc-text-input>
+    <script>
+      // Adding this block to show how to set feedback via JS
+      //const input = document.getElementById('error-input');
+      //input.feedback = { level: 'error', message: 'Value is required.' };
+    </script>
   `,
+};
+
+export const WithCustomIconSlot: Story = {
+  // prettier-ignore
+  render: (args) => html`
+<modus-wc-text-input
+  aria-label="Text input with custom icon"
+  auto-capitalize=${ifDefined(args['auto-capitalize'])}
+  auto-complete=${ifDefined(args['auto-complete'])}
+  auto-correct=${ifDefined(args['auto-correct'])}
+  ?bordered=${args.bordered}
+  clear-aria-label=${ifDefined(args['clear-aria-label'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?disabled=${args.disabled}
+  enterkeyhint=${ifDefined(args.enterkeyhint)}
+  .feedback=${args.feedback}
+  include-clear=${ifDefined(args['include-clear'])}
+  include-search=${ifDefined(args['include-search'])}
+  input-id=${ifDefined(args['input-id'])}
+  inputmode=${ifDefined(args.inputmode)}
+  input-tab-index=${ifDefined(args['input-tab-index'])}
+  label=${ifDefined(args.label)}
+  max-length=${ifDefined(args['max-length'])}
+  min-length=${ifDefined(args['min-length'])}
+  name=${ifDefined(args.name)}
+  pattern=${ifDefined(args.pattern)}
+  placeholder=${ifDefined(args.placeholder)}
+  ?read-only=${args['read-only']}
+  ?required=${args.required}
+  size=${ifDefined(args.size)}
+  spellcheck=${ifDefined(args.spellcheck)}
+  type=${ifDefined(args.type)}
+  .value=${args.value}
+>
+  <modus-wc-icon slot="custom-icon" name="heart" size="sm"></modus-wc-icon>
+</modus-wc-text-input>
+  `,
+  args: {
+    placeholder: 'Enter text here...',
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for text-input component
+    if (!customElements.get('text-input-shadow-host')) {
+      const TextInputShadowHost = createShadowHostClass<TextInputArgs>({
+        componentTag: 'modus-wc-text-input',
+        propsMapper: (v: TextInputArgs, el: HTMLElement) => {
+          const textInputEl = el as unknown as {
+            autoCapitalize: string;
+            autoComplete: string;
+            autoCorrect: string;
+            bordered: boolean;
+            clearAriaLabel: string;
+            customClass: string;
+            disabled: boolean;
+            enterkeyhint: string;
+            feedback: IInputFeedbackProp;
+            includeClear: boolean;
+            includeSearch: boolean;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            maxLength: number;
+            minLength: number;
+            name: string;
+            pattern: string;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            size: string;
+            type: string;
+            value: string;
+          };
+          textInputEl.autoCapitalize = v['auto-capitalize'] || '';
+          textInputEl.autoComplete = v['auto-complete'] || '';
+          textInputEl.autoCorrect = v['auto-correct'] || '';
+          textInputEl.bordered = Boolean(v.bordered);
+          textInputEl.clearAriaLabel =
+            v['clear-aria-label'] || '' || 'Clear text';
+          textInputEl.customClass = v['custom-class'] || '';
+          textInputEl.disabled = Boolean(v.disabled);
+          textInputEl.enterkeyhint = v.enterkeyhint || '';
+          textInputEl.includeClear = Boolean(v['include-clear']);
+          textInputEl.includeSearch = Boolean(v['include-search']);
+          textInputEl.inputId = v['input-id'] || '';
+          textInputEl.inputTabIndex = v['input-tab-index'] || 0;
+          textInputEl.label = v.label || '';
+          textInputEl.maxLength = v['max-length'];
+          textInputEl.minLength = v['min-length'];
+          textInputEl.name = v.name || '';
+          textInputEl.pattern = v.pattern || '';
+          textInputEl.placeholder = v.placeholder || '';
+          textInputEl.readOnly = Boolean(v['read-only']);
+          textInputEl.required = Boolean(v.required);
+          textInputEl.size = v.size || '';
+          textInputEl.type = v.type || '';
+          textInputEl.value = v.value;
+        },
+      });
+      customElements.define('text-input-shadow-host', TextInputShadowHost);
+    }
+
+    return html`<text-input-shadow-host
+      .props=${{ ...args }}
+    ></text-input-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {
@@ -215,7 +334,7 @@ export const Migration: Story = {
 | include-error-icon           |                     | Not carried over                                            |
 | include-search-icon          | include-search      |                                                             |
 | include-password-text-toggle |                     | Not carried over                                            |
-| inputmode                    | input-mode          |                                                             |
+| inputmode                    | inputmode          |                                                             |
 | label                        | label               |                                                             |
 | max-length                   | max-length          |                                                             |
 | pattern                      | pattern             |                                                             |

@@ -71,10 +71,30 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-breadcrumbs
+  aria-label="Breadcrumbs"
   custom-class=${ifDefined(args['custom-class'])}
   .items=${args.items}
   size=${ifDefined(args.size)}
 ></modus-wc-breadcrumbs>
+<script>
+  const items = [
+    {
+      label: 'Root',
+      url: '#',
+    },
+    {
+      label: 'Subpage',
+      url: '#',
+    },
+    {
+      label: 'Current Page',
+      url: '#',
+    },
+  ];
+  // Adding this block to show how to set options via JS 
+  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
+  // breadcrumbs.items = items;
+</script>
     `;
   },
 };
@@ -95,6 +115,25 @@ export const UnderlineLinks: Story = {
   .items=${args.items}
   size=${ifDefined(args.size)}
 ></modus-wc-breadcrumbs>
+<script>
+  const items = [
+    {
+      label: 'Root',
+      url: '#',
+    },
+    {
+      label: 'Subpage',
+      url: '#',
+    },
+    {
+      label: 'Current Page',
+      url: '#',
+    },
+  ];
+  // Adding this block to show how to set options via JS 
+  // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
+  // breadcrumbs.items = items;
+</script>
     `;
   },
 };

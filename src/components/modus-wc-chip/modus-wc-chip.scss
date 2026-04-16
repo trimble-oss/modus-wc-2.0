@@ -9,9 +9,15 @@ modus-wc-chip .modus-wc-chip {
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;
     box-sizing: border-box;
-    color: var(--modus-wc-color-base-content);
 
     --rounded-btn: #{var(--modus-wc-border-radius-chip)};
+
+    &.modus-wc-chip--circle {
+      --rounded-btn: var(--modus-wc-border-radius-3xl);
+    }
+
+    @include common-states;
+    @include sizing-tokens;
 
     // Sizes
     &.modus-wc-btn-sm {
@@ -25,8 +31,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-md);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -41,8 +49,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-lg);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -57,24 +67,27 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+        font-size: var(--modus-wc-font-size-xl);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
     // States
     &.modus-wc-chip--active {
-      background-color: var(--modus-wc-color-primary);
+      background-color: var(--modus-wc-color-primary-pale);
       border-color: transparent;
-      color: var(--modus-wc-color-base-content);
+
+      // color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-primary);
+        background-color: var(--modus-wc-color-primary-pale);
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
 
         .modus-wc-chip-label {
-          color: var(--modus-wc-color-base-content);
+          color: var(--modus-wc-color-primary);
         }
       }
     }
@@ -91,29 +104,26 @@ modus-wc-chip .modus-wc-chip {
     }
 
     &.modus-wc-chip--outline {
-      background-color: transparent;
+      background-color: var(--modus-wc-color-base-page);
       border-color: var(--modus-wc-color-base-200);
     }
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
-      background-color: var(--modus-wc-color-base-100);
-      border-color: transparent;
       color: var(--modus-wc-color-base-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
         border-color: var(--modus-wc-color-base-200);
-        color: var(--modus-wc-color-base-content);
+
+        // color: var(--modus-wc-color-base-content);
       }
     }
 
     &:active:not(.modus-wc-chip--error):not(.modus-wc-chip--active) {
-      background-color: var(--modus-wc-color-primary);
       border-color: transparent;
-      color: var(--modus-wc-color-primary-content);
+
+      // color: var(--modus-wc-color-primary-content);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
         background-color: transparent;
         border-color: var(--modus-wc-color-primary);
         color: var(--modus-wc-color-primary);
@@ -132,13 +142,11 @@ modus-wc-chip .modus-wc-chip {
   &.modus-wc-chip--disabled {
     opacity: 0.3;
 
+    --tw-text-opacity: 1;
+
     .modus-wc-avatar {
       filter: grayscale(100%);
     }
-  }
-
-  .modus-wc-avatar {
-    display: flex;
   }
 }
 
@@ -157,8 +165,6 @@ modus-wc-chip .modus-wc-chip {
     color: var(--modus-wc-color-base-content);
     font-size: var(--modus-wc-font-size-md);
 
-    --rounded-btn: #{var(--modus-wc-border-radius-xl)};
-
     // Sizes
     &.modus-wc-btn-sm {
       font-size: var(--modus-wc-font-size-md);
@@ -172,8 +178,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-md);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -183,16 +191,16 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
-      --rounded-btn: #{var(--modus-wc-border-radius-2xl)};
-
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-lg);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -202,16 +210,16 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
 
-      --rounded-btn: #{var(--modus-wc-border-radius-3xl)};
-
       .modus-wc-avatar {
         height: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+        font-size: var(--modus-wc-font-size-xl);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -266,9 +274,6 @@ modus-wc-chip .modus-wc-chip {
       color: var(--modus-wc-color-gray-10);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
-        background-color: transparent;
-        background-color: $modus-wc-chip-active-filled-bg;
         background-color: $modus-wc-chip-active-filled-bg;
 
         .modus-wc-chip-label {
@@ -284,6 +289,8 @@ modus-wc-chip .modus-wc-chip {
 
   &.modus-wc-chip--disabled {
     opacity: 0.3;
+
+    --tw-text-opacity: 1;
 
     .modus-wc-avatar {
       filter: grayscale(100%);
@@ -378,5 +385,7 @@ modus-wc-chip .modus-wc-chip {
 
   &.modus-wc-chip--disabled {
     opacity: 0.6;
+
+    --tw-text-opacity: 1;
   }
 }

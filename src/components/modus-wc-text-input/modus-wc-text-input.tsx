@@ -10,16 +10,24 @@ import {
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   AutocompleteTypes,
   IInputFeedbackProp,
   ModusSize,
   TextFieldTypes,
 } from '../types';
-import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import {
+  Attributes,
+  generateElementId,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../utils';
 
 /**
  * A customizable input component used to create text inputs with types.
+ *
+ * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
  */
 @Component({
   tag: 'modus-wc-text-input',
@@ -28,6 +36,7 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 })
 export class ModusWcTextInput {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -81,20 +90,6 @@ export class ModusWcTextInput {
   /** The ID of the input element. */
   @Prop() inputId?: string;
 
-  /**
-   * Hints at the type of data that might be entered by the user while editing the element or its contents.
-   * This allows a browser to display an appropriate virtual keyboard.
-   */
-  @Prop() inputMode:
-    | 'decimal'
-    | 'email'
-    | 'none'
-    | 'numeric'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url' = 'text';
-
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
@@ -131,6 +126,9 @@ export class ModusWcTextInput {
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
+  /** Event emitted when the clear button is clicked. */
+  @StencilEvent() clearClick!: EventEmitter<void>;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -141,14 +139,24 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.placeholder || 'Text input';
     }
 
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
-      ...inheritAttributes(this.el, ['spellcheck']),
+      ...inheritAttributes(this.el, ['spellcheck', 'inputmode']),
     };
+
+    if (
+      !this.el.hasAttribute('inputmode') &&
+      !this.inheritedAttributes.inputmode
+    ) {
+      this.el.setAttribute('inputmode', 'text');
+    }
   }
 
   private getClasses(): string {
@@ -183,6 +191,7 @@ export class ModusWcTextInput {
   private handleClearText = (event: MouseEvent | KeyboardEvent) => {
     this.value = '';
     this.inputChange.emit(event as unknown as InputEvent);
+    this.clearClick.emit();
   };
 
   private handleFocus = (event: FocusEvent) => {
@@ -202,23 +211,30 @@ export class ModusWcTextInput {
 
   render() {
     const showClear = this.shouldIncludeClear();
+    const effectiveId = this.inputId || this.generatedId;
+    const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
 
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
           />
         )}
         <label class={this.getClasses()}>
-          {this.includeSearch && (
-            <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+          {hasCustomIcon ? (
+            <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
+              <slot name="custom-icon" />
+            </div>
+          ) : (
+            this.includeSearch && (
+              <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+            )
           )}
           <input
-            aria-placeholder={this.placeholder}
             aria-required={this.required}
             autocapitalize={this.autoCapitalize}
             autocomplete={this.autoComplete}
@@ -226,8 +242,7 @@ export class ModusWcTextInput {
             class="modus-wc-grow"
             disabled={this.disabled}
             enterkeyhint={this.enterkeyhint}
-            id={this.inputId}
-            inputmode={this.inputMode}
+            id={effectiveId}
             maxlength={this.maxLength}
             minlength={this.minLength}
             name={this.name}

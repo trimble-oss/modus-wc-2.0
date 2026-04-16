@@ -1,6 +1,7 @@
 import {
 	ModusWcThemeProvider,
 	ModusWcThemeSwitcher,
+	ModusWcLogo,
 } from "@trimble-oss/moduswebcomponents-react";
 import "@trimble-oss/moduswebcomponents-react/modus-wc-styles.css";
 import * as ModusReactExamples from "./examples";
@@ -17,8 +18,10 @@ function App() {
 				</div>
 				<div className="grid">
 				<ModusReactExamples.Badge />
+				<ModusReactExamples.Date />
 				<ModusReactExamples.Icon />
 				<ModusReactExamples.Tabs />
+				<ModusWcLogo name="trimble" />
 			 </div>
 			</ModusWcThemeProvider>
 		</>

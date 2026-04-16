@@ -8,17 +8,15 @@ import {
   Host,
   Listen,
   Prop,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
-import { AlertSolidIcon } from '../../icons/alert-solid.icon';
-import { CheckCircleSolidIcon } from '../../icons/check-circle-solid.icon';
-import { CloseSolidIcon } from '../../icons/close-solid.icon';
-import { InfoSolidIcon } from '../../icons/info-solid.icon';
-import { WarningSolidIcon } from '../../icons/warning-solid.icon';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable alert component used to inform the user about important events
+ * A customizable alert component used to inform the user about important events.
+ *
+ * The component supports `<slot>` elements for injecting custom content and buttons.
  */
 @Component({
   tag: 'modus-wc-alert',
@@ -40,6 +38,9 @@ export class ModusWcAlert {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
+  /** Time taken to dismiss the alert in milliseconds */
+  @Prop() delay?: number;
+
   /** Whether the alert has a dismiss button */
   @Prop() dismissible?: boolean = false;
 
@@ -49,13 +50,16 @@ export class ModusWcAlert {
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'success' | 'warning' = 'info';
 
-  /** Role taken by the alert. Defaults to 'status' */
-  @Prop() role: 'alert' | 'log' | 'marquee' | 'status' | 'timer' = 'status';
-
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
+    // Set default role if none provided
+    if (!this.el.hasAttribute('role')) {
+      this.el.setAttribute('role', 'status');
+    }
+
+    // Then inherit all ARIA attributes normally
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -75,26 +79,76 @@ export class ModusWcAlert {
   private getLeadingIcon(): FunctionalComponent {
     if (this.icon) {
       return (
-        <modus-wc-icon custom-class="modus-wc-alert-icon" name={this.icon} />
+        <modus-wc-icon
+          custom-class="modus-wc-alert-icon"
+          name={this.icon}
+          variant="outlined"
+        />
       );
     }
 
     switch (this.variant) {
       case 'error':
-        return <AlertSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="alert"
+            variant="outlined"
+          />
+        );
       case 'success':
-        return <CheckCircleSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="check_circle"
+          />
+        );
       case 'warning':
-        return <WarningSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="warning"
+            variant="outlined"
+          />
+        );
       case 'info':
       default:
-        return <InfoSolidIcon className="modus-wc-alert-icon" />;
+        return (
+          <modus-wc-icon
+            custom-class="modus-wc-alert-icon"
+            name="info"
+            variant="outlined"
+          />
+        );
     }
+  }
+
+  // Handle delay
+  private timerId!: ReturnType<typeof setTimeout>;
+
+  @Watch('delay')
+  delayChanged(newDelay: number): void {
+    clearTimeout(this.timerId);
+    this.timerId = setTimeout(() => {
+      this.dismissElement();
+    }, newDelay);
   }
 
   dismissElement() {
     this.dismissClick.emit();
     this.el.remove();
+  }
+
+  componentDidLoad(): void {
+    if (this.delay && this.delay > 0) {
+      this.timerId = setTimeout(() => {
+        this.dismissElement();
+      }, this.delay);
+    }
+  }
+
+  disconnectedCallback(): void {
+    clearTimeout(this.timerId);
   }
 
   @Listen('keyup')
@@ -113,11 +167,7 @@ export class ModusWcAlert {
   render() {
     return (
       <Host>
-        <div
-          class={this.getClasses()}
-          role="alert"
-          {...this.inheritedAttributes}
-        >
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           {this.getLeadingIcon()}
           <div>
             <div class="title">{this.alertTitle}</div>
@@ -132,13 +182,17 @@ export class ModusWcAlert {
           {this.dismissible && (
             <modus-wc-button
               aria-label="notification button"
-              color="secondary"
+              color="tertiary"
               size="sm"
               slot="button"
               variant="borderless"
               onButtonClick={() => this.dismissElement()}
             >
-              <CloseSolidIcon className="modus-wc-alert-close-icon" />
+              <modus-wc-icon
+                custom-class="modus-wc-alert-close-icon"
+                name="close"
+                variant="outlined"
+              />
             </modus-wc-button>
           )}
         </div>

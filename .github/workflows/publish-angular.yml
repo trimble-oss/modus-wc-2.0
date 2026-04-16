@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-angular:
@@ -34,10 +35,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
@@ -51,6 +54,8 @@ jobs:
       - name: Install Web Component dependencies
         run: npm ci
         working-directory: .
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
 
       - name: Build Base Web Components
         run: npm run build:ci
@@ -91,7 +96,7 @@ jobs:
         run: npm pack ./dist/trimble-oss/moduswebcomponents-angular
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: '**/*.tgz'
@@ -102,15 +107,11 @@ jobs:
       - name: Publish distribution
         run: npm publish *.tgz
 
-      - run: rm -f $(find . -name '*.tgz')
-
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish npm Package to GitHub Registry
-        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
-        # TODO: remove once we configure this repo's permissions
-        continue-on-error: true
+        run: npm publish *.tgz --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
   release-angular:
     needs: build-and-publish-angular
@@ -125,10 +126,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: angular-${{ matrix.angular-version }}-distribution-v${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}
           path: .
@@ -145,7 +146,7 @@ jobs:
           mv ${{ steps.find-asset.outputs.asset_path }} package-ng${{ matrix.angular-version }}.tgz
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-angular-${{ github.event.inputs.version }}-ng${{ matrix.angular-version }}

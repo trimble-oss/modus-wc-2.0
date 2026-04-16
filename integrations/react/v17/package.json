@@ -6,7 +6,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "^0.7.4",
-    "@trimble-oss/moduswebcomponents": "0.0.0-alpha.1"
+    "@trimble-oss/moduswebcomponents": "file:../../../dist"
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
@@ -18,17 +18,34 @@
     "react": "^17.0",
     "react-dom": "^17.0"
   },
-  "main": "index.js",
+  "main": "index-cjs.js",
   "module": "index.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./index.js",
+      "require": "./index-cjs.js",
+      "default": "./index.js"
+    },
+    "./modus-wc-styles.css": "./modus-wc-styles.css"
+  },
   "scripts": {
     "prebuild": "npm run symlink",
-    "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-meta",
+    "build": "npm run clean && npm run tsc && npm run copy-css && npm run copy-assets && npm run copy-meta",
     "clean": "rimraf dist",
     "tsc": "tsc -p . --outDir ./dist",
     "symlink": "symlink-dir ../stencil-generated/ src/stencil-generated/",
     "copy-css": "copyfiles -f node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css dist",
+    "copy-assets": "copyfiles -u 3 'node_modules/@trimble-oss/moduswebcomponents/assets/**/*' dist",
     "copy-meta": "copyfiles -f README.md package.json dist"
+  },
+  "overrides": {
+    "ts-morph": {
+      "@ts-morph/common": {
+        "minimatch": "9.0.9"
+      }
+    }
   },
   "sideEffects": false,
   "publishConfig": {

@@ -8,12 +8,14 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
-import { CancelCircleSolidIcon } from '../../icons/cancel-circle-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, KEY } from '../utils';
 
 /**
  * A customizable chip component used to display information in a compact area
+ *
+ * The component supports a `<slot>` for injecting custom content such as avatar and icons.
  */
 @Component({
   tag: 'modus-wc-chip',
@@ -44,6 +46,9 @@ export class ModusWcChip {
   /** Whether to show the close icon on right side of the chip. */
   @Prop() showRemove?: boolean = false;
 
+  /** The shape of the chip: 'rectangle' (default) or 'circle'. */
+  @Prop() shape?: 'rectangle' | 'circle' = 'rectangle';
+
   /** The size of the chip. */
   @Prop() size?: ModusSize = 'md';
 
@@ -57,6 +62,9 @@ export class ModusWcChip {
   @Event() chipRemove!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.label || 'Chip';
     }
@@ -100,6 +108,7 @@ export class ModusWcChip {
       active: this.active,
       disabled: this.disabled,
       hasError: this.hasError,
+      shape: this.shape,
       size: this.size,
       variant: this.variant,
     });
@@ -128,10 +137,11 @@ export class ModusWcChip {
           <slot />
           {this.label && <span class="modus-wc-chip-label">{this.label}</span>}
           {this.showRemove && (
-            <CancelCircleSolidIcon
-              className="modus-wc-chip-remove-icon"
+            <modus-wc-icon
+              custom-class="modus-wc-chip-remove-icon"
+              name="close"
               onClick={this.handleChipRemove}
-            />
+            ></modus-wc-icon>
           )}
         </button>
       </Host>

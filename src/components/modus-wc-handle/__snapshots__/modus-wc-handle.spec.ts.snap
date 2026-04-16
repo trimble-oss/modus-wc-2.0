@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-handle should render button type 1`] = `
+<modus-wc-handle class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-type-button modus-wc-handle-vertical" tabindex="0" type="button">
+  <div class="modus-wc-handle-button-wrapper">
+    <modus-wc-button aria-orientation="horizontal" color="tertiary" role="separator" shape="circle" size="md" variant="filled">
+      <modus-wc-icon name="drag_horizontal" size="xs"></modus-wc-icon>
+    </modus-wc-button>
+  </div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render button type with vertical orientation 1`] = `
+<modus-wc-handle class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-horizontal modus-wc-handle-type-button" orientation="vertical" tabindex="0" type="button">
+  <div class="modus-wc-handle-button-wrapper">
+    <modus-wc-button aria-orientation="vertical" color="tertiary" role="separator" shape="circle" size="md" variant="filled">
+      <modus-wc-icon name="drag_vertical" size="xs"></modus-wc-icon>
+    </modus-wc-button>
+  </div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render with custom class 1`] = `
+<modus-wc-handle aria-orientation="horizontal" class="custom-handle modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-type-bar modus-wc-handle-vertical" custom-class="custom-handle" role="separator" tabindex="0">
+  <div class="modus-wc-handle-bar"></div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render with default props 1`] = `
+<modus-wc-handle aria-orientation="horizontal" class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-type-bar modus-wc-handle-vertical" role="separator" tabindex="0">
+  <div class="modus-wc-handle-bar"></div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render with horizontal orientation 1`] = `
+<modus-wc-handle aria-orientation="horizontal" class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-type-bar modus-wc-handle-vertical" orientation="horizontal" role="separator" tabindex="0">
+  <div class="modus-wc-handle-bar"></div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render with large size 1`] = `
+<modus-wc-handle aria-orientation="horizontal" class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-lg modus-wc-handle-type-bar modus-wc-handle-vertical" role="separator" size="lg" tabindex="0">
+  <div class="modus-wc-handle-bar"></div>
+</modus-wc-handle>
+`;
+
+exports[`modus-wc-handle should render with vertical orientation 1`] = `
+<modus-wc-handle aria-orientation="vertical" class="modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-horizontal modus-wc-handle-type-bar" orientation="vertical" role="separator" tabindex="0">
+  <div class="modus-wc-handle-bar"></div>
+</modus-wc-handle>
+`;

@@ -21,10 +21,9 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
-import { TrimbleLogoFullIcon } from '../../icons/trimble-logo-full.icon';
-import { TrimbleLogoGlobeIcon } from '../../icons/trimble-logo-globe.icon';
+import { handleShadowDOMStyles } from '../base-component';
+import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
-
 export interface INavbarTextOverrides {
   /** Replaces the text for "Apps" in the condensed menu. */
   apps?: string;
@@ -43,6 +42,8 @@ export interface INavbarVisibility {
   apps?: boolean;
   /** Controls visibility of the help button. */
   help?: boolean;
+  /** Controls visibility of the product / Trimble logo button. Defaults to visible when omitted. */
+  logo?: boolean;
   /** Controls visibility of the main menu button. */
   mainMenu?: boolean;
   /** Controls visibility of the notifications button. */
@@ -72,9 +73,6 @@ export interface INavbarUserCard {
 
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
- *
- * The component supports a 'main-menu', 'notifications', and 'apps' `<slot>` for injecting custom HTML menus.
- * It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -92,6 +90,9 @@ export class ModusWcNavbar {
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
+
+  /** The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'. */
+  @Prop() logoName?: LogoName = 'trimble';
 
   /** The open state of the apps menu. */
   @Prop({ mutable: true }) appsMenuOpen?: boolean = false;
@@ -131,6 +132,7 @@ export class ModusWcNavbar {
     ai: false,
     apps: false,
     help: false,
+    logo: true,
     mainMenu: false,
     notifications: false,
     search: false,
@@ -177,7 +179,8 @@ export class ModusWcNavbar {
   /** Event emitted when the user profile sign out button is clicked or activated via keyboard. */
   @StencilEvent() signOutClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
-  /** Event emitted when the Trimble logo is clicked or activated via keyboard. */
+  /** Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+   */
   @StencilEvent() trimbleLogoClick!: EventEmitter<MouseEvent | KeyboardEvent>;
 
   /** Event emitted when the user menu open state changes. */
@@ -189,6 +192,9 @@ export class ModusWcNavbar {
   private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     this.isLight = isLightMode();
@@ -213,7 +219,7 @@ export class ModusWcNavbar {
 
   @Listen('click', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+    const path = event.composedPath ? event.composedPath() : [event.target];
 
     if (this.appsMenuOpen) {
       const appsButton = this.el.querySelector(
@@ -221,9 +227,8 @@ export class ModusWcNavbar {
       );
       if (
         this.appsRef &&
-        !this.appsRef.contains(target) &&
-        appsButton !== target &&
-        !appsButton?.contains(target)
+        !path.includes(this.appsRef) &&
+        !path.includes(appsButton)
       ) {
         this.appsMenuOpen = false;
         this.appsMenuOpenChange.emit(false);
@@ -236,9 +241,8 @@ export class ModusWcNavbar {
       );
       if (
         this.condensedMenuRef &&
-        !this.condensedMenuRef.contains(target) &&
-        condenseMenuButton !== target &&
-        !condenseMenuButton?.contains(target)
+        !path.includes(this.condensedMenuRef) &&
+        !path.includes(condenseMenuButton)
       ) {
         this.condensedMenuOpen = false;
         this.condensedMenuOpenChange.emit(false);
@@ -251,12 +255,10 @@ export class ModusWcNavbar {
       );
       if (
         this.menuRef &&
-        !this.menuRef.contains(target) &&
-        menuButton !== target &&
-        !menuButton?.contains(target)
+        !path.includes(this.menuRef) &&
+        !path.includes(menuButton)
       ) {
         this.mainMenuOpen = false;
-        this.mainMenuOpenChange.emit(false);
       }
     }
 
@@ -266,9 +268,8 @@ export class ModusWcNavbar {
       );
       if (
         this.notificationsRef &&
-        !this.notificationsRef.contains(target) &&
-        notificationsButton !== target &&
-        !notificationsButton?.contains(target)
+        !path.includes(this.notificationsRef) &&
+        !path.includes(notificationsButton)
       ) {
         this.notificationsMenuOpen = false;
         this.notificationsMenuOpenChange.emit(false);
@@ -281,9 +282,8 @@ export class ModusWcNavbar {
       );
       if (
         this.userRef &&
-        !this.userRef.contains(target) &&
-        userButton !== target &&
-        !userButton?.contains(target)
+        !path.includes(this.userRef) &&
+        !path.includes(userButton)
       ) {
         this.userMenuOpen = false;
         this.userMenuOpenChange.emit(false);
@@ -298,16 +298,6 @@ export class ModusWcNavbar {
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
-  }
-
-  private getUserInitials(): string {
-    if (!this.userCard?.name) return '';
-
-    return this.userCard.name
-      .split(' ')
-      .map((part) => part.charAt(0))
-      .join('')
-      .toUpperCase();
   }
 
   private handleAiClick = (event?: CustomEvent<MouseEvent | KeyboardEvent>) => {
@@ -428,6 +418,10 @@ export class ModusWcNavbar {
       this.visibility?.notifications ||
       this.visibility?.search;
 
+    const accessibleName = (this.logoName || 'trimble')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-toolbar>
@@ -435,6 +429,7 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Main menu"
                   onButtonClick={this.toggleMainMenu}
                   shape="square"
                   size="sm"
@@ -451,18 +446,20 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            <modus-wc-button
-              customClass="trimble-logo"
-              onButtonClick={this.handleTrimbleLogoClick}
-              size="sm"
-              variant="borderless"
-            >
-              {this.condensed ? (
-                <TrimbleLogoGlobeIcon />
-              ) : (
-                <TrimbleLogoFullIcon />
-              )}
-            </modus-wc-button>
+            {this.visibility?.logo !== false && (
+              <modus-wc-button
+                aria-label={`${accessibleName} logo`}
+                customClass="logo"
+                onButtonClick={this.handleTrimbleLogoClick}
+                size="sm"
+                variant="borderless"
+              >
+                <modus-wc-logo
+                  name={this.logoName || 'trimble'}
+                  emblem={this.condensed}
+                ></modus-wc-logo>
+              </modus-wc-button>
+            )}
 
             <slot name="start" />
           </div>
@@ -477,6 +474,7 @@ export class ModusWcNavbar {
             {this.visibility?.ai && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="AI assistant"
                   customClass="ai"
                   onButtonClick={this.handleAiClick}
                   shape="square"
@@ -491,6 +489,7 @@ export class ModusWcNavbar {
             {this.condensed && condensedHasItems && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="More options"
                   onButtonClick={this.toggleCondensedMenu}
                   shape="square"
                   size="sm"
@@ -547,10 +546,12 @@ export class ModusWcNavbar {
                     includeSearch={true}
                     onInputChange={this.handleSearchChange}
                     placeholder={this.textOverrides?.search || 'Search'}
+                    size="sm"
                     value={this.searchValue}
                   />
                 )}
                 <modus-wc-button
+                  aria-label="Search"
                   onButtonClick={this.handleSearchClick}
                   shape="square"
                   size="sm"
@@ -564,6 +565,7 @@ export class ModusWcNavbar {
             {this.visibility?.notifications && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Notifications"
                   onButtonClick={this.handleNotificationsClick}
                   shape="square"
                   size="sm"
@@ -582,6 +584,7 @@ export class ModusWcNavbar {
 
             {this.visibility?.help && !this.condensed && (
               <modus-wc-button
+                aria-label="Help"
                 onButtonClick={this.handleHelpClick}
                 shape="square"
                 size="sm"
@@ -594,6 +597,7 @@ export class ModusWcNavbar {
             {this.visibility?.apps && !this.condensed && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="Apps"
                   onButtonClick={this.handleAppsClick}
                   shape="square"
                   size="sm"
@@ -613,21 +617,19 @@ export class ModusWcNavbar {
             {this.visibility?.user && (
               <Fragment>
                 <modus-wc-button
+                  aria-label="User profile"
                   customClass="user-button"
                   onButtonClick={this.toggleUser}
                   shape="circle"
                   size="sm"
                   variant="borderless"
                 >
-                  {this.userCard?.avatarSrc ? (
-                    <modus-wc-avatar
-                      alt={this.userCard.avatarAlt || 'User avatar'}
-                      imgSrc={this.userCard.avatarSrc}
-                      size="xs"
-                    />
-                  ) : (
-                    this.getUserInitials()
-                  )}
+                  <modus-wc-avatar
+                    alt={this.userCard?.avatarAlt || ''}
+                    imgSrc={this.userCard?.avatarSrc}
+                    initials={this.userCard?.name}
+                    size="xs"
+                  />
                 </modus-wc-button>
                 <div
                   class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
@@ -635,14 +637,11 @@ export class ModusWcNavbar {
                 >
                   <modus-wc-card>
                     <div slot="header">
-                      {this.userCard?.avatarSrc ? (
-                        <modus-wc-avatar
-                          alt={this.userCard.avatarAlt || 'User avatar'}
-                          imgSrc={this.userCard.avatarSrc}
-                        />
-                      ) : (
-                        <div class="initials">{this.getUserInitials()}</div>
-                      )}
+                      <modus-wc-avatar
+                        alt={this.userCard?.avatarAlt || ''}
+                        imgSrc={this.userCard?.avatarSrc}
+                        initials={this.userCard?.name}
+                      />
                     </div>
                     <div slot="title">{this.userCard?.name}</div>
                     <div>{this.userCard?.email}</div>

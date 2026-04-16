@@ -8,15 +8,16 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
 export interface ISelectOption {
-  /** Whether the option is disabled and cannot be selected */
+  /** Whether the option is disabled and cannot be selected. */
   disabled?: boolean;
-  /** Display text for the option */
+  /** The text to render in the option. */
   label: string;
-  /** The value of the option */
+  /** The value of the option. */
   value: string;
 }
 
@@ -30,6 +31,7 @@ export interface ISelectOption {
 })
 export class ModusWcSelect {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -80,6 +82,9 @@ export class ModusWcSelect {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Select';
     }
@@ -112,15 +117,18 @@ export class ModusWcSelect {
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLSelectElement).value;
     this.inputChange.emit(event);
   };
 
   render() {
+    const effectiveId = this.inputId || this.generatedId;
+
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -129,7 +137,7 @@ export class ModusWcSelect {
         <select
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}

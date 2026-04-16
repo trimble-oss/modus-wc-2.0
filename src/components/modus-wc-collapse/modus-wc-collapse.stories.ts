@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ICollapseOptions } from './modus-wc-collapse';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CollapseArgs {
   bordered?: boolean;
@@ -62,6 +63,17 @@ const Template: Story = {
 >
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
+<script>
+// Adding this block to show how to set options via JS.
+// const options = {
+//   title: 'Collapse Title',
+//   description: 'Collapse description',
+//   icon: 'alert',
+//   iconAriaLabel: 'Alert',
+// };
+//   const collapse = document.querySelector('modus-wc-collapse');
+//   collapse.options = options;
+</script>
     `;
   },
 };
@@ -91,13 +103,59 @@ export const WithCustomClickableHeader = {
 >
   <div slot="header" class="modus-wc-collapse-title" id="123">
     <div class="clickable-div">
-      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
-      <modus-wc-button @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
+      <modus-wc-button id="button1" @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
+      <modus-wc-button id="button2" @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
     </div>
   </div>
   <div slot="content">Collapse content</div>
 </modus-wc-collapse>
+<script>
+// Adding this block to show how to add clickable buttons in the collapse header via JS.
+// function handleButtonClick() {
+//   window.alert('Button was clicked!');
+// }
+// const button1 = document.getElementById('button1');
+// const button2 = document.getElementById('button2');
+// button1.addEventListener('click', handleButtonClick);
+// button2.addEventListener('click', handleButtonClick);
+</script>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for collapse component
+    if (!customElements.get('collapse-shadow-host')) {
+      const CollapseShadowHost = createShadowHostClass<CollapseArgs>({
+        componentTag: 'modus-wc-collapse',
+        propsMapper: (v: CollapseArgs, el: HTMLElement) => {
+          const collapseEl = el as unknown as {
+            bordered: boolean;
+            customClass: string;
+            expanded: boolean;
+            id: string;
+            options: ICollapseOptions;
+          };
+          // Only set innerHTML once on initial creation
+          if (!el.querySelector('[slot="content"]')) {
+            el.innerHTML = '<div slot="content">Collapse content</div>';
+          }
+          collapseEl.bordered = Boolean(v.bordered);
+          collapseEl.customClass = v['custom-class'] || '';
+          collapseEl.expanded = Boolean(v.expanded);
+          collapseEl.id = v.id ?? '';
+          if (v.options) {
+            collapseEl.options = v.options; // Conditional assignment only if provided
+          }
+        },
+      });
+      customElements.define('collapse-shadow-host', CollapseShadowHost);
+    }
+
+    return html`<collapse-shadow-host
+      .props=${{ ...args }}
+    ></collapse-shadow-host>`;
   },
 };
 

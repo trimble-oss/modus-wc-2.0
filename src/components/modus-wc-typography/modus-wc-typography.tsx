@@ -1,22 +1,23 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { DaisySize } from '../types';
+import {
+  TypographyHierarchy,
+  TypographySize,
+  TypographyWeight,
+} from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-export type TypographyVariant =
-  | 'body'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'p';
-
-export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
-
 /**
- * A customizable typography component used to render text with different sizes, variants, and weights.
+ * A customizable typography component used to render text with different sizes, hierarchy, and weights.
+ *
+ * Note:
+ * - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying
+ * the default size (size="md") and weight (weight="normal") properties. Default styling can be overridden by
+ * providing your own custom values for the size or weight properties from the available options.
+ *
+
+ * - If both slot content and `label` are provided, only the slot content will be rendered
+ * - Use the `label` prop when you need to dynamically update the text.
  */
 @Component({
   tag: 'modus-wc-typography',
@@ -32,11 +33,14 @@ export class ModusWCTypography {
   /** Custom CSS class to apply to the typography element. */
   @Prop() customClass?: string = '';
 
-  /** The size of the font. */
-  @Prop() size?: DaisySize = 'md';
+  /** The hierarchy of the typography component. */
+  @Prop() hierarchy: TypographyHierarchy = 'p';
 
-  /** The variant of the typography component. */
-  @Prop() variant: TypographyVariant = 'p';
+  /** The text label to display. */
+  @Prop() label!: string;
+
+  /** The size of the font. */
+  @Prop() size?: TypographySize = 'md';
 
   /** The weight of the text. */
   @Prop() weight?: TypographyWeight = 'normal';
@@ -48,9 +52,19 @@ export class ModusWCTypography {
   private getClasses(): string {
     const classList = ['modus-wc-typography'];
 
+    // Check if we're dealing with a heading and have size/weight overrides
+    const isHeading = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(
+      this.hierarchy
+    );
+    const hasOverrides = this.size !== 'md' || this.weight !== 'normal';
+
+    if (isHeading && hasOverrides) {
+      // Add a class to indicate overrides for headings
+      classList.push('modus-wc-typography-override');
+    }
+
     const propClasses = convertPropsToClasses({
       size: this.size,
-      variant: this.variant,
       weight: this.weight,
     });
 
@@ -62,12 +76,12 @@ export class ModusWCTypography {
   }
 
   render() {
-    const Element = this.variant;
+    const Element = this.hierarchy;
 
     return (
       <Host>
         <Element class={this.getClasses()} {...this.inheritedAttributes}>
-          <slot></slot>
+          <slot>{this.label}</slot>
         </Element>
       </Host>
     );

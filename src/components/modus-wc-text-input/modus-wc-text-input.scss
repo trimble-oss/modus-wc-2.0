@@ -3,8 +3,19 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+modus-wc-text-input .modus-wc-input {
+  border-bottom-width: var(--input-bottom-border-width);
+
   @include feedback-levels;
+  @include sizing-tokens;
+
+  & input {
+    background-color: var(--modus-wc-color-base-page);
+  }
+
+  &:has(> input[disabled]) > input[disabled] {
+    background-color: var(--modus-wc-color-base-200);
+  }
 }
 
 modus-wc-text-input {
@@ -15,22 +26,34 @@ modus-wc-text-input {
   // Icon sizes
   .modus-wc-text-input {
     &.modus-wc-input {
+      background-color: var(--modus-wc-color-base-page);
+
       &.modus-wc-input-sm {
-        .modus-wc-text-input-icon {
+        padding: 0 var(--modus-wc-spacing-sm);
+
+        input {
+          max-height: var(--modus-wc-size-xs);
+        }
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-sm);
           width: var(--modus-wc-line-height-sm);
         }
       }
 
       &.modus-wc-input-md {
-        .modus-wc-text-input-icon {
+        font-size: var(--modus-wc-font-size-md);
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-md);
           width: var(--modus-wc-line-height-md);
         }
       }
 
       &.modus-wc-input-lg {
-        .modus-wc-text-input-icon {
+        font-size: var(--modus-wc-font-size-lg);
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-lg);
           width: var(--modus-wc-line-height-lg);
         }
@@ -39,6 +62,13 @@ modus-wc-text-input {
       .modus-wc-text-input-icon {
         &.modus-wc-text-input-icon-clear {
           cursor: pointer;
+        }
+
+        &.modus-wc-text-input-icon-custom {
+          align-items: center;
+          display: flex;
+          flex-shrink: 0;
+          justify-content: center;
         }
       }
 
@@ -144,4 +174,9 @@ modus-wc-text-input {
       border-color: var(--modus-wc-color-highlight-blue);
     }
   }
+}
+
+[data-theme='connect-light'] modus-wc-text-input .modus-wc-text-input,
+[data-theme='connect-dark'] modus-wc-text-input .modus-wc-text-input {
+  @include connect-input-styles;
 }

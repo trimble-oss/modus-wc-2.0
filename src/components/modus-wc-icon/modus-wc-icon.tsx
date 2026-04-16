@@ -1,4 +1,5 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -31,7 +32,13 @@ export class ModusWcIcon {
   /** The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. */
   @Prop() size?: DaisySize = 'md';
 
+  /** The icon variant, can be "outlined" or "solid". */
+  @Prop() variant?: 'outlined' | 'solid';
+
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.decorative && !this.el.ariaLabel) {
       this.el.ariaLabel = `${this.name} icon`;
     }
@@ -40,10 +47,24 @@ export class ModusWcIcon {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-icon modus-icons'];
+    let classList: string[] = [];
 
-    // The order CSS classes are added matters to CSS specificity
+    // Add base class
+    classList.push('modus-wc-icon');
+
+    // Add icon font class based on variant
+    if (this.variant === 'outlined') {
+      classList.push('modus-icons-outlined');
+    } else if (this.variant === 'solid') {
+      classList.push('modus-icons-solid');
+    } else {
+      classList.push('modus-icons');
+    }
+
+    // Add size class - this is common for all variants
     classList.push(`modus-wc-icon--${this.size}`);
+
+    // Add custom class if provided
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');

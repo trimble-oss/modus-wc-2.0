@@ -1,5 +1,2 @@
 # Global reviewers - these users will be requested for review on all changes
 * @trimble-oss/MWC-Maintainers
-
-# Component-specific ownership
-/src/components/ @gabriel-piltzer-trimble @Kai-Richardson @stuart-rimel

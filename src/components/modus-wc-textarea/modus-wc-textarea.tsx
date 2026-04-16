@@ -8,6 +8,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 
@@ -62,6 +63,9 @@ export class ModusWcTextarea {
   /** The maximum number of characters allowed in the textarea. */
   @Prop() maxLength?: number;
 
+  /** The minimum number of characters required in the textarea. */
+  @Prop() minLength?: number;
+
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
@@ -93,6 +97,9 @@ export class ModusWcTextarea {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = this.placeholder || 'Text area';
     }
@@ -127,6 +134,7 @@ export class ModusWcTextarea {
   };
 
   private handleInput = (event: InputEvent) => {
+    this.value = (event.target as HTMLTextAreaElement).value;
     this.inputChange.emit(event);
   };
 
@@ -150,6 +158,7 @@ export class ModusWcTextarea {
           enterkeyhint={this.enterkeyhint}
           id={this.inputId}
           maxLength={this.maxLength}
+          minlength={this.minLength}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}

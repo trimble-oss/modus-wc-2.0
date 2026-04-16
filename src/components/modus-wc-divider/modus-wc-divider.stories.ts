@@ -73,7 +73,6 @@ type Story = StoryObj<DividerArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-divider
-      aria-label="Divider"
       color="${args.color}"
       content="${args.content}"
       custom-class="${ifDefined(args['custom-class'])}"

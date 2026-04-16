@@ -24,6 +24,25 @@ const meta: Meta<TooltipArgs> = {
       options: ['auto', 'top', 'right', 'left', 'bottom'],
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `
+A customizable tooltip component used to create tooltips with different content.
+\nThe component supports a \`<slot>\` for injecting custom tooltip content.
+
+### Features
+- **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
+- **Auto-positioning**: Automatically positions the tooltip to avoid viewport edges
+- **Customizable**: Supports custom CSS classes and positioning
+
+### Keyboard Interaction
+- Press **Escape** to dismiss the tooltip while it's visible
+- The tooltip will automatically re-enable on mouse enter
+        `,
+      },
+    },
+  },
 };
 
 export default meta;
@@ -31,6 +50,11 @@ export default meta;
 type Story = StoryObj<TooltipArgs>;
 
 const Template: Story = {
+  parameters: {
+    actions: {
+      handles: ['dismissEscape'],
+    },
+  },
   render: (args) => {
     // prettier-ignore
     return html`

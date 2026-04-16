@@ -84,6 +84,8 @@ export class ModusWcTable {
   private inheritedAttributes: Attributes = {};
   private table: Table<Record<string, unknown>> | null = null;
   private tanStackColumns: ColumnDef<Record<string, unknown>, unknown>[] = [];
+  private globalClickHandler?: (event: MouseEvent) => void;
+  private activeEditorElement?: HTMLElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -130,6 +132,9 @@ export class ModusWcTable {
 
   /** Zebra striped tables differentiate rows by styling them in an alternating fashion. */
   @Prop() zebra?: boolean = false;
+
+  /** Accessibility caption for the table (visually hidden but available to screen readers). */
+  @Prop() caption?: string;
 
   /** Currently editing cell coordinates */
   @State() activeEditor?: { rowIndex: number; colId: string } | null = null;
@@ -250,10 +255,6 @@ export class ModusWcTable {
   }
 
   componentWillLoad() {
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Table';
-    }
-
     if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
     }
@@ -266,9 +267,25 @@ export class ModusWcTable {
       pageIndex: this.currentPage - 1,
       pageSize: this.pageSizeOptions[0],
     };
-
+    // Initialize row selection from selectedRowIds prop
+    const rowSelection: RowSelectionState = Object.fromEntries(
+      this.selectedRowIds?.map((id) => [id, true]) ?? []
+    );
+    if (rowSelection && Object.keys(rowSelection).length > 0) {
+      this.internalRowSelection = rowSelection;
+    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.initializeTable();
+  }
+
+  disconnectedCallback() {
+    // Clean up global listener on component disconnect
+    if (this.globalClickHandler) {
+      document.removeEventListener('click', this.globalClickHandler, true);
+      this.globalClickHandler = undefined;
+    }
+    // Clear active editor reference
+    this.activeEditorElement = undefined;
   }
 
   // Handle sorting changes from TanStack
@@ -541,7 +558,7 @@ export class ModusWcTable {
           aria-label="Select page size"
           bordered
           size={paginationSize}
-          onInputChange={(e) => this.handlePageSizeOptionChange(e)}
+          onInputChange={(e) => this.handlePageSizeOptionChange(e as Event)}
           options={options}
         ></modus-wc-select>
       </div>
@@ -601,6 +618,18 @@ export class ModusWcTable {
     const row = this.data[rowIndex];
     if (!this.isRowEditable(row)) return;
 
+    // Only enter edit mode if the column has an editor defined
+    /* istanbul ignore next */
+    const column = this.columns?.find((col) => col.id === colId);
+    /* istanbul ignore next */
+    if (
+      !column?.editor &&
+      !column?.editorTemplate &&
+      !column?.customEditorRenderer
+    ) {
+      return;
+    }
+
     this.activeEditor = { rowIndex, colId };
     this.cellEditStart.emit({ rowIndex, colId });
   }
@@ -624,6 +653,20 @@ export class ModusWcTable {
 
     // Simply clear editor state – Stencil will re-render cell normally
     this.activeEditor = null;
+    this.activeEditorElement = undefined;
+  }
+
+  private renderCellContent(
+    el: HTMLElement,
+    cellNode: HTMLElement | string
+  ): void {
+    el.innerHTML = '';
+
+    if (typeof cellNode !== 'string' && 'tagName' in cellNode) {
+      el.appendChild(cellNode);
+    } else {
+      el.textContent = String(cellNode);
+    }
   }
 
   private setupEditorCell(
@@ -633,28 +676,39 @@ export class ModusWcTable {
     row: Record<string, unknown>,
     handleCommit: (val: unknown) => void
   ): void {
-    el.innerHTML = '';
+    this.renderCellContent(el, cellNode);
 
     const isNode = typeof cellNode !== 'string' && 'tagName' in cellNode;
 
     if (isNode) {
-      el.appendChild(cellNode);
-
       if (column.editorTemplate && column.editorSetup) {
         column.editorSetup(cellNode, row, handleCommit);
       }
 
-      const blurHandler = (event: FocusEvent) => {
-        const relatedTarget = event.relatedTarget as Node | null;
-        if (!el.contains(relatedTarget)) {
-          this.activeEditor = null;
-          el.removeEventListener('focusout', blurHandler);
-        }
-      };
+      // Store reference to active editor element (only called when editing)
+      this.activeEditorElement = el;
 
-      el.addEventListener('focusout', blurHandler, { capture: true });
-    } else {
-      el.textContent = String(cellNode);
+      // Create and keep global click handler active
+      if (!this.globalClickHandler) {
+        this.globalClickHandler = (event: MouseEvent) => {
+          // Only process clicks when we have an active editor
+          if (!this.activeEditor || !this.activeEditorElement) {
+            return;
+          }
+
+          const target = event.target as Node;
+          const outsideTable = !this.el.contains(target);
+
+          // Check if click is outside table
+          if (outsideTable) {
+            this.activeEditor = null;
+            this.activeEditorElement = undefined;
+          }
+        };
+
+        // Register once and keep it active
+        document.addEventListener('click', this.globalClickHandler, true);
+      }
     }
   }
 
@@ -676,6 +730,9 @@ export class ModusWcTable {
         <div class="table-container">
           <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
             <table class={this.getClasses()}>
+              {this.caption && (
+                <caption class="modus-wc-sr-only">{this.caption}</caption>
+              )}
               <thead>
                 <tr>
                   {this.selectable !== 'none' && (
@@ -764,6 +821,8 @@ export class ModusWcTable {
                           selected:
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
+                          selectable: this.selectable !== 'none',
+                          editable: this.isRowEditable(row),
                         }}
                         onClick={() => this.handleRowClick(rowObj, index)}
                       >
@@ -826,20 +885,43 @@ export class ModusWcTable {
                               class={{
                                 [column.className || '']: !!column.className,
                                 editing,
+                                'editable-cell':
+                                  !!column.editor && this.isRowEditable(row),
                               }}
                               data-col={column.id}
-                              onDblClick={() =>
-                                this.enterEdit(index, column.id)
-                              }
+                              onDblClick={(e) => {
+                                // Don't enter edit mode if already editing this cell
+                                if (
+                                  this.activeEditor?.rowIndex === index &&
+                                  this.activeEditor?.colId === column.id
+                                ) {
+                                  return;
+                                }
+                                // Don't enter edit mode if clicking inside an active editor
+                                if (
+                                  this.activeEditorElement?.contains(
+                                    e.target as Node
+                                  )
+                                ) {
+                                  return;
+                                }
+                                this.enterEdit(index, column.id);
+                              }}
                               ref={(el) => {
                                 if (!el) return;
-                                this.setupEditorCell(
-                                  el,
-                                  cellNode,
-                                  column,
-                                  row,
-                                  handleCommit
-                                );
+                                // Only setup editor when cell is actually being edited
+                                if (editing) {
+                                  this.setupEditorCell(
+                                    el,
+                                    cellNode,
+                                    column,
+                                    row,
+                                    handleCommit
+                                  );
+                                } else {
+                                  // For non-editing cells, just set content directly
+                                  this.renderCellContent(el, cellNode);
+                                }
                               }}
                             ></td>
                           );
@@ -874,7 +956,9 @@ export class ModusWcTable {
                   count={totalPages}
                   page={this.internalPagination.pageIndex + 1}
                   size={this.getPaginationSize()}
-                  onPageChange={(e) => this.handlePageChange(e.detail.newPage)}
+                  onPageChange={(e) =>
+                    this.handlePageChange(Number(e.detail.newPage))
+                  }
                 ></modus-wc-pagination>
               </div>
             </div>

@@ -4,6 +4,7 @@
 # - The Web Components package
 # - The React package
 # - The Angular package
+# - The Vue package
 # This is triggered by a manual run with a specified version number.
 
 name: Publish & Release
@@ -19,16 +20,19 @@ on:
 permissions:
   contents: write
   actions: write
+  packages: write
 
 jobs:
   build-and-publish-wc:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
@@ -37,6 +41,56 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+
+      - name: Validate version bump follows SemVer
+        run: |
+          set -euo pipefail
+
+          current="$(node -p "require('./package.json').version")"
+
+          # Capture the raw input version and ensure it does not start with 'v'
+          input='${{ github.event.inputs.version }}'
+          if [ "${input#v}" != "$input" ]; then
+            echo "❌ Version '$input' must not start with 'v'. Please provide a bare SemVer like '1.2.3'." >&2
+            exit 1
+          fi
+
+          # Validate that the input is a valid SemVer version using the semver CLI
+          valid="$(npx --yes semver@7 "$input" || true)"
+          if [ -z "$valid" ]; then
+            echo "❌ '$input' is not a valid SemVer version." >&2
+            exit 1
+          fi
+
+          # Compute expected MAJOR / MINOR / PATCH increments from the current version
+          expectedMajor="$(npx --yes semver@7 -i major "$current")"
+          expectedMinor="$(npx --yes semver@7 -i minor "$current")"
+          expectedPatch="$(npx --yes semver@7 -i patch "$current")"
+
+          # Also allow prerelease increments (e.g. 1.3.0-alpha.1) to align with release-drafter prerelease config
+          expectedPremajor="$(npx --yes semver@7 -i premajor --preid alpha "$current")"
+          expectedPreminor="$(npx --yes semver@7 -i preminor --preid alpha "$current")"
+          expectedPrepatch="$(npx --yes semver@7 -i prepatch --preid alpha "$current")"
+          expectedPrerelease="$(npx --yes semver@7 -i prerelease --preid alpha "$current" || true)"
+
+          if [ "$input" != "$expectedMajor" ] && [ "$input" != "$expectedMinor" ] && [ "$input" != "$expectedPatch" ] && \
+             [ "$input" != "$expectedPremajor" ] && [ "$input" != "$expectedPreminor" ] && [ "$input" != "$expectedPrepatch" ] && \
+             [ "$input" != "$expectedPrerelease" ]; then
+            echo "❌ Invalid version bump: '$input' is not a valid SemVer increment from '$current'." >&2
+            echo "   Expected one of:" >&2
+            echo "     MAJOR:      $expectedMajor (breaking changes)" >&2
+            echo "     MINOR:      $expectedMinor (new features)" >&2
+            echo "     PATCH:      $expectedPatch (bug fixes)" >&2
+            echo "     PREMAJOR:   $expectedPremajor (breaking prerelease)" >&2
+            echo "     PREMINOR:   $expectedPreminor (feature prerelease)" >&2
+            echo "     PREPATCH:   $expectedPrepatch (fix prerelease)" >&2
+            echo "     PRERELEASE: $expectedPrerelease (next prerelease iteration)" >&2
+            exit 1
+          fi
+
+          echo "✅ Version bump from $current to $input is valid."
 
       - name: Update package.json version
         run: |
@@ -56,7 +110,7 @@ jobs:
         id: npm_pack
 
       - name: Upload tarball as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: npm-tarball
           path: 'dist/*.tgz'
@@ -73,16 +127,32 @@ jobs:
 
       - name: Publish npm Package to GitHub Registry
         working-directory: dist
-        run: npm publish --access public --ignore-scripts --@trimble-oss:registry='https://npm.pkg.github.com'
-        # TODO: remove once we configure this repo's permissions
-        continue-on-error: true
+        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
+
+      - name: Commit version bump and open PR to main
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          BRANCH="chore/version-bump-${{ github.event.inputs.version }}"
+          git checkout -b "$BRANCH"
+          git add package.json
+          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: bump version to ${{ github.event.inputs.version }}" \
+            --body "Automated version bump after publishing \`${{ github.event.inputs.version }}\` to npm." \
+            --base main \
+            --head "$BRANCH"
 
   trigger-angular-publish:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Angular Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-angular.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -92,9 +162,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger React Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-react.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
+  trigger-vue-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vue Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.3
+        with:
+          workflow: publish-vue.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
+  trigger-mcp-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger MCP Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.3
+        with:
+          workflow: publish-mcp.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   release-wc:
@@ -102,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download tarball artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: npm-tarball
           path: .
@@ -115,7 +205,7 @@ jobs:
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-${{ github.event.inputs.version }}

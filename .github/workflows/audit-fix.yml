@@ -1,0 +1,147 @@
+name: npm audit fix
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
+concurrency:
+  group: npm-audit-fix
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  audit-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      # --- Build phase ---
+
+      - name: Install root dependencies and build Stencil
+        run: npm ci && npm run build:ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+
+      - name: Build React v17 integration
+        working-directory: integrations/react/v17
+        run: npm ci && npm run build
+
+      - name: Build React v18 integration
+        working-directory: integrations/react/v18
+        run: npm ci && npm run build
+
+      - name: Build React v19 integration
+        working-directory: integrations/react/v19
+        run: npm ci && npm run build
+
+      - name: Build Vue integration
+        working-directory: integrations/vue/v-latest
+        run: npm ci && npm run build
+
+      # --- Install remaining integration deps ---
+
+      - name: Install Angular ng17 dependencies
+        working-directory: integrations/angular/ng17
+        run: npm ci
+
+      - name: Install Angular ng18 dependencies
+        working-directory: integrations/angular/ng18
+        run: npm ci
+
+      - name: Install Angular ng19 dependencies
+        working-directory: integrations/angular/ng19
+        run: npm ci
+
+      - name: Install React test app v17 dependencies
+        working-directory: integrations/react/test-react-v17
+        run: npm ci
+
+      - name: Install React test app v18 dependencies
+        working-directory: integrations/react/test-react-v18
+        run: npm ci
+
+      - name: Install React test app v19 dependencies
+        working-directory: integrations/react/test-react-v19
+        run: npm ci
+
+      - name: Install Vue test app dependencies
+        working-directory: integrations/vue/test-app
+        run: npm ci
+
+      # --- Audit phase ---
+
+      - name: Run npm audit and apply fixes across all directories
+        run: |
+          DIRS=". integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
+            integrations/react/v17 integrations/react/v18 integrations/react/v19 \
+            integrations/react/test-react-v17 integrations/react/test-react-v18 integrations/react/test-react-v19 \
+            integrations/vue/v-latest integrations/vue/test-app"
+          for DIR in $DIRS; do
+            echo "Auditing $DIR..."
+            npm audit --json --prefix "$DIR" > "${DIR}/audit-output.json" || true
+            echo "Fixing $DIR..."
+            npm audit fix --prefix "$DIR" || true
+          done
+
+      - name: Upload all audit outputs as artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: audit-output-all
+          path: |
+            audit-output.json
+            integrations/angular/ng17/audit-output.json
+            integrations/angular/ng18/audit-output.json
+            integrations/angular/ng19/audit-output.json
+            integrations/react/v17/audit-output.json
+            integrations/react/v18/audit-output.json
+            integrations/react/v19/audit-output.json
+            integrations/react/test-react-v17/audit-output.json
+            integrations/react/test-react-v18/audit-output.json
+            integrations/react/test-react-v19/audit-output.json
+            integrations/vue/v-latest/audit-output.json
+            integrations/vue/test-app/audit-output.json
+
+      # --- PR phase ---
+
+      - name: Push fix branch and create PR
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="fix/npm-audit-fix-$(date +%Y-%m-%d)-${{ github.run_id }}-${{ github.run_attempt }}"
+          git checkout -b "$BRANCH"
+          git add \
+            package.json package-lock.json \
+            integrations/angular/ng17/package.json integrations/angular/ng17/package-lock.json \
+            integrations/angular/ng18/package.json integrations/angular/ng18/package-lock.json \
+            integrations/angular/ng19/package.json integrations/angular/ng19/package-lock.json \
+            integrations/react/v17/package.json integrations/react/v17/package-lock.json \
+            integrations/react/v18/package.json integrations/react/v18/package-lock.json \
+            integrations/react/v19/package.json integrations/react/v19/package-lock.json \
+            integrations/react/test-react-v17/package.json integrations/react/test-react-v17/package-lock.json \
+            integrations/react/test-react-v18/package.json integrations/react/test-react-v18/package-lock.json \
+            integrations/react/test-react-v19/package.json integrations/react/test-react-v19/package-lock.json \
+            integrations/vue/v-latest/package.json integrations/vue/v-latest/package-lock.json \
+            integrations/vue/test-app/package.json integrations/vue/test-app/package-lock.json
+          git diff --cached --quiet && echo "Nothing to commit, working tree clean" && exit 0
+          git commit -m "fix: npm audit fix all packages $(date +%Y-%m-%d)"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "fix: npm audit fix all packages $(date +%Y-%m-%d)" \
+            --body "Automated PR from \`npm audit fix\` across all packages on $(date +%Y-%m-%d)." \
+            --base main \
+            --head "$BRANCH"

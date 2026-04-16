@@ -2,7 +2,7 @@
 
 exports[`modus-wc-select renders with default props 1`] = `
 <modus-wc-select value="">
-  <select aria-label="Default select" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full"></select>
+  <select aria-label="Default select" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_0"></select>
 </modus-wc-select>
 `;
 
@@ -15,7 +15,7 @@ exports[`modus-wc-select should render with custom props 1`] = `
 
 exports[`modus-wc-select should render with error feedback 1`] = `
 <modus-wc-select value="">
-  <select aria-label="Error input" class="modus-wc-input--error modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full"></select>
+  <select aria-label="Error input" class="modus-wc-select modus-wc-select--error modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_2"></select>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
       <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

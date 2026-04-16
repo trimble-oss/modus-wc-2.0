@@ -9,7 +9,7 @@
 
 A customizable modal component used to display content in a dialog.
 
-The component supports a 'header', 'content', and 'footer' <slot> for injecting custom HTML
+This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
 
 ## Properties
 

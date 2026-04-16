@@ -28,7 +28,7 @@
 
 modus-wc-table .modus-wc-table {
   &.modus-wc-table-zebra tbody tr:nth-child(2n) {
-    background-color: var(--modus-wc-color-base-100);
+    background-color: var(--modus-wc-color-base-page);
   }
 
   &:where(thead, tfoot) {
@@ -45,9 +45,8 @@ modus-wc-table .modus-wc-table {
 }
 
 modus-wc-table .modus-wc-overflow-x-auto {
-  border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-base-100);
   border-radius: var(--modus-wc-border-radius-table);
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 [data-theme='modus-classic-light'] modus-wc-table,
@@ -62,17 +61,12 @@ modus-wc-table .modus-wc-overflow-x-auto {
 
     th,
     td {
-      border-right: 1px solid #b7b9c3;
-    }
-
-    th:last-child,
-    td:last-child {
-      border-right: none;
+      border: 1px solid #6a6e79;
     }
   }
 }
 
-/* Modern theme specific hover styles */
+/* Classic theme specific hover styles */
 [data-theme='modus-classic-light'] {
   th {
     background-color: #f1f1f6 !important;
@@ -95,8 +89,44 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 }
 
+[data-theme='connect-light'] modus-wc-table,
+[data-theme='connect-dark'] modus-wc-table {
+  border: none;
+  box-shadow: none;
+
+  .modus-wc-overflow-x-auto {
+    border: none;
+    border-radius: 0;
+  }
+
+  .modus-wc-table {
+    border: none;
+    border-collapse: collapse;
+    border-radius: 0;
+
+    th,
+    td {
+      border-right: 1px solid transparent;
+    }
+  }
+
+  th {
+    background-color: var(--modus-wc-color-base-100) !important;
+    border: none !important;
+    color: var(--modus-wc-color-base-content-low-contrast) !important;
+  }
+
+  td {
+    border: none !important;
+    border-bottom: 1px solid var(--modus-wc-color-base-100);
+  }
+
+  .modus-wc-table.modus-wc-table-hover tbody tr:hover {
+    background-color: var(--modus-wc-color-base-100) !important;
+  }
+}
+
 .modus-wc-table {
-  overflow: hidden;
   width: 100%;
 
   th {
@@ -128,13 +158,8 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 
   td {
-    border-bottom: 1px solid var(--modus-wc-color-alt-silver);
     padding: 0.75rem;
     vertical-align: middle;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
   }
 
   /* Apply styles based on table density */
@@ -160,9 +185,10 @@ modus-wc-table .modus-wc-overflow-x-auto {
   }
 
   /* Apply zebra striping styles */
+
   &.modus-wc-table-zebra {
     tbody tr:nth-child(odd) {
-      background-color: var(--modus-wc-color-alt-silver-light);
+      background-color: var(--modus-wc-color-base-100);
     }
   }
 
@@ -171,13 +197,14 @@ modus-wc-table .modus-wc-overflow-x-auto {
     tbody tr {
       transition: background-color 0.15s ease-in-out;
 
-      &:hover {
-        background-color: var(--modus-wc-color-alt-silver-light);
-      }
+      @include common-states;
     }
   }
 
-  tbody tr {
+  /* Cursor styles based on interactivity - apply to cells, not rows */
+
+  /* Editable cells should show pointer cursor */
+  td.editable-cell {
     cursor: pointer;
   }
 
@@ -243,7 +270,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
 }
 
 tr.selected {
-  background-color: var(--modus-wc-color-primary-light, #e6f4ff);
+  background-color: var(--modus-wc-color-primary-pale);
 }
 
 /* === Editing cell overrides === */

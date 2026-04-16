@@ -7,12 +7,13 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable accordion component used for showing and hiding related groups of content.
  *
- * The component supports a `<slot>` for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+ * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
  */
 @Component({
   tag: 'modus-wc-accordion',
@@ -35,6 +36,9 @@ export class ModusWcAccordion {
   }>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

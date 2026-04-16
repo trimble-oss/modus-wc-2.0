@@ -11,13 +11,27 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     font-weight: var(--modus-wc-font-weight-normal);
     padding-inline-start: var(--modus-wc-spacing-md);
   }
+
+  [type='checkbox'].modus-wc-checkbox {
+    &:checked {
+      --fallback-bc: var(--modus-wc-color-primary);
+    }
+
+    &:focus {
+      outline-color: var(--modus-wc-color-primary);
+    }
+
+    &:hover {
+      --fallback-bc: var(--modus-wc-color-primary);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-highlight-blue);
+  --check-bg: var(--modus-wc-color-highlight-blue);
   --fallback-bc: var(--modus-wc-color-gray-4);
-  --chkfg: var(--modus-wc-color-white);
+  --check-content: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
   border-width: var(--modus-wc-border-width-sm);
@@ -43,7 +57,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-blue-light);
+    --check-bg: var(--modus-wc-color-blue-light);
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
@@ -74,14 +88,99 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 }
 
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox {
-  --chkbg: var(--modus-wc-color-blue-light);
+  --check-bg: var(--modus-wc-color-blue-light);
 
   &:checked {
     --fallback-bc: var(--modus-wc-color-blue-light);
   }
 
   &:checked:hover {
-    --chkbg: var(--modus-wc-color-trimble-blue);
+    --check-bg: var(--modus-wc-color-trimble-blue);
+    --fallback-bc: var(--modus-wc-color-trimble-blue);
+  }
+
+  &:indeterminate {
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+
+  &:focus {
+    outline-color: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+}
+
+[data-theme='connect-light'] modus-wc-checkbox .modus-wc-checkbox,
+[data-theme='connect-dark'] modus-wc-checkbox .modus-wc-checkbox {
+  --check-bg: var(--modus-wc-color-highlight-blue);
+  --fallback-bc: var(--modus-wc-color-gray-4);
+  --check-content: var(--modus-wc-color-white);
+
+  border-radius: var(--modus-wc-border-radius-sm);
+  border-width: var(--modus-wc-border-width-sm);
+
+  // Sizes
+  &.modus-wc-checkbox-sm {
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+
+  &.modus-wc-checkbox-md {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  &.modus-wc-checkbox-lg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-primary-color);
+  }
+
+  &:checked:hover {
+    --check-bg: var(--modus-wc-color-blue-light);
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+
+  &:indeterminate {
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+
+    &:not(:checked) {
+      background-color: unset;
+      border: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-gray-4);
+    }
+  }
+
+  &:focus {
+    outline-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-highlight-blue) 75%,
+      transparent
+    );
+  }
+
+  &:hover {
+    --fallback-bc: var(--modus-wc-color-highlight-blue);
+  }
+}
+
+[data-theme='connect-light'] modus-wc-checkbox .modus-wc-checkbox {
+  --check-bg: var(--modus-wc-color-primary-color);
+
+  &:checked {
+    --fallback-bc: var(--modus-wc-color-blue-light);
+  }
+
+  &:checked:hover {
+    --check-bg: var(--modus-wc-color-trimble-blue);
     --fallback-bc: var(--modus-wc-color-trimble-blue);
   }
 

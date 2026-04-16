@@ -3,17 +3,34 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-menu.modus-wc-menu-submenu {
+  display: contents;
+}
+
 modus-wc-menu .modus-wc-menu {
+  background-color: var(--modus-wc-color-base-page);
   border-radius: var(--modus-wc-border-radius-md);
 
   /* Enforce Tailwind CSS reset */
   list-style: none;
   margin: 0;
+  overflow: hidden;
   padding: 0;
   padding-inline-start: 0;
 
   &.modus-wc-menu--bordered {
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-0);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
+  }
+}
+
+modus-wc-menu {
+  .modus-wc-menu-dropdown {
+    display: none;
+    list-style: none;
+  }
+
+  .modus-wc-menu-dropdown-show {
+    display: block;
   }
 }
 

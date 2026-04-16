@@ -8,12 +8,13 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable radio component
+ * A customizable radio button component.
  */
 @Component({
   tag: 'modus-wc-radio',
@@ -22,6 +23,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcRadio {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -63,6 +65,9 @@ export class ModusWcRadio {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Radio button';
     }
@@ -95,6 +100,7 @@ export class ModusWcRadio {
 
   render() {
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
+    const effectiveId = this.inputId || this.generatedId;
 
     return (
       <Host class="modus-wc-radio-host">
@@ -104,7 +110,7 @@ export class ModusWcRadio {
           checked={this.value}
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -116,7 +122,7 @@ export class ModusWcRadio {
         />
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={labelSize}

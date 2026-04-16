@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface ButtonArgs {
@@ -10,7 +11,7 @@ interface ButtonArgs {
   disabled: boolean;
   'full-width': boolean;
   pressed: boolean;
-  shape: 'circle' | 'rectangle' | 'square';
+  shape: 'circle' | 'ellipse' | 'rectangle' | 'square';
   size: DaisySize;
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
@@ -36,7 +37,7 @@ const meta: Meta<ButtonArgs> = {
     },
     shape: {
       control: { type: 'select' },
-      options: ['circle', 'rectangle', 'square'],
+      options: ['circle', 'ellipse', 'rectangle', 'square'],
     },
     size: {
       control: { type: 'select' },
@@ -68,7 +69,6 @@ const Template: Story = {
     // prettier-ignore
     return html`
 <modus-wc-button
-  aria-label="Click me button"
   color="${args.color}"
   custom-class="${ifDefined(args['custom-class'])}"
   ?disabled="${args.disabled}"
@@ -93,22 +93,66 @@ export const ButtonShapes: Story = {
   render: () => {
     // prettier-ignore
     return html`
+  <modus-wc-button
+    shape="rectangle"
+  >
+    Rectangle
+  </modus-wc-button>
 <modus-wc-button
-  aria-label="Circle button"
   shape="circle"
 >
   Circle
 </modus-wc-button>
 <modus-wc-button
-  aria-label="Square button"
   shape="square"
 >
   Square
+</modus-wc-button>
+<modus-wc-button
+  shape="ellipse"
+>
+  Ellipse
 </modus-wc-button>
     `;
   },
 };
 
+export const DynamicTextUpdate: Story = {
+  render: () => {
+    const updateButtonText = () => {
+      const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+      const input = document.getElementById(
+        'btn-text-input'
+      ) as HTMLInputElement;
+
+      btnText.textContent = input.value;
+    };
+
+    // prettier-ignore
+    return html`
+<script>
+  function updateButtonText() {
+    const btnText = document.getElementById('btn-text');
+    const input = document.getElementById('btn-text-input');
+    btnText.textContent = input.value;
+  }
+  // Call updateButtonText function using the button's click event
+  // Example:  <modus-wc-button color="primary" variant="filled" buttonClick="updateButtonText()"></modus-wc-button>
+</script>
+
+<div>
+  <modus-wc-button id="text-update-btn" color="primary" variant="filled" @buttonClick=${updateButtonText}>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon><span id="btn-text">Press button to update content</span>
+    <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
+  </modus-wc-button>
+
+  <div style="margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+    <modus-wc-text-input id="btn-text-input" type="text" value="Updated Text" style="padding: 4px 8px;" />
+  </div>
+</div>
+    `;
+  },
+};
 export const IconOnlyButton: Story = {
   render: () => {
     // prettier-ignore
@@ -124,7 +168,7 @@ export const IconLeftButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Download button">
+<modus-wc-button>
   <modus-wc-icon decorative name="download"></modus-wc-icon>
   Download
 </modus-wc-button>
@@ -136,7 +180,7 @@ export const IconRightButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Details button">
+<modus-wc-button>
   Details
   <modus-wc-icon decorative name="launch"></modus-wc-icon>
 </modus-wc-button>
@@ -148,12 +192,55 @@ export const IconLeftAndRightButton: Story = {
   render: () => {
     // prettier-ignore
     return html`
-<modus-wc-button aria-label="Checkout button">
+<modus-wc-button>
   <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
   Checkout
   <modus-wc-icon decorative name="shopping_cart"></modus-wc-icon>
 </modus-wc-button>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for button component
+    if (!customElements.get('button-shadow-host')) {
+      const ButtonShadowHost = createShadowHostClass<ButtonArgs>({
+        componentTag: 'modus-wc-button',
+        propsMapper: (v: ButtonArgs, el: HTMLElement) => {
+          const buttonEl = el as unknown as {
+            ariaLabel: string;
+            color: string;
+            shape: string;
+            size: string;
+            type: string;
+            variant: string;
+            customClass: string;
+            disabled: boolean;
+            fullWidth: boolean;
+            pressed: boolean;
+          };
+          buttonEl.ariaLabel = 'Click me button';
+          buttonEl.color = v.color;
+          buttonEl.shape = v.shape;
+          buttonEl.size = v.size;
+          buttonEl.type = v.type;
+          buttonEl.variant = v.variant;
+          buttonEl.customClass = v['custom-class'] || '';
+          buttonEl.disabled = Boolean(v.disabled);
+          buttonEl.fullWidth = Boolean(v['full-width']);
+          buttonEl.pressed = Boolean(v.pressed);
+          // DO NOT set textContent - it destroys the component's internal structure!
+          // Button content should be set via defaultContent in the helper config
+        },
+        defaultContent: 'Click me', // Set content here instead
+      });
+      customElements.define('button-shadow-host', ButtonShadowHost);
+    }
+
+    return html`<button-shadow-host
+      .props=${{ ...args }}
+    ></button-shadow-host>`;
   },
 };
 

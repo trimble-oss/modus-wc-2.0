@@ -1,0 +1,56 @@
+modus-wc-utility-panel {
+  --modus-wc-utility-panel-padding: 1rem;
+  --modus-wc-utility-panel-width: 312px;
+  --modus-wc-utility-panel-header-height: 50px;
+  --modus-wc-utility-panel-border-color: var(--modus-wc-color-base-200);
+  --modus-wc-utility-panel-box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+  --modus-wc-utility-panel-transition-duration: 0.3s;
+}
+
+.modus-wc-utility-panel {
+  background-color: var(--modus-wc-color-base-page);
+  box-shadow: var(--modus-wc-utility-panel-box-shadow);
+  color: var(--modus-wc-utility-panel-color);
+  height: 100%;
+  position: absolute;
+  right: calc(var(--modus-wc-utility-panel-width) * -1 - 12px);
+  top: 0;
+  transition: right var(--modus-wc-utility-panel-transition-duration) ease-out;
+  width: var(--modus-wc-utility-panel-width);
+  z-index: 1000;
+
+  &.open {
+    background: var(--modus-wc-color-base-page);
+    right: 0;
+    transition: right var(--modus-wc-utility-panel-transition-duration) ease-out;
+  }
+
+  .modus-wc-utility-panel-content {
+    background: var(--modus-wc-color-base-page);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .modus-wc-utility-panel-header,
+    .modus-wc-utility-panel-footer {
+      align-items: center;
+      background: var(--modus-wc-color-base-page);
+      display: flex;
+      height: var(--modus-wc-utility-panel-header-height);
+      padding: 0 var(--modus-wc-utility-panel-padding);
+    }
+
+    .modus-wc-utility-panel-body {
+      background: var(--modus-wc-color-base-page);
+      flex: 1;
+      overflow: auto;
+      padding: var(--modus-wc-utility-panel-padding);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--modus-wc-utility-panel-border-color);
+      margin: 0;
+    }
+  }
+}

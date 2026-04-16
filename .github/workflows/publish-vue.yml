@@ -1,0 +1,141 @@
+# This publishes various packages in this repository.
+# It will update the package.json version, build the vue package, publish it to the Artifactory NPM registry, as well as create a GitHub release.
+# This is triggered by running the main 'Publish & Release' workflow.
+
+name: Publish & Release - Vue
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+  packages: write
+
+jobs:
+  build-and-publish-vue:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: integrations/vue/v-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      # - uses: google/wireit@setup-github-actions-caching/v2
+
+      - name: Install Web Component dependencies
+        run: npm ci
+        working-directory: .
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            integrations/vue/v-latest/package-lock.json
+
+      - name: Build Base Web Components
+        run: npm run build:ci
+        working-directory: .
+
+      - name: Pack Base Web Components
+        working-directory: ./dist
+        run: |
+          TARBALL=$(npm pack)
+          echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
+
+      - name: Update to use new WebComponent version
+        run: |
+          jq --arg version "${{ github.event.inputs.version }}" \
+          '.peerDependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json
+
+      - run: npm i
+
+      - name: Install local WebComponent dependency (for build)
+        run: npm install file:../../../dist/${TARBALL} --no-save
+
+      - name: Update package.json version
+        run: |
+          jq --arg version "${{ github.event.inputs.version }}-vue" \
+          '.version = $version' package.json > package.json.tmp && \
+          mv package.json.tmp package.json
+
+      - name: Build distribution
+        run: npm run build
+
+      - name: Package distribution
+        working-directory: integrations/vue/v-latest/dist
+        run: npm pack
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: vue-distribution-v${{ github.event.inputs.version }}-vue
+          path: 'integrations/vue/v-latest/dist/*.tgz'
+
+      - name: Clean up tgz files
+        working-directory: integrations/vue/v-latest/dist
+        run: rm -f $(find . -name '*.tgz')
+
+      - name: Set npm Registry Auth Token
+        working-directory: integrations/vue/v-latest/dist
+        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish distribution
+        working-directory: integrations/vue/v-latest/dist
+        run: npm publish
+
+      - name: Set GitHub Registry Auth Token
+        working-directory: integrations/vue/v-latest/dist
+        run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish npm Package to GitHub Registry
+        working-directory: integrations/vue/v-latest/dist
+        run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
+
+  release-vue:
+    needs: build-and-publish-vue
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: vue-distribution-v${{ github.event.inputs.version }}-vue
+          path: .
+
+      - name: Find the release asset
+        id: find-asset
+        run: echo "asset_path=$(find . -name '*.tgz')" >> $GITHUB_OUTPUT
+
+      - name: Rename release asset
+        run: mv ${{ steps.find-asset.outputs.asset_path }} package-vue.tgz
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: moduswebcomponents-vue-${{ github.event.inputs.version }}-vue
+          name: Modus Web Components Vue ${{ github.event.inputs.version }}
+          files: |
+            **/package-vue.tgz

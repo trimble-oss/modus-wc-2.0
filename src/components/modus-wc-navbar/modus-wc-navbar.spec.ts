@@ -43,4 +43,17 @@ describe('modus-wc-navbar', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should not render logo when visibility.logo is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],
+      html: '<modus-wc-navbar></modus-wc-navbar>',
+    });
+    page.rootInstance.visibility = {
+      ...page.rootInstance.visibility,
+      logo: false,
+    };
+    await page.waitForChanges();
+    expect(page.root?.querySelector('modus-wc-logo')).toBeNull();
+  });
 });

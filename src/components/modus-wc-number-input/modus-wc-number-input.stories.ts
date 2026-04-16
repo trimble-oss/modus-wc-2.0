@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface NumberInputArgs {
@@ -13,7 +14,7 @@ interface NumberInputArgs {
   feedback?: IInputFeedbackProp;
   'input-aria-invalid'?: 'true' | 'false';
   'input-id'?: string;
-  'input-mode': 'decimal' | 'none' | 'numeric';
+  inputmode?: 'decimal' | 'none' | 'numeric';
   'input-tab-index'?: number;
   label?: string;
   max?: number;
@@ -34,7 +35,7 @@ const meta: Meta<NumberInputArgs> = {
   args: {
     bordered: true,
     disabled: false,
-    'input-mode': 'numeric',
+    inputmode: 'numeric',
     label: 'Label',
     size: 'md',
     type: 'number',
@@ -62,7 +63,7 @@ const meta: Meta<NumberInputArgs> = {
       control: { type: 'select' },
       options: ['true', 'false'],
     },
-    'input-mode': {
+    inputmode: {
       control: { type: 'select' },
       options: ['decimal', 'none', 'numeric'],
     },
@@ -99,7 +100,7 @@ const Template: Story = {
       .feedback=${args.feedback}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
       input-id=${ifDefined(args['input-id'])}
-      input-mode=${args['input-mode']}
+      inputmode=${ifDefined(args.inputmode)}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       label=${ifDefined(args.label)}
       max=${ifDefined(args.max)}
@@ -131,6 +132,78 @@ export const Currency: Story = {
 export const WithErrorFeedback: Story = {
   ...Template,
   args: { feedback: errorFeedback, required: true },
+  parameters: {
+    docs: {
+      source: {
+        transform: (src) => `${src}
+<script>
+  const numberInputElement = document.querySelector('modus-wc-number-input');
+  numberInputElement.feedback = {
+    level: 'error',
+    message: 'Value is required.'
+  };
+</script>`,
+      },
+    },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for number-input component
+    if (!customElements.get('number-input-shadow-host')) {
+      const NumberInputShadowHost = createShadowHostClass<NumberInputArgs>({
+        componentTag: 'modus-wc-number-input',
+        propsMapper: (v: NumberInputArgs, el: HTMLElement) => {
+          const numberInputEl = el as unknown as {
+            autoComplete: string;
+            bordered: boolean;
+            currencySymbol: string;
+            customClass: string;
+            disabled: boolean;
+            feedback: IInputFeedbackProp;
+            inputId: string;
+            inputTabIndex: number;
+            label: string;
+            max: number;
+            min: number;
+            name: string;
+            placeholder: string;
+            readOnly: boolean;
+            required: boolean;
+            size: string;
+            step: number;
+            type: string;
+            value: string;
+          };
+          numberInputEl.autoComplete = v['auto-complete'] ?? '';
+          numberInputEl.bordered = Boolean(v.bordered);
+          numberInputEl.currencySymbol = v['currency-symbol'] ?? '';
+          numberInputEl.customClass = v['custom-class'] || '';
+          numberInputEl.disabled = Boolean(v.disabled);
+          numberInputEl.inputId = v['input-id'] ?? '';
+          numberInputEl.inputTabIndex = v['input-tab-index'] ?? 0;
+          numberInputEl.label = v.label ?? '';
+          numberInputEl.max = v.max ?? 0;
+          numberInputEl.min = v.min ?? 0;
+          numberInputEl.name = v.name ?? '';
+          numberInputEl.placeholder = v.placeholder ?? '';
+          numberInputEl.readOnly = Boolean(v['read-only']);
+          numberInputEl.required = Boolean(v.required);
+          numberInputEl.size = v.size ?? '';
+          numberInputEl.step = v.step ?? 1;
+          numberInputEl.type = v.type ?? '';
+          numberInputEl.value = v.value;
+        },
+      });
+      customElements.define('number-input-shadow-host', NumberInputShadowHost);
+    }
+
+    return html`<number-input-shadow-host
+      style="width: 200px;display: block;"
+      .props=${{ ...args }}
+    ></number-input-shadow-host>`;
+  },
 };
 
 export const Migration: Story = {

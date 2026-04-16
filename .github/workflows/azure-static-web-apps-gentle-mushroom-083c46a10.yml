@@ -1,0 +1,54 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build_and_deploy_job:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+    if: github.repository == 'trimble-oss/modus-wc-2.0'
+    runs-on: ubuntu-22.04
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          lfs: false
+          persist-credentials: false
+          submodules: true
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+
+      - name: Build project
+        run: npm run build
+
+      # We need to copy the CSS so it can be served by Storybook.
+      - name: Copy CSS file
+        run: |
+          cp src/styles/output.css storybook-static/public/output.css
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_MUSHROOM_083C46A10 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: 'upload'
+          skip_app_build: 'true'
+          app_location: 'storybook-static' # App source code path (Storybook build output)
+          api_location: '' # Api source code path - optional
+          output_location: '' # Built app content directory - optional

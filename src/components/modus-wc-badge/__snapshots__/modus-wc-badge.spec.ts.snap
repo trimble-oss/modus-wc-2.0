@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-badge should render with alert role 1`] = `
+exports[`modus-wc-badge should render with alert role for warning color 1`] = `
 <modus-wc-badge color="warning">
   <!---->
-  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-warning" role="alert" tabindex="-1"></span>
+  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-warning" role="alert"></span>
 </modus-wc-badge>
 `;
 
 exports[`modus-wc-badge should render with custom props 1`] = `
 <modus-wc-badge color="secondary" custom-class="test-class" size="lg" variant="text">
   <!---->
-  <span class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-secondary modus-wc-badge-text test-class" role="status" tabindex="-1">
+  <span class="modus-wc-badge modus-wc-badge-lg modus-wc-badge-secondary modus-wc-badge-text test-class" role="status">
     Test
   </span>
 </modus-wc-badge>
@@ -19,6 +19,13 @@ exports[`modus-wc-badge should render with custom props 1`] = `
 exports[`modus-wc-badge should render with default props 1`] = `
 <modus-wc-badge>
   <!---->
-  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status" tabindex="-1"></span>
+  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status"></span>
+</modus-wc-badge>
+`;
+
+exports[`modus-wc-badge should render with status role for primary color 1`] = `
+<modus-wc-badge color="primary">
+  <!---->
+  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status"></span>
 </modus-wc-badge>
 `;

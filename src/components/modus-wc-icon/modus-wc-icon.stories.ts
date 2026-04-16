@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface IconArgs {
@@ -8,6 +9,7 @@ interface IconArgs {
   decorative: boolean;
   name: string;
   size: DaisySize;
+  variant?: 'outlined' | 'solid';
 }
 
 const meta: Meta<IconArgs> = {
@@ -24,6 +26,10 @@ const meta: Meta<IconArgs> = {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg'],
     },
+    variant: {
+      control: { type: 'select' },
+      options: ['outlined', 'solid'],
+    },
   },
 };
 
@@ -33,15 +39,17 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <modus-wc-icon
-        aria-label="Alert icon"
-        custom-class="${ifDefined(args['custom-class'])}"
-        ?decorative="${args.decorative}"
-        name="${args.name}"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<modus-wc-icon
+  aria-label="Alert icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+  variant="${ifDefined(args.variant)}"
+>
+</modus-wc-icon>
     `;
   },
 };
@@ -50,20 +58,80 @@ export const Default: Story = { ...Template };
 
 export const CustomColor: Story = {
   render: (args) => {
+    // prettier-ignore
     return html`
-      <style>
-        .red-icon {
-          color: red;
-        }
-      </style>
-      <modus-wc-icon
-        aria-label="Red alert icon"
-        custom-class="red-icon"
-        name="alert"
-        size="${args.size}"
-      >
-      </modus-wc-icon>
+<style>
+  .red-icon {
+    color: red;
+  }
+</style>
+<modus-wc-icon
+  aria-label="Red alert icon"
+  custom-class="red-icon"
+  name="alert"
+  size="${args.size}"
+>
+</modus-wc-icon>
     `;
+  },
+};
+
+export const CustomIcons: Story = {
+  args: {
+    'custom-class': 'icon-font tc-icon-cloud-queue',
+    decorative: false,
+    name: '',
+    size: 'lg',
+  },
+  decorators: [
+    (story) => html`
+      <link
+        rel="stylesheet"
+        href="https://resources.connect.trimble.com/1.12.0/fonts/icon-font.min.css"
+      />
+      ${story()}
+    `,
+  ],
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-icon
+  aria-label="Cloud Queue icon"
+  custom-class="${ifDefined(args['custom-class'])}"
+  ?decorative="${args.decorative}"
+  name="${args.name}"
+  size="${args.size}"
+>
+</modus-wc-icon>
+    `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for icon component
+    if (!customElements.get('icon-shadow-host')) {
+      const IconShadowHost = createShadowHostClass<IconArgs>({
+        componentTag: 'modus-wc-icon',
+        propsMapper: (v: IconArgs, el: HTMLElement) => {
+          const iconEl = el as unknown as {
+            customClass: string;
+            decorative: boolean;
+            name: string;
+            size: string;
+            variant: string;
+          };
+          iconEl.customClass = v['custom-class'] || '';
+          iconEl.decorative = Boolean(v.decorative);
+          iconEl.name = v.name;
+          iconEl.size = v.size;
+          iconEl.variant = v.variant ?? 'outlined';
+        },
+      });
+      customElements.define('icon-shadow-host', IconShadowHost);
+    }
+
+    return html`<icon-shadow-host .props=${{ ...args }}></icon-shadow-host>`;
   },
 };
 

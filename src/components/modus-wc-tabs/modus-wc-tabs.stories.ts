@@ -39,6 +39,7 @@ const meta: Meta<TabsArgs> = {
             - icon (string, optional): A Modus Icon name to display
             - iconPosition ('left' | 'right', optional): The position of the icon
             - label (string, optional): The content to display in the tab
+            - slotName (string, optional): The slot name to use for custom tab header content
           `,
         },
       },
@@ -52,7 +53,19 @@ const meta: Meta<TabsArgs> = {
       options: ['xs', 'sm', 'md', 'lg'],
     },
   },
-  decorators: [withActions],
+  decorators: [
+    withActions,
+    (story, context) => {
+      // Normalize tabs before rendering the story
+      const { tabs } = context.args ?? {};
+
+      if (Array.isArray(tabs)) {
+        context.args.tabs = normalizeTabs(tabs);
+      }
+
+      return story();
+    },
+  ],
   parameters: {
     actions: {
       handles: ['tabChange'],
@@ -62,9 +75,42 @@ const meta: Meta<TabsArgs> = {
 
 export default meta;
 
+// Shared normalization function used by both decorator and source code
+const normalizeTabs = (tabs: ITab[]) => {
+  return tabs.map((tab) => {
+    const normalized = { ...tab };
+    // Only keep disabled when it is explicitly true
+    if (normalized.disabled !== true) {
+      delete normalized.disabled;
+    }
+    return normalized;
+  });
+};
+
+const getSourceCode = (tabs: ITab[]) => {
+  const normalizedTabs = normalizeTabs(tabs);
+  return `
+<script>
+  const tabs = ${JSON.stringify(normalizedTabs, null, 2)};
+  const tabElement = document.querySelector('modus-wc-tabs');
+  tabElement.tabs = tabs;
+</script>`;
+};
+
 type Story = StoryObj<TabsArgs>;
 
 const Template: Story = {
+  parameters: {
+    docs: {
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tabs
+  aria-label="Tab group"
+  tab-style="${ifDefined(args['tab-style'])}"
+  size="${ifDefined(args.size)}">
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -72,7 +118,7 @@ const Template: Story = {
   active-tab-index="${ifDefined(args.activeTabIndex)}"
   aria-label="Tab group"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${args.tabs}"
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
 </modus-wc-tabs>
@@ -82,14 +128,171 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const ActiveAndDisabled: Story = { ...Template };
-ActiveAndDisabled.args = {
-  activeTabIndex: 1,
-  tabs: [
-    { label: 'Normal' },
-    { label: 'Active' },
-    { label: 'Disabled', disabled: true },
-  ],
+export const CustomContent: Story = {
+  args: {
+    tabs: [
+      {
+        icon: 'home',
+        iconPosition: 'left',
+        label: 'Home',
+        slotName: 'home-tab-content',
+      },
+      {
+        icon: 'clipboard',
+        iconPosition: 'right',
+        label: 'Tasks',
+      },
+      {
+        slotName: 'actions-tab-content',
+      },
+      {
+        slotName: 'notifications-tab-content',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tabs now include slots, offering a flexible approach for users to add relevant components within the tab for more complex use cases.',
+      },
+      source: {
+        transform: (_src, { args }) => `<style>
+  .red-icon {
+    color: red;
+  }
+  /* Style for disabled badge and icon components */
+  modus-wc-badge[disabled="true"],
+  modus-wc-icon[disabled="true"] ,
+  button[disabled] modus-wc-badge,
+  button[disabled] modus-wc-icon {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+</style>
+<modus-wc-tabs
+  size="md"
+  tab-style="bordered"
+  aria-label="Custom tab group"
+>
+  <span
+    slot="home-tab-content"
+    style="display: inline-flex; align-items: center;padding-top: 6px"
+  >
+    <modus-wc-badge
+      color="warning"
+      size="md"
+      variant="filled"
+    >
+      <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
+      Home
+    </modus-wc-badge>
+  </span>
+  <span
+    slot="actions-tab-content"
+    style="display: inline-flex; align-items: center; gap: 8px;"
+  >
+    Actions
+    <modus-wc-icon
+      name="warning"
+      variant="solid"
+      size="md"
+      custom-class="red-icon"
+    ></modus-wc-icon>
+  </span>
+  <span
+    slot="notifications-tab-content"
+    style="display: inline-flex; align-items: center; gap: 8px;"
+  >
+    Notifications
+    <modus-wc-badge
+      color="primary"
+      size="md"
+      variant="counter"
+      >5</modus-wc-badge
+    >
+  </span>
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
+
+  // prettier-ignore
+  render: (args) => {
+    return html`
+    <style>
+      .red-icon {
+        color: red;
+      }
+      /* Style for disabled badge and icon components */
+      modus-wc-badge[disabled="true"],
+      modus-wc-icon[disabled="true"] ,
+      button[disabled] modus-wc-badge,
+      button[disabled] modus-wc-icon {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+    </style>
+    <modus-wc-tabs
+      .tabs=${args.tabs}
+      size="${ifDefined(args.size)}"
+      tab-style="${ifDefined(args['tab-style'])}"
+      active-tab-index="${ifDefined(args.activeTabIndex)}"
+      aria-label="Custom tab group"
+    >
+      <span
+        slot="home-tab-content"
+        style="display: inline-flex; align-items: center;padding-top: 6px"
+      >
+        <modus-wc-badge
+          color="warning"
+          size="${ifDefined(args.size)}"
+          variant="filled"
+        >
+          <modus-wc-icon decorative="" name="home" size="xs"></modus-wc-icon>
+          Home
+        </modus-wc-badge>
+      </span>
+      <span
+        slot="actions-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Actions
+        <modus-wc-icon
+          name="warning"
+          variant="solid"
+          size="${ifDefined(args.size)}"
+          custom-class="red-icon"
+        ></modus-wc-icon>
+      </span>
+      <span
+        slot="notifications-tab-content"
+        style="display: inline-flex; align-items: center; gap: 8px;"
+      >
+        Notifications
+        <modus-wc-badge
+          color="primary"
+          size="${ifDefined(args.size)}"
+          variant="counter"
+          >5</modus-wc-badge
+        >
+      </span>
+    </modus-wc-tabs>
+    
+  `;
+  },
+};
+
+export const ActiveAndDisabled: Story = {
+  ...Template,
+  args: {
+    activeTabIndex: 1,
+    tabs: [
+      { label: 'Normal' },
+      { label: 'Active' },
+      { label: 'Disabled', disabled: true },
+    ],
+  },
 };
 
 export const Icons: Story = {
@@ -108,6 +311,30 @@ export const Icons: Story = {
 };
 
 export const TabsWithPanel: Story = {
+  parameters: {
+    docs: {
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tabs
+  aria-label="Tab group"
+  tab-style="bordered"
+  size="md"
+>
+  <p slot="tab-0">
+    Modus (noun) : a mode of procedure : a way of doing something
+  </p>
+  <p slot="tab-1">
+    input (noun) : information fed into a data processing system or computer
+  </p>
+  <p slot="tab-2">
+    secret (noun) : kept from knowledge or view : hidden
+  </p>
+  <p slot="tab-3">
+    snapshot (noun) : an impression or view of something brief or transitory
+  </p>
+</modus-wc-tabs>${getSourceCode(args.tabs as ITab[])}`,
+      },
+    },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -117,7 +344,7 @@ export const TabsWithPanel: Story = {
   custom-class="${ifDefined(args['custom-class'])}"
   ?img-src="${args['img-src']}"
   tab-style="${ifDefined(args['tab-style'])}"
-  .tabs="${args.tabs}"
+  .tabs=${args.tabs}
   size="${ifDefined(args.size)}"
 >
   <p slot="tab-0">

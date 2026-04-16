@@ -4,6 +4,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const themeable = [
+  //Accessibility
+  'modus-wc-sr-only',
   //Alert
   'modus-wc-alert-error',
   'modus-wc-alert-info',
@@ -19,11 +21,20 @@ const themeable = [
   'modus-wc-btn-sm',
   'modus-wc-btn-md',
   'modus-wc-btn-lg',
+  //group
+  'modus-wc-join',
+  'modus-wc-join-item',
+  'modus-wc-join-vertical',
   // Checkbox
   'modus-wc-checkbox-xs',
   'modus-wc-checkbox-sm',
   'modus-wc-checkbox-md',
   'modus-wc-checkbox-lg',
+  //File Input
+  'modus-wc-file-input-xs',
+  'modus-wc-file-input-sm',
+  'modus-wc-file-input-md',
+  'modus-wc-file-input-lg',
   // Font
   'modus-wc-font-bold',
   'modus-wc-font-light',
@@ -59,6 +70,15 @@ const themeable = [
   'modus-wc-text-sm',
   'modus-wc-text-md',
   'modus-wc-text-lg',
+  'modus-wc-text-xl',
+  'modus-wc-text-2xl',
+  'modus-wc-text-3xl',
+  'modus-wc-text-4xl',
+  'modus-wc-text-5xl',
+  'modus-wc-text-6xl',
+  'modus-wc-text-7xl',
+  'modus-wc-text-8xl',
+  'modus-wc-text-9xl',
   'modus-wc-text-primary',
   'modus-wc-text-secondary',
   'modus-wc-text-tertiary',

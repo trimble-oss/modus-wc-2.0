@@ -1,0 +1,116 @@
+modus-wc-file-dropzone .modus-wc-file-dropzone {
+  .modus-wc-file-input {
+    display: none;
+  }
+
+  .dropzone-content {
+    align-items: center;
+    background-color: var(--modus-wc-color-base-page);
+    border: 0.125rem dashed var(--modus-wc-color-base-200);
+    color: var(--modus-wc-color-base-content);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    height: 201px;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.2s ease;
+    width: 431px;
+
+    &.dragging-over {
+      background-color: var(--modus-wc-color-primary-pale);
+      border-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-primary);
+    }
+
+    &.invalid-file-type {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-error-pale) 80%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-error);
+      color: var(--modus-wc-color-error);
+    }
+
+    &.upload-success {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-success-pale) 80%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-success);
+      color: var(--modus-wc-color-success);
+    }
+
+    .default-content {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      span {
+        text-align: center;
+      }
+    }
+  }
+
+  &:has(input:disabled) {
+    .dropzone-content {
+      background-color: var(--modus-wc-color-base-100);
+      border-color: var(--modus-wc-color-base-100);
+      color: var(--modus-wc-color-base-200);
+      cursor: not-allowed;
+    }
+  }
+}
+
+[data-theme='modus-classic-dark']
+  modus-wc-file-dropzone
+  .modus-wc-file-dropzone,
+[data-theme='connect-dark'] modus-wc-file-dropzone .modus-wc-file-dropzone {
+  .dropzone-content {
+    background-color: var(--modus-wc-color-gray-10);
+    color: var(--modus-wc-color-gray-3);
+
+    &.dragging-over {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-highlight-blue);
+      color: var(--modus-wc-color-gray-light);
+    }
+
+    &.invalid-file-type {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-red) 50%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-red);
+      color: var(--modus-wc-color-gray-light);
+    }
+
+    &.upload-success {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-green) 50%,
+        transparent
+      );
+      border-color: var(--modus-wc-color-green);
+      color: var(--modus-wc-color-gray-light);
+    }
+  }
+
+  &:has(input:disabled) {
+    .dropzone-content {
+      background-color: var(--modus-wc-color-gray-9);
+      border-color: var(--modus-wc-color-gray-3);
+      color: var(--modus-wc-color-gray-3);
+      cursor: not-allowed;
+    }
+  }
+}

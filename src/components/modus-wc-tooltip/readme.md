@@ -9,6 +9,9 @@
 
 A customizable tooltip component used to create tooltips with different content.
 
+The tooltip can be dismissed by pressing the Escape key when hovering over it.
+When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+
 ## Properties
 
 | Property      | Attribute      | Description                                                                                             | Type                                                            | Default     |
@@ -20,6 +23,26 @@ A customizable tooltip component used to create tooltips with different content.
 | `position`    | `position`     | The position that the tooltip will render in relation to the element.                                   | `"auto" \| "bottom" \| "left" \| "right" \| "top" \| undefined` | `'auto'`    |
 | `tooltipId`   | `tooltip-id`   | The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements. | `string \| undefined`                                           | `undefined` |
 
+
+## Events
+
+| Event           | Description                                                      | Type               |
+| --------------- | ---------------------------------------------------------------- | ------------------ |
+| `dismissEscape` | An event that fires when the tooltip is dismissed via Escape key | `CustomEvent<any>` |
+
+
+## Dependencies
+
+### Used by
+
+ - [modus-wc-menu-item](../modus-wc-menu-item)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-menu-item --> modus-wc-tooltip
+  style modus-wc-tooltip fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

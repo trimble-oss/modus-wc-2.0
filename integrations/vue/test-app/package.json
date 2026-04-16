@@ -1,0 +1,22 @@
+{
+  "name": "test-vue-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:with-tsc": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@trimble-oss/moduswebcomponents-vue": "file:../v-latest/dist",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.0.0",
+    "vue-tsc": "^2.1.0"
+  }
+}

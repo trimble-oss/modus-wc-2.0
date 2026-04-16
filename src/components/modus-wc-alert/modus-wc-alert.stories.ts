@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,6 +7,7 @@ interface AlertArgs {
   'alert-description'?: string;
   'alert-title': string;
   'custom-class'?: string;
+  delay?: number;
   dismissible?: boolean;
   dismissClick?: () => void;
   icon?: string;
@@ -33,8 +35,12 @@ const meta: Meta<AlertArgs> = {
       options: ['', 'error', 'info', 'success', 'warning'],
     },
   },
+  decorators: [withActions],
   parameters: {
     layout: 'padded',
+    actions: {
+      handles: ['dismissClick'],
+    },
   },
 };
 
@@ -50,6 +56,7 @@ const Template: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -70,6 +77,7 @@ export const CustomButton: Story = {
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -77,7 +85,7 @@ export const CustomButton: Story = {
 >
   <modus-wc-button
     aria-label="View messages"
-    color="secondary"
+    color="tertiary"
     slot="button"
     variant="outlined"
   >View Messages</modus-wc-button>
@@ -93,6 +101,7 @@ export const WithCustomContent: Story = {
 <modus-wc-alert
   id="alert-123"
   custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}

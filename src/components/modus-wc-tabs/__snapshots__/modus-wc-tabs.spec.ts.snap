@@ -1,35 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-tabs should render tabs with slotName property 1`] = `
+<modus-wc-tabs>
+  <!---->
+  <div aria-label="Tab Group with Slots" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
+    <button class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+      <div slot="custom-tab-slot-1">
+        Custom Tab Content
+      </div>
+    </button>
+    <button aria-label="Regular Tab" class="modus-wc-tab" id="tab-1" role="tab">
+      <span>
+        Regular Tab
+      </span>
+    </button>
+  </div>
+  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
+    <div class="modus-wc-tab-active">
+      <div slot="tab-0">
+        Tab Panel Content
+      </div>
+    </div>
+    <div hidden=""></div>
+  </div>
+</modus-wc-tabs>
+`;
+
 exports[`modus-wc-tabs should render with custom props 1`] = `
 <modus-wc-tabs custom-class="test-class" size="sm" tab-style="boxed">
   <!---->
   <div aria-label="Custom Tab Group" class="modus-wc-tabs modus-wc-tabs-boxed modus-wc-tabs-sm test-class" role="tablist">
-    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-label="Tab 1" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-label="home" class="modus-wc-tab" id="tab-2" role="tab">
       <modus-wc-icon name="home" size="sm"></modus-wc-icon>
     </button>
-    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-label="Settings" class="modus-wc-tab" id="tab-3" role="tab">
       <modus-wc-icon name="settings" size="sm"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-label="Alerts" class="modus-wc-tab" id="tab-4" role="tab">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="sm"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-label="Custom Tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
       <span>
         Custom Tab
       </span>
@@ -58,32 +84,32 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
-    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-label="Tab 1" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-label="home" class="modus-wc-tab" id="tab-2" role="tab">
       <modus-wc-icon name="home" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-label="Settings" class="modus-wc-tab" id="tab-3" role="tab">
       <modus-wc-icon name="settings" size="md"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-label="Alerts" class="modus-wc-tab" id="tab-4" role="tab">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-label="Custom Tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
       <span>
         Custom Tab
       </span>
@@ -104,32 +130,32 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
-    <button aria-label="Tab 1 tab" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-label="Tab 1" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="" aria-label="Tab 2 tab" class="modus-wc-tab modus-wc-tab-disabled" id="tab-1" role="tab">
+    <button aria-disabled="" aria-label="Tab 2" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home tab" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-label="home" class="modus-wc-tab" id="tab-2" role="tab">
       <modus-wc-icon name="home" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Settings tab" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-label="Settings" class="modus-wc-tab" id="tab-3" role="tab">
       <modus-wc-icon name="settings" size="md"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts tab" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-label="Alerts" class="modus-wc-tab" id="tab-4" role="tab">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-label="Custom Tab" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
       <span>
         Custom Tab
       </span>

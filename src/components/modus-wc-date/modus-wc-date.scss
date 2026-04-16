@@ -1,10 +1,229 @@
 .modus-wc-input {
   @include feedback-levels;
+  @include sizing-tokens;
 }
 
-modus-wc-date {
+modus-wc-date .modus-wc-date-input {
+  background-color: var(--modus-wc-color-base-page);
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
+  }
+
+  &--readonly {
+    background-color: var(--modus-wc-color-base-200);
+  }
+}
+
+// Calendar styles
+modus-wc-date {
+  --calendar-grid-columns: repeat(7, 1fr);
+  --calendar-grid-columns-with-week-numbers: auto repeat(7, 1fr);
+
+  position: relative;
+
+  &.modus-wc-date-input {
+    background-color: var(--modus-wc-color-base-page);
+    border-radius: var(--modus-wc-border-radius-input);
+    color: var(--modus-wc-color-base-content);
+  }
+
+  .date-input-container {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+
+    .calendar-icon-button {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      right: var(--modus-wc-spacing-md);
+
+      :hover {
+        color: var(--modus-wc-color-primary);
+      }
+
+      :disabled {
+        background-color: transparent;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .calendar-container {
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-200);
+    border-radius: var(--rounded-box);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    height: 327px;
+    overflow: hidden;
+    position: fixed;
+    width: 272px;
+    z-index: 9999;
+
+    &.has-week-numbers {
+      width: 320px;
+    }
+
+    .calendar-header {
+      align-items: center;
+      background-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-base-page);
+      display: flex;
+      gap: var(--modus-wc-spacing-sm);
+      justify-content: center;
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
+
+      .nav-btn {
+        i {
+          color: var(--modus-wc-color-primary-content);
+        }
+
+        &:hover {
+          i {
+            color: var(--modus-wc-color-primary);
+          }
+        }
+      }
+
+      .calendar-selects {
+        align-items: center;
+        display: flex;
+        gap: var(--modus-wc-spacing-xs);
+
+        select {
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          color: var(--modus-wc-color-base-content);
+        }
+
+        .month-select {
+          border-radius: var(--modus-wc-border-radius-input);
+        }
+
+        .year-select {
+          border-radius: var(--modus-wc-border-radius-input);
+        }
+
+        select option {
+          background-color: var(--modus-wc-color-base-page);
+          color: var(--modus-wc-color-base-content);
+        }
+      }
+    }
+
+    .calendar-body {
+      background-color: var(--modus-wc-color-base-page);
+      font-size: var(--modus-wc-font-size-md);
+      height: 272px;
+      padding: var(--modus-wc-spacing-xl);
+
+      .calendar-days-week {
+        display: grid;
+        gap: var(--modus-wc-spacing-xs);
+        grid-template-columns: var(--calendar-grid-columns);
+        margin-bottom: var(--modus-wc-spacing-sm);
+
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number-header {
+          margin-inline-end: var(--modus-wc-spacing-md);
+          padding: var(--modus-wc-spacing-xs);
+        }
+
+        .day-header {
+          color: var(--modus-wc-color-base-content-high-contrast);
+          font-weight: var(--modus-wc-font-weight-bold);
+          padding: var(--modus-wc-spacing-xs);
+          text-align: center;
+        }
+      }
+
+      .calendar-dates {
+        display: grid;
+        grid-template-columns: var(--calendar-grid-columns);
+
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number {
+          align-items: center;
+          border-inline-end: 1px solid
+            color-mix(
+              in sRGB,
+              var(--modus-wc-color-base-inverted) 10%,
+              transparent
+            );
+          display: flex;
+          font-size: var(--modus-wc-font-size-sm);
+          font-weight: var(--modus-wc-font-weight-bold);
+          justify-content: center;
+          padding-inline-end: var(--modus-wc-spacing-sm);
+        }
+
+        .calendar-day {
+          align-items: center;
+          background: none;
+          border: none;
+          border-radius: 50%;
+          color: var(--modus-wc-color-base-content-high-contrast);
+          cursor: pointer;
+          display: flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
+
+          &:hover {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-white);
+          }
+
+          &:focus {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-white);
+            outline: none;
+          }
+
+          &.current-day {
+            border: 2px solid var(--modus-wc-color-primary);
+            outline: none;
+          }
+
+          &.selected {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-primary-content);
+            font-weight: var(--modus-wc-font-weight-semibold);
+          }
+
+          &.other-month {
+            color: var(--modus-wc-color-base-content-high-contrast);
+            opacity: 0.5;
+
+            &:hover {
+              background-color: var(--modus-wc-color-base-200);
+              color: var(--modus-wc-color-base-content);
+            }
+          }
+
+          &.disabled {
+            color: var(--modus-wc-color-gray-4);
+
+            &:hover {
+              background-color: transparent;
+              color: var(--modus-wc-color-gray-4);
+            }
+
+            &:focus {
+              border: none;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -12,6 +231,7 @@ modus-wc-date {
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
+    color: var(--modus-wc-color-base-content);
 
     // TODO - add support for xs and xl once added to Modus Figma
 
@@ -36,8 +256,6 @@ modus-wc-date {
     &:focus {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
-      box-shadow: none; // Removes the Tailwind ring effect
-      outline: none; // Ensures there's no outline on focus
     }
 
     &.modus-wc-date-input--readonly {
@@ -56,8 +274,34 @@ modus-wc-date {
 
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   color-scheme: dark; // needed to ensure the calendar icon button is visible in dark mode
-
   &.modus-wc-input:focus {
     border-color: var(--modus-wc-color-highlight-blue);
+  }
+}
+
+[data-theme='connect-light'] modus-wc-date .modus-wc-date-input,
+[data-theme='connect-dark'] modus-wc-date .modus-wc-date-input {
+  @include connect-input-styles;
+}
+
+[data-theme='modus-modern-dark'] modus-wc-date,
+[data-theme='modus-classic-dark'] modus-wc-date {
+  .calendar-container .calendar-header {
+    .nav-btn {
+      i {
+        color: var(--modus-wc-color-primary-content);
+      }
+    }
+
+    .calendar-selects select {
+      background-color: unset;
+      color: var(--modus-wc-color-base-content);
+      font-weight: 600;
+
+      option {
+        background-color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-white);
+      }
+    }
   }
 }

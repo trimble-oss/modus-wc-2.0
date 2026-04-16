@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-button should render with custom props 1`] = `
-<modus-wc-button color="secondary" custom-class="test-class" full-width="true" pressed="true" size="lg" type="submit" variant="outlined">
+<modus-wc-button color="secondary" custom-class="test-class" full-width="true" pressed="" size="lg" type="submit" variant="outlined">
   <!---->
-  <button aria-label="Custom Button" aria-pressed="true" class="modus-wc-btn modus-wc-btn-block modus-wc-btn-lg modus-wc-btn-outline modus-wc-btn-secondary test-class" tabindex="0" type="submit">
+  <button aria-pressed="true" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-block modus-wc-btn-lg modus-wc-btn-outline modus-wc-btn-secondary test-class" tabindex="0" type="submit">
     Test
   </button>
 </modus-wc-button>
@@ -12,7 +12,7 @@ exports[`modus-wc-button should render with custom props 1`] = `
 exports[`modus-wc-button should render with default props 1`] = `
 <modus-wc-button>
   <!---->
-  <button aria-label="Default Button" class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
+  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
     Test
   </button>
 </modus-wc-button>
@@ -21,7 +21,7 @@ exports[`modus-wc-button should render with default props 1`] = `
 exports[`modus-wc-button should render with disabled attribute 1`] = `
 <modus-wc-button disabled="true">
   <!---->
-  <button aria-label="Custom Button" class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
+  <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
     Test
   </button>
 </modus-wc-button>

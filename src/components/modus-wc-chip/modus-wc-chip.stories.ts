@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface ChipArgs {
@@ -10,6 +11,7 @@ interface ChipArgs {
   disabled?: boolean;
   'has-error'?: boolean;
   label: string;
+  shape?: 'rectangle' | 'circle';
   'show-remove'?: boolean;
   size: ModusSize;
   variant: 'filled' | 'outline';
@@ -21,10 +23,15 @@ const meta: Meta<ChipArgs> = {
   args: {
     label: 'Chip',
     'show-remove': true,
+    shape: 'rectangle',
     size: 'md',
     variant: 'filled',
   },
   argTypes: {
+    shape: {
+      control: { type: 'select' },
+      options: ['rectangle', 'circle'],
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -54,6 +61,7 @@ const Template: Story = {
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
       label=${args.label}
+      shape=${args.shape}
       show-remove=${ifDefined(args['show-remove'])}
       size=${args.size}
       variant=${args.variant}
@@ -73,6 +81,7 @@ export const AvatarChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
@@ -96,6 +105,7 @@ export const CheckIconChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
   variant=${args.variant}
@@ -115,6 +125,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
 >
@@ -127,6 +138,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   show-remove="true"
   size=${args.size}
   variant=${args.variant}
@@ -140,6 +152,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
 >
@@ -148,6 +161,44 @@ export const Composable: Story = {
   <modus-wc-icon name="heart" size="xs"></modus-wc-icon>
 </modus-wc-chip>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    // Create a unique shadow host for chip component
+    if (!customElements.get('chip-shadow-host')) {
+      const ChipShadowHost = createShadowHostClass<ChipArgs>({
+        componentTag: 'modus-wc-chip',
+        propsMapper: (v: ChipArgs, el: HTMLElement) => {
+          const chipEl = el as unknown as {
+            ariaLabel: string;
+            active: boolean;
+            customClass: string;
+            disabled: boolean;
+            hasError: boolean;
+            label: string;
+            shape: string;
+            showRemove: boolean;
+            size: string;
+            variant: string;
+          };
+          chipEl.ariaLabel = 'Click me chip';
+          chipEl.active = Boolean(v.active);
+          chipEl.shape = v.shape || 'rectangle';
+          chipEl.size = v.size;
+          chipEl.variant = v.variant;
+          chipEl.customClass = v['custom-class'] || '';
+          chipEl.disabled = Boolean(v.disabled);
+          chipEl.hasError = Boolean(v['has-error']);
+          chipEl.label = v.label;
+          chipEl.showRemove = Boolean(v['show-remove']);
+        },
+      });
+      customElements.define('chip-shadow-host', ChipShadowHost);
+    }
+
+    return html`<chip-shadow-host .props=${{ ...args }}></chip-shadow-host>`;
   },
 };
 
@@ -180,6 +231,7 @@ export const Migration: Story = {
 | show-close     | show-remove |                                                   |
 | size           | size        | \`medium\` → \`md\`, \`small\` → \`sm\`           |
 | value          | label       |                                                   |
+|                | shape       | New in 2.0: \`rectangle\` (default), \`circle\` |
 
 #### Event Mapping
 

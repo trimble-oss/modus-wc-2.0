@@ -34,53 +34,94 @@ body {
   background-color: var(--modus-wc-color-base-page);
 }
 
+/*
+  Modal Scrollbar Behavior Override
+  Tailwind/DaisyUI applies `scrollbar-gutter: stable` to :root when a modal is open
+  (e.g., `:root:has(.modus-wc-modal-open, ...)`). This reserves space for the
+  scrollbar, leaving a visible empty gutter beside the content. We override it to
+  `auto` so the layout reflows naturally and the gutter disappears.
+*/
+:root:has(
+    :is(
+      .modus-wc-modal-open,
+      .modus-wc-modal:target,
+      .modus-wc-modal-toggle:checked + .modus-wc-modal,
+      .modus-wc-modal[open]
+    )
+  ) {
+  scrollbar-gutter: auto !important;
+}
+
 .modus-wc-border {
   border-color: var(--modus-wc-color-base-200);
   border-radius: 1px;
   border-style: solid;
 }
 
-modus-wc-text-input,
-modus-wc-select,
-modus-wc-textarea,
-modus-wc-time-input,
-modus-wc-number-input,
-modus-wc-date {
+modus-wc-text-input .modus-wc-text-input,
+modus-wc-textarea .modus-wc-textarea,
+modus-wc-time-input .modus-wc-time-input,
+modus-wc-date .modus-wc-date {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
+  padding: 0 var(--modus-wc-spacing-sm);
+}
+
+modus-wc-select {
+  --fallback-b1: transparent;
+
+  background: var(--modus-wc-color-base-page);
+}
+
+modus-wc-number-input .modus-wc-number-input {
+  --fallback-b1: transparent;
+
+  background: var(--modus-wc-color-base-page);
+}
+
+/* Utility Panel Content Push Classes */
+.modus-wc-utility-panel-push-target {
+  transition: margin-inline-end
+    var(--modus-wc-utility-panel-transition-duration, 0.3s) ease-out;
+}
+
+.modus-wc-utility-panel-push-target.modus-wc-utility-panel-pushed {
+  margin-inline-end: var(--modus-wc-utility-panel-width, 312px);
 }
 
 /* Modus Modern Themes */
 [data-theme='modus-modern-light']:root {
   color-scheme: light;
 
-  --modus-wc-color-base-page: #fff;
-  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
-  --modus-wc-color-base-200: var(--modus-wc-color-gray-0);
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-01);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-02);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-white);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-modern-dark']:root {
   color-scheme: dark;
 
-  --modus-wc-color-base-page: #000;
-  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
-  --modus-wc-color-base-200: var(--modus-wc-color-gray-9);
-  --modus-wc-color-base-300: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-page: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
 /* Modus Classic Themes */
 [data-theme='modus-classic-light']:root {
   color-scheme: light;
 
-  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
@@ -89,18 +130,43 @@ modus-wc-date {
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
 [data-theme='modus-classic-dark']:root {
   color-scheme: dark;
 
-  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-page: var(--modus-wc-color-black);
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
-  --modus-wc-color-base-300: var(--modus-wc-color-9);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
   --modus-wc-color-success: var(--modus-wc-color-green);
   --modus-wc-color-error: var(--modus-wc-color-red);
   --modus-wc-color-warning: var(--modus-wc-color-yellow);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
+}
+
+/* Connect Themes */
+[data-theme='connect-light']:root {
+  color-scheme: light;
+
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
+}
+
+[data-theme='connect-dark']:root {
+  color-scheme: dark;
+
+  --modus-wc-color-base-page: var(--modus-wc-color-black);
+  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
