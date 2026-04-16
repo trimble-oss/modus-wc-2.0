@@ -7,6 +7,7 @@ import {
   INavbarUserCard,
   INavbarVisibility,
 } from './modus-wc-navbar';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { getAvailableLogos, LogoName } from '../modus-wc-logo/logo-constants';
 
 const textOverrides: INavbarTextOverrides = {
@@ -27,6 +28,7 @@ const visibility: INavbarVisibility = {
   ai: true,
   apps: true,
   help: true,
+  logo: true,
   mainMenu: true,
   notifications: true,
   search: true,
@@ -90,8 +92,6 @@ const meta: Meta<NavbarArgs> = {
       options: getAvailableLogos(),
     },
     'user-card': {
-      description:
-        '⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.',
       table: {
         type: {
           detail: `
@@ -117,6 +117,7 @@ const meta: Meta<NavbarArgs> = {
             - ai (boolean, optional): Controls visibility of the AI button
             - apps (boolean, optional): Controls visibility of the apps button
             - help (boolean, optional): Controls visibility of the help button
+            - logo (boolean, optional): Controls visibility of the logo button; omit for visible
             - mainMenu (boolean, optional): Controls visibility of the main menu button
             - notifications (boolean, optional): Controls visibility of the notifications button
             - search (boolean, optional): Controls visibility of the search button
@@ -197,6 +198,7 @@ const Template: Story = {
 //     ai: true,
 //     apps: true,
 //     help: true,
+//     logo: true,
 //     mainMenu: true,
 //     notifications: true,
 //     search: true,
@@ -401,6 +403,7 @@ export const CustomMenuAndSlots: Story = {
         //     ai: false,
         //     apps: false,
         //     help: false,
+        //     logo: true,
         //     mainMenu: false,
         //     notifications: false,
         //     search: false,
@@ -484,4 +487,73 @@ export const CustomLogoSizes: Story = {
       </div>
     </div>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('navbar-shadow-host')) {
+      const NavbarShadowHost = createShadowHostClass<NavbarArgs>({
+        componentTag: 'modus-wc-navbar',
+        propsMapper: (v: NavbarArgs, el: HTMLElement) => {
+          const navbarEl = el as unknown as {
+            condensed: boolean;
+            customClass: string;
+            logoName: LogoName;
+            searchDebounceMs: number;
+            textOverrides: INavbarTextOverrides;
+            userCard: INavbarUserCard;
+            visibility: INavbarVisibility;
+          };
+          navbarEl.condensed = Boolean(v.condensed);
+          navbarEl.customClass = v['custom-class'] || '';
+          navbarEl.logoName = v['logo-name'];
+          navbarEl.searchDebounceMs = v['search-debounce-ms'] ?? 300;
+          navbarEl.textOverrides = v['text-overrides'] as INavbarTextOverrides;
+          navbarEl.userCard = v['user-card'];
+          navbarEl.visibility = v.visibility as INavbarVisibility;
+
+          if (!el.querySelector('[slot="main-menu"]')) {
+            const mainMenu = document.createElement('div');
+            mainMenu.setAttribute('slot', 'main-menu');
+            mainMenu.textContent = 'Main menu contents';
+
+            const notifications = document.createElement('div');
+            notifications.setAttribute('slot', 'notifications');
+            notifications.textContent = 'Notification contents';
+
+            const apps = document.createElement('div');
+            apps.setAttribute('slot', 'apps');
+            apps.textContent = 'App drawer contents';
+
+            el.appendChild(mainMenu);
+            el.appendChild(notifications);
+            el.appendChild(apps);
+
+            // Inject slot styles into shadow root (matches Default story styling)
+            const shadowRoot = el.getRootNode() as ShadowRoot;
+            const styleEl = document.createElement('style');
+            styleEl.textContent = `
+              :host {
+                display: block;
+                border: 1px dashed black;
+                height: 360px;
+                overflow: hidden;
+              }
+              [slot='main-menu'] {
+                background-color: #0063a3;
+                color: white;
+                height: 400px;
+              }
+            `;
+            shadowRoot.appendChild(styleEl);
+          }
+        },
+      });
+      customElements.define('navbar-shadow-host', NavbarShadowHost);
+    }
+
+    return html`<navbar-shadow-host
+      .props=${{ ...args }}
+    ></navbar-shadow-host>`;
+  },
 };

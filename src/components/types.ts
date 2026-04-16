@@ -9,6 +9,27 @@ export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
 export type Orientation = 'horizontal' | 'vertical';
 
+export type SelectionMode = 'single' | 'multiple';
+
+export type TypographyHierarchy = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
+
+export type TypographySize =
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | '7xl'
+  | '8xl'
+  | '9xl';
+
+export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
+
 export type WeekStartDay =
   | 'sunday'
   | 'monday'

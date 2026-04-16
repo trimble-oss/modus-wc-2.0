@@ -280,7 +280,7 @@
             {
               "name": "props",
               "type": {
-                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
+                "text": "{\n  bordered?: boolean;\n  disabled?: boolean;\n  feedback?: IInputFeedbackProp;\n  readOnly?: boolean;\n  size?: ModusSize;\n}"
               }
             }
           ]
@@ -899,6 +899,14 @@
           ],
           "attributes": [
             {
+              "name": "auto-complete",
+              "fieldName": "autoComplete",
+              "description": "Hint for form autofill feature.",
+              "type": {
+                "text": "AutocompleteTypes"
+              }
+            },
+            {
               "name": "bordered",
               "fieldName": "bordered",
               "default": "true",
@@ -964,6 +972,14 @@
               "description": "Whether the form control is disabled.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "Feedback state for the input field.",
+              "type": {
+                "text": "IInputFeedbackProp"
               }
             },
             {
@@ -2334,6 +2350,11 @@
             },
             {
               "kind": "method",
+              "name": "handleFormatChange",
+              "description": "Re-displays the stored ISO value in the new format when the `format` prop changes."
+            },
+            {
+              "kind": "method",
               "name": "handleMaxChange",
               "parameters": [
                 {
@@ -2419,7 +2440,6 @@
             {
               "name": "format",
               "fieldName": "format",
-              "default": "'dd-mm-yyyy'",
               "description": "The date format for display and input.",
               "type": {
                 "text": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'"
@@ -2495,7 +2515,7 @@
               "name": "show-week-numbers",
               "fieldName": "showWeekNumbers",
               "default": "false",
-              "description": "Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.",
+              "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.",
               "type": {
                 "text": "boolean"
               }
@@ -2560,7 +2580,7 @@
               "type": {
                 "text": "EventEmitter<InputEvent>"
               },
-              "description": "Event emitted when the input value changes."
+              "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid."
             },
             {
               "kind": "field",
@@ -2799,6 +2819,15 @@
               "description": "The color variant of the button.",
               "type": {
                 "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'"
+              }
+            },
+            {
+              "name": "button-shape",
+              "fieldName": "buttonShape",
+              "default": "'rectangle'",
+              "description": "The shape of the button.",
+              "type": {
+                "text": "'circle' | 'ellipse' | 'rectangle' | 'square'"
               }
             },
             {
@@ -3605,7 +3634,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.",
+          "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
           "name": "ModusWcLogo",
           "members": [
             {
@@ -3615,6 +3644,10 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "onLogoPropsChange"
             },
             {
               "kind": "method",
@@ -3709,6 +3742,18 @@
               "description": "Reference to the host element"
             },
             {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "isExpanded",
               "type": {
@@ -3798,14 +3843,6 @@
               }
             },
             {
-              "name": "start-icon",
-              "fieldName": "startIcon",
-              "description": "The modus icon name to render on the start of the menu item.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "sub-label",
               "fieldName": "subLabel",
               "description": "The text rendered beneath the label.",
@@ -3892,6 +3929,46 @@
             },
             {
               "kind": "method",
+              "name": "handleFocusout",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "FocusEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSelectionModeChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -3931,6 +4008,15 @@
               }
             },
             {
+              "name": "selection-mode",
+              "fieldName": "selectionMode",
+              "default": "'single'",
+              "description": "The selection mode of the menu.",
+              "type": {
+                "text": "SelectionMode"
+              }
+            },
+            {
               "name": "size",
               "fieldName": "size",
               "default": "'md'",
@@ -3949,6 +4035,14 @@
                 "text": "EventEmitter<FocusEvent>"
               },
               "description": "Event emitted when the menu loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "menuSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>"
+              },
+              "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
             }
           ],
           "customElement": true
@@ -4089,7 +4183,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable navbar component used for top level navigation of all Trimble applications.\n\nThe component supports a 'main-menu', 'notifications', and 'apps' <slot> for injecting custom HTML menus. It also supports a 'start', 'center', and 'end' `<slot>` for injecting additional custom HTML.",
+          "description": "A customizable navbar component used for top level navigation of all Trimble applications.",
           "name": "ModusWcNavbar",
           "members": [
             {
@@ -4152,6 +4246,15 @@
               "description": "Custom CSS class to apply to the host element.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "logo-name",
+              "fieldName": "logoName",
+              "default": "'trimble'",
+              "description": "The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.",
+              "type": {
+                "text": "LogoName"
               }
             },
             {
@@ -4218,7 +4321,7 @@
             {
               "name": "visibility",
               "fieldName": "visibility",
-              "default": "{ ai: false, apps: false, help: false, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+              "default": "{ ai: false, apps: false, help: false, logo: true, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
               "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden.",
               "type": {
                 "text": "INavbarVisibility"
@@ -4337,7 +4440,7 @@
               "type": {
                 "text": "EventEmitter<MouseEvent | KeyboardEvent>"
               },
-              "description": "Event emitted when the Trimble logo is clicked or activated via keyboard."
+              "description": "Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value."
             },
             {
               "kind": "field",
@@ -4805,6 +4908,157 @@
           "declaration": {
             "name": "ModusWcPanel",
             "module": "src/components/modus-wc-panel/modus-wc-panel.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcProfileMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "menu-one",
+              "fieldName": "menuOne",
+              "description": "Configuration for the first menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "menu-two",
+              "fieldName": "menuTwo",
+              "description": "Configuration for the second menu including title and items",
+              "type": {
+                "text": "ISubMenu"
+              }
+            },
+            {
+              "name": "profile-props",
+              "fieldName": "profileProps",
+              "description": "Profile menu properties containing user information",
+              "type": {
+                "text": "IProfileMenuProps"
+              }
+            }
+          ],
+          "tagName": "modus-wc-profile-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuItemClick",
+              "type": {
+                "text": "EventEmitter<string>"
+              },
+              "description": "Emitted when any menu item is clicked, passing back the item value or label"
+            },
+            {
+              "kind": "field",
+              "name": "signOutClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Emitted when the Sign Out menu item is clicked"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcProfileMenu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-profile-menu",
+          "declaration": {
+            "name": "ModusWcProfileMenu",
+            "module": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-profile-menu/utils/menu_template.tsx",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "renderSubMenu",
+          "parameters": [
+            {
+              "name": "subMenu",
+              "optional": true,
+              "type": {
+                "text": "ISubMenu"
+              },
+              "description": "The submenu configuration containing title and items"
+            },
+            {
+              "name": "onMenuItemClick",
+              "optional": true,
+              "type": {
+                "text": "(value: string) => void"
+              },
+              "description": "Callback function when a menu item is clicked"
+            },
+            {
+              "name": "isMainMenu",
+              "optional": true,
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "description": "Renders a submenu section with optional title and menu items",
+          "return": {
+            "type": {
+              "text": ""
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "renderSubMenu",
+          "declaration": {
+            "name": "renderSubMenu",
+            "module": "src/components/modus-wc-profile-menu/utils/menu_template.tsx"
           }
         }
       ]
@@ -7554,7 +7808,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\n\nNote: When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\nproviding your own custom values for the size or weight properties from the available options.",
+          "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\n\nNote:\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\nproviding your own custom values for the size or weight properties from the available options.\n\n\n- If both slot content and `label` are provided, only the slot content will be rendered\n- Use the `label` prop when you need to dynamically update the text.",
           "name": "ModusWCTypography",
           "members": [
             {

@@ -9,7 +9,7 @@
 
 A customizable menu item component used to display the item portion of a menu.
 
-The component supports a `<slot>` called 'start-icon' for custom icons at the start of the item.
+This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
 
 ## Properties
 
@@ -24,7 +24,6 @@ The component supports a `<slot>` called 'start-icon' for custom icons at the st
 | `label`           | `label`            | The text rendered in the menu item.                                                                                 | `string`                                                        | `''`        |
 | `selected`        | `selected`         | The selected state of the menu item.                                                                                | `boolean \| undefined`                                          | `undefined` |
 | `size`            | `size`             | The size of the menu item.                                                                                          | `"lg" \| "md" \| "sm" \| undefined`                             | `'md'`      |
-| `startIcon`       | `start-icon`       | The modus icon name to render on the start of the menu item.                                                        | `string \| undefined`                                           | `undefined` |
 | `subLabel`        | `sub-label`        | The text rendered beneath the label.                                                                                | `string \| undefined`                                           | `undefined` |
 | `tooltipContent`  | `tooltip-content`  | The tooltip text to display when hovering over the menu item.                                                       | `string \| undefined`                                           | `undefined` |
 | `tooltipPosition` | `tooltip-position` | The position of the tooltip relative to the menu item.                                                              | `"auto" \| "bottom" \| "left" \| "right" \| "top" \| undefined` | `'auto'`    |
@@ -57,6 +56,7 @@ Type: `Promise<void>`
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-navbar](../modus-wc-navbar)
+ - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Depends on
 
@@ -71,6 +71,7 @@ graph TD;
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
+  modus-wc-profile-menu --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

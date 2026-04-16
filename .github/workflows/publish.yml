@@ -27,12 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
@@ -110,7 +110,7 @@ jobs:
         id: npm_pack
 
       - name: Upload tarball as artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: npm-tarball
           path: 'dist/*.tgz'
@@ -129,12 +129,30 @@ jobs:
         working-directory: dist
         run: npm publish --registry=https://npm.pkg.github.com --access public --ignore-scripts
 
+      - name: Commit version bump and open PR to main
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          BRANCH="chore/version-bump-${{ github.event.inputs.version }}"
+          git checkout -b "$BRANCH"
+          git add package.json
+          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: bump version to ${{ github.event.inputs.version }}" \
+            --body "Automated version bump after publishing \`${{ github.event.inputs.version }}\` to npm." \
+            --base main \
+            --head "$BRANCH"
+
   trigger-angular-publish:
     needs: build-and-publish-wc
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Angular Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-angular.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -144,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger React Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-react.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -154,9 +172,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Vue Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-vue.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
+  trigger-mcp-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger MCP Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.3
+        with:
+          workflow: publish-mcp.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   release-wc:
@@ -164,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download tarball artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: npm-tarball
           path: .
@@ -177,7 +205,7 @@ jobs:
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-${{ github.event.inputs.version }}

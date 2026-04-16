@@ -1,6 +1,6 @@
 {
   "name": "@trimble-oss/moduswebcomponents",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
   "keywords": [
     "trimble",
@@ -212,7 +212,8 @@
       "dependencies": [
         "build:cem-json",
         "tailwind:build",
-        "embed:css"
+        "embed:css",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -240,7 +241,8 @@
       },
       "dependencies": [
         "build:cem-json",
-        "tailwind:watch"
+        "tailwind:watch",
+        "generate:logo-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -305,6 +307,16 @@
       "output": [
         "src/providers/theme/css-content.ts",
         "src/styles/modus-wc-variables.css"
+      ]
+    },
+    "generate:logo-data": {
+      "command": "node scripts/generate-logo-data.js",
+      "files": [
+        "src/components/modus-wc-logo/assets/logos/**/*.svg",
+        "scripts/generate-logo-data.js"
+      ],
+      "output": [
+        "src/components/modus-wc-logo/logo-svg-data.ts"
       ]
     },
     "tailwind:watch": {

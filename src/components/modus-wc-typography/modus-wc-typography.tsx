@@ -1,12 +1,11 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
+import {
+  TypographyHierarchy,
+  TypographySize,
+  TypographyWeight,
+} from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-
-export type TypographyHierarchy = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
-
-export type TypographySize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-
-export type TypographyWeight = 'light' | 'normal' | 'semibold' | 'bold';
 
 /**
  * A customizable typography component used to render text with different sizes, hierarchy, and weights.

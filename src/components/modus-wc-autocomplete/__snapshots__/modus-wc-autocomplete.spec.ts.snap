@@ -129,7 +129,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
       <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_80" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <div class="modus-wc-autocomplete-no-results">
@@ -159,7 +159,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
       <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_90" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu class="menu-visible">
+  <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
     <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
       <div class="modus-wc-autocomplete-no-results">
@@ -276,9 +276,7 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
           <span class="modus-wc-chip-label">
             Chip 1
           </span>
-          <svg class="mi-cancel-circle mi-solid modus-wc-chip-remove-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"></path>
-          </svg>
+          <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
         </button>
       </modus-wc-chip>
       <modus-wc-chip show-remove="">
@@ -287,9 +285,7 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
           <span class="modus-wc-chip-label">
             Chip 3
           </span>
-          <svg class="mi-cancel-circle mi-solid modus-wc-chip-remove-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41 9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12 7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"></path>
-          </svg>
+          <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
         </button>
       </modus-wc-chip>
       <modus-wc-text-input inputmode="text" value="">

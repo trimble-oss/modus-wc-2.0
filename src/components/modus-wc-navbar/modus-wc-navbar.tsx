@@ -21,9 +21,9 @@ import { MenuSolidIcon } from '../../icons/menu-solid.icon';
 import { MoreVerticalSolidIcon } from '../../icons/more-vertical-solid.icon';
 import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { LogoName } from '../modus-wc-logo/logo-constants';
 import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
-
 export interface INavbarTextOverrides {
   /** Replaces the text for "Apps" in the condensed menu. */
   apps?: string;
@@ -42,6 +42,8 @@ export interface INavbarVisibility {
   apps?: boolean;
   /** Controls visibility of the help button. */
   help?: boolean;
+  /** Controls visibility of the product / Trimble logo button. Defaults to visible when omitted. */
+  logo?: boolean;
   /** Controls visibility of the main menu button. */
   mainMenu?: boolean;
   /** Controls visibility of the notifications button. */
@@ -54,7 +56,6 @@ export interface INavbarVisibility {
   user?: boolean;
 }
 
-/** @deprecated This interface will be replaced by the `IProfileMenuProps` interface from `modus-wc-profile-menu` in an upcoming release. */
 export interface INavbarUserCard {
   /** The alt value to set on the avatar. */
   avatarAlt?: string;
@@ -72,9 +73,6 @@ export interface INavbarUserCard {
 
 /**
  * A customizable navbar component used for top level navigation of all Trimble applications.
- *
- * ⚠️ **Deprecated**: The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
- *The component requires a profileProps object with user information and optionally accepts menuOne and menuTwo for custom menus.
  */
 @Component({
   tag: 'modus-wc-navbar',
@@ -123,9 +121,7 @@ export class ModusWcNavbar {
   /** Text replacements for the navbar. */
   @Prop() textOverrides?: INavbarTextOverrides;
 
-  /** User information used to render the user card.
-   * @deprecated The `user-card` prop will be replaced by `profile-props` prop of the `modus-wc-profile-menu` component in an upcoming release.
-   */
+  /** User information used to render the user card. */
   @Prop() userCard!: INavbarUserCard;
 
   /** The open state of the user menu. */
@@ -136,6 +132,7 @@ export class ModusWcNavbar {
     ai: false,
     apps: false,
     help: false,
+    logo: true,
     mainMenu: false,
     notifications: false,
     search: false,
@@ -195,6 +192,9 @@ export class ModusWcNavbar {
   private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     this.isLight = isLightMode();
@@ -219,7 +219,7 @@ export class ModusWcNavbar {
 
   @Listen('click', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+    const path = event.composedPath ? event.composedPath() : [event.target];
 
     if (this.appsMenuOpen) {
       const appsButton = this.el.querySelector(
@@ -227,9 +227,8 @@ export class ModusWcNavbar {
       );
       if (
         this.appsRef &&
-        !this.appsRef.contains(target) &&
-        appsButton !== target &&
-        !appsButton?.contains(target)
+        !path.includes(this.appsRef) &&
+        !path.includes(appsButton)
       ) {
         this.appsMenuOpen = false;
         this.appsMenuOpenChange.emit(false);
@@ -242,9 +241,8 @@ export class ModusWcNavbar {
       );
       if (
         this.condensedMenuRef &&
-        !this.condensedMenuRef.contains(target) &&
-        condenseMenuButton !== target &&
-        !condenseMenuButton?.contains(target)
+        !path.includes(this.condensedMenuRef) &&
+        !path.includes(condenseMenuButton)
       ) {
         this.condensedMenuOpen = false;
         this.condensedMenuOpenChange.emit(false);
@@ -257,9 +255,8 @@ export class ModusWcNavbar {
       );
       if (
         this.menuRef &&
-        !this.menuRef.contains(target) &&
-        menuButton !== target &&
-        !menuButton?.contains(target)
+        !path.includes(this.menuRef) &&
+        !path.includes(menuButton)
       ) {
         this.mainMenuOpen = false;
       }
@@ -271,9 +268,8 @@ export class ModusWcNavbar {
       );
       if (
         this.notificationsRef &&
-        !this.notificationsRef.contains(target) &&
-        notificationsButton !== target &&
-        !notificationsButton?.contains(target)
+        !path.includes(this.notificationsRef) &&
+        !path.includes(notificationsButton)
       ) {
         this.notificationsMenuOpen = false;
         this.notificationsMenuOpenChange.emit(false);
@@ -286,9 +282,8 @@ export class ModusWcNavbar {
       );
       if (
         this.userRef &&
-        !this.userRef.contains(target) &&
-        userButton !== target &&
-        !userButton?.contains(target)
+        !path.includes(this.userRef) &&
+        !path.includes(userButton)
       ) {
         this.userMenuOpen = false;
         this.userMenuOpenChange.emit(false);
@@ -451,18 +446,20 @@ export class ModusWcNavbar {
               </Fragment>
             )}
 
-            <modus-wc-button
-              aria-label={`${accessibleName} logo`}
-              customClass="logo"
-              onButtonClick={this.handleTrimbleLogoClick}
-              size="sm"
-              variant="borderless"
-            >
-              <modus-wc-logo
-                name={this.logoName || 'trimble'}
-                emblem={this.condensed}
-              ></modus-wc-logo>
-            </modus-wc-button>
+            {this.visibility?.logo !== false && (
+              <modus-wc-button
+                aria-label={`${accessibleName} logo`}
+                customClass="logo"
+                onButtonClick={this.handleTrimbleLogoClick}
+                size="sm"
+                variant="borderless"
+              >
+                <modus-wc-logo
+                  name={this.logoName || 'trimble'}
+                  emblem={this.condensed}
+                ></modus-wc-logo>
+              </modus-wc-button>
+            )}
 
             <slot name="start" />
           </div>

@@ -5,7 +5,6 @@ modus-wc-side-navigation {
 
   .modus-wc-side-navigation {
     background: var(--modus-wc-color-base-page);
-    box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
     color: var(--modus-wc-color-base-content);
     display: flex;
     flex-direction: column;
@@ -21,42 +20,99 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    color: var(--modus-wc-color-base-content);
     flex: 1 1 auto;
+    max-width: 100%;
   }
 
   modus-wc-menu .modus-wc-menu {
     background-color: transparent;
     border-radius: 0;
+
+    & > li {
+      max-width: 100%;
+    }
+  }
+
+  modus-wc-menu-item {
+    max-width: 100%;
   }
 
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
-    border-radius: 0;
-    padding: var(--modus-wc-spacing-md) 1.25rem;
+    padding-inline-end: var(--modus-wc-spacing-xs);
+    padding-inline-start: var(--modus-wc-spacing-xs);
+
+    &.modus-wc-menu-dropdown-toggle {
+      max-height: 32px;
+      padding-inline-start: var(--modus-wc-spacing-xs);
+    }
+
+    &:not(.modus-wc-menu-dropdown-toggle) {
+      max-height: 32px;
+      padding-inline-start: var(--modus-wc-spacing-xs);
+    }
   }
 }
 
-[data-theme='modus-modern-light'] modus-wc-side-navigation {
-  .modus-wc-side-navigation {
-    background-image: url('dist/styles/assets/Sidenavpattern.svg');
-    background-size: cover;
-    box-shadow: none;
-  }
-}
-
+[data-theme='modus-modern-light'] modus-wc-side-navigation,
 [data-theme='modus-modern-dark'] modus-wc-side-navigation {
+  .modus-wc-side-navigation-expanded {
+    modus-wc-menu-item
+      .modus-wc-menu-item
+      > button
+      .modus-wc-menu-item-content
+      .modus-wc-menu-item-labels {
+      display: block;
+      padding-inline-end: 0;
+      padding-inline-start: var(--modus-wc-spacing-md);
+    }
+  }
+
   .modus-wc-side-navigation {
-    background: var(--modus-wc-color-trimble-gray);
-    background-image: url('dist/styles/assets/Sidenavdarkpattern.svg');
     background-size: cover;
     box-shadow: none;
+  }
+
+  .side-navigation-content {
+    color: var(--modus-wc-color-base-page);
+    flex: 1 1 auto;
+    padding: 0 var(--modus-wc-spacing-lg);
+  }
+
+  modus-wc-menu-item .modus-wc-menu-item {
+    border-radius: var(--modus-wc-border-radius-btn);
+    margin-bottom: var(--modus-wc-spacing-xs);
+
+    & > button {
+      padding-inline-end: var(--modus-wc-spacing-md);
+    }
+
+    & > button .modus-wc-menu-item-content .modus-wc-menu-item-labels {
+      display: none;
+      padding: 0;
+      padding-inline-end: var(--modus-wc-spacing-md);
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-side-navigation,
+[data-theme='modus-classic-dark'] modus-wc-side-navigation {
+  modus-wc-menu-item .modus-wc-menu-item button {
+    background-color: transparent;
+    padding: var(--modus-wc-spacing-md) 1.25rem;
+    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-start: calc(var(--modus-wc-spacing-lg) + 0.25rem);
   }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
-  .side-navigation-content {
+  .modus-wc-side-navigation {
     background: var(--modus-wc-color-gray-10);
+    background-size: cover;
+    box-shadow: none;
+  }
+
+  .side-navigation-content {
     color: var(--modus-wc-color-white);
   }
 
@@ -118,6 +174,11 @@ modus-wc-side-navigation {
   }
 
   modus-wc-menu-item .modus-wc-menu-item button {
+    background-color: transparent;
+    padding: var(--modus-wc-spacing-xs) 1.25rem;
+    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-start: calc(var(--modus-wc-spacing-lg) + 0.25rem);
+
     &:hover {
       background: var(--modus-wc-color-trimble-blue);
       color: var(--modus-wc-color-white);
@@ -128,7 +189,7 @@ modus-wc-side-navigation {
     }
   }
 
-  modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-selected button {
+  modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-active button {
     background: var(--modus-wc-color-blue-light);
     color: var(--modus-wc-color-white);
     font-weight: var(--modus-wc-font-weight-semibold);

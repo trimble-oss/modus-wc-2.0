@@ -1,0 +1,210 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Modus Icon Usage" />
+
+# Modus Icon Usage
+
+Modus Web Components require Modus Icons.
+
+Starting from v0.0.0-beta.5, the Web Components package supports both outlined and solid icon variants through a single CSS file.
+
+## 1. Installation
+
+### Option A: Online Usage (CDN)
+
+Create a file at:
+
+```
+/public/modus-web-components/modus-icons.css
+```
+
+with the following contents:
+
+```css
+@font-face {
+  font-family: 'modus-icons';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-outlined';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-outlined/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-solid';
+  src: url('https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons@1/dist/modus-solid/fonts/modus-icons.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+.modus-icons-outlined {
+  font-family: 'modus-icons-outlined';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons-solid {
+  font-family: 'modus-icons-solid';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons {
+  font-family: 'modus-icons';
+  font-style: normal;
+  font-weight: normal;
+}
+```
+
+Then include it in your app:
+
+```html
+<head>
+  <link rel="stylesheet" href="/modus-web-components/modus-icons.css" />
+</head>
+```
+
+### Option B: Offline Usage
+
+For applications requiring offline capability, follow these steps:
+
+1. Install the Modus Icons package:
+
+```bash
+npm install @trimble-oss/modus-icons
+```
+
+2. Download the font files:
+
+```
+node_modules/@trimble-oss/modus-icons/dist/modus-outlined/fonts/modus-icons.woff2
+node_modules/@trimble-oss/modus-icons/dist/modus-solid/fonts/modus-icons.woff2
+```
+
+3. Create this directory structure in your project:
+
+```
+public/
+  └── modus-web-components/
+      ├── fonts/
+      │   ├── modus-icons-outlined.woff2  (renamed from modus-outlined/fonts/modus-icons.woff2)
+      │   └── modus-icons-solid.woff2     (renamed from modus-solid/fonts/modus-icons.woff2)
+      └── modus-icons.css
+```
+
+4. Create a modified `modus-icons.css` file that references the local font files:
+
+```css
+@font-face {
+  font-family: 'modus-icons';
+  src: url('./fonts/modus-icons-outlined.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-outlined';
+  src: url('./fonts/modus-icons-outlined.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'modus-icons-solid';
+  src: url('./fonts/modus-icons-solid.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+.modus-icons-outlined {
+  font-family: 'modus-icons-outlined';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons-solid {
+  font-family: 'modus-icons-solid';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.modus-icons {
+  font-family: 'modus-icons';
+  font-style: normal;
+  font-weight: normal;
+}
+```
+
+5. Include the CSS file in your HTML just as in the online version:
+
+```html
+<head>
+  <link rel="stylesheet" href="/modus-web-components/modus-icons.css" />
+</head>
+```
+
+## 2. Usage in Components
+
+Once the stylesheet is loaded, you can use icons in any framework:
+
+### Web Components
+
+```html
+<!-- Outlined icon (default) -->
+<modus-wc-icon name="alert" variant="outlined"></modus-wc-icon>
+
+<!-- Solid icon -->
+<modus-wc-icon name="alert" variant="solid"></modus-wc-icon>
+```
+
+### React
+
+```tsx
+import { ModusWcIcon } from '@trimble-oss/moduswebcomponents-react';
+
+export function IconExamples() {
+  return (
+    <div>
+      {/* Outlined */}
+      <ModusWcIcon name="alert" variant="outlined" />
+
+      {/* Solid */}
+      <ModusWcIcon name="alert" variant="solid" />
+
+      {/* Accessible icon */}
+      <ModusWcIcon
+        name="accessibility_circle"
+        variant="solid"
+        decorative={false}
+        aria-label="Accessibility features"
+      />
+
+      {/* Custom styling */}
+      <ModusWcIcon
+        name="add_bold"
+        variant="outlined"
+        decorative
+        style={{ color: 'var(--modus-wc-color-trimble-blue)' }}
+      />
+    </div>
+  );
+}
+```
+
+### Angular, Vue, etc.
+
+Follow the same approach — just make sure to include the global CSS file once in your application.
