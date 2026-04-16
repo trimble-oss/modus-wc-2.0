@@ -64,20 +64,20 @@ modus-wc-time-input .modus-wc-time-input,
 modus-wc-date .modus-wc-date {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
   padding: 0 var(--modus-wc-spacing-sm);
 }
 
 modus-wc-select {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 modus-wc-number-input .modus-wc-number-input {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 /* Utility Panel Content Push Classes */

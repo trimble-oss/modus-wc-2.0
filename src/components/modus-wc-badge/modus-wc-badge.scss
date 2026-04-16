@@ -4,11 +4,15 @@
 */
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
+
 modus-wc-badge .modus-wc-badge {
+  display: flex;
   font-weight: var(--modus-wc-font-weight-semibold);
+  height: fit-content;
 
   &.modus-wc-badge-sm {
     font-size: var(--modus-wc-font-size-xs);
+    max-height: var(--modus-wc-size-xs);
   }
 
   &.modus-wc-badge-md {
