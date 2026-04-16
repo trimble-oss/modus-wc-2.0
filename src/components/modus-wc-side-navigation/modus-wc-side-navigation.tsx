@@ -9,6 +9,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -67,6 +68,9 @@ export class ModusWcSideNavigation {
   }
 
   componentWillLoad() {
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
+
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -104,7 +108,10 @@ export class ModusWcSideNavigation {
   };
 
   private setTargetContentMargin(isExpanded, mode, target) {
-    const content = document.querySelector(target);
+    const root = this.el.getRootNode() as ShadowRoot | Document;
+    const content =
+      (root instanceof ShadowRoot ? root : document).querySelector(target) ??
+      document.querySelector(target);
     if (content && 'style' in content) {
       (content as HTMLElement).style.marginLeft =
         isExpanded && mode === 'push' ? this.maxWidth : this.minWidth;
