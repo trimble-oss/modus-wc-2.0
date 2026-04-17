@@ -251,10 +251,6 @@ modus-wc-switch .modus-wc-toggle {
       outline-offset: var(--modus-wc-border-width-sm);
     }
 
-    &:disabled {
-      --fallback-b1: var(--modus-wc-color-gray-light);
-    }
-
     // Sizes
     &.modus-wc-toggle-xs {
       --handleoffset: var(--modus-wc-spacing-sm);
@@ -309,11 +305,5 @@ modus-wc-switch .modus-wc-toggle {
 [data-theme='modus-modern-dark'] modus-wc-switch {
   modus-wc-input-label .modus-wc-input-label {
     color: var(--modus-wc-color-gray-light);
-  }
-
-  .modus-wc-toggle {
-    &:disabled {
-      --fallback-b1: var(--modus-wc-color-gray-10);
-    }
   }
 }
