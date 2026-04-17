@@ -30,3 +30,5 @@ coverage/
 # Logs
 *.log
 
+# Internal docs
+docs/
