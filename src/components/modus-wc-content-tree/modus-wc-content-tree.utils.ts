@@ -3,6 +3,9 @@ import {
   ITreeItemReorderParameters,
 } from './modus-wc-tree-item/modus-wc-tree-item';
 
+const getTreeItemIdentity = (item: ITreeItemData): string =>
+  item.clientId ?? item.id;
+
 export const getReorderSignature = (
   parameters: ITreeItemReorderParameters
 ): string => JSON.stringify(parameters);
@@ -26,7 +29,7 @@ const reorderListByIndex = (
     return list;
   }
 
-  if (list[oldIndex].id !== itemId) {
+  if (getTreeItemIdentity(list[oldIndex]) !== itemId) {
     return null;
   }
 
@@ -46,7 +49,9 @@ const removeFromParent = (
   oldIndex: number;
 } | null => {
   if (parentId === null) {
-    const oldIndex = list.findIndex((item) => item.id === itemId);
+    const oldIndex = list.findIndex(
+      (item) => getTreeItemIdentity(item) === itemId
+    );
     if (oldIndex === -1) {
       return null;
     }
@@ -59,9 +64,11 @@ const removeFromParent = (
   for (let i = 0; i < list.length; i++) {
     const current = list[i];
 
-    if (current.id === parentId) {
+    if (getTreeItemIdentity(current) === parentId) {
       const children = current.children ?? [];
-      const oldIndex = children.findIndex((child) => child.id === itemId);
+      const oldIndex = children.findIndex(
+        (child) => getTreeItemIdentity(child) === itemId
+      );
       if (oldIndex === -1) {
         return null;
       }
@@ -106,7 +113,7 @@ const insertIntoParent = (
   for (let i = 0; i < list.length; i++) {
     const current = list[i];
 
-    if (current.id === parentId) {
+    if (getTreeItemIdentity(current) === parentId) {
       const children = current.children ?? [];
       const safeIndex = Math.max(0, Math.min(index, children.length));
       const updatedChildren = [...children];

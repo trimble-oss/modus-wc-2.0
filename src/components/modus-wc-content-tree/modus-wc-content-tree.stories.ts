@@ -68,20 +68,26 @@ type Story = StoryObj<ContentTreeArgs>;
 const nestedItemsReorderingData: ITreeItemData[] = [
   {
     id: 'phase-1',
+    clientId: 'phase-1-client',
     label: 'Phase 1',
     children: [
-      { id: 'backlog', label: 'Backlog' },
-      { id: 'in-progress', label: 'In Progress' },
-      { id: 'review', label: 'Review' },
+      { id: 'backlog', clientId: 'backlog-client', label: 'Backlog' },
+      {
+        id: 'in-progress',
+        clientId: 'in-progress-client',
+        label: 'In Progress',
+      },
+      { id: 'review', clientId: 'review-client', label: 'Review' },
     ],
   },
   {
     id: 'phase-2',
+    clientId: 'phase-2-client',
     label: 'Phase 2',
     children: [
-      { id: 'qa', label: 'QA' },
-      { id: 'uat', label: 'UAT' },
-      { id: 'done', label: 'Done' },
+      { id: 'qa', clientId: 'qa-client', label: 'QA' },
+      { id: 'uat', clientId: 'uat-client', label: 'UAT' },
+      { id: 'done', clientId: 'done-client', label: 'Done' },
     ],
   },
 ];
@@ -1095,6 +1101,7 @@ const tree = document.querySelector('modus-wc-content-tree');
 tree.items = items;
 
 tree.addEventListener('itemsReordered', (event) => {
+  // Use clientId as stable UI identity while backend IDs can change.
   items = [...event.detail.items];
   tree.items = items;
 });
@@ -1255,45 +1262,47 @@ export const LazyLoading: Story = {
   parameters: {
     docs: {
       description: {
-        story: `Demonstrates lazy loading using the data-driven \`items\` prop and \`itemExpand\` event. Items with \`hasChildren: true\` and no \`children\` show an expand chevron; when expanded, the tree shows a loader until the consumer provides children by updating \`items\`. Expand "Documents", "Projects", or "Resources" to see the loading spinner and then the loaded children.`,
+        story: `Demonstrates lazy loading using the data-driven \`items\` prop and \`itemExpand\` event with stable \`clientId\` identity. Items with \`hasChildren: true\` and no \`children\` show an expand chevron; when expanded, the tree shows a loader until the consumer provides children by updating \`items\`.`,
       },
       source: {
         code: `
 <script>
 const initialItems = [
-  { id: 'documents', label: 'Documents', hasChildren: true },
-  { id: 'projects', label: 'Projects', hasChildren: true },
-  { id: 'resources', label: 'Resources', hasChildren: true },
+  { id: 'db-101', clientId: 'documents-node', label: 'Documents', hasChildren: true },
+  { id: 'db-102', clientId: 'projects-node', label: 'Projects', hasChildren: true },
+  { id: 'db-103', clientId: 'resources-node', label: 'Resources', hasChildren: true },
 ];
 
 const mockData = {
-  documents: [
-    { id: 'report', label: 'Report.pdf' },
-    { id: 'proposal', label: 'Proposal.docx' },
-    { id: 'notes', label: 'Meeting Notes.txt' },
+  'documents-node': [
+    { id: 'db-201', clientId: 'report-node', label: 'Report.pdf' },
+    { id: 'db-202', clientId: 'proposal-node', label: 'Proposal.docx' },
+    { id: 'db-203', clientId: 'notes-node', label: 'Meeting Notes.txt' },
   ],
-  projects: [
-    { id: 'website', label: 'Website Redesign', hasChildren: true },
-    { id: 'mobile', label: 'Mobile App' },
-    { id: 'api', label: 'API Integration' },
+  'projects-node': [
+    { id: 'db-301', clientId: 'website-node', label: 'Website Redesign', hasChildren: true },
+    { id: 'db-302', clientId: 'mobile-node', label: 'Mobile App' },
+    { id: 'db-303', clientId: 'api-node', label: 'API Integration' },
   ],
-  resources: [
-    { id: 'templates', label: 'Templates' },
-    { id: 'guide', label: 'Style Guide' },
+  'resources-node': [
+    { id: 'db-401', clientId: 'templates-node', label: 'Templates' },
+    { id: 'db-402', clientId: 'guide-node', label: 'Style Guide' },
   ],
-  website: [
-    { id: 'design', label: 'Design Mockups' },
-    { id: 'dev', label: 'Development' },
+  'website-node': [
+    { id: 'db-501', clientId: 'design-node', label: 'Design Mockups' },
+    { id: 'db-502', clientId: 'dev-node', label: 'Development' },
   ],
 };
 
-function updateItem(items, parentId, updater) {
+const getIdentity = (item) => item.clientId ?? item.id;
+
+function updateItem(items, parentIdentity, updater) {
   return items.map((item) => {
-    if (item.id === parentId) return updater(item);
+    if (getIdentity(item) === parentIdentity) return updater(item);
     if (item.children) {
       return {
         ...item,
-        children: updateItem(item.children, parentId, updater),
+        children: updateItem(item.children, parentIdentity, updater),
       };
     }
     return item;
@@ -1304,11 +1313,11 @@ const tree = document.querySelector('modus-wc-content-tree');
 tree.items = initialItems;
 
 tree.addEventListener('itemExpand', async (event) => {
-  const itemId = event.detail;
+  const itemIdentity = event.detail;
 
   const findItem = (items) => {
     for (const item of items) {
-      if (item.id === itemId) return item;
+      if (getIdentity(item) === itemIdentity) return item;
       if (item.children) {
         const found = findItem(item.children);
         if (found) return found;
@@ -1320,10 +1329,10 @@ tree.addEventListener('itemExpand', async (event) => {
   if (item?.children?.length) return;
 
   const children = await new Promise((resolve) =>
-    setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
+    setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
   );
 
-  tree.items = updateItem(tree.items, itemId, (item) => ({
+  tree.items = updateItem(tree.items, itemIdentity, (item) => ({
     ...item,
     children,
     hasChildren: children.length > 0,
@@ -1341,55 +1350,78 @@ tree.addEventListener('itemExpand', async (event) => {
   },
   render: (args) => {
     const initialItems: ITreeItemData[] = [
-      { id: 'documents', label: 'Documents', hasChildren: true },
-      { id: 'projects', label: 'Projects', hasChildren: true },
-      { id: 'resources', label: 'Resources', hasChildren: true },
+      {
+        id: 'db-101',
+        clientId: 'documents-node',
+        label: 'Documents',
+        hasChildren: true,
+      },
+      {
+        id: 'db-102',
+        clientId: 'projects-node',
+        label: 'Projects',
+        hasChildren: true,
+      },
+      {
+        id: 'db-103',
+        clientId: 'resources-node',
+        label: 'Resources',
+        hasChildren: true,
+      },
     ];
 
     const mockData: Record<string, ITreeItemData[]> = {
-      documents: [
-        { id: 'report', label: 'Report.pdf' },
-        { id: 'proposal', label: 'Proposal.docx' },
-        { id: 'notes', label: 'Meeting Notes.txt' },
+      'documents-node': [
+        { id: 'db-201', clientId: 'report-node', label: 'Report.pdf' },
+        { id: 'db-202', clientId: 'proposal-node', label: 'Proposal.docx' },
+        { id: 'db-203', clientId: 'notes-node', label: 'Meeting Notes.txt' },
       ],
-      projects: [
-        { id: 'website', label: 'Website Redesign', hasChildren: true },
-        { id: 'mobile', label: 'Mobile App' },
-        { id: 'api', label: 'API Integration' },
+      'projects-node': [
+        {
+          id: 'db-301',
+          clientId: 'website-node',
+          label: 'Website Redesign',
+          hasChildren: true,
+        },
+        { id: 'db-302', clientId: 'mobile-node', label: 'Mobile App' },
+        { id: 'db-303', clientId: 'api-node', label: 'API Integration' },
       ],
-      resources: [
-        { id: 'templates', label: 'Templates' },
-        { id: 'guide', label: 'Style Guide' },
+      'resources-node': [
+        { id: 'db-401', clientId: 'templates-node', label: 'Templates' },
+        { id: 'db-402', clientId: 'guide-node', label: 'Style Guide' },
       ],
-      website: [
-        { id: 'design', label: 'Design Mockups' },
-        { id: 'dev', label: 'Development' },
+      'website-node': [
+        { id: 'db-501', clientId: 'design-node', label: 'Design Mockups' },
+        { id: 'db-502', clientId: 'dev-node', label: 'Development' },
       ],
     };
 
+    const getIdentity = (item: ITreeItemData): string =>
+      item.clientId ?? item.id;
+
     const updateItem = (
       items: ITreeItemData[],
-      parentId: string,
+      parentIdentity: string,
       updater: (item: ITreeItemData) => ITreeItemData
     ): ITreeItemData[] =>
       items.map((item) => {
-        if (item.id === parentId) return updater(item);
+        if (getIdentity(item) === parentIdentity) return updater(item);
         if (item.children)
           return {
             ...item,
-            children: updateItem(item.children, parentId, updater),
+            children: updateItem(item.children, parentIdentity, updater),
           };
         return item;
       });
 
     const findItem = (
       items: ITreeItemData[],
-      id: string
+      identity: string
     ): ITreeItemData | undefined => {
       for (const item of items) {
-        if (item.id === id) return item;
+        if (getIdentity(item) === identity) return item;
         if (item.children) {
-          const found = findItem(item.children, id);
+          const found = findItem(item.children, identity);
           if (found) return found;
         }
       }
@@ -1400,16 +1432,16 @@ tree.addEventListener('itemExpand', async (event) => {
       const tree = event.currentTarget as HTMLElement & {
         items?: ITreeItemData[];
       };
-      const itemId = event.detail;
+      const itemIdentity = event.detail;
       const current = tree.items ?? initialItems;
-      const item = findItem(current, itemId);
+      const item = findItem(current, itemIdentity);
       if (item?.children?.length) return;
 
       const children = await new Promise<ITreeItemData[]>((resolve) =>
-        setTimeout(() => resolve(mockData[itemId] ?? []), 1500)
+        setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
       );
 
-      tree.items = updateItem(current, itemId, (i) => ({
+      tree.items = updateItem(current, itemIdentity, (i) => ({
         ...i,
         children,
         hasChildren: children.length > 0,
@@ -1539,6 +1571,23 @@ export const ApiReference: Story = {
 ---
 
 ### Interfaces
+
+#### ITreeItemData
+
+\`\`\`typescript
+interface ITreeItemData {
+  id: string;                // Backend/persistent identifier
+  clientId?: string;         // Optional stable client-generated identifier (for example UUID)
+  label: string;
+  checkbox?: boolean;
+  startIcon?: string;
+  treeItemActions?: ITreeItemActions[];
+  children?: ITreeItemData[];
+  hasChildren?: boolean;
+}
+\`\`\`
+
+---
 
 #### ITreeItemActions
 

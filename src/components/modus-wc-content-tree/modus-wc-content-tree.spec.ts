@@ -987,4 +987,51 @@ describe('modus-wc-content-tree', () => {
     expect(startIcon).toBeTruthy();
     expect(startIcon?.getAttribute('name')).toBe('folder');
   });
+
+  it('should resolve identity from clientId when present and fallback to id', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [
+      {
+        id: 'item-1',
+        clientId: 'client-item-1',
+        label: 'Client ID Item',
+        hasChildren: true,
+      },
+      { id: 'item-2', label: 'ID Fallback Item', hasChildren: true },
+    ];
+    await page.waitForChanges();
+
+    const clientIdentityExpandEvent = new CustomEvent('itemExpand', {
+      detail: 'client-item-1',
+      bubbles: true,
+      composed: true,
+    });
+    const idFallbackExpandEvent = new CustomEvent('itemExpand', {
+      detail: 'item-2',
+      bubbles: true,
+      composed: true,
+    });
+    page.root!.dispatchEvent(clientIdentityExpandEvent);
+    page.root!.dispatchEvent(idFallbackExpandEvent);
+    await page.waitForChanges();
+
+    const renderedItems = page.root!.querySelectorAll('modus-wc-tree-item');
+    const clientIdentityItem = renderedItems[0] as ITreeItemElement;
+    const idFallbackItem = renderedItems[1] as ITreeItemElement;
+
+    expect(clientIdentityItem).toBeTruthy();
+    expect(clientIdentityItem.value).toBe('client-item-1');
+    expect(clientIdentityItem.lazyLoading).toBe(true);
+
+    expect(idFallbackItem).toBeTruthy();
+    expect(idFallbackItem.value).toBe('item-2');
+    expect(idFallbackItem.lazyLoading).toBe(true);
+
+    expect(renderedItems.length).toBe(2);
+  });
 });

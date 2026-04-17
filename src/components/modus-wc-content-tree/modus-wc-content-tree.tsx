@@ -110,6 +110,10 @@ export class ModusWcContentTree {
     return this.hasDataItems && !!this.itemsReordering;
   }
 
+  private getItemIdentity(item: ITreeItemData): string {
+    return item.clientId ?? item.id;
+  }
+
   private applyItemsReorderingState(): void {
     // In data-driven mode, `itemsReordering` is passed declaratively in render.
     // Avoid imperative prop writes that can race reconciliation while reordering.
@@ -143,7 +147,10 @@ export class ModusWcContentTree {
       }
     });
 
-    const nextItems = reorderTreeItemsData(this.items!, event.detail.parameters);
+    const nextItems = reorderTreeItemsData(
+      this.items!,
+      event.detail.parameters
+    );
     if (!nextItems) {
       return;
     }
@@ -271,19 +278,20 @@ export class ModusWcContentTree {
 
   private renderTreeItems(items: ITreeItemData[]) {
     return items.map((item) => {
+      const itemIdentity = this.getItemIdentity(item);
       const hasChildren =
         Array.isArray(item.children) && item.children.length > 0;
       const hasSubtree = hasChildren || !!item.hasChildren;
       const isLoading =
         !hasChildren &&
         !!item.hasChildren &&
-        this.pendingChildrenIds.has(item.id);
+        this.pendingChildrenIds.has(itemIdentity);
 
       return (
         <modus-wc-tree-item
-          data-key={item.id}
+          data-key={itemIdentity}
           label={item.label}
-          value={item.id}
+          value={itemIdentity}
           checkbox={item.checkbox}
           treeItemActions={item.treeItemActions}
           itemsReordering={this.isReorderingEnabled}

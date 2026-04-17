@@ -17,6 +17,8 @@ import { ITreeItemActions } from '../modus-wc-tree-actions/modus-wc-tree-actions
 export interface ITreeItemData {
   /** Unique identifier for the tree item */
   id: string;
+  /** Optional stable client-generated identifier (for example UUID) used to keep UI identity stable before/after backend persistence. */
+  clientId?: string;
   /** Display label for the tree item */
   label: string;
   /** If true, renders a checkbox at the start of the tree item. */
