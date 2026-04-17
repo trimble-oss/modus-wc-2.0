@@ -31,4 +31,4 @@ coverage/
 *.log
 
 # Internal docs
-docs/
+docs/security-remediation-*.md
