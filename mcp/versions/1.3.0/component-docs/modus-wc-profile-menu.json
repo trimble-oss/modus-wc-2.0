@@ -1,0 +1,76 @@
+{
+  "description": "",
+  "properties": [
+    {
+      "name": "profileProps",
+      "type": "IProfileMenuProps",
+      "description": "Profile menu properties containing user information",
+      "default": null,
+      "mutable": false,
+      "end_line": 67
+    },
+    {
+      "name": "menuOne",
+      "type": "ISubMenu",
+      "description": "Configuration for the first menu including title and items",
+      "default": null,
+      "mutable": false,
+      "end_line": 70
+    },
+    {
+      "name": "menuTwo",
+      "type": "ISubMenu",
+      "description": "Configuration for the second menu including title and items",
+      "default": null,
+      "mutable": false,
+      "end_line": 73
+    }
+  ],
+  "events": [
+    {
+      "name": "signOutClick",
+      "detail": "void",
+      "description": "Emitted when the Sign Out menu item is clicked",
+      "end_line": 76
+    },
+    {
+      "name": "menuItemClick",
+      "detail": "string",
+      "description": "Emitted when any menu item is clicked, passing back the item value or label",
+      "end_line": 79
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<div style=\"min-height: 600px;\">\n  <modus-wc-profile-menu\n    .profileProps=${args['profile-props']}\n    .menuOne=${ifDefined(args['menu-one'])}\n    .menuTwo=${ifDefined(args['menu-two'])}\n    @signOutClick=${action('signOutClick')}\n    @menuItemClick=${action('menuItemClick')}\n  ></modus-wc-profile-menu>\n</div>",
+    "variations": [],
+    "args": {
+      "props": "profileData"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-profile-menu profileProps=\"example-profileProps\" menuOne=\"example-menuOne\" menuTwo=\"example-menuTwo\"></modus-wc-profile-menu>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-profile-menu onSignOutClick={(e) => handleSignOutClick(e.detail)} onMenuItemClick={(e) => handleMenuItemClick(e.detail)}></modus-wc-profile-menu>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-profile-menu",
+  "storyExample": {
+    "template": "<div style=\"min-height: 600px;\">\n  <modus-wc-profile-menu\n    .profileProps=${args['profile-props']}\n    .menuOne=${ifDefined(args['menu-one'])}\n    .menuTwo=${ifDefined(args['menu-two'])}\n    @signOutClick=${action('signOutClick')}\n    @menuItemClick=${action('menuItemClick')}\n  ></modus-wc-profile-menu>\n</div>",
+    "args": {
+      "props": "profileData"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { action } from '@storybook/addon-actions';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IProfileMenuProps, ISubMenu } from './modus-wc-profile-menu';\n\ninterface ProfileMenuArgs {\n  'profile-props': IProfileMenuProps;\n  'menu-one'?: ISubMenu;\n  'menu-two'?: ISubMenu;\n}\n\nconst profileData: IProfileMenuProps = {\n  profileImageUrl:\n    'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',\n  headerName: 'Enterprise ABC',\n  userName: 'Jane Doe',\n  userEmail: 'jane.doe@example.com',\n  manageTrimbleId: {\n    link: '#',\n  },\n};\n\nconst meta: Meta<ProfileMenuArgs> = {\n  title: 'Components/Profile Menu',\n  component: 'modus-wc-profile-menu',\n  args: {\n    'profile-props': profileData,\n  },\n  argTypes: {\n    'profile-props': {\n      description: 'Profile menu properties containing user information',\n      table: {\n        type: {\n          detail: `\n            Interface: IProfileMenuProps\n            Properties:\n            - profileImageUrl (string): The URL of the profile image\n            - headerName (string): The header name of the profile menu\n            - userName (string): The name of the user\n            - userEmail (string): The email of the user\n            - manageTrimbleId (IManageTrimbleId, optional): The manage Trimble ID link configuration\n              - link (string): The URL for managing the user's Trimble ID\n              - target ('_blank' | '_self' | '_parent' | '_top', optional): The target for the link\n              - rel (string, optional): The rel attribute for the link. Defaults to 'noopener noreferrer' when target is '_blank'\n          `,\n        },\n      },\n    },\n    'menu-one': {\n      description: 'Configuration for the first submenu section',\n      table: {\n        type: {\n          detail: `\n            Interface: ISubMenu\n            Properties:\n            - title (string, optional): Title for the submenu section\n            - items (IMenuItem[]): Array of menu items\n              - label (string): The display text for the menu item\n              - icon (string, optional): The name of the icon to display\n              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon\n              - iconVariant ('solid' | 'outlined', optional): The variant of the icon\n              - value (string, optional): The value associated with the menu item, used for selection\n          `,\n        },\n      },\n    },\n    'menu-two': {\n      description: 'Configuration for the second submenu section',\n      table: {\n        type: {\n          detail: `\n            Interface: ISubMenu\n            Properties:\n            - title (string, optional): Title for the submenu section\n            - items (IMenuItem[]): Array of menu items\n              - label (string): The display text for the menu item\n              - icon (string, optional): The name of the icon to display\n              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon\n              - iconVariant ('solid' | 'outlined', optional): The variant of the icon\n              - value (string, optional): The value associated with the menu item, used for selection\n          `,\n        },\n      },\n    },\n  },\n  parameters: {\n    docs: {\n      description: {\n        component: `\nA customizable profile menu component that displays user information with optional submenus.\n\\nThe component uses the \\`modus-wc-panel\\` component for layout and supports one or two custom submenus.\n\n### Features\n- **User Profile Display**: Shows profile image, header name, username, and email\n- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings)\n- **Custom Submenus**: Supports up to two additional custom submenus with titles and icons\n- **Manage Trimble ID Link**: Optional link for managing user's Trimble ID\n- **Sign Out**: Built-in sign out menu item in the footer\n- **Icon Support**: Menu items can include icons with solid or outlined variants\n\n### Events\n- **menuItemClick**: Emitted when any menu item is clicked, passing back the item label/identifier\n- **signOutClick**: Emitted when the Sign Out menu item is clicked\n\n### Usage\nThe component requires a \\`profileProps\\` object with user information and optionally accepts \\`menuOne\\` and \\`menuTwo\\` for custom menus.\n        `,\n      },\n    },\n  },\n};\nexport default meta;\n\ntype Story = StoryObj<ProfileMenuArgs>;\nconst getSourceCode = (args: ProfileMenuArgs) => {\n  const profilePropsCode = `const profileProps = ${JSON.stringify(args['profile-props'], null, 2)};`;\n\n  const menuOneCode = args['menu-one']\n    ? `\\nconst menuOne = ${JSON.stringify(args['menu-one'], null, 2)};`\n    : '';\n\n  const menuTwoCode = args['menu-two']\n    ? `\\nconst menuTwo = ${JSON.stringify(args['menu-two'], null, 2)};`\n    : '';\n\n  return `<modus-wc-profile-menu></modus-wc-profile-menu>\n\n<script>\n  ${profilePropsCode}${menuOneCode}${menuTwoCode}\n\n  const element = document.querySelector('modus-wc-profile-menu');\n  element.profileProps = profileProps;${args['menu-one'] ? '\\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\\n  element.menuTwo = menuTwo;' : ''}\n\n  // Event listeners\n  element.addEventListener('menuItemClick', (event) => {\n    console.log('Menu item clicked:', event.detail);\n  });\n  element.addEventListener('signOutClick', () => {\n    console.log('Sign Out clicked');\n  });\n\n</script>\n`;\n};\n\nconst Template: Story = {\n  parameters: {\n    docs: {\n      source: {\n        transform: (_src, { args }: { args: ProfileMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<div style=\"min-height: 600px;\">\n  <modus-wc-profile-menu\n    .profileProps=${args['profile-props']}\n    .menuOne=${ifDefined(args['menu-one'])}\n    .menuTwo=${ifDefined(args['menu-two'])}\n    @signOutClick=${action('signOutClick')}\n    @menuItemClick=${action('menuItemClick')}\n  ></modus-wc-profile-menu>\n</div>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Basic profile menu with default menu items (My Profile, My Products, Support center, Admin settings) and no custom submenus.',\n      },\n      source: {\n        transform: (_src, { args }: { args: ProfileMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n};\n\nexport const WithOneSubmenu: Story = {\n  ...Template,\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Profile menu with one additional custom submenu section. Submenus can include a title and items with icons.',\n      },\n      source: {\n        transform: (_src, { args }: { args: ProfileMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n  args: {\n    'menu-one': {\n      title: 'Recent Projects',\n      items: [\n        {\n          label: 'Project Alpha',\n          icon: 'bug',\n          iconVariant: 'solid',\n        },\n        {\n          label: 'Project Beta',\n          icon: 'triangle_down',\n          iconVariant: 'solid',\n        },\n        {\n          label: 'Project Gamma',\n          icon: 'service_rep',\n          iconVariant: 'solid',\n        },\n      ],\n    },\n  },\n};\n\nexport const WithTwoSubmenus: Story = {\n  ...Template,\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Profile menu with two additional custom submenu sections. Each submenu can have its own title and menu items with icons.',\n      },\n      source: {\n        transform: (_src, { args }: { args: ProfileMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n  args: {\n    'menu-one': {\n      title: 'Recent Projects',\n      items: [\n        {\n          label: 'Project Alpha',\n          icon: 'bug',\n          iconVariant: 'solid',\n        },\n        {\n          label: 'Project Beta',\n          icon: 'triangle_down',\n          iconVariant: 'solid',\n        },\n        {\n          label: 'Project Gamma',\n          icon: 'antenna',\n          iconVariant: 'solid',\n        },\n      ],\n    },\n    'menu-two': {\n      title: 'Quick Actions',\n      items: [\n        {\n          label: 'Settings',\n          icon: 'settings',\n          iconVariant: 'solid',\n        },\n        {\n          label: 'Help Center',\n          icon: 'help',\n          iconVariant: 'solid',\n        },\n        { label: 'Support', icon: 'headset', iconVariant: 'solid' },\n      ],\n    },\n  },\n};\n"
+  }
+}
