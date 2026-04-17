@@ -133,24 +133,24 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
   &.modus-wc-btn-filled,
   &.modus-wc-btn-outline {
     &.modus-wc-btn-primary:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(38, 122, 177, 0.5);
+      box-shadow: 0 0 0 0.25rem rgb(38, 122, 177, 0.5);
     }
 
     &.modus-wc-btn-secondary:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
+      box-shadow: 0 0 0 0.25rem rgb(98, 102, 108, 0.5);
     }
 
     // tertiary
     &.modus-wc-btn-neutral:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(98, 102, 108, 0.5);
+      box-shadow: 0 0 0 0.25rem rgb(98, 102, 108, 0.5);
     }
 
     &.modus-wc-btn-warning:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(194, 125, 31, 0.5);
+      box-shadow: 0 0 0 0.25rem rgb(194, 125, 31, 0.5);
     }
 
     &.modus-wc-btn-error:focus-visible {
-      box-shadow: 0 0 0 0.25rem rgba(224, 66, 76, 0.5);
+      box-shadow: 0 0 0 0.25rem rgb(224, 66, 76, 0.5);
     }
   }
 }
@@ -278,7 +278,7 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
 
       &:active,
       &[aria-pressed='true'] {
-        background-color: rgba(0, 99, 163, 0.18);
+        background-color: rgb(0, 99, 163, 0.18);
         border-color: var(--modus-wc-color-blue-dark);
         color: var(--modus-wc-color-blue-dark);
       }
@@ -463,12 +463,12 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
       color: var(--modus-wc-color-highlight-blue);
 
       &:hover {
-        background-color: rgba(1, 154, 235, 0.12);
+        background-color: rgb(1, 154, 235, 0.12);
       }
 
       &:active,
       &[aria-pressed='true'] {
-        background-color: rgba(1, 154, 235, 0.3);
+        background-color: rgb(1, 154, 235, 0.3);
       }
     }
 
@@ -477,12 +477,12 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
       color: var(--modus-wc-color-gray-1);
 
       &:hover {
-        background-color: rgba(203, 205, 214, 0.12);
+        background-color: rgb(203, 205, 214, 0.12);
       }
 
       &:active,
       &[aria-pressed='true'] {
-        background-color: rgba(203, 205, 214, 0.3);
+        background-color: rgb(203, 205, 214, 0.3);
       }
     }
 
@@ -492,12 +492,12 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-lg {
       color: var(--modus-wc-color-gray-2);
 
       &:hover {
-        background-color: rgba(203, 205, 214, 0.12);
+        background-color: rgb(203, 205, 214, 0.12);
       }
 
       &:active,
       &[aria-pressed='true'] {
-        background-color: rgba(203, 205, 214, 0.3);
+        background-color: rgb(203, 205, 214, 0.3);
       }
     }
 
