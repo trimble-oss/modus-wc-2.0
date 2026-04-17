@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main, prod]
+    branches: [main]
   workflow_dispatch:
     inputs:
       branch:
@@ -61,7 +61,7 @@ jobs:
         with:
           folder: storybook-static
           branch: gh-pages
-          target-folder: ${{ github.event.inputs.branch || 'main' || 'prod'}}
+          target-folder: ${{ github.event.inputs.branch || 'main' }}
 
       - name: Get preview URL
         if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
@@ -73,7 +73,7 @@ jobs:
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         id: deployment-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' || 'prod' }}/" >> $GITHUB_OUTPUT
+          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
 
       - name: Print deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
