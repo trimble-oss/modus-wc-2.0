@@ -64,20 +64,20 @@ modus-wc-time-input .modus-wc-time-input,
 modus-wc-date .modus-wc-date {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
   padding: 0 var(--modus-wc-spacing-sm);
 }
 
 modus-wc-select {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 modus-wc-number-input .modus-wc-number-input {
   --fallback-b1: transparent;
 
-  background: transparent;
+  background: var(--modus-wc-color-base-page);
 }
 
 /* Utility Panel Content Push Classes */
@@ -94,9 +94,9 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='modus-modern-light']:root {
   color-scheme: light;
 
-  --modus-wc-color-base-page: #fff;
-  --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
-  --modus-wc-color-base-200: var(--modus-wc-color-gray-0);
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-01);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-02);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
   --modus-wc-color-primary: var(--modus-wc-color-trimble-blue);
@@ -107,10 +107,10 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='modus-modern-dark']:root {
   color-scheme: dark;
 
-  --modus-wc-color-base-page: #000;
-  --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
-  --modus-wc-color-base-200: var(--modus-wc-color-gray-9);
-  --modus-wc-color-base-300: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-page: var(--modus-wc-color-gray-10);
+  --modus-wc-color-base-100: var(--modus-wc-color-gray-9);
+  --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
+  --modus-wc-color-base-300: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
   --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
   --modus-wc-color-primary-content: var(--modus-wc-color-black);
@@ -121,7 +121,7 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='modus-classic-light']:root {
   color-scheme: light;
 
-  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
@@ -136,7 +136,7 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='modus-classic-dark']:root {
   color-scheme: dark;
 
-  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-page: var(--modus-wc-color-black);
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
@@ -152,7 +152,7 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='connect-light']:root {
   color-scheme: light;
 
-  --modus-wc-color-base-page: #fff;
+  --modus-wc-color-base-page: var(--modus-wc-color-white);
   --modus-wc-color-base-100: var(--modus-wc-color-gray-light);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
@@ -163,7 +163,7 @@ modus-wc-number-input .modus-wc-number-input {
 [data-theme='connect-dark']:root {
   color-scheme: dark;
 
-  --modus-wc-color-base-page: #000;
+  --modus-wc-color-base-page: var(--modus-wc-color-black);
   --modus-wc-color-base-100: var(--modus-wc-color-trimble-gray);
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);

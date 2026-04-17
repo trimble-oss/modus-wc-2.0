@@ -6,7 +6,7 @@
 modus-wc-menu-item .modus-wc-menu-item {
   button {
     align-items: center;
-    border-radius: 0;
+    border-radius: inherit;
     display: flex;
     width: 100%;
 
@@ -19,7 +19,7 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
 
     &.modus-wc-menu-dropdown-toggle::after {
-      color: var(--modus-wc-color-gray-6);
+      color: var(--modus-wc-color-base-content);
     }
 
     .modus-wc-menu-item-content {
@@ -28,20 +28,22 @@ modus-wc-menu-item .modus-wc-menu-item {
       width: 100%;
 
       [slot='start-icon'] {
-        padding-inline-end: var(--modus-wc-spacing-lg);
+        padding-inline-end: var(--modus-wc-spacing-sm);
       }
 
       modus-wc-checkbox {
-        padding-inline-end: var(--modus-wc-spacing-lg);
+        padding-inline-end: var(--modus-wc-spacing-sm);
       }
 
       .modus-wc-menu-item-labels {
         padding-inline-end: var(--modus-wc-spacing-xs);
-        padding-inline-start: var(--modus-wc-spacing-xs);
+        padding-inline-start: var(--modus-wc-spacing-md);
+        white-space: nowrap;
       }
 
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-sm);
+        white-space: nowrap;
       }
 
       .modus-wc-menu-item-selected-icon {
@@ -82,26 +84,31 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-bordered {
     border-bottom: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-base-100);
+      var(--modus-wc-color-base-200);
     border-radius: 0;
     border-top: var(--modus-wc-border-width-xs) solid
-      var(--modus-wc-color-base-100);
+      var(--modus-wc-color-base-200);
   }
 
-  &:not(.modus-wc-menu-item-active) {
-    color: var(--modus-wc-color-gray-10);
+  &:not(.modus-wc-menu-item-selected) {
+    color: var(--modus-wc-color-base-content);
   }
 
-  &.modus-wc-menu-item-active,
-  &:active:not(.modus-wc-menu-item-disabled):not(
-      :has(.modus-wc-menu-dropdown)
-    ) {
-    background-color: var(--modus-wc-color-blue-pale);
+  &.modus-wc-menu-item-selected {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-primary-pale) 50%,
+      transparent
+    );
     border-radius: inherit;
-    color: var(--modus-wc-color-primary);
+    color: var(--modus-wc-base-content);
 
     &:focus {
-      background-color: var(--modus-wc-color-blue-pale);
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-primary-pale) 50%,
+        transparent
+      );
     }
 
     button {
@@ -110,6 +117,37 @@ modus-wc-menu-item .modus-wc-menu-item {
       &:hover,
       &:focus {
         background-color: transparent;
+        border-radius: inherit;
+        box-shadow: none;
+        color: inherit;
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-active {
+    background-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-primary-pale) 50%,
+      transparent
+    );
+    border-radius: inherit;
+    color: var(--modus-wc-color-base-content);
+
+    &:focus {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-primary-pale) 50%,
+        transparent
+      );
+    }
+
+    button {
+      background-color: transparent;
+
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        border-radius: inherit;
         box-shadow: none;
         color: inherit;
       }
@@ -127,8 +165,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   // Hover state for all items
   &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
     &:hover {
-      background-color: var(--modus-wc-color-gray-0);
-      color: inherit;
+      background-color: var(--modus-wc-color-base-100);
       outline: none;
     }
   }
@@ -139,8 +176,8 @@ modus-wc-menu-item .modus-wc-menu-item {
     ) {
     &:focus:not(:focus-visible),
     &.modus-wc-arrow-focused {
-      background-color: var(--modus-wc-color-gray-0);
-      color: inherit;
+      background-color: var(--modus-wc-color-base-100);
+      color: var(--modus-wc-color-primary);
       outline: none;
     }
   }
@@ -148,13 +185,12 @@ modus-wc-menu-item .modus-wc-menu-item {
   // Tab navigation focus state (outline only)
   &:focus-visible {
     background-color: transparent;
-    outline: 2px solid var(--modus-wc-color-trimble-blue);
+    outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
 }
 
 [data-theme='modus-classic-dark'],
-[data-theme='modus-modern-dark'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
     &:not(.modus-wc-menu-item-active) {
@@ -210,7 +246,11 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-.modus-wc-menu-item-tooltip {
-  display: inline-block;
-  width: auto;
+[data-theme='connect-light'],
+[data-theme='connect-dark'] {
+  modus-wc-menu-item .modus-wc-menu-item {
+    & > button.modus-wc-menu-dropdown-toggle::after {
+      color: var(--modus-wc-color-white);
+    }
+  }
 }

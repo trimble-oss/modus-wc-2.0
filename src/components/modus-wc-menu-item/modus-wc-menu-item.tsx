@@ -146,10 +146,9 @@ export class ModusWcMenuItem {
   }
 
   private getRootMenu(): HTMLElement | null {
-    let menu = this.el.closest('modus-wc-menu') as HTMLElement | null;
+    let menu = this.el.closest('modus-wc-menu');
     while (menu) {
-      const parent = (menu.parentElement?.closest('modus-wc-menu') ??
-        null) as HTMLElement | null;
+      const parent = menu.parentElement?.closest('modus-wc-menu') ?? null;
       if (!parent) break;
       menu = parent;
     }

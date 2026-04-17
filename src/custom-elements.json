@@ -4271,6 +4271,10 @@
             },
             {
               "kind": "method",
+              "name": "onLogoPropsChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -4660,7 +4664,7 @@
               "kind": "field",
               "name": "menuSelectionChange",
               "type": {
-                "text": "EventEmitter<{\r\n    selectedItems: HTMLElement[];\r\n  }>"
+                "text": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>"
               },
               "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
             }

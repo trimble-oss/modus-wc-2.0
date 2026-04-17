@@ -1206,17 +1206,31 @@ describe('modus-wc-menu-item', () => {
 
       const allItems = Array.from(
         page.doc.querySelectorAll('modus-wc-menu-item')
-      ) as (HTMLElement & { selected?: boolean; value: string })[];
+      );
 
-      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
-      const calendar = allItems.find((i) => i.value === 'calendar')!;
+      const barChart = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'bar-chart'
+      )! as HTMLElement & { selected?: boolean; value: string };
+      const calendar = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'calendar'
+      )! as HTMLElement & { selected?: boolean; value: string };
 
       // Select "Bar Chart" in the submenu
-      barChart.querySelector('button')?.click();
+      (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(barChart.selected).toBe(true);
-      expect(calendar.selected).toBeFalsy();
+      expect(
+        (barChart as HTMLElement & { selected?: boolean; value: string })
+          .selected
+      ).toBe(true);
+      expect(
+        (calendar as HTMLElement & { selected?: boolean; value: string })
+          .selected
+      ).toBeFalsy();
 
       // Select "Calendar" in the root menu — should deselect "Bar Chart"
       calendar.querySelector('button')?.click();
@@ -1247,16 +1261,27 @@ describe('modus-wc-menu-item', () => {
 
       const allItems = Array.from(
         page.doc.querySelectorAll('modus-wc-menu-item')
-      ) as (HTMLElement & { selected?: boolean; value: string })[];
+      );
 
-      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
-      const monthlyReport = allItems.find((i) => i.value === 'monthly-report')!;
+      const barChart = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'bar-chart'
+      )! as HTMLElement & { selected?: boolean; value: string };
+      const monthlyReport = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'monthly-report'
+      )! as HTMLElement & { selected?: boolean; value: string };
 
       // Select "Bar Chart"
-      barChart.querySelector('button')?.click();
+      (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(barChart.selected).toBe(true);
+      expect(
+        (barChart as HTMLElement & { selected?: boolean; value: string })
+          .selected
+      ).toBe(true);
 
       // Select "Monthly Report" in a different submenu — should deselect "Bar Chart"
       monthlyReport.querySelector('button')?.click();
@@ -1282,16 +1307,27 @@ describe('modus-wc-menu-item', () => {
 
       const allItems = Array.from(
         page.doc.querySelectorAll('modus-wc-menu-item')
-      ) as (HTMLElement & { selected?: boolean; value: string })[];
+      );
 
-      const chartsHeader = allItems.find((i) => i.value === 'charts')!;
-      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
+      const chartsHeader = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'charts'
+      )! as HTMLElement & { selected?: boolean; value: string };
+      const barChart = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'bar-chart'
+      )! as HTMLElement & { selected?: boolean; value: string };
 
       // Select "Bar Chart"
-      barChart.querySelector('button')?.click();
+      (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(barChart.selected).toBe(true);
+      expect(
+        (barChart as HTMLElement & { selected?: boolean; value: string })
+          .selected
+      ).toBe(true);
 
       // The submenu header should NOT have the active class
       const headerLi = chartsHeader.querySelector('li') as HTMLLIElement;
@@ -1324,16 +1360,31 @@ describe('modus-wc-menu-item', () => {
 
       const allItems = Array.from(
         page.doc.querySelectorAll('modus-wc-menu-item')
-      ) as (HTMLElement & { selected?: boolean; value: string })[];
+      );
 
-      const barChart = allItems.find((i) => i.value === 'bar-chart')!;
-      const calendar = allItems.find((i) => i.value === 'calendar')!;
-      const monthlyReport = allItems.find((i) => i.value === 'monthly-report')!;
+      const barChart = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'bar-chart'
+      )! as HTMLElement & { selected?: boolean; value: string };
+      const calendar = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'calendar'
+      )! as HTMLElement & { selected?: boolean; value: string };
+      const monthlyReport = allItems.find(
+        (i) =>
+          (i as HTMLElement & { selected?: boolean; value: string }).value ===
+          'monthly-report'
+      )! as HTMLElement & { selected?: boolean; value: string };
 
       // Select Bar Chart
-      barChart.querySelector('button')?.click();
+      (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
-      expect(barChart.selected).toBe(true);
+      expect(
+        (barChart as HTMLElement & { selected?: boolean; value: string })
+          .selected
+      ).toBe(true);
 
       // Select Calendar — Bar Chart deselected
       calendar.querySelector('button')?.click();
