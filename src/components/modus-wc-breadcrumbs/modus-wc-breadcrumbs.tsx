@@ -8,6 +8,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-breadcrumbs.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -45,6 +46,7 @@ export class ModusWcBreadcrumbs {
   @Event() breadcrumbClick!: EventEmitter<IBreadcrumb>;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Breadcrumbs';
     }

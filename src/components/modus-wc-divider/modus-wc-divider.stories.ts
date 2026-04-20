@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { Orientation } from '../types';
 
 interface DividerArgs {
@@ -87,3 +88,34 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('divider-shadow-host')) {
+      const DividerShadowHost = createShadowHostClass<DividerArgs>({
+        componentTag: 'modus-wc-divider',
+        propsMapper: (v: DividerArgs, el: HTMLElement) => {
+          const dividerEl = el as unknown as {
+            color: string;
+            content: string;
+            customClass: string;
+            orientation: string;
+            position: string;
+            responsive: boolean;
+          };
+          dividerEl.color = v.color;
+          dividerEl.content = v.content;
+          dividerEl.customClass = v['custom-class'] || '';
+          dividerEl.orientation = v.orientation;
+          dividerEl.position = v.position;
+          dividerEl.responsive = Boolean(v.responsive);
+        },
+      });
+      customElements.define('divider-shadow-host', DividerShadowHost);
+    }
+
+    return html`<divider-shadow-host
+      .props=${{ ...args }}
+    ></divider-shadow-host>`;
+  },
+};

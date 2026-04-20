@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface AlertArgs {
   'alert-description'?: string;
@@ -113,6 +114,36 @@ export const WithCustomContent: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('alert-shadow-host')) {
+      const AlertShadowHost = createShadowHostClass<AlertArgs>({
+        componentTag: 'modus-wc-alert',
+        propsMapper: (v: AlertArgs, el: HTMLElement) => {
+          const alertEl = el as unknown as {
+            alertDescription: string;
+            alertTitle: string;
+            customClass: string;
+            delay: number;
+            dismissible: boolean;
+            icon: string;
+            variant: string;
+          };
+          alertEl.alertDescription = v['alert-description'] ?? '';
+          alertEl.alertTitle = v['alert-title'];
+          alertEl.customClass = v['custom-class'] || '';
+          alertEl.delay = v.delay ?? 0;
+          alertEl.dismissible = Boolean(v.dismissible);
+          alertEl.icon = v.icon ?? '';
+          alertEl.variant = v.variant;
+        },
+      });
+      customElements.define('alert-shadow-host', AlertShadowHost);
+    }
+
+    return html`<alert-shadow-host .props=${{ ...args }}></alert-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

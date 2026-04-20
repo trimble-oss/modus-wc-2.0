@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface ToolbarArgs {
   'custom-class'?: string;
@@ -32,3 +33,26 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('toolbar-shadow-host')) {
+      const ToolbarShadowHost = createShadowHostClass<ToolbarArgs>({
+        componentTag: 'modus-wc-toolbar',
+        propsMapper: (v: ToolbarArgs, el: HTMLElement) => {
+          const toolbarEl = el as unknown as { customClass: string };
+          toolbarEl.customClass = v['custom-class'] || '';
+          if (!el.hasChildNodes()) {
+            el.innerHTML =
+              '<div slot="start">Start</div><div slot="center">Center</div><div slot="end">End</div>';
+          }
+        },
+      });
+      customElements.define('toolbar-shadow-host', ToolbarShadowHost);
+    }
+
+    return html`<toolbar-shadow-host
+      .props=${{ ...args }}
+    ></toolbar-shadow-host>`;
+  },
+};

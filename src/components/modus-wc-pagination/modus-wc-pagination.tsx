@@ -8,6 +8,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ChevronDoubleLeftSolidIcon } from '../../icons/chevron-double-left-solid.icon';
@@ -105,6 +106,7 @@ export class ModusWcPagination {
   }
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.calculateVisiblePages();
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }

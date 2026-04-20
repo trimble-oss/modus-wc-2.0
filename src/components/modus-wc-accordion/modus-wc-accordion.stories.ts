@@ -133,7 +133,6 @@ export const ShadowDomParent: Story = {
     ></accordion-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

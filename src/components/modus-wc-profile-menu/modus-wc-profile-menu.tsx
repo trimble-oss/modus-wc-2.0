@@ -8,6 +8,7 @@ import {
   Prop,
   Event as StencilEvent,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { renderSubMenu } from './utils/menu_template';
@@ -80,6 +81,7 @@ export class ModusWcProfileMenu {
   @StencilEvent() menuItemClick!: EventEmitter<string>;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

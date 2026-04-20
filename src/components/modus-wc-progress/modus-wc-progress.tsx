@@ -1,5 +1,6 @@
 import { Component, Element, Fragment, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-progress.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -37,6 +38,7 @@ export class ModusWcProgress {
   @Prop() variant?: 'default' | 'radial' = 'default';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Progress';
     }

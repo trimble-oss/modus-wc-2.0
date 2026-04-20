@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ToastPosition } from './modus-wc-toast';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface ToastArgs {
   'custom-class'?: string;
@@ -58,6 +59,32 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('toast-shadow-host')) {
+      const ToastShadowHost = createShadowHostClass<ToastArgs>({
+        componentTag: 'modus-wc-toast',
+        propsMapper: (v: ToastArgs, el: HTMLElement) => {
+          const toastEl = el as unknown as {
+            customClass: string;
+            delay: number;
+            position: string;
+          };
+          toastEl.customClass = v['custom-class'] || '';
+          toastEl.delay = v.delay ?? 0;
+          toastEl.position = v.position ?? 'top-end';
+          if (!el.hasChildNodes()) {
+            el.innerHTML =
+              '<modus-wc-alert alert-title="Message sent!" variant="success"></modus-wc-alert>';
+          }
+        },
+      });
+      customElements.define('toast-shadow-host', ToastShadowHost);
+    }
+
+    return html`<toast-shadow-host .props=${{ ...args }}></toast-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

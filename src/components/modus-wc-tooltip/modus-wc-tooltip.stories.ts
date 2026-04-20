@@ -74,6 +74,72 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('tooltip-shadow-host')) {
+      class TooltipShadowHost extends HTMLElement {
+        private sr: ShadowRoot;
+        private _props?: TooltipArgs;
+        private tooltipEl?: HTMLElement & {
+          content: string;
+          customClass: string;
+          disabled: boolean;
+          forceOpen: boolean | undefined;
+          tooltipId: string;
+          position: string;
+        };
+
+        constructor() {
+          super();
+          this.sr = this.attachShadow({ mode: 'open' });
+        }
+
+        connectedCallback() {
+          if (this.tooltipEl) return;
+          this.renderContent();
+        }
+
+        set props(v: TooltipArgs) {
+          this._props = v;
+          if (this.tooltipEl) this.applyProps();
+        }
+
+        private renderContent() {
+          this.sr.innerHTML = '';
+
+          this.tooltipEl = document.createElement(
+            'modus-wc-tooltip'
+          ) as typeof this.tooltipEl;
+
+          const badge = document.createElement('modus-wc-badge');
+          badge.textContent = 'Hover';
+          this.tooltipEl!.appendChild(badge);
+          this.sr.appendChild(this.tooltipEl!);
+
+          // Apply props after Stencil hydrates the tooltip element
+          void Promise.resolve().then(() => this.applyProps());
+        }
+
+        private applyProps() {
+          const v = this._props;
+          const tooltip = this.tooltipEl;
+          if (!v || !tooltip) return;
+          tooltip.content = v.content ?? 'Tooltip content';
+          tooltip.customClass = v['custom-class'] ?? '';
+          tooltip.disabled = Boolean(v.disabled);
+          tooltip.forceOpen = v['force-open'] || undefined;
+          tooltip.tooltipId = v['tooltip-id'] ?? '';
+          tooltip.position = v.position ?? 'auto';
+        }
+      }
+      customElements.define('tooltip-shadow-host', TooltipShadowHost);
+    }
+
+    return html`<tooltip-shadow-host
+      .props=${{ ...args }}
+    ></tooltip-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

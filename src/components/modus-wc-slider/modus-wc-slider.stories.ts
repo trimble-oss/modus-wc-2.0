@@ -115,7 +115,6 @@ export const ShadowDomParent: Story = {
     ></slider-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { generateRandomId } from '../utils';
 
 interface ModalArgs {
@@ -158,6 +159,55 @@ ${illustrativeScript}
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    const modalId = `shadow-dom-modal`;
+
+    const handleModalVisibility = (action: 'show' | 'hide') => {
+      const modal = document.getElementById(modalId) as HTMLDialogElement;
+      if (modal) {
+        if (action === 'show') modal.showModal();
+        else modal.close();
+      }
+    };
+
+    if (!customElements.get('modal-shadow-host')) {
+      const ModalShadowHost = createShadowHostClass<ModalArgs>({
+        componentTag: 'modus-wc-modal',
+        propsMapper: (v: ModalArgs, el: HTMLElement) => {
+          const modalEl = el as unknown as {
+            backdrop: string;
+            customClass: string;
+            fullscreen: boolean;
+            modalId: string;
+            position: string;
+            showClose: boolean;
+            showFullscreenToggle: boolean;
+          };
+          modalEl.backdrop = v.backdrop;
+          modalEl.customClass = v['custom-class'] || '';
+          modalEl.fullscreen = Boolean(v.fullscreen);
+          modalEl.modalId = modalId;
+          modalEl.position = v.position;
+          modalEl.showClose = Boolean(v['show-close']);
+          modalEl.showFullscreenToggle = Boolean(v['show-fullscreen-toggle']);
+          if (!el.hasChildNodes()) {
+            el.innerHTML = `<span slot="header">Modal Title</span><span slot="content">This is sample modal content.</span>`;
+          }
+        },
+      });
+      customElements.define('modal-shadow-host', ModalShadowHost);
+    }
+
+    // prettier-ignore
+    return html`
+<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
+  Open modal
+</modus-wc-button>
+<modal-shadow-host .props=${{ ...args }}></modal-shadow-host>
+    `;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

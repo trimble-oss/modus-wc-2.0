@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LoaderColor, LoaderVariant } from './modus-wc-loader';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface LoaderArgs {
@@ -134,6 +135,32 @@ export const Ring: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('loader-shadow-host')) {
+      const LoaderShadowHost = createShadowHostClass<LoaderArgs>({
+        componentTag: 'modus-wc-loader',
+        propsMapper: (v: LoaderArgs, el: HTMLElement) => {
+          const loaderEl = el as unknown as {
+            color: string;
+            customClass: string;
+            size: string;
+            variant: string;
+          };
+          loaderEl.color = v.color;
+          loaderEl.customClass = v['custom-class'] || '';
+          loaderEl.size = v.size;
+          loaderEl.variant = v.variant;
+        },
+      });
+      customElements.define('loader-shadow-host', LoaderShadowHost);
+    }
+
+    return html`<loader-shadow-host
+      .props=${{ ...args }}
+    ></loader-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

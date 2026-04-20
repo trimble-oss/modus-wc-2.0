@@ -206,7 +206,6 @@ export const ShadowDomParent: Story = {
     ></textarea-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

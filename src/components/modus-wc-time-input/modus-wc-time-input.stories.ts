@@ -230,7 +230,6 @@ export const ShadowDomParent: Story = {
     ></time-input-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

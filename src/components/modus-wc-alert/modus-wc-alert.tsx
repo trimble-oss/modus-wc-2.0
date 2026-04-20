@@ -11,6 +11,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -54,6 +55,7 @@ export class ModusWcAlert {
   @Event() dismissClick!: EventEmitter;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     // Set default role if none provided
     if (!this.el.hasAttribute('role')) {
       this.el.setAttribute('role', 'status');

@@ -12,6 +12,7 @@ import {
   convertPropsToClasses,
   convertPropsToClassesTab as convertPropsToTabClasses,
 } from './modus-wc-tabs.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -73,6 +74,7 @@ export class ModusWcTabs {
   }>;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Tab Group';
     }

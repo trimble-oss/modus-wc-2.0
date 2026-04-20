@@ -2498,7 +2498,6 @@ export const ShadowDomParent: Story = {
     ></autocomplete-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

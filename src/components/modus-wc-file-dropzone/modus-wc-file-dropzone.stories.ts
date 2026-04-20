@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface FileDropzoneArgs {
   'accept-file-types'?: string;
@@ -224,4 +225,38 @@ export const multipleFiles: Story = {
       instructions="Select multiple image files"
     ></modus-wc-file-dropzone>
   `,
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('file-dropzone-shadow-host')) {
+      const FileDropzoneShadowHost = createShadowHostClass<FileDropzoneArgs>({
+        componentTag: 'modus-wc-file-dropzone',
+        propsMapper: (v: FileDropzoneArgs, el: HTMLElement) => {
+          const dropzoneEl = el as unknown as {
+            acceptFileTypes: string;
+            customClass: string;
+            disabled: boolean;
+            includeStateIcon: boolean;
+            instructions: string;
+            multiple: boolean;
+          };
+          dropzoneEl.acceptFileTypes = v['accept-file-types'] ?? '';
+          dropzoneEl.customClass = v['custom-class'] || '';
+          dropzoneEl.disabled = Boolean(v.disabled);
+          dropzoneEl.includeStateIcon = Boolean(v['include-state-icon']);
+          dropzoneEl.instructions = v.instructions ?? '';
+          dropzoneEl.multiple = Boolean(v.multiple);
+        },
+      });
+      customElements.define(
+        'file-dropzone-shadow-host',
+        FileDropzoneShadowHost
+      );
+    }
+
+    return html`<file-dropzone-shadow-host
+      .props=${{ ...args }}
+    ></file-dropzone-shadow-host>`;
+  },
 };

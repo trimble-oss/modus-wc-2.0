@@ -243,7 +243,6 @@ export const ShadowDomParent: Story = {
     ></button-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

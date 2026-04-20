@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface PanelArgs {
   'custom-class'?: string;
@@ -132,5 +133,33 @@ export const BodyOnly: Story = {
   </modus-wc-menu>
 </modus-wc-panel>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('panel-shadow-host')) {
+      const PanelShadowHost = createShadowHostClass<PanelArgs>({
+        componentTag: 'modus-wc-panel',
+        propsMapper: (v: PanelArgs, el: HTMLElement) => {
+          const panelEl = el as unknown as {
+            customClass: string;
+            width: string;
+            height: string;
+            floating: boolean;
+          };
+          panelEl.customClass = v['custom-class'] || '';
+          panelEl.width = v.width ?? '350px';
+          panelEl.height = v.height ?? '700px';
+          panelEl.floating = Boolean(v.floating);
+          if (!el.hasChildNodes()) {
+            el.innerHTML = '<div slot="body"><p>Panel content</p></div>';
+          }
+        },
+      });
+      customElements.define('panel-shadow-host', PanelShadowHost);
+    }
+
+    return html`<panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
   },
 };

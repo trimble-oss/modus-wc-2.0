@@ -9,6 +9,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -58,6 +59,7 @@ export class ModusWcButtonGroup {
   }>;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

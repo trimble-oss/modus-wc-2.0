@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IProfileMenuProps, ISubMenu } from './modus-wc-profile-menu';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface ProfileMenuArgs {
   'profile-props': IProfileMenuProps;
@@ -274,5 +275,30 @@ export const WithTwoSubmenus: Story = {
         { label: 'Support', icon: 'headset', iconVariant: 'solid' },
       ],
     },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('profile-menu-shadow-host')) {
+      const ProfileMenuShadowHost = createShadowHostClass<ProfileMenuArgs>({
+        componentTag: 'modus-wc-profile-menu',
+        propsMapper: (v: ProfileMenuArgs, el: HTMLElement) => {
+          const profileMenuEl = el as unknown as {
+            profileProps: IProfileMenuProps;
+            menuOne: ISubMenu | undefined;
+            menuTwo: ISubMenu | undefined;
+          };
+          profileMenuEl.profileProps = v['profile-props'];
+          profileMenuEl.menuOne = v['menu-one'];
+          profileMenuEl.menuTwo = v['menu-two'];
+        },
+      });
+      customElements.define('profile-menu-shadow-host', ProfileMenuShadowHost);
+    }
+
+    return html`<profile-menu-shadow-host
+      .props=${{ ...args }}
+    ></profile-menu-shadow-host>`;
   },
 };

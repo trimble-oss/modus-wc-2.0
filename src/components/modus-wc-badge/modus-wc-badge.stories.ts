@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 
 interface BadgeArgs {
@@ -90,6 +91,31 @@ export const WithIcon: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('badge-shadow-host')) {
+      const BadgeShadowHost = createShadowHostClass<BadgeArgs>({
+        componentTag: 'modus-wc-badge',
+        propsMapper: (v: BadgeArgs, el: HTMLElement) => {
+          const badgeEl = el as unknown as {
+            color: string;
+            customClass: string;
+            size: string;
+            variant: string;
+          };
+          badgeEl.color = v.color;
+          badgeEl.customClass = v['custom-class'] || '';
+          badgeEl.size = v.size;
+          badgeEl.variant = v.variant;
+        },
+        defaultContent: 'Badge',
+      });
+      customElements.define('badge-shadow-host', BadgeShadowHost);
+    }
+
+    return html`<badge-shadow-host .props=${{ ...args }}></badge-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {
