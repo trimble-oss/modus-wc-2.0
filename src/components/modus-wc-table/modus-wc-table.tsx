@@ -255,11 +255,8 @@ export class ModusWcTable {
     }
   }
 
-  connectedCallback() {
-    handleShadowDOMStyles(this.el);
-  }
-
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
     }

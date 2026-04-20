@@ -61,11 +61,8 @@ export class ModusWcTooltip {
   /** An event that fires when the tooltip is dismissed via Escape key */
   @Event() dismissEscape!: EventEmitter;
 
-  connectedCallback() {
-    handleShadowDOMStyles(this.el);
-  }
-
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
