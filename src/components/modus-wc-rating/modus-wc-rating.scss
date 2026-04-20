@@ -38,10 +38,10 @@ modus-wc-rating.modus-wc-rating-container {
           &[aria-checked='true'],
           &[aria-current='true'],
           &:has(
-            ~ *:checked,
-            ~ *[aria-checked='true'],
-            ~ *[aria-current='true']
-          ) {
+              ~ *:checked,
+              ~ *[aria-checked='true'],
+              ~ *[aria-current='true']
+            ) {
             opacity: 0.3;
           }
         }

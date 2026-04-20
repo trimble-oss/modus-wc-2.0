@@ -36,10 +36,10 @@ modus-wc-table .modus-wc-table {
   }
 
   &:where(
-    thead tr,
-    tbody tr:not(:last-child),
-    tbody tr:first-child:last-child
-  ) {
+      thead tr,
+      tbody tr:not(:last-child),
+      tbody tr:first-child:last-child
+    ) {
     border-bottom-color: var(--modus-wc-color-base-100);
   }
 }
