@@ -58,8 +58,11 @@ export class ModusWcButtonGroup {
     selectedButtons: HTMLElement[];
   }>;
 
-  componentWillLoad() {
+  connectedCallback() {
     handleShadowDOMStyles(this.el);
+  }
+
+  componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

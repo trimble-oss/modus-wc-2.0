@@ -105,8 +105,11 @@ export class ModusWcPagination {
     this.visiblePages = pages;
   }
 
-  componentWillLoad() {
+  connectedCallback() {
     handleShadowDOMStyles(this.el);
+  }
+
+  componentWillLoad() {
     this.calculateVisiblePages();
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
