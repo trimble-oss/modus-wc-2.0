@@ -2362,12 +2362,15 @@ describe('modus-wc-table', () => {
     });
 
     const component = page.rootInstance as ModusWcTable;
+    const attributesPrototype = Object.getPrototypeOf(
+      document.createElement('a').attributes
+    ) as NamedNodeMap;
     const itemDescriptor = Object.getOwnPropertyDescriptor(
-      NamedNodeMap.prototype,
+      attributesPrototype,
       'item'
     );
     const itemSpy = jest
-      .spyOn(NamedNodeMap.prototype, 'item')
+      .spyOn(attributesPrototype, 'item')
       .mockImplementation(function (this: NamedNodeMap, index: number) {
         if (index === 0) return null;
         return itemDescriptor?.value
