@@ -211,7 +211,7 @@ export class ModusWcSlider {
 
   private getValueFromPointer(event: PointerEvent): number {
     const track = this.el.querySelector<HTMLElement>(
-      '.modus-wc-dual-range-track-bg'
+      '.modus-wc-dual-range-inner'
     );
     if (!track) return 0;
     const rect = track.getBoundingClientRect();
@@ -323,55 +323,54 @@ export class ModusWcSlider {
         class={this.getDualWrapperClasses()}
         role="group"
       >
-        <div class="modus-wc-dual-range-track-bg" />
-        <div
-          class="modus-wc-dual-range-fill"
-          style={{ left: `${low}%`, width: `${high - low}%` }}
-        />
+        <div class="modus-wc-dual-range-inner">
+          <div class="modus-wc-dual-range-track-bg" />
+          <div
+            class="modus-wc-dual-range-fill"
+            style={{ left: `${low}%`, width: `${high - low}%` }}
+          />
 
-        {/* Min thumb */}
-        <div
-          aria-label="Minimum value"
-          aria-valuemax={this.maxValue ?? rangeMax}
-          aria-valuemin={rangeMin}
-          aria-valuenow={this.minValue ?? rangeMin}
-          aria-valuetext={String(this.minValue ?? rangeMin)}
-          class={`modus-wc-dual-range-thumb${this.dragging === 'min' ? ' modus-wc-dual-range-thumb--dragging' : ''}`}
-          id={this.inputId}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onKeyDown={this.handleMinKeyDown}
-          onPointerCancel={this.handlePointerEnd}
-          onPointerDown={this.handleMinPointerDown}
-          onPointerMove={this.handlePointerMove}
-          onPointerUp={this.handlePointerEnd}
-          role="slider"
-          style={{ left: `${low}%` }}
-          tabIndex={tabIdx}
-        />
+          <div
+            aria-label="Minimum value"
+            aria-valuemax={this.maxValue ?? rangeMax}
+            aria-valuemin={rangeMin}
+            aria-valuenow={this.minValue ?? rangeMin}
+            aria-valuetext={String(this.minValue ?? rangeMin)}
+            class={`modus-wc-dual-range-thumb${this.dragging === 'min' ? ' modus-wc-dual-range-thumb--dragging' : ''}`}
+            id={this.inputId}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onKeyDown={this.handleMinKeyDown}
+            onPointerCancel={this.handlePointerEnd}
+            onPointerDown={this.handleMinPointerDown}
+            onPointerMove={this.handlePointerMove}
+            onPointerUp={this.handlePointerEnd}
+            role="slider"
+            style={{ left: `${low}%` }}
+            tabIndex={tabIdx}
+          />
 
-        {/* Max thumb */}
-        <div
-          aria-label="Maximum value"
-          aria-valuemax={rangeMax}
-          aria-valuemin={this.minValue ?? rangeMin}
-          aria-valuenow={this.maxValue ?? rangeMax}
-          aria-valuetext={String(this.maxValue ?? rangeMax)}
-          class={`modus-wc-dual-range-thumb${this.dragging === 'max' ? ' modus-wc-dual-range-thumb--dragging' : ''}`}
-          id={this.inputId ? `${this.inputId}-max` : undefined}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onKeyDown={this.handleMaxKeyDown}
-          onPointerCancel={this.handlePointerEnd}
-          onPointerDown={this.handleMaxPointerDown}
-          onPointerMove={this.handlePointerMove}
-          onPointerUp={this.handlePointerEnd}
-          role="slider"
-          style={{ left: `${high}%` }}
-          tabIndex={tabIdx}
-        />
+          <div
+            aria-label="Maximum value"
+            aria-valuemax={rangeMax}
+            aria-valuemin={this.minValue ?? rangeMin}
+            aria-valuenow={this.maxValue ?? rangeMax}
+            aria-valuetext={String(this.maxValue ?? rangeMax)}
+            class={`modus-wc-dual-range-thumb${this.dragging === 'max' ? ' modus-wc-dual-range-thumb--dragging' : ''}`}
+            id={this.inputId ? `${this.inputId}-max` : undefined}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onKeyDown={this.handleMaxKeyDown}
+            onPointerCancel={this.handlePointerEnd}
+            onPointerDown={this.handleMaxPointerDown}
+            onPointerMove={this.handlePointerMove}
+            onPointerUp={this.handlePointerEnd}
+            role="slider"
+            style={{ left: `${high}%` }}
+            tabIndex={tabIdx}
+          />
+        </div>
 
-        {/* Hidden inputs for form submission */}
         <input
           name={this.name ? `${this.name}-min` : undefined}
           type="hidden"

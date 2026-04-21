@@ -35,6 +35,9 @@ modus-wc-slider .modus-wc-dual-range-wrapper {
   align-items: center;
   height: var(--dr-height);
   width: 100%;
+  /* Inset so thumbs at 0%/100% don't overflow the container */
+  padding-inline: calc(var(--dr-thumb-size) / 2);
+  box-sizing: border-box;
   cursor: pointer;
 
   &.modus-wc-range-sm {
@@ -49,7 +52,15 @@ modus-wc-slider .modus-wc-dual-range-wrapper {
     --dr-thumb-size: 2rem;
   }
 
-  /* Gray background track */
+  /* Inner container: takes full width inside the padding; all tracks/thumbs are positioned relative to this */
+  .modus-wc-dual-range-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
   .modus-wc-dual-range-track-bg {
     position: absolute;
     inset-inline: 0;
@@ -86,7 +97,8 @@ modus-wc-slider .modus-wc-dual-range-wrapper {
     }
 
     &:focus-visible {
-      box-shadow: 0 0 0 6px var(--dr-thumb-bg) inset,
+      box-shadow:
+        0 0 0 6px var(--dr-thumb-bg) inset,
         0 0 0 2rem var(--dr-fill-color) inset;
     }
 

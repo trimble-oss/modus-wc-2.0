@@ -45,7 +45,8 @@ function attachSliderLiveRef(root: Element | undefined) {
   }
   const sync = () =>
     void updateSliderLiveDisplay(slider as SliderStoryHost, live);
-  void sync();
+  // Wait for the custom element to upgrade so @Method getters are available
+  void customElements.whenDefined('modus-wc-slider').then(sync);
   slider.addEventListener('inputChange', sync);
   return () => slider.removeEventListener('inputChange', sync);
 }
@@ -142,7 +143,8 @@ export const DualRange: Story = {
     const maxV = args['max-value'] ?? 80;
     return html`
       <div
-        style="display:flex;flex-direction:column;gap:0.5rem"
+      <div
+        style="display:flex;flex-direction:column;gap:0.5rem;width:20rem"
         ${ref(attachSliderLiveRef)}
       >
         <modus-wc-slider
