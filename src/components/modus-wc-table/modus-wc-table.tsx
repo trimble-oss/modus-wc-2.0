@@ -715,8 +715,14 @@ export class ModusWcTable {
   private buildEditorNodeFromTemplate(
     editorTemplate: string,
     value: unknown
-  ): HTMLElement | undefined {
-    const htmlStr = editorTemplate.replace(/\$\{value\}/g, String(value ?? ''));
+  ): HTMLElement {
+    const escapedValue = String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    const htmlStr = editorTemplate.replace(/\$\{value\}/g, escapedValue);
     const parsed = new DOMParser().parseFromString(htmlStr, 'text/html');
 
     parsed
@@ -724,25 +730,33 @@ export class ModusWcTable {
       .forEach((node) => node.remove());
 
     parsed.querySelectorAll('*').forEach((element) => {
-      [...element.attributes].forEach((attribute) => {
+      for (let i = element.attributes.length - 1; i >= 0; i--) {
+        const attribute = element.attributes.item(i);
+        if (!attribute) continue;
+
         const name = attribute.name.toLowerCase();
-        const value = attribute.value;
+        const attributeValue = attribute.value;
 
         if (name.startsWith('on')) {
           element.removeAttribute(attribute.name);
-          return;
+          continue;
         }
 
         if (
           ['href', 'src', 'xlink:href', 'formaction'].includes(name) &&
-          !sanitizeUrl(value)
+          !sanitizeUrl(attributeValue)
         ) {
           element.removeAttribute(attribute.name);
         }
-      });
+      }
     });
 
-    return parsed.body.firstElementChild as HTMLElement | undefined;
+    const parsedElement = parsed.body.firstElementChild as HTMLElement | null;
+    if (parsedElement) return parsedElement;
+
+    const fallbackElement = document.createElement('span');
+    fallbackElement.textContent = String(value ?? '');
+    return fallbackElement;
   }
 
   render() {
@@ -893,19 +907,10 @@ export class ModusWcTable {
                                   column.editorTemplate,
                                   /* istanbul ignore next */
                                   row[column.accessor]
-                                ) ??
-                                String(
-                                  /* istanbul ignore next */
-                                  row[column.accessor] ?? ''
                                 );
 
                               // allow users to wire events / data
-                              if (
-                                typeof cellNode !== 'string' &&
-                                'tagName' in cellNode
-                              ) {
-                                column.editorSetup?.(cellNode, row, handleCommit);
-                              }
+                              column.editorSetup?.(cellNode, row, handleCommit);
                             } else if (column.customEditorRenderer) {
                               cellNode = column.customEditorRenderer(
                                 row[column.accessor],
