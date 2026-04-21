@@ -2362,12 +2362,17 @@ describe('modus-wc-table', () => {
     });
 
     const component = page.rootInstance as ModusWcTable;
-    const originalItem = NamedNodeMap.prototype.item;
+    const itemDescriptor = Object.getOwnPropertyDescriptor(
+      NamedNodeMap.prototype,
+      'item'
+    );
     const itemSpy = jest
       .spyOn(NamedNodeMap.prototype, 'item')
       .mockImplementation(function (this: NamedNodeMap, index: number) {
         if (index === 0) return null;
-        return originalItem.call(this, index);
+        return itemDescriptor?.value
+          ? itemDescriptor.value.call(this, index)
+          : null;
       });
 
     try {
