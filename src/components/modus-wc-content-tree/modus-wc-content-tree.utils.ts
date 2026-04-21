@@ -10,6 +10,41 @@ export const getReorderSignature = (
   parameters: ITreeItemReorderParameters
 ): string => JSON.stringify(parameters);
 
+export interface ITreeItemAddParameters {
+  parentId: string | null;
+  item: ITreeItemData;
+  index?: number;
+}
+
+export interface ITreeItemDeleteParameters {
+  itemId: string;
+}
+
+export interface ITreeItemDuplicateParameters {
+  itemId: string;
+  parentId?: string | null;
+  index?: number;
+}
+
+export interface ITreeItemAddAdjacentParameters {
+  referenceItemId: string;
+  item: ITreeItemData;
+  placement: 'above' | 'below';
+}
+
+interface ITreeItemRemovalResult {
+  list: ITreeItemData[];
+  removedItem: ITreeItemData;
+  parentId: string | null;
+  index: number;
+}
+
+interface ITreeItemLocationResult {
+  item: ITreeItemData;
+  parentId: string | null;
+  index: number;
+}
+
 const reorderListByIndex = (
   list: ITreeItemData[],
   oldIndex: number,
@@ -136,6 +171,92 @@ const insertIntoParent = (
   return null;
 };
 
+const removeByIdentity = (
+  list: ITreeItemData[],
+  itemId: string,
+  parentId: string | null = null
+): ITreeItemRemovalResult | null => {
+  for (let i = 0; i < list.length; i++) {
+    const current = list[i];
+    if (getTreeItemIdentity(current) === itemId) {
+      const updated = [...list];
+      const [removedItem] = updated.splice(i, 1);
+      return { list: updated, removedItem, parentId, index: i };
+    }
+
+    if (!current.children?.length) {
+      continue;
+    }
+
+    const nested = removeByIdentity(
+      current.children,
+      itemId,
+      getTreeItemIdentity(current)
+    );
+    if (!nested) {
+      continue;
+    }
+
+    const updated = [...list];
+    updated[i] = { ...current, children: nested.list };
+    return {
+      ...nested,
+      list: updated,
+    };
+  }
+
+  return null;
+};
+
+const findByIdentity = (
+  list: ITreeItemData[],
+  itemId: string,
+  parentId: string | null = null
+): ITreeItemLocationResult | null => {
+  for (let i = 0; i < list.length; i++) {
+    const current = list[i];
+    if (getTreeItemIdentity(current) === itemId) {
+      return { item: current, parentId, index: i };
+    }
+
+    if (!current.children?.length) {
+      continue;
+    }
+
+    const nested = findByIdentity(
+      current.children,
+      itemId,
+      getTreeItemIdentity(current)
+    );
+    if (nested) {
+      return nested;
+    }
+  }
+
+  return null;
+};
+
+const cloneTreeItemForDuplicate = (
+  item: ITreeItemData,
+  sequence: { current: number }
+): ITreeItemData => {
+  const nextSequence = sequence.current;
+  sequence.current += 1;
+  const nextId = `${item.id}-copy-${nextSequence}`;
+  const nextClientId = item.clientId
+    ? `${item.clientId}-copy-${nextSequence}`
+    : undefined;
+
+  return {
+    ...item,
+    id: nextId,
+    clientId: nextClientId,
+    children: item.children?.map((child) =>
+      cloneTreeItemForDuplicate(child, sequence)
+    ),
+  };
+};
+
 export const reorderTreeItemsData = (
   items: ITreeItemData[],
   parameters: ITreeItemReorderParameters
@@ -189,5 +310,65 @@ export const reorderTreeItemsData = (
     newPosition.parentId,
     removed.removedItem,
     newPosition.index
+  );
+};
+
+export const addTreeItemData = (
+  items: ITreeItemData[],
+  parameters: ITreeItemAddParameters
+): ITreeItemData[] | null => {
+  const { parentId, item, index } = parameters;
+  const targetIndex = index ?? Number.MAX_SAFE_INTEGER;
+
+  return insertIntoParent(items, parentId, item, targetIndex);
+};
+
+export const deleteTreeItemData = (
+  items: ITreeItemData[],
+  parameters: ITreeItemDeleteParameters
+): ITreeItemData[] | null => {
+  const removal = removeByIdentity(items, parameters.itemId);
+  if (!removal) {
+    return null;
+  }
+  return removal.list;
+};
+
+export const duplicateTreeItemData = (
+  items: ITreeItemData[],
+  parameters: ITreeItemDuplicateParameters
+): ITreeItemData[] | null => {
+  const located = findByIdentity(items, parameters.itemId);
+  if (!located) {
+    return null;
+  }
+
+  const sequence = { current: 1 };
+  const duplicatedItem = cloneTreeItemForDuplicate(located.item, sequence);
+  const targetParentId =
+    parameters.parentId === undefined ? located.parentId : parameters.parentId;
+  const targetIndex =
+    parameters.index === undefined ? located.index + 1 : parameters.index;
+
+  return insertIntoParent(items, targetParentId, duplicatedItem, targetIndex);
+};
+
+export const addTreeItemAdjacentData = (
+  items: ITreeItemData[],
+  parameters: ITreeItemAddAdjacentParameters
+): ITreeItemData[] | null => {
+  const located = findByIdentity(items, parameters.referenceItemId);
+  if (!located) {
+    return null;
+  }
+
+  const indexOffset = parameters.placement === 'above' ? 0 : 1;
+  const targetIndex = located.index + indexOffset;
+
+  return insertIntoParent(
+    items,
+    located.parentId,
+    parameters.item,
+    targetIndex
   );
 };

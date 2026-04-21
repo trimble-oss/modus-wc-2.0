@@ -2,6 +2,12 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import {
+  addTreeItemAdjacentData,
+  addTreeItemData,
+  deleteTreeItemData,
+  duplicateTreeItemData,
+} from './modus-wc-content-tree.utils';
+import {
   ITreeItemData,
   ITreeItemElement,
 } from './modus-wc-tree-item/modus-wc-tree-item';
@@ -1060,6 +1066,272 @@ document
   },
 };
 
+export const ControlledActionsWithUtilities: Story = {
+  name: 'Controlled Actions With Utilities',
+  args: {
+    'include-search': false,
+    'include-actions': false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Demonstrates stateless add, duplicate, and delete actions. The consumer handles `treeActionClick`, calls utility functions, and updates `items` with returned data.',
+      },
+      source: {
+        code: `
+<script type="module">
+  import { addTreeItemAdjacentData, addTreeItemData, deleteTreeItemData, duplicateTreeItemData } from './modus-wc-content-tree.utils';
+
+  const treeActions = [
+    {
+      id: 'add-node-above',
+      label: 'Add Node Above',
+      icon: 'add',
+      ariaLabel: 'Add node above',
+    },
+    {
+      id: 'add-node-below',
+      label: 'Add Node Below',
+      icon: 'add',
+      ariaLabel: 'Add node below',
+    },
+    {
+      id: 'add-child',
+      label: 'Add Child',
+      icon: 'subdirectory_arrow_right',
+      ariaLabel: 'Add child node',
+    },
+    {
+      id: 'duplicate',
+      label: 'Duplicate',
+      icon: 'copy_content',
+      ariaLabel: 'Duplicate node',
+    },
+    {
+      id: 'delete',
+      label: 'Delete',
+      icon: 'delete',
+      ariaLabel: 'Delete node',
+    },
+  ];
+
+  const withTreeActions = (items) =>
+    items.map((item) => ({
+      ...item,
+      treeItemActions: treeActions,
+      children: item.children ? withTreeActions(item.children) : undefined,
+    }));
+
+  let itemCounter = 1;
+  let items = withTreeActions([
+    {
+      id: 'roadmap',
+      clientId: 'roadmap-client',
+      label: 'Roadmap',
+      children: [{ id: 'milestone-1', clientId: 'milestone-1-client', label: 'Milestone 1' }],
+    },
+  ]);
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  tree.items = items;
+
+  tree.addEventListener('treeActionClick', (event) => {
+    const treeItem = event.target.closest('modus-wc-tree-item');
+    if (!treeItem) return;
+
+    let next = null;
+    if (event.detail.actionId === 'add-node-above') {
+      const id = 'new-node-' + itemCounter;
+      itemCounter += 1;
+      next = addTreeItemAdjacentData(items, {
+        referenceItemId: treeItem.value,
+        item: { id, clientId: id + '-client', label: 'New Node', treeItemActions: treeActions },
+        placement: 'above',
+      });
+    } else if (event.detail.actionId === 'add-node-below') {
+      const id = 'new-node-' + itemCounter;
+      itemCounter += 1;
+      next = addTreeItemAdjacentData(items, {
+        referenceItemId: treeItem.value,
+        item: { id, clientId: id + '-client', label: 'New Node', treeItemActions: treeActions },
+        placement: 'below',
+      });
+    } else if (event.detail.actionId === 'add-child') {
+      const id = 'new-child-' + itemCounter;
+      itemCounter += 1;
+      next = addTreeItemData(items, {
+        parentId: treeItem.value,
+        item: { id, clientId: id + '-client', label: 'New Child', treeItemActions: treeActions },
+      });
+    } else if (event.detail.actionId === 'duplicate') {
+      next = duplicateTreeItemData(items, { itemId: treeItem.value });
+    } else if (event.detail.actionId === 'delete') {
+      next = deleteTreeItemData(items, { itemId: treeItem.value });
+    }
+
+    if (!next) return;
+    items = next;
+    tree.items = items;
+  });
+</script>
+
+<modus-wc-content-tree include-search="false" include-actions="false"></modus-wc-content-tree>
+`,
+      },
+    },
+  },
+  render: () => {
+    const treeActions = [
+      {
+        id: 'add-node-above',
+        label: 'Add Node Above',
+        icon: 'add',
+        ariaLabel: 'Add node above',
+      },
+      {
+        id: 'add-node-below',
+        label: 'Add Node Below',
+        icon: 'add',
+        ariaLabel: 'Add node below',
+      },
+      {
+        id: 'add-child',
+        label: 'Add Child',
+        icon: 'subdirectory_arrow_right',
+        ariaLabel: 'Add child node',
+      },
+      {
+        id: 'duplicate',
+        label: 'Duplicate',
+        icon: 'copy_content',
+        ariaLabel: 'Duplicate node',
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: 'delete',
+        ariaLabel: 'Delete node',
+      },
+    ];
+
+    const withTreeActions = (items: ITreeItemData[]): ITreeItemData[] =>
+      items.map((item) => ({
+        ...item,
+        treeItemActions: treeActions,
+        children: item.children ? withTreeActions(item.children) : undefined,
+      }));
+
+    const initialItems = withTreeActions([
+      {
+        id: 'roadmap',
+        clientId: 'roadmap-client',
+        label: 'Roadmap',
+        children: [
+          {
+            id: 'milestone-1',
+            clientId: 'milestone-1-client',
+            label: 'Milestone 1',
+          },
+        ],
+      },
+      { id: 'backlog', clientId: 'backlog-client', label: 'Backlog' },
+    ]);
+
+    let itemCounter = 1;
+    let currentItems = initialItems;
+
+    const handleTreeActionClick = (
+      event: CustomEvent<{ actionId: string; actionName: string }>
+    ) => {
+      const source = event.target as HTMLElement;
+      const treeItem = source.closest(
+        'modus-wc-tree-item'
+      ) as ITreeItemElement | null;
+      if (!treeItem) return;
+
+      let nextItems: ITreeItemData[] | null = null;
+      switch (event.detail.actionId) {
+        case 'add-node-above': {
+          const nextNodeNumber = itemCounter;
+          const newNodeId = `new-node-${nextNodeNumber}`;
+          itemCounter += 1;
+          nextItems = addTreeItemAdjacentData(currentItems, {
+            referenceItemId: treeItem.value,
+            item: {
+              id: newNodeId,
+              clientId: `${newNodeId}-client`,
+              label: `New Node ${nextNodeNumber}`,
+              treeItemActions: treeActions,
+            },
+            placement: 'above',
+          });
+          break;
+        }
+        case 'add-node-below': {
+          const nextNodeNumber = itemCounter;
+          const newNodeId = `new-node-${nextNodeNumber}`;
+          itemCounter += 1;
+          nextItems = addTreeItemAdjacentData(currentItems, {
+            referenceItemId: treeItem.value,
+            item: {
+              id: newNodeId,
+              clientId: `${newNodeId}-client`,
+              label: `New Node ${nextNodeNumber}`,
+              treeItemActions: treeActions,
+            },
+            placement: 'below',
+          });
+          break;
+        }
+        case 'add-child': {
+          const nextChildNumber = itemCounter;
+          const newChildId = `new-child-${nextChildNumber}`;
+          itemCounter += 1;
+          nextItems = addTreeItemData(currentItems, {
+            parentId: treeItem.value,
+            item: {
+              id: newChildId,
+              clientId: `${newChildId}-client`,
+              label: `New Child ${nextChildNumber}`,
+              treeItemActions: treeActions,
+            },
+          });
+          break;
+        }
+        case 'duplicate':
+          nextItems = duplicateTreeItemData(currentItems, {
+            itemId: treeItem.value,
+          });
+          break;
+        case 'delete':
+          nextItems = deleteTreeItemData(currentItems, {
+            itemId: treeItem.value,
+          });
+          break;
+      }
+
+      if (!nextItems) return;
+
+      currentItems = nextItems;
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      tree.items = currentItems;
+    };
+
+    return html`
+      <modus-wc-content-tree
+        .includeSearch=${false}
+        .includeActions=${false}
+        .items=${currentItems}
+        @treeActionClick=${handleTreeActionClick}
+      >
+      </modus-wc-content-tree>
+    `;
+  },
+};
+
 export const ItemsReordering: Story = {
   name: 'Items Reordering',
   args: {
@@ -1482,6 +1754,37 @@ export const ApiReference: Story = {
 | Name           | Payload                                                         | Description |
 |----------------|------------------------------------------------------------------|-------------|
 | itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata |
+
+---
+
+### State Manager Utilities
+
+Use these helpers to keep tree updates controlled/stateless. Each utility returns \`nextItems\`; your application decides whether to apply it.
+
+| Utility | Parameters | Description |
+|---------|------------|-------------|
+| \`addTreeItemData\` | \`(items, { parentId, item, index? })\` | Adds an item at root or as a child under \`parentId\`. |
+| \`addTreeItemAdjacentData\` | \`(items, { referenceItemId, item, placement })\` | Inserts a sibling above or below an existing item. |
+| \`deleteTreeItemData\` | \`(items, { itemId })\` | Removes an item by identity. |
+| \`duplicateTreeItemData\` | \`(items, { itemId, parentId?, index? })\` | Duplicates an item/subtree with regenerated IDs. |
+| \`reorderTreeItemsData\` | \`(items, parameters)\` | Computes reordered tree data for drag/drop operations. |
+
+#### Built-in Action Mapping
+
+| Action ID | Recommended Utility |
+|-----------|----------------------|
+| \`add-node-above\` | \`addTreeItemAdjacentData(..., { placement: 'above' })\` |
+| \`add-node-below\` | \`addTreeItemAdjacentData(..., { placement: 'below' })\` |
+| \`add-child\` | \`addTreeItemData\` |
+| \`duplicate\` | \`duplicateTreeItemData\` |
+| \`delete\` | \`deleteTreeItemData\` |
+
+#### Controlled Update Flow
+
+1. Handle \`treeActionClick\` or \`itemsReordered\`.
+2. Call the mapped utility to compute \`nextItems\`.
+3. Optionally validate/persist with your backend.
+4. Apply \`nextItems\` by updating \`items\`.
 
 ---
 
