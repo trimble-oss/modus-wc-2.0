@@ -2,8 +2,51 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
+
+type SliderStoryHost = HTMLElement & {
+  dualRange?: boolean;
+  getSliderValue?: () => Promise<number>;
+  getDualRangeValues?: () => Promise<{
+    minValue: number;
+    maxValue: number;
+  } | null>;
+};
+
+async function updateSliderLiveDisplay(
+  host: SliderStoryHost,
+  liveEl: HTMLElement
+): Promise<void> {
+  if (host.dualRange && host.getDualRangeValues) {
+    const range = await host.getDualRangeValues();
+    liveEl.textContent = range
+      ? `minValue: ${range.minValue}, maxValue: ${range.maxValue}`
+      : '';
+    return;
+  }
+  if (host.getSliderValue) {
+    const v = await host.getSliderValue();
+    liveEl.textContent = `value: ${v}`;
+  }
+}
+
+function attachSliderLiveRef(root: Element | undefined) {
+  if (!(root instanceof HTMLElement)) {
+    return undefined;
+  }
+  const slider = root.querySelector('modus-wc-slider');
+  const live = root.querySelector<HTMLElement>('[data-slider-live-value]');
+  if (!slider || !live) {
+    return undefined;
+  }
+  const sync = () =>
+    void updateSliderLiveDisplay(slider as SliderStoryHost, live);
+  void sync();
+  slider.addEventListener('inputChange', sync);
+  return () => slider.removeEventListener('inputChange', sync);
+}
 
 interface SliderArgs {
   'custom-class'?: string;
@@ -12,12 +55,14 @@ interface SliderArgs {
   'input-tab-index'?: number;
   label?: string;
   max?: number;
+  'max-value'?: number;
   min?: number;
+  'min-value'?: number;
   name?: string;
   required?: boolean;
   size?: ModusSize;
   step?: number;
-  value: boolean;
+  value: number;
 }
 
 const meta: Meta<SliderArgs> = {
@@ -30,7 +75,7 @@ const meta: Meta<SliderArgs> = {
     name: '',
     required: false,
     size: 'md',
-    value: true,
+    value: 0,
   },
   argTypes: {
     size: {
@@ -53,21 +98,76 @@ type Story = StoryObj<SliderArgs>;
 export const Default: Story = {
   render: (args) => {
     return html`
-      <modus-wc-slider
-        aria-label="Slider"
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        max=${ifDefined(args.max)}
-        min=${ifDefined(args.min)}
-        name=${ifDefined(args.name)}
-        ?required=${args.required}
-        size=${ifDefined(args.size)}
-        step=${ifDefined(args.step)}
-        .value=${args.value}
-      ></modus-wc-slider>
+      <div
+        class="modus-wc-slider-story"
+        style="display:flex;flex-direction:column;gap:0.5rem"
+        ${ref(attachSliderLiveRef)}
+      >
+        <modus-wc-slider
+          aria-label="Slider"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?disabled=${args.disabled}
+          input-id=${ifDefined(args['input-id'])}
+          input-tab-index=${ifDefined(args['input-tab-index'])}
+          label=${ifDefined(args.label)}
+          max=${ifDefined(args.max)}
+          min=${ifDefined(args.min)}
+          name=${ifDefined(args.name)}
+          ?required=${args.required}
+          size=${ifDefined(args.size)}
+          step=${ifDefined(args.step)}
+          .value=${args.value}
+        ></modus-wc-slider>
+        <p
+          style="margin:0;font-size:0.875rem;color:var(--modus-wc-color-gray-6)"
+        >
+          <span data-slider-live-value></span>
+        </p>
+      </div>
+    `;
+  },
+};
+
+export const DualRange: Story = {
+  args: {
+    label: 'Price Range',
+    min: 0,
+    max: 100,
+    'min-value': 20,
+    'max-value': 80,
+  },
+  render: (args) => {
+    const minV = args['min-value'] ?? 20;
+    const maxV = args['max-value'] ?? 80;
+    return html`
+      <div
+        class="modus-wc-slider-story"
+        style="display:flex;flex-direction:column;gap:0.5rem"
+        ${ref(attachSliderLiveRef)}
+      >
+        <modus-wc-slider
+          aria-label="Dual range slider"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?disabled=${args.disabled}
+          ?dual-range=${true}
+          input-id=${ifDefined(args['input-id'])}
+          input-tab-index=${ifDefined(args['input-tab-index'])}
+          label=${ifDefined(args.label)}
+          max=${ifDefined(args.max)}
+          min=${ifDefined(args.min)}
+          .maxValue=${maxV}
+          .minValue=${minV}
+          name=${ifDefined(args.name)}
+          ?required=${args.required}
+          size=${ifDefined(args.size)}
+          step=${ifDefined(args.step)}
+        ></modus-wc-slider>
+        <p
+          style="margin:0;font-size:0.875rem;color:var(--modus-wc-color-gray-6)"
+        >
+          <span data-slider-live-value></span>
+        </p>
+      </div>
     `;
   },
 };

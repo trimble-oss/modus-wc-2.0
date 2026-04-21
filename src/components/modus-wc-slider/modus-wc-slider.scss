@@ -17,3 +17,65 @@ modus-wc-slider .modus-wc-range {
   --rounded-box: 200px;
   --range-shadow: var(--modus-wc-color-trimble-blue);
 }
+
+modus-wc-slider .modus-wc-dual-range-wrapper {
+  position: relative;
+  display: grid;
+  width: 100%;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+
+  .modus-wc-dual-range-track {
+    --range-low: 0%;
+    --range-high: 100%;
+
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
+    height: 0.5rem;
+    border-radius: var(--rounded-box, 1rem);
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(
+      to right,
+      var(--fallback-bc, oklch(var(--bc) / 0.1)) var(--range-low),
+      var(--range-shdw, var(--modus-wc-color-trimble-blue)) var(--range-low),
+      var(--range-shdw, var(--modus-wc-color-trimble-blue)) var(--range-high),
+      var(--fallback-bc, oklch(var(--bc) / 0.1)) var(--range-high)
+    );
+  }
+
+  .modus-wc-dual-range-input {
+    --rounded-box: 200px;
+    --range-shadow: var(--modus-wc-color-trimble-blue);
+
+    grid-row: 1;
+    grid-column: 1;
+    pointer-events: none;
+    overflow: visible;
+
+    &::-webkit-slider-runnable-track {
+      background: transparent !important;
+    }
+
+    &::-moz-range-track {
+      background: transparent !important;
+    }
+
+    &::-webkit-slider-thumb {
+      pointer-events: all;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 0 3px var(--range-shdw) inset,
+        var(--focus-shadow, 0 0) !important;
+    }
+
+    &::-moz-range-thumb {
+      pointer-events: all;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 0 3px var(--range-shdw) inset,
+        var(--focus-shadow, 0 0) !important;
+    }
+  }
+}
