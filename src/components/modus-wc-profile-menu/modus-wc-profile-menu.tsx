@@ -127,7 +127,9 @@ export class ModusWcProfileMenu {
   };
 
   render() {
-    const manageTrimbleIdLink = sanitizeUrl(this.profileProps.manageTrimbleId?.link);
+    const manageTrimbleIdLink = sanitizeUrl(
+      this.profileProps.manageTrimbleId?.link
+    );
 
     return (
       <Host {...this.inheritedAttributes}>

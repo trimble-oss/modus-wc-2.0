@@ -1884,7 +1884,7 @@ describe('modus-wc-table', () => {
       const cellNode = component['buildEditorNodeFromTemplate'](
         column.editorTemplate,
         mockRow[column.accessor]
-      ) as HTMLElement;
+      );
 
       // Verify we have a valid input element from the template
       expect(cellNode.tagName).toBe('INPUT');
@@ -2248,7 +2248,7 @@ describe('modus-wc-table', () => {
     const cellNode = component['buildEditorNodeFromTemplate'](
       column.editorTemplate ?? '',
       row.name
-    ) as HTMLElement;
+    );
 
     // Sanity check
     expect(cellNode?.tagName?.toLowerCase()).toBe('input');
@@ -2288,6 +2288,26 @@ describe('modus-wc-table', () => {
     expect(editorNode?.getAttribute('onclick')).toBeNull();
     expect(editorNode?.getAttribute('src')).toBeNull();
     expect((editorNode as HTMLInputElement).value).toBe('safe value');
+  });
+
+  it('should write sanitized URL attributes back to editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<a href=" https://trimble.com/path " formaction=" mailto:test@trimble.com ">${value}</a>',
+      'safe value'
+    ) as HTMLAnchorElement;
+
+    expect(editorNode).toBeTruthy();
+    expect(editorNode.getAttribute('href')).toBe('https://trimble.com/path');
+    expect(editorNode.getAttribute('formaction')).toBe(
+      'mailto:test@trimble.com'
+    );
+    expect(editorNode.textContent).toBe('safe value');
   });
 
   it('should handle deferred blur when relatedTarget is null', async () => {

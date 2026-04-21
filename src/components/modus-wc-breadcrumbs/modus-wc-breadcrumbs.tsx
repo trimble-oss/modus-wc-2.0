@@ -84,6 +84,7 @@ export class ModusWcBreadcrumbs {
           <ol>
             {this.items.map((item, index) => {
               const isCurrentPage = index === this.items.length - 1;
+              const sanitizedUrl = sanitizeUrl(item.url);
 
               return (
                 <li
@@ -92,17 +93,21 @@ export class ModusWcBreadcrumbs {
                 >
                   {isCurrentPage ? (
                     <span>{item.label}</span>
-                  ) : sanitizeUrl(item.url) ? (
+                  ) : sanitizedUrl ? (
                     <a
-                      href={sanitizeUrl(item.url)}
+                      href={sanitizedUrl}
                       onClick={(event) => this.handleClick(event, item)}
                     >
                       {item.label}
                     </a>
                   ) : (
-                    <span onClick={(event) => this.handleClick(event, item)}>
+                    <button
+                      class="modus-wc-breadcrumb-button"
+                      type="button"
+                      onClick={(event) => this.handleClick(event, item)}
+                    >
                       {item.label}
-                    </span>
+                    </button>
                   )}
                 </li>
               );

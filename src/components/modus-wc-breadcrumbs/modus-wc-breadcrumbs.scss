@@ -8,6 +8,15 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
     list-style: none;
   }
 
+  .modus-wc-breadcrumb-button {
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+  }
+
   // Sizes
   &.modus-wc-text-xs {
     font-size: var(--modus-wc-font-size-xs);
@@ -28,7 +37,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
 
 [data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,
 [data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
-  a {
+  a,
+  .modus-wc-breadcrumb-button {
     text-decoration: none;
 
     &:hover {
@@ -38,7 +48,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
 }
 
 [data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
-  a {
+  a,
+  .modus-wc-breadcrumb-button {
     color: var(--modus-wc-color-blue-light);
 
     &:active {
@@ -52,7 +63,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
-  a {
+  a,
+  .modus-wc-breadcrumb-button {
     color: var(--modus-wc-color-highlight-blue);
 
     &:active {
@@ -67,7 +79,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
 
 [data-theme='connect-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,
 [data-theme='connect-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
-  a {
+  a,
+  .modus-wc-breadcrumb-button {
     color: var(--modus-wc-color-base-content);
     opacity: 0.5;
     text-decoration: none;

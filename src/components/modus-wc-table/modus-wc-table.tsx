@@ -748,11 +748,15 @@ export class ModusWcTable {
           continue;
         }
 
-        if (
-          ['href', 'src', 'xlink:href', 'formaction'].includes(name) &&
-          !sanitizeUrl(attributeValue)
-        ) {
-          element.removeAttribute(attribute.name);
+        if (['href', 'src', 'xlink:href', 'formaction'].includes(name)) {
+          const sanitizedAttributeValue = sanitizeUrl(attributeValue);
+
+          if (!sanitizedAttributeValue) {
+            element.removeAttribute(attribute.name);
+            continue;
+          }
+
+          element.setAttribute(attribute.name, sanitizedAttributeValue);
         }
       }
     });
@@ -908,12 +912,11 @@ export class ModusWcTable {
 
                           if (editing) {
                             if (column.editorTemplate) {
-                              cellNode =
-                                this.buildEditorNodeFromTemplate(
-                                  column.editorTemplate,
-                                  /* istanbul ignore next */
-                                  row[column.accessor]
-                                );
+                              cellNode = this.buildEditorNodeFromTemplate(
+                                column.editorTemplate,
+                                /* istanbul ignore next */
+                                row[column.accessor]
+                              );
 
                               // allow users to wire events / data
                               column.editorSetup?.(cellNode, row, handleCommit);
