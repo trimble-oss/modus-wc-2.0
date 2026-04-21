@@ -2310,6 +2310,38 @@ describe('modus-wc-table', () => {
     expect(editorNode.textContent).toBe('safe value');
   });
 
+  it('should remove dangerous elements from editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<script>alert(1)</script><span>${value}</span>',
+      'safe value'
+    );
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('safe value');
+  });
+
+  it('should return a fallback span when editor templates do not render an element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '',
+      'fallback value'
+    );
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('fallback value');
+  });
+
   it('should handle deferred blur when relatedTarget is null', async () => {
     const mockCommit = jest.fn();
     const column: ITableColumn = {
