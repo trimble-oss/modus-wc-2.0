@@ -154,6 +154,8 @@ export const KEY: { [key: string]: string } = {
   ArrowUp: 'ArrowUp',
 };
 
+const ALLOWED_URL_PROTOCOLS = new Set(['http', 'https', 'mailto', 'tel']);
+
 /**
  * Returns a safe URL string for use in link-like attributes.
  * Disallows dangerous protocols such as javascript:, data:, vbscript:, and file:.
@@ -168,7 +170,6 @@ export const sanitizeUrl = (url?: string): string | undefined => {
   if (!schemeMatch) return trimmed;
 
   const protocol = schemeMatch[0].slice(0, -1).toLowerCase();
-  const allowedProtocols = new Set(['http', 'https', 'mailto', 'tel']);
 
-  return allowedProtocols.has(protocol) ? trimmed : undefined;
+  return ALLOWED_URL_PROTOCOLS.has(protocol) ? trimmed : undefined;
 };
