@@ -726,12 +726,18 @@ export class ModusWcTable {
     const parsed = new DOMParser().parseFromString(htmlStr, 'text/html');
 
     parsed
-      .querySelectorAll('script,iframe,object,embed,link,meta')
+      .querySelectorAll(
+        'script,iframe,object,embed,link,meta,base,form,style,foreignObject'
+      )
       .forEach((node) => node.remove());
 
     parsed.querySelectorAll('*').forEach((element) => {
-      for (let i = element.attributes.length - 1; i >= 0; i--) {
-        const attribute = element.attributes.item(i);
+      for (
+        let attrIndex = element.attributes.length - 1;
+        attrIndex >= 0;
+        attrIndex--
+      ) {
+        const attribute = element.attributes.item(attrIndex);
         if (!attribute) continue;
 
         const name = attribute.name.toLowerCase();

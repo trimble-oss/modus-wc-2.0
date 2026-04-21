@@ -116,7 +116,7 @@ describe('modus-wc-breadcrumbs', () => {
     await page.waitForChanges();
 
     const firstLink = page.root?.querySelector('a');
-    expect(firstLink?.getAttribute('href')).toBe('#');
+    expect(firstLink).toBeNull();
 
     const mockEvent = new MouseEvent('click');
     const preventDefaultSpy = jest.spyOn(mockEvent, 'preventDefault');

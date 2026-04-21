@@ -92,13 +92,17 @@ export class ModusWcBreadcrumbs {
                 >
                   {isCurrentPage ? (
                     <span>{item.label}</span>
-                  ) : (
+                  ) : sanitizeUrl(item.url) ? (
                     <a
-                      href={sanitizeUrl(item.url) ?? '#'}
+                      href={sanitizeUrl(item.url)}
                       onClick={(event) => this.handleClick(event, item)}
                     >
                       {item.label}
                     </a>
+                  ) : (
+                    <span onClick={(event) => this.handleClick(event, item)}>
+                      {item.label}
+                    </span>
                   )}
                 </li>
               );
