@@ -106,7 +106,6 @@ export type AutocompleteTypes =
   | 'mobile'
   | 'pager'
   | 'fax'
-  | 'pager'
   | 'webauthn';
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
