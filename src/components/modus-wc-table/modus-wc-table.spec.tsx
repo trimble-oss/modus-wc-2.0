@@ -1881,10 +1881,10 @@ describe('modus-wc-table', () => {
       // Check the template has the correct value substituted
       expect(htmlStr).toContain('value="Test Template"');
 
-      // Create a wrapper and set innerHTML as the component does
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = htmlStr;
-      const cellNode = wrapper.firstElementChild as HTMLElement;
+      const cellNode = component['buildEditorNodeFromTemplate'](
+        column.editorTemplate,
+        mockRow[column.accessor]
+      ) as HTMLElement;
 
       // Verify we have a valid input element from the template
       expect(cellNode.tagName).toBe('INPUT');
@@ -2245,13 +2245,10 @@ describe('modus-wc-table', () => {
     const component = page.rootInstance as ModusWcTable;
 
     // Build cellNode from template
-    const htmlStr = (column.editorTemplate ?? '').replace(
-      /\$\{value\}/g,
-      String(row.name)
-    );
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = htmlStr;
-    const cellNode = wrapper.firstElementChild as HTMLElement;
+    const cellNode = component['buildEditorNodeFromTemplate'](
+      column.editorTemplate ?? '',
+      row.name
+    ) as HTMLElement;
 
     // Sanity check
     expect(cellNode?.tagName?.toLowerCase()).toBe('input');
@@ -2273,6 +2270,24 @@ describe('modus-wc-table', () => {
     });
     cellNode.dispatchEvent(blurEvent);
     expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should sanitize unsafe attributes from editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<input onclick="alert(1)" src="javascript:alert(2)" value="${value}" />',
+      'safe value'
+    );
+
+    expect(editorNode).toBeTruthy();
+    expect(editorNode?.getAttribute('onclick')).toBeNull();
+    expect(editorNode?.getAttribute('src')).toBeNull();
+    expect((editorNode as HTMLInputElement).value).toBe('safe value');
   });
 
   it('should handle deferred blur when relatedTarget is null', async () => {

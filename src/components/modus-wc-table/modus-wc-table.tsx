@@ -20,7 +20,7 @@ import {
 } from '@tanstack/table-core';
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { Density, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 import {
   createModusTable,
   Table,
@@ -712,6 +712,39 @@ export class ModusWcTable {
     }
   }
 
+  private buildEditorNodeFromTemplate(
+    editorTemplate: string,
+    value: unknown
+  ): HTMLElement | undefined {
+    const htmlStr = editorTemplate.replace(/\$\{value\}/g, String(value ?? ''));
+    const parsed = new DOMParser().parseFromString(htmlStr, 'text/html');
+
+    parsed
+      .querySelectorAll('script,iframe,object,embed,link,meta')
+      .forEach((node) => node.remove());
+
+    parsed.querySelectorAll('*').forEach((element) => {
+      [...element.attributes].forEach((attribute) => {
+        const name = attribute.name.toLowerCase();
+        const value = attribute.value;
+
+        if (name.startsWith('on')) {
+          element.removeAttribute(attribute.name);
+          return;
+        }
+
+        if (
+          ['href', 'src', 'xlink:href', 'formaction'].includes(name) &&
+          !sanitizeUrl(value)
+        ) {
+          element.removeAttribute(attribute.name);
+        }
+      });
+    });
+
+    return parsed.body.firstElementChild as HTMLElement | undefined;
+  }
+
   render() {
     // Derive rows straight from TanStack's row model so that any sorting/pagination
     // is reflected automatically
@@ -855,18 +888,24 @@ export class ModusWcTable {
 
                           if (editing) {
                             if (column.editorTemplate) {
-                              const htmlStr = column.editorTemplate.replace(
-                                /\$\{value\}/g,
-                                /* istanbul ignore next */
-                                String(row[column.accessor] ?? '')
-                              );
-                              const wrapper = document.createElement('div');
-                              wrapper.innerHTML = htmlStr;
                               cellNode =
-                                wrapper.firstElementChild as HTMLElement;
+                                this.buildEditorNodeFromTemplate(
+                                  column.editorTemplate,
+                                  /* istanbul ignore next */
+                                  row[column.accessor]
+                                ) ??
+                                String(
+                                  /* istanbul ignore next */
+                                  row[column.accessor] ?? ''
+                                );
 
                               // allow users to wire events / data
-                              column.editorSetup?.(cellNode, row, handleCommit);
+                              if (
+                                typeof cellNode !== 'string' &&
+                                'tagName' in cellNode
+                              ) {
+                                column.editorSetup?.(cellNode, row, handleCommit);
+                              }
                             } else if (column.customEditorRenderer) {
                               cellNode = column.customEditorRenderer(
                                 row[column.accessor],
