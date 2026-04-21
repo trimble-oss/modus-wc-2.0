@@ -2342,6 +2342,47 @@ describe('modus-wc-table', () => {
     expect(editorNode.textContent).toBe('fallback value');
   });
 
+  it('should return an empty fallback span when template and value are missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate']('', undefined);
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('');
+  });
+
+  it('should ignore missing attributes while sanitizing editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const originalItem = NamedNodeMap.prototype.item;
+    const itemSpy = jest
+      .spyOn(NamedNodeMap.prototype, 'item')
+      .mockImplementation(function (this: NamedNodeMap, index: number) {
+        if (index === 0) return null;
+        return originalItem.call(this, index);
+      });
+
+    try {
+      const editorNode = component['buildEditorNodeFromTemplate'](
+        '<a href="https://trimble.com">${value}</a>',
+        'safe value'
+      );
+
+      expect(editorNode.tagName.toLowerCase()).toBe('a');
+      expect(editorNode.textContent).toBe('safe value');
+    } finally {
+      itemSpy.mockRestore();
+    }
+  });
+
   it('should handle deferred blur when relatedTarget is null', async () => {
     const mockCommit = jest.fn();
     const column: ITableColumn = {
