@@ -164,7 +164,15 @@ export const ShadowDomParent: Story = {
     const modalId = `shadow-dom-modal`;
 
     const handleModalVisibility = (action: 'show' | 'hide') => {
-      const modal = document.getElementById(modalId) as HTMLDialogElement;
+      // The dialog lives inside the shadow host's shadowRoot, not in document
+      const host = document.querySelector(
+        'modal-shadow-host'
+      ) as HTMLElement & {
+        shadowRoot: ShadowRoot;
+      };
+      const modal = host?.shadowRoot?.getElementById(
+        modalId
+      ) as HTMLDialogElement;
       if (modal) {
         if (action === 'show') modal.showModal();
         else modal.close();

@@ -127,7 +127,7 @@ export const ShadowDomParent: Story = {
           tooltip.content = v.content ?? 'Tooltip content';
           tooltip.customClass = v['custom-class'] ?? '';
           tooltip.disabled = Boolean(v.disabled);
-          tooltip.forceOpen = v['force-open'] || undefined;
+          tooltip.forceOpen = v['force-open'] ?? false;
           tooltip.tooltipId = v['tooltip-id'] ?? '';
           tooltip.position = v.position ?? 'auto';
         }
