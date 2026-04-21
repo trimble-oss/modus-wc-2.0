@@ -93,10 +93,21 @@ export type AutocompleteTypes =
   | 'tel-national'
   | 'tel-area-code'
   | 'tel-local'
+  | 'tel-local-prefix'
+  | 'tel-local-suffix'
   | 'tel-extension'
   | 'impp'
   | 'url'
-  | 'photo';
+  | 'photo'
+  | 'shipping'
+  | 'billing'
+  | 'home'
+  | 'work'
+  | 'mobile'
+  | 'pager'
+  | 'fax'
+  | 'pager'
+  | 'webauthn';
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =
