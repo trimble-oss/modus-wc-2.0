@@ -18,64 +18,88 @@ modus-wc-slider .modus-wc-range {
   --range-shadow: var(--modus-wc-color-trimble-blue);
 }
 
+/* ─── Dual-range: single container, two custom thumb divs ─────────────────── */
+
 modus-wc-slider .modus-wc-dual-range-wrapper {
+  /* Size tokens — overridden by .modus-wc-range-{sm,lg} modifiers below */
+  --dr-height: 1.5rem;
+  --dr-track-height: 0.5rem;
+  --dr-thumb-size: 1.5rem;
+  --dr-rounded: var(--rounded-box, 200px);
+  --dr-fill-color: var(--range-shdw, var(--modus-wc-color-trimble-blue));
+  --dr-track-color: var(--fallback-bc, oklch(var(--bc) / 0.1));
+  --dr-thumb-bg: var(--fallback-b1, oklch(var(--b1) / 1));
+
   position: relative;
-  display: grid;
+  display: flex;
+  align-items: center;
+  height: var(--dr-height);
   width: 100%;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
+  cursor: pointer;
 
-  .modus-wc-dual-range-track {
-    --range-low: 0%;
-    --range-high: 100%;
-
-    grid-row: 1;
-    grid-column: 1;
-    align-self: center;
-    height: 0.5rem;
-    border-radius: var(--rounded-box, 1rem);
-    pointer-events: none;
-    z-index: 0;
-    background: linear-gradient(
-      to right,
-      var(--fallback-bc, oklch(var(--bc) / 0.1)) var(--range-low),
-      var(--range-shdw, var(--modus-wc-color-trimble-blue)) var(--range-low),
-      var(--range-shdw, var(--modus-wc-color-trimble-blue)) var(--range-high),
-      var(--fallback-bc, oklch(var(--bc) / 0.1)) var(--range-high)
-    );
+  &.modus-wc-range-sm {
+    --dr-height: 1.25rem;
+    --dr-track-height: 0.25rem;
+    --dr-thumb-size: 1.25rem;
   }
 
-  .modus-wc-dual-range-input {
-    --rounded-box: 200px;
-    --range-shadow: var(--modus-wc-color-trimble-blue);
+  &.modus-wc-range-lg {
+    --dr-height: 2rem;
+    --dr-track-height: 1rem;
+    --dr-thumb-size: 2rem;
+  }
 
-    grid-row: 1;
-    grid-column: 1;
+  /* Gray background track */
+  .modus-wc-dual-range-track-bg {
+    position: absolute;
+    inset-inline: 0;
+    height: var(--dr-track-height);
+    background-color: var(--dr-track-color);
+    border-radius: var(--dr-rounded);
     pointer-events: none;
-    overflow: visible;
+  }
 
-    &::-webkit-slider-runnable-track {
-      background: transparent !important;
+  /* Colored fill between the two thumbs */
+  .modus-wc-dual-range-fill {
+    position: absolute;
+    height: var(--dr-track-height);
+    background-color: var(--dr-fill-color);
+    border-radius: var(--dr-rounded);
+    pointer-events: none;
+  }
+
+  /* Thumb — matches DaisyUI .modus-wc-range thumb appearance */
+  .modus-wc-dual-range-thumb {
+    position: absolute;
+    width: var(--dr-thumb-size);
+    height: var(--dr-thumb-size);
+    background-color: var(--dr-thumb-bg);
+    border-radius: var(--dr-rounded);
+    box-shadow: 0 0 0 3px var(--dr-fill-color) inset;
+    transform: translateX(-50%);
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+
+    &:focus {
+      outline: none;
     }
 
-    &::-moz-range-track {
-      background: transparent !important;
+    &:focus-visible {
+      box-shadow: 0 0 0 6px var(--dr-thumb-bg) inset,
+        0 0 0 2rem var(--dr-fill-color) inset;
     }
 
-    &::-webkit-slider-thumb {
-      pointer-events: all;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 0 3px var(--range-shdw) inset,
-        var(--focus-shadow, 0 0) !important;
+    &--dragging,
+    &:active {
+      cursor: grabbing;
     }
+  }
 
-    &::-moz-range-thumb {
-      pointer-events: all;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 0 3px var(--range-shdw) inset,
-        var(--focus-shadow, 0 0) !important;
-    }
+  /* Disabled state */
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.5;
   }
 }

@@ -7,7 +7,6 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { ModusSize } from '../types';
 
 type SliderStoryHost = HTMLElement & {
-  dualRange?: boolean;
   getSliderValue?: () => Promise<number>;
   getDualRangeValues?: () => Promise<{
     minValue: number;
@@ -19,7 +18,10 @@ async function updateSliderLiveDisplay(
   host: SliderStoryHost,
   liveEl: HTMLElement
 ): Promise<void> {
-  if (host.dualRange && host.getDualRangeValues) {
+  // Check the HTML attribute (always set by Lit before element upgrade)
+  // rather than the JS property which may be unavailable on first render.
+  const isDualRange = host.hasAttribute('dual-range');
+  if (isDualRange && host.getDualRangeValues) {
     const range = await host.getDualRangeValues();
     liveEl.textContent = range
       ? `minValue: ${range.minValue}, maxValue: ${range.maxValue}`
@@ -99,7 +101,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <div
-        class="modus-wc-slider-story"
         style="display:flex;flex-direction:column;gap:0.5rem"
         ${ref(attachSliderLiveRef)}
       >
@@ -141,12 +142,11 @@ export const DualRange: Story = {
     const maxV = args['max-value'] ?? 80;
     return html`
       <div
-        class="modus-wc-slider-story"
         style="display:flex;flex-direction:column;gap:0.5rem"
         ${ref(attachSliderLiveRef)}
       >
         <modus-wc-slider
-          aria-label="Dual range slider"
+          aria-label="Price range slider"
           custom-class=${ifDefined(args['custom-class'])}
           ?disabled=${args.disabled}
           ?dual-range=${true}
@@ -174,7 +174,6 @@ export const DualRange: Story = {
 
 export const ShadowDomParent: Story = {
   render: (args) => {
-    // Create a unique shadow host for slider component
     if (!customElements.get('slider-shadow-host')) {
       const SliderShadowHost = createShadowHostClass<SliderArgs>({
         componentTag: 'modus-wc-slider',

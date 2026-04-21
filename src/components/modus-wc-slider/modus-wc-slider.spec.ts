@@ -28,7 +28,7 @@ describe('modus-wc-slider', () => {
         required="true"
         size="lg"
         step="50"
-        value="true"
+        value="75"
       ></modus-wc-slider>`,
     });
     expect(page.root).toMatchSnapshot();
@@ -40,7 +40,6 @@ describe('modus-wc-slider', () => {
       html: '<modus-wc-slider aria-label="Blur test"></modus-wc-slider>',
     });
     const range = page.root!.querySelector('input[type="range"]');
-    expect(range).not.toBeNull();
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
@@ -58,19 +57,16 @@ describe('modus-wc-slider', () => {
     const range = page.root!.querySelector(
       'input[type="range"]'
     ) as HTMLInputElement;
-    expect(range).not.toBeNull();
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
 
-    range.value = 'true';
+    range.value = '50';
     range.dispatchEvent(new Event('input'));
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
     expect(changeSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: expect.any(Event),
-      })
+      expect.objectContaining({ detail: expect.any(Event) })
     );
   });
 
@@ -80,7 +76,6 @@ describe('modus-wc-slider', () => {
       html: '<modus-wc-slider aria-label="Focus test"></modus-wc-slider>',
     });
     const range = page.root!.querySelector('input[type="range"]');
-    expect(range).not.toBeNull();
     const focusSpy = jest.fn();
     page.root!.addEventListener('inputFocus', focusSpy);
 
@@ -88,5 +83,65 @@ describe('modus-wc-slider', () => {
     await page.waitForChanges();
 
     expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should render dual-range with two role=slider thumbs and role=group wrapper', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider],
+      html: '<modus-wc-slider aria-label="Dual range" dual-range="true" min="0" max="100"></modus-wc-slider>',
+    });
+    expect(page.root).toMatchSnapshot();
+
+    const thumbs = page.root!.querySelectorAll('[role="slider"]');
+    expect(thumbs.length).toBe(2);
+
+    const group = page.root!.querySelector('[role="group"]');
+    expect(group).not.toBeNull();
+  });
+
+  it('should have no native range inputs in dual-range mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider],
+      html: '<modus-wc-slider aria-label="Dual range" dual-range="true"></modus-wc-slider>',
+    });
+    const rangeInputs = page.root!.querySelectorAll('input[type="range"]');
+    expect(rangeInputs.length).toBe(0);
+  });
+
+  it('should clamp minValue below maxValue via keyboard', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider],
+      html: '<modus-wc-slider aria-label="Keyboard test" dual-range="true" min="0" max="100" step="1"></modus-wc-slider>',
+    });
+    const component = page.rootInstance as ModusWcSlider;
+    component.minValue = 70;
+    component.maxValue = 80;
+    await page.waitForChanges();
+
+    const thumbs = page.root!.querySelectorAll('[role="slider"]');
+    thumbs[0].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    const maxAfter = component.maxValue ?? 0;
+    expect(component.minValue).toBeLessThan(maxAfter);
+  });
+
+  it('should emit inputChange from dual-range keyboard interaction', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider],
+      html: '<modus-wc-slider aria-label="Dual change test" dual-range="true" min="0" max="100"></modus-wc-slider>',
+    });
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    const thumbs = page.root!.querySelectorAll('[role="slider"]');
+    thumbs[0].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
   });
 });
