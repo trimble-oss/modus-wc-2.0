@@ -98,15 +98,7 @@ export type AutocompleteTypes =
   | 'tel-extension'
   | 'impp'
   | 'url'
-  | 'photo'
-  | 'shipping'
-  | 'billing'
-  | 'home'
-  | 'work'
-  | 'mobile'
-  | 'pager'
-  | 'fax'
-  | 'webauthn';
+  | 'photo';
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =
