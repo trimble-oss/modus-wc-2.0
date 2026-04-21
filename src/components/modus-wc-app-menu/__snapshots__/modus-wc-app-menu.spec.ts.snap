@@ -1,0 +1,196 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-app-menu should render with custom class 1`] = `
+<modus-wc-app-menu class="my-custom-class">
+  <!---->
+  <modus-wc-panel height="568px" width="320px">
+    <div slot="body">
+      <div class="menu-header">
+        <div class="header-title">
+          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+        </div>
+        <div class="header-end-content">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil"></modus-wc-icon>
+          </modus-wc-button>
+        </div>
+      </div>
+      <div class="app-menu-body">
+        <div aria-label="Construction" class="app-menu-section" role="group">
+          <div class="submenu-title-container">
+            <modus-wc-typography label="Construction" size="md" weight="bold"></modus-wc-typography>
+            <modus-wc-typography label="Project management tools" size="sm" weight="normal"></modus-wc-typography>
+          </div>
+          <div class="app-menu-items">
+            <modus-wc-menu>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Trimble Connect">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Viewpoint">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+            </modus-wc-menu>
+          </div>
+        </div>
+        <div aria-label="Design" class="app-menu-section" role="group">
+          <div class="submenu-title-container">
+            <modus-wc-typography label="Design" size="md" weight="bold"></modus-wc-typography>
+            <modus-wc-typography label="Design tools" size="sm" weight="normal"></modus-wc-typography>
+          </div>
+          <div class="app-menu-items">
+            <modus-wc-menu>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="SketchUp">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Tekla">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+            </modus-wc-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modus-wc-panel>
+</modus-wc-app-menu>
+`;
+
+exports[`modus-wc-app-menu should render with default props 1`] = `
+<modus-wc-app-menu>
+  <!---->
+  <modus-wc-panel height="568px" width="320px">
+    <div slot="body">
+      <div class="menu-header">
+        <div class="header-title">
+          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+        </div>
+        <div class="header-end-content">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil"></modus-wc-icon>
+          </modus-wc-button>
+        </div>
+      </div>
+      <div class="app-menu-body"></div>
+    </div>
+  </modus-wc-panel>
+</modus-wc-app-menu>
+`;
+
+exports[`modus-wc-app-menu should render with sections in grid layout 1`] = `
+<modus-wc-app-menu>
+  <!---->
+  <modus-wc-panel height="568px" width="320px">
+    <div slot="body">
+      <div class="menu-header">
+        <div class="header-title">
+          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+        </div>
+        <div class="header-end-content">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil"></modus-wc-icon>
+          </modus-wc-button>
+        </div>
+      </div>
+      <div class="app-menu-body">
+        <div class="grid-menu">
+          <div class="grid-row" role="list">
+            <div aria-label="Trimble Connect" class="grid-item" draggable="false" role="listitem">
+              <modus-wc-logo custom-class="grid-emblem" emblem="" name="connect"></modus-wc-logo>
+              <modus-wc-tooltip content="Trimble Connect" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
+            </div>
+            <div aria-label="Viewpoint" class="grid-item" draggable="false" role="listitem">
+              <modus-wc-logo custom-class="grid-emblem" emblem="" name="viewpoint"></modus-wc-logo>
+              <modus-wc-tooltip content="Viewpoint" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
+            </div>
+            <div aria-label="SketchUp" class="grid-item" draggable="false" role="listitem">
+              <modus-wc-logo custom-class="grid-emblem" emblem="" name="sketchup"></modus-wc-logo>
+              <modus-wc-tooltip content="SketchUp" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
+            </div>
+            <div aria-label="Tekla" class="grid-item" draggable="false" role="listitem">
+              <modus-wc-logo custom-class="grid-emblem" emblem="" name="tekla"></modus-wc-logo>
+              <modus-wc-tooltip content="Tekla" position="auto">
+                <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="xs" weight="normal"></modus-wc-typography>
+              </modus-wc-tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modus-wc-panel>
+</modus-wc-app-menu>
+`;
+
+exports[`modus-wc-app-menu should render with sections in list layout 1`] = `
+<modus-wc-app-menu>
+  <!---->
+  <modus-wc-panel height="568px" width="320px">
+    <div slot="body">
+      <div class="menu-header">
+        <div class="header-title">
+          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+        </div>
+        <div class="header-end-content">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil"></modus-wc-icon>
+          </modus-wc-button>
+        </div>
+      </div>
+      <div class="app-menu-body">
+        <div aria-label="Construction" class="app-menu-section" role="group">
+          <div class="submenu-title-container">
+            <modus-wc-typography label="Construction" size="md" weight="bold"></modus-wc-typography>
+            <modus-wc-typography label="Project management tools" size="sm" weight="normal"></modus-wc-typography>
+          </div>
+          <div class="app-menu-items">
+            <modus-wc-menu>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Trimble Connect">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Viewpoint">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+            </modus-wc-menu>
+          </div>
+        </div>
+        <div aria-label="Design" class="app-menu-section" role="group">
+          <div class="submenu-title-container">
+            <modus-wc-typography label="Design" size="md" weight="bold"></modus-wc-typography>
+            <modus-wc-typography label="Design tools" size="sm" weight="normal"></modus-wc-typography>
+          </div>
+          <div class="app-menu-items">
+            <modus-wc-menu>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="SketchUp">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+              <div class="app-menu-item-row" draggable="false">
+                <modus-wc-menu-item label="Tekla">
+                  <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
+                </modus-wc-menu-item>
+              </div>
+            </modus-wc-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modus-wc-panel>
+</modus-wc-app-menu>
+`;
