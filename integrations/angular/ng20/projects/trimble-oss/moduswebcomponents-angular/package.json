@@ -1,0 +1,14 @@
+{
+  "name": "@trimble-oss/moduswebcomponents-angular",
+  "version": "0.0.1-ng20",
+  "peerDependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@trimble-oss/moduswebcomponents": "^0.0.0-beta.5"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+
+  "sideEffects": false
+}
