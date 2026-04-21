@@ -1881,10 +1881,10 @@ describe('modus-wc-table', () => {
       // Check the template has the correct value substituted
       expect(htmlStr).toContain('value="Test Template"');
 
-      // Create a wrapper and set innerHTML as the component does
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = htmlStr;
-      const cellNode = wrapper.firstElementChild as HTMLElement;
+      const cellNode = component['buildEditorNodeFromTemplate'](
+        column.editorTemplate,
+        mockRow[column.accessor]
+      );
 
       // Verify we have a valid input element from the template
       expect(cellNode.tagName).toBe('INPUT');
@@ -2245,13 +2245,10 @@ describe('modus-wc-table', () => {
     const component = page.rootInstance as ModusWcTable;
 
     // Build cellNode from template
-    const htmlStr = (column.editorTemplate ?? '').replace(
-      /\$\{value\}/g,
-      String(row.name)
+    const cellNode = component['buildEditorNodeFromTemplate'](
+      column.editorTemplate ?? '',
+      row.name
     );
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = htmlStr;
-    const cellNode = wrapper.firstElementChild as HTMLElement;
 
     // Sanity check
     expect(cellNode?.tagName?.toLowerCase()).toBe('input');
@@ -2273,6 +2270,126 @@ describe('modus-wc-table', () => {
     });
     cellNode.dispatchEvent(blurEvent);
     expect(component['activeEditor']).toBeNull();
+  });
+
+  it('should sanitize unsafe attributes from editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<input onclick="alert(1)" src="javascript:alert(2)" value="${value}" />',
+      'safe value'
+    );
+
+    expect(editorNode).toBeTruthy();
+    expect(editorNode?.getAttribute('onclick')).toBeNull();
+    expect(editorNode?.getAttribute('src')).toBeNull();
+    expect((editorNode as HTMLInputElement).value).toBe('safe value');
+  });
+
+  it('should write sanitized URL attributes back to editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<a href=" https://trimble.com/path " formaction=" mailto:test@trimble.com ">${value}</a>',
+      'safe value'
+    ) as HTMLAnchorElement;
+
+    expect(editorNode).toBeTruthy();
+    expect(editorNode.getAttribute('href')).toBe('https://trimble.com/path');
+    expect(editorNode.getAttribute('formaction')).toBe(
+      'mailto:test@trimble.com'
+    );
+    expect(editorNode.textContent).toBe('safe value');
+  });
+
+  it('should remove dangerous elements from editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '<script>alert(1)</script><span>${value}</span>',
+      'safe value'
+    );
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('safe value');
+  });
+
+  it('should return a fallback span when editor templates do not render an element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate'](
+      '',
+      'fallback value'
+    );
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('fallback value');
+  });
+
+  it('should return an empty fallback span when template and value are missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const editorNode = component['buildEditorNodeFromTemplate']('', undefined);
+
+    expect(editorNode.tagName.toLowerCase()).toBe('span');
+    expect(editorNode.textContent).toBe('');
+  });
+
+  it('should ignore missing attributes while sanitizing editor templates', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    const attributesPrototype = Object.getPrototypeOf(
+      document.createElement('a').attributes
+    ) as NamedNodeMap;
+    const itemDescriptor = Object.getOwnPropertyDescriptor(
+      attributesPrototype,
+      'item'
+    );
+    const itemSpy = jest
+      .spyOn(attributesPrototype, 'item')
+      .mockImplementation(function (this: NamedNodeMap, index: number) {
+        if (index === 0) return null;
+
+        return itemDescriptor?.value
+          ? itemDescriptor.value.call(this, index)
+          : null;
+      });
+
+    try {
+      const editorNode = component['buildEditorNodeFromTemplate'](
+        '<a href="https://trimble.com">${value}</a>',
+        'safe value'
+      );
+
+      expect(editorNode.tagName.toLowerCase()).toBe('a');
+      expect(editorNode.textContent).toBe('safe value');
+    } finally {
+      itemSpy.mockRestore();
+    }
   });
 
   it('should handle deferred blur when relatedTarget is null', async () => {
