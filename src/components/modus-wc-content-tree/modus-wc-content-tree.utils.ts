@@ -32,6 +32,11 @@ export interface ITreeItemAddAdjacentParameters {
   placement: 'above' | 'below';
 }
 
+export interface ITreeItemUpdateParameters {
+  itemId: string;
+  patch: Partial<ITreeItemData>;
+}
+
 interface ITreeItemRemovalResult {
   list: ITreeItemData[];
   removedItem: ITreeItemData;
@@ -257,6 +262,36 @@ const cloneTreeItemForDuplicate = (
   };
 };
 
+const updateByIdentity = (
+  list: ITreeItemData[],
+  itemId: string,
+  patch: Partial<ITreeItemData>
+): { list: ITreeItemData[]; updated: boolean } => {
+  for (let i = 0; i < list.length; i++) {
+    const current = list[i];
+    if (getTreeItemIdentity(current) === itemId) {
+      const updatedList = [...list];
+      updatedList[i] = { ...current, ...patch };
+      return { list: updatedList, updated: true };
+    }
+
+    if (!current.children?.length) {
+      continue;
+    }
+
+    const nested = updateByIdentity(current.children, itemId, patch);
+    if (!nested.updated) {
+      continue;
+    }
+
+    const updatedList = [...list];
+    updatedList[i] = { ...current, children: nested.list };
+    return { list: updatedList, updated: true };
+  }
+
+  return { list, updated: false };
+};
+
 export const reorderTreeItemsData = (
   items: ITreeItemData[],
   parameters: ITreeItemReorderParameters
@@ -371,4 +406,12 @@ export const addTreeItemAdjacentData = (
     parameters.item,
     targetIndex
   );
+};
+
+export const updateTreeItemData = (
+  items: ITreeItemData[],
+  parameters: ITreeItemUpdateParameters
+): ITreeItemData[] | null => {
+  const updated = updateByIdentity(items, parameters.itemId, parameters.patch);
+  return updated.updated ? updated.list : null;
 };

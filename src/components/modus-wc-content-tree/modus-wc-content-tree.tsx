@@ -289,11 +289,14 @@ export class ModusWcContentTree {
 
       return (
         <modus-wc-tree-item
+          key={itemIdentity}
           data-key={itemIdentity}
           label={item.label}
           value={itemIdentity}
+          disabled={item.disabled}
           checkbox={item.checkbox}
           treeItemActions={item.treeItemActions}
+          inlineLabelEdit={item.inlineLabelEdit}
           itemsReordering={this.isReorderingEnabled}
           hasSubtree={hasSubtree}
           lazyLoading={isLoading}

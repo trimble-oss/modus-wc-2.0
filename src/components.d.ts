@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { ITreeItemData, ITreeItemReorderParameters } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
@@ -26,8 +26,7 @@ import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 import { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 import { ITreeItemReorderedEventDetail } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
-import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, WeekStartDay } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { ITreeItemData, ITreeItemReorderParameters } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
@@ -48,7 +47,6 @@ export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { ITreeItemActions } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 export { ITreeItemActions as ITreeItemActions1 } from "./components/modus-wc-content-tree/modus-wc-tree-actions/modus-wc-tree-actions";
 export { ITreeItemReorderedEventDetail } from "./components/modus-wc-content-tree/modus-wc-tree-item/modus-wc-tree-item";
-export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.

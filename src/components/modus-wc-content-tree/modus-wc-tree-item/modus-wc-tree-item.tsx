@@ -21,12 +21,16 @@ export interface ITreeItemData {
   clientId?: string;
   /** Display label for the tree item */
   label: string;
+  /** If true, renders the tree item in disabled state. */
+  disabled?: boolean;
   /** If true, renders a checkbox at the start of the tree item. */
   checkbox?: boolean;
   /** Optional icon name rendered in the start icon slot. */
   startIcon?: string;
   /** Optional actions shown in the tree item menu. */
   treeItemActions?: ITreeItemActions[];
+  /** If true, renders inline editable text input for the item label. */
+  inlineLabelEdit?: boolean;
   /** Optional nested children items */
   children?: ITreeItemData[];
   /** Indicates the item has children that can be lazily loaded. When true and getChildren is provided on the content tree, the expand chevron is shown before children are fetched. */

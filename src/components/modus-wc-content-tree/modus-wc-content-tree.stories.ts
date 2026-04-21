@@ -6,6 +6,7 @@ import {
   addTreeItemData,
   deleteTreeItemData,
   duplicateTreeItemData,
+  updateTreeItemData,
 } from './modus-wc-content-tree.utils';
 import {
   ITreeItemData,
@@ -1076,12 +1077,12 @@ export const ControlledActionsWithUtilities: Story = {
     docs: {
       description: {
         story:
-          'Demonstrates stateless add, duplicate, and delete actions. The consumer handles `treeActionClick`, calls utility functions, and updates `items` with returned data.',
+          'Demonstrates stateless add, duplicate, inline edit, and delete actions. The consumer handles `treeActionClick` and `itemLabelChange`, calls utility functions, and updates `items` with returned data.',
       },
       source: {
         code: `
 <script type="module">
-  import { addTreeItemAdjacentData, addTreeItemData, deleteTreeItemData, duplicateTreeItemData } from './modus-wc-content-tree.utils';
+  import { addTreeItemAdjacentData, addTreeItemData, deleteTreeItemData, duplicateTreeItemData, updateTreeItemData } from './modus-wc-content-tree.utils';
 
   const treeActions = [
     {
@@ -1107,6 +1108,12 @@ export const ControlledActionsWithUtilities: Story = {
       label: 'Duplicate',
       icon: 'copy_content',
       ariaLabel: 'Duplicate node',
+    },
+    {
+      id: 'edit-label',
+      label: 'Edit Label',
+      icon: 'pencil',
+      ariaLabel: 'Edit label',
     },
     {
       id: 'delete',
@@ -1146,7 +1153,13 @@ export const ControlledActionsWithUtilities: Story = {
       itemCounter += 1;
       next = addTreeItemAdjacentData(items, {
         referenceItemId: treeItem.value,
-        item: { id, clientId: id + '-client', label: 'New Node', treeItemActions: treeActions },
+        item: {
+          id,
+          clientId: id + '-client',
+          label: 'New Node',
+          inlineLabelEdit: true,
+          treeItemActions: treeActions,
+        },
         placement: 'above',
       });
     } else if (event.detail.actionId === 'add-node-below') {
@@ -1154,7 +1167,13 @@ export const ControlledActionsWithUtilities: Story = {
       itemCounter += 1;
       next = addTreeItemAdjacentData(items, {
         referenceItemId: treeItem.value,
-        item: { id, clientId: id + '-client', label: 'New Node', treeItemActions: treeActions },
+        item: {
+          id,
+          clientId: id + '-client',
+          label: 'New Node',
+          inlineLabelEdit: true,
+          treeItemActions: treeActions,
+        },
         placement: 'below',
       });
     } else if (event.detail.actionId === 'add-child') {
@@ -1162,13 +1181,38 @@ export const ControlledActionsWithUtilities: Story = {
       itemCounter += 1;
       next = addTreeItemData(items, {
         parentId: treeItem.value,
-        item: { id, clientId: id + '-client', label: 'New Child', treeItemActions: treeActions },
+        item: {
+          id,
+          clientId: id + '-client',
+          label: 'New Child',
+          inlineLabelEdit: true,
+          treeItemActions: treeActions,
+        },
       });
     } else if (event.detail.actionId === 'duplicate') {
       next = duplicateTreeItemData(items, { itemId: treeItem.value });
+    } else if (event.detail.actionId === 'edit-label') {
+      next = updateTreeItemData(items, {
+        itemId: treeItem.value,
+        patch: { inlineLabelEdit: true },
+      });
     } else if (event.detail.actionId === 'delete') {
       next = deleteTreeItemData(items, { itemId: treeItem.value });
     }
+
+    if (!next) return;
+    items = next;
+    tree.items = items;
+  });
+
+  tree.addEventListener('itemLabelChange', (event) => {
+    const treeItem = event.target.closest('modus-wc-tree-item');
+    if (!treeItem) return;
+
+    const next = updateTreeItemData(items, {
+      itemId: treeItem.value,
+      patch: { label: event.detail, inlineLabelEdit: false },
+    });
 
     if (!next) return;
     items = next;
@@ -1206,6 +1250,12 @@ export const ControlledActionsWithUtilities: Story = {
         label: 'Duplicate',
         icon: 'copy_content',
         ariaLabel: 'Duplicate node',
+      },
+      {
+        id: 'edit-label',
+        label: 'Edit Label',
+        icon: 'pencil',
+        ariaLabel: 'Edit label',
       },
       {
         id: 'delete',
@@ -1262,6 +1312,7 @@ export const ControlledActionsWithUtilities: Story = {
               id: newNodeId,
               clientId: `${newNodeId}-client`,
               label: `New Node ${nextNodeNumber}`,
+              inlineLabelEdit: true,
               treeItemActions: treeActions,
             },
             placement: 'above',
@@ -1278,6 +1329,7 @@ export const ControlledActionsWithUtilities: Story = {
               id: newNodeId,
               clientId: `${newNodeId}-client`,
               label: `New Node ${nextNodeNumber}`,
+              inlineLabelEdit: true,
               treeItemActions: treeActions,
             },
             placement: 'below',
@@ -1294,6 +1346,7 @@ export const ControlledActionsWithUtilities: Story = {
               id: newChildId,
               clientId: `${newChildId}-client`,
               label: `New Child ${nextChildNumber}`,
+              inlineLabelEdit: true,
               treeItemActions: treeActions,
             },
           });
@@ -1302,6 +1355,12 @@ export const ControlledActionsWithUtilities: Story = {
         case 'duplicate':
           nextItems = duplicateTreeItemData(currentItems, {
             itemId: treeItem.value,
+          });
+          break;
+        case 'edit-label':
+          nextItems = updateTreeItemData(currentItems, {
+            itemId: treeItem.value,
+            patch: { inlineLabelEdit: true },
           });
           break;
         case 'delete':
@@ -1320,12 +1379,33 @@ export const ControlledActionsWithUtilities: Story = {
       tree.items = currentItems;
     };
 
+    const handleItemLabelChange = (event: CustomEvent<string>) => {
+      const source = event.target as HTMLElement;
+      const treeItem = source.closest(
+        'modus-wc-tree-item'
+      ) as ITreeItemElement | null;
+      if (!treeItem) return;
+
+      const nextItems = updateTreeItemData(currentItems, {
+        itemId: treeItem.value,
+        patch: { label: event.detail, inlineLabelEdit: false },
+      });
+      if (!nextItems) return;
+
+      currentItems = nextItems;
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      tree.items = currentItems;
+    };
+
     return html`
       <modus-wc-content-tree
         .includeSearch=${false}
         .includeActions=${false}
         .items=${currentItems}
         @treeActionClick=${handleTreeActionClick}
+        @itemLabelChange=${handleItemLabelChange}
       >
       </modus-wc-content-tree>
     `;
@@ -1767,6 +1847,7 @@ Use these helpers to keep tree updates controlled/stateless. Each utility return
 | \`addTreeItemAdjacentData\` | \`(items, { referenceItemId, item, placement })\` | Inserts a sibling above or below an existing item. |
 | \`deleteTreeItemData\` | \`(items, { itemId })\` | Removes an item by identity. |
 | \`duplicateTreeItemData\` | \`(items, { itemId, parentId?, index? })\` | Duplicates an item/subtree with regenerated IDs. |
+| \`updateTreeItemData\` | \`(items, { itemId, patch })\` | Updates an existing item by identity using a partial patch. |
 | \`reorderTreeItemsData\` | \`(items, parameters)\` | Computes reordered tree data for drag/drop operations. |
 
 #### Built-in Action Mapping
@@ -1777,6 +1858,7 @@ Use these helpers to keep tree updates controlled/stateless. Each utility return
 | \`add-node-below\` | \`addTreeItemAdjacentData(..., { placement: 'below' })\` |
 | \`add-child\` | \`addTreeItemData\` |
 | \`duplicate\` | \`duplicateTreeItemData\` |
+| \`edit-label\` | \`updateTreeItemData\` |
 | \`delete\` | \`deleteTreeItemData\` |
 
 #### Controlled Update Flow

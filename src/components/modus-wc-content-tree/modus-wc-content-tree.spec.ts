@@ -1034,4 +1034,51 @@ describe('modus-wc-content-tree', () => {
 
     expect(renderedItems.length).toBe(2);
   });
+
+  it('keeps selection on the same identity when inserting an item above', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [
+      { id: 'item-a', label: 'Item A' },
+      { id: 'item-b', label: 'Item B' },
+    ];
+    await page.waitForChanges();
+
+    const initialItems = page.root!.querySelectorAll('modus-wc-tree-item');
+    const selectedIdentity = initialItems[1] as ITreeItemElement;
+    selectedIdentity.dispatchEvent(
+      new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          value: selectedIdentity.value,
+          additive: false,
+          range: false,
+        },
+      })
+    );
+    await page.waitForChanges();
+    expect(selectedIdentity.selected).toBe(true);
+
+    instance.items = [
+      { id: 'item-new', label: 'New Item Above' },
+      { id: 'item-a', label: 'Item A' },
+      { id: 'item-b', label: 'Item B' },
+    ];
+    await page.waitForChanges();
+
+    const updatedItems = Array.from(
+      page.root!.querySelectorAll('modus-wc-tree-item')
+    ) as ITreeItemElement[];
+    const selectedAfterInsert = updatedItems.find(
+      (item) => item.value === 'item-b'
+    );
+
+    expect(selectedAfterInsert).toBeTruthy();
+    expect(selectedAfterInsert?.selected).toBe(true);
+  });
 });
