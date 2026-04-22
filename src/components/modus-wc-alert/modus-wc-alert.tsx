@@ -181,7 +181,7 @@ export class ModusWcAlert {
           <slot name="button" />
           {this.dismissible && (
             <modus-wc-button
-              aria-label="notification button"
+              aria-label="Dismiss alert"
               color="tertiary"
               size="sm"
               slot="button"
