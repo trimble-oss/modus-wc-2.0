@@ -262,8 +262,8 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           custom-class=${ifDefined(args['custom-class'])}
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Utility Panel Header
@@ -404,8 +404,8 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-expanded"
           custom-class=${ifDefined(args['custom-class'])}
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Expanded Panel Header
@@ -528,8 +528,8 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-overlay"
           custom-class=${ifDefined(args['custom-class'])}
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Overlay Panel Header
@@ -582,8 +582,8 @@ export const WithoutHeaderFooter: Story = {
       <modus-wc-utility-panel
         id="panel-simple"
         custom-class=${ifDefined(args['custom-class'])}
-        ?expanded="${args.expanded}"
-        ?push-content="${args['push-content']}"
+        ?expanded=${args.expanded}
+        ?push-content=${args['push-content']}
       >
         <div slot="body">
           <h3>Simple Body Content</h3>
