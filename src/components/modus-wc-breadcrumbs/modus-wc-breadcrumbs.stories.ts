@@ -154,6 +154,30 @@ export const UnderlineLinks: Story = {
   },
 };
 
+export const FallbackButton: Story = {
+  args: {
+    items: fallbackItems,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Shows the fallback behavior when a breadcrumb item has an unsafe URL. The first item renders as a button instead of a navigable link, while still emitting the `breadcrumbClick` event.',
+      },
+    },
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-breadcrumbs
+  aria-label="Breadcrumb fallback example"
+  .items=${args.items}
+  size=${ifDefined(args.size)}
+></modus-wc-breadcrumbs>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('breadcrumbs-shadow-host')) {
@@ -178,6 +202,7 @@ export const ShadowDomParent: Story = {
     ></breadcrumbs-shadow-host>`;
   },
 };
+
 export const Migration: Story = {
   parameters: {
     docs: {
