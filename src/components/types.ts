@@ -116,7 +116,7 @@ type AutocompleteDetailToken =
 /**
  * All valid token-list combinations, excluding the optional `webauthn` suffix.
  *
- * Token order per the WHATWG spec:
+ * Token order per the HTML spec:
  *   `[section-*] [shipping|billing] ([home|…] <contact> | <detail>)`
  */
 type AutocompleteBase =
@@ -132,7 +132,7 @@ type AutocompleteBase =
 /**
  * For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
  *
- * Models the full WHATWG token-list spec:
+ * Models the full HTML spec token-list:
  *   - `on` / `off`
  *   - standalone detail token              e.g. `given-name`
  *   - `<group> <detail>`                   e.g. `shipping street-address`
