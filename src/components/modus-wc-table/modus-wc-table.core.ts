@@ -12,8 +12,9 @@ import {
 } from '@tanstack/table-core';
 
 // Extend the TanStack Table with additional methods we need
-export interface Table<TData extends Record<string, unknown>>
-  extends TanStackTable<TData> {
+export interface Table<
+  TData extends Record<string, unknown>,
+> extends TanStackTable<TData> {
   setData: (data: TData[]) => void;
   setColumns: (columns: ColumnDef<TData, unknown>[]) => void;
 }
