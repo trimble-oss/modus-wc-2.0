@@ -53,8 +53,9 @@ type AutocompleteRecipientToken = 'home' | 'work' | 'mobile' | 'fax' | 'pager';
 type AutocompleteContactToken = 'tel' | 'email' | 'impp';
 
 /**
- * Named-section token — any `section-<alphanumeric>` string, e.g. `section-billing`.
+ * Named-section token — any string prefixed with `section-`, e.g. `section-billing`.
  * Groups form controls that share the same named section.
+ * Note: TypeScript cannot enforce the alphanumeric-only suffix constraint of the HTML spec.
  */
 type AutocompleteSectionToken = `section-${string}`;
 
@@ -130,22 +131,34 @@ type AutocompleteBase =
   | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`;
 
 /**
+ * Credential tokens that are valid directly before `webauthn` per the HTML spec.
+ * `webauthn` is only meaningful in passkey/credential autofill contexts.
+ */
+type AutocompleteWebAuthnBase =
+  | 'username'
+  | 'current-password'
+  | `${AutocompleteSectionToken} username`
+  | `${AutocompleteSectionToken} current-password`;
+
+/**
  * For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
  *
  * Models the full HTML spec token-list:
+ *   - `''`  (empty string — attribute present without a value, browser uses default autofill)
  *   - `on` / `off`
  *   - standalone detail token              e.g. `given-name`
  *   - `<group> <detail>`                   e.g. `shipping street-address`
  *   - `<recipient> <contact>`              e.g. `home tel`
  *   - `<group> <recipient> <contact>`      e.g. `shipping home tel`
  *   - `<section> …`                        e.g. `section-user shipping street-address`
- *   - Any of the above `+ webauthn`        e.g. `username webauthn`
+ *   - `username webauthn` / `current-password webauthn` (credential + passkey contexts only)
  */
 export type AutocompleteTypes =
+  | ''
   | 'on'
   | 'off'
   | AutocompleteBase
-  | `${AutocompleteBase} webauthn`;
+  | `${AutocompleteWebAuthnBase} webauthn`;
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =
