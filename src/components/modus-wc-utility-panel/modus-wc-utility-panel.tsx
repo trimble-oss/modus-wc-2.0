@@ -16,6 +16,9 @@ import { handleShadowDOMStyles } from '../base-component';
   shadow: false,
 })
 export class ModusWcUtilityPanel {
+  /** Custom CSS class to apply to the outer div. */
+  @Prop() customClass?: string = '';
+
   /** The panel is expanded or closed */
   @Prop() expanded = false;
 
@@ -109,16 +112,18 @@ export class ModusWcUtilityPanel {
     return !!slot;
   }
 
+  private getClasses(): string {
+    const classList: string[] = ['modus-wc-utility-panel'];
+    if (this.expanded) classList.push('open');
+    if (this.customClass) classList.push(this.customClass);
+    return classList.join(' ');
+  }
+
   render() {
     const hasHeader = this.hasSlotContent('header');
     const hasFooter = this.hasSlotContent('footer');
     return (
-      <div
-        class={{
-          'modus-wc-utility-panel': true,
-          open: this.expanded,
-        }}
-      >
+      <div class={this.getClasses()}>
         <div class="modus-wc-utility-panel-content">
           {hasHeader && (
             <Fragment>

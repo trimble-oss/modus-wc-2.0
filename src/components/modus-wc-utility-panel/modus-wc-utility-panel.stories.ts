@@ -1,9 +1,11 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
+  'custom-class'?: string;
   expanded: boolean;
   'push-content': boolean;
 }
@@ -16,6 +18,9 @@ const meta: Meta<UtilityPanelArgs> = {
     'push-content': true,
   },
   argTypes: {
+    'custom-class': {
+      control: { type: 'text' },
+    },
     expanded: {
       control: { type: 'boolean' },
     },
@@ -256,6 +261,7 @@ ${scriptBlock}`,
         </div>
 
         <modus-wc-utility-panel
+          custom-class=${ifDefined(args['custom-class'])}
           ?expanded="${args.expanded}"
           ?push-content="${args['push-content']}"
         >
@@ -397,6 +403,7 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           id="panel-expanded"
+          custom-class=${ifDefined(args['custom-class'])}
           ?expanded="${args.expanded}"
           ?push-content="${args['push-content']}"
         >
@@ -520,6 +527,7 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           id="panel-overlay"
+          custom-class=${ifDefined(args['custom-class'])}
           ?expanded="${args.expanded}"
           ?push-content="${args['push-content']}"
         >
@@ -573,6 +581,7 @@ export const WithoutHeaderFooter: Story = {
 
       <modus-wc-utility-panel
         id="panel-simple"
+        custom-class=${ifDefined(args['custom-class'])}
         ?expanded="${args.expanded}"
         ?push-content="${args['push-content']}"
       >

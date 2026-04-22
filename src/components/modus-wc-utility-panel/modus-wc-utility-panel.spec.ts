@@ -304,4 +304,60 @@ describe('modus-wc-utility-panel', () => {
 
     expect(adjustContentSpy).not.toHaveBeenCalled();
   });
+
+  it('should apply customClass to the outer div', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel custom-class="my-custom-class"></modus-wc-utility-panel>',
+    });
+
+    const outerDiv = root?.querySelector('div');
+    expect(outerDiv?.classList.contains('modus-wc-utility-panel')).toBe(true);
+    expect(outerDiv?.classList.contains('my-custom-class')).toBe(true);
+  });
+
+  it('should re-adjust content when targetElement changes while expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="target-1">Target 1</div>
+          <div id="target-2">Target 2</div>
+          <modus-wc-utility-panel expanded="true" push-content="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target1 = page.doc.querySelector('#target-1') as HTMLElement;
+    const target2 = page.doc.querySelector('#target-2') as HTMLElement;
+
+    component.targetElement = target1;
+    component.handleTargetChange();
+    expect(target1.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      true
+    );
+
+    component.targetElement = target2;
+    component.handleTargetChange();
+    expect(target2.classList.contains('modus-wc-utility-panel-pushed')).toBe(
+      true
+    );
+  });
+
+  it('should not re-adjust content when targetElement changes while collapsed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel push-content="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const adjustContentSpy = jest.spyOn(component, 'adjustContent');
+
+    const target = page.doc.createElement('div');
+    component.targetElement = target;
+    component.handleTargetChange();
+
+    expect(adjustContentSpy).not.toHaveBeenCalled();
+  });
 });
