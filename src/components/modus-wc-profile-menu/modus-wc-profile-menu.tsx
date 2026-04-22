@@ -10,7 +10,7 @@ import {
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 import { renderSubMenu } from './utils/menu_template';
 
 export interface IMenuItem {
@@ -129,6 +129,10 @@ export class ModusWcProfileMenu {
   };
 
   render() {
+    const manageTrimbleIdLink = sanitizeUrl(
+      this.profileProps.manageTrimbleId?.link
+    );
+
     return (
       <Host {...this.inheritedAttributes}>
         <modus-wc-panel height="auto" width="298px">
@@ -161,9 +165,9 @@ export class ModusWcProfileMenu {
                   label={this.profileProps.userEmail}
                 ></modus-wc-typography>
 
-                {this.profileProps.manageTrimbleId ? (
+                {this.profileProps.manageTrimbleId && manageTrimbleIdLink ? (
                   <a
-                    href={this.profileProps.manageTrimbleId.link}
+                    href={manageTrimbleIdLink}
                     target={this.profileProps.manageTrimbleId.target}
                     rel={
                       this.profileProps.manageTrimbleId.rel ??

@@ -21,7 +21,7 @@ import {
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Density, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 import {
   createModusTable,
   Table,
@@ -714,6 +714,63 @@ export class ModusWcTable {
     }
   }
 
+  private buildEditorNodeFromTemplate(
+    editorTemplate: string,
+    value: unknown
+  ): HTMLElement {
+    const escapedValue = String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    const htmlStr = editorTemplate.replace(/\$\{value\}/g, escapedValue);
+    const parsed = new DOMParser().parseFromString(htmlStr, 'text/html');
+
+    parsed
+      .querySelectorAll(
+        'script,iframe,object,embed,link,meta,base,form,style,foreignObject'
+      )
+      .forEach((node) => node.remove());
+
+    parsed.querySelectorAll('*').forEach((element) => {
+      for (
+        let attrIndex = element.attributes.length - 1;
+        attrIndex >= 0;
+        attrIndex--
+      ) {
+        const attribute = element.attributes.item(attrIndex);
+        if (!attribute) continue;
+
+        const name = attribute.name.toLowerCase();
+        const attributeValue = attribute.value;
+
+        if (name.startsWith('on')) {
+          element.removeAttribute(attribute.name);
+          continue;
+        }
+
+        if (['href', 'src', 'xlink:href', 'formaction'].includes(name)) {
+          const sanitizedAttributeValue = sanitizeUrl(attributeValue);
+
+          if (!sanitizedAttributeValue) {
+            element.removeAttribute(attribute.name);
+            continue;
+          }
+
+          element.setAttribute(attribute.name, sanitizedAttributeValue);
+        }
+      }
+    });
+
+    const parsedElement = parsed.body.firstElementChild as HTMLElement | null;
+    if (parsedElement) return parsedElement;
+
+    const fallbackElement = document.createElement('span');
+    fallbackElement.textContent = String(value ?? '');
+    return fallbackElement;
+  }
+
   render() {
     // Derive rows straight from TanStack's row model so that any sorting/pagination
     // is reflected automatically
@@ -857,15 +914,11 @@ export class ModusWcTable {
 
                           if (editing) {
                             if (column.editorTemplate) {
-                              const htmlStr = column.editorTemplate.replace(
-                                /\$\{value\}/g,
+                              cellNode = this.buildEditorNodeFromTemplate(
+                                column.editorTemplate,
                                 /* istanbul ignore next */
-                                String(row[column.accessor] ?? '')
+                                row[column.accessor]
                               );
-                              const wrapper = document.createElement('div');
-                              wrapper.innerHTML = htmlStr;
-                              cellNode =
-                                wrapper.firstElementChild as HTMLElement;
 
                               // allow users to wire events / data
                               column.editorSetup?.(cellNode, row, handleCommit);

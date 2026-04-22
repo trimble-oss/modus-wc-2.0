@@ -21,6 +21,21 @@ const items: IBreadcrumb[] = [
   },
 ];
 
+const fallbackItems: IBreadcrumb[] = [
+  {
+    label: 'Unsafe URL fallback',
+    url: 'javascript:alert(1)',
+  },
+  {
+    label: 'Safe subpage',
+    url: '#',
+  },
+  {
+    label: 'Current Page',
+    url: '#',
+  },
+];
+
 interface BreadcrumbArgs {
   'custom-class'?: string;
   items: IBreadcrumb[];

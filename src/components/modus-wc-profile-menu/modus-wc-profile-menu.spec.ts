@@ -197,6 +197,23 @@ describe('modus-wc-profile-menu', () => {
     expect(link?.getAttribute('rel')).toBeNull();
   });
 
+  it('should not render an anchor for unsafe manageTrimbleId link protocols', async () => {
+    const props = {
+      ...mockProfileProps,
+      manageTrimbleId: {
+        link: 'javascript:alert(1)',
+      },
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () => h('modus-wc-profile-menu', { profileProps: props }),
+    });
+
+    const link = page.root?.querySelector('a');
+    expect(link).toBeNull();
+  });
+
   it('should render footer with copyright', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],
