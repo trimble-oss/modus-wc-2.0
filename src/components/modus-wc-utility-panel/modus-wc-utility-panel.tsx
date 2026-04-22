@@ -112,18 +112,17 @@ export class ModusWcUtilityPanel {
     return !!slot;
   }
 
-  private getClasses(): string {
-    const classList: string[] = ['modus-wc-utility-panel'];
-    if (this.expanded) classList.push('open');
-    if (this.customClass) classList.push(this.customClass);
-    return classList.join(' ');
-  }
-
   render() {
     const hasHeader = this.hasSlotContent('header');
     const hasFooter = this.hasSlotContent('footer');
     return (
-      <div class={this.getClasses()}>
+      <div
+        class={{
+          'modus-wc-utility-panel': true,
+          open: this.expanded,
+          [this.customClass as string]: !!this.customClass,
+        }}
+      >
         <div class="modus-wc-utility-panel-content">
           {hasHeader && (
             <Fragment>

@@ -101,7 +101,7 @@ describe('modus-wc-utility-panel', () => {
     const content = page.doc.querySelector('#test-content') as HTMLElement;
     const component = page.rootInstance as ModusWcUtilityPanel;
 
-    // Set the targetElement reference (new approach)
+    // Set the targetElement reference
     component.targetElement = content;
 
     // Manually trigger componentDidLoad to simulate lifecycle
@@ -109,7 +109,7 @@ describe('modus-wc-utility-panel', () => {
 
     await page.waitForChanges();
 
-    // Check that CSS classes were added (new approach)
+    // Check that CSS classes were added
     expect(
       content.classList.contains('modus-wc-utility-panel-push-target')
     ).toBe(true);
@@ -140,7 +140,7 @@ describe('modus-wc-utility-panel', () => {
       html: `
         <div>
           <div id="test-content-open">Test Content</div>
-          <modus-wc-utility-panel push-content="true" target-content="#test-content-open"></modus-wc-utility-panel>
+          <modus-wc-utility-panel push-content="true"></modus-wc-utility-panel>
         </div>
       `,
     });
@@ -165,7 +165,7 @@ describe('modus-wc-utility-panel', () => {
       html: `
         <div>
           <div id="test-content-close">Test Content</div>
-          <modus-wc-utility-panel expanded="true" push-content="true" target-content="#test-content-close"></modus-wc-utility-panel>
+          <modus-wc-utility-panel expanded="true" push-content="true"></modus-wc-utility-panel>
         </div>
       `,
     });
@@ -200,7 +200,7 @@ describe('modus-wc-utility-panel', () => {
       '#test-content-adjust'
     ) as HTMLElement;
 
-    // Set the targetElement reference (new approach)
+    // Set the targetElement reference
     component.targetElement = content;
 
     // Test when expanded is true
