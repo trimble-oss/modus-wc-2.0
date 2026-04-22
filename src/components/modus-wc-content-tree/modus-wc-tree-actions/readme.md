@@ -22,8 +22,8 @@ It supports displaying a primary action and grouping additional actions in a dro
 
 | Event             | Description                             | Type                                                     |
 | ----------------- | --------------------------------------- | -------------------------------------------------------- |
-| `dropdownOpened`  | Event emitted when a dropdown is opened | `CustomEvent<HTMLElement>`                               |
-| `treeActionClick` | Event emitted when an action is clicked | `CustomEvent<{ actionId: string; actionName: string; }>` |
+| `dropdownOpened`  | Event emitted when a dropdown is opened                                                                                                                                                                                                                                                                                                                                                                   | `CustomEvent<HTMLElement>`                                                                      |
+| `treeActionClick` | Event emitted when an action is clicked. Includes the clicked action's `actionId` and `actionName`, along with the owning tree item's `itemId` (its `value`) and its `parentItemId` (the `value` of the closest ancestor `modus-wc-tree-item`, or `null` if the item is at the tree root). The IDs let consumers locate the target item without traversing the DOM themselves.                            | `CustomEvent<{ actionId: string; actionName: string; itemId: string \| null; parentItemId: string \| null; }>` |
 
 
 ## Dependencies

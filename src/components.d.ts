@@ -3269,6 +3269,8 @@ declare global {
         "treeActionClick": {
     actionId: string;
     actionName: string;
+    itemId: string | null;
+    parentItemId: string | null;
   };
     }
     /**
@@ -5800,6 +5802,8 @@ declare namespace LocalJSX {
         "onTreeActionClick"?: (event: ModusWcTreeActionsCustomEvent<{
     actionId: string;
     actionName: string;
+    itemId: string | null;
+    parentItemId: string | null;
   }>) => void;
         /**
           * The size of the action buttons and icons.

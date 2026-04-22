@@ -65,6 +65,8 @@ export class ModusWcTreeActions {
   @StencilEvent() treeActionClick!: EventEmitter<{
     actionId: string;
     actionName: string;
+    itemId: string | null;
+    parentItemId: string | null;
   }>;
 
   componentDidLoad() {
@@ -135,6 +137,35 @@ export class ModusWcTreeActions {
     }
   }
 
+  private getItemAndParentIds(): {
+    itemId: string | null;
+    parentItemId: string | null;
+  } {
+    const treeItem = this.el.closest(
+      'modus-wc-tree-item'
+    ) as HTMLElement | null;
+    if (!treeItem) {
+      return { itemId: null, parentItemId: null };
+    }
+
+    const itemId = this.getTreeItemValue(treeItem);
+
+    // Resolve the nearest ancestor tree-item above the owning one.
+    const parentElement = treeItem.parentElement?.closest(
+      'modus-wc-tree-item'
+    ) as HTMLElement | null;
+    const parentItemId = parentElement
+      ? this.getTreeItemValue(parentElement)
+      : null;
+
+    return { itemId, parentItemId };
+  }
+
+  private getTreeItemValue(element: HTMLElement): string | null {
+    const value = (element as HTMLElement & { value?: string }).value;
+    return value || element.getAttribute('value') || null;
+  }
+
   private handleActionClick = (action: ITreeItemActions, event: MouseEvent) => {
     event.stopPropagation();
     if (action.disabled) return;
@@ -148,9 +179,12 @@ export class ModusWcTreeActions {
       return;
     }
 
+    const { itemId, parentItemId } = this.getItemAndParentIds();
     this.treeActionClick.emit({
       actionId: action.id,
       actionName: action.label,
+      itemId,
+      parentItemId,
     });
 
     this.isDropdownOpen = false;
@@ -165,9 +199,12 @@ export class ModusWcTreeActions {
     event.stopPropagation();
     if (!this.pendingDeleteAction) return;
 
+    const { itemId, parentItemId } = this.getItemAndParentIds();
     this.treeActionClick.emit({
       actionId: this.pendingDeleteAction.id,
       actionName: this.pendingDeleteAction.label,
+      itemId,
+      parentItemId,
     });
     this.pendingDeleteAction = undefined;
     this.isDropdownOpen = false;
