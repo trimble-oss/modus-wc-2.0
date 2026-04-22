@@ -41,10 +41,25 @@ export type WeekStartDay =
 
 // -- Web Types -- //
 
-/** For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete */
-export type AutocompleteTypes =
-  | 'on'
-  | 'off'
+// ─── Autocomplete token primitives ───────────────────────────────────────────
+
+/** Grouping tokens — must precede a detail token, e.g. `shipping street-address` */
+type AutocompleteGroupToken = 'shipping' | 'billing';
+
+/** Recipient tokens — must precede a contact token, e.g. `home tel` */
+type AutocompleteRecipientToken = 'home' | 'work' | 'mobile' | 'fax' | 'pager';
+
+/** Contact tokens — valid standalone or after a recipient token */
+type AutocompleteContactToken = 'tel' | 'email' | 'impp';
+
+/**
+ * Named-section token — any `section-<alphanumeric>` string, e.g. `section-billing`.
+ * Groups form controls that share the same named section.
+ */
+type AutocompleteSectionToken = `section-${string}`;
+
+/** All tokens that are valid as the core detail value in a token list */
+type AutocompleteDetailToken =
   | 'name'
   | 'honorific-prefix'
   | 'given-name'
@@ -52,7 +67,6 @@ export type AutocompleteTypes =
   | 'family-name'
   | 'honorific-suffix'
   | 'nickname'
-  | 'email'
   | 'username'
   | 'new-password'
   | 'current-password'
@@ -88,17 +102,50 @@ export type AutocompleteTypes =
   | 'bday-month'
   | 'bday-year'
   | 'sex'
-  | 'tel'
+  | 'url'
+  | 'photo'
+  | AutocompleteContactToken
   | 'tel-country-code'
   | 'tel-national'
   | 'tel-area-code'
   | 'tel-local'
   | 'tel-local-prefix'
   | 'tel-local-suffix'
-  | 'tel-extension'
-  | 'impp'
-  | 'url'
-  | 'photo';
+  | 'tel-extension';
+
+/**
+ * All valid token-list combinations, excluding the optional `webauthn` suffix.
+ *
+ * Token order per the WHATWG spec:
+ *   `[section-*] [shipping|billing] ([home|…] <contact> | <detail>)`
+ */
+type AutocompleteBase =
+  | AutocompleteDetailToken
+  | `${AutocompleteGroupToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`;
+
+/**
+ * For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+ *
+ * Models the full WHATWG token-list spec:
+ *   - `on` / `off`
+ *   - standalone detail token              e.g. `given-name`
+ *   - `<group> <detail>`                   e.g. `shipping street-address`
+ *   - `<recipient> <contact>`              e.g. `home tel`
+ *   - `<group> <recipient> <contact>`      e.g. `shipping home tel`
+ *   - `<section> …`                        e.g. `section-user shipping street-address`
+ *   - Any of the above `+ webauthn`        e.g. `username webauthn`
+ */
+export type AutocompleteTypes =
+  | 'on'
+  | 'off'
+  | AutocompleteBase
+  | `${AutocompleteBase} webauthn`;
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =
