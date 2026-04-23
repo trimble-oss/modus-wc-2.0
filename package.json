@@ -83,6 +83,7 @@
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.19",
     "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
+    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.10",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.32.1",
@@ -229,7 +230,8 @@
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
-        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/blazor/stencil-generated/**"
       ]
     },
     "stencil:watch": {

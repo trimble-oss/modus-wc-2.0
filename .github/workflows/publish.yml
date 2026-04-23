@@ -43,6 +43,7 @@ jobs:
         run: npm ci
         env:
           TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate version bump follows SemVer
         run: |
@@ -119,7 +120,7 @@ jobs:
 
       - name: Publish npm Package Publicly
         working-directory: dist
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         working-directory: dist
@@ -185,6 +186,16 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1.3
         with:
           workflow: publish-mcp.yml
+          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+
+  trigger-blazor-publish:
+    needs: build-and-publish-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Blazor Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1.2
+        with:
+          workflow: publish-blazor.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   release-wc:
