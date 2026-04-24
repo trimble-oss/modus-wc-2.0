@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeActions } from './modus-wc-tree-actions';
+import { ModusWcTreeItem } from '../modus-wc-tree-item/modus-wc-tree-item';
+import { ModusWcTreeView } from '../modus-wc-tree-view/modus-wc-tree-view';
 
 describe('modus-wc-tree-actions', () => {
   it('renders correctly', async () => {
@@ -1249,6 +1251,200 @@ describe('modus-wc-tree-actions', () => {
         '.modus-wc-tree-delete-confirmation'
       );
       expect(confirmationDiv).toBeNull();
+    });
+  });
+
+  describe('getItemAndParentIds', () => {
+    const treeFixtureComponents = [
+      ModusWcTreeActions,
+      ModusWcTreeItem,
+      ModusWcTreeView,
+    ];
+
+    it('yields null ids when actions are not inside modus-wc-tree-item', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const action = { id: 'edit', icon: 'edit', label: 'Edit' };
+      page.rootInstance.actions = [action];
+      await page.waitForChanges();
+
+      const eventSpy = jest.fn();
+      page.root?.addEventListener('treeActionClick', eventSpy);
+
+      const treeActions = page.rootInstance;
+      treeActions['handleActionClick'](action, new MouseEvent('click'));
+      await page.waitForChanges();
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(eventSpy.mock.calls[0][0].detail).toEqual({
+        actionId: 'edit',
+        actionName: 'Edit',
+        itemId: null,
+        parentItemId: null,
+      });
+    });
+
+    it('resolves itemId and parentItemId from owning item and ancestor tree item', async () => {
+      const page = await newSpecPage({
+        components: treeFixtureComponents,
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const action = { id: 'edit', icon: 'edit', label: 'Edit' };
+      page.rootInstance.actions = [action];
+      await page.waitForChanges();
+
+      const actionsHost = page.root!;
+      const parent = page.doc.createElement('modus-wc-tree-item');
+      parent.setAttribute('value', 'parent-id');
+      parent.setAttribute('label', 'Parent');
+      const view = page.doc.createElement('modus-wc-tree-view');
+      view.setAttribute('is-sub-list', 'true');
+      const child = page.doc.createElement('modus-wc-tree-item');
+      child.setAttribute('value', 'child-id');
+      child.setAttribute('label', 'Child');
+
+      child.appendChild(actionsHost);
+      view.appendChild(child);
+      parent.appendChild(view);
+      page.doc.body.appendChild(parent);
+      await page.waitForChanges();
+
+      const eventSpy = jest.fn();
+      actionsHost.addEventListener('treeActionClick', eventSpy);
+
+      const treeActions = page.rootInstance;
+      treeActions['handleActionClick'](action, new MouseEvent('click'));
+      await page.waitForChanges();
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(eventSpy.mock.calls[0][0].detail).toEqual({
+        actionId: 'edit',
+        actionName: 'Edit',
+        itemId: 'child-id',
+        parentItemId: 'parent-id',
+      });
+    });
+
+    it('yields null parentItemId when owning tree item has no parentElement', async () => {
+      const page = await newSpecPage({
+        components: treeFixtureComponents,
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const action = { id: 'edit', icon: 'edit', label: 'Edit' };
+      page.rootInstance.actions = [action];
+      await page.waitForChanges();
+
+      const actionsHost = page.root!;
+      const orphanItem = page.doc.createElement('modus-wc-tree-item');
+      orphanItem.setAttribute('value', 'orphan-id');
+      orphanItem.setAttribute('label', 'Orphan');
+      orphanItem.appendChild(actionsHost);
+      await page.waitForChanges();
+
+      const eventSpy = jest.fn();
+      actionsHost.addEventListener('treeActionClick', eventSpy);
+
+      const treeActions = page.rootInstance;
+      treeActions['handleActionClick'](action, new MouseEvent('click'));
+      await page.waitForChanges();
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(eventSpy.mock.calls[0][0].detail).toEqual({
+        actionId: 'edit',
+        actionName: 'Edit',
+        itemId: 'orphan-id',
+        parentItemId: null,
+      });
+    });
+
+    it('resolves itemId and null parentItemId for a top-level tree item', async () => {
+      const page = await newSpecPage({
+        components: treeFixtureComponents,
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+
+      const action = { id: 'share', icon: 'share', label: 'Share' };
+      page.rootInstance.actions = [action];
+      await page.waitForChanges();
+
+      const actionsHost = page.root!;
+      const view = page.doc.createElement('modus-wc-tree-view');
+      const rootItem = page.doc.createElement('modus-wc-tree-item');
+      rootItem.setAttribute('value', 'root-id');
+      rootItem.setAttribute('label', 'Root');
+      rootItem.appendChild(actionsHost);
+      view.appendChild(rootItem);
+      page.doc.body.appendChild(view);
+      await page.waitForChanges();
+
+      const eventSpy = jest.fn();
+      actionsHost.addEventListener('treeActionClick', eventSpy);
+
+      const treeActions = page.rootInstance;
+      treeActions['handleActionClick'](action, new MouseEvent('click'));
+      await page.waitForChanges();
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(eventSpy.mock.calls[0][0].detail).toEqual({
+        actionId: 'share',
+        actionName: 'Share',
+        itemId: 'root-id',
+        parentItemId: null,
+      });
+    });
+  });
+
+  describe('getTreeItemValue', () => {
+    const getMethod = async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeActions],
+        html: `<modus-wc-tree-actions></modus-wc-tree-actions>`,
+      });
+      const instance = page.rootInstance as unknown as {
+        getTreeItemValue(element: HTMLElement): string | null;
+      };
+      return instance.getTreeItemValue.bind(instance);
+    };
+
+    it('returns the value property when set', async () => {
+      const getTreeItemValue = await getMethod();
+      const el = document.createElement('div');
+      Object.assign(el, { value: 'from-prop' });
+      expect(getTreeItemValue(el)).toBe('from-prop');
+    });
+
+    it('falls back to the value attribute when the property is missing', async () => {
+      const getTreeItemValue = await getMethod();
+      const el = document.createElement('div');
+      el.setAttribute('value', 'from-attr');
+      expect(getTreeItemValue(el)).toBe('from-attr');
+    });
+
+    it('uses the attribute when the value property is an empty string', async () => {
+      const getTreeItemValue = await getMethod();
+      const el = document.createElement('div');
+      Object.assign(el, { value: '' });
+      el.setAttribute('value', 'from-attr');
+      expect(getTreeItemValue(el)).toBe('from-attr');
+    });
+
+    it('prefers the value property over the attribute when both are set', async () => {
+      const getTreeItemValue = await getMethod();
+      const el = document.createElement('div');
+      Object.assign(el, { value: 'from-prop' });
+      el.setAttribute('value', 'from-attr');
+      expect(getTreeItemValue(el)).toBe('from-prop');
+    });
+
+    it('returns null when neither property nor attribute provides a value', async () => {
+      const getTreeItemValue = await getMethod();
+      const el = document.createElement('div');
+      expect(getTreeItemValue(el)).toBeNull();
     });
   });
 });

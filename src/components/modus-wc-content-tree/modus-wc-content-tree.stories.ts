@@ -865,7 +865,10 @@ export const WithActions: Story = {
 
       if (actionId === 'toggle-visibility') {
         apply(tree, toggleItemVisibilityInTree(items, itemId));
-      } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+      } else if (
+        actionId === 'add-node-above' ||
+        actionId === 'add-node-below'
+      ) {
         const id = `node-${counter++}`;
         apply(
           tree,

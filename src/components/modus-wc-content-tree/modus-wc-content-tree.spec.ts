@@ -1081,4 +1081,223 @@ describe('modus-wc-content-tree', () => {
     expect(selectedAfterInsert).toBeTruthy();
     expect(selectedAfterInsert?.selected).toBe(true);
   });
+
+  it('clears dataDriveSelectedValues when items become empty or undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+    };
+
+    instance.items = [{ id: 'row-a', label: 'A' }];
+    await page.waitForChanges();
+
+    const row = page.root!.querySelector(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement;
+    row.dispatchEvent(
+      new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+        detail: { value: row.value, additive: false, range: false },
+      })
+    );
+    await page.waitForChanges();
+
+    expect(internal.dataDriveSelectedValues).toEqual(['row-a']);
+
+    instance.items = [];
+    await page.waitForChanges();
+    expect(internal.dataDriveSelectedValues).toEqual([]);
+
+    instance.items = [{ id: 'row-b', label: 'B' }];
+    await page.waitForChanges();
+    const rowB = page.root!.querySelector(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement;
+    rowB.dispatchEvent(
+      new CustomEvent('itemSelect', {
+        bubbles: true,
+        composed: true,
+        detail: { value: rowB.value, additive: false, range: false },
+      })
+    );
+    await page.waitForChanges();
+    expect(internal.dataDriveSelectedValues).toEqual(['row-b']);
+
+    instance.items = undefined as unknown as typeof instance.items;
+    await page.waitForChanges();
+    expect(internal.dataDriveSelectedValues).toEqual([]);
+  });
+
+  it('syncDataDriveSelection returns early when there are no data-driven items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree>
+        <modus-wc-tree-item label="Slotted" value="slot-1"></modus-wc-tree-item>
+      </modus-wc-content-tree>`,
+    });
+
+    const internal = page.rootInstance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+
+    internal.dataDriveSelectedValues = ['slot-1'];
+    internal.syncDataDriveSelection();
+
+    const slotted = page.root!.querySelector(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement;
+    expect(slotted.selected).toBeFalsy();
+    expect(internal.dataDriveSelectedValues).toEqual(['slot-1']);
+  });
+
+  it('syncDataDriveSelection returns early when dataDriveSelectedValues is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [{ id: 'only', label: 'Only' }];
+    await page.waitForChanges();
+
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+    internal.dataDriveSelectedValues = [];
+
+    const row = page.root!.querySelector(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement;
+    row.selected = true;
+
+    internal.syncDataDriveSelection();
+
+    expect(row.selected).toBe(true);
+  });
+
+  it('syncDataDriveSelection returns after filtering when no selected values match rendered items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [{ id: 'present', label: 'Present' }];
+    await page.waitForChanges();
+
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+    internal.dataDriveSelectedValues = ['not-in-tree'];
+
+    internal.syncDataDriveSelection();
+
+    expect(internal.dataDriveSelectedValues).toEqual([]);
+
+    const row = page.root!.querySelector(
+      'modus-wc-tree-item'
+    ) as ITreeItemElement;
+    expect(row.selected).toBeFalsy();
+  });
+
+  it('syncDataDriveSelection applies selection when identities match data-driven items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [
+      { id: 'first', label: 'First' },
+      { id: 'second', label: 'Second' },
+    ];
+    await page.waitForChanges();
+
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+    internal.dataDriveSelectedValues = ['second'];
+
+    internal.syncDataDriveSelection();
+
+    const rows = Array.from(
+      page.root!.querySelectorAll('modus-wc-tree-item')
+    ) as ITreeItemElement[];
+    expect(rows[0].selected).toBeFalsy();
+    expect(rows[1].selected).toBe(true);
+  });
+
+  it('syncDataDriveSelection returns when no modus-wc-tree-item nodes are found', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [{ id: 'only', label: 'Only' }];
+    await page.waitForChanges();
+
+    const host = page.root!;
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+    internal.dataDriveSelectedValues = ['only'];
+
+    const spy = jest
+      .spyOn(host, 'querySelectorAll')
+      .mockImplementation(function (this: Element, selector: string) {
+        if (selector === 'modus-wc-tree-item') {
+          return Element.prototype.querySelectorAll.call(
+            this,
+            '__sync_no_tree_items__'
+          );
+        }
+        return Element.prototype.querySelectorAll.call(this, selector);
+      });
+
+    internal.syncDataDriveSelection();
+    spy.mockRestore();
+
+    expect(internal.dataDriveSelectedValues).toEqual(['only']);
+  });
+
+  it('syncDataDriveSelection does not set selected on checkbox tree items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-content-tree></modus-wc-content-tree>`,
+    });
+
+    const instance = page.rootInstance;
+    instance.items = [
+      { id: 'cb', label: 'Checkbox row', checkbox: true },
+      { id: 'plain', label: 'Plain row' },
+    ];
+    await page.waitForChanges();
+
+    const internal = instance as unknown as {
+      dataDriveSelectedValues: string[];
+      syncDataDriveSelection(): void;
+    };
+    internal.dataDriveSelectedValues = ['cb', 'plain'];
+
+    internal.syncDataDriveSelection();
+
+    const rows = Array.from(
+      page.root!.querySelectorAll('modus-wc-tree-item')
+    ) as ITreeItemElement[];
+    expect(rows[0].checkbox).toBe(true);
+    expect(rows[0].selected).toBeFalsy();
+    expect(rows[1].selected).toBe(true);
+  });
 });
