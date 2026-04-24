@@ -16,6 +16,9 @@ import { handleShadowDOMStyles } from '../base-component';
   shadow: false,
 })
 export class ModusWcUtilityPanel {
+  /** Custom CSS class to apply to the outer div. */
+  @Prop() customClass?: string = '';
+
   /** The panel is expanded or closed */
   @Prop() expanded = false;
 
@@ -117,6 +120,7 @@ export class ModusWcUtilityPanel {
         class={{
           'modus-wc-utility-panel': true,
           open: this.expanded,
+          [this.customClass as string]: !!this.customClass,
         }}
       >
         <div class="modus-wc-utility-panel-content">
