@@ -916,6 +916,8 @@ describe('modus-wc-tree-actions', () => {
       expect(eventSpy.mock.calls[0][0].detail).toEqual({
         actionId: 'delete-123',
         actionName: 'Delete Item',
+        itemId: null,
+        parentItemId: null,
       });
     });
 

@@ -542,11 +542,11 @@ export namespace Components {
          */
         "includeSearch"?: boolean;
         /**
-          * Data-driven items to render as tree items.
+          * Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.
          */
         "items"?: ITreeItemData[];
         /**
-          * If true, enables reordering UI for data-driven `items` trees.
+          * If true, enables reordering UI for data-driven `items` trees. Not supported for slot-based trees.
          */
         "itemsReordering"?: boolean;
         /**
@@ -3990,15 +3990,15 @@ declare namespace LocalJSX {
          */
         "includeSearch"?: boolean;
         /**
-          * Data-driven items to render as tree items.
+          * Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.
          */
         "items"?: ITreeItemData[];
         /**
-          * If true, enables reordering UI for data-driven `items` trees.
+          * If true, enables reordering UI for data-driven `items` trees. Not supported for slot-based trees.
          */
         "itemsReordering"?: boolean;
         /**
-          * Emits reordered data for controlled updates/backend sync.
+          * Emits reordered data for controlled updates/backend sync in data-driven `items` mode only.
          */
         "onItemsReordered"?: (event: ModusWcContentTreeCustomEvent<{
     items: ITreeItemData[];

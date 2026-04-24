@@ -297,7 +297,7 @@ export const EmptyState: Story = {
     docs: {
       description: {
         story:
-          'This example shows the content tree when no items are present. Consumers can provide a custom empty state through the default slot.',
+          'This example starts with a custom slot-based empty state and transitions to data-driven mode after creating the first node. Consumers can provide a custom empty state through the default slot.',
       },
       source: {
         code: `
@@ -321,8 +321,14 @@ export const EmptyState: Story = {
 </style>
 <script>
 function handleCreateNew(tree) {
+  const id = 'new-item-' + Date.now();
   tree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
-  tree.items = [{ id: 'new-item', label: 'New Item' }];
+  tree.items = [{
+    id,
+    clientId: id,
+    label: 'New Item',
+    inlineLabelEdit: true,
+  }];
 }
 </script>
 
@@ -360,21 +366,6 @@ function handleCreateNew(tree) {
       items?: ITreeItemData[];
     };
 
-    const focusEditMode = (contentTree: ContentTreeElement, id: string) => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const treeItems = Array.from(
-            contentTree.querySelectorAll('modus-wc-tree-item')
-          ) as ITreeItemElement[];
-          const el = treeItems.find((item) => item.value === id);
-
-          if (el) {
-            el.inlineLabelEdit = true;
-          }
-        });
-      });
-    };
-
     const handleAddNewItem = (event: Event) => {
       const contentTree = (event.currentTarget as HTMLElement)?.closest(
         'modus-wc-content-tree'
@@ -387,11 +378,11 @@ function handleCreateNew(tree) {
       contentTree.items = [
         {
           id: newId,
+          clientId: newId,
           label: 'New Item',
+          inlineLabelEdit: true,
         },
       ];
-
-      focusEditMode(contentTree, newId);
     };
 
     return html`
@@ -420,6 +411,18 @@ function handleCreateNew(tree) {
         .includeActions=${args['include-actions']}
       >
         <div class="modus-wc-content-tree-empty-story">
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 64 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
+              fill="#6A6E79"
+            />
+          </svg>
           <modus-wc-typography
             hierarchy="p"
             label="Empty Content Tree"
@@ -521,62 +524,42 @@ export const SingleSelection: Story = {
   },
 };
 
-export const CheckboxSelection: Story = {
-  name: 'Checkbox Selection',
+export const MultiSelect: Story = {
+  name: 'Multi-selection',
   parameters: {
     docs: {
       description: {
         story:
-          'This example demonstrates tree items with checkboxes for multi-selection. Selecting a parent item will select all its children, and vice versa.',
+          'Enables multi-select on the tree view. Use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
       },
       source: {
         code: `
 <modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
-  <modus-wc-tree-view>
-    <modus-wc-tree-item checkbox="true" label="Documents" has-subtree="true" value="documents">
+  <modus-wc-tree-view multi-select="true">
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
       <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item checkbox="true" label="Reports" has-subtree="true" value="reports">
-          <modus-wc-tree-view is-sub-list="true">
-            <modus-wc-tree-item checkbox="true" label="Financial" has-subtree="true" value="financial">
-              <modus-wc-tree-view is-sub-list="true">
-                <modus-wc-tree-item checkbox="true" label="Q1 Report" value="q1-report"></modus-wc-tree-item>
-                <modus-wc-tree-item checkbox="true" label="Q2 Report" value="q2-report"></modus-wc-tree-item>
-              </modus-wc-tree-view>
-            </modus-wc-tree-item>
-            <modus-wc-tree-item checkbox="true" label="Annual Report" value="annual-report"></modus-wc-tree-item>
-          </modus-wc-tree-view>
-        </modus-wc-tree-item>
-        <modus-wc-tree-item checkbox="true" label="Presentations" has-subtree="true" value="presentations">
-          <modus-wc-tree-view is-sub-list="true">
-            <modus-wc-tree-item checkbox="true" label="Team Meeting" value="team-meeting"></modus-wc-tree-item>
-            <modus-wc-tree-item checkbox="true" label="Client Proposal" value="client-proposal"></modus-wc-tree-item>
-          </modus-wc-tree-view>
-        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
       </modus-wc-tree-view>
     </modus-wc-tree-item>
-    <modus-wc-tree-item checkbox="true" label="Projects" has-subtree="true" value="projects">
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
       <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item checkbox="true" label="Active" has-subtree="true" value="active">
-          <modus-wc-tree-view is-sub-list="true">
-            <modus-wc-tree-item checkbox="true" label="Project Alpha" has-subtree="true" value="project-alpha">
-              <modus-wc-tree-view is-sub-list="true">
-                <modus-wc-tree-item checkbox="true" label="Source Code" value="source-code"></modus-wc-tree-item>
-                <modus-wc-tree-item checkbox="true" label="Documentation" value="documentation"></modus-wc-tree-item>
-              </modus-wc-tree-view>
-            </modus-wc-tree-item>
-            <modus-wc-tree-item checkbox="true" label="Project Beta" value="project-beta"></modus-wc-tree-item>
-          </modus-wc-tree-view>
-        </modus-wc-tree-item>
-        <modus-wc-tree-item checkbox="true" label="Completed" value="completed"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Mobile App" value="mobile-app"></modus-wc-tree-item>
       </modus-wc-tree-view>
     </modus-wc-tree-item>
-    <modus-wc-tree-item checkbox="true" label="Resources" has-subtree="true" value="resources">
+    <modus-wc-tree-item label="Resources" has-subtree="true" value="resources">
       <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item checkbox="true" label="Templates" value="templates"></modus-wc-tree-item>
-        <modus-wc-tree-item checkbox="true" label="Guidelines" value="guidelines"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Templates" value="templates"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Guidelines" value="guidelines"></modus-wc-tree-item>
       </modus-wc-tree-view>
     </modus-wc-tree-item>
-    <modus-wc-tree-item checkbox="true" label="Archive" value="archive"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" has-subtree="true" value="archives">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="2024" value="2024"></modus-wc-tree-item>
+        <modus-wc-tree-item label="2025" value="2025"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
   </modus-wc-tree-view>
 </modus-wc-content-tree>
 `,
@@ -587,150 +570,58 @@ export const CheckboxSelection: Story = {
     return html`
       <modus-wc-content-tree
         search-placeholder=${args['search-placeholder']}
-        customClass=${args['custom-class']}
+        custom-class=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
       >
-        <modus-wc-tree-view>
+        <modus-wc-tree-view .multiSelect=${true}>
           <modus-wc-tree-item
-            checkbox=${true}
             label="Documents"
             .hasSubtree=${true}
             value="documents"
           >
             <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Reports"
-                .hasSubtree=${true}
-                value="reports"
-              >
-                <modus-wc-tree-view .isSubList=${true}>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Financial"
-                    .hasSubtree=${true}
-                    value="financial"
-                  >
-                    <modus-wc-tree-view .isSubList=${true}>
-                      <modus-wc-tree-item
-                        checkbox=${true}
-                        label="Q1 Report"
-                        value="q1-report"
-                      >
-                      </modus-wc-tree-item>
-                      <modus-wc-tree-item
-                        checkbox=${true}
-                        label="Q2 Report"
-                        value="q2-report"
-                      >
-                      </modus-wc-tree-item>
-                    </modus-wc-tree-view>
-                  </modus-wc-tree-item>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Annual Report"
-                    value="annual-report"
-                  >
-                  </modus-wc-tree-item>
-                </modus-wc-tree-view>
+              <modus-wc-tree-item label="Report.pdf" value="report">
               </modus-wc-tree-item>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Presentations"
-                .hasSubtree=${true}
-                value="presentations"
-              >
-                <modus-wc-tree-view .isSubList=${true}>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Team Meeting"
-                    value="team-meeting"
-                  >
-                  </modus-wc-tree-item>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Client Proposal"
-                    value="client-proposal"
-                  >
-                  </modus-wc-tree-item>
-                </modus-wc-tree-view>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
               </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
           <modus-wc-tree-item
-            checkbox=${true}
             label="Projects"
             .hasSubtree=${true}
             value="projects"
           >
             <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Active"
-                .hasSubtree=${true}
-                value="active"
-              >
-                <modus-wc-tree-view .isSubList=${true}>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Project Alpha"
-                    .hasSubtree=${true}
-                    value="project-alpha"
-                  >
-                    <modus-wc-tree-view .isSubList=${true}>
-                      <modus-wc-tree-item
-                        checkbox=${true}
-                        label="Source Code"
-                        value="source-code"
-                      >
-                      </modus-wc-tree-item>
-                      <modus-wc-tree-item
-                        checkbox=${true}
-                        label="Documentation"
-                        value="documentation"
-                      >
-                      </modus-wc-tree-item>
-                    </modus-wc-tree-view>
-                  </modus-wc-tree-item>
-                  <modus-wc-tree-item
-                    checkbox=${true}
-                    label="Project Beta"
-                    value="project-beta"
-                  >
-                  </modus-wc-tree-item>
-                </modus-wc-tree-view>
+              <modus-wc-tree-item label="Website Redesign" value="website">
               </modus-wc-tree-item>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Completed"
-                value="completed"
-              >
+              <modus-wc-tree-item label="Mobile App" value="mobile-app">
               </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
           <modus-wc-tree-item
-            checkbox=${true}
             label="Resources"
             .hasSubtree=${true}
             value="resources"
           >
             <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Templates"
-                value="templates"
-              >
+              <modus-wc-tree-item label="Templates" value="templates">
               </modus-wc-tree-item>
-              <modus-wc-tree-item
-                checkbox=${true}
-                label="Guidelines"
-                value="guidelines"
-              >
+              <modus-wc-tree-item label="Guidelines" value="guidelines">
               </modus-wc-tree-item>
             </modus-wc-tree-view>
           </modus-wc-tree-item>
-          <modus-wc-tree-item checkbox=${true} label="Archive" value="archive">
+          <modus-wc-tree-item
+            label="Archives"
+            .hasSubtree=${true}
+            value="archives"
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item label="2024" value="2024">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="2025" value="2025">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>
@@ -799,6 +690,114 @@ export const DisabledSelection: Story = {
           </modus-wc-tree-item>
         </modus-wc-tree-view>
       </modus-wc-content-tree>
+    `;
+  },
+};
+
+export const CheckboxSelection: Story = {
+  name: 'Checkbox Selection',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example demonstrates a data-driven tree with checkboxes for multi-selection. Selecting a parent item selects its descendants, and descendant selections update parent indeterminate/checked states.',
+      },
+      source: {
+        code: `
+<script>
+const items = [
+  {
+    id: 'documents',
+    clientId: 'documents-node',
+    label: 'Documents',
+    checkbox: true,
+    children: [
+      { id: 'report', clientId: 'report-node', label: 'Report.pdf', checkbox: true },
+      { id: 'proposal', clientId: 'proposal-node', label: 'Proposal.docx', checkbox: true },
+    ],
+  },
+  {
+    id: 'projects',
+    clientId: 'projects-node',
+    label: 'Projects',
+    checkbox: true,
+    children: [
+      { id: 'alpha', clientId: 'alpha-node', label: 'Project Alpha', checkbox: true },
+      { id: 'beta', clientId: 'beta-node', label: 'Project Beta', checkbox: true },
+    ],
+  },
+  { id: 'archive', clientId: 'archive-node', label: 'Archive', checkbox: true },
+];
+</script>
+
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+  include-actions="true"
+  .items="items"
+></modus-wc-content-tree>
+`,
+      },
+    },
+  },
+  render: (args) => {
+    const checkboxItems: ITreeItemData[] = [
+      {
+        id: 'documents',
+        clientId: 'documents-node',
+        label: 'Documents',
+        checkbox: true,
+        children: [
+          {
+            id: 'report',
+            clientId: 'report-node',
+            label: 'Report.pdf',
+            checkbox: true,
+          },
+          {
+            id: 'proposal',
+            clientId: 'proposal-node',
+            label: 'Proposal.docx',
+            checkbox: true,
+          },
+        ],
+      },
+      {
+        id: 'projects',
+        clientId: 'projects-node',
+        label: 'Projects',
+        checkbox: true,
+        children: [
+          {
+            id: 'alpha',
+            clientId: 'alpha-node',
+            label: 'Project Alpha',
+            checkbox: true,
+          },
+          {
+            id: 'beta',
+            clientId: 'beta-node',
+            label: 'Project Beta',
+            checkbox: true,
+          },
+        ],
+      },
+      {
+        id: 'archive',
+        clientId: 'archive-node',
+        label: 'Archive',
+        checkbox: true,
+      },
+    ];
+
+    return html`
+      <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
+        .items=${checkboxItems}
+      ></modus-wc-content-tree>
     `;
   },
 };
@@ -880,8 +879,18 @@ export const WithActions: Story = {
 
     let counter = 1;
     let items: ITreeItemData[] = [
-      { id: 'roadmap', clientId: 'roadmap', label: 'Roadmap', treeItemActions: actions },
-      { id: 'backlog', clientId: 'backlog', label: 'Backlog', treeItemActions: actions },
+      {
+        id: 'roadmap',
+        clientId: 'roadmap',
+        label: 'Roadmap',
+        treeItemActions: actions,
+      },
+      {
+        id: 'backlog',
+        clientId: 'backlog',
+        label: 'Backlog',
+        treeItemActions: actions,
+      },
     ];
 
     const apply = (
@@ -898,18 +907,34 @@ export const WithActions: Story = {
     ) => {
       const { actionId, itemId } = event.detail;
       if (!itemId) return;
-      const tree = event.currentTarget as HTMLElement & { items?: ITreeItemData[] };
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
 
       if (actionId === 'add-child') {
         const id = `child-${counter++}`;
-        apply(tree, addTreeItemData(items, {
-          parentId: itemId,
-          item: { id, clientId: id, label: 'New Child', treeItemActions: actions },
-        }));
+        apply(
+          tree,
+          addTreeItemData(items, {
+            parentId: itemId,
+            item: {
+              id,
+              clientId: id,
+              label: 'New Child',
+              treeItemActions: actions,
+            },
+          })
+        );
       } else if (actionId === 'duplicate') {
         apply(tree, duplicateTreeItemData(items, { itemId }));
       } else if (actionId === 'edit-label') {
-        apply(tree, updateTreeItemData(items, { itemId, patch: { inlineLabelEdit: true } }));
+        apply(
+          tree,
+          updateTreeItemData(items, {
+            itemId,
+            patch: { inlineLabelEdit: true },
+          })
+        );
       } else if (actionId === 'delete') {
         apply(tree, deleteTreeItemData(items, { itemId }));
       }
@@ -920,11 +945,16 @@ export const WithActions: Story = {
         'modus-wc-tree-item'
       ) as ITreeItemElement | null;
       if (!treeItem) return;
-      const tree = event.currentTarget as HTMLElement & { items?: ITreeItemData[] };
-      apply(tree, updateTreeItemData(items, {
-        itemId: treeItem.value,
-        patch: { label: event.detail, inlineLabelEdit: false },
-      }));
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      apply(
+        tree,
+        updateTreeItemData(items, {
+          itemId: treeItem.value,
+          patch: { label: event.detail, inlineLabelEdit: false },
+        })
+      );
     };
 
     return html`
@@ -1284,114 +1314,6 @@ tree.addEventListener('itemsReordered', (event) => {
   },
 };
 
-export const MultiSelect: Story = {
-  name: 'Multi Select',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Enables multi-select on the tree view. Use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
-      },
-      source: {
-        code: `
-<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
-  <modus-wc-tree-view multi-select="true">
-    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Mobile App" value="mobile-app"></modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Resources" has-subtree="true" value="resources">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Templates" value="templates"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Guidelines" value="guidelines"></modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Archives" has-subtree="true" value="archives">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="2024" value="2024"></modus-wc-tree-item>
-        <modus-wc-tree-item label="2025" value="2025"></modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-  </modus-wc-tree-view>
-</modus-wc-content-tree>
-`,
-      },
-    },
-    actions: {
-      handles: ['itemSelect', 'itemSelectionChange'],
-    },
-  },
-  render: (args) => {
-    return html`
-      <modus-wc-content-tree
-        search-placeholder=${args['search-placeholder']}
-        custom-class=${args['custom-class']}
-        .includeSearch=${args['include-search']}
-        .includeActions=${args['include-actions']}
-      >
-        <modus-wc-tree-view .multiSelect=${true}>
-          <modus-wc-tree-item
-            label="Documents"
-            .hasSubtree=${true}
-            value="documents"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="Report.pdf" value="report">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Proposal.docx" value="proposal">
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Projects"
-            .hasSubtree=${true}
-            value="projects"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="Website Redesign" value="website">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Mobile App" value="mobile-app">
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Resources"
-            .hasSubtree=${true}
-            value="resources"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="Templates" value="templates">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Guidelines" value="guidelines">
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Archives"
-            .hasSubtree=${true}
-            value="archives"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="2024" value="2024">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="2025" value="2025">
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-        </modus-wc-tree-view>
-      </modus-wc-content-tree>
-    `;
-  },
-};
-
 export const LazyLoading: Story = {
   name: 'Lazy Loading',
   parameters: {
@@ -1431,19 +1353,6 @@ const mockData = {
 
 const getIdentity = (item) => item.clientId ?? item.id;
 
-function updateItem(items, parentIdentity, updater) {
-  return items.map((item) => {
-    if (getIdentity(item) === parentIdentity) return updater(item);
-    if (item.children) {
-      return {
-        ...item,
-        children: updateItem(item.children, parentIdentity, updater),
-      };
-    }
-    return item;
-  });
-}
-
 const tree = document.querySelector('modus-wc-content-tree');
 tree.items = initialItems;
 
@@ -1467,11 +1376,17 @@ tree.addEventListener('itemExpand', async (event) => {
     setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
   );
 
-  tree.items = updateItem(tree.items, itemIdentity, (item) => ({
-    ...item,
-    children,
-    hasChildren: children.length > 0,
-  }));
+  const nextItems = updateTreeItemData(tree.items, {
+    itemId: itemIdentity,
+    patch: {
+      children,
+      hasChildren: children.length > 0,
+    },
+  });
+
+  if (nextItems) {
+    tree.items = nextItems;
+  }
 });
 </script>
 
@@ -1534,21 +1449,6 @@ tree.addEventListener('itemExpand', async (event) => {
     const getIdentity = (item: ITreeItemData): string =>
       item.clientId ?? item.id;
 
-    const updateItem = (
-      items: ITreeItemData[],
-      parentIdentity: string,
-      updater: (item: ITreeItemData) => ITreeItemData
-    ): ITreeItemData[] =>
-      items.map((item) => {
-        if (getIdentity(item) === parentIdentity) return updater(item);
-        if (item.children)
-          return {
-            ...item,
-            children: updateItem(item.children, parentIdentity, updater),
-          };
-        return item;
-      });
-
     const findItem = (
       items: ITreeItemData[],
       identity: string
@@ -1576,11 +1476,17 @@ tree.addEventListener('itemExpand', async (event) => {
         setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
       );
 
-      tree.items = updateItem(current, itemIdentity, (i) => ({
-        ...i,
-        children,
-        hasChildren: children.length > 0,
-      }));
+      const nextItems = updateTreeItemData(current, {
+        itemId: itemIdentity,
+        patch: {
+          children,
+          hasChildren: children.length > 0,
+        },
+      });
+
+      if (nextItems) {
+        tree.items = nextItems;
+      }
     };
 
     return html`
@@ -1601,6 +1507,15 @@ export const ApiReference: Story = {
     docs: {
       description: {
         story: `
+### Support Model
+
+| Mode | Supported Scope |
+|------|------------------|
+| Slot-based (no \`items\`) | Basic nested rendering, basic expand/collapse and selection UX, basic action buttons/events, styling/composition flexibility |
+| Data-driven (\`items\`) | Controlled/stateless updates, mutation utilities, lazy loading orchestration, and drag/drop reordering |
+
+> Use the data-driven \`items\` model for controlled application state. Treat slot-based usage as basic/uncontrolled mode.
+
 ### Props
 
 | Name              | Type       | Default      | Description                                       |
@@ -1609,20 +1524,20 @@ export const ApiReference: Story = {
 | searchPlaceholder | \`string\` | \`'Search...'\` | Placeholder text for the search input          |
 | includeSearch     | \`boolean\` | \`true\`    | Whether to display the search functionality       |
 | includeActions    | \`boolean\` | \`true\`    | Whether to display action buttons for tree items  |
-| items             | \`ITreeItemData[]\` | - | Data-driven tree data used to render items and nested children |
-| itemsReordering   | \`boolean\` | \`false\` | Enables drag-and-drop reordering for data-driven trees |
+| items             | \`ITreeItemData[]\` | - | Data-driven tree data used to render items and nested children. If omitted, slotted content is rendered in basic/uncontrolled mode. |
+| itemsReordering   | \`boolean\` | \`false\` | Enables drag-and-drop reordering for data-driven trees only (not slot-based trees). |
 
 #### Events
 
 | Name           | Payload                                                         | Description |
 |----------------|------------------------------------------------------------------|-------------|
-| itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata |
+| itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata in data-driven mode only |
 
 ---
 
 ### State Manager Utilities
 
-Use these helpers to keep tree updates controlled/stateless. Each utility returns \`nextItems\`; your application decides whether to apply it.
+Use these helpers to keep tree updates controlled/stateless in data-driven mode. Each utility returns \`nextItems\`; your application decides whether to apply it.
 
 | Utility | Parameters | Description |
 |---------|------------|-------------|
@@ -1650,6 +1565,8 @@ Use these helpers to keep tree updates controlled/stateless. Each utility return
 2. Call the mapped utility to compute \`nextItems\`.
 3. Optionally validate/persist with your backend.
 4. Apply \`nextItems\` by updating \`items\`.
+
+> The controlled flow above applies to data-driven mode. Slot-based mode is intentionally limited to basic UI behavior.
 
 ---
 

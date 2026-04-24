@@ -51,13 +51,13 @@ export class ModusWcContentTree {
   /** If true, displays the action buttons (expand/collapse all, etc.). */
   @Prop() includeActions?: boolean = false;
 
-  /** If true, enables reordering UI for data-driven `items` trees. */
+  /** If true, enables reordering UI for data-driven `items` trees. Not supported for slot-based trees. */
   @Prop() itemsReordering?: boolean = false;
 
   /** Data-driven items to render as tree items. */
   @Prop() items?: ITreeItemData[];
 
-  /** Emits reordered data for controlled updates/backend sync. */
+  /** Emits reordered data for controlled updates/backend sync in data-driven `items` mode only. */
   @StencilEvent({ bubbles: true, composed: true })
   itemsReordered!: EventEmitter<{
     items: ITreeItemData[];

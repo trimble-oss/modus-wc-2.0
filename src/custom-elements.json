@@ -2380,7 +2380,7 @@
             {
               "name": "items",
               "fieldName": "items",
-              "description": "Data-driven items to render as tree items.",
+              "description": "Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.",
               "type": {
                 "text": "ITreeItemData[]"
               }
@@ -2389,7 +2389,7 @@
               "name": "items-reordering",
               "fieldName": "itemsReordering",
               "default": "false",
-              "description": "If true, enables reordering UI for data-driven `items` trees.",
+              "description": "If true, enables reordering UI for data-driven `items` trees. Not supported for slot-based trees.",
               "type": {
                 "text": "boolean"
               }
@@ -2412,7 +2412,7 @@
               "type": {
                 "text": "EventEmitter<{\r\n    items: ITreeItemData[];\r\n    parameters: ITreeItemReorderParameters;\r\n  }>"
               },
-              "description": "Emits reordered data for controlled updates/backend sync."
+              "description": "Emits reordered data for controlled updates/backend sync in data-driven `items` mode only."
             }
           ],
           "customElement": true
@@ -2540,7 +2540,7 @@
               "kind": "field",
               "name": "treeActionClick",
               "type": {
-                "text": "EventEmitter<{\r\n    actionId: string;\r\n    actionName: string;\r\n  }>"
+                "text": "EventEmitter<{\r\n    actionId: string;\r\n    actionName: string;\r\n    itemId: string | null;\r\n    parentItemId: string | null;\r\n  }>"
               },
               "description": "Event emitted when an action is clicked"
             }
