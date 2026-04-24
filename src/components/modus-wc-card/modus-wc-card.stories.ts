@@ -213,7 +213,13 @@ export const ShadowDomParent: Story = {
       customElements.define('card-shadow-host', CardShadowHost);
     }
 
-    return html`<card-shadow-host .props=${{ ...args }}></card-shadow-host>`;
+    return html` <style>
+        card-shadow-host {
+          width: 400px;
+          display: block;
+        }
+      </style>
+      <card-shadow-host .props=${{ ...args }}></card-shadow-host>`;
   },
 };
 export const Migration: Story = {

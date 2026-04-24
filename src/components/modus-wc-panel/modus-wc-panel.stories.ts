@@ -149,13 +149,13 @@ export const ShadowDomParent: Story = {
             floating: boolean;
           };
           panelEl.customClass = v['custom-class'] || '';
-          panelEl.width = v.width ?? '350px';
-          panelEl.height = v.height ?? '700px';
+          panelEl.width = v.width ?? '250px';
+          panelEl.height = v.height ?? '500px';
           panelEl.floating = Boolean(v.floating);
           if (!el.hasChildNodes()) {
             el.innerHTML = `
 <modus-wc-menu slot="header">
-  <modus-wc-menu-item label="Home">
+  <modus-wc-menu-item label="Home" custom-class="panel-section">
     <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
   </modus-wc-menu-item>
 </modus-wc-menu>
@@ -164,9 +164,13 @@ export const ShadowDomParent: Story = {
   <modus-wc-menu-item label="Projects" value="projects"></modus-wc-menu-item>
   <modus-wc-menu-item label="Team" value="team"></modus-wc-menu-item>
   <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Documents" value="documents"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Reports" value="reports"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Analytics" value="analytics"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Messages" value="messages"></modus-wc-menu-item>
 </modus-wc-menu>
 <modus-wc-menu slot="footer">
-  <modus-wc-menu-item label="Settings">
+  <modus-wc-menu-item label="Settings" custom-class="panel-section">
     <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
   </modus-wc-menu-item>
 </modus-wc-menu>`;
@@ -176,6 +180,11 @@ export const ShadowDomParent: Story = {
       customElements.define('panel-shadow-host', PanelShadowHost);
     }
 
-    return html`<panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
+    return html` <style>
+        .panel-section {
+          padding: 12px;
+        }
+      </style>
+      <panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
   },
 };
