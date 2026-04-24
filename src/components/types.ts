@@ -152,9 +152,7 @@ type AutocompleteWebAuthnBase =
 
 /**
  * For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
- *
  * Models the full HTML spec token-list:
- *   - `''`  (empty string — attribute present without a value, browser uses default autofill)
  *   - `on` / `off`
  *   - standalone detail token              e.g. `given-name`
  *   - standalone contact token             e.g. `tel`, `tel-national`, `email`
