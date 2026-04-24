@@ -1295,9 +1295,12 @@ export const ControlledSelection: Story = {
     };
 
     const handleSelectProjects = (event: Event) => {
-      const wrapper = (event.currentTarget as HTMLElement).closest(
+      const currentTarget = event.currentTarget;
+      if (!(currentTarget instanceof HTMLElement)) return;
+
+      const wrapper = currentTarget.closest(
         '.modus-wc-controlled-selection-story'
-      ) as HTMLElement | null;
+      );
       const tree = wrapper?.querySelector('modus-wc-content-tree') as
         | (HTMLElement & { selectedValues?: string[] })
         | null;

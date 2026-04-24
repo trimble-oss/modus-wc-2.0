@@ -1293,7 +1293,10 @@ describe('modus-wc-content-tree', () => {
       writable: true,
     });
 
-    expect((instance as unknown as { isSelectionControlled: boolean }).isSelectionControlled).toBe(true);
+    expect(
+      (instance as unknown as { isSelectionControlled: boolean })
+        .isSelectionControlled
+    ).toBe(true);
 
     instance.syncDataDriveSelection();
 

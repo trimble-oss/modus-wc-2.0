@@ -630,10 +630,16 @@ describe('modus-wc-tree-view', () => {
       await page.waitForChanges();
 
       const treeView = page.rootInstance as unknown as {
-        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        itemSelectionChange: {
+          emit: (detail: { selectedValues: string[] }) => void;
+        };
         applySelectionToItems(selectedValues: string[]): void;
         handleItemSelect(
-          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+          event: CustomEvent<{
+            value: string;
+            additive: boolean;
+            range: boolean;
+          }>
         ): void;
       };
       const allItems = Array.from(
@@ -747,10 +753,16 @@ describe('modus-wc-tree-view', () => {
       });
 
       const treeView = page.rootInstance as unknown as {
-        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        itemSelectionChange: {
+          emit: (detail: { selectedValues: string[] }) => void;
+        };
         applySelectionToItems(selectedValues: string[]): void;
         handleItemSelect(
-          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+          event: CustomEvent<{
+            value: string;
+            additive: boolean;
+            range: boolean;
+          }>
         ): void;
       };
       const allItems = Array.from(
@@ -791,10 +803,16 @@ describe('modus-wc-tree-view', () => {
       await page.waitForChanges();
 
       const treeView = page.rootInstance as unknown as {
-        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        itemSelectionChange: {
+          emit: (detail: { selectedValues: string[] }) => void;
+        };
         applySelectionToItems(selectedValues: string[]): void;
         handleItemSelect(
-          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+          event: CustomEvent<{
+            value: string;
+            additive: boolean;
+            range: boolean;
+          }>
         ): void;
       };
       const allItems = Array.from(
