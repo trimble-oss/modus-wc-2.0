@@ -49,8 +49,21 @@ type AutocompleteGroupToken = 'shipping' | 'billing';
 /** Recipient tokens — must precede a contact token, e.g. `home tel` */
 type AutocompleteRecipientToken = 'home' | 'work' | 'mobile' | 'fax' | 'pager';
 
-/** Contact tokens — valid standalone or after a recipient token */
-type AutocompleteContactToken = 'tel' | 'email' | 'impp';
+/**
+ * Contact-field tokens  — valid standalone, after a recipient
+ * token (`home` | `work` | …), or in the same positions as `tel` / `email` / `impp`.
+ */
+type AutocompleteContactToken =
+  | 'tel'
+  | 'tel-country-code'
+  | 'tel-national'
+  | 'tel-area-code'
+  | 'tel-local'
+  | 'tel-local-prefix'
+  | 'tel-local-suffix'
+  | 'tel-extension'
+  | 'email'
+  | 'impp';
 
 /**
  * Named-section token — any string prefixed with `section-`, e.g. `section-billing`.
@@ -59,7 +72,7 @@ type AutocompleteContactToken = 'tel' | 'email' | 'impp';
  */
 type AutocompleteSectionToken = `section-${string}`;
 
-/** All tokens that are valid as the core detail value in a token list */
+/** Autocomplete tokens in the spec's detail branch — excludes contact-field tokens (`AutocompleteContactToken`). */
 type AutocompleteDetailToken =
   | 'name'
   | 'honorific-prefix'
@@ -104,28 +117,25 @@ type AutocompleteDetailToken =
   | 'bday-year'
   | 'sex'
   | 'url'
-  | 'photo'
-  | AutocompleteContactToken
-  | 'tel-country-code'
-  | 'tel-national'
-  | 'tel-area-code'
-  | 'tel-local'
-  | 'tel-local-prefix'
-  | 'tel-local-suffix'
-  | 'tel-extension';
+  | 'photo';
 
 /**
  * All valid token-list combinations, excluding the optional `webauthn` suffix.
  *
  * Token order per the HTML spec:
  *   `[section-*] [shipping|billing] ([home|…] <contact> | <detail>)`
+ *
+ * `<contact>` and `<detail>` are separate branches so contact tokens are not embedded in
+ * `AutocompleteDetailToken` (avoids losing standalone / section + contact if detail is tightened).
  */
 type AutocompleteBase =
   | AutocompleteDetailToken
+  | AutocompleteContactToken
   | `${AutocompleteGroupToken} ${AutocompleteDetailToken}`
   | `${AutocompleteRecipientToken} ${AutocompleteContactToken}`
   | `${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
   | `${AutocompleteSectionToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteContactToken}`
   | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteDetailToken}`
   | `${AutocompleteSectionToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
   | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`;
@@ -147,10 +157,12 @@ type AutocompleteWebAuthnBase =
  *   - `''`  (empty string — attribute present without a value, browser uses default autofill)
  *   - `on` / `off`
  *   - standalone detail token              e.g. `given-name`
+ *   - standalone contact token             e.g. `tel`, `tel-national`, `email`
  *   - `<group> <detail>`                   e.g. `shipping street-address`
  *   - `<recipient> <contact>`              e.g. `home tel`
  *   - `<group> <recipient> <contact>`      e.g. `shipping home tel`
  *   - `<section> …`                        e.g. `section-user shipping street-address`
+ *   - `<section> <contact>`                e.g. `section-user tel`
  *   - `username webauthn` / `current-password webauthn` (credential + passkey contexts only)
  */
 export type AutocompleteTypes =
