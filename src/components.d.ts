@@ -542,7 +542,7 @@ export namespace Components {
          */
         "includeSearch"?: boolean;
         /**
-          * Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.
+          * Data-driven items to render as tree items.
          */
         "items"?: ITreeItemData[];
         /**
@@ -3990,7 +3990,7 @@ declare namespace LocalJSX {
          */
         "includeSearch"?: boolean;
         /**
-          * Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.
+          * Data-driven items to render as tree items.
          */
         "items"?: ITreeItemData[];
         /**

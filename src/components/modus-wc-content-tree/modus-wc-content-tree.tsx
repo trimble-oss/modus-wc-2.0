@@ -35,6 +35,8 @@ export class ModusWcContentTree {
   private debounceTimer?: number;
   private cachedItems?: ITreeItemElement[];
   private lastReorderSignature?: string;
+  /** Single- and multi-select values for data-driven `items`; reapplied after `items` re-render. */
+  private dataDriveSelectedValues: string[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -77,6 +79,9 @@ export class ModusWcContentTree {
   handleItemsChange() {
     this.cachedItems = undefined;
     this.pendingChildrenIds = new Set();
+    if (!this.items?.length) {
+      this.dataDriveSelectedValues = [];
+    }
   }
 
   @Watch('itemsReordering')
@@ -93,7 +98,44 @@ export class ModusWcContentTree {
   }
 
   componentDidRender() {
+    this.syncDataDriveSelection();
     this.applyItemsReorderingState();
+  }
+
+  private handleTreeViewItemSelectionChange = (
+    event: CustomEvent<{ selectedValues: string[] }>
+  ) => {
+    this.dataDriveSelectedValues = [...event.detail.selectedValues];
+  };
+
+  /** Restore selection on new tree-item nodes after controlled `items` updates. */
+  private syncDataDriveSelection(): void {
+    if (!this.hasDataItems || this.dataDriveSelectedValues.length === 0) {
+      return;
+    }
+
+    const treeItems = Array.from(
+      this.el.querySelectorAll('modus-wc-tree-item')
+    ) as ITreeItemElement[];
+
+    if (treeItems.length === 0) {
+      return;
+    }
+
+    const existingValues = new Set(treeItems.map((item) => item.value));
+    this.dataDriveSelectedValues = this.dataDriveSelectedValues.filter((v) =>
+      existingValues.has(v)
+    );
+
+    if (this.dataDriveSelectedValues.length === 0) {
+      return;
+    }
+
+    const selectedSet = new Set(this.dataDriveSelectedValues);
+    treeItems.forEach((item) => {
+      if (item.checkbox) return;
+      item.selected = selectedSet.has(item.value);
+    });
   }
 
   disconnectedCallback() {
@@ -289,8 +331,6 @@ export class ModusWcContentTree {
 
       return (
         <modus-wc-tree-item
-          key={itemIdentity}
-          data-key={itemIdentity}
           label={item.label}
           value={itemIdentity}
           disabled={item.disabled}
@@ -364,7 +404,9 @@ export class ModusWcContentTree {
           </div>
           <div class="modus-wc-content-tree-content">
             {this.hasDataItems ? (
-              <modus-wc-tree-view>
+              <modus-wc-tree-view
+                onItemSelectionChange={this.handleTreeViewItemSelectionChange}
+              >
                 {this.renderTreeItems(this.items!)}
               </modus-wc-tree-view>
             ) : (

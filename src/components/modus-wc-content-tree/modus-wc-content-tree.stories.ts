@@ -104,7 +104,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree.',
+          'A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree. On `modus-wc-tree-view`, selection is **single-select by default**: clicking an item selects only that item. To allow multiple selected items, enable multi-select on the tree view (see the Multi-selection story).',
       },
       source: {
         code: `
@@ -183,54 +183,8 @@ export const Default: Story = {
   },
 };
 
-export const TreeItem: Story = {
-  name: 'Tree Item',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A comprehensive example showing tree item features: checkbox, start icon, and actions.',
-      },
-      source: {
-        code: `
-<modus-wc-tree-view>
-  <modus-wc-tree-item 
-    label="Project Folder" 
-    value="project" 
-    checkbox="true"
-    tree-item-actions='[
-      {"id":"edit","icon":"pencil","label":"Edit"},
-      {"id":"delete","icon":"trash","label":"Delete"}
-    ]'>
-    <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
-  </modus-wc-tree-item>
-</modus-wc-tree-view>
-`,
-      },
-    },
-  },
-  render: () => {
-    const actions = [
-      { id: 'edit', icon: 'pencil', label: 'Edit' },
-      { id: 'delete', icon: 'trash', label: 'Delete' },
-    ];
-    return html`
-      <modus-wc-tree-view>
-        <modus-wc-tree-item
-          label="Project Folder"
-          value="project"
-          .checkbox=${true}
-          .treeItemActions=${actions}
-        >
-          <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
-        </modus-wc-tree-item>
-      </modus-wc-tree-view>
-    `;
-  },
-};
-
 export const TreeItemWithStartIcon: Story = {
-  name: 'Tree Item - With Start Icon',
+  name: 'Tree Item',
   parameters: {
     docs: {
       description: {
@@ -440,97 +394,13 @@ function handleCreateNew(tree) {
   },
 };
 
-export const SingleSelection: Story = {
-  name: 'Single Selection',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Content tree with single selection mode. Click on any tree item to select it. Only one item can be selected at a time.',
-      },
-      source: {
-        code: `
-<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
-  <modus-wc-tree-view>
-    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
-      <modus-wc-tree-view is-sub-list="true">
-        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
-        <modus-wc-tree-item label="Client Work" has-subtree="true" value="client-work">
-          <modus-wc-tree-view is-sub-list="true">
-            <modus-wc-tree-item label="Design Mockups" value="mockups"></modus-wc-tree-item>
-          </modus-wc-tree-view>
-        </modus-wc-tree-item>
-      </modus-wc-tree-view>
-    </modus-wc-tree-item>
-    <modus-wc-tree-item label="Resources" value="resources"></modus-wc-tree-item>
-  </modus-wc-tree-view>
-</modus-wc-content-tree>
-`,
-      },
-    },
-  },
-  render: (args) => {
-    return html`
-      <modus-wc-content-tree
-        search-placeholder=${args['search-placeholder']}
-        custom-class=${args['custom-class']}
-        .includeSearch=${args['include-search']}
-        .includeActions=${args['include-actions']}
-      >
-        <modus-wc-tree-view>
-          <modus-wc-tree-item
-            label="Documents"
-            .hasSubtree=${true}
-            value="documents"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="Report.pdf" value="report">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Proposal.docx" value="proposal">
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item
-            label="Projects"
-            .hasSubtree=${true}
-            value="projects"
-          >
-            <modus-wc-tree-view .isSubList=${true}>
-              <modus-wc-tree-item label="Website Redesign" value="website">
-              </modus-wc-tree-item>
-              <modus-wc-tree-item
-                label="Client Work"
-                .hasSubtree=${true}
-                value="client-work"
-              >
-                <modus-wc-tree-view .isSubList=${true}>
-                  <modus-wc-tree-item label="Design Mockups" value="mockups">
-                  </modus-wc-tree-item>
-                </modus-wc-tree-view>
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-tree-item>
-          <modus-wc-tree-item label="Resources" value="resources">
-          </modus-wc-tree-item>
-        </modus-wc-tree-view>
-      </modus-wc-content-tree>
-    `;
-  },
-};
-
 export const MultiSelect: Story = {
   name: 'Multi-selection',
   parameters: {
     docs: {
       description: {
         story:
-          'Enables multi-select on the tree view. Use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
+          '**Multi-select mode** is opt-in: set `multi-select` on `modus-wc-tree-view` (or the equivalent property in your framework). Without it, the tree stays in the default **single-selection** behavior. When multi-select is on, use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
       },
       source: {
         code: `
@@ -802,6 +672,32 @@ const items = [
   },
 };
 
+/** Demo: toggles row disabled state and visibility icon on the matching item. */
+function toggleItemVisibilityInTree(
+  items: ITreeItemData[],
+  itemId: string
+): ITreeItemData[] {
+  return items.map((item) => {
+    const children = item.children
+      ? toggleItemVisibilityInTree(item.children, itemId)
+      : undefined;
+    const match = item.id === itemId || item.clientId === itemId;
+    if (!match) {
+      return children !== item.children ? { ...item, children } : item;
+    }
+    const nextDisabled = !item.disabled;
+    const treeItemActions = item.treeItemActions?.map((a) => {
+      if (a.id !== 'toggle-visibility') return a;
+      return {
+        ...a,
+        icon: nextDisabled ? 'visibility_off' : 'visibility_on',
+        ariaLabel: nextDisabled ? 'Item hidden' : 'Item visible',
+      };
+    });
+    return { ...item, disabled: nextDisabled, treeItemActions, children };
+  });
+}
+
 export const WithActions: Story = {
   name: 'With Actions',
   args: {
@@ -812,12 +708,37 @@ export const WithActions: Story = {
     docs: {
       description: {
         story:
-          'A compact stateless example using `addTreeItemData`, `duplicateTreeItemData`, `updateTreeItemData`, and `deleteTreeItemData`. The consumer reads `event.detail.itemId` on `treeActionClick`, calls a utility, and assigns the result back to `tree.items`.',
+          'All-in-one stateless example: visibility (toggle `disabled` + icon), add sibling above/below, add child, duplicate, inline edit label, and delete—using `addTreeItemAdjacentData`, `addTreeItemData`, `duplicateTreeItemData`, `updateTreeItemData`, and `deleteTreeItemData`. On `treeActionClick`, read `event.detail.itemId`, call the matching utility, assign back to `tree.items`.',
       },
       source: {
         code: `
 <script>
+  function toggleItemVisibilityInTree(items, itemId) {
+    return items.map((item) => {
+      const children = item.children
+        ? toggleItemVisibilityInTree(item.children, itemId)
+        : undefined;
+      const match = item.id === itemId || item.clientId === itemId;
+      if (!match) {
+        return children !== item.children ? { ...item, children } : item;
+      }
+      const nextDisabled = !item.disabled;
+      const treeItemActions = item.treeItemActions?.map((a) => {
+        if (a.id !== 'toggle-visibility') return a;
+        return {
+          ...a,
+          icon: nextDisabled ? 'visibility_off' : 'visibility_on',
+          ariaLabel: nextDisabled ? 'Item hidden' : 'Item visible',
+        };
+      });
+      return { ...item, disabled: nextDisabled, treeItemActions, children };
+    });
+  }
+
   const actions = [
+    { id: 'toggle-visibility', label: 'Visibility', icon: 'visibility_on', ariaLabel: 'Item visible' },
+    { id: 'add-node-above', label: 'Add Node Above', icon: 'add', ariaLabel: 'Add node above' },
+    { id: 'add-node-below', label: 'Add Node Below', icon: 'add', ariaLabel: 'Add node below' },
     { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right' },
     { id: 'duplicate', label: 'Duplicate', icon: 'copy_content' },
     { id: 'edit-label', label: 'Edit Label', icon: 'pencil' },
@@ -839,7 +760,16 @@ export const WithActions: Story = {
     const { actionId, itemId } = event.detail;
     if (!itemId) return;
 
-    if (actionId === 'add-child') {
+    if (actionId === 'toggle-visibility') {
+      apply(toggleItemVisibilityInTree(items, itemId));
+    } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+      const id = 'node-' + counter++;
+      apply(addTreeItemAdjacentData(items, {
+        referenceItemId: itemId,
+        item: { id, clientId: id, label: 'New Node', treeItemActions: actions },
+        placement: actionId === 'add-node-above' ? 'above' : 'below',
+      }));
+    } else if (actionId === 'add-child') {
       const id = 'child-' + counter++;
       apply(addTreeItemData(items, {
         parentId: itemId,
@@ -871,7 +801,29 @@ export const WithActions: Story = {
   },
   render: () => {
     const actions = [
-      { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right' },
+      {
+        id: 'toggle-visibility',
+        label: 'Visibility',
+        icon: 'visibility_on',
+        ariaLabel: 'Item visible',
+      },
+      {
+        id: 'add-node-above',
+        label: 'Add Node Above',
+        icon: 'add',
+        ariaLabel: 'Add node above',
+      },
+      {
+        id: 'add-node-below',
+        label: 'Add Node Below',
+        icon: 'add',
+        ariaLabel: 'Add node below',
+      },
+      {
+        id: 'add-child',
+        label: 'Add Child',
+        icon: 'subdirectory_arrow_right',
+      },
       { id: 'duplicate', label: 'Duplicate', icon: 'copy_content' },
       { id: 'edit-label', label: 'Edit Label', icon: 'pencil' },
       { id: 'delete', label: 'Delete', icon: 'delete' },
@@ -911,7 +863,24 @@ export const WithActions: Story = {
         items?: ITreeItemData[];
       };
 
-      if (actionId === 'add-child') {
+      if (actionId === 'toggle-visibility') {
+        apply(tree, toggleItemVisibilityInTree(items, itemId));
+      } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+        const id = `node-${counter++}`;
+        apply(
+          tree,
+          addTreeItemAdjacentData(items, {
+            referenceItemId: itemId,
+            item: {
+              id,
+              clientId: id,
+              label: 'New Node',
+              treeItemActions: actions,
+            },
+            placement: actionId === 'add-node-above' ? 'above' : 'below',
+          })
+        );
+      } else if (actionId === 'add-child') {
         const id = `child-${counter++}`;
         apply(
           tree,
@@ -963,264 +932,6 @@ export const WithActions: Story = {
         @treeActionClick=${handleTreeActionClick}
         @itemLabelChange=${handleItemLabelChange}
       ></modus-wc-content-tree>
-    `;
-  },
-};
-
-export const ControlledActionsWithUtilities: Story = {
-  name: 'Controlled Actions With Utilities',
-  args: {
-    'include-search': false,
-    'include-actions': false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Full stateless example covering every mutation utility: `addTreeItemData`, `addTreeItemAdjacentData`, `duplicateTreeItemData`, `updateTreeItemData`, and `deleteTreeItemData`. The consumer reads `event.detail.itemId` on `treeActionClick`, picks the matching utility, and assigns the returned array back to `tree.items`.',
-      },
-      source: {
-        code: `
-<script>
-  const treeActions = [
-    { id: 'add-node-above', label: 'Add Node Above', icon: 'add', ariaLabel: 'Add node above' },
-    { id: 'add-node-below', label: 'Add Node Below', icon: 'add', ariaLabel: 'Add node below' },
-    { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right', ariaLabel: 'Add child node' },
-    { id: 'duplicate', label: 'Duplicate', icon: 'copy_content', ariaLabel: 'Duplicate node' },
-    { id: 'edit-label', label: 'Edit Label', icon: 'pencil', ariaLabel: 'Edit label' },
-    { id: 'delete', label: 'Delete', icon: 'delete', ariaLabel: 'Delete node' },
-  ];
-
-  const withTreeActions = (items) =>
-    items.map((item) => ({
-      ...item,
-      treeItemActions: treeActions,
-      children: item.children ? withTreeActions(item.children) : undefined,
-    }));
-
-  let itemCounter = 1;
-  let items = withTreeActions([
-    {
-      id: 'roadmap',
-      clientId: 'roadmap-client',
-      label: 'Roadmap',
-      children: [{ id: 'milestone-1', clientId: 'milestone-1-client', label: 'Milestone 1' }],
-    },
-    { id: 'backlog', clientId: 'backlog-client', label: 'Backlog' },
-  ]);
-
-  const tree = document.querySelector('modus-wc-content-tree');
-  tree.items = items;
-
-  const apply = (next) => { if (next) { items = next; tree.items = items; } };
-
-  tree.addEventListener('treeActionClick', (event) => {
-    const { actionId, itemId } = event.detail;
-    if (!itemId) return;
-
-    if (actionId === 'add-node-above' || actionId === 'add-node-below') {
-      const id = 'new-node-' + itemCounter++;
-      apply(addTreeItemAdjacentData(items, {
-        referenceItemId: itemId,
-        item: { id, clientId: id + '-client', label: 'New Node', treeItemActions: treeActions },
-        placement: actionId === 'add-node-above' ? 'above' : 'below',
-      }));
-    } else if (actionId === 'add-child') {
-      const id = 'new-child-' + itemCounter++;
-      apply(addTreeItemData(items, {
-        parentId: itemId,
-        item: { id, clientId: id + '-client', label: 'New Child', treeItemActions: treeActions },
-      }));
-    } else if (actionId === 'duplicate') {
-      apply(duplicateTreeItemData(items, { itemId }));
-    } else if (actionId === 'edit-label') {
-      apply(updateTreeItemData(items, { itemId, patch: { inlineLabelEdit: true } }));
-    } else if (actionId === 'delete') {
-      apply(deleteTreeItemData(items, { itemId }));
-    }
-  });
-
-  tree.addEventListener('itemLabelChange', (event) => {
-    const treeItem = event.target.closest('modus-wc-tree-item');
-    if (!treeItem) return;
-    apply(updateTreeItemData(items, {
-      itemId: treeItem.value,
-      patch: { label: event.detail, inlineLabelEdit: false },
-    }));
-  });
-</script>
-
-<modus-wc-content-tree include-search="false" include-actions="false"></modus-wc-content-tree>
-`,
-      },
-    },
-  },
-  render: () => {
-    const treeActions = [
-      {
-        id: 'add-node-above',
-        label: 'Add Node Above',
-        icon: 'add',
-        ariaLabel: 'Add node above',
-      },
-      {
-        id: 'add-node-below',
-        label: 'Add Node Below',
-        icon: 'add',
-        ariaLabel: 'Add node below',
-      },
-      {
-        id: 'add-child',
-        label: 'Add Child',
-        icon: 'subdirectory_arrow_right',
-        ariaLabel: 'Add child node',
-      },
-      {
-        id: 'duplicate',
-        label: 'Duplicate',
-        icon: 'copy_content',
-        ariaLabel: 'Duplicate node',
-      },
-      {
-        id: 'edit-label',
-        label: 'Edit Label',
-        icon: 'pencil',
-        ariaLabel: 'Edit label',
-      },
-      {
-        id: 'delete',
-        label: 'Delete',
-        icon: 'delete',
-        ariaLabel: 'Delete node',
-      },
-    ];
-
-    const withTreeActions = (items: ITreeItemData[]): ITreeItemData[] =>
-      items.map((item) => ({
-        ...item,
-        treeItemActions: treeActions,
-        children: item.children ? withTreeActions(item.children) : undefined,
-      }));
-
-    let itemCounter = 1;
-    let items: ITreeItemData[] = withTreeActions([
-      {
-        id: 'roadmap',
-        clientId: 'roadmap-client',
-        label: 'Roadmap',
-        children: [
-          {
-            id: 'milestone-1',
-            clientId: 'milestone-1-client',
-            label: 'Milestone 1',
-          },
-        ],
-      },
-      { id: 'backlog', clientId: 'backlog-client', label: 'Backlog' },
-    ]);
-
-    const apply = (
-      tree: HTMLElement & { items?: ITreeItemData[] },
-      next: ITreeItemData[] | null
-    ) => {
-      if (!next) return;
-      items = next;
-      tree.items = items;
-    };
-
-    const handleTreeActionClick = (
-      event: CustomEvent<{
-        actionId: string;
-        actionName: string;
-        itemId: string | null;
-        parentItemId: string | null;
-      }>
-    ) => {
-      const { actionId, itemId } = event.detail;
-      if (!itemId) return;
-      const tree = event.currentTarget as HTMLElement & {
-        items?: ITreeItemData[];
-      };
-
-      switch (actionId) {
-        case 'add-node-above':
-        case 'add-node-below': {
-          const id = `new-node-${itemCounter++}`;
-          apply(
-            tree,
-            addTreeItemAdjacentData(items, {
-              referenceItemId: itemId,
-              item: {
-                id,
-                clientId: `${id}-client`,
-                label: 'New Node',
-                treeItemActions: treeActions,
-              },
-              placement: actionId === 'add-node-above' ? 'above' : 'below',
-            })
-          );
-          return;
-        }
-        case 'add-child': {
-          const id = `new-child-${itemCounter++}`;
-          apply(
-            tree,
-            addTreeItemData(items, {
-              parentId: itemId,
-              item: {
-                id,
-                clientId: `${id}-client`,
-                label: 'New Child',
-                treeItemActions: treeActions,
-              },
-            })
-          );
-          return;
-        }
-        case 'duplicate':
-          apply(tree, duplicateTreeItemData(items, { itemId }));
-          return;
-        case 'edit-label':
-          apply(
-            tree,
-            updateTreeItemData(items, {
-              itemId,
-              patch: { inlineLabelEdit: true },
-            })
-          );
-          return;
-        case 'delete':
-          apply(tree, deleteTreeItemData(items, { itemId }));
-          return;
-      }
-    };
-
-    const handleItemLabelChange = (event: CustomEvent<string>) => {
-      const treeItem = (event.target as HTMLElement).closest(
-        'modus-wc-tree-item'
-      ) as ITreeItemElement | null;
-      if (!treeItem) return;
-      const tree = event.currentTarget as HTMLElement & {
-        items?: ITreeItemData[];
-      };
-      apply(
-        tree,
-        updateTreeItemData(items, {
-          itemId: treeItem.value,
-          patch: { label: event.detail, inlineLabelEdit: false },
-        })
-      );
-    };
-
-    return html`
-      <modus-wc-content-tree
-        .includeSearch=${false}
-        .includeActions=${false}
-        .items=${items}
-        @treeActionClick=${handleTreeActionClick}
-        @itemLabelChange=${handleItemLabelChange}
-      >
-      </modus-wc-content-tree>
     `;
   },
 };

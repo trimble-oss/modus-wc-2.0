@@ -2380,7 +2380,7 @@
             {
               "name": "items",
               "fieldName": "items",
-              "description": "Data-driven items to render as tree items. When omitted, the component renders slotted content in basic/uncontrolled mode.",
+              "description": "Data-driven items to render as tree items.",
               "type": {
                 "text": "ITreeItemData[]"
               }
