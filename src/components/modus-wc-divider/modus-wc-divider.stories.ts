@@ -109,15 +109,21 @@ export const ShadowDomParent: Story = {
           dividerEl.orientation = v.orientation;
           dividerEl.position = v.position;
           dividerEl.responsive = Boolean(v.responsive);
+          // Mirror the Default story: apply display:flex + height on the
+          // modus-wc-divider element itself so the inner div gets its height
+          if (v.orientation === 'horizontal') {
+            el.style.display = 'flex';
+            el.style.height = '100px';
+          } else {
+            el.style.display = '';
+            el.style.height = '';
+          }
         },
       });
       customElements.define('divider-shadow-host', DividerShadowHost);
     }
 
     return html`<divider-shadow-host
-      style=${args.orientation === 'horizontal'
-        ? 'display: flex; height: 100px'
-        : ''}
       .props=${{ ...args }}
     ></divider-shadow-host>`;
   },
