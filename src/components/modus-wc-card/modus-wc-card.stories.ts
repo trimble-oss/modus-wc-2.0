@@ -206,7 +206,7 @@ export const ShadowDomParent: Story = {
           cardEl.padding = v.padding ?? 'compact';
           if (!el.hasChildNodes()) {
             el.innerHTML =
-              '<span slot="title">Card Title</span><span slot="subtitle">Card Subtitle</span><p>This is a sample card content.</p><div slot="actions" class="modus-wc-justify-end"><modus-wc-button aria-label="Click me">Click me</modus-wc-button></div>';
+              '<span slot="title">Card Title</span><span slot="subtitle">Card Subtitle</span><p>This is a sample card content. You can place any content here.</p><div slot="actions" class="modus-wc-justify-end"><modus-wc-button aria-label="Click me">Click me</modus-wc-button></div>';
           }
         },
       });
