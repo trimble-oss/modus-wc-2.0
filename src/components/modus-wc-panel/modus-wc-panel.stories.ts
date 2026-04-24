@@ -153,6 +153,18 @@ export const ShadowDomParent: Story = {
           panelEl.height = v.height ?? '500px';
           panelEl.floating = Boolean(v.floating);
           if (!el.hasChildNodes()) {
+            // Inject .panel-section style into the shadow root since the
+            // global <style> block can't cross the shadow DOM boundary
+            const shadowRoot = el.getRootNode();
+            if (
+              shadowRoot instanceof ShadowRoot &&
+              !shadowRoot.querySelector('#panel-section-style')
+            ) {
+              const style = document.createElement('style');
+              style.id = 'panel-section-style';
+              style.textContent = '.panel-section { padding: 12px; }';
+              shadowRoot.appendChild(style);
+            }
             el.innerHTML = `
 <modus-wc-menu slot="header">
   <modus-wc-menu-item label="Home" custom-class="panel-section">
@@ -180,11 +192,6 @@ export const ShadowDomParent: Story = {
       customElements.define('panel-shadow-host', PanelShadowHost);
     }
 
-    return html` <style>
-        .panel-section {
-          padding: 12px;
-        }
-      </style>
-      <panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
+    return html`<panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
   },
 };
