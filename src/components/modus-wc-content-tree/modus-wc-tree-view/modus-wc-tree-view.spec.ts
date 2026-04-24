@@ -168,6 +168,110 @@ describe('modus-wc-tree-view', () => {
     expect(ul?.getAttribute('aria-expanded')).toBe('true');
   });
 
+  it('returns early when itemSelect detail is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view>
+          <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance;
+    const emitSpy = jest.spyOn(treeView.itemSelectionChange, 'emit');
+    const event = new CustomEvent('itemSelect', {
+      detail: null,
+      bubbles: true,
+    }) as unknown as CustomEvent<{
+      value: string;
+      additive: boolean;
+      range: boolean;
+    }>;
+
+    expect(() => treeView.handleItemSelect(event)).not.toThrow();
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('handleSelectedValuesChange calls syncSelectionFromProp', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView],
+      html: `<modus-wc-tree-view></modus-wc-tree-view>`,
+    });
+
+    const treeView = page.rootInstance as unknown as {
+      handleSelectedValuesChange(): void;
+      syncSelectionFromProp(): void;
+    };
+    const syncSpy = jest.spyOn(treeView, 'syncSelectionFromProp');
+
+    treeView.handleSelectedValuesChange();
+
+    expect(syncSpy).toHaveBeenCalled();
+  });
+
+  it('componentDidRender calls syncSelectionFromProp when selectedValues is defined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view>
+          <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item B" value="b"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeView = page.rootInstance as unknown as {
+      syncSelectionFromProp(): void;
+    };
+    const syncSpy = jest.spyOn(treeView, 'syncSelectionFromProp');
+    const host = page.root as HTMLElement & { selectedValues?: string[] };
+
+    host.selectedValues = ['b'];
+    await page.waitForChanges();
+
+    expect(syncSpy).toHaveBeenCalled();
+  });
+
+  it('syncSelectionFromProp applies selectedValues and skips checkbox items', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Checkbox Row"
+            value="cb"
+            checkbox="true"
+          ></modus-wc-tree-item>
+          <modus-wc-tree-item label="Plain Row" value="plain"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const host = page.root as HTMLElement & { selectedValues?: string[] };
+    host.selectedValues = ['cb', 'plain'];
+    await page.waitForChanges();
+
+    const treeView = page.rootInstance as unknown as {
+      selectedValues?: string[];
+      syncSelectionFromProp(): void;
+      applySelectionToItems(selectedValues: string[]): void;
+    };
+    const applySpy = jest.spyOn(treeView, 'applySelectionToItems');
+
+    treeView.syncSelectionFromProp();
+
+    expect(applySpy).toHaveBeenCalledWith(treeView.selectedValues);
+
+    const rows = Array.from(
+      page.root?.querySelectorAll('modus-wc-tree-item') || []
+    ) as ITreeItemElement[];
+
+    expect(rows[0].checkbox).toBe(true);
+    expect(rows[0].selected).toBeFalsy();
+    expect(rows[1].selected).toBe(true);
+  });
+
   it('getClasses returns correct classes for main tree view', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeView],
@@ -341,7 +445,7 @@ describe('modus-wc-tree-view', () => {
       }>;
     };
 
-    it('initializes anchor and selects a single item on first range selection', async () => {
+    it('selects a single item on first range selection without setting an anchor', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
@@ -371,7 +475,7 @@ describe('modus-wc-tree-view', () => {
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(false);
       expect(allItems[2].selected).toBe(true);
-      expect(treeView['anchorValue']).toBe('c');
+      expect(treeView['anchorValue']).toBeNull();
     });
 
     it('selects a range when anchor exists and is found', async () => {
@@ -437,7 +541,7 @@ describe('modus-wc-tree-view', () => {
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(true);
       expect(allItems[2].selected).toBe(false);
-      expect(treeView['anchorValue']).toBe('b');
+      expect(treeView['anchorValue']).toBe('missing-anchor');
     });
 
     it('toggles target selection when additive is true and range is false', async () => {
@@ -477,6 +581,82 @@ describe('modus-wc-tree-view', () => {
       expect(treeView['anchorValue']).toBe('b');
     });
 
+    it('uses DOM selected items when selectedValues is undefined', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeView, ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item B" value="b"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item C" value="c"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        `,
+      });
+
+      const treeView = page.rootInstance;
+      const allItems = Array.from(
+        page.root?.querySelectorAll('modus-wc-tree-item') || []
+      ) as ITreeItemElement[];
+
+      allItems[0].selected = true;
+
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[1] as unknown as HTMLElement,
+          true,
+          false
+        )
+      );
+
+      expect(allItems[0].selected).toBe(true);
+      expect(allItems[1].selected).toBe(true);
+      expect(allItems[2].selected).toBe(false);
+    });
+
+    it('uses selectedValues instead of DOM selected items in controlled mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeView, ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item B" value="b"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item C" value="c"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        `,
+      });
+
+      const host = page.root as HTMLElement & { selectedValues?: string[] };
+      host.selectedValues = ['a'];
+      await page.waitForChanges();
+
+      const treeView = page.rootInstance as unknown as {
+        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        applySelectionToItems(selectedValues: string[]): void;
+        handleItemSelect(
+          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+        ): void;
+      };
+      const allItems = Array.from(
+        page.root?.querySelectorAll('modus-wc-tree-item') || []
+      ) as ITreeItemElement[];
+      const emitSpy = jest.spyOn(treeView.itemSelectionChange, 'emit');
+      const applySpy = jest.spyOn(treeView, 'applySelectionToItems');
+
+      allItems[0].selected = false;
+      allItems[2].selected = true;
+
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[1] as unknown as HTMLElement,
+          true,
+          false
+        )
+      );
+
+      expect(applySpy).not.toHaveBeenCalled();
+      expect(emitSpy).toHaveBeenCalledWith({ selectedValues: ['a', 'b'] });
+    });
+
     it('selects a single item when additive and range are false', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
@@ -511,7 +691,7 @@ describe('modus-wc-tree-view', () => {
       expect(treeView['anchorValue']).toBe('c');
     });
 
-    it('returns early when target item is not found in all items', async () => {
+    it('emits the computed selection even when all items lookup returns empty', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
@@ -551,21 +731,126 @@ describe('modus-wc-tree-view', () => {
 
       treeView.handleItemSelect(event);
 
-      expect(treeView['anchorValue']).toBeNull();
+      expect(treeView['anchorValue']).toBe('a');
+      expect(emitSpy).toHaveBeenCalledWith({ selectedValues: ['a'] });
+    });
+
+    it('returns early when the computed selection is unchanged', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeView, ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-view>
+            <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item B" value="b"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        `,
+      });
+
+      const treeView = page.rootInstance as unknown as {
+        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        applySelectionToItems(selectedValues: string[]): void;
+        handleItemSelect(
+          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+        ): void;
+      };
+      const allItems = Array.from(
+        page.root?.querySelectorAll('modus-wc-tree-item') || []
+      ) as ITreeItemElement[];
+      const emitSpy = jest.spyOn(treeView.itemSelectionChange, 'emit');
+      const applySpy = jest.spyOn(treeView, 'applySelectionToItems');
+
+      allItems[0].selected = true;
+
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[0] as unknown as HTMLElement,
+          false,
+          false
+        )
+      );
+
+      expect(applySpy).not.toHaveBeenCalled();
+      expect(emitSpy).not.toHaveBeenCalled();
+      expect(allItems[0].selected).toBe(true);
+      expect(allItems[1].selected).toBeFalsy();
+    });
+
+    it('uses selectedValues for prev comparison in controlled mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTreeView, ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-view>
+            <modus-wc-tree-item label="Item A" value="a"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item B" value="b"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        `,
+      });
+
+      const host = page.root as HTMLElement & { selectedValues?: string[] };
+      host.selectedValues = ['a'];
+      await page.waitForChanges();
+
+      const treeView = page.rootInstance as unknown as {
+        itemSelectionChange: { emit: (detail: { selectedValues: string[] }) => void };
+        applySelectionToItems(selectedValues: string[]): void;
+        handleItemSelect(
+          event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
+        ): void;
+      };
+      const allItems = Array.from(
+        page.root?.querySelectorAll('modus-wc-tree-item') || []
+      ) as ITreeItemElement[];
+      const emitSpy = jest.spyOn(treeView.itemSelectionChange, 'emit');
+      const applySpy = jest.spyOn(treeView, 'applySelectionToItems');
+
+      allItems[0].selected = false;
+      allItems[1].selected = true;
+
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[0] as unknown as HTMLElement,
+          false,
+          false
+        )
+      );
+
+      expect(applySpy).not.toHaveBeenCalled();
       expect(emitSpy).not.toHaveBeenCalled();
     });
   });
 
-  describe('selectRange', () => {
-    it('should select items in range (forward order)', async () => {
+  describe('range selection behavior', () => {
+    const createItemSelectEvent = (
+      target: HTMLElement,
+      additive: boolean,
+      range: boolean
+    ) => {
+      const event = new CustomEvent('itemSelect', {
+        detail: { value: target.getAttribute('value'), additive, range },
+        bubbles: true,
+      });
+
+      Object.defineProperty(event, 'target', {
+        value: target,
+        enumerable: true,
+      });
+
+      return event as CustomEvent<{
+        value: string;
+        additive: boolean;
+        range: boolean;
+      }>;
+    };
+
+    it('selects items in range (forward order)', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view>
-            <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 2"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 3"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 4"></modus-wc-tree-item>
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 4" value="4"></modus-wc-tree-item>
           </modus-wc-tree-view>
         `,
       });
@@ -575,7 +860,14 @@ describe('modus-wc-tree-view', () => {
         page.root?.querySelectorAll('modus-wc-tree-item') || []
       ) as ITreeItemElement[];
 
-      treeView['selectRange'](allItems, 1, 3, false);
+      treeView['anchorValue'] = '2';
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[3] as unknown as HTMLElement,
+          false,
+          true
+        )
+      );
 
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(true);
@@ -583,15 +875,15 @@ describe('modus-wc-tree-view', () => {
       expect(allItems[3].selected).toBe(true);
     });
 
-    it('should select items in range (reverse order)', async () => {
+    it('selects items in range (reverse order)', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view>
-            <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 2"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 3"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 4"></modus-wc-tree-item>
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 4" value="4"></modus-wc-tree-item>
           </modus-wc-tree-view>
         `,
       });
@@ -601,7 +893,14 @@ describe('modus-wc-tree-view', () => {
         page.root?.querySelectorAll('modus-wc-tree-item') || []
       ) as ITreeItemElement[];
 
-      treeView['selectRange'](allItems, 3, 1, false);
+      treeView['anchorValue'] = '4';
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[1] as unknown as HTMLElement,
+          false,
+          true
+        )
+      );
 
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(true);
@@ -609,14 +908,14 @@ describe('modus-wc-tree-view', () => {
       expect(allItems[3].selected).toBe(true);
     });
 
-    it('should select single item when anchor and target are same', async () => {
+    it('selects a single item when anchor and target are the same', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view>
-            <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 2"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 3"></modus-wc-tree-item>
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
           </modus-wc-tree-view>
         `,
       });
@@ -626,22 +925,29 @@ describe('modus-wc-tree-view', () => {
         page.root?.querySelectorAll('modus-wc-tree-item') || []
       ) as ITreeItemElement[];
 
-      treeView['selectRange'](allItems, 1, 1, false);
+      treeView['anchorValue'] = '2';
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[1] as unknown as HTMLElement,
+          false,
+          true
+        )
+      );
 
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(true);
       expect(allItems[2].selected).toBe(false);
     });
 
-    it('should clear previous selections when additive is false', async () => {
+    it('clears previous selections when additive is false', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view>
-            <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 2"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 3"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 4"></modus-wc-tree-item>
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 4" value="4"></modus-wc-tree-item>
           </modus-wc-tree-view>
         `,
       });
@@ -655,7 +961,14 @@ describe('modus-wc-tree-view', () => {
       allItems[0].selected = true;
       allItems[3].selected = true;
 
-      treeView['selectRange'](allItems, 1, 2, false);
+      treeView['anchorValue'] = '2';
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[2] as unknown as HTMLElement,
+          false,
+          true
+        )
+      );
 
       expect(allItems[0].selected).toBe(false);
       expect(allItems[1].selected).toBe(true);
@@ -663,15 +976,15 @@ describe('modus-wc-tree-view', () => {
       expect(allItems[3].selected).toBe(false);
     });
 
-    it('should skip disabled items in range', async () => {
+    it('skips disabled items in range', async () => {
       const page = await newSpecPage({
         components: [ModusWcTreeView, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view>
-            <modus-wc-tree-item label="Item 1"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 2" disabled="true"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 3"></modus-wc-tree-item>
-            <modus-wc-tree-item label="Item 4" disabled="true"></modus-wc-tree-item>
+          <modus-wc-tree-view multi-select="true">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 2" value="2" disabled="true"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+            <modus-wc-tree-item label="Item 4" value="4" disabled="true"></modus-wc-tree-item>
           </modus-wc-tree-view>
         `,
       });
@@ -681,7 +994,14 @@ describe('modus-wc-tree-view', () => {
         page.root?.querySelectorAll('modus-wc-tree-item') || []
       ) as ITreeItemElement[];
 
-      treeView['selectRange'](allItems, 0, 3, false);
+      treeView['anchorValue'] = '1';
+      treeView.handleItemSelect(
+        createItemSelectEvent(
+          allItems[3] as unknown as HTMLElement,
+          false,
+          true
+        )
+      );
 
       expect(allItems[0].selected).toBe(true);
       expect(allItems[1].selected).toBe(false);

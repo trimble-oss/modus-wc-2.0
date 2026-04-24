@@ -18,6 +18,7 @@ interface ContentTreeArgs {
   'search-placeholder'?: string;
   'include-search'?: boolean;
   'include-actions'?: boolean;
+  'multi-select'?: boolean;
   'items-reordering'?: boolean;
   items?: ITreeItemData[];
 }
@@ -30,6 +31,7 @@ const meta: Meta<ContentTreeArgs> = {
     'search-placeholder': 'Search...',
     'include-search': true,
     'include-actions': true,
+    'multi-select': false,
     'items-reordering': false,
     items: undefined,
   },
@@ -43,6 +45,10 @@ const meta: Meta<ContentTreeArgs> = {
       table: { category: 'Content Tree' },
     },
     'include-actions': {
+      control: { type: 'boolean' },
+      table: { category: 'Content Tree' },
+    },
+    'multi-select': {
       control: { type: 'boolean' },
       table: { category: 'Content Tree' },
     },
@@ -104,7 +110,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree. On `modus-wc-tree-view`, selection is **single-select by default**: clicking an item selects only that item. To allow multiple selected items, enable multi-select on the tree view (see the Multi-selection story).',
+          'A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree. Selection is **single-select by default**: clicking an item selects only that item. To allow multiple selected items when using `modus-wc-content-tree`, enable `multi-select` on the content tree (see the Multi-selection story).',
       },
       source: {
         code: `
@@ -140,6 +146,7 @@ export const Default: Story = {
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
+        .multiSelect=${args['multi-select']}
         .itemsReordering=${args['items-reordering']}
       >
         <modus-wc-tree-view>
@@ -400,12 +407,17 @@ export const MultiSelect: Story = {
     docs: {
       description: {
         story:
-          '**Multi-select mode** is opt-in: set `multi-select` on `modus-wc-tree-view` (or the equivalent property in your framework). Without it, the tree stays in the default **single-selection** behavior. When multi-select is on, use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
+          '**Multi-select mode** is opt-in: set `multi-select` on `modus-wc-content-tree` when using the content tree wrapper. Without it, the tree stays in the default **single-selection** behavior. When multi-select is on, use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.',
       },
       source: {
         code: `
-<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
-  <modus-wc-tree-view multi-select="true">
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+  include-actions="true"
+  multi-select="true"
+>
+  <modus-wc-tree-view>
     <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
       <modus-wc-tree-view is-sub-list="true">
         <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
@@ -443,8 +455,9 @@ export const MultiSelect: Story = {
         custom-class=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
+        .multiSelect=${true}
       >
-        <modus-wc-tree-view .multiSelect=${true}>
+        <modus-wc-tree-view>
           <modus-wc-tree-item
             label="Documents"
             .hasSubtree=${true}
@@ -532,6 +545,7 @@ export const DisabledSelection: Story = {
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
+        .multiSelect=${args['multi-select']}
       >
         <modus-wc-tree-view>
           <modus-wc-tree-item label="Documents" value="documents">
@@ -1215,6 +1229,103 @@ tree.addEventListener('itemExpand', async (event) => {
   },
 };
 
+export const ControlledSelection: Story = {
+  name: 'Controlled Selection',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Demonstrates fully controlled selection in data-driven mode using the `selectedValues` prop and `selectionsChange` event. The application owns the selected IDs as state and passes them back into the tree, keeping UI and app state in sync. The external button shows that selection can also be changed by application logic outside the tree.',
+      },
+      source: {
+        code: `
+<script>
+  const items = [
+    { id: 'documents', clientId: 'documents-node', label: 'Documents' },
+    { id: 'projects', clientId: 'projects-node', label: 'Projects' },
+    { id: 'resources', clientId: 'resources-node', label: 'Resources' },
+  ];
+
+  let selectedValues = ['documents-node'];
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  const button = document.querySelector('#select-projects-button');
+  tree.items = items;
+  tree.selectedValues = selectedValues;
+
+  tree.addEventListener('selectionsChange', (event) => {
+    selectedValues = [...event.detail.selectedValues];
+    tree.selectedValues = selectedValues;
+  });
+
+  button.addEventListener('buttonClick', () => {
+    selectedValues = ['projects-node'];
+    tree.selectedValues = selectedValues;
+  });
+</script>
+
+<div style="display:flex; flex-direction:column; gap:0.75rem;">
+  <modus-wc-button id="select-projects-button" variant="outline">
+    Select Projects
+  </modus-wc-button>
+  <modus-wc-content-tree></modus-wc-content-tree>
+</div>
+        `,
+      },
+    },
+  },
+  render: () => {
+    const items: ITreeItemData[] = [
+      { id: 'documents', clientId: 'documents-node', label: 'Documents' },
+      { id: 'projects', clientId: 'projects-node', label: 'Projects' },
+      { id: 'resources', clientId: 'resources-node', label: 'Resources' },
+    ];
+
+    let selectedValues: string[] = ['documents-node'];
+
+    const handleSelectionsChange = (
+      event: CustomEvent<{ selectedValues: string[] }>
+    ) => {
+      const tree = event.currentTarget as HTMLElement & {
+        selectedValues?: string[];
+      };
+
+      selectedValues = [...event.detail.selectedValues];
+      tree.selectedValues = selectedValues;
+    };
+
+    const handleSelectProjects = (event: Event) => {
+      const wrapper = (event.currentTarget as HTMLElement).closest(
+        '.modus-wc-controlled-selection-story'
+      ) as HTMLElement | null;
+      const tree = wrapper?.querySelector('modus-wc-content-tree') as
+        | (HTMLElement & { selectedValues?: string[] })
+        | null;
+
+      if (!tree) return;
+
+      selectedValues = ['projects-node'];
+      tree.selectedValues = selectedValues;
+    };
+
+    return html`
+      <div
+        class="modus-wc-controlled-selection-story"
+        style="display: flex; flex-direction: column; gap: 0.75rem;"
+      >
+        <modus-wc-button variant="outline" @buttonClick=${handleSelectProjects}>
+          Select Projects
+        </modus-wc-button>
+        <modus-wc-content-tree
+          .items=${items}
+          .selectedValues=${selectedValues}
+          @selectionsChange=${handleSelectionsChange}
+        ></modus-wc-content-tree>
+      </div>
+    `;
+  },
+};
+
 export const ApiReference: Story = {
   name: 'API Reference',
   parameters: {
@@ -1225,10 +1336,10 @@ export const ApiReference: Story = {
 
 | Mode | Supported Scope |
 |------|------------------|
-| Slot-based (no \`items\`) | Basic nested rendering, basic expand/collapse and selection UX, basic action buttons/events, styling/composition flexibility |
-| Data-driven (\`items\`) | Controlled/stateless updates, mutation utilities, lazy loading orchestration, and drag/drop reordering |
+| Slot-based (no \`items\`) | Basic nested rendering, basic expand/collapse and selection UX, wrapper-owned \`multiSelect\`, action buttons/events, styling/composition flexibility |
+| Data-driven (\`items\`) | Controlled/stateless updates, controlled selection via \`selectedValues\`, mutation utilities, lazy loading orchestration, and drag/drop reordering |
 
-> Use the data-driven \`items\` model for controlled application state. Treat slot-based usage as basic/uncontrolled mode.
+> Use the data-driven \`items\` model for controlled application state. Slot-based usage remains basic/uncontrolled for selection state, but \`multiSelect\` is still configured on \`modus-wc-content-tree\` when the wrapper is used.
 
 ### Props
 
@@ -1239,12 +1350,15 @@ export const ApiReference: Story = {
 | includeSearch     | \`boolean\` | \`true\`    | Whether to display the search functionality       |
 | includeActions    | \`boolean\` | \`true\`    | Whether to display action buttons for tree items  |
 | items             | \`ITreeItemData[]\` | - | Data-driven tree data used to render items and nested children. If omitted, slotted content is rendered in basic/uncontrolled mode. |
+| multiSelect      | \`boolean\` | \`false\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior for the root tree rendered or wrapped by \`modus-wc-content-tree\`. |
 | itemsReordering   | \`boolean\` | \`false\` | Enables drag-and-drop reordering for data-driven trees only (not slot-based trees). |
+| selectedValues    | \`string[]\` | - | Controlled selected item values for data-driven trees. When provided, the application owns selection state. |
 
 #### Events
 
 | Name           | Payload                                                         | Description |
 |----------------|------------------------------------------------------------------|-------------|
+| selectionsChange | \`{ selectedValues: string[] }\` | Emitted when selection changes in data-driven mode. Use this with \`selectedValues\` for controlled selection. |
 | itemsReordered | \`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\` | Emitted after a successful drag reorder with updated tree data and reorder metadata in data-driven mode only |
 
 ---
@@ -1280,7 +1394,14 @@ Use these helpers to keep tree updates controlled/stateless in data-driven mode.
 3. Optionally validate/persist with your backend.
 4. Apply \`nextItems\` by updating \`items\`.
 
-> The controlled flow above applies to data-driven mode. Slot-based mode is intentionally limited to basic UI behavior.
+#### Controlled Selection Flow
+
+1. Pass \`selectedValues\` to \`modus-wc-content-tree\`.
+2. Listen for \`selectionsChange\`.
+3. Update your application state.
+4. Pass the new \`selectedValues\` back to the tree.
+
+> The controlled flows above apply to data-driven mode. Slot-based mode is intentionally limited to basic/uncontrolled selection state, but \`multiSelect\` should still be configured on \`modus-wc-content-tree\` when using the wrapper.
 
 ---
 
@@ -1292,14 +1413,15 @@ Use these helpers to keep tree updates controlled/stateless in data-driven mode.
 |-------------|------------|-----------|-------------------------------------------------------|
 | customClass | \`string\` | \`''\`    | Additional CSS class to apply to the tree view        |
 | isSubList   | \`boolean\` | \`false\` | Whether the tree view is a sublist of another tree item |
-| multiSelect | \`boolean\` | \`false\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior |
+| multiSelect | \`boolean\` | \`false\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior when using \`modus-wc-tree-view\` directly. When wrapped by \`modus-wc-content-tree\`, prefer configuring \`multiSelect\` on the content tree. |
+| selectedValues | \`string[]\` | - | Controlled selected values for direct \`modus-wc-tree-view\` usage. |
 | showConnectorLine | \`boolean\` | \`true\` | Shows or hides connector lines for nested sublists |
 
 #### Events
 
 | Name                | Payload                          | Description |
 |---------------------|----------------------------------|-------------|
-| itemSelectionChange | \`{ selectedValues: string[] }\` | Emitted when selected tree item values change |
+| itemSelectionChange | \`{ selectedValues: string[] }\` | Emitted when selected tree item values change in direct \`modus-wc-tree-view\` usage or lower-level compositions |
 
 ---
 

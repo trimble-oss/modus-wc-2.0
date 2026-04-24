@@ -7,6 +7,7 @@ import {
   Listen,
   Prop,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { Attributes, inheritAriaAttributes } from '../../utils';
 import { ITreeItemElement } from '../modus-wc-tree-item/modus-wc-tree-item';
@@ -36,9 +37,13 @@ export class ModusWcTreeView {
   /** If true, shows the connector line for nested sublists. */
   @Prop() showConnectorLine?: boolean = true;
 
-  /** If true, enables multi-select with Ctrl/Cmd and Shift keys. */
+  /** If true, enables multi-select with Ctrl/Cmd and Shift keys. When wrapped by `modus-wc-content-tree`, prefer configuring `multiSelect` on the content tree. */
   @Prop() multiSelect?: boolean = false;
 
+  /** Controlled selected values for tree items. When provided, the tree mirrors this selection state. */
+  @Prop() selectedValues?: string[];
+
+  /** Emits selected values when tree item selection changes. */
   @StencilEvent() itemSelectionChange!: EventEmitter<{
     selectedValues: string[];
   }>;
@@ -47,56 +52,96 @@ export class ModusWcTreeView {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  componentDidLoad() {
+    this.syncSelectionFromProp();
+  }
+
+  componentDidRender() {
+    if (this.selectedValues !== undefined) {
+      this.syncSelectionFromProp();
+    }
+  }
+
   @Listen('itemSelect')
   handleItemSelect(
     event: CustomEvent<{ value: string; additive: boolean; range: boolean }>
   ) {
     if (this.isSubList) return;
+    if (event.detail == null) return;
 
-    const target = event.target as HTMLElement;
-    if (!target) return;
-
-    const targetItem = target.closest(
-      'modus-wc-tree-item'
-    ) as ITreeItemElement | null;
-    if (!targetItem || targetItem.checkbox) return;
-
+    const { value, additive, range } = event.detail;
     const allItems = this.getAllTreeItems();
-    const targetIndex = allItems.indexOf(targetItem);
-    if (targetIndex === -1) return;
+    const currentSelected = new Set(
+      this.selectedValues ??
+        allItems.filter((i) => i.selected).map((i) => i.value)
+    );
 
-    const { additive, range } = event.detail;
+    let nextSelected: string[] = [];
 
-    if (this.multiSelect) {
+    if (!this.multiSelect) {
+      nextSelected = [value];
+    } else {
       if (range) {
-        if (this.anchorValue === null) {
-          // Initialize anchor on first range interaction.
-          this.selectSingleItem(allItems, targetItem);
-          this.anchorValue = targetItem.value;
+        const targetIndex = allItems.findIndex((i) => i.value === value);
+        const anchorIndex = allItems.findIndex(
+          (i) => i.value === this.anchorValue
+        );
+
+        if (anchorIndex === -1 || targetIndex === -1) {
+          nextSelected = [value];
         } else {
-          const anchorIndex = allItems.findIndex(
-            (item) => item.value === this.anchorValue
-          );
-          if (anchorIndex !== -1) {
-            this.selectRange(allItems, anchorIndex, targetIndex, additive);
-          } else {
-            this.selectSingleItem(allItems, targetItem);
-            this.anchorValue = targetItem.value;
+          const start = Math.min(anchorIndex, targetIndex);
+          const end = Math.max(anchorIndex, targetIndex);
+
+          if (!additive) currentSelected.clear();
+
+          for (let i = start; i <= end; i++) {
+            if (!allItems[i].disabled) {
+              currentSelected.add(allItems[i].value);
+            }
           }
+
+          nextSelected = [...currentSelected];
         }
       } else if (additive) {
-        targetItem.selected = !targetItem.selected;
-        this.anchorValue = targetItem.value;
+        if (currentSelected.has(value)) {
+          currentSelected.delete(value);
+        } else {
+          currentSelected.add(value);
+        }
+
+        nextSelected = [...currentSelected];
       } else {
-        this.selectSingleItem(allItems, targetItem);
-        this.anchorValue = targetItem.value;
+        nextSelected = [value];
       }
-    } else {
-      this.selectSingleItem(allItems, targetItem);
-      this.anchorValue = targetItem.value;
+
+      if (!range) {
+        this.anchorValue = value;
+      }
     }
 
-    this.emitSelectionChange(allItems);
+    const prev =
+      this.selectedValues ??
+      allItems.filter((i) => i.selected).map((i) => i.value);
+
+    const isSame =
+      prev.length === nextSelected.length &&
+      prev.every((v) => nextSelected.includes(v));
+
+    if (isSame) return;
+
+    if (this.selectedValues === undefined) {
+      this.applySelectionToItems(nextSelected);
+    }
+
+    this.itemSelectionChange.emit({
+      selectedValues: nextSelected,
+    });
+  }
+
+  @Watch('selectedValues')
+  handleSelectedValuesChange() {
+    this.syncSelectionFromProp();
   }
 
   private getAllTreeItems(): ITreeItemElement[] {
@@ -105,40 +150,21 @@ export class ModusWcTreeView {
     ) as ITreeItemElement[];
   }
 
-  private selectSingleItem(
-    allItems: ITreeItemElement[],
-    targetItem: ITreeItemElement
-  ): void {
-    allItems.forEach((item) => (item.selected = false));
-    targetItem.selected = true;
+  private applySelectionToItems(selectedValues: string[]): void {
+    const selectedSet = new Set(selectedValues);
+    const allItems = this.getAllTreeItems();
+
+    allItems.forEach((item) => {
+      if (item.checkbox) return;
+      item.selected = selectedSet.has(item.value);
+    });
   }
 
-  private selectRange(
-    allItems: ITreeItemElement[],
-    anchorIndex: number,
-    targetIndex: number,
-    additive: boolean
-  ): void {
-    const start = Math.min(anchorIndex, targetIndex);
-    const end = Math.max(anchorIndex, targetIndex);
-
-    if (!additive) {
-      allItems.forEach((item) => (item.selected = false));
+  private syncSelectionFromProp(): void {
+    if (this.selectedValues === undefined) {
+      return;
     }
-
-    for (let i = start; i <= end; i++) {
-      if (!allItems[i].disabled) {
-        allItems[i].selected = true;
-      }
-    }
-  }
-
-  private emitSelectionChange(allItems: ITreeItemElement[]): void {
-    const selectedValues = allItems
-      .filter((item) => item.selected)
-      .map((item) => item.value);
-
-    this.itemSelectionChange.emit({ selectedValues });
+    this.applySelectionToItems(this.selectedValues);
   }
 
   private getClasses(): string {

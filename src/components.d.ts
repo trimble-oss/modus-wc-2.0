@@ -550,9 +550,17 @@ export namespace Components {
          */
         "itemsReordering"?: boolean;
         /**
+          * If true, enables additive (Ctrl/Cmd) and range (Shift) multi-selection for the root tree rendered or wrapped by this content tree.
+         */
+        "multiSelect"?: boolean;
+        /**
           * Placeholder text for the search input.
          */
         "searchPlaceholder"?: string;
+        /**
+          * Controlled selected values for tree items in data-driven `items` mode.
+         */
+        "selectedValues"?: string[];
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -1615,7 +1623,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
          */
@@ -2155,9 +2163,13 @@ export namespace Components {
          */
         "isSubList"?: boolean;
         /**
-          * If true, enables multi-select with Ctrl/Cmd and Shift keys.
+          * If true, enables multi-select with Ctrl/Cmd and Shift keys. When wrapped by `modus-wc-content-tree`, prefer configuring `multiSelect` on the content tree.
          */
         "multiSelect"?: boolean;
+        /**
+          * Controlled selected values for tree items. When provided, the tree mirrors this selection state.
+         */
+        "selectedValues"?: string[];
         /**
           * If true, shows the connector line for nested sublists.
          */
@@ -2195,6 +2207,10 @@ export namespace Components {
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
         /**
           * The panel is expanded or closed
          */
@@ -2591,6 +2607,9 @@ declare global {
         new (): HTMLModusWcCollapseElement;
     };
     interface HTMLModusWcContentTreeElementEventMap {
+        "selectionsChange": {
+    selectedValues: string[];
+  };
         "itemsReordered": {
     items: ITreeItemData[];
     parameters: ITreeItemReorderParameters;
@@ -3998,6 +4017,10 @@ declare namespace LocalJSX {
          */
         "itemsReordering"?: boolean;
         /**
+          * If true, enables additive (Ctrl/Cmd) and range (Shift) multi-selection for the root tree rendered or wrapped by this content tree.
+         */
+        "multiSelect"?: boolean;
+        /**
           * Emits reordered data for controlled updates/backend sync in data-driven `items` mode only.
          */
         "onItemsReordered"?: (event: ModusWcContentTreeCustomEvent<{
@@ -4005,9 +4028,19 @@ declare namespace LocalJSX {
     parameters: ITreeItemReorderParameters;
   }>) => void;
         /**
+          * Emits current selection when tree selection changes in data-driven `items` mode.
+         */
+        "onSelectionsChange"?: (event: ModusWcContentTreeCustomEvent<{
+    selectedValues: string[];
+  }>) => void;
+        /**
           * Placeholder text for the search input.
          */
         "searchPlaceholder"?: string;
+        /**
+          * Controlled selected values for tree items in data-driven `items` mode.
+         */
+        "selectedValues"?: string[];
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -5247,7 +5280,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
          */
@@ -5907,12 +5940,19 @@ declare namespace LocalJSX {
          */
         "isSubList"?: boolean;
         /**
-          * If true, enables multi-select with Ctrl/Cmd and Shift keys.
+          * If true, enables multi-select with Ctrl/Cmd and Shift keys. When wrapped by `modus-wc-content-tree`, prefer configuring `multiSelect` on the content tree.
          */
         "multiSelect"?: boolean;
+        /**
+          * Emits selected values when tree item selection changes.
+         */
         "onItemSelectionChange"?: (event: ModusWcTreeViewCustomEvent<{
     selectedValues: string[];
   }>) => void;
+        /**
+          * Controlled selected values for tree items. When provided, the tree mirrors this selection state.
+         */
+        "selectedValues"?: string[];
         /**
           * If true, shows the connector line for nested sublists.
          */
@@ -5950,6 +5990,10 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
         /**
           * The panel is expanded or closed
          */

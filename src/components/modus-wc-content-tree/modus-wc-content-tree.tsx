@@ -59,6 +59,18 @@ export class ModusWcContentTree {
   /** Data-driven items to render as tree items. */
   @Prop() items?: ITreeItemData[];
 
+  /** Controlled selected values for tree items in data-driven `items` mode. */
+  @Prop() selectedValues?: string[];
+
+  /** If true, enables additive (Ctrl/Cmd) and range (Shift) multi-selection for the root tree rendered or wrapped by this content tree. */
+  @Prop() multiSelect?: boolean = false;
+
+  /** Emits current selection when tree selection changes in data-driven `items` mode. */
+  @StencilEvent({ bubbles: true, composed: true })
+  selectionsChange!: EventEmitter<{
+    selectedValues: string[];
+  }>;
+
   /** Emits reordered data for controlled updates/backend sync in data-driven `items` mode only. */
   @StencilEvent({ bubbles: true, composed: true })
   itemsReordered!: EventEmitter<{
@@ -75,6 +87,10 @@ export class ModusWcContentTree {
   /** IDs of items that have been expanded but whose children have not yet been provided by the consumer. */
   @State() private pendingChildrenIds: Set<string> = new Set();
 
+  private get isSelectionControlled(): boolean {
+    return this.selectedValues !== undefined;
+  }
+
   @Watch('items')
   handleItemsChange() {
     this.cachedItems = undefined;
@@ -84,33 +100,56 @@ export class ModusWcContentTree {
     }
   }
 
+  @Watch('selectedValues')
+  handleSelectedValuesChange(newValues?: string[]) {
+    this.dataDriveSelectedValues = Array.isArray(newValues)
+      ? [...newValues]
+      : [];
+  }
+
   @Watch('itemsReordering')
   handleItemsReorderingChange() {
     this.applyItemsReorderingState();
   }
 
+  @Watch('multiSelect')
+  handleMultiSelectChange() {
+    this.applyTreeViewSelectionMode();
+  }
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    if (Array.isArray(this.selectedValues)) {
+      this.dataDriveSelectedValues = [...this.selectedValues];
+    }
   }
 
   componentDidLoad() {
     this.applyItemsReorderingState();
+    this.applyTreeViewSelectionMode();
   }
 
   componentDidRender() {
     this.syncDataDriveSelection();
     this.applyItemsReorderingState();
+    this.applyTreeViewSelectionMode();
   }
 
   private handleTreeViewItemSelectionChange = (
     event: CustomEvent<{ selectedValues: string[] }>
   ) => {
-    this.dataDriveSelectedValues = [...event.detail.selectedValues];
+    if (!this.isSelectionControlled) {
+      this.dataDriveSelectedValues = [...event.detail.selectedValues];
+    }
+
+    this.selectionsChange.emit({
+      selectedValues: [...event.detail.selectedValues],
+    });
   };
 
   /** Restore selection on new tree-item nodes after controlled `items` updates. */
   private syncDataDriveSelection(): void {
-    if (!this.hasDataItems || this.dataDriveSelectedValues.length === 0) {
+    if (!this.hasDataItems) {
       return;
     }
 
@@ -122,16 +161,22 @@ export class ModusWcContentTree {
       return;
     }
 
+    const controlledSelectionValues = this.selectedValues;
+    const selectionValues = this.isSelectionControlled
+      ? controlledSelectionValues == null
+        ? []
+        : controlledSelectionValues
+      : this.dataDriveSelectedValues;
     const existingValues = new Set(treeItems.map((item) => item.value));
-    this.dataDriveSelectedValues = this.dataDriveSelectedValues.filter((v) =>
+    const nextSelectionValues = selectionValues.filter((v) =>
       existingValues.has(v)
     );
 
-    if (this.dataDriveSelectedValues.length === 0) {
-      return;
+    if (!this.isSelectionControlled) {
+      this.dataDriveSelectedValues = nextSelectionValues;
     }
 
-    const selectedSet = new Set(this.dataDriveSelectedValues);
+    const selectedSet = new Set(nextSelectionValues);
     treeItems.forEach((item) => {
       if (item.checkbox) return;
       item.selected = selectedSet.has(item.value);
@@ -167,6 +212,23 @@ export class ModusWcContentTree {
     treeItems.forEach((item) => {
       (item as ITreeItemElement).itemsReordering = this.isReorderingEnabled;
     });
+  }
+
+  private applyTreeViewSelectionMode(): void {
+    // In data-driven mode, `multiSelect` is passed declaratively in render.
+    if (this.hasDataItems) {
+      return;
+    }
+
+    const treeViews = Array.from(
+      this.el.querySelectorAll('modus-wc-tree-view')
+    ) as Array<HTMLElement & { isSubList?: boolean; multiSelect?: boolean }>;
+
+    treeViews
+      .filter((treeView) => !treeView.isSubList)
+      .forEach((treeView) => {
+        treeView.multiSelect = !!this.multiSelect;
+      });
   }
 
   @Listen('itemReordered')
@@ -405,6 +467,8 @@ export class ModusWcContentTree {
           <div class="modus-wc-content-tree-content">
             {this.hasDataItems ? (
               <modus-wc-tree-view
+                multiSelect={this.multiSelect}
+                selectedValues={this.selectedValues}
                 onItemSelectionChange={this.handleTreeViewItemSelectionChange}
               >
                 {this.renderTreeItems(this.items!)}
