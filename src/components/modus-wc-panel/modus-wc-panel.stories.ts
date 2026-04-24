@@ -153,7 +153,23 @@ export const ShadowDomParent: Story = {
           panelEl.height = v.height ?? '700px';
           panelEl.floating = Boolean(v.floating);
           if (!el.hasChildNodes()) {
-            el.innerHTML = '<div slot="body"><p>Panel content</p></div>';
+            el.innerHTML = `
+<modus-wc-menu slot="header">
+  <modus-wc-menu-item label="Home">
+    <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
+  </modus-wc-menu-item>
+</modus-wc-menu>
+<modus-wc-menu size="lg" slot="body">
+  <modus-wc-menu-item label="Dashboard" value="dashboard"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Projects" value="projects"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Team" value="team"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+</modus-wc-menu>
+<modus-wc-menu slot="footer">
+  <modus-wc-menu-item label="Settings">
+    <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
+  </modus-wc-menu-item>
+</modus-wc-menu>`;
           }
         },
       });

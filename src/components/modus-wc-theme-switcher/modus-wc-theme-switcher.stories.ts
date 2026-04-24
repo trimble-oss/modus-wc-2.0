@@ -127,8 +127,12 @@ export const ShadowDomParent: Story = {
       );
     }
 
-    return html`<theme-switcher-shadow-host
-      .props=${{ ...args }}
-    ></theme-switcher-shadow-host>`;
+    return html`
+      <modus-wc-theme-provider .initialTheme=${getCurrentTheme()}>
+        <theme-switcher-shadow-host
+          .props=${{ ...args }}
+        ></theme-switcher-shadow-host>
+      </modus-wc-theme-provider>
+    `;
   },
 };

@@ -115,6 +115,9 @@ export const ShadowDomParent: Story = {
     }
 
     return html`<divider-shadow-host
+      style=${args.orientation === 'horizontal'
+        ? 'display: flex; height: 100px'
+        : ''}
       .props=${{ ...args }}
     ></divider-shadow-host>`;
   },

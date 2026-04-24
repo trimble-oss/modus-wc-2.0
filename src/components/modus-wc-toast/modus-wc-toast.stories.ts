@@ -75,14 +75,18 @@ export const ShadowDomParent: Story = {
           toastEl.position = v.position ?? 'top-end';
           if (!el.hasChildNodes()) {
             el.innerHTML =
-              '<modus-wc-alert alert-title="Message sent!" variant="success"></modus-wc-alert>';
+              '<modus-wc-alert alert-title="Message sent successfully!" variant="success"></modus-wc-alert>';
           }
         },
       });
       customElements.define('toast-shadow-host', ToastShadowHost);
     }
 
-    return html`<toast-shadow-host .props=${{ ...args }}></toast-shadow-host>`;
+    return html`
+      <div style="height: 200px;">
+        <toast-shadow-host .props=${{ ...args }}></toast-shadow-host>
+      </div>
+    `;
   },
 };
 export const Migration: Story = {

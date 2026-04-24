@@ -109,13 +109,17 @@ export const ShadowDomParent: Story = {
             ariaLabelValues: IAriaLabelValues | undefined;
             count: number;
             customClass: string;
+            nextButtonText: string;
             page: number;
+            prevButtonText: string;
             size: string;
           };
           paginationEl.ariaLabelValues = v['aria-label-values'];
           paginationEl.count = v.count;
           paginationEl.customClass = v['custom-class'] || '';
+          paginationEl.nextButtonText = v['next-button-text'] ?? '';
           paginationEl.page = v.page;
+          paginationEl.prevButtonText = v['prev-button-text'] ?? '';
           paginationEl.size = v.size ?? 'md';
         },
       });

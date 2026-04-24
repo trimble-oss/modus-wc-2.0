@@ -292,6 +292,12 @@ export const ShadowDomParent: Story = {
           profileMenuEl.profileProps = v['profile-props'];
           profileMenuEl.menuOne = v['menu-one'];
           profileMenuEl.menuTwo = v['menu-two'];
+          // Wire events once after first prop assignment
+          if (!el.dataset['eventsWired']) {
+            el.addEventListener('signOutClick', action('signOutClick'));
+            el.addEventListener('menuItemClick', action('menuItemClick'));
+            el.dataset['eventsWired'] = 'true';
+          }
         },
       });
       customElements.define('profile-menu-shadow-host', ProfileMenuShadowHost);
