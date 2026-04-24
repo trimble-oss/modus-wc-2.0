@@ -1,9 +1,11 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
+  'custom-class'?: string;
   expanded: boolean;
   'push-content': boolean;
 }
@@ -16,6 +18,9 @@ const meta: Meta<UtilityPanelArgs> = {
     'push-content': true,
   },
   argTypes: {
+    'custom-class': {
+      control: { type: 'text' },
+    },
     expanded: {
       control: { type: 'boolean' },
     },
@@ -256,8 +261,9 @@ ${scriptBlock}`,
         </div>
 
         <modus-wc-utility-panel
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Utility Panel Header
@@ -397,8 +403,9 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           id="panel-expanded"
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Expanded Panel Header
@@ -520,8 +527,9 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           id="panel-overlay"
-          ?expanded="${args.expanded}"
-          ?push-content="${args['push-content']}"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
         >
           <div slot="header" class="modus-wc-utility-panel-header">
             Overlay Panel Header
@@ -573,8 +581,9 @@ export const WithoutHeaderFooter: Story = {
 
       <modus-wc-utility-panel
         id="panel-simple"
-        ?expanded="${args.expanded}"
-        ?push-content="${args['push-content']}"
+        custom-class=${ifDefined(args['custom-class'])}
+        ?expanded=${args.expanded}
+        ?push-content=${args['push-content']}
       >
         <div slot="body">
           <h3>Simple Body Content</h3>
