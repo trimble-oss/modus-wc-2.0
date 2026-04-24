@@ -13,6 +13,12 @@ interface PanelArgs {
 const meta: Meta<PanelArgs> = {
   title: 'Components/Panel',
   component: 'modus-wc-panel',
+  args: {
+    'custom-class': '',
+    width: '250px',
+    height: '500px',
+    floating: false,
+  },
   parameters: {
     layout: 'padded',
   },

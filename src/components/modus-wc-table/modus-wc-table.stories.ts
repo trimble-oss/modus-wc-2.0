@@ -29,7 +29,20 @@ interface TableStoryArgs {
 const meta: Meta<TableStoryArgs> = {
   title: 'Components/Table',
   component: 'modus-wc-table',
-
+  args: {
+    density: 'comfortable',
+    hover: false,
+    sortable: true,
+    paginated: false,
+    'show-page-size-selector': true,
+    'custom-class': '',
+    selectable: 'none',
+    zebra: false,
+    'current-page': 1,
+    'page-size-options': [5, 10, 15],
+    'selected-row-ids': [],
+    editable: false,
+  },
   argTypes: {
     columns: {
       control: 'object',
