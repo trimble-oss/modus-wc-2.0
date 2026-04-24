@@ -144,8 +144,10 @@ or, a more complex wrapper:
 import { ModusWcTextInput } from '@trimble-oss/moduswebcomponents-vue';
 import type { ComponentProps } from 'vue-component-type-helpers';
 
-interface Props
-  extends Omit<ComponentProps<typeof ModusWcTextInput>, 'onInputChange'> {
+interface Props extends Omit<
+  ComponentProps<typeof ModusWcTextInput>,
+  'onInputChange'
+> {
   onValueChange?: (value: string) => void;
 }
 

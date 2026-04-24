@@ -484,8 +484,15 @@ async function fetchIconNames(): Promise<string[]> {
 function updateIconDocs(outputDir: string, iconNames: string[]): void {
   if (!iconNames.length) return;
   const iconPath = join(outputDir, 'modus-wc-icon.json');
-  if (!existsSync(iconPath)) return;
-  const data: ComponentDoc = JSON.parse(readFileSync(iconPath, 'utf-8'));
+
+  let data: ComponentDoc;
+  try {
+    data = JSON.parse(readFileSync(iconPath, 'utf-8'));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return;
+    throw error;
+  }
+
   data.availableIcons = {
     total: iconNames.length,
     variants: ['solid', 'outlined'],
