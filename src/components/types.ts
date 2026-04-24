@@ -166,7 +166,6 @@ type AutocompleteWebAuthnBase =
  *   - `username webauthn` / `current-password webauthn` (credential + passkey contexts only)
  */
 export type AutocompleteTypes =
-  | ''
   | 'on'
   | 'off'
   | AutocompleteBase
