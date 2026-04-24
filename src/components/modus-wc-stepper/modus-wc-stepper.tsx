@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -46,6 +47,7 @@ export class ModusWcStepper {
   @Prop() steps: IStepperItem[] = [];
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

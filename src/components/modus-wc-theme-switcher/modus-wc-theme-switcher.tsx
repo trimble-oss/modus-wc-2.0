@@ -12,6 +12,7 @@ import {
 } from '@stencil/core';
 import { themeStore } from '../../providers/theme/theme.store';
 import { IThemeConfig } from '../../providers/theme/theme.types';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -40,6 +41,7 @@ export class ModusWcThemeSwitcher {
   @State() isDarkMode = themeStore.state.mode === 'dark';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Switch between light and dark theme';
     }

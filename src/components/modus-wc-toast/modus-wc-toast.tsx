@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop, Watch } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-toast.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 export type ToastPosition =
@@ -39,6 +40,7 @@ export class ModusWcToast {
   @Prop() position?: ToastPosition = 'top-end';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

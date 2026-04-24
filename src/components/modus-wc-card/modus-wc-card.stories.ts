@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface CardArgs {
   'background-figure'?: boolean;
@@ -185,6 +186,42 @@ export const BackgroundFigureImage: Story = {
   `,
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('card-shadow-host')) {
+      const CardShadowHost = createShadowHostClass<CardArgs>({
+        componentTag: 'modus-wc-card',
+        propsMapper: (v: CardArgs, el: HTMLElement) => {
+          const cardEl = el as unknown as {
+            backgroundFigure: boolean;
+            bordered: boolean;
+            customClass: string;
+            layout: string;
+            padding: string;
+          };
+          cardEl.backgroundFigure = Boolean(v['background-figure']);
+          cardEl.bordered = Boolean(v.bordered);
+          cardEl.customClass = v['custom-class'] || '';
+          cardEl.layout = v.layout ?? 'vertical';
+          cardEl.padding = v.padding ?? 'compact';
+          if (!el.hasChildNodes()) {
+            el.innerHTML =
+              '<span slot="title">Card Title</span><span slot="subtitle">Card Subtitle</span><p>This is a sample card content. You can place any content here.</p><div slot="actions" class="modus-wc-justify-end"><modus-wc-button aria-label="Click me">Click me</modus-wc-button></div>';
+          }
+        },
+      });
+      customElements.define('card-shadow-host', CardShadowHost);
+    }
+
+    return html` <style>
+        card-shadow-host {
+          width: 400px;
+          display: block;
+        }
+      </style>
+      <card-shadow-host .props=${{ ...args }}></card-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

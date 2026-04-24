@@ -304,7 +304,6 @@ export const ShadowDomParent: Story = {
     ></text-input-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

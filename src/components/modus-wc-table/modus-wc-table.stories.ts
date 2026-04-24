@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ITableColumn } from './modus-wc-table';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IAutocompleteItem } from '../types';
 import { Density } from '../types';
 
@@ -28,7 +29,20 @@ interface TableStoryArgs {
 const meta: Meta<TableStoryArgs> = {
   title: 'Components/Table',
   component: 'modus-wc-table',
-
+  args: {
+    density: 'comfortable',
+    hover: false,
+    sortable: true,
+    paginated: false,
+    'show-page-size-selector': true,
+    'custom-class': '',
+    selectable: 'none',
+    zebra: false,
+    'current-page': 1,
+    'page-size-options': [5, 10, 15],
+    'selected-row-ids': [],
+    editable: false,
+  },
   argTypes: {
     columns: {
       control: 'object',
@@ -1015,5 +1029,40 @@ export const InlineEditing: Story = {
     'current-page': 1,
     'page-size-options': [5, 10, 15],
     'selected-row-ids': [],
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('table-shadow-host')) {
+      const TableShadowHost = createShadowHostClass<TableStoryArgs>({
+        componentTag: 'modus-wc-table',
+        propsMapper: (v: TableStoryArgs, el: HTMLElement) => {
+          const tableEl = el as unknown as {
+            columns: ITableColumn[];
+            data: Record<string, unknown>[];
+            customClass: string;
+            density: string;
+            hover: boolean;
+            paginated: boolean;
+            selectable: string;
+            sortable: boolean;
+            zebra: boolean;
+          };
+          tableEl.columns = v.columns ?? createDemoColumns();
+          tableEl.data = v.data ?? createDemoData();
+          tableEl.customClass = v['custom-class'] || '';
+          tableEl.density = v.density ?? 'comfortable';
+          tableEl.hover = Boolean(v.hover);
+          tableEl.paginated = Boolean(v.paginated);
+          tableEl.selectable = v.selectable ?? 'none';
+          tableEl.sortable = Boolean(v.sortable);
+          tableEl.zebra = Boolean(v.zebra);
+        },
+      });
+      customElements.define('table-shadow-host', TableShadowHost);
+    }
+
+    return html`<table-shadow-host .props=${{ ...args }}></table-shadow-host>`;
   },
 };

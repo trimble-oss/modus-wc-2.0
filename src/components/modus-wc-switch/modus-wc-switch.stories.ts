@@ -108,7 +108,6 @@ export const ShadowDomParent: Story = {
     ></switch-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

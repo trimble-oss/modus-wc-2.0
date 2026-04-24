@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface PanelArgs {
   'custom-class'?: string;
@@ -12,6 +13,12 @@ interface PanelArgs {
 const meta: Meta<PanelArgs> = {
   title: 'Components/Panel',
   component: 'modus-wc-panel',
+  args: {
+    'custom-class': '',
+    width: '250px',
+    height: '500px',
+    floating: false,
+  },
   parameters: {
     layout: 'padded',
   },
@@ -132,5 +139,65 @@ export const BodyOnly: Story = {
   </modus-wc-menu>
 </modus-wc-panel>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('panel-shadow-host')) {
+      const PanelShadowHost = createShadowHostClass<PanelArgs>({
+        componentTag: 'modus-wc-panel',
+        propsMapper: (v: PanelArgs, el: HTMLElement) => {
+          const panelEl = el as unknown as {
+            customClass: string;
+            width: string;
+            height: string;
+            floating: boolean;
+          };
+          panelEl.customClass = v['custom-class'] || '';
+          panelEl.width = v.width ?? '250px';
+          panelEl.height = v.height ?? '500px';
+          panelEl.floating = Boolean(v.floating);
+          if (!el.hasChildNodes()) {
+            // Inject .panel-section style into the shadow root since the
+            // global <style> block can't cross the shadow DOM boundary
+            const shadowRoot = el.getRootNode();
+            if (
+              shadowRoot instanceof ShadowRoot &&
+              !shadowRoot.querySelector('#panel-section-style')
+            ) {
+              const style = document.createElement('style');
+              style.id = 'panel-section-style';
+              style.textContent = '.panel-section { padding: 12px; }';
+              shadowRoot.appendChild(style);
+            }
+            el.innerHTML = `
+<modus-wc-menu slot="header">
+  <modus-wc-menu-item label="Home" custom-class="panel-section">
+    <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
+  </modus-wc-menu-item>
+</modus-wc-menu>
+<modus-wc-menu size="lg" slot="body">
+  <modus-wc-menu-item label="Dashboard" value="dashboard"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Projects" value="projects"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Team" value="team"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Calendar" value="calendar"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Documents" value="documents"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Reports" value="reports"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Analytics" value="analytics"></modus-wc-menu-item>
+  <modus-wc-menu-item label="Messages" value="messages"></modus-wc-menu-item>
+</modus-wc-menu>
+<modus-wc-menu slot="footer">
+  <modus-wc-menu-item label="Settings" custom-class="panel-section">
+    <modus-wc-icon slot="start-icon" name="settings"></modus-wc-icon>
+  </modus-wc-menu-item>
+</modus-wc-menu>`;
+          }
+        },
+      });
+      customElements.define('panel-shadow-host', PanelShadowHost);
+    }
+
+    return html`<panel-shadow-host .props=${{ ...args }}></panel-shadow-host>`;
   },
 };

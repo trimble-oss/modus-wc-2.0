@@ -224,7 +224,6 @@ export const ShadowDomParent: Story = {
     return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

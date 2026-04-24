@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { Orientation } from '../types';
 
 interface StepperArgs {
@@ -93,3 +94,28 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('stepper-shadow-host')) {
+      const StepperShadowHost = createShadowHostClass<StepperArgs>({
+        componentTag: 'modus-wc-stepper',
+        propsMapper: (v: StepperArgs, el: HTMLElement) => {
+          const stepperEl = el as unknown as {
+            customClass: string;
+            orientation: string;
+            steps: IStepperItem[];
+          };
+          stepperEl.customClass = v['custom-class'] || '';
+          stepperEl.orientation = v.orientation ?? 'horizontal';
+          stepperEl.steps = v.steps ?? [];
+        },
+      });
+      customElements.define('stepper-shadow-host', StepperShadowHost);
+    }
+
+    return html`<stepper-shadow-host
+      .props=${{ ...args }}
+    ></stepper-shadow-host>`;
+  },
+};

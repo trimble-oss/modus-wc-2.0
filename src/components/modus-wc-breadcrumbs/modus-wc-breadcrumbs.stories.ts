@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IBreadcrumb } from './modus-wc-breadcrumbs';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 const items: IBreadcrumb[] = [
@@ -174,6 +175,31 @@ export const FallbackButton: Story = {
   size=${ifDefined(args.size)}
 ></modus-wc-breadcrumbs>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('breadcrumbs-shadow-host')) {
+      const BreadcrumbsShadowHost = createShadowHostClass<BreadcrumbArgs>({
+        componentTag: 'modus-wc-breadcrumbs',
+        propsMapper: (v: BreadcrumbArgs, el: HTMLElement) => {
+          const breadcrumbsEl = el as unknown as {
+            customClass: string;
+            items: IBreadcrumb[];
+            size: string;
+          };
+          breadcrumbsEl.customClass = v['custom-class'] || '';
+          breadcrumbsEl.items = v.items;
+          breadcrumbsEl.size = v.size ?? 'md';
+        },
+      });
+      customElements.define('breadcrumbs-shadow-host', BreadcrumbsShadowHost);
+    }
+
+    return html`<breadcrumbs-shadow-host
+      .props=${{ ...args }}
+    ></breadcrumbs-shadow-host>`;
   },
 };
 

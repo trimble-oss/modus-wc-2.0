@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IThemeConfig } from '../../providers/theme/theme.types';
 
 interface ThemeSwitcherArgs {
@@ -105,5 +106,33 @@ export const ThemeTest: Story = {
           'This example syncs with the active Storybook theme. Toggle between light and dark modes using the theme switcher on the default story to see the components adapt accordingly.',
       },
     },
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('theme-switcher-shadow-host')) {
+      const ThemeSwitcherShadowHost = createShadowHostClass<ThemeSwitcherArgs>({
+        componentTag: 'modus-wc-theme-switcher',
+        propsMapper: (v: ThemeSwitcherArgs, el: HTMLElement) => {
+          const themeSwitcherEl = el as unknown as {
+            customClass: string;
+          };
+          themeSwitcherEl.customClass = v['custom-class'] || '';
+        },
+      });
+      customElements.define(
+        'theme-switcher-shadow-host',
+        ThemeSwitcherShadowHost
+      );
+    }
+
+    return html`
+      <modus-wc-theme-provider .initialTheme=${getCurrentTheme()}>
+        <theme-switcher-shadow-host
+          .props=${{ ...args }}
+        ></theme-switcher-shadow-host>
+      </modus-wc-theme-provider>
+    `;
   },
 };
