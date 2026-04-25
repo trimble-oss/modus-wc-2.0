@@ -584,104 +584,85 @@ export const CheckboxSelection: Story = {
     docs: {
       description: {
         story:
-          'This example demonstrates a data-driven tree with checkboxes for multi-selection. Selecting a parent item selects its descendants, and descendant selections update parent indeterminate/checked states.',
+          'This example demonstrates checkbox selection in a slot-based tree. Selecting a parent item selects its descendants, and descendant selections update parent indeterminate/checked states.',
       },
       source: {
         code: `
-<script>
-const items = [
-  {
-    id: 'documents',
-    clientId: 'documents-node',
-    label: 'Documents',
-    checkbox: true,
-    children: [
-      { id: 'report', clientId: 'report-node', label: 'Report.pdf', checkbox: true },
-      { id: 'proposal', clientId: 'proposal-node', label: 'Proposal.docx', checkbox: true },
-    ],
-  },
-  {
-    id: 'projects',
-    clientId: 'projects-node',
-    label: 'Projects',
-    checkbox: true,
-    children: [
-      { id: 'alpha', clientId: 'alpha-node', label: 'Project Alpha', checkbox: true },
-      { id: 'beta', clientId: 'beta-node', label: 'Project Beta', checkbox: true },
-    ],
-  },
-  { id: 'archive', clientId: 'archive-node', label: 'Archive', checkbox: true },
-];
-</script>
-
-<modus-wc-content-tree
-  search-placeholder="Search..."
-  include-search="true"
-  include-actions="true"
-  .items="items"
-></modus-wc-content-tree>
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" checkbox="true" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" checkbox="true" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" checkbox="true" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" checkbox="true" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Project Alpha" checkbox="true" value="alpha"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Project Beta" checkbox="true" value="beta"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Archive" checkbox="true" value="archive"></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
 `,
       },
     },
   },
   render: (args) => {
-    const checkboxItems: ITreeItemData[] = [
-      {
-        id: 'documents',
-        clientId: 'documents-node',
-        label: 'Documents',
-        checkbox: true,
-        children: [
-          {
-            id: 'report',
-            clientId: 'report-node',
-            label: 'Report.pdf',
-            checkbox: true,
-          },
-          {
-            id: 'proposal',
-            clientId: 'proposal-node',
-            label: 'Proposal.docx',
-            checkbox: true,
-          },
-        ],
-      },
-      {
-        id: 'projects',
-        clientId: 'projects-node',
-        label: 'Projects',
-        checkbox: true,
-        children: [
-          {
-            id: 'alpha',
-            clientId: 'alpha-node',
-            label: 'Project Alpha',
-            checkbox: true,
-          },
-          {
-            id: 'beta',
-            clientId: 'beta-node',
-            label: 'Project Beta',
-            checkbox: true,
-          },
-        ],
-      },
-      {
-        id: 'archive',
-        clientId: 'archive-node',
-        label: 'Archive',
-        checkbox: true,
-      },
-    ];
-
     return html`
       <modus-wc-content-tree
         search-placeholder=${args['search-placeholder']}
         customClass=${args['custom-class']}
         .includeSearch=${args['include-search']}
         .includeActions=${args['include-actions']}
-        .items=${checkboxItems}
-      ></modus-wc-content-tree>
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .checkbox=${true}
+            .hasSubtree=${true}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item
+                label="Report.pdf"
+                .checkbox=${true}
+                value="report"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Proposal.docx"
+                .checkbox=${true}
+                value="proposal"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .checkbox=${true}
+            .hasSubtree=${true}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=${true}>
+              <modus-wc-tree-item
+                label="Project Alpha"
+                .checkbox=${true}
+                value="alpha"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Project Beta"
+                .checkbox=${true}
+                value="beta"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archive"
+            .checkbox=${true}
+            value="archive"
+          ></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
     `;
   },
 };
@@ -715,8 +696,8 @@ function toggleItemVisibilityInTree(
 export const WithActions: Story = {
   name: 'With Actions',
   args: {
-    'include-search': false,
-    'include-actions': false,
+    'include-search': true,
+    'include-actions': true,
   },
   parameters: {
     docs: {
@@ -813,7 +794,7 @@ export const WithActions: Story = {
       },
     },
   },
-  render: () => {
+  render: (args) => {
     const actions = [
       {
         id: 'toggle-visibility',
@@ -945,6 +926,10 @@ export const WithActions: Story = {
 
     return html`
       <modus-wc-content-tree
+        search-placeholder=${args['search-placeholder']}
+        customClass=${args['custom-class']}
+        .includeSearch=${args['include-search']}
+        .includeActions=${args['include-actions']}
         .items=${items}
         @treeActionClick=${handleTreeActionClick}
         @itemLabelChange=${handleItemLabelChange}
