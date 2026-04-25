@@ -1342,8 +1342,6 @@ export const ApiReference: Story = {
 | Slot-based (no \`items\`) | Basic nested rendering, basic expand/collapse and selection UX, wrapper-owned \`multiSelect\`, action buttons/events, styling/composition flexibility |
 | Data-driven (\`items\`) | Controlled/stateless updates, controlled selection via \`selectedValues\`, mutation utilities, lazy loading orchestration, and drag/drop reordering |
 
-> Use the data-driven \`items\` model for controlled application state. Slot-based usage remains basic/uncontrolled for selection state, but \`multiSelect\` is still configured on \`modus-wc-content-tree\` when the wrapper is used.
-
 ### Props
 
 | Name              | Type       | Default      | Description                                       |
@@ -1404,7 +1402,7 @@ Use these helpers to keep tree updates controlled/stateless in data-driven mode.
 3. Update your application state.
 4. Pass the new \`selectedValues\` back to the tree.
 
-> The controlled flows above apply to data-driven mode. Slot-based mode is intentionally limited to basic/uncontrolled selection state, but \`multiSelect\` should still be configured on \`modus-wc-content-tree\` when using the wrapper.
+The controlled flows above apply to data-driven mode. Slot-based mode is intentionally limited to basic/uncontrolled selection state, but \`multiSelect\` should still be configured on \`modus-wc-content-tree\` when using the wrapper. Checkbox selection, expansion, and drag/drop veto remain uncontrolled and are planned for a future update.
 
 ---
 

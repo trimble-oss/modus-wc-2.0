@@ -2346,6 +2346,23 @@
             },
             {
               "kind": "method",
+              "name": "handleMultiSelectChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleSelectedValuesChange",
+              "parameters": [
+                {
+                  "name": "newValues",
+                  "optional": true,
+                  "type": {
+                    "text": "string[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2395,12 +2412,29 @@
               }
             },
             {
+              "name": "multi-select",
+              "fieldName": "multiSelect",
+              "default": "false",
+              "description": "If true, enables additive (Ctrl/Cmd) and range (Shift) multi-selection for the root tree rendered or wrapped by this content tree.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "search-placeholder",
               "fieldName": "searchPlaceholder",
               "default": "'Search...'",
               "description": "Placeholder text for the search input.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "selected-values",
+              "fieldName": "selectedValues",
+              "description": "Controlled selected values for tree items in data-driven `items` mode.",
+              "type": {
+                "text": "string[]"
               }
             }
           ],
@@ -2413,6 +2447,14 @@
                 "text": "EventEmitter<{\r\n    items: ITreeItemData[];\r\n    parameters: ITreeItemReorderParameters;\r\n  }>"
               },
               "description": "Emits reordered data for controlled updates/backend sync in data-driven `items` mode only."
+            },
+            {
+              "kind": "field",
+              "name": "selectionsChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    selectedValues: string[];\r\n  }>"
+              },
+              "description": "Emits current selection when tree selection changes in data-driven `items` mode."
             }
           ],
           "customElement": true
@@ -2846,6 +2888,10 @@
             },
             {
               "kind": "method",
+              "name": "handleSelectedValuesChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -2872,9 +2918,17 @@
               "name": "multi-select",
               "fieldName": "multiSelect",
               "default": "false",
-              "description": "If true, enables multi-select with Ctrl/Cmd and Shift keys.",
+              "description": "If true, enables multi-select with Ctrl/Cmd and Shift keys. When wrapped by `modus-wc-content-tree`, prefer configuring `multiSelect` on the content tree.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "selected-values",
+              "fieldName": "selectedValues",
+              "description": "Controlled selected values for tree items. When provided, the tree mirrors this selection state.",
+              "type": {
+                "text": "string[]"
               }
             },
             {
@@ -2894,7 +2948,8 @@
               "name": "itemSelectionChange",
               "type": {
                 "text": "EventEmitter<{\r\n    selectedValues: string[];\r\n  }>"
-              }
+              },
+              "description": "Emits selected values when tree item selection changes."
             }
           ],
           "customElement": true
@@ -6793,7 +6848,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs'"
               }
             },
             {
@@ -8595,6 +8650,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "expanded",
               "fieldName": "expanded",
