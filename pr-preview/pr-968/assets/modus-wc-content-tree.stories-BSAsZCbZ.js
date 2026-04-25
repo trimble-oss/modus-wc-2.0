@@ -1,0 +1,1837 @@
+import{w as pe}from"./decorator-D4YmxizW.js";import{x as u}from"./lit-element-CucEn6F2.js";import"./chunk-4XZ63LWV-CnYBn8W6.js";import"./v4-CtRu48qb.js";const w=e=>e.clientId??e.id,S=(e,t,n,o)=>{var i;if(t===null){const s=Math.max(0,Math.min(o,e.length)),r=[...e];return r.splice(s,0,n),r}for(let s=0;s<e.length;s++){const r=e[s];if(w(r)===t){const a=r.children??[],l=Math.max(0,Math.min(o,a.length)),m=[...a];m.splice(l,0,n);const p=[...e];return p[s]={...r,children:m},p}if(!((i=r.children)!=null&&i.length))continue;const d=S(r.children,t,n,o);if(!d)continue;const c=[...e];return c[s]={...r,children:d},c}return null},ae=(e,t,n=null)=>{var o;for(let i=0;i<e.length;i++){const s=e[i];if(w(s)===t){const c=[...e],[a]=c.splice(i,1);return{list:c,removedItem:a,parentId:n,index:i}}if(!((o=s.children)!=null&&o.length))continue;const r=ae(s.children,t,w(s));if(!r)continue;const d=[...e];return d[i]={...s,children:r.list},{...r,list:d}}return null},$=(e,t,n=null)=>{var o;for(let i=0;i<e.length;i++){const s=e[i];if(w(s)===t)return{item:s,parentId:n,index:i};if(!((o=s.children)!=null&&o.length))continue;const r=$(s.children,t,w(s));if(r)return r}return null},le=(e,t)=>{var s;const n=t.current;t.current+=1;const o=`${e.id}-copy-${n}`,i=e.clientId?`${e.clientId}-copy-${n}`:void 0;return{...e,id:o,clientId:i,children:(s=e.children)==null?void 0:s.map(r=>le(r,t))}},me=(e,t,n)=>{var o;for(let i=0;i<e.length;i++){const s=e[i];if(w(s)===t){const c=[...e];return c[i]={...s,...n},{list:c,updated:!0}}if(!((o=s.children)!=null&&o.length))continue;const r=me(s.children,t,n);if(!r.updated)continue;const d=[...e];return d[i]={...s,children:r.list},{list:d,updated:!0}}return{list:e,updated:!1}},he=(e,t)=>{const{parentId:n,item:o,index:i}=t,s=i??Number.MAX_SAFE_INTEGER;return S(e,n,o,s)},be=(e,t)=>{const n=ae(e,t.itemId);return n?n.list:null},ve=(e,t)=>{const n=$(e,t.itemId);if(!n)return null;const o={current:1},i=le(n.item,o),s=t.parentId===void 0?n.parentId:t.parentId,r=t.index===void 0?n.index+1:t.index;return S(e,s,i,r)},Ie=(e,t)=>{const n=$(e,t.referenceItemId);if(!n)return null;const o=t.placement==="above"?0:1,i=n.index+o;return S(e,n.parentId,t.item,i)},A=(e,t)=>{const n=me(e,t.itemId,t.patch);return n.updated?n.list:null},Te={title:"Components/Content Tree",component:"modus-wc-content-tree",args:{"custom-class":"","search-placeholder":"Search...","include-search":!0,"include-actions":!0,"multi-select":!1,"items-reordering":!1,items:void 0},argTypes:{"search-placeholder":{control:{type:"text"},table:{category:"Content Tree"}},"include-search":{control:{type:"boolean"},table:{category:"Content Tree"}},"include-actions":{control:{type:"boolean"},table:{category:"Content Tree"}},"multi-select":{control:{type:"boolean"},table:{category:"Content Tree"}},"items-reordering":{control:{type:"boolean"},table:{category:"Content Tree"}}},decorators:[pe],parameters:{actions:{handles:["itemSelect","itemReordered","itemsReordered","treeActionClick","selectionsChange","dropdownOpened","itemLabelChange","itemExpand"]}}},ge=[{id:"phase-1",clientId:"phase-1-client",label:"Phase 1",children:[{id:"backlog",clientId:"backlog-client",label:"Backlog"},{id:"in-progress",clientId:"in-progress-client",label:"In Progress"},{id:"review",clientId:"review-client",label:"Review"}]},{id:"phase-2",clientId:"phase-2-client",label:"Phase 2",children:[{id:"qa",clientId:"qa-client",label:"QA"},{id:"uat",clientId:"uat-client",label:"UAT"},{id:"done",clientId:"done-client",label:"Done"}]}],h={parameters:{docs:{description:{story:"A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree. Selection is **single-select by default**: clicking an item selects only that item. To allow multiple selected items when using `modus-wc-content-tree`, enable `multi-select` on the content tree (see the Multi-selection story)."},source:{code:`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Client Work" has-subtree="true" value="client-work">
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Design Mockups" value="mockups"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Resources" value="resources"></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+`}}},render:e=>u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        customClass=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+        .multiSelect=${e["multi-select"]}
+        .itemsReordering=${e["items-reordering"]}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .hasSubtree=${!0}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${!0}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Client Work"
+                .hasSubtree=${!0}
+                value="client-work"
+              >
+                <modus-wc-tree-view .isSubList=${!0}>
+                  <modus-wc-tree-item label="Design Mockups" value="mockups">
+                  </modus-wc-tree-item>
+                </modus-wc-tree-view>
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item label="Resources" value="resources">
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `},b={name:"Tree Item",parameters:{docs:{description:{story:"Tree items can display custom icons at the start using the start-icon slot. This is useful for representing file types, folders, or custom item types."},source:{code:`
+<modus-wc-tree-view>
+  <modus-wc-tree-item label="Folder" value="folder">
+    <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Document.pdf" value="document">
+    <modus-wc-icon slot="start-icon" name="description"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Image.png" value="image">
+    <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+    <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Code" value="code">
+        <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+      </modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
+`}}},render:()=>u`
+      <modus-wc-tree-view>
+        <modus-wc-tree-item label="Folder" value="folder">
+          <modus-wc-icon slot="start-icon" name="folder_closed"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Document.pdf" value="document">
+          <modus-wc-icon slot="start-icon" name="file"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Image.png" value="image">
+          <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Projects"
+          .hasSubtree=${!0}
+          value="projects"
+        >
+          <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Code" value="code">
+              <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    `},v={name:"Empty State",parameters:{docs:{description:{story:"This example starts with a custom slot-based empty state and transitions to data-driven mode after creating the first node. Consumers can provide a custom empty state through the default slot."},source:{code:`
+<style>
+  .modus-wc-content-tree-empty-story {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: center;
+    min-height: 500px;
+    padding: 1rem;
+  }
+
+  .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+    color: #6a6e79;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 400;
+  }
+</style>
+<script>
+function handleCreateNew(tree) {
+  const id = 'new-item-' + Date.now();
+  tree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
+  tree.items = [{
+    id,
+    clientId: id,
+    label: 'New Item',
+    inlineLabelEdit: true,
+  }];
+}
+<\/script>
+
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+>
+  <div class="modus-wc-content-tree-empty-story">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
+        fill="#6A6E79"
+      />
+    </svg>
+    <modus-wc-typography
+      hierarchy="p"
+      label="Empty Content Tree"
+      size="lg"
+      weight="normal"
+      custom-class="modus-wc-content-tree-empty-text"
+    ></modus-wc-typography>
+    <modus-wc-button variant="outline"
+      onclick="handleCreateNew(this.closest('modus-wc-content-tree'))">
+      Create node
+    </modus-wc-button>
+  </div>
+</modus-wc-content-tree>
+`}}},render:e=>{const t=n=>{var s,r;const o=(s=n.currentTarget)==null?void 0:s.closest("modus-wc-content-tree");if(!o)return;const i=`new-item-${Date.now()}`;(r=o.querySelector(".modus-wc-content-tree-empty-story"))==null||r.remove(),o.items=[{id:i,clientId:i,label:"New Item",inlineLabelEdit:!0}]};return u`
+      <style>
+        .modus-wc-content-tree-empty-story {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          justify-content: center;
+          min-height: 500px;
+          padding: 1rem;
+        }
+
+        .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+          color: #6a6e79;
+          font-size: 18px;
+          text-align: center;
+          font-weight: 400;
+        }
+      </style>
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        custom-class=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+      >
+        <div class="modus-wc-content-tree-empty-story">
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 64 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
+              fill="#6A6E79"
+            />
+          </svg>
+          <modus-wc-typography
+            hierarchy="p"
+            label="Empty Content Tree"
+            size="lg"
+            weight="normal"
+            custom-class="modus-wc-content-tree-empty-text"
+          ></modus-wc-typography>
+
+          <modus-wc-button variant="outline" @buttonClick=${t}>
+            Create node
+          </modus-wc-button>
+        </div>
+      </modus-wc-content-tree>
+    `}},I={name:"Multi-selection",parameters:{docs:{description:{story:"**Multi-select mode** is opt-in: set `multi-select` on `modus-wc-content-tree` when using the content tree wrapper. Without it, the tree stays in the default **single-selection** behavior. When multi-select is on, use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items."},source:{code:`
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+  include-actions="true"
+  multi-select="true"
+>
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Mobile App" value="mobile-app"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Resources" has-subtree="true" value="resources">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Templates" value="templates"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Guidelines" value="guidelines"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" has-subtree="true" value="archives">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="2024" value="2024"></modus-wc-tree-item>
+        <modus-wc-tree-item label="2025" value="2025"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+`}}},render:e=>u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        custom-class=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+        .multiSelect=${!0}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .hasSubtree=${!0}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${!0}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Mobile App" value="mobile-app">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Resources"
+            .hasSubtree=${!0}
+            value="resources"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="Templates" value="templates">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Guidelines" value="guidelines">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archives"
+            .hasSubtree=${!0}
+            value="archives"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item label="2024" value="2024">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="2025" value="2025">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `},g={name:"Disabled Selection",parameters:{docs:{description:{story:"This example demonstrates tree items with disabled state. Disabled items cannot be selected or interacted with."},source:{code:`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" value="documents"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" value="archives" disabled="true"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Legacy Project" value="legacy" disabled="true"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+`}}},render:e=>u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        customClass=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+        .multiSelect=${e["multi-select"]}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item label="Documents" value="documents">
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archives"
+            value="archives"
+            .disabled=${!0}
+          >
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=${!0}
+            value="projects"
+          >
+            <modus-wc-tree-view is-sub-list="true">
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Legacy Project"
+                value="legacy"
+                .disabled=${!0}
+              >
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `},f={name:"Checkbox Selection",parameters:{docs:{description:{story:"This example demonstrates checkbox selection in a slot-based tree. Selecting a parent item selects its descendants, and descendant selections update parent indeterminate/checked states."},source:{code:`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" checkbox="true" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" checkbox="true" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" checkbox="true" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" checkbox="true" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Project Alpha" checkbox="true" value="alpha"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Project Beta" checkbox="true" value="beta"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Archive" checkbox="true" value="archive"></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+`}}},render:e=>u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        customClass=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .checkbox=${!0}
+            .hasSubtree=${!0}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item
+                label="Report.pdf"
+                .checkbox=${!0}
+                value="report"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Proposal.docx"
+                .checkbox=${!0}
+                value="proposal"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .checkbox=${!0}
+            .hasSubtree=${!0}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=${!0}>
+              <modus-wc-tree-item
+                label="Project Alpha"
+                .checkbox=${!0}
+                value="alpha"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Project Beta"
+                .checkbox=${!0}
+                value="beta"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archive"
+            .checkbox=${!0}
+            value="archive"
+          ></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    `};function ue(e,t){return e.map(n=>{var d;const o=n.children?ue(n.children,t):void 0;if(!(n.id===t||n.clientId===t))return o!==n.children?{...n,children:o}:n;const s=!n.disabled,r=(d=n.treeItemActions)==null?void 0:d.map(c=>c.id!=="toggle-visibility"?c:{...c,icon:s?"visibility_off":"visibility_on",ariaLabel:s?"Item hidden":"Item visible"});return{...n,disabled:s,treeItemActions:r,children:o}})}const y={name:"With Actions",args:{"include-search":!0,"include-actions":!0},parameters:{docs:{description:{story:"All-in-one stateless example: visibility (toggle `disabled` + icon), add sibling above/below, add child, duplicate, inline edit label, and delete—using `addTreeItemAdjacentData`, `addTreeItemData`, `duplicateTreeItemData`, `updateTreeItemData`, and `deleteTreeItemData`. On `treeActionClick`, read `event.detail.itemId`, call the matching utility, assign back to `tree.items`."},source:{code:`
+<script>
+  function toggleItemVisibilityInTree(items, itemId) {
+    return items.map((item) => {
+      const children = item.children
+        ? toggleItemVisibilityInTree(item.children, itemId)
+        : undefined;
+      const match = item.id === itemId || item.clientId === itemId;
+      if (!match) {
+        return children !== item.children ? { ...item, children } : item;
+      }
+      const nextDisabled = !item.disabled;
+      const treeItemActions = item.treeItemActions?.map((a) => {
+        if (a.id !== 'toggle-visibility') return a;
+        return {
+          ...a,
+          icon: nextDisabled ? 'visibility_off' : 'visibility_on',
+          ariaLabel: nextDisabled ? 'Item hidden' : 'Item visible',
+        };
+      });
+      return { ...item, disabled: nextDisabled, treeItemActions, children };
+    });
+  }
+
+  const actions = [
+    { id: 'toggle-visibility', label: 'Visibility', icon: 'visibility_on', ariaLabel: 'Item visible' },
+    { id: 'add-node-above', label: 'Add Node Above', icon: 'add', ariaLabel: 'Add node above' },
+    { id: 'add-node-below', label: 'Add Node Below', icon: 'add', ariaLabel: 'Add node below' },
+    { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right' },
+    { id: 'duplicate', label: 'Duplicate', icon: 'copy_content' },
+    { id: 'edit-label', label: 'Edit Label', icon: 'pencil' },
+    { id: 'delete', label: 'Delete', icon: 'delete' },
+  ];
+
+  let counter = 1;
+  let items = [
+    { id: 'roadmap', clientId: 'roadmap', label: 'Roadmap', treeItemActions: actions },
+    { id: 'backlog', clientId: 'backlog', label: 'Backlog', treeItemActions: actions },
+  ];
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  tree.items = items;
+
+  const apply = (next) => { if (next) { items = next; tree.items = items; } };
+
+  tree.addEventListener('treeActionClick', (event) => {
+    const { actionId, itemId } = event.detail;
+    if (!itemId) return;
+
+    if (actionId === 'toggle-visibility') {
+      apply(toggleItemVisibilityInTree(items, itemId));
+    } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+      const id = 'node-' + counter++;
+      apply(addTreeItemAdjacentData(items, {
+        referenceItemId: itemId,
+        item: { id, clientId: id, label: 'New Node', treeItemActions: actions },
+        placement: actionId === 'add-node-above' ? 'above' : 'below',
+      }));
+    } else if (actionId === 'add-child') {
+      const id = 'child-' + counter++;
+      apply(addTreeItemData(items, {
+        parentId: itemId,
+        item: { id, clientId: id, label: 'New Child', treeItemActions: actions },
+      }));
+    } else if (actionId === 'duplicate') {
+      apply(duplicateTreeItemData(items, { itemId }));
+    } else if (actionId === 'edit-label') {
+      apply(updateTreeItemData(items, { itemId, patch: { inlineLabelEdit: true } }));
+    } else if (actionId === 'delete') {
+      apply(deleteTreeItemData(items, { itemId }));
+    }
+  });
+
+  tree.addEventListener('itemLabelChange', (event) => {
+    const treeItem = event.target.closest('modus-wc-tree-item');
+    if (!treeItem) return;
+    apply(updateTreeItemData(items, {
+      itemId: treeItem.value,
+      patch: { label: event.detail, inlineLabelEdit: false },
+    }));
+  });
+<\/script>
+
+<modus-wc-content-tree></modus-wc-content-tree>
+`}}},render:e=>{const t=[{id:"toggle-visibility",label:"Visibility",icon:"visibility_on",ariaLabel:"Item visible"},{id:"add-node-above",label:"Add Node Above",icon:"add",ariaLabel:"Add node above"},{id:"add-node-below",label:"Add Node Below",icon:"add",ariaLabel:"Add node below"},{id:"add-child",label:"Add Child",icon:"subdirectory_arrow_right"},{id:"duplicate",label:"Duplicate",icon:"copy_content"},{id:"edit-label",label:"Edit Label",icon:"pencil"},{id:"delete",label:"Delete",icon:"delete"}];let n=1,o=[{id:"roadmap",clientId:"roadmap",label:"Roadmap",treeItemActions:t},{id:"backlog",clientId:"backlog",label:"Backlog",treeItemActions:t}];const i=(d,c)=>{c&&(o=c,d.items=o)},s=d=>{const{actionId:c,itemId:a}=d.detail;if(!a)return;const l=d.currentTarget;if(c==="toggle-visibility")i(l,ue(o,a));else if(c==="add-node-above"||c==="add-node-below"){const m=`node-${n++}`;i(l,Ie(o,{referenceItemId:a,item:{id:m,clientId:m,label:"New Node",treeItemActions:t},placement:c==="add-node-above"?"above":"below"}))}else if(c==="add-child"){const m=`child-${n++}`;i(l,he(o,{parentId:a,item:{id:m,clientId:m,label:"New Child",treeItemActions:t}}))}else c==="duplicate"?i(l,ve(o,{itemId:a})):c==="edit-label"?i(l,A(o,{itemId:a,patch:{inlineLabelEdit:!0}})):c==="delete"&&i(l,be(o,{itemId:a}))},r=d=>{const c=d.target.closest("modus-wc-tree-item");if(!c)return;const a=d.currentTarget;i(a,A(o,{itemId:c.value,patch:{label:d.detail,inlineLabelEdit:!1}}))};return u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        customClass=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+        .items=${o}
+        @treeActionClick=${s}
+        @itemLabelChange=${r}
+      ></modus-wc-content-tree>
+    `}},C={name:"Items Reordering",args:{"include-search":!1,"include-actions":!1,"items-reordering":!0},parameters:{docs:{description:{story:"Enables drag-and-drop reordering with top/bottom drop-line indicators for data-driven `items` in the same level."},source:{code:`
+<script>
+let items = [
+  {
+    id: 'phase-1',
+    label: 'Phase 1',
+    children: [
+      { id: 'backlog', label: 'Backlog' },
+      { id: 'in-progress', label: 'In Progress' },
+      { id: 'review', label: 'Review' }
+    ]
+  },
+  {
+    id: 'phase-2',
+    label: 'Phase 2',
+    children: [
+      { id: 'qa', label: 'QA' },
+      { id: 'uat', label: 'UAT' },
+      { id: 'done', label: 'Done' }
+    ]
+  }
+];
+
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = items;
+
+tree.addEventListener('itemsReordered', (event) => {
+  // Use clientId as stable UI identity while backend IDs can change.
+  items = [...event.detail.items];
+  tree.items = items;
+});
+<\/script>
+
+<modus-wc-content-tree
+  include-search="false"
+  include-actions="false"
+  items-reordering="true"
+></modus-wc-content-tree>
+`}}},render:e=>{const t=[...e.items??ge],n=o=>{const i=o.currentTarget;i.items=[...o.detail.items]};return u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        customClass=${e["custom-class"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${e["include-actions"]}
+        .itemsReordering=${e["items-reordering"]}
+        .items=${t}
+        @itemsReordered=${n}
+      ></modus-wc-content-tree>
+    `}},x={name:"Lazy Loading",parameters:{docs:{description:{story:"Demonstrates lazy loading using the data-driven `items` prop and `itemExpand` event with stable `clientId` identity. Items with `hasChildren: true` and no `children` show an expand chevron; when expanded, the tree shows a loader until the consumer provides children by updating `items`."},source:{code:`
+<script>
+const initialItems = [
+  { id: 'db-101', clientId: 'documents-node', label: 'Documents', hasChildren: true },
+  { id: 'db-102', clientId: 'projects-node', label: 'Projects', hasChildren: true },
+  { id: 'db-103', clientId: 'resources-node', label: 'Resources', hasChildren: true },
+];
+
+const mockData = {
+  'documents-node': [
+    { id: 'db-201', clientId: 'report-node', label: 'Report.pdf' },
+    { id: 'db-202', clientId: 'proposal-node', label: 'Proposal.docx' },
+    { id: 'db-203', clientId: 'notes-node', label: 'Meeting Notes.txt' },
+  ],
+  'projects-node': [
+    { id: 'db-301', clientId: 'website-node', label: 'Website Redesign', hasChildren: true },
+    { id: 'db-302', clientId: 'mobile-node', label: 'Mobile App' },
+    { id: 'db-303', clientId: 'api-node', label: 'API Integration' },
+  ],
+  'resources-node': [
+    { id: 'db-401', clientId: 'templates-node', label: 'Templates' },
+    { id: 'db-402', clientId: 'guide-node', label: 'Style Guide' },
+  ],
+  'website-node': [
+    { id: 'db-501', clientId: 'design-node', label: 'Design Mockups' },
+    { id: 'db-502', clientId: 'dev-node', label: 'Development' },
+  ],
+};
+
+const getIdentity = (item) => item.clientId ?? item.id;
+
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = initialItems;
+
+tree.addEventListener('itemExpand', async (event) => {
+  const itemIdentity = event.detail;
+
+  const findItem = (items) => {
+    for (const item of items) {
+      if (getIdentity(item) === itemIdentity) return item;
+      if (item.children) {
+        const found = findItem(item.children);
+        if (found) return found;
+      }
+    }
+  };
+
+  const item = findItem(tree.items);
+  if (item?.children?.length) return;
+
+  const children = await new Promise((resolve) =>
+    setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
+  );
+
+  const nextItems = updateTreeItemData(tree.items, {
+    itemId: itemIdentity,
+    patch: {
+      children,
+      hasChildren: children.length > 0,
+    },
+  });
+
+  if (nextItems) {
+    tree.items = nextItems;
+  }
+});
+<\/script>
+
+<modus-wc-content-tree search-placeholder="Search..." include-search="true"></modus-wc-content-tree>
+`}},actions:{handles:["itemExpand"]}},render:e=>{const t=[{id:"db-101",clientId:"documents-node",label:"Documents",hasChildren:!0},{id:"db-102",clientId:"projects-node",label:"Projects",hasChildren:!0},{id:"db-103",clientId:"resources-node",label:"Resources",hasChildren:!0}],n={"documents-node":[{id:"db-201",clientId:"report-node",label:"Report.pdf"},{id:"db-202",clientId:"proposal-node",label:"Proposal.docx"},{id:"db-203",clientId:"notes-node",label:"Meeting Notes.txt"}],"projects-node":[{id:"db-301",clientId:"website-node",label:"Website Redesign",hasChildren:!0},{id:"db-302",clientId:"mobile-node",label:"Mobile App"},{id:"db-303",clientId:"api-node",label:"API Integration"}],"resources-node":[{id:"db-401",clientId:"templates-node",label:"Templates"},{id:"db-402",clientId:"guide-node",label:"Style Guide"}],"website-node":[{id:"db-501",clientId:"design-node",label:"Design Mockups"},{id:"db-502",clientId:"dev-node",label:"Development"}]},o=r=>r.clientId??r.id,i=(r,d)=>{for(const c of r){if(o(c)===d)return c;if(c.children){const a=i(c.children,d);if(a)return a}}},s=async r=>{var V;const d=r.currentTarget,c=r.detail,a=d.items??t,l=i(a,c);if((V=l==null?void 0:l.children)!=null&&V.length)return;const m=await new Promise(we=>setTimeout(()=>we(n[c]??[]),1500)),p=A(a,{itemId:c,patch:{children:m,hasChildren:m.length>0}});p&&(d.items=p)};return u`
+      <modus-wc-content-tree
+        search-placeholder=${e["search-placeholder"]}
+        .includeSearch=${e["include-search"]}
+        .includeActions=${!1}
+        .items=${t}
+        @itemExpand=${s}
+      ></modus-wc-content-tree>
+    `}},T={name:"Controlled Selection",parameters:{docs:{description:{story:"Demonstrates fully controlled selection in data-driven mode using the `selectedValues` prop and `selectionsChange` event. The application owns the selected IDs as state and passes them back into the tree, keeping UI and app state in sync. The external button shows that selection can also be changed by application logic outside the tree."},source:{code:`
+<script>
+  const items = [
+    { id: 'documents', clientId: 'documents-node', label: 'Documents' },
+    { id: 'projects', clientId: 'projects-node', label: 'Projects' },
+    { id: 'resources', clientId: 'resources-node', label: 'Resources' },
+  ];
+
+  let selectedValues = ['documents-node'];
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  const button = document.querySelector('#select-projects-button');
+  tree.items = items;
+  tree.selectedValues = selectedValues;
+
+  tree.addEventListener('selectionsChange', (event) => {
+    selectedValues = [...event.detail.selectedValues];
+    tree.selectedValues = selectedValues;
+  });
+
+  button.addEventListener('buttonClick', () => {
+    selectedValues = ['projects-node'];
+    tree.selectedValues = selectedValues;
+  });
+<\/script>
+
+<div style="display:flex; flex-direction:column; gap:0.75rem;">
+  <modus-wc-button id="select-projects-button" variant="outline">
+    Select Projects
+  </modus-wc-button>
+  <modus-wc-content-tree></modus-wc-content-tree>
+</div>
+        `}}},render:()=>{const e=[{id:"documents",clientId:"documents-node",label:"Documents"},{id:"projects",clientId:"projects-node",label:"Projects"},{id:"resources",clientId:"resources-node",label:"Resources"}];let t=["documents-node"];return u`
+      <div
+        class="modus-wc-controlled-selection-story"
+        style="display: flex; flex-direction: column; gap: 0.75rem;"
+      >
+        <modus-wc-button variant="outline" @buttonClick=${i=>{const s=i.currentTarget;if(!(s instanceof HTMLElement))return;const r=s.closest(".modus-wc-controlled-selection-story"),d=r==null?void 0:r.querySelector("modus-wc-content-tree");d&&(t=["projects-node"],d.selectedValues=t)}}>
+          Select Projects
+        </modus-wc-button>
+        <modus-wc-content-tree
+          .items=${e}
+          .selectedValues=${t}
+          @selectionsChange=${i=>{const s=i.currentTarget;t=[...i.detail.selectedValues],s.selectedValues=t}}
+        ></modus-wc-content-tree>
+      </div>
+    `}},D={name:"API Reference",parameters:{docs:{description:{story:"\n### Support Model\n\n| Mode | Supported Scope |\n|------|------------------|\n| Slot-based (no `items`) | Basic nested rendering, basic expand/collapse and selection UX, wrapper-owned `multiSelect`, action buttons/events, styling/composition flexibility |\n| Data-driven (`items`) | Controlled/stateless updates, controlled selection via `selectedValues`, mutation utilities, lazy loading orchestration, and drag/drop reordering |\n\n### Props\n\n| Name              | Type       | Default      | Description                                       |\n|-------------------|------------|--------------|---------------------------------------------------|\n| customClass       | `string` | `''`       | Additional CSS class to apply to the component    |\n| searchPlaceholder | `string` | `'Search...'` | Placeholder text for the search input          |\n| includeSearch     | `boolean` | `true`    | Whether to display the search functionality       |\n| includeActions    | `boolean` | `true`    | Whether to display action buttons for tree items  |\n| items             | `ITreeItemData[]` | - | Data-driven tree data used to render items and nested children. If omitted, slotted content is rendered in basic/uncontrolled mode. |\n| multiSelect      | `boolean` | `false` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior for the root tree rendered or wrapped by `modus-wc-content-tree`. |\n| itemsReordering   | `boolean` | `false` | Enables drag-and-drop reordering for data-driven trees only (not slot-based trees). |\n| selectedValues    | `string[]` | - | Controlled selected item values for data-driven trees. When provided, the application owns selection state. |\n\n#### Events\n\n| Name           | Payload                                                         | Description |\n|----------------|------------------------------------------------------------------|-------------|\n| selectionsChange | `{ selectedValues: string[] }` | Emitted when selection changes in data-driven mode. Use this with `selectedValues` for controlled selection. |\n| itemsReordered | `{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }` | Emitted after a successful drag reorder with updated tree data and reorder metadata in data-driven mode only |\n\n---\n\n### State Manager Utilities\n\nUse these helpers to keep tree updates controlled/stateless in data-driven mode. Each utility returns `nextItems`; your application decides whether to apply it.\n\n| Utility | Parameters | Description |\n|---------|------------|-------------|\n| `addTreeItemData` | `(items, { parentId, item, index? })` | Adds an item at root or as a child under `parentId`. |\n| `addTreeItemAdjacentData` | `(items, { referenceItemId, item, placement })` | Inserts a sibling above or below an existing item. |\n| `deleteTreeItemData` | `(items, { itemId })` | Removes an item by identity. |\n| `duplicateTreeItemData` | `(items, { itemId, parentId?, index? })` | Duplicates an item/subtree with regenerated IDs. |\n| `updateTreeItemData` | `(items, { itemId, patch })` | Updates an existing item by identity using a partial patch. |\n| `reorderTreeItemsData` | `(items, parameters)` | Computes reordered tree data for drag/drop operations. |\n\n#### Built-in Action Mapping\n\n| Action ID | Recommended Utility |\n|-----------|----------------------|\n| `add-node-above` | `addTreeItemAdjacentData(..., { placement: 'above' })` |\n| `add-node-below` | `addTreeItemAdjacentData(..., { placement: 'below' })` |\n| `add-child` | `addTreeItemData` |\n| `duplicate` | `duplicateTreeItemData` |\n| `edit-label` | `updateTreeItemData` |\n| `delete` | `deleteTreeItemData` |\n\n#### Controlled Update Flow\n\n1. Handle `treeActionClick` or `itemsReordered`.\n2. Call the mapped utility to compute `nextItems`.\n3. Optionally validate/persist with your backend.\n4. Apply `nextItems` by updating `items`.\n\n#### Controlled Selection Flow\n\n1. Pass `selectedValues` to `modus-wc-content-tree`.\n2. Listen for `selectionsChange`.\n3. Update your application state.\n4. Pass the new `selectedValues` back to the tree.\n\nThe controlled flows above apply to data-driven mode. Slot-based mode is intentionally limited to basic/uncontrolled selection state, but `multiSelect` should still be configured on `modus-wc-content-tree` when using the wrapper. Checkbox selection, expansion, and drag/drop veto remain uncontrolled and are planned for a future update.\n\n---\n\n### Tree View\n\n#### Props\n\n| Name        | Type       | Default   | Description                                           |\n|-------------|------------|-----------|-------------------------------------------------------|\n| customClass | `string` | `''`    | Additional CSS class to apply to the tree view        |\n| isSubList   | `boolean` | `false` | Whether the tree view is a sublist of another tree item |\n| multiSelect | `boolean` | `false` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior when using `modus-wc-tree-view` directly. When wrapped by `modus-wc-content-tree`, prefer configuring `multiSelect` on the content tree. |\n| selectedValues | `string[]` | - | Controlled selected values for direct `modus-wc-tree-view` usage. |\n| showConnectorLine | `boolean` | `true` | Shows or hides connector lines for nested sublists |\n\n#### Events\n\n| Name                | Payload                          | Description |\n|---------------------|----------------------------------|-------------|\n| itemSelectionChange | `{ selectedValues: string[] }` | Emitted when selected tree item values change in direct `modus-wc-tree-view` usage or lower-level compositions |\n\n---\n\n### Tree Item\n\n#### Props\n\n| Name            | Type                                   | Default   | Description                                                  |\n|-----------------|----------------------------------------|-----------|--------------------------------------------------------------|\n| label           | `string`                             | -         | The label text for the tree item (required)                  |\n| value           | `string`                             | `''`    | The value associated with the tree item                      |\n| disabled        | `boolean`                            | `false` | Whether the tree item is disabled                            |\n| checkbox        | `boolean`                            | `false` | Whether to display a checkbox for the tree item              |\n| selected        | `boolean`                            | -         | Whether the tree item is selected (mutable, reflected)       |\n| checked         | `boolean`                            | -         | Whether the tree item checkbox is checked (mutable, reflected) |\n| hasSubtree      | `boolean`                            | `false` | Whether the tree item has a subtree                          |\n| treeItemActions | `ITreeItemActions[]`                 | -         | Array of actions to display for the tree item                |\n| inlineLabelEdit | `boolean`                            | `false` | Enables inline text editing for the item label               |\n| itemsReordering | `boolean`                            | `false` | Shows drag handle and enables drag/drop item reordering      |\n| size            | `'xs' | 'sm' | 'md' | 'lg'`    | `'xs'`  | The size of the tree item                                    |\n| customClass     | `string`                             | `''`    | Additional CSS class to apply to the tree item               |\n| lazyLoading     | `boolean`                            | `false` | When `true` and the item is expanded, shows a spinner in place of children. Managed automatically by the content tree when `getChildren` is provided. |\n| hasChildren     | `boolean`                            | -         | Hint that the item has unloaded children. Used with `getChildren` on the content tree to show the expand chevron before children are fetched. |\n\n#### Events\n\n| Name             | Payload                          | Description                                     |\n|------------------|----------------------------------|-------------------------------------------------|\n| itemSelect       | `{ value: string }`            | Emitted when a tree item is selected            |\n| selectionsChange | `{ selectedValues: string[] }` | Emitted when the selection state changes        |\n| itemExpand       | `string`                       | Emitted with the item's `value` when it is expanded. Use this to trigger lazy data loading. |\n| itemLabelChange  | `string`                       | Emitted when inline label editing is committed |\n| itemReordered    | `ITreeItemReorderedEventDetail` | Emitted when a drag/drop reorder operation completes for the item |\n\n#### Methods\n\n| Name            | Type                      | Description                |\n|-----------------|---------------------------|----------------------------|\n| collapseSubTree | `() => Promise<void>`   | Collapses the subtree      |\n| expandSubTree   | `() => Promise<void>`   | Expands the subtree        |\n| setIndeterminateState | `(indeterminate: boolean) => Promise<void>` | Sets checkbox indeterminate state |\n\n---\n\n### Tree Actions\n\n#### Props\n\n| Name    | Type                                | Default  | Description                          |\n|---------|-------------------------------------|----------|--------------------------------------|\n| actions | `ITreeItemActions[]`              | -        | Array of actions to display          |\n| size    | `'xs' | 'sm' | 'md' | 'lg'` | `'xs'` | The size of the action buttons       |\n\n#### Behavior\n\n- Renders the first action as a direct icon button for fast access.\n- Renders remaining actions in a \"More actions\" dropdown menu.\n- When the `delete` action is clicked, a confirmation UI is shown before emitting `treeActionClick`.\n- Automatically closes other open tree-action dropdowns when a new one opens.\n\n#### Events\n\n| Name            | Payload                                   | Description                                |\n|-----------------|-------------------------------------------|--------------------------------------------|\n| treeActionClick | `{ actionId: string; actionName: string }` | Emitted when an action is clicked       |\n| dropdownOpened  | `HTMLElement`                           | Emitted when the dropdown is opened        |\n\n---\n\n### Interfaces\n\n#### ITreeItemData\n\n```typescript\ninterface ITreeItemData {\n  id: string;                // Backend/persistent identifier\n  clientId?: string;         // Optional stable client-generated identifier (for example UUID)\n  label: string;\n  checkbox?: boolean;\n  startIcon?: string;\n  treeItemActions?: ITreeItemActions[];\n  children?: ITreeItemData[];\n  hasChildren?: boolean;\n}\n```\n\n---\n\n#### ITreeItemActions\n\n```typescript\ninterface ITreeItemActions {\n  id: string;                           // Unique identifier for the action\n  icon: string;                         // Icon name for the action, e.g., 'edit', 'trash'\n  iconVariant?: 'solid' | 'outlined';   // Optional variant for the icon\n  label: string;                        // Text label for the action\n  ariaLabel?: string;                   // Optional label for accessibility\n  disabled?: boolean;                   // Optional flag to disable the action\n}\n```\n"}},controls:{disable:!0}},render:()=>u``};var k,L,E;h.parameters={...h.parameters,docs:{...(k=h.parameters)==null?void 0:k.docs,source:{originalSource:`{
+  parameters: {
+    docs: {
+      description: {
+        story: 'A basic content tree with hierarchical structure. Items can be expanded and collapsed to navigate through the tree. Selection is **single-select by default**: clicking an item selects only that item. To allow multiple selected items when using \`modus-wc-content-tree\`, enable \`multi-select\` on the content tree (see the Multi-selection story).'
+      },
+      source: {
+        code: \`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Client Work" has-subtree="true" value="client-work">
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Design Mockups" value="mockups"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Resources" value="resources"></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        customClass=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+        .multiSelect=\${args['multi-select']}
+        .itemsReordering=\${args['items-reordering']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .hasSubtree=\${true}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=\${true}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Client Work"
+                .hasSubtree=\${true}
+                value="client-work"
+              >
+                <modus-wc-tree-view .isSubList=\${true}>
+                  <modus-wc-tree-item label="Design Mockups" value="mockups">
+                  </modus-wc-tree-item>
+                </modus-wc-tree-view>
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item label="Resources" value="resources">
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    \`;
+  }
+}`,...(E=(L=h.parameters)==null?void 0:L.docs)==null?void 0:E.source}}};var P,j,H;b.parameters={...b.parameters,docs:{...(P=b.parameters)==null?void 0:P.docs,source:{originalSource:`{
+  name: 'Tree Item',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tree items can display custom icons at the start using the start-icon slot. This is useful for representing file types, folders, or custom item types.'
+      },
+      source: {
+        code: \`
+<modus-wc-tree-view>
+  <modus-wc-tree-item label="Folder" value="folder">
+    <modus-wc-icon slot="start-icon" name="folder"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Document.pdf" value="document">
+    <modus-wc-icon slot="start-icon" name="description"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Image.png" value="image">
+    <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+  </modus-wc-tree-item>
+  <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+    <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+    <modus-wc-tree-view is-sub-list="true">
+      <modus-wc-tree-item label="Code" value="code">
+        <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+      </modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
+\`
+      }
+    }
+  },
+  render: () => {
+    return html\`
+      <modus-wc-tree-view>
+        <modus-wc-tree-item label="Folder" value="folder">
+          <modus-wc-icon slot="start-icon" name="folder_closed"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Document.pdf" value="document">
+          <modus-wc-icon slot="start-icon" name="file"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item label="Image.png" value="image">
+          <modus-wc-icon slot="start-icon" name="image"></modus-wc-icon>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Projects"
+          .hasSubtree=\${true}
+          value="projects"
+        >
+          <modus-wc-icon slot="start-icon" name="folder_open"></modus-wc-icon>
+          <modus-wc-tree-view is-sub-list="true">
+            <modus-wc-tree-item label="Code" value="code">
+              <modus-wc-icon slot="start-icon" name="code"></modus-wc-icon>
+            </modus-wc-tree-item>
+          </modus-wc-tree-view>
+        </modus-wc-tree-item>
+      </modus-wc-tree-view>
+    \`;
+  }
+}`,...(H=(j=b.parameters)==null?void 0:j.docs)==null?void 0:H.source}}};var R,M,N;v.parameters={...v.parameters,docs:{...(R=v.parameters)==null?void 0:R.docs,source:{originalSource:`{
+  name: 'Empty State',
+  parameters: {
+    docs: {
+      description: {
+        story: 'This example starts with a custom slot-based empty state and transitions to data-driven mode after creating the first node. Consumers can provide a custom empty state through the default slot.'
+      },
+      source: {
+        code: \`
+<style>
+  .modus-wc-content-tree-empty-story {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: center;
+    min-height: 500px;
+    padding: 1rem;
+  }
+
+  .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+    color: #6a6e79;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 400;
+  }
+</style>
+<script>
+function handleCreateNew(tree) {
+  const id = 'new-item-' + Date.now();
+  tree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
+  tree.items = [{
+    id,
+    clientId: id,
+    label: 'New Item',
+    inlineLabelEdit: true,
+  }];
+}
+<\/script>
+
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+>
+  <div class="modus-wc-content-tree-empty-story">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
+        fill="#6A6E79"
+      />
+    </svg>
+    <modus-wc-typography
+      hierarchy="p"
+      label="Empty Content Tree"
+      size="lg"
+      weight="normal"
+      custom-class="modus-wc-content-tree-empty-text"
+    ></modus-wc-typography>
+    <modus-wc-button variant="outline"
+      onclick="handleCreateNew(this.closest('modus-wc-content-tree'))">
+      Create node
+    </modus-wc-button>
+  </div>
+</modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    type ContentTreeElement = HTMLElement & {
+      includeActions?: boolean;
+      items?: ITreeItemData[];
+    };
+    const handleAddNewItem = (event: Event) => {
+      const contentTree = (event.currentTarget as HTMLElement)?.closest('modus-wc-content-tree') as ContentTreeElement | null;
+      if (!contentTree) return;
+      const newId = \`new-item-\${Date.now()}\`;
+      contentTree.querySelector('.modus-wc-content-tree-empty-story')?.remove();
+      contentTree.items = [{
+        id: newId,
+        clientId: newId,
+        label: 'New Item',
+        inlineLabelEdit: true
+      }];
+    };
+    return html\`
+      <style>
+        .modus-wc-content-tree-empty-story {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          justify-content: center;
+          min-height: 500px;
+          padding: 1rem;
+        }
+
+        .modus-wc-content-tree-empty-story .modus-wc-content-tree-empty-text {
+          color: #6a6e79;
+          font-size: 18px;
+          text-align: center;
+          font-weight: 400;
+        }
+      </style>
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        custom-class=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+      >
+        <div class="modus-wc-content-tree-empty-story">
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 64 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.3335 13.3601H10.6668V10.6934H13.3335V5.36011H5.3335V13.3601ZM45.3335 5.36011H34.6668V10.6934H45.3335V5.36011ZM10.6668 19.3601H5.3335V31.3601H10.6668V19.3601ZM18.6668 45.3601H29.3335V40.0268H18.6668V45.3601ZM10.6668 37.3601H5.3335V45.3601H13.3335V40.0268H10.6668V37.3601ZM50.6668 5.36011V10.6934H53.3335V13.3601H58.6668V5.36011H50.6668ZM53.3335 31.3601H58.6668V19.3601H53.3335V31.3601ZM57.4402 41.5468L34.2135 32.0801C34.0269 32.0062 33.8275 31.9699 33.6268 31.9734H33.4668C33.3068 31.9734 33.1735 32.0001 33.0402 32.0801C32.9868 32.0801 32.9335 32.0801 32.8802 32.1334C32.6935 32.2134 32.5068 32.3201 32.3735 32.4801C32.2402 32.6401 32.1068 32.8001 32.0268 32.9868L31.9735 33.1468C31.9202 33.2801 31.8935 33.4401 31.8935 33.5734V33.7334C31.8935 33.9201 31.9202 34.1334 32.0002 34.3201L41.4668 57.5468C41.7335 58.1868 42.3735 58.6134 43.0668 58.6134H43.2002C43.9468 58.5601 44.5868 58.0268 44.7468 57.2801L46.6402 49.1201L54.3202 56.8001C54.6402 57.1201 55.0935 57.3068 55.5468 57.3068C56.0002 57.3068 56.4268 57.1201 56.7735 56.8001C57.4402 56.1334 57.4402 55.0401 56.7735 54.3734L49.1202 46.6934L57.3068 44.8001C58.0268 44.6401 58.5868 44.0001 58.6402 43.2534H58.5868C58.6087 42.8933 58.5178 42.5354 58.3266 42.2294C58.1354 41.9235 57.8535 41.6849 57.5202 41.5468M18.6668 10.6934H29.3335V5.36011H18.6668V10.6934Z"
+              fill="#6A6E79"
+            />
+          </svg>
+          <modus-wc-typography
+            hierarchy="p"
+            label="Empty Content Tree"
+            size="lg"
+            weight="normal"
+            custom-class="modus-wc-content-tree-empty-text"
+          ></modus-wc-typography>
+
+          <modus-wc-button variant="outline" @buttonClick=\${handleAddNewItem}>
+            Create node
+          </modus-wc-button>
+        </div>
+      </modus-wc-content-tree>
+    \`;
+  }
+}`,...(N=(M=v.parameters)==null?void 0:M.docs)==null?void 0:N.source}}};var W,U,Z;I.parameters={...I.parameters,docs:{...(W=I.parameters)==null?void 0:W.docs,source:{originalSource:`{
+  name: 'Multi-selection',
+  parameters: {
+    docs: {
+      description: {
+        story: '**Multi-select mode** is opt-in: set \`multi-select\` on \`modus-wc-content-tree\` when using the content tree wrapper. Without it, the tree stays in the default **single-selection** behavior. When multi-select is on, use Ctrl/Cmd + click to toggle individual items, and Shift + click to select a contiguous range. Works across nested tree items.'
+      },
+      source: {
+        code: \`
+<modus-wc-content-tree
+  search-placeholder="Search..."
+  include-search="true"
+  include-actions="true"
+  multi-select="true"
+>
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Mobile App" value="mobile-app"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Resources" has-subtree="true" value="resources">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Templates" value="templates"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Guidelines" value="guidelines"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" has-subtree="true" value="archives">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="2024" value="2024"></modus-wc-tree-item>
+        <modus-wc-tree-item label="2025" value="2025"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        custom-class=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+        .multiSelect=\${true}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .hasSubtree=\${true}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="Report.pdf" value="report">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Proposal.docx" value="proposal">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=\${true}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Mobile App" value="mobile-app">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Resources"
+            .hasSubtree=\${true}
+            value="resources"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="Templates" value="templates">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Guidelines" value="guidelines">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archives"
+            .hasSubtree=\${true}
+            value="archives"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item label="2024" value="2024">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="2025" value="2025">
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    \`;
+  }
+}`,...(Z=(U=I.parameters)==null?void 0:U.docs)==null?void 0:Z.source}}};var _,B,z;g.parameters={...g.parameters,docs:{...(_=g.parameters)==null?void 0:_.docs,source:{originalSource:`{
+  name: 'Disabled Selection',
+  parameters: {
+    docs: {
+      description: {
+        story: 'This example demonstrates tree items with disabled state. Disabled items cannot be selected or interacted with.'
+      },
+      source: {
+        code: \`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" value="documents"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Archives" value="archives" disabled="true"></modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Website Redesign" value="website"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Legacy Project" value="legacy" disabled="true"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        customClass=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+        .multiSelect=\${args['multi-select']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item label="Documents" value="documents">
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archives"
+            value="archives"
+            .disabled=\${true}
+          >
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .hasSubtree=\${true}
+            value="projects"
+          >
+            <modus-wc-tree-view is-sub-list="true">
+              <modus-wc-tree-item label="Website Redesign" value="website">
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Legacy Project"
+                value="legacy"
+                .disabled=\${true}
+              >
+              </modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    \`;
+  }
+}`,...(z=(B=g.parameters)==null?void 0:B.docs)==null?void 0:z.source}}};var q,O,F;f.parameters={...f.parameters,docs:{...(q=f.parameters)==null?void 0:q.docs,source:{originalSource:`{
+  name: 'Checkbox Selection',
+  parameters: {
+    docs: {
+      description: {
+        story: 'This example demonstrates checkbox selection in a slot-based tree. Selecting a parent item selects its descendants, and descendant selections update parent indeterminate/checked states.'
+      },
+      source: {
+        code: \`
+<modus-wc-content-tree search-placeholder="Search..." include-search="true" include-actions="true">
+  <modus-wc-tree-view>
+    <modus-wc-tree-item label="Documents" checkbox="true" has-subtree="true" value="documents">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Report.pdf" checkbox="true" value="report"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Proposal.docx" checkbox="true" value="proposal"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Projects" checkbox="true" has-subtree="true" value="projects">
+      <modus-wc-tree-view is-sub-list="true">
+        <modus-wc-tree-item label="Project Alpha" checkbox="true" value="alpha"></modus-wc-tree-item>
+        <modus-wc-tree-item label="Project Beta" checkbox="true" value="beta"></modus-wc-tree-item>
+      </modus-wc-tree-view>
+    </modus-wc-tree-item>
+    <modus-wc-tree-item label="Archive" checkbox="true" value="archive"></modus-wc-tree-item>
+  </modus-wc-tree-view>
+</modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        customClass=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+      >
+        <modus-wc-tree-view>
+          <modus-wc-tree-item
+            label="Documents"
+            .checkbox=\${true}
+            .hasSubtree=\${true}
+            value="documents"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item
+                label="Report.pdf"
+                .checkbox=\${true}
+                value="report"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Proposal.docx"
+                .checkbox=\${true}
+                value="proposal"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Projects"
+            .checkbox=\${true}
+            .hasSubtree=\${true}
+            value="projects"
+          >
+            <modus-wc-tree-view .isSubList=\${true}>
+              <modus-wc-tree-item
+                label="Project Alpha"
+                .checkbox=\${true}
+                value="alpha"
+              ></modus-wc-tree-item>
+              <modus-wc-tree-item
+                label="Project Beta"
+                .checkbox=\${true}
+                value="beta"
+              ></modus-wc-tree-item>
+            </modus-wc-tree-view>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item
+            label="Archive"
+            .checkbox=\${true}
+            value="archive"
+          ></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      </modus-wc-content-tree>
+    \`;
+  }
+}`,...(F=(O=f.parameters)==null?void 0:O.docs)==null?void 0:F.source}}};var G,Q,X;y.parameters={...y.parameters,docs:{...(G=y.parameters)==null?void 0:G.docs,source:{originalSource:`{
+  name: 'With Actions',
+  args: {
+    'include-search': true,
+    'include-actions': true
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All-in-one stateless example: visibility (toggle \`disabled\` + icon), add sibling above/below, add child, duplicate, inline edit label, and delete—using \`addTreeItemAdjacentData\`, \`addTreeItemData\`, \`duplicateTreeItemData\`, \`updateTreeItemData\`, and \`deleteTreeItemData\`. On \`treeActionClick\`, read \`event.detail.itemId\`, call the matching utility, assign back to \`tree.items\`.'
+      },
+      source: {
+        code: \`
+<script>
+  function toggleItemVisibilityInTree(items, itemId) {
+    return items.map((item) => {
+      const children = item.children
+        ? toggleItemVisibilityInTree(item.children, itemId)
+        : undefined;
+      const match = item.id === itemId || item.clientId === itemId;
+      if (!match) {
+        return children !== item.children ? { ...item, children } : item;
+      }
+      const nextDisabled = !item.disabled;
+      const treeItemActions = item.treeItemActions?.map((a) => {
+        if (a.id !== 'toggle-visibility') return a;
+        return {
+          ...a,
+          icon: nextDisabled ? 'visibility_off' : 'visibility_on',
+          ariaLabel: nextDisabled ? 'Item hidden' : 'Item visible',
+        };
+      });
+      return { ...item, disabled: nextDisabled, treeItemActions, children };
+    });
+  }
+
+  const actions = [
+    { id: 'toggle-visibility', label: 'Visibility', icon: 'visibility_on', ariaLabel: 'Item visible' },
+    { id: 'add-node-above', label: 'Add Node Above', icon: 'add', ariaLabel: 'Add node above' },
+    { id: 'add-node-below', label: 'Add Node Below', icon: 'add', ariaLabel: 'Add node below' },
+    { id: 'add-child', label: 'Add Child', icon: 'subdirectory_arrow_right' },
+    { id: 'duplicate', label: 'Duplicate', icon: 'copy_content' },
+    { id: 'edit-label', label: 'Edit Label', icon: 'pencil' },
+    { id: 'delete', label: 'Delete', icon: 'delete' },
+  ];
+
+  let counter = 1;
+  let items = [
+    { id: 'roadmap', clientId: 'roadmap', label: 'Roadmap', treeItemActions: actions },
+    { id: 'backlog', clientId: 'backlog', label: 'Backlog', treeItemActions: actions },
+  ];
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  tree.items = items;
+
+  const apply = (next) => { if (next) { items = next; tree.items = items; } };
+
+  tree.addEventListener('treeActionClick', (event) => {
+    const { actionId, itemId } = event.detail;
+    if (!itemId) return;
+
+    if (actionId === 'toggle-visibility') {
+      apply(toggleItemVisibilityInTree(items, itemId));
+    } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+      const id = 'node-' + counter++;
+      apply(addTreeItemAdjacentData(items, {
+        referenceItemId: itemId,
+        item: { id, clientId: id, label: 'New Node', treeItemActions: actions },
+        placement: actionId === 'add-node-above' ? 'above' : 'below',
+      }));
+    } else if (actionId === 'add-child') {
+      const id = 'child-' + counter++;
+      apply(addTreeItemData(items, {
+        parentId: itemId,
+        item: { id, clientId: id, label: 'New Child', treeItemActions: actions },
+      }));
+    } else if (actionId === 'duplicate') {
+      apply(duplicateTreeItemData(items, { itemId }));
+    } else if (actionId === 'edit-label') {
+      apply(updateTreeItemData(items, { itemId, patch: { inlineLabelEdit: true } }));
+    } else if (actionId === 'delete') {
+      apply(deleteTreeItemData(items, { itemId }));
+    }
+  });
+
+  tree.addEventListener('itemLabelChange', (event) => {
+    const treeItem = event.target.closest('modus-wc-tree-item');
+    if (!treeItem) return;
+    apply(updateTreeItemData(items, {
+      itemId: treeItem.value,
+      patch: { label: event.detail, inlineLabelEdit: false },
+    }));
+  });
+<\/script>
+
+<modus-wc-content-tree></modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    const actions = [{
+      id: 'toggle-visibility',
+      label: 'Visibility',
+      icon: 'visibility_on',
+      ariaLabel: 'Item visible'
+    }, {
+      id: 'add-node-above',
+      label: 'Add Node Above',
+      icon: 'add',
+      ariaLabel: 'Add node above'
+    }, {
+      id: 'add-node-below',
+      label: 'Add Node Below',
+      icon: 'add',
+      ariaLabel: 'Add node below'
+    }, {
+      id: 'add-child',
+      label: 'Add Child',
+      icon: 'subdirectory_arrow_right'
+    }, {
+      id: 'duplicate',
+      label: 'Duplicate',
+      icon: 'copy_content'
+    }, {
+      id: 'edit-label',
+      label: 'Edit Label',
+      icon: 'pencil'
+    }, {
+      id: 'delete',
+      label: 'Delete',
+      icon: 'delete'
+    }];
+    let counter = 1;
+    let items: ITreeItemData[] = [{
+      id: 'roadmap',
+      clientId: 'roadmap',
+      label: 'Roadmap',
+      treeItemActions: actions
+    }, {
+      id: 'backlog',
+      clientId: 'backlog',
+      label: 'Backlog',
+      treeItemActions: actions
+    }];
+    const apply = (tree: HTMLElement & {
+      items?: ITreeItemData[];
+    }, next: ITreeItemData[] | null) => {
+      if (!next) return;
+      items = next;
+      tree.items = items;
+    };
+    const handleTreeActionClick = (event: CustomEvent<{
+      actionId: string;
+      itemId: string | null;
+    }>) => {
+      const {
+        actionId,
+        itemId
+      } = event.detail;
+      if (!itemId) return;
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      if (actionId === 'toggle-visibility') {
+        apply(tree, toggleItemVisibilityInTree(items, itemId));
+      } else if (actionId === 'add-node-above' || actionId === 'add-node-below') {
+        const id = \`node-\${counter++}\`;
+        apply(tree, addTreeItemAdjacentData(items, {
+          referenceItemId: itemId,
+          item: {
+            id,
+            clientId: id,
+            label: 'New Node',
+            treeItemActions: actions
+          },
+          placement: actionId === 'add-node-above' ? 'above' : 'below'
+        }));
+      } else if (actionId === 'add-child') {
+        const id = \`child-\${counter++}\`;
+        apply(tree, addTreeItemData(items, {
+          parentId: itemId,
+          item: {
+            id,
+            clientId: id,
+            label: 'New Child',
+            treeItemActions: actions
+          }
+        }));
+      } else if (actionId === 'duplicate') {
+        apply(tree, duplicateTreeItemData(items, {
+          itemId
+        }));
+      } else if (actionId === 'edit-label') {
+        apply(tree, updateTreeItemData(items, {
+          itemId,
+          patch: {
+            inlineLabelEdit: true
+          }
+        }));
+      } else if (actionId === 'delete') {
+        apply(tree, deleteTreeItemData(items, {
+          itemId
+        }));
+      }
+    };
+    const handleItemLabelChange = (event: CustomEvent<string>) => {
+      const treeItem = (event.target as HTMLElement).closest('modus-wc-tree-item') as ITreeItemElement | null;
+      if (!treeItem) return;
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      apply(tree, updateTreeItemData(items, {
+        itemId: treeItem.value,
+        patch: {
+          label: event.detail,
+          inlineLabelEdit: false
+        }
+      }));
+    };
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        customClass=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+        .items=\${items}
+        @treeActionClick=\${handleTreeActionClick}
+        @itemLabelChange=\${handleItemLabelChange}
+      ></modus-wc-content-tree>
+    \`;
+  }
+}`,...(X=(Q=y.parameters)==null?void 0:Q.docs)==null?void 0:X.source}}};var J,K,Y;C.parameters={...C.parameters,docs:{...(J=C.parameters)==null?void 0:J.docs,source:{originalSource:`{
+  name: 'Items Reordering',
+  args: {
+    'include-search': false,
+    'include-actions': false,
+    'items-reordering': true
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Enables drag-and-drop reordering with top/bottom drop-line indicators for data-driven \`items\` in the same level.'
+      },
+      source: {
+        code: \`
+<script>
+let items = [
+  {
+    id: 'phase-1',
+    label: 'Phase 1',
+    children: [
+      { id: 'backlog', label: 'Backlog' },
+      { id: 'in-progress', label: 'In Progress' },
+      { id: 'review', label: 'Review' }
+    ]
+  },
+  {
+    id: 'phase-2',
+    label: 'Phase 2',
+    children: [
+      { id: 'qa', label: 'QA' },
+      { id: 'uat', label: 'UAT' },
+      { id: 'done', label: 'Done' }
+    ]
+  }
+];
+
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = items;
+
+tree.addEventListener('itemsReordered', (event) => {
+  // Use clientId as stable UI identity while backend IDs can change.
+  items = [...event.detail.items];
+  tree.items = items;
+});
+<\/script>
+
+<modus-wc-content-tree
+  include-search="false"
+  include-actions="false"
+  items-reordering="true"
+></modus-wc-content-tree>
+\`
+      }
+    }
+  },
+  render: args => {
+    const initialItems = [...(args.items ?? nestedItemsReorderingData)];
+    const handleItemsReordered = (event: CustomEvent<{
+      items: ITreeItemData[];
+      parameters: {
+        itemId: string;
+        oldPosition: {
+          parentId: string | null;
+          index: number;
+        };
+        newPosition: {
+          parentId: string | null;
+          index: number;
+        };
+      };
+    }>) => {
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      tree.items = [...event.detail.items];
+    };
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        customClass=\${args['custom-class']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${args['include-actions']}
+        .itemsReordering=\${args['items-reordering']}
+        .items=\${initialItems}
+        @itemsReordered=\${handleItemsReordered}
+      ></modus-wc-content-tree>
+    \`;
+  }
+}`,...(Y=(K=C.parameters)==null?void 0:K.docs)==null?void 0:Y.source}}};var ee,te,ne;x.parameters={...x.parameters,docs:{...(ee=x.parameters)==null?void 0:ee.docs,source:{originalSource:`{
+  name: 'Lazy Loading',
+  parameters: {
+    docs: {
+      description: {
+        story: \`Demonstrates lazy loading using the data-driven \\\`items\\\` prop and \\\`itemExpand\\\` event with stable \\\`clientId\\\` identity. Items with \\\`hasChildren: true\\\` and no \\\`children\\\` show an expand chevron; when expanded, the tree shows a loader until the consumer provides children by updating \\\`items\\\`.\`
+      },
+      source: {
+        code: \`
+<script>
+const initialItems = [
+  { id: 'db-101', clientId: 'documents-node', label: 'Documents', hasChildren: true },
+  { id: 'db-102', clientId: 'projects-node', label: 'Projects', hasChildren: true },
+  { id: 'db-103', clientId: 'resources-node', label: 'Resources', hasChildren: true },
+];
+
+const mockData = {
+  'documents-node': [
+    { id: 'db-201', clientId: 'report-node', label: 'Report.pdf' },
+    { id: 'db-202', clientId: 'proposal-node', label: 'Proposal.docx' },
+    { id: 'db-203', clientId: 'notes-node', label: 'Meeting Notes.txt' },
+  ],
+  'projects-node': [
+    { id: 'db-301', clientId: 'website-node', label: 'Website Redesign', hasChildren: true },
+    { id: 'db-302', clientId: 'mobile-node', label: 'Mobile App' },
+    { id: 'db-303', clientId: 'api-node', label: 'API Integration' },
+  ],
+  'resources-node': [
+    { id: 'db-401', clientId: 'templates-node', label: 'Templates' },
+    { id: 'db-402', clientId: 'guide-node', label: 'Style Guide' },
+  ],
+  'website-node': [
+    { id: 'db-501', clientId: 'design-node', label: 'Design Mockups' },
+    { id: 'db-502', clientId: 'dev-node', label: 'Development' },
+  ],
+};
+
+const getIdentity = (item) => item.clientId ?? item.id;
+
+const tree = document.querySelector('modus-wc-content-tree');
+tree.items = initialItems;
+
+tree.addEventListener('itemExpand', async (event) => {
+  const itemIdentity = event.detail;
+
+  const findItem = (items) => {
+    for (const item of items) {
+      if (getIdentity(item) === itemIdentity) return item;
+      if (item.children) {
+        const found = findItem(item.children);
+        if (found) return found;
+      }
+    }
+  };
+
+  const item = findItem(tree.items);
+  if (item?.children?.length) return;
+
+  const children = await new Promise((resolve) =>
+    setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500)
+  );
+
+  const nextItems = updateTreeItemData(tree.items, {
+    itemId: itemIdentity,
+    patch: {
+      children,
+      hasChildren: children.length > 0,
+    },
+  });
+
+  if (nextItems) {
+    tree.items = nextItems;
+  }
+});
+<\/script>
+
+<modus-wc-content-tree search-placeholder="Search..." include-search="true"></modus-wc-content-tree>
+\`
+      }
+    },
+    actions: {
+      handles: ['itemExpand']
+    }
+  },
+  render: args => {
+    const initialItems: ITreeItemData[] = [{
+      id: 'db-101',
+      clientId: 'documents-node',
+      label: 'Documents',
+      hasChildren: true
+    }, {
+      id: 'db-102',
+      clientId: 'projects-node',
+      label: 'Projects',
+      hasChildren: true
+    }, {
+      id: 'db-103',
+      clientId: 'resources-node',
+      label: 'Resources',
+      hasChildren: true
+    }];
+    const mockData: Record<string, ITreeItemData[]> = {
+      'documents-node': [{
+        id: 'db-201',
+        clientId: 'report-node',
+        label: 'Report.pdf'
+      }, {
+        id: 'db-202',
+        clientId: 'proposal-node',
+        label: 'Proposal.docx'
+      }, {
+        id: 'db-203',
+        clientId: 'notes-node',
+        label: 'Meeting Notes.txt'
+      }],
+      'projects-node': [{
+        id: 'db-301',
+        clientId: 'website-node',
+        label: 'Website Redesign',
+        hasChildren: true
+      }, {
+        id: 'db-302',
+        clientId: 'mobile-node',
+        label: 'Mobile App'
+      }, {
+        id: 'db-303',
+        clientId: 'api-node',
+        label: 'API Integration'
+      }],
+      'resources-node': [{
+        id: 'db-401',
+        clientId: 'templates-node',
+        label: 'Templates'
+      }, {
+        id: 'db-402',
+        clientId: 'guide-node',
+        label: 'Style Guide'
+      }],
+      'website-node': [{
+        id: 'db-501',
+        clientId: 'design-node',
+        label: 'Design Mockups'
+      }, {
+        id: 'db-502',
+        clientId: 'dev-node',
+        label: 'Development'
+      }]
+    };
+    const getIdentity = (item: ITreeItemData): string => item.clientId ?? item.id;
+    const findItem = (items: ITreeItemData[], identity: string): ITreeItemData | undefined => {
+      for (const item of items) {
+        if (getIdentity(item) === identity) return item;
+        if (item.children) {
+          const found = findItem(item.children, identity);
+          if (found) return found;
+        }
+      }
+      return undefined;
+    };
+    const handleItemExpand = async (event: CustomEvent<string>) => {
+      const tree = event.currentTarget as HTMLElement & {
+        items?: ITreeItemData[];
+      };
+      const itemIdentity = event.detail;
+      const current = tree.items ?? initialItems;
+      const item = findItem(current, itemIdentity);
+      if (item?.children?.length) return;
+      const children = await new Promise<ITreeItemData[]>(resolve => setTimeout(() => resolve(mockData[itemIdentity] ?? []), 1500));
+      const nextItems = updateTreeItemData(current, {
+        itemId: itemIdentity,
+        patch: {
+          children,
+          hasChildren: children.length > 0
+        }
+      });
+      if (nextItems) {
+        tree.items = nextItems;
+      }
+    };
+    return html\`
+      <modus-wc-content-tree
+        search-placeholder=\${args['search-placeholder']}
+        .includeSearch=\${args['include-search']}
+        .includeActions=\${false}
+        .items=\${initialItems}
+        @itemExpand=\${handleItemExpand}
+      ></modus-wc-content-tree>
+    \`;
+  }
+}`,...(ne=(te=x.parameters)==null?void 0:te.docs)==null?void 0:ne.source}}};var ie,se,oe;T.parameters={...T.parameters,docs:{...(ie=T.parameters)==null?void 0:ie.docs,source:{originalSource:`{
+  name: 'Controlled Selection',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates fully controlled selection in data-driven mode using the \`selectedValues\` prop and \`selectionsChange\` event. The application owns the selected IDs as state and passes them back into the tree, keeping UI and app state in sync. The external button shows that selection can also be changed by application logic outside the tree.'
+      },
+      source: {
+        code: \`
+<script>
+  const items = [
+    { id: 'documents', clientId: 'documents-node', label: 'Documents' },
+    { id: 'projects', clientId: 'projects-node', label: 'Projects' },
+    { id: 'resources', clientId: 'resources-node', label: 'Resources' },
+  ];
+
+  let selectedValues = ['documents-node'];
+
+  const tree = document.querySelector('modus-wc-content-tree');
+  const button = document.querySelector('#select-projects-button');
+  tree.items = items;
+  tree.selectedValues = selectedValues;
+
+  tree.addEventListener('selectionsChange', (event) => {
+    selectedValues = [...event.detail.selectedValues];
+    tree.selectedValues = selectedValues;
+  });
+
+  button.addEventListener('buttonClick', () => {
+    selectedValues = ['projects-node'];
+    tree.selectedValues = selectedValues;
+  });
+<\/script>
+
+<div style="display:flex; flex-direction:column; gap:0.75rem;">
+  <modus-wc-button id="select-projects-button" variant="outline">
+    Select Projects
+  </modus-wc-button>
+  <modus-wc-content-tree></modus-wc-content-tree>
+</div>
+        \`
+      }
+    }
+  },
+  render: () => {
+    const items: ITreeItemData[] = [{
+      id: 'documents',
+      clientId: 'documents-node',
+      label: 'Documents'
+    }, {
+      id: 'projects',
+      clientId: 'projects-node',
+      label: 'Projects'
+    }, {
+      id: 'resources',
+      clientId: 'resources-node',
+      label: 'Resources'
+    }];
+    let selectedValues: string[] = ['documents-node'];
+    const handleSelectionsChange = (event: CustomEvent<{
+      selectedValues: string[];
+    }>) => {
+      const tree = event.currentTarget as HTMLElement & {
+        selectedValues?: string[];
+      };
+      selectedValues = [...event.detail.selectedValues];
+      tree.selectedValues = selectedValues;
+    };
+    const handleSelectProjects = (event: Event) => {
+      const currentTarget = event.currentTarget;
+      if (!(currentTarget instanceof HTMLElement)) return;
+      const wrapper = currentTarget.closest('.modus-wc-controlled-selection-story');
+      const tree = wrapper?.querySelector('modus-wc-content-tree') as (HTMLElement & {
+        selectedValues?: string[];
+      }) | null;
+      if (!tree) return;
+      selectedValues = ['projects-node'];
+      tree.selectedValues = selectedValues;
+    };
+    return html\`
+      <div
+        class="modus-wc-controlled-selection-story"
+        style="display: flex; flex-direction: column; gap: 0.75rem;"
+      >
+        <modus-wc-button variant="outline" @buttonClick=\${handleSelectProjects}>
+          Select Projects
+        </modus-wc-button>
+        <modus-wc-content-tree
+          .items=\${items}
+          .selectedValues=\${selectedValues}
+          @selectionsChange=\${handleSelectionsChange}
+        ></modus-wc-content-tree>
+      </div>
+    \`;
+  }
+}`,...(oe=(se=T.parameters)==null?void 0:se.docs)==null?void 0:oe.source}}};var re,ce,de;D.parameters={...D.parameters,docs:{...(re=D.parameters)==null?void 0:re.docs,source:{originalSource:"{\n  name: 'API Reference',\n  parameters: {\n    docs: {\n      description: {\n        story: `\n### Support Model\n\n| Mode | Supported Scope |\n|------|------------------|\n| Slot-based (no \\`items\\`) | Basic nested rendering, basic expand/collapse and selection UX, wrapper-owned \\`multiSelect\\`, action buttons/events, styling/composition flexibility |\n| Data-driven (\\`items\\`) | Controlled/stateless updates, controlled selection via \\`selectedValues\\`, mutation utilities, lazy loading orchestration, and drag/drop reordering |\n\n### Props\n\n| Name              | Type       | Default      | Description                                       |\n|-------------------|------------|--------------|---------------------------------------------------|\n| customClass       | \\`string\\` | \\`''\\`       | Additional CSS class to apply to the component    |\n| searchPlaceholder | \\`string\\` | \\`'Search...'\\` | Placeholder text for the search input          |\n| includeSearch     | \\`boolean\\` | \\`true\\`    | Whether to display the search functionality       |\n| includeActions    | \\`boolean\\` | \\`true\\`    | Whether to display action buttons for tree items  |\n| items             | \\`ITreeItemData[]\\` | - | Data-driven tree data used to render items and nested children. If omitted, slotted content is rendered in basic/uncontrolled mode. |\n| multiSelect      | \\`boolean\\` | \\`false\\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior for the root tree rendered or wrapped by \\`modus-wc-content-tree\\`. |\n| itemsReordering   | \\`boolean\\` | \\`false\\` | Enables drag-and-drop reordering for data-driven trees only (not slot-based trees). |\n| selectedValues    | \\`string[]\\` | - | Controlled selected item values for data-driven trees. When provided, the application owns selection state. |\n\n#### Events\n\n| Name           | Payload                                                         | Description |\n|----------------|------------------------------------------------------------------|-------------|\n| selectionsChange | \\`{ selectedValues: string[] }\\` | Emitted when selection changes in data-driven mode. Use this with \\`selectedValues\\` for controlled selection. |\n| itemsReordered | \\`{ items: ITreeItemData[]; parameters: ITreeItemReorderParameters }\\` | Emitted after a successful drag reorder with updated tree data and reorder metadata in data-driven mode only |\n\n---\n\n### State Manager Utilities\n\nUse these helpers to keep tree updates controlled/stateless in data-driven mode. Each utility returns \\`nextItems\\`; your application decides whether to apply it.\n\n| Utility | Parameters | Description |\n|---------|------------|-------------|\n| \\`addTreeItemData\\` | \\`(items, { parentId, item, index? })\\` | Adds an item at root or as a child under \\`parentId\\`. |\n| \\`addTreeItemAdjacentData\\` | \\`(items, { referenceItemId, item, placement })\\` | Inserts a sibling above or below an existing item. |\n| \\`deleteTreeItemData\\` | \\`(items, { itemId })\\` | Removes an item by identity. |\n| \\`duplicateTreeItemData\\` | \\`(items, { itemId, parentId?, index? })\\` | Duplicates an item/subtree with regenerated IDs. |\n| \\`updateTreeItemData\\` | \\`(items, { itemId, patch })\\` | Updates an existing item by identity using a partial patch. |\n| \\`reorderTreeItemsData\\` | \\`(items, parameters)\\` | Computes reordered tree data for drag/drop operations. |\n\n#### Built-in Action Mapping\n\n| Action ID | Recommended Utility |\n|-----------|----------------------|\n| \\`add-node-above\\` | \\`addTreeItemAdjacentData(..., { placement: 'above' })\\` |\n| \\`add-node-below\\` | \\`addTreeItemAdjacentData(..., { placement: 'below' })\\` |\n| \\`add-child\\` | \\`addTreeItemData\\` |\n| \\`duplicate\\` | \\`duplicateTreeItemData\\` |\n| \\`edit-label\\` | \\`updateTreeItemData\\` |\n| \\`delete\\` | \\`deleteTreeItemData\\` |\n\n#### Controlled Update Flow\n\n1. Handle \\`treeActionClick\\` or \\`itemsReordered\\`.\n2. Call the mapped utility to compute \\`nextItems\\`.\n3. Optionally validate/persist with your backend.\n4. Apply \\`nextItems\\` by updating \\`items\\`.\n\n#### Controlled Selection Flow\n\n1. Pass \\`selectedValues\\` to \\`modus-wc-content-tree\\`.\n2. Listen for \\`selectionsChange\\`.\n3. Update your application state.\n4. Pass the new \\`selectedValues\\` back to the tree.\n\nThe controlled flows above apply to data-driven mode. Slot-based mode is intentionally limited to basic/uncontrolled selection state, but \\`multiSelect\\` should still be configured on \\`modus-wc-content-tree\\` when using the wrapper. Checkbox selection, expansion, and drag/drop veto remain uncontrolled and are planned for a future update.\n\n---\n\n### Tree View\n\n#### Props\n\n| Name        | Type       | Default   | Description                                           |\n|-------------|------------|-----------|-------------------------------------------------------|\n| customClass | \\`string\\` | \\`''\\`    | Additional CSS class to apply to the tree view        |\n| isSubList   | \\`boolean\\` | \\`false\\` | Whether the tree view is a sublist of another tree item |\n| multiSelect | \\`boolean\\` | \\`false\\` | Enables additive (Ctrl/Cmd) and range (Shift) selection behavior when using \\`modus-wc-tree-view\\` directly. When wrapped by \\`modus-wc-content-tree\\`, prefer configuring \\`multiSelect\\` on the content tree. |\n| selectedValues | \\`string[]\\` | - | Controlled selected values for direct \\`modus-wc-tree-view\\` usage. |\n| showConnectorLine | \\`boolean\\` | \\`true\\` | Shows or hides connector lines for nested sublists |\n\n#### Events\n\n| Name                | Payload                          | Description |\n|---------------------|----------------------------------|-------------|\n| itemSelectionChange | \\`{ selectedValues: string[] }\\` | Emitted when selected tree item values change in direct \\`modus-wc-tree-view\\` usage or lower-level compositions |\n\n---\n\n### Tree Item\n\n#### Props\n\n| Name            | Type                                   | Default   | Description                                                  |\n|-----------------|----------------------------------------|-----------|--------------------------------------------------------------|\n| label           | \\`string\\`                             | -         | The label text for the tree item (required)                  |\n| value           | \\`string\\`                             | \\`''\\`    | The value associated with the tree item                      |\n| disabled        | \\`boolean\\`                            | \\`false\\` | Whether the tree item is disabled                            |\n| checkbox        | \\`boolean\\`                            | \\`false\\` | Whether to display a checkbox for the tree item              |\n| selected        | \\`boolean\\`                            | -         | Whether the tree item is selected (mutable, reflected)       |\n| checked         | \\`boolean\\`                            | -         | Whether the tree item checkbox is checked (mutable, reflected) |\n| hasSubtree      | \\`boolean\\`                            | \\`false\\` | Whether the tree item has a subtree                          |\n| treeItemActions | \\`ITreeItemActions[]\\`                 | -         | Array of actions to display for the tree item                |\n| inlineLabelEdit | \\`boolean\\`                            | \\`false\\` | Enables inline text editing for the item label               |\n| itemsReordering | \\`boolean\\`                            | \\`false\\` | Shows drag handle and enables drag/drop item reordering      |\n| size            | \\`'xs' | 'sm' | 'md' | 'lg'\\`    | \\`'xs'\\`  | The size of the tree item                                    |\n| customClass     | \\`string\\`                             | \\`''\\`    | Additional CSS class to apply to the tree item               |\n| lazyLoading     | \\`boolean\\`                            | \\`false\\` | When \\`true\\` and the item is expanded, shows a spinner in place of children. Managed automatically by the content tree when \\`getChildren\\` is provided. |\n| hasChildren     | \\`boolean\\`                            | -         | Hint that the item has unloaded children. Used with \\`getChildren\\` on the content tree to show the expand chevron before children are fetched. |\n\n#### Events\n\n| Name             | Payload                          | Description                                     |\n|------------------|----------------------------------|-------------------------------------------------|\n| itemSelect       | \\`{ value: string }\\`            | Emitted when a tree item is selected            |\n| selectionsChange | \\`{ selectedValues: string[] }\\` | Emitted when the selection state changes        |\n| itemExpand       | \\`string\\`                       | Emitted with the item's \\`value\\` when it is expanded. Use this to trigger lazy data loading. |\n| itemLabelChange  | \\`string\\`                       | Emitted when inline label editing is committed |\n| itemReordered    | \\`ITreeItemReorderedEventDetail\\` | Emitted when a drag/drop reorder operation completes for the item |\n\n#### Methods\n\n| Name            | Type                      | Description                |\n|-----------------|---------------------------|----------------------------|\n| collapseSubTree | \\`() => Promise<void>\\`   | Collapses the subtree      |\n| expandSubTree   | \\`() => Promise<void>\\`   | Expands the subtree        |\n| setIndeterminateState | \\`(indeterminate: boolean) => Promise<void>\\` | Sets checkbox indeterminate state |\n\n---\n\n### Tree Actions\n\n#### Props\n\n| Name    | Type                                | Default  | Description                          |\n|---------|-------------------------------------|----------|--------------------------------------|\n| actions | \\`ITreeItemActions[]\\`              | -        | Array of actions to display          |\n| size    | \\`'xs' | 'sm' | 'md' | 'lg'\\` | \\`'xs'\\` | The size of the action buttons       |\n\n#### Behavior\n\n- Renders the first action as a direct icon button for fast access.\n- Renders remaining actions in a \"More actions\" dropdown menu.\n- When the \\`delete\\` action is clicked, a confirmation UI is shown before emitting \\`treeActionClick\\`.\n- Automatically closes other open tree-action dropdowns when a new one opens.\n\n#### Events\n\n| Name            | Payload                                   | Description                                |\n|-----------------|-------------------------------------------|--------------------------------------------|\n| treeActionClick | \\`{ actionId: string; actionName: string }\\` | Emitted when an action is clicked       |\n| dropdownOpened  | \\`HTMLElement\\`                           | Emitted when the dropdown is opened        |\n\n---\n\n### Interfaces\n\n#### ITreeItemData\n\n\\`\\`\\`typescript\ninterface ITreeItemData {\n  id: string;                // Backend/persistent identifier\n  clientId?: string;         // Optional stable client-generated identifier (for example UUID)\n  label: string;\n  checkbox?: boolean;\n  startIcon?: string;\n  treeItemActions?: ITreeItemActions[];\n  children?: ITreeItemData[];\n  hasChildren?: boolean;\n}\n\\`\\`\\`\n\n---\n\n#### ITreeItemActions\n\n\\`\\`\\`typescript\ninterface ITreeItemActions {\n  id: string;                           // Unique identifier for the action\n  icon: string;                         // Icon name for the action, e.g., 'edit', 'trash'\n  iconVariant?: 'solid' | 'outlined';   // Optional variant for the icon\n  label: string;                        // Text label for the action\n  ariaLabel?: string;                   // Optional label for accessibility\n  disabled?: boolean;                   // Optional flag to disable the action\n}\n\\`\\`\\`\n`\n      }\n    },\n    controls: {\n      disable: true\n    }\n  },\n  render: () => {\n    return html``;\n  }\n}",...(de=(ce=D.parameters)==null?void 0:ce.docs)==null?void 0:de.source}}};const De=["Default","TreeItemWithStartIcon","EmptyState","MultiSelect","DisabledSelection","CheckboxSelection","WithActions","ItemsReordering","LazyLoading","ControlledSelection","ApiReference"];export{D as ApiReference,f as CheckboxSelection,T as ControlledSelection,h as Default,g as DisabledSelection,v as EmptyState,C as ItemsReordering,x as LazyLoading,I as MultiSelect,b as TreeItemWithStartIcon,y as WithActions,De as __namedExportsOrder,Te as default};
