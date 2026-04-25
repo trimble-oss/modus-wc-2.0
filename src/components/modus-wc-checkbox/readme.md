@@ -40,6 +40,7 @@ A customizable checkbox component
 
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-table](../modus-wc-table)
+ - [modus-wc-tree-item](../modus-wc-content-tree/modus-wc-tree-item)
 
 ### Depends on
 
@@ -51,6 +52,7 @@ graph TD;
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-table --> modus-wc-checkbox
+  modus-wc-tree-item --> modus-wc-checkbox
   style modus-wc-checkbox fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

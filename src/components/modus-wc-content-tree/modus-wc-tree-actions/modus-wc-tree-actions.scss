@@ -1,0 +1,158 @@
+/**
+* Tree actions component styles
+*/
+
+modus-wc-tree-actions {
+  .modus-wc-tree-actions-container {
+    align-items: center;
+    display: flex;
+
+    button.modus-wc-tree-action-button {
+      background: transparent;
+      border: none;
+      color: var(--modus-wc-color-base-content);
+      cursor: pointer;
+      visibility: hidden;
+
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-base-content);
+      }
+
+      &:active,
+      &[aria-pressed='true'] {
+        background: transparent;
+      }
+    }
+  }
+
+  .modus-wc-tree-more-actions-dropdown {
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-100);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+    display: none;
+    min-width: 150px;
+    padding: 4px 0;
+    position: absolute;
+    z-index: 1000;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  .modus-wc-tree-dropdown-action {
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: var(--modus-wc-color-base-content-high-contrast);
+    cursor: pointer;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+    text-align: start;
+    width: 100%;
+
+    &:hover:not(.disabled) {
+      background-color: var(--modus-wc-color-gray-light);
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    span {
+      font-size: var(--modus-wc-font-size-sm);
+    }
+  }
+
+  .modus-wc-tree-delete-confirmation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm, 0.5rem);
+    max-width: 182px;
+    padding: var(--modus-wc-font-size-3xl);
+    text-align: center;
+  }
+
+  .modus-wc-tree-delete-confirmation-title {
+    color: var(--modus-wc-color-base-content-high-contrast);
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: 700;
+  }
+
+  .modus-wc-tree-delete-confirmation-text {
+    color: var(--modus-wc-color-base-content-high-contrast);
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 1.5;
+  }
+
+  .modus-wc-tree-delete-confirmation-actions {
+    display: flex;
+    gap: var(--modus-wc-spacing-md, 1rem);
+    justify-content: center;
+    margin-block-start: var(--modus-wc-spacing-xs, 0.25rem);
+  }
+
+  .modus-wc-tree-cancel-confirmation-button {
+    background-color: var(--modus-wc-color-base-100);
+  }
+}
+
+[data-theme='modus-classic-dark'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-dark'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-button {
+        color: var(--modus-wc-color-base-content);
+
+        &:hover,
+        &:active,
+        &[aria-pressed='true'] {
+          color: var(--modus-wc-color-base-content);
+        }
+      }
+    }
+
+    .modus-wc-tree-more-actions-dropdown {
+      background: var(--modus-wc-color-trimble-gray);
+      border-color: var(--modus-wc-color-gray-6);
+    }
+
+    .modus-wc-tree-dropdown-action {
+      &:hover:not(.disabled) {
+        background-color: var(--modus-wc-color-base-100);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-dark'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
+    }
+  }
+}
+
+[data-theme='modus-classic-light'],
+[data-theme='connect-light'] {
+  modus-wc-tree-actions {
+    .modus-wc-tree-actions-container {
+      .modus-wc-tree-action-icon {
+        color: var(--modus-wc-color-base-content);
+      }
+
+      &:hover {
+        background: transparent;
+        color: var(--modus-wc-color-base-content);
+      }
+    }
+  }
+}

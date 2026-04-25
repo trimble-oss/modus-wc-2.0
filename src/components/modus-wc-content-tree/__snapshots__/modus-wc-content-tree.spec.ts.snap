@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-content-tree should render with default props 1`] = `
+<modus-wc-content-tree>
+  <!---->
+  <div class="modus-wc-content-tree-wrapper">
+    <div class="modus-wc-content-tree-header"></div>
+    <div class="modus-wc-content-tree-content"></div>
+  </div>
+</modus-wc-content-tree>
+`;

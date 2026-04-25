@@ -1,0 +1,26 @@
+/**
+ * Styles for the tree view wrapper component.
+ * Uses modus-wc-menu structure with consistent class naming.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+modus-wc-tree-view.modus-wc-tree-submenu {
+  display: contents;
+}
+
+modus-wc-tree-view {
+  modus-wc-button
+    .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary:hover {
+    background-color: transparent;
+  }
+
+  .modus-wc-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .modus-wc-tree-dropdown.modus-wc-tree-dropdown-no-line::before {
+    display: none !important;
+  }
+}
