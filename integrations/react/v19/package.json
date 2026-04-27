@@ -28,6 +28,11 @@
       "require": "./index-cjs.js",
       "default": "./index.js"
     },
+    "./next": {
+      "types": "./types/index.server.d.ts",
+      "import": "./index.server.js",
+      "default": "./index.server.js"
+    },
     "./modus-wc-styles.css": "./modus-wc-styles.css"
   },
   "scripts": {

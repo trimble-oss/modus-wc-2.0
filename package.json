@@ -109,6 +109,7 @@
     "@stencil/core": "^4.35.3",
     "@stencil/react-output-target": "^1.2.0",
     "@stencil/sass": "^3.2.3",
+    "@stencil/ssr": "^0.3.1",
     "@stencil/store": "^2.2.2",
     "@stencil/vue-output-target": "^0.13.1",
     "@storybook/addon-a11y": "^8.6.12",
