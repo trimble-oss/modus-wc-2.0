@@ -1067,8 +1067,7 @@ export const ShadowDomParent: Story = {
           tableEl.pageSizeOptions = v['page-size-options'] ?? [5, 10, 15];
           tableEl.selectable = v.selectable ?? 'none';
           tableEl.selectedRowIds = v['selected-row-ids'] ?? [];
-          tableEl.showPageSizeSelector =
-            v['show-page-size-selector'] !== false;
+          tableEl.showPageSizeSelector = v['show-page-size-selector'] !== false;
           tableEl.sortable = Boolean(v.sortable);
           tableEl.zebra = Boolean(v.zebra);
         },
