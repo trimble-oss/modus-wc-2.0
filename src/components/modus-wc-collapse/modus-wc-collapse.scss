@@ -89,12 +89,11 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
-      padding: var(--modus-wc-spacing-lg);
+      padding: 0 var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md)
+        var(--modus-wc-spacing-lg);
     }
 
-    .modus-wc-collapse-title {
-      color: var(--modus-wc-color-base-content);
-    }
+    font-size: var(--modus-wc-font-size-md);
   }
 
   &.has-start-icon > .modus-wc-collapse-title {

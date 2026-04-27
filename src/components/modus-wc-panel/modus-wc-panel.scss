@@ -3,7 +3,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 .modus-wc-panel {
-  border: 1px solid var(--modus-wc-color-gray-0);
+  background-color: var(--modus-wc-color-base-page);
+  border: 1px solid var(--modus-wc-color-base-200);
   border-radius: var(--rounded-box);
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@
 }
 
 .modus-wc-panel-floating {
-  box-shadow: rgba(36, 35, 45, 0.3) 1px 0 4px;
+  box-shadow: rgb(36, 35, 45, 0.3) 1px 0 4px;
 }
 
 .modus-wc-panel-header,
