@@ -1070,6 +1070,19 @@ export const ShadowDomParent: Story = {
           tableEl.showPageSizeSelector = v['show-page-size-selector'] !== false;
           tableEl.sortable = Boolean(v.sortable);
           tableEl.zebra = Boolean(v.zebra);
+          // Wire events once — Stencil events don't bubble out of shadow root
+          if (!el.dataset['eventsWired']) {
+            el.addEventListener('rowClick', action('rowClick'));
+            el.addEventListener('sortChange', action('sortChange'));
+            el.addEventListener('paginationChange', action('paginationChange'));
+            el.addEventListener(
+              'rowSelectionChange',
+              action('rowSelectionChange')
+            );
+            el.addEventListener('cellEditStart', action('cellEditStart'));
+            el.addEventListener('cellEditCommit', action('cellEditCommit'));
+            el.dataset['eventsWired'] = 'true';
+          }
         },
       });
       customElements.define('table-shadow-host', TableShadowHost);
