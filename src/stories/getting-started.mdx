@@ -172,10 +172,29 @@ export default async function Page() {
 }
 ```
 
-**3. Add Modus CSS to your layout**
+**3. Register custom elements for client-side interactivity**
+
+SSR renders the initial HTML, but event handlers require the Stencil runtime on the client.
+
+```tsx
+// app/providers.tsx
+'use client';
+
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+
+defineCustomElements();
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
+```
+
+Wrap your layout with this provider:
 
 ```tsx
 // app/layout.tsx
+import { Providers } from './providers';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="modus-modern-light">
@@ -183,7 +202,9 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="/modus-wc-styles.css" />
         <link rel="stylesheet" href="/modus-icons.css" />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
@@ -196,7 +217,7 @@ The Modus CSS references font files via relative paths, so it needs to be served
 ```json
 {
   "scripts": {
-    "postinstall": "npm run setup:modus"
+    "postinstall": "npm run setup:modus",
     "setup:modus": "cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/ && cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/"
   }
 }
@@ -213,6 +234,7 @@ cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/
 ### Notes
 
 - `renderToString` runs on the server only — no browser APIs involved.
+- The `inputHtml` passed to `ModusSSR` must be trusted markup, not user-supplied content.
 - The function is framework-agnostic — works with Next.js, Remix, Express, or any Node.js server.
 
 ---
