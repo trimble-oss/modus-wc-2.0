@@ -109,10 +109,11 @@ export const ThemeTest: Story = {
 };
 
 export const ShadowDomParent: Story = {
-  render: () => {
+  render: (args) => {
     if (!customElements.get('theme-switcher-shadow-host')) {
       class ThemeSwitcherShadowHost extends HTMLElement {
         private sr: ShadowRoot;
+        private _props?: ThemeSwitcherArgs;
         private themeObserver: MutationObserver | null = null;
 
         constructor() {
@@ -137,8 +138,9 @@ export const ShadowDomParent: Story = {
             attributeFilter: ['data-theme'],
           });
 
-          // Render same structure as Default story — provider + switcher
-          // together so themeStore initializes correctly before the switcher
+          // Create provider + switcher together here (not in constructor) so
+          // provider connects first and initializes themeStore before the
+          // switcher reads themeStore.state.mode for its isDarkMode field
           const provider = document.createElement(
             'modus-wc-theme-provider'
           ) as HTMLElement & {
@@ -154,6 +156,8 @@ export const ShadowDomParent: Story = {
           provider.appendChild(switcher);
           wrapper.appendChild(provider);
           this.sr.appendChild(wrapper);
+
+          if (this._props) this.applyProps();
         }
 
         disconnectedCallback() {
@@ -161,8 +165,22 @@ export const ShadowDomParent: Story = {
           this.themeObserver = null;
         }
 
-        // props setter not needed for behaviour but kept for Storybook controls
-        set props(_: ThemeSwitcherArgs) {}
+        set props(v: ThemeSwitcherArgs) {
+          this._props = v;
+          this.applyProps();
+        }
+
+        get props(): ThemeSwitcherArgs | undefined {
+          return this._props;
+        }
+
+        private applyProps() {
+          const switcher = this.sr.querySelector('modus-wc-theme-switcher') as
+            | (HTMLElement & { customClass: string })
+            | null;
+          if (!switcher || !this._props) return;
+          switcher.customClass = this._props['custom-class'] || '';
+        }
       }
       customElements.define(
         'theme-switcher-shadow-host',
@@ -170,6 +188,8 @@ export const ShadowDomParent: Story = {
       );
     }
 
-    return html`<theme-switcher-shadow-host></theme-switcher-shadow-host>`;
+    return html`<theme-switcher-shadow-host
+      .props=${{ ...args }}
+    ></theme-switcher-shadow-host>`;
   },
 };
