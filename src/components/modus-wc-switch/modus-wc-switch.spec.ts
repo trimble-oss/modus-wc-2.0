@@ -31,6 +31,18 @@ describe('modus-wc-switch', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with size xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSwitch],
+      html: `<modus-wc-switch
+        aria-label="XS toggle"
+        label="XS label"
+        size="xs"
+      ></modus-wc-switch>`,
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should render indeterminate state', async () => {
     const page = await newSpecPage({
       components: [ModusWcSwitch],

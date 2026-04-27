@@ -31,10 +31,10 @@ modus-wc-card .modus-wc-card {
 [data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
   --rounded-box: 0.5rem;
 
-  box-shadow: 0 0 2px 0 rgba(54, 53, 69, 0.3);
+  box-shadow: 0 0 2px 0 rgb(54, 53, 69, 0.3);
 
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(54, 53, 69, 0.3);
+    box-shadow: 0 0 8px 0 rgb(54, 53, 69, 0.3);
   }
 
   .modus-wc-card-subtitle {

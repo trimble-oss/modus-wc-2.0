@@ -20,6 +20,21 @@ const items: IBreadcrumb[] = [
   },
 ];
 
+const fallbackItems: IBreadcrumb[] = [
+  {
+    label: 'Unsafe URL fallback',
+    url: 'javascript:alert(1)',
+  },
+  {
+    label: 'Safe subpage',
+    url: '#',
+  },
+  {
+    label: 'Current Page',
+    url: '#',
+  },
+];
+
 interface BreadcrumbArgs {
   'custom-class'?: string;
   items: IBreadcrumb[];
@@ -134,6 +149,30 @@ export const UnderlineLinks: Story = {
   // const breadcrumbs = document.querySelector('modus-wc-breadcrumbs');
   // breadcrumbs.items = items;
 </script>
+    `;
+  },
+};
+
+export const FallbackButton: Story = {
+  args: {
+    items: fallbackItems,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Shows the fallback behavior when a breadcrumb item has an unsafe URL. The first item renders as a button instead of a navigable link, while still emitting the `breadcrumbClick` event.',
+      },
+    },
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-breadcrumbs
+  aria-label="Breadcrumb fallback example"
+  .items=${args.items}
+  size=${ifDefined(args.size)}
+></modus-wc-breadcrumbs>
     `;
   },
 };
