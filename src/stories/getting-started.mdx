@@ -125,6 +125,94 @@ module.exports = {
 
 - ### [Vue](?path=/docs/documentation-frameworks-vue--docs)
 
+## Server-Side Rendering (SSR)
+
+Modus Web Components supports server-side rendering via Stencil's hydrate app.
+
+### Installation
+
+The `hydrate` subpath is included in the package — no additional install needed.
+
+```bash
+npm install @trimble-oss/moduswebcomponents
+```
+
+### Next.js (App Router) Setup
+
+**1. Create a reusable `ModusSSR` helper (one-time setup)**
+
+```tsx
+// lib/modus-ssr.tsx
+import { renderToString } from '@trimble-oss/moduswebcomponents/hydrate';
+
+export async function ModusSSR({ html: inputHtml }: { html: string }) {
+  const { html } = await renderToString(inputHtml, {
+    fullDocument: false,
+    serializeShadowRoot: 'declarative-shadow-dom',
+  });
+  return <div dangerouslySetInnerHTML={{ __html: html ?? '' }} />;
+}
+```
+
+**2. Use it in any Server Component**
+
+```tsx
+// app/page.tsx
+import { ModusSSR } from '@/lib/modus-ssr';
+
+export default async function Page() {
+  return (
+    <ModusSSR html={`
+      <modus-wc-button color="primary" variant="filled">Click me</modus-wc-button>
+      <modus-wc-badge color="primary">New</modus-wc-badge>
+    `} />
+  );
+}
+```
+
+**3. Add Modus CSS to your layout**
+
+```tsx
+// app/layout.tsx
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" data-theme="modus-modern-light">
+      <head>
+        <link rel="stylesheet" href="/modus-wc-styles.css" />
+        <link rel="stylesheet" href="/modus-icons.css" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**4. Copy CSS and assets to `public/`**
+
+The Modus CSS references font files via relative paths, so it needs to be served statically rather than bundled. Add a `postinstall` script to your `package.json` to automate this:
+
+```json
+{
+  "scripts": {
+    "postinstall": "npm run setup:modus"
+    "setup:modus": "cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/ && cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/"
+  }
+}
+```
+
+Or run it once manually:
+
+```bash
+cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/
+cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/
+cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/
+```
+
+### Notes
+
+- `renderToString` runs on the server only — no browser APIs involved.
+- The function is framework-agnostic — works with Next.js, Remix, Express, or any Node.js server.
+
 ---
 
 Need help? Check out our [GitHub repository](https://github.com/trimble-oss/modus-wc-2.0)
