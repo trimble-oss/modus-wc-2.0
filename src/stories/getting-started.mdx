@@ -162,10 +162,12 @@ import { ModusSSR } from '@/lib/modus-ssr';
 
 export default async function Page() {
   return (
-    <ModusSSR html={`
+    <ModusSSR
+      html={`
       <modus-wc-button color="primary" variant="filled">Click me</modus-wc-button>
       <modus-wc-badge color="primary">New</modus-wc-badge>
-    `} />
+    `}
+    />
   );
 }
 ```
