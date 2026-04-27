@@ -2,7 +2,6 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IThemeConfig } from '../../providers/theme/theme.types';
 
 interface ThemeSwitcherArgs {
@@ -112,15 +111,67 @@ export const ThemeTest: Story = {
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('theme-switcher-shadow-host')) {
-      const ThemeSwitcherShadowHost = createShadowHostClass<ThemeSwitcherArgs>({
-        componentTag: 'modus-wc-theme-switcher',
-        propsMapper: (v: ThemeSwitcherArgs, el: HTMLElement) => {
-          const themeSwitcherEl = el as unknown as {
-            customClass: string;
-          };
-          themeSwitcherEl.customClass = v['custom-class'] || '';
-        },
-      });
+      class ThemeSwitcherShadowHost extends HTMLElement {
+        private sr: ShadowRoot;
+        private _props?: ThemeSwitcherArgs;
+        private themeObserver: MutationObserver | null = null;
+
+        constructor() {
+          super();
+          this.sr = this.attachShadow({ mode: 'open' });
+        }
+
+        connectedCallback() {
+          // Create element here (not in constructor) so themeStore.state.mode
+          // is already set by modus-wc-theme-provider before Stencil initializes
+          // the component's isDarkMode class field
+          if (!this.sr.querySelector('modus-wc-theme-switcher')) {
+            // Sync data-theme so CSS variables work inside shadow root
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'contents';
+            const syncTheme = () => {
+              const theme = document.documentElement.getAttribute('data-theme');
+              if (theme) wrapper.setAttribute('data-theme', theme);
+            };
+            syncTheme();
+            this.themeObserver = new MutationObserver(syncTheme);
+            this.themeObserver.observe(document.documentElement, {
+              attributes: true,
+              attributeFilter: ['data-theme'],
+            });
+
+            const switcher = document.createElement(
+              'modus-wc-theme-switcher'
+            ) as HTMLElement & { customClass: string };
+            switcher.setAttribute('aria-label', 'Theme toggle');
+            wrapper.appendChild(switcher);
+            this.sr.appendChild(wrapper);
+          }
+          if (this._props) this.applyProps();
+        }
+
+        disconnectedCallback() {
+          this.themeObserver?.disconnect();
+          this.themeObserver = null;
+        }
+
+        set props(v: ThemeSwitcherArgs) {
+          this._props = v;
+          this.applyProps();
+        }
+
+        get props(): ThemeSwitcherArgs | undefined {
+          return this._props;
+        }
+
+        private applyProps() {
+          const switcher = this.sr.querySelector('modus-wc-theme-switcher') as
+            | (HTMLElement & { customClass: string })
+            | null;
+          if (!switcher || !this._props) return;
+          switcher.customClass = this._props['custom-class'] || '';
+        }
+      }
       customElements.define(
         'theme-switcher-shadow-host',
         ThemeSwitcherShadowHost

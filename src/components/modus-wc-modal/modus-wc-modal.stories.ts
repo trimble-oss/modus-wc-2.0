@@ -201,6 +201,12 @@ export const ShadowDomParent: Story = {
           modalEl.showFullscreenToggle = Boolean(v['show-fullscreen-toggle']);
           if (!el.hasChildNodes()) {
             el.innerHTML = `<span slot="header">Modal Title</span><span slot="content">This is sample modal content.</span><modus-wc-button slot="footer">Close</modus-wc-button>`;
+            // Wire the footer close button to close the dialog
+            const closeBtn = el.querySelector('modus-wc-button[slot="footer"]');
+            closeBtn?.addEventListener('buttonClick', () => {
+              const dialog = el.querySelector('dialog') as HTMLDialogElement;
+              dialog?.close();
+            });
           }
         },
       });
