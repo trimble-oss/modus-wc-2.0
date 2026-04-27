@@ -8,7 +8,7 @@ modus-wc-collapse details.modus-wc-collapse > summary {
 }
 
 modus-wc-collapse .modus-wc-collapse {
-  background: var(--modus-wc-color-base-page);
+  background-color: var(--modus-wc-color-base-100);
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
@@ -16,7 +16,7 @@ modus-wc-collapse .modus-wc-collapse {
 
   .modus-wc-collapse-title {
     cursor: pointer;
-    font-size: var(--modus-wc-font-size-2xl);
+    font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
     padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
@@ -81,6 +81,7 @@ modus-wc-collapse .modus-wc-collapse {
   }
 
   &.modus-wc-border {
+    background-color: var(--modus-wc-color-base-page);
     border: none;
     border-bottom: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-base-200);
@@ -89,11 +90,12 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
-      padding: 0 var(--modus-wc-spacing-lg) var(--modus-wc-spacing-md)
-        var(--modus-wc-spacing-lg);
+      padding: var(--modus-wc-spacing-lg);
     }
 
-    font-size: var(--modus-wc-font-size-md);
+    .modus-wc-collapse-title {
+      color: var(--modus-wc-color-base-content);
+    }
   }
 
   &.has-start-icon > .modus-wc-collapse-title {
@@ -113,7 +115,6 @@ modus-wc-collapse .modus-wc-collapse {
 .modus-wc-collapse-arrow.modus-wc-chevron-right
   > .modus-wc-collapse-title::after {
   top: 50%;
-  transform: translateY(-50%) rotate(45deg);
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-right.modus-wc-collapse-open
@@ -207,8 +208,4 @@ modus-wc-collapse .modus-wc-collapse {
 [data-theme='connect-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='connect-dark'] modus-wc-collapse .modus-wc-collapse {
   @include outline-styles;
-}
-
-[data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
-  background-color: var(--modus-wc-color-trimble-gray);
 }

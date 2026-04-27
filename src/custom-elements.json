@@ -3656,10 +3656,6 @@
             },
             {
               "kind": "method",
-              "name": "onLogoPropsChange"
-            },
-            {
-              "kind": "method",
               "name": "render"
             }
           ],
@@ -4049,7 +4045,7 @@
               "kind": "field",
               "name": "menuSelectionChange",
               "type": {
-                "text": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>"
+                "text": "EventEmitter<{\r\n    selectedItems: HTMLElement[];\r\n  }>"
               },
               "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
             }
@@ -6182,7 +6178,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs'"
               }
             },
             {
@@ -7984,6 +7980,15 @@
             }
           ],
           "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "expanded",
               "fieldName": "expanded",
