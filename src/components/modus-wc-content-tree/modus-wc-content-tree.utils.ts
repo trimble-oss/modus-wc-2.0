@@ -3,8 +3,7 @@ import {
   ITreeItemReorderParameters,
 } from './modus-wc-tree-item/modus-wc-tree-item';
 
-const getTreeItemIdentity = (item: ITreeItemData): string =>
-  item.clientId ?? item.id;
+const getTreeItemIdentity = (item: ITreeItemData): string => item.clientId;
 
 export const getReorderSignature = (
   parameters: ITreeItemReorderParameters
@@ -49,6 +48,59 @@ interface ITreeItemLocationResult {
   parentId: string | null;
   index: number;
 }
+
+const collectUsedIdentifiers = (items: ITreeItemData[]): Set<string> => {
+  const usedIdentifiers = new Set<string>();
+
+  const visit = (list: ITreeItemData[]) => {
+    list.forEach((item) => {
+      usedIdentifiers.add(item.id);
+      usedIdentifiers.add(item.clientId);
+      if (item.children?.length) {
+        visit(item.children);
+      }
+    });
+  };
+
+  visit(items);
+  return usedIdentifiers;
+};
+
+const generateUniqueClientId = (usedIdentifiers: Set<string>): string => {
+  let candidate =
+    globalThis.crypto?.randomUUID?.() ??
+    `generated-${Date.now().toString(36)}-${Math.random()
+      .toString(36)
+      .slice(2, 10)}`;
+
+  while (usedIdentifiers.has(candidate)) {
+    candidate =
+      globalThis.crypto?.randomUUID?.() ??
+      `generated-${Date.now().toString(36)}-${Math.random()
+        .toString(36)
+        .slice(2, 10)}`;
+  }
+
+  usedIdentifiers.add(candidate);
+  return candidate;
+};
+
+const generateUniqueTempId = (
+  usedIdentifiers: Set<string>,
+  clientId: string
+): string => {
+  const baseId = `temp-${clientId}`;
+  let candidate = baseId;
+  let suffix = 1;
+
+  while (usedIdentifiers.has(candidate)) {
+    candidate = `${baseId}-${suffix}`;
+    suffix += 1;
+  }
+
+  usedIdentifiers.add(candidate);
+  return candidate;
+};
 
 const reorderListByIndex = (
   list: ITreeItemData[],
@@ -243,21 +295,17 @@ const findByIdentity = (
 
 const cloneTreeItemForDuplicate = (
   item: ITreeItemData,
-  sequence: { current: number }
+  usedIdentifiers: Set<string>
 ): ITreeItemData => {
-  const nextSequence = sequence.current;
-  sequence.current += 1;
-  const nextId = `${item.id}-copy-${nextSequence}`;
-  const nextClientId = item.clientId
-    ? `${item.clientId}-copy-${nextSequence}`
-    : undefined;
+  const nextClientId = generateUniqueClientId(usedIdentifiers);
+  const nextId = generateUniqueTempId(usedIdentifiers, nextClientId);
 
   return {
     ...item,
     id: nextId,
     clientId: nextClientId,
     children: item.children?.map((child) =>
-      cloneTreeItemForDuplicate(child, sequence)
+      cloneTreeItemForDuplicate(child, usedIdentifiers)
     ),
   };
 };
@@ -378,8 +426,11 @@ export const duplicateTreeItemData = (
     return null;
   }
 
-  const sequence = { current: 1 };
-  const duplicatedItem = cloneTreeItemForDuplicate(located.item, sequence);
+  const usedIdentifiers = collectUsedIdentifiers(items);
+  const duplicatedItem = cloneTreeItemForDuplicate(
+    located.item,
+    usedIdentifiers
+  );
   const targetParentId =
     parameters.parentId === undefined ? located.parentId : parameters.parentId;
   const targetIndex =

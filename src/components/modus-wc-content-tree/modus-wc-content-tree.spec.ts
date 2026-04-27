@@ -9,6 +9,55 @@ import { ModusWcTreeItem } from './modus-wc-tree-item/modus-wc-tree-item';
 import { ModusWcTreeView } from './modus-wc-tree-view/modus-wc-tree-view';
 
 describe('modus-wc-content-tree', () => {
+  it('duplicateTreeItemData generates collision-safe identities across repeated duplicates', () => {
+    const items: ITreeItemData[] = [
+      {
+        id: 'documents',
+        clientId: 'documents-node',
+        label: 'Documents',
+      },
+    ];
+
+    const firstDuplicate = treeUtils.duplicateTreeItemData(items, {
+      itemId: 'documents-node',
+    });
+    expect(firstDuplicate).not.toBeNull();
+
+    const secondDuplicate = treeUtils.duplicateTreeItemData(firstDuplicate!, {
+      itemId: 'documents-node',
+    });
+    expect(secondDuplicate).not.toBeNull();
+
+    const nextItems = secondDuplicate!;
+    const ids = nextItems.map((item) => item.id);
+    const clientIds = nextItems.map((item) => item.clientId);
+
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(new Set(clientIds).size).toBe(clientIds.length);
+    expect(clientIds.every((value) => typeof value === 'string')).toBe(true);
+  });
+
+  it('duplicateTreeItemData assigns a new clientId when duplicating an item', () => {
+    const items: ITreeItemData[] = [
+      {
+        id: 'documents',
+        clientId: 'documents-node',
+        label: 'Documents',
+      },
+    ];
+
+    const duplicated = treeUtils.duplicateTreeItemData(items, {
+      itemId: 'documents-node',
+    });
+
+    expect(duplicated).not.toBeNull();
+    expect(duplicated).toHaveLength(2);
+    expect(duplicated?.[1].clientId).toBeTruthy();
+    expect(duplicated?.[1].clientId).not.toBe(items[0].clientId);
+    expect(duplicated?.[1].id).toContain('temp-');
+    expect(duplicated?.[1].id).not.toBe(items[0].id);
+  });
+
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree],
@@ -679,8 +728,8 @@ describe('modus-wc-content-tree', () => {
 
     // Set items to enable data-driven mode
     instance.items = [
-      { id: 'item1', label: 'Item 1' },
-      { id: 'item2', label: 'Item 2' },
+      { id: 'item1', clientId: 'item1-client', label: 'Item 1' },
+      { id: 'item2', clientId: 'item2-client', label: 'Item 2' },
     ];
     await page.waitForChanges();
 
@@ -746,8 +795,8 @@ describe('modus-wc-content-tree', () => {
 
     // Set items to enable data-driven mode
     instance.items = [
-      { id: 'item1', label: 'Item 1' },
-      { id: 'item2', label: 'Item 2' },
+      { id: 'item1', clientId: 'item1-client', label: 'Item 1' },
+      { id: 'item2', clientId: 'item2-client', label: 'Item 2' },
     ];
     await page.waitForChanges();
 
@@ -755,7 +804,7 @@ describe('modus-wc-content-tree', () => {
 
     const eventDetail = {
       parameters: {
-        itemId: 'item1',
+        itemId: 'item1-client',
         oldPosition: { parentId: null, index: 0 },
         newPosition: { parentId: null, index: 1 },
       },
@@ -991,7 +1040,7 @@ describe('modus-wc-content-tree', () => {
     expect(startIcon?.getAttribute('name')).toBe('folder');
   });
 
-  it('should resolve identity from clientId when present and fallback to id', async () => {
+  it('should resolve identity from clientId for all data-driven items', async () => {
     const page = await newSpecPage({
       components: [ModusWcContentTree, ModusWcTreeView, ModusWcTreeItem],
       html: `<modus-wc-content-tree></modus-wc-content-tree>`,
@@ -1005,7 +1054,12 @@ describe('modus-wc-content-tree', () => {
         label: 'Client ID Item',
         hasChildren: true,
       },
-      { id: 'item-2', label: 'ID Fallback Item', hasChildren: true },
+      {
+        id: 'item-2',
+        clientId: 'client-item-2',
+        label: 'Client ID Item 2',
+        hasChildren: true,
+      },
     ];
     await page.waitForChanges();
 
@@ -1014,13 +1068,13 @@ describe('modus-wc-content-tree', () => {
       bubbles: true,
       composed: true,
     });
-    const idFallbackExpandEvent = new CustomEvent('itemExpand', {
-      detail: 'item-2',
+    const secondClientIdentityExpandEvent = new CustomEvent('itemExpand', {
+      detail: 'client-item-2',
       bubbles: true,
       composed: true,
     });
     page.root!.dispatchEvent(clientIdentityExpandEvent);
-    page.root!.dispatchEvent(idFallbackExpandEvent);
+    page.root!.dispatchEvent(secondClientIdentityExpandEvent);
     await page.waitForChanges();
 
     const renderedItems = page.root!.querySelectorAll('modus-wc-tree-item');
@@ -1032,7 +1086,7 @@ describe('modus-wc-content-tree', () => {
     expect(clientIdentityItem.lazyLoading).toBe(true);
 
     expect(idFallbackItem).toBeTruthy();
-    expect(idFallbackItem.value).toBe('item-2');
+    expect(idFallbackItem.value).toBe('client-item-2');
     expect(idFallbackItem.lazyLoading).toBe(true);
 
     expect(renderedItems.length).toBe(2);
@@ -1046,8 +1100,8 @@ describe('modus-wc-content-tree', () => {
 
     const instance = page.rootInstance;
     instance.items = [
-      { id: 'item-a', label: 'Item A' },
-      { id: 'item-b', label: 'Item B' },
+      { id: 'item-a', clientId: 'item-a-client', label: 'Item A' },
+      { id: 'item-b', clientId: 'item-b-client', label: 'Item B' },
     ];
     await page.waitForChanges();
 
@@ -1068,9 +1122,9 @@ describe('modus-wc-content-tree', () => {
     expect(selectedIdentity.selected).toBe(true);
 
     instance.items = [
-      { id: 'item-new', label: 'New Item Above' },
-      { id: 'item-a', label: 'Item A' },
-      { id: 'item-b', label: 'Item B' },
+      { id: 'item-new', clientId: 'item-new-client', label: 'New Item Above' },
+      { id: 'item-a', clientId: 'item-a-client', label: 'Item A' },
+      { id: 'item-b', clientId: 'item-b-client', label: 'Item B' },
     ];
     await page.waitForChanges();
 
@@ -1078,7 +1132,7 @@ describe('modus-wc-content-tree', () => {
       page.root!.querySelectorAll('modus-wc-tree-item')
     ) as ITreeItemElement[];
     const selectedAfterInsert = updatedItems.find(
-      (item) => item.value === 'item-b'
+      (item) => item.value === 'item-b-client'
     );
 
     expect(selectedAfterInsert).toBeTruthy();
@@ -1096,7 +1150,7 @@ describe('modus-wc-content-tree', () => {
       dataDriveSelectedValues: string[];
     };
 
-    instance.items = [{ id: 'row-a', label: 'A' }];
+    instance.items = [{ id: 'row-a', clientId: 'row-a-client', label: 'A' }];
     await page.waitForChanges();
 
     const row = page.root!.querySelector(
@@ -1111,13 +1165,13 @@ describe('modus-wc-content-tree', () => {
     );
     await page.waitForChanges();
 
-    expect(internal.dataDriveSelectedValues).toEqual(['row-a']);
+    expect(internal.dataDriveSelectedValues).toEqual(['row-a-client']);
 
     instance.items = [];
     await page.waitForChanges();
     expect(internal.dataDriveSelectedValues).toEqual([]);
 
-    instance.items = [{ id: 'row-b', label: 'B' }];
+    instance.items = [{ id: 'row-b', clientId: 'row-b-client', label: 'B' }];
     await page.waitForChanges();
     const rowB = page.root!.querySelector(
       'modus-wc-tree-item'
@@ -1130,7 +1184,7 @@ describe('modus-wc-content-tree', () => {
       })
     );
     await page.waitForChanges();
-    expect(internal.dataDriveSelectedValues).toEqual(['row-b']);
+    expect(internal.dataDriveSelectedValues).toEqual(['row-b-client']);
 
     instance.items = undefined as unknown as typeof instance.items;
     await page.waitForChanges();
@@ -1220,8 +1274,8 @@ describe('modus-wc-content-tree', () => {
 
     const instance = page.rootInstance;
     instance.items = [
-      { id: 'first', label: 'First' },
-      { id: 'second', label: 'Second' },
+      { id: 'first', clientId: 'first-client', label: 'First' },
+      { id: 'second', clientId: 'second-client', label: 'Second' },
     ];
     await page.waitForChanges();
 
@@ -1229,7 +1283,7 @@ describe('modus-wc-content-tree', () => {
       dataDriveSelectedValues: string[];
       syncDataDriveSelection(): void;
     };
-    internal.dataDriveSelectedValues = ['second'];
+    internal.dataDriveSelectedValues = ['second-client'];
 
     internal.syncDataDriveSelection();
 
@@ -1252,12 +1306,12 @@ describe('modus-wc-content-tree', () => {
       syncDataDriveSelection(): void;
     };
     instance.items = [
-      { id: 'first', label: 'First' },
-      { id: 'second', label: 'Second' },
+      { id: 'first', clientId: 'first-client', label: 'First' },
+      { id: 'second', clientId: 'second-client', label: 'Second' },
     ];
     await page.waitForChanges();
 
-    instance.selectedValues = ['first'];
+    instance.selectedValues = ['first-client'];
     instance.syncDataDriveSelection();
 
     const rows = Array.from(
@@ -1279,7 +1333,7 @@ describe('modus-wc-content-tree', () => {
       isSelectionControlled?: boolean;
       syncDataDriveSelection(): void;
     };
-    instance.items = [{ id: 'only', label: 'Only' }];
+    instance.items = [{ id: 'only', clientId: 'only-client', label: 'Only' }];
     await page.waitForChanges();
 
     const row = page.root!.querySelector(
@@ -1346,8 +1400,13 @@ describe('modus-wc-content-tree', () => {
 
     const instance = page.rootInstance;
     instance.items = [
-      { id: 'cb', label: 'Checkbox row', checkbox: true },
-      { id: 'plain', label: 'Plain row' },
+      {
+        id: 'cb',
+        clientId: 'cb-client',
+        label: 'Checkbox row',
+        checkbox: true,
+      },
+      { id: 'plain', clientId: 'plain-client', label: 'Plain row' },
     ];
     await page.waitForChanges();
 
@@ -1355,7 +1414,7 @@ describe('modus-wc-content-tree', () => {
       dataDriveSelectedValues: string[];
       syncDataDriveSelection(): void;
     };
-    internal.dataDriveSelectedValues = ['cb', 'plain'];
+    internal.dataDriveSelectedValues = ['cb-client', 'plain-client'];
 
     internal.syncDataDriveSelection();
 

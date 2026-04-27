@@ -1064,7 +1064,7 @@ const mockData = {
   ],
 };
 
-const getIdentity = (item) => item.clientId ?? item.id;
+const getIdentity = (item) => item.clientId;
 
 const tree = document.querySelector('modus-wc-content-tree');
 tree.items = initialItems;
@@ -1159,8 +1159,7 @@ tree.addEventListener('itemExpand', async (event) => {
       ],
     };
 
-    const getIdentity = (item: ITreeItemData): string =>
-      item.clientId ?? item.id;
+    const getIdentity = (item: ITreeItemData): string => item.clientId;
 
     const findItem = (
       items: ITreeItemData[],
@@ -1484,7 +1483,7 @@ The controlled flows above apply to data-driven mode. Slot-based mode is intenti
 \`\`\`typescript
 interface ITreeItemData {
   id: string;                // Backend/persistent identifier
-  clientId?: string;         // Optional stable client-generated identifier (for example UUID)
+  clientId: string;          // Stable client-generated identifier (for example UUID)
   label: string;
   checkbox?: boolean;
   startIcon?: string;

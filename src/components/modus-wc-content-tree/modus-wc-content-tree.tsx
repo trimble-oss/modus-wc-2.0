@@ -198,7 +198,7 @@ export class ModusWcContentTree {
   }
 
   private getItemIdentity(item: ITreeItemData): string {
-    return item.clientId ?? item.id;
+    return item.clientId;
   }
 
   private applyItemsReorderingState(): void {
