@@ -94,7 +94,6 @@ export const config: Config = {
     reactOutputTarget({
       customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',
-      hydrateModule: '@trimble-oss/moduswebcomponents/hydrate',
     }),
     vueOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
