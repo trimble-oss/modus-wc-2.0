@@ -1039,23 +1039,36 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-table',
         propsMapper: (v: TableStoryArgs, el: HTMLElement) => {
           const tableEl = el as unknown as {
+            caption: string;
             columns: ITableColumn[];
+            currentPage: number;
             data: Record<string, unknown>[];
             customClass: string;
             density: string;
+            editable: boolean;
             hover: boolean;
             paginated: boolean;
+            pageSizeOptions: number[];
             selectable: string;
+            selectedRowIds: string[];
+            showPageSizeSelector: boolean;
             sortable: boolean;
             zebra: boolean;
           };
+          tableEl.caption = v.caption ?? '';
           tableEl.columns = v.columns ?? createDemoColumns();
+          tableEl.currentPage = v['current-page'] ?? 1;
           tableEl.data = v.data ?? createDemoData();
           tableEl.customClass = v['custom-class'] || '';
           tableEl.density = v.density ?? 'comfortable';
+          tableEl.editable = Boolean(v.editable);
           tableEl.hover = Boolean(v.hover);
           tableEl.paginated = Boolean(v.paginated);
+          tableEl.pageSizeOptions = v['page-size-options'] ?? [5, 10, 15];
           tableEl.selectable = v.selectable ?? 'none';
+          tableEl.selectedRowIds = v['selected-row-ids'] ?? [];
+          tableEl.showPageSizeSelector =
+            v['show-page-size-selector'] !== false;
           tableEl.sortable = Boolean(v.sortable);
           tableEl.zebra = Boolean(v.zebra);
         },
