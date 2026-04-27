@@ -42,13 +42,13 @@ body {
   `auto` so the layout reflows naturally and the gutter disappears.
 */
 :root:has(
-    :is(
-      .modus-wc-modal-open,
-      .modus-wc-modal:target,
-      .modus-wc-modal-toggle:checked + .modus-wc-modal,
-      .modus-wc-modal[open]
-    )
-  ) {
+  :is(
+    .modus-wc-modal-open,
+    .modus-wc-modal:target,
+    .modus-wc-modal-toggle:checked + .modus-wc-modal,
+    .modus-wc-modal[open]
+  )
+) {
   scrollbar-gutter: auto !important;
 }
 
