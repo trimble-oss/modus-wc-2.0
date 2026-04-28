@@ -3647,6 +3647,10 @@
             },
             {
               "kind": "method",
+              "name": "onLogoPropsChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],

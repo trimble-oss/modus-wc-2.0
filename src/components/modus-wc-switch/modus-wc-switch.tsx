@@ -52,7 +52,7 @@ export class ModusWcSwitch {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' = 'md';
 
   /** The value of the switch. */
   @Prop({ mutable: true, reflect: true }) value: boolean = false;

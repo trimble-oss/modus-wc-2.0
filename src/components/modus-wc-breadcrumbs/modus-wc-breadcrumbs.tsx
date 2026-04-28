@@ -9,7 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-breadcrumbs.tailwind';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 
 export interface IBreadcrumb {
   /** The text to render in the breadcrumb. */
@@ -71,7 +71,7 @@ export class ModusWcBreadcrumbs {
   }
 
   private handleClick(event: MouseEvent, crumb: IBreadcrumb) {
-    if (!crumb.url) {
+    if (!sanitizeUrl(crumb.url)) {
       event.preventDefault();
     }
     this.breadcrumbClick.emit(crumb);
@@ -84,6 +84,7 @@ export class ModusWcBreadcrumbs {
           <ol>
             {this.items.map((item, index) => {
               const isCurrentPage = index === this.items.length - 1;
+              const sanitizedUrl = sanitizeUrl(item.url);
 
               return (
                 <li
@@ -92,13 +93,21 @@ export class ModusWcBreadcrumbs {
                 >
                   {isCurrentPage ? (
                     <span>{item.label}</span>
-                  ) : (
+                  ) : sanitizedUrl ? (
                     <a
-                      href={item.url}
+                      href={sanitizedUrl}
                       onClick={(event) => this.handleClick(event, item)}
                     >
                       {item.label}
                     </a>
+                  ) : (
+                    <button
+                      class="modus-wc-breadcrumb-button"
+                      type="button"
+                      onClick={(event) => this.handleClick(event, item)}
+                    >
+                      {item.label}
+                    </button>
                   )}
                 </li>
               );
