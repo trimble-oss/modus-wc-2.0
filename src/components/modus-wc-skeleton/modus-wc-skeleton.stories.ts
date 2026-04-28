@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface SkeletonArgs {
   'custom-class'?: string;
@@ -106,5 +107,32 @@ export const Composed: Story = {
   <modus-wc-skeleton height="8rem"></modus-wc-skeleton>
 </div>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('skeleton-shadow-host')) {
+      const SkeletonShadowHost = createShadowHostClass<SkeletonArgs>({
+        componentTag: 'modus-wc-skeleton',
+        propsMapper: (v: SkeletonArgs, el: HTMLElement) => {
+          const skeletonEl = el as unknown as {
+            customClass: string;
+            height: string;
+            shape: string;
+            width: string;
+          };
+          skeletonEl.customClass = v['custom-class'] || '';
+          skeletonEl.height = v.height ?? '1.5rem';
+          skeletonEl.shape = v.shape ?? 'rectangle';
+          skeletonEl.width = v.width ?? '100%';
+        },
+      });
+      customElements.define('skeleton-shadow-host', SkeletonShadowHost);
+    }
+
+    return html`<skeleton-shadow-host
+      .props=${{ ...args }}
+    ></skeleton-shadow-host>`;
   },
 };

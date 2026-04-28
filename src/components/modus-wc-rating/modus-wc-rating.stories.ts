@@ -152,7 +152,6 @@ export const ShadowDomParent: Story = {
     ></rating-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

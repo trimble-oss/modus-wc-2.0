@@ -6,6 +6,7 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS } from './logo-constants';
 import { LOGO_SVGS } from './logo-svg-data';
@@ -48,6 +49,7 @@ export class ModusWcLogo {
   @Prop() alt?: string;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

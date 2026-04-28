@@ -295,3 +295,7 @@ export const MultipleHandlesNested: Story = {
     `;
   },
 };
+
+export const ShadowDomParent: Story = {
+  render: (args?: HandleArgs) => Template(args),
+};

@@ -7,8 +7,7 @@ on:
 jobs:
   qa-approval:
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]'
-    environment: qa-review # This creates the approval gate
+    environment: ${{ (github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.user.login != 'github-actions[bot]') && 'qa-review' || 'qa-review-bot-bypass' }}
     steps:
       - name: QA Approved
         run: echo "QA has approved this PR"

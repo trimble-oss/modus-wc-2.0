@@ -56,7 +56,7 @@ modus-wc-date {
     background: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
     height: 327px;
     overflow: hidden;
     position: fixed;
@@ -94,7 +94,7 @@ modus-wc-date {
         gap: var(--modus-wc-spacing-xs);
 
         select {
-          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
           color: var(--modus-wc-color-base-content);
         }
 
