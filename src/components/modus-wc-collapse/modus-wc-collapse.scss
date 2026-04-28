@@ -110,7 +110,10 @@ modus-wc-collapse .modus-wc-collapse {
     }
   }
 
-  &.no-leading-icons > .modus-wc-collapse-title,
+  &.no-leading-icons > .modus-wc-collapse-title {
+    padding-inline-start: 16px;
+  }
+
   &.no-leading-icons > .modus-wc-collapse-description {
     padding-inline-start: var(--modus-wc-spacing-md);
   }

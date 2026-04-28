@@ -169,7 +169,7 @@ export const WithCustomClickableHeader = {
   ?expanded=${args.expanded}
   id="123"
 >
-  <div slot="header" class="modus-wc-collapse-title" id="123">
+  <div slot="header" id="123">
     <div class="clickable-div">
       <modus-wc-button id="button1" @buttonClick=${handleButtonClick}>Alert 1</modus-wc-button>
       <modus-wc-button id="button2" @buttonClick=${handleButtonClick}>Alert 2</modus-wc-button>
