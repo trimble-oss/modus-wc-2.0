@@ -1,22 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
-import { IAppMenuSection, ModusWcAppMenu } from './modus-wc-app-menu';
-import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { IAppMenuItem, ModusWcAppMenu } from './modus-wc-app-menu';
 import { AppName } from '../types';
+import * as keyboardUtils from './utils/app-menu-keyboard';
 
 describe('modus-wc-app-menu', () => {
-  const mockSections: IAppMenuSection[] = [
-    {
-      title: 'Construction',
-      subtitle: 'Project management tools',
-      items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-    },
-    {
-      title: 'Design',
-      subtitle: 'Design tools',
-      items: [{ appName: 'sketchup' }, { appName: 'tekla' }],
-    },
+  const mockApps: IAppMenuItem[] = [
+    { appName: 'connect' },
+    { appName: 'viewpoint' },
+    { appName: 'sketchup' },
+    { appName: 'tekla' },
   ];
 
   it('should render with default props', async () => {
@@ -28,12 +22,12 @@ describe('modus-wc-app-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with sections in list layout', async () => {
+  it('should render with apps in list layout', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -41,12 +35,12 @@ describe('modus-wc-app-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render with sections in grid layout', async () => {
+  it('should render with apps in grid layout', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -59,7 +53,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -83,7 +77,7 @@ describe('modus-wc-app-menu', () => {
       template: () =>
         h('modus-wc-app-menu', {
           customClass: 'my-custom-class',
-          sections: mockSections,
+          apps: mockApps,
         }),
     });
 
@@ -93,7 +87,7 @@ describe('modus-wc-app-menu', () => {
   it('should render header with "Trimble apps" title when not in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const headerTitle = page.root?.querySelector(
@@ -105,7 +99,7 @@ describe('modus-wc-app-menu', () => {
   it('should render header with "Edit" title when in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -121,7 +115,7 @@ describe('modus-wc-app-menu', () => {
   it('should render edit button when not in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const editButton = page.root?.querySelector(
@@ -137,7 +131,7 @@ describe('modus-wc-app-menu', () => {
   it('should render done and cancel buttons when in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -162,35 +156,14 @@ describe('modus-wc-app-menu', () => {
     expect(cancelButton?.getAttribute('color')).toBe('tertiary');
   });
 
-  it('should render with empty sections', async () => {
+  it('should render with empty apps', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: [], layout: 'list' }),
+      template: () => h('modus-wc-app-menu', { apps: [], layout: 'list' }),
     });
 
-    const sectionElements = page.root?.querySelectorAll('.app-menu-section');
-    expect(sectionElements?.length).toBe(0);
-  });
-
-  it('should render sections without title and subtitle', async () => {
-    const sectionsNoTitle: IAppMenuSection[] = [
-      { items: [{ appName: 'connect' }] },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: sectionsNoTitle,
-          layout: 'list',
-        }),
-    });
-
-    const typographies = page.root?.querySelectorAll(
-      '.submenu-title-container modus-wc-typography'
-    );
-    expect(typographies?.[0]?.getAttribute('label')).toBe('');
-    expect(typographies?.[1]?.getAttribute('label')).toBe('');
+    const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
+    expect(menuItems?.length).toBe(0);
   });
 
   it('should render with inherited aria attributes', async () => {
@@ -199,35 +172,11 @@ describe('modus-wc-app-menu', () => {
       template: () =>
         h('modus-wc-app-menu', {
           'aria-label': 'App menu',
-          sections: mockSections,
+          apps: mockApps,
         }),
     });
 
     expect(page.root?.getAttribute('aria-label')).toBe('App menu');
-  });
-
-  it('should render list layout with section titles and subtitles', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: mockSections,
-          layout: 'list',
-        }),
-    });
-
-    const sections = page.root?.querySelectorAll('.app-menu-section');
-    expect(sections?.length).toBe(2);
-
-    const firstSectionTitle = sections?.[0]?.querySelector(
-      '.submenu-title-container modus-wc-typography'
-    );
-    expect(firstSectionTitle?.getAttribute('label')).toBe('Construction');
-
-    const secondSectionTitle = sections?.[1]?.querySelector(
-      '.submenu-title-container modus-wc-typography'
-    );
-    expect(secondSectionTitle?.getAttribute('label')).toBe('Design');
   });
 
   it('should render list layout with menu items and logos', async () => {
@@ -235,7 +184,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -249,12 +198,12 @@ describe('modus-wc-app-menu', () => {
     expect(logos?.[1]?.getAttribute('name')).toBe('viewpoint');
   });
 
-  it('should render grid layout with all items flattened', async () => {
+  it('should render grid layout with all items', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -271,7 +220,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -287,7 +236,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -305,7 +254,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -336,7 +285,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -367,7 +316,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -382,18 +331,13 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should fall back to raw appName when displayName is not found', async () => {
-    const unknownSections: IAppMenuSection[] = [
-      {
-        title: 'Unknown',
-        items: [{ appName: 'unknown_app' as AppName }],
-      },
-    ];
+    const unknownApps: IAppMenuItem[] = [{ appName: 'unknown_app' as AppName }];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: unknownSections,
+          apps: unknownApps,
           layout: 'list',
         }),
     });
@@ -407,7 +351,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -427,35 +371,12 @@ describe('modus-wc-app-menu', () => {
     });
   });
 
-  it('should set an accessible name on list layout drag handle buttons in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu, ModusWcButton],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: mockSections,
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const handleButtons = page.root?.querySelectorAll(
-      '.app-menu-item-row modus-wc-button button'
-    );
-    expect(handleButtons?.length).toBe(4);
-    handleButtons?.forEach((btn) => {
-      expect(btn.getAttribute('aria-label')).toBe('Reorder');
-    });
-  });
-
   it('should not show drag indicators in list layout when not in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -471,7 +392,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -491,10 +412,10 @@ describe('modus-wc-app-menu', () => {
     });
   });
 
-  it('should enter edit mode and save previous sections when handleEdit is called', async () => {
+  it('should enter edit mode when handleEdit is called', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -502,27 +423,35 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(true);
-    expect(component.previousSections).toEqual(mockSections);
   });
 
-  it('should enter edit mode safely when sections is nullish', async () => {
+  it('should auto-focus the first item when entering edit mode', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', {}),
+      template: () =>
+        h('modus-wc-app-menu', { apps: mockApps, layout: 'list' }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    component.sections = null as unknown as undefined;
+    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+    (component as any).handleEdit();
+    await page.waitForChanges();
 
-    expect(() => (component as any).handleEdit()).not.toThrow();
-    expect(component.isEditMode).toBe(true);
-    expect(component.previousSections).toEqual([]);
+    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 0);
+    focusSpy.mockRestore();
+    globalThis.requestAnimationFrame = origRaf;
   });
 
   it('should exit edit mode and emit itemsOrderChange when handleDone is called', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const orderChangeSpy = jest.fn();
@@ -537,15 +466,15 @@ describe('modus-wc-app-menu', () => {
 
     expect(component.isEditMode).toBe(false);
     expect(orderChangeSpy).toHaveBeenCalledTimes(1);
-    expect(orderChangeSpy.mock.calls[0][0].detail).toEqual(mockSections);
+    expect(orderChangeSpy.mock.calls[0][0].detail).toEqual(mockApps);
   });
 
-  it('should exit edit mode and restore sections when handleCancel is called', async () => {
+  it('should exit edit mode when handleCancel is called', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -553,29 +482,16 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    const originalSections = JSON.parse(
-      JSON.stringify(component.previousSections)
-    );
-
-    component.sections = [
-      {
-        title: 'Modified',
-        items: [{ appName: 'connect' }],
-      },
-    ];
-    await page.waitForChanges();
-
     (component as any).handleCancel();
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
-    expect(component.sections).toEqual(originalSections);
   });
 
   it('should set draggedItemPos when handleDragStart is called in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -587,21 +503,21 @@ describe('modus-wc-app-menu', () => {
       value: { effectAllowed: '' },
     });
 
-    (component as any).handleDragStart(mockDragEvent, 0, 1);
+    (component as any).handleDragStart(mockDragEvent, 1);
 
-    expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 1 });
+    expect(component.draggedItemPos).toEqual({ appIndex: 1 });
   });
 
   it('should not set draggedItemPos when handleDragStart is called outside edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
     const mockDragEvent = new Event('dragstart') as DragEvent;
 
-    (component as any).handleDragStart(mockDragEvent, 0, 1);
+    (component as any).handleDragStart(mockDragEvent, 1);
 
     expect(component.draggedItemPos).toBeNull();
   });
@@ -609,7 +525,7 @@ describe('modus-wc-app-menu', () => {
   it('should prevent default on drag over when in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -629,7 +545,7 @@ describe('modus-wc-app-menu', () => {
   it('should not prevent default on drag over when not in edit mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -644,22 +560,17 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should move item to target position when handleDrop is called', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
         }),
     });
 
@@ -667,18 +578,18 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.draggedItemPos = { appIndex: 0 };
 
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     jest.spyOn(mockDragEvent, 'preventDefault');
     jest.spyOn(mockDragEvent, 'stopPropagation');
 
-    (component as any).handleDrop(mockDragEvent, 0, 2);
+    (component as any).handleDrop(mockDragEvent, 2);
     await page.waitForChanges();
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('tekla');
-    expect(component.sections?.[0].items[2].appName).toBe('connect');
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('tekla');
+    expect(component.apps?.[2].appName).toBe('connect');
     expect(component.draggedItemPos).toBeNull();
   });
 
@@ -687,17 +598,17 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalSections = JSON.parse(JSON.stringify(component.sections));
+    const originalApps = JSON.parse(JSON.stringify(component.apps));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    (component as any).handleDrop(mockDragEvent, 0, 1);
+    (component as any).handleDrop(mockDragEvent, 1);
 
-    expect(component.sections).toEqual(originalSections);
+    expect(component.apps).toEqual(originalApps);
   });
 
   it('should not move item when handleDrop is called with null draggedItemPos', async () => {
@@ -705,7 +616,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -713,31 +624,26 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    const originalSections = JSON.parse(JSON.stringify(component.sections));
+    const originalApps = JSON.parse(JSON.stringify(component.apps));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
-    (component as any).handleDrop(mockDragEvent, 0, 1);
+    (component as any).handleDrop(mockDragEvent, 1);
 
-    expect(component.sections).toEqual(originalSections);
+    expect(component.apps).toEqual(originalApps);
   });
 
-  it('should move item between sections when handleDrop is called across sections', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }],
-      },
-      {
-        title: 'Section 2',
-        items: [{ appName: 'sketchup' }, { appName: 'tekla' }],
-      },
+  it('should swap items when handleContainerDrop is called', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
         }),
     });
 
@@ -745,55 +651,14 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
-
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-    jest.spyOn(mockDragEvent, 'preventDefault');
-    jest.spyOn(mockDragEvent, 'stopPropagation');
-
-    (component as any).handleDrop(mockDragEvent, 1, 1);
-    await page.waitForChanges();
-
-    expect(component.sections?.[0].items.length).toBe(0);
-    expect(component.sections?.[1].items.length).toBe(3);
-    expect(component.sections?.[1].items[1].appName).toBe('connect');
-  });
-
-  it('should append item to end of section when handleContainerDrop is called', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
-      {
-        title: 'Section 2',
-        items: [{ appName: 'sketchup' }],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.draggedItemPos = { appIndex: 0 };
 
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     jest.spyOn(mockDragEvent, 'preventDefault');
 
-    (component as any).handleContainerDrop(mockDragEvent, 1);
+    (component as any).handleContainerDrop(mockDragEvent, 2);
     await page.waitForChanges();
 
-    expect(component.sections?.[0].items.length).toBe(1);
-    expect(component.sections?.[1].items.length).toBe(2);
-    expect(component.sections?.[1].items[1].appName).toBe('connect');
     expect(component.draggedItemPos).toBeNull();
   });
 
@@ -802,17 +667,17 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalSections = JSON.parse(JSON.stringify(component.sections));
+    const originalApps = JSON.parse(JSON.stringify(component.apps));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
     (component as any).handleContainerDrop(mockDragEvent, 0);
 
-    expect(component.sections).toEqual(originalSections);
+    expect(component.apps).toEqual(originalApps);
   });
 
   it('should not move item when handleContainerDrop is called with null draggedItemPos', async () => {
@@ -820,7 +685,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -828,18 +693,18 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    const originalSections = JSON.parse(JSON.stringify(component.sections));
+    const originalApps = JSON.parse(JSON.stringify(component.apps));
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
 
     (component as any).handleContainerDrop(mockDragEvent, 0);
 
-    expect(component.sections).toEqual(originalSections);
+    expect(component.apps).toEqual(originalApps);
   });
 
   it('should set dataTransfer.effectAllowed to move on drag start', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -852,7 +717,7 @@ describe('modus-wc-app-menu', () => {
       value: dataTransfer,
     });
 
-    (component as any).handleDragStart(mockDragEvent, 0, 0);
+    (component as any).handleDragStart(mockDragEvent, 0);
 
     expect(dataTransfer.effectAllowed).toBe('move');
   });
@@ -860,7 +725,7 @@ describe('modus-wc-app-menu', () => {
   it('should handle drag start when dataTransfer is null', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -870,9 +735,9 @@ describe('modus-wc-app-menu', () => {
     const mockDragEvent = new Event('dragstart') as DragEvent;
     Object.defineProperty(mockDragEvent, 'dataTransfer', { value: null });
 
-    (component as any).handleDragStart(mockDragEvent, 0, 0);
+    (component as any).handleDragStart(mockDragEvent, 0);
 
-    expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should render menu items as draggable in edit mode for list layout', async () => {
@@ -880,7 +745,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -900,7 +765,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -915,40 +780,29 @@ describe('modus-wc-app-menu', () => {
     });
   });
 
-  it('should render with single section', async () => {
-    const singleSection: IAppMenuSection[] = [
-      {
-        title: 'Only Section',
-        subtitle: 'Single section subtitle',
-        items: [{ appName: 'connect' }],
-      },
-    ];
+  it('should render with single app item', async () => {
+    const singleApp: IAppMenuItem[] = [{ appName: 'connect' }];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: singleSection,
+          apps: singleApp,
           layout: 'list',
         }),
     });
-
-    const sections = page.root?.querySelectorAll('.app-menu-section');
-    expect(sections?.length).toBe(1);
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBe(1);
     expect(menuItems?.[0]?.getAttribute('label')).toBe('Trimble Connect');
   });
 
-  it('should render empty grid when sections have no items', async () => {
-    const emptySections: IAppMenuSection[] = [{ title: 'Empty', items: [] }];
-
+  it('should render empty grid when apps is empty', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: emptySections,
+          apps: [],
           layout: 'grid',
         }),
     });
@@ -962,7 +816,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -979,7 +833,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -994,7 +848,7 @@ describe('modus-wc-app-menu', () => {
   it('should wrap content in modus-wc-panel', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const panel = page.root?.querySelector('modus-wc-panel');
@@ -1004,7 +858,7 @@ describe('modus-wc-app-menu', () => {
   it('should render menu header inside panel body slot', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const bodySlot = page.root?.querySelector('[slot="body"]');
@@ -1016,7 +870,7 @@ describe('modus-wc-app-menu', () => {
   it('should render header-end-content container', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const headerEndContent = page.root?.querySelector('.header-end-content');
@@ -1026,7 +880,7 @@ describe('modus-wc-app-menu', () => {
   it('should enter edit mode when edit button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const editButton = page.root?.querySelector(
@@ -1042,7 +896,7 @@ describe('modus-wc-app-menu', () => {
   it('should exit edit mode when Done button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
@@ -1070,7 +924,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -1095,7 +949,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1104,8 +958,8 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
-    const firstItem = menuItems?.[0] as HTMLElement;
+    const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
+    const firstItem = itemRows?.[0] as HTMLElement;
 
     const dragStartEvent = new Event('dragstart', {
       bubbles: true,
@@ -1114,7 +968,7 @@ describe('modus-wc-app-menu', () => {
       value: { effectAllowed: '' },
     });
     firstItem?.dispatchEvent(dragStartEvent);
-    expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
 
     const dragOverEvent = new Event('dragover', {
       bubbles: true,
@@ -1122,7 +976,7 @@ describe('modus-wc-app-menu', () => {
     }) as DragEvent;
     firstItem?.dispatchEvent(dragOverEvent);
 
-    const secondItem = menuItems?.[1] as HTMLElement;
+    const secondItem = itemRows?.[1] as HTMLElement;
     const dropEvent = new Event('drop', {
       bubbles: true,
       cancelable: true,
@@ -1135,7 +989,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1144,7 +998,7 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.draggedItemPos = { appIndex: 0 };
 
     const container = page.root?.querySelector(
       '.app-menu-items'
@@ -1168,7 +1022,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -1187,7 +1041,7 @@ describe('modus-wc-app-menu', () => {
       value: { effectAllowed: '' },
     });
     firstItem?.dispatchEvent(dragStartEvent);
-    expect(component.draggedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
 
     const dragOverEvent = new Event('dragover', {
       bubbles: true,
@@ -1208,7 +1062,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -1217,7 +1071,7 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.draggedItemPos = { appIndex: 0 };
 
     const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
 
@@ -1234,38 +1088,12 @@ describe('modus-wc-app-menu', () => {
     gridMenu?.dispatchEvent(dropEvent);
   });
 
-  it('should use fallback section index 0 when grid container drop fires without draggedItemPos', async () => {
+  it('should handle apps prop being undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = null;
-
-    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
-    const dropEvent = new Event('drop', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
-    gridMenu?.dispatchEvent(dropEvent);
-
-    expect(component.draggedItemPos).toBeNull();
-  });
-
-  it('should handle sections prop being undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: undefined,
+          apps: undefined,
           layout: 'list',
         }),
     });
@@ -1273,93 +1101,17 @@ describe('modus-wc-app-menu', () => {
     expect(page.root).not.toBeNull();
   });
 
-  it('should handle sections prop being undefined in grid layout', async () => {
+  it('should handle apps prop being undefined in grid layout', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: undefined,
+          apps: undefined,
           layout: 'grid',
         }),
     });
 
     expect(page.root).not.toBeNull();
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    expect(gridItems?.length).toBe(0);
-  });
-
-  it('should fail gracefully when handleDrop runs after sections becomes nullish', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.sections = null as unknown as undefined;
-
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-    const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
-    const stopPropagationSpy = jest.spyOn(mockDragEvent, 'stopPropagation');
-
-    expect(() =>
-      (component as any).handleDrop(mockDragEvent, 0, 0)
-    ).not.toThrow();
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(stopPropagationSpy).toHaveBeenCalled();
-    expect(component.draggedItemPos).toBeNull();
-  });
-
-  it('should fail gracefully when handleContainerDrop runs after sections becomes nullish', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { sections: mockSections }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.sections = null as unknown as undefined;
-
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-    const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
-
-    expect(() =>
-      (component as any).handleContainerDrop(mockDragEvent, 0)
-    ).not.toThrow();
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(component.draggedItemPos).toBeNull();
-  });
-
-  it('should render list layout when sections is null at render time', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { layout: 'list' }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.sections = null as unknown as undefined;
-    await page.waitForChanges();
-
-    const sections = page.root?.querySelectorAll('.app-menu-section');
-    expect(sections?.length).toBe(0);
-  });
-
-  it('should render grid layout when sections is null at render time', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { layout: 'grid' }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.sections = null as unknown as undefined;
-    await page.waitForChanges();
-
     const gridItems = page.root?.querySelectorAll('.grid-item');
     expect(gridItems?.length).toBe(0);
   });
@@ -1369,7 +1121,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1383,9 +1135,9 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(spaceEvent, 0, 0);
+    (component as any).handleKeyDown(spaceEvent, 0);
 
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should drop a grabbed item on Enter key', async () => {
@@ -1393,7 +1145,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1402,34 +1154,29 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const enterEvent = new KeyboardEvent('keydown', {
       key: 'Enter',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(enterEvent, 0, 0);
+    (component as any).handleKeyDown(enterEvent, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
-  it('should move a grabbed item down on ArrowDown key', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+  it('should move a grabbed item down on ArrowDown key in list layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'list',
         }),
     });
@@ -1438,36 +1185,31 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
+    (component as any).handleKeyDown(arrowDownEvent, 0);
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 1 });
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 1 });
   });
 
-  it('should move a grabbed item up on ArrowUp key', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+  it('should move a grabbed item up on ArrowUp key in list layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'list',
         }),
     });
@@ -1476,17 +1218,17 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
+    component.grabbedItemPos = { appIndex: 1 };
     const arrowUpEvent = new KeyboardEvent('keydown', {
       key: 'ArrowUp',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowUpEvent, 0, 1);
+    (component as any).handleKeyDown(arrowUpEvent, 1);
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should cancel grab on Escape key', async () => {
@@ -1494,7 +1236,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1503,30 +1245,28 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const escapeEvent = new KeyboardEvent('keydown', {
       key: 'Escape',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(escapeEvent, 0, 0);
+    (component as any).handleKeyDown(escapeEvent, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
-  it('should not move item beyond section boundaries', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
+  it('should not move item beyond array boundaries', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'list',
         }),
     });
@@ -1535,16 +1275,16 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const arrowUpEvent = new KeyboardEvent('keydown', {
       key: 'ArrowUp',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowUpEvent, 0, 0);
+    (component as any).handleKeyDown(arrowUpEvent, 0);
 
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should not handle keyboard events when not in edit mode', async () => {
@@ -1552,7 +1292,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1563,17 +1303,17 @@ describe('modus-wc-app-menu', () => {
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(spaceEvent, 0, 0);
+    (component as any).handleKeyDown(spaceEvent, 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
-  it('should not move when arrow key pressed without grab', async () => {
+  it('should not reorder when arrow key pressed without grab', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1582,15 +1322,15 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    const originalSections = JSON.parse(JSON.stringify(component.sections));
+    const originalApps = JSON.parse(JSON.stringify(component.apps));
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
+    (component as any).handleKeyDown(arrowDownEvent, 0);
 
-    expect(component.sections).toEqual(originalSections);
+    expect(component.apps).toEqual(originalApps);
     expect(component.grabbedItemPos).toBeNull();
   });
 
@@ -1599,7 +1339,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -1607,7 +1347,7 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     (component as any).handleDone();
     await page.waitForChanges();
 
@@ -1619,7 +1359,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
         }),
     });
 
@@ -1627,7 +1367,7 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     (component as any).handleCancel();
     await page.waitForChanges();
 
@@ -1639,7 +1379,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -1648,7 +1388,7 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
 
     const firstRow = page.root?.querySelector('.app-menu-item-row');
@@ -1660,7 +1400,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'list',
         }),
     });
@@ -1680,7 +1420,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: mockSections,
+          apps: mockApps,
           layout: 'grid',
         }),
     });
@@ -1696,22 +1436,17 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should move a grabbed item right on ArrowRight key in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1720,36 +1455,31 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const arrowRightEvent = new KeyboardEvent('keydown', {
       key: 'ArrowRight',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowRightEvent, 0, 0);
+    (component as any).handleKeyDown(arrowRightEvent, 0);
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 1 });
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 1 });
   });
 
   it('should move a grabbed item left on ArrowLeft key in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1758,32 +1488,30 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
+    component.grabbedItemPos = { appIndex: 1 };
     const arrowLeftEvent = new KeyboardEvent('keydown', {
       key: 'ArrowLeft',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowLeftEvent, 0, 1);
+    (component as any).handleKeyDown(arrowLeftEvent, 1);
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should not move list items on ArrowLeft or ArrowRight key', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'list',
         }),
     });
@@ -1792,36 +1520,31 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const arrowRightEvent = new KeyboardEvent('keydown', {
       key: 'ArrowRight',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowRightEvent, 0, 0);
+    (component as any).handleKeyDown(arrowRightEvent, 0);
 
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
-  it('should route ArrowUp to moveGridItemByKeyboard in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-        ],
-      },
+  it('should route ArrowUp to reorderByKeyboard in grid layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1830,39 +1553,31 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 3 };
+    component.grabbedItemPos = { appIndex: 3 };
     const arrowUpEvent = new KeyboardEvent('keydown', {
       key: 'ArrowUp',
       cancelable: true,
       bubbles: true,
     });
     const preventDefaultSpy = jest.spyOn(arrowUpEvent, 'preventDefault');
-    (component as any).handleKeyDown(arrowUpEvent, 0, 3);
+    (component as any).handleKeyDown(arrowUpEvent, 3);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.sections?.[0].items[3].appName).toBe('sketchup');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 3 });
   });
 
-  it('should route ArrowDown to moveGridItemByKeyboard in grid layout', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-        ],
-      },
+  it('should route ArrowDown to reorderByKeyboard in grid layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1871,41 +1586,33 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       cancelable: true,
       bubbles: true,
     });
     const preventDefaultSpy = jest.spyOn(arrowDownEvent, 'preventDefault');
-    (component as any).handleKeyDown(arrowDownEvent, 0, 0);
+    (component as any).handleKeyDown(arrowDownEvent, 0);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.sections?.[0].items[3].appName).toBe('sketchup');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
   });
 
-  it('should move grid item by column count on ArrowDown via moveGridItemByKeyboard', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-          { appName: 'earthworks' },
-          { appName: 'siteworks' },
-        ],
-      },
+  it('should move grid item by offset via reorderByKeyboard', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
+      { appName: 'earthworks' },
+      { appName: 'siteworks' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1914,36 +1621,31 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    (component as any).moveGridItemByKeyboard(3);
+    component.grabbedItemPos = { appIndex: 0 };
+    (component as any).reorderByKeyboard(0, 3);
 
-    expect(component.sections?.[0].items[0].appName).toBe('viewpoint');
-    expect(component.sections?.[0].items[1].appName).toBe('tekla');
-    expect(component.sections?.[0].items[2].appName).toBe('sketchup');
-    expect(component.sections?.[0].items[3].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 3 });
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('tekla');
+    expect(component.apps?.[2].appName).toBe('sketchup');
+    expect(component.apps?.[3].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 3 });
   });
 
-  it('should move grid item up by column count via moveGridItemByKeyboard', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-          { appName: 'earthworks' },
-          { appName: 'siteworks' },
-        ],
-      },
+  it('should move grid item up by offset via reorderByKeyboard', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
+      { appName: 'earthworks' },
+      { appName: 'siteworks' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1952,31 +1654,26 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 3 };
-    (component as any).moveGridItemByKeyboard(-3);
+    component.grabbedItemPos = { appIndex: 3 };
+    (component as any).reorderByKeyboard(3, -3);
 
-    expect(component.sections?.[0].items[0].appName).toBe('sketchup');
-    expect(component.sections?.[0].items[3].appName).toBe('tekla');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('sketchup');
+    expect(component.apps?.[3].appName).toBe('tekla');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
-  it('should not move grid item beyond boundaries via moveGridItemByKeyboard', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
+  it('should not move grid item beyond boundaries via reorderByKeyboard', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -1985,72 +1682,19 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    (component as any).moveGridItemByKeyboard(-3);
+    component.grabbedItemPos = { appIndex: 0 };
+    (component as any).reorderByKeyboard(0, -3);
 
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.apps?.[0].appName).toBe('connect');
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
-  it('should move grid item across sections via moveGridItemByKeyboard', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-        ],
-      },
-      {
-        title: 'Section 2',
-        items: [
-          { appName: 'sketchup' },
-          { appName: 'earthworks' },
-          { appName: 'siteworks' },
-        ],
-      },
-    ];
-
+  it('should not move item beyond end of list', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    (component as any).moveGridItemByKeyboard(3);
-
-    expect(component.sections?.[0].items.length).toBe(3);
-    expect(component.sections?.[1].items.length).toBe(3);
-    expect(component.sections?.[1].items[0].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 1, itemIdx: 0 });
-  });
-
-  it('should move item to next section when at end of current section', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
-      {
-        title: 'Section 2',
-        items: [{ appName: 'sketchup' }, { appName: 'tekla' }],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -2059,135 +1703,16 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 1 };
+    const lastIdx = (component.apps?.length ?? 1) - 1;
+    component.grabbedItemPos = { appIndex: lastIdx };
     const arrowDownEvent = new KeyboardEvent('keydown', {
       key: 'ArrowDown',
       cancelable: true,
       bubbles: true,
     });
-    (component as any).handleKeyDown(arrowDownEvent, 0, 1);
+    (component as any).handleKeyDown(arrowDownEvent, lastIdx);
 
-    expect(component.sections?.[0].items.length).toBe(1);
-    expect(component.sections?.[0].items[0].appName).toBe('connect');
-    expect(component.sections?.[1].items.length).toBe(3);
-    expect(component.sections?.[1].items[0].appName).toBe('viewpoint');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 1, itemIdx: 0 });
-  });
-
-  it('should move item to previous section when at start of current section', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
-      {
-        title: 'Section 2',
-        items: [{ appName: 'sketchup' }, { appName: 'tekla' }],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 1, itemIdx: 0 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 1, 0);
-
-    expect(component.sections?.[0].items.length).toBe(3);
-    expect(component.sections?.[0].items[2].appName).toBe('sketchup');
-    expect(component.sections?.[1].items.length).toBe(1);
-    expect(component.sections?.[1].items[0].appName).toBe('tekla');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 2 });
-  });
-
-  it('should not move item beyond last section boundary', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const lastSectionIdx = (component.sections?.length ?? 1) - 1;
-    const lastItemIdx =
-      (component.sections?.[lastSectionIdx]?.items.length ?? 1) - 1;
-
-    component.grabbedItemPos = {
-      sectionIdx: lastSectionIdx,
-      itemIdx: lastItemIdx,
-    };
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(
-      arrowDownEvent,
-      lastSectionIdx,
-      lastItemIdx
-    );
-
-    expect(component.grabbedItemPos).toEqual({
-      sectionIdx: lastSectionIdx,
-      itemIdx: lastItemIdx,
-    });
-  });
-
-  it('should move grid item grabbed from second section via moveGridItemByKeyboard', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
-      {
-        title: 'Section 2',
-        items: [
-          { appName: 'sketchup' },
-          { appName: 'tekla' },
-          { appName: 'earthworks' },
-        ],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 1, itemIdx: 1 };
-    (component as any).moveGridItemByKeyboard(-1);
-
-    expect(component.sections?.[1].items[0].appName).toBe('tekla');
-    expect(component.sections?.[1].items[1].appName).toBe('sketchup');
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 1, itemIdx: 0 });
+    expect(component.grabbedItemPos).toEqual({ appIndex: lastIdx });
   });
 
   it('should focus item after keyboard move via requestAnimationFrame in list layout', async () => {
@@ -2197,18 +1722,16 @@ describe('modus-wc-app-menu', () => {
       return 0;
     }) as unknown as typeof globalThis.requestAnimationFrame;
 
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'list',
         }),
     });
@@ -2217,57 +1740,13 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     (component as any).handleKeyDown(
       new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }),
-      0,
       0
     );
 
     expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
-    globalThis.requestAnimationFrame = origRaf;
-  });
-
-  it('should focus item after cross-section move via requestAnimationFrame', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
-
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }],
-      },
-      {
-        title: 'Section 2',
-        items: [{ appName: 'viewpoint' }],
-      },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    (component as any).handleKeyDown(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }),
-      0,
-      0
-    );
-
-    expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 1, itemIdx: 0 });
     globalThis.requestAnimationFrame = origRaf;
   });
 
@@ -2278,18 +1757,16 @@ describe('modus-wc-app-menu', () => {
       return 0;
     }) as unknown as typeof globalThis.requestAnimationFrame;
 
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }, { appName: 'viewpoint' }],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
@@ -2298,8 +1775,8 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    (component as any).moveGridItemByKeyboard(1);
+    component.grabbedItemPos = { appIndex: 0 };
+    (component as any).reorderByKeyboard(0, 1);
 
     expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
     globalThis.requestAnimationFrame = origRaf;
@@ -2310,7 +1787,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -2329,7 +1806,7 @@ describe('modus-wc-app-menu', () => {
     });
     firstRow?.dispatchEvent(spaceEvent);
 
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should trigger handleKeyDown on grid item via DOM keydown event', async () => {
@@ -2337,7 +1814,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -2354,32 +1831,26 @@ describe('modus-wc-app-menu', () => {
     });
     firstGridItem?.dispatchEvent(spaceEvent);
 
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should calculate grid column count based on offsetTop of items', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [
-          { appName: 'connect' },
-          { appName: 'viewpoint' },
-          { appName: 'tekla' },
-          { appName: 'sketchup' },
-        ],
-      },
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
     ];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
     const gridItems = page.root?.querySelectorAll('.grid-item');
 
     if (gridItems && gridItems.length >= 4) {
@@ -2389,29 +1860,23 @@ describe('modus-wc-app-menu', () => {
       Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
     }
 
-    const colCount = (component as any).getGridColumnCount();
+    const colCount = keyboardUtils.getGridColumnCount(page.root as HTMLElement);
     expect(colCount).toBe(2);
   });
 
   it('should return 1 from getGridColumnCount when grid has zero or one item', async () => {
-    const sections: IAppMenuSection[] = [
-      {
-        title: 'Section 1',
-        items: [{ appName: 'connect' }],
-      },
-    ];
+    const apps: IAppMenuItem[] = [{ appName: 'connect' }];
 
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(sections)),
+          apps: JSON.parse(JSON.stringify(apps)),
           layout: 'grid',
         }),
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    expect((component as any).getGridColumnCount()).toBe(1);
+    expect(keyboardUtils.getGridColumnCount(page.root as HTMLElement)).toBe(1);
   });
 
   it('should not move list item when grabbedItemPos is null', async () => {
@@ -2419,7 +1884,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -2429,27 +1894,13 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     component.grabbedItemPos = null;
-    (component as any).moveListItemByKeyboard(-1);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should not move list item when section is invalid', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      cancelable: true,
+      bubbles: true,
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 99, itemIdx: 0 };
-    (component as any).moveListItemByKeyboard(-1);
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 99, itemIdx: 0 });
+    (component as any).handleKeyDown(arrowUpEvent, 0);
+    expect(component.apps?.[0].appName).toBe('connect');
   });
 
   it('should not move grid item when grabbedItemPos is null', async () => {
@@ -2457,7 +1908,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -2467,16 +1918,21 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     component.grabbedItemPos = null;
-    (component as any).moveGridItemByKeyboard(1);
-    expect(component.grabbedItemPos).toBeNull();
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowDownEvent, 0);
+    expect(component.apps?.[0].appName).toBe('connect');
   });
 
-  it('should handle focusItemAt when target element does not exist', async () => {
+  it('should handle focusAppMenuItem when target element does not exist', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
@@ -2485,7 +1941,9 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    expect(() => (component as any).focusItemAt(99, 99)).not.toThrow();
+    expect(() =>
+      keyboardUtils.focusAppMenuItem(page.root as HTMLElement, 'list', 99)
+    ).not.toThrow();
   });
 
   it('should return false from isGrabbed when grabbedItemPos is null', async () => {
@@ -2493,22 +1951,37 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'list',
         }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
     component.grabbedItemPos = null;
-    expect((component as any).isGrabbed(0, 0)).toBe(false);
+    expect((component as any).isGrabbed(0)).toBe(false);
   });
 
-  it('should handle focusItemAt for grid layout', async () => {
+  it('should return false from isGrabbed when appIndex does not match', async () => {
     const page = await newSpecPage({
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.grabbedItemPos = { appIndex: 5 };
+    expect((component as any).isGrabbed(0)).toBe(false);
+  });
+
+  it('should handle focusAppMenuItem for grid layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -2517,80 +1990,19 @@ describe('modus-wc-app-menu', () => {
     (component as any).handleEdit();
     await page.waitForChanges();
 
-    expect(() => (component as any).focusItemAt(0, 0)).not.toThrow();
+    expect(() =>
+      keyboardUtils.focusAppMenuItem(page.root as HTMLElement, 'grid', 0)
+    ).not.toThrow();
   });
 
-  it('should handle moveListItemByKeyboard when sections is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.sections = undefined;
-    (component as any).moveListItemByKeyboard(-1);
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
+  it('should handle reorderListItem when apps is empty', () => {
+    const result = keyboardUtils.reorderListItem([], 0, -1);
+    expect(result).toBeNull();
   });
 
-  it('should handle moveGridItemByKeyboard when sections is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
-    component.sections = undefined;
-    (component as any).moveGridItemByKeyboard(1);
-    expect(component.grabbedItemPos).toEqual({ sectionIdx: 0, itemIdx: 0 });
-  });
-
-  it('should handle focusItemAt when sections is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.sections = undefined;
-    expect(() => (component as any).focusItemAt(0, 0)).not.toThrow();
-  });
-
-  it('should return false from isGrabbed when sectionIdx matches but itemIdx does not', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 5 };
-    expect((component as any).isGrabbed(0, 0)).toBe(false);
+  it('should handle reorderGridItem when apps is empty', () => {
+    const result = keyboardUtils.reorderGridItem([], 0, 1);
+    expect(result).toBeNull();
   });
 
   it('should render grid items with correct aria attributes in non-edit mode', async () => {
@@ -2598,7 +2010,7 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
@@ -2613,14 +2025,14 @@ describe('modus-wc-app-menu', () => {
       components: [ModusWcAppMenu],
       template: () =>
         h('modus-wc-app-menu', {
-          sections: JSON.parse(JSON.stringify(mockSections)),
+          apps: JSON.parse(JSON.stringify(mockApps)),
           layout: 'grid',
         }),
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
     (component as any).handleEdit();
-    component.grabbedItemPos = { sectionIdx: 0, itemIdx: 0 };
+    component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
@@ -2629,5 +2041,401 @@ describe('modus-wc-app-menu', () => {
     expect(firstItem?.getAttribute('aria-roledescription')).toBe(
       'reorderable item'
     );
+  });
+
+  it('should set dropTargetIndex on handleDragEnter in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+
+    const mockDragEvent = new Event('dragenter', {
+      cancelable: true,
+    }) as DragEvent;
+    jest.spyOn(mockDragEvent, 'preventDefault');
+
+    (component as any).handleDragEnter(mockDragEvent, 2);
+
+    expect(component.dropTargetIndex).toBe(2);
+  });
+
+  it('should set dropTargetIndex to null when dragging over self', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 1 };
+
+    const mockDragEvent = new Event('dragenter', {
+      cancelable: true,
+    }) as DragEvent;
+    jest.spyOn(mockDragEvent, 'preventDefault');
+
+    (component as any).handleDragEnter(mockDragEvent, 1);
+
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should clear draggedItemPos and dropTargetIndex on handleDragEnd', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () => h('modus-wc-app-menu', { apps: mockApps }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+    component.dropTargetIndex = 2;
+
+    (component as any).handleDragEnd();
+
+    expect(component.draggedItemPos).toBeNull();
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should render list items with role="option" in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: mockApps,
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    rows?.forEach((row) => {
+      expect(row.getAttribute('role')).toBe('option');
+      expect(row.getAttribute('aria-roledescription')).toBe('reorderable item');
+    });
+  });
+
+  it('should render grid-row with role="listbox" in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: mockApps,
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const gridRow = page.root?.querySelector('.grid-row');
+    expect(gridRow?.getAttribute('role')).toBe('listbox');
+  });
+
+  it('should render grid-row with role="list" when not in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: mockApps,
+          layout: 'grid',
+        }),
+    });
+
+    const gridRow = page.root?.querySelector('.grid-row');
+    expect(gridRow?.getAttribute('role')).toBe('list');
+  });
+
+  it('should navigate focus on ArrowDown without grab in list layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowDownEvent, 0);
+
+    expect(navSpy).toHaveBeenCalledWith(0, 1);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should navigate focus on ArrowUp without grab in list layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowUpEvent, 2);
+
+    expect(navSpy).toHaveBeenCalledWith(2, -1);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should navigate focus on ArrowRight without grab in grid layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowRightEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowRightEvent, 0);
+
+    expect(navSpy).toHaveBeenCalledWith(0, 1);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should navigate focus on ArrowLeft without grab in grid layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowLeftEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowLeftEvent, 2);
+
+    expect(navSpy).toHaveBeenCalledWith(2, -1);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should navigate focus on ArrowDown without grab in grid layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
+      { appName: 'earthworks' },
+      { appName: 'siteworks' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(apps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    if (gridItems && gridItems.length >= 6) {
+      Object.defineProperty(gridItems[0], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[1], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[2], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
+      Object.defineProperty(gridItems[4], 'offsetTop', { value: 100 });
+      Object.defineProperty(gridItems[5], 'offsetTop', { value: 100 });
+    }
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowDownEvent, 0);
+
+    expect(navSpy).toHaveBeenCalledWith(0, 3);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should navigate focus on ArrowUp without grab in grid layout', async () => {
+    const apps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+      { appName: 'sketchup' },
+      { appName: 'earthworks' },
+      { appName: 'siteworks' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(apps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    if (gridItems && gridItems.length >= 6) {
+      Object.defineProperty(gridItems[0], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[1], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[2], 'offsetTop', { value: 0 });
+      Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
+      Object.defineProperty(gridItems[4], 'offsetTop', { value: 100 });
+      Object.defineProperty(gridItems[5], 'offsetTop', { value: 100 });
+    }
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowUpEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowUpEvent, 3);
+
+    expect(navSpy).toHaveBeenCalledWith(3, -3);
+    expect(component.grabbedItemPos).toBeNull();
+  });
+
+  it('should not navigate focus beyond boundaries in list layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const targetIdx = keyboardUtils.getTargetFocusIndex(0, -1, mockApps.length);
+    expect(targetIdx).toBeNull();
+  });
+
+  it('should not navigate focus beyond boundaries in grid layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const targetIdx = keyboardUtils.getTargetFocusIndex(0, -1, mockApps.length);
+    expect(targetIdx).toBeNull();
+  });
+
+  it('should prevent default on arrow keys even without grab in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    const preventDefaultSpy = jest.spyOn(arrowDownEvent, 'preventDefault');
+    (component as any).handleKeyDown(arrowDownEvent, 0);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  it('should not call navigateFocusByKeyboard for ArrowLeft/ArrowRight in list layout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowRightEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowRightEvent, 0);
+
+    expect(navSpy).not.toHaveBeenCalled();
   });
 });

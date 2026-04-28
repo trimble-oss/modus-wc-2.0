@@ -1,17 +1,17 @@
 modus-wc-app-menu {
   .modus-wc-panel {
-    border-radius: var(--modus-wc-border-radius-box);
     box-shadow:
       0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -4px rgba(0, 0, 0, 0.1);
     gap: var(--modus-wc-spacing-lg);
-    padding: var(--modus-wc-spacing-lg, var(--modus-wc-font-size-lg));
 
     [slot='body'] {
       display: flex;
       flex-direction: column;
-      gap: var(--modus-wc-spacing-sm);
       overflow-y: auto;
+      padding: var(--modus-wc-spacing-lg, var(--modus-wc-font-size-lg));
+      padding-inline-end: 0;
+      scrollbar-gutter: stable;
     }
 
     .menu-header {
@@ -21,6 +21,7 @@ modus-wc-app-menu {
       display: flex;
       flex-wrap: wrap;
       gap: var(--modus-wc-spacing-sm);
+      min-height: var(--modus-wc-size-md);
       padding: 0 var(--modus-wc-spacing-lg);
 
       .header-title {
@@ -38,8 +39,7 @@ modus-wc-app-menu {
       }
     }
 
-    .app-menu-section {
-      border-bottom: 1px solid var(--modus-wc-color-base-200);
+    .modus-wc-menu {
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
     }
 
@@ -47,7 +47,8 @@ modus-wc-app-menu {
       padding: 0 var(--modus-wc-spacing-xs);
 
       li.modus-wc-menu-item-active,
-      .modus-wc-menu-item:hover {
+      .modus-wc-menu-item:hover,
+      .modus-wc-menu-item button:active {
         background-color: transparent;
         color: inherit;
       }
@@ -58,24 +59,10 @@ modus-wc-app-menu {
         margin-inline: calc(-1 * var(--modus-wc-spacing-xs));
         position: relative;
 
-        .modus-wc-btn {
-          align-items: center;
-          background-color: transparent;
-          bottom: 0;
-          display: flex;
-          height: var(--modus-wc-input-height-sm);
-          margin: auto 0;
-          margin-inline: calc(-1 * var(--modus-wc-spacing-xs));
-          padding-inline-end: var(--modus-wc-spacing-sm);
-          padding-inline-start: var(--modus-wc-spacing-sm);
+        .drag-icon {
+          color: var(--modus-wc-color-base-content);
           position: absolute;
-          top: 0;
-          width: var(--modus-wc-input-height-sm);
-          z-index: 1;
-
-          .drag-icon {
-            color: var(--modus-wc-color-base-content);
-          }
+          transform: translateX(-10%);
         }
 
         > modus-wc-menu-item {
@@ -115,12 +102,11 @@ modus-wc-app-menu {
     }
 
     .grid-row {
-      align-items: center;
       align-self: stretch;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
       gap: 0 var(--modus-wc-spacing-sm);
-      justify-content: center;
+      grid-template-columns: repeat(3, 1fr);
+      justify-items: center;
     }
 
     .grid-item {
@@ -130,7 +116,7 @@ modus-wc-app-menu {
       gap: var(--modus-wc-spacing-2xs);
       padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xs);
       position: relative;
-      width: 80px;
+      width: 100%;
 
       > modus-wc-icon {
         inset-inline-end: 0;
@@ -192,45 +178,10 @@ modus-wc-app-menu {
       opacity: 0.3;
     }
 
-    .empty-section-drop-zone {
-      min-height: 48px;
-    }
-
-    .app-menu-items.edit-mode {
-      padding-bottom: var(--modus-wc-spacing-lg);
-    }
-
-    .app-menu-item-row.drop-indicator::before {
-      background-color: var(--modus-wc-color-primary);
-      border-radius: 1px;
-      content: '';
-      height: 2px;
-      inset-inline: 0;
-      position: absolute;
-      top: -1px;
-      z-index: 2;
-    }
-
-    .app-menu-item-row.drop-indicator-end::after {
-      background-color: var(--modus-wc-color-primary);
-      border-radius: 1px;
-      bottom: -1px;
-      content: '';
-      height: 2px;
-      inset-inline: 0;
-      position: absolute;
-      z-index: 2;
-    }
-
-    .grid-item.drop-indicator::before {
-      background-color: var(--modus-wc-color-primary);
-      border-radius: 1px;
-      content: '';
-      inset-block: 0;
-      inset-inline-start: -1px;
-      position: absolute;
-      width: 2px;
-      z-index: 2;
+    .drop-target {
+      border-radius: var(--modus-wc-border-radius-sm);
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
     }
   }
 }
