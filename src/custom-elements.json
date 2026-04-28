@@ -3647,10 +3647,6 @@
             },
             {
               "kind": "method",
-              "name": "onLogoPropsChange"
-            },
-            {
-              "kind": "method",
               "name": "render"
             }
           ],
@@ -6173,7 +6169,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs'"
               }
             },
             {

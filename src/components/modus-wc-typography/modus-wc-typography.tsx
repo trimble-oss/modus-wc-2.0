@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   TypographyHierarchy,
   TypographySize,
@@ -46,6 +47,7 @@ export class ModusWCTypography {
   @Prop() weight?: TypographyWeight = 'normal';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
