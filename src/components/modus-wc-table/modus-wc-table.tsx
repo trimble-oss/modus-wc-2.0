@@ -19,6 +19,7 @@ import {
   Updater,
 } from '@tanstack/table-core';
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Density, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 import {
@@ -255,6 +256,7 @@ export class ModusWcTable {
   }
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
     }

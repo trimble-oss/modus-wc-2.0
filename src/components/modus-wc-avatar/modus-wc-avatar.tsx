@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -40,6 +41,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize = 'md';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

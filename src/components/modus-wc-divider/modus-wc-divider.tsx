@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-divider.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -43,6 +44,7 @@ export class ModusWcDivider {
   @Prop() responsive?: boolean = true;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

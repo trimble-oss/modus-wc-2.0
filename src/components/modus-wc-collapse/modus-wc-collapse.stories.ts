@@ -228,7 +228,6 @@ export const ShadowDomParent: Story = {
     ></collapse-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {
