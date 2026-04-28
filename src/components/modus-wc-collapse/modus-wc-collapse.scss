@@ -9,6 +9,7 @@ modus-wc-collapse details.modus-wc-collapse > summary {
 
 modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-base-100);
+  border-radius: 0;
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);
   margin-bottom: var(--modus-wc-spacing-md);
@@ -19,8 +20,8 @@ modus-wc-collapse .modus-wc-collapse {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
-    padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl)
-      var(--modus-wc-spacing-md) var(--modus-wc-spacing-3xl);
+    padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-3xl)
+      var(--modus-wc-spacing-lg) var(--modus-wc-spacing-3xl);
     position: relative;
     width: auto;
 
@@ -35,8 +36,12 @@ modus-wc-collapse .modus-wc-collapse {
   }
 
   .description {
-    font-size: var(--modus-wc-font-size-lg);
-    padding-inline-start: var(--modus-wc-spacing-lg);
+    font-size: var(--modus-wc-font-size-md);
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+
+  .modus-wc-collapse-content {
+    font-size: var(--modus-wc-font-size-md);
   }
 
   .modus-wc-title-main-content {
@@ -62,7 +67,6 @@ modus-wc-collapse .modus-wc-collapse {
   .modus-wc-title-end-content {
     align-items: center;
     display: inline-flex;
-    margin-inline-end: var(--modus-wc-spacing-sm);
   }
 
   .title-end-icon {
@@ -85,12 +89,12 @@ modus-wc-collapse .modus-wc-collapse {
     border: none;
     border-bottom: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-base-200);
-    border-radius: 0;
   }
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
     .modus-wc-collapse-content {
-      padding: var(--modus-wc-spacing-lg);
+      padding: var(--modus-wc-spacing-md);
+      padding-top: var(--modus-wc-spacing-sm);
     }
 
     .modus-wc-collapse-title {
@@ -108,13 +112,14 @@ modus-wc-collapse .modus-wc-collapse {
 
   &.no-leading-icons > .modus-wc-collapse-title,
   &.no-leading-icons > .modus-wc-collapse-description {
-    padding-inline-start: var(--modus-wc-spacing-lg);
+    padding-inline-start: var(--modus-wc-spacing-md);
   }
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-right
   > .modus-wc-collapse-title::after {
   top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-right.modus-wc-collapse-open
@@ -131,7 +136,7 @@ modus-wc-collapse .modus-wc-collapse {
   inset-inline-start: var(--modus-wc-spacing-lg);
   pointer-events: none;
   position: absolute;
-  top: 50%;
+  top: 44%;
   transform: translateY(-50%) rotate(45deg);
   transform-origin: 75% 75%;
   transition-duration: 0.2s;
@@ -142,6 +147,7 @@ modus-wc-collapse .modus-wc-collapse {
 
 .modus-wc-collapse-arrow.modus-wc-chevron-left.modus-wc-collapse-open
   > .modus-wc-collapse-title::before {
+  top: 50%;
   transform: translateY(-50%) rotate(225deg);
 }
 
@@ -152,7 +158,6 @@ modus-wc-collapse .modus-wc-collapse {
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
-  border-radius: var(--modus-wc-border-radius-md);
   margin-bottom: 0;
   margin-bottom: -1px;
 
@@ -176,10 +181,11 @@ modus-wc-collapse .modus-wc-collapse {
       var(--modus-wc-color-trimble-blue);
 
     .modus-wc-collapse-title {
+      background-color: var(--modus-wc-color-blue-pale);
       font-weight: var(--modus-wc-font-weight-normal);
+      padding-inline-start: var(--modus-wc-spacing-md);
     }
 
-    &.no-leading-icons .modus-wc-collapse-title,
     &.no-leading-icons .modus-wc-collapse-description {
       padding-inline-start: var(--modus-wc-spacing-lg);
     }
@@ -208,4 +214,15 @@ modus-wc-collapse .modus-wc-collapse {
 [data-theme='connect-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='connect-dark'] modus-wc-collapse .modus-wc-collapse {
   @include outline-styles;
+}
+
+[data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
+  color: var(--modus-wc-color-gray-light);
+
+  .modus-wc-collapse-title,
+  .description,
+  .modus-wc-collapse-content,
+  &.modus-wc-collapse-arrow.modus-wc-collapse-open .modus-wc-collapse-title {
+    color: var(--modus-wc-color-gray-light);
+  }
 }
