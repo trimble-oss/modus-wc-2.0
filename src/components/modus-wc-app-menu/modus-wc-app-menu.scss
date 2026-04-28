@@ -1,8 +1,8 @@
 modus-wc-app-menu {
   .modus-wc-panel {
     box-shadow:
-      0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
     gap: var(--modus-wc-spacing-lg);
 
     [slot='body'] {
@@ -159,8 +159,8 @@ modus-wc-app-menu {
 
       &:active {
         box-shadow:
-          0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -2px rgba(0, 0, 0, 0.1);
+          0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
         cursor: grabbing;
       }
     }
@@ -168,8 +168,8 @@ modus-wc-app-menu {
     .grabbed-item {
       background-color: var(--modus-wc-color-base-200);
       box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
       outline: 2px solid var(--modus-wc-color-primary);
       outline-offset: -2px;
     }

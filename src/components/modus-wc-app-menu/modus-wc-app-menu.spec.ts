@@ -2438,4 +2438,734 @@ describe('modus-wc-app-menu', () => {
 
     expect(navSpy).not.toHaveBeenCalled();
   });
+
+  it('should execute focusAppMenuItem inside navigateFocusByKeyboard callback', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    await page.waitForChanges();
+
+    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+    (component as any).navigateFocusByKeyboard(0, 1);
+
+    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 1);
+    focusSpy.mockRestore();
+    globalThis.requestAnimationFrame = origRaf;
+  });
+
+  it('should trigger onDragEnd on list item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+    component.dropTargetIndex = 1;
+
+    const firstRow = page.root?.querySelector(
+      '.app-menu-item-row'
+    ) as HTMLElement;
+    const dragEndEvent = new Event('dragend', {
+      cancelable: true,
+      bubbles: true,
+    });
+    firstRow?.dispatchEvent(dragEndEvent);
+
+    expect(component.draggedItemPos).toBeNull();
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should trigger onDragEnter on list item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+
+    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    const secondRow = rows?.[1] as HTMLElement;
+    const dragEnterEvent = new Event('dragenter', {
+      cancelable: true,
+      bubbles: true,
+    });
+    secondRow?.dispatchEvent(dragEnterEvent);
+
+    expect(component.dropTargetIndex).toBe(1);
+  });
+
+  it('should trigger onDragEnd on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+    component.dropTargetIndex = 1;
+
+    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
+    const dragEndEvent = new Event('dragend', {
+      cancelable: true,
+      bubbles: true,
+    });
+    firstGridItem?.dispatchEvent(dragEndEvent);
+
+    expect(component.draggedItemPos).toBeNull();
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should trigger onDragEnter on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const secondGridItem = gridItems?.[1] as HTMLElement;
+    const dragEnterEvent = new Event('dragenter', {
+      cancelable: true,
+      bubbles: true,
+    });
+    secondGridItem?.dispatchEvent(dragEnterEvent);
+
+    expect(component.dropTargetIndex).toBe(1);
+  });
+
+  it('should return null from getNavigationOffset for non-arrow keys', () => {
+    const result = keyboardUtils.getNavigationOffset('Tab', 'list', 3);
+    expect(result).toBeNull();
+  });
+
+  it('should return null from getNavigationOffset for ArrowLeft in list layout', () => {
+    const result = keyboardUtils.getNavigationOffset('ArrowLeft', 'list', 1);
+    expect(result).toBeNull();
+  });
+
+  it('should fallback to list layout when layout is undefined in handleEdit', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+    component.layout = undefined;
+    (component as any).handleEdit();
+
+    expect(component.isEditMode).toBe(true);
+    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 0);
+    focusSpy.mockRestore();
+    globalThis.requestAnimationFrame = origRaf;
+  });
+
+  it('should fallback to list layout when layout is undefined in handleKeyDown', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.layout = undefined;
+    await page.waitForChanges();
+
+    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+    const arrowDownEvent = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      cancelable: true,
+      bubbles: true,
+    });
+    (component as any).handleKeyDown(arrowDownEvent, 0);
+
+    expect(navSpy).toHaveBeenCalledWith(0, 1);
+  });
+
+  it('should fallback to list layout when layout is undefined in reorderByKeyboard', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.layout = undefined;
+    component.grabbedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    (component as any).reorderByKeyboard(0, 1);
+
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+    globalThis.requestAnimationFrame = origRaf;
+  });
+
+  it('should fallback to list layout when layout is undefined in navigateFocusByKeyboard', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.layout = undefined;
+    await page.waitForChanges();
+
+    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+    (component as any).navigateFocusByKeyboard(0, 1);
+
+    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 1);
+    focusSpy.mockRestore();
+    globalThis.requestAnimationFrame = origRaf;
+  });
+
+  it('should handle navigateFocusByKeyboard when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.apps = undefined;
+    await page.waitForChanges();
+
+    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+    (component as any).navigateFocusByKeyboard(0, 1);
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should handle reorderByKeyboard when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.apps = undefined;
+    component.grabbedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    (component as any).reorderByKeyboard(0, 1);
+
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should early return from handleDrop when movedItem is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 99 };
+    const mockEvent = {
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleDrop(mockEvent, 0);
+
+    expect(component.draggedItemPos).toEqual({ appIndex: 99 });
+  });
+
+  it('should early return from handleContainerDrop when movedItem is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+    const mockEvent = {
+      preventDefault: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleContainerDrop(mockEvent, 99);
+
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should handle handleDrop when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.apps = undefined;
+    component.draggedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    const mockEvent = {
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleDrop(mockEvent, 0);
+
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should handle handleContainerDrop when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.apps = undefined;
+    component.draggedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    const mockEvent = {
+      preventDefault: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleContainerDrop(mockEvent, 0);
+
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should early return from handleDragEnter when not in edit mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.draggedItemPos = { appIndex: 0 };
+
+    const mockEvent = {
+      preventDefault: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleDragEnter(mockEvent, 1);
+
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should early return from handleDragEnter when draggedItemPos is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).isEditMode = true;
+    component.draggedItemPos = null;
+
+    const mockEvent = {
+      preventDefault: jest.fn(),
+    } as unknown as DragEvent;
+    (component as any).handleDragEnter(mockEvent, 1);
+
+    expect(component.dropTargetIndex).toBeNull();
+  });
+
+  it('should handle handleCancel when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.apps = undefined;
+    (component as any).handleCancel();
+
+    expect(component.isEditMode).toBe(false);
+    expect(component.apps).toEqual([]);
+  });
+
+  it('should render grid layout with grabbed and drop-target classes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.grabbedItemPos = { appIndex: 0 };
+    component.dropTargetIndex = 1;
+    await page.waitForChanges();
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    expect(gridItems?.[0]?.classList.contains('grabbed-item')).toBe(true);
+    expect(gridItems?.[1]?.classList.contains('drop-target')).toBe(true);
+  });
+
+  it('should render list layout with grabbed and drop-target classes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.grabbedItemPos = { appIndex: 0 };
+    component.dropTargetIndex = 1;
+    await page.waitForChanges();
+
+    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    expect(rows?.[0]?.classList.contains('grabbed-item')).toBe(true);
+    expect(rows?.[1]?.classList.contains('drop-target')).toBe(true);
+  });
+
+  it('should trigger onDragOver on grid container via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
+    const dragOverEvent = new Event('dragover', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    gridMenu?.dispatchEvent(dragOverEvent);
+
+    expect(dragOverEvent.defaultPrevented).toBe(true);
+  });
+
+  it('should trigger onDrop on grid container via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 1 };
+    await page.waitForChanges();
+
+    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
+    const dropEvent = new Event('drop', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    gridMenu?.dispatchEvent(dropEvent);
+
+    expect(component.draggedItemPos).toBeNull();
+  });
+
+  it('should trigger onDragStart on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
+    const dragStartEvent = new Event('dragstart', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    firstGridItem?.dispatchEvent(dragStartEvent);
+
+    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should trigger onDragOver on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
+    const dragOverEvent = new Event('dragover', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    firstGridItem?.dispatchEvent(dragOverEvent);
+
+    expect(dragOverEvent.defaultPrevented).toBe(true);
+  });
+
+  it('should trigger onDrop on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const secondGridItem = gridItems?.[1] as HTMLElement;
+    const dropEvent = new Event('drop', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    secondGridItem?.dispatchEvent(dropEvent);
+
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
+  });
+
+  it('should handle onDrop on list container when draggedItemPos is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'list',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = null;
+
+    const container = page.root?.querySelector(
+      '.app-menu-items'
+    ) as HTMLElement;
+    const dropEvent = new Event('drop', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    container?.dispatchEvent(dropEvent);
+
+    expect(component.apps?.[0].appName).toBe('connect');
+  });
+
+  it('should render grid layout when apps is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.apps = undefined;
+    await page.waitForChanges();
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    expect(gridItems?.length).toBe(0);
+  });
+
+  it('should handle onDrop on grid container when draggedItemPos is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    component.draggedItemPos = null;
+
+    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
+    const dropEvent = new Event('drop', {
+      cancelable: true,
+      bubbles: true,
+    }) as DragEvent;
+    gridMenu?.dispatchEvent(dropEvent);
+
+    expect(component.apps?.[0].appName).toBe('connect');
+  });
+
+  it('should trigger onKeyDown on grid item via DOM event', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () =>
+        h('modus-wc-app-menu', {
+          apps: JSON.parse(JSON.stringify(mockApps)),
+          layout: 'grid',
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+
+    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
+    const spaceEvent = new KeyboardEvent('keydown', {
+      key: ' ',
+      cancelable: true,
+      bubbles: true,
+    });
+    firstGridItem?.dispatchEvent(spaceEvent);
+
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+  });
 });
