@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { getAvailableLogos, LogoName } from './logo-constants';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface LogoArgs {
   name: LogoName;
@@ -119,5 +120,30 @@ export const CustomSizeWithClass: Story = {
         </div>
       </div>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('logo-shadow-host')) {
+      const LogoShadowHost = createShadowHostClass<LogoArgs>({
+        componentTag: 'modus-wc-logo',
+        propsMapper: (v: LogoArgs, el: HTMLElement) => {
+          const logoEl = el as unknown as {
+            name: string;
+            emblem: boolean;
+            alt: string;
+            customClass: string;
+          };
+          logoEl.name = v.name;
+          logoEl.emblem = Boolean(v.emblem);
+          logoEl.alt = v.alt ?? '';
+          logoEl.customClass = v['custom-class'] || '';
+        },
+      });
+      customElements.define('logo-shadow-host', LogoShadowHost);
+    }
+
+    return html`<logo-shadow-host .props=${{ ...args }}></logo-shadow-host>`;
   },
 };

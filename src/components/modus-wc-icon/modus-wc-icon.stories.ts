@@ -134,7 +134,6 @@ export const ShadowDomParent: Story = {
     return html`<icon-shadow-host .props=${{ ...args }}></icon-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

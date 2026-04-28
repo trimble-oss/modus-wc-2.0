@@ -11,6 +11,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -61,6 +62,7 @@ export class ModusWcTooltip {
   @Event() dismissEscape!: EventEmitter;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

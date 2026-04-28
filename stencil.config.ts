@@ -55,6 +55,10 @@ export const config: Config = {
       ],
     },
     {
+      type: 'dist-hydrate-script',
+      dir: './dist/hydrate',
+    },
+    {
       type: 'docs-readme',
     },
     angularOutputTarget({
