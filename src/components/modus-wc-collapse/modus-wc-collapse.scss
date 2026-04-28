@@ -73,6 +73,8 @@ modus-wc-collapse .modus-wc-collapse {
     height: 24px;
     margin-inline-start: var(--modus-wc-spacing-sm);
     pointer-events: none;
+    position: relative;
+    top: 2px;
   }
 
   .title-start-icon {
@@ -110,6 +112,10 @@ modus-wc-collapse .modus-wc-collapse {
     }
   }
 
+  &.modus-wc-chevron-left > .modus-wc-collapse-title {
+    padding-inline-end: 16px;
+  }
+
   &.no-leading-icons > .modus-wc-collapse-title {
     padding-inline-start: 16px;
   }
@@ -117,17 +123,6 @@ modus-wc-collapse .modus-wc-collapse {
   &.no-leading-icons > .modus-wc-collapse-description {
     padding-inline-start: var(--modus-wc-spacing-md);
   }
-}
-
-.modus-wc-collapse-arrow.modus-wc-chevron-right
-  > .modus-wc-collapse-title::after {
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.modus-wc-collapse-arrow.modus-wc-chevron-right.modus-wc-collapse-open
-  > .modus-wc-collapse-title::after {
-  transform: translateY(-50%) rotate(225deg);
 }
 
 .modus-wc-collapse-arrow.modus-wc-chevron-left
@@ -161,6 +156,7 @@ modus-wc-collapse .modus-wc-collapse {
 
 [data-theme='modus-classic-light'] modus-wc-collapse .modus-wc-collapse,
 [data-theme='modus-classic-dark'] modus-wc-collapse .modus-wc-collapse {
+  border-radius: var(--modus-wc-border-radius-md);
   margin-bottom: 0;
   margin-bottom: -1px;
 
@@ -186,11 +182,10 @@ modus-wc-collapse .modus-wc-collapse {
     .modus-wc-collapse-title {
       background-color: var(--modus-wc-color-blue-pale);
       font-weight: var(--modus-wc-font-weight-normal);
-      padding-inline-start: var(--modus-wc-spacing-md);
     }
 
     &.no-leading-icons .modus-wc-collapse-description {
-      padding-inline-start: var(--modus-wc-spacing-lg);
+      padding-inline-start: var(--modus-wc-spacing-md);
     }
   }
 }
@@ -207,9 +202,17 @@ modus-wc-collapse .modus-wc-collapse {
     border-left: var(--modus-wc-spacing-xs) solid
       var(--modus-wc-color-highlight-blue);
 
+    .modus-wc-collapse-title {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
+
     &.no-leading-icons .modus-wc-collapse-title,
     &.no-leading-icons .modus-wc-collapse-description {
-      padding-inline-start: var(--modus-wc-spacing-lg);
+      padding-inline-start: var(--modus-wc-spacing-md);
     }
   }
 }
