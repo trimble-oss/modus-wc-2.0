@@ -200,7 +200,7 @@ modus-wc-collapse .modus-wc-collapse {
   color: inherit;
 
   .description {
-    color: var(--modus-wc-color-gray-light);
+    color: var(--modus-wc-color-base-inverted);
   }
 
   &.modus-wc-collapse-arrow.modus-wc-collapse-open {
@@ -220,12 +220,12 @@ modus-wc-collapse .modus-wc-collapse {
 }
 
 [data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
-  color: var(--modus-wc-color-gray-light);
+  color: var(--modus-wc-color-base-inverted);
 
   .modus-wc-collapse-title,
   .description,
   .modus-wc-collapse-content,
   &.modus-wc-collapse-arrow.modus-wc-collapse-open .modus-wc-collapse-title {
-    color: var(--modus-wc-color-gray-light);
+    color: var(--modus-wc-color-base-inverted);
   }
 }
