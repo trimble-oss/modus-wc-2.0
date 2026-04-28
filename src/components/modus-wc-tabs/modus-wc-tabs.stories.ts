@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ITab } from './modus-wc-tabs';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize } from '../types';
 
 interface TabsArgs {
@@ -364,6 +365,32 @@ export const TabsWithPanel: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('tabs-shadow-host')) {
+      const TabsShadowHost = createShadowHostClass<TabsArgs>({
+        componentTag: 'modus-wc-tabs',
+        propsMapper: (v: TabsArgs, el: HTMLElement) => {
+          const tabsEl = el as unknown as {
+            activeTabIndex: number;
+            customClass: string;
+            size: string;
+            tabs: ITab[];
+            tabStyle: string;
+          };
+          tabsEl.activeTabIndex = v.activeTabIndex ?? 0;
+          tabsEl.customClass = v['custom-class'] || '';
+          tabsEl.size = v.size ?? 'md';
+          tabsEl.tabs = v.tabs;
+          tabsEl.tabStyle = v['tab-style'] ?? 'bordered';
+        },
+      });
+      customElements.define('tabs-shadow-host', TabsShadowHost);
+    }
+
+    return html`<tabs-shadow-host .props=${{ ...args }}></tabs-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

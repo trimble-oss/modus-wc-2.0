@@ -205,7 +205,6 @@ export const ShadowDomParent: Story = {
     ></number-input-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

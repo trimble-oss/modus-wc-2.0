@@ -10,6 +10,7 @@ import {
   Event as StencilEvent,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -82,6 +83,7 @@ export class ModusWcFileDropzone {
   @StencilEvent() fileSelect!: EventEmitter<FileList>;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

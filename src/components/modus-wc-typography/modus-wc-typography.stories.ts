@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import {
   TypographyHierarchy,
   TypographySize,
@@ -133,5 +134,34 @@ export const WithSlot: Story = {
   This <u>text</u> is set using <em>slot</em>
 </modus-wc-typography>
   `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('typography-shadow-host')) {
+      const TypographyShadowHost = createShadowHostClass<TypographyArgs>({
+        componentTag: 'modus-wc-typography',
+        propsMapper: (v: TypographyArgs, el: HTMLElement) => {
+          const typographyEl = el as unknown as {
+            customClass: string;
+            hierarchy: string;
+            label: string;
+            size: string;
+            weight: string;
+          };
+          typographyEl.customClass = v['custom-class'] || '';
+          typographyEl.hierarchy = v.hierarchy;
+          typographyEl.label = v.label;
+          typographyEl.size = v.size ?? 'md';
+          typographyEl.weight = v.weight ?? 'normal';
+        },
+      });
+      customElements.define('typography-shadow-host', TypographyShadowHost);
+    }
+
+    return html`<typography-shadow-host
+      .props=${{ ...args }}
+    ></typography-shadow-host>`;
   },
 };
