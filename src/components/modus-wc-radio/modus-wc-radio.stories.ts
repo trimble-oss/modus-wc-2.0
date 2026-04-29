@@ -162,7 +162,6 @@ export const ShadowDomParent: Story = {
     return html`<radio-shadow-host .props=${{ ...args }}></radio-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

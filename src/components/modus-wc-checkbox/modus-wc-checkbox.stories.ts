@@ -108,7 +108,6 @@ export const ShadowDomParent: Story = {
     ></checkbox-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

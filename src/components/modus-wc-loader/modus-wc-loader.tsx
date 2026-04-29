@@ -1,5 +1,6 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-loader.tailwind';
+import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -48,6 +49,7 @@ export class ModusWcLoader {
   @Prop() variant: LoaderVariant = 'spinner';
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Loading';
     }

@@ -107,3 +107,89 @@ export const ThemeTest: Story = {
     },
   },
 };
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('theme-switcher-shadow-host')) {
+      class ThemeSwitcherShadowHost extends HTMLElement {
+        private sr: ShadowRoot;
+        private _props?: ThemeSwitcherArgs;
+        private themeObserver: MutationObserver | null = null;
+
+        constructor() {
+          super();
+          this.sr = this.attachShadow({ mode: 'open' });
+        }
+
+        connectedCallback() {
+          if (this.sr.childElementCount) return;
+
+          // Sync data-theme so CSS variables work inside shadow root
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'contents';
+          const syncTheme = () => {
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (theme) wrapper.setAttribute('data-theme', theme);
+          };
+          syncTheme();
+          this.themeObserver = new MutationObserver(syncTheme);
+          this.themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme'],
+          });
+
+          // Create provider + switcher together here (not in constructor) so
+          // provider connects first and initializes themeStore before the
+          // switcher reads themeStore.state.mode for its isDarkMode field
+          const provider = document.createElement(
+            'modus-wc-theme-provider'
+          ) as HTMLElement & {
+            initialTheme: { theme: string; mode: string };
+          };
+          provider.initialTheme = getCurrentTheme();
+
+          const switcher = document.createElement(
+            'modus-wc-theme-switcher'
+          ) as HTMLElement & { customClass: string };
+          switcher.setAttribute('aria-label', 'Theme toggle');
+
+          provider.appendChild(switcher);
+          wrapper.appendChild(provider);
+          this.sr.appendChild(wrapper);
+
+          if (this._props) this.applyProps();
+        }
+
+        disconnectedCallback() {
+          this.themeObserver?.disconnect();
+          this.themeObserver = null;
+        }
+
+        set props(v: ThemeSwitcherArgs) {
+          this._props = v;
+          this.applyProps();
+        }
+
+        get props(): ThemeSwitcherArgs | undefined {
+          return this._props;
+        }
+
+        private applyProps() {
+          const switcher = this.sr.querySelector('modus-wc-theme-switcher') as
+            | (HTMLElement & { customClass: string })
+            | null;
+          if (!switcher || !this._props) return;
+          switcher.customClass = this._props['custom-class'] || '';
+        }
+      }
+      customElements.define(
+        'theme-switcher-shadow-host',
+        ThemeSwitcherShadowHost
+      );
+    }
+
+    return html`<theme-switcher-shadow-host
+      .props=${{ ...args }}
+    ></theme-switcher-shadow-host>`;
+  },
+};

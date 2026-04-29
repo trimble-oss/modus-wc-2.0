@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IAriaLabelValues } from './modus-wc-pagination';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 const defaultLabelValues: IAriaLabelValues = {
   firstPage: 'First page',
@@ -98,6 +99,38 @@ export const Default: Story = {
   `,
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('pagination-shadow-host')) {
+      const PaginationShadowHost = createShadowHostClass<PaginationArgs>({
+        componentTag: 'modus-wc-pagination',
+        propsMapper: (v: PaginationArgs, el: HTMLElement) => {
+          const paginationEl = el as unknown as {
+            ariaLabelValues: IAriaLabelValues | undefined;
+            count: number;
+            customClass: string;
+            nextButtonText: string;
+            page: number;
+            prevButtonText: string;
+            size: string;
+          };
+          paginationEl.ariaLabelValues = v['aria-label-values'];
+          paginationEl.count = v.count;
+          paginationEl.customClass = v['custom-class'] || '';
+          paginationEl.nextButtonText = v['next-button-text'] ?? '';
+          paginationEl.page = v.page;
+          paginationEl.prevButtonText = v['prev-button-text'] ?? '';
+          paginationEl.size = v.size ?? 'md';
+        },
+      });
+      customElements.define('pagination-shadow-host', PaginationShadowHost);
+    }
+
+    return html`<pagination-shadow-host
+      .props=${{ ...args }}
+    ></pagination-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {
