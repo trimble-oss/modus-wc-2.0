@@ -65,16 +65,19 @@
     "./components/*.js": {
       "types": "./components/*.d.ts",
       "import": "./components/*.js",
+      "require": null,
       "default": "./components/*.js"
     },
     "./components/*": {
       "types": "./components/*.d.ts",
       "import": "./components/*.js",
+      "require": null,
       "default": "./components/*.js"
     },
     "./components": {
       "types": "./components/index.d.ts",
       "import": "./components/index.js",
+      "require": null,
       "default": "./components/index.js"
     },
     "./modus-wc-styles.css": "./modus-wc-styles.css",
