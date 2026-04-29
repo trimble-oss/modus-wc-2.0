@@ -158,6 +158,9 @@
       "@ts-morph/common": {
         "minimatch": "9.0.9"
       }
+    },
+    "@stencil/ssr": {
+      "vite": "^7.1.7"
     }
   },
   "optionalDependencies": {
