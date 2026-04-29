@@ -172,7 +172,7 @@ modus-wc-collapse .modus-wc-collapse {
   color: inherit;
 
   &.modus-wc-border {
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-2);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
   }
 
   .description {
@@ -199,7 +199,7 @@ modus-wc-collapse .modus-wc-collapse {
   color: inherit;
 
   &.modus-wc-border {
-    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-gray-8);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
   }
 
   .description {
@@ -234,7 +234,12 @@ modus-wc-collapse .modus-wc-collapse {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-collapse .modus-wc-collapse {
+  border-radius: 16px;
+}
+
 [data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
+  border-radius: 16px;
   color: var(--modus-wc-color-base-inverted);
 
   .modus-wc-collapse-title,
