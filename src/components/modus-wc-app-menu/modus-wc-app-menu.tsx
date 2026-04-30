@@ -61,26 +61,28 @@ export class ModusWcAppMenu {
 
   @State() grabbedItemPos: { appIndex: number } | null = null;
 
+  private appsSnapshot: IAppMenuItem[] | null = null;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   componentDidRender() {
-    this.updateGridTooltips();
+    requestAnimationFrame(() => this.updateGridTooltips());
   }
 
   private updateGridTooltips() {
-    const tooltips = this.el.querySelectorAll('.grid-item modus-wc-tooltip');
-    tooltips.forEach((tooltip) => {
-      const label = tooltip.querySelector(
-        '.grid-item-text-label'
-      ) as HTMLElement;
-      if (label) {
+    const gridItems = this.el.querySelectorAll('.grid-item');
+    gridItems.forEach((gridItem) => {
+      const tooltip = gridItem.querySelector('modus-wc-tooltip') as
+        | (HTMLElement & { disabled: boolean })
+        | null;
+      const label = gridItem.querySelector('.grid-item-text-label');
+      if (tooltip && label) {
         const isTruncated =
           label.scrollWidth > label.clientWidth ||
           label.scrollHeight > label.clientHeight;
-        (tooltip as HTMLElement & { disabled: boolean }).disabled =
-          !isTruncated;
+        tooltip.disabled = !isTruncated;
       }
     });
   }
@@ -95,6 +97,7 @@ export class ModusWcAppMenu {
   }
 
   private handleEdit() {
+    this.appsSnapshot = [...(this.apps ?? [])];
     this.isEditMode = true;
     const layout = this.layout ?? 'list';
     requestAnimationFrame(() => {
@@ -105,11 +108,15 @@ export class ModusWcAppMenu {
   private handleDone() {
     this.isEditMode = false;
     this.grabbedItemPos = null;
+    this.appsSnapshot = null;
     this.itemsOrderChange.emit(this.apps);
   }
 
   private handleCancel() {
-    this.apps = [...(this.apps ?? [])];
+    if (this.appsSnapshot) {
+      this.apps = this.appsSnapshot;
+    }
+    this.appsSnapshot = null;
     this.isEditMode = false;
     this.grabbedItemPos = null;
   }
@@ -189,6 +196,10 @@ export class ModusWcAppMenu {
     return this.grabbedItemPos?.appIndex === appIndex;
   }
 
+  private isDragSource(appIndex: number): boolean {
+    return this.draggedItemPos?.appIndex === appIndex;
+  }
+
   private handleDragStart(e: DragEvent, appIndex: number) {
     if (!this.isEditMode) return;
     this.draggedItemPos = { appIndex };
@@ -214,6 +225,14 @@ export class ModusWcAppMenu {
     this.dropTargetIndex = null;
   }
 
+  private handleDragLeave(e: DragEvent) {
+    const container = e.currentTarget as HTMLElement;
+    const related = e.relatedTarget as Node | null;
+    if (!related || !container.contains(related)) {
+      this.dropTargetIndex = null;
+    }
+  }
+
   private handleDrop(e: DragEvent, targetAppIndex: number) {
     if (!this.isEditMode || !this.draggedItemPos) return;
     e.preventDefault();
@@ -230,15 +249,15 @@ export class ModusWcAppMenu {
     this.dropTargetIndex = null;
   }
 
-  private handleContainerDrop(e: DragEvent, targetAppIndex: number) {
+  private handleContainerDrop(e: DragEvent) {
     if (!this.isEditMode || !this.draggedItemPos) return;
     e.preventDefault();
 
     const apps = [...(this.apps ?? [])];
     const { appIndex } = this.draggedItemPos;
-    const [movedItem] = apps.splice(targetAppIndex, 1);
+    const [movedItem] = apps.splice(appIndex, 1);
     if (!movedItem) return;
-    apps.splice(appIndex, 0, movedItem);
+    apps.push(movedItem);
     this.apps = apps;
 
     this.draggedItemPos = null;
@@ -251,18 +270,18 @@ export class ModusWcAppMenu {
     return (
       <div
         class="app-menu-items"
+        onDragLeave={(e) => this.handleDragLeave(e)}
         onDragOver={(e) => this.handleDragOver(e)}
-        onDrop={(e) =>
-          this.handleContainerDrop(e, this.draggedItemPos?.appIndex ?? 0)
-        }
+        onDrop={(e) => this.handleContainerDrop(e)}
       >
         <modus-wc-menu>
           {apps.map((app, appIndex) => (
             <div
+              key={app.appName}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
-              class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
+              class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
               draggable={this.isEditMode}
               onDragEnd={() => this.handleDragEnd()}
               onDragEnter={(e) => this.handleDragEnter(e, appIndex)}
@@ -301,19 +320,19 @@ export class ModusWcAppMenu {
     return (
       <div
         class="grid-menu"
+        onDragLeave={(e) => this.handleDragLeave(e)}
         onDragOver={(e) => this.handleDragOver(e)}
-        onDrop={(e) =>
-          this.handleContainerDrop(e, this.draggedItemPos?.appIndex ?? 0)
-        }
+        onDrop={(e) => this.handleContainerDrop(e)}
       >
         <div class="grid-row" role={this.isEditMode ? 'listbox' : 'list'}>
           {apps.map((app, appIndex) => (
             <div
+              key={app.appName}
               aria-label={this.getDisplayName(app.appName)}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
-              class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
+              class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
               draggable={this.isEditMode}
               onDragEnd={() => this.handleDragEnd()}
               onDragEnter={(e) => this.handleDragEnter(e, appIndex)}

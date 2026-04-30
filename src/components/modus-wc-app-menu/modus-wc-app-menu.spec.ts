@@ -13,50 +13,64 @@ describe('modus-wc-app-menu', () => {
     { appName: 'tekla' },
   ];
 
-  it('should render with default props', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', {}),
-    });
+  const cloneApps = (apps: IAppMenuItem[] = mockApps) =>
+    JSON.parse(JSON.stringify(apps)) as IAppMenuItem[];
 
+  async function createPage(props: Record<string, unknown> = {}) {
+    return newSpecPage({
+      components: [ModusWcAppMenu],
+      template: () => h('modus-wc-app-menu', props),
+    });
+  }
+
+  async function createEditModePage(props: Record<string, unknown> = {}) {
+    const page = await createPage(props);
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).handleEdit();
+    await page.waitForChanges();
+    return { page, component };
+  }
+
+  function keyEvent(key: string): KeyboardEvent {
+    return new KeyboardEvent('keydown', {
+      key,
+      cancelable: true,
+      bubbles: true,
+    });
+  }
+
+  function dragEvt(type: string): Event {
+    return new Event(type, { cancelable: true, bubbles: true });
+  }
+
+  function mockRaf(): () => void {
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    }) as unknown as typeof globalThis.requestAnimationFrame;
+    return () => {
+      globalThis.requestAnimationFrame = origRaf;
+    };
+  }
+
+  it('should render with default props', async () => {
+    const page = await createPage({});
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with apps in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
-
+    const page = await createPage({ apps: mockApps, layout: 'list' });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render with apps in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
-
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
     expect(page.root).toMatchSnapshot();
   });
 
   it('should emit layoutChange when layout prop changes after load', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const layoutChangeSpy = jest.fn();
     page.root?.addEventListener('layoutChange', layoutChangeSpy);
@@ -72,24 +86,15 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render with custom class', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          customClass: 'my-custom-class',
-          apps: mockApps,
-        }),
+    const page = await createPage({
+      customClass: 'my-custom-class',
+      apps: mockApps,
     });
-
     expect(page.root).toMatchSnapshot();
   });
 
   it('should render header with "Trimble apps" title when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
+    const page = await createPage({ apps: mockApps });
     const headerTitle = page.root?.querySelector(
       '.header-title modus-wc-typography'
     );
@@ -97,15 +102,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render header with "Edit" title when in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
+    const { page } = await createEditModePage({ apps: mockApps });
     const headerTitle = page.root?.querySelector(
       '.header-title modus-wc-typography'
     );
@@ -113,10 +110,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render edit button when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
+    const page = await createPage({ apps: mockApps });
 
     const editButton = page.root?.querySelector(
       '.header-end-content modus-wc-button'
@@ -129,14 +123,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render done and cancel buttons when in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { page } = await createEditModePage({ apps: mockApps });
 
     const buttons = Array.from(
       page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
@@ -157,37 +144,21 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render with empty apps', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: [], layout: 'list' }),
-    });
-
+    const page = await createPage({ apps: [], layout: 'list' });
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBe(0);
   });
 
   it('should render with inherited aria attributes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          'aria-label': 'App menu',
-          apps: mockApps,
-        }),
+    const page = await createPage({
+      'aria-label': 'App menu',
+      apps: mockApps,
     });
-
     expect(page.root?.getAttribute('aria-label')).toBe('App menu');
   });
 
   it('should render list layout with menu items and logos', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBe(4);
@@ -199,14 +170,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render grid layout with all items', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
     expect(gridItems?.length).toBe(4);
@@ -216,14 +180,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not have tooltipContent on list layout menu items', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     menuItems?.forEach((item) => {
@@ -232,14 +189,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should wrap grid layout labels with modus-wc-tooltip', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
 
     const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
     expect(tooltips?.length).toBe(4);
@@ -249,77 +199,40 @@ describe('modus-wc-app-menu', () => {
     expect(tooltips?.[3]?.getAttribute('content')).toBe('Tekla');
   });
 
-  it('should disable grid tooltips when text is not truncated', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+  it.each([
+    { scrollWidth: 50, clientWidth: 80, expectedDisabled: true },
+    { scrollWidth: 120, clientWidth: 80, expectedDisabled: false },
+  ])(
+    'should set grid tooltip disabled=$expectedDisabled when scrollWidth=$scrollWidth',
+    async ({ scrollWidth, clientWidth, expectedDisabled }) => {
+      const page = await createPage({ apps: mockApps, layout: 'grid' });
 
-    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
-    tooltips?.forEach((tooltip) => {
-      const mockLabel = document.createElement('span');
-      mockLabel.classList.add('grid-item-text-label');
-      Object.defineProperty(mockLabel, 'scrollWidth', { value: 50 });
-      Object.defineProperty(mockLabel, 'clientWidth', { value: 80 });
-      Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
-      Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
-      tooltip.appendChild(mockLabel);
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).updateGridTooltips();
-
-    tooltips?.forEach((tooltip) => {
-      expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
-        true
+      const tooltips = page.root?.querySelectorAll(
+        '.grid-item modus-wc-tooltip'
       );
-    });
-  });
+      tooltips?.forEach((tooltip) => {
+        const mockLabel = document.createElement('span');
+        mockLabel.classList.add('grid-item-text-label');
+        Object.defineProperty(mockLabel, 'scrollWidth', { value: scrollWidth });
+        Object.defineProperty(mockLabel, 'clientWidth', { value: clientWidth });
+        Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
+        Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
+        tooltip.appendChild(mockLabel);
+      });
 
-  it('should enable grid tooltips when text is truncated', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).updateGridTooltips();
 
-    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
-    tooltips?.forEach((tooltip) => {
-      const mockLabel = document.createElement('span');
-      mockLabel.classList.add('grid-item-text-label');
-      Object.defineProperty(mockLabel, 'scrollWidth', { value: 120 });
-      Object.defineProperty(mockLabel, 'clientWidth', { value: 80 });
-      Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
-      Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
-      tooltip.appendChild(mockLabel);
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).updateGridTooltips();
-
-    tooltips?.forEach((tooltip) => {
-      expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
-        false
-      );
-    });
-  });
+      tooltips?.forEach((tooltip) => {
+        expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
+          expectedDisabled
+        );
+      });
+    }
+  );
 
   it('should render grid layout with item labels', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
 
     const labels = page.root?.querySelectorAll(
       '.grid-item modus-wc-typography'
@@ -332,33 +245,17 @@ describe('modus-wc-app-menu', () => {
 
   it('should fall back to raw appName when displayName is not found', async () => {
     const unknownApps: IAppMenuItem[] = [{ appName: 'unknown_app' as AppName }];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: unknownApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: unknownApps, layout: 'list' });
 
     const menuItem = page.root?.querySelector('modus-wc-menu-item');
     expect(menuItem?.getAttribute('label')).toBe('unknown_app');
   });
 
   it('should show drag indicators in list layout when in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const dragIcons = page.root?.querySelectorAll(
       '.app-menu-item-row modus-wc-icon[name="drag_indicator"]'
@@ -372,14 +269,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not show drag indicators in list layout when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const dragIcons = page.root?.querySelectorAll(
       'modus-wc-icon[name="drag_indicator"]'
@@ -388,18 +278,10 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should show drag indicators in grid layout when in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const dragIcons = page.root?.querySelectorAll(
       '.grid-item modus-wc-icon[name="drag_indicator"]'
@@ -413,31 +295,14 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should enter edit mode when handleEdit is called', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
+    const { component } = await createEditModePage({ apps: mockApps });
     expect(component.isEditMode).toBe(true);
   });
 
   it('should auto-focus the first item when entering edit mode', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
+    const restoreRaf = mockRaf();
 
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', { apps: mockApps, layout: 'list' }),
-    });
-
+    const page = await createPage({ apps: mockApps, layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
     const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
     (component as any).handleEdit();
@@ -445,21 +310,14 @@ describe('modus-wc-app-menu', () => {
 
     expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 0);
     focusSpy.mockRestore();
-    globalThis.requestAnimationFrame = origRaf;
+    restoreRaf();
   });
 
   it('should exit edit mode and emit itemsOrderChange when handleDone is called', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
+    const { page, component } = await createEditModePage({ apps: mockApps });
 
     const orderChangeSpy = jest.fn();
     page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     (component as any).handleDone();
     await page.waitForChanges();
@@ -470,17 +328,9 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should exit edit mode when handleCancel is called', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     (component as any).handleCancel();
     await page.waitForChanges();
@@ -489,71 +339,46 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should set draggedItemPos when handleDragStart is called in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     const mockDragEvent = new Event('dragstart') as DragEvent;
     Object.defineProperty(mockDragEvent, 'dataTransfer', {
       value: { effectAllowed: '' },
     });
-
     (component as any).handleDragStart(mockDragEvent, 1);
 
     expect(component.draggedItemPos).toEqual({ appIndex: 1 });
   });
 
   it('should not set draggedItemPos when handleDragStart is called outside edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
+    const page = await createPage({ apps: mockApps });
     const component = page.rootInstance as ModusWcAppMenu;
-    const mockDragEvent = new Event('dragstart') as DragEvent;
 
-    (component as any).handleDragStart(mockDragEvent, 1);
+    (component as any).handleDragStart(new Event('dragstart') as DragEvent, 1);
 
     expect(component.draggedItemPos).toBeNull();
   });
 
   it('should prevent default on drag over when in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     const mockDragEvent = new Event('dragover', {
       cancelable: true,
     }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
-
     (component as any).handleDragOver(mockDragEvent);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
   it('should not prevent default on drag over when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
+    const page = await createPage({ apps: mockApps });
     const component = page.rootInstance as ModusWcAppMenu;
+
     const mockDragEvent = new Event('dragover', {
       cancelable: true,
     }) as DragEvent;
     const preventDefaultSpy = jest.spyOn(mockDragEvent, 'preventDefault');
-
     (component as any).handleDragOver(mockDragEvent);
 
     expect(preventDefaultSpy).not.toHaveBeenCalled();
@@ -565,18 +390,9 @@ describe('modus-wc-app-menu', () => {
       { appName: 'viewpoint' },
       { appName: 'tekla' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(apps),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.draggedItemPos = { appIndex: 0 };
 
@@ -594,40 +410,26 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not move item when handleDrop is called outside edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps() });
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalApps = JSON.parse(JSON.stringify(component.apps));
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
+    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
 
-    (component as any).handleDrop(mockDragEvent, 1);
+    (component as any).handleDrop(
+      new Event('drop', { cancelable: true }) as DragEvent,
+      1
+    );
 
     expect(component.apps).toEqual(originalApps);
   });
 
   it('should not move item when handleDrop is called with null draggedItemPos', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
+    const { component } = await createEditModePage({ apps: cloneApps() });
+    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const originalApps = JSON.parse(JSON.stringify(component.apps));
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-
-    (component as any).handleDrop(mockDragEvent, 1);
+    (component as any).handleDrop(
+      new Event('drop', { cancelable: true }) as DragEvent,
+      1
+    );
 
     expect(component.apps).toEqual(originalApps);
   });
@@ -638,24 +440,14 @@ describe('modus-wc-app-menu', () => {
       { appName: 'viewpoint' },
       { appName: 'tekla' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(apps),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.draggedItemPos = { appIndex: 0 };
 
     const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
     jest.spyOn(mockDragEvent, 'preventDefault');
-
     (component as any).handleContainerDrop(mockDragEvent, 2);
     await page.waitForChanges();
 
@@ -663,96 +455,58 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not move item when handleContainerDrop is called outside edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps() });
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalApps = JSON.parse(JSON.stringify(component.apps));
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
+    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
 
-    (component as any).handleContainerDrop(mockDragEvent, 0);
+    (component as any).handleContainerDrop(
+      new Event('drop', { cancelable: true }) as DragEvent,
+      0
+    );
 
     expect(component.apps).toEqual(originalApps);
   });
 
   it('should not move item when handleContainerDrop is called with null draggedItemPos', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
+    const { component } = await createEditModePage({ apps: cloneApps() });
+    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const originalApps = JSON.parse(JSON.stringify(component.apps));
-    const mockDragEvent = new Event('drop', { cancelable: true }) as DragEvent;
-
-    (component as any).handleContainerDrop(mockDragEvent, 0);
+    (component as any).handleContainerDrop(
+      new Event('drop', { cancelable: true }) as DragEvent,
+      0
+    );
 
     expect(component.apps).toEqual(originalApps);
   });
 
   it('should set dataTransfer.effectAllowed to move on drag start', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     const dataTransfer = { effectAllowed: '' };
     const mockDragEvent = new Event('dragstart') as DragEvent;
     Object.defineProperty(mockDragEvent, 'dataTransfer', {
       value: dataTransfer,
     });
-
     (component as any).handleDragStart(mockDragEvent, 0);
 
     expect(dataTransfer.effectAllowed).toBe('move');
   });
 
   it('should handle drag start when dataTransfer is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     const mockDragEvent = new Event('dragstart') as DragEvent;
     Object.defineProperty(mockDragEvent, 'dataTransfer', { value: null });
-
     (component as any).handleDragStart(mockDragEvent, 0);
 
     expect(component.draggedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should render menu items as draggable in edit mode for list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
     itemRows?.forEach((row) => {
@@ -761,18 +515,10 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render grid items as draggable in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
     gridItems?.forEach((item) => {
@@ -781,15 +527,9 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render with single app item', async () => {
-    const singleApp: IAppMenuItem[] = [{ appName: 'connect' }];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: singleApp,
-          layout: 'list',
-        }),
+    const page = await createPage({
+      apps: [{ appName: 'connect' }],
+      layout: 'list',
     });
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
@@ -798,28 +538,13 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render empty grid when apps is empty', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: [],
-          layout: 'grid',
-        }),
-    });
-
+    const page = await createPage({ apps: [], layout: 'grid' });
     const gridItems = page.root?.querySelectorAll('.grid-item');
     expect(gridItems?.length).toBe(0);
   });
 
   it('should render logo emblems in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const logos = page.root?.querySelectorAll('modus-wc-logo');
     logos?.forEach((logo) => {
@@ -829,14 +554,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render logo emblems in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
 
     const logos = page.root?.querySelectorAll('modus-wc-logo');
     logos?.forEach((logo) => {
@@ -846,42 +564,25 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should wrap content in modus-wc-panel', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const panel = page.root?.querySelector('modus-wc-panel');
-    expect(panel).not.toBeNull();
+    const page = await createPage({ apps: mockApps });
+    expect(page.root?.querySelector('modus-wc-panel')).not.toBeNull();
   });
 
   it('should render menu header inside panel body slot', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
+    const page = await createPage({ apps: mockApps });
 
     const bodySlot = page.root?.querySelector('[slot="body"]');
     expect(bodySlot).not.toBeNull();
-    const menuHeader = bodySlot?.querySelector('.menu-header');
-    expect(menuHeader).not.toBeNull();
+    expect(bodySlot?.querySelector('.menu-header')).not.toBeNull();
   });
 
   it('should render header-end-content container', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const headerEndContent = page.root?.querySelector('.header-end-content');
-    expect(headerEndContent).not.toBeNull();
+    const page = await createPage({ apps: mockApps });
+    expect(page.root?.querySelector('.header-end-content')).not.toBeNull();
   });
 
   it('should enter edit mode when edit button is clicked', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
+    const page = await createPage({ apps: mockApps });
 
     const editButton = page.root?.querySelector(
       '.header-end-content modus-wc-button'
@@ -894,14 +595,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should exit edit mode when Done button is clicked', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { page, component } = await createEditModePage({ apps: mockApps });
 
     const orderChangeSpy = jest.fn();
     page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
@@ -920,17 +614,9 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should exit edit mode when Cancel button is clicked', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const buttons = Array.from(
       page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
@@ -945,58 +631,33 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should trigger drag handlers on list layout items via DOM events', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
     const firstItem = itemRows?.[0] as HTMLElement;
 
-    const dragStartEvent = new Event('dragstart', {
-      bubbles: true,
-    }) as DragEvent;
+    const dragStartEvent = dragEvt('dragstart') as DragEvent;
     Object.defineProperty(dragStartEvent, 'dataTransfer', {
       value: { effectAllowed: '' },
     });
     firstItem?.dispatchEvent(dragStartEvent);
     expect(component.draggedItemPos).toEqual({ appIndex: 0 });
 
-    const dragOverEvent = new Event('dragover', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
+    const dragOverEvent = dragEvt('dragover');
     firstItem?.dispatchEvent(dragOverEvent);
 
     const secondItem = itemRows?.[1] as HTMLElement;
-    const dropEvent = new Event('drop', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
-    secondItem?.dispatchEvent(dropEvent);
+    secondItem?.dispatchEvent(dragEvt('drop'));
   });
 
   it('should trigger drag handlers on list container via DOM events', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.draggedItemPos = { appIndex: 0 };
 
@@ -1004,194 +665,117 @@ describe('modus-wc-app-menu', () => {
       '.app-menu-items'
     ) as HTMLElement;
 
-    const dragOverEvent = new Event('dragover', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
-    container?.dispatchEvent(dragOverEvent);
-
-    const dropEvent = new Event('drop', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
-    container?.dispatchEvent(dropEvent);
+    container?.dispatchEvent(dragEvt('dragover'));
+    container?.dispatchEvent(dragEvt('drop'));
   });
 
   it('should trigger drag handlers on grid layout items via DOM events', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
     const firstItem = gridItems?.[0] as HTMLElement;
 
-    const dragStartEvent = new Event('dragstart', {
-      bubbles: true,
-    }) as DragEvent;
+    const dragStartEvent = dragEvt('dragstart') as DragEvent;
     Object.defineProperty(dragStartEvent, 'dataTransfer', {
       value: { effectAllowed: '' },
     });
     firstItem?.dispatchEvent(dragStartEvent);
     expect(component.draggedItemPos).toEqual({ appIndex: 0 });
 
-    const dragOverEvent = new Event('dragover', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
+    const dragOverEvent = dragEvt('dragover');
     firstItem?.dispatchEvent(dragOverEvent);
+    expect(dragOverEvent.defaultPrevented).toBe(true);
 
     const secondItem = gridItems?.[1] as HTMLElement;
-    const dropEvent = new Event('drop', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
+    const dropEvent = dragEvt('drop');
     secondItem?.dispatchEvent(dropEvent);
+
+    expect(component.apps?.[0].appName).toBe('viewpoint');
+    expect(component.apps?.[1].appName).toBe('connect');
   });
 
   it('should trigger drag handlers on grid container via DOM events', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.draggedItemPos = { appIndex: 0 };
 
     const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
 
-    const dragOverEvent = new Event('dragover', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
+    const dragOverEvent = dragEvt('dragover');
     gridMenu?.dispatchEvent(dragOverEvent);
+    expect(dragOverEvent.defaultPrevented).toBe(true);
 
-    const dropEvent = new Event('drop', {
-      bubbles: true,
-      cancelable: true,
-    }) as DragEvent;
+    const dropEvent = dragEvt('drop');
     gridMenu?.dispatchEvent(dropEvent);
+    expect(component.draggedItemPos).toBeNull();
   });
 
-  it('should handle apps prop being undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: undefined,
-          layout: 'list',
-        }),
-    });
+  it.each(['list', 'grid'] as const)(
+    'should handle apps prop being undefined in %s layout',
+    async (layout) => {
+      const page = await createPage({ apps: undefined, layout });
 
-    expect(page.root).not.toBeNull();
-  });
+      expect(page.root).not.toBeNull();
+      if (layout === 'grid') {
+        expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(0);
+      }
+    }
+  );
 
-  it('should handle apps prop being undefined in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: undefined,
-          layout: 'grid',
-        }),
-    });
+  it('should render grid layout with zero items when apps is set to undefined after load', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
+    const component = page.rootInstance as ModusWcAppMenu;
 
-    expect(page.root).not.toBeNull();
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    expect(gridItems?.length).toBe(0);
+    expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(4);
+
+    component.apps = undefined;
+    await page.waitForChanges();
+
+    expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(0);
   });
 
   it('should grab an item on Space key in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(spaceEvent, 0);
+    (component as any).handleKeyDown(keyEvent(' '), 0);
 
     expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should drop a grabbed item on Enter key', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
-    const enterEvent = new KeyboardEvent('keydown', {
-      key: 'Enter',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(enterEvent, 0);
+    (component as any).handleKeyDown(keyEvent('Enter'), 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
   it('should move a grabbed item down on ArrowDown key in list layout', async () => {
-    const apps: IAppMenuItem[] = [
+    const threeApps: IAppMenuItem[] = [
       { appName: 'connect' },
       { appName: 'viewpoint' },
       { appName: 'tekla' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(threeApps),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
+    (component as any).handleKeyDown(keyEvent('ArrowDown'), 0);
 
     expect(component.apps?.[0].appName).toBe('viewpoint');
     expect(component.apps?.[1].appName).toBe('connect');
@@ -1199,32 +783,18 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should move a grabbed item up on ArrowUp key in list layout', async () => {
-    const apps: IAppMenuItem[] = [
+    const threeApps: IAppMenuItem[] = [
       { appName: 'connect' },
       { appName: 'viewpoint' },
       { appName: 'tekla' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(threeApps),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 1 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 1);
+    (component as any).handleKeyDown(keyEvent('ArrowUp'), 1);
 
     expect(component.apps?.[0].appName).toBe('viewpoint');
     expect(component.apps?.[1].appName).toBe('connect');
@@ -1232,120 +802,56 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should cancel grab on Escape key', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
-    const escapeEvent = new KeyboardEvent('keydown', {
-      key: 'Escape',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(escapeEvent, 0);
+    (component as any).handleKeyDown(keyEvent('Escape'), 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
   it('should not move item beyond array boundaries', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps([{ appName: 'connect' }, { appName: 'viewpoint' }]),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 0);
+    (component as any).handleKeyDown(keyEvent('ArrowUp'), 0);
 
     expect(component.apps?.[0].appName).toBe('connect');
     expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should not handle keyboard events when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(spaceEvent, 0);
+
+    (component as any).handleKeyDown(keyEvent(' '), 0);
 
     expect(component.grabbedItemPos).toBeNull();
   });
 
   it('should not reorder when arrow key pressed without grab', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const originalApps = JSON.parse(JSON.stringify(component.apps));
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
+    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    (component as any).handleKeyDown(keyEvent('ArrowDown'), 0);
 
     expect(component.apps).toEqual(originalApps);
     expect(component.grabbedItemPos).toBeNull();
   });
 
   it('should clear grabbedItemPos on handleDone', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
     (component as any).handleDone();
@@ -1355,17 +861,9 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should clear grabbedItemPos on handleCancel', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
     (component as any).handleCancel();
@@ -1375,18 +873,10 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should add grabbed-item class when item is grabbed', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
@@ -1395,211 +885,90 @@ describe('modus-wc-app-menu', () => {
     expect(firstRow?.classList.contains('grabbed-item')).toBe(true);
   });
 
-  it('should add tabindex to items in edit mode for list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
-    });
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should add tabindex to items in edit mode for $layout layout',
+    async ({ layout, selector }) => {
+      const { page } = await createEditModePage({
+        apps: mockApps,
+        layout,
+      });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+      const items = page.root?.querySelectorAll(selector);
+      items?.forEach((item) => {
+        expect(item.getAttribute('tabindex')).toBe('0');
+      });
+    }
+  );
 
-    const rows = page.root?.querySelectorAll('.app-menu-item-row');
-    rows?.forEach((row) => {
-      expect(row.getAttribute('tabindex')).toBe('0');
-    });
-  });
+  it.each([
+    { key: 'ArrowRight', startIdx: 0, expectedIdx: 1 },
+    { key: 'ArrowLeft', startIdx: 1, expectedIdx: 0 },
+  ])(
+    'should move a grabbed item on $key key in grid layout',
+    async ({ key, startIdx, expectedIdx }) => {
+      const threeApps: IAppMenuItem[] = [
+        { appName: 'connect' },
+        { appName: 'viewpoint' },
+        { appName: 'tekla' },
+      ];
+      const { component } = await createEditModePage({
+        apps: cloneApps(threeApps),
+        layout: 'grid',
+      });
 
-  it('should add tabindex to items in edit mode for grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
+      component.grabbedItemPos = { appIndex: startIdx };
+      (component as any).handleKeyDown(keyEvent(key), startIdx);
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    gridItems?.forEach((item) => {
-      expect(item.getAttribute('tabindex')).toBe('0');
-    });
-  });
-
-  it('should move a grabbed item right on ArrowRight key in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 0 };
-    const arrowRightEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowRightEvent, 0);
-
-    expect(component.apps?.[0].appName).toBe('viewpoint');
-    expect(component.apps?.[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ appIndex: 1 });
-  });
-
-  it('should move a grabbed item left on ArrowLeft key in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 1 };
-    const arrowLeftEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowLeft',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowLeftEvent, 1);
-
-    expect(component.apps?.[0].appName).toBe('viewpoint');
-    expect(component.apps?.[1].appName).toBe('connect');
-    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
-  });
+      expect(component.apps?.[0].appName).toBe('viewpoint');
+      expect(component.apps?.[1].appName).toBe('connect');
+      expect(component.grabbedItemPos).toEqual({ appIndex: expectedIdx });
+    }
+  );
 
   it('should not move list items on ArrowLeft or ArrowRight key', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps([{ appName: 'connect' }, { appName: 'viewpoint' }]),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
-    const arrowRightEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowRightEvent, 0);
+    (component as any).handleKeyDown(keyEvent('ArrowRight'), 0);
 
     expect(component.apps?.[0].appName).toBe('connect');
     expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
-  it('should route ArrowUp to reorderByKeyboard in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'sketchup' },
-    ];
+  it.each([
+    { key: 'ArrowUp', grabbedIdx: 3 },
+    { key: 'ArrowDown', grabbedIdx: 0 },
+  ])(
+    'should route $key to reorderByKeyboard in grid layout',
+    async ({ key, grabbedIdx }) => {
+      const fourApps: IAppMenuItem[] = [
+        { appName: 'connect' },
+        { appName: 'viewpoint' },
+        { appName: 'tekla' },
+        { appName: 'sketchup' },
+      ];
+      const { component } = await createEditModePage({
+        apps: cloneApps(fourApps),
+        layout: 'grid',
+      });
 
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
+      component.grabbedItemPos = { appIndex: grabbedIdx };
+      const evt = keyEvent(key);
+      const preventDefaultSpy = jest.spyOn(evt, 'preventDefault');
+      (component as any).handleKeyDown(evt, grabbedIdx);
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 3 };
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    const preventDefaultSpy = jest.spyOn(arrowUpEvent, 'preventDefault');
-    (component as any).handleKeyDown(arrowUpEvent, 3);
-
-    expect(preventDefaultSpy).toHaveBeenCalled();
-  });
-
-  it('should route ArrowDown to reorderByKeyboard in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'sketchup' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 0 };
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    const preventDefaultSpy = jest.spyOn(arrowDownEvent, 'preventDefault');
-    (component as any).handleKeyDown(arrowDownEvent, 0);
-
-    expect(preventDefaultSpy).toHaveBeenCalled();
-  });
+      expect(preventDefaultSpy).toHaveBeenCalled();
+    }
+  );
 
   it('should move grid item by offset via reorderByKeyboard', async () => {
-    const apps: IAppMenuItem[] = [
+    const sixApps: IAppMenuItem[] = [
       { appName: 'connect' },
       { appName: 'viewpoint' },
       { appName: 'tekla' },
@@ -1607,19 +976,10 @@ describe('modus-wc-app-menu', () => {
       { appName: 'earthworks' },
       { appName: 'siteworks' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(sixApps),
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
     (component as any).reorderByKeyboard(0, 3);
@@ -1632,7 +992,7 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should move grid item up by offset via reorderByKeyboard', async () => {
-    const apps: IAppMenuItem[] = [
+    const sixApps: IAppMenuItem[] = [
       { appName: 'connect' },
       { appName: 'viewpoint' },
       { appName: 'tekla' },
@@ -1640,19 +1000,10 @@ describe('modus-wc-app-menu', () => {
       { appName: 'earthworks' },
       { appName: 'siteworks' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(sixApps),
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 3 };
     (component as any).reorderByKeyboard(3, -3);
@@ -1663,24 +1014,15 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not move grid item beyond boundaries via reorderByKeyboard', async () => {
-    const apps: IAppMenuItem[] = [
+    const threeApps: IAppMenuItem[] = [
       { appName: 'connect' },
       { appName: 'viewpoint' },
       { appName: 'tekla' },
     ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(threeApps),
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.grabbedItemPos = { appIndex: 0 };
     (component as any).reorderByKeyboard(0, -3);
@@ -1690,330 +1032,148 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should not move item beyond end of list', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const lastIdx = (component.apps?.length ?? 1) - 1;
     component.grabbedItemPos = { appIndex: lastIdx };
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, lastIdx);
+    (component as any).handleKeyDown(keyEvent('ArrowDown'), lastIdx);
 
     expect(component.grabbedItemPos).toEqual({ appIndex: lastIdx });
   });
 
-  it('should focus item after keyboard move via requestAnimationFrame in list layout', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
+  it.each([
+    { layout: 'list' as const, method: 'handleKeyDown', key: 'ArrowDown' },
+    { layout: 'grid' as const, method: 'reorderByKeyboard', key: null },
+  ])(
+    'should focus item after keyboard move via rAF in $layout layout',
+    async ({ layout, method, key }) => {
+      const restoreRaf = mockRaf();
+      const twoApps: IAppMenuItem[] = [
+        { appName: 'connect' },
+        { appName: 'viewpoint' },
+      ];
+      const { component } = await createEditModePage({
+        apps: cloneApps(twoApps),
+        layout,
+      });
 
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-    ];
+      component.grabbedItemPos = { appIndex: 0 };
+      if (key) {
+        (component as any)[method](keyEvent(key), 0);
+      } else {
+        (component as any)[method](0, 1);
+      }
 
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'list',
-        }),
-    });
+      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+      restoreRaf();
+    }
+  );
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should trigger handleKeyDown on $layout item via DOM keydown event',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
 
-    component.grabbedItemPos = { appIndex: 0 };
-    (component as any).handleKeyDown(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }),
-      0
-    );
+      const item = page.root?.querySelector(selector) as HTMLElement;
+      item?.dispatchEvent(keyEvent(' '));
 
-    expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
-    globalThis.requestAnimationFrame = origRaf;
-  });
-
-  it('should focus item after grid move via requestAnimationFrame', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
-
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 0 };
-    (component as any).reorderByKeyboard(0, 1);
-
-    expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
-    globalThis.requestAnimationFrame = origRaf;
-  });
-
-  it('should trigger handleKeyDown on list item via DOM keydown event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const firstRow = page.root?.querySelector(
-      '.app-menu-item-row'
-    ) as HTMLElement;
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-      bubbles: true,
-    });
-    firstRow?.dispatchEvent(spaceEvent);
-
-    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
-  });
-
-  it('should trigger handleKeyDown on grid item via DOM keydown event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-      bubbles: true,
-    });
-    firstGridItem?.dispatchEvent(spaceEvent);
-
-    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
-  });
+      expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+    }
+  );
 
   it('should calculate grid column count based on offsetTop of items', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'sketchup' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
+    const page = await createPage({
+      apps: cloneApps(mockApps),
+      layout: 'grid',
     });
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
-
     if (gridItems && gridItems.length >= 4) {
-      Object.defineProperty(gridItems[0], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[1], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[2], 'offsetTop', { value: 100 });
-      Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
+      [0, 0, 100, 100].forEach((top, i) => {
+        Object.defineProperty(gridItems[i], 'offsetTop', { value: top });
+      });
     }
 
-    const colCount = keyboardUtils.getGridColumnCount(page.root as HTMLElement);
-    expect(colCount).toBe(2);
+    expect(keyboardUtils.getGridColumnCount(page.root as HTMLElement)).toBe(2);
   });
 
   it('should return 1 from getGridColumnCount when grid has zero or one item', async () => {
-    const apps: IAppMenuItem[] = [{ appName: 'connect' }];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
+    const page = await createPage({
+      apps: [{ appName: 'connect' }],
+      layout: 'grid',
     });
-
     expect(keyboardUtils.getGridColumnCount(page.root as HTMLElement)).toBe(1);
   });
 
-  it('should not move list item when grabbedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
+  it.each([
+    { layout: 'list' as const, key: 'ArrowUp' },
+    { layout: 'grid' as const, key: 'ArrowDown' },
+  ])(
+    'should not move $layout item when grabbedItemPos is null',
+    async ({ layout, key }) => {
+      const { component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+      component.grabbedItemPos = null;
+      (component as any).handleKeyDown(keyEvent(key), 0);
+      expect(component.apps?.[0].appName).toBe('connect');
+    }
+  );
 
-    component.grabbedItemPos = null;
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 0);
-    expect(component.apps?.[0].appName).toBe('connect');
-  });
+  it.each([
+    { layout: 'list' as const, idx: 99 },
+    { layout: 'grid' as const, idx: 0 },
+  ])(
+    'should handle focusAppMenuItem for $layout layout without throwing',
+    async ({ layout, idx }) => {
+      const { page } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
 
-  it('should not move grid item when grabbedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
+      expect(() =>
+        keyboardUtils.focusAppMenuItem(page.root as HTMLElement, layout, idx)
+      ).not.toThrow();
+    }
+  );
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+  it.each([
+    { grabbedPos: null, expectedResult: false },
+    { grabbedPos: { appIndex: 5 }, expectedResult: false },
+  ])(
+    'should return false from isGrabbed when grabbedItemPos=$grabbedPos',
+    async ({ grabbedPos, expectedResult }) => {
+      const page = await createPage({ apps: cloneApps(), layout: 'list' });
+      const component = page.rootInstance as ModusWcAppMenu;
+      component.grabbedItemPos = grabbedPos;
+      expect((component as any).isGrabbed(0)).toBe(expectedResult);
+    }
+  );
 
-    component.grabbedItemPos = null;
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
-    expect(component.apps?.[0].appName).toBe('connect');
-  });
-
-  it('should handle focusAppMenuItem when target element does not exist', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    expect(() =>
-      keyboardUtils.focusAppMenuItem(page.root as HTMLElement, 'list', 99)
-    ).not.toThrow();
-  });
-
-  it('should return false from isGrabbed when grabbedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.grabbedItemPos = null;
-    expect((component as any).isGrabbed(0)).toBe(false);
-  });
-
-  it('should return false from isGrabbed when appIndex does not match', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.grabbedItemPos = { appIndex: 5 };
-    expect((component as any).isGrabbed(0)).toBe(false);
-  });
-
-  it('should handle focusAppMenuItem for grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    expect(() =>
-      keyboardUtils.focusAppMenuItem(page.root as HTMLElement, 'grid', 0)
-    ).not.toThrow();
-  });
-
-  it('should handle reorderListItem when apps is empty', () => {
-    const result = keyboardUtils.reorderListItem([], 0, -1);
-    expect(result).toBeNull();
-  });
-
-  it('should handle reorderGridItem when apps is empty', () => {
-    const result = keyboardUtils.reorderGridItem([], 0, 1);
-    expect(result).toBeNull();
+  it.each([
+    { fn: 'reorderListItem', args: [[], 0, -1] },
+    { fn: 'reorderGridItem', args: [[], 0, 1] },
+  ])('should return null from $fn when apps is empty', ({ fn, args }) => {
+    expect(
+      (keyboardUtils as Record<string, (...a: unknown[]) => unknown>)[fn](
+        ...args
+      )
+    ).toBeNull();
   });
 
   it('should render grid items with correct aria attributes in non-edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
+    const page = await createPage({ apps: cloneApps(), layout: 'grid' });
 
     const gridItem = page.root?.querySelector('.grid-item');
     expect(gridItem?.getAttribute('aria-roledescription')).toBeNull();
@@ -2021,22 +1181,15 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render grid items with correct aria attributes in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'grid',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
     component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    const firstItem = gridItems?.[0];
+    const firstItem = page.root?.querySelector('.grid-item');
     expect(firstItem?.getAttribute('draggable')).toBe('true');
     expect(firstItem?.getAttribute('aria-roledescription')).toBe(
       'reorderable item'
@@ -2044,62 +1197,28 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should set dropTargetIndex on handleDragEnter in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     component.draggedItemPos = { appIndex: 0 };
-
-    const mockDragEvent = new Event('dragenter', {
-      cancelable: true,
-    }) as DragEvent;
-    jest.spyOn(mockDragEvent, 'preventDefault');
-
-    (component as any).handleDragEnter(mockDragEvent, 2);
+    (component as any).handleDragEnter(dragEvt('dragenter'), 2);
 
     expect(component.dropTargetIndex).toBe(2);
   });
 
   it('should set dropTargetIndex to null when dragging over self', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     component.draggedItemPos = { appIndex: 1 };
-
-    const mockDragEvent = new Event('dragenter', {
-      cancelable: true,
-    }) as DragEvent;
-    jest.spyOn(mockDragEvent, 'preventDefault');
-
-    (component as any).handleDragEnter(mockDragEvent, 1);
+    (component as any).handleDragEnter(dragEvt('dragenter'), 1);
 
     expect(component.dropTargetIndex).toBeNull();
   });
 
   it('should clear draggedItemPos and dropTargetIndex on handleDragEnd', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () => h('modus-wc-app-menu', { apps: mockApps }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    const { component } = await createEditModePage({ apps: mockApps });
 
     component.draggedItemPos = { appIndex: 0 };
     component.dropTargetIndex = 2;
-
     (component as any).handleDragEnd();
 
     expect(component.draggedItemPos).toBeNull();
@@ -2107,18 +1226,10 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render list items with role="option" in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'list',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const rows = page.root?.querySelectorAll('.app-menu-item-row');
     rows?.forEach((row) => {
@@ -2128,333 +1239,118 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should render grid-row with role="listbox" in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
+    const { page } = await createEditModePage({
+      apps: mockApps,
+      layout: 'grid',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     const gridRow = page.root?.querySelector('.grid-row');
     expect(gridRow?.getAttribute('role')).toBe('listbox');
   });
 
   it('should render grid-row with role="list" when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: mockApps,
-          layout: 'grid',
-        }),
-    });
-
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
     const gridRow = page.root?.querySelector('.grid-row');
     expect(gridRow?.getAttribute('role')).toBe('list');
   });
 
-  it('should navigate focus on ArrowDown without grab in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
+  it.each([
+    { key: 'ArrowDown', layout: 'list' as const, idx: 0, expectedOffset: 1 },
+    { key: 'ArrowUp', layout: 'list' as const, idx: 2, expectedOffset: -1 },
+    { key: 'ArrowRight', layout: 'grid' as const, idx: 0, expectedOffset: 1 },
+    { key: 'ArrowLeft', layout: 'grid' as const, idx: 2, expectedOffset: -1 },
+  ])(
+    'should navigate focus on $key without grab in $layout layout',
+    async ({ key, layout, idx, expectedOffset }) => {
+      const page = await createPage({ apps: cloneApps(), layout });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      await page.waitForChanges();
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
+      const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+      (component as any).handleKeyDown(keyEvent(key), idx);
 
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
-
-    expect(navSpy).toHaveBeenCalledWith(0, 1);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should navigate focus on ArrowUp without grab in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 2);
-
-    expect(navSpy).toHaveBeenCalledWith(2, -1);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should navigate focus on ArrowRight without grab in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowRightEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowRightEvent, 0);
-
-    expect(navSpy).toHaveBeenCalledWith(0, 1);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should navigate focus on ArrowLeft without grab in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowLeftEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowLeft',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowLeftEvent, 2);
-
-    expect(navSpy).toHaveBeenCalledWith(2, -1);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should navigate focus on ArrowDown without grab in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'sketchup' },
-      { appName: 'earthworks' },
-      { appName: 'siteworks' },
-    ];
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    if (gridItems && gridItems.length >= 6) {
-      Object.defineProperty(gridItems[0], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[1], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[2], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
-      Object.defineProperty(gridItems[4], 'offsetTop', { value: 100 });
-      Object.defineProperty(gridItems[5], 'offsetTop', { value: 100 });
+      expect(navSpy).toHaveBeenCalledWith(idx, expectedOffset);
+      expect(component.grabbedItemPos).toBeNull();
     }
+  );
 
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
+  it.each([
+    { key: 'ArrowDown', idx: 0, expectedOffset: 3 },
+    { key: 'ArrowUp', idx: 3, expectedOffset: -3 },
+  ])(
+    'should navigate focus on $key without grab in grid layout (multi-row)',
+    async ({ key, idx, expectedOffset }) => {
+      const sixApps: IAppMenuItem[] = [
+        { appName: 'connect' },
+        { appName: 'viewpoint' },
+        { appName: 'tekla' },
+        { appName: 'sketchup' },
+        { appName: 'earthworks' },
+        { appName: 'siteworks' },
+      ];
 
-    expect(navSpy).toHaveBeenCalledWith(0, 3);
-    expect(component.grabbedItemPos).toBeNull();
-  });
+      const page = await createPage({
+        apps: cloneApps(sixApps),
+        layout: 'grid',
+      });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      await page.waitForChanges();
 
-  it('should navigate focus on ArrowUp without grab in grid layout', async () => {
-    const apps: IAppMenuItem[] = [
-      { appName: 'connect' },
-      { appName: 'viewpoint' },
-      { appName: 'tekla' },
-      { appName: 'sketchup' },
-      { appName: 'earthworks' },
-      { appName: 'siteworks' },
-    ];
+      const gridItems = page.root?.querySelectorAll('.grid-item');
+      if (gridItems && gridItems.length >= 6) {
+        [0, 0, 0, 100, 100, 100].forEach((top, i) => {
+          Object.defineProperty(gridItems[i], 'offsetTop', { value: top });
+        });
+      }
 
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(apps)),
-          layout: 'grid',
-        }),
-    });
+      const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+      (component as any).handleKeyDown(keyEvent(key), idx);
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    if (gridItems && gridItems.length >= 6) {
-      Object.defineProperty(gridItems[0], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[1], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[2], 'offsetTop', { value: 0 });
-      Object.defineProperty(gridItems[3], 'offsetTop', { value: 100 });
-      Object.defineProperty(gridItems[4], 'offsetTop', { value: 100 });
-      Object.defineProperty(gridItems[5], 'offsetTop', { value: 100 });
+      expect(navSpy).toHaveBeenCalledWith(idx, expectedOffset);
+      expect(component.grabbedItemPos).toBeNull();
     }
+  );
 
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowUpEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowUp',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowUpEvent, 3);
-
-    expect(navSpy).toHaveBeenCalledWith(3, -3);
-    expect(component.grabbedItemPos).toBeNull();
-  });
-
-  it('should not navigate focus beyond boundaries in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const targetIdx = keyboardUtils.getTargetFocusIndex(0, -1, mockApps.length);
-    expect(targetIdx).toBeNull();
-  });
-
-  it('should not navigate focus beyond boundaries in grid layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    await page.waitForChanges();
-
-    const targetIdx = keyboardUtils.getTargetFocusIndex(0, -1, mockApps.length);
-    expect(targetIdx).toBeNull();
+  it('should not navigate focus beyond boundaries', () => {
+    expect(
+      keyboardUtils.getTargetFocusIndex(0, -1, mockApps.length)
+    ).toBeNull();
+    expect(
+      keyboardUtils.getTargetFocusIndex(mockApps.length - 1, 1, mockApps.length)
+    ).toBeNull();
   });
 
   it('should prevent default on arrow keys even without grab in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
     (component as any).isEditMode = true;
     await page.waitForChanges();
 
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
-    });
-    const preventDefaultSpy = jest.spyOn(arrowDownEvent, 'preventDefault');
-    (component as any).handleKeyDown(arrowDownEvent, 0);
+    const evt = keyEvent('ArrowDown');
+    const preventDefaultSpy = jest.spyOn(evt, 'preventDefault');
+    (component as any).handleKeyDown(evt, 0);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
   it('should not call navigateFocusByKeyboard for ArrowLeft/ArrowRight in list layout', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
     (component as any).isEditMode = true;
     await page.waitForChanges();
 
     const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowRightEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowRight',
-      cancelable: true,
-      bubbles: true,
-    });
-    (component as any).handleKeyDown(arrowRightEvent, 0);
+    (component as any).handleKeyDown(keyEvent('ArrowRight'), 0);
 
     expect(navSpy).not.toHaveBeenCalled();
   });
 
   it('should execute focusAppMenuItem inside navigateFocusByKeyboard callback', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
+    const restoreRaf = mockRaf();
 
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
     (component as any).isEditMode = true;
     await page.waitForChanges();
@@ -2464,294 +1360,219 @@ describe('modus-wc-app-menu', () => {
 
     expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 1);
     focusSpy.mockRestore();
-    globalThis.requestAnimationFrame = origRaf;
+    restoreRaf();
   });
 
-  it('should trigger onDragEnd on list item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should trigger onDragEnd on $layout item via DOM event',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.draggedItemPos = { appIndex: 0 };
+      component.dropTargetIndex = 1;
+
+      const item = page.root?.querySelector(selector) as HTMLElement;
+      item?.dispatchEvent(dragEvt('dragend'));
+
+      expect(component.draggedItemPos).toBeNull();
+      expect(component.dropTargetIndex).toBeNull();
+    }
+  );
+
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should trigger onDragEnter on $layout item via DOM event',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.draggedItemPos = { appIndex: 0 };
+
+      const items = page.root?.querySelectorAll(selector);
+      const secondItem = items?.[1] as HTMLElement;
+      secondItem?.dispatchEvent(dragEvt('dragenter'));
+
+      expect(component.dropTargetIndex).toBe(1);
+    }
+  );
+
+  it.each([
+    { key: 'Tab', layout: 'list' as const },
+    { key: 'ArrowLeft', layout: 'list' as const },
+  ])(
+    'should return null from getNavigationOffset for $key in $layout layout',
+    ({ key, layout }) => {
+      expect(keyboardUtils.getNavigationOffset(key, layout, 3)).toBeNull();
+    }
+  );
+
+  describe('undefined layout fallback', () => {
+    it('should fallback to list layout in handleEdit', async () => {
+      const restoreRaf = mockRaf();
+
+      const page = await createPage({ apps: cloneApps() });
+      const component = page.rootInstance as ModusWcAppMenu;
+      const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+      component.layout = undefined;
+      (component as any).handleEdit();
+
+      expect(component.isEditMode).toBe(true);
+      expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 0);
+      focusSpy.mockRestore();
+      restoreRaf();
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    it('should fallback to list layout in handleKeyDown', async () => {
+      const page = await createPage({ apps: cloneApps() });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      component.layout = undefined;
+      await page.waitForChanges();
 
-    component.draggedItemPos = { appIndex: 0 };
-    component.dropTargetIndex = 1;
+      const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+      (component as any).handleKeyDown(keyEvent('ArrowDown'), 0);
 
-    const firstRow = page.root?.querySelector(
-      '.app-menu-item-row'
-    ) as HTMLElement;
-    const dragEndEvent = new Event('dragend', {
-      cancelable: true,
-      bubbles: true,
+      expect(navSpy).toHaveBeenCalledWith(0, 1);
     });
-    firstRow?.dispatchEvent(dragEndEvent);
 
-    expect(component.draggedItemPos).toBeNull();
-    expect(component.dropTargetIndex).toBeNull();
+    it('should fallback to list layout in reorderByKeyboard', async () => {
+      const restoreRaf = mockRaf();
+
+      const page = await createPage({ apps: cloneApps() });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      component.layout = undefined;
+      component.grabbedItemPos = { appIndex: 0 };
+      await page.waitForChanges();
+
+      (component as any).reorderByKeyboard(0, 1);
+
+      expect(component.apps?.[0].appName).toBe('viewpoint');
+      expect(component.apps?.[1].appName).toBe('connect');
+      restoreRaf();
+    });
+
+    it('should fallback to list layout in navigateFocusByKeyboard', async () => {
+      const restoreRaf = mockRaf();
+
+      const page = await createPage({ apps: cloneApps() });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      component.layout = undefined;
+      await page.waitForChanges();
+
+      const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+      (component as any).navigateFocusByKeyboard(0, 1);
+
+      expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 1);
+      focusSpy.mockRestore();
+      restoreRaf();
+    });
   });
 
-  it('should trigger onDragEnter on list item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  describe('undefined apps handling', () => {
+    it('should not focus in navigateFocusByKeyboard', async () => {
+      const page = await createPage({ apps: cloneApps(), layout: 'list' });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      component.apps = undefined;
+      await page.waitForChanges();
+
+      const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
+      (component as any).navigateFocusByKeyboard(0, 1);
+
+      expect(focusSpy).not.toHaveBeenCalled();
+      focusSpy.mockRestore();
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    it('should not reorder in reorderByKeyboard', async () => {
+      const page = await createPage({ apps: cloneApps(), layout: 'list' });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = true;
+      component.apps = undefined;
+      component.grabbedItemPos = { appIndex: 0 };
+      await page.waitForChanges();
 
-    component.draggedItemPos = { appIndex: 0 };
+      (component as any).reorderByKeyboard(0, 1);
 
-    const rows = page.root?.querySelectorAll('.app-menu-item-row');
-    const secondRow = rows?.[1] as HTMLElement;
-    const dragEnterEvent = new Event('dragenter', {
-      cancelable: true,
-      bubbles: true,
-    });
-    secondRow?.dispatchEvent(dragEnterEvent);
-
-    expect(component.dropTargetIndex).toBe(1);
-  });
-
-  it('should trigger onDragEnd on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+      expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    it.each(['handleDrop', 'handleContainerDrop'] as const)(
+      'should not move items in %s',
+      async (method) => {
+        const page = await createPage({ apps: cloneApps(), layout: 'list' });
+        const component = page.rootInstance as ModusWcAppMenu;
+        (component as any).isEditMode = true;
+        component.apps = undefined;
+        component.draggedItemPos = { appIndex: 0 };
+        await page.waitForChanges();
 
-    component.draggedItemPos = { appIndex: 0 };
-    component.dropTargetIndex = 1;
+        const mockEvent = {
+          preventDefault: jest.fn(),
+          stopPropagation: jest.fn(),
+        } as unknown as DragEvent;
+        (component as any)[method](mockEvent, 0);
 
-    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
-    const dragEndEvent = new Event('dragend', {
-      cancelable: true,
-      bubbles: true,
-    });
-    firstGridItem?.dispatchEvent(dragEndEvent);
+        expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+      }
+    );
 
-    expect(component.draggedItemPos).toBeNull();
-    expect(component.dropTargetIndex).toBeNull();
-  });
+    it('should restore apps from snapshot on handleCancel', async () => {
+      const originalApps = cloneApps();
+      const { component } = await createEditModePage({
+        apps: originalApps,
+        layout: 'list',
+      });
 
-  it('should trigger onDragEnter on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
+      component.apps = undefined;
+      (component as any).handleCancel();
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { appIndex: 0 };
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    const secondGridItem = gridItems?.[1] as HTMLElement;
-    const dragEnterEvent = new Event('dragenter', {
-      cancelable: true,
-      bubbles: true,
-    });
-    secondGridItem?.dispatchEvent(dragEnterEvent);
-
-    expect(component.dropTargetIndex).toBe(1);
-  });
-
-  it('should return null from getNavigationOffset for non-arrow keys', () => {
-    const result = keyboardUtils.getNavigationOffset('Tab', 'list', 3);
-    expect(result).toBeNull();
-  });
-
-  it('should return null from getNavigationOffset for ArrowLeft in list layout', () => {
-    const result = keyboardUtils.getNavigationOffset('ArrowLeft', 'list', 1);
-    expect(result).toBeNull();
-  });
-
-  it('should fallback to list layout when layout is undefined in handleEdit', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+      expect(component.isEditMode).toBe(false);
+      expect(component.apps).toEqual(originalApps);
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
-    component.layout = undefined;
-    (component as any).handleEdit();
+    it('should snapshot empty array when apps is undefined on handleEdit', async () => {
+      const page = await createPage({ layout: 'list' });
+      const component = page.rootInstance as ModusWcAppMenu;
 
-    expect(component.isEditMode).toBe(true);
-    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 0);
-    focusSpy.mockRestore();
-    globalThis.requestAnimationFrame = origRaf;
-  });
+      component.apps = undefined;
+      (component as any).handleEdit();
 
-  it('should fallback to list layout when layout is undefined in handleKeyDown', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
+      expect((component as any).appsSnapshot).toEqual([]);
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.layout = undefined;
-    await page.waitForChanges();
+    it('should not modify apps on handleCancel when snapshot is null', async () => {
+      const page = await createPage({
+        apps: cloneApps(),
+        layout: 'list',
+      });
+      const component = page.rootInstance as ModusWcAppMenu;
 
-    const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
-    const arrowDownEvent = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      cancelable: true,
-      bubbles: true,
+      (component as any).appsSnapshot = null;
+      (component as any).isEditMode = true;
+      (component as any).handleCancel();
+
+      expect(component.apps).toEqual(cloneApps());
+      expect(component.isEditMode).toBe(false);
     });
-    (component as any).handleKeyDown(arrowDownEvent, 0);
-
-    expect(navSpy).toHaveBeenCalledWith(0, 1);
-  });
-
-  it('should fallback to list layout when layout is undefined in reorderByKeyboard', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.layout = undefined;
-    component.grabbedItemPos = { appIndex: 0 };
-    await page.waitForChanges();
-
-    (component as any).reorderByKeyboard(0, 1);
-
-    expect(component.apps?.[0].appName).toBe('viewpoint');
-    expect(component.apps?.[1].appName).toBe('connect');
-    globalThis.requestAnimationFrame = origRaf;
-  });
-
-  it('should fallback to list layout when layout is undefined in navigateFocusByKeyboard', async () => {
-    const origRaf = globalThis.requestAnimationFrame;
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
-
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.layout = undefined;
-    await page.waitForChanges();
-
-    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
-    (component as any).navigateFocusByKeyboard(0, 1);
-
-    expect(focusSpy).toHaveBeenCalledWith(expect.anything(), 'list', 1);
-    focusSpy.mockRestore();
-    globalThis.requestAnimationFrame = origRaf;
-  });
-
-  it('should handle navigateFocusByKeyboard when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.apps = undefined;
-    await page.waitForChanges();
-
-    const focusSpy = jest.spyOn(keyboardUtils, 'focusAppMenuItem');
-    (component as any).navigateFocusByKeyboard(0, 1);
-
-    expect(focusSpy).not.toHaveBeenCalled();
-    focusSpy.mockRestore();
-  });
-
-  it('should handle reorderByKeyboard when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.apps = undefined;
-    component.grabbedItemPos = { appIndex: 0 };
-    await page.waitForChanges();
-
-    (component as any).reorderByKeyboard(0, 1);
-
-    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
   it('should early return from handleDrop when movedItem is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
 
     component.draggedItemPos = { appIndex: 99 };
     const mockEvent = {
@@ -2764,408 +1585,230 @@ describe('modus-wc-app-menu', () => {
   });
 
   it('should early return from handleContainerDrop when movedItem is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { appIndex: 0 };
+    component.draggedItemPos = { appIndex: 99 };
     const mockEvent = {
       preventDefault: jest.fn(),
     } as unknown as DragEvent;
-    (component as any).handleContainerDrop(mockEvent, 99);
+    (component as any).handleContainerDrop(mockEvent);
 
-    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+    expect(component.draggedItemPos).toEqual({ appIndex: 99 });
   });
 
-  it('should handle handleDrop when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  it.each([
+    { editMode: false, draggedItemPos: { appIndex: 0 } },
+    { editMode: true, draggedItemPos: null },
+  ])(
+    'should early return from handleDragEnter (editMode=$editMode, drag=$draggedItemPos)',
+    async ({ editMode, draggedItemPos }) => {
+      const page = await createPage({ apps: cloneApps(), layout: 'list' });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).isEditMode = editMode;
+      component.draggedItemPos = draggedItemPos;
+
+      (component as any).handleDragEnter(
+        { preventDefault: jest.fn() } as unknown as DragEvent,
+        1
+      );
+
+      expect(component.dropTargetIndex).toBeNull();
+    }
+  );
+
+  it.each([
+    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+  ])(
+    'should render $layout layout with grabbed and drop-target classes',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.grabbedItemPos = { appIndex: 0 };
+      component.dropTargetIndex = 1;
+      await page.waitForChanges();
+
+      const items = page.root?.querySelectorAll(selector);
+      expect(items?.[0]?.classList.contains('grabbed-item')).toBe(true);
+      expect(items?.[1]?.classList.contains('drop-target')).toBe(true);
+    }
+  );
+
+  it.each([
+    { layout: 'list' as const, containerSelector: '.app-menu-items' },
+    { layout: 'grid' as const, containerSelector: '.grid-menu' },
+  ])(
+    'should handle onDrop on $layout container when draggedItemPos is null',
+    async ({ layout, containerSelector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.draggedItemPos = null;
+
+      const container = page.root?.querySelector(
+        containerSelector
+      ) as HTMLElement;
+      container?.dispatchEvent(dragEvt('drop'));
+
+      expect(component.apps?.[0].appName).toBe('connect');
+    }
+  );
+
+  it.each([
+    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+  ])(
+    'should apply drag-source class to the dragged item in $layout layout',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.draggedItemPos = { appIndex: 1 };
+      await page.waitForChanges();
+
+      const items = page.root?.querySelectorAll(selector);
+      expect(items?.[1]?.classList.contains('drag-source')).toBe(true);
+      expect(items?.[0]?.classList.contains('drag-source')).toBe(false);
+    }
+  );
+
+  it.each([
+    { layout: 'list' as const, containerSelector: '.app-menu-items' },
+    { layout: 'grid' as const, containerSelector: '.grid-menu' },
+  ])(
+    'should clear dropTargetIndex when cursor leaves the $layout container via DOM event',
+    async ({ layout, containerSelector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.dropTargetIndex = 1;
+
+      const container = page.root?.querySelector(
+        containerSelector
+      ) as HTMLElement;
+      const event = new Event('dragleave', {
+        bubbles: true,
+        cancelable: true,
+      });
+      Object.defineProperty(event, 'relatedTarget', { value: null });
+      container?.dispatchEvent(event);
+
+      expect(component.dropTargetIndex).toBeNull();
+    }
+  );
+
+  it('should keep dropTargetIndex when cursor moves within the container', async () => {
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.apps = undefined;
-    component.draggedItemPos = { appIndex: 0 };
-    await page.waitForChanges();
+    component.dropTargetIndex = 1;
 
+    const container = {} as HTMLElement;
+    container.contains = jest.fn().mockReturnValue(true);
     const mockEvent = {
-      preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
+      currentTarget: container,
+      relatedTarget: document.createElement('div'),
     } as unknown as DragEvent;
-    (component as any).handleDrop(mockEvent, 0);
 
-    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
+    (component as any).handleDragLeave(mockEvent);
+
+    expect(component.dropTargetIndex).toBe(1);
   });
 
-  it('should handle handleContainerDrop when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  it('should clear dropTargetIndex when relatedTarget is null', async () => {
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.apps = undefined;
-    component.draggedItemPos = { appIndex: 0 };
-    await page.waitForChanges();
+    component.dropTargetIndex = 2;
 
     const mockEvent = {
-      preventDefault: jest.fn(),
+      currentTarget: document.createElement('div'),
+      relatedTarget: null,
     } as unknown as DragEvent;
-    (component as any).handleContainerDrop(mockEvent, 0);
 
-    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
-  });
-
-  it('should early return from handleDragEnter when not in edit mode', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.draggedItemPos = { appIndex: 0 };
-
-    const mockEvent = {
-      preventDefault: jest.fn(),
-    } as unknown as DragEvent;
-    (component as any).handleDragEnter(mockEvent, 1);
+    (component as any).handleDragLeave(mockEvent);
 
     expect(component.dropTargetIndex).toBeNull();
   });
 
-  it('should early return from handleDragEnter when draggedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  it('should restore original app order when cancel is clicked after reorder', async () => {
+    const originalApps = cloneApps();
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).isEditMode = true;
-    component.draggedItemPos = null;
-
-    const mockEvent = {
-      preventDefault: jest.fn(),
-    } as unknown as DragEvent;
-    (component as any).handleDragEnter(mockEvent, 1);
-
-    expect(component.dropTargetIndex).toBeNull();
-  });
-
-  it('should handle handleCancel when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.apps = undefined;
-    (component as any).handleCancel();
-
-    expect(component.isEditMode).toBe(false);
-    expect(component.apps).toEqual([]);
-  });
-
-  it('should render grid layout with grabbed and drop-target classes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 0 };
-    component.dropTargetIndex = 1;
-    await page.waitForChanges();
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    expect(gridItems?.[0]?.classList.contains('grabbed-item')).toBe(true);
-    expect(gridItems?.[1]?.classList.contains('drop-target')).toBe(true);
-  });
-
-  it('should render list layout with grabbed and drop-target classes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.grabbedItemPos = { appIndex: 0 };
-    component.dropTargetIndex = 1;
-    await page.waitForChanges();
-
-    const rows = page.root?.querySelectorAll('.app-menu-item-row');
-    expect(rows?.[0]?.classList.contains('grabbed-item')).toBe(true);
-    expect(rows?.[1]?.classList.contains('drop-target')).toBe(true);
-  });
-
-  it('should trigger onDragOver on grid container via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
-    const dragOverEvent = new Event('dragover', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    gridMenu?.dispatchEvent(dragOverEvent);
-
-    expect(dragOverEvent.defaultPrevented).toBe(true);
-  });
-
-  it('should trigger onDrop on grid container via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { appIndex: 1 };
-    await page.waitForChanges();
-
-    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
-    const dropEvent = new Event('drop', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    gridMenu?.dispatchEvent(dropEvent);
-
-    expect(component.draggedItemPos).toBeNull();
-  });
-
-  it('should trigger onDragStart on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
-    const dragStartEvent = new Event('dragstart', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    firstGridItem?.dispatchEvent(dragStartEvent);
-
-    expect(component.draggedItemPos).toEqual({ appIndex: 0 });
-  });
-
-  it('should trigger onDragOver on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
-    const dragOverEvent = new Event('dragover', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    firstGridItem?.dispatchEvent(dragOverEvent);
-
-    expect(dragOverEvent.defaultPrevented).toBe(true);
-  });
-
-  it('should trigger onDrop on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
-    });
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    component.draggedItemPos = { appIndex: 0 };
-    await page.waitForChanges();
-
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    const secondGridItem = gridItems?.[1] as HTMLElement;
-    const dropEvent = new Event('drop', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    secondGridItem?.dispatchEvent(dropEvent);
+    const reorderedApps = [...(component.apps ?? [])];
+    const [moved] = reorderedApps.splice(0, 1);
+    reorderedApps.push(moved);
+    component.apps = reorderedApps;
 
     expect(component.apps?.[0].appName).toBe('viewpoint');
-    expect(component.apps?.[1].appName).toBe('connect');
+
+    (component as any).handleCancel();
+
+    expect(component.apps).toEqual(originalApps);
+    expect(component.isEditMode).toBe(false);
   });
 
-  it('should handle onDrop on list container when draggedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'list',
-        }),
+  it('should clear appsSnapshot when done is clicked', async () => {
+    const { component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    expect((component as any).appsSnapshot).not.toBeNull();
 
-    component.draggedItemPos = null;
+    (component as any).handleDone();
 
-    const container = page.root?.querySelector(
-      '.app-menu-items'
-    ) as HTMLElement;
-    const dropEvent = new Event('drop', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    container?.dispatchEvent(dropEvent);
-
-    expect(component.apps?.[0].appName).toBe('connect');
+    expect((component as any).appsSnapshot).toBeNull();
   });
 
-  it('should render grid layout when apps is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          layout: 'grid',
-        }),
-    });
+  it('should call updateGridTooltips via requestAnimationFrame on render', async () => {
+    const restoreRaf = mockRaf();
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    component.apps = undefined;
-    await page.waitForChanges();
+    const page = await createPage({
+      apps: cloneApps(),
+      layout: 'grid',
+    });
 
     const gridItems = page.root?.querySelectorAll('.grid-item');
-    expect(gridItems?.length).toBe(0);
-  });
-
-  it('should handle onDrop on grid container when draggedItemPos is null', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+    gridItems?.forEach((gridItem) => {
+      const mockLabel = document.createElement('span');
+      mockLabel.classList.add('grid-item-text-label');
+      Object.defineProperty(mockLabel, 'scrollWidth', { value: 120 });
+      Object.defineProperty(mockLabel, 'clientWidth', { value: 80 });
+      Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
+      Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
+      gridItem.querySelector('modus-wc-tooltip')?.appendChild(mockLabel);
     });
 
     const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
+    (component as any).updateGridTooltips();
 
-    component.draggedItemPos = null;
-
-    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
-    const dropEvent = new Event('drop', {
-      cancelable: true,
-      bubbles: true,
-    }) as DragEvent;
-    gridMenu?.dispatchEvent(dropEvent);
-
-    expect(component.apps?.[0].appName).toBe('connect');
-  });
-
-  it('should trigger onKeyDown on grid item via DOM event', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAppMenu],
-      template: () =>
-        h('modus-wc-app-menu', {
-          apps: JSON.parse(JSON.stringify(mockApps)),
-          layout: 'grid',
-        }),
+    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
+    tooltips?.forEach((tooltip) => {
+      expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
+        false
+      );
     });
 
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).handleEdit();
-    await page.waitForChanges();
-
-    const firstGridItem = page.root?.querySelector('.grid-item') as HTMLElement;
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-      bubbles: true,
-    });
-    firstGridItem?.dispatchEvent(spaceEvent);
-
-    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+    restoreRaf();
   });
 });
