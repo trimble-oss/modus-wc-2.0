@@ -235,11 +235,16 @@ modus-wc-collapse .modus-wc-collapse {
 }
 
 [data-theme='modus-modern-light'] modus-wc-collapse .modus-wc-collapse {
-  border-radius: 16px;
+  &:not(.modus-wc-border) {
+    border-radius: 16px;
+  }
 }
 
 [data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
-  border-radius: 16px;
+  &:not(.modus-wc-border) {
+    border-radius: 16px;
+  }
+
   color: var(--modus-wc-color-base-inverted);
 
   .modus-wc-collapse-title,
