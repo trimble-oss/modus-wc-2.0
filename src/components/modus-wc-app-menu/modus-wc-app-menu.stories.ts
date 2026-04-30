@@ -63,7 +63,7 @@ const meta: Meta<AppMenuArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['layoutChange', 'itemsOrderChange'],
+      handles: ['layoutChange', 'itemsOrderChange', 'itemClick'],
     },
     docs: {
       description: {

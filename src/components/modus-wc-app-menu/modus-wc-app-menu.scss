@@ -9,7 +9,7 @@ modus-wc-app-menu {
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding: var(--modus-wc-spacing-lg, var(--modus-wc-font-size-lg));
+      padding: var(--modus-wc-spacing-lg);
       padding-inline-end: 0;
       scrollbar-gutter: stable;
     }
@@ -47,7 +47,6 @@ modus-wc-app-menu {
       padding: 0 var(--modus-wc-spacing-xs);
 
       li.modus-wc-menu-item-active,
-      .modus-wc-menu-item:hover,
       .modus-wc-menu-item button:active {
         background-color: transparent;
         color: inherit;
@@ -63,6 +62,7 @@ modus-wc-app-menu {
           color: var(--modus-wc-color-base-content);
           position: absolute;
           transform: translateX(-10%);
+          z-index: 1;
         }
 
         > modus-wc-menu-item {
@@ -123,6 +123,11 @@ modus-wc-app-menu {
         padding: 0 var(--modus-wc-spacing-sm);
         position: absolute;
         top: 0;
+      }
+
+      &:hover {
+        background-color: var(--modus-wc-color-base-200);
+        border-radius: var(--modus-wc-border-radius-sm);
       }
     }
 

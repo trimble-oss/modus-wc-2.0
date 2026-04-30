@@ -43,7 +43,7 @@ export class ModusWcAppMenu {
   @Prop({ mutable: true }) layout?: 'list' | 'grid' = 'list';
 
   /** The apps to display in the menu. */
-  @Prop() apps?: IAppMenuItem[] = [];
+  @Prop({ mutable: true }) apps?: IAppMenuItem[] = [];
 
   /** Emit event when the layout changes */
   @StencilEvent() layoutChange!: EventEmitter<{
@@ -52,6 +52,9 @@ export class ModusWcAppMenu {
 
   /** Emitted when reordering is confirmed via "Done" */
   @StencilEvent() itemsOrderChange!: EventEmitter<IAppMenuItem[]>;
+
+  /** Emitted when an item is clicked */
+  @StencilEvent() itemClick!: EventEmitter<{ appIndex: number }>;
 
   @State() isEditMode = false;
 
@@ -278,6 +281,8 @@ export class ModusWcAppMenu {
           {apps.map((app, appIndex) => (
             <div
               key={app.appName}
+              onClick={() => this.itemClick.emit({ appIndex })}
+              aria-label={this.getDisplayName(app.appName)}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
@@ -334,6 +339,7 @@ export class ModusWcAppMenu {
               }
               class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
               draggable={this.isEditMode}
+              onClick={() => this.itemClick.emit({ appIndex })}
               onDragEnd={() => this.handleDragEnd()}
               onDragEnter={(e) => this.handleDragEnter(e, appIndex)}
               onDragOver={(e) => this.handleDragOver(e)}

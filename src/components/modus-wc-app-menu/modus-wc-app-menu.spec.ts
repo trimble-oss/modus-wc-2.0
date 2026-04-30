@@ -1780,6 +1780,24 @@ describe('modus-wc-app-menu', () => {
     expect((component as any).appsSnapshot).toBeNull();
   });
 
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should emit itemClick when $layout item is clicked',
+    async ({ layout, selector }) => {
+      const page = await createPage({ apps: mockApps, layout });
+      const itemClickSpy = jest.fn();
+      page.root?.addEventListener('itemClick', itemClickSpy);
+
+      const items = page.root?.querySelectorAll(selector);
+      (items?.[1] as HTMLElement)?.click();
+
+      expect(itemClickSpy).toHaveBeenCalledTimes(1);
+      expect(itemClickSpy.mock.calls[0][0].detail).toEqual({ appIndex: 1 });
+    }
+  );
+
   it('should call updateGridTooltips via requestAnimationFrame on render', async () => {
     const restoreRaf = mockRaf();
 
