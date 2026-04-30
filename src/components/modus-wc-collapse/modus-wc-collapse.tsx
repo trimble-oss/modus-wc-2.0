@@ -2,7 +2,6 @@ import {
   Component,
   Element,
   EventEmitter,
-  Fragment,
   h,
   Host,
   Prop,
@@ -20,12 +19,20 @@ import { DaisySize } from '../types';
 import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
 
 export interface ICollapseOptions {
-  /** The description to render in the collapse header. */
+  /** The description to render below the collapse header, visible only when the component is expanded. */
   description?: string;
+  /** The Modus icon name to render at the end of the header. */
+  endIcon?: string;
+  /** The end icon's aria-label. */
+  endIconAriaLabel?: string;
   /** The Modus icon name to render in the collapse header. */
   icon?: string;
   /** The icon's aria-label. */
   iconAriaLabel?: string;
+  /** The Modus icon name to render before the chevron. */
+  startIcon?: string;
+  /** The start icon's aria-label. */
+  startIconAriaLabel?: string;
   /** The size of the collapse header. */
   size?: DaisySize;
   /** The title to render in the collapse header. */
@@ -49,8 +56,11 @@ export class ModusWcCollapse {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Indicates that the component should have a border. */
+  /** When true, renders a border-bottom on the collapse component. */
   @Prop() bordered?: boolean = false;
+
+  /** Controls chevron placement. */
+  @Prop() chevronPosition?: 'left' | 'right' = 'right';
 
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
@@ -107,6 +117,13 @@ export class ModusWcCollapse {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
+    classList.push(`modus-wc-chevron-${this.chevronPosition}`);
+    if (!this.options?.startIcon && this.chevronPosition !== 'left') {
+      classList.push('no-leading-icons');
+    }
+    if (this.options?.startIcon && this.chevronPosition === 'left') {
+      classList.push('has-start-icon');
+    }
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -129,7 +146,9 @@ export class ModusWcCollapse {
 
   // istanbul ignore next
   private getTitleChildDivClasses(): string {
-    const classList: string[] = ['modus-wc-inline-flex modus-wc-items-center'];
+    const classList: string[] = [
+      'modus-wc-title-main-row modus-wc-inline-flex modus-wc-items-center',
+    ];
 
     const titleFontSize = convertPropsToTitleChildDivClasses({
       size: this.options?.size,
@@ -169,28 +188,52 @@ export class ModusWcCollapse {
         >
           <summary class={this.getTitleClasses()} id={titleId}>
             {this.options ? (
-              <Fragment>
-                <div class={this.getTitleChildDivClasses()}>
-                  {this.options.icon && (
+              <div class="modus-wc-summary-main-content">
+                {this.options.startIcon && (
+                  <modus-wc-icon
+                    aria-label={this.options.startIconAriaLabel}
+                    class="title-start-icon"
+                    decorative={!this.options.startIconAriaLabel}
+                    name={this.options.startIcon}
+                    size={this.options.size}
+                  ></modus-wc-icon>
+                )}
+                <div class="modus-wc-title-main-content">
+                  <div class={this.getTitleChildDivClasses()}>
+                    {this.options.icon && (
+                      <modus-wc-icon
+                        aria-label={this.options.iconAriaLabel}
+                        decorative={!this.options.iconAriaLabel}
+                        name={this.options.icon}
+                        size={this.options.size}
+                      ></modus-wc-icon>
+                    )}
+                    {this.options.title}
+                  </div>
+                </div>
+                {this.options.endIcon && (
+                  <div class="modus-wc-title-end-content">
                     <modus-wc-icon
-                      aria-label={this.options.iconAriaLabel}
-                      decorative={true}
-                      name={this.options.icon}
+                      aria-label={this.options.endIconAriaLabel}
+                      class="title-end-icon"
+                      decorative={!this.options.endIconAriaLabel}
+                      name={this.options.endIcon}
                       size={this.options.size}
                     ></modus-wc-icon>
-                  )}
-                  {this.options.title}
-                </div>
-                {this.options.description && (
-                  <div class={this.getDescriptionDivClasses()}>
-                    {this.options.description}
                   </div>
                 )}
-              </Fragment>
+              </div>
             ) : (
               <slot name="header" />
             )}
           </summary>
+          {this.expanded && this.options?.description && (
+            <div
+              class={`modus-wc-collapse-description ${this.getDescriptionDivClasses()}`}
+            >
+              {this.options.description}
+            </div>
+          )}
           <div
             aria-labelledby={titleId}
             class="modus-wc-collapse-content modus-wc-cursor-default"
