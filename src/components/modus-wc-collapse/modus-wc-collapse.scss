@@ -236,13 +236,13 @@ modus-wc-collapse .modus-wc-collapse {
 
 [data-theme='modus-modern-light'] modus-wc-collapse .modus-wc-collapse {
   &:not(.modus-wc-border) {
-    border-radius: 16px;
+    border-radius: var(--modus-wc-border-radius-box);
   }
 }
 
 [data-theme='modus-modern-dark'] modus-wc-collapse .modus-wc-collapse {
   &:not(.modus-wc-border) {
-    border-radius: 16px;
+    border-radius: var(--modus-wc-border-radius-box);
   }
 
   color: var(--modus-wc-color-base-inverted);
