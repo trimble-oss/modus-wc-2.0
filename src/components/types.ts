@@ -41,10 +41,39 @@ export type WeekStartDay =
 
 // -- Web Types -- //
 
-/** For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete */
-export type AutocompleteTypes =
-  | 'on'
-  | 'off'
+// ─── Autocomplete token primitives ───────────────────────────────────────────
+
+/** Grouping tokens — must precede a detail token, e.g. `shipping street-address` */
+type AutocompleteGroupToken = 'shipping' | 'billing';
+
+/** Recipient tokens — must precede a contact token, e.g. `home tel` */
+type AutocompleteRecipientToken = 'home' | 'work' | 'mobile' | 'fax' | 'pager';
+
+/**
+ * Contact-field tokens  — valid standalone, after a recipient
+ * token (`home` | `work` | …), or in the same positions as `tel` / `email` / `impp`.
+ */
+type AutocompleteContactToken =
+  | 'tel'
+  | 'tel-country-code'
+  | 'tel-national'
+  | 'tel-area-code'
+  | 'tel-local'
+  | 'tel-local-prefix'
+  | 'tel-local-suffix'
+  | 'tel-extension'
+  | 'email'
+  | 'impp';
+
+/**
+ * Named-section token — any string prefixed with `section-`, e.g. `section-billing`.
+ * Groups form controls that share the same named section.
+ * Note: TypeScript cannot enforce the alphanumeric-only suffix constraint of the HTML spec.
+ */
+type AutocompleteSectionToken = `section-${string}`;
+
+/** Autocomplete tokens in the spec's detail branch — excludes contact-field tokens (`AutocompleteContactToken`). */
+type AutocompleteDetailToken =
   | 'name'
   | 'honorific-prefix'
   | 'given-name'
@@ -52,7 +81,6 @@ export type AutocompleteTypes =
   | 'family-name'
   | 'honorific-suffix'
   | 'nickname'
-  | 'email'
   | 'username'
   | 'new-password'
   | 'current-password'
@@ -88,15 +116,58 @@ export type AutocompleteTypes =
   | 'bday-month'
   | 'bday-year'
   | 'sex'
-  | 'tel'
-  | 'tel-country-code'
-  | 'tel-national'
-  | 'tel-area-code'
-  | 'tel-local'
-  | 'tel-extension'
-  | 'impp'
   | 'url'
   | 'photo';
+
+/**
+ * All valid token-list combinations, excluding the optional `webauthn` suffix.
+ *
+ * Token order per the HTML spec:
+ *   `[section-*] [shipping|billing] ([home|…] <contact> | <detail>)`
+ *
+ * `<contact>` and `<detail>` are separate branches so contact tokens are not embedded in
+ * `AutocompleteDetailToken` (avoids losing standalone / section + contact if detail is tightened).
+ */
+type AutocompleteBase =
+  | AutocompleteDetailToken
+  | AutocompleteContactToken
+  | `${AutocompleteGroupToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteContactToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteDetailToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`
+  | `${AutocompleteSectionToken} ${AutocompleteGroupToken} ${AutocompleteRecipientToken} ${AutocompleteContactToken}`;
+
+/**
+ * Credential tokens that are valid directly before `webauthn` per the HTML spec.
+ * `webauthn` is only meaningful in passkey/credential autofill contexts.
+ */
+type AutocompleteWebAuthnBase =
+  | 'username'
+  | 'current-password'
+  | `${AutocompleteSectionToken} username`
+  | `${AutocompleteSectionToken} current-password`;
+
+/**
+ * For `autocomplete`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+ * Models the full HTML spec token-list:
+ *   - `on` / `off`
+ *   - standalone detail token              e.g. `given-name`
+ *   - standalone contact token             e.g. `tel`, `tel-national`, `email`
+ *   - `<group> <detail>`                   e.g. `shipping street-address`
+ *   - `<recipient> <contact>`              e.g. `home tel`
+ *   - `<group> <recipient> <contact>`      e.g. `shipping home tel`
+ *   - `<section> …`                        e.g. `section-user shipping street-address`
+ *   - `<section> <contact>`                e.g. `section-user tel`
+ *   - `username webauthn` / `current-password webauthn` (credential + passkey contexts only)
+ */
+export type AutocompleteTypes =
+  | 'on'
+  | 'off'
+  | AutocompleteBase
+  | `${AutocompleteWebAuthnBase} webauthn`;
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =
