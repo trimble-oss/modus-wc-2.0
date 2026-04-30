@@ -20,25 +20,25 @@ exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
           <div class="grid-row" role="list">
             <div aria-label="Trimble Connect" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="connect"></modus-wc-logo>
-              <modus-wc-tooltip content="Trimble Connect" position="auto">
+              <modus-wc-tooltip content="Trimble Connect" disabled="" position="auto">
                 <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="xs" weight="normal"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="Viewpoint" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="viewpoint"></modus-wc-logo>
-              <modus-wc-tooltip content="Viewpoint" position="auto">
+              <modus-wc-tooltip content="Viewpoint" disabled="" position="auto">
                 <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="xs" weight="normal"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="SketchUp" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="sketchup"></modus-wc-logo>
-              <modus-wc-tooltip content="SketchUp" position="auto">
+              <modus-wc-tooltip content="SketchUp" disabled="" position="auto">
                 <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="xs" weight="normal"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="Tekla" class="grid-item" draggable="false" role="listitem">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="tekla"></modus-wc-logo>
-              <modus-wc-tooltip content="Tekla" position="auto">
+              <modus-wc-tooltip content="Tekla" disabled="" position="auto">
                 <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="xs" weight="normal"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>

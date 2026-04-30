@@ -200,32 +200,46 @@ describe('modus-wc-app-menu', () => {
   });
 
   it.each([
-    { scrollWidth: 50, clientWidth: 80, expectedDisabled: true },
-    { scrollWidth: 120, clientWidth: 80, expectedDisabled: false },
+    {
+      scrollWidth: 50,
+      clientWidth: 80,
+      expectedTruncated: false,
+    },
+    {
+      scrollWidth: 120,
+      clientWidth: 80,
+      expectedTruncated: true,
+    },
   ])(
-    'should set grid tooltip disabled=$expectedDisabled when scrollWidth=$scrollWidth',
-    async ({ scrollWidth, clientWidth, expectedDisabled }) => {
+    'should detect truncation=$expectedTruncated when scrollWidth=$scrollWidth',
+    async ({ scrollWidth, clientWidth, expectedTruncated }) => {
       const page = await createPage({ apps: mockApps, layout: 'grid' });
+
+      const gridItems = page.root?.querySelectorAll('.grid-item');
+      gridItems?.forEach((gridItem) => {
+        const mockLabel = document.createElement('span');
+        mockLabel.classList.add('grid-item-text-label');
+        Object.defineProperty(mockLabel, 'scrollWidth', {
+          value: scrollWidth,
+        });
+        Object.defineProperty(mockLabel, 'clientWidth', {
+          value: clientWidth,
+        });
+        Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
+        Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
+        gridItem.querySelector('modus-wc-tooltip')?.appendChild(mockLabel);
+      });
+
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).updateGridTooltips();
+      await page.waitForChanges();
 
       const tooltips = page.root?.querySelectorAll(
         '.grid-item modus-wc-tooltip'
       );
       tooltips?.forEach((tooltip) => {
-        const mockLabel = document.createElement('span');
-        mockLabel.classList.add('grid-item-text-label');
-        Object.defineProperty(mockLabel, 'scrollWidth', { value: scrollWidth });
-        Object.defineProperty(mockLabel, 'clientWidth', { value: clientWidth });
-        Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
-        Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
-        tooltip.appendChild(mockLabel);
-      });
-
-      const component = page.rootInstance as ModusWcAppMenu;
-      (component as any).updateGridTooltips();
-
-      tooltips?.forEach((tooltip) => {
-        expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
-          expectedDisabled
+        expect(tooltip.getAttribute('disabled')).toBe(
+          expectedTruncated ? null : ''
         );
       });
     }
@@ -1798,7 +1812,7 @@ describe('modus-wc-app-menu', () => {
     }
   );
 
-  it('should call updateGridTooltips via requestAnimationFrame on render', async () => {
+  it('should populate truncatedApps on componentDidLoad for grid layout', async () => {
     const restoreRaf = mockRaf();
 
     const page = await createPage({
@@ -1819,14 +1833,83 @@ describe('modus-wc-app-menu', () => {
 
     const component = page.rootInstance as ModusWcAppMenu;
     (component as any).updateGridTooltips();
+    await page.waitForChanges();
 
-    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
-    tooltips?.forEach((tooltip) => {
-      expect((tooltip as HTMLElement & { disabled: boolean }).disabled).toBe(
-        false
-      );
+    expect(component.truncatedApps.size).toBe(4);
+    mockApps.forEach((app) => {
+      expect(component.truncatedApps.has(app.appName)).toBe(true);
     });
 
+    restoreRaf();
+  });
+
+  it('should skip tooltip update when layout is list', async () => {
+    const restoreRaf = mockRaf();
+    const page = await createPage({
+      apps: cloneApps(),
+      layout: 'list',
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    const spy = jest.spyOn(component as any, 'updateGridTooltips');
+    (component as any).scheduleTooltipUpdate();
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+    restoreRaf();
+  });
+
+  it('should schedule tooltip update when apps change', async () => {
+    const restoreRaf = mockRaf();
+    const page = await createPage({
+      apps: cloneApps(),
+      layout: 'grid',
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    const spy = jest.spyOn(component as any, 'scheduleTooltipUpdate');
+    component.apps = [{ appName: 'connect' }];
+    await page.waitForChanges();
+
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+    restoreRaf();
+  });
+
+  it('should schedule tooltip update when layout changes to grid', async () => {
+    const restoreRaf = mockRaf();
+    const page = await createPage({
+      apps: cloneApps(),
+      layout: 'list',
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    const spy = jest.spyOn(component as any, 'scheduleTooltipUpdate');
+    component.layout = 'grid';
+    await page.waitForChanges();
+
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+    restoreRaf();
+  });
+
+  it('should skip truncation check when logo element is missing', async () => {
+    const restoreRaf = mockRaf();
+    const page = await createPage({
+      apps: cloneApps(),
+      layout: 'grid',
+    });
+
+    const gridItems = page.root?.querySelectorAll('.grid-item');
+    gridItems?.forEach((gridItem) => {
+      const logo = gridItem.querySelector('modus-wc-logo');
+      logo?.remove();
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).updateGridTooltips();
+
+    expect(component.truncatedApps.size).toBe(0);
     restoreRaf();
   });
 });

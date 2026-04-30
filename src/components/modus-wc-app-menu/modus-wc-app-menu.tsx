@@ -64,30 +64,46 @@ export class ModusWcAppMenu {
 
   @State() grabbedItemPos: { appIndex: number } | null = null;
 
+  @State() truncatedApps: Set<string> = new Set();
+
   private appsSnapshot: IAppMenuItem[] | null = null;
 
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  componentDidRender() {
+  componentDidLoad() {
+    this.scheduleTooltipUpdate();
+  }
+
+  @Watch('apps')
+  onAppsChange() {
+    this.scheduleTooltipUpdate();
+  }
+
+  private scheduleTooltipUpdate() {
+    if (this.layout !== 'grid') return;
     requestAnimationFrame(() => this.updateGridTooltips());
   }
 
   private updateGridTooltips() {
+    const updated = new Set<string>();
     const gridItems = this.el.querySelectorAll('.grid-item');
     gridItems.forEach((gridItem) => {
-      const tooltip = gridItem.querySelector('modus-wc-tooltip') as
-        | (HTMLElement & { disabled: boolean })
-        | null;
       const label = gridItem.querySelector('.grid-item-text-label');
-      if (tooltip && label) {
+      const appName = gridItem
+        .querySelector('modus-wc-logo')
+        ?.getAttribute('name');
+      if (label && appName) {
         const isTruncated =
           label.scrollWidth > label.clientWidth ||
           label.scrollHeight > label.clientHeight;
-        tooltip.disabled = !isTruncated;
+        if (isTruncated) {
+          updated.add(appName);
+        }
       }
     });
+    this.truncatedApps = updated;
   }
 
   private getDisplayName(appName: AppName): string {
@@ -97,6 +113,7 @@ export class ModusWcAppMenu {
   @Watch('layout')
   onLayoutChange(newLayout: 'list' | 'grid') {
     this.layoutChange.emit({ layout: newLayout });
+    this.scheduleTooltipUpdate();
   }
 
   private handleEdit() {
@@ -280,7 +297,6 @@ export class ModusWcAppMenu {
         <modus-wc-menu>
           {apps.map((app, appIndex) => (
             <div
-              key={app.appName}
               onClick={() => this.itemClick.emit({ appIndex })}
               aria-label={this.getDisplayName(app.appName)}
               aria-roledescription={
@@ -363,6 +379,7 @@ export class ModusWcAppMenu {
               ></modus-wc-logo>
               <modus-wc-tooltip
                 content={this.getDisplayName(app.appName)}
+                disabled={!this.truncatedApps.has(app.appName)}
                 position="auto"
               >
                 <modus-wc-typography
