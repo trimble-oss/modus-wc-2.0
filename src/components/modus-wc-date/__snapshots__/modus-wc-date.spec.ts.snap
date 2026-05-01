@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-date renders type range with inline pickers and cross bounds 1`] = `
+<modus-wc-date class="modus-wc-date--range" end="2025-09-20" format="MMM DD, YYYY" label="Select Date" start="2025-09-10" type="range" value="">
+  <fieldset class="modus-wc-date-range-fieldset">
+    <legend class="modus-wc-date-range-legend modus-wc-date-range-legend--md" id="modus-wc-date-range-legend-c627c694-1d01-4b6a-9165-d053025f60dc">
+      Select Date
+    </legend>
+    <div class="modus-wc-date-range-row">
+      <div class="date-input-container">
+        <input aria-label="Range test" class="modus-wc-date-input modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="MMM DD, YYYY" type="text" value="Sep 10, 2025">
+        <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" shape="circle" size="xs" variant="borderless">
+          <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
+        </modus-wc-button>
+      </div>
+      <div class="date-input-container">
+        <input aria-label="Date range, end date" class="modus-wc-date-input modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" placeholder="MMM DD, YYYY" type="text" value="Sep 20, 2025">
+        <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" shape="circle" size="xs" variant="borderless">
+          <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
+        </modus-wc-button>
+      </div>
+    </div>
+  </fieldset>
+</modus-wc-date>
+`;
+
 exports[`modus-wc-date renders with default props 1`] = `
 <modus-wc-date format="dd/mm/yyyy" value="">
   <div class="date-input-container">

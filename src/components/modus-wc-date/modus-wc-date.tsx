@@ -17,6 +17,37 @@ import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import DatePickerCalendar from './utils/calendar';
 
+/** Payload for `rangeChange` when `variant` is `range` (HTML attribute `type="range"`). */
+export interface IRangeChangeDetail {
+  start: string;
+  end: string;
+}
+
+/**
+ * Per-picker metadata for range mode. All fields are optional.
+ * Pass this as a JS object; avoid serialising large objects as HTML attributes.
+ */
+export interface IRangeConfig {
+  /** `id` on the start input (`type="range"`). Defaults to the top-level `inputId`. */
+  startInputId?: string;
+  /** `id` on the end input (`type="range"`). */
+  endInputId?: string;
+  /** `name` on the start input. Defaults to the top-level `name`. */
+  startName?: string;
+  /** `name` on the end input. */
+  endName?: string;
+  /** Overrides the start input `aria-label`. Falls back to host `aria-label + ", start date"`. */
+  startAriaLabel?: string;
+  /** Overrides the end input `aria-label`. Falls back to host `aria-label + ", end date"`. */
+  endAriaLabel?: string;
+}
+
+/** Matches Modus 2.0 DateInput: single picker vs start/end range. */
+export type DateInputType = 'single' | 'range';
+
+/** Which logical picker is active: single date, range start, or range end. */
+type PickerSide = 'single' | 'start' | 'end';
+
 const MONTH_SHORT_NAMES = [
   'Jan',
   'Feb',
@@ -55,8 +86,13 @@ const WEEK_START_DAY_MAP: Record<WeekStartDay, number> = {
 export class ModusWcDate {
   private inheritedAttributes: Attributes = {};
   private popperInstance: PopperInstance | null = null;
+  private endPopperInstance: PopperInstance | null = null;
   private inputRef?: HTMLInputElement;
   private calendarRef?: HTMLElement;
+  private endInputRef?: HTMLInputElement;
+  private endCalendarRef?: HTMLElement;
+  /** Stable id for range mode legend (unique per instance). */
+  private rangeLegendId = '';
   private locale: string = 'en-US';
   private minDate?: Date;
   private maxDate?: Date;
@@ -73,8 +109,20 @@ export class ModusWcDate {
   /** Currently focused date index in calendar */
   @State() private focusedDateIndex: number = -1;
 
+  /** Show the end picker's calendar (range mode). */
+  @State() private showEndCalendar = false;
+
+  /** Calendar state for the end picker (range mode). */
+  @State() private endCalendar: DatePickerCalendar = new DatePickerCalendar();
+
+  /** Focused date index in the end picker's calendar. */
+  @State() private endFocusedDateIndex: number = -1;
+
   /** Tracks whether the component currently has focus */
   private hasFocus = false;
+
+  /** Tracks whether the end input currently has focus (range mode). */
+  private endHasFocus = false;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -134,6 +182,21 @@ export class ModusWcDate {
   /** Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week. */
   @Prop() showWeekNumbers?: boolean = false;
 
+  /** `single` (default): one date (`value`). `range`: start (`start`) and end (`end`) pickers with cross bounds. Reflected as HTML attribute `type`. */
+  @Prop({ attribute: 'type' }) variant?: DateInputType = 'single';
+
+  /** When `variant` is `range` (`type="range"`), the start date (ISO 8601 `YYYY-MM-DD`). */
+  @Prop({ mutable: true }) start: string = '';
+
+  /** When `variant` is `range` (`type="range"`), the end date (ISO 8601 `YYYY-MM-DD`). */
+  @Prop({ mutable: true }) end: string = '';
+
+  /**
+   * Per-picker metadata for range mode: start/end `inputId`, `name`, and `aria-label` overrides.
+   * Only used when `variant` is `range` (`type="range"`).
+   */
+  @Prop() rangeConfig?: IRangeConfig;
+
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
@@ -149,13 +212,23 @@ export class ModusWcDate {
   /** Event emitted when the calendar year selection changes. */
   @StencilEvent() calendarYearChange!: EventEmitter<number>;
 
+  /** When `type` is `range`, emitted after either picker updates (same timing as `inputChange` / calendar blur on children). */
+  @StencilEvent() rangeChange!: EventEmitter<IRangeChangeDetail>;
+
   /** Re-displays the stored ISO value in the new format when the `format` prop changes. */
   @Watch('format')
   handleFormatChange() {
-    if (this.value && this.inputRef) {
-      const parsed = this.parseISODate(this.value);
-      if (parsed) {
-        this.inputRef.value = this.formatForDisplay(parsed);
+    const sides: PickerSide[] =
+      this.variant === 'range' ? ['start', 'end'] : ['single'];
+    for (const side of sides) {
+      const inputRef = side === 'end' ? this.endInputRef : this.inputRef;
+      const iso =
+        side === 'end' ? this.end : side === 'start' ? this.start : this.value;
+      if (iso && inputRef) {
+        const parsed = this.parseISODate(iso);
+        if (parsed) {
+          inputRef.value = this.formatForDisplay(this.clampDate(parsed, side));
+        }
       }
     }
   }
@@ -180,70 +253,106 @@ export class ModusWcDate {
 
   @Watch('value')
   handleValueChange(newValue?: string) {
-    if (newValue === undefined) {
+    if (newValue === undefined || this.variant === 'range') {
       return;
     }
+    this.applyIsoPropToInput(
+      newValue,
+      'single',
+      this.inputRef,
+      () => this.hasFocus
+    );
+  }
 
+  @Watch('start')
+  handleStartChange(newValue?: string) {
+    if (newValue === undefined || this.variant !== 'range') {
+      return;
+    }
+    this.applyIsoPropToInput(
+      newValue,
+      'start',
+      this.inputRef,
+      () => this.hasFocus
+    );
+  }
+
+  @Watch('end')
+  handleEndChange(newValue?: string) {
+    if (newValue === undefined || this.variant !== 'range') {
+      return;
+    }
+    this.applyIsoPropToInput(
+      newValue,
+      'end',
+      this.endInputRef,
+      () => this.endHasFocus
+    );
+  }
+
+  /**
+   * Syncs a prop-driven ISO value to the given input display (and calendar month when not typing).
+   * Handles both typing (partial pass-through) and programmatic (clamp + reformat) paths.
+   * Does NOT write back to the prop — callers own their prop; this only updates the DOM input.
+   */
+  private applyIsoPropToInput(
+    newValue: string,
+    side: PickerSide,
+    inputRef: HTMLInputElement | undefined,
+    hasFocusGetter: () => boolean
+  ) {
+    if (!inputRef) {
+      return;
+    }
     if (!newValue) {
-      if (this.inputRef) {
-        this.inputRef.value = '';
-      }
+      inputRef.value = '';
       return;
     }
-
-    // When the input has focus, the user is actively typing.
-    // Allow partial/incomplete values to pass through without validation
-    // so that controlled input patterns (e.g. React) work correctly.
-    // Only reformat strict ISO 8601 values set programmatically; all other
-    // typed/partial input passes through unchanged.
-    if (this.hasFocus) {
+    if (hasFocusGetter()) {
       const isISO = /^\d{4}-\d{2}-\d{2}$/.test(newValue);
       if (isISO) {
         const parsed = this.parseISODate(newValue);
         if (parsed) {
-          // Clamp for display only — do not write back to this.value to avoid
-          // re-triggering this watcher and risking a loop in controlled-input patterns.
-          if (this.inputRef) {
-            this.inputRef.value = this.formatForDisplay(this.clampDate(parsed));
-          }
-        } else if (this.inputRef) {
-          this.inputRef.value = newValue;
+          inputRef.value = this.formatForDisplay(this.clampDate(parsed, side));
+        } else {
+          inputRef.value = newValue;
         }
-      } else if (this.inputRef) {
-        this.inputRef.value = newValue;
+      } else {
+        inputRef.value = newValue;
       }
       return;
     }
-
-    // Prop-driven change (no focus). Parse and update the display.
-    // The parent is responsible for providing a valid value; we clamp only
-    // the display here and never write back to this.value from the watcher.
     const parsed = this.parseISODate(newValue);
     if (!parsed) {
-      if (this.inputRef) {
-        this.inputRef.value = '';
-      }
+      inputRef.value = '';
       return;
     }
-
-    const clamped = this.clampDate(parsed);
-    if (this.inputRef) {
-      this.inputRef.value = this.formatForDisplay(clamped);
-      const event = new Event('input', { bubbles: true });
-      this.inputRef.dispatchEvent(event);
-    }
-
-    this.ensureCalendarWithinBounds(clamped);
+    const clamped = this.clampDate(parsed, side);
+    inputRef.value = this.formatForDisplay(clamped);
+    const event = new Event('input', { bubbles: true });
+    inputRef.dispatchEvent(event);
+    this.ensureCalendarWithinBounds(clamped, side);
   }
 
   @Watch('weekStartDay')
   handleWeekStartDayChange() {
-    // Reinitialize calendar with new first day of week
     const firstDayOfWeek =
       WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     this.calendar = new DatePickerCalendar(firstDayOfWeek);
 
-    // Navigate to currently selected date if exists
+    if (this.variant === 'range') {
+      this.endCalendar = new DatePickerCalendar(firstDayOfWeek);
+      const startDate = this.parseISODate(this.start);
+      if (startDate) {
+        this.calendar.gotoDate(startDate.getFullYear(), startDate.getMonth());
+      }
+      const endDate = this.parseISODate(this.end);
+      if (endDate) {
+        this.endCalendar.gotoDate(endDate.getFullYear(), endDate.getMonth());
+      }
+      return;
+    }
+
     const selectedDate = this.parseISODate(this.value);
     if (selectedDate) {
       this.calendar.gotoDate(
@@ -258,7 +367,8 @@ export class ModusWcDate {
     handleShadowDOMStyles(this.el);
 
     if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Date input';
+      this.el.ariaLabel =
+        this.variant === 'range' ? 'Date range' : 'Date input';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
@@ -274,25 +384,38 @@ export class ModusWcDate {
     const firstDayOfWeek =
       WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     this.calendar = new DatePickerCalendar(firstDayOfWeek);
+    if (this.variant === 'range') {
+      this.endCalendar = new DatePickerCalendar(firstDayOfWeek);
+    }
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
-    this.handleValueChange(this.value);
+    if (this.variant === 'range') {
+      this.rangeLegendId = this.el.id
+        ? `${this.el.id}-range-legend`
+        : typeof crypto !== 'undefined' && 'randomUUID' in crypto
+          ? `modus-wc-date-range-legend-${crypto.randomUUID()}`
+          : `modus-wc-date-range-legend-${Date.now()}`;
+      this.handleStartChange(this.start);
+      this.handleEndChange(this.end);
+    } else {
+      this.handleValueChange(this.value);
+    }
   }
 
   componentDidUpdate() {
-    if (this.showCalendar && this.inputRef && this.calendarRef) {
-      this.setupPopper();
-    } else if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
+    if (this.variant === 'range') {
+      this.syncPopperForSide('start');
+      this.syncPopperForSide('end');
+    } else {
+      this.syncPopperForSide('single');
     }
   }
 
   disconnectedCallback() {
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
-    }
+    this.popperInstance?.destroy();
+    this.popperInstance = null;
+    this.endPopperInstance?.destroy();
+    this.endPopperInstance = null;
   }
 
   private getClasses(): string {
@@ -315,7 +438,127 @@ export class ModusWcDate {
     return classList.join(' ');
   }
 
-  private handleBlur = (event: FocusEvent) => {
+  /** `side` matches the current `variant` (single vs start/end range). */
+  private isActivePickerSide(side: PickerSide): boolean {
+    return this.variant === 'range'
+      ? side === 'start' || side === 'end'
+      : side === 'single';
+  }
+
+  /** Accessible name for range pickers; explicit rangeConfig overrides beat host `aria-label`, then defaults. */
+  private getRangeInputAriaLabel(isEnd: boolean): string {
+    const explicit = (
+      isEnd ? this.rangeConfig?.endAriaLabel : this.rangeConfig?.startAriaLabel
+    )?.trim();
+    if (explicit) {
+      return explicit;
+    }
+    const host = this.el.ariaLabel?.trim();
+    if (host) {
+      return isEnd ? `${host}, end date` : `${host}, start date`;
+    }
+    return isEnd ? 'End date' : 'Start date';
+  }
+
+  private syncPopperForSide(side: PickerSide) {
+    if (!this.isActivePickerSide(side)) {
+      return;
+    }
+    const isEnd = side === 'end';
+
+    const showCalendar = isEnd ? this.showEndCalendar : this.showCalendar;
+    const inputRef = isEnd ? this.endInputRef : this.inputRef;
+    const calendarRef = isEnd ? this.endCalendarRef : this.calendarRef;
+
+    if (showCalendar && inputRef && calendarRef) {
+      this.setupPopper(side);
+    } else if (isEnd && this.endPopperInstance) {
+      this.endPopperInstance.destroy();
+      this.endPopperInstance = null;
+    } else if (!isEnd && this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
+  }
+
+  private getIsoForSide(side: PickerSide): string {
+    return side === 'end'
+      ? this.end
+      : side === 'start'
+        ? this.start
+        : this.value;
+  }
+
+  private getPickerBounds(side: PickerSide): {
+    minDate?: Date;
+    maxDate?: Date;
+  } {
+    if (this.variant !== 'range') {
+      return { minDate: this.minDate, maxDate: this.maxDate };
+    }
+    if (side === 'start') {
+      return {
+        minDate: this.minDate,
+        maxDate: this.parseISODate(this.getRangeStartMaxBound()),
+      };
+    }
+    if (side === 'end') {
+      return {
+        minDate: this.parseISODate(this.getRangeEndMinBound()),
+        maxDate: this.maxDate,
+      };
+    }
+    return { minDate: this.minDate, maxDate: this.maxDate };
+  }
+
+  private resolveOpenCalendarSide(): PickerSide | null {
+    if (this.variant !== 'range') {
+      return this.showCalendar ? 'single' : null;
+    }
+    if (this.showCalendar && this.showEndCalendar) {
+      const ae = document.activeElement;
+      if (ae && this.endCalendarRef?.contains(ae as Node)) {
+        return 'end';
+      }
+      if (ae && this.calendarRef?.contains(ae as Node)) {
+        return 'start';
+      }
+      return 'start';
+    }
+    if (this.showEndCalendar) {
+      return 'end';
+    }
+    if (this.showCalendar) {
+      return 'start';
+    }
+    return null;
+  }
+
+  private getCalendarForSide(side: PickerSide): DatePickerCalendar {
+    return side === 'end' ? this.endCalendar : this.calendar;
+  }
+
+  private setCalendarForSide(side: PickerSide, cal: DatePickerCalendar) {
+    if (side === 'end') {
+      this.endCalendar = cal;
+    } else {
+      this.calendar = cal;
+    }
+  }
+
+  private getFocusedIdx(side: PickerSide): number {
+    return side === 'end' ? this.endFocusedDateIndex : this.focusedDateIndex;
+  }
+
+  private setFocusedIdx(side: PickerSide, index: number) {
+    if (side === 'end') {
+      this.endFocusedDateIndex = index;
+    } else {
+      this.focusedDateIndex = index;
+    }
+  }
+
+  private handleBlur = (event: FocusEvent, side: PickerSide = 'single') => {
     // Check if focus is moving to an element within the component
     const relatedTarget = event.relatedTarget as HTMLElement;
     // istanbul ignore next (unreachable code)
@@ -324,44 +567,74 @@ export class ModusWcDate {
       return;
     }
 
-    // Focus is leaving the component
-    this.hasFocus = false;
-    this.syncValueFromInput();
+    if (side === 'end') {
+      this.endHasFocus = false;
+    } else {
+      this.hasFocus = false;
+    }
+    this.syncValueFromInput(side);
     this.inputBlur.emit(event);
   };
 
-  private handleFocus = (event: FocusEvent) => {
-    // Only emit focus if component didn't already have focus
-    if (!this.hasFocus) {
+  private handleFocus = (event: FocusEvent, side: PickerSide = 'single') => {
+    if (side === 'end') {
+      if (!this.endHasFocus) {
+        this.endHasFocus = true;
+        this.inputFocus.emit(event);
+      }
+    } else if (!this.hasFocus) {
       this.hasFocus = true;
       this.inputFocus.emit(event);
     }
   };
 
-  private handleInput = (event: InputEvent) => {
+  private handleInput = (event: InputEvent, side: PickerSide = 'single') => {
     const rawValue = (event.target as HTMLInputElement)?.value ?? '';
     const parsed = this.parseISODate(rawValue);
-    const isoValue = parsed ? this.formatISODate(this.clampDate(parsed)) : '';
+    const isoValue = parsed
+      ? this.formatISODate(this.clampDate(parsed, side))
+      : '';
     this.inputChange.emit({
       target: { value: isoValue },
     } as unknown as InputEvent);
+
+    if (this.variant === 'range' && (side === 'start' || side === 'end')) {
+      const prevStart = this.start;
+      const prevEnd = this.end;
+      if (side === 'start') {
+        this.start = isoValue;
+      } else {
+        this.end = isoValue;
+      }
+      if (prevStart !== this.start || prevEnd !== this.end) {
+        this.rangeChange.emit({ start: this.start, end: this.end });
+      }
+    }
   };
 
-  private handleInputKeyDown = (event: KeyboardEvent) => {
+  private handleInputKeyDown = (
+    event: KeyboardEvent,
+    side: PickerSide = 'single'
+  ) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      this.syncValueFromInput();
+      this.syncValueFromInput(side);
     }
   };
 
-  private setupPopper = () => {
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
+  private setupPopper(side: PickerSide = 'single') {
+    if (!this.isActivePickerSide(side)) {
+      return;
     }
-
-    this.popperInstance = createPopper(this.inputRef!, this.calendarRef!, {
-      placement: 'bottom-start',
-      strategy: 'fixed',
+    const isEnd = side === 'end';
+    const inputRef = isEnd ? this.endInputRef : this.inputRef;
+    const calendarRef = isEnd ? this.endCalendarRef : this.calendarRef;
+    if (!inputRef || !calendarRef) {
+      return;
+    }
+    const popperOptions = {
+      placement: 'bottom-start' as const,
+      strategy: 'fixed' as const,
       modifiers: [
         {
           name: 'offset',
@@ -376,122 +649,163 @@ export class ModusWcDate {
           },
         },
       ],
-    });
-  };
+    };
+    if (isEnd) {
+      this.endPopperInstance?.destroy();
+      this.endPopperInstance = createPopper(
+        inputRef,
+        calendarRef,
+        popperOptions
+      );
+    } else {
+      this.popperInstance?.destroy();
+      this.popperInstance = createPopper(inputRef, calendarRef, popperOptions);
+    }
+  }
 
-  private toggleCalendar = () => {
-    this.showCalendar = !this.showCalendar;
+  private toggleCalendar = (side: PickerSide = 'single') => {
+    if (!this.isActivePickerSide(side)) {
+      return;
+    }
+    const isEnd = side === 'end';
+    const show = isEnd ? this.showEndCalendar : this.showCalendar;
+    const nextShow = !show;
+    if (isEnd) {
+      this.showEndCalendar = nextShow;
+    } else {
+      this.showCalendar = nextShow;
+    }
 
-    // If opening the calendar and there's a selected date, navigate to it
-    if (this.showCalendar) {
-      const selectedDate = this.parseISODate(this.value);
-      this.ensureCalendarWithinBounds(selectedDate);
-
-      // Set focus to the selected date if it exists
+    if (nextShow) {
+      const selectedDate = this.parseISODate(this.getIsoForSide(side));
+      this.ensureCalendarWithinBounds(selectedDate ?? undefined, side);
+      const cal = this.getCalendarForSide(side);
       if (selectedDate) {
-        const selectedIndex = this.calendar.dates.findIndex(
-          (date) => date && this.compareDate(date, selectedDate) === 0
+        const selectedIndex = cal.dates.findIndex(
+          (d) => d && this.compareDate(d, selectedDate) === 0
         );
         if (selectedIndex !== -1) {
-          this.focusedDateIndex = selectedIndex;
+          this.setFocusedIdx(side, selectedIndex);
         }
-      }
-      // set focus to today
-      else {
-        this.ensureCalendarWithinBounds(new Date());
-        this.focusedDateIndex = this.calendar.dates.findIndex(
-          (date) => date && this.compareDate(date, new Date()) === 0
+      } else {
+        this.ensureCalendarWithinBounds(new Date(), side);
+        const calOpen = this.getCalendarForSide(side);
+        this.setFocusedIdx(
+          side,
+          calOpen.dates.findIndex(
+            (d) => d && this.compareDate(d, new Date()) === 0
+          )
         );
       }
     } else {
-      // Reset focus when closing
-      this.focusedDateIndex = -1;
+      this.setFocusedIdx(side, -1);
     }
-    // Always ensure input is focused when toggling calendar (opening or closing)
-    if (this.inputRef) {
-      this.inputRef.focus();
-    }
+    const inputRef = isEnd ? this.endInputRef : this.inputRef;
+    inputRef?.focus();
   };
 
-  private handleDateSelect = (date: Date) => {
-    if (this.isDateDisabled(date)) {
+  private handleDateSelect = (date: Date, side: PickerSide = 'single') => {
+    if (this.isDateDisabled(date, side)) {
       return;
     }
 
-    // Clear hasFocus before setting value so the @Watch('value') handler
-    // takes the full validation path and dispatches the input event.
-    this.hasFocus = false;
-    this.value = this.formatISODate(date);
-
-    // If the selected date is from a different month, navigate to that month
-    // istanbul ignore next (unreachable code)
-    if (
-      date.getMonth() !== this.calendar.selectedMonth ||
-      date.getFullYear() !== this.calendar.selectedYear
-    ) {
-      const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay || 'sunday'];
-      const newCalendar = new DatePickerCalendar(firstDayOfWeek);
-      newCalendar.gotoDate(date.getFullYear(), date.getMonth());
-      this.calendar = newCalendar;
+    const isEnd = side === 'end';
+    if (isEnd) {
+      this.endHasFocus = false;
+      this.end = this.formatISODate(date);
+      this.showEndCalendar = false;
+    } else if (side === 'start') {
+      this.hasFocus = false;
+      this.start = this.formatISODate(date);
+      this.showCalendar = false;
+    } else {
+      this.hasFocus = false;
+      this.value = this.formatISODate(date);
+      this.showCalendar = false;
     }
 
-    this.showCalendar = false;
+    const cal = this.getCalendarForSide(side);
+    if (
+      date.getMonth() !== cal.selectedMonth ||
+      date.getFullYear() !== cal.selectedYear
+    ) {
+      const newCalendar = new DatePickerCalendar(
+        WEEK_START_DAY_MAP[this.weekStartDay || 'sunday']
+      );
+      newCalendar.gotoDate(date.getFullYear(), date.getMonth());
+      this.setCalendarForSide(side, newCalendar);
+    }
+
     this.inputBlur.emit(new FocusEvent('blur', { bubbles: true }));
+    if (this.variant === 'range' && (side === 'start' || side === 'end')) {
+      this.rangeChange.emit({ start: this.start, end: this.end });
+    }
   };
 
-  private addMonthOffset = (offset: number) => {
-    const target = new Date(
-      this.calendar.selectedYear,
-      this.calendar.selectedMonth + offset,
-      1
+  private addMonthOffset = (offset: number, side: PickerSide = 'single') => {
+    const cal = this.getCalendarForSide(side);
+    const target = new Date(cal.selectedYear, cal.selectedMonth + offset, 1);
+    this.updateCalendarAndEmitEvents(
+      target.getFullYear(),
+      target.getMonth(),
+      side
     );
-    this.updateCalendarAndEmitEvents(target.getFullYear(), target.getMonth());
   };
 
-  private handleMonthChange = (event: CustomEvent<InputEvent>) => {
+  private handleMonthChange = (
+    event: CustomEvent<InputEvent>,
+    side: PickerSide = 'single'
+  ) => {
     event.stopPropagation();
 
-    // Try to get the value from the original input event
     const inputEvent = event.detail;
     const selectTarget = inputEvent?.target as HTMLSelectElement;
     const monthValue = selectTarget?.value;
     const newMonth = parseInt(monthValue || '0', 10);
 
-    const currentYear = this.calendar.selectedYear;
+    const cal = this.getCalendarForSide(side);
+    const currentYear = cal.selectedYear;
 
     if (Number.isNaN(newMonth)) {
       return;
     }
 
-    this.updateCalendarAndEmitEvents(currentYear, newMonth);
+    this.updateCalendarAndEmitEvents(currentYear, newMonth, side);
   };
 
-  private handleYearChange = (event: CustomEvent<InputEvent>) => {
+  private handleYearChange = (
+    event: CustomEvent<InputEvent>,
+    side: PickerSide = 'single'
+  ) => {
     event.stopPropagation();
 
-    // Try to get the value from the original input event
     const inputEvent = event.detail;
     const selectTarget = inputEvent?.target as HTMLSelectElement;
     const yearValue = selectTarget?.value;
     const newYear = parseInt(yearValue || '0', 10);
 
-    const currentMonth = this.calendar.selectedMonth;
+    const cal = this.getCalendarForSide(side);
+    const currentMonth = cal.selectedMonth;
 
     if (Number.isNaN(newYear)) {
       return;
     }
 
-    this.updateCalendarAndEmitEvents(newYear, currentMonth);
+    this.updateCalendarAndEmitEvents(newYear, currentMonth, side);
   };
 
-  private handleDateKeyDown = (event: KeyboardEvent, date: Date) => {
-    if (this.isDateDisabled(date)) {
+  private handleDateKeyDown = (
+    event: KeyboardEvent,
+    date: Date,
+    side: PickerSide = 'single'
+  ) => {
+    if (this.isDateDisabled(date, side)) {
       return;
     }
 
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      this.handleDateSelect(date);
+      this.handleDateSelect(date, side);
     }
   };
 
@@ -499,64 +813,79 @@ export class ModusWcDate {
   handleClickOutside(event: MouseEvent) {
     const path = event.composedPath();
     const insideComponent = path.includes(this.el);
-    if (!insideComponent && this.showCalendar) {
-      this.showCalendar = false;
-      this.hasFocus = false;
+    if (!insideComponent) {
+      if (this.showCalendar) {
+        this.showCalendar = false;
+        this.hasFocus = false;
+      }
+      if (this.showEndCalendar) {
+        this.showEndCalendar = false;
+        this.endHasFocus = false;
+      }
     }
   }
 
   @Listen('keydown', { target: 'document' })
   handleEscapeKey(event: KeyboardEvent) {
-    if (event.key === 'Escape' && this.showCalendar) {
-      this.showCalendar = false;
-      event.preventDefault();
+    if (event.key === 'Escape') {
+      if (this.showCalendar) {
+        this.showCalendar = false;
+        event.preventDefault();
+      }
+      if (this.showEndCalendar) {
+        this.showEndCalendar = false;
+        event.preventDefault();
+      }
     }
   }
 
-  private navigateToAdjacentMonth(currentIndex: number, isUp: boolean): void {
+  private navigateToAdjacentMonth(
+    currentIndex: number,
+    isUp: boolean,
+    side: PickerSide = 'single'
+  ): void {
+    const cal = this.getCalendarForSide(side);
     const currentColumn = currentIndex % 7;
 
-    // Navigate to previous/next month
-    // Date constructor will normalize out-of-bounds months (e.g., -1 → Dec of prev year, 12 → Jan of next year)
     this.updateCalendarAndEmitEvents(
-      this.calendar.selectedYear,
-      this.calendar.selectedMonth + (isUp ? -1 : 1)
+      cal.selectedYear,
+      cal.selectedMonth + (isUp ? -1 : 1),
+      side
     );
 
-    // Find target date in same column
+    const calNext = this.getCalendarForSide(side);
     const weekRange = isUp ? [5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5];
 
     for (const week of weekRange) {
       const indexInWeek = week * 7 + currentColumn;
-      // istanbul ignore next (optional chaining)
       if (
-        indexInWeek < this.calendar.dates.length &&
-        this.calendar.dates[indexInWeek]?.getMonth() ===
-          this.calendar.selectedMonth
+        indexInWeek < calNext.dates.length &&
+        calNext.dates[indexInWeek]?.getMonth() === calNext.selectedMonth
       ) {
-        this.focusedDateIndex = indexInWeek;
+        this.setFocusedIdx(side, indexInWeek);
         return;
       }
     }
 
-    // Fallback to first/last current-month date
-    // istanbul ignore next (fallback scenario)
-    const currentMonthIndices = this.calendar.dates
+    const currentMonthIndices = calNext.dates
       .map((date, index) =>
-        date?.getMonth() === this.calendar.selectedMonth ? index : -1
+        date?.getMonth() === calNext.selectedMonth ? index : -1
       )
       .filter((index) => index !== -1);
 
-    // istanbul ignore next (fallback scenario)
-    this.focusedDateIndex = isUp
-      ? (currentMonthIndices[currentMonthIndices.length - 1] ??
-        this.calendar.dates.length - 1)
-      : (currentMonthIndices[0] ?? 0);
+    this.setFocusedIdx(
+      side,
+      isUp
+        ? (currentMonthIndices[currentMonthIndices.length - 1] ??
+            calNext.dates.length - 1)
+        : (currentMonthIndices[0] ?? 0)
+    );
   }
 
   @Listen('keydown')
   handleArrowKeys(event: KeyboardEvent) {
-    if (!this.showCalendar) {
+    const side = this.resolveOpenCalendarSide();
+    if (side === null) {
       return;
     }
 
@@ -568,32 +897,29 @@ export class ModusWcDate {
 
     event.preventDefault();
 
-    const totalDates = this.calendar.dates.length;
-    let newIndex = this.focusedDateIndex;
+    const cal = this.getCalendarForSide(side);
+    const totalDates = cal.dates.length;
+    let newIndex = this.getFocusedIdx(side);
 
-    // If no date is focused, start with the first date or selected date
     if (newIndex === -1) {
-      if (this.value) {
-        const selectedDate = this.parseISODate(this.value);
+      const iso = this.getIsoForSide(side);
+      if (iso) {
+        const selectedDate = this.parseISODate(iso);
         if (selectedDate) {
-          newIndex = this.calendar.dates.findIndex(
+          newIndex = cal.dates.findIndex(
             (date) => this.compareDate(date, selectedDate) === 0
           );
         }
       }
-      // istanbul ignore next (unreachable code)
       if (newIndex === -1) {
         newIndex = 0;
       }
     }
 
-    // Calculate target position for each arrow key
     let targetIndex = newIndex;
     let shouldChangeMonth = false;
     let targetDate: Date | null = null;
 
-    // Navigate based on arrow key
-    // istanbul ignore next (unreachable code)
     switch (key) {
       case 'ArrowLeft':
         targetIndex = newIndex - 1;
@@ -609,12 +935,10 @@ export class ModusWcDate {
         break;
     }
 
-    // Check if target index is valid and get the target date
     if (targetIndex >= 0 && targetIndex < totalDates) {
-      targetDate = this.calendar.dates[targetIndex];
+      targetDate = cal.dates[targetIndex];
 
       if (targetDate) {
-        // Skip disabled dates - keep moving in the same direction until we find a valid date
         let searchIndex = targetIndex;
         const direction =
           key === 'ArrowLeft'
@@ -628,147 +952,126 @@ export class ModusWcDate {
         while (
           searchIndex >= 0 &&
           searchIndex < totalDates &&
-          this.isDateDisabled(this.calendar.dates[searchIndex])
+          this.isDateDisabled(cal.dates[searchIndex], side)
         ) {
           searchIndex += direction;
         }
 
-        // If we found a valid date within bounds
         if (
           searchIndex >= 0 &&
           searchIndex < totalDates &&
-          this.calendar.dates[searchIndex]
+          cal.dates[searchIndex]
         ) {
-          targetDate = this.calendar.dates[searchIndex];
+          targetDate = cal.dates[searchIndex];
           targetIndex = searchIndex;
         } else {
-          // No valid date found in this direction, don't move
           return;
         }
 
-        // If target date is from a different month, navigate to that month
-        // istanbul ignore next (optional chaining)
-        if (targetDate.getMonth() !== this.calendar.selectedMonth) {
+        if (targetDate.getMonth() !== cal.selectedMonth) {
           shouldChangeMonth = true;
         }
-        this.focusedDateIndex = targetIndex;
+        this.setFocusedIdx(side, targetIndex);
       }
     } else {
-      // Target is outside current calendar, navigate to appropriate month
       shouldChangeMonth = true;
 
       if (key === 'ArrowUp') {
-        // Check if we can navigate to previous month
         const prevMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth - 1,
+          cal.selectedYear,
+          cal.selectedMonth - 1,
           1
         );
-        if (!this.isDateDisabled(prevMonthDate)) {
-          this.navigateToAdjacentMonth(newIndex, true);
-          shouldChangeMonth = false; // Already handled in helper
+        if (!this.isDateDisabled(prevMonthDate, side)) {
+          this.navigateToAdjacentMonth(newIndex, true, side);
+          shouldChangeMonth = false;
         }
       } else if (key === 'ArrowDown') {
-        // Check if we can navigate to next month
         const nextMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth + 1,
+          cal.selectedYear,
+          cal.selectedMonth + 1,
           1
         );
-        if (!this.isDateDisabled(nextMonthDate)) {
-          this.navigateToAdjacentMonth(newIndex, false);
-          shouldChangeMonth = false; // Already handled in helper
+        if (!this.isDateDisabled(nextMonthDate, side)) {
+          this.navigateToAdjacentMonth(newIndex, false, side);
+          shouldChangeMonth = false;
         }
       } else if (key === 'ArrowLeft') {
-        // Go to previous month's last day
         const prevMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth - 1,
+          cal.selectedYear,
+          cal.selectedMonth - 1,
           1
         );
         targetDate = new Date(
           prevMonthDate.getFullYear(),
           prevMonthDate.getMonth() + 1,
           0
-        ); // Last day of previous month
+        );
 
-        // Only navigate if not disabled
-        if (this.isDateDisabled(targetDate)) {
+        if (this.isDateDisabled(targetDate, side)) {
           return;
         }
       } else {
-        // Go to next month's first day
-        targetDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth + 1,
-          1
-        ); // First day of next month
+        targetDate = new Date(cal.selectedYear, cal.selectedMonth + 1, 1);
 
-        // Only navigate if not disabled
-        if (this.isDateDisabled(targetDate)) {
+        if (this.isDateDisabled(targetDate, side)) {
           return;
         }
       }
     }
 
-    // Handle month change if needed
     if (shouldChangeMonth && targetDate) {
       this.updateCalendarAndEmitEvents(
         targetDate.getFullYear(),
-        targetDate.getMonth()
+        targetDate.getMonth(),
+        side
       );
 
-      // Find the target date in the new calendar
-      const newTargetIndex = this.calendar.dates.findIndex(
-        // istanbul ignore next (optional chaining)
+      const calAfter = this.getCalendarForSide(side);
+      const newTargetIndex = calAfter.dates.findIndex(
         (date) => date && this.compareDate(date, targetDate) === 0
       );
 
-      // istanbul ignore next (inequality check)
       if (newTargetIndex !== -1) {
-        this.focusedDateIndex = newTargetIndex;
+        this.setFocusedIdx(side, newTargetIndex);
       } else {
-        // Fallback positioning
-        // istanbul ignore next (fallback scenario)
         if (key === 'ArrowLeft' || key === 'ArrowUp') {
-          // Focus on last current-month date
-          // istanbul ignore next (fallback scenario)
-          const lastCurrentMonthIndex = this.calendar.dates
+          const lastCurrentMonthIndex = calAfter.dates
             .map((date, index) =>
               date && date.getMonth() === targetDate.getMonth() ? index : -1
             )
             .filter((index) => index !== -1)
             .pop();
-          // istanbul ignore next (fallback scenario)
-          this.focusedDateIndex =
+          this.setFocusedIdx(
+            side,
             lastCurrentMonthIndex !== undefined
               ? lastCurrentMonthIndex
-              : this.calendar.dates.length - 1;
+              : calAfter.dates.length - 1
+          );
         } else {
-          // Focus on first current-month date
-          // istanbul ignore next (fallback scenario)
-          const firstCurrentMonthIndex = this.calendar.dates.findIndex(
+          const firstCurrentMonthIndex = calAfter.dates.findIndex(
             (date) => date && date.getMonth() === targetDate.getMonth()
           );
-          // istanbul ignore next (fallback scenario)
-          this.focusedDateIndex =
-            firstCurrentMonthIndex !== -1 ? firstCurrentMonthIndex : 0;
+          this.setFocusedIdx(
+            side,
+            firstCurrentMonthIndex !== -1 ? firstCurrentMonthIndex : 0
+          );
         }
       }
     }
 
-    // Focus the corresponding button
-    // istanbul ignore next (unreachable code)
-    const dateButtons = this.calendarRef?.querySelectorAll('.calendar-day');
-    if (dateButtons && dateButtons[this.focusedDateIndex]) {
-      // istanbul ignore next (unreachable code)
-      (dateButtons[this.focusedDateIndex] as HTMLElement).focus();
+    const calRef = side === 'end' ? this.endCalendarRef : this.calendarRef;
+    const dateButtons = calRef?.querySelectorAll('.calendar-day');
+    const focusedIdx = this.getFocusedIdx(side);
+    if (dateButtons && dateButtons[focusedIdx]) {
+      (dateButtons[focusedIdx] as HTMLElement).focus();
     }
   }
 
-  private renderCalendarHeader() {
-    const currentYear = this.calendar.selectedYear;
-    const currentMonth = this.calendar.selectedMonth;
+  private renderCalendarHeader(side: PickerSide = 'single') {
+    const cal = this.getCalendarForSide(side);
+    const currentYear = cal.selectedYear;
+    const currentMonth = cal.selectedMonth;
 
     // Generate year options (current year ± 100 years)
     const yearOptions: { value: string; label: string }[] = [];
@@ -792,7 +1095,7 @@ export class ModusWcDate {
           size="xs"
           onButtonClick={
             // istanbul ignore next (unreachable code)
-            () => this.addMonthOffset(-1)
+            () => this.addMonthOffset(-1, side)
           }
           class="nav-btn"
         >
@@ -801,13 +1104,13 @@ export class ModusWcDate {
 
         <div class="calendar-selects">
           <modus-wc-select
-            key={`month-${currentYear}-${currentMonth}`}
+            key={`month-${side}-${currentYear}-${currentMonth}`}
             class="month-select"
             value={currentMonth.toString()}
             options={monthOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleMonthChange(e as CustomEvent<InputEvent>)
+              (e) => this.handleMonthChange(e as CustomEvent<InputEvent>, side)
             }
             onInputBlur={
               // istanbul ignore next (unreachable code)
@@ -817,13 +1120,13 @@ export class ModusWcDate {
             size="sm"
           />
           <modus-wc-select
-            key={`year-${currentYear}`}
+            key={`year-${side}-${currentYear}`}
             class="year-select"
             value={currentYear.toString()}
             options={yearOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleYearChange(e as CustomEvent<InputEvent>)
+              (e) => this.handleYearChange(e as CustomEvent<InputEvent>, side)
             }
             onInputBlur={
               // istanbul ignore next (unreachable code)
@@ -842,7 +1145,7 @@ export class ModusWcDate {
           size="xs"
           onButtonClick={
             // istanbul ignore next (unreachable code)
-            () => this.addMonthOffset(1)
+            () => this.addMonthOffset(1, side)
           }
           class="nav-btn"
         >
@@ -852,10 +1155,13 @@ export class ModusWcDate {
     );
   }
 
-  private renderCalendarBody() {
+  private renderCalendarBody(side: PickerSide = 'single') {
+    const cal = this.getCalendarForSide(side);
     const today = new Date();
-    const selectedDate = this.parseISODate(this.value);
-    const currentMonth = this.calendar.selectedMonth;
+    const selectedDate = this.parseISODate(this.getIsoForSide(side));
+    const currentMonth = cal.selectedMonth;
+    const weekStartDayNum =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
 
     return (
       <div class="calendar-body">
@@ -863,30 +1169,22 @@ export class ModusWcDate {
           class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
           {this.showWeekNumbers && <div class="week-number-header"></div>}
-          {this.calendar
-            .getDaysOfWeek(
-              'default',
-              WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
-            )
-            .map((d) => {
-              return <div class="day-header">{d}</div>;
-            })}
+          {cal.getDaysOfWeek('default', weekStartDayNum).map((d) => {
+            return <div class="day-header">{d}</div>;
+          })}
         </div>
         <div
           class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
-          {this.calendar.dates.map((date, index) => {
+          {cal.dates.map((date, index) => {
             // Add week number at the start of each row (every 7 days)
             const weekNumberElement =
               this.showWeekNumbers && index % 7 === 0 ? (
                 <div
                   class="week-number"
-                  aria-label={`Week ${this.calendar.getWeekNumber(date, WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay])}`}
+                  aria-label={`Week ${cal.getWeekNumber(date, weekStartDayNum)}`}
                 >
-                  {this.calendar.getWeekNumber(
-                    date,
-                    WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay]
-                  )}
+                  {cal.getWeekNumber(date, weekStartDayNum)}
                 </div>
               ) : null;
 
@@ -899,7 +1197,7 @@ export class ModusWcDate {
               (selectedDate && this.compareDate(date, selectedDate) === 0) ||
               false;
             const isCurrentMonth = date.getMonth() === currentMonth;
-            const isDisabled = this.isDateDisabled(date);
+            const isDisabled = this.isDateDisabled(date, side);
 
             const button = (
               <button
@@ -913,8 +1211,8 @@ export class ModusWcDate {
                   disabled: isDisabled,
                 }}
                 disabled={isDisabled}
-                onClick={() => this.handleDateSelect(date)}
-                onKeyDown={(e) => this.handleDateKeyDown(e, date)}
+                onClick={() => this.handleDateSelect(date, side)}
+                onKeyDown={(e) => this.handleDateKeyDown(e, date, side)}
                 tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
@@ -930,27 +1228,13 @@ export class ModusWcDate {
   }
 
   private compareDate(date1: Date, date2: Date): number {
-    if (!date1 && !date2) {
-      return 0;
-    } else if (!date1 && date2) {
-      return -1;
-    } else if (date1 && !date2) {
-      return 1;
-    }
-
-    let delta: number;
-
-    delta = date1.getFullYear() - date2.getFullYear();
-    if (delta !== 0) {
-      return delta;
-    }
-
-    delta = date1.getMonth() - date2.getMonth();
-    if (delta !== 0) {
-      return delta;
-    }
-
-    return date1.getDate() - date2.getDate();
+    if (!date1) return date2 ? -1 : 0;
+    if (!date2) return 1;
+    return (
+      date1.getFullYear() - date2.getFullYear() ||
+      date1.getMonth() - date2.getMonth() ||
+      date1.getDate() - date2.getDate()
+    );
   }
 
   private get effectiveFormat(): string {
@@ -1075,10 +1359,13 @@ export class ModusWcDate {
     return `${year}-${month}-${day}`;
   }
 
-  /** Returns the current value formatted for display, or empty string if value is absent or unparseable. */
-  private get inputDisplayValue(): string {
-    if (!this.value) return '';
-    const parsed = this.parseISODate(this.value);
+  /** Returns ISO for `side` formatted for display, or empty when absent / unparseable. */
+  private getDisplayValue(side: PickerSide): string {
+    const iso = this.getIsoForSide(side);
+    if (!iso) {
+      return '';
+    }
+    const parsed = this.parseISODate(iso);
     return parsed ? this.formatForDisplay(parsed) : '';
   }
 
@@ -1106,53 +1393,70 @@ export class ModusWcDate {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  private clampDate(date: Date): Date {
+  private clampDate(date: Date, side: PickerSide = 'single'): Date {
+    const { minDate, maxDate } = this.getPickerBounds(side);
     let result = this.cloneDate(date);
 
-    if (this.minDate && result < this.minDate) {
-      result = this.cloneDate(this.minDate);
+    if (minDate && result < minDate) {
+      result = this.cloneDate(minDate);
     }
 
-    if (this.maxDate && result > this.maxDate) {
-      result = this.cloneDate(this.maxDate);
+    if (maxDate && result > maxDate) {
+      result = this.cloneDate(maxDate);
     }
 
     return result;
   }
 
-  private isDateDisabled(date: Date): boolean {
-    if (this.minDate && date < this.minDate) {
+  private isDateDisabled(date: Date, side: PickerSide = 'single'): boolean {
+    const { minDate, maxDate } = this.getPickerBounds(side);
+    if (minDate && date < minDate) {
       return true;
     }
 
-    if (this.maxDate && date > this.maxDate) {
+    if (maxDate && date > maxDate) {
       return true;
     }
 
     return false;
   }
 
+  private clampIsoToProp(iso: string, side: PickerSide): string {
+    if (!iso) {
+      return '';
+    }
+    const parsed = this.parseISODate(iso);
+    if (!parsed) {
+      return '';
+    }
+    return this.formatISODate(this.clampDate(parsed, side));
+  }
+
   private ensureValueWithinBounds() {
+    if (this.variant === 'range') {
+      const nextStart = this.clampIsoToProp(this.start, 'start');
+      if (nextStart !== this.start) {
+        this.start = nextStart;
+      }
+      const nextEnd = this.clampIsoToProp(this.end, 'end');
+      if (nextEnd !== this.end) {
+        this.end = nextEnd;
+      }
+      return;
+    }
     if (!this.value) {
       return;
     }
-
-    const parsed = this.parseISODate(this.value);
-    if (!parsed) {
-      this.value = '';
-      return;
-    }
-
-    const clamped = this.clampDate(parsed);
-    const formatted = this.formatISODate(clamped);
-
-    if (formatted !== this.value) {
-      this.value = formatted;
+    const clamped = this.clampIsoToProp(this.value, 'single');
+    if (clamped !== this.value) {
+      this.value = clamped;
     }
   }
 
-  private ensureCalendarWithinBounds(referenceDate?: Date) {
-    // Allow viewing any month, just disable dates outside min/max
+  private ensureCalendarWithinBounds(
+    referenceDate?: Date,
+    side: PickerSide = 'single'
+  ) {
     if (referenceDate) {
       const firstDayOfWeek =
         WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
@@ -1161,25 +1465,29 @@ export class ModusWcDate {
         referenceDate.getFullYear(),
         referenceDate.getMonth()
       );
-      this.calendar = newCalendar;
+      this.setCalendarForSide(side, newCalendar);
     }
   }
 
-  private setCalendarMonth(year: number, month: number) {
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCalendar = new DatePickerCalendar(firstDayOfWeek);
-    newCalendar.gotoDate(year, month);
-    this.calendar = newCalendar;
+  private setCalendarMonth(
+    year: number,
+    month: number,
+    side: PickerSide = 'single'
+  ) {
+    this.ensureCalendarWithinBounds(new Date(year, month, 1), side);
   }
 
-  private updateCalendarAndEmitEvents(year: number, month: number) {
-    const oldYear = this.calendar.selectedYear;
-    const oldMonth = this.calendar.selectedMonth;
+  private updateCalendarAndEmitEvents(
+    year: number,
+    month: number,
+    side: PickerSide = 'single'
+  ) {
+    const cal = this.getCalendarForSide(side);
+    const oldYear = cal.selectedYear;
+    const oldMonth = cal.selectedMonth;
 
-    this.setCalendarMonth(year, month);
+    this.setCalendarMonth(year, month, side);
 
-    // Emit events only if the values actually changed
     if (month !== oldMonth) {
       this.calendarMonthChange.emit(month);
     }
@@ -1189,15 +1497,27 @@ export class ModusWcDate {
     }
   }
 
-  private syncValueFromInput() {
-    if (!this.inputRef) {
+  private syncValueFromInput(side: PickerSide = 'single') {
+    const inputRef = side === 'end' ? this.endInputRef : this.inputRef;
+    if (!inputRef) {
       return;
     }
 
-    const value = this.inputRef.value.trim();
+    const value = inputRef.value.trim();
 
     if (!value) {
-      if (this.value) {
+      if (this.variant === 'range') {
+        const prevStart = this.start;
+        const prevEnd = this.end;
+        if (side === 'end') {
+          this.end = '';
+        } else if (side === 'start') {
+          this.start = '';
+        }
+        if (prevStart !== this.start || prevEnd !== this.end) {
+          this.rangeChange.emit({ start: this.start, end: this.end });
+        }
+      } else if (this.value) {
         this.value = '';
       }
       return;
@@ -1206,16 +1526,188 @@ export class ModusWcDate {
     const parsed = this.parseISODate(value);
 
     if (!parsed) {
-      this.inputRef.value = this.inputDisplayValue;
+      inputRef.value = this.getDisplayValue(side);
       return;
     }
 
-    const clamped = this.clampDate(parsed);
-    this.value = this.formatISODate(clamped);
-    this.inputRef.value = this.formatForDisplay(clamped);
+    const clamped = this.clampDate(parsed, side);
+    const formatted = this.formatISODate(clamped);
+    const prevStart = this.start;
+    const prevEnd = this.end;
+
+    if (side === 'end') {
+      this.end = formatted;
+    } else if (side === 'start') {
+      this.start = formatted;
+    } else {
+      this.value = formatted;
+    }
+    inputRef.value = this.formatForDisplay(clamped);
+
+    if (
+      this.variant === 'range' &&
+      (side === 'start' || side === 'end') &&
+      (prevStart !== this.start || prevEnd !== this.end)
+    ) {
+      this.rangeChange.emit({ start: this.start, end: this.end });
+    }
+  }
+
+  private getRangeStartMaxBound(): string | undefined {
+    const end = this.end;
+    const cap = this.max;
+    if (end && /^\d{4}-\d{2}-\d{2}$/.test(end)) {
+      if (!cap) {
+        return end;
+      }
+      return end <= cap ? end : cap;
+    }
+    return cap || undefined;
+  }
+
+  private getRangeEndMinBound(): string | undefined {
+    const start = this.start;
+    const capMin = this.min;
+    if (start && /^\d{4}-\d{2}-\d{2}$/.test(start)) {
+      if (!capMin) {
+        return start;
+      }
+      return start >= capMin ? start : capMin;
+    }
+    return capMin || undefined;
+  }
+
+  private renderPickerContent(side: PickerSide) {
+    if (!this.isActivePickerSide(side)) {
+      return null;
+    }
+
+    const isEnd = side === 'end';
+    const showCal = isEnd ? this.showEndCalendar : this.showCalendar;
+    const hasFocusState = isEnd ? this.endHasFocus : this.hasFocus;
+    const inputRef = isEnd ? this.endInputRef : this.inputRef;
+    const ariaLabel = this.getRangeInputAriaLabel(isEnd);
+
+    return [
+      <div
+        class="date-input-container"
+        key={isEnd ? 'end-picker' : 'start-picker'}
+      >
+        <input
+          ref={(el) => {
+            if (isEnd) {
+              this.endInputRef = el as HTMLInputElement;
+            } else {
+              this.inputRef = el as HTMLInputElement;
+            }
+          }}
+          aria-disabled={this.disabled}
+          aria-label={this.variant === 'range' ? ariaLabel : undefined}
+          class={this.getClasses()}
+          disabled={this.disabled}
+          id={
+            isEnd
+              ? (this.rangeConfig?.endInputId ?? this.inputId)
+              : (this.rangeConfig?.startInputId ?? this.inputId)
+          }
+          name={
+            isEnd
+              ? (this.rangeConfig?.endName ?? this.name)
+              : (this.rangeConfig?.startName ?? this.name)
+          }
+          onBlur={(e) => this.handleBlur(e, side)}
+          onFocus={(e) => this.handleFocus(e, side)}
+          onInput={(e) => this.handleInput(e, side)}
+          onKeyDown={(e) => this.handleInputKeyDown(e, side)}
+          placeholder={this.effectiveFormat}
+          readonly={this.readOnly}
+          required={this.required}
+          tabIndex={isEnd ? undefined : this.inputTabIndex}
+          type="text"
+          value={
+            hasFocusState ? (inputRef?.value ?? '') : this.getDisplayValue(side)
+          }
+          {...(isEnd ? {} : this.inheritedAttributes)}
+        />
+        <modus-wc-button
+          aria-label="Open calendar"
+          disabled={this.disabled || this.readOnly}
+          variant="borderless"
+          shape="circle"
+          size="xs"
+          color="tertiary"
+          class="calendar-icon-button"
+          onButtonClick={() => this.toggleCalendar(side)}
+        >
+          <modus-wc-icon name="calendar_blank" size="sm" />
+        </modus-wc-button>
+      </div>,
+      showCal && (
+        <div
+          key={isEnd ? 'end-cal' : 'start-cal'}
+          ref={(el) => {
+            if (isEnd) {
+              this.endCalendarRef = el as HTMLElement;
+            } else {
+              this.calendarRef = el as HTMLElement;
+            }
+          }}
+          class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+        >
+          {this.renderCalendarHeader(side)}
+          {this.renderCalendarBody(side)}
+        </div>
+      ),
+    ];
+  }
+
+  private renderRange() {
+    const legendId = this.label ? this.rangeLegendId : undefined;
+
+    return (
+      <Host class="modus-wc-date--range">
+        <fieldset
+          class="modus-wc-date-range-fieldset"
+          aria-label={this.label ? undefined : this.el.ariaLabel || undefined}
+        >
+          {this.label && (
+            <legend
+              id={legendId}
+              class={{
+                'modus-wc-date-range-legend': true,
+                [`modus-wc-date-range-legend--${this.size}`]: Boolean(
+                  this.size
+                ),
+              }}
+            >
+              {this.label}
+              {this.required && (
+                <span aria-hidden="true" class="modus-wc-date-range-required">
+                  {'\u00A0*'}
+                </span>
+              )}
+            </legend>
+          )}
+          <div class="modus-wc-date-range-row">
+            {this.renderPickerContent('start')}
+            {this.renderPickerContent('end')}
+          </div>
+        </fieldset>
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            size={this.size}
+          />
+        )}
+      </Host>
+    );
   }
 
   render() {
+    if (this.variant === 'range') {
+      return this.renderRange();
+    }
     return (
       <Host>
         {this.label && (
@@ -1226,57 +1718,7 @@ export class ModusWcDate {
             size={this.size}
           />
         )}
-        <div class="date-input-container">
-          <input
-            ref={(el) => (this.inputRef = el)}
-            aria-disabled={this.disabled}
-            class={this.getClasses()}
-            disabled={this.disabled}
-            id={this.inputId}
-            name={this.name}
-            onBlur={this.handleBlur}
-            onFocus={this.handleFocus}
-            onInput={this.handleInput}
-            onKeyDown={this.handleInputKeyDown}
-            placeholder={this.effectiveFormat}
-            readonly={this.readOnly}
-            required={this.required}
-            tabIndex={this.inputTabIndex}
-            type="text"
-            value={
-              this.hasFocus
-                ? (this.inputRef?.value ?? '')
-                : this.inputDisplayValue
-            }
-            {...this.inheritedAttributes}
-          />
-          <modus-wc-button
-            aria-label="Open calendar"
-            disabled={this.disabled || this.readOnly}
-            variant="borderless"
-            shape="circle"
-            size="xs"
-            color="tertiary"
-            class="calendar-icon-button"
-            onButtonClick={
-              // istanbul ignore next (unreachable code)
-              () => this.toggleCalendar()
-            }
-          >
-            <modus-wc-icon name="calendar_blank" size="sm" />
-          </modus-wc-button>
-        </div>
-
-        {this.showCalendar && (
-          <div
-            ref={(el) => (this.calendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
-          >
-            {this.renderCalendarHeader()}
-            {this.renderCalendarBody()}
-          </div>
-        )}
-
+        {this.renderPickerContent('single')}
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}

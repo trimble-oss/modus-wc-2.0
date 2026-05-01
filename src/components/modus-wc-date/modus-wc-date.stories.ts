@@ -29,6 +29,10 @@ interface DateArgs {
   'show-week-numbers'?: boolean;
   size?: ModusSize;
   value: string;
+  /** When `type="range"`, ISO start date (`YYYY-MM-DD`). */
+  start?: string;
+  /** When `type="range"`, ISO end date (`YYYY-MM-DD`). */
+  end?: string;
   'week-start-day'?: WeekStartDay;
 }
 
@@ -99,6 +103,7 @@ const meta: Meta<DateArgs> = {
         'inputFocus',
         'calendarMonthChange',
         'calendarYearChange',
+        'rangeChange',
       ],
     },
   },
@@ -142,6 +147,72 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+const RangeTemplate: Story = {
+  render: (args) => html`
+    <style>
+      .date-range-storybook-wrap {
+        align-content: flex-start;
+        display: grid;
+        max-width: 560px;
+        min-height: 400px;
+      }
+    </style>
+    <div class="date-range-storybook-wrap">
+      <modus-wc-date
+        aria-label="Select date range"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        ?disabled=${args.disabled}
+        .feedback=${args.feedback}
+        end=${args.end ?? ''}
+        format=${ifDefined(args.format)}
+        input-id=${ifDefined(args['input-id'])}
+        input-tab-index=${ifDefined(args['input-tab-index'])}
+        label=${ifDefined(args.label)}
+        max=${ifDefined(args.max)}
+        min=${ifDefined(args.min)}
+        name=${ifDefined(args.name)}
+        ?read-only=${args['read-only']}
+        ?required=${args.required}
+        ?show-week-numbers=${args['show-week-numbers']}
+        size=${ifDefined(args.size)}
+        start=${args.start ?? ''}
+        type="range"
+        week-start-day=${ifDefined(args['week-start-day'])}
+      ></modus-wc-date>
+    </div>
+  `,
+};
+
+export const DateRange: Story = {
+  ...RangeTemplate,
+  name: 'Date Range',
+  args: {
+    ...meta.args,
+    bordered: true,
+    disabled: false,
+    end: '2025-09-15',
+    format: 'MMM DD, YYYY',
+    label: 'Select Date',
+    'read-only': false,
+    required: false,
+    'show-week-numbers': false,
+    size: 'md',
+    start: '2025-09-10',
+    value: '',
+    'week-start-day': 'sunday',
+  },
+  parameters: {
+    controls: {
+      exclude: ['value', 'type'],
+    },
+  },
+  argTypes: {
+    start: { control: 'text' },
+    end: { control: 'text' },
+  },
+};
 
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
@@ -240,6 +311,7 @@ export const Migration: Story = {
   - The \`format\` prop is now automatically derived from the user's locale when not explicitly set.
   Previously, it defaulted to \`dd-mm-yyyy\`. The accepted values remain the same fixed union
   (\`'yyyy-mm-dd'\`, \`'dd-mm-yyyy'\`, \`'mm-dd-yyyy'\`, \`'yyyy/mm/dd'\`, \`'dd/mm/yyyy'\`, \`'mm/dd/yyyy'\`, \`'MMM DD, YYYY'\`).
+  - **Date range:** set attribute \`type="range"\` (Stencil prop \`variant="range"\`) for two pickers with a shared label. Use \`start\` and \`end\` (both ISO \`YYYY-MM-DD\`), and listen for \`rangeChange\`.
 
 #### Prop Mapping
 
@@ -263,9 +335,11 @@ export const Migration: Story = {
 | required           | required         |                                         |
 | show-calendar-icon |                  | Not carried over                        |
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
-| type               |                  | Not carried over                        |
+| type               | type (\`variant\` in TS) | \`single\` (default) or \`range\`; range uses \`start\` + \`end\` and emits \`rangeChange\` |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
 | value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`)   |
+| (n/a)              | start            | Range start (ISO) when \`type\` is \`range\` |
+| (n/a)              | end              | Range end (ISO) when \`type\` is \`range\` |
 
 #### Event Mapping
 
@@ -273,7 +347,7 @@ export const Migration: Story = {
 |---------------------|-------------|------------------|
 | calendarIconClicked |             | Not carried over |
 | dateInputBlur       | inputBlur   |                  |
-| valueChange         | inputChange |                  |
+| valueChange         | inputChange, \`rangeChange\` | \`rangeChange\` when \`type\` is \`range\` |
 | valueError          |             | Not carried over |
         `,
       },

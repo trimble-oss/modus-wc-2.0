@@ -12,6 +12,20 @@ describe('modus-wc-date', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('renders type range with inline pickers and cross bounds', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: `<modus-wc-date type="range" label="Select Date" start="2025-09-10" end="2025-09-20" format="MMM DD, YYYY" aria-label="Range test"></modus-wc-date>`,
+    });
+    expect(page.root!.tagName.toLowerCase()).toBe('modus-wc-date');
+    const inputs = page.root!.querySelectorAll('input');
+    expect(inputs.length).toBe(2);
+    const inst = page.rootInstance as ModusWcDate;
+    expect(inst['getRangeEndMinBound']()).toBe('2025-09-10');
+    expect(inst['getRangeStartMaxBound']()).toBe('2025-09-20');
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should render with custom props', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
@@ -314,7 +328,7 @@ describe('modus-wc-date', () => {
     const testDate = new Date(2025, 9, 15);
     const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
 
-    component['handleDateKeyDown'](enterEvent, testDate);
+    component['handleDateKeyDown'](enterEvent, testDate, 'single');
     await page.waitForChanges();
 
     expect(component.value).toBe('2025-10-15');
@@ -721,7 +735,7 @@ describe('modus-wc-date', () => {
     expect(component.value).toBe('2025-10-15');
 
     input.value = '   ';
-    component['syncValueFromInput']();
+    component['syncValueFromInput']('single');
     await page.waitForChanges();
 
     expect(component.value).toBe('');
@@ -1271,7 +1285,7 @@ describe('modus-wc-date', () => {
     const component = page.rootInstance as ModusWcDate;
 
     component['inputRef'] = undefined;
-    component['syncValueFromInput']();
+    component['syncValueFromInput']('single');
     await page.waitForChanges();
 
     expect(component.value).toBe('');
@@ -1563,7 +1577,7 @@ describe('modus-wc-date', () => {
 
     component.value = '';
     input.value = 'invalid-format';
-    component['syncValueFromInput']();
+    component['syncValueFromInput']('single');
     await page.waitForChanges();
 
     expect(input.value).toBe('');
@@ -2791,7 +2805,7 @@ describe('modus-wc-date', () => {
       .spyOn(component as unknown as Record<string, jest.Mock>, 'parseISODate')
       .mockReturnValue(undefined);
 
-    const display = component['inputDisplayValue'];
+    const display = component['getDisplayValue']('single');
     expect(display).toBe('');
 
     parseSpy.mockRestore();
@@ -3244,7 +3258,10 @@ describe('modus-wc-date', () => {
     const spy = jest.fn();
     page.root!.addEventListener('inputChange', spy);
 
-    component['handleInput']({ target: null } as unknown as InputEvent);
+    component['handleInput'](
+      { target: null } as unknown as InputEvent,
+      'single'
+    );
     await page.waitForChanges();
 
     expect(spy).toHaveBeenCalled();

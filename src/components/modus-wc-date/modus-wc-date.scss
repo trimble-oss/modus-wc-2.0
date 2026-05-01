@@ -284,6 +284,57 @@ modus-wc-date {
   @include connect-input-styles;
 }
 
+// Date range (`type="range"`): shared legend and two pickers (Modus 2.0 DateInput)
+modus-wc-date.modus-wc-date--range {
+  .modus-wc-date-range-fieldset {
+    border: 0;
+    margin: 0;
+    min-inline-size: 0;
+    padding: 0;
+  }
+
+  .modus-wc-date-range-legend {
+    font-weight: var(--modus-wc-font-weight-bold);
+    padding: 0;
+
+    &.modus-wc-date-range-legend--sm {
+      font-size: var(--modus-wc-font-size-xs);
+    }
+
+    &.modus-wc-date-range-legend--md {
+      font-size: var(--modus-wc-font-size-sm);
+    }
+
+    &.modus-wc-date-range-legend--lg {
+      font-size: var(--modus-wc-font-size-md);
+    }
+  }
+
+  .modus-wc-date-range-required {
+    color: var(--modus-wc-color-error);
+  }
+
+  .modus-wc-date-range-row {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    inline-size: 100%;
+
+    modus-wc-date {
+      flex: 1 1 0;
+      min-inline-size: 0;
+    }
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-date.modus-wc-date--range .modus-wc-date-range-legend {
+  color: var(--modus-wc-color-gray-8);
+}
+
+[data-theme='modus-classic-dark'] modus-wc-date.modus-wc-date--range .modus-wc-date-range-legend {
+  color: var(--modus-wc-color-gray-2);
+}
+
 [data-theme='modus-modern-dark'] modus-wc-date,
 [data-theme='modus-classic-dark'] modus-wc-date {
   .calendar-container .calendar-header {
