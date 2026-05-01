@@ -3,6 +3,7 @@ import { convertPropsToClasses } from './modus-wc-modal.tailwind';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { CollapseSolidIcon } from '../../icons/collapse-solid.icon';
 import { ExpandSolidIcon } from '../../icons/expand-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -46,6 +47,7 @@ export class ModusWcModal {
   @Prop() showFullscreenToggle?: boolean = false;
 
   componentWillLoad() {
+    handleShadowDOMStyles(this.el);
     if (!this.modalId) {
       console.error(
         "The modal component requires a unique 'modalId' to be passed in as a prop."

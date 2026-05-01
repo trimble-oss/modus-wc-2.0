@@ -13,20 +13,22 @@ The component supports a `<slot>` for injecting custom li elements inside the ul
 
 ## Properties
 
-| Property      | Attribute      | Description                                       | Type                                      | Default      |
-| ------------- | -------------- | ------------------------------------------------- | ----------------------------------------- | ------------ |
-| `bordered`    | `bordered`     | Indicates that the menu should have a border.     | `boolean \| undefined`                    | `undefined`  |
-| `customClass` | `custom-class` | Custom CSS class to apply to the ul element.      | `string \| undefined`                     | `''`         |
-| `isSubMenu`   | `is-sub-menu`  | Indicates that this menu is a submenu (dropdown). | `boolean \| undefined`                    | `undefined`  |
-| `orientation` | `orientation`  | The orientation of the menu.                      | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `size`        | `size`         | The size of the menu.                             | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
+| Property        | Attribute        | Description                                       | Type                                      | Default      |
+| --------------- | ---------------- | ------------------------------------------------- | ----------------------------------------- | ------------ |
+| `bordered`      | `bordered`       | Indicates that the menu should have a border.     | `boolean \| undefined`                    | `undefined`  |
+| `customClass`   | `custom-class`   | Custom CSS class to apply to the ul element.      | `string \| undefined`                     | `''`         |
+| `isSubMenu`     | `is-sub-menu`    | Indicates that this menu is a submenu (dropdown). | `boolean \| undefined`                    | `undefined`  |
+| `orientation`   | `orientation`    | The orientation of the menu.                      | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `selectionMode` | `selection-mode` | The selection mode of the menu.                   | `"multiple" \| "single" \| undefined`     | `'single'`   |
+| `size`          | `size`           | The size of the menu.                             | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Events
 
-| Event          | Description                              | Type                      |
-| -------------- | ---------------------------------------- | ------------------------- |
-| `menuFocusout` | Event emitted when the menu loses focus. | `CustomEvent<FocusEvent>` |
+| Event                 | Description                                                                                                                    | Type                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| `menuFocusout`        | Event emitted when the menu loses focus.                                                                                       | `CustomEvent<FocusEvent>`                        |
+| `menuSelectionChange` | Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements. | `CustomEvent<{ selectedItems: HTMLElement[]; }>` |
 
 
 ## Dependencies

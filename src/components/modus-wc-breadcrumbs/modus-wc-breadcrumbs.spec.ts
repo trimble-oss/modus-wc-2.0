@@ -101,4 +101,34 @@ describe('modus-wc-breadcrumbs', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
+
+  it('should prevent navigation for unsafe breadcrumb url protocols', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBreadcrumbs],
+      html: '<modus-wc-breadcrumbs aria-label="Unsafe breadcrumbs"></modus-wc-breadcrumbs>',
+    });
+
+    const component = page.rootInstance as ModusWcBreadcrumbs;
+    const eventSpy = jest.fn();
+    component.items = [
+      { label: 'Unsafe', url: 'javascript:alert(1)' },
+      { label: 'Current' },
+    ];
+    page.root?.addEventListener('breadcrumbClick', eventSpy);
+
+    await page.waitForChanges();
+
+    const firstLink = page.root?.querySelector('a');
+    const fallbackButton = page.root?.querySelector('button');
+    expect(firstLink).toBeNull();
+    expect(fallbackButton?.getAttribute('type')).toBe('button');
+
+    fallbackButton?.click();
+    expect(eventSpy).toHaveBeenCalled();
+
+    const mockEvent = new MouseEvent('click');
+    const preventDefaultSpy = jest.spyOn(mockEvent, 'preventDefault');
+    component['handleClick'](mockEvent, component.items[0]);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
 });

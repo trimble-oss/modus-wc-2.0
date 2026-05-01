@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface ProgressArgs {
   'custom-class'?: string;
@@ -217,6 +218,36 @@ export const RadialWithCustomSizeAndThickness: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('progress-shadow-host')) {
+      const ProgressShadowHost = createShadowHostClass<ProgressArgs>({
+        componentTag: 'modus-wc-progress',
+        propsMapper: (v: ProgressArgs, el: HTMLElement) => {
+          const progressEl = el as unknown as {
+            customClass: string;
+            indeterminate: boolean;
+            label: string;
+            max: number;
+            value: number;
+            variant: string;
+          };
+          progressEl.customClass = v['custom-class'] || '';
+          progressEl.indeterminate = Boolean(v.indeterminate);
+          progressEl.label = v.label ?? '';
+          progressEl.max = v.max ?? 100;
+          progressEl.value = v.value;
+          progressEl.variant = v.variant ?? 'default';
+        },
+      });
+      customElements.define('progress-shadow-host', ProgressShadowHost);
+    }
+
+    return html`<progress-shadow-host
+      .props=${{ ...args }}
+    ></progress-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

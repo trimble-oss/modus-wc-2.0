@@ -31,8 +31,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-md);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -47,8 +49,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-lg);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -63,8 +67,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+        font-size: var(--modus-wc-font-size-xl);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -172,8 +178,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-md);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -189,8 +197,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        font-size: var(--modus-wc-font-size-lg);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -206,8 +216,10 @@ modus-wc-chip .modus-wc-chip {
       }
 
       .modus-wc-chip-remove-icon {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+        font-size: var(--modus-wc-font-size-xl);
+
+        /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
+        line-height: 1;
       }
     }
 
@@ -262,9 +274,6 @@ modus-wc-chip .modus-wc-chip {
       color: var(--modus-wc-color-gray-10);
 
       &.modus-wc-chip--outline {
-        background-color: var(--modus-wc-color-base-100);
-        background-color: transparent;
-        background-color: $modus-wc-chip-active-filled-bg;
         background-color: $modus-wc-chip-active-filled-bg;
 
         .modus-wc-chip-label {

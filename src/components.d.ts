@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
+import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -22,8 +22,7 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-import { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, TextFieldTypes, WeekStartDay } from "./components/types";
+export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -40,7 +39,6 @@ export { SortingState } from "@tanstack/table-core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { TypographyHierarchy, TypographySize, TypographyWeight } from "./components/modus-wc-typography/modus-wc-typography";
 export namespace Components {
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
@@ -91,6 +89,10 @@ export namespace Components {
      * The component supports a `<slot>` for injecting custom content.
      */
     interface ModusWcAutocomplete {
+        /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: AutocompleteTypes;
         /**
           * Indicates that the autocomplete should have a border.
          */
@@ -495,9 +497,13 @@ export namespace Components {
      */
     interface ModusWcCollapse {
         /**
-          * Indicates that the component should have a border.
+          * When true, renders a border-bottom on the collapse component.
          */
         "bordered"?: boolean;
+        /**
+          * Controls chevron placement.
+         */
+        "chevronPosition"?: 'left' | 'right';
         /**
           * A unique identifier used to set the id attributes of various elements.
          */
@@ -579,7 +585,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -947,6 +953,10 @@ export namespace Components {
          */
         "orientation"?: Orientation;
         /**
+          * The selection mode of the menu.
+         */
+        "selectionMode"?: SelectionMode;
+        /**
           * The size of the menu.
          */
         "size"?: ModusSize;
@@ -993,10 +1003,6 @@ export namespace Components {
           * The size of the menu item.
          */
         "size"?: ModusSize;
-        /**
-          * The modus icon name to render on the start of the menu item.
-         */
-        "startIcon"?: string;
         /**
           * The text rendered beneath the label.
          */
@@ -1576,7 +1582,7 @@ export namespace Components {
         /**
           * The size of the input.
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
          */
@@ -2051,6 +2057,10 @@ export namespace Components {
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
         /**
           * The panel is expanded or closed
          */
@@ -2567,6 +2577,9 @@ declare global {
     };
     interface HTMLModusWcMenuElementEventMap {
         "menuFocusout": FocusEvent;
+        "menuSelectionChange": {
+    selectedItems: HTMLElement[];
+  };
     }
     /**
      * A customizable menu component used to display a list of li elements vertically or horizontally.
@@ -3227,6 +3240,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcAutocomplete {
         /**
+          * Hint for form autofill feature.
+         */
+        "autoComplete"?: AutocompleteTypes;
+        /**
           * Indicates that the autocomplete should have a border.
          */
         "bordered"?: boolean;
@@ -3675,9 +3692,13 @@ declare namespace LocalJSX {
      */
     interface ModusWcCollapse {
         /**
-          * Indicates that the component should have a border.
+          * When true, renders a border-bottom on the collapse component.
          */
         "bordered"?: boolean;
+        /**
+          * Controls chevron placement.
+         */
+        "chevronPosition"?: 'left' | 'right';
         /**
           * A unique identifier used to set the id attributes of various elements.
          */
@@ -3767,7 +3788,7 @@ declare namespace LocalJSX {
          */
         "onInputBlur"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Event emitted when the input value changes.
+          * Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
          */
         "onInputChange"?: (event: ModusWcDateCustomEvent<InputEvent>) => void;
         /**
@@ -3783,7 +3804,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Displays ISO 8601 week numbers in the calendar.Week numbers are calculated with Monday as the first day of the week.
+          * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
          */
         "showWeekNumbers"?: boolean;
         /**
@@ -4155,9 +4176,19 @@ declare namespace LocalJSX {
          */
         "onMenuFocusout"?: (event: ModusWcMenuCustomEvent<FocusEvent>) => void;
         /**
+          * Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements.
+         */
+        "onMenuSelectionChange"?: (event: ModusWcMenuCustomEvent<{
+    selectedItems: HTMLElement[];
+  }>) => void;
+        /**
           * The orientation of the menu.
          */
         "orientation"?: Orientation;
+        /**
+          * The selection mode of the menu.
+         */
+        "selectionMode"?: SelectionMode;
         /**
           * The size of the menu.
          */
@@ -4208,10 +4239,6 @@ declare namespace LocalJSX {
           * The size of the menu item.
          */
         "size"?: ModusSize;
-        /**
-          * The modus icon name to render on the start of the menu item.
-         */
-        "startIcon"?: string;
         /**
           * The text rendered beneath the label.
          */
@@ -4931,7 +4958,7 @@ declare namespace LocalJSX {
         /**
           * The size of the input.
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
          */
@@ -5499,6 +5526,10 @@ declare namespace LocalJSX {
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
+        /**
+          * Custom CSS class to apply to the outer div.
+         */
+        "customClass"?: string;
         /**
           * The panel is expanded or closed
          */

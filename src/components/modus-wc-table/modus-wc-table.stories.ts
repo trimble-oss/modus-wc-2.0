@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ITableColumn } from './modus-wc-table';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IAutocompleteItem } from '../types';
 import { Density } from '../types';
 
@@ -28,7 +29,20 @@ interface TableStoryArgs {
 const meta: Meta<TableStoryArgs> = {
   title: 'Components/Table',
   component: 'modus-wc-table',
-
+  args: {
+    density: 'comfortable',
+    hover: false,
+    sortable: true,
+    paginated: false,
+    'show-page-size-selector': true,
+    'custom-class': '',
+    selectable: 'none',
+    zebra: false,
+    'current-page': 1,
+    'page-size-options': [5, 10, 15],
+    'selected-row-ids': [],
+    editable: false,
+  },
   argTypes: {
     columns: {
       control: 'object',
@@ -1015,5 +1029,65 @@ export const InlineEditing: Story = {
     'current-page': 1,
     'page-size-options': [5, 10, 15],
     'selected-row-ids': [],
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('table-shadow-host')) {
+      const TableShadowHost = createShadowHostClass<TableStoryArgs>({
+        componentTag: 'modus-wc-table',
+        propsMapper: (v: TableStoryArgs, el: HTMLElement) => {
+          const tableEl = el as unknown as {
+            caption: string;
+            columns: ITableColumn[];
+            currentPage: number;
+            data: Record<string, unknown>[];
+            customClass: string;
+            density: string;
+            editable: boolean;
+            hover: boolean;
+            paginated: boolean;
+            pageSizeOptions: number[];
+            selectable: string;
+            selectedRowIds: string[];
+            showPageSizeSelector: boolean;
+            sortable: boolean;
+            zebra: boolean;
+          };
+          tableEl.caption = v.caption ?? '';
+          tableEl.columns = v.columns ?? createDemoColumns();
+          tableEl.currentPage = v['current-page'] ?? 1;
+          tableEl.data = v.data ?? createDemoData();
+          tableEl.customClass = v['custom-class'] || '';
+          tableEl.density = v.density ?? 'comfortable';
+          tableEl.editable = Boolean(v.editable);
+          tableEl.hover = Boolean(v.hover);
+          tableEl.paginated = Boolean(v.paginated);
+          tableEl.pageSizeOptions = v['page-size-options'] ?? [5, 10, 15];
+          tableEl.selectable = v.selectable ?? 'none';
+          tableEl.selectedRowIds = v['selected-row-ids'] ?? [];
+          tableEl.showPageSizeSelector = v['show-page-size-selector'] !== false;
+          tableEl.sortable = Boolean(v.sortable);
+          tableEl.zebra = Boolean(v.zebra);
+          // Wire events once — Stencil events don't bubble out of shadow root
+          if (!el.dataset['eventsWired']) {
+            el.addEventListener('rowClick', action('rowClick'));
+            el.addEventListener('sortChange', action('sortChange'));
+            el.addEventListener('paginationChange', action('paginationChange'));
+            el.addEventListener(
+              'rowSelectionChange',
+              action('rowSelectionChange')
+            );
+            el.addEventListener('cellEditStart', action('cellEditStart'));
+            el.addEventListener('cellEditCommit', action('cellEditCommit'));
+            el.dataset['eventsWired'] = 'true';
+          }
+        },
+      });
+      customElements.define('table-shadow-host', TableShadowHost);
+    }
+
+    return html`<table-shadow-host .props=${{ ...args }}></table-shadow-host>`;
   },
 };

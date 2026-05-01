@@ -3,7 +3,8 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 .modus-wc-navbar {
-  border-radius: 8px;
+  background: var(--modus-wc-color-base-page);
+  border-radius: var(--modus-wc-border-radius-box);
   box-shadow:
     0 1px 2px -1px
       color-mix(in sRGB, var(--modus-wc-color-black) 10%, transparent),
