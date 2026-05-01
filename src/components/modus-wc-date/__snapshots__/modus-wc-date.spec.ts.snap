@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-date renders type range with inline pickers and cross bounds 1`] = `
-<modus-wc-date class="modus-wc-date--range" end="2025-09-20" format="MMM DD, YYYY" label="Select Date" start="2025-09-10" type="range" value="">
+<modus-wc-date class="modus-wc-date--range" end="2025-09-20" format="MMM DD, YYYY" id="snapshot-range-test" label="Select Date" start="2025-09-10" type="range" value="">
   <fieldset class="modus-wc-date-range-fieldset">
-    <legend class="modus-wc-date-range-legend modus-wc-date-range-legend--md" id="modus-wc-date-range-legend-c627c694-1d01-4b6a-9165-d053025f60dc">
+    <legend class="modus-wc-date-range-legend modus-wc-date-range-legend--md" id="snapshot-range-test-range-legend">
       Select Date
     </legend>
     <div class="modus-wc-date-range-row">
