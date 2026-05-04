@@ -327,11 +327,15 @@ modus-wc-date.modus-wc-date--range {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-date.modus-wc-date--range .modus-wc-date-range-legend {
+[data-theme='modus-classic-light']
+  modus-wc-date.modus-wc-date--range
+  .modus-wc-date-range-legend {
   color: var(--modus-wc-color-gray-8);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-date.modus-wc-date--range .modus-wc-date-range-legend {
+[data-theme='modus-classic-dark']
+  modus-wc-date.modus-wc-date--range
+  .modus-wc-date-range-legend {
   color: var(--modus-wc-color-gray-2);
 }
 
