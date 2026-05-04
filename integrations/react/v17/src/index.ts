@@ -8,7 +8,7 @@ if (typeof window !== 'undefined') {
 }
 
 export * from './stencil-generated/components';
-export type { Density, ModusSize } from '@trimble-oss/moduswebcomponents/types/components';
+export type { Density, ModusSize } from '@trimble-oss/moduswebcomponents';
 
 // Re-export setAssetPath for users who need to override
 export { setAssetPath };
