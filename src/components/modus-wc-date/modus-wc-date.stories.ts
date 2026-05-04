@@ -23,6 +23,7 @@ interface DateArgs {
   label?: string;
   max?: string;
   min?: string;
+  type?: 'single' | 'range';
   name?: string;
   'read-only'?: boolean;
   required?: boolean;
@@ -44,6 +45,7 @@ const meta: Meta<DateArgs> = {
     'custom-class': '',
     disabled: false,
     label: 'Label',
+    type: 'single',
     'read-only': false,
     required: false,
     'show-week-numbers': false,
@@ -81,6 +83,10 @@ const meta: Meta<DateArgs> = {
         'MMM DD, YYYY',
       ],
     },
+    type: {
+      control: { type: 'select' },
+      options: ['single', 'range'],
+    },
     'week-start-day': {
       control: { type: 'select' },
       options: [
@@ -114,79 +120,37 @@ export default meta;
 type Story = StoryObj<DateArgs>;
 
 const Template: Story = {
-  render: (args) => {
-    return html`
-      <style>
-        div[id^='story--components-forms-date--default'] {
-          min-height: 400px;
-          width: 300px;
-        }
-      </style>
-      <modus-wc-date
-        aria-label="Date input"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        .feedback=${args.feedback}
-        format=${ifDefined(args.format)}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        max=${ifDefined(args.max)}
-        min=${ifDefined(args.min)}
-        name=${ifDefined(args.name)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-week-numbers=${args['show-week-numbers']}
-        size=${ifDefined(args.size)}
-        .value=${args.value}
-        week-start-day=${ifDefined(args['week-start-day'])}
-      ></modus-wc-date>
-    `;
-  },
+  render: (args) => html`
+    <modus-wc-date
+      aria-label="Date input"
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      ?disabled=${args.disabled}
+      .feedback=${args.feedback}
+      end=${ifDefined(args.end)}
+      format=${ifDefined(args.format)}
+      input-id=${ifDefined(args['input-id'])}
+      input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
+      max=${ifDefined(args.max)}
+      min=${ifDefined(args.min)}
+      name=${ifDefined(args.name)}
+      ?read-only=${args['read-only']}
+      ?required=${args.required}
+      ?show-week-numbers=${args['show-week-numbers']}
+      size=${ifDefined(args.size)}
+      start=${ifDefined(args.start)}
+      type=${ifDefined(args.type)}
+      .value=${args.value}
+      week-start-day=${ifDefined(args['week-start-day'])}
+    ></modus-wc-date>
+  `,
 };
 
 export const Default: Story = { ...Template };
 
-const RangeTemplate: Story = {
-  render: (args) => html`
-    <style>
-      .date-range-storybook-wrap {
-        align-content: flex-start;
-        display: grid;
-        max-width: 560px;
-        min-height: 400px;
-      }
-    </style>
-    <div class="date-range-storybook-wrap">
-      <modus-wc-date
-        aria-label="Select date range"
-        ?bordered=${args.bordered}
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        .feedback=${args.feedback}
-        end=${args.end ?? ''}
-        format=${ifDefined(args.format)}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        max=${ifDefined(args.max)}
-        min=${ifDefined(args.min)}
-        name=${ifDefined(args.name)}
-        ?read-only=${args['read-only']}
-        ?required=${args.required}
-        ?show-week-numbers=${args['show-week-numbers']}
-        size=${ifDefined(args.size)}
-        start=${args.start ?? ''}
-        type="range"
-        week-start-day=${ifDefined(args['week-start-day'])}
-      ></modus-wc-date>
-    </div>
-  `,
-};
-
 export const DateRange: Story = {
-  ...RangeTemplate,
+  ...Template,
   name: 'Date Range',
   args: {
     ...meta.args,
@@ -200,17 +164,14 @@ export const DateRange: Story = {
     'show-week-numbers': false,
     size: 'md',
     start: '2025-09-10',
+    type: 'range',
     value: '',
     'week-start-day': 'sunday',
   },
   parameters: {
     controls: {
-      exclude: ['value', 'type'],
+      exclude: ['value'],
     },
-  },
-  argTypes: {
-    start: { control: 'text' },
-    end: { control: 'text' },
   },
 };
 
@@ -249,6 +210,7 @@ export const ShadowDomParent: Story = {
             bordered: boolean;
             customClass: string;
             disabled: boolean;
+            end: string;
             feedback: IInputFeedbackProp;
             format?:
               | 'yyyy-mm-dd'
@@ -268,12 +230,15 @@ export const ShadowDomParent: Story = {
             required: boolean;
             showWeekNumbers: boolean;
             size: string;
+            start: string;
+            variant: 'single' | 'range';
             value: string;
             weekStartDay: string;
           };
           dateEl.bordered = Boolean(v.bordered);
           dateEl.customClass = v['custom-class'] || '';
           dateEl.disabled = Boolean(v.disabled);
+          dateEl.end = v.end ?? '';
           dateEl.format = v.format;
           dateEl.inputId = v['input-id'] ?? '';
           dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
@@ -285,6 +250,8 @@ export const ShadowDomParent: Story = {
           dateEl.required = Boolean(v.required);
           dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);
           dateEl.size = v.size ?? '';
+          dateEl.start = v.start ?? '';
+          dateEl.variant = v.type ?? 'single';
           dateEl.value = v.value ?? '';
           dateEl.weekStartDay = v['week-start-day'] ?? '';
         },

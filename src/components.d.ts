@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { DateInputType, IRangeChangeDetail, IRangeConfig } from "./components/modus-wc-date/modus-wc-date";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { LogoName } from "./components/modus-wc-logo/logo-constants";
@@ -25,6 +26,7 @@ import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { DateInputType, IRangeChangeDetail, IRangeConfig } from "./components/modus-wc-date/modus-wc-date";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { LogoName } from "./components/modus-wc-logo/logo-constants";
@@ -539,6 +541,10 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * When `variant` is `range` (`type="range"`), the end date (ISO 8601 `YYYY-MM-DD`).
+         */
+        "end": string;
+        /**
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
@@ -577,6 +583,10 @@ export namespace Components {
          */
         "name"?: string;
         /**
+          * Per-picker metadata for range mode: start/end `inputId`, `name`, and `aria-label` overrides. Only used when `variant` is `range` (`type="range"`).
+         */
+        "rangeConfig"?: IRangeConfig;
+        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -593,9 +603,17 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
+          * When `variant` is `range` (`type="range"`), the start date (ISO 8601 `YYYY-MM-DD`).
+         */
+        "start": string;
+        /**
           * The value of the control.
          */
         "value": string;
+        /**
+          * `single` (default): one date (`value`). `range`: start (`start`) and end (`end`) pickers with cross bounds. Reflected as HTML attribute `type`.
+         */
+        "variant"?: DateInputType;
         /**
           * The first day of the week for the calendar display
          */
@@ -2446,6 +2464,7 @@ declare global {
         "inputFocus": FocusEvent;
         "calendarMonthChange": number;
         "calendarYearChange": number;
+        "rangeChange": IRangeChangeDetail;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3738,6 +3757,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * When `variant` is `range` (`type="range"`), the end date (ISO 8601 `YYYY-MM-DD`).
+         */
+        "end"?: string;
+        /**
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
@@ -3796,6 +3819,14 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
+          * When `type` is `range`, emitted after either picker updates (same timing as `inputChange` / calendar blur on children).
+         */
+        "onRangeChange"?: (event: ModusWcDateCustomEvent<IRangeChangeDetail>) => void;
+        /**
+          * Per-picker metadata for range mode: start/end `inputId`, `name`, and `aria-label` overrides. Only used when `variant` is `range` (`type="range"`).
+         */
+        "rangeConfig"?: IRangeConfig;
+        /**
           * Whether the value is editable.
          */
         "readOnly"?: boolean;
@@ -3812,9 +3843,17 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
+          * When `variant` is `range` (`type="range"`), the start date (ISO 8601 `YYYY-MM-DD`).
+         */
+        "start"?: string;
+        /**
           * The value of the control.
          */
         "value"?: string;
+        /**
+          * `single` (default): one date (`value`). `range`: start (`start`) and end (`end`) pickers with cross bounds. Reflected as HTML attribute `type`.
+         */
+        "variant"?: DateInputType;
         /**
           * The first day of the week for the calendar display
          */

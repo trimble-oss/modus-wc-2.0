@@ -735,7 +735,9 @@ export class ModusWcDate {
       date.getFullYear() !== cal.selectedYear
     ) {
       const newCalendar = new DatePickerCalendar(
-        WEEK_START_DAY_MAP[/* istanbul ignore next */ this.weekStartDay || 'sunday']
+        WEEK_START_DAY_MAP[
+          /* istanbul ignore next */ this.weekStartDay || 'sunday'
+        ]
       );
       newCalendar.gotoDate(date.getFullYear(), date.getMonth());
       this.setCalendarForSide(side, newCalendar);
@@ -880,14 +882,13 @@ export class ModusWcDate {
       )
       .filter((index) => index !== -1);
 
-    // istanbul ignore next
-    this.setFocusedIdx(
-      side,
-      isUp
-        ? (currentMonthIndices[currentMonthIndices.length - 1] ??
-            calNext.dates.length - 1)
-        : (currentMonthIndices[0] ?? 0)
-    );
+    /* istanbul ignore next */
+    const lastIdx =
+      currentMonthIndices[currentMonthIndices.length - 1] ??
+      calNext.dates.length - 1;
+    /* istanbul ignore next */
+    const firstIdx = currentMonthIndices[0] ?? 0;
+    this.setFocusedIdx(side, isUp ? lastIdx : firstIdx);
   }
 
   @Listen('keydown')
@@ -1680,7 +1681,11 @@ export class ModusWcDate {
       <Host class="modus-wc-date--range">
         <fieldset
           class="modus-wc-date-range-fieldset"
-          aria-label={this.label ? undefined : this.el.ariaLabel || /* istanbul ignore next */ undefined}
+          aria-label={
+            this.label
+              ? undefined
+              : this.el.ariaLabel || /* istanbul ignore next */ undefined
+          }
         >
           {this.label && (
             <legend
