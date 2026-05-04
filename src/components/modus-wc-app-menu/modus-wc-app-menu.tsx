@@ -54,7 +54,7 @@ export class ModusWcAppMenu {
   @StencilEvent() itemsOrderChange!: EventEmitter<IAppMenuItem[]>;
 
   /** Emitted when an item is clicked */
-  @StencilEvent() itemClick!: EventEmitter<{ appIndex: number }>;
+  @StencilEvent() itemClick!: EventEmitter<{ appName: AppName }>;
 
   @State() isEditMode = false;
 
@@ -89,11 +89,9 @@ export class ModusWcAppMenu {
   private updateGridTooltips() {
     const updated = new Set<string>();
     const gridItems = this.el.querySelectorAll('.grid-item');
-    gridItems.forEach((gridItem) => {
+    gridItems.forEach((gridItem, appIndex) => {
       const label = gridItem.querySelector('.grid-item-text-label');
-      const appName = gridItem
-        .querySelector('modus-wc-logo')
-        ?.getAttribute('name');
+      const appName = this.apps?.[appIndex]?.appName;
       if (label && appName) {
         const isTruncated =
           label.scrollWidth > label.clientWidth ||
@@ -297,13 +295,17 @@ export class ModusWcAppMenu {
         <modus-wc-menu>
           {apps.map((app, appIndex) => (
             <div
-              onClick={() => this.itemClick.emit({ appIndex })}
               aria-label={this.getDisplayName(app.appName)}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
               class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
               draggable={this.isEditMode}
+              onClick={() => {
+                if (!this.isEditMode) {
+                  this.itemClick.emit({ appName: app.appName });
+                }
+              }}
               onDragEnd={() => this.handleDragEnd()}
               onDragEnter={(e) => this.handleDragEnter(e, appIndex)}
               onDragOver={(e) => this.handleDragOver(e)}
@@ -355,7 +357,11 @@ export class ModusWcAppMenu {
               }
               class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
               draggable={this.isEditMode}
-              onClick={() => this.itemClick.emit({ appIndex })}
+              onClick={() => {
+                if (!this.isEditMode) {
+                  this.itemClick.emit({ appName: app.appName });
+                }
+              }}
               onDragEnd={() => this.handleDragEnd()}
               onDragEnter={(e) => this.handleDragEnter(e, appIndex)}
               onDragOver={(e) => this.handleDragOver(e)}

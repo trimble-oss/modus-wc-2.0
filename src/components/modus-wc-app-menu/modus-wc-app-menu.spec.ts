@@ -1808,7 +1808,9 @@ describe('modus-wc-app-menu', () => {
       (items?.[1] as HTMLElement)?.click();
 
       expect(itemClickSpy).toHaveBeenCalledTimes(1);
-      expect(itemClickSpy.mock.calls[0][0].detail).toEqual({ appIndex: 1 });
+      expect(itemClickSpy.mock.calls[0][0].detail).toEqual({
+        appName: 'viewpoint',
+      });
     }
   );
 
@@ -1893,20 +1895,15 @@ describe('modus-wc-app-menu', () => {
     restoreRaf();
   });
 
-  it('should skip truncation check when logo element is missing', async () => {
+  it('should skip truncation check when apps data is unavailable', async () => {
     const restoreRaf = mockRaf();
     const page = await createPage({
       apps: cloneApps(),
       layout: 'grid',
     });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
-    gridItems?.forEach((gridItem) => {
-      const logo = gridItem.querySelector('modus-wc-logo');
-      logo?.remove();
-    });
-
     const component = page.rootInstance as ModusWcAppMenu;
+    component.apps = undefined;
     (component as any).updateGridTooltips();
 
     expect(component.truncatedApps.size).toBe(0);
