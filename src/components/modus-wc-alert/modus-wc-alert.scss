@@ -28,8 +28,9 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-error {
-    // Fallback for Chrome <111: --modus-wc-color-red-pale (#fbd4d7) at 80% opacity
-    background-color: rgba(251, 212, 215, 0.8);
+    // Fallback for Chrome <111: precomputed solid blend of
+    // --modus-wc-color-red-pale (#fbd4d7) 80% + --modus-wc-color-gray-light (#f1f1f6) 20%
+    background-color: #fce0e2;
     border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-color-gray-10);
 
@@ -43,8 +44,9 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-success {
-    // Fallback for Chrome <111: --modus-wc-color-green-pale (#e0eccf) at 80% opacity
-    background-color: rgba(224, 236, 207, 0.8);
+    // Fallback for Chrome <111: precomputed solid blend of
+    // --modus-wc-color-green-pale (#e0eccf) 80% + --modus-wc-color-gray-light (#f1f1f6) 20%
+    background-color: #e6efd9;
     border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-color-gray-10);
 
@@ -58,8 +60,9 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-warning {
-    // Fallback for Chrome <111: --modus-wc-color-yellow-pale (#fff5e4) at 60% opacity
-    background-color: rgba(255, 245, 228, 0.6);
+    // Fallback for Chrome <111: precomputed solid blend of
+    // --modus-wc-color-yellow-pale (#fff5e4) 60% + --modus-wc-color-gray-light (#f1f1f6) 40%
+    background-color: #f9f0e8;
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
 
@@ -122,7 +125,7 @@ modus-wc-alert .modus-wc-alert {
 
   &.modus-wc-alert-info {
     // Fallback for Chrome <111: --modus-wc-color-highlight-blue (#019aeb) at 30% opacity
-    background-color: rgba(1, 154, 235, 0.3);
+    background-color: rgb(1 154 235 / 0.3);
     border-color: var(--modus-wc-color-highlight-blue);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
@@ -136,7 +139,7 @@ modus-wc-alert .modus-wc-alert {
 
   &.modus-wc-alert-error {
     // Fallback for Chrome <111: --modus-wc-color-red (#da212c) at 50% opacity
-    background-color: rgba(218, 33, 44, 0.5);
+    background-color: rgb(218 33 44 / 0.5);
     border-color: var(--modus-wc-color-red-light);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
@@ -150,7 +153,7 @@ modus-wc-alert .modus-wc-alert {
 
   &.modus-wc-alert-success {
     // Fallback for Chrome <111: --modus-wc-color-green (#1e8a44) at 50% opacity
-    background-color: rgba(30, 138, 68, 0.5);
+    background-color: rgb(30 138 68 / 0.5);
     border-color: var(--modus-wc-color-green-light);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
@@ -164,7 +167,7 @@ modus-wc-alert .modus-wc-alert {
 
   &.modus-wc-alert-warning {
     // Fallback for Chrome <111: --modus-wc-color-yellow (#fbad26) at 50% opacity
-    background-color: rgba(251, 173, 38, 0.5);
+    background-color: rgb(251 173 38 / 0.5);
     border-color: var(--modus-wc-color-yellow-light);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {

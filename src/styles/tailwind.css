@@ -186,139 +186,139 @@
   /* modus-modern-light (default) — source: src/styles/themes/modus-modern.ts */
   :root,
   [data-theme='modus-modern-light'] {
-    --fallback-p: #0063a3;   /* primary: Trimble Blue */
-    --fallback-pc: #ffffff;  /* primary-content: White */
-    --fallback-s: #fbad26;   /* secondary: Yellow */
-    --fallback-sc: #000000;  /* secondary-content: Black */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #fbad26; /* secondary: Yellow */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
     --fallback-ac: #ffffff;
-    --fallback-n: #cbcdd6;   /* neutral: Gray 1 */
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
     --fallback-nc: #252a2e;
-    --fallback-b1: #ffffff;  /* base-100: White */
-    --fallback-b2: #cbcdd6;  /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3;  /* base-300: Gray 2 */
-    --fallback-in: #0063a3;  /* info: Trimble Blue */
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
     --fallback-inc: #ffffff;
-    --fallback-su: #1e8a44;  /* success: Green */
+    --fallback-su: #1e8a44; /* success: Green */
     --fallback-suc: #ffffff;
-    --fallback-wa: #e49325;  /* warning: Yellow Dark */
+    --fallback-wa: #e49325; /* warning: Yellow Dark */
     --fallback-wac: #252a2e;
-    --fallback-er: #da212c;  /* error: Red */
+    --fallback-er: #da212c; /* error: Red */
     --fallback-erc: #ffffff;
   }
 
   /* modus-modern-dark — source: src/styles/themes/modus-modern.ts */
   [data-theme='modus-modern-dark'] {
-    --fallback-p: #019aeb;   /* primary: Highlight Blue */
-    --fallback-pc: #000000;  /* primary-content: Black */
-    --fallback-s: #fec157;   /* secondary: Yellow Light */
-    --fallback-sc: #000000;  /* secondary-content: Black */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
-    --fallback-ac: #ffffff;  /* accent-content: White */
-    --fallback-n: #353a40;   /* neutral: Gray 9 */
-    --fallback-nc: #ffffff;  /* neutral-content: White */
-    --fallback-b1: #171c1e;  /* base-100: Gray 10 */
-    --fallback-b2: #353a40;  /* base-200: Gray 9 */
-    --fallback-b3: #464b52;  /* base-300: Gray 8 */
-    --fallback-in: #217cbb;  /* info: Blue Light */
+    --fallback-p: #019aeb; /* primary: Highlight Blue */
+    --fallback-pc: #000000; /* primary-content: Black */
+    --fallback-s: #fec157; /* secondary: Yellow Light */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #217cbb; /* info: Blue Light */
     --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #4ea646;  /* success: Green Light */
+    --fallback-su: #4ea646; /* success: Green Light */
     --fallback-suc: #000000; /* success-content: Black */
-    --fallback-wa: #fec157;  /* warning: Yellow Light */
+    --fallback-wa: #fec157; /* warning: Yellow Light */
     --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #e86363;  /* error: Red Light */
+    --fallback-er: #e86363; /* error: Red Light */
     --fallback-erc: #000000; /* error-content: Black */
   }
 
   /* modus-classic-light — source: src/styles/themes/modus-classic.ts */
   [data-theme='modus-classic-light'] {
-    --fallback-p: #0063a3;   /* primary: Trimble Blue */
-    --fallback-pc: #ffffff;  /* primary-content: White */
-    --fallback-s: #6a6e79;   /* secondary: Gray 6 */
-    --fallback-sc: #ffffff;  /* secondary-content: White */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
-    --fallback-ac: #ffffff;  /* accent-content: White */
-    --fallback-n: #cbcdd6;   /* neutral: Gray 1 */
-    --fallback-nc: #252a2e;  /* neutral-content: Trimble Gray */
-    --fallback-b1: #ffffff;  /* base-100: White */
-    --fallback-b2: #cbcdd6;  /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3;  /* base-300: Gray 2 */
-    --fallback-in: #0063a3;  /* info: Trimble Blue */
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #6a6e79; /* secondary: Gray 6 */
+    --fallback-sc: #ffffff; /* secondary-content: White */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
+    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
     --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #1e8a44;  /* success: Green */
+    --fallback-su: #1e8a44; /* success: Green */
     --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #fbad26;  /* warning: Yellow */
+    --fallback-wa: #fbad26; /* warning: Yellow */
     --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #da212c;  /* error: Red */
+    --fallback-er: #da212c; /* error: Red */
     --fallback-erc: #ffffff; /* error-content: White */
   }
 
   /* modus-classic-dark — source: src/styles/themes/modus-classic.ts */
   [data-theme='modus-classic-dark'] {
-    --fallback-p: #0063a3;   /* primary: Trimble Blue */
-    --fallback-pc: #ffffff;  /* primary-content: White */
-    --fallback-s: #fbad26;   /* secondary: Yellow */
-    --fallback-sc: #252a2e;  /* secondary-content: Trimble Gray */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
-    --fallback-ac: #ffffff;  /* accent-content: White */
-    --fallback-n: #353a40;   /* neutral: Gray 9 */
-    --fallback-nc: #ffffff;  /* neutral-content: White */
-    --fallback-b1: #171c1e;  /* base-100: Gray 10 */
-    --fallback-b2: #353a40;  /* base-200: Gray 9 */
-    --fallback-b3: #464b52;  /* base-300: Gray 8 */
-    --fallback-in: #0063a3;  /* info: Trimble Blue */
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #fbad26; /* secondary: Yellow */
+    --fallback-sc: #252a2e; /* secondary-content: Trimble Gray */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
     --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #1e8a44;  /* success: Green */
+    --fallback-su: #1e8a44; /* success: Green */
     --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #fbad26;  /* warning: Yellow */
+    --fallback-wa: #fbad26; /* warning: Yellow */
     --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #da212c;  /* error: Red */
+    --fallback-er: #da212c; /* error: Red */
     --fallback-erc: #ffffff; /* error-content: White */
   }
 
   /* connect-light — source: src/styles/themes/connect.ts */
   [data-theme='connect-light'] {
-    --fallback-p: #005f9e;   /* primary: Trimble Blue */
-    --fallback-pc: #ffffff;  /* primary-content: White */
-    --fallback-s: #6a6976;   /* secondary: Neutral Gray 10 */
-    --fallback-sc: #ffffff;  /* secondary-content: White */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
-    --fallback-ac: #ffffff;  /* accent-content: White */
-    --fallback-n: #cbcdd6;   /* neutral: Gray 1 */
-    --fallback-nc: #252a2e;  /* neutral-content: Trimble Gray */
-    --fallback-b1: #ffffff;  /* base-100: White */
-    --fallback-b2: #cbcdd6;  /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3;  /* base-300: Gray 2 */
-    --fallback-in: #0063a3;  /* info: Trimble Blue */
+    --fallback-p: #005f9e; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #6a6976; /* secondary: Neutral Gray 10 */
+    --fallback-sc: #ffffff; /* secondary-content: White */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
+    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
     --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #72a544;  /* success: Green */
+    --fallback-su: #72a544; /* success: Green */
     --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #ffbe00;  /* warning: Yellow */
+    --fallback-wa: #ffbe00; /* warning: Yellow */
     --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #d52a33;  /* error: Red */
+    --fallback-er: #d52a33; /* error: Red */
     --fallback-erc: #ffffff; /* error-content: White */
   }
 
   /* connect-dark — source: src/styles/themes/connect.ts */
   [data-theme='connect-dark'] {
-    --fallback-p: #019aeb;   /* primary: Highlight Blue */
-    --fallback-pc: #000000;  /* primary-content: Black */
-    --fallback-s: #f1f1f6;   /* secondary: Gray Light */
-    --fallback-sc: #000000;  /* secondary-content: Black */
-    --fallback-a: #6a6e79;   /* accent: Gray 6 */
-    --fallback-ac: #ffffff;  /* accent-content: White */
-    --fallback-n: #353a40;   /* neutral: Gray 9 */
-    --fallback-nc: #ffffff;  /* neutral-content: White */
-    --fallback-b1: #171c1e;  /* base-100: Gray 10 */
-    --fallback-b2: #353a40;  /* base-200: Gray 9 */
-    --fallback-b3: #464b52;  /* base-300: Gray 8 */
-    --fallback-in: #217cbb;  /* info: Blue Light */
+    --fallback-p: #019aeb; /* primary: Highlight Blue */
+    --fallback-pc: #000000; /* primary-content: Black */
+    --fallback-s: #f1f1f6; /* secondary: Gray Light */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #217cbb; /* info: Blue Light */
     --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #4ea646;  /* success: Green Light */
+    --fallback-su: #4ea646; /* success: Green Light */
     --fallback-suc: #000000; /* success-content: Black */
-    --fallback-wa: #fec157;  /* warning: Yellow Light */
+    --fallback-wa: #fec157; /* warning: Yellow Light */
     --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #e86363;  /* error: Red Light */
+    --fallback-er: #e86363; /* error: Red Light */
     --fallback-erc: #000000; /* error-content: Black */
   }
 }
