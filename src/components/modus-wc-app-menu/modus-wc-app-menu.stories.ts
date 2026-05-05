@@ -68,18 +68,7 @@ const meta: Meta<AppMenuArgs> = {
       description: {
         component: `
 A customizable app menu component that displays application links in list or grid layout.
-\nThe component uses the \`modus-wc-panel\` component for layout and supports reordering via drag-and-drop or keyboard.
-
-### Features
-- **List & Grid Layouts**: Toggle between list and grid display modes
-- **Reorderable**: Edit mode allows drag-and-drop and keyboard reordering
-
-### Events
-- **layoutChange**: Emitted when the \`layout\` prop changes between list and grid
-- **itemsOrderChange**: Emitted when the user confirms reordering in edit mode (Done)
-
-### Usage
-The component accepts an \`apps\` array of \`IAppMenuItem\` objects.
+\nThe component uses the modus-wc-panel component for layout , supports dual viewing (List and Grid) modes and allows reordering via drag-and-drop and keyboard in edit mode.
         `,
       },
     },

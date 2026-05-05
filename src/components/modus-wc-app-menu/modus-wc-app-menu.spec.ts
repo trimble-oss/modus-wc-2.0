@@ -1814,6 +1814,23 @@ describe('modus-wc-app-menu', () => {
     }
   );
 
+  it('should stop propagation of itemSelect event from menu items in list layout', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'list' });
+
+    const itemSelectSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', itemSelectSpy);
+
+    const menuItem = page.root?.querySelector('modus-wc-menu-item');
+    const event = new CustomEvent('itemSelect', {
+      bubbles: true,
+      cancelable: true,
+      detail: { value: '', selected: true },
+    });
+    menuItem?.dispatchEvent(event);
+
+    expect(itemSelectSpy).not.toHaveBeenCalled();
+  });
+
   it('should populate truncatedApps on componentDidLoad for grid layout', async () => {
     const restoreRaf = mockRaf();
 

@@ -322,7 +322,10 @@ export class ModusWcAppMenu {
                   size="xs"
                 ></modus-wc-icon>
               )}
-              <modus-wc-menu-item label={this.getDisplayName(app.appName)}>
+              <modus-wc-menu-item
+                label={this.getDisplayName(app.appName)}
+                onItemSelect={(e) => e.stopPropagation()}
+              >
                 <modus-wc-logo
                   name={app.appName}
                   custom-class="app-logo"
