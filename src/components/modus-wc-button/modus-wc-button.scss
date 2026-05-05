@@ -11,7 +11,8 @@ modus-wc-button .modus-wc-btn-outline {
   @include btn-state-colors;
 }
 
-modus-wc-button .modus-wc-btn-xl {
+modus-wc-button
+  .modus-wc-btn-xl:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
   font-size: var(--modus-wc-font-size-xl);
   padding-left: var(--modus-wc-spacing-xl);
   padding-right: var(--modus-wc-spacing-xl);
