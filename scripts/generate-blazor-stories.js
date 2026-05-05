@@ -85,7 +85,15 @@ const CATEGORY_MAP = {
   ModusWcThemeSwitcher: 'Theme',
 };
 
-// ── Per-component extra @code blocks and custom default template overrides ─
+// ── Per-component extra @code blocks, directives, and template overrides ───
+//
+// Fields:
+//   codeBlock         - extra lines inserted into the @code { } block
+//   directives        - file-level Razor directives (e.g. @inject) placed at top
+//   defaultTemplate   - static template used for variant stories
+//   interactiveTemplate - overrides the auto-generated interactive Default story
+//                         template (still uses context.Args via @attributes where needed)
+//
 const COMPONENT_OVERRIDES = {
   ModusWcBreadcrumbs: {
     codeBlock: `
@@ -141,7 +149,12 @@ const COMPONENT_OVERRIDES = {
     defaultTemplate: `<ModusWcStepper Steps="@_steps" Orientation="horizontal" />`,
   },
   ModusWcNavbar: {
-    defaultTemplate: `<ModusWcNavbar />`,
+    defaultTemplate: `
+<ModusWcNavbar>
+    <div slot="main-menu">Main menu contents</div>
+    <div slot="notifications">Notification contents</div>
+    <div slot="apps">App drawer contents</div>
+</ModusWcNavbar>`,
   },
   ModusWcProfileMenu: {
     codeBlock: `
@@ -150,7 +163,7 @@ const COMPONENT_OVERRIDES = {
   },
   ModusWcSideNavigation: {
     defaultTemplate: `
-<ModusWcSideNavigation Mode="overlay" MaxWidth="256px">
+<ModusWcSideNavigation Mode="push" MaxWidth="256px" Expanded="true">
     <ModusWcMenu Size="lg">
         <ModusWcMenuItem Label="Home">
             <ModusWcIcon Name="home" Slot="start-icon" />
@@ -173,37 +186,71 @@ const COMPONENT_OVERRIDES = {
 </ModusWcMenu>`,
   },
   ModusWcAccordion: {
+    codeBlock: `
+    private readonly object[] _sectionOptions = [
+        new { title = "Section One", description = "Expand to view content" },
+        new { title = "Section Two" },
+        new { title = "Section Three" },
+    ];`,
     defaultTemplate: `
 <ModusWcAccordion>
-    <ModusWcCollapse Label="Section One">
-        <p>Content for the first section.</p>
+    <ModusWcCollapse Options="@_sectionOptions[0]">
+        <div slot="content">Content for the first section.</div>
     </ModusWcCollapse>
-    <ModusWcCollapse Label="Section Two">
-        <p>Content for the second section.</p>
+    <ModusWcCollapse Options="@_sectionOptions[1]">
+        <div slot="content">Content for the second section.</div>
+    </ModusWcCollapse>
+    <ModusWcCollapse Options="@_sectionOptions[2]">
+        <div slot="content">Content for the third section.</div>
     </ModusWcCollapse>
 </ModusWcAccordion>`,
   },
   ModusWcCollapse: {
+    codeBlock: `
+    private readonly object _collapseOptions = new { title = "Collapse Title", description = "Collapse description" };`,
     defaultTemplate: `
-<ModusWcCollapse Label="Expandable Section">
-    <p>Collapsed content is revealed when the header is clicked.</p>
+<ModusWcCollapse Options="@_collapseOptions">
+    <div slot="content">Collapse content goes here.</div>
+</ModusWcCollapse>`,
+    interactiveTemplate: `<ModusWcCollapse @attributes="context.Args" Options="@_collapseOptions">
+    <div slot="content">Collapse content goes here.</div>
 </ModusWcCollapse>`,
   },
   ModusWcCard: {
     defaultTemplate: `
 <ModusWcCard Style="max-width:320px;">
-    <div slot="title">Card Title</div>
-    <p>This is the card body. It can contain any content.</p>
-    <ModusWcButton slot="footer">Action</ModusWcButton>
+    <span slot="title">Card Title</span>
+    <span slot="subtitle">Card Subtitle</span>
+    <p>This is a sample card content. You can place any content here.</p>
+    <div slot="actions" style="display:flex;justify-content:flex-end;">
+        <ModusWcButton>Action</ModusWcButton>
+    </div>
 </ModusWcCard>`,
   },
   ModusWcModal: {
+    directives: `@inject IJSRuntime JS`,
+    codeBlock: `
+    private readonly string _modalId = $"story-modal-{Guid.NewGuid():N}"[..12];
+
+    private async Task OpenModal() =>
+        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_modalId}')?.showModal()");
+
+    private async Task CloseModal() =>
+        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_modalId}')?.close()");`,
+    interactiveTemplate: `<ModusWcButton @onclick="OpenModal">Open Modal</ModusWcButton>
+<ModusWcModal @attributes="context.Args" ModalId="@_modalId">
+    <span slot="header">Modal Title</span>
+    <span slot="content">This is sample modal content.</span>
+    <div slot="footer" style="display:flex;gap:0.5rem;">
+        <ModusWcButton Variant="outlined" @onclick="CloseModal">Cancel</ModusWcButton>
+        <ModusWcButton @onclick="CloseModal">Confirm</ModusWcButton>
+    </div>
+</ModusWcModal>`,
     defaultTemplate: `
-<ModusWcButton>Open Modal</ModusWcButton>
 <ModusWcModal ModalId="demo-modal">
-    <div slot="header">Modal Title</div>
-    <p>Modal body content goes here.</p>
-    <div slot="footer">
+    <span slot="header">Modal Title</span>
+    <span slot="content">This is sample modal content.</span>
+    <div slot="footer" style="display:flex;gap:0.5rem;">
         <ModusWcButton Variant="outlined">Cancel</ModusWcButton>
         <ModusWcButton>Confirm</ModusWcButton>
     </div>
@@ -211,19 +258,22 @@ const COMPONENT_OVERRIDES = {
   },
   ModusWcTooltip: {
     defaultTemplate: `
-<ModusWcTooltip Text="Helpful tooltip text" Position="top">
-    <ModusWcButton>Hover me</ModusWcButton>
+<ModusWcTooltip Content="Tooltip content" Position="auto">
+    <ModusWcBadge>Hover</ModusWcBadge>
 </ModusWcTooltip>`,
   },
   ModusWcDropdownMenu: {
     defaultTemplate: `
 <ModusWcDropdownMenu>
-    <ModusWcButton slot="anchor">Open Menu</ModusWcButton>
-    <ModusWcMenu slot="content">
-        <ModusWcMenuItem Label="Action 1" />
-        <ModusWcMenuItem Label="Action 2" />
-        <ModusWcMenuItem Label="Action 3" Disabled="true" />
-    </ModusWcMenu>
+    <div slot="button" style="display:flex;align-items:center;gap:4px;">
+        Menu
+        <ModusWcIcon Name="expand_more" Size="sm" />
+    </div>
+    <div slot="menu">
+        <ModusWcMenuItem Label="Action 1" Value="1" />
+        <ModusWcMenuItem Label="Action 2" Value="2" />
+        <ModusWcMenuItem Label="Action 3" Value="3" Disabled="true" />
+    </div>
 </ModusWcDropdownMenu>`,
   },
   ModusWcThemeProvider: {
@@ -236,33 +286,69 @@ const COMPONENT_OVERRIDES = {
   ModusWcButtonGroup: {
     defaultTemplate: `
 <ModusWcButtonGroup>
-    <ModusWcButton>First</ModusWcButton>
-    <ModusWcButton>Second</ModusWcButton>
-    <ModusWcButton>Third</ModusWcButton>
+    <ModusWcButton>Button 1</ModusWcButton>
+    <ModusWcButton>Button 2</ModusWcButton>
+    <ModusWcButton>Button 3</ModusWcButton>
 </ModusWcButtonGroup>`,
   },
   ModusWcPanel: {
     defaultTemplate: `
-<ModusWcPanel Style="height:300px;">
+<ModusWcPanel Style="height:400px; width:280px;">
     <div slot="header">Panel Header</div>
-    <p>Panel body content.</p>
-    <div slot="footer">Panel Footer</div>
+    <div slot="body">
+        <ModusWcMenu Size="lg">
+            <ModusWcMenuItem Label="Dashboard" />
+            <ModusWcMenuItem Label="Projects" />
+            <ModusWcMenuItem Label="Team" />
+            <ModusWcMenuItem Label="Calendar" />
+        </ModusWcMenu>
+    </div>
+    <div slot="footer" style="padding:0.5rem;">
+        <ModusWcButton Size="sm" Variant="borderless">
+            <ModusWcIcon Name="settings" />
+            Settings
+        </ModusWcButton>
+    </div>
 </ModusWcPanel>`,
   },
   ModusWcUtilityPanel: {
     defaultTemplate: `
-<ModusWcUtilityPanel Style="height:300px;" Heading="Utility Panel">
-    <p>Utility panel content.</p>
+<ModusWcUtilityPanel Expanded="true">
+    <div slot="header">Utility Panel Header</div>
+    <div slot="body">
+        <p>This is the utility panel body content.</p>
+        <p>You can add any content here including forms, lists, or other components.</p>
+    </div>
+    <div slot="footer" style="display:flex;gap:0.5rem;padding:0.5rem;">
+        <ModusWcButton Color="tertiary" Size="sm" Variant="outlined">Close</ModusWcButton>
+        <ModusWcButton Size="sm">Save</ModusWcButton>
+    </div>
+</ModusWcUtilityPanel>`,
+    interactiveTemplate: `<ModusWcUtilityPanel @attributes="context.Args" Expanded="true">
+    <div slot="header">Utility Panel Header</div>
+    <div slot="body">
+        <p>This is the utility panel body content.</p>
+        <p>You can add any content here including forms, lists, or other components.</p>
+    </div>
+    <div slot="footer" style="display:flex;gap:0.5rem;padding:0.5rem;">
+        <ModusWcButton Color="tertiary" Size="sm" Variant="outlined">Close</ModusWcButton>
+        <ModusWcButton Size="sm">Save</ModusWcButton>
+    </div>
 </ModusWcUtilityPanel>`,
   },
   ModusWcToolbar: {
     defaultTemplate: `
 <ModusWcToolbar>
-    <ModusWcButton slot="start">Save</ModusWcButton>
-    <ModusWcButton slot="start" Variant="outlined">Cancel</ModusWcButton>
-    <ModusWcButton slot="end" Variant="borderless">
-        <ModusWcIcon Name="settings" />
-    </ModusWcButton>
+    <div slot="start" style="display:flex;gap:0.5rem;">
+        <ModusWcButton>Save</ModusWcButton>
+        <ModusWcButton Variant="outlined">Cancel</ModusWcButton>
+    </div>
+    <div slot="center">Center</div>
+    <div slot="end">
+        <ModusWcButton Variant="borderless">
+            <ModusWcIcon Name="settings" />
+        </ModusWcButton>
+    </div>
 </ModusWcToolbar>`,
   },
   ModusWcAutocomplete: {
@@ -278,52 +364,61 @@ const COMPONENT_OVERRIDES = {
   ModusWcPagination: {
     defaultTemplate: `<ModusWcPagination />`,
   },
+  ModusWcToast: {
+    defaultTemplate: `
+<div style="height:200px; position:relative;">
+    <ModusWcToast Position="top-end">
+        <ModusWcAlert AlertTitle="Operation Completed!" AlertDescription="Your changes were saved." Variant="success" Dismissible="true" />
+    </ModusWcToast>
+</div>`,
+    interactiveTemplate: `<div style="height:200px; position:relative;">
+    <ModusWcToast @attributes="context.Args">
+        <ModusWcAlert AlertTitle="Operation Completed!" AlertDescription="Your changes were saved." Variant="success" Dismissible="true" />
+    </ModusWcToast>
+</div>`,
+  },
 };
 
 // ── Simple default content per component (for components not in overrides) ─
 const SIMPLE_DEFAULTS = {
-  ModusWcButton: `<ModusWcButton>Click Me</ModusWcButton>`,
-  ModusWcAlert: `<ModusWcAlert AlertTitle="Information" AlertDescription="This is an informational alert." Variant="info" />`,
-  ModusWcAvatar: `<ModusWcAvatar Initials="JD" Size="md" />`,
-  ModusWcBadge: `<ModusWcBadge>42</ModusWcBadge>`,
-  ModusWcCheckbox: `<ModusWcCheckbox Label="Accept terms and conditions" />`,
-  ModusWcChip: `<ModusWcChip>Label</ModusWcChip>`,
-  ModusWcDate: `<ModusWcDate Label="Select a date" />`,
+  ModusWcButton: `<ModusWcButton Color="primary">Click me</ModusWcButton>`,
+  ModusWcAlert: `<ModusWcAlert AlertTitle="New message!" AlertDescription="You have 3 new messages." Variant="info" />`,
+  ModusWcAvatar: `<ModusWcAvatar Alt="Example avatar" ImgSrc="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" Size="md" />`,
+  ModusWcBadge: `<ModusWcBadge>Badge</ModusWcBadge>`,
+  ModusWcCheckbox: `<ModusWcCheckbox Label="Label" />`,
+  ModusWcChip: `<ModusWcChip Label="Chip" ShowRemove="true" />`,
+  ModusWcDate: `<ModusWcDate Label="Label" />`,
   ModusWcDivider: `<ModusWcDivider />`,
   ModusWcFileDropzone: `<ModusWcFileDropzone />`,
   ModusWcHandle: `<ModusWcHandle />`,
-  ModusWcIcon: `<ModusWcIcon Name="sun" Size="md" />`,
+  ModusWcIcon: `<ModusWcIcon Name="alert" Size="md" />`,
   ModusWcInputFeedback: `<ModusWcInputFeedback Message="This field is required." Variant="error" />`,
   ModusWcInputLabel: `<ModusWcInputLabel Label="Field Label" Required="true" />`,
   ModusWcLoader: `<ModusWcLoader Size="lg" />`,
   ModusWcLogo: `<ModusWcLogo />`,
   ModusWcMenuItem: `<ModusWcMenuItem Label="Menu Item" />`,
-  ModusWcNumberInput: `<ModusWcNumberInput Label="Enter a number" />`,
+  ModusWcNumberInput: `<ModusWcNumberInput Label="Label" />`,
   ModusWcProgress: `<ModusWcProgress Value="65" />`,
   ModusWcRadio: `<ModusWcRadio Label="Option A" />`,
   ModusWcRating: `<ModusWcRating Value="3" />`,
-  ModusWcSkeletion: `<ModusWcSkeleton />`,
   ModusWcSkeleton: `<ModusWcSkeleton />`,
-  ModusWcSlider: `<ModusWcSlider Label="Volume" />`,
-  ModusWcSwitch: `<ModusWcSwitch Label="Enable feature" />`,
-  ModusWcTextInput: `<ModusWcTextInput Label="Your name" Placeholder="Enter your name…" />`,
-  ModusWcTextarea: `<ModusWcTextarea Label="Comments" Placeholder="Enter your comments…" />`,
+  ModusWcSlider: `<ModusWcSlider Label="Label" />`,
+  ModusWcSwitch: `<ModusWcSwitch Label="Label" />`,
+  ModusWcTextInput: `<ModusWcTextInput Label="Label" />`,
+  ModusWcTextarea: `<ModusWcTextarea Label="Label" />`,
   ModusWcThemeSwitcher: `<ModusWcThemeSwitcher />`,
-  ModusWcTimeInput: `<ModusWcTimeInput Label="Select time" />`,
-  ModusWcToast: `<ModusWcToast Message="Operation completed successfully!" Variant="success" />`,
-  ModusWcTypography: `<ModusWcTypography Variant="h2">Modus Heading</ModusWcTypography>`,
+  ModusWcTimeInput: `<ModusWcTimeInput Label="Label" />`,
+  ModusWcTypography: `<ModusWcTypography Hierarchy="p" Label="The quick brown fox jumps over the lazy dog" />`,
 };
 
 // ── Default slot content for the interactive story per component ──────────
-// These are used inside the <ComponentName @attributes="context.Args">…</ComponentName>
-// wrapper so the component renders with visible child content.
+// Used inside <ComponentName @attributes="context.Args">…</ComponentName>
+// so the component renders with visible child content.
+// Not needed for components that use the Label prop or have interactiveTemplate overrides.
 const INTERACTIVE_CHILD_CONTENT = {
-  ModusWcButton: 'Click Me',
-  ModusWcBadge: '42',
-  ModusWcChip: 'Label',
-  ModusWcTypography: 'Heading Text',
-  ModusWcCollapse: '<p>Collapsible content goes here.</p>',
-  ModusWcUtilityPanel: '<p>Panel content goes here.</p>',
+  ModusWcButton: 'Click me',
+  ModusWcBadge: 'Badge',
+  ModusWcCollapse: '<div slot="content">Collapse content goes here.</div>',
 };
 
 // ── Parser ─────────────────────────────────────────────────────────────────
@@ -450,7 +545,10 @@ function getCategory(name) {
 
 /** Derive a human-friendly display name from PascalCase, e.g. ModusWcButton → Button */
 function displayName(name) {
-  return name.replace(/^ModusWc/, '').replace(/([A-Z])/g, ' $1').trim();
+  return name
+    .replace(/^ModusWc/, '')
+    .replace(/([A-Z])/g, ' $1')
+    .trim();
 }
 
 /** Build the default story Template markup */
@@ -532,7 +630,10 @@ function capitalize(s) {
  * from an existing template string, so the interactive story can reuse it.
  */
 function extractInnerContent(templateHtml, compName) {
-  const regex = new RegExp(`<${compName}[^>]*>([\\s\\S]*?)<\\/${compName}>`, 'i');
+  const regex = new RegExp(
+    `<${compName}[^>]*>([\\s\\S]*?)<\\/${compName}>`,
+    'i'
+  );
   const match = templateHtml.match(regex);
   return match ? match[1].trim() : null;
 }
@@ -584,9 +685,12 @@ function buildInteractiveTemplate(comp) {
   const override = COMPONENT_OVERRIDES[comp.name];
   const tag = comp.name;
 
+  // Use explicit interactive template if provided
+  if (override?.interactiveTemplate) return override.interactiveTemplate.trim();
+
   // Complex params need explicit backing-field bindings
   const complexParams = comp.parameters.filter(
-    (p) => p.type === 'object?' || p.type === 'object',
+    (p) => p.type === 'object?' || p.type === 'object'
   );
   const explicitAttrs = [];
   if (override?.codeBlock) {
@@ -616,17 +720,20 @@ function buildInteractiveTemplate(comp) {
 
 /** Generate full story file content */
 function generateStoryFile(comp) {
+  const override = COMPONENT_OVERRIDES[comp.name];
   const category = getCategory(comp.name);
   const display = displayName(comp.name);
+  const directives = (override?.directives ?? '').trim();
   const codeBlock = buildCodeBlock(comp);
   const argumentsBlock = buildArgumentsBlock(comp);
   const interactiveTemplate = buildInteractiveTemplate(comp);
   const variantStories = buildVariantStories(comp);
 
   const hasCode = !!codeBlock.trim();
+  const prefix = directives ? `${directives}\n\n` : '';
 
   // _Imports.razor in Stories/ adds @using BlazingStory.Components, BlazingStory.Types, ModusWebComponents.Blazor
-  return `@attribute [Stories("${category}/${display}")]
+  return `${prefix}@attribute [Stories("${category}/${display}")]
 
 <Stories TComponent="${comp.name}">
 
@@ -671,7 +778,9 @@ function main() {
     const storyContent = generateStoryFile(comp);
     const outFile = path.join(STORIES_OUT_DIR, `${comp.name}Stories.razor`);
     fs.writeFileSync(outFile, storyContent, 'utf-8');
-    console.log(`  ✓  ${comp.name}Stories.razor  (${getCategory(comp.name)}/${displayName(comp.name)})`);
+    console.log(
+      `  ✓  ${comp.name}Stories.razor  (${getCategory(comp.name)}/${displayName(comp.name)})`
+    );
     generated++;
   }
 

@@ -25,6 +25,17 @@
   </ItemGroup>
 
   <!--
+    BlazingStory's _EmbeddStoriesFilesAsResources target only matches *.stories.razor
+    (lowercase, with a dot before "stories"). Our generator produces *Stories.razor
+    (PascalCase, no dot), so they are never embedded and "Show code" shows an empty
+    black box. This explicit glob ensures all story files in Stories/ are embedded
+    as manifest resources so BlazingStory can read their source text.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Stories/**/*.razor" />
+  </ItemGroup>
+
+  <!--
     Copy the Stencil web-component bundle (produced by `npm run build` at the repo
     root) into wwwroot/dist/esm so the browser can load custom-element definitions.
     The iframe.html references this bundle; scripts go there, not in index.html.
