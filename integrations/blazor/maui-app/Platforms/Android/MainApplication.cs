@@ -4,7 +4,7 @@ using MauiHostingApp = Microsoft.Maui.Hosting.MauiApp;
 
 namespace ModusWebComponents.MauiApp;
 
-[Application]
+[Application(UsesCleartextTraffic = true)]
 public class MainApplication : MauiApplication
 {
     public MainApplication(IntPtr handle, JniHandleOwnership ownership)
