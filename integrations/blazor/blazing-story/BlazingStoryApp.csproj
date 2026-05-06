@@ -35,25 +35,5 @@
     <EmbeddedResource Include="Stories/**/*.razor" />
   </ItemGroup>
 
-  <!--
-    Copy the Stencil web-component bundle (produced by `npm run build` at the repo
-    root) into wwwroot/dist/esm so the browser can load custom-element definitions.
-    The iframe.html references this bundle; scripts go there, not in index.html.
-  -->
-  <PropertyGroup>
-    <StencilEsmDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)','..','..','..','dist','esm'))</StencilEsmDir>
-    <WwwrootDistDir>$(MSBuildProjectDirectory)\wwwroot\dist\esm</WwwrootDistDir>
-    <StencilStylesDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)','..','..','..','dist'))</StencilStylesDir>
-  </PropertyGroup>
-
-  <Target Name="CopyStencilBundle" BeforeTargets="Build">
-    <Message Text="Copying Stencil ESM bundle from $(StencilEsmDir) →  wwwroot/dist/esm" Importance="normal" />
-    <ItemGroup>
-      <StencilFiles Include="$(StencilEsmDir)\**\*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(StencilFiles)"
-          DestinationFiles="@(StencilFiles->'$(WwwrootDistDir)\%(RecursiveDir)%(Filename)%(Extension)')"
-          SkipUnchangedFiles="true" />
-  </Target>
 
 </Project>

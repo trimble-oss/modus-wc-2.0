@@ -17,11 +17,9 @@
     <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
     <link rel="stylesheet" href="css/blazor-ui.css" />
     <link rel="stylesheet" href="BlazingStoryApp.styles.css" />
-    <!-- Stencil ESM bundle: registers all modus-wc-* custom elements in the browser -->
-    <script type="module">
-        import { defineCustomElements } from './dist/esm/loader.js';
-        defineCustomElements();
-    </script>
+    <!-- Stencil ESM bundle: registers all modus-wc-* custom elements in the browser.
+         Served from the Blazor RCL's static web assets — kept in sync by `npm run build`. -->
+    <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
     <!-- Blazor ↔ web-component event interop helper (from the Blazor RCL) -->
     <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
     <script type="importmap"></script>
