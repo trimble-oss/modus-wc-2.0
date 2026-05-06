@@ -1,6 +1,8 @@
-# Build artifacts copied from the repo's dist/ by MSBuild before each build.
+# Build artifacts — kept in sync by `npm run generate:blazor-stories`.
+# Never commit these – they are regenerated automatically.
 wwwroot/dist/
 wwwroot/css/modus-wc-styles.css
+Stories/
 
 # .NET build output
 obj/

@@ -1,10 +1,10 @@
 /* Story canvas: center component previews vertically + horizontally.
-   Generous min-height and padding-bottom give expanding components
-   (dropdowns, tooltips, modals) enough room to render without clipping. */
+   padding-bottom gives expanding components (dropdowns, tooltips, modals)
+   enough room to render without clipping. */
 .story-canvas {
-    min-height: 500px;
+    min-height: 300px;
     padding: 2rem;
-    padding-bottom: 300px;
+    padding-bottom: 80px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -8,6 +8,7 @@
  * Usage:  node scripts/generate-blazor-stories.js
  *
  * Output: integrations/blazor/blazing-story/Stories/<ComponentName>Stories.razor
+ *         integrations/blazor/maui-app/Stories/<ComponentName>Stories.razor
  */
 
 import fs from 'fs';
@@ -23,6 +24,10 @@ const COMPONENTS_DIR = path.join(
 const STORIES_OUT_DIR = path.join(
   REPO_ROOT,
   'integrations/blazor/blazing-story/Stories'
+);
+const MAUI_STORIES_OUT_DIR = path.join(
+  REPO_ROOT,
+  'integrations/blazor/maui-app/Stories'
 );
 
 // ── Component → Storybook category ────────────────────────────────────────
@@ -764,6 +769,7 @@ function main() {
   }
 
   fs.mkdirSync(STORIES_OUT_DIR, { recursive: true });
+  fs.mkdirSync(MAUI_STORIES_OUT_DIR, { recursive: true });
 
   const files = fs
     .readdirSync(COMPONENTS_DIR)
@@ -778,6 +784,8 @@ function main() {
     const storyContent = generateStoryFile(comp);
     const outFile = path.join(STORIES_OUT_DIR, `${comp.name}Stories.razor`);
     fs.writeFileSync(outFile, storyContent, 'utf-8');
+    const mauiOutFile = path.join(MAUI_STORIES_OUT_DIR, `${comp.name}Stories.razor`);
+    fs.writeFileSync(mauiOutFile, storyContent, 'utf-8');
     console.log(
       `  ✓  ${comp.name}Stories.razor  (${getCategory(comp.name)}/${displayName(comp.name)})`
     );
@@ -785,6 +793,7 @@ function main() {
   }
 
   console.log(`\nGenerated ${generated} story files → ${STORIES_OUT_DIR}`);
+  console.log(`Generated ${generated} story files → ${MAUI_STORIES_OUT_DIR}`);
 }
 
 main();

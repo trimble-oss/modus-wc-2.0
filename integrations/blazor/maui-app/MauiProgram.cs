@@ -1,13 +1,14 @@
 using BlazingStory;
 using Microsoft.Extensions.Logging;
+using MauiHostingApp = Microsoft.Maui.Hosting.MauiApp;
 
 namespace ModusWebComponents.MauiApp;
 
 public static class MauiProgram
 {
-    public static MauiApp CreateMauiApp()
+    public static MauiHostingApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
+        var builder = MauiHostingApp.CreateBuilder();
 
         builder
             .UseMauiApp<App>()
@@ -20,7 +21,6 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
-        builder.Logging.AddDebug();
 #endif
 
         return builder.Build();
