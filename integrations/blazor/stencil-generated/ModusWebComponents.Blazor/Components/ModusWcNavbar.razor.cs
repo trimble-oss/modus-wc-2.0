@@ -92,12 +92,12 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the AI button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnAiClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnAiClick { get; set; }
 
     /// <summary>
     /// Event emitted when the apps button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnAppsClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnAppsClick { get; set; }
 
     /// <summary>
     /// Event emitted when the apps menu open state changes.
@@ -112,7 +112,7 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the help button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnHelpClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnHelpClick { get; set; }
 
     /// <summary>
     /// Event emitted when the main menu open state changes.
@@ -122,12 +122,12 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnMyTrimbleClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnMyTrimbleClick { get; set; }
 
     /// <summary>
     /// Event emitted when the notifications button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnNotificationsClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnNotificationsClick { get; set; }
 
     /// <summary>
     /// Event emitted when the notifications menu open state changes.
@@ -137,12 +137,12 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the search input value is changed.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnSearchChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnSearchChange { get; set; }
 
     /// <summary>
     /// Event emitted when the search button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnSearchClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnSearchClick { get; set; }
 
     /// <summary>
     /// Event emitted when the search input open state changes.
@@ -152,12 +152,12 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the user profile sign out button is clicked or activated via keyboard.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnSignOutClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnSignOutClick { get; set; }
 
     /// <summary>
     /// Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnTrimbleLogoClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnTrimbleLogoClick { get; set; }
 
     /// <summary>
     /// Event emitted when the user menu open state changes.
@@ -195,16 +195,27 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     private static bool __AsBool(object? d) =>
         d is System.Text.Json.JsonElement je && (je.ValueKind == System.Text.Json.JsonValueKind.True || je.ValueKind == System.Text.Json.JsonValueKind.False) ? je.GetBoolean() : false;
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "aiClick":
-                await OnAiClick.InvokeAsync(detail);
+                await OnAiClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "appsClick":
-                await OnAppsClick.InvokeAsync(detail);
+                await OnAppsClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "appsMenuOpenChange":
                 await OnAppsMenuOpenChange.InvokeAsync(__AsBool(detail));
@@ -213,34 +224,34 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
                 await OnCondensedMenuOpenChange.InvokeAsync(__AsBool(detail));
                 break;
             case "helpClick":
-                await OnHelpClick.InvokeAsync(detail);
+                await OnHelpClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "mainMenuOpenChange":
                 await OnMainMenuOpenChange.InvokeAsync(__AsBool(detail));
                 break;
             case "myTrimbleClick":
-                await OnMyTrimbleClick.InvokeAsync(detail);
+                await OnMyTrimbleClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "notificationsClick":
-                await OnNotificationsClick.InvokeAsync(detail);
+                await OnNotificationsClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "notificationsMenuOpenChange":
                 await OnNotificationsMenuOpenChange.InvokeAsync(__AsBool(detail));
                 break;
             case "searchChange":
-                await OnSearchChange.InvokeAsync(detail);
+                await OnSearchChange.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "searchClick":
-                await OnSearchClick.InvokeAsync(detail);
+                await OnSearchClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "searchInputOpenChange":
                 await OnSearchInputOpenChange.InvokeAsync(__AsBool(detail));
                 break;
             case "signOutClick":
-                await OnSignOutClick.InvokeAsync(detail);
+                await OnSignOutClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "trimbleLogoClick":
-                await OnTrimbleLogoClick.InvokeAsync(detail);
+                await OnTrimbleLogoClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "userMenuOpenChange":
                 await OnUserMenuOpenChange.InvokeAsync(__AsBool(detail));

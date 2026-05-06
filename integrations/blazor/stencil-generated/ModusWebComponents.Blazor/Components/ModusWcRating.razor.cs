@@ -64,7 +64,7 @@ public partial class ModusWcRating : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the rating changes
     /// </summary>
-    [Parameter] public EventCallback<object?> OnRatingChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnRatingChange { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -75,13 +75,24 @@ public partial class ModusWcRating : ComponentBase, IAsyncDisposable
         }
     }
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "ratingChange":
-                await OnRatingChange.InvokeAsync(detail);
+                await OnRatingChange.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }

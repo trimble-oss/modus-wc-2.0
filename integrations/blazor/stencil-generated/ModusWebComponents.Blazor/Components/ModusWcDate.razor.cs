@@ -122,17 +122,17 @@ public partial class ModusWcDate : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the input loses focus.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnInputBlur { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnInputBlur { get; set; }
 
     /// <summary>
     /// Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnInputChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnInputChange { get; set; }
 
     /// <summary>
     /// Event emitted when the input gains focus.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnInputFocus { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnInputFocus { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -156,6 +156,17 @@ public partial class ModusWcDate : ComponentBase, IAsyncDisposable
     private static double __AsDouble(object? d) =>
         d is System.Text.Json.JsonElement je && je.ValueKind == System.Text.Json.JsonValueKind.Number ? je.GetDouble() : 0d;
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
@@ -168,13 +179,13 @@ public partial class ModusWcDate : ComponentBase, IAsyncDisposable
                 await OnCalendarYearChange.InvokeAsync(__AsDouble(detail));
                 break;
             case "inputBlur":
-                await OnInputBlur.InvokeAsync(detail);
+                await OnInputBlur.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "inputChange":
-                await OnInputChange.InvokeAsync(detail);
+                await OnInputChange.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "inputFocus":
-                await OnInputFocus.InvokeAsync(detail);
+                await OnInputFocus.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }

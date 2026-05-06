@@ -55,12 +55,12 @@ public partial class ModusWcButtonGroup : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when any button in the group is clicked
     /// </summary>
-    [Parameter] public EventCallback<object?> OnButtonGroupClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnButtonGroupClick { get; set; }
 
     /// <summary>
     /// Event emitted when button selection changes
     /// </summary>
-    [Parameter] public EventCallback<object?> OnButtonSelectionChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnButtonSelectionChange { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -71,16 +71,27 @@ public partial class ModusWcButtonGroup : ComponentBase, IAsyncDisposable
         }
     }
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "buttonGroupClick":
-                await OnButtonGroupClick.InvokeAsync(detail);
+                await OnButtonGroupClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "buttonSelectionChange":
-                await OnButtonSelectionChange.InvokeAsync(detail);
+                await OnButtonSelectionChange.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }

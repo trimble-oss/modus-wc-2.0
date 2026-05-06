@@ -57,12 +57,12 @@ public partial class ModusWcMenu : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Event emitted when the menu loses focus.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnMenuFocusout { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnMenuFocusout { get; set; }
 
     /// <summary>
     /// Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnMenuSelectionChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnMenuSelectionChange { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -73,16 +73,27 @@ public partial class ModusWcMenu : ComponentBase, IAsyncDisposable
         }
     }
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "menuFocusout":
-                await OnMenuFocusout.InvokeAsync(detail);
+                await OnMenuFocusout.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "menuSelectionChange":
-                await OnMenuSelectionChange.InvokeAsync(detail);
+                await OnMenuSelectionChange.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }

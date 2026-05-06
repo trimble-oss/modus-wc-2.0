@@ -100,32 +100,32 @@ public partial class ModusWcTable : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Emits when cell editing is committed with the new value.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnCellEditCommit { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnCellEditCommit { get; set; }
 
     /// <summary>
     /// Emits when cell editing starts.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnCellEditStart { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnCellEditStart { get; set; }
 
     /// <summary>
     /// Emits when pagination changes with the new pagination state.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnPaginationChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnPaginationChange { get; set; }
 
     /// <summary>
     /// Emits when a row is clicked.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnRowClick { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnRowClick { get; set; }
 
     /// <summary>
     /// Emits when row selection changes with the selected rows and their IDs.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnRowSelectionChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnRowSelectionChange { get; set; }
 
     /// <summary>
     /// Emits when sorting changes with the new sorting state.
     /// </summary>
-    [Parameter] public EventCallback<object?> OnSortChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnSortChange { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -158,28 +158,39 @@ public partial class ModusWcTable : ComponentBase, IAsyncDisposable
         }
     }
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "cellEditCommit":
-                await OnCellEditCommit.InvokeAsync(detail);
+                await OnCellEditCommit.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "cellEditStart":
-                await OnCellEditStart.InvokeAsync(detail);
+                await OnCellEditStart.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "paginationChange":
-                await OnPaginationChange.InvokeAsync(detail);
+                await OnPaginationChange.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "rowClick":
-                await OnRowClick.InvokeAsync(detail);
+                await OnRowClick.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "rowSelectionChange":
-                await OnRowSelectionChange.InvokeAsync(detail);
+                await OnRowSelectionChange.InvokeAsync(__AsEventArgs(detail));
                 break;
             case "sortChange":
-                await OnSortChange.InvokeAsync(detail);
+                await OnSortChange.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }

@@ -32,7 +32,7 @@ public partial class ModusWcAccordion : ComponentBase, IAsyncDisposable
     /// <summary>
     /// When a collapse expanded state is changed, this event outputs the relevant index and state
     /// </summary>
-    [Parameter] public EventCallback<object?> OnExpandedChange { get; set; }
+    [Parameter] public EventCallback<ModusWcEventArgs> OnExpandedChange { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,13 +43,24 @@ public partial class ModusWcAccordion : ComponentBase, IAsyncDisposable
         }
     }
 
+    private static object? __AsObject(object? d) =>
+        d is System.Text.Json.JsonElement je ? je.ValueKind switch {
+            System.Text.Json.JsonValueKind.String => (object?)je.GetString(),
+            System.Text.Json.JsonValueKind.True => (object?)true,
+            System.Text.Json.JsonValueKind.False => (object?)false,
+            System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
+            System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
+            _ => je.GetRawText()
+        } : d;
+    private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
+
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? detail)
     {
         switch (eventName)
         {
             case "expandedChange":
-                await OnExpandedChange.InvokeAsync(detail);
+                await OnExpandedChange.InvokeAsync(__AsEventArgs(detail));
                 break;
         }
     }
