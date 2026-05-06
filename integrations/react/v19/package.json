@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Trimble Inc.",
   "dependencies": {
-    "@stencil/react-output-target": "^0.7.4",
+    "@stencil/react-output-target": "^1.2.0",
     "@trimble-oss/moduswebcomponents": "file:../../../dist"
   },
   "devDependencies": {
@@ -27,6 +27,11 @@
       "import": "./index.js",
       "require": "./index-cjs.js",
       "default": "./index.js"
+    },
+    "./next": {
+      "types": "./types/index.server.d.ts",
+      "import": "./index.server.js",
+      "default": "./index.server.js"
     },
     "./modus-wc-styles.css": "./modus-wc-styles.css"
   },
