@@ -1,3 +1,6 @@
 @using BlazingStory
-@* Root component for MAUI Blazor Hybrid – hosts the BlazingStory UI *@
-<BlazingStoryApp />
+@using ModusWebComponents.MauiApp
+
+<BlazingStoryApp Assemblies="[typeof(RootBlazorComponent).Assembly]"
+                 Title="Modus Web Components"
+                 DefaultLayout="typeof(DefaultLayout)" />

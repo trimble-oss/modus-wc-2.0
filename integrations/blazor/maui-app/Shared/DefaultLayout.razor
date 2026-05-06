@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+
+<div class="story-canvas">
+    <ErrorBoundary>
+        <ChildContent>
+            @Body
+        </ChildContent>
+        <ErrorContent Context="ex">
+            <div class="story-error">
+                <div class="story-error-header">⚠️ Story Render Error</div>
+                <div class="story-error-message">@ex.Message</div>
+#if DEBUG
+                <details>
+                    <summary>Stack trace</summary>
+                    <pre class="story-error-trace">@ex.ToString()</pre>
+                </details>
+#endif
+            </div>
+        </ErrorContent>
+    </ErrorBoundary>
+</div>

@@ -1,3 +1,30 @@
 /* MAUI Blazor Hybrid host overrides */
 html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
 #app { height: 100%; }
+
+/* Story canvas: fills the available preview area */
+.story-canvas {
+    min-height: 200px;
+    padding: 1.5rem;
+    padding-bottom: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.story-error {
+    border: 2px solid #dc3545;
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    background: #fff5f5;
+    color: #721c24;
+    max-width: 700px;
+    width: 100%;
+    font-family: monospace;
+}
+
+.story-error-header { font-weight: bold; margin-bottom: 0.5rem; }
+.story-error-message { font-size: 0.9rem; margin-bottom: 0.75rem; word-break: break-word; }
+.story-error-trace  { font-size: 0.75rem; overflow-x: auto; white-space: pre-wrap; }
