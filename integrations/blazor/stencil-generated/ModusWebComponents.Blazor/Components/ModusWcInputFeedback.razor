@@ -1,0 +1,11 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-input-feedback custom-class="@CustomClass"
+                 icon="@Icon"
+                 level="@Level"
+                 message="@Message"
+                 size="@Size"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-input-feedback>

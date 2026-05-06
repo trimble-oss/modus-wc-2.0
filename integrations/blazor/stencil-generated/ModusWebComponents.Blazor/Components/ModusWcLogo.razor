@@ -1,0 +1,10 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-logo alt="@Alt"
+                 custom-class="@CustomClass"
+                 emblem="@(Emblem?.ToString().ToLower())"
+                 name="@Name"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-logo>

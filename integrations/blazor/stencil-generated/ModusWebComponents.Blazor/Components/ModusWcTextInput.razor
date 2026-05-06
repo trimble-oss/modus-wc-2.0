@@ -1,0 +1,28 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-text-input auto-capitalize="@AutoCapitalize"
+                 auto-correct="@AutoCorrect"
+                 bordered="@(Bordered?.ToString().ToLower())"
+                 clear-aria-label="@ClearAriaLabel"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 enterkeyhint="@Enterkeyhint"
+                 include-clear="@(IncludeClear?.ToString().ToLower())"
+                 include-search="@(IncludeSearch?.ToString().ToLower())"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 max-length="@MaxLength"
+                 min-length="@MinLength"
+                 name="@Name"
+                 pattern="@Pattern"
+                 placeholder="@Placeholder"
+                 read-only="@(ReadOnly?.ToString().ToLower())"
+                 required="@(Required?.ToString().ToLower())"
+                 size="@Size"
+                 type="@Type"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-text-input>

@@ -1,0 +1,11 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-card background-figure="@(BackgroundFigure?.ToString().ToLower())"
+                 bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 layout="@Layout"
+                 padding="@Padding"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-card>

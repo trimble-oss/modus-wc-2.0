@@ -1,0 +1,28 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-autocomplete bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 debounce-ms="@DebounceMs"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 include-clear="@(IncludeClear?.ToString().ToLower())"
+                 include-search="@(IncludeSearch?.ToString().ToLower())"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 leave-menu-open="@(LeaveMenuOpen?.ToString().ToLower())"
+                 max-chips="@MaxChips"
+                 min-chars="@MinChars"
+                 min-input-width="@MinInputWidth"
+                 multi-select="@(MultiSelect?.ToString().ToLower())"
+                 name="@Name"
+                 placeholder="@Placeholder"
+                 read-only="@(ReadOnly?.ToString().ToLower())"
+                 required="@(Required?.ToString().ToLower())"
+                 show-menu-on-focus="@(ShowMenuOnFocus?.ToString().ToLower())"
+                 show-spinner="@(ShowSpinner?.ToString().ToLower())"
+                 size="@Size"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-autocomplete>

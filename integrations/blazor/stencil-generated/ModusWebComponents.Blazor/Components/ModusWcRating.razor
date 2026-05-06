@@ -1,0 +1,13 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-rating allow-half="@(AllowHalf?.ToString().ToLower())"
+                 count="@Count"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 size="@Size"
+                 value="@Value"
+                 variant="@Variant"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-rating>

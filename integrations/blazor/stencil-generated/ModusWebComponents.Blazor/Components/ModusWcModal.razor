@@ -1,0 +1,13 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-modal backdrop="@Backdrop"
+                 custom-class="@CustomClass"
+                 fullscreen="@(Fullscreen?.ToString().ToLower())"
+                 modal-id="@ModalId"
+                 position="@Position"
+                 show-close="@(ShowClose?.ToString().ToLower())"
+                 show-fullscreen-toggle="@(ShowFullscreenToggle?.ToString().ToLower())"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-modal>

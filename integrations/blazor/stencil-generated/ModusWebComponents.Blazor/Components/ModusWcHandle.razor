@@ -1,0 +1,15 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-handle button-color="@ButtonColor"
+                 button-size="@ButtonSize"
+                 button-variant="@ButtonVariant"
+                 custom-class="@CustomClass"
+                 default-split="@DefaultSplit"
+                 density="@Density"
+                 orientation="@Orientation"
+                 size="@Size"
+                 type="@Type"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-handle>

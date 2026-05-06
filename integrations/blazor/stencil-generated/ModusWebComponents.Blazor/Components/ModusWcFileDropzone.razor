@@ -1,0 +1,18 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-file-dropzone accept-file-types="@AcceptFileTypes"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 file-dragged-over-instructions="@FileDraggedOverInstructions"
+                 include-state-icon="@(IncludeStateIcon?.ToString().ToLower())"
+                 instructions="@Instructions"
+                 invalid-file-type-message="@InvalidFileTypeMessage"
+                 max-file-count="@MaxFileCount"
+                 max-file-name-length="@MaxFileNameLength"
+                 max-total-file-size-bytes="@MaxTotalFileSizeBytes"
+                 multiple="@(Multiple?.ToString().ToLower())"
+                 success-message="@SuccessMessage"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-file-dropzone>

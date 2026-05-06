@@ -1,0 +1,19 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-menu-item bordered="@(Bordered?.ToString().ToLower())"
+                 checkbox="@(Checkbox?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 focused="@(Focused?.ToString().ToLower())"
+                 has-submenu="@(HasSubmenu?.ToString().ToLower())"
+                 label="@Label"
+                 selected="@(Selected?.ToString().ToLower())"
+                 size="@Size"
+                 sub-label="@SubLabel"
+                 tooltip-content="@TooltipContent"
+                 tooltip-position="@TooltipPosition"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-menu-item>

@@ -1,0 +1,22 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-date bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 format="@Format"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 max="@Max"
+                 min="@Min"
+                 name="@Name"
+                 read-only="@(ReadOnly?.ToString().ToLower())"
+                 required="@(Required?.ToString().ToLower())"
+                 show-week-numbers="@(ShowWeekNumbers?.ToString().ToLower())"
+                 size="@Size"
+                 value="@Value"
+                 week-start-day="@WeekStartDay"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-date>

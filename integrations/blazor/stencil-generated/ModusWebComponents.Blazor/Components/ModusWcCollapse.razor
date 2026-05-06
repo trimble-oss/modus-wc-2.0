@@ -1,0 +1,11 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-collapse bordered="@(Bordered?.ToString().ToLower())"
+                 chevron-position="@ChevronPosition"
+                 collapse-id="@CollapseId"
+                 custom-class="@CustomClass"
+                 expanded="@(Expanded?.ToString().ToLower())"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-collapse>

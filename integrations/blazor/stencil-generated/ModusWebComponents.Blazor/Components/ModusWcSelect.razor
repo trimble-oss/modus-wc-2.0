@@ -1,0 +1,16 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-select bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 name="@Name"
+                 required="@(Required?.ToString().ToLower())"
+                 size="@Size"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-select>

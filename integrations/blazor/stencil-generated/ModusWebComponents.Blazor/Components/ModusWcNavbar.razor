@@ -1,0 +1,15 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-navbar apps-menu-open="@(AppsMenuOpen?.ToString().ToLower())"
+                 condensed="@(Condensed?.ToString().ToLower())"
+                 condensed-menu-open="@(CondensedMenuOpen?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 main-menu-open="@(MainMenuOpen?.ToString().ToLower())"
+                 notifications-menu-open="@(NotificationsMenuOpen?.ToString().ToLower())"
+                 search-debounce-ms="@SearchDebounceMs"
+                 search-input-open="@(SearchInputOpen?.ToString().ToLower())"
+                 user-menu-open="@(UserMenuOpen?.ToString().ToLower())"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-navbar>

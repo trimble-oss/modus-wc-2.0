@@ -1,0 +1,10 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-tabs active-tab-index="@ActiveTabIndex"
+                 custom-class="@CustomClass"
+                 size="@Size"
+                 tab-style="@TabStyle"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-tabs>

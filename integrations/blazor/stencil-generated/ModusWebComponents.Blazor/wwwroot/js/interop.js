@@ -12,16 +12,37 @@
     var t = typeof detail;
     if (t === 'string' || t === 'number' || t === 'boolean') return detail;
 
-    // DOM Event objects (FocusEvent, MouseEvent, KeyboardEvent, InputEvent, etc.)
-    // must be checked FIRST because they also have a `.target` property that would
-    // otherwise cause them to enter the form-control branch below. A real DOM Event
-    // always has BOTH `.type` (string) AND `.isTrusted` (boolean); synthetic
-    // InputEvent-like objects emitted by Stencil components (e.g. modus-wc-date's
-    // `{ target: { value: "2026-04-29" } }`) have neither.
+    // Real DOM Event objects (InputEvent, FocusEvent, MouseEvent, KeyboardEvent, etc.)
+    // must be checked FIRST because they also have a .target property that would
+    // otherwise pull them into the synthetic-object branch below. A genuine DOM Event
+    // always has BOTH .type (string) AND .isTrusted (boolean); synthetic InputEvent-like
+    // objects emitted by Stencil (e.g. modus-wc-date's { target: { value: "..." } })
+    // have neither of those properties.
     if (typeof detail.type === 'string' && typeof detail.isTrusted === 'boolean') {
+      // input / change events: extract the meaningful scalar from the target.
+      // This mirrors the React/Angular pattern of reading event.target.value or
+      // event.target.checked — giving C# handlers the same clean scalar value.
+      if ((detail.type === 'input' || detail.type === 'change') && detail.target) {
+        var tgt = detail.target;
+        var inputType = (tgt.type || '').toLowerCase();
+        if ((inputType === 'checkbox' || inputType === 'radio') &&
+            typeof tgt.checked === 'boolean') return tgt.checked;
+        if ('value' in tgt) return tgt.value ?? null;
+      }
+      // Keyboard events: return the key data (the most useful subset).
+      if (detail.type === 'keydown' || detail.type === 'keyup' || detail.type === 'keypress') {
+        var keyData = {};
+        if (typeof detail.key === 'string')       keyData.key = detail.key;
+        if (typeof detail.code === 'string')      keyData.code = detail.code;
+        if (typeof detail.ctrlKey === 'boolean')  keyData.ctrlKey = detail.ctrlKey;
+        if (typeof detail.shiftKey === 'boolean') keyData.shiftKey = detail.shiftKey;
+        if (typeof detail.altKey === 'boolean')   keyData.altKey = detail.altKey;
+        if (typeof detail.metaKey === 'boolean')  keyData.metaKey = detail.metaKey;
+        return keyData;
+      }
+      // All other DOM events (focus, blur, click, mouseenter, etc.): return a
+      // minimal metadata object so the Actions tab shows something meaningful.
       var evData = { type: detail.type };
-      if (typeof detail.key === 'string')       evData.key = detail.key;
-      if (typeof detail.code === 'string')      evData.code = detail.code;
       if (typeof detail.button === 'number')    evData.button = detail.button;
       if (typeof detail.ctrlKey === 'boolean')  evData.ctrlKey = detail.ctrlKey;
       if (typeof detail.shiftKey === 'boolean') evData.shiftKey = detail.shiftKey;
@@ -31,26 +52,23 @@
       return evData;
     }
 
-    // Input-like object: extract the scalar value from the target element, but
-    // ONLY for actual form controls — not for arbitrary elements like buttons or
-    // custom elements where .value is "" and would produce misleading empty details.
+    // Synthetic InputEvent-like objects: extract the scalar from .target.value /
+    // .target.checked. Many Stencil components emit a plain object shaped like an
+    // InputEvent (e.g. modus-wc-date emits { target: { value: "2026-04-29" } })
+    // rather than a real DOM event. These lack .isTrusted so the block above is
+    // skipped, and we handle them here.
     if (typeof detail.target === 'object' && detail.target !== null) {
       var tgt = detail.target;
       var tagName = tgt.tagName ? String(tgt.tagName).toUpperCase() : '';
       var isFormControl = tagName === 'INPUT' || tagName === 'SELECT' ||
                           tagName === 'TEXTAREA' || tagName === 'OPTION';
       if (isFormControl) {
-        // Only use .checked for checkbox/radio — all <input> types have a
-        // .checked property (always false for non-checkable types), so we
-        // must guard on .type to avoid returning false for text/number/range.
         var inputType = tgt.type ? String(tgt.type).toLowerCase() : '';
         if ((inputType === 'checkbox' || inputType === 'radio') &&
             typeof tgt.checked === 'boolean') return tgt.checked;
         if ('value' in tgt) return tgt.value;
       }
-      // Fallback: synthetic InputEvent-like objects where target is a plain
-      // object (not a form control), e.g. modus-wc-date emits
-      // { target: { value: "2026-04-29" } } as unknown as InputEvent.
+      // Plain object target (no tagName) — e.g. modus-wc-date's synthetic detail.
       if (typeof tgt.value === 'string') return tgt.value;
     }
 

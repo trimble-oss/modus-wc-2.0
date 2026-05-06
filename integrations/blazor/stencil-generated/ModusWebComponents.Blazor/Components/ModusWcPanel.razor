@@ -1,0 +1,10 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-panel custom-class="@CustomClass"
+                 floating="@(Floating?.ToString().ToLower())"
+                 height="@Height"
+                 width="@Width"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-panel>

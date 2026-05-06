@@ -1,0 +1,11 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-button-group color="@Color"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 orientation="@Orientation"
+                 selection-type="@SelectionType"
+                 variant="@Variant"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-button-group>

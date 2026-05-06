@@ -1,0 +1,15 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-button color="@Color"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 full-width="@(FullWidth?.ToString().ToLower())"
+                 pressed="@(Pressed?.ToString().ToLower())"
+                 shape="@Shape"
+                 size="@Size"
+                 type="@Type"
+                 variant="@Variant"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-button>

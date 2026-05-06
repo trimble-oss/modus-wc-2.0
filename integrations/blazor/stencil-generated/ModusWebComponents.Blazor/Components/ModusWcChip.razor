@@ -1,0 +1,15 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-chip active="@(Active?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 has-error="@(HasError?.ToString().ToLower())"
+                 label="@Label"
+                 shape="@Shape"
+                 show-remove="@(ShowRemove?.ToString().ToLower())"
+                 size="@Size"
+                 variant="@Variant"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-chip>

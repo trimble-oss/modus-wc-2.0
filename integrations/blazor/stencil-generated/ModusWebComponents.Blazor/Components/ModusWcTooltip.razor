@@ -1,0 +1,12 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-tooltip content="@Content"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 force-open="@(ForceOpen?.ToString().ToLower())"
+                 position="@Position"
+                 tooltip-id="@TooltipId"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-tooltip>

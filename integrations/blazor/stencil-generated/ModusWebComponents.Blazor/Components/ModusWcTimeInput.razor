@@ -1,0 +1,23 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-time-input auto-complete="@AutoComplete"
+                 bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 datalist-id="@DatalistId"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 max="@Max"
+                 min="@Min"
+                 name="@Name"
+                 read-only="@(ReadOnly?.ToString().ToLower())"
+                 required="@(Required?.ToString().ToLower())"
+                 show-seconds="@(ShowSeconds?.ToString().ToLower())"
+                 size="@Size"
+                 step="@Step"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-time-input>

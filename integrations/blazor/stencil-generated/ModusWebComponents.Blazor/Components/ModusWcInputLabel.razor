@@ -1,0 +1,12 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-input-label custom-class="@CustomClass"
+                 for-id="@ForId"
+                 label-text="@LabelText"
+                 required="@(Required?.ToString().ToLower())"
+                 size="@Size"
+                 sub-label-text="@SubLabelText"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-input-label>

@@ -1,0 +1,12 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-menu bordered="@(Bordered?.ToString().ToLower())"
+                 custom-class="@CustomClass"
+                 is-sub-menu="@(IsSubMenu?.ToString().ToLower())"
+                 orientation="@Orientation"
+                 selection-mode="@SelectionMode"
+                 size="@Size"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-menu>

@@ -1,0 +1,24 @@
+@namespace ModusWebComponents.Blazor
+
+<modus-wc-number-input auto-complete="@AutoComplete"
+                 bordered="@(Bordered?.ToString().ToLower())"
+                 currency-symbol="@CurrencySymbol"
+                 custom-class="@CustomClass"
+                 disabled="@(Disabled?.ToString().ToLower())"
+                 input-id="@InputId"
+                 input-tab-index="@InputTabIndex"
+                 label="@Label"
+                 max="@Max"
+                 min="@Min"
+                 name="@Name"
+                 placeholder="@Placeholder"
+                 read-only="@(ReadOnly?.ToString().ToLower())"
+                 required="@(Required?.ToString().ToLower())"
+                 size="@Size"
+                 step="@Step"
+                 type="@Type"
+                 value="@Value"
+                 @ref="_elementRef"
+                 @attributes="AdditionalAttributes">
+    @ChildContent
+</modus-wc-number-input>
