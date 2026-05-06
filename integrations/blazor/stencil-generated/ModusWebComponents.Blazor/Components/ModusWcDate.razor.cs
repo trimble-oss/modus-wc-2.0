@@ -163,7 +163,7 @@ public partial class ModusWcDate : ComponentBase, IAsyncDisposable
             System.Text.Json.JsonValueKind.False => (object?)false,
             System.Text.Json.JsonValueKind.Number => je.TryGetDouble(out double __n) ? (object?)__n : je.GetRawText(),
             System.Text.Json.JsonValueKind.Null or System.Text.Json.JsonValueKind.Undefined => null,
-            _ => je.GetRawText()
+            _ => (object?)je
         } : d;
     private static ModusWcEventArgs __AsEventArgs(object? d) => new ModusWcEventArgs(__AsObject(d));
 
