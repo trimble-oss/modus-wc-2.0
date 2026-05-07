@@ -1,0 +1,164 @@
+{
+  "description": "A customizable dropdown menu component used to render a button and toggleable menu. The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
+  "properties": [
+    {
+      "name": "buttonAriaLabel",
+      "type": "string",
+      "description": "The aria-label for the dropdown button.",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "buttonColor",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'warning'     | 'danger'",
+      "description": "The color variant of the button.",
+      "default": "'primary'",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "buttonShape",
+      "type": "'circle' | 'ellipse' | 'rectangle' | 'square'",
+      "description": "The shape of the button.",
+      "default": "'rectangle'",
+      "mutable": false,
+      "end_line": 47
+    },
+    {
+      "name": "buttonSize",
+      "type": "DaisySize",
+      "description": "The size of the button.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 50
+    },
+    {
+      "name": "buttonVariant",
+      "type": "'borderless' | 'filled' | 'outlined'",
+      "description": "The variant of the button.",
+      "default": "'filled'",
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the host element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 56
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "If true, the button will be disabled.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 59
+    },
+    {
+      "name": "menuBordered",
+      "type": "boolean",
+      "description": "Indicates that the menu should have a border.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 62
+    },
+    {
+      "name": "menuOffset",
+      "type": "number",
+      "description": "Distance between the button and menu in pixels.",
+      "default": "10",
+      "mutable": false,
+      "end_line": 65
+    },
+    {
+      "name": "menuPlacement",
+      "type": "PopoverPlacement",
+      "description": "The placement of the menu relative to the button.",
+      "default": "'bottom-start'",
+      "mutable": false,
+      "end_line": 68
+    },
+    {
+      "name": "menuSize",
+      "type": "ModusSize",
+      "description": "The size of the menu.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 71
+    },
+    {
+      "name": "menuVisible",
+      "type": "boolean",
+      "description": "Indicates that the menu is visible.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 74
+    }
+  ],
+  "events": [
+    {
+      "name": "menuVisibilityChange",
+      "detail": "{ isVisible: boolean }",
+      "description": "Event emitted when the menuVisible prop changes.",
+      "end_line": 77
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "button",
+      "description": "Slot for button content"
+    },
+    {
+      "name": "menu",
+      "description": "Slot for menu content"
+    }
+  ],
+  "examples": {
+    "basic": "<style>\n  /* Storybook styling */\n  div#story--components-dropdown-menu--default--primary-inner {\n    display: flex;\n    align-items: center;\n    height: 240px;\n  }\n\n  [slot=\"button\"] {\n    display: flex;\n    align-items: center;\n    gap: 4px;\n  }\n\n  .value {\n    font-size: 14px;\n    padding-top: 12px;\n  }\n</style>\n\n\n\n<modus-wc-dropdown-menu\n  button-aria-label=${ifDefined(args['button-aria-label'])}\n  button-color=${ifDefined(args['button-color'])}\n  button-shape=${ifDefined(args['button-shape'])}\n  button-size=${ifDefined(args['button-size'])}\n  button-variant=${ifDefined(args['button-variant'])}\n  custom-class=${ifDefined(args['custom-class'])}\n  ?disabled=${args.disabled}\n  ?menu-bordered=${args['menu-bordered']}\n  menu-offset=${ifDefined(args['menu-offset'])}\n  menu-placement=${ifDefined(args['menu-placement'])}\n  menu-size=${ifDefined(args['menu-size'])}\n  ?menu-visible=${args['menu-visible']}\n>\n  <div slot=\"button\">\n    Button\n    <modus-wc-icon name=\"expand_more\" size=\"sm\" />\n  </div>\n\n  <div slot=\"menu\">\n    <modus-wc-menu-item label=\"Item One\" value=\"1\" @itemSelect=${handleItemSelect}></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Two\" value=\"2\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Three\" value=\"3\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n  </div>\n</modus-wc-dropdown-menu>\n<script>\n  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.\n  // let selectedValue = '';\n\n  // const handleItemSelect = (event) => {\n  // //  Update the \"Selected Value\" label\n  //   selectedValue = event.detail.value;\n  //   const displayElement = document.querySelector('#selected-value');\n  //   if (displayElement) {\n  //     displayElement.textContent = selectedValue;\n  //   }\n\n  //   // Close the dropdown menu when an item is selected\n  //   const dropdownMenu = event.target;\n  //   const dropdownMenuElement = dropdownMenu.closest(\n  //     'modus-wc-dropdown-menu'\n  //   );\n  //   if (dropdownMenuElement) {\n  //     dropdownMenuElement.menuVisible = false;\n  //   }\n  // };\n  //  const menuItems = document.querySelectorAll('modus-wc-menu-item');\n  //   menuItems.forEach(item => {\n  //     item.addEventListener('itemSelect', handleItemSelect);\n  //   });\n</script>\n\n<div class=\"value\">\n  Selected Value:\n  <span id=\"selected-value\"></span>\n</div>",
+    "variations": [],
+    "args": {
+      "button-aria-label": "'Dropdown menu button'",
+      "button-color": "'primary'",
+      "button-shape": "'rectangle'",
+      "button-size": "'md'",
+      "button-variant": "'filled'",
+      "disabled": "false",
+      "menu-bordered": "true",
+      "menu-offset": "14",
+      "menu-placement": "'bottom-start'",
+      "menu-size": "'md'",
+      "menu-visible": "false"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "menuVisibilityChange"
+    ]
+  },
+  "tag": "modus-wc-dropdown-menu",
+  "storyExample": {
+    "template": "<style>\n  /* Storybook styling */\n  div#story--components-dropdown-menu--default--primary-inner {\n    display: flex;\n    align-items: center;\n    height: 240px;\n  }\n\n  [slot=\"button\"] {\n    display: flex;\n    align-items: center;\n    gap: 4px;\n  }\n\n  .value {\n    font-size: 14px;\n    padding-top: 12px;\n  }\n</style>\n\n\n\n<modus-wc-dropdown-menu\n  button-aria-label=${ifDefined(args['button-aria-label'])}\n  button-color=${ifDefined(args['button-color'])}\n  button-shape=${ifDefined(args['button-shape'])}\n  button-size=${ifDefined(args['button-size'])}\n  button-variant=${ifDefined(args['button-variant'])}\n  custom-class=${ifDefined(args['custom-class'])}\n  ?disabled=${args.disabled}\n  ?menu-bordered=${args['menu-bordered']}\n  menu-offset=${ifDefined(args['menu-offset'])}\n  menu-placement=${ifDefined(args['menu-placement'])}\n  menu-size=${ifDefined(args['menu-size'])}\n  ?menu-visible=${args['menu-visible']}\n>\n  <div slot=\"button\">\n    Button\n    <modus-wc-icon name=\"expand_more\" size=\"sm\" />\n  </div>\n\n  <div slot=\"menu\">\n    <modus-wc-menu-item label=\"Item One\" value=\"1\" @itemSelect=${handleItemSelect}></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Two\" value=\"2\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Three\" value=\"3\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n  </div>\n</modus-wc-dropdown-menu>\n<script>\n  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.\n  // let selectedValue = '';\n\n  // const handleItemSelect = (event) => {\n  // //  Update the \"Selected Value\" label\n  //   selectedValue = event.detail.value;\n  //   const displayElement = document.querySelector('#selected-value');\n  //   if (displayElement) {\n  //     displayElement.textContent = selectedValue;\n  //   }\n\n  //   // Close the dropdown menu when an item is selected\n  //   const dropdownMenu = event.target;\n  //   const dropdownMenuElement = dropdownMenu.closest(\n  //     'modus-wc-dropdown-menu'\n  //   );\n  //   if (dropdownMenuElement) {\n  //     dropdownMenuElement.menuVisible = false;\n  //   }\n  // };\n  //  const menuItems = document.querySelectorAll('modus-wc-menu-item');\n  //   menuItems.forEach(item => {\n  //     item.addEventListener('itemSelect', handleItemSelect);\n  //   });\n</script>\n\n<div class=\"value\">\n  Selected Value:\n  <span id=\"selected-value\"></span>\n</div>",
+    "args": {
+      "button-aria-label": "'Dropdown menu button'",
+      "button-color": "'primary'",
+      "button-shape": "'rectangle'",
+      "button-size": "'md'",
+      "button-variant": "'filled'",
+      "disabled": "false",
+      "menu-bordered": "true",
+      "menu-offset": "14",
+      "menu-placement": "'bottom-start'",
+      "menu-size": "'md'",
+      "menu-visible": "false"
+    },
+    "argTypes": {},
+    "events": [
+      "menuVisibilityChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { DaisySize, ModusSize, PopoverPlacement } from '../types';\n\ninterface DropdownMenuArgs {\n  'button-aria-label'?: string;\n  'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';\n  'button-shape'?: 'circle' | 'ellipse' | 'rectangle' | 'square';\n  'button-size'?: DaisySize;\n  'button-variant'?: 'borderless' | 'filled' | 'outlined';\n  'custom-class'?: string;\n  disabled?: boolean;\n  'menu-bordered'?: boolean;\n  'menu-offset'?: number;\n  'menu-placement'?: PopoverPlacement;\n  'menu-size'?: ModusSize;\n  'menu-visible': boolean;\n}\n\nconst meta: Meta<DropdownMenuArgs> = {\n  title: 'Components/Dropdown Menu',\n  component: 'modus-wc-dropdown-menu',\n  args: {\n    'button-aria-label': 'Dropdown menu button',\n    'button-color': 'primary',\n    'button-shape': 'rectangle',\n    'button-size': 'md',\n    'button-variant': 'filled',\n    disabled: false,\n    'menu-bordered': true,\n    'menu-offset': 14,\n    'menu-placement': 'bottom-start',\n    'menu-size': 'md',\n    'menu-visible': false,\n  },\n  argTypes: {\n    'button-color': {\n      control: { type: 'select' },\n      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],\n    },\n    'button-size': {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n    'button-shape': {\n      control: { type: 'select' },\n      options: ['circle', 'ellipse', 'rectangle', 'square'],\n    },\n    'button-variant': {\n      control: { type: 'select' },\n      options: ['borderless', 'filled', 'outlined'],\n    },\n    'menu-placement': {\n      control: { type: 'select' },\n      options: [\n        'top',\n        'top-start',\n        'top-end',\n        'bottom',\n        'bottom-start',\n        'bottom-end',\n        'left',\n        'left-start',\n        'left-end',\n        'right',\n        'right-start',\n        'right-end',\n      ],\n    },\n    'menu-size': {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['menuVisibilityChange'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<DropdownMenuArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    let selectedValue = '';\n\n    const handleItemSelect = (event: CustomEvent) => {\n      selectedValue = event.detail.value;\n      const displayElement = document.querySelector('#selected-value');\n      if (displayElement) {\n        displayElement.textContent = selectedValue;\n      }\n\n      // Close the dropdown menu when an item is selected\n      const dropdownMenu = event.target as HTMLElement;\n      const dropdownMenuElement = dropdownMenu.closest(\n        'modus-wc-dropdown-menu'\n      );\n      if (dropdownMenuElement) {\n        dropdownMenuElement.menuVisible = false;\n      }\n    };\n\n    // prettier-ignore\n    return html`\n<style>\n  /* Storybook styling */\n  div#story--components-dropdown-menu--default--primary-inner {\n    display: flex;\n    align-items: center;\n    height: 240px;\n  }\n\n  [slot=\"button\"] {\n    display: flex;\n    align-items: center;\n    gap: 4px;\n  }\n\n  .value {\n    font-size: 14px;\n    padding-top: 12px;\n  }\n</style>\n\n\n\n<modus-wc-dropdown-menu\n  button-aria-label=${ifDefined(args['button-aria-label'])}\n  button-color=${ifDefined(args['button-color'])}\n  button-shape=${ifDefined(args['button-shape'])}\n  button-size=${ifDefined(args['button-size'])}\n  button-variant=${ifDefined(args['button-variant'])}\n  custom-class=${ifDefined(args['custom-class'])}\n  ?disabled=${args.disabled}\n  ?menu-bordered=${args['menu-bordered']}\n  menu-offset=${ifDefined(args['menu-offset'])}\n  menu-placement=${ifDefined(args['menu-placement'])}\n  menu-size=${ifDefined(args['menu-size'])}\n  ?menu-visible=${args['menu-visible']}\n>\n  <div slot=\"button\">\n    Button\n    <modus-wc-icon name=\"expand_more\" size=\"sm\" />\n  </div>\n\n  <div slot=\"menu\">\n    <modus-wc-menu-item label=\"Item One\" value=\"1\" @itemSelect=${handleItemSelect}></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Two\" value=\"2\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n    <modus-wc-menu-item label=\"Item Three\" value=\"3\" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>\n  </div>\n</modus-wc-dropdown-menu>\n<script>\n  // //  Adding this block to handle menu item selection to update a label and close the dropdown via JS.\n  // let selectedValue = '';\n\n  // const handleItemSelect = (event) => {\n  // //  Update the \"Selected Value\" label\n  //   selectedValue = event.detail.value;\n  //   const displayElement = document.querySelector('#selected-value');\n  //   if (displayElement) {\n  //     displayElement.textContent = selectedValue;\n  //   }\n\n  //   // Close the dropdown menu when an item is selected\n  //   const dropdownMenu = event.target;\n  //   const dropdownMenuElement = dropdownMenu.closest(\n  //     'modus-wc-dropdown-menu'\n  //   );\n  //   if (dropdownMenuElement) {\n  //     dropdownMenuElement.menuVisible = false;\n  //   }\n  // };\n  //  const menuItems = document.querySelectorAll('modus-wc-menu-item');\n  //   menuItems.forEach(item => {\n  //     item.addEventListener('itemSelect', handleItemSelect);\n  //   });\n</script>\n\n<div class=\"value\">\n  Selected Value:\n  <span id=\"selected-value\"></span>\n</div>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const IconOnlyDropdownMenu: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<style>\n  /* Storybook styling */\n  div[id^='story--components-dropdown-menu--icon-only-dropdown-menu'] {\n    height: 60px;\n  }\n</style>\n\n<modus-wc-dropdown-menu button-shape=\"square\">\n  <div slot=\"button\">\n    <modus-wc-icon decorative name=\"more_vertical\"></modus-wc-icon>\n  </div>\n  <div slot=\"menu\">\n    <modus-wc-menu-item label=\"Item One\"></modus-wc-menu-item>\n  </div>\n</modus-wc-dropdown-menu>\n    `;\n  },\n};\n"
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "description": "A customizable input component used to create text inputs with types. The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
+  "properties": [
+    {
+      "name": "autoCapitalize",
+      "type": "| 'off'     | 'none'     | 'on'     | 'sentences'     | 'words'     | 'characters'",
+      "description": "Controls automatic capitalization in inputted text.",
+      "default": null,
+      "mutable": false,
+      "end_line": 50
+    },
+    {
+      "name": "autoComplete",
+      "type": "AutocompleteTypes",
+      "description": "Hint for form autofill feature.",
+      "default": null,
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "autoCorrect",
+      "type": "'on' | 'off'",
+      "description": "Controls automatic correction in inputted text. Support by browser varies.",
+      "default": null,
+      "mutable": false,
+      "end_line": 56
+    },
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Indicates that the input should have a border.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 59
+    },
+    {
+      "name": "clearAriaLabel",
+      "type": "string",
+      "description": "Aria label for the clear icon button.",
+      "default": "'Clear text'",
+      "mutable": false,
+      "end_line": 62
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the input.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 65
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Whether the form control is disabled.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 68
+    },
+    {
+      "name": "enterkeyhint",
+      "type": "| 'enter'     | 'done'     | 'go'     | 'next'     | 'previous'     | 'search'     | 'send'",
+      "description": "A hint to the browser for which enter key to display.",
+      "default": null,
+      "mutable": false,
+      "end_line": 78
+    },
+    {
+      "name": "feedback",
+      "type": "IInputFeedbackProp",
+      "description": "Feedback to render below the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 81
+    },
+    {
+      "name": "includeClear",
+      "type": "boolean",
+      "description": "Show the clear button within the input field.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 84
+    },
+    {
+      "name": "includeSearch",
+      "type": "boolean",
+      "description": "Show the search icon within the input field.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 87
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the input element.",
+      "default": null,
+      "mutable": false,
+      "end_line": 90
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
+      "default": null,
+      "mutable": false,
+      "end_line": 93
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 96
+    },
+    {
+      "name": "maxLength",
+      "type": "number",
+      "description": "Maximum length (number of characters) of value.",
+      "default": null,
+      "mutable": false,
+      "end_line": 99
+    },
+    {
+      "name": "minLength",
+      "type": "number",
+      "description": "Minimum length (number of characters) of value.",
+      "default": null,
+      "mutable": false,
+      "end_line": 102
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+      "default": null,
+      "mutable": false,
+      "end_line": 105
+    },
+    {
+      "name": "pattern",
+      "type": "string",
+      "description": "Pattern the value must match to be valid",
+      "default": null,
+      "mutable": false,
+      "end_line": 108
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Text that appears in the form control when it has no value set.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 111
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Whether the value is editable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 114
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 117
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 120
+    },
+    {
+      "name": "type",
+      "type": "TextFieldTypes",
+      "description": "Type of form control.",
+      "default": "'text'",
+      "mutable": false,
+      "end_line": 123
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The value of the control.",
+      "default": "''",
+      "mutable": true,
+      "end_line": 126
+    }
+  ],
+  "events": [
+    {
+      "name": "clearClick",
+      "detail": "void",
+      "description": "Event emitted when the clear button is clicked.",
+      "end_line": 129
+    },
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the input loses focus.",
+      "end_line": 132
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Event emitted when the input value changes.",
+      "end_line": 135
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the input gains focus.",
+      "end_line": 138
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "custom-icon",
+      "description": "Slot for custom-icon content"
+    }
+  ],
+  "examples": {
+    "basic": "<text-input-shadow-host\n      .props=${{ ...args }}\n    ></text-input-shadow-host>",
+    "variations": [],
+    "args": {
+      "bordered": "true",
+      "disabled": "false",
+      "clear": "false",
+      "search": "false",
+      "inputmode": "'text'",
+      "label": "'Label'",
+      "size": "'md'",
+      "spellcheck": "false",
+      "type": "'text'",
+      "value": "''"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "clearClick",
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-text-input autoCapitalize=\"example-autoCapitalize\" autoComplete=\"example-autoComplete\" autoCorrect=\"example-autoCorrect\" enterkeyhint=\"example-enterkeyhint\" feedback=\"example-feedback\" inputId=\"example-inputId\" inputTabIndex=\"example-inputTabIndex\" label=\"example-label\" maxLength=\"example-maxLength\" minLength=\"example-minLength\" name=\"example-name\" pattern=\"example-pattern\"></modus-wc-text-input>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-text-input onClearClick={(e) => handleClearClick(e.detail)} onInputBlur={(e) => handleInputBlur(e.detail)} onInputChange={(e) => handleInputChange(e.detail)} onInputFocus={(e) => handleInputFocus(e.detail)}></modus-wc-text-input>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-text-input",
+  "storyExample": {
+    "template": "<text-input-shadow-host\n      .props=${{ ...args }}\n    ></text-input-shadow-host>",
+    "args": {
+      "bordered": "true",
+      "disabled": "false",
+      "clear": "false",
+      "search": "false",
+      "inputmode": "'text'",
+      "label": "'Label'",
+      "size": "'md'",
+      "spellcheck": "false",
+      "type": "'text'",
+      "value": "''"
+    },
+    "argTypes": {},
+    "events": [
+      "clearClick",
+      "inputBlur",
+      "inputChange",
+      "inputFocus"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';\n\ninterface TextInputArgs {\n  'auto-capitalize'?:\n    | 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters';\n  'auto-complete'?: AutocompleteTypes;\n  'auto-correct'?: 'on' | 'off';\n  bordered?: boolean;\n  'clear-aria-label'?: string;\n  'custom-class'?: string;\n  disabled?: boolean;\n  enterkeyhint?:\n    | 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send';\n  feedback?: IInputFeedbackProp;\n  'include-clear'?: boolean;\n  'include-search'?: boolean;\n  'input-id'?: string;\n  inputmode?:\n    | 'decimal'\n    | 'email'\n    | 'none'\n    | 'numeric'\n    | 'search'\n    | 'tel'\n    | 'text'\n    | 'url';\n  'input-tab-index'?: number;\n  label?: string;\n  'max-length': number;\n  'min-length': number;\n  name?: string;\n  pattern?: string;\n  placeholder?: string;\n  'read-only'?: boolean;\n  required?: boolean;\n  size?: ModusSize;\n  spellcheck?: boolean;\n  type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';\n  value: string;\n}\n\nconst meta: Meta<TextInputArgs> = {\n  title: 'Components/Forms/Text Input',\n  component: 'modus-wc-text-input',\n  args: {\n    bordered: true,\n    disabled: false,\n    'include-clear': false,\n    'include-search': false,\n    inputmode: 'text',\n    label: 'Label',\n    size: 'md',\n    spellcheck: false,\n    type: 'text',\n    value: '',\n  },\n  argTypes: {\n    'auto-capitalize': {\n      options: ['off', 'none', 'on', 'sentences', 'words', 'characters'],\n    },\n    'auto-complete': {\n      control: { type: 'text' },\n    },\n    'auto-correct': {\n      options: ['on', 'off'],\n    },\n    enterkeyhint: {\n      options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],\n    },\n    feedback: {\n      description: 'Feedback prop for input components',\n      table: {\n        type: {\n          detail: `\n            Interface: IInputFeedbackProp\n            Properties:\n            - level ('error' | 'info' | 'success' | 'warning'): The feedback level\n            - message (string, optional): The feedback message\n          `,\n        },\n      },\n    },\n    inputmode: {\n      control: { type: 'select' },\n      options: [\n        'decimal',\n        'email',\n        'none',\n        'numeric',\n        'search',\n        'tel',\n        'text',\n        'url',\n      ],\n    },\n    size: {\n      options: ['sm', 'md', 'lg'],\n    },\n    spellcheck: {\n      description:\n        'Whether the element may be checked for spelling errors. A hint for the browser, not a guarantee.',\n      table: {\n        category: 'attributes',\n        defaultValue: { summary: 'false' },\n      },\n    },\n    type: {\n      options: ['email', 'password', 'search', 'tel', 'text', 'url'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['clearClick', 'inputBlur', 'inputChange', 'inputFocus'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TextInputArgs>;\n\nconst Template: Story = {\n  render: (args) => html`\n    <modus-wc-text-input\n      aria-label=\"Text input\"\n      auto-capitalize=${ifDefined(args['auto-capitalize'])}\n      auto-complete=${ifDefined(args['auto-complete'])}\n      auto-correct=${ifDefined(args['auto-correct'])}\n      ?bordered=${args.bordered}\n      clear-aria-label=${ifDefined(args['clear-aria-label'])}\n      custom-class=${ifDefined(args['custom-class'])}\n      ?disabled=${args.disabled}\n      enterkeyhint=${ifDefined(args.enterkeyhint)}\n      .feedback=${args.feedback}\n      include-clear=${ifDefined(args['include-clear'])}\n      include-search=${ifDefined(args['include-search'])}\n      input-aria-invalid=${ifDefined(args['input-aria-invalid'])}\n      input-id=${ifDefined(args['input-id'])}\n      inputmode=${ifDefined(args.inputmode)}\n      input-tab-index=${ifDefined(args['input-tab-index'])}\n      label=${ifDefined(args.label)}\n      max-length=${ifDefined(args['max-length'])}\n      min-length=${ifDefined(args['min-length'])}\n      name=${ifDefined(args.name)}\n      pattern=${ifDefined(args.pattern)}\n      placeholder=${ifDefined(args.placeholder)}\n      ?read-only=${args['read-only']}\n      ?required=${args.required}\n      size=${ifDefined(args.size)}\n      spellcheck=${ifDefined(args.spellcheck)}\n      type=${ifDefined(args.type)}\n      .value=${args.value}\n    ></modus-wc-text-input>\n  `,\n};\n\nexport const Default: Story = { ...Template };\n\nconst errorFeedback: IInputFeedbackProp = {\n  level: 'error',\n  message: 'Value is required.',\n};\n\nexport const WithErrorFeedback: Story = {\n  // prettier-ignore\n  render: (args) => html`\n    <modus-wc-text-input\n      aria-label=\"Text input with error feedback\"\n      .feedback=${errorFeedback}\n      id=\"error-input\"\n      label=${ifDefined(args.label)}\n      ?required=${true}\n      .value=${args.value}\n    ></modus-wc-text-input>\n    <script>\n      // Adding this block to show how to set feedback via JS\n      //const input = document.getElementById('error-input');\n      //input.feedback = { level: 'error', message: 'Value is required.' };\n    </script>\n  `,\n};\n\nexport const WithCustomIconSlot: Story = {\n  // prettier-ignore\n  render: (args) => html`\n<modus-wc-text-input\n  aria-label=\"Text input with custom icon\"\n  auto-capitalize=${ifDefined(args['auto-capitalize'])}\n  auto-complete=${ifDefined(args['auto-complete'])}\n  auto-correct=${ifDefined(args['auto-correct'])}\n  ?bordered=${args.bordered}\n  clear-aria-label=${ifDefined(args['clear-aria-label'])}\n  custom-class=${ifDefined(args['custom-class'])}\n  ?disabled=${args.disabled}\n  enterkeyhint=${ifDefined(args.enterkeyhint)}\n  .feedback=${args.feedback}\n  include-clear=${ifDefined(args['include-clear'])}\n  include-search=${ifDefined(args['include-search'])}\n  input-id=${ifDefined(args['input-id'])}\n  inputmode=${ifDefined(args.inputmode)}\n  input-tab-index=${ifDefined(args['input-tab-index'])}\n  label=${ifDefined(args.label)}\n  max-length=${ifDefined(args['max-length'])}\n  min-length=${ifDefined(args['min-length'])}\n  name=${ifDefined(args.name)}\n  pattern=${ifDefined(args.pattern)}\n  placeholder=${ifDefined(args.placeholder)}\n  ?read-only=${args['read-only']}\n  ?required=${args.required}\n  size=${ifDefined(args.size)}\n  spellcheck=${ifDefined(args.spellcheck)}\n  type=${ifDefined(args.type)}\n  .value=${args.value}\n>\n  <modus-wc-icon slot=\"custom-icon\" name=\"heart\" size=\"sm\"></modus-wc-icon>\n</modus-wc-text-input>\n  `,\n  args: {\n    placeholder: 'Enter text here...',\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for text-input component\n    if (!customElements.get('text-input-shadow-host')) {\n      const TextInputShadowHost = createShadowHostClass<TextInputArgs>({\n        componentTag: 'modus-wc-text-input',\n        propsMapper: (v: TextInputArgs, el: HTMLElement) => {\n          const textInputEl = el as unknown as {\n            autoCapitalize: string;\n            autoComplete: string;\n            autoCorrect: string;\n            bordered: boolean;\n            clearAriaLabel: string;\n            customClass: string;\n            disabled: boolean;\n            enterkeyhint: string;\n            feedback: IInputFeedbackProp;\n            includeClear: boolean;\n            includeSearch: boolean;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            maxLength: number;\n            minLength: number;\n            name: string;\n            pattern: string;\n            placeholder: string;\n            readOnly: boolean;\n            required: boolean;\n            size: string;\n            type: string;\n            value: string;\n          };\n          textInputEl.autoCapitalize = v['auto-capitalize'] || '';\n          textInputEl.autoComplete = v['auto-complete'] || '';\n          textInputEl.autoCorrect = v['auto-correct'] || '';\n          textInputEl.bordered = Boolean(v.bordered);\n          textInputEl.clearAriaLabel =\n            v['clear-aria-label'] || '' || 'Clear text';\n          textInputEl.customClass = v['custom-class'] || '';\n          textInputEl.disabled = Boolean(v.disabled);\n          textInputEl.enterkeyhint = v.enterkeyhint || '';\n          textInputEl.includeClear = Boolean(v['include-clear']);\n          textInputEl.includeSearch = Boolean(v['include-search']);\n          textInputEl.inputId = v['input-id'] || '';\n          textInputEl.inputTabIndex = v['input-tab-index'] || 0;\n          textInputEl.label = v.label || '';\n          textInputEl.maxLength = v['max-length'];\n          textInputEl.minLength = v['min-length'];\n          textInputEl.name = v.name || '';\n          textInputEl.pattern = v.pattern || '';\n          textInputEl.placeholder = v.placeholder || '';\n          textInputEl.readOnly = Boolean(v['read-only']);\n          textInputEl.required = Boolean(v.required);\n          textInputEl.size = v.size || '';\n          textInputEl.type = v.type || '';\n          textInputEl.value = v.value;\n        },\n      });\n      customElements.define('text-input-shadow-host', TextInputShadowHost);\n    }\n\n    return html`<text-input-shadow-host\n      .props=${{ ...args }}\n    ></text-input-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for\n  additional info and examples.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop                     | 2.0 Prop            | Notes                                                       |\n|------------------------------|---------------------|-------------------------------------------------------------|\n| aria-label                   | aria-label          |                                                             |\n| autocapitalize               | auto-capitalize     |                                                             |\n| autocorrect                  | auto-correct        |                                                             |\n| autocomplete                 | autocomplete        |                                                             |\n| auto-focus-input             | autofocus           |                                                             |\n| clearable                    | include-clear       |                                                             |\n| disabled                     | disabled            |                                                             |\n| enter-key-hint               | enterkeyhint        |                                                             |\n| error-text                   | feedback.message    | Use \\`feedback\\` level                                      |\n| helper-text                  |                     | Not carried over                                            |\n| include-error-icon           |                     | Not carried over                                            |\n| include-search-icon          | include-search      |                                                             |\n| include-password-text-toggle |                     | Not carried over                                            |\n| inputmode                    | inputmode          |                                                             |\n| label                        | label               |                                                             |\n| max-length                   | max-length          |                                                             |\n| pattern                      | pattern             |                                                             |\n| placeholder                  | placeholder         |                                                             |\n| read-only                    | read-only           |                                                             |\n| required                     | required            |                                                             |\n| size                         | size                | \\`small\\` \u2192 \\`sm\\`, \\`medium\\` \u2192 \\`md\\`, \\`large\\` \u2192 \\`lg\\` |\n| spellcheck                   | spellcheck          |                                                             |\n| text-align                   |                     | Not carried over, use CSS instead                           |\n| type                         | type                |                                                             |\n| valid-text                   | feedback.message    | Use \\`feedback\\` level                                      |\n| value                        | value               |                                                             |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event   | Notes            |\n|-------------|-------------|------------------|\n| valueChange | inputChange |                  |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

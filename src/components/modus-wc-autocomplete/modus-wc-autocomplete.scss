@@ -137,9 +137,9 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       padding: 0 8px;
 
       .modus-wc-autocomplete-more-text {
-        background-color: var(--modus-wc-color-gray-2);
+        background-color: var(--modus-wc-color-base-100);
         border-radius: var(--modus-wc-border-radius-sm);
-        color: var(--modus-wc-color-text-secondary);
+        color: var(--modus-wc-color-base-content);
         font-size: var(--modus-wc-font-size-sm);
         font-weight: var(--modus-wc-font-weight-medium);
         padding: 4px 8px;
@@ -179,7 +179,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
       justify-content: center;
 
       .modus-wc-autocomplete-search-icon {
-        color: var(--modus-wc-color-gray-6);
+        color: var(--modus-wc-color-base-content-low-contrast);
         height: 1.5rem;
         width: 1.5rem;
       }
@@ -192,7 +192,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
 
     .sub-label {
-      color: var(--modus-wc-color-gray-7);
+      color: var(--modus-wc-color-base-content-low-contrast);
       font-size: var(--modus-wc-font-size-sm);
       text-align: center;
     }
@@ -275,7 +275,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 
 [data-theme='modus-modern-light'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
-    background-color: var(--modus-wc-color-white);
+    background-color: var(--modus-wc-color-base-page);
   }
 
   .modus-wc-autocomplete-multi-select .modus-wc-autocomplete-content {
@@ -289,7 +289,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 
 [data-theme='modus-modern-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-menu {
-    background-color: var(--modus-wc-color-gray-10);
+    background-color: var(--modus-wc-color-base-page);
   }
 
   .modus-wc-autocomplete-multi-select .modus-wc-autocomplete-content {

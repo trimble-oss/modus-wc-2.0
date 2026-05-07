@@ -52,6 +52,7 @@ jobs:
         working-directory: .
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
           cache: 'npm'
           cache-dependency-path: |
             package-lock.json

@@ -1,0 +1,72 @@
+{
+  "description": "A customizable skeleton component used to create skeletons of various sizes and shapes",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 19
+    },
+    {
+      "name": "height",
+      "type": "string",
+      "description": "The height of the skeleton.",
+      "default": "'var(--modus-wc-line-height-md)'",
+      "mutable": false,
+      "end_line": 22
+    },
+    {
+      "name": "shape",
+      "type": "'circle' | 'rectangle'",
+      "description": "The shape of the skeleton.",
+      "default": "'rectangle'",
+      "mutable": false,
+      "end_line": 25
+    },
+    {
+      "name": "width",
+      "type": "string",
+      "description": "The width of the skeleton.",
+      "default": "'100%'",
+      "mutable": false,
+      "end_line": 28
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-skeleton\n        custom-class=${ifDefined(args['custom-class'])}\n        height=${ifDefined(args.height)}\n        shape=${ifDefined(args.shape)}\n        width=${ifDefined(args.width)}\n      ></modus-wc-skeleton>",
+    "variations": [],
+    "args": {
+      "class": "''",
+      "height": "'1.5rem'",
+      "shape": "'rectangle'",
+      "width": "'100%'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-skeleton ></modus-wc-skeleton>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-skeleton",
+  "storyExample": {
+    "template": "<modus-wc-skeleton\n        custom-class=${ifDefined(args['custom-class'])}\n        height=${ifDefined(args.height)}\n        shape=${ifDefined(args.shape)}\n        width=${ifDefined(args.width)}\n      ></modus-wc-skeleton>",
+    "args": {
+      "class": "''",
+      "height": "'1.5rem'",
+      "shape": "'rectangle'",
+      "width": "'100%'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface SkeletonArgs {\n  'custom-class'?: string;\n  height?: string;\n  shape?: 'circle' | 'rectangle';\n  width?: string;\n}\n\nconst meta: Meta<SkeletonArgs> = {\n  title: 'Components/Skeleton',\n  component: 'modus-wc-skeleton',\n  args: {\n    'custom-class': '',\n    height: '1.5rem',\n    shape: 'rectangle',\n    width: '100%',\n  },\n  argTypes: {\n    shape: {\n      control: {\n        type: 'select',\n      },\n      options: ['circle', 'rectangle'],\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<SkeletonArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-skeleton\n        custom-class=${ifDefined(args['custom-class'])}\n        height=${ifDefined(args.height)}\n        shape=${ifDefined(args.shape)}\n        width=${ifDefined(args.width)}\n      ></modus-wc-skeleton>\n    `;\n  },\n};\n\nexport const Circle: Story = {\n  render: () => {\n    return html`\n      <modus-wc-skeleton\n        height=\"5rem\"\n        shape=\"circle\"\n        width=\"5rem\"\n      ></modus-wc-skeleton>\n    `;\n  },\n};\n\nexport const Square: Story = {\n  render: () => {\n    return html`\n      <modus-wc-skeleton height=\"5rem\" width=\"5rem\"></modus-wc-skeleton>\n    `;\n  },\n};\n\nexport const Composed: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<style>\n  .skeleton-container {\n    width: 13rem;\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .skeleton-profile {\n    display: flex;\n    gap: 1rem;\n  }\n\n  .skeleton-text {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n</style>\n<div class=\"skeleton-container\">\n  <div class=\"skeleton-profile\">\n    <modus-wc-skeleton\n      height=\"4rem\"\n      shape=\"circle\"\n      width=\"4rem\"\n    ></modus-wc-skeleton>\n    <div class=\"skeleton-text\">\n      <modus-wc-skeleton width=\"5rem\"></modus-wc-skeleton>\n      <modus-wc-skeleton width=\"7rem\"></modus-wc-skeleton>\n    </div>\n  </div>\n  <modus-wc-skeleton height=\"8rem\"></modus-wc-skeleton>\n</div>\n    `;\n  },\n};\n"
+  }
+}

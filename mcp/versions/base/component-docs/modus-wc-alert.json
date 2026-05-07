@@ -1,0 +1,112 @@
+{
+  "description": "A customizable alert component used to inform the user about important events. The component supports `<slot>` elements for injecting custom content and buttons.",
+  "properties": [
+    {
+      "name": "alertDescription",
+      "type": "string",
+      "description": "The description of the alert.",
+      "default": null,
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "alertTitle",
+      "type": "string",
+      "description": "The title of the alert.",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the outer div element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "description": "Time taken to dismiss the alert in milliseconds",
+      "default": null,
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "dismissible",
+      "type": "boolean",
+      "description": "Whether the alert has a dismiss button",
+      "default": "false",
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "icon",
+      "type": "string",
+      "description": "The Modus icon to render.",
+      "default": null,
+      "mutable": false,
+      "end_line": 47
+    },
+    {
+      "name": "variant",
+      "type": "'error' | 'info' | 'success' | 'warning'",
+      "description": "The variant of the alert.",
+      "default": "'info'",
+      "mutable": false,
+      "end_line": 50
+    }
+  ],
+  "events": [
+    {
+      "name": "dismissClick",
+      "detail": "void",
+      "description": "An event that fires when the alert is dismissed",
+      "end_line": 126
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "content",
+      "description": "Slot for content content"
+    },
+    {
+      "name": "button",
+      "description": "Slot for button content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-alert\n  alert-description=${ifDefined(args['alert-description'])}\n  alert-title=${args['alert-title']}\n  custom-class=${ifDefined(args['custom-class'])}\n  delay=${ifDefined(args.delay)}\n  dismissible=${ifDefined(args.dismissible)}\n  icon=${ifDefined(args.icon)}\n  role=${args.role}\n  variant=${ifDefined(args.variant)}\n>\n</modus-wc-alert>",
+    "variations": [],
+    "args": {
+      "alert-description": "'You have 3 new messages.'",
+      "alert-title": "'New message!'",
+      "dismissible": "false",
+      "role": "'status'",
+      "variant": "'info'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "dismissClick"
+    ]
+  },
+  "tag": "modus-wc-alert",
+  "storyExample": {
+    "template": "<modus-wc-alert\n  alert-description=${ifDefined(args['alert-description'])}\n  alert-title=${args['alert-title']}\n  custom-class=${ifDefined(args['custom-class'])}\n  delay=${ifDefined(args.delay)}\n  dismissible=${ifDefined(args.dismissible)}\n  icon=${ifDefined(args.icon)}\n  role=${args.role}\n  variant=${ifDefined(args.variant)}\n>\n</modus-wc-alert>",
+    "args": {
+      "alert-description": "'You have 3 new messages.'",
+      "alert-title": "'New message!'",
+      "dismissible": "false",
+      "role": "'status'",
+      "variant": "'info'"
+    },
+    "argTypes": {},
+    "events": [
+      "dismissClick"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface AlertArgs {\n  'alert-description'?: string;\n  'alert-title': string;\n  'custom-class'?: string;\n  delay?: number;\n  dismissible?: boolean;\n  dismissClick?: () => void;\n  icon?: string;\n  variant: 'error' | 'info' | 'success' | 'warning';\n  role: 'alert' | 'log' | 'marquee' | 'status' | 'timer';\n}\n\nconst meta: Meta<AlertArgs> = {\n  title: 'Components/Alert',\n  component: 'modus-wc-alert',\n  args: {\n    'alert-description': 'You have 3 new messages.',\n    'alert-title': 'New message!',\n    dismissible: false,\n    role: 'status',\n    variant: 'info',\n  },\n  argTypes: {\n    role: {\n      control: { type: 'select' },\n      options: ['', 'alert', 'log', 'marquee', 'status', 'timer'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['', 'error', 'info', 'success', 'warning'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    layout: 'padded',\n    actions: {\n      handles: ['dismissClick'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<AlertArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-alert\n  alert-description=${ifDefined(args['alert-description'])}\n  alert-title=${args['alert-title']}\n  custom-class=${ifDefined(args['custom-class'])}\n  delay=${ifDefined(args.delay)}\n  dismissible=${ifDefined(args.dismissible)}\n  icon=${ifDefined(args.icon)}\n  role=${args.role}\n  variant=${ifDefined(args.variant)}\n>\n</modus-wc-alert>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const CustomButton: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-alert\n  alert-description=${ifDefined(args['alert-description'])}\n  alert-title=${args['alert-title']}\n  custom-class=${ifDefined(args['custom-class'])}\n  delay=${ifDefined(args.delay)}\n  dismissible=${ifDefined(args.dismissible)}\n  icon=${ifDefined(args.icon)}\n  role=${args.role}\n  variant=${ifDefined(args.variant)}\n>\n  <modus-wc-button\n    aria-label=\"View messages\"\n    color=\"tertiary\"\n    slot=\"button\"\n    variant=\"outlined\"\n  >View Messages</modus-wc-button>\n</modus-wc-alert>\n    `;\n  },\n};\n\nexport const WithCustomContent: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-alert\n  id=\"alert-123\"\n  custom-class=${ifDefined(args['custom-class'])}\n  delay=${ifDefined(args.delay)}\n  dismissible=${ifDefined(args.dismissible)}\n  icon=${ifDefined(args.icon)}\n  role=${args.role}\n  variant=${ifDefined(args.variant)}\n>\n  <div slot=\"content\">New custom message!</div>\n</modus-wc-alert>\n    `;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - The 2.0 component can render a custom HTML title in the \\`content\\` slot.\n  - The 1.0 component rendered a button, while the 2.0 component can render a custom HTML button in the \\`button\\` slot.\n\n#### Prop Mapping\n\n| 1.0 Prop          | 2.0 Prop    | Notes                                 |\n|-------------------|-------------|---------------------------------------|\n| aria-label        | aria-label  |                                       |\n| button-aria-label |             | Not carried over, use \\`button\\` slot |\n| button-text       |             | Not carried over, use \\`button\\` slot |\n| dismissible       | dismissible |                                       |\n| message           | alert-title |                                       |\n| type              | variant     |                                       |\n\n#### Event Mapping\n\n| 1.0 Event    | 2.0 Event    | Notes                                 |\n|--------------|--------------|---------------------------------------|\n| actionClick  |              | Not carried over, use \\`button\\` slot |\n| dismissClick | dismissClick |                                       |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

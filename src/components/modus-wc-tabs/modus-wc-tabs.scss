@@ -12,8 +12,6 @@ modus-wc-tabs {
 
 modus-wc-tabs .modus-wc-tabs {
   align-items: center;
-  border-top-left-radius: var(--modus-wc-border-radius-md);
-  border-top-right-radius: var(--modus-wc-border-radius-md);
   display: inline-flex;
   font-weight: var(--modus-wc-font-weight-bold);
 
@@ -22,19 +20,19 @@ modus-wc-tabs .modus-wc-tabs {
   // For centering purposes
   modus-wc-icon {
     .modus-wc-icon--xs {
-      line-height: calc(var(--modus-wc-line-height-sm) + 0.25rem);
+      line-height: calc(var(--modus-wc-line-height-xs) + 0.25rem);
     }
 
     .modus-wc-icon--sm {
-      line-height: var(--modus-wc-line-height-md);
+      line-height: calc(var(--modus-wc-line-height-sm) + 0.25rem);
     }
 
     .modus-wc-icon--md {
-      line-height: var(--modus-wc-line-height-lg);
+      line-height: calc(var(--modus-wc-line-height-md) + 0.25rem);
     }
 
     .modus-wc-icon--lg {
-      line-height: var(--modus-wc-line-height-xl);
+      line-height: calc(var(--modus-wc-line-height-lg) + 0.25rem);
     }
   }
 
@@ -48,16 +46,41 @@ modus-wc-tabs .modus-wc-tabs {
     }
   }
 
-  &.modus-wc-tab .modus-wc-tab-active {
-    .modus-wc-tab:is(input:checked) {
-      color: var(--modus-wc-color-primary);
+  &.modus-wc-tabs-boxed {
+    background: var(--modus-wc-color-base-100);
+    border-radius: var(--modus-wc-border-radius-tab);
+
+    &.modus-wc-tabs {
+      height: inherit;
+    }
+
+    & > .modus-wc-tab {
+      border-radius: var(--modus-wc-border-radius-tab);
+      height: inherit;
+      min-height: var(--modus-wc-input-height-sm);
+    }
+  }
+
+  .modus-wc-tabs-boxed
+    :is(.modus-wc-tab-active, [aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]),
+  .modus-wc-tabs-boxed :is(input:checked) {
+    background: var(--modus-wc-color-primary);
+    border-radius: var(--modus-wc-border-radius-tab);
+    color: var(--modus-wc-color-primary-content);
+  }
+
+  &.modus-wc-tabs-lifted {
+    & > .modus-wc-tab {
+      border-top-left-radius: var(--modus-wc-border-radius-tab);
+      border-top-right-radius: var(--modus-wc-border-radius-tab);
     }
   }
 }
 
 // Note: This is a workaround to apply the lifted style changes for the modern and connect themes. It will be removed in the future release with the classic theme lifted tab fixed.
 [data-theme='modus-modern-light'] modus-wc-tabs .modus-wc-tabs,
-[data-theme='modus-modern-dark'] modus-wc-tabs .modus-wc-tabs,
 [data-theme='connect-light'] modus-wc-tabs .modus-wc-tabs,
 [data-theme='connect-dark'] modus-wc-tabs .modus-wc-tabs {
   &.modus-wc-tabs-lifted
@@ -74,6 +97,7 @@ modus-wc-tabs .modus-wc-tabs {
 modus-wc-tabs .modus-wc-tab {
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
   height: inherit;
+  min-height: var(--modus-wc-input-height-sm);
 
   @include common-states;
 

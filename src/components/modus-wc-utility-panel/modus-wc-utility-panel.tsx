@@ -8,6 +8,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 
 @Component({
   tag: 'modus-wc-utility-panel',
@@ -35,7 +36,8 @@ export class ModusWcUtilityPanel {
   private isInitialLoad = true;
 
   componentWillLoad() {
-    // Set initial load flag will be cleared after first render
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
   }
 
   componentDidLoad() {

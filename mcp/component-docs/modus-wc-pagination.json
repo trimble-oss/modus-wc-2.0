@@ -1,0 +1,115 @@
+{
+  "description": "Pagination component to navigate through pages of content",
+  "properties": [
+    {
+      "name": "ariaLabelValues",
+      "type": "IAriaLabelValues",
+      "description": "Aria label values for pagination buttons",
+      "default": null,
+      "mutable": false,
+      "end_line": 55
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "Total number of pages",
+      "default": "1",
+      "mutable": false,
+      "end_line": 58
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply",
+      "default": "''",
+      "mutable": false,
+      "end_line": 61
+    },
+    {
+      "name": "nextButtonText",
+      "type": "string",
+      "description": "The next page button text. If not set, an icon control will be used.",
+      "default": null,
+      "mutable": false,
+      "end_line": 64
+    },
+    {
+      "name": "page",
+      "type": "number",
+      "description": "The current page number",
+      "default": "1",
+      "mutable": false,
+      "end_line": 67
+    },
+    {
+      "name": "prevButtonText",
+      "type": "string",
+      "description": "The previous page button text. If not set, an icon control will be used.",
+      "default": null,
+      "mutable": false,
+      "end_line": 70
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "Size of the pagination buttons",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 73
+    }
+  ],
+  "events": [
+    {
+      "name": "pageChange",
+      "detail": "IPageChange",
+      "description": "Event emitted when page changes",
+      "end_line": 76
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "values": "defaultLabelValues",
+      "count": "5",
+      "class": "''",
+      "page": "1",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "pageChange"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-pagination ariaLabelValues=\"example-ariaLabelValues\" nextButtonText=\"example-nextButtonText\" prevButtonText=\"example-prevButtonText\"></modus-wc-pagination>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-pagination onPageChange={(e) => handlePageChange(e.detail)}></modus-wc-pagination>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-pagination",
+  "storyExample": {
+    "template": null,
+    "args": {
+      "values": "defaultLabelValues",
+      "count": "5",
+      "class": "''",
+      "page": "1",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "pageChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IAriaLabelValues } from './modus-wc-pagination';\n\nconst defaultLabelValues: IAriaLabelValues = {\n  firstPage: 'First page',\n  lastPage: 'Last page',\n  nextPage: 'Next page',\n  page: 'Page {0}',\n  previousPage: 'Previous page',\n};\n\ninterface PaginationArgs {\n  'aria-label-values'?: IAriaLabelValues;\n  count: number;\n  'custom-class'?: string;\n  'next-button-text'?: string;\n  page: number;\n  'prev-button-text'?: string;\n  size?: 'sm' | 'md' | 'lg';\n}\n\nconst meta: Meta<PaginationArgs> = {\n  title: 'Components/Pagination',\n  component: 'modus-wc-pagination',\n  args: {\n    'aria-label-values': defaultLabelValues,\n    count: 5,\n    'custom-class': '',\n    page: 1,\n    size: 'md',\n  },\n  argTypes: {\n    'aria-label-values': {\n      description: 'Custom aria label values for pagination buttons',\n      table: {\n        type: {\n          detail: `\n            Interface: IAriaLabelValues\n            Properties:\n            - firstPage (string, optional): Aria label for the first page button\n            - lastPage (string, optional): Aria label for the last page button\n            - nextPage (string, optional): Aria label for the next page button\n            - page (string, optional): Aria label for the page number button. Use {0} as placeholder for the page number\n            - previousPage (string, optional): Aria label for the previous page button\n          `,\n        },\n      },\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['pageChange'],\n    },\n    docs: {\n      description: {\n        component: `\n## Event Interface Documentation\n\nThe pageChange event emits an object with the following interface:\n\n\\`\\`\\`typescript\ninterface IPageChange {\n  /** The number of the newly selected page */\n  newPage: number;\n  /** The number of the previously selected page */\n  prevPage: number;\n}\n\\`\\`\\`\n        `,\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<PaginationArgs>;\n\nexport const Default: Story = {\n  render: (args) => html`\n    <modus-wc-pagination\n      .ariaLabelValues=${args['aria-label-values']}\n      count=${args.count}\n      custom-class=${ifDefined(args['custom-class'])}\n      next-button-text=\"${ifDefined(args['next-button-text'])}\"\n      page=${args.page}\n      prev-button-text=\"${ifDefined(args['prev-button-text'])}\"\n      size=${ifDefined(args.size)}\n    ></modus-wc-pagination>\n  `,\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 the pagination component incorporated ellipses to indicate page skips. In 2.0, the component\n  has been simplified to only show at most 5 page buttons relative to current page with previous/next\n  and first/last navigation buttons.\n  - In 1.0 the \\`active-page\\` prop was used, while 2.0 uses \\`page\\` instead.\n  - The \\`pageChange\\` event in 1.0 emitted just the page number value. In 2.0, it emits an object\n  with \\`newPage\\` and \\`prevPage\\` properties.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop              | 2.0 Prop           | Notes                                                       |\n|-----------------------|--------------------|-------------------------------------------------------------|\n| active-page           | page               |                                                             |\n| aria-label            | aria-label         |                                                             |\n| max-page              | count              |                                                             |\n| min-page              |                    | Not carried over, minimum page is always 1                  |\n| next-page-button-text | next-button-text   |                                                             |\n| prev-page-button-text | prev-button-text   |                                                             |\n| size                  | size               | \\`small\\` \u2192 \\`sm\\`, \\`medium\\` \u2192 \\`md\\`, \\`large\\` \u2192 \\`lg\\` |\n\n#### Event Mapping\n\n| 1.0 Event   | 2.0 Event   | Notes                                                   |\n|-------------|-------------|---------------------------------------------------------|\n| pageChange  | pageChange  | Now emits an object with \\`newPage\\` and \\`prevPage\\`   |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

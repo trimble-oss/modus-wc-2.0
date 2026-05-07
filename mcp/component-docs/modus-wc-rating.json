@@ -1,0 +1,123 @@
+{
+  "description": "A rating component that allows users to choose a rating from predefined options",
+  "properties": [
+    {
+      "name": "allowHalf",
+      "type": "boolean",
+      "description": "Whether to allow half-ratings. Only applies to star and heart variants.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "The number of rating items to display",
+      "default": "5",
+      "mutable": false,
+      "end_line": 46
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply",
+      "default": "''",
+      "mutable": false,
+      "end_line": 49
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Whether the rating component is disabled",
+      "default": "false",
+      "mutable": false,
+      "end_line": 52
+    },
+    {
+      "name": "getAriaLabelText",
+      "type": "(ratingValue: number)",
+      "description": "Function to provide aria-label text for a given rating-item index",
+      "default": "> string = (ratingValue) =>     `Rating item ${ratingValue}`",
+      "mutable": false,
+      "end_line": 56
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the rating component",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 59
+    },
+    {
+      "name": "variant",
+      "type": "ModusWcRatingVariant",
+      "description": "The variant of the rating scale",
+      "default": "'smiley'",
+      "mutable": false,
+      "end_line": 62
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "The current value of the rating",
+      "default": "0",
+      "mutable": true,
+      "end_line": 65
+    }
+  ],
+  "events": [
+    {
+      "name": "ratingChange",
+      "detail": "IRatingChange",
+      "description": "Event emitted when the rating changes",
+      "end_line": 68
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<script>\n  const myAriaLabelText = (index) => {\n    return 'Custom label for rating item ' + index.toString();\n  };\n</script>\n<modus-wc-rating\n  aria-label=\"Rating scale component\"\n  allow-half=${ifDefined(args['allow-half'])}\n  count=${args.count}\n  custom-class=\"custom-rating-component\"\n  disabled=${ifDefined(args.disabled)}\n  size=${ifDefined(args.size)}\n  value=${ifDefined(args.value)}\n  variant=${args.variant}\n  .getAriaLabelText=${ariaLabelText}\n></modus-wc-rating>",
+    "variations": [],
+    "args": {
+      "half": "false",
+      "count": "5",
+      "class": "''",
+      "disabled": "false",
+      "getAriaLabelText": "(index: number) => `${index"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "ratingChange"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-rating ></modus-wc-rating>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-rating onRatingChange={(e) => handleRatingChange(e.detail)}></modus-wc-rating>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-rating",
+  "storyExample": {
+    "template": "<script>\n  const myAriaLabelText = (index) => {\n    return 'Custom label for rating item ' + index.toString();\n  };\n</script>\n<modus-wc-rating\n  aria-label=\"Rating scale component\"\n  allow-half=${ifDefined(args['allow-half'])}\n  count=${args.count}\n  custom-class=\"custom-rating-component\"\n  disabled=${ifDefined(args.disabled)}\n  size=${ifDefined(args.size)}\n  value=${ifDefined(args.value)}\n  variant=${args.variant}\n  .getAriaLabelText=${ariaLabelText}\n></modus-wc-rating>",
+    "args": {
+      "half": "false",
+      "count": "5",
+      "class": "''",
+      "disabled": "false",
+      "getAriaLabelText": "(index: number) => `${index"
+    },
+    "argTypes": {},
+    "events": [
+      "ratingChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ModusWcRatingVariant } from './modus-wc-rating';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\n\ninterface RatingArgs {\n  'allow-half'?: boolean;\n  count: number;\n  'custom-class'?: string;\n  disabled?: boolean;\n  getAriaLabelText?: (index: number) => string;\n  size?: 'sm' | 'md' | 'lg';\n  value?: number;\n  variant: ModusWcRatingVariant;\n}\n\nconst meta: Meta<RatingArgs> = {\n  title: 'Components/Forms/Rating',\n  component: 'modus-wc-rating',\n  args: {\n    'allow-half': false,\n    count: 5,\n    'custom-class': '',\n    disabled: false,\n    getAriaLabelText: (index: number) => `${index} rating`,\n    size: 'md',\n    value: 0,\n    variant: 'smiley',\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['heart', 'smiley', 'star', 'thumb'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['ratingChange'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<RatingArgs>;\n\nexport const Default: Story = {\n  render: (args) => html`\n    <modus-wc-rating\n      aria-label=\"Rating scale component\"\n      allow-half=${ifDefined(args['allow-half'])}\n      count=${args.count}\n      custom-class=${ifDefined(args['custom-class'])}\n      disabled=${ifDefined(args.disabled)}\n      size=${ifDefined(args.size)}\n      value=${ifDefined(args.value)}\n      variant=${args.variant}\n      .getAriaLabelText=${args.getAriaLabelText}\n    ></modus-wc-rating>\n  `,\n};\n\nexport const CustomAriaLabels: Story = {\n  render: (args) => {\n    const ariaLabelText = (index: number) =>\n      `Custom label for rating item ${index}`;\n\n    // prettier-ignore\n    return html`\n<script>\n  const myAriaLabelText = (index) => {\n    return 'Custom label for rating item ' + index.toString();\n  };\n</script>\n<modus-wc-rating\n  aria-label=\"Rating scale component\"\n  allow-half=${ifDefined(args['allow-half'])}\n  count=${args.count}\n  custom-class=\"custom-rating-component\"\n  disabled=${ifDefined(args.disabled)}\n  size=${ifDefined(args.size)}\n  value=${ifDefined(args.value)}\n  variant=${args.variant}\n  .getAriaLabelText=${ariaLabelText}\n></modus-wc-rating>\n    `;\n  },\n};\n\nexport const CustomColors: Story = {\n  // prettier-ignore\n  render: (args) => html`\n<style>\n  .custom-color-rating-component {\n    --modus-wc-rating-item-color: var(--modus-wc-color-yellow-dark);\n  }\n</style>\n<modus-wc-rating\n  aria-label=\"Rating scale component\"\n  allow-half=${ifDefined(args['allow-half'])}\n  count=${args.count}\n  custom-class=\"custom-color-rating-component\"\n  disabled=${ifDefined(args.disabled)}\n  size=${ifDefined(args.size)}\n  value=\"3\"\n  variant=\"star\"\n></modus-wc-rating>\n  `,\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for rating component\n    if (!customElements.get('rating-shadow-host')) {\n      const RatingShadowHost = createShadowHostClass<RatingArgs>({\n        componentTag: 'modus-wc-rating',\n        propsMapper: (v: RatingArgs, el: HTMLElement) => {\n          const ratingEl = el as unknown as {\n            allowHalf: boolean;\n            count: number;\n            customClass: string;\n            disabled: boolean;\n            getAriaLabelText: (index: number) => string;\n            size: string;\n            value: number;\n            variant: string;\n          };\n          ratingEl.allowHalf = Boolean(v['allow-half']);\n          ratingEl.count = v.count;\n          ratingEl.customClass = v['custom-class'] || '';\n          ratingEl.disabled = Boolean(v.disabled);\n          if (v.getAriaLabelText) {\n            ratingEl.getAriaLabelText = v.getAriaLabelText; // Conditional assignment only if provided\n          }\n          ratingEl.size = v.size || 'md';\n          ratingEl.value = v.value || 0;\n          ratingEl.variant = v.variant;\n        },\n      });\n      customElements.define('rating-shadow-host', RatingShadowHost);\n    }\n\n    return html`<rating-shadow-host\n      .props=${{ ...args }}\n    ></rating-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for\n  additional info and examples.\n  - Type/variant values have changed from \\`smileys\\` to \\`smiley\\` and \\`thumbs\\` to \\`thumb\\`.\n\n#### Prop Mapping\n\n| 1.0 Prop    | 2.0 Prop    | Notes                                                |\n|-------------|-------------|------------------------------------------------------|\n| aria-label  | aria-label  |                                                      |\n| disabled    | disabled    |                                                      |\n| type        | variant     | \\`smileys\\` \u2192 \\`smiley\\`, \\`thumbs\\` \u2192 \\`thumb\\`     |\n\n#### Event Mapping\n\n| 1.0 Event          | 2.0 Event    | Notes                                         |\n|--------------------|--------------|-----------------------------------------------|\n| sentimentSelection | ratingChange |                                               |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

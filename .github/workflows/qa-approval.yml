@@ -7,7 +7,7 @@ on:
 jobs:
   qa-approval:
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]'
     environment: qa-review # This creates the approval gate
     steps:
       - name: QA Approved

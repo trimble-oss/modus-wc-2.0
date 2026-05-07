@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Testing" />
+
+# Testing
+
+## Jest
+
+Jest may throw errors during test runs when encountering ES modules or node_modules that need transformation.
+If you encounter errors like "SyntaxError: Unexpected token 'export'" or "Cannot use import statement outside a
+module", add the following `transformIgnorePatterns` configuration to your Jest config:
+
+```js
+// In jest.config.js or package.json
+"transformIgnorePatterns": [
+  "node_modules/(?!(your-problematic-module|another-module)/)"
+]
+```

@@ -1,0 +1,75 @@
+{
+  "description": "A customizable badge component used to create badges with different sizes, types, and colors. The component supports a `<slot>` for injecting content within the badge.",
+  "properties": [
+    {
+      "name": "color",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'high-contrast'     | 'success'     | 'warning'     | 'danger'",
+      "description": "The color variant of the badge.",
+      "default": "'primary'",
+      "mutable": false,
+      "end_line": 31
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the span element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the badge.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "variant",
+      "type": "'counter' | 'filled' | 'outlined' | 'text'",
+      "description": "The variant of the badge.",
+      "default": "'filled'",
+      "mutable": false,
+      "end_line": 40
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-badge\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  size=\"${args.size}\"\n  variant=\"${args.variant}\"\n>\n  Badge\n</modus-wc-badge>",
+    "variations": [],
+    "args": {
+      "color": "'primary'",
+      "size": "'md'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-badge ></modus-wc-badge>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-badge",
+  "storyExample": {
+    "template": "<modus-wc-badge\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  size=\"${args.size}\"\n  variant=\"${args.variant}\"\n>\n  Badge\n</modus-wc-badge>",
+    "args": {
+      "color": "'primary'",
+      "size": "'md'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ModusSize } from '../types';\n\ninterface BadgeArgs {\n  color:\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger';\n  'custom-class'?: string;\n  size: ModusSize;\n  variant: 'counter' | 'filled' | 'outlined' | 'text';\n}\n\nconst meta: Meta<BadgeArgs> = {\n  title: 'Components/Badge',\n  component: 'modus-wc-badge',\n  args: {\n    color: 'primary',\n    size: 'md',\n    variant: 'filled',\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: [\n        'primary',\n        'secondary',\n        'tertiary',\n        'high-contrast',\n        'success',\n        'warning',\n        'danger',\n      ],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['counter', 'filled', 'outlined', 'text'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<BadgeArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-badge\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  size=\"${args.size}\"\n  variant=\"${args.variant}\"\n>\n  Badge\n</modus-wc-badge>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n};\n\nexport const WithIcon: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<style>\n  .modus-wc-icon {\n    padding-inline-end: 4px;\n  }\n</style>\n<modus-wc-badge>\n  <modus-wc-icon decorative name=\"check\" size=\"xs\"></modus-wc-icon>\n  Item\n</modus-wc-badge>\n    `;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - The \\`dark\\` color option is now \\`high-contrast\\`\n  - The \\`type\\` prop is now \\`variant\\` and \\`default\\` type is now \\`filled\\`\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop   | 2.0 Prop   | Notes                                                       |\n|------------|------------|-------------------------------------------------------------|\n| aria-label | aria-label |                                                             |\n| color      | color      | \\`dark\\` is now \\`high-contrast\\`                           |\n| size       | size       | \\`small\\` \u2192 \\`sm\\`, \\`medium\\` \u2192 \\`md\\`, \\`large\\` \u2192 \\`lg\\` |\n| type       | variant    | \\`default\\` is now \\`filled\\`                               |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

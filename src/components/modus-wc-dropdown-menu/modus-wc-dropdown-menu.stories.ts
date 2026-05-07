@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 
 interface DropdownMenuArgs {
@@ -213,5 +214,100 @@ export const IconOnlyDropdownMenu: Story = {
   </div>
 </modus-wc-dropdown-menu>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('dropdown-menu-shadow-host')) {
+      const DropdownMenuShadowHost = createShadowHostClass<DropdownMenuArgs>({
+        componentTag: 'modus-wc-dropdown-menu',
+        propsMapper: (v: DropdownMenuArgs, el: HTMLElement) => {
+          const dropdownEl = el as unknown as {
+            buttonAriaLabel: string;
+            buttonColor: string;
+            buttonShape: string;
+            buttonSize: DaisySize;
+            buttonVariant: string;
+            customClass: string;
+            disabled: boolean;
+            menuBordered: boolean;
+            menuOffset: number;
+            menuPlacement: PopoverPlacement;
+            menuSize: ModusSize;
+            menuVisible: boolean;
+          };
+          dropdownEl.buttonAriaLabel = v['button-aria-label'] || '';
+          dropdownEl.buttonColor = v['button-color'] || 'primary';
+          dropdownEl.buttonShape = v['button-shape'] || 'rectangle';
+          dropdownEl.buttonSize = v['button-size'] as DaisySize;
+          dropdownEl.buttonVariant = v['button-variant'] || 'filled';
+          dropdownEl.customClass = v['custom-class'] || '';
+          dropdownEl.disabled = Boolean(v.disabled);
+          dropdownEl.menuBordered = Boolean(v['menu-bordered']);
+          dropdownEl.menuOffset = v['menu-offset'] ?? 10;
+          dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
+          dropdownEl.menuSize = v['menu-size'] as ModusSize;
+          dropdownEl.menuVisible = Boolean(v['menu-visible']);
+
+          // On first render: add slot content and append the Selected Value
+          // display as a sibling of el inside the helper's display:contents
+          // wrapper — both become direct layout children of the shadow root.
+          if (!el.hasAttribute('data-layout-built')) {
+            el.setAttribute('data-layout-built', '');
+
+            const wrapper = el.parentElement!;
+
+            const buttonSlot = document.createElement('div');
+            buttonSlot.setAttribute('slot', 'button');
+            buttonSlot.style.cssText =
+              'display: flex; align-items: center; gap: 4px;';
+            buttonSlot.appendChild(document.createTextNode('Button'));
+            const expandIcon = document.createElement('modus-wc-icon');
+            expandIcon.setAttribute('name', 'expand_more');
+            expandIcon.setAttribute('size', 'sm');
+            buttonSlot.appendChild(expandIcon);
+
+            const menuSlot = document.createElement('div');
+            menuSlot.setAttribute('slot', 'menu');
+            [
+              { label: 'Item One', value: '1' },
+              { label: 'Item Two', value: '2' },
+              { label: 'Item Three', value: '3' },
+            ].forEach(({ label, value }) => {
+              const item = document.createElement('modus-wc-menu-item');
+              item.setAttribute('label', label);
+              item.setAttribute('value', value);
+              menuSlot.appendChild(item);
+            });
+
+            el.appendChild(buttonSlot);
+            el.appendChild(menuSlot);
+
+            // Selected value display as sibling in wrapper
+            const valueDiv = document.createElement('div');
+            valueDiv.style.cssText = 'font-size: 14px; padding-top: 12px;';
+            valueDiv.textContent = 'Selected Value: ';
+            const valueSpan = document.createElement('span');
+            valueDiv.appendChild(valueSpan);
+            wrapper.appendChild(valueDiv);
+
+            el.addEventListener('itemSelect', (e: Event) => {
+              const custom = e as CustomEvent<{ value: string }>;
+              valueSpan.textContent = custom.detail?.value ?? '';
+              (el as unknown as { menuVisible: boolean }).menuVisible = false;
+            });
+          }
+        },
+      });
+      customElements.define(
+        'dropdown-menu-shadow-host',
+        DropdownMenuShadowHost
+      );
+    }
+
+    return html`<dropdown-menu-shadow-host
+      .props=${{ ...args }}
+    ></dropdown-menu-shadow-host>`;
   },
 };

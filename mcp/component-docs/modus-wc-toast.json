@@ -1,0 +1,63 @@
+{
+  "description": "A customizable toast component used to stack elements, positioned on the corner of a page. The component supports a `<slot>` for injecting additional custom content inside the toast.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Additional classes for custom styling.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 32
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "description": "Time taken to dismiss the toast in milliseconds",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "position",
+      "type": "ToastPosition",
+      "description": "The position of the toast in the parent container.",
+      "default": "'top-end'",
+      "mutable": false,
+      "end_line": 38
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "position": "'top-end'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-toast delay=\"example-delay\"></modus-wc-toast>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-toast",
+  "storyExample": {
+    "template": null,
+    "args": {
+      "position": "'top-end'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ToastPosition } from './modus-wc-toast';\n\ninterface ToastArgs {\n  'custom-class'?: string;\n  delay?: number;\n  position?: ToastPosition;\n}\n\nconst meta: Meta<ToastArgs> = {\n  title: 'Components/Toast',\n  component: 'modus-wc-toast',\n  args: {\n    position: 'top-end',\n  },\n  argTypes: {\n    position: {\n      control: { type: 'select' },\n      options: [\n        'top-start',\n        'top-center',\n        'top-end',\n        'middle-start',\n        'middle-center',\n        'middle-end',\n        'bottom-start',\n        'bottom-center',\n        'bottom-end',\n      ],\n    },\n  },\n  parameters: {\n    layout: 'padded',\n    viewport: 'responsive',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ToastArgs>;\n\nconst Template: Story = {\n  // prettier-ignore\n  render: (args) => html`\n<div style=\"height: 200px;\">\n  <modus-wc-toast\n    custom-class=${ifDefined(args['custom-class'])}\n    delay=${ifDefined(args.delay)}\n    position=${ifDefined(args.position)}\n  >\n    <modus-wc-alert alert-title=\"Message sent successfully!\" variant=\"success\"></modus-wc-alert>\n  </modus-wc-toast>\n</div>\n  `,\n};\n\nexport const Default: Story = { ...Template };\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 toast included built-in dismiss functionality with delay timer and dismiss button. 2.0 components focus on positioning only.\n  - In 1.0 toast included built-in icons. 2.0 components rely on slotted content for visual elements.\n  - 2.0 toast components no longer support built-in types/variants, use slotted \\`modus-wc-alert\\` components instead.\n\n#### Prop Mapping\n\n| 1.0 Prop        | 2.0 Prop    | Notes                                      |\n|-----------------|-------------|--------------------------------------------|\n| aria-label      | aria-label  |                                            |\n| delay           |             | Not carried over                           |\n| dismissible     |             | Not carried over                           |\n| retain-element  |             | Not carried over                           |\n| role            |             | Not carried over                           |\n| show-icon       |             | Not carried over                           |\n| type            |             | Not carried over, use slotted content      |\n\n#### Event Mapping\n\n| 1.0 Event     | 2.0 Event | Notes            |\n|---------------|-----------|------------------|\n| dismissClick  |           | Not carried over |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

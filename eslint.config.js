@@ -84,6 +84,7 @@ export default [
       '.storybook/**',
       'dist/**',
       'integrations/**',
+      'mcp/**',
       'node_modules/**',
       'src/components.d.ts',
       'src/providers/theme/css-content.ts',

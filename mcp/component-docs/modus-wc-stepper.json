@@ -1,0 +1,60 @@
+{
+  "description": "Used to show a list of steps in a process.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the steps element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the steps.",
+      "default": null,
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "steps",
+      "type": "IStepperItem[]",
+      "description": "The steps to display.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 45
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "steps": "[\n      { label: 'Scale'",
+      "color": "'primary'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-stepper orientation=\"example-orientation\"></modus-wc-stepper>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-stepper",
+  "storyExample": {
+    "template": null,
+    "args": {
+      "steps": "[\n      { label: 'Scale'",
+      "color": "'primary'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { Orientation } from '../types';\n\ninterface StepperArgs {\n  'custom-class'?: string;\n  orientation: Orientation;\n  steps?: IStepperItem[];\n}\n\ninterface IStepperItem {\n  color?:\n    | 'primary'\n    | 'secondary'\n    | 'accent'\n    | 'info'\n    | 'success'\n    | 'warning'\n    | 'error'\n    | 'neutral';\n  content?: string;\n  customClass?: string;\n  label?: string;\n}\n\nconst meta: Meta<StepperArgs> = {\n  title: 'Components/Stepper',\n  component: 'modus-wc-stepper',\n  args: {\n    steps: [\n      { label: 'Scale', color: 'primary' },\n      { label: 'Belong', color: 'primary' },\n      { label: 'Grow', color: 'warning' },\n      { label: 'Innovate', content: '\ud83d\ude80' },\n    ],\n  },\n  argTypes: {\n    'custom-class': {\n      control: 'text',\n    },\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    steps: {\n      description: 'Array of step objects defining the steps to display',\n      table: {\n        type: {\n          detail: `\n            Interface: IStepperItem\n            Properties:\n            - color ('primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'neutral', optional): The color theme of the step\n            - content (string, optional): Custom content to display in the step indicator\n            - customClass (string, optional): Custom CSS class to apply to the step\n            - label (string, optional): Text label for the step\n          `,\n        },\n      },\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<StepperArgs>;\n\nconst Template: Story = {\n  // prettier-ignore\n  render: (args) => html`\n<modus-wc-stepper\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  orientation=\"${ifDefined(args.orientation)}\"\n  .steps=\"${args.steps}\"\n>\n</modus-wc-stepper>\n<script>\n// Adding this block to show how to set stepper steps via JS.    \n// const steps = [\n//   { label: 'Scale', color: 'primary' },\n//   { label: 'Belong', color: 'primary' },\n//   { label: 'Grow', color: 'warning' },\n//   { label: 'Innovate', content: '\ud83d\ude80' }\n//   ];      \n// const stepper = document.querySelector('modus-wc-stepper');  \n// stepper.steps = steps;\n</script>\n\n  `,\n};\n\nexport const Default: Story = { ...Template };\n"
+  }
+}

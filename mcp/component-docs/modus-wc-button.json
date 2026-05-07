@@ -1,0 +1,142 @@
+{
+  "description": "A customizable button component used to create buttons with different sizes, variants, and types. The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
+  "properties": [
+    {
+      "name": "color",
+      "type": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'",
+      "description": "The color variant of the button.",
+      "default": "'primary'",
+      "mutable": false,
+      "end_line": 33
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the button element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "If true, the button will be disabled.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "description": "If true, the button will take the full width of its container.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "pressed",
+      "type": "boolean",
+      "description": "If true, the button will be in a pressed state (for toggle buttons).",
+      "default": "false",
+      "mutable": false,
+      "end_line": 45
+    },
+    {
+      "name": "shape",
+      "type": "'circle' | 'ellipse' | 'rectangle' | 'square'",
+      "description": "The shape of the button.",
+      "default": "'rectangle'",
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "size",
+      "type": "DaisySize",
+      "description": "The size of the button.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "type",
+      "type": "'button' | 'submit' | 'reset'",
+      "description": "The type of the button.",
+      "default": "'button'",
+      "mutable": false,
+      "end_line": 54
+    },
+    {
+      "name": "variant",
+      "type": "'borderless' | 'filled' | 'outlined'",
+      "description": "The variant of the button.",
+      "default": "'filled'",
+      "mutable": false,
+      "end_line": 57
+    }
+  ],
+  "events": [
+    {
+      "name": "buttonClick",
+      "detail": "MouseEvent | KeyboardEvent",
+      "description": "Event emitted when the button is clicked or activated via keyboard.",
+      "end_line": 60
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-button\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  ?disabled=\"${args.disabled}\"\n  ?full-width=\"${args['full-width']}\"\n  ?pressed=\"${args.pressed}\"\n  shape=\"${args.shape}\"\n  size=\"${args.size}\"\n  type=\"${args.type}\"\n  variant=\"${args.variant}\"\n>\n  Click me\n</modus-wc-button>",
+    "variations": [],
+    "args": {
+      "color": "'primary'",
+      "disabled": "false",
+      "width": "false",
+      "pressed": "false",
+      "shape": "'rectangle'",
+      "size": "'md'",
+      "type": "'button'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "buttonClick"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-button ></modus-wc-button>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-button onButtonClick={(e) => handleButtonClick(e.detail)}></modus-wc-button>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-button",
+  "storyExample": {
+    "template": "<modus-wc-button\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  ?disabled=\"${args.disabled}\"\n  ?full-width=\"${args['full-width']}\"\n  ?pressed=\"${args.pressed}\"\n  shape=\"${args.shape}\"\n  size=\"${args.size}\"\n  type=\"${args.type}\"\n  variant=\"${args.variant}\"\n>\n  Click me\n</modus-wc-button>",
+    "args": {
+      "color": "'primary'",
+      "disabled": "false",
+      "width": "false",
+      "pressed": "false",
+      "shape": "'rectangle'",
+      "size": "'md'",
+      "type": "'button'",
+      "variant": "'filled'"
+    },
+    "argTypes": {},
+    "events": [
+      "buttonClick"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { DaisySize } from '../types';\n\ninterface ButtonArgs {\n  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';\n  'custom-class'?: string;\n  disabled: boolean;\n  'full-width': boolean;\n  pressed: boolean;\n  shape: 'circle' | 'ellipse' | 'rectangle' | 'square';\n  size: DaisySize;\n  type: 'button' | 'submit' | 'reset';\n  variant: 'borderless' | 'filled' | 'outlined';\n}\n\nconst meta: Meta<ButtonArgs> = {\n  title: 'Components/Button',\n  component: 'modus-wc-button',\n  args: {\n    color: 'primary',\n    disabled: false,\n    'full-width': false,\n    pressed: false,\n    shape: 'rectangle',\n    size: 'md',\n    type: 'button',\n    variant: 'filled',\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],\n    },\n    shape: {\n      control: { type: 'select' },\n      options: ['circle', 'ellipse', 'rectangle', 'square'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n    type: {\n      control: { type: 'select' },\n      options: ['button', 'submit', 'reset'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['borderless', 'filled', 'outlined'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['buttonClick'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ButtonArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-button\n  color=\"${args.color}\"\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  ?disabled=\"${args.disabled}\"\n  ?full-width=\"${args['full-width']}\"\n  ?pressed=\"${args.pressed}\"\n  shape=\"${args.shape}\"\n  size=\"${args.size}\"\n  type=\"${args.type}\"\n  variant=\"${args.variant}\"\n>\n  Click me\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n};\n\nexport const ButtonShapes: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n  <modus-wc-button\n    shape=\"rectangle\"\n  >\n    Rectangle\n  </modus-wc-button>\n<modus-wc-button\n  shape=\"circle\"\n>\n  Circle\n</modus-wc-button>\n<modus-wc-button\n  shape=\"square\"\n>\n  Square\n</modus-wc-button>\n<modus-wc-button\n  shape=\"ellipse\"\n>\n  Ellipse\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const DynamicTextUpdate: Story = {\n  render: () => {\n    const updateButtonText = () => {\n      const btnText = document.getElementById('btn-text') as HTMLSpanElement;\n      const input = document.getElementById(\n        'btn-text-input'\n      ) as HTMLInputElement;\n\n      btnText.textContent = input.value;\n    };\n\n    // prettier-ignore\n    return html`\n<script>\n  function updateButtonText() {\n    const btnText = document.getElementById('btn-text');\n    const input = document.getElementById('btn-text-input');\n    btnText.textContent = input.value;\n  }\n  // Call updateButtonText function using the button's click event\n  // Example:  <modus-wc-button color=\"primary\" variant=\"filled\" buttonClick=\"updateButtonText()\"></modus-wc-button>\n</script>\n\n<div>\n  <modus-wc-button id=\"text-update-btn\" color=\"primary\" variant=\"filled\" @buttonClick=${updateButtonText}>\n    <modus-wc-icon decorative name=\"shopping_cart\"></modus-wc-icon><span id=\"btn-text\">Press button to update content</span>\n    <modus-wc-icon decorative name=\"shopping_cart\"></modus-wc-icon>\n  </modus-wc-button>\n\n  <div style=\"margin-top: 8px; display: flex; gap: 8px; align-items: center;\">\n    <modus-wc-text-input id=\"btn-text-input\" type=\"text\" value=\"Updated Text\" style=\"padding: 4px 8px;\" />\n  </div>\n</div>\n    `;\n  },\n};\nexport const IconOnlyButton: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<modus-wc-button aria-label=\"Notification button\">\n  <modus-wc-icon decorative name=\"notifications\"></modus-wc-icon>\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const IconLeftButton: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<modus-wc-button>\n  <modus-wc-icon decorative name=\"download\"></modus-wc-icon>\n  Download\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const IconRightButton: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<modus-wc-button>\n  Details\n  <modus-wc-icon decorative name=\"launch\"></modus-wc-icon>\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const IconLeftAndRightButton: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<modus-wc-button>\n  <modus-wc-icon decorative name=\"shopping_cart\"></modus-wc-icon>\n  Checkout\n  <modus-wc-icon decorative name=\"shopping_cart\"></modus-wc-icon>\n</modus-wc-button>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for button component\n    if (!customElements.get('button-shadow-host')) {\n      const ButtonShadowHost = createShadowHostClass<ButtonArgs>({\n        componentTag: 'modus-wc-button',\n        propsMapper: (v: ButtonArgs, el: HTMLElement) => {\n          const buttonEl = el as unknown as {\n            ariaLabel: string;\n            color: string;\n            shape: string;\n            size: string;\n            type: string;\n            variant: string;\n            customClass: string;\n            disabled: boolean;\n            fullWidth: boolean;\n            pressed: boolean;\n          };\n          buttonEl.ariaLabel = 'Click me button';\n          buttonEl.color = v.color;\n          buttonEl.shape = v.shape;\n          buttonEl.size = v.size;\n          buttonEl.type = v.type;\n          buttonEl.variant = v.variant;\n          buttonEl.customClass = v['custom-class'] || '';\n          buttonEl.disabled = Boolean(v.disabled);\n          buttonEl.fullWidth = Boolean(v['full-width']);\n          buttonEl.pressed = Boolean(v.pressed);\n          // DO NOT set textContent - it destroys the component's internal structure!\n          // Button content should be set via defaultContent in the helper config\n        },\n        defaultContent: 'Click me', // Set content here instead\n      });\n      customElements.define('button-shadow-host', ButtonShadowHost);\n    }\n\n    return html`<button-shadow-host\n      .props=${{ ...args }}\n    ></button-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 buttons had specific properties for adding icons (\\`icon-only\\`, \\`left-icon\\`, \\`right-icon\\`). In 2.0, icons are added via slots using the \\`modus-wc-icon\\` component.\n  - The \\`button-style\\` property has been renamed to \\`variant\\` with similar options.\n  - Size values have changed from verbose names (\\`small\\`, \\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop        | 2.0 Prop   | Notes                                                       |\n|-----------------|------------|-------------------------------------------------------------|\n| aria-label      | aria-label |                                                             |\n| button-style    | variant    | \\`fill\\` \u2192 \\`filled\\`, \\`outline\\` \u2192 \\`outlined\\`           |\n| color           | color      | \\`dark\\` and \\`special\\` removed, \\`warning\\` added         |\n| critical-action |            | Not carried over                                            |\n| disabled        | disabled   |                                                             |\n| icon-only       |            | Not carried over, use \\`icon\\` slot                         |\n| left-icon       |            | Not carried over, use \\`icon\\` slot                         |\n| right-icon      |            | Not carried over, use \\`icon\\` slot                         |\n| show-caret      |            | Not carried over                                            |\n| size            | size       | \\`small\\` \u2192 \\`sm\\`, \\`medium\\` \u2192 \\`md\\`, \\`large\\` \u2192 \\`lg\\` |\n| type            | type       |                                                             |\n\n#### Event Mapping\n\n| 1.0 Event    | 2.0 Event    | Notes            |\n|--------------|--------------|------------------|\n| buttonClick  | buttonClick  |                  |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

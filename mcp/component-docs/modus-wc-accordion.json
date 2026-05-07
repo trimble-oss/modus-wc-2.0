@@ -1,0 +1,60 @@
+{
+  "description": "A customizable accordion component used for showing and hiding related groups of content. The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 29
+    }
+  ],
+  "events": [
+    {
+      "name": "expandedChange",
+      "detail": "{ expanded: boolean; index: number; }",
+      "description": "When a collapse expanded state is changed, this event outputs the relevant index and state",
+      "end_line": 35
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<div style=\"padding: 20px;\">\n  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>\n    <modus-wc-collapse .options=${collapseOptions[0]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[1]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[2]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n  </modus-wc-accordion>\n</div>\n<script>\n  const collapseOptions = [\n    {\n      description: 'Item one description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item One',\n    },\n    {\n      description: 'Item two description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Two',\n    },\n    {\n      description: 'Item three description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Three',\n    },\n  ];\n // Adding this block to show how to set options via JS \n  // const items = document.querySelectorAll('modus-wc-collapse');\n  // items.forEach((item, index) => {\n  //  item.options = collapseOptions[index];\n  // });\n</script>",
+    "variations": [],
+    "args": {},
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "expandedChange"
+    ]
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-accordion ></modus-wc-accordion>",
+      "description": "Minimal required properties"
+    },
+    {
+      "title": "Event Handling",
+      "code": "<modus-wc-accordion onExpandedChange={(e) => handleExpandedChange(e.detail)}></modus-wc-accordion>",
+      "description": "Handling component events"
+    }
+  ],
+  "tag": "modus-wc-accordion",
+  "storyExample": {
+    "template": "<div style=\"padding: 20px;\">\n  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>\n    <modus-wc-collapse .options=${collapseOptions[0]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[1]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[2]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n  </modus-wc-accordion>\n</div>\n<script>\n  const collapseOptions = [\n    {\n      description: 'Item one description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item One',\n    },\n    {\n      description: 'Item two description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Two',\n    },\n    {\n      description: 'Item three description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Three',\n    },\n  ];\n // Adding this block to show how to set options via JS \n  // const items = document.querySelectorAll('modus-wc-collapse');\n  // items.forEach((item, index) => {\n  //  item.options = collapseOptions[index];\n  // });\n</script>",
+    "args": {},
+    "argTypes": {},
+    "events": [
+      "expandedChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ICollapseOptions } from '../modus-wc-collapse/modus-wc-collapse';\n\ninterface AccordionArgs {\n  'custom-class'?: string;\n}\n\nconst collapseOptions: ICollapseOptions[] = [\n  {\n    description: 'Item one description',\n    icon: 'alert',\n    iconAriaLabel: 'Alert',\n    title: 'Item One',\n  },\n  {\n    description: 'Item two description',\n    icon: 'alert',\n    iconAriaLabel: 'Alert',\n    title: 'Item Two',\n  },\n  {\n    description: 'Item three description',\n    icon: 'alert',\n    iconAriaLabel: 'Alert',\n    title: 'Item Three',\n  },\n];\n\nconst meta: Meta<AccordionArgs> = {\n  title: 'Components/Accordion',\n  component: 'modus-wc-accordion',\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['expandedChange'],\n    },\n    layout: {\n      padded: true,\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<AccordionArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<div style=\"padding: 20px;\">\n  <modus-wc-accordion custom-class=${ifDefined(args['custom-class'])}>\n    <modus-wc-collapse .options=${collapseOptions[0]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[1]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n    <modus-wc-collapse .options=${collapseOptions[2]}>\n      <div slot=\"content\">Collapse content</div>\n    </modus-wc-collapse>\n  </modus-wc-accordion>\n</div>\n<script>\n  const collapseOptions = [\n    {\n      description: 'Item one description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item One',\n    },\n    {\n      description: 'Item two description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Two',\n    },\n    {\n      description: 'Item three description',\n      icon: 'alert',\n      iconAriaLabel: 'Alert',\n      title: 'Item Three',\n    },\n  ];\n // Adding this block to show how to set options via JS \n  // const items = document.querySelectorAll('modus-wc-collapse');\n  // items.forEach((item, index) => {\n  //  item.options = collapseOptions[index];\n  // });\n</script>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const ShadowDomParent: Story = {\n  render: () => {\n    // Create a unique shadow host for accordion component\n    if (!customElements.get('accordion-shadow-host')) {\n      const AccordionShadowHost = createShadowHostClass<AccordionArgs>({\n        componentTag: 'modus-wc-accordion',\n        propsMapper: (v: AccordionArgs, el: HTMLElement) => {\n          const accordionEl = el as unknown as {\n            customClass: string;\n          };\n          accordionEl.customClass = v['custom-class'] || '';\n\n          // Create and append collapse elements (no whitespace between to avoid gaps)\n          el.innerHTML = '';\n          collapseOptions.forEach((options) => {\n            const collapse = document.createElement('modus-wc-collapse');\n            (collapse as unknown as { options: ICollapseOptions }).options =\n              options;\n            const contentDiv = document.createElement('div');\n            contentDiv.setAttribute('slot', 'content');\n            contentDiv.textContent = 'Collapse content';\n            collapse.appendChild(contentDiv);\n            el.appendChild(collapse);\n          });\n        },\n      });\n      customElements.define('accordion-shadow-host', AccordionShadowHost);\n    }\n\n    return html`<accordion-shadow-host\n      style=\"display: block; padding: 20px;\"\n      .props=${{}}\n    ></accordion-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 the accordion was composed of child accordion-item components. In 2.0 accordion children are collapse\n  components.\n  - The new accordion supports \\`header\\` and \\`content\\` slots to provide maximum flexibility.\n  - Size values have changed from (\\`condensed\\`, \\`standard\\`) in 1.0 accordion-item to abbreviations (\\`xs\\`, \\`sm\\`, \\`md\\`, \\`lg\\`) in 2.0 collapse.\n\n#### Prop Mapping\n\n##### accordion\n\n| 1.0 Prop           | 2.0 Prop           | Notes            |\n|--------------------|--------------------|------------------|\n| aria-label         | aria-label         |                  |\n\n##### accordion-item \u2192 collapse\n\n| 1.0 Prop           | 2.0 Prop            | Notes            |\n|--------------------|---------------------|------------------|\n| aria-label         | aria-label          |                  |\n| disabled           |                     | Not carried over |\n| expand-button-type |                     | Not carried over |\n| expanded           | expanded            |                  |\n| header-text        | options.title       |                  |\n| icon               | options.icon        |                  |\n| supporting-label   | options.description |                  |\n| size               | options.size        |                  |\n\n#### Event Mapping\n\n##### accordion-item \u2192 accordion\n\nThe new accordion and collapse have their own events. We recommend using the\naccordion events to migrate.\n\n| 1.0 Event | 2.0 Event      | Notes            |\n|-----------|----------------|------------------|\n| closed    | expandedChange |                  |\n| opened    | expandedChange |                  |\n        `,\n      },\n    },\n    // To hide the actual story rendering and only show docs:\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  // Simple render function or leave it empty\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

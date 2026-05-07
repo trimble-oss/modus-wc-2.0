@@ -8,6 +8,10 @@ modus-wc-card .modus-wc-card {
     background-color: var(--modus-wc-color-base-100);
   }
 
+  &.modus-wc-card-bordered {
+    background-color: var(--modus-wc-color-base-page);
+  }
+
   color: var(--modus-wc-color-base-content);
 
   figure {
@@ -16,6 +20,10 @@ modus-wc-card .modus-wc-card {
 
   .modus-wc-card-body {
     gap: unset;
+  }
+
+  & > modus-wc-collapse .modus-wc-collapse {
+    background-color: var(--modus-wc-color-base-page);
   }
 }
 

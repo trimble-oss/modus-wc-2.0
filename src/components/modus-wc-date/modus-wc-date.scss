@@ -4,7 +4,7 @@
 }
 
 modus-wc-date .modus-wc-date-input {
-  background-color: inherit;
+  background-color: var(--modus-wc-color-base-page);
 
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
@@ -22,6 +22,12 @@ modus-wc-date {
 
   position: relative;
 
+  &.modus-wc-date-input {
+    background-color: var(--modus-wc-color-base-page);
+    border-radius: var(--modus-wc-border-radius-input);
+    color: var(--modus-wc-color-base-content);
+  }
+
   .date-input-container {
     align-items: center;
     display: inline-flex;
@@ -33,10 +39,10 @@ modus-wc-date {
       display: flex;
       justify-content: center;
       position: absolute;
-      right: var(--modus-wc-spacing-xs);
+      right: var(--modus-wc-spacing-md);
 
       :hover {
-        color: var(--modus-wc-color-blue-light);
+        color: var(--modus-wc-color-primary);
       }
 
       :disabled {
@@ -47,9 +53,9 @@ modus-wc-date {
   }
 
   .calendar-container {
-    background: var(--modus-wc-color-white);
-    border: 1px solid var(--modus-wc-color-gray-4);
-    border-radius: var(--modus-wc-border-radius-md);
+    background: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-base-200);
+    border-radius: var(--rounded-box);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     height: 327px;
     overflow: hidden;
@@ -64,7 +70,7 @@ modus-wc-date {
     .calendar-header {
       align-items: center;
       background-color: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-white);
+      color: var(--modus-wc-color-base-page);
       display: flex;
       gap: var(--modus-wc-spacing-sm);
       justify-content: center;
@@ -72,12 +78,12 @@ modus-wc-date {
 
       .nav-btn {
         i {
-          color: var(--modus-wc-color-white);
+          color: var(--modus-wc-color-primary-content);
         }
 
         &:hover {
           i {
-            color: var(--modus-wc-color-blue-dark);
+            color: var(--modus-wc-color-primary);
           }
         }
       }
@@ -89,11 +95,20 @@ modus-wc-date {
 
         select {
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+          color: var(--modus-wc-color-base-content);
+        }
+
+        .month-select {
+          border-radius: var(--modus-wc-border-radius-input);
+        }
+
+        .year-select {
+          border-radius: var(--modus-wc-border-radius-input);
         }
 
         select option {
-          background-color: var(--modus-wc-color-white);
-          color: var(--modus-wc-color-gray-9);
+          background-color: var(--modus-wc-color-base-page);
+          color: var(--modus-wc-color-base-content);
         }
       }
     }
@@ -163,24 +178,24 @@ modus-wc-date {
           width: 32px;
 
           &:hover {
-            background-color: var(--modus-wc-color-blue-light);
+            background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-white);
           }
 
           &:focus {
-            background-color: var(--modus-wc-color-blue-light);
+            background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-white);
             outline: none;
           }
 
           &.current-day {
-            border: 2px solid var(--modus-wc-color-blue-light);
+            border: 2px solid var(--modus-wc-color-primary);
             outline: none;
           }
 
           &.selected {
-            background-color: var(--modus-wc-color-blue-light);
-            color: var(--modus-wc-color-white);
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-primary-content);
             font-weight: var(--modus-wc-font-weight-semibold);
           }
 
@@ -189,8 +204,8 @@ modus-wc-date {
             opacity: 0.5;
 
             &:hover {
-              background-color: var(--modus-wc-color-gray-2);
-              color: var(--modus-wc-color-gray-6);
+              background-color: var(--modus-wc-color-base-200);
+              color: var(--modus-wc-color-base-content);
             }
           }
 
@@ -216,6 +231,7 @@ modus-wc-date {
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
+    color: var(--modus-wc-color-base-content);
 
     // TODO - add support for xs and xl once added to Modus Figma
 
@@ -258,7 +274,6 @@ modus-wc-date {
 
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   color-scheme: dark; // needed to ensure the calendar icon button is visible in dark mode
-
   &.modus-wc-input:focus {
     border-color: var(--modus-wc-color-highlight-blue);
   }
@@ -269,19 +284,18 @@ modus-wc-date {
   @include connect-input-styles;
 }
 
-[data-theme='connect-dark'] modus-wc-date,
 [data-theme='modus-modern-dark'] modus-wc-date,
 [data-theme='modus-classic-dark'] modus-wc-date {
   .calendar-container .calendar-header {
     .nav-btn {
       i {
-        color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-primary-content);
       }
     }
 
     .calendar-selects select {
       background-color: unset;
-      color: var(--modus-wc-color-black);
+      color: var(--modus-wc-color-base-content);
       font-weight: 600;
 
       option {

@@ -1,0 +1,138 @@
+{
+  "description": "A draggable handle component for resizing adjacent elements",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the handle element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 28
+    },
+    {
+      "name": "leftTarget",
+      "type": "string | HTMLElement",
+      "description": "The left target element to resize (CSS selector or HTMLElement)",
+      "default": null,
+      "mutable": false,
+      "end_line": 31
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the handle.",
+      "default": "'horizontal'",
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "rightTarget",
+      "type": "string | HTMLElement",
+      "description": "The right target element to resize (CSS selector or HTMLElement)",
+      "default": null,
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "size",
+      "type": "'default' | 'lg' | 'xl' | '2xl'",
+      "description": "The size of the handle.",
+      "default": "'default'",
+      "mutable": false,
+      "end_line": 40
+    },
+    {
+      "name": "density",
+      "type": "'compact' | 'comfortable' | 'relaxed'",
+      "description": "The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).",
+      "default": "'comfortable'",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "defaultSplit",
+      "type": "number",
+      "description": "The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.",
+      "default": "50",
+      "mutable": false,
+      "end_line": 46
+    },
+    {
+      "name": "buttonSize",
+      "type": "DaisySize",
+      "description": "The size of the button.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 49
+    },
+    {
+      "name": "buttonColor",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'warning'     | 'danger'",
+      "description": "The color of the button.",
+      "default": "'tertiary'",
+      "mutable": false,
+      "end_line": 57
+    },
+    {
+      "name": "buttonVariant",
+      "type": "'borderless' | 'filled' | 'outlined'",
+      "description": "The variant of the button.",
+      "default": "'filled'",
+      "mutable": false,
+      "end_line": 60
+    },
+    {
+      "name": "type",
+      "type": "'bar' | 'button'",
+      "description": "The type of handle to display.",
+      "default": "'bar'",
+      "mutable": false,
+      "end_line": 63
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<style>${storyStyles}</style>\n${keyed(orientation, html",
+    "variations": [],
+    "args": {
+      "color": "'tertiary'",
+      "size": "'default'",
+      "variant": "'filled'",
+      "class": "''",
+      "split": "50",
+      "density": "'comfortable'",
+      "target": "''",
+      "orientation": "'vertical'",
+      "type": "'bar'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "scripts": [
+    {
+      "title": "Basic Usage",
+      "code": "<modus-wc-handle leftTarget=\"example-leftTarget\" rightTarget=\"example-rightTarget\"></modus-wc-handle>",
+      "description": "Minimal required properties"
+    }
+  ],
+  "tag": "modus-wc-handle",
+  "storyExample": {
+    "template": "<style>${storyStyles}</style>\n${keyed(orientation, html",
+    "args": {
+      "color": "'tertiary'",
+      "size": "'default'",
+      "variant": "'filled'",
+      "class": "''",
+      "split": "50",
+      "density": "'comfortable'",
+      "target": "''",
+      "orientation": "'vertical'",
+      "type": "'bar'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html, unsafeCSS } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { keyed } from 'lit/directives/keyed.js';\nimport { DaisySize, Orientation } from '../types';\n\n// Shared styles for story demos\nconst storyStyles = unsafeCSS(`\n  .handle-demo-container {\n    display: flex;\n    gap: 0;\n  }\n\n  .handle-demo-container.horizontal {\n    height: 300px;\n  }\n\n  .handle-demo-container.vertical {\n    flex-direction: column;\n    height: 500px;\n  }\n\n  .handle-demo-panel {\n    background-color: var(--modus-wc-color-base-100);\n    overflow: auto;\n  }\n\n  .handle-demo-panel.initial-size-200 {\n    width: 200px;\n  }\n\n  .handle-demo-panel.initial-height-200 {\n    height: 200px;\n  }\n\n  .handle-demo-panel.initial-size-400 {\n    width: 400px;\n  }\n\n  .handle-demo-panel.flex-fill {\n    flex: 1;\n  }\n\n  .handle-demo-right-container {\n    flex: 1;\n    display: flex;\n    flex-direction: column;\n    gap: 0;\n  }\n`);\n\ninterface HandleArgs {\n  'custom-class'?: string;\n  'default-split'?: number;\n  density?: 'compact' | 'comfortable' | 'relaxed';\n  'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';\n  'button-size'?: DaisySize;\n  'button-variant'?: 'borderless' | 'filled' | 'outlined';\n  'left-target'?: string;\n  orientation?: Orientation;\n  'right-target'?: string;\n  size?: 'default' | 'lg' | 'xl' | '2xl';\n  type?: 'bar' | 'button';\n}\n\nconst meta: Meta<HandleArgs> = {\n  title: 'Components/Handle',\n  component: 'modus-wc-handle',\n  args: {\n    'button-color': 'tertiary',\n    'button-size': 'md',\n    'button-variant': 'filled',\n    'custom-class': '',\n    'default-split': 50,\n    density: 'comfortable',\n    'left-target': '',\n    orientation: 'vertical',\n    'right-target': '',\n    size: 'default',\n    type: 'bar',\n  },\n  argTypes: {\n    'custom-class': {\n      control: 'text',\n    },\n    'default-split': {\n      control: { type: 'range', min: 1, max: 100, step: 1 },\n    },\n    density: {\n      control: { type: 'select' },\n      options: ['compact', 'comfortable', 'relaxed'],\n    },\n    'button-size': {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    'button-color': {\n      control: { type: 'select' },\n      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],\n    },\n    'button-variant': {\n      control: { type: 'select' },\n      options: ['borderless', 'filled', 'outlined'],\n    },\n    'left-target': {\n      control: 'text',\n    },\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    'right-target': {\n      control: 'text',\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['default', 'lg', 'xl', '2xl'],\n    },\n    type: {\n      control: { type: 'select' },\n      options: ['bar', 'button'],\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<HandleArgs>;\n\nconst HandleTemplate = (args?: HandleArgs) =>\n  // prettier-ignore\n  html`\n<modus-wc-handle\n  custom-class=\"${ifDefined(args?.['custom-class'])}\"\n  default-split=\"${args?.['default-split']}\"\n  density=\"${args?.density}\"\n  button-size=\"${args?.['button-size']}\"\n  button-color=\"${args?.['button-color']}\"\n  button-variant=\"${args?.['button-variant']}\"\n  left-target=\"${ifDefined(args?.['left-target'])}\"\n  orientation=\"${ifDefined(args?.orientation)}\"\n  right-target=\"${ifDefined(args?.['right-target'])}\"\n  size=\"${args?.size}\"\n  type=\"${args?.type}\"\n></modus-wc-handle>\n  `;\n\n// Helper templates for panels\nconst PanelTemplate = (\n  id: string,\n  title: string,\n  content: string,\n  className: string = ''\n) =>\n  // prettier-ignore\n  html`\n<div id=\"${id}\" class=\"handle-demo-panel ${className}\">\n  <h3>${title}</h3>\n  <p>${content}</p>\n</div>\n`;\n\nconst PanelWithKeyboardInfo = (\n  id: string,\n  title: string,\n  content: string,\n  keyboardInfo: string,\n  className: string = ''\n) =>\n  // prettier-ignore\n  html`\n<div id=\"${id}\" class=\"handle-demo-panel ${className}\">\n  <h3>${title}</h3>\n  <p>${content}</p>\n  <p><strong>Keyboard:</strong> ${keyboardInfo}</p>\n</div>\n`;\n\n// Generate unique ID for each render to avoid conflicts on docs page\nconst generateUniqueId = () => Math.random().toString(36).substring(2, 9);\n\n// Reusable render function for demos\nconst Template = (args?: HandleArgs) => {\n  const orientation = args?.orientation ?? 'horizontal';\n  const type = args?.type ?? 'bar';\n  const isHorizontal = orientation === 'horizontal';\n  const uniqueId = generateUniqueId();\n  const leftId = `panel-left-${uniqueId}`;\n  const rightId = `panel-right-${uniqueId}`;\n  // prettier-ignore\n  return html`\n<style>${storyStyles}</style>\n${keyed(orientation, html`\n<div class=\"handle-demo-container ${isHorizontal ? 'horizontal' : 'vertical'}\">\n  ${PanelWithKeyboardInfo(\n    leftId,\n    isHorizontal ? 'Left Panel' : 'Top Panel',\n    'Drag the handle to resize this panel.',\n    `Focus the handle and use ${isHorizontal ? 'Left/Right' : 'Up/Down'} arrow keys to resize (5px per press, 15px with Shift).`,\n    isHorizontal ? 'initial-size-200' : 'initial-height-200'\n  )}\n  ${HandleTemplate({\n    orientation: orientation,\n    size: args?.size ?? 'default',\n    density: args?.density ?? 'comfortable',\n    type: type,\n    'default-split': args?.['default-split'] ?? 50,\n    'custom-class': args?.['custom-class'],\n    'button-size': args?.['button-size'],\n    'button-color': args?.['button-color'],\n    'button-variant': args?.['button-variant'],\n    'left-target': `#${leftId}`,\n    'right-target': `#${rightId}`,\n  })}\n  ${PanelTemplate(\n    rightId,\n    isHorizontal ? 'Right Panel' : 'Bottom Panel',\n    'This panel will resize automatically when you drag the handle.',\n    'flex-fill'\n  )}\n</div>\n`)}`;\n};\n\nexport const Default: Story = {\n  render: (args?: HandleArgs) => Template(args),\n};\n\nexport const ButtonVariant: Story = {\n  render: (args?: HandleArgs) => {\n    return Template({\n      ...args,\n      orientation: args?.orientation ?? 'horizontal',\n      size: args?.size ?? 'default',\n      density: args?.density ?? 'comfortable',\n      type: 'button',\n    });\n  },\n  args: {\n    type: 'button',\n  },\n  parameters: {\n    docs: {\n      description: {\n        story: `\nButton type handle with customizable button properties.\n\n**Button Properties Available:**\n- \\`button-size\\`: sm, md, lg\n- \\`button-color\\`: primary, secondary, tertiary, warning, danger\n- \\`button-variant\\`: borderless, filled, outlined\n\n**Keyboard Navigation:**\n- Arrow keys: Move 5px per press\n- Shift + Arrow keys: Move 15px per press\n\nThe button handle provides a more prominent visual indicator compared to the bar type.\n        `,\n      },\n    },\n  },\n};\n\nexport const MultipleHandlesNested: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<style>${storyStyles}</style>\n<div class=\"handle-demo-container\" style=\"height: 600px;\">\n  ${PanelTemplate('panel-one', 'One', 'Large left panel', 'initial-size-400')}\n  ${HandleTemplate({\n    orientation: 'horizontal',\n    size: 'default',\n    density: 'comfortable',\n    type: 'bar',\n    'left-target': '#panel-one',\n    'right-target': '#right-container',\n  })}\n  <div id=\"right-container\" class=\"handle-demo-right-container\">\n    ${PanelTemplate('panel-two', 'Two', 'Top right panel', 'initial-height-200')}\n    ${HandleTemplate({\n      orientation: 'vertical',\n      size: 'default',\n      density: 'comfortable',\n      type: 'bar',\n      'left-target': '#panel-two',\n      'right-target': '#panel-three',\n    })}\n    ${PanelTemplate('panel-three', 'Three', 'Bottom right panel', 'flex-fill')}\n  </div>\n</div>\n    `;\n  },\n};\n"
+  }
+}
