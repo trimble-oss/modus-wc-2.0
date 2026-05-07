@@ -8,4 +8,20 @@ export { ModusWebComponentsPlugin, ComponentLibrary } from './plugin';
 export { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
 // Shared types from core (src/components/types.ts)
-export type { Density, ModusSize } from '@trimble-oss/moduswebcomponents';
+export type {
+  AutocompleteTypes,
+  DaisySize,
+  Density,
+  IAutocompleteItem,
+  IAutocompleteNoResults,
+  IInputFeedbackProp,
+  ModusSize,
+  Orientation,
+  PopoverPlacement,
+  SelectionMode,
+  TextFieldTypes,
+  TypographyHierarchy,
+  TypographySize,
+  TypographyWeight,
+  WeekStartDay,
+} from '@trimble-oss/moduswebcomponents';
