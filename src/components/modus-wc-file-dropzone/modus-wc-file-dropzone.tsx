@@ -13,10 +13,15 @@ import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+/** Custom messages shown when file validation fails. Messages are rendered as provided; include any limit values directly in the string. */
 export interface IFileDropzoneErrorMessages {
+  /** Message shown when selected or dropped file count exceeds maxFileCount. */
   invalidCount?: string;
+  /** Message shown when a filename exceeds maxFileNameLength. */
   invalidName?: string;
+  /** Message shown when total selected or dropped file size exceeds maxTotalFileSizeBytes. */
   invalidSize?: string;
+  /** Message shown when a file does not match acceptFileTypes. */
   invalidType?: string;
 }
 

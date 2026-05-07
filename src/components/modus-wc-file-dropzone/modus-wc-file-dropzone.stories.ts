@@ -13,7 +13,7 @@ interface FileDropzoneArgs {
   'include-state-icon'?: boolean;
   instructions?: string;
   'invalid-file-type-message'?: string;
-  errorMessages?: IFileDropzoneErrorMessages;
+  'error-messages'?: IFileDropzoneErrorMessages;
   'max-file-name-length'?: number;
   'max-file-count'?: number;
   'max-total-file-size-bytes'?: number;
@@ -56,7 +56,7 @@ const meta: Meta<FileDropzoneArgs> = {
       description:
         'Custom error message displayed when an invalid file type is selected',
     },
-    errorMessages: {
+    'error-messages': {
       control: 'object',
       description: 'Custom error messages displayed when file validation fails',
     },
@@ -113,12 +113,12 @@ export const Default: Story = {
       )}
       ?include-state-icon=${args['include-state-icon']}
       instructions=${ifDefined(args['instructions'])}
-      .errorMessages=${args.errorMessages}
+      .errorMessages=${args['error-messages']}
       invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
       max-file-name-length=${ifDefined(args['max-file-name-length'])}
       max-file-count=${ifDefined(args['max-file-count'])}
       max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
-      ?multiple=${args.multiple}
+      ?multiple=${args['multiple']}
       success-message=${ifDefined(args['success-message'])}
     ></modus-wc-file-dropzone>
   `,
@@ -295,7 +295,7 @@ export const ShadowDomParent: Story = {
           dropzoneEl.instructions = v.instructions ?? '';
           dropzoneEl.invalidFileTypeMessage =
             v['invalid-file-type-message'] ?? '';
-          dropzoneEl.errorMessages = v.errorMessages ?? {};
+          dropzoneEl.errorMessages = v['error-messages'] ?? {};
           dropzoneEl.maxFileCount = v['max-file-count'] ?? 0;
           dropzoneEl.maxFileNameLength = v['max-file-name-length'] ?? 0;
           dropzoneEl.maxTotalFileSizeBytes =

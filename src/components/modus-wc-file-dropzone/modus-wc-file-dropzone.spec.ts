@@ -417,7 +417,7 @@ describe('modus-wc-file-dropzone', () => {
     const component = page.rootInstance;
     const fileSelectSpy = jest.spyOn(component.fileSelect, 'emit');
     component.errorMessages = {
-      invalidCount: 'Maximum number of files allowed is 8',
+      invalidCount: 'Custom file count error',
     };
 
     const file1 = new File(['test content 1'], 'file1.txt', {
@@ -444,7 +444,7 @@ describe('modus-wc-file-dropzone', () => {
 
     expect(fileSelectSpy).not.toHaveBeenCalled();
     expect(component.invalidFile).toBe('count');
-    expect(component.errorMessage).toBe('Maximum number of files allowed is 8');
+    expect(component.errorMessage).toBe('Custom file count error');
   });
 
   it('should validate total file size', async () => {
