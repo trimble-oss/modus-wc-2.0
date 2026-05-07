@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import type { IFileDropzoneErrorMessages } from './modus-wc-file-dropzone';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface FileDropzoneArgs {
@@ -12,6 +13,7 @@ interface FileDropzoneArgs {
   'include-state-icon'?: boolean;
   instructions?: string;
   'invalid-file-type-message'?: string;
+  errorMessages?: IFileDropzoneErrorMessages;
   'max-file-name-length'?: number;
   'max-file-count'?: number;
   'max-total-file-size-bytes'?: number;
@@ -53,6 +55,10 @@ const meta: Meta<FileDropzoneArgs> = {
       control: 'text',
       description:
         'Custom error message displayed when an invalid file type is selected',
+    },
+    errorMessages: {
+      control: 'object',
+      description: 'Custom error messages displayed when file validation fails',
     },
     'max-file-name-length': {
       control: 'number',
@@ -107,6 +113,7 @@ export const Default: Story = {
       )}
       ?include-state-icon=${args['include-state-icon']}
       instructions=${ifDefined(args['instructions'])}
+      .errorMessages=${args.errorMessages}
       invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
       max-file-name-length=${ifDefined(args['max-file-name-length'])}
       max-file-count=${ifDefined(args['max-file-count'])}
@@ -197,12 +204,43 @@ export const fileValidations: Story = {
     'max-file-name-length': 20,
     'max-file-count': 3,
     'max-total-file-size-bytes': 10485760, // 10MB
-    'invalid-file-type-message':
-      'Invalid file format. Please upload correct file type.',
+    errorMessages: {
+      invalidCount: 'You can add up to 3 files.',
+      invalidName: 'Filename must be 20 characters or fewer.',
+      invalidSize: 'Total file size must be 10MB or less.',
+      invalidType: 'Invalid file format. Please upload correct file type.',
+    },
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<modus-wc-file-dropzone
+  id="file-validations-dropzone"
+  accept-file-types=".doc, .docx, .pdf"
+  max-file-name-length="20"
+  max-file-count="3"
+  max-total-file-size-bytes="10485760"
+  multiple
+  instructions="Upload files (max 3 files, 10MB total, filename ≤ 20 chars)"
+></modus-wc-file-dropzone>
+
+<script>
+  const dropzone = document.getElementById('file-validations-dropzone');
+
+  dropzone.errorMessages = {
+    invalidCount: 'You can add up to 3 files.',
+    invalidName: 'Filename must be 20 characters or fewer.',
+    invalidSize: 'Total file size must be 10MB or less.',
+    invalidType: 'Invalid file format. Please upload correct file type.',
+  };
+</script>`,
+      },
+    },
   },
   render: (args) => html`
     <modus-wc-file-dropzone
       accept-file-types=${ifDefined(args['accept-file-types'])}
+      .errorMessages=${args.errorMessages}
       invalid-file-type-message=${ifDefined(args['invalid-file-type-message'])}
       max-file-name-length=${ifDefined(args['max-file-name-length'])}
       max-file-count=${ifDefined(args['max-file-count'])}
@@ -241,6 +279,7 @@ export const ShadowDomParent: Story = {
             includeStateIcon: boolean;
             instructions: string;
             invalidFileTypeMessage: string;
+            errorMessages: IFileDropzoneErrorMessages;
             maxFileCount: number;
             maxFileNameLength: number;
             maxTotalFileSizeBytes: number;
@@ -256,6 +295,7 @@ export const ShadowDomParent: Story = {
           dropzoneEl.instructions = v.instructions ?? '';
           dropzoneEl.invalidFileTypeMessage =
             v['invalid-file-type-message'] ?? '';
+          dropzoneEl.errorMessages = v.errorMessages ?? {};
           dropzoneEl.maxFileCount = v['max-file-count'] ?? 0;
           dropzoneEl.maxFileNameLength = v['max-file-name-length'] ?? 0;
           dropzoneEl.maxTotalFileSizeBytes =

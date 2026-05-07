@@ -13,6 +13,13 @@ import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+export interface IFileDropzoneErrorMessages {
+  invalidCount?: string;
+  invalidName?: string;
+  invalidSize?: string;
+  invalidType?: string;
+}
+
 /**
  * File dropzone component that allows users to drag and drop files for upload.
  *
@@ -64,6 +71,9 @@ export class ModusWcFileDropzone {
   /** Custom error message displayed when an invalid file type is selected */
   @Prop() invalidFileTypeMessage?: string;
 
+  /** Custom error messages displayed when file validation fails */
+  @Prop() errorMessages?: IFileDropzoneErrorMessages;
+
   /** Maximum allowed length of filename, will show error if exceeded */
   @Prop() maxFileNameLength?: number;
 
@@ -110,13 +120,25 @@ export class ModusWcFileDropzone {
   ): string {
     switch (errorType) {
       case 'type':
-        return this.invalidFileTypeMessage || 'File format not accepted';
+        return (
+          this.errorMessages?.invalidType ||
+          this.invalidFileTypeMessage ||
+          'File format not accepted'
+        );
       case 'name':
-        return 'Filename exceeds maximum length';
+        return (
+          this.errorMessages?.invalidName || 'Filename exceeds maximum length'
+        );
       case 'count':
-        return `Maximum number of files allowed is ${this.maxFileCount}`;
+        return (
+          this.errorMessages?.invalidCount ||
+          `Maximum number of files allowed is ${this.maxFileCount}`
+        );
       case 'size':
-        return `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`;
+        return (
+          this.errorMessages?.invalidSize ||
+          `Total file size exceeds ${this.formatFileSize(this.maxTotalFileSizeBytes)}`
+        );
       default:
         return 'Validation error';
     }

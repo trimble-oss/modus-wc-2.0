@@ -408,6 +408,45 @@ describe('modus-wc-file-dropzone', () => {
     expect(component.uploadSuccess).toBe(true);
   });
 
+  it('should use custom error message when file count validation fails', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone max-file-count="1"></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+    const fileSelectSpy = jest.spyOn(component.fileSelect, 'emit');
+    component.errorMessages = {
+      invalidCount: 'Maximum number of files allowed is 8',
+    };
+
+    const file1 = new File(['test content 1'], 'file1.txt', {
+      type: 'text/plain',
+    });
+    const file2 = new File(['test content 2'], 'file2.txt', {
+      type: 'text/plain',
+    });
+    const tooManyFiles = {
+      0: file1,
+      1: file2,
+      length: 2,
+      item: (idx: number) => [file1, file2][idx],
+    } as unknown as FileList;
+
+    const invalidEvent = {
+      target: {
+        files: tooManyFiles,
+        value: '',
+      },
+    } as unknown as Event;
+
+    component.handleFileChange(invalidEvent);
+
+    expect(fileSelectSpy).not.toHaveBeenCalled();
+    expect(component.invalidFile).toBe('count');
+    expect(component.errorMessage).toBe('Maximum number of files allowed is 8');
+  });
+
   it('should validate total file size', async () => {
     const page = await newSpecPage({
       components: [ModusWcFileDropzone],
@@ -1335,6 +1374,54 @@ describe('modus-wc-file-dropzone', () => {
     ]('invalid');
 
     expect(errorMessage).toBe('Validation error');
+  });
+
+  it('should return custom error messages from errorMessages', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone invalid-file-type-message="Legacy type message"></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+    component.errorMessages = {
+      invalidCount: 'Custom count message',
+      invalidName: 'Custom name message',
+      invalidSize: 'Custom size message',
+      invalidType: 'Custom type message',
+    };
+
+    type PrivateMethods = {
+      getErrorMessage: (type: string) => string;
+    };
+
+    const getErrorMessage = (component as unknown as PrivateMethods)[
+      'getErrorMessage'
+    ].bind(component);
+
+    expect(getErrorMessage('count')).toBe('Custom count message');
+    expect(getErrorMessage('name')).toBe('Custom name message');
+    expect(getErrorMessage('size')).toBe('Custom size message');
+    expect(getErrorMessage('type')).toBe('Custom type message');
+  });
+
+  it('should fallback to invalidFileTypeMessage when errorMessages type is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone invalid-file-type-message="Legacy type message"></modus-wc-file-dropzone>',
+    });
+
+    const component = page.rootInstance;
+    component.errorMessages = {};
+
+    type PrivateMethods = {
+      getErrorMessage: (type: string) => string;
+    };
+
+    const errorMessage = (component as unknown as PrivateMethods)[
+      'getErrorMessage'
+    ]('type');
+
+    expect(errorMessage).toBe('Legacy type message');
   });
 
   it('should return "0 Bytes" for zero or undefined bytes in formatFileSize', async () => {

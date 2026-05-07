@@ -3020,6 +3020,14 @@
               }
             },
             {
+              "name": "error-messages",
+              "fieldName": "errorMessages",
+              "description": "Custom error messages displayed when file validation fails",
+              "type": {
+                "text": "IFileDropzoneErrorMessages"
+              }
+            },
+            {
               "name": "file-dragged-over-instructions",
               "fieldName": "fileDraggedOverInstructions",
               "description": "Custom instructions shown when files are dragged over the dropzone",

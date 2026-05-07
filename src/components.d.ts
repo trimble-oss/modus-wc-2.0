@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { IFileDropzoneErrorMessages } from "./components/modus-wc-file-dropzone/modus-wc-file-dropzone";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { LogoName } from "./components/modus-wc-logo/logo-constants";
@@ -25,6 +26,7 @@ import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { IFileDropzoneErrorMessages } from "./components/modus-wc-file-dropzone/modus-wc-file-dropzone";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { LogoName } from "./components/modus-wc-logo/logo-constants";
@@ -711,6 +713,10 @@ export namespace Components {
           * Disable the file input
          */
         "disabled"?: boolean;
+        /**
+          * Custom error messages displayed when file validation fails
+         */
+        "errorMessages"?: IFileDropzoneErrorMessages;
         /**
           * Custom instructions shown when files are dragged over the dropzone
          */
@@ -3934,6 +3940,10 @@ declare namespace LocalJSX {
           * Disable the file input
          */
         "disabled"?: boolean;
+        /**
+          * Custom error messages displayed when file validation fails
+         */
+        "errorMessages"?: IFileDropzoneErrorMessages;
         /**
           * Custom instructions shown when files are dragged over the dropzone
          */
