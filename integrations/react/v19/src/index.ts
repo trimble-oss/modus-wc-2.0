@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
   setAssetPath(new URL('.', import.meta.url).href);
 }
 
-export * from './stencil-generated/components';
+export * from './stencil-generated/components.js';
 export type {
   AutocompleteTypes,
   DaisySize,
