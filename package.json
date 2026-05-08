@@ -130,7 +130,6 @@
     "@storybook/web-components": "^8.6.12",
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.19",
-    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
     "@trimble-oss/modus-stencil-razor-output-target": "^1.0.18",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
@@ -172,6 +171,7 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",
+    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
