@@ -512,7 +512,7 @@ function parseRazorCs(filePath) {
       const name = paramMatch[2];
       let defaultVal = paramMatch[3] ?? null;
 
-      // Normalise default value string
+      // Normalize default value string
       if (defaultVal !== null) {
         defaultVal = defaultVal
           .replace(/^"(.*)"$/, '$1')

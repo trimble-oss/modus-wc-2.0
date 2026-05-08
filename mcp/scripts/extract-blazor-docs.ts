@@ -94,7 +94,7 @@ export interface BlazorComponentDoc {
   usageExample: string;
   /**
    * Important note about bool? parameters: C# bool.ToString() produces "True"/"False"
-   * (capitalised) which Stencil would misinterpret. The generated wrapper always emits
+   * (capitalized) which Stencil would misinterpret. The generated wrapper always emits
    * lowercase "true"/"false" via the @(Prop == true ? "true" : "false") pattern.
    */
   booleanBindingNote: string;
@@ -257,7 +257,7 @@ function parseRazorCodeBehind(csPath: string): Omit<BlazorComponentDoc, 'razorTe
     booleanBindingNote:
       'bool? parameters are normal C# booleans from the consumer perspective — just bind them ' +
       'as @myBoolVar or true/false. Internally the wrapper renders lowercase "true"/"false" ' +
-      'string attributes because C# bool.ToString() produces "True"/"False" (capitalised) ' +
+      'string attributes because C# bool.ToString() produces "True"/"False" (capitalized) ' +
       "which Stencil's runtime would misinterpret. This is handled automatically; " +
       'you do not need to use the ternary pattern in your own Razor pages.',
   };

@@ -96,7 +96,7 @@ String parameters are bound directly:
 
 ### Boolean Parameters
 
-Boolean parameters use normal C# `bool?`. The wrapper serialises them to lowercase `"true"` / `"false"` strings automatically (C#'s `bool.ToString()` produces capitalised `"True"` / `"False"` which Stencil would misinterpret):
+Boolean parameters use normal C# `bool?`. The wrapper serializes them to lowercase `"true"` / `"false"` strings automatically (C#'s `bool.ToString()` produces capitalized `"True"` / `"False"` which Stencil would misinterpret):
 
 ```razor
 <ModusWcButton Disabled="@_isDisabled" FullWidth="true">Save</ModusWcButton>
@@ -539,7 +539,7 @@ Ensure `modus-wc/modus-wc.esm.js` is present in `index.html` with `type="module"
 
 ### `&lt;slot&gt;` or raw entities in component descriptions
 
-This is a known display artefact in development tooling — it does not affect runtime behaviour.
+This is a known display artefact in development tooling — it does not affect runtime behavior.
 
 ### Events not firing
 

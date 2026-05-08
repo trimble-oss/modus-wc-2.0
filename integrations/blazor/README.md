@@ -70,7 +70,7 @@ node scripts/generate-blazor-stories.js
 npm run generate:blazor-stories
 ```
 
-Stories are organised into categories:
+Stories are organized into categories:
 
 | Category | Components |
 |---|---|
