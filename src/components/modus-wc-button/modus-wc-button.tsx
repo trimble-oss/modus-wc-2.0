@@ -75,7 +75,7 @@ export class ModusWcButton {
       fullWidth: this.fullWidth,
       pressed: this.pressed,
       shape: this.shape,
-      size: this.size as DaisySize,
+      size: this.size,
       variant: this.variant,
     });
 
