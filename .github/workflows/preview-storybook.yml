@@ -18,6 +18,10 @@ permissions:
   packages: read
   pull-requests: write
 
+concurrency:
+  group: gh-pages-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
