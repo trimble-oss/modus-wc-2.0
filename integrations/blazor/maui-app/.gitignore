@@ -2,6 +2,7 @@
 # Never commit these – they are regenerated automatically.
 wwwroot/dist/
 wwwroot/css/modus-wc-styles.css
+wwwroot/iframe.html
 Stories/
 
 # .NET build output
