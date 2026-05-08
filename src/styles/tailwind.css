@@ -329,7 +329,7 @@
  * WHY THIS EXISTS:
  * DaisyUI v4 generates hover/active states using:
  *   color-mix(in oklab, oklch(var(--btn-color)) 90%, #000)   ← modern Chrome
- * This fails via IACVT on Chrome <111. DaisyUI's own @supports not fallback
+ * This fails on Chrome <111. DaisyUI's own @supports not fallback
  * uses the SAME flat color for both default and hover (no darkening):
  *   @supports not (color: oklch()) { .btn:hover { background: var(--btn-color) } }
  * Result: no visual state feedback on old Chrome.
@@ -351,9 +351,9 @@
  *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e
  */
 @supports not (color: oklch(0% 0 0)) {
-
   /* ── modus-modern-light: filled buttons ──────────────────────────────── */
-  [data-theme='modus-modern-light'] .modus-wc-btn-primary.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-filled:hover {
     background-color: #217cbb; /* blue-light — ~10% lighter than trimble-blue */
   }
 
@@ -364,7 +364,8 @@
     background-color: #0e416c; /* blue-dark */
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
     background-color: #fec157; /* yellow-light */
   }
 
@@ -375,7 +376,8 @@
     background-color: #e49325; /* yellow-dark */
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
     background-color: #e0e1e9; /* gray-0 */
   }
 
@@ -386,7 +388,8 @@
     background-color: #b7b9c3; /* gray-2 */
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-warning.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-filled:hover {
     background-color: #fbad26; /* yellow — lighter than yellow-dark base */
   }
 
@@ -397,7 +400,8 @@
     background-color: #c97d1e; /* ~10% darker than yellow-dark */
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-error.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-filled:hover {
     background-color: #e86363; /* red-light */
   }
 
@@ -409,7 +413,8 @@
   }
 
   /* ── modus-modern-light: outlined buttons ────────────────────────────── */
-  [data-theme='modus-modern-light'] .modus-wc-btn-primary.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-outline:hover {
     background-color: #dcedf9; /* blue-pale */
     border-color: #217cbb;
     color: #217cbb;
@@ -424,7 +429,8 @@
     color: #0e416c;
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
     background-color: #fff5e4; /* yellow-pale */
     border-color: #fec157;
     color: #fec157;
@@ -439,7 +445,8 @@
     color: #e49325;
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
     background-color: #e0e1e9; /* gray-0 */
   }
 
@@ -450,7 +457,8 @@
     background-color: #cbcdd6; /* gray-1 */
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-warning.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-outline:hover {
     border-color: #fbad26;
     color: #fbad26;
   }
@@ -464,7 +472,8 @@
     color: #e49325;
   }
 
-  [data-theme='modus-modern-light'] .modus-wc-btn-error.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-outline:hover {
     background-color: #fbd4d7; /* red-pale */
     border-color: #e86363;
     color: #e86363;
@@ -480,7 +489,8 @@
   }
 
   /* ── modus-modern-dark: filled buttons ───────────────────────────────── */
-  [data-theme='modus-modern-dark'] .modus-wc-btn-primary.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-filled:hover {
     background-color: #217cbb; /* blue-light */
   }
 
@@ -491,7 +501,8 @@
     background-color: #0e416c; /* blue-dark */
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
     background-color: #fbad26; /* yellow */
   }
 
@@ -502,7 +513,8 @@
     background-color: #e49325; /* yellow-dark */
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
     background-color: #464b52; /* gray-8 */
   }
 
@@ -513,7 +525,8 @@
     background-color: #171c1e; /* gray-10 */
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-warning.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-filled:hover {
     background-color: #fbad26; /* yellow */
   }
 
@@ -524,7 +537,8 @@
     background-color: #e49325; /* yellow-dark */
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-error.modus-wc-btn-filled:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-filled:hover {
     background-color: #da212c; /* red */
   }
 
@@ -536,7 +550,8 @@
   }
 
   /* ── modus-modern-dark: outlined buttons ─────────────────────────────── */
-  [data-theme='modus-modern-dark'] .modus-wc-btn-primary.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-outline:hover {
     background-color: rgb(1 154 235 / 0.12);
   }
 
@@ -547,7 +562,8 @@
     background-color: rgb(1 154 235 / 0.3);
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
     background-color: rgb(254 193 87 / 0.12);
   }
 
@@ -558,7 +574,8 @@
     background-color: rgb(254 193 87 / 0.3);
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
     background-color: rgb(203 205 214 / 0.12);
   }
 
@@ -569,7 +586,8 @@
     background-color: rgb(203 205 214 / 0.3);
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-warning.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-outline:hover {
     background-color: rgb(254 193 87 / 0.12);
     border-color: #fbad26;
     color: #fbad26;
@@ -584,7 +602,8 @@
     color: #e49325;
   }
 
-  [data-theme='modus-modern-dark'] .modus-wc-btn-error.modus-wc-btn-outline:hover {
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-outline:hover {
     background-color: rgb(232 99 99 / 0.12);
     border-color: #da212c;
     color: #da212c;
