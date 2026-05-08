@@ -1,0 +1,15 @@
+<Project>
+  <!--
+    This file is auto-imported by MSBuild for all projects in this directory.
+    It injects the NuGet package README without touching the generated .csproj,
+    which is overwritten on every `stencil build`.
+    Source: integrations/blazor/nuget-README.md
+  -->
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../nuget-README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+</Project>
