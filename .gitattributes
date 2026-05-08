@@ -17,7 +17,7 @@
 *.yml  text eol=lf
 *.yaml text eol=lf
 
-# Binary — never normalise
+# Binary — never normalize
 *.woff2 binary
 *.png   binary
 *.jpg   binary
