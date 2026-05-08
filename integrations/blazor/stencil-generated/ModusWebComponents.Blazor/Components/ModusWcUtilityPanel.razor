@@ -1,9 +1,0 @@
-@namespace ModusWebComponents.Blazor
-
-<modus-wc-utility-panel custom-class="@CustomClass"
-                 expanded="@(Expanded?.ToString().ToLower())"
-                 push-content="@(PushContent?.ToString().ToLower())"
-                 @ref="_elementRef"
-                 @attributes="AdditionalAttributes">
-    @ChildContent
-</modus-wc-utility-panel>
