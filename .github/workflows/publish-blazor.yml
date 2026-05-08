@@ -48,10 +48,16 @@ jobs:
       - name: Build Base Web Components (generates Blazor RCL)
         run: npm run build:ci
 
+      - name: Build Blazor RCL
+        run: |
+          dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor \
+            -c Release \
+            -p:Version="${{ github.event.inputs.version }}"
+
       - name: Pack Blazor RCL
         run: |
           dotnet pack integrations/blazor/stencil-generated/ModusWebComponents.Blazor \
-            -c Release \
+            -c Release --no-build \
             -p:Version="${{ github.event.inputs.version }}" \
             --output ./nuget-output
 
