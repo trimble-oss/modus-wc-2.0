@@ -43,7 +43,9 @@ jobs:
         run: npm run build:ci
 
       - name: Build Blazor RCL
-        run: dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor -c Release
+        run: dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor \
+          -c Release \
+          -p:Version="0.0.0-pr${{ inputs.pr_number }}.${{ github.run_number }}"
 
       - name: Pack Blazor RCL (preview NuGet for QA)
         run: |
