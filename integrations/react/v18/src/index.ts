@@ -8,23 +8,7 @@ if (typeof window !== 'undefined') {
 }
 
 export * from './stencil-generated/components';
-export type {
-  AutocompleteTypes,
-  DaisySize,
-  Density,
-  IAutocompleteItem,
-  IAutocompleteNoResults,
-  IInputFeedbackProp,
-  ModusSize,
-  Orientation,
-  PopoverPlacement,
-  SelectionMode,
-  TextFieldTypes,
-  TypographyHierarchy,
-  TypographySize,
-  TypographyWeight,
-  WeekStartDay,
-} from '@trimble-oss/moduswebcomponents';
+export type * from '@trimble-oss/moduswebcomponents';
 
 // Re-export setAssetPath for users who need to override
 export { setAssetPath };
