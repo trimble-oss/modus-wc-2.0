@@ -47,6 +47,7 @@ export namespace Components {
     interface ModusWcAccordion {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
     }
@@ -65,6 +66,7 @@ export namespace Components {
         "alertTitle": string;
         /**
           * Custom CSS class to apply to the outer div element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -73,6 +75,7 @@ export namespace Components {
         "delay"?: number;
         /**
           * Whether the alert has a dismiss button
+          * @default false
          */
         "dismissible"?: boolean;
         /**
@@ -81,6 +84,7 @@ export namespace Components {
         "icon"?: string;
         /**
           * The variant of the alert.
+          * @default 'info'
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
     }
@@ -95,6 +99,7 @@ export namespace Components {
         "autoComplete"?: AutocompleteTypes;
         /**
           * Indicates that the autocomplete should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
@@ -111,6 +116,7 @@ export namespace Components {
         "customBlur"?: (event: FocusEvent) => void;
         /**
           * Custom CSS class to apply to host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -127,10 +133,12 @@ export namespace Components {
         "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+          * @default 300
          */
         "debounceMs"?: number;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -143,10 +151,12 @@ export namespace Components {
         "focusInput": () => Promise<void>;
         /**
           * Show the clear button within the input field.
+          * @default false
          */
         "includeClear"?: boolean;
         /**
           * Show the search icon within the input field.
+          * @default false
          */
         "includeSearch"?: boolean;
         /**
@@ -159,6 +169,7 @@ export namespace Components {
         "inputTabIndex"?: number;
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
+          * @default []
          */
         "items"?: IAutocompleteItem[];
         /**
@@ -167,22 +178,27 @@ export namespace Components {
         "label"?: string;
         /**
           * Whether the menu should remain open after an item is selected.
+          * @default false
          */
         "leaveMenuOpen"?: boolean;
         /**
           * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+          * @default -1
          */
         "maxChips"?: number;
         /**
           * The minimum number of characters required to render the menu.
+          * @default 0
          */
         "minChars": number;
         /**
           * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+          * @default 10
          */
         "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
+          * @default false
          */
         "multiSelect"?: boolean;
         /**
@@ -191,6 +207,7 @@ export namespace Components {
         "name"?: string;
         /**
           * The content to display when no results are found.
+          * @default {     ariaLabel: 'No results found',     label: 'No results found',     subLabel: 'Check spelling or try a different keyword',   }
          */
         "noResults"?: IAutocompleteNoResults;
         /**
@@ -199,14 +216,17 @@ export namespace Components {
         "openMenu": () => Promise<void>;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -215,14 +235,17 @@ export namespace Components {
         "selectItem": (item: IAutocompleteItem | null) => Promise<void>;
         /**
           * Whether to show the menu whenever the input has focus, regardless of input value.
+          * @default false
          */
         "showMenuOnFocus"?: boolean;
         /**
           * A spinner that appears when set to true
+          * @default false
          */
         "showSpinner"?: boolean;
         /**
           * The size of the autocomplete (input and menu).
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -231,6 +254,7 @@ export namespace Components {
         "toggleMenu": () => Promise<void>;
         /**
           * The value of the control.
+          * @default ''
          */
         "value": string;
     }
@@ -246,22 +270,27 @@ export namespace Components {
         "alt": string;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The location of the image.
+          * @default ''
          */
         "imgSrc": string;
         /**
           * The initials to display when no image is provided.
+          * @default ''
          */
         "initials"?: string;
         /**
           * The shape of the avatar.
+          * @default 'circle'
          */
         "shape"?: 'circle' | 'square';
         /**
           * The size of the avatar.
+          * @default 'md'
          */
         "size"?: DaisySize;
     }
@@ -272,6 +301,7 @@ export namespace Components {
     interface ModusWcBadge {
         /**
           * The color variant of the badge.
+          * @default 'primary'
          */
         "color": | 'primary'
     | 'secondary'
@@ -282,14 +312,17 @@ export namespace Components {
     | 'danger';
         /**
           * Custom CSS class to apply to the span element.
+          * @default ''
          */
         "customClass": string;
         /**
           * The size of the badge.
+          * @default 'md'
          */
         "size": ModusSize;
         /**
           * The variant of the badge.
+          * @default 'filled'
          */
         "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
@@ -299,14 +332,17 @@ export namespace Components {
     interface ModusWcBreadcrumbs {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The breadcrumbs to render.
+          * @default []
          */
         "items": IBreadcrumb[];
         /**
           * The size of the breadcrumbs.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -317,38 +353,47 @@ export namespace Components {
     interface ModusWcButton {
         /**
           * The color variant of the button.
+          * @default 'primary'
          */
         "color": 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Custom CSS class to apply to the button element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * If true, the button will be disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * If true, the button will take the full width of its container.
+          * @default false
          */
         "fullWidth"?: boolean;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
+          * @default false
          */
         "pressed"?: boolean;
         /**
           * The shape of the button.
+          * @default 'rectangle'
          */
         "shape": 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "size": DaisySize;
         /**
           * The type of the button.
+          * @default 'button'
          */
         "type": 'button' | 'submit' | 'reset';
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "variant": 'borderless' | 'filled' | 'outlined';
     }
@@ -363,18 +408,22 @@ export namespace Components {
         "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Disables all buttons within the button group
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Orientation of the button group: horizontal or vertical
+          * @default 'horizontal'
          */
         "orientation"?: Orientation;
         /**
           * Selection type for button group
+          * @default 'default'
          */
         "selectionType"?: 'default' | 'single' | 'multiple';
         /**
           * Style variant to apply to all buttons within the button group
+          * @default 'outlined'
          */
         "variant": 'borderless' | 'filled' | 'outlined';
     }
@@ -385,22 +434,27 @@ export namespace Components {
     interface ModusWcCard {
         /**
           * Makes any \<figure> in the 'header' slot cover the background
+          * @default false
          */
         "backgroundFigure"?: boolean;
         /**
           * Adds a hard border to the card
+          * @default false
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Determines how the card is laid out
+          * @default 'vertical'
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
           * Determines the interior padding size
+          * @default 'compact'
          */
         "padding"?: 'compact' | 'comfortable';
     }
@@ -410,14 +464,17 @@ export namespace Components {
     interface ModusWcCheckbox {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the checkbox.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * The indeterminate state of the checkbox.
+          * @default false
          */
         "indeterminate": boolean;
         /**
@@ -434,18 +491,22 @@ export namespace Components {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the checkbox.
+          * @default false
          */
         "value": boolean;
     }
@@ -456,38 +517,47 @@ export namespace Components {
     interface ModusWcChip {
         /**
           * Active state of chip.
+          * @default false
          */
         "active"?: boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the chip is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Whether the chip has an error.
+          * @default false
          */
         "hasError"?: boolean;
         /**
           * The label to display in the chip.
+          * @default ''
          */
         "label"?: string;
         /**
           * The shape of the chip: 'rectangle' (default) or 'circle'.
+          * @default 'rectangle'
          */
         "shape"?: 'rectangle' | 'circle';
         /**
           * Whether to show the close icon on right side of the chip.
+          * @default false
          */
         "showRemove"?: boolean;
         /**
           * The size of the chip.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The variant of the chip.
+          * @default 'filled'
          */
         "variant"?: 'filled' | 'outline';
     }
@@ -498,10 +568,12 @@ export namespace Components {
     interface ModusWcCollapse {
         /**
           * When true, renders a border-bottom on the collapse component.
+          * @default false
          */
         "bordered"?: boolean;
         /**
           * Controls chevron placement.
+          * @default 'right'
          */
         "chevronPosition"?: 'left' | 'right';
         /**
@@ -510,10 +582,12 @@ export namespace Components {
         "collapseId"?: string;
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Controls whether the collapse is expanded or not.
+          * @default false
          */
         "expanded"?: boolean;
         /**
@@ -528,14 +602,17 @@ export namespace Components {
     interface ModusWcDate {
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -578,26 +655,32 @@ export namespace Components {
         "name"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required or must be checked for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
+          * @default false
          */
         "showWeekNumbers"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the control.
+          * @default ''
          */
         "value": string;
         /**
           * The first day of the week for the calendar display
+          * @default 'sunday'
          */
         "weekStartDay"?: WeekStartDay;
     }
@@ -607,6 +690,7 @@ export namespace Components {
     interface ModusWcDivider {
         /**
           * The color of the divider line.
+          * @default 'tertiary'
          */
         "color"?: | 'primary'
     | 'secondary'
@@ -617,22 +701,27 @@ export namespace Components {
     | 'danger';
         /**
           * The content to display in the divider.
+          * @default ''
          */
         "content"?: string;
         /**
           * Custom CSS class to apply to the divider element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
+          * @default 'vertical'
          */
         "orientation"?: Orientation;
         /**
           * The position of the divider.
+          * @default 'center'
          */
         "position"?: 'center' | 'end' | 'start';
         /**
           * Whether the divider is responsive or not.
+          * @default true
          */
         "responsive"?: boolean;
     }
@@ -647,6 +736,7 @@ export namespace Components {
         "buttonAriaLabel"?: string;
         /**
           * The color variant of the button.
+          * @default 'primary'
          */
         "buttonColor"?: | 'primary'
     | 'secondary'
@@ -655,42 +745,52 @@ export namespace Components {
     | 'danger';
         /**
           * The shape of the button.
+          * @default 'rectangle'
          */
         "buttonShape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "buttonSize"?: DaisySize;
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
         /**
           * Custom CSS class to apply to the host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * If true, the button will be disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Indicates that the menu should have a border.
+          * @default true
          */
         "menuBordered"?: boolean;
         /**
           * Distance between the button and menu in pixels.
+          * @default 10
          */
         "menuOffset"?: number;
         /**
           * The placement of the menu relative to the button.
+          * @default 'bottom-start'
          */
         "menuPlacement"?: PopoverPlacement;
         /**
           * The size of the menu.
+          * @default 'md'
          */
         "menuSize"?: ModusSize;
         /**
           * Indicates that the menu is visible.
+          * @default false
          */
         "menuVisible": boolean;
     }
@@ -705,6 +805,7 @@ export namespace Components {
         "acceptFileTypes"?: string;
         /**
           * Custom CSS class to apply to the file dropzone element
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -717,6 +818,7 @@ export namespace Components {
         "fileDraggedOverInstructions"?: string;
         /**
           * Include state icon (upload, success, error)
+          * @default true
          */
         "includeStateIcon"?: boolean;
         /**
@@ -758,6 +860,7 @@ export namespace Components {
     interface ModusWcHandle {
         /**
           * The color of the button.
+          * @default 'tertiary'
          */
         "buttonColor"?: | 'primary'
     | 'secondary'
@@ -766,22 +869,27 @@ export namespace Components {
     | 'danger';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "buttonSize"?: DaisySize;
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
         /**
           * Custom CSS class to apply to the handle element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+          * @default 50
          */
         "defaultSplit"?: number;
         /**
           * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+          * @default 'comfortable'
          */
         "density"?: 'compact' | 'comfortable' | 'relaxed';
         /**
@@ -790,6 +898,7 @@ export namespace Components {
         "leftTarget"?: string | HTMLElement;
         /**
           * The orientation of the handle.
+          * @default 'horizontal'
          */
         "orientation"?: Orientation;
         /**
@@ -798,10 +907,12 @@ export namespace Components {
         "rightTarget"?: string | HTMLElement;
         /**
           * The size of the handle.
+          * @default 'default'
          */
         "size"?: 'default' | 'lg' | 'xl' | '2xl';
         /**
           * The type of handle to display.
+          * @default 'bar'
          */
         "type"?: 'bar' | 'button';
     }
@@ -812,10 +923,12 @@ export namespace Components {
     interface ModusWcIcon {
         /**
           * Custom CSS class to apply to the i element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
+          * @default true
          */
         "decorative"?: boolean;
         /**
@@ -824,6 +937,7 @@ export namespace Components {
         "name": string;
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
+          * @default 'md'
          */
         "size"?: DaisySize;
         /**
@@ -838,10 +952,12 @@ export namespace Components {
     interface ModusWcInputFeedback {
         /**
           * Custom CSS class to apply to the outer div element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The Modus icon to use instead of the pre-defined icons.
+          * @default ''
          */
         "icon"?: string;
         /**
@@ -850,10 +966,12 @@ export namespace Components {
         "level": IInputFeedbackLevel;
         /**
           * The message.
+          * @default ''
          */
         "message"?: string;
         /**
           * The size of the feedback component.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -864,6 +982,7 @@ export namespace Components {
     interface ModusWcInputLabel {
         /**
           * Additional classes for custom styling.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -876,10 +995,12 @@ export namespace Components {
         "labelText"?: string;
         /**
           * Whether the label indicates a required field.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the label.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -893,18 +1014,22 @@ export namespace Components {
     interface ModusWcLoader {
         /**
           * The color of the loader.
+          * @default 'primary'
          */
         "color": LoaderColor;
         /**
           * Custom CSS class to apply to the loader element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The size of the loader.
+          * @default 'md'
          */
         "size": DaisySize;
         /**
           * The variant of the loader.
+          * @default 'spinner'
          */
         "variant": LoaderVariant;
     }
@@ -920,10 +1045,12 @@ export namespace Components {
         "alt"?: string;
         /**
           * Custom CSS class to apply to the logo container.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Show emblem version (icon only) instead of full logo
+          * @default false
          */
         "emblem"?: boolean;
         /**
@@ -942,6 +1069,7 @@ export namespace Components {
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -950,14 +1078,17 @@ export namespace Components {
         "isSubMenu"?: boolean;
         /**
           * The orientation of the menu.
+          * @default 'vertical'
          */
         "orientation"?: Orientation;
         /**
           * The selection mode of the menu.
+          * @default 'single'
          */
         "selectionMode"?: SelectionMode;
         /**
           * The size of the menu.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -977,6 +1108,7 @@ export namespace Components {
         "collapseSubmenu": () => Promise<void>;
         /**
           * Custom CSS class to apply to the li element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -993,6 +1125,7 @@ export namespace Components {
         "hasSubmenu"?: boolean;
         /**
           * The text rendered in the menu item.
+          * @default ''
          */
         "label": string;
         /**
@@ -1001,6 +1134,7 @@ export namespace Components {
         "selected"?: boolean;
         /**
           * The size of the menu item.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -1013,10 +1147,12 @@ export namespace Components {
         "tooltipContent"?: string;
         /**
           * The position of the tooltip relative to the menu item.
+          * @default 'auto'
          */
         "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
+          * @default ''
          */
         "value": string;
     }
@@ -1027,14 +1163,17 @@ export namespace Components {
     interface ModusWcModal {
         /**
           * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+          * @default 'default'
          */
         "backdrop"?: 'default' | 'static';
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Specifies whether the modal should be displayed full-screen
+          * @default false
          */
         "fullscreen"?: boolean;
         /**
@@ -1043,14 +1182,17 @@ export namespace Components {
         "modalId": string;
         /**
           * Specifies the position of the modal
+          * @default 'center'
          */
         "position"?: 'bottom' | 'center' | 'top';
         /**
           * Specifies whether to show the close icon button at the top right of modal
+          * @default true
          */
         "showClose"?: boolean;
         /**
           * Specifies whether to show the fullscreen toggle icon button
+          * @default false
          */
         "showFullscreenToggle"?: boolean;
     }
@@ -1060,38 +1202,47 @@ export namespace Components {
     interface ModusWcNavbar {
         /**
           * The open state of the apps menu.
+          * @default false
          */
         "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
+          * @default false
          */
         "condensed"?: boolean;
         /**
           * The open state of the condensed menu.
+          * @default false
          */
         "condensedMenuOpen"?: boolean;
         /**
           * Custom CSS class to apply to the host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
+          * @default 'trimble'
          */
         "logoName"?: LogoName;
         /**
           * The open state of the main menu.
+          * @default false
          */
         "mainMenuOpen"?: boolean;
         /**
           * The open state of the notifications menu.
+          * @default false
          */
         "notificationsMenuOpen"?: boolean;
         /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
+          * @default 300
          */
         "searchDebounceMs"?: number;
         /**
           * The open state of the search input.
+          * @default false
          */
         "searchInputOpen"?: boolean;
         /**
@@ -1104,10 +1255,12 @@ export namespace Components {
         "userCard": INavbarUserCard;
         /**
           * The open state of the user menu.
+          * @default false
          */
         "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+          * @default {     ai: false,     apps: false,     help: false,     logo: true,     mainMenu: false,     notifications: false,     search: false,     searchInput: false,     user: true,   }
          */
         "visibility"?: INavbarVisibility;
     }
@@ -1121,18 +1274,22 @@ export namespace Components {
         "autoComplete"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * The currency symbol to display.
+          * @default ''
          */
         "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1165,18 +1322,22 @@ export namespace Components {
         "name"?: string;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -1185,10 +1346,12 @@ export namespace Components {
         "step"?: number;
         /**
           * Type of form control.
+          * @default 'number'
          */
         "type"?: 'number' | 'range';
         /**
           * The value of the control.
+          * @default ''
          */
         "value": string;
     }
@@ -1202,10 +1365,12 @@ export namespace Components {
         "ariaLabelValues"?: IAriaLabelValues;
         /**
           * Total number of pages
+          * @default 1
          */
         "count": number;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1214,6 +1379,7 @@ export namespace Components {
         "nextButtonText"?: string;
         /**
           * The current page number
+          * @default 1
          */
         "page": number;
         /**
@@ -1222,6 +1388,7 @@ export namespace Components {
         "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
+          * @default 'md'
          */
         "size": ModusSize;
     }
@@ -1232,18 +1399,22 @@ export namespace Components {
     interface ModusWcPanel {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Enable floating mode with elevated shadow.
+          * @default false
          */
         "floating"?: boolean;
         /**
           * Height of the panel in pixels.
+          * @default '700px'
          */
         "height"?: string;
         /**
           * Width of the panel in pixels.
+          * @default '350px'
          */
         "width"?: string;
     }
@@ -1268,10 +1439,12 @@ export namespace Components {
     interface ModusWcProgress {
         /**
           * Custom CSS class to apply to the progress element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The indeterminate state of the progress component.
+          * @default false
          */
         "indeterminate": boolean;
         /**
@@ -1280,14 +1453,17 @@ export namespace Components {
         "label"?: string;
         /**
           * The progress component's maximum value.
+          * @default 100
          */
         "max"?: number;
         /**
           * The value of the progress component.
+          * @default 0
          */
         "value": number;
         /**
           * The variant of the progress component.
+          * @default 'default'
          */
         "variant"?: 'default' | 'radial';
     }
@@ -1297,10 +1473,12 @@ export namespace Components {
     interface ModusWcRadio {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the radio.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1317,18 +1495,22 @@ export namespace Components {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the radio.
+          * @default false
          */
         "value": boolean;
     }
@@ -1338,34 +1520,42 @@ export namespace Components {
     interface ModusWcRating {
         /**
           * Whether to allow half-ratings. Only applies to star and heart variants.
+          * @default false
          */
         "allowHalf"?: boolean;
         /**
           * The number of rating items to display
+          * @default 5
          */
         "count": number;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the rating component is disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Function to provide aria-label text for a given rating-item index
+          * @default (ratingValue) =>     `Rating item ${ratingValue}`
          */
         "getAriaLabelText"?: (ratingValue: number) => string;
         /**
           * The size of the rating component
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The current value of the rating
+          * @default 0
          */
         "value": number;
         /**
           * The variant of the rating scale
+          * @default 'smiley'
          */
         "variant": ModusWcRatingVariant;
     }
@@ -1375,14 +1565,17 @@ export namespace Components {
     interface ModusWcSelect {
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1407,18 +1600,22 @@ export namespace Components {
         "name"?: string;
         /**
           * The options to display in the select dropdown.
+          * @default []
          */
         "options": ISelectOption[];
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the control.
+          * @default ''
          */
         "value": string;
     }
@@ -1429,26 +1626,32 @@ export namespace Components {
     interface ModusWcSideNavigation {
         /**
           * Whether the side navigation should collapse when clicking outside of it.
+          * @default true
          */
         "collapseOnClickOutside": boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the side navigation is expanded.
+          * @default false
          */
         "expanded": boolean;
         /**
           * Maximum width of the side navigation panel in an expanded state.
+          * @default '256px'
          */
         "maxWidth": string;
         /**
           * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+          * @default 'overlay'
          */
         "mode": 'overlay' | 'push';
         /**
           * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+          * @default ''
          */
         "targetContent": string;
     }
@@ -1458,18 +1661,22 @@ export namespace Components {
     interface ModusWcSkeleton {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The height of the skeleton.
+          * @default 'var(--modus-wc-line-height-md)'
          */
         "height": string;
         /**
           * The shape of the skeleton.
+          * @default 'rectangle'
          */
         "shape"?: 'circle' | 'rectangle';
         /**
           * The width of the skeleton.
+          * @default '100%'
          */
         "width": string;
     }
@@ -1479,10 +1686,12 @@ export namespace Components {
     interface ModusWcSlider {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the slider.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1507,14 +1716,17 @@ export namespace Components {
         "min"?: number;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -1523,6 +1735,7 @@ export namespace Components {
         "step"?: number;
         /**
           * The value of the slider.
+          * @default 0
          */
         "value": number;
     }
@@ -1532,6 +1745,7 @@ export namespace Components {
     interface ModusWcStepper {
         /**
           * Custom CSS class to apply to the steps element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1540,6 +1754,7 @@ export namespace Components {
         "orientation"?: Orientation;
         /**
           * The steps to display.
+          * @default []
          */
         "steps": IStepperItem[];
     }
@@ -1549,14 +1764,17 @@ export namespace Components {
     interface ModusWcSwitch {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the switch.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * The indeterminate state of the switch.
+          * @default false
          */
         "indeterminate": boolean;
         /**
@@ -1573,18 +1791,22 @@ export namespace Components {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
+          * @default false
          */
         "value": boolean;
     }
@@ -1599,10 +1821,12 @@ export namespace Components {
         "columns": ITableColumn[];
         /**
           * The current page number in pagination (1-based index).
+          * @default 1
          */
         "currentPage": number;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1611,26 +1835,32 @@ export namespace Components {
         "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
+          * @default 'comfortable'
          */
         "density"?: Density;
         /**
           * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+          * @default false
          */
         "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
         /**
           * Enable hover effect on table rows.
+          * @default true
          */
         "hover"?: boolean;
         /**
           * Available options for the number of rows per page.
+          * @default [5, 10, 15]
          */
         "pageSizeOptions": number[];
         /**
           * Enable pagination for the table.
+          * @default false
          */
         "paginated"?: boolean;
         /**
           * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+          * @default 'none'
          */
         "selectable"?: 'none' | 'single' | 'multi';
         /**
@@ -1639,14 +1869,17 @@ export namespace Components {
         "selectedRowIds"?: string[];
         /**
           * Show/hide the page size selector in pagination.
+          * @default true
          */
         "showPageSizeSelector"?: boolean;
         /**
           * Enable sorting functionality for sortable columns.
+          * @default true
          */
         "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+          * @default false
          */
         "zebra"?: boolean;
     }
@@ -1657,22 +1890,27 @@ export namespace Components {
     interface ModusWcTabs {
         /**
           * The current active tab
+          * @default 0
          */
         "activeTabIndex": number;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The size of the tabs.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * Additional styling for the tabs.
+          * @default 'bordered'
          */
         "tabStyle"?: 'boxed' | 'bordered' | 'lifted' | 'none';
         /**
           * The tabs to display.
+          * @default []
          */
         "tabs": ITab[];
     }
@@ -1700,18 +1938,22 @@ export namespace Components {
         "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Aria label for the clear icon button.
+          * @default 'Clear text'
          */
         "clearAriaLabel"?: string;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1730,10 +1972,12 @@ export namespace Components {
         "feedback"?: IInputFeedbackProp;
         /**
           * Show the clear button within the input field.
+          * @default false
          */
         "includeClear"?: boolean;
         /**
           * Show the search icon within the input field.
+          * @default false
          */
         "includeSearch"?: boolean;
         /**
@@ -1766,26 +2010,32 @@ export namespace Components {
         "pattern"?: string;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * Type of form control.
+          * @default 'text'
          */
         "type"?: TextFieldTypes;
         /**
           * The value of the control.
+          * @default ''
          */
         "value": string;
     }
@@ -1799,14 +2049,17 @@ export namespace Components {
         "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the textarea.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1849,14 +2102,17 @@ export namespace Components {
         "name"?: string;
         /**
           * The placeholder text for the textarea.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * The readonly state of the textarea.
+          * @default false
          */
         "readonly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -1865,10 +2121,12 @@ export namespace Components {
         "rows"?: number;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the textarea.
+          * @default ''
          */
         "value": string;
     }
@@ -1882,6 +2140,7 @@ export namespace Components {
     interface ModusWcThemeSwitcher {
         /**
           * Custom CSS class to apply to the theme switcher element.
+          * @default ''
          */
         "customClass"?: string;
     }
@@ -1895,10 +2154,12 @@ export namespace Components {
         "autoComplete"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1907,10 +2168,12 @@ export namespace Components {
         "datalistId"?: string;
         /**
           * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+          * @default []
          */
         "datalistOptions": string[];
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -1943,18 +2206,22 @@ export namespace Components {
         "name"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+          * @default false
          */
         "showSeconds"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -1963,6 +2230,7 @@ export namespace Components {
         "step"?: number;
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+          * @default ''
          */
         "value": string;
     }
@@ -1973,6 +2241,7 @@ export namespace Components {
     interface ModusWcToast {
         /**
           * Additional classes for custom styling.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1981,6 +2250,7 @@ export namespace Components {
         "delay"?: number;
         /**
           * The position of the toast in the parent container.
+          * @default 'top-end'
          */
         "position"?: ToastPosition;
     }
@@ -1991,6 +2261,7 @@ export namespace Components {
     interface ModusWcToolbar {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
     }
@@ -2002,14 +2273,17 @@ export namespace Components {
     interface ModusWcTooltip {
         /**
           * The text content of the tooltip.
+          * @default ''
          */
         "content": string;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Disables displaying the tooltip on hover
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -2018,6 +2292,7 @@ export namespace Components {
         "forceOpen"?: boolean;
         /**
           * The position that the tooltip will render in relation to the element.
+          * @default 'auto'
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
@@ -2037,10 +2312,12 @@ export namespace Components {
     interface ModusWcTypography {
         /**
           * Custom CSS class to apply to the typography element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The hierarchy of the typography component.
+          * @default 'p'
          */
         "hierarchy": TypographyHierarchy;
         /**
@@ -2049,24 +2326,29 @@ export namespace Components {
         "label": string;
         /**
           * The size of the font.
+          * @default 'md'
          */
         "size"?: TypographySize;
         /**
           * The weight of the text.
+          * @default 'normal'
          */
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The panel is expanded or closed
+          * @default false
          */
         "expanded": boolean;
         /**
           * Determines if the panel pushes content or displays an overlay.
+          * @default false
          */
         "pushContent": boolean;
         /**
@@ -3186,6 +3468,7 @@ declare namespace LocalJSX {
     interface ModusWcAccordion {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -3211,6 +3494,7 @@ declare namespace LocalJSX {
         "alertTitle": string;
         /**
           * Custom CSS class to apply to the outer div element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -3219,6 +3503,7 @@ declare namespace LocalJSX {
         "delay"?: number;
         /**
           * Whether the alert has a dismiss button
+          * @default false
          */
         "dismissible"?: boolean;
         /**
@@ -3231,6 +3516,7 @@ declare namespace LocalJSX {
         "onDismissClick"?: (event: ModusWcAlertCustomEvent<any>) => void;
         /**
           * The variant of the alert.
+          * @default 'info'
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
     }
@@ -3245,6 +3531,7 @@ declare namespace LocalJSX {
         "autoComplete"?: AutocompleteTypes;
         /**
           * Indicates that the autocomplete should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
@@ -3253,6 +3540,7 @@ declare namespace LocalJSX {
         "customBlur"?: (event: FocusEvent) => void;
         /**
           * Custom CSS class to apply to host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -3269,10 +3557,12 @@ declare namespace LocalJSX {
         "customKeyDown"?: (event: KeyboardEvent) => void;
         /**
           * The debounce timeout in milliseconds. Set to 0 to disable debouncing.
+          * @default 300
          */
         "debounceMs"?: number;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -3281,10 +3571,12 @@ declare namespace LocalJSX {
         "feedback"?: IInputFeedbackProp;
         /**
           * Show the clear button within the input field.
+          * @default false
          */
         "includeClear"?: boolean;
         /**
           * Show the search icon within the input field.
+          * @default false
          */
         "includeSearch"?: boolean;
         /**
@@ -3297,6 +3589,7 @@ declare namespace LocalJSX {
         "inputTabIndex"?: number;
         /**
           * The items to display in the menu. Creating a new array of items will ensure proper component re-render.
+          * @default []
          */
         "items"?: IAutocompleteItem[];
         /**
@@ -3305,22 +3598,27 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Whether the menu should remain open after an item is selected.
+          * @default false
          */
         "leaveMenuOpen"?: boolean;
         /**
           * Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
+          * @default -1
          */
         "maxChips"?: number;
         /**
           * The minimum number of characters required to render the menu.
+          * @default 0
          */
         "minChars"?: number;
         /**
           * Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead.
+          * @default 10
          */
         "minInputWidth"?: number;
         /**
           * Whether the input allows multiple items to be selected.
+          * @default false
          */
         "multiSelect"?: boolean;
         /**
@@ -3329,6 +3627,7 @@ declare namespace LocalJSX {
         "name"?: string;
         /**
           * The content to display when no results are found.
+          * @default {     ariaLabel: 'No results found',     label: 'No results found',     subLabel: 'Check spelling or try a different keyword',   }
          */
         "noResults"?: IAutocompleteNoResults;
         /**
@@ -3361,30 +3660,37 @@ declare namespace LocalJSX {
         "onItemSelect"?: (event: ModusWcAutocompleteCustomEvent<IAutocompleteItem>) => void;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * Whether to show the menu whenever the input has focus, regardless of input value.
+          * @default false
          */
         "showMenuOnFocus"?: boolean;
         /**
           * A spinner that appears when set to true
+          * @default false
          */
         "showSpinner"?: boolean;
         /**
           * The size of the autocomplete (input and menu).
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the control.
+          * @default ''
          */
         "value"?: string;
     }
@@ -3400,22 +3706,27 @@ declare namespace LocalJSX {
         "alt": string;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The location of the image.
+          * @default ''
          */
         "imgSrc"?: string;
         /**
           * The initials to display when no image is provided.
+          * @default ''
          */
         "initials"?: string;
         /**
           * The shape of the avatar.
+          * @default 'circle'
          */
         "shape"?: 'circle' | 'square';
         /**
           * The size of the avatar.
+          * @default 'md'
          */
         "size"?: DaisySize;
     }
@@ -3426,6 +3737,7 @@ declare namespace LocalJSX {
     interface ModusWcBadge {
         /**
           * The color variant of the badge.
+          * @default 'primary'
          */
         "color"?: | 'primary'
     | 'secondary'
@@ -3436,14 +3748,17 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * Custom CSS class to apply to the span element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The size of the badge.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The variant of the badge.
+          * @default 'filled'
          */
         "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
     }
@@ -3453,10 +3768,12 @@ declare namespace LocalJSX {
     interface ModusWcBreadcrumbs {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The breadcrumbs to render.
+          * @default []
          */
         "items"?: IBreadcrumb[];
         /**
@@ -3465,6 +3782,7 @@ declare namespace LocalJSX {
         "onBreadcrumbClick"?: (event: ModusWcBreadcrumbsCustomEvent<IBreadcrumb>) => void;
         /**
           * The size of the breadcrumbs.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -3475,18 +3793,22 @@ declare namespace LocalJSX {
     interface ModusWcButton {
         /**
           * The color variant of the button.
+          * @default 'primary'
          */
         "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Custom CSS class to apply to the button element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * If true, the button will be disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * If true, the button will take the full width of its container.
+          * @default false
          */
         "fullWidth"?: boolean;
         /**
@@ -3495,22 +3817,27 @@ declare namespace LocalJSX {
         "onButtonClick"?: (event: ModusWcButtonCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * If true, the button will be in a pressed state (for toggle buttons).
+          * @default false
          */
         "pressed"?: boolean;
         /**
           * The shape of the button.
+          * @default 'rectangle'
          */
         "shape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "size"?: DaisySize;
         /**
           * The type of the button.
+          * @default 'button'
          */
         "type"?: 'button' | 'submit' | 'reset';
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
@@ -3525,6 +3852,7 @@ declare namespace LocalJSX {
         "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
         /**
           * Disables all buttons within the button group
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -3542,14 +3870,17 @@ declare namespace LocalJSX {
   }>) => void;
         /**
           * Orientation of the button group: horizontal or vertical
+          * @default 'horizontal'
          */
         "orientation"?: Orientation;
         /**
           * Selection type for button group
+          * @default 'default'
          */
         "selectionType"?: 'default' | 'single' | 'multiple';
         /**
           * Style variant to apply to all buttons within the button group
+          * @default 'outlined'
          */
         "variant"?: 'borderless' | 'filled' | 'outlined';
     }
@@ -3560,22 +3891,27 @@ declare namespace LocalJSX {
     interface ModusWcCard {
         /**
           * Makes any \<figure> in the 'header' slot cover the background
+          * @default false
          */
         "backgroundFigure"?: boolean;
         /**
           * Adds a hard border to the card
+          * @default false
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Determines how the card is laid out
+          * @default 'vertical'
          */
         "layout"?: 'vertical' | 'horizontal';
         /**
           * Determines the interior padding size
+          * @default 'compact'
          */
         "padding"?: 'compact' | 'comfortable';
     }
@@ -3585,14 +3921,17 @@ declare namespace LocalJSX {
     interface ModusWcCheckbox {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the checkbox.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * The indeterminate state of the checkbox.
+          * @default false
          */
         "indeterminate"?: boolean;
         /**
@@ -3609,6 +3948,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
@@ -3625,14 +3965,17 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcCheckboxCustomEvent<FocusEvent>) => void;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the checkbox.
+          * @default false
          */
         "value"?: boolean;
     }
@@ -3643,22 +3986,27 @@ declare namespace LocalJSX {
     interface ModusWcChip {
         /**
           * Active state of chip.
+          * @default false
          */
         "active"?: boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the chip is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Whether the chip has an error.
+          * @default false
          */
         "hasError"?: boolean;
         /**
           * The label to display in the chip.
+          * @default ''
          */
         "label"?: string;
         /**
@@ -3671,18 +4019,22 @@ declare namespace LocalJSX {
         "onChipRemove"?: (event: ModusWcChipCustomEvent<MouseEvent | KeyboardEvent>) => void;
         /**
           * The shape of the chip: 'rectangle' (default) or 'circle'.
+          * @default 'rectangle'
          */
         "shape"?: 'rectangle' | 'circle';
         /**
           * Whether to show the close icon on right side of the chip.
+          * @default false
          */
         "showRemove"?: boolean;
         /**
           * The size of the chip.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The variant of the chip.
+          * @default 'filled'
          */
         "variant"?: 'filled' | 'outline';
     }
@@ -3693,10 +4045,12 @@ declare namespace LocalJSX {
     interface ModusWcCollapse {
         /**
           * When true, renders a border-bottom on the collapse component.
+          * @default false
          */
         "bordered"?: boolean;
         /**
           * Controls chevron placement.
+          * @default 'right'
          */
         "chevronPosition"?: 'left' | 'right';
         /**
@@ -3705,10 +4059,12 @@ declare namespace LocalJSX {
         "collapseId"?: string;
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Controls whether the collapse is expanded or not.
+          * @default false
          */
         "expanded"?: boolean;
         /**
@@ -3727,14 +4083,17 @@ declare namespace LocalJSX {
     interface ModusWcDate {
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -3797,26 +4156,32 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required or must be checked for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.
+          * @default false
          */
         "showWeekNumbers"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the control.
+          * @default ''
          */
         "value"?: string;
         /**
           * The first day of the week for the calendar display
+          * @default 'sunday'
          */
         "weekStartDay"?: WeekStartDay;
     }
@@ -3826,6 +4191,7 @@ declare namespace LocalJSX {
     interface ModusWcDivider {
         /**
           * The color of the divider line.
+          * @default 'tertiary'
          */
         "color"?: | 'primary'
     | 'secondary'
@@ -3836,22 +4202,27 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * The content to display in the divider.
+          * @default ''
          */
         "content"?: string;
         /**
           * Custom CSS class to apply to the divider element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The orientation of the divider. This is in reference to how content will be rendered around the divider.
+          * @default 'vertical'
          */
         "orientation"?: Orientation;
         /**
           * The position of the divider.
+          * @default 'center'
          */
         "position"?: 'center' | 'end' | 'start';
         /**
           * Whether the divider is responsive or not.
+          * @default true
          */
         "responsive"?: boolean;
     }
@@ -3866,6 +4237,7 @@ declare namespace LocalJSX {
         "buttonAriaLabel"?: string;
         /**
           * The color variant of the button.
+          * @default 'primary'
          */
         "buttonColor"?: | 'primary'
     | 'secondary'
@@ -3874,42 +4246,52 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * The shape of the button.
+          * @default 'rectangle'
          */
         "buttonShape"?: 'circle' | 'ellipse' | 'rectangle' | 'square';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "buttonSize"?: DaisySize;
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
         /**
           * Custom CSS class to apply to the host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * If true, the button will be disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Indicates that the menu should have a border.
+          * @default true
          */
         "menuBordered"?: boolean;
         /**
           * Distance between the button and menu in pixels.
+          * @default 10
          */
         "menuOffset"?: number;
         /**
           * The placement of the menu relative to the button.
+          * @default 'bottom-start'
          */
         "menuPlacement"?: PopoverPlacement;
         /**
           * The size of the menu.
+          * @default 'md'
          */
         "menuSize"?: ModusSize;
         /**
           * Indicates that the menu is visible.
+          * @default false
          */
         "menuVisible"?: boolean;
         /**
@@ -3928,6 +4310,7 @@ declare namespace LocalJSX {
         "acceptFileTypes"?: string;
         /**
           * Custom CSS class to apply to the file dropzone element
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -3940,6 +4323,7 @@ declare namespace LocalJSX {
         "fileDraggedOverInstructions"?: string;
         /**
           * Include state icon (upload, success, error)
+          * @default true
          */
         "includeStateIcon"?: boolean;
         /**
@@ -3981,6 +4365,7 @@ declare namespace LocalJSX {
     interface ModusWcHandle {
         /**
           * The color of the button.
+          * @default 'tertiary'
          */
         "buttonColor"?: | 'primary'
     | 'secondary'
@@ -3989,22 +4374,27 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * The size of the button.
+          * @default 'md'
          */
         "buttonSize"?: DaisySize;
         /**
           * The variant of the button.
+          * @default 'filled'
          */
         "buttonVariant"?: 'borderless' | 'filled' | 'outlined';
         /**
           * Custom CSS class to apply to the handle element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage.
+          * @default 50
          */
         "defaultSplit"?: number;
         /**
           * The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px).
+          * @default 'comfortable'
          */
         "density"?: 'compact' | 'comfortable' | 'relaxed';
         /**
@@ -4013,6 +4403,7 @@ declare namespace LocalJSX {
         "leftTarget"?: string | HTMLElement;
         /**
           * The orientation of the handle.
+          * @default 'horizontal'
          */
         "orientation"?: Orientation;
         /**
@@ -4021,10 +4412,12 @@ declare namespace LocalJSX {
         "rightTarget"?: string | HTMLElement;
         /**
           * The size of the handle.
+          * @default 'default'
          */
         "size"?: 'default' | 'lg' | 'xl' | '2xl';
         /**
           * The type of handle to display.
+          * @default 'bar'
          */
         "type"?: 'bar' | 'button';
     }
@@ -4035,10 +4428,12 @@ declare namespace LocalJSX {
     interface ModusWcIcon {
         /**
           * Custom CSS class to apply to the i element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.
+          * @default true
          */
         "decorative"?: boolean;
         /**
@@ -4047,6 +4442,7 @@ declare namespace LocalJSX {
         "name": string;
         /**
           * The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.
+          * @default 'md'
          */
         "size"?: DaisySize;
         /**
@@ -4061,10 +4457,12 @@ declare namespace LocalJSX {
     interface ModusWcInputFeedback {
         /**
           * Custom CSS class to apply to the outer div element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The Modus icon to use instead of the pre-defined icons.
+          * @default ''
          */
         "icon"?: string;
         /**
@@ -4073,10 +4471,12 @@ declare namespace LocalJSX {
         "level": IInputFeedbackLevel;
         /**
           * The message.
+          * @default ''
          */
         "message"?: string;
         /**
           * The size of the feedback component.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -4087,6 +4487,7 @@ declare namespace LocalJSX {
     interface ModusWcInputLabel {
         /**
           * Additional classes for custom styling.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4099,10 +4500,12 @@ declare namespace LocalJSX {
         "labelText"?: string;
         /**
           * Whether the label indicates a required field.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the label.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -4116,18 +4519,22 @@ declare namespace LocalJSX {
     interface ModusWcLoader {
         /**
           * The color of the loader.
+          * @default 'primary'
          */
         "color"?: LoaderColor;
         /**
           * Custom CSS class to apply to the loader element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The size of the loader.
+          * @default 'md'
          */
         "size"?: DaisySize;
         /**
           * The variant of the loader.
+          * @default 'spinner'
          */
         "variant"?: LoaderVariant;
     }
@@ -4143,10 +4550,12 @@ declare namespace LocalJSX {
         "alt"?: string;
         /**
           * Custom CSS class to apply to the logo container.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Show emblem version (icon only) instead of full logo
+          * @default false
          */
         "emblem"?: boolean;
         /**
@@ -4165,6 +4574,7 @@ declare namespace LocalJSX {
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the ul element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4183,14 +4593,17 @@ declare namespace LocalJSX {
   }>) => void;
         /**
           * The orientation of the menu.
+          * @default 'vertical'
          */
         "orientation"?: Orientation;
         /**
           * The selection mode of the menu.
+          * @default 'single'
          */
         "selectionMode"?: SelectionMode;
         /**
           * The size of the menu.
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -4206,6 +4619,7 @@ declare namespace LocalJSX {
         "checkbox"?: boolean;
         /**
           * Custom CSS class to apply to the li element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4222,6 +4636,7 @@ declare namespace LocalJSX {
         "hasSubmenu"?: boolean;
         /**
           * The text rendered in the menu item.
+          * @default ''
          */
         "label"?: string;
         /**
@@ -4237,6 +4652,7 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * The size of the menu item.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -4249,10 +4665,12 @@ declare namespace LocalJSX {
         "tooltipContent"?: string;
         /**
           * The position of the tooltip relative to the menu item.
+          * @default 'auto'
          */
         "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
           * The unique identifying value of the menu item.
+          * @default ''
          */
         "value"?: string;
     }
@@ -4263,14 +4681,17 @@ declare namespace LocalJSX {
     interface ModusWcModal {
         /**
           * The modal's backdrop. Specify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content.
+          * @default 'default'
          */
         "backdrop"?: 'default' | 'static';
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Specifies whether the modal should be displayed full-screen
+          * @default false
          */
         "fullscreen"?: boolean;
         /**
@@ -4279,14 +4700,17 @@ declare namespace LocalJSX {
         "modalId": string;
         /**
           * Specifies the position of the modal
+          * @default 'center'
          */
         "position"?: 'bottom' | 'center' | 'top';
         /**
           * Specifies whether to show the close icon button at the top right of modal
+          * @default true
          */
         "showClose"?: boolean;
         /**
           * Specifies whether to show the fullscreen toggle icon button
+          * @default false
          */
         "showFullscreenToggle"?: boolean;
     }
@@ -4296,30 +4720,37 @@ declare namespace LocalJSX {
     interface ModusWcNavbar {
         /**
           * The open state of the apps menu.
+          * @default false
          */
         "appsMenuOpen"?: boolean;
         /**
           * Applies condensed layout and styling.
+          * @default false
          */
         "condensed"?: boolean;
         /**
           * The open state of the condensed menu.
+          * @default false
          */
         "condensedMenuOpen"?: boolean;
         /**
           * Custom CSS class to apply to the host element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
+          * @default 'trimble'
          */
         "logoName"?: LogoName;
         /**
           * The open state of the main menu.
+          * @default false
          */
         "mainMenuOpen"?: boolean;
         /**
           * The open state of the notifications menu.
+          * @default false
          */
         "notificationsMenuOpen"?: boolean;
         /**
@@ -4384,10 +4815,12 @@ declare namespace LocalJSX {
         "onUserMenuOpenChange"?: (event: ModusWcNavbarCustomEvent<boolean>) => void;
         /**
           * Debounce time in milliseconds for search input changes. Default is 300ms.
+          * @default 300
          */
         "searchDebounceMs"?: number;
         /**
           * The open state of the search input.
+          * @default false
          */
         "searchInputOpen"?: boolean;
         /**
@@ -4400,10 +4833,12 @@ declare namespace LocalJSX {
         "userCard": INavbarUserCard;
         /**
           * The open state of the user menu.
+          * @default false
          */
         "userMenuOpen"?: boolean;
         /**
           * The visibility of individual navbar buttons. Default is user profile visible, others hidden.
+          * @default {     ai: false,     apps: false,     help: false,     logo: true,     mainMenu: false,     notifications: false,     search: false,     searchInput: false,     user: true,   }
          */
         "visibility"?: INavbarVisibility;
     }
@@ -4417,18 +4852,22 @@ declare namespace LocalJSX {
         "autoComplete"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * The currency symbol to display.
+          * @default ''
          */
         "currencySymbol"?: string;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -4473,18 +4912,22 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcNumberInputCustomEvent<FocusEvent>) => void;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -4493,10 +4936,12 @@ declare namespace LocalJSX {
         "step"?: number;
         /**
           * Type of form control.
+          * @default 'number'
          */
         "type"?: 'number' | 'range';
         /**
           * The value of the control.
+          * @default ''
          */
         "value"?: string;
     }
@@ -4510,10 +4955,12 @@ declare namespace LocalJSX {
         "ariaLabelValues"?: IAriaLabelValues;
         /**
           * Total number of pages
+          * @default 1
          */
         "count"?: number;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4526,6 +4973,7 @@ declare namespace LocalJSX {
         "onPageChange"?: (event: ModusWcPaginationCustomEvent<IPageChange>) => void;
         /**
           * The current page number
+          * @default 1
          */
         "page"?: number;
         /**
@@ -4534,6 +4982,7 @@ declare namespace LocalJSX {
         "prevButtonText"?: string;
         /**
           * Size of the pagination buttons
+          * @default 'md'
          */
         "size"?: ModusSize;
     }
@@ -4544,18 +4993,22 @@ declare namespace LocalJSX {
     interface ModusWcPanel {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Enable floating mode with elevated shadow.
+          * @default false
          */
         "floating"?: boolean;
         /**
           * Height of the panel in pixels.
+          * @default '700px'
          */
         "height"?: string;
         /**
           * Width of the panel in pixels.
+          * @default '350px'
          */
         "width"?: string;
     }
@@ -4588,10 +5041,12 @@ declare namespace LocalJSX {
     interface ModusWcProgress {
         /**
           * Custom CSS class to apply to the progress element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The indeterminate state of the progress component.
+          * @default false
          */
         "indeterminate"?: boolean;
         /**
@@ -4600,14 +5055,17 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * The progress component's maximum value.
+          * @default 100
          */
         "max"?: number;
         /**
           * The value of the progress component.
+          * @default 0
          */
         "value"?: number;
         /**
           * The variant of the progress component.
+          * @default 'default'
          */
         "variant"?: 'default' | 'radial';
     }
@@ -4617,10 +5075,12 @@ declare namespace LocalJSX {
     interface ModusWcRadio {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the radio.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -4637,6 +5097,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
@@ -4653,14 +5114,17 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcRadioCustomEvent<FocusEvent>) => void;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the radio.
+          * @default false
          */
         "value"?: boolean;
     }
@@ -4670,22 +5134,27 @@ declare namespace LocalJSX {
     interface ModusWcRating {
         /**
           * Whether to allow half-ratings. Only applies to star and heart variants.
+          * @default false
          */
         "allowHalf"?: boolean;
         /**
           * The number of rating items to display
+          * @default 5
          */
         "count"?: number;
         /**
           * Custom CSS class to apply
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the rating component is disabled
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Function to provide aria-label text for a given rating-item index
+          * @default (ratingValue) =>     `Rating item ${ratingValue}`
          */
         "getAriaLabelText"?: (ratingValue: number) => string;
         /**
@@ -4694,14 +5163,17 @@ declare namespace LocalJSX {
         "onRatingChange"?: (event: ModusWcRatingCustomEvent<IRatingChange>) => void;
         /**
           * The size of the rating component
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The current value of the rating
+          * @default 0
          */
         "value"?: number;
         /**
           * The variant of the rating scale
+          * @default 'smiley'
          */
         "variant"?: ModusWcRatingVariant;
     }
@@ -4711,14 +5183,17 @@ declare namespace LocalJSX {
     interface ModusWcSelect {
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -4755,18 +5230,22 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcSelectCustomEvent<FocusEvent>) => void;
         /**
           * The options to display in the select dropdown.
+          * @default []
          */
         "options"?: ISelectOption[];
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the control.
+          * @default ''
          */
         "value"?: string;
     }
@@ -4777,22 +5256,27 @@ declare namespace LocalJSX {
     interface ModusWcSideNavigation {
         /**
           * Whether the side navigation should collapse when clicking outside of it.
+          * @default true
          */
         "collapseOnClickOutside"?: boolean;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the side navigation is expanded.
+          * @default false
          */
         "expanded"?: boolean;
         /**
           * Maximum width of the side navigation panel in an expanded state.
+          * @default '256px'
          */
         "maxWidth"?: string;
         /**
           * Mode to make side navigation either overlay or push the content for the selector specified in targetContent
+          * @default 'overlay'
          */
         "mode"?: 'overlay' | 'push';
         /**
@@ -4801,6 +5285,7 @@ declare namespace LocalJSX {
         "onExpandedChange"?: (event: ModusWcSideNavigationCustomEvent<boolean>) => void;
         /**
           * (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode.
+          * @default ''
          */
         "targetContent"?: string;
     }
@@ -4810,18 +5295,22 @@ declare namespace LocalJSX {
     interface ModusWcSkeleton {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The height of the skeleton.
+          * @default 'var(--modus-wc-line-height-md)'
          */
         "height"?: string;
         /**
           * The shape of the skeleton.
+          * @default 'rectangle'
          */
         "shape"?: 'circle' | 'rectangle';
         /**
           * The width of the skeleton.
+          * @default '100%'
          */
         "width"?: string;
     }
@@ -4831,10 +5320,12 @@ declare namespace LocalJSX {
     interface ModusWcSlider {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the slider.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -4859,6 +5350,7 @@ declare namespace LocalJSX {
         "min"?: number;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
@@ -4875,10 +5367,12 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcSliderCustomEvent<FocusEvent>) => void;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -4887,6 +5381,7 @@ declare namespace LocalJSX {
         "step"?: number;
         /**
           * The value of the slider.
+          * @default 0
          */
         "value"?: number;
     }
@@ -4896,6 +5391,7 @@ declare namespace LocalJSX {
     interface ModusWcStepper {
         /**
           * Custom CSS class to apply to the steps element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4904,6 +5400,7 @@ declare namespace LocalJSX {
         "orientation"?: Orientation;
         /**
           * The steps to display.
+          * @default []
          */
         "steps"?: IStepperItem[];
     }
@@ -4913,14 +5410,17 @@ declare namespace LocalJSX {
     interface ModusWcSwitch {
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the switch.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * The indeterminate state of the switch.
+          * @default false
          */
         "indeterminate"?: boolean;
         /**
@@ -4937,6 +5437,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Name of the form control. Submitted with the form as part of a name/value pair.
+          * @default ''
          */
         "name"?: string;
         /**
@@ -4953,14 +5454,17 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcSwitchCustomEvent<FocusEvent>) => void;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize | 'xs';
         /**
           * The value of the switch.
+          * @default false
          */
         "value"?: boolean;
     }
@@ -4975,10 +5479,12 @@ declare namespace LocalJSX {
         "columns": ITableColumn[];
         /**
           * The current page number in pagination (1-based index).
+          * @default 1
          */
         "currentPage"?: number;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4987,14 +5493,17 @@ declare namespace LocalJSX {
         "data": Record<string, unknown>[];
         /**
           * The density of the table, used to save space or increase readability.
+          * @default 'comfortable'
          */
         "density"?: Density;
         /**
           * Enable cell editing. Either a boolean (all rows) or a predicate per row.
+          * @default false
          */
         "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
         /**
           * Enable hover effect on table rows.
+          * @default true
          */
         "hover"?: boolean;
         /**
@@ -5037,14 +5546,17 @@ declare namespace LocalJSX {
         "onSortChange"?: (event: ModusWcTableCustomEvent<SortingState>) => void;
         /**
           * Available options for the number of rows per page.
+          * @default [5, 10, 15]
          */
         "pageSizeOptions"?: number[];
         /**
           * Enable pagination for the table.
+          * @default false
          */
         "paginated"?: boolean;
         /**
           * Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows.
+          * @default 'none'
          */
         "selectable"?: 'none' | 'single' | 'multi';
         /**
@@ -5053,14 +5565,17 @@ declare namespace LocalJSX {
         "selectedRowIds"?: string[];
         /**
           * Show/hide the page size selector in pagination.
+          * @default true
          */
         "showPageSizeSelector"?: boolean;
         /**
           * Enable sorting functionality for sortable columns.
+          * @default true
          */
         "sortable"?: boolean;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
+          * @default false
          */
         "zebra"?: boolean;
     }
@@ -5071,10 +5586,12 @@ declare namespace LocalJSX {
     interface ModusWcTabs {
         /**
           * The current active tab
+          * @default 0
          */
         "activeTabIndex"?: number;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -5086,14 +5603,17 @@ declare namespace LocalJSX {
   }>) => void;
         /**
           * The size of the tabs.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * Additional styling for the tabs.
+          * @default 'bordered'
          */
         "tabStyle"?: 'boxed' | 'bordered' | 'lifted' | 'none';
         /**
           * The tabs to display.
+          * @default []
          */
         "tabs"?: ITab[];
     }
@@ -5121,18 +5641,22 @@ declare namespace LocalJSX {
         "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Aria label for the clear icon button.
+          * @default 'Clear text'
          */
         "clearAriaLabel"?: string;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5151,10 +5675,12 @@ declare namespace LocalJSX {
         "feedback"?: IInputFeedbackProp;
         /**
           * Show the clear button within the input field.
+          * @default false
          */
         "includeClear"?: boolean;
         /**
           * Show the search icon within the input field.
+          * @default false
          */
         "includeSearch"?: boolean;
         /**
@@ -5203,26 +5729,32 @@ declare namespace LocalJSX {
         "pattern"?: string;
         /**
           * Text that appears in the form control when it has no value set.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * Type of form control.
+          * @default 'text'
          */
         "type"?: TextFieldTypes;
         /**
           * The value of the control.
+          * @default ''
          */
         "value"?: string;
     }
@@ -5236,14 +5768,17 @@ declare namespace LocalJSX {
         "autoCorrect"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the textarea (supports DaisyUI).
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The disabled state of the textarea.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5298,14 +5833,17 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcTextareaCustomEvent<FocusEvent>) => void;
         /**
           * The placeholder text for the textarea.
+          * @default ''
          */
         "placeholder"?: string;
         /**
           * The readonly state of the textarea.
+          * @default false
          */
         "readonly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
@@ -5314,10 +5852,12 @@ declare namespace LocalJSX {
         "rows"?: number;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
           * The value of the textarea.
+          * @default ''
          */
         "value"?: string;
     }
@@ -5331,6 +5871,7 @@ declare namespace LocalJSX {
     interface ModusWcThemeSwitcher {
         /**
           * Custom CSS class to apply to the theme switcher element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -5348,10 +5889,12 @@ declare namespace LocalJSX {
         "autoComplete"?: 'on' | 'off';
         /**
           * Indicates that the input should have a border.
+          * @default true
          */
         "bordered"?: boolean;
         /**
           * Custom CSS class to apply to the input.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -5360,10 +5903,12 @@ declare namespace LocalJSX {
         "datalistId"?: string;
         /**
           * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+          * @default []
          */
         "datalistOptions"?: string[];
         /**
           * Whether the form control is disabled.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5408,18 +5953,22 @@ declare namespace LocalJSX {
         "onInputFocus"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
         /**
           * Whether the value is editable.
+          * @default false
          */
         "readOnly"?: boolean;
         /**
           * A value is required for the form to be submittable.
+          * @default false
          */
         "required"?: boolean;
         /**
           * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+          * @default false
          */
         "showSeconds"?: boolean;
         /**
           * The size of the input.
+          * @default 'md'
          */
         "size"?: ModusSize;
         /**
@@ -5428,6 +5977,7 @@ declare namespace LocalJSX {
         "step"?: number;
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+          * @default ''
          */
         "value"?: string;
     }
@@ -5438,6 +5988,7 @@ declare namespace LocalJSX {
     interface ModusWcToast {
         /**
           * Additional classes for custom styling.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -5446,6 +5997,7 @@ declare namespace LocalJSX {
         "delay"?: number;
         /**
           * The position of the toast in the parent container.
+          * @default 'top-end'
          */
         "position"?: ToastPosition;
     }
@@ -5456,6 +6008,7 @@ declare namespace LocalJSX {
     interface ModusWcToolbar {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
     }
@@ -5467,14 +6020,17 @@ declare namespace LocalJSX {
     interface ModusWcTooltip {
         /**
           * The text content of the tooltip.
+          * @default ''
          */
         "content"?: string;
         /**
           * Custom CSS class to apply to the inner div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * Disables displaying the tooltip on hover
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5487,6 +6043,7 @@ declare namespace LocalJSX {
         "onDismissEscape"?: (event: ModusWcTooltipCustomEvent<any>) => void;
         /**
           * The position that the tooltip will render in relation to the element.
+          * @default 'auto'
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
@@ -5506,10 +6063,12 @@ declare namespace LocalJSX {
     interface ModusWcTypography {
         /**
           * Custom CSS class to apply to the typography element.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The hierarchy of the typography component.
+          * @default 'p'
          */
         "hierarchy"?: TypographyHierarchy;
         /**
@@ -5518,20 +6077,24 @@ declare namespace LocalJSX {
         "label": string;
         /**
           * The size of the font.
+          * @default 'md'
          */
         "size"?: TypographySize;
         /**
           * The weight of the text.
+          * @default 'normal'
          */
         "weight"?: TypographyWeight;
     }
     interface ModusWcUtilityPanel {
         /**
           * Custom CSS class to apply to the outer div.
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The panel is expanded or closed
+          * @default false
          */
         "expanded"?: boolean;
         /**
@@ -5544,6 +6107,7 @@ declare namespace LocalJSX {
         "onPanelOpened"?: (event: ModusWcUtilityPanelCustomEvent<void>) => void;
         /**
           * Determines if the panel pushes content or displays an overlay.
+          * @default false
          */
         "pushContent"?: boolean;
         /**

@@ -7,6 +7,7 @@
 
 | Property        | Attribute        | Description                                                    | Type                       | Default     |
 | --------------- | ---------------- | -------------------------------------------------------------- | -------------------------- | ----------- |
+| `customClass`   | `custom-class`   | Custom CSS class to apply to the outer div.                    | `string \| undefined`      | `''`        |
 | `expanded`      | `expanded`       | The panel is expanded or closed                                | `boolean`                  | `false`     |
 | `pushContent`   | `push-content`   | Determines if the panel pushes content or displays an overlay. | `boolean`                  | `false`     |
 | `targetElement` | `target-element` | Target element reference to push content when panel opens      | `HTMLElement \| undefined` | `undefined` |

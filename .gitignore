@@ -33,3 +33,4 @@ coverage/
 # Logs
 *.log
 
+nuget-output/

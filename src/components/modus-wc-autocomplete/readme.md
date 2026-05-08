@@ -156,6 +156,7 @@ graph TD;
   modus-wc-autocomplete --> modus-wc-loader
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-input-feedback --> modus-wc-icon
+  modus-wc-chip --> modus-wc-icon
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-menu-item --> modus-wc-checkbox
