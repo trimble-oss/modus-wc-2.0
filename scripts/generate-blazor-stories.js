@@ -784,7 +784,10 @@ function main() {
     const storyContent = generateStoryFile(comp);
     const outFile = path.join(STORIES_OUT_DIR, `${comp.name}Stories.razor`);
     fs.writeFileSync(outFile, storyContent, 'utf-8');
-    const mauiOutFile = path.join(MAUI_STORIES_OUT_DIR, `${comp.name}Stories.razor`);
+    const mauiOutFile = path.join(
+      MAUI_STORIES_OUT_DIR,
+      `${comp.name}Stories.razor`
+    );
     fs.writeFileSync(mauiOutFile, storyContent, 'utf-8');
     console.log(
       `  ✓  ${comp.name}Stories.razor  (${getCategory(comp.name)}/${displayName(comp.name)})`
