@@ -6,6 +6,8 @@ import { Meta } from '@storybook/blocks';
 
 This guide covers using the Modus Web Components library in **Blazor WebAssembly**, **Blazor Server**, and **.NET MAUI Blazor Hybrid** projects via the auto-generated `ModusWebComponents.Blazor` Razor component wrappers.
 
+---
+
 ## Installation
 
 ### NuGet Package
@@ -22,17 +24,44 @@ dotnet add package ModusWebComponents.Blazor
 
 ### Load the Stencil Bundle and Styles
 
-Add the following to your `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.cshtml` / `App.razor` (Blazor Server):
+Add the following to your `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.cshtml` / `App.razor` (Blazor Server). **Script order matters: Stencil → interop.js → blazor bootstrap.**
 
 ```html
-<!-- Modus Web Components Stencil bundle -->
-<script type="module" src="_content/ModusWebComponents.Blazor/esm/modus-wc.esm.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Your App</title>
+    <base href="/" />
 
-<!-- Modus styles (tokens + component styles) -->
-<link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+    <!-- 1. Modus component styles (must load before the Stencil bundle) -->
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+    <!-- 2. Modus icon font (local copy — no CDN required) -->
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-icons.css" />
+</head>
+<body>
+    <div id="app">...</div>
+
+    <!-- 3. Blazor framework script -->
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <!-- 4. Stencil web-components bundle (must come BEFORE interop.js) -->
+    <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
+    <!-- 5. JS interop bridge (must come AFTER the Stencil bundle) -->
+    <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+</body>
+</html>
 ```
 
-> **Note:** The NuGet package includes the pre-built Stencil ESM bundle and CSS as static web assets, so no additional npm install is needed in Blazor projects.
+For **MAUI Blazor Hybrid**, add the equivalent in `wwwroot/index.html` and end with `blazor.webview.js` instead:
+
+```html
+<script src="_framework/blazor.webview.js" autostart="false"></script>
+```
+
+> **Critical:** Never use the path `loader/index.js` — it references a file that does not exist. Always use `modus-wc/modus-wc.esm.js`.
+>
+> **Note:** No `data-theme` attribute is needed on `<body>` or `<html>`. `ModusWcThemeProvider` sets it on `<html>` dynamically.
 
 ---
 
@@ -46,8 +75,8 @@ Once the package is installed and imports are registered, use any component by i
 </ModusWcButton>
 
 @code {
-    private void HandleClick(object? detail) =>
-        Console.WriteLine("Button clicked");
+    private void HandleClick(ModusWcEventArgs args) =>
+        Console.WriteLine($"Button clicked: {args.Value}");
 }
 ```
 
@@ -62,46 +91,55 @@ All component tags follow the pattern `ModusWc{ComponentName}` — matching the 
 String parameters are bound directly:
 
 ```razor
-<ModusWcBadge Color="primary" Size="md" Type="counter" />
+<ModusWcBadge Color="primary" Size="md" Variant="counter" />
 ```
 
 ### Boolean Parameters
 
-Boolean parameters are just normal C# `bool?` from your perspective — bind them as you would any other Blazor parameter:
+Boolean parameters use normal C# `bool?`. The wrapper serialises them to lowercase `"true"` / `"false"` strings automatically (C#'s `bool.ToString()` produces capitalised `"True"` / `"False"` which Stencil would misinterpret):
 
 ```razor
-<ModusWcButton Disabled="@isDisabled" FullWidth="true">
-    Save
-</ModusWcButton>
+<ModusWcButton Disabled="@_isDisabled" FullWidth="true">Save</ModusWcButton>
 
 @code {
-    private bool isDisabled = false;
+    private bool _isDisabled = false;
 }
 ```
-
-> **Implementation note:** Internally the generated wrapper renders `"true"` / `"false"` as lowercase string attributes because C#'s `bool.ToString()` produces `"True"` / `"False"` (capitalised), which the Stencil runtime would misinterpret. This is handled automatically inside the wrapper — you never need to write the ternary yourself.
 
 ### Number Parameters
 
 Numeric parameters use `double?`:
 
 ```razor
-<ModusWcNavbar SearchDebounceMs="500" />
+<ModusWcSlider Min="0" Max="100" Value="50" />
 ```
 
 ### Complex Object Parameters (`object?`)
 
-Some components accept complex data (arrays of items, configuration objects) via `object?` parameters. Pass a C# object that will be serialized to JSON via JS interop:
+Some components accept complex data (arrays, configuration objects) via `object?` parameters that are applied via JS interop:
 
 ```razor
 <ModusWcBreadcrumbs Items="@_items" />
+<ModusWcTable Columns="@_columns" Data="@_data" Sortable="true" />
 
 @code {
-    private object[] _items =
+    private readonly object[] _items =
     [
         new { label = "Home",     url = "/" },
         new { label = "Products", url = "/products" },
         new { label = "Current Page" },
+    ];
+
+    // Table columns use id, header, accessor — NOT key/label.
+    private readonly object[] _columns =
+    [
+        new { id = "name", header = "Name", accessor = "name", sortable = true },
+    ];
+
+    private readonly object[] _data =
+    [
+        new { name = "Alice" },
+        new { name = "Bob" },
     ];
 }
 ```
@@ -110,59 +148,129 @@ Some components accept complex data (arrays of items, configuration objects) via
 
 ## Events
 
-Events are exposed as `EventCallback<T>` parameters prefixed with `On`. The generic type is usually `object?` (the raw JS event detail deserialized from JSON) or a specific type like `bool`.
+Events are exposed as `EventCallback<T>` parameters prefixed with `On`. Most events use `EventCallback<ModusWcEventArgs>` where `ModusWcEventArgs.Value` contains the deserialized event detail. Some events carry strongly-typed payloads (`bool`, `double`).
 
 ```razor
-<ModusWcTextInput
-    Label="Search"
-    OnInputChange="@HandleChange"
-    OnInputBlur="@HandleBlur" />
+<ModusWcTextInput Label="Search" OnInputChange="@HandleChange" />
+<ModusWcCheckbox Label="Accept" OnInputChange="@HandleChecked" />
+<ModusWcSideNavigation Expanded="@_expanded" OnExpandedChange="@HandleExpand" />
 
 @code {
-    private void HandleChange(object? detail) =>
-        Console.WriteLine($"Value changed: {detail}");
+    private bool _expanded;
 
-    private void HandleBlur(object? detail) { }
+    // ModusWcEventArgs.Value is object? — string, bool, double, or JsonElement
+    private void HandleChange(ModusWcEventArgs args) =>
+        Console.WriteLine($"Value: {args.Value}");
+
+    // Strongly-typed bool event — no args wrapper needed
+    private void HandleExpand(bool expanded) => _expanded = expanded;
+
+    // Checkbox: Value is bool
+    private void HandleChecked(ModusWcEventArgs args)
+    {
+        if (args.Value is bool b) Console.WriteLine($"Checked: {b}");
+    }
 }
 ```
 
 ### Event Name Mapping
 
-| Stencil event (JS) | Blazor EventCallback parameter |
-|--------------------|-------------------------------|
-| `buttonClick`      | `OnButtonClick`               |
-| `inputChange`      | `OnInputChange`               |
-| `inputBlur`        | `OnInputBlur`                 |
-| `chipClose`        | `OnChipClose`                 |
+The pattern is: prepend `On` + PascalCase the Stencil event name.
 
-The pattern is always: prepend `On` + PascalCase the original event name.
+| Stencil event (JS) | Blazor parameter       | Type                          |
+|--------------------|------------------------|-------------------------------|
+| `buttonClick`      | `OnButtonClick`        | `EventCallback<ModusWcEventArgs>` |
+| `inputChange`      | `OnInputChange`        | `EventCallback<ModusWcEventArgs>` |
+| `inputBlur`        | `OnInputBlur`          | `EventCallback<ModusWcEventArgs>` |
+| `expandedChange`   | `OnExpandedChange`     | `EventCallback<bool>`         |
+| `mainMenuOpenChange` | `OnMainMenuOpenChange` | `EventCallback<bool>`       |
+| `ratingChange`     | `OnRatingChange`       | `EventCallback<double>`       |
+| `chipClose`        | `OnChipRemove`         | `EventCallback<ModusWcEventArgs>` |
+
+### Parsing `ModusWcEventArgs.Value`
+
+`Value` is typed as `object?`. Stencil emits primitives, booleans, and objects. Use a helper for consistent parsing:
+
+```csharp
+using System.Text.Json;
+
+internal static class ModusEventDetail
+{
+    public static bool ToBool(ModusWcEventArgs args)
+    {
+        if (args.Value is bool b) return b;
+        if (args.Value is not JsonElement je) return false;
+        return je.ValueKind switch
+        {
+            JsonValueKind.True  => true,
+            JsonValueKind.False => false,
+            JsonValueKind.String => je.GetString() is "on" or "ON",
+            _ => false,
+        };
+    }
+
+    public static double ToDouble(ModusWcEventArgs args)
+    {
+        if (args.Value is not JsonElement je) return 0;
+        if (je.ValueKind == JsonValueKind.Number && je.TryGetDouble(out var v)) return v;
+        if (je.ValueKind == JsonValueKind.String
+            && double.TryParse(je.GetString(),
+               System.Globalization.NumberStyles.Any,
+               System.Globalization.CultureInfo.InvariantCulture, out v))
+            return v;
+        return 0;
+    }
+
+    public static string? ToString(ModusWcEventArgs args) =>
+        args.Value is JsonElement je ? je.GetRawText() : args.Value?.ToString();
+}
+```
+
+### Async event handlers
+
+`EventCallback<T>` supports both sync and async:
+
+```razor
+<ModusWcButton OnButtonClick="HandleClick">Save</ModusWcButton>
+
+@code {
+    private async Task HandleClick(ModusWcEventArgs _)
+    {
+        await SomeService.SaveAsync();
+    }
+}
+```
 
 ---
 
 ## Slots (Child Content)
 
-Components that accept child content expose a `ChildContent` parameter, which maps to the web component's default `<slot>`. Use it just like any other Blazor child content:
+Components that accept child content expose a `ChildContent` parameter mapping to the default slot. Named slots use `RenderFragment` parameters named after the slot (PascalCase + `Slot`):
 
 ```razor
 <ModusWcCard>
-    <ModusWcTypography Variant="h4">Card Title</ModusWcTypography>
+    <ModusWcTypography Hierarchy="h4">Card Title</ModusWcTypography>
     <p>Card body content goes here.</p>
 </ModusWcCard>
+
+<ModusWcModal ModalId="confirm" Open="@_open" OnOpenChange="@((bool v) => _open = v)">
+    <div slot="header">Confirm Delete</div>
+    <div slot="content">Are you sure?</div>
+    <div slot="footer">
+        <ModusWcButton Color="danger" OnButtonClick="@((ModusWcEventArgs _) => _open = false)">Delete</ModusWcButton>
+    </div>
+</ModusWcModal>
+
+@code { private bool _open; }
 ```
 
-```razor
-<ModusWcModal>
-    <p>Are you sure you want to delete this item?</p>
-    <ModusWcButton Color="danger">Delete</ModusWcButton>
-    <ModusWcButton Variant="outlined">Cancel</ModusWcButton>
-</ModusWcModal>
-```
+> Modal slot names are `header`, `content`, and `footer` — NOT `body`.
 
 ---
 
 ## Additional Attributes (aria-*, data-*, id, etc.)
 
-All components support `AdditionalAttributes` (`[Parameter(CaptureUnmatchedValues = true)]`). Pass any HTML attribute not defined as an explicit parameter — including ARIA attributes, `data-*`, `id`, `class`, and `style`:
+All components capture unmatched attributes and forward them to the host element:
 
 ```razor
 <ModusWcButton
@@ -176,52 +284,249 @@ All components support `AdditionalAttributes` (`[Parameter(CaptureUnmatchedValue
 
 ---
 
-## Theme
+## Theming
 
-Use `ModusWcThemeProvider` to apply a Modus theme to a subtree:
+Wrap your app shell with `ModusWcThemeProvider`. It sets `data-theme` on `<html>` and reads/writes `localStorage` for persistence:
 
 ```razor
-<ModusWcThemeProvider Theme="modus-classic-dark">
-    <ModusWcButton>Dark themed button</ModusWcButton>
+<ModusWcThemeProvider>
+    <!-- your entire layout -->
 </ModusWcThemeProvider>
 ```
 
-Or use the interactive switcher:
+To force a specific theme on load, pass an `InitialTheme` object:
 
 ```razor
-<ModusWcThemeSwitcher OnThemeChange="@HandleThemeChange" />
+@code {
+    private readonly object _theme = new { theme = "modus-modern", mode = "dark" };
+}
+<ModusWcThemeProvider InitialTheme="@_theme" />
+```
+
+Available themes: `modus-modern-light`, `modus-modern-dark`, `modus-classic-light`, `modus-classic-dark`, `connect-light`, `connect-dark`.
+
+Use the built-in picker:
+
+```razor
+<ModusWcThemeSwitcher />
 ```
 
 ---
 
 ## MAUI Blazor Hybrid
 
-The same `ModusWebComponents.Blazor` package works in `.NET MAUI Blazor Hybrid` apps. Add the NuGet package to your MAUI project and load the bundle from the package's static assets in `wwwroot/index.html`:
+The same `ModusWebComponents.Blazor` package works in `.NET MAUI Blazor Hybrid` apps.
 
-```html
-<script type="module" src="_content/ModusWebComponents.Blazor/esm/modus-wc.esm.js"></script>
-<link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+### Minimum `MauiProgram.cs`
+
+```csharp
+using Blazing.Mvvm;
+
+public static class MauiProgram
+{
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder.UseMauiApp<App>();
+        builder.Services.AddMauiBlazorWebView();
+
+#if ANDROID
+        BlazorScrollFix.Apply(); // prevents vertical scroll being captured by native ViewGroup
+#endif
+#if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
+#endif
+        // Blazing.Mvvm (optional MVVM support — see §MVVM below)
+        builder.Services.AddMvvm(options =>
+            options.HostingModelType = BlazorHostingModelType.HybridMaui);
+
+        return builder.Build();
+    }
+}
 ```
 
-Then use components in any `.razor` page exactly as in a web app. The MAUI WebView hosts the Blazor runtime and renders all custom elements natively.
+### Android status-bar padding (`MainPage.xaml.cs`)
+
+Android 15+ enforces edge-to-edge rendering. Read the status-bar height from system resources and set `ContentPage.Padding`:
+
+```csharp
+public partial class MainPage : ContentPage
+{
+    public MainPage() { InitializeComponent(); }
+
+#if ANDROID
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        var res = global::Android.Content.Res.Resources.System;
+        var resId = res?.GetIdentifier("status_bar_height", "dimen", "android") ?? 0;
+        if (resId > 0)
+        {
+            var px = res!.GetDimensionPixelSize(resId);
+            var density = res.DisplayMetrics?.Density ?? 1f;
+            Padding = new Thickness(0, px / density, 0, 0);
+        }
+    }
+#endif
+}
+```
+
+### Android edge-to-edge (`MainActivity.cs`)
+
+```csharp
+protected override void OnCreate(Bundle? savedInstanceState)
+{
+    base.OnCreate(savedInstanceState);
+    if (Window is not null)
+        WindowCompat.SetDecorFitsSystemWindows(Window, false);
+}
+```
+
+### Android scroll fix (`Platforms/Android/BlazorScrollFix.cs`)
+
+CSS `overflow-y: auto` containers appear frozen on Android because the native `ViewGroup` intercepts touch events. Fix:
+
+```csharp
+public static class BlazorScrollFix
+{
+    private static bool _applied;
+
+    public static void Apply()
+    {
+        if (_applied) return;
+        _applied = true;
+        BlazorWebViewHandler.BlazorWebViewMapper.AppendToMapping("ScrollFix", (handler, _) =>
+        {
+            var webView = handler.PlatformView;
+            webView.NestedScrollingEnabled = true;
+            webView.SetOnTouchListener(new ScrollTouchListener(webView));
+        });
+    }
+
+    private sealed class ScrollTouchListener(global::Android.Webkit.WebView webView)
+        : Java.Lang.Object, Android.Views.View.IOnTouchListener
+    {
+        public bool OnTouch(Android.Views.View? v, Android.Views.MotionEvent? e)
+        {
+            if (e?.Action == Android.Views.MotionEventActions.Down)
+                webView.Parent?.RequestDisallowInterceptTouchEvent(true);
+            return false;
+        }
+    }
+}
+```
+
+### iOS safe-area insets (`MainLayout.razor.css`)
+
+```css
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+    /* All four insets handle both portrait and landscape rotation */
+    padding-top:    env(safe-area-inset-top,    0px);
+    padding-right:  env(safe-area-inset-right,  0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left:   env(safe-area-inset-left,   0px);
+}
+
+.main-content-row {
+    display: flex;
+    flex: 1;
+    min-height: 0; /* required — prevents flex item growing past viewport */
+    overflow: hidden;
+}
+
+.panel-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    padding: 1.5rem;
+    margin-left: 4rem; /* matches collapsed side-nav rail width */
+    box-sizing: border-box;
+}
+```
+
+### Android cleartext traffic (development only)
+
+For localhost dev server WebView access, add to `Platforms/Android/AndroidManifest.xml`:
+
+```xml
+<application android:usesCleartextTraffic="true" ...>
+```
+
+Remove before publishing to app stores.
+
+---
+
+## MVVM Architecture (optional)
+
+The Blazor wrappers work with [**Blazing.Mvvm**](https://github.com/gragra33/Blazing.Mvvm) (CommunityToolkit.Mvvm) for clean MVVM separation:
+
+```razor
+@page "/buttons"
+@inherits MvvmComponentBase<ButtonsViewModel>
+
+<ModusWcButton OnButtonClick="@(async (ModusWcEventArgs _) => await ViewModel.IncrementClickCommand.ExecuteAsync(null))">
+    Click Me
+</ModusWcButton>
+<ModusWcTypography Label="@($"Clicked {ViewModel.ButtonClickCount} time(s)")" />
+```
+
+Key rules:
+- Use `@inherits MvvmComponentBase<TViewModel>` — not `@inject`
+- For `EventCallback<bool>`: `OnExpandedChange="ViewModel.HandleExpandedChange"` (direct method group)
+- For `EventCallback<ModusWcEventArgs>`: always include the `ModusWcEventArgs` parameter
+- Never subscribe manually to `ViewModel.PropertyChanged` — the base class does it automatically
+- Use `MvvmOwningComponentBase<T>` when the ViewModel implements `IDisposable`
+
+---
+
+## Imperative Component Methods
+
+```csharp
+[Inject] private IJSRuntime JS { get; set; } = default!;
+private ElementReference _ref;
+
+// Call focus(), open(), close(), etc.
+await JS.InvokeVoidAsync("modusWcInterop.callMethod", _ref, "focus");
+```
+
+`ModusWcModal` exposes `ShowModal()` and `Close()` C# methods directly on the wrapper.
+
+---
+
+## Using Modus Design Tokens in Custom CSS
+
+```css
+.custom-panel {
+    background-color: var(--modus-wc-color-base-surface, #ffffff);
+    color: var(--modus-wc-color-text-primary, #252a2e);
+    border: 1px solid var(--modus-wc-color-border-default, #e0e1e9);
+}
+
+.error-text {
+    color: var(--modus-danger, #da1e28);
+}
+```
+
+Always provide a fallback value so styles work even before the Modus stylesheet has loaded.
 
 ---
 
 ## Querying Component Data via MCP
 
-Use the `get_modus_component_data` MCP tool to look up the Blazor-specific binding information for any component. The response includes a `blazor` section with:
-
-- `parameters` — PascalCase C# parameter names, `csharpType`, defaults, and allowed values
-- `events` — `EventCallback<T>` parameter names and callback types
-- `slots` — `RenderFragment` slot parameters
-- `razorTemplate` — the internal `.razor` template (for understanding the binding)
-- `usageExample` — a ready-to-use Razor snippet
+Use the `get_modus_component_data` MCP tool to look up Blazor-specific binding information for any component:
 
 ```
 get_modus_component_data("modus-wc-button")
-→ data.blazor.parameters   // PascalCase params
-→ data.blazor.events        // EventCallback names
-→ data.blazor.usageExample  // Ready-to-paste Razor
+→ data.blazor.parameters   // PascalCase params with csharpType
+→ data.blazor.events        // EventCallback names and types
+→ data.blazor.usageExample  // Ready-to-paste Razor snippet
 ```
 
 ---
@@ -230,12 +535,62 @@ get_modus_component_data("modus-wc-button")
 
 ### Custom elements not rendering
 
-Ensure the Stencil ESM bundle script tag is present in `index.html` and uses `type="module"`. Without it, custom element tags render as unknown HTML elements.
+Ensure `modus-wc/modus-wc.esm.js` is present in `index.html` with `type="module"`. Without it, custom element tags render as unknown HTML.
+
+### `&lt;slot&gt;` or raw entities in component descriptions
+
+This is a known display artefact in development tooling — it does not affect runtime behaviour.
 
 ### Events not firing
 
-Events require JS interop initialisation that runs in `OnAfterRenderAsync`. If you subscribe to an event before the component has rendered (e.g. in `OnInitialized`), it will not yet be wired up. Subscribe via `EventCallback` parameters instead of direct DOM event listeners.
+Events are wired in `OnAfterRenderAsync`. Subscribe via `EventCallback` parameters — never via direct DOM event listeners before first render.
+
+### `modusWcInterop` undefined error
+
+Ensure `interop.js` is loaded **after** `modus-wc.esm.js` but **before** any Blazor component renders (i.e., after the framework bootstrap script, as shown in the `index.html` template above).
+
+### Components appear unstyled
+
+Load `modus-wc-styles.css` in `<head>` **before** the Stencil bundle script. Custom properties must be available before shadow DOM styles clone.
 
 ### Boolean attributes always true / always false
 
-You are likely setting a boolean attribute as a raw string on the underlying `<modus-wc-*>` HTML element. Use the Razor wrapper (`<ModusWcButton>`) which handles the `"true"`/`"false"` encoding automatically.
+Use the `ModusWc*` Razor wrapper — it handles `"true"`/`"false"` lowercasing automatically. Never set boolean attributes as raw strings on the underlying `modus-wc-*` element.
+
+### Icons not rendering (blank squares)
+
+Ensure `modus-icons.css` is loaded in `<head>`. The icon font uses OpenType ligatures — without `font-feature-settings: 'liga'` the browser renders literal text instead of glyphs.
+
+### Icon names must be single words
+
+Hyphenated icon names (e.g., `visibility-on`) break ligature rendering. Use single-word names: `home`, `settings`, `search`, `notifications`, `delete`, `pencil`, `check`, `close`, `info`, `warning`, `calendar`, `filter`, `menu`, `edit`, etc.
+
+### CS1503: cannot implicitly convert lambda to `EventCallback<ModusWcEventArgs>`
+
+Always include the `ModusWcEventArgs` parameter:
+
+```razor
+@* WRONG *@ OnButtonClick="@(() => _count++)"
+@* RIGHT *@ OnButtonClick="@((ModusWcEventArgs _) => _count++)"
+```
+
+### Navbar hamburger doesn't open sidebar
+
+`OnMainMenuOpenChange` emits `bool` (open state of the navbar's own menu popover). Wire it directly to your nav-expanded state:
+
+```csharp
+private void HandleMainMenuToggle(bool isOpen) => _navExpanded = isOpen;
+```
+
+### `JSDisconnectedException` on navigate
+
+This is expected when the WebView navigates away while an async JS call is in flight. Catch and ignore it:
+
+```csharp
+try { await JS.InvokeVoidAsync(...); }
+catch (JSDisconnectedException) { }
+```
+
+### CSS `overflow-y: auto` frozen on Android
+
+Two things required together: `BlazorScrollFix` (native handler patch) AND `min-height: 0` on every flex ancestor in the scroll chain. If either is missing, scrolling breaks.

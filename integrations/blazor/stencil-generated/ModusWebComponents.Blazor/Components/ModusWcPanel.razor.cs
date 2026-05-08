@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable panel component used to organize content in a structured layout.  This component provides 'header', 'body', and 'footer' `&lt;slot&gt;` elements for inserting custom HTML.
+/// A customizable panel component used to organize content in a structured layout.  This component provides 'header', 'body', and 'footer' slot elements for inserting custom HTML.
 /// </summary>
 public partial class ModusWcPanel : ComponentBase
 {

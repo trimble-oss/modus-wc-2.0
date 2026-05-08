@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable chip component used to display information in a compact area  The component supports a `&lt;slot&gt;` for injecting custom content such as avatar and icons.
+/// A customizable chip component used to display information in a compact area  The component supports a slot for injecting custom content such as avatar and icons.
 /// </summary>
 public partial class ModusWcChip : ComponentBase, IAsyncDisposable
 {

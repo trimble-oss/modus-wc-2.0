@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable alert component used to inform the user about important events.  The component supports `&lt;slot&gt;` elements for injecting custom content and buttons.
+/// A customizable alert component used to inform the user about important events.  The component supports slot elements for injecting custom content and buttons.
 /// </summary>
 public partial class ModusWcAlert : ComponentBase, IAsyncDisposable
 {

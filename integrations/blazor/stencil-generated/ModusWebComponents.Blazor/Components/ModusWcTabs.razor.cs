@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable tabs component used to create groups of tabs.  The component supports a `&lt;slot&gt;` for injecting custom tab content.
+/// A customizable tabs component used to create groups of tabs.  The component supports a slot for injecting custom tab content.
 /// </summary>
 public partial class ModusWcTabs : ComponentBase, IAsyncDisposable
 {

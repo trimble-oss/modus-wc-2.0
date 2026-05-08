@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable modal component used to display content in a dialog.  This component supports 'header', 'content', and 'footer' `&lt;slot&gt;` elements for inserting custom HTML.
+/// A customizable modal component used to display content in a dialog.  This component supports 'header', 'content', and 'footer' slot elements for inserting custom HTML.
 /// </summary>
 public partial class ModusWcModal : ComponentBase
 {

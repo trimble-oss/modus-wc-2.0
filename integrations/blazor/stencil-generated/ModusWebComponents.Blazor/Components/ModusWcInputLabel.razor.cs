@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable input label component.  The component supports a `&lt;slot&gt;` for injecting additional custom content inside the label, such as icons or formatted text.
+/// A customizable input label component.  The component supports a slot for injecting additional custom content inside the label, such as icons or formatted text.
 /// </summary>
 public partial class ModusWcInputLabel : ComponentBase
 {
@@ -15,7 +15,7 @@ public partial class ModusWcInputLabel : ComponentBase
     [Parameter] public string? CustomClass { get; set; } = "";
 
     /// <summary>
-    /// The `for` attribute of the label, matching the `id` of the associated input.
+    /// The for attribute of the label, matching the id of the associated input.
     /// </summary>
     [Parameter] public string? ForId { get; set; }
 

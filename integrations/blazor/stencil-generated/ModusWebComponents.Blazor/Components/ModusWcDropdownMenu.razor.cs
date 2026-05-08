@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable dropdown menu component used to render a button and toggleable menu.  The component supports a 'button' and 'menu' `&lt;slot&gt;` for injecting custom HTML content.
+/// A customizable dropdown menu component used to render a button and toggleable menu.  The component supports a 'button' and 'menu' slot for injecting custom HTML content.
 /// </summary>
 public partial class ModusWcDropdownMenu : ComponentBase, IAsyncDisposable
 {

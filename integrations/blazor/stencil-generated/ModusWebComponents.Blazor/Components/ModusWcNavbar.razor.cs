@@ -155,7 +155,7 @@ public partial class ModusWcNavbar : ComponentBase, IAsyncDisposable
     [Parameter] public EventCallback<ModusWcEventArgs> OnSignOutClick { get; set; }
 
     /// <summary>
-    /// Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value.
+    /// Event emitted when the logo button is clicked or activated via keyboard,regardless of the logoName prop value.
     /// </summary>
     [Parameter] public EventCallback<ModusWcEventArgs> OnTrimbleLogoClick { get; set; }
 

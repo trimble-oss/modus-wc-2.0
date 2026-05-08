@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable badge component used to create badges with different sizes, types, and colors.  The component supports a `&lt;slot&gt;` for injecting content within the badge.
+/// A customizable badge component used to create badges with different sizes, types, and colors.  The component supports a slot for injecting content within the badge.
 /// </summary>
 public partial class ModusWcBadge : ComponentBase
 {

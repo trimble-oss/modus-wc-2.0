@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable side navigation component for organizing primary navigation and content areas in an application.  The component supports a `&lt;slot&gt;` for injecting custom content inside the side navigation panel.
+/// A customizable side navigation component for organizing primary navigation and content areas in an application.  The component supports a slot for injecting custom content inside the side navigation panel.
 /// </summary>
 public partial class ModusWcSideNavigation : ComponentBase, IAsyncDisposable
 {

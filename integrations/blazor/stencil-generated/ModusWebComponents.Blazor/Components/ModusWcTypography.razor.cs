@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable typography component used to render text with different sizes, hierarchy, and weights.  Note: - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying the default size (size=&quot;md&quot;) and weight (weight=&quot;normal&quot;) properties. Default styling can be overridden by providing your own custom values for the size or weight properties from the available options.   - If both slot content and `label` are provided, only the slot content will be rendered - Use the `label` prop when you need to dynamically update the text.
+/// A customizable typography component used to render text with different sizes, hierarchy, and weights.  Note: - When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying the default size (size=&quot;md&quot;) and weight (weight=&quot;normal&quot;) properties. Default styling can be overridden by providing your own custom values for the size or weight properties from the available options.   - If both slot content and label are provided, only the slot content will be rendered - Use the label prop when you need to dynamically update the text.
 /// </summary>
 public partial class ModusWcTypography : ComponentBase
 {

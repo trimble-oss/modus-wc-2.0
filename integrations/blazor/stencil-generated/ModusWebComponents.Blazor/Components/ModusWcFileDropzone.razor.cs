@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// File dropzone component that allows users to drag and drop files for upload.  The component supports a `&lt;slot&gt;` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
+/// File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
 /// </summary>
 public partial class ModusWcFileDropzone : ComponentBase, IAsyncDisposable
 {

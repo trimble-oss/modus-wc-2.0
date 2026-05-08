@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable menu item component used to display the item portion of a menu.  This component supports a 'start-icon' `&lt;slot&gt;` that allows for custom icons to be placed at the beginning of the item.
+/// A customizable menu item component used to display the item portion of a menu.  This component supports a 'start-icon' slot that allows for custom icons to be placed at the beginning of the item.
 /// </summary>
 public partial class ModusWcMenuItem : ComponentBase, IAsyncDisposable
 {

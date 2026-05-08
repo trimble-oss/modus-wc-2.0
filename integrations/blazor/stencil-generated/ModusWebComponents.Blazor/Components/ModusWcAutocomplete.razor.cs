@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable autocomplete component used to create searchable text inputs.  The component supports a `&lt;slot&gt;` for injecting custom content.
+/// A customizable autocomplete component used to create searchable text inputs.  The component supports a slot for injecting custom content.
 /// </summary>
 public partial class ModusWcAutocomplete : ComponentBase, IAsyncDisposable
 {

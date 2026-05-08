@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable collapse component used for showing and hiding content.  The component supports a 'header' and 'content' `&lt;slot&gt;` for injecting custom HTML.
+/// A customizable collapse component used for showing and hiding content.  The component supports a 'header' and 'content' slot for injecting custom HTML.
 /// </summary>
 public partial class ModusWcCollapse : ComponentBase, IAsyncDisposable
 {

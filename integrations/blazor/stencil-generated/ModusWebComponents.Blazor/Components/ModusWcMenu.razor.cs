@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable menu component used to display a list of li elements vertically or horizontally.  The component supports a `&lt;slot&gt;` for injecting custom li elements inside the ul element.
+/// A customizable menu component used to display a list of li elements vertically or horizontally.  The component supports a slot for injecting custom li elements inside the ul element.
 /// </summary>
 public partial class ModusWcMenu : ComponentBase, IAsyncDisposable
 {

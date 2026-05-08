@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable accordion component used for showing and hiding related groups of content.  The component supports a `&lt;slot&gt;` called 'content' for injecting `&lt;modus-wc-collapse&gt;` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
+/// A customizable accordion component used for showing and hiding related groups of content.  The component supports a slot called 'content' for injecting modus-wc-collapse elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
 /// </summary>
 public partial class ModusWcAccordion : ComponentBase, IAsyncDisposable
 {

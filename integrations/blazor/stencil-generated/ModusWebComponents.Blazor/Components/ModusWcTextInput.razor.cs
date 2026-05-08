@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable input component used to create text inputs with types.  The component supports a `&lt;slot&gt;` for injecting additional custom content inside the input, such as icons or formatted text.
+/// A customizable input component used to create text inputs with types.  The component supports a slot for injecting additional custom content inside the input, such as icons or formatted text.
 /// </summary>
 public partial class ModusWcTextInput : ComponentBase, IAsyncDisposable
 {

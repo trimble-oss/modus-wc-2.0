@@ -125,7 +125,7 @@ public partial class ModusWcDate : ComponentBase, IAsyncDisposable
     [Parameter] public EventCallback<ModusWcEventArgs> OnInputBlur { get; set; }
 
     /// <summary>
-    /// Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
+    /// Event emitted when the input value changes. target.value is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
     /// </summary>
     [Parameter] public EventCallback<ModusWcEventArgs> OnInputChange { get; set; }
 

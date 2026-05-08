@@ -30,7 +30,7 @@ public partial class ModusWcTimeInput : ComponentBase, IAsyncDisposable
     [Parameter] public string? CustomClass { get; set; } = "";
 
     /// <summary>
-    /// ID of a `&lt;datalist&gt;` element that contains pre-defined time options. The value must be the ID of a `&lt;datalist&gt;` element in the same document.
+    /// ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
     /// </summary>
     [Parameter] public string? DatalistId { get; set; }
 
@@ -55,12 +55,12 @@ public partial class ModusWcTimeInput : ComponentBase, IAsyncDisposable
     [Parameter] public string? Label { get; set; }
 
     /// <summary>
-    /// Maximum value. Format: `HH:mm`, `HH:mm:ss`.
+    /// Maximum value. Format: HH:mm, HH:mm:ss.
     /// </summary>
     [Parameter] public string? Max { get; set; }
 
     /// <summary>
-    /// Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+    /// Minimum value. Format: HH:mm, HH:mm:ss.
     /// </summary>
     [Parameter] public string? Min { get; set; }
 
@@ -80,7 +80,7 @@ public partial class ModusWcTimeInput : ComponentBase, IAsyncDisposable
     [Parameter] public bool? Required { get; set; } = false;
 
     /// <summary>
-    /// Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+    /// Displays the time input format as HH:mm:ss if true. Internally sets the step to 1 second. If a step value is provided, it will override this attribute.
     /// </summary>
     [Parameter] public bool? ShowSeconds { get; set; } = false;
 
@@ -90,17 +90,17 @@ public partial class ModusWcTimeInput : ComponentBase, IAsyncDisposable
     [Parameter] public string? Size { get; set; } = "md";
 
     /// <summary>
-    /// Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+    /// Specifies the granularity that the value must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the seconds attribute if both are provided.
     /// </summary>
     [Parameter] public double? Step { get; set; }
 
     /// <summary>
-    /// The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+    /// The value of the time input. Always in 24-hour format that includes leading zeros: HH:mm or HH:mm:ss, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always HH:mm:ss.
     /// </summary>
     [Parameter] public string? Value { get; set; } = "";
 
     /// <summary>
-    /// The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+    /// The options to display in the time input dropdown. Options must be in HH:mm or HH:mm:ss format.
     /// </summary>
     [Parameter] public object? DatalistOptions { get; set; }
 

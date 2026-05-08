@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable card component used to group and display content in a way that is easily readable.  This component supports multiple `&lt;slot&gt;` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
+/// A customizable card component used to group and display content in a way that is easily readable.  This component supports multiple slot elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
 /// </summary>
 public partial class ModusWcCard : ComponentBase
 {

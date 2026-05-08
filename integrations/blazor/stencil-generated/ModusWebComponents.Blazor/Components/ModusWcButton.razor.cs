@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable button component used to create buttons with different sizes, variants, and types.  The component supports a `&lt;slot&gt;` for injecting content within the button, similar to a native HTML button.
+/// A customizable button component used to create buttons with different sizes, variants, and types.  The component supports a slot for injecting content within the button, similar to a native HTML button.
 /// </summary>
 public partial class ModusWcButton : ComponentBase, IAsyncDisposable
 {

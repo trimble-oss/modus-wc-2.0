@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable toast component used to stack elements, positioned on the corner of a page.  The component supports a `&lt;slot&gt;` for injecting additional custom content inside the toast.
+/// A customizable toast component used to stack elements, positioned on the corner of a page.  The component supports a slot for injecting additional custom content inside the toast.
 /// </summary>
 public partial class ModusWcToast : ComponentBase
 {

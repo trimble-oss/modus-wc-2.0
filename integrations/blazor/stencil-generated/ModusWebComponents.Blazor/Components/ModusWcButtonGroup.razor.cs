@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable buttongroup component that groups multiple Modus buttons together.  The component supports a `&lt;slot&gt;` for injecting content within the buttongroup.
+/// A customizable buttongroup component that groups multiple Modus buttons together.  The component supports a slot for injecting content within the buttongroup.
 /// </summary>
 public partial class ModusWcButtonGroup : ComponentBase, IAsyncDisposable
 {

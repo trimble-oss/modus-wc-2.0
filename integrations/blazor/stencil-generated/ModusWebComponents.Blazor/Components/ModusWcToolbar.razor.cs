@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 namespace ModusWebComponents.Blazor;
 
 /// <summary>
-/// A customizable toolbar component used to organize content across the entire page.  This component provides 'start', 'center', and 'end' `&lt;slot&gt;` elements for inserting custom HTML.
+/// A customizable toolbar component used to organize content across the entire page.  This component provides 'start', 'center', and 'end' slot elements for inserting custom HTML.
 /// </summary>
 public partial class ModusWcToolbar : ComponentBase
 {
