@@ -81,6 +81,12 @@ jobs:
           npx tsx mcp/scripts/extract-docs.ts \
             --source-dir src/components \
             --output-dir "$TMPDIR/component-docs"
+
+          # Augment component docs with Blazor-specific data (params, events, slots, usage examples)
+          npx tsx mcp/scripts/extract-blazor-docs.ts \
+            --blazor-dir integrations/blazor/stencil-generated/ModusWebComponents.Blazor/Components \
+            --docs-dir "$TMPDIR/component-docs"
+
           mkdir -p "$TMPDIR/docs"
           cp src/stories/*.mdx "$TMPDIR/docs/"
           cp src/stories/frameworks/*.mdx "$TMPDIR/docs/"
