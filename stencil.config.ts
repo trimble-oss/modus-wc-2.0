@@ -108,6 +108,7 @@ export const config: Config = {
         './integrations/blazor/stencil-generated/ModusWebComponents.Blazor',
       packageName: 'ModusWebComponents.Blazor',
       namespace: 'ModusWebComponents.Blazor',
+      packageReadmePath: '../../nuget-README.md',
     }),
   ],
   plugins: [
