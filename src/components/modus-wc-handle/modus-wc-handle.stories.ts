@@ -92,7 +92,7 @@ const meta: Meta<HandleArgs> = {
     },
     'button-size': {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg', 'xl'],
     },
     'button-color': {
       control: { type: 'select' },
