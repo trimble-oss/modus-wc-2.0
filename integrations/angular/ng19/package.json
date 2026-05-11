@@ -34,6 +34,10 @@
     "ng-packagr": "^19.2.2",
     "typescript": "~5.5.2"
   },
+  "overrides": {
+    "tar": "^7.5.15",
+    "serialize-javascript": "^7.0.5"
+  },
   "publishConfig": {
     "access": "public"
   },

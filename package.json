@@ -163,8 +163,9 @@
       "vite": "^7.1.7"
     },
     "wireit": {
-      "brace-expansion": "4.0.1"
+      "brace-expansion": "^5.0.5"
     },
+    "next": "^15.5.18",
     "socks": "^2.8.8",
     "postcss": "^8.5.14"
   },
