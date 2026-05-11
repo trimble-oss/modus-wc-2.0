@@ -54,6 +54,12 @@ describe('modus-wc-app-menu', () => {
     };
   }
 
+  function dispatchModusWcButtonClick(host: HTMLElement) {
+    host.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true, composed: true })
+    );
+  }
+
   it('should render with default props', async () => {
     const page = await createPage({});
     expect(page.root).toMatchSnapshot();
@@ -93,12 +99,12 @@ describe('modus-wc-app-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render header with "Trimble apps" title when not in edit mode', async () => {
+  it('should render header with "Trimble Apps" title when not in edit mode', async () => {
     const page = await createPage({ apps: mockApps });
     const headerTitle = page.root?.querySelector(
       '.header-title modus-wc-typography'
     );
-    expect(headerTitle?.getAttribute('label')).toBe('Trimble apps');
+    expect(headerTitle?.getAttribute('label')).toBe('Trimble Apps');
   });
 
   it('should render header with "Edit" title when in edit mode', async () => {
@@ -179,7 +185,7 @@ describe('modus-wc-app-menu', () => {
     expect(logos?.length).toBe(4);
   });
 
-  it('should not have tooltipContent on list layout menu items', async () => {
+  it('should not set tooltipContent on list items when no apps are truncated', async () => {
     const page = await createPage({ apps: mockApps, layout: 'list' });
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
@@ -327,7 +333,7 @@ describe('modus-wc-app-menu', () => {
     restoreRaf();
   });
 
-  it('should exit edit mode and emit itemsOrderChange when handleDone is called', async () => {
+  it('should exit edit mode without emitting itemsOrderChange when handleDone is called with no reorder', async () => {
     const { page, component } = await createEditModePage({ apps: mockApps });
 
     const orderChangeSpy = jest.fn();
@@ -337,8 +343,31 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
+    expect(orderChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should exit edit mode and emit itemsOrderChange when handleDone is called after reorder', async () => {
+    const { page, component } = await createEditModePage({ apps: mockApps });
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    const apps = [...(component.apps ?? [])];
+    const [first, second, ...rest] = apps;
+    component.apps = [second, first, ...rest];
+    await page.waitForChanges();
+
+    (component as any).handleDone();
+    await page.waitForChanges();
+
+    expect(component.isEditMode).toBe(false);
     expect(orderChangeSpy).toHaveBeenCalledTimes(1);
-    expect(orderChangeSpy.mock.calls[0][0].detail).toEqual(mockApps);
+    expect(orderChangeSpy.mock.calls[0][0].detail).toEqual([
+      { appName: 'viewpoint' },
+      { appName: 'connect' },
+      { appName: 'sketchup' },
+      { appName: 'tekla' },
+    ]);
   });
 
   it('should exit edit mode when handleCancel is called', async () => {
@@ -595,20 +624,20 @@ describe('modus-wc-app-menu', () => {
     expect(page.root?.querySelector('.header-end-content')).not.toBeNull();
   });
 
-  it('should enter edit mode when edit button is clicked', async () => {
+  it('should enter edit mode when edit button fires buttonClick', async () => {
     const page = await createPage({ apps: mockApps });
 
     const editButton = page.root?.querySelector(
       '.header-end-content modus-wc-button'
     ) as HTMLElement;
-    editButton?.click();
+    dispatchModusWcButtonClick(editButton);
     await page.waitForChanges();
 
     const component = page.rootInstance as ModusWcAppMenu;
     expect(component.isEditMode).toBe(true);
   });
 
-  it('should exit edit mode when Done button is clicked', async () => {
+  it('should exit edit mode when Done fires buttonClick without reordering', async () => {
     const { page, component } = await createEditModePage({ apps: mockApps });
 
     const orderChangeSpy = jest.fn();
@@ -620,17 +649,20 @@ describe('modus-wc-app-menu', () => {
     const doneButton = buttons.find(
       (btn) => btn.textContent?.trim() === 'Done'
     ) as HTMLElement;
-    doneButton?.click();
+    dispatchModusWcButtonClick(doneButton);
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
-    expect(orderChangeSpy).toHaveBeenCalledTimes(1);
+    expect(orderChangeSpy).not.toHaveBeenCalled();
   });
 
-  it('should exit edit mode when Cancel button is clicked', async () => {
+  it('should exit edit mode when Cancel fires buttonClick', async () => {
     const { page, component } = await createEditModePage({
       apps: cloneApps(),
     });
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const buttons = Array.from(
       page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
@@ -638,10 +670,11 @@ describe('modus-wc-app-menu', () => {
     const cancelButton = buttons.find(
       (btn) => btn.textContent?.trim() === 'Cancel'
     ) as HTMLElement;
-    cancelButton?.click();
+    dispatchModusWcButtonClick(cancelButton);
     await page.waitForChanges();
 
     expect(component.isEditMode).toBe(false);
+    expect(orderChangeSpy).not.toHaveBeenCalled();
   });
 
   it('should trigger drag handlers on list layout items via DOM events', async () => {
@@ -840,7 +873,7 @@ describe('modus-wc-app-menu', () => {
     expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
   });
 
-  it('should not handle keyboard events when not in edit mode', async () => {
+  it('should not toggle grabbedItemPos on Space key when not in edit mode', async () => {
     const page = await createPage({ apps: cloneApps(), layout: 'list' });
     const component = page.rootInstance as ModusWcAppMenu;
 
@@ -900,15 +933,20 @@ describe('modus-wc-app-menu', () => {
   });
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    {
+      layout: 'list' as const,
+      selector: '.app-menu-item-row',
+      editMode: false,
+    },
+    { layout: 'list' as const, selector: '.app-menu-item-row', editMode: true },
+    { layout: 'grid' as const, selector: '.grid-item', editMode: false },
+    { layout: 'grid' as const, selector: '.grid-item', editMode: true },
   ])(
-    'should add tabindex to items in edit mode for $layout layout',
-    async ({ layout, selector }) => {
-      const { page } = await createEditModePage({
-        apps: mockApps,
-        layout,
-      });
+    'should set tabindex=0 on $layout items when editMode=$editMode',
+    async ({ layout, selector, editMode }) => {
+      const { page } = editMode
+        ? await createEditModePage({ apps: mockApps, layout })
+        : { page: await createPage({ apps: mockApps, layout }) };
 
       const items = page.root?.querySelectorAll(selector);
       items?.forEach((item) => {
@@ -1174,6 +1212,80 @@ describe('modus-wc-app-menu', () => {
       expect((component as any).isGrabbed(0)).toBe(expectedResult);
     }
   );
+
+  function focusOutEventTo(relatedTarget: Node | null): FocusEvent {
+    const evt = new FocusEvent('focusout', {
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(evt, 'relatedTarget', { value: relatedTarget });
+    return evt;
+  }
+
+  it.each([
+    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.grid-item' },
+  ])(
+    'should release grabbedItemPos on $layout row when focus moves to a sibling row',
+    async ({ layout, selector }) => {
+      const { page, component } = await createEditModePage({
+        apps: cloneApps(),
+        layout,
+      });
+
+      component.grabbedItemPos = { appIndex: 0 };
+      await page.waitForChanges();
+
+      const rows = Array.from(page.root?.querySelectorAll(selector) ?? []);
+      const grabbedRow = rows[0];
+      const otherRow = rows[1];
+
+      grabbedRow.dispatchEvent(focusOutEventTo(otherRow));
+      await page.waitForChanges();
+
+      expect(component.grabbedItemPos).toBeNull();
+    }
+  );
+
+  it('should keep grabbedItemPos when focus stays inside the grabbed row', async () => {
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
+    });
+
+    component.grabbedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    const grabbedRow = page.root?.querySelector(
+      '.app-menu-item-row'
+    ) as HTMLElement;
+    const innerChild = grabbedRow.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement;
+
+    grabbedRow.dispatchEvent(focusOutEventTo(innerChild));
+    await page.waitForChanges();
+
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should not change grabbedItemPos on focusout when row is not grabbed', async () => {
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'list',
+    });
+
+    component.grabbedItemPos = { appIndex: 1 };
+    await page.waitForChanges();
+
+    const otherRow = page.root?.querySelectorAll(
+      '.app-menu-item-row'
+    )[0] as HTMLElement;
+    otherRow.dispatchEvent(focusOutEventTo(null));
+    await page.waitForChanges();
+
+    expect(component.grabbedItemPos).toEqual({ appIndex: 1 });
+  });
 
   it.each([
     { fn: 'reorderListItem', args: [[], 0, -1] },
@@ -1814,6 +1926,53 @@ describe('modus-wc-app-menu', () => {
     }
   );
 
+  it.each([{ layout: 'list' as const }, { layout: 'grid' as const }])(
+    'should emit itemClick on Enter key in non-edit mode for $layout layout',
+    async ({ layout }) => {
+      const page = await createPage({ apps: mockApps, layout });
+      const component = page.rootInstance as ModusWcAppMenu;
+      const itemClickSpy = jest.fn();
+      page.root?.addEventListener('itemClick', itemClickSpy);
+
+      (component as any).handleKeyDown(keyEvent('Enter'), 1);
+
+      expect(itemClickSpy).toHaveBeenCalledTimes(1);
+      expect(itemClickSpy.mock.calls[0][0].detail).toEqual({
+        appName: 'viewpoint',
+      });
+    }
+  );
+
+  it.each([
+    { layout: 'list' as const, key: 'ArrowDown', expectedOffset: 1 },
+    { layout: 'grid' as const, key: 'ArrowRight', expectedOffset: 1 },
+  ])(
+    'should navigate focus on $key in non-edit mode for $layout layout',
+    async ({ layout, key, expectedOffset }) => {
+      const page = await createPage({ apps: cloneApps(), layout });
+      const component = page.rootInstance as ModusWcAppMenu;
+      const navSpy = jest.spyOn(component as any, 'navigateFocusByKeyboard');
+
+      (component as any).handleKeyDown(keyEvent(key), 0);
+
+      expect(navSpy).toHaveBeenCalledWith(0, expectedOffset);
+    }
+  );
+
+  it('should not emit itemClick on Enter in edit mode', async () => {
+    const { page, component } = await createEditModePage({
+      apps: mockApps,
+      layout: 'list',
+    });
+    const itemClickSpy = jest.fn();
+    page.root?.addEventListener('itemClick', itemClickSpy);
+
+    (component as any).handleKeyDown(keyEvent('Enter'), 0);
+
+    expect(itemClickSpy).not.toHaveBeenCalled();
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+  });
+
   it('should stop propagation of itemSelect event from menu items in list layout', async () => {
     const page = await createPage({ apps: mockApps, layout: 'list' });
 
@@ -1925,5 +2084,275 @@ describe('modus-wc-app-menu', () => {
 
     expect(component.truncatedApps.size).toBe(0);
     restoreRaf();
+  });
+
+  describe('list layout truncation detection', () => {
+    // mock-doc does not render the modus-wc-menu-item template, so the
+    // .modus-wc-menu-item-labels DOM that getListMenuItemLabelTextElement
+    // walks must be injected manually for these tests.
+    function appendLabel(
+      row: Element,
+      textNode: HTMLElement,
+      withTooltipWrapper: boolean
+    ) {
+      const labels = document.createElement('div');
+      labels.classList.add('modus-wc-menu-item-labels');
+
+      if (withTooltipWrapper) {
+        const tooltip = document.createElement('modus-wc-tooltip');
+        const wrap = document.createElement('div');
+        wrap.appendChild(textNode);
+        tooltip.appendChild(wrap);
+        labels.appendChild(tooltip);
+      } else {
+        labels.appendChild(textNode);
+      }
+
+      const menuItem = row.querySelector('modus-wc-menu-item');
+      menuItem?.appendChild(labels);
+    }
+
+    function makeTextNode(scrollWidth: number, clientWidth: number) {
+      const text = document.createElement('div');
+      Object.defineProperty(text, 'scrollWidth', { value: scrollWidth });
+      Object.defineProperty(text, 'clientWidth', { value: clientWidth });
+      Object.defineProperty(text, 'scrollHeight', { value: 16 });
+      Object.defineProperty(text, 'clientHeight', { value: 20 });
+      return text;
+    }
+
+    it.each([{ withTooltipWrapper: true }, { withTooltipWrapper: false }])(
+      'should mark apps as truncated when text overflows (tooltipWrapper=$withTooltipWrapper)',
+      async ({ withTooltipWrapper }) => {
+        const page = await createPage({ apps: mockApps, layout: 'list' });
+        const rows = page.root?.querySelectorAll('.app-menu-item-row');
+        rows?.forEach((row) => {
+          appendLabel(row, makeTextNode(120, 80), withTooltipWrapper);
+        });
+
+        const component = page.rootInstance as ModusWcAppMenu;
+        (component as any).updateListTooltips();
+
+        expect(component.truncatedApps.size).toBe(mockApps.length);
+        mockApps.forEach((app) => {
+          expect(component.truncatedApps.has(app.appName)).toBe(true);
+        });
+      }
+    );
+
+    it('should not mark apps as truncated when text fits', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const rows = page.root?.querySelectorAll('.app-menu-item-row');
+      rows?.forEach((row) => {
+        appendLabel(row, makeTextNode(50, 80), false);
+      });
+
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).updateListTooltips();
+
+      expect(component.truncatedApps.size).toBe(0);
+    });
+
+    it('should skip rows where the label text element is missing', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).updateListTooltips();
+
+      expect(component.truncatedApps.size).toBe(0);
+    });
+
+    it('should skip rows whose labels container only has a sublabel', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const rows = page.root?.querySelectorAll('.app-menu-item-row');
+      rows?.forEach((row) => {
+        const labels = document.createElement('div');
+        labels.classList.add('modus-wc-menu-item-labels');
+        const sublabel = document.createElement('div');
+        sublabel.classList.add('modus-wc-menu-item-sublabel');
+        labels.appendChild(sublabel);
+        row.querySelector('modus-wc-menu-item')?.appendChild(labels);
+      });
+
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).updateListTooltips();
+
+      expect(component.truncatedApps.size).toBe(0);
+    });
+  });
+
+  it('should reset inner menu-item <li> tabindex back to -1 when changed externally', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'list' });
+
+    // mock-doc does not render the modus-wc-menu-item template, so inject
+    // the <li> the production runtime would otherwise produce.
+    const menuItem = page.root?.querySelector(
+      '.app-menu-item-row modus-wc-menu-item'
+    );
+    const li = document.createElement('li');
+    li.setAttribute('tabindex', '0');
+    menuItem?.appendChild(li);
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).syncListMenuItemTabindex();
+
+    expect(li.getAttribute('tabindex')).toBe('-1');
+  });
+
+  it('should not re-assign truncatedApps when the new set matches the current one', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
+    const component = page.rootInstance as ModusWcAppMenu;
+
+    const initialReference = component.truncatedApps;
+    (component as any).setTruncatedApps(new Set());
+
+    expect(component.truncatedApps).toBe(initialReference);
+  });
+
+  it('should re-assign truncatedApps when sets differ in elements but match in size', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'grid' });
+    const component = page.rootInstance as ModusWcAppMenu;
+
+    component.truncatedApps = new Set<AppName>(['connect']);
+    const replacement = new Set<AppName>(['viewpoint']);
+    (component as any).setTruncatedApps(replacement);
+
+    expect(component.truncatedApps).toBe(replacement);
+  });
+
+  it('should emit itemsOrderChange with new order when items differ but length matches', async () => {
+    const { page, component } = await createEditModePage({ apps: mockApps });
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    component.apps = [
+      { appName: 'tekla' },
+      { appName: 'viewpoint' },
+      { appName: 'sketchup' },
+      { appName: 'connect' },
+    ];
+    await page.waitForChanges();
+
+    (component as any).handleDone();
+
+    expect(orderChangeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit itemsOrderChange when length changes during edit', async () => {
+    const { page, component } = await createEditModePage({ apps: mockApps });
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    component.apps = [{ appName: 'connect' }];
+    await page.waitForChanges();
+
+    (component as any).handleDone();
+
+    expect(orderChangeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not emit itemClick on Enter in non-edit mode when apps is undefined', async () => {
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.apps = undefined;
+    await page.waitForChanges();
+
+    const itemClickSpy = jest.fn();
+    page.root?.addEventListener('itemClick', itemClickSpy);
+
+    (component as any).handleKeyDown(keyEvent('Enter'), 0);
+
+    expect(itemClickSpy).not.toHaveBeenCalled();
+  });
+
+  it('should set tooltipContent on truncated list items', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+
+    component.truncatedApps = new Set<AppName>(['connect']);
+    await page.waitForChanges();
+
+    const menuItem = page.root?.querySelector(
+      '.app-menu-item-row modus-wc-menu-item'
+    );
+    expect(menuItem?.getAttribute('tooltipcontent')).toBe('Trimble Connect');
+  });
+
+  it('should treat empty tooltip wrappers in label container as no text element', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'list' });
+    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    rows?.forEach((row) => {
+      const labels = document.createElement('div');
+      labels.classList.add('modus-wc-menu-item-labels');
+      const tooltip = document.createElement('modus-wc-tooltip');
+      labels.appendChild(tooltip);
+      row.querySelector('modus-wc-menu-item')?.appendChild(labels);
+    });
+
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).updateListTooltips();
+
+    expect(component.truncatedApps.size).toBe(0);
+  });
+
+  it('should ignore rows whose appName is missing in updateListTooltips', async () => {
+    const page = await createPage({ apps: mockApps, layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.apps = undefined;
+
+    (component as any).updateListTooltips();
+
+    expect(component.truncatedApps.size).toBe(0);
+  });
+
+  it('should not emit itemsOrderChange on handleDone when apps stays undefined', async () => {
+    const page = await createPage({ layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+    component.apps = undefined;
+    (component as any).handleEdit();
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    (component as any).handleDone();
+
+    expect(orderChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should report order change when an item slot in the snapshot was missing', async () => {
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+    (component as any).appsSnapshot = [];
+
+    expect((component as any).hasOrderChangedSinceEdit()).toBe(true);
+  });
+
+  it('should report no order change when handleDone runs without a prior edit snapshot', async () => {
+    const page = await createPage({ apps: cloneApps(), layout: 'list' });
+    const component = page.rootInstance as ModusWcAppMenu;
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    (component as any).handleDone();
+
+    expect(orderChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit empty apps array when handleDone runs after apps becomes undefined', async () => {
+    const { page, component } = await createEditModePage({ apps: cloneApps() });
+
+    const orderChangeSpy = jest.fn();
+    page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
+
+    component.apps = undefined;
+    await page.waitForChanges();
+
+    (component as any).handleDone();
+
+    expect(orderChangeSpy).toHaveBeenCalledTimes(1);
+    expect(orderChangeSpy.mock.calls[0][0].detail).toEqual([]);
   });
 });

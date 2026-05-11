@@ -50,7 +50,7 @@ export class ModusWcAppMenu {
     layout: 'list' | 'grid';
   }>;
 
-  /** Emitted when reordering is confirmed via "Done" */
+  /** Emitted when reordering is confirmed via "Done" and the order differs from when edit started */
   @StencilEvent() itemsOrderChange!: EventEmitter<IAppMenuItem[]>;
 
   /** Emitted when an item is clicked */
@@ -64,7 +64,7 @@ export class ModusWcAppMenu {
 
   @State() grabbedItemPos: { appIndex: number } | null = null;
 
-  @State() truncatedApps: Set<string> = new Set();
+  @State() truncatedApps: Set<AppName> = new Set();
 
   private appsSnapshot: IAppMenuItem[] | null = null;
 
@@ -76,18 +76,63 @@ export class ModusWcAppMenu {
     this.scheduleTooltipUpdate();
   }
 
+  componentDidRender() {
+    this.scheduleTooltipUpdate();
+    this.syncListMenuItemTabindex();
+  }
+
+  // The .app-menu-item-row owns keyboard focus and key handling in both
+  // edit and non-edit modes, so demote the inner <li> rendered by
+  // modus-wc-menu-item to avoid having two Tab stops per item.
+  private syncListMenuItemTabindex() {
+    if (this.layout !== 'list') return;
+
+    const rows = this.el.querySelectorAll('.app-menu-item-row');
+    rows.forEach((row) => {
+      const li = row.querySelector('modus-wc-menu-item li');
+      if (li && li.getAttribute('tabindex') !== '-1') {
+        li.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
   @Watch('apps')
   onAppsChange() {
     this.scheduleTooltipUpdate();
   }
 
+  @Watch('isEditMode')
+  onEditModeChange() {
+    this.scheduleTooltipUpdate();
+  }
+
   private scheduleTooltipUpdate() {
-    if (this.layout !== 'grid') return;
-    requestAnimationFrame(() => this.updateGridTooltips());
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (this.layout === 'grid') {
+          this.updateGridTooltips();
+        } else {
+          this.updateListTooltips();
+        }
+      });
+    });
+  }
+
+  private setsAreEqual(a: Set<AppName>, b: Set<AppName>): boolean {
+    if (a.size !== b.size) return false;
+    for (const name of a) {
+      if (!b.has(name)) return false;
+    }
+    return true;
+  }
+
+  private setTruncatedApps(next: Set<AppName>) {
+    if (this.setsAreEqual(next, this.truncatedApps)) return;
+    this.truncatedApps = next;
   }
 
   private updateGridTooltips() {
-    const updated = new Set<string>();
+    const updated = new Set<AppName>();
     const gridItems = this.el.querySelectorAll('.grid-item');
     gridItems.forEach((gridItem, appIndex) => {
       const label = gridItem.querySelector('.grid-item-text-label');
@@ -101,7 +146,50 @@ export class ModusWcAppMenu {
         }
       }
     });
-    this.truncatedApps = updated;
+    this.setTruncatedApps(updated);
+  }
+
+  /** Label text node that visually truncates (inner div), not `.modus-wc-menu-item-labels`. */
+  private getListMenuItemLabelTextElement(row: Element): HTMLElement | null {
+    const labels = row.querySelector('.modus-wc-menu-item-labels');
+    if (!labels) return null;
+
+    // Walk direct children only; `:scope >` is unavailable in mock-doc (used in tests).
+    for (const child of Array.from(labels.children)) {
+      if (child.tagName === 'MODUS-WC-TOOLTIP') {
+        const textDiv = child.firstElementChild?.firstElementChild ?? null;
+        return textDiv as HTMLElement | null;
+      }
+
+      if (
+        child.tagName === 'DIV' &&
+        !child.classList.contains('modus-wc-menu-item-sublabel')
+      ) {
+        return child as HTMLElement;
+      }
+    }
+
+    return null;
+  }
+
+  private updateListTooltips() {
+    const updated = new Set<AppName>();
+    const rows = this.el.querySelectorAll('.app-menu-item-row');
+    rows.forEach((row, appIndex) => {
+      const appName = this.apps?.[appIndex]?.appName;
+      if (!appName) return;
+
+      const textEl = this.getListMenuItemLabelTextElement(row);
+      if (!textEl) return;
+
+      const isTruncated =
+        textEl.scrollWidth > textEl.clientWidth ||
+        textEl.scrollHeight > textEl.clientHeight;
+      if (isTruncated) {
+        updated.add(appName);
+      }
+    });
+    this.setTruncatedApps(updated);
   }
 
   private getDisplayName(appName: AppName): string {
@@ -123,11 +211,23 @@ export class ModusWcAppMenu {
     });
   }
 
+  private hasOrderChangedSinceEdit(): boolean {
+    const snapshot = this.appsSnapshot;
+    if (!snapshot) return false;
+    const current = this.apps ?? [];
+    if (current.length !== snapshot.length) return true;
+    // Length equality guarantees snapshot[i] is defined here.
+    return current.some((item, i) => item.appName !== snapshot[i].appName);
+  }
+
   private handleDone() {
+    const shouldEmit = this.hasOrderChangedSinceEdit();
     this.isEditMode = false;
     this.grabbedItemPos = null;
     this.appsSnapshot = null;
-    this.itemsOrderChange.emit(this.apps);
+    if (shouldEmit) {
+      this.itemsOrderChange.emit([...(this.apps ?? [])]);
+    }
   }
 
   private handleCancel() {
@@ -140,14 +240,21 @@ export class ModusWcAppMenu {
   }
 
   private handleKeyDown(e: KeyboardEvent, appIndex: number) {
-    if (!this.isEditMode) return;
-
     switch (e.key) {
       case ' ':
-      case 'Enter':
-        e.preventDefault();
-        this.grabbedItemPos = this.grabbedItemPos ? null : { appIndex };
+      case 'Enter': {
+        if (this.isEditMode) {
+          e.preventDefault();
+          this.grabbedItemPos = this.grabbedItemPos ? null : { appIndex };
+        } else if (e.key === 'Enter') {
+          const app = this.apps?.[appIndex];
+          if (app) {
+            e.preventDefault();
+            this.itemClick.emit({ appName: app.appName });
+          }
+        }
         break;
+      }
 
       case 'ArrowUp':
       case 'ArrowDown':
@@ -161,7 +268,7 @@ export class ModusWcAppMenu {
         e.preventDefault();
         e.stopPropagation();
 
-        if (this.grabbedItemPos) {
+        if (this.isEditMode && this.grabbedItemPos) {
           this.reorderByKeyboard(appIndex, offset);
         } else {
           this.navigateFocusByKeyboard(appIndex, offset);
@@ -170,7 +277,7 @@ export class ModusWcAppMenu {
       }
 
       case 'Escape':
-        if (this.grabbedItemPos) {
+        if (this.isEditMode && this.grabbedItemPos) {
           e.preventDefault();
           this.grabbedItemPos = null;
         }
@@ -212,6 +319,19 @@ export class ModusWcAppMenu {
 
   private isGrabbed(appIndex: number): boolean {
     return this.grabbedItemPos?.appIndex === appIndex;
+  }
+
+  // Release the grab when keyboard focus moves out of the grabbed row,
+  // otherwise the previously grabbed row keeps its outline alongside the
+  // newly focused one (e.g., after pressing Tab).
+  private handleRowFocusOut(e: FocusEvent, appIndex: number) {
+    if (!this.isGrabbed(appIndex)) return;
+
+    const row = e.currentTarget as HTMLElement | null;
+    const next = e.relatedTarget as Node | null;
+    if (row && next && row.contains(next)) return;
+
+    this.grabbedItemPos = null;
   }
 
   private isDragSource(appIndex: number): boolean {
@@ -311,9 +431,10 @@ export class ModusWcAppMenu {
               onDragOver={(e) => this.handleDragOver(e)}
               onDragStart={(e) => this.handleDragStart(e, appIndex)}
               onDrop={(e) => this.handleDrop(e, appIndex)}
+              onFocusout={(e) => this.handleRowFocusOut(e, appIndex)}
               onKeyDown={(e) => this.handleKeyDown(e, appIndex)}
-              role={this.isEditMode ? 'option' : undefined}
-              tabindex={this.isEditMode ? 0 : undefined}
+              role={this.isEditMode ? 'option' : 'listitem'}
+              tabindex={0}
             >
               {this.isEditMode && (
                 <modus-wc-icon
@@ -324,6 +445,12 @@ export class ModusWcAppMenu {
               )}
               <modus-wc-menu-item
                 label={this.getDisplayName(app.appName)}
+                tooltipContent={
+                  this.truncatedApps.has(app.appName)
+                    ? this.getDisplayName(app.appName)
+                    : undefined
+                }
+                tooltipPosition="auto"
                 onItemSelect={(e) => e.stopPropagation()}
               >
                 <modus-wc-logo
@@ -370,9 +497,10 @@ export class ModusWcAppMenu {
               onDragOver={(e) => this.handleDragOver(e)}
               onDragStart={(e) => this.handleDragStart(e, appIndex)}
               onDrop={(e) => this.handleDrop(e, appIndex)}
+              onFocusout={(e) => this.handleRowFocusOut(e, appIndex)}
               onKeyDown={(e) => this.handleKeyDown(e, appIndex)}
               role={this.isEditMode ? 'option' : 'listitem'}
-              tabindex={this.isEditMode ? 0 : undefined}
+              tabindex={0}
             >
               {this.isEditMode && (
                 <modus-wc-icon
@@ -393,8 +521,7 @@ export class ModusWcAppMenu {
               >
                 <modus-wc-typography
                   custom-class="grid-item-text-label"
-                  size="xs"
-                  weight="normal"
+                  size="sm"
                   label={this.getDisplayName(app.appName)}
                 ></modus-wc-typography>
               </modus-wc-tooltip>
@@ -416,9 +543,10 @@ export class ModusWcAppMenu {
             <div class="menu-header">
               <div class="header-title">
                 <modus-wc-typography
-                  size="md"
-                  weight="bold"
-                  label={this.isEditMode ? 'Edit' : 'Trimble apps'}
+                  size="2xl"
+                  weight="semibold"
+                  hierarchy="h3"
+                  label={this.isEditMode ? 'Edit' : 'Trimble Apps'}
                 ></modus-wc-typography>
               </div>
               <div class="header-end-content">
@@ -426,27 +554,32 @@ export class ModusWcAppMenu {
                 {!this.isEditMode ? (
                   <modus-wc-button
                     aria-label="Edit app order"
+                    custom-class="edit-icon-button"
                     shape="square"
                     size="sm"
                     variant="filled"
                     color="tertiary"
-                    onClick={() => this.handleEdit()}
+                    onButtonClick={() => this.handleEdit()}
                   >
-                    <modus-wc-icon name="pencil"></modus-wc-icon>
+                    <modus-wc-icon
+                      name="pencil"
+                      variant="solid"
+                    ></modus-wc-icon>
                   </modus-wc-button>
                 ) : (
                   [
                     <modus-wc-button
+                      custom-class="cancel-button"
                       size="sm"
                       color="tertiary"
-                      onClick={() => this.handleCancel()}
+                      onButtonClick={() => this.handleCancel()}
                     >
                       Cancel
                     </modus-wc-button>,
                     <modus-wc-button
                       size="sm"
                       color="primary"
-                      onClick={() => this.handleDone()}
+                      onButtonClick={() => this.handleDone()}
                     >
                       Done
                     </modus-wc-button>,

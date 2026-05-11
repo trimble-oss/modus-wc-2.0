@@ -8,6 +8,7 @@ modus-wc-app-menu {
     [slot='body'] {
       display: flex;
       flex-direction: column;
+      gap: var(--modus-wc-spacing-lg);
       overflow-y: auto;
       padding: var(--modus-wc-spacing-lg);
       padding-inline-end: 0;
@@ -21,7 +22,7 @@ modus-wc-app-menu {
       display: flex;
       flex-wrap: wrap;
       gap: var(--modus-wc-spacing-sm);
-      min-height: var(--modus-wc-size-md);
+      min-height: var(--modus-wc-size-sm);
       padding: 0 var(--modus-wc-spacing-lg);
 
       .header-title {
@@ -36,6 +37,12 @@ modus-wc-app-menu {
         align-items: center;
         display: flex;
         gap: var(--modus-wc-spacing-sm);
+
+        .edit-icon-button,
+        .cancel-button {
+          background: var(--modus-wc-color-gray-01);
+          border: none;
+        }
       }
     }
 
@@ -52,10 +59,29 @@ modus-wc-app-menu {
         color: inherit;
       }
 
+      /* Keyboard focus lives on `.app-menu-item-row` (the row owns the tab
+         stop and key handling). The inner menu-item paints its hover
+         background on top of any outline placed on the row, so we paint
+         the focus outline on the inner menu-item element instead. The
+         second selector overrides the global menu-item hover rule
+         (`outline: none`) so the ring stays visible while hovering. */
+      .app-menu-item-row:focus-visible {
+        outline: none;
+      }
+
+      .app-menu-item-row:focus-visible modus-wc-menu-item .modus-wc-menu-item,
+      .app-menu-item-row:focus-visible
+        modus-wc-menu-item
+        .modus-wc-menu-item:hover {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
+      }
+
       .app-menu-item-row {
         align-items: center;
         display: flex;
         margin-inline: calc(-1 * var(--modus-wc-spacing-xs));
+        max-width: 256px;
         position: relative;
 
         .drag-icon {
@@ -69,9 +95,90 @@ modus-wc-app-menu {
           flex: 1;
           min-width: 0;
         }
+
+        &.draggable-item {
+          cursor: grab;
+
+          .drag-icon {
+            cursor: grab;
+          }
+
+          /* Row is draggable; inner menu button would otherwise use pointer/default and shrink the grab hit visually. */
+          modus-wc-menu-item .modus-wc-menu-item button,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button
+            .modus-wc-menu-item-content,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button
+            .modus-wc-menu-item-content
+            * {
+            cursor: grab;
+          }
+
+          modus-wc-menu-item .modus-wc-menu-item button:active,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button:active
+            .modus-wc-menu-item-content,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button:active
+            .modus-wc-menu-item-content
+            * {
+            cursor: grabbing;
+          }
+        }
       }
 
+      /* No explicit width here: the menu item naturally fills its row,
+         which is constrained by the surrounding `modus-wc-panel` width
+         and its body padding. */
       .modus-wc-menu-item button {
+        min-width: 0;
+
+        .modus-wc-menu-item-content {
+          gap: var(--modus-wc-spacing-lg);
+          min-width: 0;
+          width: 100%;
+        }
+
+        .modus-wc-menu-item-labels {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          padding-inline-start: 0;
+
+          > div:not(.modus-wc-menu-item-sublabel) {
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          > modus-wc-tooltip {
+            display: block;
+            flex: 1;
+            max-width: 100%;
+            min-width: 0;
+          }
+
+          > modus-wc-tooltip > div {
+            max-width: 100%;
+            min-width: 0;
+          }
+
+          > modus-wc-tooltip > div > div:first-child {
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
         .modus-wc-menu-item-content [slot='start-icon'] {
           align-items: center;
           display: inline-flex;
@@ -83,51 +190,56 @@ modus-wc-app-menu {
             width: var(--modus-wc-input-height-sm);
           }
         }
-
-        .modus-wc-menu-item-content {
-          gap: var(--modus-wc-spacing-lg);
-        }
-
-        .modus-wc-menu-item-labels {
-          padding-inline-start: 0;
-        }
       }
     }
 
     .grid-menu {
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       gap: var(--modus-wc-spacing-sm);
-      padding: var(--modus-wc-spacing-sm);
+      margin-inline: auto;
+      width: fit-content;
     }
 
     .grid-row {
       align-self: stretch;
       display: grid;
       gap: 0 var(--modus-wc-spacing-sm);
-      grid-template-columns: repeat(3, 1fr);
-      justify-items: center;
+
+      /* minmax(0, 1fr) prevents a long label from making its column wider
+         than the others, so all three items share equal space per row. */
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-items: stretch;
     }
 
     .grid-item {
       align-items: center;
+      border-radius: var(--modus-wc-border-radius-sm);
       display: flex;
       flex-direction: column;
-      gap: var(--modus-wc-spacing-2xs);
       padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xs);
       position: relative;
-      width: 100%;
+      width: var(--modus-wc-spacing-20);
 
       > modus-wc-icon {
+        align-items: center;
+        display: inline-flex;
         inset-inline-end: 0;
-        padding: 0 var(--modus-wc-spacing-sm);
+        justify-content: center;
         position: absolute;
         top: 0;
+        width: var(--modus-wc-size-xs);
       }
 
       &:hover {
         background-color: var(--modus-wc-color-base-100);
-        border-radius: var(--modus-wc-border-radius-sm);
+      }
+
+      /* Focus outline that persists alongside the hover background. */
+      &:focus-visible {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
       }
     }
 
@@ -153,14 +265,7 @@ modus-wc-app-menu {
 
     .draggable-item {
       cursor: grab;
-      transition:
-        box-shadow 0.2s ease,
-        outline 0.2s ease;
-
-      &:focus-visible {
-        outline: 2px solid var(--modus-wc-color-primary);
-        outline-offset: -2px;
-      }
+      transition: box-shadow 0.2s ease;
 
       &:active {
         box-shadow:

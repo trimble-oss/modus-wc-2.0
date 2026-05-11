@@ -7,39 +7,39 @@ exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
-          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+          <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
-            <modus-wc-icon name="pencil"></modus-wc-icon>
+          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
       </div>
       <div class="app-menu-body">
         <div class="grid-menu">
           <div class="grid-row" role="list">
-            <div aria-label="Trimble Connect" class="grid-item" draggable="false" role="listitem">
+            <div aria-label="Trimble Connect" class="grid-item" draggable="false" role="listitem" tabindex="0">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="connect"></modus-wc-logo>
               <modus-wc-tooltip content="Trimble Connect" disabled="" position="auto">
-                <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="xs" weight="normal"></modus-wc-typography>
+                <modus-wc-typography custom-class="grid-item-text-label" label="Trimble Connect" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
-            <div aria-label="Viewpoint" class="grid-item" draggable="false" role="listitem">
+            <div aria-label="Viewpoint" class="grid-item" draggable="false" role="listitem" tabindex="0">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="viewpoint"></modus-wc-logo>
               <modus-wc-tooltip content="Viewpoint" disabled="" position="auto">
-                <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="xs" weight="normal"></modus-wc-typography>
+                <modus-wc-typography custom-class="grid-item-text-label" label="Viewpoint" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
-            <div aria-label="SketchUp" class="grid-item" draggable="false" role="listitem">
+            <div aria-label="SketchUp" class="grid-item" draggable="false" role="listitem" tabindex="0">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="sketchup"></modus-wc-logo>
               <modus-wc-tooltip content="SketchUp" disabled="" position="auto">
-                <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="xs" weight="normal"></modus-wc-typography>
+                <modus-wc-typography custom-class="grid-item-text-label" label="SketchUp" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
-            <div aria-label="Tekla" class="grid-item" draggable="false" role="listitem">
+            <div aria-label="Tekla" class="grid-item" draggable="false" role="listitem" tabindex="0">
               <modus-wc-logo custom-class="grid-emblem" emblem="" name="tekla"></modus-wc-logo>
               <modus-wc-tooltip content="Tekla" disabled="" position="auto">
-                <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="xs" weight="normal"></modus-wc-typography>
+                <modus-wc-typography custom-class="grid-item-text-label" label="Tekla" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
           </div>
@@ -57,34 +57,34 @@ exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
-          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+          <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
-            <modus-wc-icon name="pencil"></modus-wc-icon>
+          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
       </div>
       <div class="app-menu-body">
         <div class="app-menu-items">
           <modus-wc-menu>
-            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Trimble Connect">
+            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Viewpoint">
+            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="SketchUp">
+            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Tekla" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Tekla">
+            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Tekla" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
@@ -103,34 +103,34 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
-          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+          <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
-            <modus-wc-icon name="pencil"></modus-wc-icon>
+          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
       </div>
       <div class="app-menu-body">
         <div class="app-menu-items">
           <modus-wc-menu>
-            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Trimble Connect">
+            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Viewpoint">
+            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="SketchUp">
+            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Tekla" class="app-menu-item-row" draggable="false">
-              <modus-wc-menu-item label="Tekla">
+            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+              <modus-wc-menu-item label="Tekla" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
@@ -149,11 +149,11 @@ exports[`modus-wc-app-menu should render with default props 1`] = `
     <div slot="body">
       <div class="menu-header">
         <div class="header-title">
-          <modus-wc-typography label="Trimble apps" size="md" weight="bold"></modus-wc-typography>
+          <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
-            <modus-wc-icon name="pencil"></modus-wc-icon>
+          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+            <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
       </div>
