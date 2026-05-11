@@ -54,7 +54,7 @@ interface HandleArgs {
   'default-split'?: number;
   density?: 'compact' | 'comfortable' | 'relaxed';
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
-  'button-size'?: DaisySize;
+  'button-size'?: DaisySize | 'xl';
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'left-target'?: string;
   orientation?: Orientation;

@@ -43,7 +43,7 @@ const meta: Meta<DropdownMenuArgs> = {
     },
     'button-size': {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     'button-shape': {
       control: { type: 'select' },
