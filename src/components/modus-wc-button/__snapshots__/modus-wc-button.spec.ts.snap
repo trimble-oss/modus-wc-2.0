@@ -26,3 +26,12 @@ exports[`modus-wc-button should render with disabled attribute 1`] = `
   </button>
 </modus-wc-button>
 `;
+
+exports[`modus-wc-button should render with size xl 1`] = `
+<modus-wc-button size="xl">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-xl" tabindex="0" type="button">
+    XL Button
+  </button>
+</modus-wc-button>
+`;

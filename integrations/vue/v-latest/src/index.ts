@@ -6,3 +6,5 @@ export { ModusWebComponentsPlugin, ComponentLibrary } from './plugin';
 
 // Re-export setAssetPath for users who need to configure asset paths
 export { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
+
+export type * from '@trimble-oss/moduswebcomponents';
