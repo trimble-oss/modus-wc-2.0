@@ -162,21 +162,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     z-index: 99;
   }
 
-  // Mirrors menu-item's :focus-visible outline for the autocomplete's
-  // class-based focus indicator. DOM focus stays on the input, so the
-  // pseudo-class never fires; this routes the same visual through the
-  // .modus-wc-menu-item-focused class flipped by the `focused` prop.
-  // Only the outline is set so the underlying background (selected/active
-  // pale-primary or the non-active base-100) stays visible while the keyboard
-  // navigates onto it — the user sees both "this is the focused row" and
-  // "this is the selected row" when those coincide.
-  .modus-wc-menu
-    modus-wc-menu-item
-    .modus-wc-menu-item.modus-wc-menu-item-focused {
-    outline: 2px solid var(--modus-wc-color-primary);
-    outline-offset: -2px;
-  }
-
   .menu-hidden {
     display: none;
   }

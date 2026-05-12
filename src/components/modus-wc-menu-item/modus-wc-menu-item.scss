@@ -188,6 +188,13 @@ modus-wc-menu-item .modus-wc-menu-item {
     outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
+
+  // Programmatic focus marker (via the `focused` prop). Outline only so the
+  // underlying selected/hover background stays visible.
+  &.modus-wc-menu-item-focused {
+    outline: 2px solid var(--modus-wc-color-primary);
+    outline-offset: -2px;
+  }
 }
 
 [data-theme='modus-classic-dark'],
