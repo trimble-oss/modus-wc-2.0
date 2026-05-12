@@ -176,6 +176,7 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",
+    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
