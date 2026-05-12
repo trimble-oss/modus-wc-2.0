@@ -97,6 +97,16 @@ describe('modus-wc-button', () => {
     expect(clickSpy).toHaveBeenCalled();
   });
 
+  it('should render with size xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button size="xl">XL Button</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-xl')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should not emit buttonClick event on key press when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
