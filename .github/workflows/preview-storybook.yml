@@ -52,7 +52,7 @@ jobs:
           cp src/styles/output.css storybook-static/public/output.css
 
       - name: Deploy preview
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
         uses: rossjrw/pr-preview-action@v1
         id: preview-deploy
         with:
@@ -70,7 +70,7 @@ jobs:
           target-folder: ${{ github.event.inputs.branch || 'main' }}
 
       - name: Get preview URL
-        if: github.event_name == 'pull_request' && steps.preview-deploy.outcome == 'success'
+        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.preview-deploy.outcome == 'success'
         id: preview-url
         run: |
           echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT

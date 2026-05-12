@@ -79,7 +79,7 @@ jobs:
             blazing-story-dist/wwwroot/iframe.html
 
       - name: Deploy preview
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
         uses: rossjrw/pr-preview-action@v1
         id: preview-deploy
         with:
