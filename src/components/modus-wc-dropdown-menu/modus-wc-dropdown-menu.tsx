@@ -49,7 +49,7 @@ export class ModusWcDropdownMenu {
     'rectangle';
 
   /** The size of the button. */
-  @Prop() buttonSize?: DaisySize = 'md';
+  @Prop() buttonSize?: DaisySize | 'xl' = 'md';
 
   /** The variant of the button. */
   @Prop() buttonVariant?: 'borderless' | 'filled' | 'outlined' = 'filled';
