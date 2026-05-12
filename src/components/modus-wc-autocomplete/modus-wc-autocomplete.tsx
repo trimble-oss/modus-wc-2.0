@@ -364,6 +364,9 @@ export class ModusWcAutocomplete {
     });
   }
 
+  // Keeps the arrow-focused item within the scrollable menu viewport.
+  // DOM focus stays on the input, so the browser's focus-driven auto-scroll
+  // does not fire; the autocomplete drives the scroll itself.
   private scrollFocusedIntoView(): void {
     requestAnimationFrame(() => {
       const menuEl = this.el.querySelector(
@@ -384,6 +387,9 @@ export class ModusWcAutocomplete {
       const isBelowView = itemRect.bottom > containerRect.bottom;
 
       if (isAboveView || isBelowView) {
+        // Align to the top edge when moving up and to the bottom edge when
+        // moving down so consecutive arrow presses reveal one row at a time
+        // instead of jumping the menu back to the start.
         const scrollTop = isAboveView
           ? targetItem.offsetTop
           : targetItem.offsetTop +
@@ -391,7 +397,7 @@ export class ModusWcAutocomplete {
             scrollContainer.clientHeight;
         scrollContainer.scrollTo({
           top: Math.max(0, scrollTop),
-          behavior: 'smooth',
+          behavior: 'auto',
         });
       }
     });

@@ -6223,7 +6223,8 @@ describe('modus-wc-autocomplete', () => {
       configurable: true,
     });
 
-    (menuEl as HTMLElement).scrollTo = jest.fn();
+    const scrollToMock = jest.fn();
+    (menuEl as HTMLElement).scrollTo = scrollToMock;
     menuEl.appendChild(targetItem);
 
     jest
@@ -6246,9 +6247,9 @@ describe('modus-wc-autocomplete', () => {
 
     // Item is below: scroll so its bottom aligns with the container bottom.
     // scrollTop = offsetTop + offsetHeight - clientHeight = 200 + 20 - 100 = 120
-    expect(menuEl.scrollTo).toHaveBeenCalledWith({
+    expect(scrollToMock).toHaveBeenCalledWith({
       top: 120,
-      behavior: 'smooth',
+      behavior: 'auto',
     });
     jest.restoreAllMocks();
   });
@@ -6309,7 +6310,8 @@ describe('modus-wc-autocomplete', () => {
       configurable: true,
     });
 
-    (menuEl as HTMLElement).scrollTo = jest.fn();
+    const scrollToMock = jest.fn();
+    (menuEl as HTMLElement).scrollTo = scrollToMock;
     menuEl.appendChild(targetItem);
 
     jest
@@ -6332,9 +6334,9 @@ describe('modus-wc-autocomplete', () => {
 
     // Item is above: scroll so its top aligns with the container top.
     // scrollTop = offsetTop = 10
-    expect(menuEl.scrollTo).toHaveBeenCalledWith({
+    expect(scrollToMock).toHaveBeenCalledWith({
       top: 10,
-      behavior: 'smooth',
+      behavior: 'auto',
     });
     jest.restoreAllMocks();
   });
@@ -6382,7 +6384,8 @@ describe('modus-wc-autocomplete', () => {
         toJSON: () => {},
       }) as DOMRect;
 
-    (menuEl as HTMLElement).scrollTo = jest.fn();
+    const scrollToMock = jest.fn();
+    (menuEl as HTMLElement).scrollTo = scrollToMock;
     menuEl.appendChild(targetItem);
 
     jest
@@ -6403,7 +6406,7 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['scrollFocusedIntoView']();
     await new Promise(requestAnimationFrame);
 
-    expect(menuEl.scrollTo).not.toHaveBeenCalled();
+    expect(scrollToMock).not.toHaveBeenCalled();
     jest.restoreAllMocks();
   });
 
@@ -6420,12 +6423,40 @@ describe('modus-wc-autocomplete', () => {
 
     const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
-    jest
-      .spyOn(autocomplete.el, 'querySelector')
-      .mockImplementation(() => null);
+    jest.spyOn(autocomplete.el, 'querySelector').mockImplementation(() => null);
 
     expect(() => autocomplete['scrollFocusedIntoView']()).not.toThrow();
     await new Promise(requestAnimationFrame);
+    jest.restoreAllMocks();
+  });
+
+  it('should noop scrollFocusedIntoView when menu exists but no focused item is found', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const menuEl = document.createElement('div');
+    const scrollToMock = jest.fn();
+
+    jest.spyOn(menuEl, 'querySelector').mockImplementation(() => null);
+    jest
+      .spyOn(autocomplete.el, 'querySelector')
+      .mockImplementation((selector: string) => {
+        if (selector === 'modus-wc-menu') return menuEl as unknown as Element;
+        return null;
+      });
+
+    autocomplete['scrollFocusedIntoView']();
+    await new Promise(requestAnimationFrame);
+
+    expect(scrollToMock).not.toHaveBeenCalled();
     jest.restoreAllMocks();
   });
 });
