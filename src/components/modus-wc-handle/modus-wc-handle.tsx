@@ -48,7 +48,7 @@ export class ModusWcHandle {
   @Prop() defaultSplit?: number = 50;
 
   /** The size of the button. */
-  @Prop() buttonSize?: DaisySize = 'md';
+  @Prop() buttonSize?: DaisySize | 'xl' = 'md';
 
   /** The color of the button. */
   @Prop() buttonColor?:
