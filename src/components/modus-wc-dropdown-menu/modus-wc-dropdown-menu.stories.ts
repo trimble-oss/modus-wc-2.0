@@ -9,7 +9,7 @@ interface DropdownMenuArgs {
   'button-aria-label'?: string;
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'button-shape'?: 'circle' | 'ellipse' | 'rectangle' | 'square';
-  'button-size'?: DaisySize;
+  'button-size'?: DaisySize | 'xl';
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'custom-class'?: string;
   disabled?: boolean;
