@@ -160,11 +160,14 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     position: absolute;
     top: 100%;
     z-index: 99;
+  }
 
-    .modus-wc-menu-item-focused {
-      box-shadow: inset 0 0 0 var(--modus-wc-border-width-sm)
-        var(--modus-wc-color-primary);
-    }
+  .modus-wc-menu
+    modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-focused {
+    background-color: transparent;
+    outline: 2px solid var(--modus-wc-color-primary);
+    outline-offset: -2px;
   }
 
   .menu-hidden {

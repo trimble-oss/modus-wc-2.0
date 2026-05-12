@@ -364,6 +364,39 @@ export class ModusWcAutocomplete {
     });
   }
 
+  private scrollFocusedIntoView(): void {
+    requestAnimationFrame(() => {
+      const menuEl = this.el.querySelector(
+        'modus-wc-menu'
+      ) as HTMLElement | null;
+      if (!menuEl) return;
+
+      const targetItem = menuEl.querySelector<HTMLElement>(
+        '.modus-wc-menu-item-focused'
+      );
+      const scrollContainer =
+        menuEl.querySelector<HTMLElement>('.modus-wc-menu');
+      if (!targetItem || !scrollContainer) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = targetItem.getBoundingClientRect();
+      const isAboveView = itemRect.top < containerRect.top;
+      const isBelowView = itemRect.bottom > containerRect.bottom;
+
+      if (isAboveView || isBelowView) {
+        const scrollTop = isAboveView
+          ? targetItem.offsetTop
+          : targetItem.offsetTop +
+            targetItem.offsetHeight -
+            scrollContainer.clientHeight;
+        scrollContainer.scrollTo({
+          top: Math.max(0, scrollTop),
+          behavior: 'smooth',
+        });
+      }
+    });
+  }
+
   private handleArrowDown(): void {
     const input = this.el.querySelector('input');
     if (!input) return;
@@ -393,6 +426,7 @@ export class ModusWcAutocomplete {
         if (!wasFiltering && !this.searchText && this.items) {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
+        this.scrollFocusedIntoView();
       },
       onSetMenuVisible: (visible) => {
         this.menuVisible = visible;
@@ -421,6 +455,7 @@ export class ModusWcAutocomplete {
         if (!isFiltering && this.items) {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
+        this.scrollFocusedIntoView();
       },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
