@@ -1928,7 +1928,7 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
-  it('should deselect an item and set focused state when leaveMenuOpen is true and it has checkbox property', async () => {
+  it('should deselect an item and clear focused state when leaveMenuOpen is true and it has checkbox property', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcTextInput],
       html: `<modus-wc-autocomplete aria-label="Multi-select deselection test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
@@ -1952,9 +1952,10 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleItemSelect'](testItem);
     await page.waitForChanges();
 
-    // When leaveMenuOpen is true, selected should be false and focused should be true
+    // Focused state is reserved for keyboard navigation only; selection
+    // (mouse or otherwise) must never leave an item with focused=true.
     expect(autocomplete.items[0].selected).toBe(false);
-    expect(autocomplete.items[0].focused).toBe(true); // Updated to expect true instead of false
+    expect(autocomplete.items[0].focused).toBe(false);
     expect(autocomplete['selectionOrder']).toEqual([]);
   });
 
@@ -5326,8 +5327,10 @@ describe('modus-wc-autocomplete', () => {
     expect(resultWithEmpty.map((i) => i.value)).toEqual(['apple', 'banana']);
   });
 
-  // Test focused state with leaveMenuOpen in processItemSelection
-  it('should set focused state correctly based on leaveMenuOpen', async () => {
+  // Selecting an item must never leave it with focused=true, regardless of
+  // leaveMenuOpen. The focused state is reserved for keyboard navigation so
+  // the prominent outline does not leak onto mouse-selected/active items.
+  it('should never leave a selected item focused regardless of leaveMenuOpen', async () => {
     const page = await newSpecPage({
       components: [
         ModusWcAutocomplete,
@@ -5357,7 +5360,8 @@ describe('modus-wc-autocomplete', () => {
     autocomplete.items = items;
     await page.waitForChanges();
 
-    // Test 1: When leaveMenuOpen is true, selected item should have focus
+    // Test 1: With leaveMenuOpen=true the menu stays open, but the selected
+    // item must not carry the keyboard-focus marker.
     autocomplete.leaveMenuOpen = true;
     autocomplete.multiSelect = true;
     await page.waitForChanges();
@@ -5366,10 +5370,9 @@ describe('modus-wc-autocomplete', () => {
     autocomplete['handleItemSelect'](items[1]);
     await page.waitForChanges();
 
-    // Check that Banana is focused and selected
     expect(autocomplete.items[0].focused).toBe(false);
-    expect(autocomplete.items[1].focused).toBe(true); // Banana should be focused
-    expect(autocomplete.items[1].selected).toBe(true); // Banana should be selected
+    expect(autocomplete.items[1].focused).toBe(false);
+    expect(autocomplete.items[1].selected).toBe(true);
     expect(autocomplete.items[2].focused).toBe(false);
 
     // Test 2: When leaveMenuOpen is false, no item should have focus after selection

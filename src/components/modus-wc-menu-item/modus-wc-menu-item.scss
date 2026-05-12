@@ -162,11 +162,25 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
-  // Hover state for all items
-  &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+  // Hover state for all items. The `:not(.modus-wc-menu-item-focused)` guard
+  // keeps the keyboard focus outline (and its border-radius) visible when the
+  // user hovers over a programmatically focused item.
+  &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
+      :has(.modus-wc-menu-dropdown)
+    ) {
     &:hover {
       background-color: var(--modus-wc-color-base-100);
       outline: none;
+    }
+  }
+
+  // When the item is both hovered AND keyboard-focused, keep the focus outline
+  // on top of the hover background so the navigation cue persists.
+  &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+      :has(.modus-wc-menu-dropdown)
+    ) {
+    &:hover {
+      background-color: var(--modus-wc-color-base-100);
     }
   }
 
@@ -190,8 +204,10 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   // Programmatic focus marker (via the `focused` prop). Outline only so the
-  // underlying selected/hover background stays visible.
+  // underlying selected/hover background stays visible. Border-radius is
+  // inherited to match the menu item's own corner radius.
   &.modus-wc-menu-item-focused {
+    border-radius: inherit;
     outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
@@ -210,12 +226,27 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
 
-    // Hover state for all items
-    &:not(.modus-wc-menu-item-disabled):not(:has(.modus-wc-menu-dropdown)) {
+    // Hover state for all items. The `:not(.modus-wc-menu-item-focused)` guard
+    // keeps the keyboard focus outline (and its border-radius) visible when the
+    // user hovers over a programmatically focused item.
+    &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
       &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
         outline: none;
+      }
+    }
+
+    // When the item is both hovered AND keyboard-focused, keep the focus
+    // outline on top of the dark-theme hover background.
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:hover {
+        background-color: var(--modus-wc-color-gray-9);
+        color: inherit;
       }
     }
 
