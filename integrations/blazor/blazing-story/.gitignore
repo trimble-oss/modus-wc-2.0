@@ -1,0 +1,13 @@
+# Build artifacts previously copied from dist/esm/ by the CopyStencilBundle MSBuild target.
+# No longer generated — the Stencil bundle is now served directly from the Blazor RCL
+# static web assets at _content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js.
+# Kept here in case any stale copies remain locally.
+wwwroot/dist/
+wwwroot/css/modus-wc-styles.css
+wwwroot/css/assets/
+wwwroot/css/fonts/
+wwwroot/css/*.svg
+
+# .NET build output
+obj/
+bin/

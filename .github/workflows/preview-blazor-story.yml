@@ -1,0 +1,106 @@
+name: Publish Blazor Story
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+
+concurrency:
+  group: gh-pages-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          dotnet-version: '10.x'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Stencil components (generates Blazor RCL)
+        run: npm run build:ci
+
+      - name: Build Blazor RCL
+        run: dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor -c Release
+
+      - name: Compute base path
+        id: base-path
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "path=/${REPO_NAME}/blazor-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+          else
+            BRANCH="${{ github.event.inputs.branch || 'main' }}"
+            echo "path=/${REPO_NAME}/blazor-story/${BRANCH}/" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish Blazor Story (static site)
+        run: |
+          dotnet publish integrations/blazor/blazing-story/BlazingStoryApp.csproj \
+            -c Release \
+            --output ./blazing-story-dist
+
+      - name: Fix base href for subdirectory deployment
+        run: |
+          BASE_PATH="${{ steps.base-path.outputs.path }}"
+          sed -i "s|<base href=\"/\" />|<base href=\"${BASE_PATH}\" />|g" \
+            blazing-story-dist/wwwroot/index.html \
+            blazing-story-dist/wwwroot/iframe.html
+
+      - name: Deploy preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        id: preview-deploy
+        with:
+          source-dir: ./blazing-story-dist/wwwroot/
+          preview-branch: gh-pages
+          umbrella-dir: blazor-preview
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: JamesIves/github-pages-deploy-action@v4
+        id: deploy
+        with:
+          folder: blazing-story-dist/wwwroot
+          branch: gh-pages
+          target-folder: blazor-story/${{ github.event.inputs.branch || 'main' }}
+
+      - name: Print deployment URL
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && steps.deploy.outcome == 'success'
+        run: |
+          echo "Blazor Story deployed to: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/blazor-story/${{ github.event.inputs.branch || 'main' }}/"
+
+      - name: Print failure message
+        if: failure()
+        run: echo "Deployment failed. Please check the logs for more information."
