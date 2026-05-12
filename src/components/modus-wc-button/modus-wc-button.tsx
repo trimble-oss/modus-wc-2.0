@@ -49,7 +49,7 @@ export class ModusWcButton {
   @Prop() shape: 'circle' | 'ellipse' | 'rectangle' | 'square' = 'rectangle';
 
   /** The size of the button. */
-  @Prop() size: DaisySize = 'md';
+  @Prop() size: DaisySize | 'xl' = 'md';
 
   /** The type of the button. */
   @Prop() type: 'button' | 'submit' | 'reset' = 'button';

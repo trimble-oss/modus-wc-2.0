@@ -26,6 +26,9 @@
     "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   },
+  "overrides": {
+    "fast-uri": "^3.1.2"
+  },
   "publishConfig": {
     "access": "public"
   },
