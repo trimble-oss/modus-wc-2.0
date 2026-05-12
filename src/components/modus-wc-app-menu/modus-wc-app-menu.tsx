@@ -78,18 +78,18 @@ export class ModusWcAppMenu {
 
   @Watch('apps')
   onAppsChange() {
-    this.scheduleTooltipUpdate();
+    if (!this.isEditMode) {
+      this.scheduleTooltipUpdate();
+    }
   }
 
   private scheduleTooltipUpdate() {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (this.layout === 'grid') {
-          this.updateGridTooltips();
-        } else {
-          this.updateListTooltips();
-        }
-      });
+      if (this.layout === 'grid') {
+        this.updateGridTooltips();
+      } else {
+        this.updateListTooltips();
+      }
     });
   }
 
@@ -221,7 +221,7 @@ export class ModusWcAppMenu {
         if (this.isEditMode) {
           e.preventDefault();
           this.grabbedItemPos = this.grabbedItemPos ? null : { appIndex };
-        } else if (e.key === 'Enter') {
+        } else {
           const app = this.apps?.[appIndex];
           if (app) {
             e.preventDefault();
