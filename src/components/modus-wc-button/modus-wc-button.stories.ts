@@ -12,7 +12,7 @@ interface ButtonArgs {
   'full-width': boolean;
   pressed: boolean;
   shape: 'circle' | 'ellipse' | 'rectangle' | 'square';
-  size: DaisySize;
+  size: DaisySize | 'xl';
   type: 'button' | 'submit' | 'reset';
   variant: 'borderless' | 'filled' | 'outlined';
 }
@@ -41,7 +41,7 @@ const meta: Meta<ButtonArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     type: {
       control: { type: 'select' },

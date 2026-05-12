@@ -9,7 +9,7 @@ interface DropdownMenuArgs {
   'button-aria-label'?: string;
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
   'button-shape'?: 'circle' | 'ellipse' | 'rectangle' | 'square';
-  'button-size'?: DaisySize;
+  'button-size'?: DaisySize | 'xl';
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'custom-class'?: string;
   disabled?: boolean;
@@ -43,7 +43,7 @@ const meta: Meta<DropdownMenuArgs> = {
     },
     'button-size': {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     'button-shape': {
       control: { type: 'select' },
