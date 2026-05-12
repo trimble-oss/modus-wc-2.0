@@ -38,12 +38,10 @@ modus-wc-2.0/
 #### Code Structure and Organization
 
 1. **Component Structure**:
-
    - Each component should be self-contained with its own HTML, CSS, and JS/TS files.
    - Use meaningful and descriptive names for components and their files.
 
 2. **File Naming Conventions**:
-
    - Use kebab-case for file names (e.g., `modus-wc-text-input.ts`).
    - Ensure file names are descriptive of their content and purpose.
 
@@ -53,13 +51,11 @@ modus-wc-2.0/
 #### Coding Standards
 
 1. **TypeScript Usage**:
-
    - Prefer TypeScript over JavaScript for type safety and better tooling support.
    - Define types and interfaces for component properties and events.
    - Add component type on naming interfaces but full names are not needed to be included. (e.g., `ISelectOption` instead of `IModusWcSelectOption`)
 
 2. **Property Definitions**:
-
    - Use the `@Prop` decorator to define component properties.
    - Provide default values for properties where applicable.
    - Use appropriate types for properties (e.g., `string`, `boolean`, `number`).
@@ -67,13 +63,11 @@ modus-wc-2.0/
    - Use `?` for defining optional props. (e.g., `@Prop() alt?: string`)
 
 3. **Event Emission**:
-
    - Use the `@Event` decorator to define custom events.
    - Name events using camelCase (e.g., `inputBlur`, `inputChange`).
    - Emit events using the `this.emit` method.
 
 4. **CSS Styling**:
-
    - Use CSS variables for styling (e.g., `--modus-wc-color-green-dark`). If a CSS value is being repeated, consider creating a new CSS variable or set of them(e.g., `--modus-wc-font-size-xs`).
    - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input-label`).
    - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
@@ -82,18 +76,15 @@ modus-wc-2.0/
    - Use direct child selectors (e.g., `> span`) when targeting specific elements to avoid leaking styles into nested elements of the same type. This prevents unintended style inheritance in complex component hierarchies.
 
 5. **Consistent Code Style**:
-
    - Follow a consistent code style throughout the codebase. Use tools like Prettier and ESLint to enforce code style rules.
    - Use single quotes for strings, and ensure proper indentation and spacing.
    - Add blank lines between styling blocks for readability and consistency.
 
 6. **Error Handling**:
-
    - Implement proper error handling in components and functions. Use try-catch blocks where necessary and provide meaningful error messages.
    - Ensure that errors are logged appropriately for debugging purposes (but avoid frivolous logging).
 
 7. **Accessibility**
-
    - Ensure all components are accessible and follow WCAG 2.2 standards.
    - Components should be fully operable via keyboard alone.
    - Use ARIA attributes where necessary to enhance accessibility.
@@ -104,34 +95,28 @@ modus-wc-2.0/
 #### Version Control and Collaboration
 
 1. **Commit Messages**:
-
    - Write clear and concise commit messages.
    - Use semantic commit messages to maintain consistency and clarity. (e.g., "feature: Add {new-feature}" and "Fix {bug}").
    - Do not commit unused imports.
 
 2. **Pull Requests**:
-
    - Provide a clear description of the changes and the rationale behind them for each and every PR.
    - Clarify in detail on the review comments promptly and update the pull request accordingly with the fix.
    - Fill in all the items in the PR template when creating PRs.
 
 3. **Code Reviews**:
-
    - Conduct thorough code reviews to ensure code quality and adherence to guidelines.
    - Provide constructive feedback and suggestions for improvement during code reviews.
 
 4. **Collaboration Tools**:
-
    - Use collaboration tools like GitHub Issues and Project Boards to track tasks, bugs, and feature requests.
    - Ensure that all team members are aware of the current project status and any ongoing work.
 
 #### Testing and Quality Assurance
 
 1. **Unit Testing**:
-
    - Write unit tests for all components and functions.
    - We are using the Jest testing framework throughout the project to ensure tests cover various scenarios, including edge cases.
-
      - Example test case: We are covering the test case `should render with default props` from `ModusWcAvatar` component
 
      ```ts
@@ -159,12 +144,10 @@ modus-wc-2.0/
      ```
 
 2. **Test Naming Conventions**:
-
    - Use descriptive names for test cases.
    - Follow the pattern `should do something when condition` for test names.
 
 3. **Code Coverage**:
-
    - Aim for 100% code coverage, but prioritize meaningful tests over the coverage percentage itself.
    - Update test cases to cover the code changes for each component.
 
@@ -176,7 +159,6 @@ modus-wc-2.0/
 - NOTE: The storybook creates its information using the auto documentation feature; in order to produce accurate information, inline comments must be provided.
 
 1. **Component Documentation**:
-
    - Provide storybook inline docs for all components
    - Provide component details in the `stories.ts` file to generate inline docs for components.
    - Include types, and default values in the component properties.
@@ -186,17 +168,14 @@ modus-wc-2.0/
    - Provide migration documentation, if applicable, after each pull request.
 
 2. **Inline Comments**:
-
    - Use inline comments to explain complex logic and important decisions.
    - Keep comments concise and relevant.
 
 3. **README Files**:
-
    - Each component should have an auto-generated `readme.md` file that provides an overview of the component, its properties, events, and usage examples.
    - Ensure the documentation is clear and concise, making it easy for developers to understand how to use the component.
 
 4. **API Documentation**:
-
    - Ensure documentation is present for any events exposed which is generated by autoDocs in the storybook.
    - Ensure documentation includes examples and descriptions of each component generated by autoDocs in the storybook.
    - AutoDocs generates information with the comments of each `@StencilEvent` or `@Prop`.

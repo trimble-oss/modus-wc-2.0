@@ -125,6 +125,190 @@ module.exports = {
 
 - ### [Vue](?path=/docs/documentation-frameworks-vue--docs)
 
+## Server-Side Rendering (SSR)
+
+Modus Web Components supports server-side rendering for React 19 + Next.js (App Router) via [`@stencil/ssr`](https://www.npmjs.com/package/@stencil/ssr).
+
+This is a one-time setup — once configured, all Modus React components are automatically server-rendered on every page with no per-page wrappers needed.
+
+### Requirements
+
+- React 19
+- Next.js (App Router)
+- `@trimble-oss/moduswebcomponents-react` (React 19 integration package)
+
+### Installation
+
+```bash
+npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-react
+npm install --save-dev @stencil/ssr
+```
+
+### Setup
+
+**1. Configure `next.config.ts` (one-time)**
+
+```ts
+// next.config.ts
+import type { NextConfig } from 'next';
+import stencilSSR from '@stencil/ssr/next';
+
+const nextConfig: NextConfig = {};
+
+export default stencilSSR({
+  module: import('@trimble-oss/moduswebcomponents-react'),
+  from: '@trimble-oss/moduswebcomponents-react',
+  hydrateModule: import('@trimble-oss/moduswebcomponents/hydrate'),
+  serializeShadowRoot: 'declarative-shadow-dom',
+})(nextConfig);
+```
+
+> **Note:** `@stencil/ssr` currently requires the Webpack bundler. Start your dev server with `next dev --webpack`.
+
+**2. Register custom elements for interactivity (one-time)**
+
+SSR provides the initial HTML render. `defineCustomElements()` must still be called client-side to enable events and component interactivity.
+
+```tsx
+// app/modus-init.tsx
+'use client';
+import { useEffect } from 'react';
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+
+export function ModusInit() {
+  useEffect(() => {
+    defineCustomElements();
+  }, []);
+  return null;
+}
+```
+
+Add it once to your root layout:
+
+```tsx
+// app/layout.tsx
+import { ModusInit } from './modus-init';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" data-theme="modus-modern-light">
+      <head>
+        <link rel="stylesheet" href="/modus-wc-styles.css" />
+        <link rel="stylesheet" href="/modus-icons.css" />
+      </head>
+      <body>
+        <ModusInit />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+**3. Use components — no wrappers needed**
+
+Server Components render Modus components directly. Client Components handle interactivity.
+
+```tsx
+// app/page.tsx — server-rendered display components
+import {
+  ModusWcBadge,
+  ModusWcAlert,
+} from '@trimble-oss/moduswebcomponents-react';
+import { InteractiveSection } from './interactive-section';
+
+export default function Page() {
+  return (
+    <>
+      <ModusWcBadge color="primary">New</ModusWcBadge>
+      <ModusWcAlert
+        alertTitle="Hello"
+        alertDescription="Server-rendered."
+        type="success"
+      />
+      <InteractiveSection />
+    </>
+  );
+}
+```
+
+```tsx
+// app/interactive-section.tsx — client-rendered interactive components
+'use client';
+import { ModusWcButton } from '@trimble-oss/moduswebcomponents-react';
+
+export function InteractiveSection() {
+  return (
+    <ModusWcButton
+      color="primary"
+      variant="filled"
+      onButtonClick={() => console.log('clicked')}
+    >
+      Click me
+    </ModusWcButton>
+  );
+}
+```
+
+**4. Copy CSS and assets to `public/`**
+
+Modus CSS references font files via relative paths and must be served statically. Add a `postinstall` script to automate this:
+
+```json
+{
+  "scripts": {
+    "postinstall": "cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/ && cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/"
+  }
+}
+```
+
+### How it works
+
+- **Server Components** — Modus components are serialized to static HTML on the server, with their styles included inline. The browser displays styled content immediately, before JavaScript loads.
+- **Client Components** — Components with event handlers must be in a `'use client'` file. These hydrate after JS loads.
+- **`defineCustomElements()`** — Required once in the client to register the Stencil runtime for interactivity. SSR alone does not wire up events.
+
+### Notes
+
+- Components that accept named slot content as React children (e.g. a custom dropdown trigger) may not render that slot content during SSR. Move such components into a `'use client'` boundary to ensure correct rendering.
+- This setup is specific to Next.js App Router with React 19. For other frameworks or React 18, see the manual SSR approach below.
+
+### Manual SSR (React 18 / Remix / other Node.js servers)
+
+For frameworks other than Next.js App Router, or when using React 18, you can call `renderToString` directly from the `hydrate` subpath.
+
+```tsx
+// lib/modus-ssr.tsx
+import { renderToString } from '@trimble-oss/moduswebcomponents/hydrate';
+
+export async function ModusSSR({ html: inputHtml }: { html: string }) {
+  const { html } = await renderToString(inputHtml, {
+    fullDocument: false,
+    serializeShadowRoot: 'declarative-shadow-dom',
+  });
+  return <div dangerouslySetInnerHTML={{ __html: html ?? '' }} />;
+}
+```
+
+Use it in any server-rendered page or route:
+
+```tsx
+import { ModusSSR } from '@/lib/modus-ssr';
+
+export default async function Page() {
+  return (
+    <ModusSSR
+      html={`
+      <modus-wc-button color="primary" variant="filled">Click me</modus-wc-button>
+      <modus-wc-badge color="primary">New</modus-wc-badge>
+    `}
+    />
+  );
+}
+```
+
+> **Note:** `inputHtml` must be trusted server-side markup — do not pass user-supplied content. `renderToString` is a Node.js API and cannot run in browser or Edge Runtime environments.
+
 ---
 
 Need help? Check out our [GitHub repository](https://github.com/trimble-oss/modus-wc-2.0)

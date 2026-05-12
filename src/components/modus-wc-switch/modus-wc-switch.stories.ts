@@ -14,7 +14,7 @@ interface SwitchArgs {
   label?: string;
   name?: string;
   required?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs';
   value: boolean;
 }
 
@@ -34,7 +34,7 @@ const meta: Meta<SwitchArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
   },
   decorators: [withActions],
@@ -108,7 +108,6 @@ export const ShadowDomParent: Story = {
     ></switch-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

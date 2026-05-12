@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWCTypography, TypographyWeight } from './modus-wc-typography';
+import { ModusWCTypography } from './modus-wc-typography';
+import { TypographySize, TypographyWeight } from '../types';
 import { convertPropsToClasses } from './modus-wc-typography.tailwind';
-import { DaisySize } from '../types';
 
 describe('modus-wc-typography', () => {
   it('should render with default props', async () => {
@@ -60,10 +60,20 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     expect(convertPropsToClasses({})).toBe('');
   });
 
-  it.each([['sm'], ['md'], ['lg']])(
-    'returns correct size class (%s)',
+  it.each([['xs'], ['sm'], ['md'], ['lg'], ['xl'], ['2xl'], ['3xl']])(
+    'returns correct size class using Modus CSS variable (%s)',
     (size) => {
-      expect(convertPropsToClasses({ size: size as DaisySize })).toBe(
+      expect(convertPropsToClasses({ size: size as TypographySize })).toBe(
+        `modus-wc-text-${size}`
+      );
+    }
+  );
+
+  // 4xl–9xl sizes fall back to Tailwind's default font-size values
+  it.each([['4xl'], ['5xl'], ['6xl'], ['7xl'], ['8xl'], ['9xl']])(
+    'returns correct size class using Tailwind default (%s)',
+    (size) => {
+      expect(convertPropsToClasses({ size: size as TypographySize })).toBe(
         `modus-wc-text-${size}`
       );
     }

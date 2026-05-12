@@ -62,6 +62,7 @@ export type LogoName =
   | 'trimble'
   | 'truckmate'
   | 'unity'
+  | 'unity_adms'
   | 'unity_construct'
   | 'unity_field'
   | 'unity_maintain'
@@ -457,6 +458,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   unity: {
     displayName: 'Unity',
     path: 'logos/trimble/unity.svg',
+    emblemPath: 'logos/emblems/unity-emblem.svg',
+    category: 'trimble',
+  },
+  unity_adms: {
+    displayName: 'Unity ADMS',
+    path: 'logos/trimble/unity-adms.svg',
     emblemPath: 'logos/emblems/unity-emblem.svg',
     category: 'trimble',
   },

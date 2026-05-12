@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { Orientation } from '../types';
 
 interface ButtonGroupArgs {
@@ -255,6 +256,37 @@ export const SelectionEvent: Story = {
   },
 };
 
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('button-group-shadow-host')) {
+      const ButtonGroupShadowHost = createShadowHostClass<ButtonGroupArgs>({
+        componentTag: 'modus-wc-button-group',
+        propsMapper: (v: ButtonGroupArgs, el: HTMLElement) => {
+          const bgEl = el as unknown as {
+            variant: string;
+            color: string;
+            disabled: boolean;
+            orientation: string;
+            selectionType: string;
+          };
+          bgEl.variant = v.variant;
+          bgEl.color = v.color;
+          bgEl.disabled = Boolean(v.disabled);
+          bgEl.orientation = v.orientation;
+          bgEl.selectionType = v['selection-type'];
+          if (!el.hasChildNodes()) {
+            el.innerHTML = `<modus-wc-button>Button 1</modus-wc-button><modus-wc-button>Button 2</modus-wc-button><modus-wc-button>Button 3</modus-wc-button>`;
+          }
+        },
+      });
+      customElements.define('button-group-shadow-host', ButtonGroupShadowHost);
+    }
+
+    return html`<button-group-shadow-host
+      .props=${{ ...args }}
+    ></button-group-shadow-host>`;
+  },
+};
 export const Migration: Story = {
   parameters: {
     docs: {

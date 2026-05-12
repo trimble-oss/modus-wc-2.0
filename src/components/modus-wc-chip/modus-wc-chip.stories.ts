@@ -201,7 +201,6 @@ export const ShadowDomParent: Story = {
     return html`<chip-shadow-host .props=${{ ...args }}></chip-shadow-host>`;
   },
 };
-
 export const Migration: Story = {
   parameters: {
     docs: {

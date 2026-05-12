@@ -2,6 +2,12 @@ name: Build Blazor Integration
 
 on:
   workflow_call:
+    inputs:
+      pr_number:
+        description: 'PR number (used to version the preview NuGet artifact)'
+        required: false
+        type: string
+        default: '0'
     secrets:
       TRIMBLE_AGENTIC_NPM_TOKEN:
         required: true
@@ -37,4 +43,20 @@ jobs:
         run: npm run build:ci
 
       - name: Build Blazor RCL
-        run: dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor -c Release
+        run: |
+          dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor \
+            -c Release \
+            -p:Version="0.0.0-pr${{ inputs.pr_number }}.${{ github.run_number }}"
+
+      - name: Pack Blazor RCL (preview NuGet for QA)
+        run: |
+          dotnet pack integrations/blazor/stencil-generated/ModusWebComponents.Blazor \
+            -c Release --no-build \
+            -p:Version="0.0.0-pr${{ inputs.pr_number }}.${{ github.run_number }}" \
+            --output ./nuget-output
+
+      - name: Upload NuGet artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ModusWebComponents.Blazor-pr${{ inputs.pr_number }}-run${{ github.run_number }}
+          path: nuget-output/*.nupkg

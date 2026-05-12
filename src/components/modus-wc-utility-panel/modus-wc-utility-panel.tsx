@@ -8,6 +8,7 @@ import {
   Prop,
   Watch,
 } from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 
 @Component({
   tag: 'modus-wc-utility-panel',
@@ -15,6 +16,9 @@ import {
   shadow: false,
 })
 export class ModusWcUtilityPanel {
+  /** Custom CSS class to apply to the outer div. */
+  @Prop() customClass?: string = '';
+
   /** The panel is expanded or closed */
   @Prop() expanded = false;
 
@@ -35,7 +39,8 @@ export class ModusWcUtilityPanel {
   private isInitialLoad = true;
 
   componentWillLoad() {
-    // Set initial load flag will be cleared after first render
+    // Auto-inject CSS if component is used inside user's shadow DOM
+    handleShadowDOMStyles(this.el);
   }
 
   componentDidLoad() {
@@ -115,6 +120,7 @@ export class ModusWcUtilityPanel {
         class={{
           'modus-wc-utility-panel': true,
           open: this.expanded,
+          [this.customClass as string]: !!this.customClass,
         }}
       >
         <div class="modus-wc-utility-panel-content">

@@ -1,4 +1,4 @@
-name: Cleanup Storybook PR Preview
+name: Cleanup PR Previews
 on:
   pull_request:
     types: [closed]
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: gh-pages # Checkout the gh-pages branch
           fetch-depth: 1
@@ -25,16 +25,24 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Remove PR Preview
+      - name: Remove PR Previews
         run: |
-          # Check if PR preview directory exists
-          if [ -d "pr-preview/pr-${{ github.event.pull_request.number }}" ]; then
-            # Remove the PR preview directory
-            git rm -rf pr-preview/pr-${{ github.event.pull_request.number }}
+          PR="${{ github.event.pull_request.number }}"
+          CHANGED=false
 
-            # Commit and push the change
-            git commit -m "Remove Storybook preview for PR #${{ github.event.pull_request.number }}"
+          if [ -d "pr-preview/pr-${PR}" ]; then
+            git rm -rf pr-preview/pr-${PR}
+            CHANGED=true
+          fi
+
+          if [ -d "blazor-preview/pr-${PR}" ]; then
+            git rm -rf blazor-preview/pr-${PR}
+            CHANGED=true
+          fi
+
+          if [ "$CHANGED" = "true" ]; then
+            git commit -m "Remove PR #${PR} previews"
             git push origin gh-pages
           else
-            echo "No preview directory found for PR #${{ github.event.pull_request.number }}"
+            echo "No preview directories found for PR #${PR}"
           fi

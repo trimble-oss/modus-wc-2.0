@@ -56,6 +56,10 @@ export const config: Config = {
       ],
     },
     {
+      type: 'dist-hydrate-script',
+      dir: './dist/hydrate',
+    },
+    {
       type: 'docs-readme',
     },
     angularOutputTarget({
@@ -91,6 +95,8 @@ export const config: Config = {
     reactOutputTarget({
       customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',
+      hydrateModule: '@trimble-oss/moduswebcomponents/hydrate',
+      clientModule: '@trimble-oss/moduswebcomponents-react',
     }),
     vueOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
@@ -102,6 +108,7 @@ export const config: Config = {
         './integrations/blazor/stencil-generated/ModusWebComponents.Blazor',
       packageName: 'ModusWebComponents.Blazor',
       namespace: 'ModusWebComponents.Blazor',
+      packageReadmePath: '../../nuget-README.md',
     }),
   ],
   plugins: [

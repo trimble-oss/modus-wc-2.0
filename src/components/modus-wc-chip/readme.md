@@ -40,9 +40,14 @@ The component supports a `<slot>` for injecting custom content such as avatar an
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
 
+### Depends on
+
+- [modus-wc-icon](../modus-wc-icon)
+
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-chip --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-chip
   style modus-wc-chip fill:#f9f,stroke:#333,stroke-width:4px
 ```

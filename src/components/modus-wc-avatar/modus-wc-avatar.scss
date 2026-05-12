@@ -9,8 +9,8 @@ modus-wc-avatar {
 modus-wc-avatar .modus-wc-avatar {
   .initials {
     align-items: center;
-    background-color: var(--modus-wc-color-black);
-    color: var(--modus-wc-color-white);
+    background-color: var(--modus-wc-color-neutral);
+    color: var(--modus-wc-color-neutral-content);
     display: flex;
     font-weight: 600;
     height: 100%;
@@ -21,8 +21,8 @@ modus-wc-avatar .modus-wc-avatar {
 
   .no-image {
     align-items: center;
-    background-color: var(--modus-wc-color-gray-2);
-    color: var(--modus-wc-color-white);
+    background-color: var(--modus-wc-color-base-200);
+    color: var(--modus-wc-color-base-content);
     display: flex;
     justify-content: center;
   }

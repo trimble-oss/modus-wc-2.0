@@ -1,0 +1,131 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Getting Started" />
+
+# Getting Started
+
+## Installation
+
+<b>
+  Lock the installed package version to avoid unintended breakages on future npm
+  installs.
+</b>
+
+```bash
+npm install @trimble-oss/moduswebcomponents
+```
+
+## Usage
+
+### 1. Set up the styling:
+
+You will need to import our styling in your main JavaScript or CSS file:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+```
+
+#### Variables-Only CSS
+
+If you want Modus styling to apply only to your components and **not affect the rest of your application**, you can import the lightweight variables-only file instead:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-variables.css';
+```
+
+Modus components inside Shadow DOM will automatically inject their own class rules via `handleShadowDOMStyles()`, so they render correctly without the full stylesheet being loaded globally.
+
+> **Note:** Both imports work with Shadow DOM. We recommend `modus-wc-styles.css` for new applications. Consider `modus-wc-variables.css` for existing applications where you want to avoid global style changes.
+
+### 2. Set the theme:
+
+The theme can be set manually or by using the `ThemeSwitcher` component. See the "Use a Theme" section of [Styling](/docs/documentation-styling--docs) for guidance.
+
+Available themes are:
+
+- `modus-modern-light` (default)
+- `modus-modern-dark`
+- `modus-classic-light`
+- `modus-classic-dark`
+- `connect-light`
+- `connect-dark`
+
+### 3. Register custom elements:
+
+```javascript
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+
+// Call during the initial loading of your application
+const Root = () => {
+  defineCustomElements();
+
+  return <App />;
+};
+```
+
+### 4. Use the components:
+
+```javascript
+// Use in HTML
+<modus-wc-button variant="primary">Click me</modus-wc-button>
+```
+
+## Types
+
+Types are a crucial part of our component library, providing robust type safety and enhanced developer experience through comprehensive TypeScript definitions for all components.
+
+```javascript
+import { ISelectOption, ModusWcSelectCustomEvent } from '@trimble-oss/moduswebcomponents';
+
+const options: ISelectOption[] = [
+  {
+    label: 'Option 1',
+    value: '1',
+  },
+  {
+    label: 'Option 2',
+    value: '2',
+  },
+];
+
+const handleEvent = (e: ModusWcSelectCustomEvent<ISelectOption>) => {}
+```
+
+## Testing with Jest
+
+If you are using the React integration package (`@trimble-oss/moduswebcomponents-react`), this package is published as ES modules. To use it in a Jest environment you need to configure Babel to transpile it.
+
+Add `transformIgnorePatterns` to your Jest config (`package.json` or `jest.config.js`):
+
+```json
+{
+  "jest": {
+    "transformIgnorePatterns": ["/node_modules/(?!(@trimble-oss|@stencil))"]
+  }
+}
+```
+
+Ensure your `babel.config.js` includes these presets:
+
+```js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', { targets: { node: 'current' } }],
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
+  ],
+};
+```
+
+## Framework Integrations
+
+- ### [Angular](?path=/docs/documentation-frameworks-angular--docs)
+
+- ### [React](?path=/docs/documentation-frameworks-react--docs)
+
+- ### [Vue](?path=/docs/documentation-frameworks-vue--docs)
+
+---
+
+Need help? Check out our [GitHub repository](https://github.com/trimble-oss/modus-wc-2.0)
+or [raise an issue](https://github.com/trimble-oss/modus-wc-2.0/issues).
