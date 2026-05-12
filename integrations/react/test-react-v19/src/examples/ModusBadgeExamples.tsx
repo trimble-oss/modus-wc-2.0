@@ -1,9 +1,24 @@
-import { ModusWcBadge as ModusBadge } from "@trimble-oss/moduswebcomponents-react";
+import {
+	ModusWcBadge as ModusBadge,
+	type Density,
+	type ModusSize,
+} from "@trimble-oss/moduswebcomponents-react";
+
+function densityLabel(density: Density): string {
+	return density;
+}
 
 export default function ModusBadgeExamples() {
+	const typedSize: ModusSize = "md";
+	const typedDensity: Density = "comfortable";
+
 	return (
 		<>
 			<h3>Badge</h3>
+			<p className="demo-types-hint">
+				Types from <code>@trimble-oss/moduswebcomponents-react</code>: ModusSize=
+				{typedSize}, Density={densityLabel(typedDensity)}
+			</p>
 			<div className="grid">
 				<div className="grid-row">
 					<ModusBadge aria-label="Badge" content="Default" />
@@ -17,7 +32,7 @@ export default function ModusBadgeExamples() {
 
 				<div className="grid-row">
 					<ModusBadge aria-label="Badge" size="sm" content="Small" />
-					<ModusBadge aria-label="Badge" size="md" content="Medium" />
+					<ModusBadge aria-label="Badge" size={typedSize} content="Medium (typed)" />
 					<ModusBadge aria-label="Badge" size="lg" content="Large" />
 				</div>
 
