@@ -76,33 +76,8 @@ export class ModusWcAppMenu {
     this.scheduleTooltipUpdate();
   }
 
-  componentDidRender() {
-    this.scheduleTooltipUpdate();
-    this.syncListMenuItemTabindex();
-  }
-
-  // The .app-menu-item-row owns keyboard focus and key handling in both
-  // edit and non-edit modes, so demote the inner <li> rendered by
-  // modus-wc-menu-item to avoid having two Tab stops per item.
-  private syncListMenuItemTabindex() {
-    if (this.layout !== 'list') return;
-
-    const rows = this.el.querySelectorAll('.app-menu-item-row');
-    rows.forEach((row) => {
-      const li = row.querySelector('modus-wc-menu-item li');
-      if (li && li.getAttribute('tabindex') !== '-1') {
-        li.setAttribute('tabindex', '-1');
-      }
-    });
-  }
-
   @Watch('apps')
   onAppsChange() {
-    this.scheduleTooltipUpdate();
-  }
-
-  @Watch('isEditMode')
-  onEditModeChange() {
     this.scheduleTooltipUpdate();
   }
 
@@ -434,7 +409,7 @@ export class ModusWcAppMenu {
               onFocusout={(e) => this.handleRowFocusOut(e, appIndex)}
               onKeyDown={(e) => this.handleKeyDown(e, appIndex)}
               role={this.isEditMode ? 'option' : 'listitem'}
-              tabindex={0}
+              tabindex={this.isEditMode ? 0 : -1}
             >
               {this.isEditMode && (
                 <modus-wc-icon

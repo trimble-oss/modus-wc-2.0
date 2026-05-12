@@ -68,22 +68,22 @@ exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
       <div class="app-menu-body">
         <div class="app-menu-items">
           <modus-wc-menu>
-            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Tekla" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
@@ -114,22 +114,22 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
       <div class="app-menu-body">
         <div class="app-menu-items">
           <modus-wc-menu>
-            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Trimble Connect" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Viewpoint" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="SketchUp" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
-            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="0">
+            <div aria-label="Tekla" class="app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Tekla" tooltipposition="auto">
                 <modus-wc-logo custom-class="app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>

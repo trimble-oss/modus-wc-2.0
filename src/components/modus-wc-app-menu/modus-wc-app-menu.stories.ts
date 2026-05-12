@@ -95,6 +95,9 @@ const getSourceCode = (args: AppMenuArgs) => {
   element.addEventListener('itemsOrderChange', (event) => {
     console.log('Items order changed:', event.detail);
   });
+  element.addEventListener('itemClick', (event) => {
+    console.log('Item clicked:', event.detail);
+  });
 </script>
 `;
 };

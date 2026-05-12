@@ -101,15 +101,29 @@ export function getTargetFocusIndex(
 
 /**
  * Focuses the app menu item at the given index based on the layout.
+ *
+ * In list layout the focus target depends on edit mode: the wrapper row
+ * (tabIndex 0 in edit mode) or the inner `<li>` rendered by
+ * modus-wc-menu-item (native tab stop in normal mode).
  */
 export function focusAppMenuItem(
   el: HTMLElement,
   layout: 'list' | 'grid',
   appIndex: number
 ): void {
-  const selector =
-    layout === 'grid' ? '.grid-item[tabindex]' : '.app-menu-item-row[tabindex]';
-  const items = el.querySelectorAll(selector);
-  const target = items[appIndex] as HTMLElement;
-  target?.focus();
+  if (layout === 'grid') {
+    const items = el.querySelectorAll('.grid-item');
+    (items[appIndex] as HTMLElement)?.focus();
+  } else {
+    const rows = el.querySelectorAll('.app-menu-item-row');
+    const row = rows[appIndex] as HTMLElement;
+    if (!row) return;
+
+    if (row.tabIndex === 0) {
+      row.focus();
+    } else {
+      const li = row.querySelector('modus-wc-menu-item li') as HTMLElement;
+      li?.focus();
+    }
+  }
 }

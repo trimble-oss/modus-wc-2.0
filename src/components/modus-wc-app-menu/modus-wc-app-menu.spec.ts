@@ -936,21 +936,37 @@ describe('modus-wc-app-menu', () => {
     {
       layout: 'list' as const,
       selector: '.app-menu-item-row',
-      editMode: false,
+      editMode: true,
+      expected: '0',
     },
-    { layout: 'list' as const, selector: '.app-menu-item-row', editMode: true },
-    { layout: 'grid' as const, selector: '.grid-item', editMode: false },
-    { layout: 'grid' as const, selector: '.grid-item', editMode: true },
+    {
+      layout: 'list' as const,
+      selector: '.app-menu-item-row',
+      editMode: false,
+      expected: '-1',
+    },
+    {
+      layout: 'grid' as const,
+      selector: '.grid-item',
+      editMode: true,
+      expected: '0',
+    },
+    {
+      layout: 'grid' as const,
+      selector: '.grid-item',
+      editMode: false,
+      expected: '0',
+    },
   ])(
-    'should set tabindex=0 on $layout items when editMode=$editMode',
-    async ({ layout, selector, editMode }) => {
+    'should set tabindex=$expected on $layout items when editMode=$editMode',
+    async ({ layout, selector, editMode, expected }) => {
       const { page } = editMode
         ? await createEditModePage({ apps: mockApps, layout })
         : { page: await createPage({ apps: mockApps, layout }) };
 
       const items = page.root?.querySelectorAll(selector);
       items?.forEach((item) => {
-        expect(item.getAttribute('tabindex')).toBe('0');
+        expect(item.getAttribute('tabindex')).toBe(expected);
       });
     }
   );
@@ -2179,24 +2195,6 @@ describe('modus-wc-app-menu', () => {
 
       expect(component.truncatedApps.size).toBe(0);
     });
-  });
-
-  it('should reset inner menu-item <li> tabindex back to -1 when changed externally', async () => {
-    const page = await createPage({ apps: mockApps, layout: 'list' });
-
-    // mock-doc does not render the modus-wc-menu-item template, so inject
-    // the <li> the production runtime would otherwise produce.
-    const menuItem = page.root?.querySelector(
-      '.app-menu-item-row modus-wc-menu-item'
-    );
-    const li = document.createElement('li');
-    li.setAttribute('tabindex', '0');
-    menuItem?.appendChild(li);
-
-    const component = page.rootInstance as ModusWcAppMenu;
-    (component as any).syncListMenuItemTabindex();
-
-    expect(li.getAttribute('tabindex')).toBe('-1');
   });
 
   it('should not re-assign truncatedApps when the new set matches the current one', async () => {
