@@ -146,7 +146,7 @@
     "stencil-tailwind-plugin": "^1.8.0",
     "stylelint": "16.26.1",
     "stylelint-config-standard-scss": "16.0.0",
-    "stylelint-order": "6.0.4",
+    "stylelint-order": "8.1.1",
     "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.7",
     "typescript": "^5.6.2",
@@ -161,7 +161,12 @@
     },
     "@stencil/ssr": {
       "vite": "^7.1.7"
-    }
+    },
+    "wireit": {
+      "brace-expansion": "4.0.1"
+    },
+    "socks": "^2.8.8",
+    "postcss": "^8.5.14"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",
