@@ -1947,7 +1947,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('2025-10-05');
       expect(input.value).toBe('05-10-2025');
 
-      // Test date above max — same behaviour.
+      // Test date above max — same behavior.
       component.value = '2025-10-25';
       await page.waitForChanges();
       expect(component.value).toBe('2025-10-25');
@@ -1968,7 +1968,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('15-10');
       expect(input.value).toBe('');
 
-      // Test invalid format (empty parts) — same behaviour
+      // Test invalid format (empty parts) — same behavior
       component.value = '--';
       await page.waitForChanges();
       expect(component.value).toBe('--');
@@ -2084,7 +2084,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('2025-10-05');
       expect(page.root!.querySelector('input')?.value).toBe('Oct 05, 2025');
 
-      // Above max — same behaviour.
+      // Above max — same behavior.
       component.value = '2025-10-25';
       await page.waitForChanges();
       expect(component.value).toBe('2025-10-25');
@@ -2898,7 +2898,7 @@ describe('modus-wc-date', () => {
     const dispatchEventSpy = jest.spyOn(mockInputElement, 'dispatchEvent');
     component['inputRef'] = mockInputElement;
 
-    // Set an ISO value — handleValueChange will normalise and then dispatch
+    // Set an ISO value — handleValueChange will normalize and then dispatch
     component.value = '2025-10-15';
     component['handleValueChange']('2025-10-15');
     await page.waitForChanges();
