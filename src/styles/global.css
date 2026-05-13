@@ -70,8 +70,6 @@ modus-wc-date .modus-wc-date {
 
 modus-wc-select {
   --fallback-b1: transparent;
-
-  background: var(--modus-wc-color-base-page);
 }
 
 modus-wc-number-input .modus-wc-number-input {
