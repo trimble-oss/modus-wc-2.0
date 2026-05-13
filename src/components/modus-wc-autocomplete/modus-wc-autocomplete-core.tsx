@@ -330,7 +330,7 @@ export function processItemSelection(
         ...params.items.map((menuItem) => ({
           ...menuItem,
           selected: menuItem.value === item.value ? false : menuItem.selected,
-          focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+          focused: false,
         })),
       ];
 
@@ -352,7 +352,7 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value ? true : menuItem.selected,
-        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        focused: false,
       })),
     ];
 
@@ -375,7 +375,7 @@ export function processItemSelection(
       ...params.items.map((menuItem) => ({
         ...menuItem,
         selected: menuItem.value === item.value,
-        focused: params.leaveMenuOpen ? menuItem.value === item.value : false,
+        focused: false,
       })),
     ];
     // Always set the input value to show the selected item's label
