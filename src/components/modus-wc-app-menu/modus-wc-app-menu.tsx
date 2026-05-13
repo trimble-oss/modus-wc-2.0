@@ -68,12 +68,6 @@ export class ModusWcAppMenu {
 
   private appsSnapshot: IAppMenuItem[] | null = null;
 
-  // True while a keyboard-driven reorder is in flight. The keyed grid
-  // reconciliation transiently moves the grabbed DOM node, which fires a
-  // focusout with relatedTarget=null — without this flag, handleRowFocusOut
-  // would treat that as a real focus loss and drop the item.
-  private isReorderingViaKeyboard = false;
-
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -275,12 +269,10 @@ export class ModusWcAppMenu {
         : reorderListItem(apps, appIndex, offset);
 
     if (result) {
-      this.isReorderingViaKeyboard = true;
       this.apps = result.items;
       this.grabbedItemPos = { appIndex: result.targetIndex };
       requestAnimationFrame(() => {
         focusAppMenuItem(this.el, layout, result.targetIndex);
-        this.isReorderingViaKeyboard = false;
       });
     }
   }
@@ -309,10 +301,6 @@ export class ModusWcAppMenu {
   // newly focused one (e.g., after pressing Tab).
   private handleRowFocusOut(e: FocusEvent, appIndex: number) {
     if (!this.isGrabbed(appIndex)) return;
-    // Suppress the transient focusout that fires while Stencil moves the
-    // keyed grid DOM nodes during a keyboard reorder — otherwise the item
-    // is dropped automatically after a single arrow press.
-    if (this.isReorderingViaKeyboard) return;
 
     const row = e.currentTarget as HTMLElement | null;
     const next = e.relatedTarget as Node | null;
@@ -466,8 +454,15 @@ export class ModusWcAppMenu {
       >
         <div class="grid-row" role={this.isEditMode ? 'listbox' : 'list'}>
           {apps.map((app, appIndex) => (
+            // Intentionally unkeyed: Stencil's keyed reconciliation triggers
+            // insertBefore on grid-item DOM nodes during a reorder, which fires
+            // a transient disconnectedCallback on descendant custom elements.
+            // modus-wc-tooltip only sets up its popper/popover in
+            // componentDidLoad (runs once), so after the disconnect/reconnect
+            // its popover is detached from document.body and hover stops
+            // showing the tooltip for any moved item. Reusing nodes by
+            // position keeps the tooltip subtree connected.
             <div
-              key={app.appName}
               aria-label={this.getDisplayName(app.appName)}
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
