@@ -296,10 +296,11 @@ For Blazor / MAUI projects the response also includes a 'blazor' section with Pa
 C# parameter names, csharpType, EventCallback event names, RenderFragment slot names,
 the generated .razor template, and a ready-to-use Razor usage example.
 
-IMPORTANT: Before calling this tool, check the user's project package.json for the
-@trimble-oss/moduswebcomponents dependency version. Pass that version as the 'version'
-parameter to receive documentation matching their installed version. If their version is
-below 1.0.6 (minimum supported), advise them to update their dependency.
+IMPORTANT: Before calling this tool, check the user's project for the installed package version:
+- For JavaScript/TypeScript projects: check package.json for @trimble-oss/moduswebcomponents
+- For Blazor / MAUI projects: check the .csproj for the ModusWebComponents.Blazor NuGet package version
+Pass that version as the 'version' parameter to receive documentation matching their installed version.
+If their version is below 1.0.6 (minimum supported), advise them to update their dependency.
 
 Special component names:
 - "_all_components" - Returns catalog of all available components (includes blazor_components list)

@@ -26,6 +26,14 @@
 
     <!-- 6. JS interop bridge (must come AFTER the Stencil bundle) -->
     <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+    <!-- Story helper: CSP-safe element method invocation by ID (avoids eval) -->
+    <script>
+      window.modusWcInterop = window.modusWcInterop || {};
+      window.modusWcInterop.invokeElement = function (id, method) {
+        var el = document.getElementById(id);
+        if (el && typeof el[method] === 'function') el[method]();
+      };
+    </script>
 </head>
 
 <body>

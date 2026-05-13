@@ -22,6 +22,14 @@
     <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
     <!-- Blazor ↔ web-component event interop helper (from the Blazor RCL) -->
     <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+    <!-- Story helper: CSP-safe element method invocation by ID (avoids eval) -->
+    <script>
+      window.modusWcInterop = window.modusWcInterop || {};
+      window.modusWcInterop.invokeElement = function (id, method) {
+        var el = document.getElementById(id);
+        if (el && typeof el[method] === 'function') el[method]();
+      };
+    </script>
     <script type="importmap"></script>
 </head>
 

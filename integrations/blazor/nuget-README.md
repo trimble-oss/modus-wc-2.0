@@ -46,7 +46,7 @@ Then use components directly in any `.razor` file:
 
 <ModusWcTextInput Label="Name" Placeholder="Enter your name" />
 
-<ModusWcAlert Message="Hello from Modus!" Type="success" />
+<ModusWcAlert AlertTitle="Welcome" AlertDescription="Hello from Modus!" Variant="success" />
 ```
 
 ## Resources

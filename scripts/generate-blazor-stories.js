@@ -238,10 +238,10 @@ const COMPONENT_OVERRIDES = {
     private readonly string _modalId = $"story-modal-{Guid.NewGuid():N}"[..12];
 
     private async Task OpenModal() =>
-        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_modalId}')?.showModal()");
+        await JS.InvokeVoidAsync("modusWcInterop.invokeElement", _modalId, "showModal");
 
     private async Task CloseModal() =>
-        await JS.InvokeVoidAsync("eval", $"document.getElementById('{_modalId}')?.close()");`,
+        await JS.InvokeVoidAsync("modusWcInterop.invokeElement", _modalId, "close");`,
     interactiveTemplate: `<ModusWcButton @onclick="OpenModal">Open Modal</ModusWcButton>
 <ModusWcModal @attributes="context.Args" ModalId="@_modalId">
     <span slot="header">Modal Title</span>
