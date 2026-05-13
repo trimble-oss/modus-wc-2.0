@@ -14,7 +14,7 @@ export const convertPropsToClasses = ({
   fullWidth?: boolean;
   pressed?: boolean;
   shape?: 'circle' | 'ellipse' | 'rectangle' | 'square';
-  size?: DaisySize;
+  size?: DaisySize | 'xl';
   variant?: 'borderless' | 'filled' | 'outlined';
 }): string => {
   let classes = '';

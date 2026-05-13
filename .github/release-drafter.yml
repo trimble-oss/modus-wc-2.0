@@ -41,7 +41,8 @@ categories:
     labels:
       - 'dependencies'
   - title: '🧰 Maintenance'
-    labels: 'chore'
+    labels:
+      - 'chore'
 change-template: '- #$NUMBER: $TITLE (@$AUTHOR)'
 template: |
   ## Changes

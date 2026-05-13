@@ -54,7 +54,7 @@ interface HandleArgs {
   'default-split'?: number;
   density?: 'compact' | 'comfortable' | 'relaxed';
   'button-color'?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
-  'button-size'?: DaisySize;
+  'button-size'?: DaisySize | 'xl';
   'button-variant'?: 'borderless' | 'filled' | 'outlined';
   'left-target'?: string;
   orientation?: Orientation;
@@ -92,7 +92,7 @@ const meta: Meta<HandleArgs> = {
     },
     'button-size': {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg', 'xl'],
     },
     'button-color': {
       control: { type: 'select' },
