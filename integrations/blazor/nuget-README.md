@@ -15,7 +15,8 @@ dotnet add package ModusWebComponents.Blazor
 Add the following to your app's host page **before** the Blazor framework script.
 
 **Blazor WebAssembly** — `wwwroot/index.html`  
-**Blazor Server / .NET 8+ Web App** — `App.razor` or `Pages/_Host.cshtml`
+**Blazor Server / .NET 8+ Web App** — `App.razor` or `Pages/_Host.cshtml`  
+**MAUI Blazor Hybrid** — `wwwroot/index.html`
 
 ```html
 <!-- Modus icon font -->
