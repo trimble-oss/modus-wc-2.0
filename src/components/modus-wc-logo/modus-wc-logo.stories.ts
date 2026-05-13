@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { getAvailableLogos, LogoName } from './logo-constants';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
+import { LogoName } from '../types';
+import { getAvailableLogos } from './logo-constants';
 
 interface LogoArgs {
   name: LogoName;
