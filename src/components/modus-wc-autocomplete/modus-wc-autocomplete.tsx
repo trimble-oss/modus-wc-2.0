@@ -390,6 +390,9 @@ export class ModusWcAutocomplete {
 
     // Check if we're in filtering mode based on searchText BEFORE clearing it
     const wasFiltering = this.searchText.length > 0;
+    // Capture whether the menu was already open so we only auto-scroll to the
+    // selected item on the open transition (not on every subsequent arrow press).
+    const wasMenuVisible = this.menuVisible;
 
     if (this.initialNavigation) {
       if (this.searchText) {
@@ -417,8 +420,14 @@ export class ModusWcAutocomplete {
       },
       onSetMenuVisible: (visible) => {
         this.menuVisible = visible;
-        // Only scroll if menu is becoming visible and there's a selected item
-        if (visible && this.items?.some((item) => item.selected)) {
+        // Only scroll to the selected item on the hidden->visible transition.
+        // Otherwise repeated arrow-down presses would keep snapping the menu
+        // back to the selected item and fight scrollFocusedIntoView().
+        if (
+          visible &&
+          !wasMenuVisible &&
+          this.items?.some((item) => item.selected)
+        ) {
           this.scrollToOptionSelected();
           this.showFeedback = false;
         } else if (visible) {

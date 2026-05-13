@@ -5761,7 +5761,7 @@ describe('modus-wc-autocomplete', () => {
     expect(autocomplete['initialNavigation']).toBe(false); // Should be reset after first navigation
   });
 
-  it('should call scrollToOptionSelected when arrow down is pressed and menu is open', async () => {
+  it('should call scrollToOptionSelected only on the hidden->visible transition for arrow down', async () => {
     const page = await newSpecPage({
       components: [
         ModusWcAutocomplete,
@@ -5800,7 +5800,8 @@ describe('modus-wc-autocomplete', () => {
         return originalQuerySelector.call(autocomplete.el, selector);
       });
 
-    // Set up items and mark one as selected
+    // Set up items and mark one as selected (simulating user previously
+    // picked an item and then tabbed out, so the menu is closed).
     const items: IAutocompleteItem[] = [
       { value: 'apple', label: 'Apple', visibleInMenu: true, selected: true },
       {
@@ -5818,10 +5819,9 @@ describe('modus-wc-autocomplete', () => {
     ];
     autocomplete.items = items;
     autocomplete.minChars = 0;
-    autocomplete['menuVisible'] = true;
+    autocomplete['menuVisible'] = false;
     await page.waitForChanges();
 
-    // Press arrow down to trigger scrollToOptionSelected
     const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
     const input = page.root?.querySelector('input');
     Object.defineProperty(arrowDownEvent, 'target', {
@@ -5829,15 +5829,29 @@ describe('modus-wc-autocomplete', () => {
       enumerable: true,
     });
 
+    // First arrow down: menu opens, scroll-to-selected should fire.
     autocomplete.handleKeyDown(arrowDownEvent);
     await page.waitForChanges();
-    expect(scrollSpy).toHaveBeenCalled();
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
 
-    // Allow time for requestAnimationFrame to complete
+    // Subsequent arrow down presses with the menu already open must NOT
+    // re-trigger scroll-to-selected, otherwise the menu keeps snapping
+    // back to the selected item and fights scrollFocusedIntoView.
     await new Promise((resolve) => setTimeout(resolve, 50));
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
+
+    autocomplete.handleKeyDown(arrowDownEvent);
+    await page.waitForChanges();
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
+
+    // Multi-select mode short-circuits scrollToOptionSelected internally;
+    // verify the spy still tracks the call but no DOM scrollIntoView is invoked.
     scrollSpy.mockClear();
     mockScrollIntoView.mockClear();
     autocomplete.multiSelect = true;
+    autocomplete['menuVisible'] = false;
     await page.waitForChanges();
 
     autocomplete.handleKeyDown(arrowDownEvent);
