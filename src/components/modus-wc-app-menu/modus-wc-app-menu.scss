@@ -37,12 +37,6 @@ modus-wc-app-menu {
         align-items: center;
         display: flex;
         gap: var(--modus-wc-spacing-sm);
-
-        .edit-icon-button,
-        .cancel-button {
-          background: var(--modus-wc-color-base-100);
-          border: none;
-        }
       }
     }
 

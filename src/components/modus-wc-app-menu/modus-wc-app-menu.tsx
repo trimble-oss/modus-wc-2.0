@@ -68,6 +68,12 @@ export class ModusWcAppMenu {
 
   private appsSnapshot: IAppMenuItem[] | null = null;
 
+  // True while a keyboard-driven reorder is in flight. The keyed grid
+  // reconciliation transiently moves the grabbed DOM node, which fires a
+  // focusout with relatedTarget=null — without this flag, handleRowFocusOut
+  // would treat that as a real focus loss and drop the item.
+  private isReorderingViaKeyboard = false;
+
   componentWillLoad() {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -269,10 +275,12 @@ export class ModusWcAppMenu {
         : reorderListItem(apps, appIndex, offset);
 
     if (result) {
+      this.isReorderingViaKeyboard = true;
       this.apps = result.items;
       this.grabbedItemPos = { appIndex: result.targetIndex };
       requestAnimationFrame(() => {
         focusAppMenuItem(this.el, layout, result.targetIndex);
+        this.isReorderingViaKeyboard = false;
       });
     }
   }
@@ -301,6 +309,10 @@ export class ModusWcAppMenu {
   // newly focused one (e.g., after pressing Tab).
   private handleRowFocusOut(e: FocusEvent, appIndex: number) {
     if (!this.isGrabbed(appIndex)) return;
+    // Suppress the transient focusout that fires while Stencil moves the
+    // keyed grid DOM nodes during a keyboard reorder — otherwise the item
+    // is dropped automatically after a single arrow press.
+    if (this.isReorderingViaKeyboard) return;
 
     const row = e.currentTarget as HTMLElement | null;
     const next = e.relatedTarget as Node | null;
@@ -529,7 +541,6 @@ export class ModusWcAppMenu {
                 {!this.isEditMode ? (
                   <modus-wc-button
                     aria-label="Edit app order"
-                    custom-class="edit-icon-button"
                     shape="square"
                     size="sm"
                     variant="filled"
@@ -544,7 +555,6 @@ export class ModusWcAppMenu {
                 ) : (
                   [
                     <modus-wc-button
-                      custom-class="cancel-button"
                       size="sm"
                       color="tertiary"
                       onButtonClick={() => this.handleCancel()}

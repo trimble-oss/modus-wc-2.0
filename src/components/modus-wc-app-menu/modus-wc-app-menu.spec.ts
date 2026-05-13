@@ -1263,6 +1263,49 @@ describe('modus-wc-app-menu', () => {
     }
   );
 
+  it('should keep grabbedItemPos when grid focusout fires during a keyboard reorder', async () => {
+    const { page, component } = await createEditModePage({
+      apps: cloneApps(),
+      layout: 'grid',
+    });
+
+    component.grabbedItemPos = { appIndex: 0 };
+    await page.waitForChanges();
+
+    // Simulate the in-flight keyboard reorder state — Stencil's keyed grid
+    // reconciliation transiently moves the grabbed DOM node, which fires
+    // focusout with relatedTarget=null.
+    (component as any).isReorderingViaKeyboard = true;
+
+    const grabbedRow = page.root?.querySelector('.grid-item') as HTMLElement;
+    grabbedRow.dispatchEvent(focusOutEventTo(null));
+    await page.waitForChanges();
+
+    expect(component.grabbedItemPos).toEqual({ appIndex: 0 });
+  });
+
+  it('should clear the keyboard reorder flag after focus is restored via reorderByKeyboard', async () => {
+    const restoreRaf = mockRaf();
+    const threeApps: IAppMenuItem[] = [
+      { appName: 'connect' },
+      { appName: 'viewpoint' },
+      { appName: 'tekla' },
+    ];
+    const { component } = await createEditModePage({
+      apps: cloneApps(threeApps),
+      layout: 'grid',
+    });
+
+    component.grabbedItemPos = { appIndex: 0 };
+    (component as any).reorderByKeyboard(0, 1);
+
+    // mockRaf runs callbacks synchronously, so the flag should be cleared
+    // by the time reorderByKeyboard returns.
+    expect((component as any).isReorderingViaKeyboard).toBe(false);
+    expect(component.grabbedItemPos).toEqual({ appIndex: 1 });
+    restoreRaf();
+  });
+
   it('should keep grabbedItemPos when focus stays inside the grabbed row', async () => {
     const { page, component } = await createEditModePage({
       apps: cloneApps(),

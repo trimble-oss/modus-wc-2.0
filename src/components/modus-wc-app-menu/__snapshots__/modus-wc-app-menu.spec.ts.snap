@@ -10,7 +10,7 @@ exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
           <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
             <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
@@ -60,7 +60,7 @@ exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
           <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
             <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
@@ -106,7 +106,7 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
           <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
             <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
@@ -152,7 +152,7 @@ exports[`modus-wc-app-menu should render with default props 1`] = `
           <modus-wc-typography hierarchy="h3" label="Trimble Apps" size="2xl" weight="semibold"></modus-wc-typography>
         </div>
         <div class="header-end-content">
-          <modus-wc-button aria-label="Edit app order" color="tertiary" custom-class="edit-icon-button" shape="square" size="sm" variant="filled">
+          <modus-wc-button aria-label="Edit app order" color="tertiary" shape="square" size="sm" variant="filled">
             <modus-wc-icon name="pencil" variant="solid"></modus-wc-icon>
           </modus-wc-button>
         </div>
