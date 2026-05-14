@@ -82,7 +82,7 @@ export class ModusWcAlert {
   }
 
   private getLeadingIcon(): FunctionalComponent {
-    if (this.icon && !this.disableIcon) {
+    if (this.icon) {
       return (
         <modus-wc-icon
           custom-class="modus-wc-alert-icon"
