@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -6,6 +7,7 @@ import { Orientation } from '../types';
 
 interface StepperArgs {
   'custom-class'?: string;
+  interactive?: boolean;
   orientation: Orientation;
   steps?: IStepperItem[];
 }
@@ -29,6 +31,7 @@ const meta: Meta<StepperArgs> = {
   title: 'Components/Stepper',
   component: 'modus-wc-stepper',
   args: {
+    interactive: false,
     steps: [
       { label: 'Scale', color: 'primary' },
       { label: 'Belong', color: 'primary' },
@@ -36,9 +39,13 @@ const meta: Meta<StepperArgs> = {
       { label: 'Innovate', content: '🚀' },
     ],
   },
+  decorators: [withActions],
   argTypes: {
     'custom-class': {
       control: 'text',
+    },
+    interactive: {
+      control: 'boolean',
     },
     orientation: {
       control: { type: 'select' },
@@ -61,6 +68,9 @@ const meta: Meta<StepperArgs> = {
     },
   },
   parameters: {
+    actions: {
+      handles: ['stepClick'],
+    },
     layout: 'padded',
   },
 };
@@ -75,6 +85,7 @@ const Template: Story = {
 <modus-wc-stepper
   custom-class="${ifDefined(args['custom-class'])}"
   orientation="${ifDefined(args.orientation)}"
+  ?interactive="${args.interactive ?? false}"
   .steps="${args.steps}"
 >
 </modus-wc-stepper>
@@ -95,6 +106,20 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const Interactive: Story = {
+  args: {
+    interactive: true,
+  },
+  render: (args) => html`
+    <modus-wc-stepper
+      custom-class="${ifDefined(args['custom-class'])}"
+      orientation="${ifDefined(args.orientation)}"
+      ?interactive="${args.interactive ?? false}"
+      .steps="${args.steps}"
+    ></modus-wc-stepper>
+  `,
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('stepper-shadow-host')) {
@@ -103,10 +128,12 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: StepperArgs, el: HTMLElement) => {
           const stepperEl = el as unknown as {
             customClass: string;
+            interactive: boolean;
             orientation: string;
             steps: IStepperItem[];
           };
           stepperEl.customClass = v['custom-class'] || '';
+          stepperEl.interactive = v.interactive ?? false;
           stepperEl.orientation = v.orientation ?? 'horizontal';
           stepperEl.steps = v.steps ?? [];
         },

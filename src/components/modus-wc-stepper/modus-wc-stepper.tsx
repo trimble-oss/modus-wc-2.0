@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
@@ -46,6 +54,12 @@ export class ModusWcStepper {
   /** The steps to display. */
   @Prop() steps: IStepperItem[] = [];
 
+  /** If true, steps will be rendered as buttons and emit `stepClick` when activated. */
+  @Prop() interactive? = false;
+
+  /** Emitted with the 0-based step index when a step is activated and `interactive` is true. */
+  @Event() stepClick!: EventEmitter<number>;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -75,22 +89,57 @@ export class ModusWcStepper {
     return classList.join(' ');
   }
 
+  private stepAriaLabel(step: IStepperItem, index: number): string {
+    if (step.label?.trim()) {
+      return `Step ${index + 1}: ${step.label}`;
+    }
+    return `Step ${index + 1}`;
+  }
+
+  private handleStepActivate(index: number): void {
+    if (!this.interactive) {
+      return;
+    }
+    this.stepClick.emit(index);
+  }
+
+  private rootClasses(isInteractive: boolean): string {
+    const base = this.getClasses();
+    return isInteractive ? `${base} modus-wc-stepper--interactive` : base;
+  }
+
   render() {
+    const isInteractive = !!this.interactive;
+
     return (
       <Host>
-        <div class={this.getClasses()} {...this.inheritedAttributes}>
+        <ul
+          class={this.rootClasses(isInteractive)}
+          {...this.inheritedAttributes}
+        >
           {this.steps.map((step, index) => {
             return (
               <li
                 class={this.getClassesForStep(step)}
                 key={index}
                 data-content={step.content}
+                onClick={() => this.handleStepActivate(index)}
               >
-                {step.label}
+                {isInteractive ? (
+                  <button
+                    type="button"
+                    class="modus-wc-stepper-step-button"
+                    aria-label={this.stepAriaLabel(step, index)}
+                  >
+                    {step.label ?? step.content ?? ''}
+                  </button>
+                ) : (
+                  step.label
+                )}
               </li>
             );
           })}
-        </div>
+        </ul>
       </Host>
     );
   }

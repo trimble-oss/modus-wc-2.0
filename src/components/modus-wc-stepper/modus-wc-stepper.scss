@@ -6,3 +6,25 @@
 modus-wc-stepper .modus-wc-steps .modus-wc-step {
   --fallback-b3: var(--modus-wc-color-base-200);
 }
+
+modus-wc-stepper .modus-wc-stepper--interactive .modus-wc-step {
+  cursor: pointer;
+}
+
+modus-wc-stepper .modus-wc-stepper-step-button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  width: 100%;
+}
+
+modus-wc-stepper .modus-wc-stepper-step-button:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
