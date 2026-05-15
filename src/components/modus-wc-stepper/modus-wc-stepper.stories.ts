@@ -6,6 +6,7 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { Orientation } from '../types';
 
 interface StepperArgs {
+  'active-step'?: number;
   'custom-class'?: string;
   interactive?: boolean;
   orientation: Orientation;
@@ -31,6 +32,7 @@ const meta: Meta<StepperArgs> = {
   title: 'Components/Stepper',
   component: 'modus-wc-stepper',
   args: {
+    'active-step': undefined,
     interactive: false,
     steps: [
       { label: 'Scale', color: 'primary' },
@@ -41,6 +43,9 @@ const meta: Meta<StepperArgs> = {
   },
   decorators: [withActions],
   argTypes: {
+    'active-step': {
+      control: 'number',
+    },
     'custom-class': {
       control: 'text',
     },
@@ -83,6 +88,7 @@ const Template: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-stepper
+  active-step="${ifDefined(args['active-step'])}"
   custom-class="${ifDefined(args['custom-class'])}"
   orientation="${ifDefined(args.orientation)}"
   ?interactive="${args.interactive ?? false}"
@@ -112,12 +118,92 @@ export const Interactive: Story = {
   },
   render: (args) => html`
     <modus-wc-stepper
+      active-step="${ifDefined(args['active-step'])}"
       custom-class="${ifDefined(args['custom-class'])}"
       orientation="${ifDefined(args.orientation)}"
       ?interactive="${args.interactive ?? false}"
       .steps="${args.steps}"
     ></modus-wc-stepper>
   `,
+};
+
+export const ControlledActiveStep: Story = {
+  name: 'Active step (controlled)',
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-stepper
+  id="controlled-stepper"
+  active-step="1"
+  orientation="horizontal"
+  interactive
+></modus-wc-stepper>
+<script>
+  const baseSteps = [
+    { label: 'Planning' },
+    { label: 'Execution' },
+    { label: 'Verification' },
+    { label: 'Done' },
+  ];
+
+  const getColoredSteps = (activeIndex) =>
+    baseSteps.map((step, index) => ({
+      ...step,
+      color: index <= activeIndex ? 'primary' : 'neutral',
+    }));
+
+  const stepper = document.getElementById('controlled-stepper');
+  stepper.steps = getColoredSteps(1);
+
+  stepper.addEventListener('stepClick', (event) => {
+    const activeIndex = event.detail;
+    stepper.activeStep = activeIndex;
+    stepper.steps = getColoredSteps(activeIndex);
+  });
+</script>
+        `,
+      },
+    },
+  },
+  // prettier-ignore
+  render: () => {
+    const initialActiveStep = 1;
+
+    const baseSteps: IStepperItem[] = [
+      { label: 'Planning' },
+      { label: 'Execution' },
+      { label: 'Verification' },
+      { label: 'Done' },
+    ];
+
+    const getColoredSteps = (activeIndex: number): IStepperItem[] =>
+      baseSteps.map((step, index) => ({
+        ...step,
+        color: index <= activeIndex ? 'primary' : 'neutral',
+      }));
+
+    const handleStepClick = (event: CustomEvent<number>) => {
+      const stepper = event.target as HTMLElement & {
+        activeStep: number;
+        steps: IStepperItem[];
+      };
+      const nextActive = event.detail;
+      stepper.activeStep = nextActive;
+      stepper.steps = getColoredSteps(nextActive);
+    };
+
+    return html`
+      <modus-wc-stepper
+        id="controlled-stepper"
+        active-step="${initialActiveStep}"
+        orientation="horizontal"
+        interactive
+        .steps="${getColoredSteps(initialActiveStep)}"
+        @stepClick=${handleStepClick}
+      ></modus-wc-stepper>
+    `;
+  },
 };
 
 export const ShadowDomParent: Story = {
@@ -127,11 +213,13 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-stepper',
         propsMapper: (v: StepperArgs, el: HTMLElement) => {
           const stepperEl = el as unknown as {
+            activeStep: number | undefined;
             customClass: string;
             interactive: boolean;
             orientation: string;
             steps: IStepperItem[];
           };
+          stepperEl.activeStep = v['active-step'];
           stepperEl.customClass = v['custom-class'] || '';
           stepperEl.interactive = v.interactive ?? false;
           stepperEl.orientation = v.orientation ?? 'horizontal';

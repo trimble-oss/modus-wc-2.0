@@ -51,6 +51,9 @@ export class ModusWcStepper {
   /** The orientation of the steps. */
   @Prop() orientation?: Orientation;
 
+  /** The index (0-based) of the active step in the `steps` array. */
+  @Prop() activeStep?: number;
+
   /** The steps to display. */
   @Prop() steps: IStepperItem[] = [];
 
@@ -79,8 +82,31 @@ export class ModusWcStepper {
     return classList.join(' ');
   }
 
-  private getClassesForStep(step: IStepperItem): string {
+  private isStepActive(index: number): boolean {
+    return (
+      typeof this.activeStep === 'number' &&
+      Number.isFinite(this.activeStep) &&
+      this.activeStep === index
+    );
+  }
+
+  private handleStepKeyDown(event: KeyboardEvent, index: number): void {
+    if (!this.interactive) {
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.handleStepActivate(index);
+    }
+  }
+
+  private getClassesForStep(step: IStepperItem, index: number): string {
     const classList = ['modus-wc-step'];
+
+    if (this.isStepActive(index)) {
+      classList.push('modus-wc-step-active');
+    }
 
     // The order CSS classes are added matters to CSS specificity
     if (step.color) classList.push(`modus-wc-step-${step.color}`);
@@ -120,22 +146,19 @@ export class ModusWcStepper {
           {this.steps.map((step, index) => {
             return (
               <li
-                class={this.getClassesForStep(step)}
+                class={this.getClassesForStep(step, index)}
                 key={index}
                 data-content={step.content}
                 onClick={() => this.handleStepActivate(index)}
+                onKeyDown={(event) => this.handleStepKeyDown(event, index)}
+                role={isInteractive ? 'button' : undefined}
+                tabIndex={isInteractive ? 0 : undefined}
+                aria-label={
+                  isInteractive ? this.stepAriaLabel(step, index) : undefined
+                }
+                aria-current={this.isStepActive(index) ? 'step' : undefined}
               >
-                {isInteractive ? (
-                  <button
-                    type="button"
-                    class="modus-wc-stepper-step-button"
-                    aria-label={this.stepAriaLabel(step, index)}
-                  >
-                    {step.label ?? step.content ?? ''}
-                  </button>
-                ) : (
-                  step.label
-                )}
+                {step.label ?? step.content ?? ''}
               </li>
             );
           })}

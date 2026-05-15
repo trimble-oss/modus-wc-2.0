@@ -100,4 +100,23 @@ describe('modus-wc-stepper', () => {
 
     expect(listener).not.toHaveBeenCalled();
   });
+
+  it('should apply active step class and aria-current when activeStep is set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper active-step="2"></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = defaultSteps;
+
+    await page.waitForChanges();
+
+    const steps = page.root!.querySelectorAll('li.modus-wc-step');
+    expect(steps.length).toBe(defaultSteps.length);
+    const activeStep = steps[2] as HTMLLIElement;
+
+    expect(activeStep.classList.contains('modus-wc-step-active')).toBe(true);
+    expect(activeStep.getAttribute('aria-current')).toBe('step');
+  });
 });
