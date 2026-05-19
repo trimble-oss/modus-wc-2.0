@@ -27,10 +27,6 @@ modus-wc-alert .modus-wc-alert {
     font-size: var(--modus-wc-font-size-md);
   }
 
-  .modus-wc-alert-slot-button {
-    max-width: fit-content;
-  }
-
   &.modus-wc-alert-info {
     background-color: var(--modus-wc-color-blue-pale);
     border-color: var(--modus-wc-color-info-blue);

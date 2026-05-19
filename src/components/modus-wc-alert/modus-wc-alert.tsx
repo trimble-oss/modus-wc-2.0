@@ -173,7 +173,7 @@ export class ModusWcAlert {
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.disableIcon ? false : this.getLeadingIcon()}
+          {!this.disableIcon && this.getLeadingIcon()}
           <div class="modus-wc-alert-content">
             <div class="title">{this.alertTitle}</div>
             {this.alertDescription && (
@@ -183,7 +183,7 @@ export class ModusWcAlert {
               <slot name="content" />
             )}
           </div>
-          <slot name="button" custom-class="modus-wc-alert-slot-button" />
+          <slot name="button" />
           {this.dismissible && (
             <modus-wc-button
               aria-label="Dismiss alert"

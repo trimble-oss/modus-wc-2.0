@@ -195,6 +195,44 @@ describe('modus-wc-alert', () => {
     expect(icon).toBeNull();
   });
 
+  it('should render the leading variant icon by default when disable-icon is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Default icon"></modus-wc-alert>',
+    });
+
+    const component = page.rootInstance as ModusWcAlert;
+    expect(component.disableIcon).toBe(false);
+
+    const icon = page.root?.querySelector('modus-wc-icon');
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute('name')).toBe('info');
+  });
+
+  it('should suppress the custom icon as well when disable-icon is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Custom icon hidden" icon="help" disable-icon="true"></modus-wc-alert>',
+    });
+    // disableIcon must take precedence over the custom icon prop
+    const icon = page.root?.querySelector('modus-wc-icon');
+    expect(icon).toBeNull();
+  });
+
+  it('should wrap title and description in a .modus-wc-alert-content container', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert],
+      html: '<modus-wc-alert alert-title="Title" alert-description="Description"></modus-wc-alert>',
+    });
+
+    const content = page.root?.querySelector('.modus-wc-alert-content');
+    expect(content).not.toBeNull();
+    expect(content?.querySelector('.title')?.textContent).toBe('Title');
+    expect(content?.querySelector('.description')?.textContent).toBe(
+      'Description'
+    );
+  });
+
   it('should render a custom icon when icon prop is provided and disable-icon is false', async () => {
     // Intentionally omit ModusWcIcon so the rendered modus-wc-icon stays as a
     // bare element with its attributes intact and assertable
