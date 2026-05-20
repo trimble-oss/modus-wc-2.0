@@ -1,0 +1,49 @@
+{
+  "description": "A theme switcher component used to toggle the application theme and/or mode. Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the theme switcher element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 34
+    }
+  ],
+  "events": [
+    {
+      "name": "themeChange",
+      "detail": "IThemeConfig",
+      "description": "An event that fires when the theme is changed.",
+      "end_line": 37
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-theme-provider .initialTheme=${currentTheme}>\n        <modus-wc-theme-switcher\n          aria-label=\"Theme toggle\"\n          custom-class=${ifDefined(args['custom-class'])}\n        ></modus-wc-theme-switcher>\n      </modus-wc-theme-provider>",
+    "variations": [],
+    "args": {
+      "custom-class": "undefined",
+      "initial-theme": "undefined"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "themeChange"
+    ]
+  },
+  "tag": "modus-wc-theme-switcher",
+  "storyExample": {
+    "template": "<modus-wc-theme-provider .initialTheme=${currentTheme}>\n        <modus-wc-theme-switcher\n          aria-label=\"Theme toggle\"\n          custom-class=${ifDefined(args['custom-class'])}\n        ></modus-wc-theme-switcher>\n      </modus-wc-theme-provider>",
+    "args": {
+      "custom-class": "undefined",
+      "initial-theme": "undefined"
+    },
+    "argTypes": {},
+    "events": [
+      "themeChange"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IThemeConfig } from '../../providers/theme/theme.types';\n\ninterface ThemeSwitcherArgs {\n  'custom-class'?: string;\n  'initial-theme'?: Partial<IThemeConfig>;\n}\n\nconst meta: Meta<ThemeSwitcherArgs> = {\n  title: 'Components/ThemeSwitcher',\n  component: 'modus-wc-theme-switcher',\n  args: {\n    'custom-class': undefined,\n    'initial-theme': undefined,\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['themeChange'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ThemeSwitcherArgs>;\n// When no data-theme is set on the root element, default to the design system's base theme \"modus-modern-light\"\nconst getCurrentTheme = () => {\n  const dataTheme =\n    document.documentElement.getAttribute('data-theme') || 'modus-modern-light';\n  const mode = dataTheme.endsWith('-dark') ? 'dark' : 'light';\n  const theme = dataTheme.replace(`-${mode}`, '');\n  return { theme, mode };\n};\n\nconst Template: Story = {\n  // prettier-ignore\n  render: (args) => {\n    const currentTheme = getCurrentTheme();\n    return html`\n      <modus-wc-theme-provider .initialTheme=${currentTheme}>\n        <modus-wc-theme-switcher\n          aria-label=\"Theme toggle\"\n          custom-class=${ifDefined(args['custom-class'])}\n        ></modus-wc-theme-switcher>\n      </modus-wc-theme-provider>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\n// New story for testing theme configurations\nconst ThemeTestTemplate: Story = {\n  render: () => {\n    const currentTheme = getCurrentTheme();\n\n    return html`\n      <modus-wc-theme-provider .initialTheme=${currentTheme}>\n        <div style=\"padding: 40px\">\n          <h2 style=\"text-align: center; color: var(--mwc-color-on-surface);\">\n            Theme Configuration Test\n          </h2>\n          <p\n            style=\"text-align: center; color: var(--mwc-color-on-surface-secondary); margin-bottom: 30px;\"\n          >\n            This story matches the global Storybook theme\n          </p>\n\n          <div\n            style=\"display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;\"\n          >\n            <modus-wc-button color=\"primary\">Primary Button</modus-wc-button>\n            <modus-wc-button color=\"secondary\"\n              >Secondary Button</modus-wc-button\n            >\n            <modus-wc-button color=\"tertiary\">Tertiary Button</modus-wc-button>\n            <modus-wc-button color=\"danger\">Danger Button</modus-wc-button>\n          </div>\n\n          <div\n            style=\"display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center;\"\n          >\n            <modus-wc-badge color=\"primary\">Badge</modus-wc-badge>\n            <modus-wc-badge color=\"secondary\">Badge 2</modus-wc-badge>\n            <modus-wc-chip label=\"Chip 1\"></modus-wc-chip>\n            <modus-wc-chip label=\"Chip 2\" active></modus-wc-chip>\n            <modus-wc-switch label=\"Switch\"></modus-wc-switch>\n          </div>\n        </div>\n      </modus-wc-theme-provider>\n    `;\n  },\n};\n\nexport const ThemeTest: Story = {\n  ...ThemeTestTemplate,\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'This example syncs with the active Storybook theme. Toggle between light and dark modes using the theme switcher on the default story to see the components adapt accordingly.',\n      },\n    },\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    if (!customElements.get('theme-switcher-shadow-host')) {\n      class ThemeSwitcherShadowHost extends HTMLElement {\n        private sr: ShadowRoot;\n        private _props?: ThemeSwitcherArgs;\n        private themeObserver: MutationObserver | null = null;\n\n        constructor() {\n          super();\n          this.sr = this.attachShadow({ mode: 'open' });\n        }\n\n        connectedCallback() {\n          if (this.sr.childElementCount) return;\n\n          // Sync data-theme so CSS variables work inside shadow root\n          const wrapper = document.createElement('div');\n          wrapper.style.display = 'contents';\n          const syncTheme = () => {\n            const theme = document.documentElement.getAttribute('data-theme');\n            if (theme) wrapper.setAttribute('data-theme', theme);\n          };\n          syncTheme();\n          this.themeObserver = new MutationObserver(syncTheme);\n          this.themeObserver.observe(document.documentElement, {\n            attributes: true,\n            attributeFilter: ['data-theme'],\n          });\n\n          // Create provider + switcher together here (not in constructor) so\n          // provider connects first and initializes themeStore before the\n          // switcher reads themeStore.state.mode for its isDarkMode field\n          const provider = document.createElement(\n            'modus-wc-theme-provider'\n          ) as HTMLElement & {\n            initialTheme: { theme: string; mode: string };\n          };\n          provider.initialTheme = getCurrentTheme();\n\n          const switcher = document.createElement(\n            'modus-wc-theme-switcher'\n          ) as HTMLElement & { customClass: string };\n          switcher.setAttribute('aria-label', 'Theme toggle');\n\n          provider.appendChild(switcher);\n          wrapper.appendChild(provider);\n          this.sr.appendChild(wrapper);\n\n          if (this._props) this.applyProps();\n        }\n\n        disconnectedCallback() {\n          this.themeObserver?.disconnect();\n          this.themeObserver = null;\n        }\n\n        set props(v: ThemeSwitcherArgs) {\n          this._props = v;\n          this.applyProps();\n        }\n\n        get props(): ThemeSwitcherArgs | undefined {\n          return this._props;\n        }\n\n        private applyProps() {\n          const switcher = this.sr.querySelector('modus-wc-theme-switcher') as\n            | (HTMLElement & { customClass: string })\n            | null;\n          if (!switcher || !this._props) return;\n          switcher.customClass = this._props['custom-class'] || '';\n        }\n      }\n      customElements.define(\n        'theme-switcher-shadow-host',\n        ThemeSwitcherShadowHost\n      );\n    }\n\n    return html`<theme-switcher-shadow-host\n      .props=${{ ...args }}\n    ></theme-switcher-shadow-host>`;\n  },\n};\n"
+  }
+}
