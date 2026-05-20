@@ -5,12 +5,18 @@
 
 modus-wc-alert .modus-wc-alert {
   align-content: center;
+  align-items: center;
   background-color: var(--modus-wc-color-base-page);
   border-color: var(--modus-wc-color-base-200);
   border-width: var(--alert-border-width);
   border-left-width: var(--alert-border-left-width);
   border-radius: var(--alert-border-radius);
   color: var(--modus-wc-color-base-content);
+  display: flex;
+
+  .modus-wc-alert-content {
+    flex: auto;
+  }
 
   .title {
     font-size: var(--modus-wc-font-size-md);

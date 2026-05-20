@@ -9,7 +9,7 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
         alert
       </i>
     </modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title">
         Custom title
       </div>
@@ -27,7 +27,7 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
         info
       </i>
     </modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title">
         Custom title
       </div>
@@ -45,7 +45,7 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
         check_circle
       </i>
     </modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title">
         Custom title
       </div>
@@ -63,7 +63,7 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
         warning
       </i>
     </modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title">
         Custom title
       </div>
@@ -77,7 +77,7 @@ exports[`modus-wc-alert should render with custom props 1`] = `
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info test-class" role="status">
     <modus-wc-icon custom-class="modus-wc-alert-icon" name="help" variant="outlined"></modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title">
         Custom title
       </div>
@@ -98,7 +98,7 @@ exports[`modus-wc-alert should render with default props 1`] = `
         info
       </i>
     </modus-wc-icon>
-    <div>
+    <div class="modus-wc-alert-content">
       <div class="title"></div>
     </div>
   </div>

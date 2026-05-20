@@ -9,6 +9,7 @@ interface AlertArgs {
   'alert-title': string;
   'custom-class'?: string;
   delay?: number;
+  'disable-icon'?: boolean;
   dismissible?: boolean;
   dismissClick?: () => void;
   icon?: string;
@@ -22,6 +23,7 @@ const meta: Meta<AlertArgs> = {
   args: {
     'alert-description': 'You have 3 new messages.',
     'alert-title': 'New message!',
+    'disable-icon': false,
     dismissible: false,
     role: 'status',
     variant: 'info',
@@ -58,6 +60,7 @@ const Template: Story = {
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
+  disable-icon=${ifDefined(args['disable-icon'])}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -79,6 +82,7 @@ export const CustomButton: Story = {
   alert-title=${args['alert-title']}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
+  disable-icon=${ifDefined(args['disable-icon'])}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -103,6 +107,7 @@ export const WithCustomContent: Story = {
   id="alert-123"
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
+  disable-icon=${ifDefined(args['disable-icon'])}
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
@@ -125,6 +130,7 @@ export const ShadowDomParent: Story = {
             alertTitle: string;
             customClass: string;
             delay: number;
+            disableIcon: boolean;
             dismissible: boolean;
             icon: string;
             variant: string;
@@ -133,6 +139,7 @@ export const ShadowDomParent: Story = {
           alertEl.alertTitle = v['alert-title'];
           alertEl.customClass = v['custom-class'] || '';
           alertEl.delay = v.delay ?? 0;
+          alertEl.disableIcon = Boolean(v['disable-icon']);
           alertEl.dismissible = Boolean(v.dismissible);
           alertEl.icon = v.icon ?? '';
           alertEl.variant = v.variant;
