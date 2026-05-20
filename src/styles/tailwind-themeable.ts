@@ -40,6 +40,10 @@ const themeable = [
   'modus-wc-font-light',
   'modus-wc-font-normal',
   'modus-wc-font-semibold',
+  // Link
+  'modus-wc-link',
+  'modus-wc-link-hover',
+  'modus-wc-no-underline',
   // Input
   'modus-wc-input-xs',
   'modus-wc-input-sm',

@@ -1,0 +1,111 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-link a.modus-wc-link {
+  &.modus-wc-link-color-primary {
+    color: var(--modus-wc-color-primary);
+  }
+
+  &.modus-wc-link-color-secondary {
+    color: var(--modus-wc-color-secondary);
+  }
+
+  &.modus-wc-link-color-tertiary {
+    color: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  &.modus-wc-link-color-warning {
+    color: var(--modus-wc-color-warning);
+  }
+
+  &.modus-wc-link-color-danger {
+    color: var(--modus-wc-color-error);
+  }
+}
+
+[data-theme='modus-classic-light'] modus-wc-link a.modus-wc-link {
+  &.modus-wc-link-color-primary {
+    color: var(--modus-wc-color-blue-light);
+
+    &:active {
+      color: var(--modus-wc-color-trimble-gray);
+    }
+  }
+
+  &.modus-wc-link-color-secondary {
+    color: var(--modus-wc-color-trimble-gray);
+
+    &:active {
+      color: var(--modus-wc-color-blue-light);
+    }
+  }
+
+  &.modus-wc-link-color-tertiary {
+    color: var(--modus-wc-color-gray-1);
+  }
+
+  &.modus-wc-link-color-warning {
+    color: var(--modus-wc-color-yellow-dark);
+  }
+
+  &.modus-wc-link-color-danger {
+    color: var(--modus-wc-color-red);
+  }
+}
+
+[data-theme='modus-classic-dark'] modus-wc-link a.modus-wc-link {
+  &.modus-wc-link-color-primary {
+    color: var(--modus-wc-color-highlight-blue);
+
+    &:active {
+      color: var(--modus-wc-color-white);
+    }
+  }
+
+  &.modus-wc-link-color-secondary {
+    color: var(--modus-wc-color-gray-6);
+
+    &:active {
+      color: var(--modus-wc-color-highlight-blue);
+    }
+  }
+
+  &.modus-wc-link-color-tertiary {
+    color: var(--modus-wc-color-gray-1);
+  }
+
+  &.modus-wc-link-color-warning {
+    color: var(--modus-wc-color-yellow-light);
+  }
+
+  &.modus-wc-link-color-danger {
+    color: var(--modus-wc-color-red-light);
+  }
+}
+
+[data-theme='modus-modern-light'] modus-wc-link a.modus-wc-link,
+[data-theme='modus-modern-dark'] modus-wc-link a.modus-wc-link,
+[data-theme='connect-light'] modus-wc-link a.modus-wc-link,
+[data-theme='connect-dark'] modus-wc-link a.modus-wc-link {
+  &.modus-wc-link-color-primary {
+    color: var(--modus-wc-color-primary);
+  }
+
+  &.modus-wc-link-color-secondary {
+    color: var(--modus-wc-color-secondary);
+  }
+
+  &.modus-wc-link-color-tertiary {
+    color: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  &.modus-wc-link-color-warning {
+    color: var(--modus-wc-color-warning);
+  }
+
+  &.modus-wc-link-color-danger {
+    color: var(--modus-wc-color-error);
+  }
+}

@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-link should render with default props 1`] = `
+<modus-wc-link>
+  <!---->
+  <a aria-label="Link" class="modus-wc-link modus-wc-link-color-primary">
+    <slot-fb>
+      Click me
+    </slot-fb>
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render with color class when color is set 1`] = `
+<modus-wc-link color="secondary">
+  <!---->
+  <a aria-label="Secondary link" class="modus-wc-link modus-wc-link-color-secondary">
+    <slot-fb>
+      Click me
+    </slot-fb>
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render with hover underline class when underline is hover 1`] = `
+<modus-wc-link underline="hover">
+  <!---->
+  <a aria-label="Hover link" class="modus-wc-link modus-wc-link-color-primary modus-wc-link-hover">
+    <slot-fb>
+      Click me
+    </slot-fb>
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render with no underline class when underline is none 1`] = `
+<modus-wc-link underline="none">
+  <!---->
+  <a aria-label="No underline link" class="modus-wc-link modus-wc-link-color-primary modus-wc-no-underline">
+    <slot-fb>
+      Click me
+    </slot-fb>
+  </a>
+</modus-wc-link>
+`;
