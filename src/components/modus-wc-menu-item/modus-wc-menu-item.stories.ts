@@ -10,6 +10,7 @@ interface MenuItemArgs {
   checkbox?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  focused?: boolean;
   'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
@@ -60,6 +61,7 @@ const Template: Story = {
     ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
+    ?focused=${args.focused}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
@@ -85,6 +87,7 @@ export const WithIcon: Story = {
     ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
+    ?focused=${args.focused}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
@@ -116,6 +119,7 @@ export const WithCheckbox: Story = {
     ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
+    ?focused=${args.focused}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
@@ -140,6 +144,7 @@ export const WithTooltip: Story = {
     ?bordered=${args.bordered}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}
+    ?focused=${args.focused}
     label=${args.label}
     ?selected=${args.selected}
     size=${args.size}
@@ -180,6 +185,7 @@ export const ShadowDomParent: Story = {
             checkbox: boolean;
             customClass: string;
             disabled: boolean;
+            focused: boolean;
             label: string;
             selected: boolean;
             size: string;
@@ -194,6 +200,7 @@ export const ShadowDomParent: Story = {
           menuItemEl.checkbox = Boolean(v.checkbox);
           menuItemEl.customClass = v['custom-class'] || '';
           menuItemEl.disabled = Boolean(v.disabled);
+          menuItemEl.focused = Boolean(v.focused);
           menuItemEl.label = v.label;
           menuItemEl.selected = Boolean(v.selected);
           menuItemEl.size = v.size || 'md';
