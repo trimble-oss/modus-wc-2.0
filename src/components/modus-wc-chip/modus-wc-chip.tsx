@@ -43,7 +43,7 @@ export class ModusWcChip {
   /** The label to display in the chip. */
   @Prop() label?: string = '';
 
-  /** Whether the chip height can grow and the label can wrap across multiple lines. */
+  /** Whether the chip height can grow and its content can wrap across multiple lines. */
   @Prop() multiline?: boolean = false;
 
   /** Whether to show the close icon on right side of the chip. */

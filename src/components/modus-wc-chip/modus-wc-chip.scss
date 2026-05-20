@@ -76,12 +76,8 @@ modus-wc-chip .modus-wc-chip {
 
     &.modus-wc-chip-multiline {
       height: auto;
-
-      .modus-wc-chip-label {
-        display: block;
-        line-height: var(--modus-wc-line-height-md);
-        white-space: normal;
-      }
+      line-height: var(--modus-wc-line-height-md);
+      white-space: normal;
     }
 
     // States
@@ -235,12 +231,8 @@ modus-wc-chip .modus-wc-chip {
 
     &.modus-wc-chip-multiline {
       height: auto;
-
-      .modus-wc-chip-label {
-        display: block;
-        line-height: var(--modus-wc-line-height-md);
-        white-space: normal;
-      }
+      line-height: var(--modus-wc-line-height-md);
+      white-space: normal;
     }
 
     // States
