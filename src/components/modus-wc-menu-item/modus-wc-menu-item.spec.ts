@@ -63,6 +63,34 @@ describe('modus-wc-menu-item', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should add the focused class when the focused prop is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="Test value"></modus-wc-menu-item>',
+    });
+
+    const menuItem = page.root as HTMLElement;
+    const liElement = menuItem.querySelector('li') as HTMLLIElement;
+
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-focused')
+    ).toBeFalsy();
+
+    (menuItem as unknown as { focused: boolean }).focused = true;
+    await page.waitForChanges();
+
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-focused')
+    ).toBeTruthy();
+
+    (menuItem as unknown as { focused: boolean }).focused = false;
+    await page.waitForChanges();
+
+    expect(
+      liElement.classList.contains('modus-wc-menu-item-focused')
+    ).toBeFalsy();
+  });
+
   it('should emit itemSelect event when clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],

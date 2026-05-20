@@ -333,35 +333,55 @@ export class ModusWcAutocomplete {
     }
   }
 
+  // Shared scroll engine for both "open with a preselected option" and
+  // "arrow-key navigation". DOM focus stays on the input, so the browser's
+  // focus-driven auto-scroll never fires; the autocomplete drives it.
+  //
+  // alignment:
+  //   'top'  — always top-align the item (used when opening on a selection).
+  //   'auto' — top-align when above the viewport, bottom-align when below,
+  //            so consecutive arrow presses reveal one row at a time.
+  private scrollMenuItemIntoView(
+    itemSelector: string,
+    alignment: 'top' | 'auto',
+    behavior: ScrollBehavior
+  ): void {
+    requestAnimationFrame(() => {
+      const menuEl = this.el.querySelector<HTMLElement>('modus-wc-menu');
+      if (!menuEl) return;
+
+      const targetItem = menuEl.querySelector<HTMLElement>(itemSelector);
+      const scrollContainer =
+        menuEl.querySelector<HTMLElement>('.modus-wc-menu');
+      if (!targetItem || !scrollContainer) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const itemRect = targetItem.getBoundingClientRect();
+      const isAboveView = itemRect.top < containerRect.top;
+      const isBelowView = itemRect.bottom > containerRect.bottom;
+      if (!isAboveView && !isBelowView) return;
+
+      const scrollTop =
+        alignment === 'auto' && isBelowView
+          ? targetItem.offsetTop +
+            targetItem.offsetHeight -
+            scrollContainer.clientHeight
+          : targetItem.offsetTop;
+
+      scrollContainer.scrollTo({
+        top: Math.max(0, scrollTop),
+        behavior,
+      });
+    });
+  }
+
   private scrollToOptionSelected(): void {
     if (this.multiSelect) return;
+    this.scrollMenuItemIntoView('.modus-wc-menu-item-active', 'top', 'smooth');
+  }
 
-    requestAnimationFrame(() => {
-      const menuEl = this.el.querySelector('modus-wc-menu') as HTMLElement;
-      if (menuEl) {
-        const targetItem = menuEl.querySelector(
-          '.modus-wc-menu-item-active'
-        ) as HTMLElement;
-
-        const scrollContainer = menuEl.querySelector(
-          '.modus-wc-menu'
-        ) as HTMLElement;
-
-        const containerRect = scrollContainer.getBoundingClientRect();
-        const itemRect = targetItem.getBoundingClientRect();
-
-        const isAboveView = itemRect.top < containerRect.top;
-        const isBelowView = itemRect.bottom > containerRect.bottom;
-
-        if (isAboveView || isBelowView) {
-          const scrollTop = targetItem.offsetTop;
-          scrollContainer.scrollTo({
-            top: Math.max(0, scrollTop),
-            behavior: 'smooth',
-          });
-        }
-      }
-    });
+  private scrollFocusedIntoView(): void {
+    this.scrollMenuItemIntoView('.modus-wc-menu-item-focused', 'auto', 'auto');
   }
 
   private handleArrowDown(): void {
@@ -370,6 +390,9 @@ export class ModusWcAutocomplete {
 
     // Check if we're in filtering mode based on searchText BEFORE clearing it
     const wasFiltering = this.searchText.length > 0;
+    // Capture whether the menu was already open so we only auto-scroll to the
+    // selected item on the open transition (not on every subsequent arrow press).
+    const wasMenuVisible = this.menuVisible;
 
     if (this.initialNavigation) {
       if (this.searchText) {
@@ -393,11 +416,18 @@ export class ModusWcAutocomplete {
         if (!wasFiltering && !this.searchText && this.items) {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
+        this.scrollFocusedIntoView();
       },
       onSetMenuVisible: (visible) => {
         this.menuVisible = visible;
-        // Only scroll if menu is becoming visible and there's a selected item
-        if (visible && this.items?.some((item) => item.selected)) {
+        // Only scroll to the selected item on the hidden->visible transition.
+        // Otherwise repeated arrow-down presses would keep snapping the menu
+        // back to the selected item and fight scrollFocusedIntoView().
+        if (
+          visible &&
+          !wasMenuVisible &&
+          this.items?.some((item) => item.selected)
+        ) {
           this.scrollToOptionSelected();
           this.showFeedback = false;
         } else if (visible) {
@@ -421,6 +451,7 @@ export class ModusWcAutocomplete {
         if (!isFiltering && this.items) {
           this.filteredItems = this.items.filter((item) => item.visibleInMenu);
         }
+        this.scrollFocusedIntoView();
       },
       onSetInitialNavigation: (value) => (this.initialNavigation = value),
     });
