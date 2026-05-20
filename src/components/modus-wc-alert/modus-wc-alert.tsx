@@ -42,6 +42,9 @@ export class ModusWcAlert {
   /** Time taken to dismiss the alert in milliseconds */
   @Prop() delay?: number;
 
+  /** Whether to disable the icon */
+  @Prop() disableIcon?: boolean = false;
+
   /** Whether the alert has a dismiss button */
   @Prop() dismissible?: boolean = false;
 
@@ -170,8 +173,8 @@ export class ModusWcAlert {
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.getLeadingIcon()}
-          <div>
+          {!this.disableIcon && this.getLeadingIcon()}
+          <div class="modus-wc-alert-content">
             <div class="title">{this.alertTitle}</div>
             {this.alertDescription && (
               <div class="description">{this.alertDescription}</div>
