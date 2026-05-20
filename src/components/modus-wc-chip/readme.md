@@ -13,17 +13,18 @@ The component supports a `<slot>` for injecting custom content such as avatar an
 
 ## Properties
 
-| Property      | Attribute      | Description                                               | Type                                   | Default       |
-| ------------- | -------------- | --------------------------------------------------------- | -------------------------------------- | ------------- |
-| `active`      | `active`       | Active state of chip.                                     | `boolean \| undefined`                 | `false`       |
-| `customClass` | `custom-class` | Custom CSS class to apply to the inner div.               | `string \| undefined`                  | `''`          |
-| `disabled`    | `disabled`     | Whether the chip is disabled.                             | `boolean \| undefined`                 | `false`       |
-| `hasError`    | `has-error`    | Whether the chip has an error.                            | `boolean \| undefined`                 | `false`       |
-| `label`       | `label`        | The label to display in the chip.                         | `string \| undefined`                  | `''`          |
-| `shape`       | `shape`        | The shape of the chip: 'rectangle' (default) or 'circle'. | `"circle" \| "rectangle" \| undefined` | `'rectangle'` |
-| `showRemove`  | `show-remove`  | Whether to show the close icon on right side of the chip. | `boolean \| undefined`                 | `false`       |
-| `size`        | `size`         | The size of the chip.                                     | `"lg" \| "md" \| "sm" \| undefined`    | `'md'`        |
-| `variant`     | `variant`      | The variant of the chip.                                  | `"filled" \| "outline" \| undefined`   | `'filled'`    |
+| Property      | Attribute      | Description                                                                    | Type                                   | Default       |
+| ------------- | -------------- | ------------------------------------------------------------------------------ | -------------------------------------- | ------------- |
+| `active`      | `active`       | Active state of chip.                                                          | `boolean \| undefined`                 | `false`       |
+| `customClass` | `custom-class` | Custom CSS class to apply to the inner div.                                    | `string \| undefined`                  | `''`          |
+| `disabled`    | `disabled`     | Whether the chip is disabled.                                                  | `boolean \| undefined`                 | `false`       |
+| `hasError`    | `has-error`    | Whether the chip has an error.                                                 | `boolean \| undefined`                 | `false`       |
+| `label`       | `label`        | The label to display in the chip.                                              | `string \| undefined`                  | `''`          |
+| `multiline`   | `multiline`    | Whether the chip height can grow and the label can wrap across multiple lines. | `boolean \| undefined`                 | `false`       |
+| `shape`       | `shape`        | The shape of the chip: 'rectangle' (default) or 'circle'.                      | `"circle" \| "rectangle" \| undefined` | `'rectangle'` |
+| `showRemove`  | `show-remove`  | Whether to show the close icon on right side of the chip.                      | `boolean \| undefined`                 | `false`       |
+| `size`        | `size`         | The size of the chip.                                                          | `"lg" \| "md" \| "sm" \| undefined`    | `'md'`        |
+| `variant`     | `variant`      | The variant of the chip.                                                       | `"filled" \| "outline" \| undefined`   | `'filled'`    |
 
 
 ## Events
@@ -40,9 +41,14 @@ The component supports a `<slot>` for injecting custom content such as avatar an
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
 
+### Depends on
+
+- [modus-wc-icon](../modus-wc-icon)
+
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-chip --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-chip
   style modus-wc-chip fill:#f9f,stroke:#333,stroke-width:4px
 ```

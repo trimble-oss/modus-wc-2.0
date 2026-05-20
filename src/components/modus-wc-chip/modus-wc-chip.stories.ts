@@ -11,6 +11,7 @@ interface ChipArgs {
   disabled?: boolean;
   'has-error'?: boolean;
   label: string;
+  multiline?: boolean;
   shape?: 'rectangle' | 'circle';
   'show-remove'?: boolean;
   size: ModusSize;
@@ -22,6 +23,7 @@ const meta: Meta<ChipArgs> = {
   component: 'modus-wc-chip',
   args: {
     label: 'Chip',
+    multiline: false,
     'show-remove': true,
     shape: 'rectangle',
     size: 'md',
@@ -61,6 +63,7 @@ const Template: Story = {
       disabled=${ifDefined(args.disabled)}
       has-error=${ifDefined(args['has-error'])}
       label=${args.label}
+      ?multiline=${Boolean(args.multiline)}
       shape=${args.shape}
       show-remove=${ifDefined(args['show-remove'])}
       size=${args.size}
@@ -81,6 +84,7 @@ export const AvatarChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  ?multiline=${Boolean(args.multiline)}
   shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
@@ -105,6 +109,7 @@ export const CheckIconChip: Story = {
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
   label=${args.label}
+  ?multiline=${Boolean(args.multiline)}
   shape=${args.shape}
   show-remove=${ifDefined(args['show-remove'])}
   size=${args.size}
@@ -112,6 +117,40 @@ export const CheckIconChip: Story = {
 >
   <modus-wc-icon name="check" size="xs"></modus-wc-icon>
 </modus-wc-chip>
+    `;
+  },
+};
+
+export const Multiline: Story = {
+  args: {
+    label:
+      'This chip has a longer label that wraps across multiple lines when constrained.',
+    multiline: true,
+    'show-remove': false,
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<style>
+  .multiline-chip {
+    max-width: 12rem;
+    text-align: start;
+  }
+</style>
+
+<modus-wc-chip
+  aria-label="Multiline chip example"
+  active=${ifDefined(args.active)}
+  custom-class="multiline-chip"
+  disabled=${ifDefined(args.disabled)}
+  has-error=${ifDefined(args['has-error'])}
+  label=${args.label}
+  ?multiline=${Boolean(args.multiline)}
+  shape=${args.shape}
+  show-remove=${ifDefined(args['show-remove'])}
+  size=${args.size}
+  variant=${args.variant}
+></modus-wc-chip>
     `;
   },
 };
@@ -125,6 +164,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  ?multiline=${Boolean(args.multiline)}
   shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
@@ -138,6 +178,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  ?multiline=${Boolean(args.multiline)}
   shape=${args.shape}
   show-remove="true"
   size=${args.size}
@@ -152,6 +193,7 @@ export const Composable: Story = {
   active=${ifDefined(args.active)}
   disabled=${ifDefined(args.disabled)}
   has-error=${ifDefined(args['has-error'])}
+  ?multiline=${Boolean(args.multiline)}
   shape=${args.shape}
   size=${args.size}
   variant=${args.variant}
@@ -178,6 +220,7 @@ export const ShadowDomParent: Story = {
             disabled: boolean;
             hasError: boolean;
             label: string;
+            multiline: boolean;
             shape: string;
             showRemove: boolean;
             size: string;
@@ -192,6 +235,7 @@ export const ShadowDomParent: Story = {
           chipEl.disabled = Boolean(v.disabled);
           chipEl.hasError = Boolean(v['has-error']);
           chipEl.label = v.label;
+          chipEl.multiline = Boolean(v.multiline);
           chipEl.showRemove = Boolean(v['show-remove']);
         },
       });

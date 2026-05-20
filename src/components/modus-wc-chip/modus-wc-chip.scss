@@ -74,6 +74,15 @@ modus-wc-chip .modus-wc-chip {
       }
     }
 
+    &.modus-wc-chip-multiline {
+      height: auto;
+
+      .modus-wc-chip-label {
+        display: block;
+        white-space: normal;
+      }
+    }
+
     // States
     &.modus-wc-chip--active {
       background-color: var(--modus-wc-color-primary-pale);
@@ -220,6 +229,15 @@ modus-wc-chip .modus-wc-chip {
 
         /* Constrains icon height to its font-size, preventing it from stretching to match the inherited line-height */
         line-height: 1;
+      }
+    }
+
+    &.modus-wc-chip-multiline {
+      height: auto;
+
+      .modus-wc-chip-label {
+        display: block;
+        white-space: normal;
       }
     }
 

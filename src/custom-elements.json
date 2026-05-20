@@ -163,6 +163,15 @@
               }
             },
             {
+              "name": "disable-icon",
+              "fieldName": "disableIcon",
+              "default": "false",
+              "description": "Whether to disable the icon",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "dismissible",
               "fieldName": "dismissible",
               "default": "false",
@@ -217,6 +226,161 @@
           "declaration": {
             "name": "ModusWcAlert",
             "module": "src/components/modus-wc-alert/modus-wc-alert.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcAppMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "draggedItemPos",
+              "type": {
+                "text": "{ appIndex: number } | null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "dropTargetIndex",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "grabbedItemPos",
+              "type": {
+                "text": "{ appIndex: number } | null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "isEditMode",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "onAppsChange"
+            },
+            {
+              "kind": "method",
+              "name": "onLayoutChange",
+              "parameters": [
+                {
+                  "name": "newLayout",
+                  "type": {
+                    "text": "'list' | 'grid'"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "truncatedApps",
+              "type": {
+                "text": "Set<AppName>"
+              },
+              "default": "new Set()"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "apps",
+              "fieldName": "apps",
+              "default": "[]",
+              "description": "The apps to display in the menu.",
+              "type": {
+                "text": "IAppMenuItem[]"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "custom class to apply to the menu",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "layout",
+              "fieldName": "layout",
+              "default": "'list'",
+              "description": "The layout of the menu.",
+              "type": {
+                "text": "'list' | 'grid'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-app-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemClick",
+              "type": {
+                "text": "EventEmitter<{ appName: AppName }>"
+              },
+              "description": "Emitted when an item is clicked"
+            },
+            {
+              "kind": "field",
+              "name": "itemsOrderChange",
+              "type": {
+                "text": "EventEmitter<IAppMenuItem[]>"
+              },
+              "description": "Emitted when reordering is confirmed via \"Done\" and the order differs from when edit started"
+            },
+            {
+              "kind": "field",
+              "name": "layoutChange",
+              "type": {
+                "text": "EventEmitter<{\r\n    layout: 'list' | 'grid';\r\n  }>"
+              },
+              "description": "Emit event when the layout changes"
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcAppMenu",
+          "declaration": {
+            "name": "ModusWcAppMenu",
+            "module": "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-app-menu",
+          "declaration": {
+            "name": "ModusWcAppMenu",
+            "module": "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
           }
         }
       ]
@@ -1732,7 +1896,7 @@
               "default": "'md'",
               "description": "The size of the button.",
               "type": {
-                "text": "DaisySize"
+                "text": "DaisySize | 'xl'"
               }
             },
             {
@@ -2105,6 +2269,15 @@
               "description": "The label to display in the chip.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "multiline",
+              "fieldName": "multiline",
+              "default": "false",
+              "description": "Whether the chip height can grow and the label can wrap across multiple lines.",
+              "type": {
+                "text": "boolean"
               }
             },
             {
@@ -2845,7 +3018,7 @@
               "default": "'md'",
               "description": "The size of the button.",
               "type": {
-                "text": "DaisySize"
+                "text": "DaisySize | 'xl'"
               }
             },
             {
@@ -3164,7 +3337,7 @@
               "default": "'md'",
               "description": "The size of the button.",
               "type": {
-                "text": "DaisySize"
+                "text": "DaisySize | 'xl'"
               }
             },
             {
