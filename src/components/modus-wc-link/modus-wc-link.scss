@@ -23,6 +23,10 @@ modus-wc-link a.modus-wc-link {
   &.modus-wc-link-color-danger {
     color: var(--modus-wc-color-error);
   }
+
+  &.modus-wc-link-color-inherit {
+    color: inherit;
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-link a.modus-wc-link {

@@ -1,8 +1,19 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface LinkArgs {
-  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'warning'
+    | 'danger';
+  'custom-class'?: string;
+  href: string;
+  rel?: string;
+  target?: string;
   underline: 'always' | 'hover' | 'none';
 }
 
@@ -11,16 +22,28 @@ const meta: Meta<LinkArgs> = {
   component: 'modus-wc-link',
   args: {
     color: 'primary',
+    href: '#',
     underline: 'always',
   },
   argTypes: {
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'inherit',
+        'warning',
+        'danger',
+      ],
     },
     underline: {
       control: { type: 'select' },
       options: ['always', 'hover', 'none'],
+    },
+    target: {
+      control: { type: 'select' },
+      options: [undefined, '_blank', '_self', '_parent', '_top'],
     },
   },
 };
@@ -33,7 +56,14 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-link color="${args.color}" underline="${args.underline}">Click me</modus-wc-link>
+<modus-wc-link
+  color="${args.color}"
+  custom-class="${ifDefined(args['custom-class'])}"
+  href="${args.href}"
+  rel="${ifDefined(args.rel)}"
+  target="${ifDefined(args.target)}"
+  underline="${args.underline}"
+>Click me</modus-wc-link>
     `;
   },
 };
@@ -51,10 +81,40 @@ export const Underline: Story = {
 <div style="display: flex; flex-direction: column; gap: 8px;">
   ${underlines.map(
     (underline) => html`
-  <modus-wc-link underline="${underline}">${underline}</modus-wc-link>
+  <modus-wc-link href="#" underline="${underline}">${underline}</modus-wc-link>
   `
   )}
 </div>
+    `;
+  },
+};
+
+export const ExternalLink: Story = {
+  args: {
+    href: 'https://www.trimble.com',
+    target: '_blank',
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-link
+  href="${args.href}"
+  target="${ifDefined(args.target)}"
+  aria-label="Visit Trimble website, opens in a new window"
+>Trimble.com</modus-wc-link>
+    `;
+  },
+};
+
+export const InheritColor: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<p style="color: var(--modus-wc-color-base-content);">
+  Body text with an
+  <modus-wc-link href="#" color="inherit">inherit color link</modus-wc-link>
+  inline.
+</p>
     `;
   },
 };
@@ -65,6 +125,7 @@ export const Colors: Story = {
       'primary',
       'secondary',
       'tertiary',
+      'inherit',
       'warning',
       'danger',
     ];
@@ -74,7 +135,7 @@ export const Colors: Story = {
 <div style="display: flex; flex-direction: column; gap: 8px;">
   ${colors.map(
     (color) => html`
-  <modus-wc-link color="${color}">${color}</modus-wc-link>
+  <modus-wc-link href="#" color="${color}">${color}</modus-wc-link>
   `
   )}
 </div>

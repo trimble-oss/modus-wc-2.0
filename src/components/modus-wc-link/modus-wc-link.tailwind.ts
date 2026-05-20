@@ -2,7 +2,13 @@ export const convertPropsToClasses = ({
   color,
   underline,
 }: {
-  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'warning'
+    | 'danger';
   underline?: 'always' | 'hover' | 'none';
 }): string => {
   let classes = '';

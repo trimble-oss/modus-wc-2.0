@@ -1,7 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-link.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 
 /**
  * A link component styled with DaisyUI.
@@ -18,8 +18,25 @@ export class ModusWcLink {
   @Element() el!: HTMLElement;
 
   /** The color of the link. */
-  @Prop() color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' =
-    'primary';
+  @Prop() color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'warning'
+    | 'danger' = 'primary';
+
+  /** Custom CSS class to apply to the link element. */
+  @Prop() customClass?: string = '';
+
+  /** The URL to navigate to when the link is activated. */
+  @Prop() href!: string;
+
+  /** The relationship attribute for the link. */
+  @Prop() rel?: string;
+
+  /** The browsing context for the link. */
+  @Prop() target?: string;
 
   /** The underline behavior of the link. */
   @Prop() underline: 'always' | 'hover' | 'none' = 'always';
@@ -38,14 +55,39 @@ export class ModusWcLink {
     });
 
     if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   }
 
+  private getRelAttribute(): string | undefined {
+    const relValues = new Set(
+      (this.rel ?? '')
+        .split(/\s+/)
+        .map((value) => value.trim())
+        .filter(Boolean)
+    );
+
+    if (this.target === '_blank') {
+      relValues.add('noopener');
+      relValues.add('noreferrer');
+    }
+
+    return relValues.size > 0 ? Array.from(relValues).join(' ') : undefined;
+  }
+
   render() {
+    const sanitizedHref = sanitizeUrl(this.href);
+
     return (
       <Host>
-        <a class={this.getClasses()} {...this.inheritedAttributes}>
+        <a
+          class={this.getClasses()}
+          href={sanitizedHref}
+          rel={this.getRelAttribute()}
+          target={this.target}
+          {...this.inheritedAttributes}
+        >
           <slot />
         </a>
       </Host>

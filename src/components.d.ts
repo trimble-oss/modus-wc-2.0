@@ -912,7 +912,28 @@ export namespace Components {
         /**
           * The color of the link.
          */
-        "color": 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color": | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href": string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
         /**
           * The underline behavior of the link.
          */
@@ -4216,7 +4237,28 @@ declare namespace LocalJSX {
         /**
           * The color of the link.
          */
-        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href": string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
         /**
           * The underline behavior of the link.
          */

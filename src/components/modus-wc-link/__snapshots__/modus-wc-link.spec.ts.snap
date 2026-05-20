@@ -1,45 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-link should render with default props 1`] = `
-<modus-wc-link>
+exports[`modus-wc-link should render with color class when color is set 1`] = `
+<modus-wc-link color="secondary" href="#">
   <!---->
-  <a aria-label="Link" class="modus-wc-link modus-wc-link-color-primary">
-    <slot-fb>
-      Click me
-    </slot-fb>
+  <a aria-label="Secondary link" class="modus-wc-link modus-wc-link-color-secondary" href="#">
+    Click me
   </a>
 </modus-wc-link>
 `;
 
-exports[`modus-wc-link should render with color class when color is set 1`] = `
-<modus-wc-link color="secondary">
+exports[`modus-wc-link should render with default props 1`] = `
+<modus-wc-link href="#">
   <!---->
-  <a aria-label="Secondary link" class="modus-wc-link modus-wc-link-color-secondary">
-    <slot-fb>
-      Click me
-    </slot-fb>
+  <a aria-label="Link" class="modus-wc-link modus-wc-link-color-primary" href="#">
+    Click me
   </a>
 </modus-wc-link>
 `;
 
 exports[`modus-wc-link should render with hover underline class when underline is hover 1`] = `
-<modus-wc-link underline="hover">
+<modus-wc-link href="#" underline="hover">
   <!---->
-  <a aria-label="Hover link" class="modus-wc-link modus-wc-link-color-primary modus-wc-link-hover">
-    <slot-fb>
-      Click me
-    </slot-fb>
+  <a aria-label="Hover link" class="modus-wc-link modus-wc-link-color-primary modus-wc-link-hover" href="#">
+    Click me
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render with inherit color class when color is inherit 1`] = `
+<modus-wc-link color="inherit" href="#">
+  <!---->
+  <a class="modus-wc-link modus-wc-link-color-inherit" href="#">
+    Click me
   </a>
 </modus-wc-link>
 `;
 
 exports[`modus-wc-link should render with no underline class when underline is none 1`] = `
-<modus-wc-link underline="none">
+<modus-wc-link href="#" underline="none">
   <!---->
-  <a aria-label="No underline link" class="modus-wc-link modus-wc-link-color-primary modus-wc-no-underline">
-    <slot-fb>
-      Click me
-    </slot-fb>
+  <a aria-label="No underline link" class="modus-wc-link modus-wc-link-color-primary modus-wc-no-underline" href="#">
+    Click me
   </a>
 </modus-wc-link>
 `;

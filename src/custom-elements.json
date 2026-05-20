@@ -3746,16 +3746,49 @@
               "default": "'primary'",
               "description": "The color of the link.",
               "type": {
-                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'inherit'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {
-              "name": "hover",
-              "fieldName": "hover",
-              "default": "false",
-              "description": "If true, applies the DaisyUI link-hover class to underline on hover.",
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the link element.",
               "type": {
-                "text": "boolean"
+                "text": "string"
+              }
+            },
+            {
+              "name": "href",
+              "fieldName": "href",
+              "description": "The URL to navigate to when the link is activated.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "rel",
+              "fieldName": "rel",
+              "description": "The relationship attribute for the link.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "target",
+              "fieldName": "target",
+              "description": "The browsing context for the link.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "underline",
+              "fieldName": "underline",
+              "default": "'always'",
+              "description": "The underline behavior of the link.",
+              "type": {
+                "text": "'always' | 'hover' | 'none'"
               }
             }
           ],
