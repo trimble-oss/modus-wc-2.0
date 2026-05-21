@@ -160,6 +160,10 @@
   /* 32px */
   --modus-wc-spacing-3xl: 3rem;
   /* 48px */
+  --modus-wc-spacing-20: 5rem;
+  /* 80px */
+  --modus-wc-spacing-24: 6rem;
+  /* 96px */
 
   /* Inputs */
   --modus-wc-input-height-sm: 1.5rem;
