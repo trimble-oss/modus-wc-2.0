@@ -862,14 +862,12 @@ describe('modus-wc-table', () => {
     rowSelectionChangeSpy.mockClear();
     component['selectedRowIds'] = ['3', '4']; // Simulate externally controlled selection
 
-    // When selection is controlled externally, it shouldn't update internalRowSelection
-    const prevInternalRowSelection = { ...component['internalRowSelection'] };
+    // internalRowSelection must mirror TanStack even when controlled so Stencil re-renders;
+    // the parent should update selectedRowIds from rowSelectionChange to stay in sync.
     component['handleRowSelectionChange']({ '5': true });
 
-    // Internal state should not change in controlled mode
-    expect(component['internalRowSelection']).toEqual(prevInternalRowSelection);
+    expect(component['internalRowSelection']).toEqual({ '5': true });
 
-    // But event should still be emitted
     expect(rowSelectionChangeSpy).toHaveBeenCalled();
   });
 
@@ -3425,6 +3423,34 @@ describe('modus-wc-table', () => {
     component.selectedRowIds = [];
     component.componentWillLoad();
     expect(component['internalRowSelection']).toEqual({});
+  });
+
+  it('should update visual selection when row is clicked after selectedRowIds is set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table
+        aria-label="Controlled selection click"
+        selectable="multi"
+      ></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = defaultColumns;
+    component.data = defaultData;
+
+    await page.waitForChanges();
+
+    component.selectedRowIds = ['0'];
+    await page.waitForChanges();
+
+    const rows = page.root!.querySelectorAll('tbody tr');
+    expect(rows[0].classList.contains('selected')).toBe(true);
+
+    (rows[1] as HTMLTableRowElement).click();
+    await page.waitForChanges();
+
+    expect(component['internalRowSelection']).toEqual({ '0': true, '1': true });
+    expect(rows[1].classList.contains('selected')).toBe(true);
   });
 
   describe('Cursor behavior', () => {
