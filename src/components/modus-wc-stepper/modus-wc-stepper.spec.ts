@@ -85,11 +85,11 @@ describe('modus-wc-stepper', () => {
     expect(buttons.length).toBe(defaultSteps.length);
     expect(labels.length).toBe(defaultSteps.length);
     expect((buttons[1] as HTMLButtonElement).type).toBe('button');
-    expect(buttons[1].getAttribute('aria-label')).toBe('Step 2: Belong');
+    expect(buttons[1].getAttribute('aria-label')).toBeNull();
     expect(labels[1].textContent).toBe('Belong');
   });
 
-  it('should use the step number as the aria-label fallback when label is missing', async () => {
+  it('should not set aria-label on interactive step buttons', async () => {
     const page = await newSpecPage({
       components: [ModusWcStepper],
       html: '<modus-wc-stepper interactive></modus-wc-stepper>',
@@ -102,8 +102,12 @@ describe('modus-wc-stepper', () => {
     const button = page.root!.querySelector(
       'button.modus-wc-stepper-step-button'
     ) as HTMLButtonElement;
+    const label = page.root!.querySelector(
+      'span.modus-wc-stepper-step-label'
+    ) as HTMLSpanElement;
 
-    expect(button.getAttribute('aria-label')).toBe('Step 1');
+    expect(button.getAttribute('aria-label')).toBeNull();
+    expect(label.textContent).toBe('🚀');
   });
 
   it('should render an empty step label when label and content are missing', async () => {

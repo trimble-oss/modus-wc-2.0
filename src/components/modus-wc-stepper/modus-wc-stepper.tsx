@@ -106,13 +106,6 @@ export class ModusWcStepper {
     return classList.join(' ');
   }
 
-  private stepAriaLabel(step: IStepperItem, index: number): string {
-    if (step.label?.trim()) {
-      return `Step ${index + 1}: ${step.label}`;
-    }
-    return `Step ${index + 1}`;
-  }
-
   private handleStepActivate(index: number): void {
     if (!this.interactive) {
       return;
@@ -142,7 +135,6 @@ export class ModusWcStepper {
                       type="button"
                       class="modus-wc-stepper-step-button"
                       onClick={() => this.handleStepActivate(index)}
-                      aria-label={this.stepAriaLabel(step, index)}
                     ></button>
                     <span class="modus-wc-stepper-step-label">
                       {stepContent}
