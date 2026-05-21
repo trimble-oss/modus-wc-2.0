@@ -9,6 +9,12 @@ modus-wc-stepper .modus-wc-steps .modus-wc-step {
 
 modus-wc-stepper .modus-wc-stepper--interactive .modus-wc-step {
   cursor: pointer;
+  position: relative;
+}
+
+modus-wc-stepper .modus-wc-stepper--interactive .modus-wc-step::before,
+modus-wc-stepper .modus-wc-stepper--interactive .modus-wc-step::after {
+  pointer-events: none;
 }
 
 modus-wc-stepper .modus-wc-stepper-step-button {
@@ -18,10 +24,20 @@ modus-wc-stepper .modus-wc-stepper-step-button {
   color: inherit;
   cursor: pointer;
   font: inherit;
+  height: 100%;
+  inset: 0;
   margin: 0;
   padding: 0;
+  position: absolute;
   text-align: inherit;
   width: 100%;
+  z-index: 1;
+}
+
+modus-wc-stepper .modus-wc-stepper-step-label {
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
 }
 
 modus-wc-stepper .modus-wc-stepper-step-button:focus-visible {

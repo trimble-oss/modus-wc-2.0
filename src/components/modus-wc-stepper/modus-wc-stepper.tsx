@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Prop,
@@ -90,17 +91,6 @@ export class ModusWcStepper {
     );
   }
 
-  private handleStepKeyDown(event: KeyboardEvent, index: number): void {
-    if (!this.interactive) {
-      return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.handleStepActivate(index);
-    }
-  }
-
   private getClassesForStep(step: IStepperItem, index: number): string {
     const classList = ['modus-wc-step'];
 
@@ -144,21 +134,30 @@ export class ModusWcStepper {
           {...this.inheritedAttributes}
         >
           {this.steps.map((step, index) => {
+            const stepContent = step.label ?? step.content ?? '';
+
             return (
               <li
                 class={this.getClassesForStep(step, index)}
                 key={index}
                 data-content={step.content}
-                onClick={() => this.handleStepActivate(index)}
-                onKeyDown={(event) => this.handleStepKeyDown(event, index)}
-                role={isInteractive ? 'button' : undefined}
-                tabIndex={isInteractive ? 0 : undefined}
-                aria-label={
-                  isInteractive ? this.stepAriaLabel(step, index) : undefined
-                }
                 aria-current={this.isStepActive(index) ? 'step' : undefined}
               >
-                {step.label ?? step.content ?? ''}
+                {isInteractive ? (
+                  <Fragment>
+                    <button
+                      type="button"
+                      class="modus-wc-stepper-step-button"
+                      onClick={() => this.handleStepActivate(index)}
+                      aria-label={this.stepAriaLabel(step, index)}
+                    ></button>
+                    <span class="modus-wc-stepper-step-label">
+                      {stepContent}
+                    </span>
+                  </Fragment>
+                ) : (
+                  stepContent
+                )}
               </li>
             );
           })}

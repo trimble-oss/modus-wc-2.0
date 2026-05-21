@@ -61,7 +61,7 @@ describe('modus-wc-stepper', () => {
     expect((listener.mock.calls[0][0] as CustomEvent<number>).detail).toBe(2);
   });
 
-  it('should emit stepClick when interactive and the step li receives a click (e.g. indicator area)', async () => {
+  it('should render interactive steps as accessible buttons', async () => {
     const page = await newSpecPage({
       components: [ModusWcStepper],
       html: '<modus-wc-stepper interactive></modus-wc-stepper>',
@@ -71,15 +71,18 @@ describe('modus-wc-stepper', () => {
     component.steps = defaultSteps;
     await page.waitForChanges();
 
-    const listener = jest.fn();
-    page.root!.addEventListener('stepClick', listener);
+    const buttons = page.root!.querySelectorAll(
+      'button.modus-wc-stepper-step-button'
+    );
+    const labels = page.root!.querySelectorAll(
+      'span.modus-wc-stepper-step-label'
+    );
 
-    const secondStep = page.root!.querySelectorAll('li.modus-wc-step')[1];
-    secondStep?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    await page.waitForChanges();
-
-    expect(listener).toHaveBeenCalledTimes(1);
-    expect((listener.mock.calls[0][0] as CustomEvent<number>).detail).toBe(1);
+    expect(buttons.length).toBe(defaultSteps.length);
+    expect(labels.length).toBe(defaultSteps.length);
+    expect((buttons[1] as HTMLButtonElement).type).toBe('button');
+    expect(buttons[1].getAttribute('aria-label')).toBe('Step 2: Belong');
+    expect(labels[1].textContent).toBe('Belong');
   });
 
   it('should not emit stepClick when interactive is false and step text is present', async () => {

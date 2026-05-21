@@ -113,22 +113,6 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const Interactive: Story = {
-  args: {
-    interactive: true,
-  },
-  render: (args) => html`
-    <modus-wc-stepper
-      active-step="${ifDefined(args['active-step'])}"
-      custom-class="${ifDefined(args['custom-class'])}"
-      orientation="${ifDefined(args.orientation)}"
-      ?interactive="${args.interactive ?? false}"
-      .steps="${args.steps}"
-    ></modus-wc-stepper>
-  `,
-};
-
-export const ControlledActiveStep: Story = {
-  name: 'Active step (controlled)',
   parameters: {
     docs: {
       source: {
@@ -140,26 +124,25 @@ export const ControlledActiveStep: Story = {
   interactive
 ></modus-wc-stepper>
 <script>
-  const baseSteps = [
-    { label: 'Planning' },
-    { label: 'Execution' },
-    { label: 'Verification' },
-    { label: 'Done' },
+  const steps = [
+    { label: 'Scale', color: 'primary' },
+    { label: 'Belong', color: 'primary' },
+    { label: 'Grow', color: 'primary' },
+    { label: 'Innovate', content: '🚀', color: 'primary' },
   ];
 
-  const getColoredSteps = (activeIndex) =>
-    baseSteps.map((step, index) => ({
-      ...step,
-      color: index <= activeIndex ? 'primary' : 'neutral',
-    }));
-
   const stepper = document.getElementById('controlled-stepper');
-  stepper.steps = getColoredSteps(1);
+  stepper.steps = steps.map((step, index) => ({
+    ...step,
+    color: index <= 1 ? 'primary' : 'neutral',
+  }));
 
   stepper.addEventListener('stepClick', (event) => {
-    const activeIndex = event.detail;
-    stepper.activeStep = activeIndex;
-    stepper.steps = getColoredSteps(activeIndex);
+    stepper.activeStep = event.detail;
+    stepper.steps = steps.map((step, index) => ({
+      ...step,
+      color: index <= event.detail ? 'primary' : 'neutral',
+    }));
   });
 </script>
         `,
@@ -168,39 +151,36 @@ export const ControlledActiveStep: Story = {
   },
   // prettier-ignore
   render: () => {
-    const initialActiveStep = 1;
-
-    const baseSteps: IStepperItem[] = [
-      { label: 'Planning' },
-      { label: 'Execution' },
-      { label: 'Verification' },
-      { label: 'Done' },
+    const interactiveSteps: IStepperItem[] = [
+      { label: 'Scale', color: 'primary' },
+      { label: 'Belong', color: 'primary' },
+      { label: 'Grow', color: 'primary' },
+      { label: 'Innovate', content: '🚀', color: 'primary' },
     ];
 
-    const getColoredSteps = (activeIndex: number): IStepperItem[] =>
-      baseSteps.map((step, index) => ({
+    const getInteractiveSteps = (activeIndex: number): IStepperItem[] =>
+      interactiveSteps.map((step, index) => ({
         ...step,
         color: index <= activeIndex ? 'primary' : 'neutral',
       }));
 
-    const handleStepClick = (event: CustomEvent<number>) => {
+    const handleInteractiveStepClick = (event: CustomEvent<number>) => {
       const stepper = event.target as HTMLElement & {
         activeStep: number;
         steps: IStepperItem[];
       };
-      const nextActive = event.detail;
-      stepper.activeStep = nextActive;
-      stepper.steps = getColoredSteps(nextActive);
+      stepper.activeStep = event.detail;
+      stepper.steps = getInteractiveSteps(event.detail);
     };
 
     return html`
       <modus-wc-stepper
         id="controlled-stepper"
-        active-step="${initialActiveStep}"
+        active-step="1"
         orientation="horizontal"
         interactive
-        .steps="${getColoredSteps(initialActiveStep)}"
-        @stepClick=${handleStepClick}
+        .steps="${getInteractiveSteps(1)}"
+        @stepClick=${handleInteractiveStepClick}
       ></modus-wc-stepper>
     `;
   },
