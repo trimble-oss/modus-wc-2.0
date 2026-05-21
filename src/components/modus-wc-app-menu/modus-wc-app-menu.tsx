@@ -522,7 +522,7 @@ export class ModusWcAppMenu {
   private getClasses(): string {
     const classList = ['modus-wc-app-menu'];
 
-    // The order CSS classes are added matters to CSS specificity
+    // Append any consumer-provided class alongside the base component class.
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
@@ -543,7 +543,7 @@ export class ModusWcAppMenu {
                 ></modus-wc-typography>
               </div>
               <div class="modus-wc-app-menu-header-end-content">
-                <slot name="modus-wc-app-menu-header-end-content"></slot>
+                <slot name="header-end-content"></slot>
                 {!this.isEditMode ? (
                   <modus-wc-button
                     aria-label="Edit app order"

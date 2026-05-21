@@ -2440,7 +2440,7 @@ describe('modus-wc-app-menu', () => {
             h(
               'span',
               {
-                slot: 'modus-wc-app-menu-header-end-content',
+                slot: 'header-end-content',
                 'data-test': 'custom-slot-content',
               },
               'Custom'
@@ -2455,9 +2455,7 @@ describe('modus-wc-app-menu', () => {
         '[data-test="custom-slot-content"]'
       );
       expect(projected).not.toBeNull();
-      expect(projected?.getAttribute('slot')).toBe(
-        'modus-wc-app-menu-header-end-content'
-      );
+      expect(projected?.getAttribute('slot')).toBe('header-end-content');
     });
   });
 
