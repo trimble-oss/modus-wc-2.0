@@ -132,7 +132,7 @@
     "@storybook/web-components": "^8.6.12",
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.19",
-    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.35",
+    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.37",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.32.1",
