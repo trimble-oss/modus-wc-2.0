@@ -8,6 +8,7 @@ interface LinkArgs {
     | 'secondary'
     | 'tertiary'
     | 'inherit'
+    | 'success'
     | 'warning'
     | 'danger';
   'custom-class'?: string;
@@ -33,6 +34,7 @@ const meta: Meta<LinkArgs> = {
         'secondary',
         'tertiary',
         'inherit',
+        'success',
         'warning',
         'danger',
       ],
@@ -119,26 +121,13 @@ export const InheritColor: Story = {
   },
 };
 
-export const Colors: Story = {
+export const HeadingLink: Story = {
   render: () => {
-    const colors: LinkArgs['color'][] = [
-      'primary',
-      'secondary',
-      'tertiary',
-      'inherit',
-      'warning',
-      'danger',
-    ];
-
     // prettier-ignore
     return html`
-<div style="display: flex; flex-direction: column; gap: 8px;">
-  ${colors.map(
-    (color) => html`
-  <modus-wc-link href="#" color="${color}">${color}</modus-wc-link>
-  `
-  )}
-</div>
+<modus-wc-typography hierarchy="h1">
+  <modus-wc-link href="#" color="inherit">Heading link</modus-wc-link>
+</modus-wc-typography>
     `;
   },
 };

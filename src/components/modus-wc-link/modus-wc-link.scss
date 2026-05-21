@@ -16,6 +16,10 @@ modus-wc-link a.modus-wc-link {
     color: var(--modus-wc-color-base-content-low-contrast);
   }
 
+  &.modus-wc-link-color-success {
+    color: var(--modus-wc-color-success);
+  }
+
   &.modus-wc-link-color-warning {
     color: var(--modus-wc-color-warning);
   }
@@ -50,6 +54,10 @@ modus-wc-link a.modus-wc-link {
     color: var(--modus-wc-color-gray-1);
   }
 
+  &.modus-wc-link-color-success {
+    color: var(--modus-wc-color-green-dark);
+  }
+
   &.modus-wc-link-color-warning {
     color: var(--modus-wc-color-yellow-dark);
   }
@@ -80,6 +88,10 @@ modus-wc-link a.modus-wc-link {
     color: var(--modus-wc-color-gray-1);
   }
 
+  &.modus-wc-link-color-success {
+    color: var(--modus-wc-color-green-light);
+  }
+
   &.modus-wc-link-color-warning {
     color: var(--modus-wc-color-yellow-light);
   }
@@ -103,6 +115,10 @@ modus-wc-link a.modus-wc-link {
 
   &.modus-wc-link-color-tertiary {
     color: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  &.modus-wc-link-color-success {
+    color: var(--modus-wc-color-success);
   }
 
   &.modus-wc-link-color-warning {

@@ -22,6 +22,15 @@ describe('modus-wc-link', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with success color class when color is success', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLink],
+      html: '<modus-wc-link aria-label="Success link" color="success" href="#">Click me</modus-wc-link>',
+    });
+    const anchor = page.root?.querySelector('a');
+    expect(anchor?.classList.contains('modus-wc-link-color-success')).toBe(true);
+  });
+
   it('should render with sanitized href when href is provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcLink],
