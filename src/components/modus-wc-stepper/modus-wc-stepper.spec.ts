@@ -1,6 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { IStepperItem, ModusWcStepper } from './modus-wc-stepper';
 
+type IPrivateStepperMethods = {
+  handleStepActivate(index: number): void;
+};
+
 describe('modus-wc-stepper', () => {
   const defaultSteps: IStepperItem[] = [
     { label: 'Scale', color: 'primary' },
@@ -148,7 +152,8 @@ describe('modus-wc-stepper', () => {
     const listener = jest.fn();
     page.root!.addEventListener('stepClick', listener);
 
-    (component as any).handleStepActivate(0);
+    const privateStepper = component as unknown as IPrivateStepperMethods;
+    privateStepper.handleStepActivate(0);
 
     expect(listener).not.toHaveBeenCalled();
   });
