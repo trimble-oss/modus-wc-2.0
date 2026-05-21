@@ -134,7 +134,6 @@ export const Multiline: Story = {
 <style>
   .multiline-chip {
     max-width: 12rem;
-    text-align: start;
   }
 </style>
 

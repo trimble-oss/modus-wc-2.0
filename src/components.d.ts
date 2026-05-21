@@ -493,7 +493,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Whether the chip height can grow and the label can wrap across multiple lines.
+          * Whether the chip height can grow and its content can wrap across multiple lines.
          */
         "multiline"?: boolean;
         /**
@@ -3742,7 +3742,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Whether the chip height can grow and the label can wrap across multiple lines.
+          * Whether the chip height can grow and its content can wrap across multiple lines.
          */
         "multiline"?: boolean;
         /**
