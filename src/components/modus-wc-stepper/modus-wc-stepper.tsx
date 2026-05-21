@@ -59,7 +59,7 @@ export class ModusWcStepper {
   @Prop() steps: IStepperItem[] = [];
 
   /** If true, steps will be rendered as buttons and emit `stepClick` when activated. */
-  @Prop() interactive? = false;
+  @Prop() interactive?: boolean = false;
 
   /** Emitted with the 0-based step index when a step is activated and `interactive` is true. */
   @Event() stepClick!: EventEmitter<number>;
@@ -73,6 +73,7 @@ export class ModusWcStepper {
     const classList = ['modus-wc-steps'];
 
     const propClasses = convertPropsToClasses({
+      interactive: this.interactive,
       orientation: this.orientation,
     });
 
@@ -119,20 +120,12 @@ export class ModusWcStepper {
     this.stepClick.emit(index);
   }
 
-  private rootClasses(isInteractive: boolean): string {
-    const base = this.getClasses();
-    return isInteractive ? `${base} modus-wc-stepper--interactive` : base;
-  }
-
   render() {
     const isInteractive = !!this.interactive;
 
     return (
       <Host>
-        <ul
-          class={this.rootClasses(isInteractive)}
-          {...this.inheritedAttributes}
-        >
+        <ul class={this.getClasses()} {...this.inheritedAttributes}>
           {this.steps.map((step, index) => {
             const stepContent = step.label ?? step.content ?? '';
 

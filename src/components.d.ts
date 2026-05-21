@@ -1559,7 +1559,7 @@ export namespace Components {
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
          */
-        "interactive"?: boolean | undefined;
+        "interactive"?: boolean;
         /**
           * The orientation of the steps.
          */
@@ -5004,7 +5004,7 @@ declare namespace LocalJSX {
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
          */
-        "interactive"?: boolean | undefined;
+        "interactive"?: boolean;
         /**
           * Emitted with the 0-based step index when a step is activated and `interactive` is true.
          */

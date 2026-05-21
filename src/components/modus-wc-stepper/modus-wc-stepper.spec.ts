@@ -85,6 +85,40 @@ describe('modus-wc-stepper', () => {
     expect(labels[1].textContent).toBe('Belong');
   });
 
+  it('should use the step number as the aria-label fallback when label is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = [{ content: '🚀' }];
+    await page.waitForChanges();
+
+    const button = page.root!.querySelector(
+      'button.modus-wc-stepper-step-button'
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-label')).toBe('Step 1');
+  });
+
+  it('should render an empty step label when label and content are missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = [{}];
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'span.modus-wc-stepper-step-label'
+    ) as HTMLSpanElement;
+
+    expect(label.textContent).toBe('');
+  });
+
   it('should not emit stepClick when interactive is false and step text is present', async () => {
     const page = await newSpecPage({
       components: [ModusWcStepper],
@@ -100,6 +134,21 @@ describe('modus-wc-stepper', () => {
 
     const firstLi = page.root!.querySelector('li');
     firstLi?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it('should not emit stepClick when handleStepActivate is called and interactive is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    const listener = jest.fn();
+    page.root!.addEventListener('stepClick', listener);
+
+    (component as any).handleStepActivate(0);
 
     expect(listener).not.toHaveBeenCalled();
   });
