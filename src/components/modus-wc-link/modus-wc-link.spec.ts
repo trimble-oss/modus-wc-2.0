@@ -78,6 +78,15 @@ describe('modus-wc-link', () => {
     expect(anchor?.getAttribute('rel')).toBe('nofollow noopener noreferrer');
   });
 
+  it('should render title attribute when provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLink],
+      html: '<modus-wc-link href="https://trimble.com" title="Visit Trimble website">Trimble.com</modus-wc-link>',
+    });
+    const anchor = page.root?.querySelector('a');
+    expect(anchor?.getAttribute('title')).toBe('Visit Trimble website');
+  });
+
   it('should render with hover underline class when underline is hover', async () => {
     const page = await newSpecPage({
       components: [ModusWcLink],

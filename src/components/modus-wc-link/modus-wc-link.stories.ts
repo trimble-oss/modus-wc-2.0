@@ -15,6 +15,7 @@ interface LinkArgs {
   href?: string;
   rel?: string;
   target?: string;
+  title?: string;
   underline: 'always' | 'hover' | 'none';
 }
 
@@ -44,7 +45,7 @@ const meta: Meta<LinkArgs> = {
     },
     target: {
       control: { type: 'select' },
-      options: [undefined, '_blank', '_self', '_parent', '_top'],
+      options: ['_blank', '_self', '_parent', '_top'],
     },
   },
 };
@@ -63,6 +64,7 @@ const Template: Story = {
   href=${ifDefined(args.href)}
   rel=${ifDefined(args.rel)}
   target=${ifDefined(args.target)}
+  title=${ifDefined(args.title)}
   underline="${args.underline}"
 >Click me</modus-wc-link>
     `;
@@ -116,17 +118,6 @@ export const InheritColor: Story = {
   <modus-wc-link color="inherit">inherit color link</modus-wc-link>
   inline.
 </p>
-    `;
-  },
-};
-
-export const HeadingLink: Story = {
-  render: () => {
-    // prettier-ignore
-    return html`
-<modus-wc-typography hierarchy="h1">
-  <modus-wc-link color="inherit">Heading link</modus-wc-link>
-</modus-wc-typography>
     `;
   },
 };

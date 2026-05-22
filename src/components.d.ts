@@ -936,6 +936,10 @@ export namespace Components {
          */
         "target"?: string;
         /**
+          * Advisory information describing the link.
+         */
+        "title"?: string;
+        /**
           * The underline behavior of the link.
          */
         "underline": 'always' | 'hover' | 'none';
@@ -4261,6 +4265,10 @@ declare namespace LocalJSX {
           * The browsing context for the link.
          */
         "target"?: string;
+        /**
+          * Advisory information describing the link.
+         */
+        "title"?: string;
         /**
           * The underline behavior of the link.
          */

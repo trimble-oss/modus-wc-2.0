@@ -18,6 +18,7 @@ A customizable link component used to navigate to URLs.
 | `href`        | `href`         | The URL to navigate to when the link is activated. | `string \| undefined`                                                                       | `undefined` |
 | `rel`         | `rel`          | The relationship attribute for the link.           | `string \| undefined`                                                                       | `undefined` |
 | `target`      | `target`       | The browsing context for the link.                 | `string \| undefined`                                                                       | `undefined` |
+| `title`       | `title`        | Advisory information describing the link.          | `string \| undefined`                                                                       | `undefined` |
 | `underline`   | `underline`    | The underline behavior of the link.                | `"always" \| "hover" \| "none"`                                                             | `'always'`  |
 
 

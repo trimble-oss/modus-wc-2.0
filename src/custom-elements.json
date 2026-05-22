@@ -3723,7 +3723,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A link component styled with DaisyUI.",
+          "description": "A customizable link component used to navigate to URLs.",
           "name": "ModusWcLink",
           "members": [
             {
@@ -3778,6 +3778,14 @@
               "name": "target",
               "fieldName": "target",
               "description": "The browsing context for the link.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "title",
+              "fieldName": "title",
+              "description": "Advisory information describing the link.",
               "type": {
                 "text": "string"
               }
