@@ -29,7 +29,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
-\nThe component supports a \`<slot>\` for injecting rich HTML tooltip content such as multiline text. The \`content\` prop will be ignored if the content slot is used.
+ \nThe component supports a named \`slot="content"\` for injecting rich HTML tooltip content such as multiline text. The default slot is used for the trigger content, and the \`content\` prop will be ignored when the named content slot is used.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -95,8 +95,9 @@ export const ContentSlot: Story = {
       <modus-wc-badge>Hover</modus-wc-badge>
       <div slot="content">
         <div style="display: flex; flex-direction: column; gap: 0.125rem;">
-        <span>First line of tooltip</span>
-        <span>Second line of tooltip</span>
+          <span>First line of tooltip</span>
+          <span>Second line of tooltip</span>
+        </div>
       </div>
     </modus-wc-tooltip>
   `,

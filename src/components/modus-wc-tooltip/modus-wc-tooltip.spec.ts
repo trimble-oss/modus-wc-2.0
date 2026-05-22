@@ -726,7 +726,7 @@ describe('modus-wc-tooltip', () => {
   }, 30000);
 
   describe('content slot', () => {
-    it('should move slot content into the tooltip element on load', async () => {
+    it('should clone slot content into the tooltip element on load', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
         html: `
@@ -744,6 +744,66 @@ describe('modus-wc-tooltip', () => {
       );
       expect(tooltipContent?.querySelector('#slot-content')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Rich content');
+    });
+
+    it('should keep the original slot node in the host after cloning', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="slot-original">Original</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      // Original stays in host, clone is in tooltip
+      expect(page.root?.querySelector('#slot-original')).not.toBeNull();
+    });
+
+    it('should clone all slot content nodes when multiple are provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="slot-a">Line A</div>
+            <div slot="content" id="slot-b">Line B</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('#slot-a')).not.toBeNull();
+      expect(tooltipContent?.querySelector('#slot-b')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Line A');
+      expect(tooltipContent?.textContent).toContain('Line B');
+    });
+
+    it('should remove slot attribute from cloned nodes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="slot-clone">Content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      const clonedNode = tooltipContent?.querySelector('#slot-clone');
+      expect(clonedNode?.getAttribute('slot')).toBeNull();
     });
 
     it('should prefer slot content over the content prop when both are provided', async () => {
@@ -789,6 +849,34 @@ describe('modus-wc-tooltip', () => {
       expect(tooltipContent?.querySelector('#slot-guard')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Slot content');
       expect(tooltipContent?.textContent).not.toContain('Updated prop');
+    });
+
+    it('should allow content prop updates when slot content is removed from host', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Prop text">
+            <button>Trigger</button>
+            <div slot="content" id="removable-slot">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      // Remove slot content from host
+      const slotNode = page.root?.querySelector('#removable-slot');
+      slotNode?.remove();
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      tooltipComponent.content = 'Updated prop';
+      tooltipComponent.handleContentChange('Updated prop');
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Updated prop');
     });
 
     it('should render the hidden slot holder in the host element', async () => {

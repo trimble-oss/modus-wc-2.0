@@ -92,9 +92,17 @@ export class ModusWcTooltip {
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
 
     // Slot content takes priority over the content prop
-    const slotContent = this.el.querySelector('[slot="content"]');
-    if (slotContent) {
-      this.tooltipElement.appendChild(slotContent);
+    const slotContentNodes = Array.from(
+      this.el.querySelectorAll('[slot="content"]')
+    );
+    if (slotContentNodes.length > 0) {
+      slotContentNodes.forEach((node) => {
+        const clonedNode = node.cloneNode(true) as HTMLElement;
+        clonedNode.removeAttribute('slot');
+        if (this.tooltipElement) {
+          this.tooltipElement.appendChild(clonedNode);
+        }
+      });
     } else {
       this.tooltipElement.textContent = this.content;
     }
@@ -271,8 +279,8 @@ export class ModusWcTooltip {
   @Watch('content')
   handleContentChange(newContent: string) {
     if (this.tooltipElement) {
-      // Don't overwrite slot content if present
-      if (this.tooltipElement.querySelector('[slot="content"]')) return;
+      // Don't overwrite slot content if present in the host
+      if (this.el.querySelector('[slot="content"]')) return;
 
       const arrow = this.tooltipElement.querySelector(
         '.modus-wc-tooltip-arrow'
