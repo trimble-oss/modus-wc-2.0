@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcSlider } from './modus-wc-slider';
 
 describe('modus-wc-slider', () => {
@@ -32,6 +34,15 @@ describe('modus-wc-slider', () => {
       ></modus-wc-slider>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider, ModusWcInputLabel],
+      html: '<modus-wc-slider label="Volume" aria-label="Volume"></modus-wc-slider>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="range"]');
   });
 
   it('should emit blur event', async () => {

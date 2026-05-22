@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcRadio } from './modus-wc-radio';
 
 describe('modus-wc-radio', () => {
@@ -29,6 +31,15 @@ describe('modus-wc-radio', () => {
       ></modus-wc-radio>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcRadio, ModusWcInputLabel],
+      html: '<modus-wc-radio label="Option A" aria-label="Option A"></modus-wc-radio>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="radio"]');
   });
 
   it('should emit blur event', async () => {

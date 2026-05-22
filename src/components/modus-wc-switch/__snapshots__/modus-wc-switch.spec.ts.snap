@@ -22,6 +22,11 @@ exports[`modus-wc-switch should render with custom props 1`] = `
 exports[`modus-wc-switch should render with size xs 1`] = `
 <modus-wc-switch class="modus-wc-switch-host" label="XS label" size="xs">
   <input aria-label="XS toggle" class="modus-wc-toggle modus-wc-toggle-xs" id="mwc_id_2" role="switch" type="checkbox">
-  <modus-wc-input-label forid="mwc_id_2" labeltext="XS label" size="sm"></modus-wc-input-label>
+  <modus-wc-input-label class="modus-wc-input-label-host">
+    <!---->
+    <label class="modus-wc-input-label modus-wc-input-label-size-sm" htmlfor="mwc_id_2">
+      XS label
+    </label>
+  </modus-wc-input-label>
 </modus-wc-switch>
 `;

@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTimeInput } from './modus-wc-time-input';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
+import { ModusWcTimeInput } from './modus-wc-time-input';
 
 describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
@@ -38,6 +40,15 @@ describe('modus-wc-time-input', () => {
               </modus-wc-time-input>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputLabel],
+      html: '<modus-wc-time-input label="Start time" aria-label="Start time"></modus-wc-time-input>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="time"]');
   });
 
   it('should render with error feedback', async () => {

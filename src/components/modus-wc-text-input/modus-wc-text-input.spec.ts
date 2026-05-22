@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTextInput } from './modus-wc-text-input';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
+import { ModusWcTextInput } from './modus-wc-text-input';
 
 describe('modus-wc-text-input', () => {
   it('should render with default props', async () => {
@@ -45,6 +47,15 @@ describe('modus-wc-text-input', () => {
       ></modus-wc-text-input>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputLabel],
+      html: '<modus-wc-text-input label="Email" aria-label="Email"></modus-wc-text-input>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input');
   });
 
   it('should render with error feedback', async () => {

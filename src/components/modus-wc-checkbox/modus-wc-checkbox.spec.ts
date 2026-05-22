@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcCheckbox } from './modus-wc-checkbox';
 
 describe('modus-wc-checkbox', () => {
@@ -29,6 +31,15 @@ describe('modus-wc-checkbox', () => {
       ></modus-wc-checkbox>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCheckbox, ModusWcInputLabel],
+      html: '<modus-wc-checkbox label="Email alerts" aria-label="Email alerts"></modus-wc-checkbox>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
   });
 
   it('should render indeterminate state', async () => {

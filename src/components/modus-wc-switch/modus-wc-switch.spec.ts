@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcSwitch } from './modus-wc-switch';
 
 describe('modus-wc-switch', () => {
@@ -33,7 +35,7 @@ describe('modus-wc-switch', () => {
 
   it('should render with size xs', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSwitch],
+      components: [ModusWcSwitch, ModusWcInputLabel],
       html: `<modus-wc-switch
         aria-label="XS toggle"
         label="XS label"
@@ -41,6 +43,7 @@ describe('modus-wc-switch', () => {
       ></modus-wc-switch>`,
     });
     expect(page.root).toMatchSnapshot();
+    expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
   });
 
   it('should render indeterminate state', async () => {

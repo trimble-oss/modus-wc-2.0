@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcTextarea } from './modus-wc-textarea';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
+import { ModusWcTextarea } from './modus-wc-textarea';
 
 describe('modus-wc-textarea', () => {
   it('renders with default props', async () => {
@@ -38,6 +40,15 @@ describe('modus-wc-textarea', () => {
       ></modus-wc-textarea>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextarea, ModusWcInputLabel],
+      html: '<modus-wc-textarea label="Notes" aria-label="Notes"></modus-wc-textarea>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'textarea');
   });
 
   it('should render with error feedback', async () => {

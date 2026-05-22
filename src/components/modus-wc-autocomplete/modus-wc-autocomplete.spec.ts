@@ -1,17 +1,19 @@
 import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
+import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
+import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
+import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import {
   renderNoResults,
   syncFilteredItems,
 } from './modus-wc-autocomplete-core';
-import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
-import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
-import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
-import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
-import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
-import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 
 describe('modus-wc-autocomplete', () => {
   const items: IAutocompleteItem[] = [
@@ -26,6 +28,20 @@ describe('modus-wc-autocomplete', () => {
       html: '<modus-wc-autocomplete aria-label="Default autocomplete"></modus-wc-autocomplete>',
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcTextInput,
+        ModusWcInputLabel,
+      ],
+      html: '<modus-wc-autocomplete label="Search" aria-label="Search"></modus-wc-autocomplete>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'modus-wc-text-input input');
   });
 
   it('should render with custom props', async () => {

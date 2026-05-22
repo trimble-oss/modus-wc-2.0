@@ -26,7 +26,7 @@ exports[`modus-wc-date should render with custom props 1`] = `
 exports[`modus-wc-date should render with error feedback 1`] = `
 <modus-wc-date format="dd/mm/yyyy" value="">
   <div class="date-input-container">
-    <input aria-label="Error input" class="modus-wc-date-input modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" id="mwc_id_2" placeholder="dd/mm/yyyy" type="text" value="">
+    <input aria-label="Error input" class="modus-wc-date-input modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-w-full" id="mwc_id_3" placeholder="dd/mm/yyyy" type="text" value="">
     <modus-wc-button aria-label="Open calendar" class="calendar-icon-button" color="tertiary" shape="circle" size="xs" variant="borderless">
       <modus-wc-icon name="calendar_blank" size="sm"></modus-wc-icon>
     </modus-wc-button>
