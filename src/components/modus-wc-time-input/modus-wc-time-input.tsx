@@ -10,8 +10,12 @@ import {
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { generateRandomId } from '../utils';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  generateElementId,
+  generateRandomId,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable input component used to create time inputs.
@@ -23,6 +27,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcTimeInput {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -188,11 +193,13 @@ export class ModusWcTimeInput {
   }
 
   render() {
+    const effectiveId = this.inputId || this.generatedId;
+
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -203,7 +210,7 @@ export class ModusWcTimeInput {
           autocomplete={this.autoComplete}
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           list={this.datalistId}
           max={this.max}
           min={this.min}

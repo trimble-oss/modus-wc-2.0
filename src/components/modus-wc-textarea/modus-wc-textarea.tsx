@@ -10,7 +10,12 @@ import {
 import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import {
+  Attributes,
+  generateElementId,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../utils';
 
 /**
  * A customizable textarea component.
@@ -22,6 +27,7 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 })
 export class ModusWcTextarea {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -139,11 +145,13 @@ export class ModusWcTextarea {
   };
 
   render() {
+    const effectiveId = this.inputId || this.generatedId;
+
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -156,7 +164,7 @@ export class ModusWcTextarea {
           class={this.getClasses()}
           disabled={this.disabled}
           enterkeyhint={this.enterkeyhint}
-          id={this.inputId}
+          id={effectiveId}
           maxLength={this.maxLength}
           minlength={this.minLength}
           name={this.name}

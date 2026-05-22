@@ -10,7 +10,12 @@ import {
 import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
+import {
+  Attributes,
+  generateElementId,
+  inheritAriaAttributes,
+  inheritAttributes,
+} from '../utils';
 
 /**
  * A customizable input component used to create number inputs with types
@@ -22,6 +27,7 @@ import { Attributes, inheritAriaAttributes, inheritAttributes } from '../utils';
 })
 export class ModusWcNumberInput {
   private inheritedAttributes: Attributes = {};
+  private generatedId: string = generateElementId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -178,11 +184,13 @@ export class ModusWcNumberInput {
   };
 
   render() {
+    const effectiveId = this.inputId || this.generatedId;
+
     return (
       <Host class={this.customClass}>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -197,7 +205,7 @@ export class ModusWcNumberInput {
             autocomplete={this.autoComplete}
             class={this.getInputClasses()}
             disabled={this.disabled}
-            id={this.inputId}
+            id={effectiveId}
             max={this.max}
             min={this.min}
             name={this.name}
