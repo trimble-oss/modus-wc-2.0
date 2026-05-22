@@ -40,7 +40,7 @@ export class ModusWcLink {
   @Prop() target?: string;
 
   /** Advisory information describing the link. */
-  @Prop() title?: string;
+  @Prop() title: string = '';
 
   /** The underline behavior of the link. */
   @Prop() underline: 'always' | 'hover' | 'none' = 'always';
@@ -100,7 +100,7 @@ export class ModusWcLink {
           href={sanitizedHref}
           rel={this.getRelAttribute()}
           target={this.target}
-          title={this.title}
+          title={this.title || undefined}
           {...this.inheritedAttributes}
         >
           <slot />

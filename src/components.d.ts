@@ -938,7 +938,7 @@ export namespace Components {
         /**
           * Advisory information describing the link.
          */
-        "title"?: string;
+        "title": string;
         /**
           * The underline behavior of the link.
          */
