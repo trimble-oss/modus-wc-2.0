@@ -99,6 +99,7 @@ export class ModusWcTooltip {
       slotContentNodes.forEach((node) => {
         const clonedNode = node.cloneNode(true) as HTMLElement;
         clonedNode.removeAttribute('slot');
+        this.stripIds(clonedNode);
         if (this.tooltipElement) {
           this.tooltipElement.appendChild(clonedNode);
         }
@@ -274,6 +275,13 @@ export class ModusWcTooltip {
       });
       void this.popperInstance.update();
     }
+  }
+
+  private stripIds(el: HTMLElement): void {
+    el.removeAttribute('id');
+    Array.from(el.querySelectorAll('[id]')).forEach((child) =>
+      child.removeAttribute('id')
+    );
   }
 
   @Watch('content')

@@ -732,7 +732,7 @@ describe('modus-wc-tooltip', () => {
         html: `
           <modus-wc-tooltip>
             <button>Trigger</button>
-            <div slot="content" id="slot-content">Rich content</div>
+            <div slot="content" class="slot-content">Rich content</div>
           </modus-wc-tooltip>
         `,
       });
@@ -742,8 +742,36 @@ describe('modus-wc-tooltip', () => {
       const tooltipContent = page.body.querySelector(
         '.modus-wc-tooltip-content'
       );
-      expect(tooltipContent?.querySelector('#slot-content')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-content')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Rich content');
+    });
+
+    it('should strip id attributes from cloned nodes to prevent duplicate IDs', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="original-id" class="slot-clone">
+              <span id="child-id">Content</span>
+            </div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      const clonedRoot = tooltipContent?.querySelector('.slot-clone');
+
+      // Clone should not have the id (to avoid duplicate IDs)
+      expect(clonedRoot?.getAttribute('id')).toBeNull();
+      // Descendant ids should also be stripped
+      expect(clonedRoot?.querySelector('#child-id')).toBeNull();
+      // Original in host should still have its id
+      expect(page.root?.querySelector('#original-id')).not.toBeNull();
     });
 
     it('should keep the original slot node in the host after cloning', async () => {
@@ -759,7 +787,7 @@ describe('modus-wc-tooltip', () => {
 
       await page.waitForChanges();
 
-      // Original stays in host, clone is in tooltip
+      // Original stays in host with its id intact
       expect(page.root?.querySelector('#slot-original')).not.toBeNull();
     });
 
@@ -769,8 +797,8 @@ describe('modus-wc-tooltip', () => {
         html: `
           <modus-wc-tooltip>
             <button>Trigger</button>
-            <div slot="content" id="slot-a">Line A</div>
-            <div slot="content" id="slot-b">Line B</div>
+            <div slot="content" class="slot-a">Line A</div>
+            <div slot="content" class="slot-b">Line B</div>
           </modus-wc-tooltip>
         `,
       });
@@ -780,8 +808,8 @@ describe('modus-wc-tooltip', () => {
       const tooltipContent = page.body.querySelector(
         '.modus-wc-tooltip-content'
       );
-      expect(tooltipContent?.querySelector('#slot-a')).not.toBeNull();
-      expect(tooltipContent?.querySelector('#slot-b')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-a')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-b')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Line A');
       expect(tooltipContent?.textContent).toContain('Line B');
     });
@@ -792,7 +820,7 @@ describe('modus-wc-tooltip', () => {
         html: `
           <modus-wc-tooltip>
             <button>Trigger</button>
-            <div slot="content" id="slot-clone">Content</div>
+            <div slot="content" class="slot-clone">Content</div>
           </modus-wc-tooltip>
         `,
       });
@@ -802,7 +830,7 @@ describe('modus-wc-tooltip', () => {
       const tooltipContent = page.body.querySelector(
         '.modus-wc-tooltip-content'
       );
-      const clonedNode = tooltipContent?.querySelector('#slot-clone');
+      const clonedNode = tooltipContent?.querySelector('.slot-clone');
       expect(clonedNode?.getAttribute('slot')).toBeNull();
     });
 
@@ -812,7 +840,7 @@ describe('modus-wc-tooltip', () => {
         html: `
           <modus-wc-tooltip content="Prop content">
             <button>Trigger</button>
-            <div slot="content" id="slot-wins">Slot content</div>
+            <div slot="content" class="slot-wins">Slot content</div>
           </modus-wc-tooltip>
         `,
       });
@@ -822,7 +850,7 @@ describe('modus-wc-tooltip', () => {
       const tooltipContent = page.body.querySelector(
         '.modus-wc-tooltip-content'
       );
-      expect(tooltipContent?.querySelector('#slot-wins')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-wins')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Slot content');
       expect(tooltipContent?.textContent).not.toContain('Prop content');
     });
@@ -833,7 +861,7 @@ describe('modus-wc-tooltip', () => {
         html: `
           <modus-wc-tooltip content="Original prop">
             <button>Trigger</button>
-            <div slot="content" id="slot-guard">Slot content</div>
+            <div slot="content" class="slot-guard">Slot content</div>
           </modus-wc-tooltip>
         `,
       });
@@ -846,7 +874,7 @@ describe('modus-wc-tooltip', () => {
       const tooltipContent = page.body.querySelector(
         '.modus-wc-tooltip-content'
       );
-      expect(tooltipContent?.querySelector('#slot-guard')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-guard')).not.toBeNull();
       expect(tooltipContent?.textContent).toContain('Slot content');
       expect(tooltipContent?.textContent).not.toContain('Updated prop');
     });

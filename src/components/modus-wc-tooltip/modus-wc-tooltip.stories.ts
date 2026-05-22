@@ -86,9 +86,9 @@ export const ContentSlot: Story = {
   },
   render: (args) => html`
     <modus-wc-tooltip
-      custom-class="${ifDefined(args['custom-class'])}"
-      ?disabled="${args.disabled}"
-      ?force-open="${args['force-open']}"
+      custom-class=${ifDefined(args['custom-class'])}"
+      ?disabled=${args.disabled}
+      ?force-open=${args['force-open']}
       tooltip-id="${ifDefined(args['tooltip-id'])}"
       position=${ifDefined(args.position)}
     >
