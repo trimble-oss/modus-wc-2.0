@@ -97,6 +97,7 @@ export const ContentSlot: Story = {
         <div style="display: flex; flex-direction: column; gap: 0.125rem;">
           <span>First line of tooltip</span>
           <span>Second line of tooltip</span>
+          <span>Third line of tooltip</span>
         </div>
       </div>
     </modus-wc-tooltip>
@@ -176,7 +177,7 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - In 1.0 tooltip positioning was handled by Popper.js. In 2.0, positioning is handled using CSS.
+  - In 1.0, tooltip positioning was managed using Popper.js. In 2.0, tooltip positioning continues to be handled by Popper.js.
   - The \`text\` prop has been renamed to \`content\`.
 
 #### Prop Mapping

@@ -97,12 +97,9 @@ export class ModusWcTooltip {
     );
     if (slotContentNodes.length > 0) {
       slotContentNodes.forEach((node) => {
-        const clonedNode = node.cloneNode(true) as HTMLElement;
+        const clonedNode = (node as HTMLElement).cloneNode(true) as HTMLElement;
         clonedNode.removeAttribute('slot');
-        this.stripIds(clonedNode);
-        if (this.tooltipElement) {
-          this.tooltipElement.appendChild(clonedNode);
-        }
+        this.tooltipElement!.appendChild(clonedNode);
       });
     } else {
       this.tooltipElement.textContent = this.content;
@@ -275,13 +272,6 @@ export class ModusWcTooltip {
       });
       void this.popperInstance.update();
     }
-  }
-
-  private stripIds(el: HTMLElement): void {
-    el.removeAttribute('id');
-    Array.from(el.querySelectorAll('[id]')).forEach((child) =>
-      child.removeAttribute('id')
-    );
   }
 
   @Watch('content')

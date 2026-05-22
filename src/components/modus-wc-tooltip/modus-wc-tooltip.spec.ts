@@ -495,14 +495,52 @@ describe('modus-wc-tooltip', () => {
     // @ts-expect-error - Set the tooltipElement
     tooltipComponent.tooltipElement = mockTooltipElement;
 
-    tooltipComponent.content = 'Updated content';
-    // Manually trigger watch handler
     tooltipComponent.handleContentChange('Updated content');
 
     expect(mockTooltipElement.textContent).toContain('Updated content');
     expect(
       mockTooltipElement.querySelector('.modus-wc-tooltip-arrow')
     ).not.toBeNull();
+  });
+
+  it('should update tooltip body when content prop changes on the host element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Original content"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    await page.waitForChanges();
+
+    if (page.root) {
+      page.root.content = 'Updated content';
+    }
+    await page.waitForChanges();
+
+    const tooltipContent = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tooltipContent?.textContent).toContain('Updated content');
+    expect(tooltipContent?.textContent).not.toContain('Original content');
+    expect(
+      tooltipContent?.querySelector('.modus-wc-tooltip-arrow')
+    ).not.toBeNull();
+  });
+
+  it('should use the first slotted child as the popper trigger element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `
+        <modus-wc-tooltip content="Test">
+          <button id="trigger-button">Hover</button>
+        </modus-wc-tooltip>
+      `,
+    });
+
+    await page.waitForChanges();
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+    const trigger = page.root?.querySelector('#trigger-button');
+
+    // @ts-expect-error - Access private property for testing
+    expect(tooltipComponent.triggerElement).toBe(trigger);
   });
 
   it('should set popover="manual" attribute on the tooltip element', async () => {
@@ -746,7 +784,7 @@ describe('modus-wc-tooltip', () => {
       expect(tooltipContent?.textContent).toContain('Rich content');
     });
 
-    it('should strip id attributes from cloned nodes to prevent duplicate IDs', async () => {
+    it('should preserve id attributes on cloned slot nodes', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
         html: `
@@ -766,11 +804,8 @@ describe('modus-wc-tooltip', () => {
       );
       const clonedRoot = tooltipContent?.querySelector('.slot-clone');
 
-      // Clone should not have the id (to avoid duplicate IDs)
-      expect(clonedRoot?.getAttribute('id')).toBeNull();
-      // Descendant ids should also be stripped
-      expect(clonedRoot?.querySelector('#child-id')).toBeNull();
-      // Original in host should still have its id
+      expect(clonedRoot?.getAttribute('id')).toBe('original-id');
+      expect(clonedRoot?.querySelector('#child-id')).not.toBeNull();
       expect(page.root?.querySelector('#original-id')).not.toBeNull();
     });
 
