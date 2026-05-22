@@ -2,7 +2,6 @@
 
 exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
 <modus-wc-app-menu class="modus-wc-app-menu">
-  <!---->
   <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="modus-wc-app-menu-header">
@@ -52,7 +51,6 @@ exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
 
 exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
 <modus-wc-app-menu class="modus-wc-app-menu">
-  <!---->
   <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="modus-wc-app-menu-header">
@@ -98,7 +96,6 @@ exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
 
 exports[`modus-wc-app-menu should render with custom class 1`] = `
 <modus-wc-app-menu class="modus-wc-app-menu my-custom-class">
-  <!---->
   <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="modus-wc-app-menu-header">
@@ -144,7 +141,6 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
 
 exports[`modus-wc-app-menu should render with default props 1`] = `
 <modus-wc-app-menu class="modus-wc-app-menu">
-  <!---->
   <modus-wc-panel height="568px" width="320px">
     <div slot="body">
       <div class="modus-wc-app-menu-header">

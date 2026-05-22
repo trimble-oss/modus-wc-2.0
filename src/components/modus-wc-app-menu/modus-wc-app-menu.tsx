@@ -543,7 +543,6 @@ export class ModusWcAppMenu {
                 ></modus-wc-typography>
               </div>
               <div class="modus-wc-app-menu-header-end-content">
-                <slot name="header-end-content"></slot>
                 {!this.isEditMode ? (
                   <modus-wc-button
                     aria-label="Edit app order"

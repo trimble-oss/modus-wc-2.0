@@ -2429,34 +2429,6 @@ describe('modus-wc-app-menu', () => {
       expect(editIcon?.getAttribute('name')).toBe('pencil');
       expect(editIcon?.getAttribute('variant')).toBe('solid');
     });
-
-    it('should project custom content into the header-end-content slot', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcAppMenu],
-        template: () =>
-          h(
-            'modus-wc-app-menu',
-            { apps: mockApps },
-            h(
-              'span',
-              {
-                slot: 'header-end-content',
-                'data-test': 'custom-slot-content',
-              },
-              'Custom'
-            )
-          ),
-      });
-
-      const headerEnd = page.root?.querySelector(
-        '.modus-wc-app-menu-header-end-content'
-      );
-      const projected = headerEnd?.querySelector(
-        '[data-test="custom-slot-content"]'
-      );
-      expect(projected).not.toBeNull();
-      expect(projected?.getAttribute('slot')).toBe('header-end-content');
-    });
   });
 
   describe('list layout attributes', () => {
