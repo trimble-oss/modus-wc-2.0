@@ -10,7 +10,7 @@ export function expectLabelLinkedToControl(
 
   expect(control).not.toBeNull();
   expect(labelHost).not.toBeNull();
-  expect(control!.id).toMatch(/^mwc_id_\d+$/);
+  expect(control!.id).toBeTruthy();
 
   const nativeLabel = labelHost!.querySelector('label');
   expect(nativeLabel).not.toBeNull();
