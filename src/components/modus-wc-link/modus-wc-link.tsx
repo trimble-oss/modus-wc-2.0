@@ -4,7 +4,7 @@ import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 
 /**
- * A link component styled with DaisyUI.
+ * A customizable link component used to navigate to URLs.
  */
 @Component({
   tag: 'modus-wc-link',
@@ -31,7 +31,7 @@ export class ModusWcLink {
   @Prop() customClass?: string = '';
 
   /** The URL to navigate to when the link is activated. */
-  @Prop() href!: string;
+  @Prop() href?: string;
 
   /** The relationship attribute for the link. */
   @Prop() rel?: string;
@@ -77,8 +77,18 @@ export class ModusWcLink {
     return relValues.size > 0 ? Array.from(relValues).join(' ') : undefined;
   }
 
+  private getHrefAttribute(): string | undefined {
+    const trimmedHref = this.href?.trim();
+
+    if (!trimmedHref || trimmedHref === 'undefined' || trimmedHref === 'null') {
+      return undefined;
+    }
+
+    return sanitizeUrl(trimmedHref);
+  }
+
   render() {
-    const sanitizedHref = sanitizeUrl(this.href);
+    const sanitizedHref = this.getHrefAttribute();
 
     return (
       <Host>

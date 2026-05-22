@@ -3746,7 +3746,7 @@
               "default": "'primary'",
               "description": "The color of the link.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'inherit'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'inherit'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
               }
             },
             {

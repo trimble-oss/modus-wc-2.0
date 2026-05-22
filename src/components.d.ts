@@ -906,7 +906,7 @@ export namespace Components {
         "subLabelText"?: string;
     }
     /**
-     * A link component styled with DaisyUI.
+     * A customizable link component used to navigate to URLs.
      */
     interface ModusWcLink {
         /**
@@ -916,6 +916,7 @@ export namespace Components {
     | 'secondary'
     | 'tertiary'
     | 'inherit'
+    | 'success'
     | 'warning'
     | 'danger';
         /**
@@ -925,7 +926,7 @@ export namespace Components {
         /**
           * The URL to navigate to when the link is activated.
          */
-        "href": string;
+        "href"?: string;
         /**
           * The relationship attribute for the link.
          */
@@ -2633,7 +2634,7 @@ declare global {
         new (): HTMLModusWcInputLabelElement;
     };
     /**
-     * A link component styled with DaisyUI.
+     * A customizable link component used to navigate to URLs.
      */
     interface HTMLModusWcLinkElement extends Components.ModusWcLink, HTMLStencilElement {
     }
@@ -4231,7 +4232,7 @@ declare namespace LocalJSX {
         "subLabelText"?: string;
     }
     /**
-     * A link component styled with DaisyUI.
+     * A customizable link component used to navigate to URLs.
      */
     interface ModusWcLink {
         /**
@@ -4241,6 +4242,7 @@ declare namespace LocalJSX {
     | 'secondary'
     | 'tertiary'
     | 'inherit'
+    | 'success'
     | 'warning'
     | 'danger';
         /**
@@ -4250,7 +4252,7 @@ declare namespace LocalJSX {
         /**
           * The URL to navigate to when the link is activated.
          */
-        "href": string;
+        "href"?: string;
         /**
           * The relationship attribute for the link.
          */
@@ -5864,7 +5866,7 @@ declare module "@stencil/core" {
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
-             * A link component styled with DaisyUI.
+             * A customizable link component used to navigate to URLs.
              */
             "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**

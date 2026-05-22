@@ -12,7 +12,7 @@ interface LinkArgs {
     | 'warning'
     | 'danger';
   'custom-class'?: string;
-  href: string;
+  href?: string;
   rel?: string;
   target?: string;
   underline: 'always' | 'hover' | 'none';
@@ -23,7 +23,6 @@ const meta: Meta<LinkArgs> = {
   component: 'modus-wc-link',
   args: {
     color: 'primary',
-    href: '#',
     underline: 'always',
   },
   argTypes: {
@@ -60,10 +59,10 @@ const Template: Story = {
     return html`
 <modus-wc-link
   color="${args.color}"
-  custom-class="${ifDefined(args['custom-class'])}"
-  href="${args.href}"
-  rel="${ifDefined(args.rel)}"
-  target="${ifDefined(args.target)}"
+  custom-class=${ifDefined(args['custom-class'])}
+  href=${ifDefined(args.href)}
+  rel=${ifDefined(args.rel)}
+  target=${ifDefined(args.target)}
   underline="${args.underline}"
 >Click me</modus-wc-link>
     `;
@@ -83,7 +82,7 @@ export const Underline: Story = {
 <div style="display: flex; flex-direction: column; gap: 8px;">
   ${underlines.map(
     (underline) => html`
-  <modus-wc-link href="#" underline="${underline}">${underline}</modus-wc-link>
+  <modus-wc-link underline="${underline}">${underline}</modus-wc-link>
   `
   )}
 </div>
@@ -100,8 +99,8 @@ export const ExternalLink: Story = {
     // prettier-ignore
     return html`
 <modus-wc-link
-  href="${args.href}"
-  target="${ifDefined(args.target)}"
+  href=${ifDefined(args.href)}
+  target=${ifDefined(args.target)}
   aria-label="Visit Trimble website, opens in a new window"
 >Trimble.com</modus-wc-link>
     `;
@@ -114,7 +113,7 @@ export const InheritColor: Story = {
     return html`
 <p style="color: var(--modus-wc-color-base-content);">
   Body text with an
-  <modus-wc-link href="#" color="inherit">inherit color link</modus-wc-link>
+  <modus-wc-link color="inherit">inherit color link</modus-wc-link>
   inline.
 </p>
     `;
@@ -126,7 +125,7 @@ export const HeadingLink: Story = {
     // prettier-ignore
     return html`
 <modus-wc-typography hierarchy="h1">
-  <modus-wc-link href="#" color="inherit">Heading link</modus-wc-link>
+  <modus-wc-link color="inherit">Heading link</modus-wc-link>
 </modus-wc-typography>
     `;
   },

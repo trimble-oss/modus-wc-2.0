@@ -28,7 +28,9 @@ describe('modus-wc-link', () => {
       html: '<modus-wc-link aria-label="Success link" color="success" href="#">Click me</modus-wc-link>',
     });
     const anchor = page.root?.querySelector('a');
-    expect(anchor?.classList.contains('modus-wc-link-color-success')).toBe(true);
+    expect(anchor?.classList.contains('modus-wc-link-color-success')).toBe(
+      true
+    );
   });
 
   it('should render with sanitized href when href is provided', async () => {
@@ -38,6 +40,24 @@ describe('modus-wc-link', () => {
     });
     const anchor = page.root?.querySelector('a');
     expect(anchor?.getAttribute('href')).toBe('https://trimble.com');
+  });
+
+  it('should not render href when href is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLink],
+      html: '<modus-wc-link>Click me</modus-wc-link>',
+    });
+    const anchor = page.root?.querySelector('a');
+    expect(anchor?.hasAttribute('href')).toBe(false);
+  });
+
+  it('should not render href when href is the string undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLink],
+      html: '<modus-wc-link href="undefined">Click me</modus-wc-link>',
+    });
+    const anchor = page.root?.querySelector('a');
+    expect(anchor?.hasAttribute('href')).toBe(false);
   });
 
   it('should not render href when url uses a disallowed protocol', async () => {
