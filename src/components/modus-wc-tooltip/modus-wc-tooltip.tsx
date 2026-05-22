@@ -19,6 +19,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  *
  * The tooltip can be dismissed by pressing the Escape key when hovering over it.
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+ * Use the content slot to add rich HTML content to the tooltip such as multiline text. The content prop will be ignored if the content slot is used.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -34,7 +35,7 @@ export class ModusWcTooltip {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The text content of the tooltip. */
+  /** The text content of the tooltip. For rich HTML content, use the content slot. */
   @Prop() content: string = '';
 
   /** Custom CSS class to apply to the inner div. */
@@ -89,7 +90,15 @@ export class ModusWcTooltip {
 
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
-    this.tooltipElement.textContent = this.content;
+
+    // Slot content takes priority over the content prop
+    const slotContent = this.el.querySelector('[slot="content"]');
+    if (slotContent) {
+      this.tooltipElement.appendChild(slotContent);
+    } else {
+      this.tooltipElement.textContent = this.content;
+    }
+
     this.tooltipElement.setAttribute('role', 'tooltip');
     if (this.tooltipId) {
       this.tooltipElement.id = this.tooltipId;
@@ -262,6 +271,9 @@ export class ModusWcTooltip {
   @Watch('content')
   handleContentChange(newContent: string) {
     if (this.tooltipElement) {
+      // Don't overwrite slot content if present
+      if (this.tooltipElement.querySelector('[slot="content"]')) return;
+
       const arrow = this.tooltipElement.querySelector(
         '.modus-wc-tooltip-arrow'
       );
@@ -303,6 +315,9 @@ export class ModusWcTooltip {
           {...this.inheritedAttributes}
         >
           <slot />
+        </div>
+        <div hidden class="modus-wc-tooltip-content-source">
+          <slot name="content" />
         </div>
       </Host>
     );

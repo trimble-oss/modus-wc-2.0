@@ -724,4 +724,98 @@ describe('modus-wc-tooltip', () => {
       globalThis.setTimeout = originalSetTimeout;
     }
   }, 30000);
+
+  describe('content slot', () => {
+    it('should move slot content into the tooltip element on load', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="slot-content">Rich content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('#slot-content')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Rich content');
+    });
+
+    it('should prefer slot content over the content prop when both are provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Prop content">
+            <button>Trigger</button>
+            <div slot="content" id="slot-wins">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('#slot-wins')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Slot content');
+      expect(tooltipContent?.textContent).not.toContain('Prop content');
+    });
+
+    it('should not overwrite slot content when content prop changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Original prop">
+            <button>Trigger</button>
+            <div slot="content" id="slot-guard">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      tooltipComponent.content = 'Updated prop';
+      tooltipComponent.handleContentChange('Updated prop');
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('#slot-guard')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Slot content');
+      expect(tooltipContent?.textContent).not.toContain('Updated prop');
+    });
+
+    it('should render the hidden slot holder in the host element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const slotHolder = page.root?.querySelector(
+        '.modus-wc-tooltip-content-source'
+      );
+      expect(slotHolder).not.toBeNull();
+      expect(slotHolder?.hasAttribute('hidden')).toBe(true);
+    });
+
+    it('should fall back to content prop when no slot content is provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Fallback text');
+    });
+  });
 });

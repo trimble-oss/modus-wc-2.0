@@ -29,7 +29,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
-\nThe component supports a \`<slot>\` for injecting custom tooltip content.
+\nThe component supports a \`<slot>\` for injecting rich HTML tooltip content such as multiline text. The \`content\` prop will be ignored if the content slot is used.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -73,6 +73,34 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const ContentSlot: Story = {
+  parameters: {
+    actions: { handles: ['dismissEscape'] },
+    docs: {
+      description: {
+        story:
+          'Use the `content` slot for static rich tooltip content such as multiline text.',
+      },
+    },
+  },
+  render: (args) => html`
+    <modus-wc-tooltip
+      custom-class="${ifDefined(args['custom-class'])}"
+      ?disabled="${args.disabled}"
+      ?force-open="${args['force-open']}"
+      tooltip-id="${ifDefined(args['tooltip-id'])}"
+      position=${ifDefined(args.position)}
+    >
+      <modus-wc-badge>Hover</modus-wc-badge>
+      <div slot="content">
+        <div style="display: flex; flex-direction: column; gap: 0.125rem;">
+        <span>First line of tooltip</span>
+        <span>Second line of tooltip</span>
+      </div>
+    </modus-wc-tooltip>
+  `,
+};
 
 export const ShadowDomParent: Story = {
   render: (args) => {
