@@ -65,68 +65,6 @@ describe('modus-wc-stepper', () => {
     expect((listener.mock.calls[0][0] as CustomEvent<number>).detail).toBe(2);
   });
 
-  it('should render interactive steps as accessible buttons', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcStepper],
-      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
-    });
-
-    const component = page.rootInstance as ModusWcStepper;
-    component.steps = defaultSteps;
-    await page.waitForChanges();
-
-    const buttons = page.root!.querySelectorAll(
-      'button.modus-wc-stepper-step-button'
-    );
-    const labels = page.root!.querySelectorAll(
-      'span.modus-wc-stepper-step-label'
-    );
-
-    expect(buttons.length).toBe(defaultSteps.length);
-    expect(labels.length).toBe(defaultSteps.length);
-    expect((buttons[1] as HTMLButtonElement).type).toBe('button');
-    expect(buttons[1].getAttribute('aria-label')).toBeNull();
-    expect(labels[1].textContent).toBe('Belong');
-  });
-
-  it('should not set aria-label on interactive step buttons', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcStepper],
-      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
-    });
-
-    const component = page.rootInstance as ModusWcStepper;
-    component.steps = [{ content: '🚀' }];
-    await page.waitForChanges();
-
-    const button = page.root!.querySelector(
-      'button.modus-wc-stepper-step-button'
-    ) as HTMLButtonElement;
-    const label = page.root!.querySelector(
-      'span.modus-wc-stepper-step-label'
-    ) as HTMLSpanElement;
-
-    expect(button.getAttribute('aria-label')).toBeNull();
-    expect(label.textContent).toBe('🚀');
-  });
-
-  it('should render an empty step label when label and content are missing', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcStepper],
-      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
-    });
-
-    const component = page.rootInstance as ModusWcStepper;
-    component.steps = [{}];
-    await page.waitForChanges();
-
-    const label = page.root!.querySelector(
-      'span.modus-wc-stepper-step-label'
-    ) as HTMLSpanElement;
-
-    expect(label.textContent).toBe('');
-  });
-
   it('should not emit stepClick when interactive is false and step text is present', async () => {
     const page = await newSpecPage({
       components: [ModusWcStepper],
@@ -179,5 +117,43 @@ describe('modus-wc-stepper', () => {
 
     expect(activeStep.classList.contains('modus-wc-step-active')).toBe(true);
     expect(activeStep.getAttribute('aria-current')).toBe('step');
+  });
+
+  it('should derive step label and aria-label from label, content, or index', async () => {
+    const steps: IStepperItem[] = [
+      { label: 'Label only' },
+      { content: 'Content only' },
+      {},
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = steps;
+
+    await page.waitForChanges();
+
+    const lis = page.root!.querySelectorAll('li.modus-wc-step');
+    const buttons = page.root!.querySelectorAll(
+      'button.modus-wc-stepper-step-button'
+    );
+
+    expect(lis.length).toBe(steps.length);
+    expect(buttons.length).toBe(steps.length);
+
+    // Uses label when present
+    expect(lis[0].textContent?.trim()).toBe('Label only');
+    expect(buttons[0].getAttribute('aria-label')).toBe('Label only');
+
+    // Falls back to content when label is missing
+    expect(lis[1].textContent?.trim()).toBe('Content only');
+    expect(buttons[1].getAttribute('aria-label')).toBe('Content only');
+
+    // Falls back to "Step N" when both are missing
+    expect(lis[2].textContent?.trim()).toBe('');
+    expect(buttons[2].getAttribute('aria-label')).toBe('Step 3');
   });
 });

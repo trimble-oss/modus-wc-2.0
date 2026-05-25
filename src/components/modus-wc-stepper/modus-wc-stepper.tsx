@@ -1,13 +1,4 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Fragment,
-  h,
-  Host,
-  Prop,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
@@ -92,6 +83,16 @@ export class ModusWcStepper {
     );
   }
 
+  private getStepLabel(step: IStepperItem): string {
+    return step.label ?? step.content ?? '';
+  }
+
+  private getStepAriaLabel(step: IStepperItem, index: number): string {
+    const stepLabel = this.getStepLabel(step);
+
+    return stepLabel || `Step ${index + 1}`;
+  }
+
   private getClassesForStep(step: IStepperItem, index: number): string {
     const classList = ['modus-wc-step'];
 
@@ -120,7 +121,7 @@ export class ModusWcStepper {
       <Host>
         <ul class={this.getClasses()} {...this.inheritedAttributes}>
           {this.steps.map((step, index) => {
-            const stepContent = step.label ?? step.content ?? '';
+            const stepLabel = this.getStepLabel(step);
 
             return (
               <li
@@ -129,20 +130,15 @@ export class ModusWcStepper {
                 data-content={step.content}
                 aria-current={this.isStepActive(index) ? 'step' : undefined}
               >
-                {isInteractive ? (
-                  <Fragment>
-                    <button
-                      type="button"
-                      class="modus-wc-stepper-step-button"
-                      onClick={() => this.handleStepActivate(index)}
-                    ></button>
-                    <span class="modus-wc-stepper-step-label">
-                      {stepContent}
-                    </span>
-                  </Fragment>
-                ) : (
-                  stepContent
+                {isInteractive && (
+                  <button
+                    type="button"
+                    class="modus-wc-stepper-step-button"
+                    aria-label={this.getStepAriaLabel(step, index)}
+                    onClick={() => this.handleStepActivate(index)}
+                  ></button>
                 )}
+                {stepLabel}
               </li>
             );
           })}

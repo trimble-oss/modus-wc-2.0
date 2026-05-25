@@ -29,12 +29,6 @@ modus-wc-stepper .modus-wc-stepper-step-button {
   z-index: 1;
 }
 
-modus-wc-stepper .modus-wc-stepper-step-label {
-  pointer-events: none;
-  position: relative;
-  z-index: 2;
-}
-
 modus-wc-stepper .modus-wc-stepper-step-button:focus-visible {
   outline: none;
 }

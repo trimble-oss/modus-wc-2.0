@@ -6214,7 +6214,10 @@
               "name": "interactive",
               "fieldName": "interactive",
               "default": "false",
-              "description": "If true, steps will be rendered as buttons and emit `stepClick` when activated."
+              "description": "If true, steps will be rendered as buttons and emit `stepClick` when activated.",
+              "type": {
+                "text": "boolean"
+              }
             },
             {
               "name": "orientation",
