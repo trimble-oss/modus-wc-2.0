@@ -138,10 +138,10 @@ export const Interactive: Story = {
   }));
 
   stepper.addEventListener('stepClick', (event) => {
-    stepper.activeStep = event.detail;
+    stepper.activeStep = event.detail.index;
     stepper.steps = steps.map((step, index) => ({
       ...step,
-      color: index <= event.detail ? 'primary' : 'neutral',
+      color: index <= event.detail.index ? 'primary' : 'neutral',
     }));
   });
 </script>
@@ -164,13 +164,15 @@ export const Interactive: Story = {
         color: index <= activeIndex ? 'primary' : 'neutral',
       }));
 
-    const handleInteractiveStepClick = (event: CustomEvent<number>) => {
+    const handleInteractiveStepClick = (
+      event: CustomEvent<{ index: number }>,
+    ) => {
       const stepper = event.target as HTMLElement & {
         activeStep: number;
         steps: IStepperItem[];
       };
-      stepper.activeStep = event.detail;
-      stepper.steps = getInteractiveSteps(event.detail);
+      stepper.activeStep = event.detail.index;
+      stepper.steps = getInteractiveSteps(event.detail.index);
     };
 
     return html`

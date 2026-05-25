@@ -40,7 +40,7 @@ describe('modus-wc-stepper', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should emit stepClick with index when interactive and a step button is clicked', async () => {
+  it('should emit stepClick with index detail when interactive and a step button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcStepper],
       html: '<modus-wc-stepper interactive></modus-wc-stepper>',
@@ -62,7 +62,10 @@ describe('modus-wc-stepper', () => {
     await page.waitForChanges();
 
     expect(listener).toHaveBeenCalledTimes(1);
-    expect((listener.mock.calls[0][0] as CustomEvent<number>).detail).toBe(2);
+    expect(
+      (listener.mock.calls[0][0] as CustomEvent<{ index: number }>).detail
+        .index
+    ).toBe(2);
   });
 
   it('should not emit stepClick when interactive is false and step text is present', async () => {

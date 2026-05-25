@@ -53,7 +53,7 @@ export class ModusWcStepper {
   @Prop() interactive?: boolean = false;
 
   /** Emitted with the 0-based step index when a step is activated and `interactive` is true. */
-  @Event() stepClick!: EventEmitter<number>;
+  @Event() stepClick!: EventEmitter<{ index: number }>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -111,7 +111,7 @@ export class ModusWcStepper {
     if (!this.interactive) {
       return;
     }
-    this.stepClick.emit(index);
+    this.stepClick.emit({ index });
   }
 
   render() {
