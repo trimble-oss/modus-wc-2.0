@@ -2919,7 +2919,7 @@ declare global {
         new (): HTMLModusWcSliderElement;
     };
     interface HTMLModusWcStepperElementEventMap {
-        "stepClick": number;
+        "stepClick": { index: number };
     }
     /**
      * Used to show a list of steps in a process.
@@ -5008,7 +5008,7 @@ declare namespace LocalJSX {
         /**
           * Emitted with the 0-based step index when a step is activated and `interactive` is true.
          */
-        "onStepClick"?: (event: ModusWcStepperCustomEvent<number>) => void;
+        "onStepClick"?: (event: ModusWcStepperCustomEvent<{ index: number }>) => void;
         /**
           * The orientation of the steps.
          */

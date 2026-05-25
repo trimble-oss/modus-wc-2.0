@@ -22,9 +22,9 @@ Used to show a list of steps in a process.
 
 ## Events
 
-| Event       | Description                                                                             | Type                  |
-| ----------- | --------------------------------------------------------------------------------------- | --------------------- |
-| `stepClick` | Emitted with the 0-based step index when a step is activated and `interactive` is true. | `CustomEvent<number>` |
+| Event       | Description                                                                             | Type                              |
+| ----------- | --------------------------------------------------------------------------------------- | --------------------------------- |
+| `stepClick` | Emitted with the 0-based step index when a step is activated and `interactive` is true. | `CustomEvent<{ index: number; }>` |
 
 
 ----------------------------------------------
