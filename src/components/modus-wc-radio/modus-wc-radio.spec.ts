@@ -42,6 +42,22 @@ describe('modus-wc-radio', () => {
     expectLabelLinkedToControl(page.root!, 'input[type="radio"]');
   });
 
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcRadio, ModusWcInputLabel],
+      html: '<modus-wc-radio label="Re-render" aria-label="Re-render"></modus-wc-radio>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="radio"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="radio"]')!.id;
+    expect(secondId).toBe(firstId);
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcRadio],

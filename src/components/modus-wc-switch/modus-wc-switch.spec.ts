@@ -46,6 +46,22 @@ describe('modus-wc-switch', () => {
     expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
   });
 
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSwitch, ModusWcInputLabel],
+      html: '<modus-wc-switch label="Re-render" aria-label="Re-render"></modus-wc-switch>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="checkbox"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="checkbox"]')!.id;
+    expect(secondId).toBe(firstId);
+  });
+
   it('should render indeterminate state', async () => {
     const page = await newSpecPage({
       components: [ModusWcSwitch],

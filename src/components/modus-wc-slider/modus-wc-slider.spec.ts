@@ -45,6 +45,22 @@ describe('modus-wc-slider', () => {
     expectLabelLinkedToControl(page.root!, 'input[type="range"]');
   });
 
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider, ModusWcInputLabel],
+      html: '<modus-wc-slider label="Re-render" aria-label="Re-render"></modus-wc-slider>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="range"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="range"]')!.id;
+    expect(secondId).toBe(firstId);
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcSlider],

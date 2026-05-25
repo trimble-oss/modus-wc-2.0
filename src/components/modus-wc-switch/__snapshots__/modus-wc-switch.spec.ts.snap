@@ -8,7 +8,7 @@ exports[`modus-wc-switch renders with default props 1`] = `
 
 exports[`modus-wc-switch should render indeterminate state 1`] = `
 <modus-wc-switch class="modus-wc-switch-host" indeterminate="">
-  <input aria-checked="mixed" aria-label="Test toggle" class="modus-wc-toggle modus-wc-toggle-md" id="mwc_id_2" role="switch" type="checkbox">
+  <input aria-checked="mixed" aria-label="Test toggle" class="modus-wc-toggle modus-wc-toggle-md" id="mwc_id_3" role="switch" type="checkbox">
 </modus-wc-switch>
 `;
 
