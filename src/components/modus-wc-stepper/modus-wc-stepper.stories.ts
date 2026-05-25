@@ -6,7 +6,6 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { Orientation } from '../types';
 
 interface StepperArgs {
-  'active-step'?: number;
   'custom-class'?: string;
   interactive?: boolean;
   orientation: Orientation;
@@ -32,7 +31,6 @@ const meta: Meta<StepperArgs> = {
   title: 'Components/Stepper',
   component: 'modus-wc-stepper',
   args: {
-    'active-step': undefined,
     interactive: false,
     steps: [
       { label: 'Scale', color: 'primary' },
@@ -43,9 +41,6 @@ const meta: Meta<StepperArgs> = {
   },
   decorators: [withActions],
   argTypes: {
-    'active-step': {
-      control: 'number',
-    },
     'custom-class': {
       control: 'text',
     },
@@ -88,7 +83,6 @@ const Template: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-stepper
-  active-step="${ifDefined(args['active-step'])}"
   custom-class="${ifDefined(args['custom-class'])}"
   orientation="${ifDefined(args.orientation)}"
   ?interactive="${args.interactive ?? false}"
@@ -118,31 +112,30 @@ export const Interactive: Story = {
       source: {
         code: `
 <modus-wc-stepper
-  id="controlled-stepper"
-  active-step="1"
+  id="interactive-stepper"
   orientation="horizontal"
   interactive
 ></modus-wc-stepper>
 <script>
+  const activeIndex = 1;
   const steps = [
-    { label: 'Scale', color: 'primary' },
-    { label: 'Belong', color: 'primary' },
-    { label: 'Grow', color: 'primary' },
-    { label: 'Innovate', content: '🚀', color: 'primary' },
+    { label: 'Scale' },
+    { label: 'Belong' },
+    { label: 'Grow' },
+    { label: 'Innovate', content: '🚀' },
   ];
 
-  const stepper = document.getElementById('controlled-stepper');
-  stepper.steps = steps.map((step, index) => ({
-    ...step,
-    color: index <= 1 ? 'primary' : 'neutral',
-  }));
+  const getSteps = (selectedIndex) =>
+    steps.map((step, index) => ({
+      ...step,
+      color: index <= selectedIndex ? 'primary' : 'neutral',
+    }));
+
+  const stepper = document.getElementById('interactive-stepper');
+  stepper.steps = getSteps(activeIndex);
 
   stepper.addEventListener('stepClick', (event) => {
-    stepper.activeStep = event.detail.index;
-    stepper.steps = steps.map((step, index) => ({
-      ...step,
-      color: index <= event.detail.index ? 'primary' : 'neutral',
-    }));
+    stepper.steps = getSteps(event.detail.index);
   });
 </script>
         `,
@@ -151,11 +144,12 @@ export const Interactive: Story = {
   },
   // prettier-ignore
   render: () => {
+    const initialActiveIndex = 1;
     const interactiveSteps: IStepperItem[] = [
-      { label: 'Scale', color: 'primary' },
-      { label: 'Belong', color: 'primary' },
-      { label: 'Grow', color: 'primary' },
-      { label: 'Innovate', content: '🚀', color: 'primary' },
+      { label: 'Scale' },
+      { label: 'Belong' },
+      { label: 'Grow' },
+      { label: 'Innovate', content: '🚀' },
     ];
 
     const getInteractiveSteps = (activeIndex: number): IStepperItem[] =>
@@ -168,20 +162,17 @@ export const Interactive: Story = {
       event: CustomEvent<{ index: number }>,
     ) => {
       const stepper = event.target as HTMLElement & {
-        activeStep: number;
         steps: IStepperItem[];
       };
-      stepper.activeStep = event.detail.index;
       stepper.steps = getInteractiveSteps(event.detail.index);
     };
 
     return html`
       <modus-wc-stepper
-        id="controlled-stepper"
-        active-step="1"
+        id="interactive-stepper"
         orientation="horizontal"
         interactive
-        .steps="${getInteractiveSteps(1)}"
+        .steps="${getInteractiveSteps(initialActiveIndex)}"
         @stepClick=${handleInteractiveStepClick}
       ></modus-wc-stepper>
     `;
@@ -195,13 +186,11 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-stepper',
         propsMapper: (v: StepperArgs, el: HTMLElement) => {
           const stepperEl = el as unknown as {
-            activeStep: number | undefined;
             customClass: string;
             interactive: boolean;
             orientation: string;
             steps: IStepperItem[];
           };
-          stepperEl.activeStep = v['active-step'];
           stepperEl.customClass = v['custom-class'] || '';
           stepperEl.interactive = v.interactive ?? false;
           stepperEl.orientation = v.orientation ?? 'horizontal';

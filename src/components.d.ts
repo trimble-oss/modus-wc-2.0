@@ -1549,10 +1549,6 @@ export namespace Components {
      */
     interface ModusWcStepper {
         /**
-          * The index (0-based) of the active step in the `steps` array.
-         */
-        "activeStep"?: number;
-        /**
           * Custom CSS class to apply to the steps element.
          */
         "customClass"?: string;
@@ -4993,10 +4989,6 @@ declare namespace LocalJSX {
      * Used to show a list of steps in a process.
      */
     interface ModusWcStepper {
-        /**
-          * The index (0-based) of the active step in the `steps` array.
-         */
-        "activeStep"?: number;
         /**
           * Custom CSS class to apply to the steps element.
          */

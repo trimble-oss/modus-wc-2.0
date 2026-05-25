@@ -6194,14 +6194,6 @@
           ],
           "attributes": [
             {
-              "name": "active-step",
-              "fieldName": "activeStep",
-              "description": "The index (0-based) of the active step in the `steps` array.",
-              "type": {
-                "text": "number"
-              }
-            },
-            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
@@ -6242,7 +6234,7 @@
             {
               "name": "stepClick",
               "type": {
-                "text": "EventEmitter<number>"
+                "text": "EventEmitter<{ index: number }>"
               },
               "description": "Emitted with the 0-based step index when a step is activated and `interactive` is true."
             }

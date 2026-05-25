@@ -13,7 +13,6 @@ Used to show a list of steps in a process.
 
 | Property      | Attribute      | Description                                                                     | Type                                      | Default     |
 | ------------- | -------------- | ------------------------------------------------------------------------------- | ----------------------------------------- | ----------- |
-| `activeStep`  | `active-step`  | The index (0-based) of the active step in the `steps` array.                    | `number \| undefined`                     | `undefined` |
 | `customClass` | `custom-class` | Custom CSS class to apply to the steps element.                                 | `string \| undefined`                     | `''`        |
 | `interactive` | `interactive`  | If true, steps will be rendered as buttons and emit `stepClick` when activated. | `boolean \| undefined`                    | `false`     |
 | `orientation` | `orientation`  | The orientation of the steps.                                                   | `"horizontal" \| "vertical" \| undefined` | `undefined` |
