@@ -132,7 +132,7 @@ export const Multiline: Story = {
     // prettier-ignore
     return html`
 <style>
-  .multiline-chip span{
+  .multiline-chip .modus-wc-chip-label{
     max-width: 12rem;
   }
 </style>
