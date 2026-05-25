@@ -1,4 +1,12 @@
-import { Component, Element, Event, EventEmitter, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';

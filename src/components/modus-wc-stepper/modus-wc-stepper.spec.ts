@@ -63,8 +63,7 @@ describe('modus-wc-stepper', () => {
 
     expect(listener).toHaveBeenCalledTimes(1);
     expect(
-      (listener.mock.calls[0][0] as CustomEvent<{ index: number }>).detail
-        .index
+      (listener.mock.calls[0][0] as CustomEvent<{ index: number }>).detail.index
     ).toBe(2);
   });
 
