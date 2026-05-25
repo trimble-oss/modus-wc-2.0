@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcNumberInput } from './modus-wc-number-input';
 
 describe('modus-wc-number-input', () => {

@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcSlider } from './modus-wc-slider';
-import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
+import { ModusWcSlider } from './modus-wc-slider';
 
 describe('modus-wc-slider', () => {
   it('renders with default props', async () => {

@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp, WeekStartDay } from '../types';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcDate } from './modus-wc-date';
 
 describe('modus-wc-date', () => {

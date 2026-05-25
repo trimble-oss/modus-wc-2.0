@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcSwitch } from './modus-wc-switch';
-import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
+import { ModusWcSwitch } from './modus-wc-switch';
 
 describe('modus-wc-switch', () => {
   it('renders with default props', async () => {

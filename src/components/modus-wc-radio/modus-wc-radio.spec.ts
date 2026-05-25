@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcRadio } from './modus-wc-radio';
-import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
+import { ModusWcRadio } from './modus-wc-radio';
 
 describe('modus-wc-radio', () => {
   it('renders with default props', async () => {
