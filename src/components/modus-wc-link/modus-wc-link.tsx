@@ -1,7 +1,12 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-link.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  inheritAttributes,
+  sanitizeUrl,
+} from '../utils';
 
 /**
  * A customizable link component used to navigate to URLs.
@@ -39,15 +44,15 @@ export class ModusWcLink {
   /** The browsing context for the link. */
   @Prop() target?: string;
 
-  /** Advisory information describing the link. */
-  @Prop() title: string = '';
-
   /** The underline behavior of the link. */
   @Prop() underline: 'always' | 'hover' | 'none' = 'always';
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = {
+      ...inheritAriaAttributes(this.el),
+      ...inheritAttributes(this.el, ['title']),
+    };
   }
 
   private getClasses(): string {
@@ -100,7 +105,6 @@ export class ModusWcLink {
           href={sanitizedHref}
           rel={this.getRelAttribute()}
           target={this.target}
-          title={this.title || undefined}
           {...this.inheritedAttributes}
         >
           <slot />

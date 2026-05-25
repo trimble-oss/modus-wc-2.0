@@ -100,32 +100,3 @@ modus-wc-link a.modus-wc-link {
     color: var(--modus-wc-color-red-light);
   }
 }
-
-[data-theme='modus-modern-light'] modus-wc-link a.modus-wc-link,
-[data-theme='modus-modern-dark'] modus-wc-link a.modus-wc-link,
-[data-theme='connect-light'] modus-wc-link a.modus-wc-link,
-[data-theme='connect-dark'] modus-wc-link a.modus-wc-link {
-  &.modus-wc-link-color-primary {
-    color: var(--modus-wc-color-primary);
-  }
-
-  &.modus-wc-link-color-secondary {
-    color: var(--modus-wc-color-secondary);
-  }
-
-  &.modus-wc-link-color-tertiary {
-    color: var(--modus-wc-color-base-content-low-contrast);
-  }
-
-  &.modus-wc-link-color-success {
-    color: var(--modus-wc-color-success);
-  }
-
-  &.modus-wc-link-color-warning {
-    color: var(--modus-wc-color-warning);
-  }
-
-  &.modus-wc-link-color-danger {
-    color: var(--modus-wc-color-error);
-  }
-}
