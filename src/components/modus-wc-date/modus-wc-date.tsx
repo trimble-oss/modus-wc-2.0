@@ -60,7 +60,11 @@ export class ModusWcDate {
   private locale: string = 'en-US';
   private minDate?: Date;
   private maxDate?: Date;
-  private generatedId: string = generateElementId();
+  private _generatedId?: string;
+  private get generatedId(): string {
+    this._generatedId ??= generateElementId();
+    return this._generatedId;
+  }
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;

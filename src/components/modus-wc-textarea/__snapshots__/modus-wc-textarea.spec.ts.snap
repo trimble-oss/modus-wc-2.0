@@ -12,7 +12,7 @@ exports[`modus-wc-textarea should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-textarea should render with error feedback 1`] = `
-<modus-wc-textarea value=""><textarea aria-label="Error input" aria-placeholder="" class="modus-wc-input--error modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="mwc_id_3" placeholder="" value=""></textarea>
+<modus-wc-textarea value=""><textarea aria-label="Error input" aria-placeholder="" class="modus-wc-input--error modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="mwc_id_2" placeholder="" value=""></textarea>
   <modus-wc-input-feedback>
     <div class="modus-wc-input-feedback modus-wc-input-feedback--error modus-wc-input-feedback--md">
       <svg class="mi-outline mi-warning modus-wc-input-feedback-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

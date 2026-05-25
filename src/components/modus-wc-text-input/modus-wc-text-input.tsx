@@ -36,7 +36,11 @@ import {
 })
 export class ModusWcTextInput {
   private inheritedAttributes: Attributes = {};
-  private generatedId: string = generateElementId();
+  private _generatedId?: string;
+  private get generatedId(): string {
+    this._generatedId ??= generateElementId();
+    return this._generatedId;
+  }
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;

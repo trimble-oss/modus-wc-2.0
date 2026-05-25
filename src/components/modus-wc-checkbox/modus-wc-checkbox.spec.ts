@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcCheckbox } from './modus-wc-checkbox';
-import { expectLabelLinkedToControl } from '../form-input-test-utils';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 
 describe('modus-wc-checkbox', () => {

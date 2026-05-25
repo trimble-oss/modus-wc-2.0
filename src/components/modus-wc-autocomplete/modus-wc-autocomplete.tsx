@@ -69,7 +69,11 @@ export class ModusWcAutocomplete {
   @State() private searchText: string = ''; // Dedicated state for active search query
   @State() private showFeedback: boolean = true; // Track whether to show feedback
   private debounceTimer?: number;
-  private generatedId: string = generateElementId();
+  private _generatedId?: string;
+  private get generatedId(): string {
+    this._generatedId ??= generateElementId();
+    return this._generatedId;
+  }
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
   private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation

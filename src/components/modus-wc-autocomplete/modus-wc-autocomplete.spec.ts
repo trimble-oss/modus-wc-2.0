@@ -1,6 +1,5 @@
 import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
-import { expectLabelLinkedToControl } from '../form-input-test-utils';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -9,6 +8,7 @@ import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import {
   renderNoResults,
