@@ -235,6 +235,25 @@ describe('modus-wc-chip', () => {
     expect(button!.classList.contains('modus-wc-btn-sm')).toBe(true);
   });
 
+  it('should render with multiline class when multiline is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="Multiline chip" multiline="true"></modus-wc-chip>',
+    });
+    const button = page.root!.querySelector('button');
+    expect(button!.classList.contains('modus-wc-chip-multiline')).toBe(true);
+  });
+
+  it('should render multiline chip with slotted content', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="Multiline slotted chip" multiline="true"><span>Slot content</span></modus-wc-chip>',
+    });
+    expect(page.root).toMatchSnapshot();
+    const button = page.root!.querySelector('button');
+    expect(button!.classList.contains('modus-wc-chip-multiline')).toBe(true);
+  });
+
   it('should render with label and remove icon together', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
