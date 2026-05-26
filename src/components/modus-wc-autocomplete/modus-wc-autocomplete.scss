@@ -199,6 +199,13 @@ modus-wc-autocomplete.modus-wc-autocomplete {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-autocomplete .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-autocomplete .modus-wc-input-label,
+[data-theme='modus-classic-light'] modus-wc-autocomplete .modus-wc-input-label,
+[data-theme='modus-classic-dark'] modus-wc-autocomplete .modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-sm);
+}
+
 [data-theme='modus-classic-light'] modus-wc-autocomplete.modus-wc-autocomplete,
 [data-theme='modus-classic-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
   .modus-wc-autocomplete-multi-select--bordered {
