@@ -67,6 +67,16 @@ export function generateElementId(): string {
 }
 
 /**
+ * Creates a per-instance resolver for input element IDs.
+ * Uses inputId when provided; otherwise lazily generates and caches a fallback ID.
+ */
+export function createEffectiveIdResolver(): (inputId?: string) => string {
+  let generatedId: string | undefined;
+
+  return (inputId?: string) => inputId || (generatedId ??= generateElementId());
+}
+
+/**
  * List of available ARIA attributes + `role`.
  * Removed deprecated attributes.
  * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes

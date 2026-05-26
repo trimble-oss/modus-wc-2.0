@@ -11,7 +11,11 @@ import { convertPropsToClasses } from './modus-wc-radio.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
-import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable radio button component.
@@ -23,11 +27,7 @@ import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcRadio {
   private inheritedAttributes: Attributes = {};
-  private _generatedId?: string;
-  private get generatedId(): string {
-    this._generatedId ??= generateElementId();
-    return this._generatedId;
-  }
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -104,7 +104,7 @@ export class ModusWcRadio {
 
   render() {
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
-    const effectiveId = this.inputId || this.generatedId;
+    const effectiveId = this.resolveEffectiveId(this.inputId);
 
     return (
       <Host class="modus-wc-radio-host">

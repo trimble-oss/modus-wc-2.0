@@ -23,7 +23,7 @@ import {
 } from '../types';
 import {
   Attributes,
-  generateElementId,
+  createEffectiveIdResolver,
   inheritAriaAttributes,
   KEY,
 } from '../utils';
@@ -69,11 +69,7 @@ export class ModusWcAutocomplete {
   @State() private searchText: string = ''; // Dedicated state for active search query
   @State() private showFeedback: boolean = true; // Track whether to show feedback
   private debounceTimer?: number;
-  private _generatedId?: string;
-  private get generatedId(): string {
-    this._generatedId ??= generateElementId();
-    return this._generatedId;
-  }
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
   private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
@@ -906,7 +902,7 @@ export class ModusWcAutocomplete {
   };
 
   render() {
-    const effectiveId = this.inputId || this.generatedId;
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     // Set CSS custom properties for dynamic min-width control
     const minWidth = this.minInputWidth || 10;
     const cssVariables = {

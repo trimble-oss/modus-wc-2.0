@@ -12,7 +12,7 @@ import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
   Attributes,
-  generateElementId,
+  createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
 } from '../utils';
@@ -27,11 +27,7 @@ import {
 })
 export class ModusWcNumberInput {
   private inheritedAttributes: Attributes = {};
-  private _generatedId?: string;
-  private get generatedId(): string {
-    this._generatedId ??= generateElementId();
-    return this._generatedId;
-  }
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -188,7 +184,7 @@ export class ModusWcNumberInput {
   };
 
   render() {
-    const effectiveId = this.inputId || this.generatedId;
+    const effectiveId = this.resolveEffectiveId(this.inputId);
 
     return (
       <Host class={this.customClass}>
