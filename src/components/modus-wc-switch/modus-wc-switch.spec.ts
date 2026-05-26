@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcSwitch } from './modus-wc-switch';
 
 describe('modus-wc-switch', () => {
@@ -33,7 +35,7 @@ describe('modus-wc-switch', () => {
 
   it('should render with size xs', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSwitch],
+      components: [ModusWcSwitch, ModusWcInputLabel],
       html: `<modus-wc-switch
         aria-label="XS toggle"
         label="XS label"
@@ -41,6 +43,23 @@ describe('modus-wc-switch', () => {
       ></modus-wc-switch>`,
     });
     expect(page.root).toMatchSnapshot();
+    expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
+  });
+
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSwitch, ModusWcInputLabel],
+      html: '<modus-wc-switch label="Re-render" aria-label="Re-render"></modus-wc-switch>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="checkbox"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="checkbox"]')!.id;
+    expect(secondId).toBe(firstId);
   });
 
   it('should render indeterminate state', async () => {
