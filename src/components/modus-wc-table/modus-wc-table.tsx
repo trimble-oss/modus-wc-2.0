@@ -962,6 +962,7 @@ export class ModusWcTable {
                 {displayData.length > 0 ? (
                   rows.map((rowObj, index) => {
                     const row = rowObj.original;
+                    const isRowSelectable = this.checkIsRowSelectable(row);
 
                     return (
                       <tr
@@ -971,8 +972,7 @@ export class ModusWcTable {
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
                           selectable:
-                            this.selectable !== 'none' &&
-                            this.checkIsRowSelectable(row),
+                            this.selectable !== 'none' && isRowSelectable,
                           editable: this.isRowEditable(row),
                         }}
                         onClick={() => this.handleRowClick(rowObj, index)}
@@ -986,7 +986,7 @@ export class ModusWcTable {
                               aria-label="Select row"
                               size="sm"
                               value={rowObj.getIsSelected?.() ?? false}
-                              disabled={!this.checkIsRowSelectable(row)}
+                              disabled={!isRowSelectable}
                             ></modus-wc-checkbox>
                           </td>
                         )}
