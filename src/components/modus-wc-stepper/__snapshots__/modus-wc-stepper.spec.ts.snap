@@ -2,7 +2,7 @@
 
 exports[`modus-wc-stepper should render with custom props 1`] = `
 <modus-wc-stepper custom-class="custom-class" orientation="vertical">
-  <div class="custom-class modus-wc-steps modus-wc-steps-vertical">
+  <ul class="custom-class modus-wc-steps modus-wc-steps-vertical">
     <li class="modus-wc-step modus-wc-step-primary">
       Scale
     </li>
@@ -15,13 +15,13 @@ exports[`modus-wc-stepper should render with custom props 1`] = `
     <li class="modus-wc-step" data-content="🚀">
       Innovate
     </li>
-  </div>
+  </ul>
 </modus-wc-stepper>
 `;
 
 exports[`modus-wc-stepper should render with default props 1`] = `
 <modus-wc-stepper>
-  <div class="modus-wc-steps">
+  <ul class="modus-wc-steps">
     <li class="modus-wc-step modus-wc-step-primary">
       Scale
     </li>
@@ -34,6 +34,6 @@ exports[`modus-wc-stepper should render with default props 1`] = `
     <li class="modus-wc-step" data-content="🚀">
       Innovate
     </li>
-  </div>
+  </ul>
 </modus-wc-stepper>
 `;

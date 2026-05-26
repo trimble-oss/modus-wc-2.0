@@ -108,9 +108,11 @@ export class ModusWcAppMenu {
 
   private updateGridTooltips() {
     const updated = new Set<AppName>();
-    const gridItems = this.el.querySelectorAll('.grid-item');
+    const gridItems = this.el.querySelectorAll('.modus-wc-app-menu-grid-item');
     gridItems.forEach((gridItem, appIndex) => {
-      const label = gridItem.querySelector('.grid-item-text-label');
+      const label = gridItem.querySelector(
+        '.modus-wc-app-menu-grid-item-label'
+      );
       const appName = this.apps?.[appIndex]?.appName;
       if (label && appName) {
         const isTruncated =
@@ -149,7 +151,7 @@ export class ModusWcAppMenu {
 
   private updateListTooltips() {
     const updated = new Set<AppName>();
-    const rows = this.el.querySelectorAll('.app-menu-item-row');
+    const rows = this.el.querySelectorAll('.modus-wc-app-menu-item-row');
     rows.forEach((row, appIndex) => {
       const appName = this.apps?.[appIndex]?.appName;
       if (!appName) return;
@@ -382,7 +384,7 @@ export class ModusWcAppMenu {
 
     return (
       <div
-        class="app-menu-items"
+        class="modus-wc-app-menu-items"
         onDragLeave={(e) => this.handleDragLeave(e)}
         onDragOver={(e) => this.handleDragOver(e)}
         onDrop={(e) => this.handleContainerDrop(e)}
@@ -394,7 +396,7 @@ export class ModusWcAppMenu {
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
-              class={`app-menu-item-row ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
+              class={`modus-wc-app-menu-item-row ${this.isEditMode ? 'modus-wc-app-menu-draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'modus-wc-app-menu-grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'modus-wc-app-menu-drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'modus-wc-app-menu-drop-target' : ''}`}
               draggable={this.isEditMode}
               onClick={() => {
                 if (!this.isEditMode) {
@@ -414,7 +416,7 @@ export class ModusWcAppMenu {
               {this.isEditMode && (
                 <modus-wc-icon
                   name="drag_indicator"
-                  custom-class="drag-icon"
+                  custom-class="modus-wc-app-menu-drag-icon"
                   size="xs"
                 ></modus-wc-icon>
               )}
@@ -430,7 +432,7 @@ export class ModusWcAppMenu {
               >
                 <modus-wc-logo
                   name={app.appName}
-                  custom-class="app-logo"
+                  custom-class="modus-wc-app-menu-app-logo"
                   emblem={true}
                   slot="start-icon"
                 ></modus-wc-logo>
@@ -447,15 +449,18 @@ export class ModusWcAppMenu {
 
     return (
       <div
-        class="grid-menu"
+        class="modus-wc-app-menu-grid"
         onDragLeave={(e) => this.handleDragLeave(e)}
         onDragOver={(e) => this.handleDragOver(e)}
         onDrop={(e) => this.handleContainerDrop(e)}
       >
-        <div class="grid-row" role={this.isEditMode ? 'listbox' : 'list'}>
+        <div
+          class="modus-wc-app-menu-grid-row"
+          role={this.isEditMode ? 'listbox' : 'list'}
+        >
           {apps.map((app, appIndex) => (
             // Intentionally unkeyed: Stencil's keyed reconciliation triggers
-            // insertBefore on grid-item DOM nodes during a reorder, which fires
+            // insertBefore on modus-wc-app-menu-grid-item DOM nodes during a reorder, which fires
             // a transient disconnectedCallback on descendant custom elements.
             // modus-wc-tooltip only sets up its popper/popover in
             // componentDidLoad (runs once), so after the disconnect/reconnect
@@ -467,7 +472,7 @@ export class ModusWcAppMenu {
               aria-roledescription={
                 this.isEditMode ? 'reorderable item' : undefined
               }
-              class={`grid-item ${this.isEditMode ? 'draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'drop-target' : ''}`}
+              class={`modus-wc-app-menu-grid-item ${this.isEditMode ? 'modus-wc-app-menu-draggable-item' : ''} ${this.isGrabbed(appIndex) ? 'modus-wc-app-menu-grabbed-item' : ''} ${this.isDragSource(appIndex) ? 'modus-wc-app-menu-drag-source' : ''} ${this.dropTargetIndex === appIndex ? 'modus-wc-app-menu-drop-target' : ''}`}
               draggable={this.isEditMode}
               onClick={() => {
                 if (!this.isEditMode) {
@@ -487,13 +492,13 @@ export class ModusWcAppMenu {
               {this.isEditMode && (
                 <modus-wc-icon
                   name="drag_indicator"
-                  custom-class="drag-icon"
+                  custom-class="modus-wc-app-menu-drag-icon"
                   size="xs"
                 ></modus-wc-icon>
               )}
               <modus-wc-logo
                 name={app.appName}
-                custom-class="grid-emblem"
+                custom-class="modus-wc-app-menu-grid-emblem"
                 emblem={true}
               ></modus-wc-logo>
               <modus-wc-tooltip
@@ -502,7 +507,7 @@ export class ModusWcAppMenu {
                 position="auto"
               >
                 <modus-wc-typography
-                  custom-class="grid-item-text-label"
+                  custom-class="modus-wc-app-menu-grid-item-label"
                   size="sm"
                   label={this.getDisplayName(app.appName)}
                 ></modus-wc-typography>
@@ -514,16 +519,22 @@ export class ModusWcAppMenu {
     );
   }
 
+  private getClasses(): string {
+    const classList = ['modus-wc-app-menu'];
+
+    // Append any consumer-provided class alongside the base component class.
+    if (this.customClass) classList.push(this.customClass);
+
+    return classList.join(' ');
+  }
+
   render() {
     return (
-      <Host
-        {...this.inheritedAttributes}
-        class={this.customClass ? this.customClass : undefined}
-      >
+      <Host {...this.inheritedAttributes} class={this.getClasses()}>
         <modus-wc-panel height="568px" width="320px">
           <div slot="body">
-            <div class="menu-header">
-              <div class="header-title">
+            <div class="modus-wc-app-menu-header">
+              <div class="modus-wc-app-menu-header-title">
                 <modus-wc-typography
                   size="2xl"
                   weight="semibold"
@@ -531,8 +542,7 @@ export class ModusWcAppMenu {
                   label={this.isEditMode ? 'Edit' : 'Trimble Apps'}
                 ></modus-wc-typography>
               </div>
-              <div class="header-end-content">
-                <slot name="header-end-content"></slot>
+              <div class="modus-wc-app-menu-header-end-content">
                 {!this.isEditMode ? (
                   <modus-wc-button
                     aria-label="Edit app order"
@@ -567,7 +577,7 @@ export class ModusWcAppMenu {
                 )}
               </div>
             </div>
-            <div class="app-menu-body">
+            <div class="modus-wc-app-menu-body">
               {this.layout === 'list'
                 ? this.renderListLayout()
                 : this.renderGridLayout()}
