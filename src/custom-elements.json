@@ -2272,6 +2272,15 @@
               }
             },
             {
+              "name": "multiline",
+              "fieldName": "multiline",
+              "default": "false",
+              "description": "Whether the chip height can grow and the label can wrap across multiple lines.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "shape",
               "fieldName": "shape",
               "default": "'rectangle'",
