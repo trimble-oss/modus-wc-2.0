@@ -11,7 +11,11 @@ import { convertPropsToClasses } from './modus-wc-switch.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable switch component
@@ -23,6 +27,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcSwitch {
   private inheritedAttributes: Attributes = {};
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -111,6 +116,7 @@ export class ModusWcSwitch {
   };
 
   render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
@@ -121,7 +127,7 @@ export class ModusWcSwitch {
           checked={this.value}
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -134,7 +140,7 @@ export class ModusWcSwitch {
         />
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={labelSize}
