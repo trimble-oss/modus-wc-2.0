@@ -10,7 +10,11 @@ import {
 import { convertPropsToClasses } from './modus-wc-checkbox.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable checkbox component
@@ -22,7 +26,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcCheckbox {
   private inheritedAttributes: Attributes = {};
-
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -111,6 +115,7 @@ export class ModusWcCheckbox {
   };
 
   render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     return (
       <Host class="modus-wc-checkbox-host">
         <input
@@ -119,7 +124,7 @@ export class ModusWcCheckbox {
           checked={this.value}
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -131,7 +136,7 @@ export class ModusWcCheckbox {
         />
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}

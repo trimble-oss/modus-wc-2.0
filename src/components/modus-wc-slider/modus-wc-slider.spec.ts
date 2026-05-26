@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcSlider } from './modus-wc-slider';
 
 describe('modus-wc-slider', () => {
@@ -32,6 +34,31 @@ describe('modus-wc-slider', () => {
       ></modus-wc-slider>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider, ModusWcInputLabel],
+      html: '<modus-wc-slider label="Volume" aria-label="Volume"></modus-wc-slider>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="range"]');
+  });
+
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSlider, ModusWcInputLabel],
+      html: '<modus-wc-slider label="Re-render" aria-label="Re-render"></modus-wc-slider>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="range"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="range"]')!.id;
+    expect(secondId).toBe(firstId);
   });
 
   it('should emit blur event', async () => {
