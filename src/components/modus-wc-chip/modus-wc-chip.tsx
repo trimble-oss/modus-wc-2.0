@@ -43,6 +43,9 @@ export class ModusWcChip {
   /** The label to display in the chip. */
   @Prop() label?: string = '';
 
+  /** Whether the chip height can grow and its content can wrap across multiple lines. */
+  @Prop() multiline?: boolean = false;
+
   /** Whether to show the close icon on right side of the chip. */
   @Prop() showRemove?: boolean = false;
 
@@ -115,6 +118,7 @@ export class ModusWcChip {
 
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
+    if (this.multiline) classList.push('modus-wc-chip-multiline');
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
