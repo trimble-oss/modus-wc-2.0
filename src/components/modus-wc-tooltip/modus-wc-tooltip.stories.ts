@@ -29,7 +29,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
- \nThe component supports a named \`slot="content"\` for injecting rich HTML tooltip content such as multiline text. The default slot is used for the trigger content, and the \`content\` prop will be ignored when the named content slot is used.
+ \nThe component supports a named \`slot="content"\` for rich HTML tooltip content such as multiline text. Slotted content is cloned on mount and stays in sync when the slot DOM changes later. For plain dynamic text, use the \`content\` prop instead. The default slot is used for the trigger content, and the \`content\` prop is ignored when the named content slot is used.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -80,7 +80,7 @@ export const ContentSlot: Story = {
     docs: {
       description: {
         story:
-          'Use the `content` slot for static rich tooltip content such as multiline text.',
+          'Use the `content` slot for rich HTML tooltip content such as multiline text. Slotted content stays in sync when updated after mount. For plain dynamic text, use the `content` prop instead.',
       },
     },
   },

@@ -19,7 +19,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  *
  * The tooltip can be dismissed by pressing the Escape key when hovering over it.
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
- * Use the content slot to add rich HTML content to the tooltip such as multiline text. The content prop will be ignored if the content slot is used.
+ * Use the content slot to add rich HTML content to the tooltip such as multiline text.
+ * Slotted content is cloned into the tooltip and kept in sync when the slot DOM changes after mount.
+ * For plain dynamic text, prefer the content prop instead. The content prop is ignored when the content slot is used.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -29,13 +31,14 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export class ModusWcTooltip {
   private inheritedAttributes: Attributes = {};
   private popperInstance: PopperInstance | null = null;
+  private slotContentObserver: MutationObserver | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The text content of the tooltip. For rich HTML content, use the content slot. */
+  /** The text content of the tooltip. Use this prop for plain dynamic text. For rich HTML, use the content slot. */
   @Prop() content: string = '';
 
   /** Custom CSS class to apply to the inner div. */
@@ -91,19 +94,7 @@ export class ModusWcTooltip {
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
 
-    // Slot content takes priority over the content prop
-    const slotContentNodes = Array.from(
-      this.el.querySelectorAll('[slot="content"]')
-    );
-    if (slotContentNodes.length > 0) {
-      slotContentNodes.forEach((node) => {
-        const clonedNode = (node as HTMLElement).cloneNode(true) as HTMLElement;
-        clonedNode.removeAttribute('slot');
-        this.tooltipElement!.appendChild(clonedNode);
-      });
-    } else {
-      this.tooltipElement.textContent = this.content;
-    }
+    this.syncTooltipContent();
 
     this.tooltipElement.setAttribute('role', 'tooltip');
     if (this.tooltipId) {
@@ -122,12 +113,17 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
+    this.observeSlotContentChanges();
+
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
   }
 
   disconnectedCallback() {
+    this.slotContentObserver?.disconnect();
+    this.slotContentObserver = null;
+
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -147,6 +143,73 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  private getSlotContentNodes(): HTMLElement[] {
+    return Array.from(
+      this.el.querySelectorAll<HTMLElement>(
+        '.modus-wc-tooltip-content-source > [slot="content"]'
+      )
+    );
+  }
+
+  private hasSlotContent(): boolean {
+    return this.getSlotContentNodes().length > 0;
+  }
+
+  private syncTooltipContent(): void {
+    if (!this.tooltipElement) return;
+
+    const arrow = this.tooltipElement.querySelector('.modus-wc-tooltip-arrow');
+    Array.from(this.tooltipElement.childNodes).forEach((node) => {
+      if (node !== arrow) {
+        node.remove();
+      }
+    });
+
+    const slotContentNodes = this.getSlotContentNodes();
+    if (slotContentNodes.length > 0) {
+      slotContentNodes.forEach((node) => {
+        const clonedNode = node.cloneNode(true) as HTMLElement;
+        clonedNode.removeAttribute('slot');
+        if (arrow) {
+          this.tooltipElement!.insertBefore(clonedNode, arrow);
+        } else {
+          this.tooltipElement!.appendChild(clonedNode);
+        }
+      });
+    } else {
+      const textNode = document.createTextNode(this.content);
+      if (arrow) {
+        this.tooltipElement.insertBefore(textNode, arrow);
+      } else {
+        this.tooltipElement.appendChild(textNode);
+      }
+    }
+
+    if (this.isVisible && this.popperInstance) {
+      void this.popperInstance.update();
+    }
+  }
+
+  private observeSlotContentChanges(): void {
+    if (typeof MutationObserver === 'undefined') return;
+
+    const contentSource = this.el.querySelector(
+      '.modus-wc-tooltip-content-source'
+    );
+    if (!contentSource) return;
+
+    this.slotContentObserver = new MutationObserver(() => {
+      this.syncTooltipContent();
+    });
+
+    this.slotContentObserver.observe(contentSource, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+    });
   }
 
   private initializePopper() {
@@ -275,19 +338,9 @@ export class ModusWcTooltip {
   }
 
   @Watch('content')
-  handleContentChange(newContent: string) {
-    if (this.tooltipElement) {
-      // Don't overwrite slot content if present in the host
-      if (this.el.querySelector('[slot="content"]')) return;
-
-      const arrow = this.tooltipElement.querySelector(
-        '.modus-wc-tooltip-arrow'
-      );
-      this.tooltipElement.textContent = newContent;
-      if (arrow) {
-        this.tooltipElement.appendChild(arrow);
-      }
-    }
+  handleContentChange() {
+    if (this.hasSlotContent()) return;
+    this.syncTooltipContent();
   }
 
   @Watch('forceOpen')
