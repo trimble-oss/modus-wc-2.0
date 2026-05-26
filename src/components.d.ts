@@ -1557,6 +1557,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+         */
+        "interactive"?: boolean;
+        /**
           * The orientation of the steps.
          */
         "orientation"?: Orientation;
@@ -2192,6 +2196,10 @@ export interface ModusWcSideNavigationCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
+}
+export interface ModusWcStepperCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcStepperElement;
 }
 export interface ModusWcSwitchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2910,10 +2918,21 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
+    interface HTMLModusWcStepperElementEventMap {
+        "stepClick": { index: number };
+    }
     /**
      * Used to show a list of steps in a process.
      */
     interface HTMLModusWcStepperElement extends Components.ModusWcStepper, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcStepperElementEventMap>(type: K, listener: (this: HTMLModusWcStepperElement, ev: ModusWcStepperCustomEvent<HTMLModusWcStepperElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcStepperElementEventMap>(type: K, listener: (this: HTMLModusWcStepperElement, ev: ModusWcStepperCustomEvent<HTMLModusWcStepperElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcStepperElement: {
         prototype: HTMLModusWcStepperElement;
@@ -4982,6 +5001,14 @@ declare namespace LocalJSX {
           * Custom CSS class to apply to the steps element.
          */
         "customClass"?: string;
+        /**
+          * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+         */
+        "interactive"?: boolean;
+        /**
+          * Emitted with the 0-based step index when a step is activated and `interactive` is true.
+         */
+        "onStepClick"?: (event: ModusWcStepperCustomEvent<{ index: number }>) => void;
         /**
           * The orientation of the steps.
          */
