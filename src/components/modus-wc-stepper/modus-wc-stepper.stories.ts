@@ -107,6 +107,9 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const Interactive: Story = {
+  args: {
+    interactive: true,
+  },
   parameters: {
     docs: {
       source: {
@@ -142,7 +145,7 @@ export const Interactive: Story = {
     },
   },
   // prettier-ignore
-  render: () => {
+  render: (args) => {
     const initialActiveIndex = 1;
     const interactiveSteps: IStepperItem[] = [
       { label: 'Scale' },
@@ -169,7 +172,7 @@ export const Interactive: Story = {
       <modus-wc-stepper
         id="interactive-stepper"
         orientation="horizontal"
-        interactive
+        ?interactive="${args.interactive ?? false}"
         .steps="${getInteractiveSteps(initialActiveIndex)}"
         @stepClick=${handleInteractiveStepClick}
       ></modus-wc-stepper>
