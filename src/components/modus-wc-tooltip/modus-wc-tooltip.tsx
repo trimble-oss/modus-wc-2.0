@@ -19,6 +19,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  *
  * The tooltip can be dismissed by pressing the Escape key when hovering over it.
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+ * Use the content slot to add rich HTML content to the tooltip such as multiline text.
+ * Slotted content is cloned into the tooltip and kept in sync when the slot DOM changes after mount.
+ * For plain dynamic text, prefer the content prop instead. The content prop is ignored when the content slot is used.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -28,6 +31,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export class ModusWcTooltip {
   private inheritedAttributes: Attributes = {};
   private popperInstance: PopperInstance | null = null;
+  private slotContentObserver: MutationObserver | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
 
@@ -114,12 +118,17 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
+    this.observeSlotContentChanges();
+
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
   }
 
   disconnectedCallback() {
+    this.slotContentObserver?.disconnect();
+    this.slotContentObserver = null;
+
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -336,6 +345,9 @@ export class ModusWcTooltip {
           {...this.inheritedAttributes}
         >
           <slot />
+        </div>
+        <div hidden class="modus-wc-tooltip-content-source">
+          <slot name="content" />
         </div>
       </Host>
     );

@@ -496,13 +496,52 @@ describe('modus-wc-tooltip', () => {
     tooltipComponent.tooltipElement = mockTooltipElement;
 
     tooltipComponent.content = 'Updated content';
-    // Manually trigger watch handler
-    tooltipComponent.handleContentChange('Updated content');
+    tooltipComponent.handleContentChange();
 
     expect(mockTooltipElement.textContent).toContain('Updated content');
     expect(
       mockTooltipElement.querySelector('.modus-wc-tooltip-arrow')
     ).not.toBeNull();
+  });
+
+  it('should update tooltip body when content prop changes on the host element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Original content"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    await page.waitForChanges();
+
+    if (page.root) {
+      page.root.content = 'Updated content';
+    }
+    await page.waitForChanges();
+
+    const tooltipContent = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tooltipContent?.textContent).toContain('Updated content');
+    expect(tooltipContent?.textContent).not.toContain('Original content');
+    expect(
+      tooltipContent?.querySelector('.modus-wc-tooltip-arrow')
+    ).not.toBeNull();
+  });
+
+  it('should use the first slotted child as the popper trigger element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `
+        <modus-wc-tooltip content="Test">
+          <button id="trigger-button">Hover</button>
+        </modus-wc-tooltip>
+      `,
+    });
+
+    await page.waitForChanges();
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+    const trigger = page.root?.querySelector('#trigger-button');
+
+    // @ts-expect-error - Access private property for testing
+    expect(tooltipComponent.triggerElement).toBe(trigger);
   });
 
   it('should set popover="manual" attribute on the tooltip element', async () => {
@@ -862,4 +901,477 @@ describe('modus-wc-tooltip', () => {
       globalThis.setTimeout = originalSetTimeout;
     }
   }, 30000);
+
+  describe('content slot', () => {
+    it('should clone slot content into the tooltip element on load', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-content">Rich content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('.slot-content')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Rich content');
+    });
+
+    it('should preserve id attributes on cloned slot nodes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="original-id" class="slot-clone">
+              <span id="child-id">Content</span>
+            </div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      const clonedRoot = tooltipContent?.querySelector('.slot-clone');
+
+      expect(clonedRoot?.getAttribute('id')).toBe('original-id');
+      expect(clonedRoot?.querySelector('#child-id')).not.toBeNull();
+      expect(page.root?.querySelector('#original-id')).not.toBeNull();
+    });
+
+    it('should keep the original slot node in the host after cloning', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" id="slot-original">Original</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      // Original stays in host with its id intact
+      expect(page.root?.querySelector('#slot-original')).not.toBeNull();
+    });
+
+    it('should clone all slot content nodes when multiple are provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-a">Line A</div>
+            <div slot="content" class="slot-b">Line B</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('.slot-a')).not.toBeNull();
+      expect(tooltipContent?.querySelector('.slot-b')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Line A');
+      expect(tooltipContent?.textContent).toContain('Line B');
+    });
+
+    it('should remove slot attribute from cloned nodes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-clone">Content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      const clonedNode = tooltipContent?.querySelector('.slot-clone');
+      expect(clonedNode?.getAttribute('slot')).toBeNull();
+    });
+
+    it('should prefer slot content over the content prop when both are provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Prop content">
+            <button>Trigger</button>
+            <div slot="content" class="slot-wins">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('.slot-wins')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Slot content');
+      expect(tooltipContent?.textContent).not.toContain('Prop content');
+    });
+
+    it('should not overwrite slot content when content prop changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Original prop">
+            <button>Trigger</button>
+            <div slot="content" class="slot-guard">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      tooltipComponent.content = 'Updated prop';
+      tooltipComponent.handleContentChange();
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('.slot-guard')).not.toBeNull();
+      expect(tooltipContent?.textContent).toContain('Slot content');
+      expect(tooltipContent?.textContent).not.toContain('Updated prop');
+    });
+
+    it('should render the hidden slot holder in the host element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const slotHolder = page.root?.querySelector(
+        '.modus-wc-tooltip-content-source'
+      );
+      expect(slotHolder).not.toBeNull();
+      expect(slotHolder?.hasAttribute('hidden')).toBe(true);
+    });
+
+    it('should fall back to content prop when no slot content is provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Fallback text');
+    });
+  });
+
+  describe('slot content MutationObserver', () => {
+    let originalMutationObserver: typeof MutationObserver;
+    let mutationCallback: MutationCallback;
+    let observeSpy: jest.Mock;
+    let disconnectSpy: jest.Mock;
+
+    beforeEach(() => {
+      originalMutationObserver = globalThis.MutationObserver;
+      observeSpy = jest.fn();
+      disconnectSpy = jest.fn();
+      globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+        mutationCallback = cb;
+        return {
+          observe: observeSpy,
+          disconnect: disconnectSpy,
+          takeRecords: jest.fn(),
+        };
+      }) as unknown as typeof MutationObserver;
+    });
+
+    afterEach(() => {
+      globalThis.MutationObserver = originalMutationObserver;
+    });
+
+    it('should set up MutationObserver on the content source in componentDidLoad', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const contentSource = page.root?.querySelector(
+        '.modus-wc-tooltip-content-source'
+      );
+      expect(globalThis.MutationObserver).toHaveBeenCalled();
+      expect(observeSpy).toHaveBeenCalledWith(contentSource, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: true,
+      });
+    });
+
+    it('should update tooltip when slot content text changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-dynamic">Original</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const slotNode = page.root!.querySelector('.slot-dynamic') as HTMLElement;
+      slotNode.textContent = 'Updated slot text';
+
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Updated slot text');
+      expect(tooltipContent?.textContent).not.toContain('Original');
+    });
+
+    it('should update tooltip when nested slot content changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-nested">
+              <span class="nested-line">Line one</span>
+            </div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const nestedLine = page.root!.querySelector(
+        '.nested-line'
+      ) as HTMLElement;
+      nestedLine.textContent = 'Line updated';
+
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.querySelector('.nested-line')?.textContent).toBe(
+        'Line updated'
+      );
+    });
+
+    it('should preserve arrow element when slot content is re-synced', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-dynamic">Original</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      const arrow = tooltipContent?.querySelector('.modus-wc-tooltip-arrow');
+      expect(arrow).not.toBeNull();
+
+      const slotNode = page.root!.querySelector('.slot-dynamic') as HTMLElement;
+      slotNode.textContent = 'Updated';
+
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      expect(
+        tooltipContent?.querySelector('.modus-wc-tooltip-arrow')
+      ).not.toBeNull();
+      expect(tooltipContent?.lastElementChild).toBe(arrow);
+      expect(tooltipContent?.textContent).toContain('Updated');
+    });
+
+    it('should fall back to content prop when slot content is removed', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Prop fallback">
+            <button>Trigger</button>
+            <div slot="content" id="removable-slot">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      page.root?.querySelector('#removable-slot')?.remove();
+
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Prop fallback');
+      expect(tooltipContent?.textContent).not.toContain('Slot content');
+    });
+
+    it('should allow content prop updates after slot content is removed', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Prop text">
+            <button>Trigger</button>
+            <div slot="content" id="removable-slot">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      page.root?.querySelector('#removable-slot')?.remove();
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      tooltipComponent.content = 'Updated prop';
+      tooltipComponent.handleContentChange();
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.textContent).toContain('Updated prop');
+      expect(tooltipContent?.textContent).not.toContain('Slot content');
+    });
+
+    it('should disconnect MutationObserver on disconnectedCallback', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      page.root?.remove();
+      expect(disconnectSpy).toHaveBeenCalled();
+    });
+
+    it('should not set up MutationObserver when MutationObserver is undefined', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (globalThis as any).MutationObserver = undefined;
+
+      await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Test">
+            <button>Trigger</button>
+            <div slot="content">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      expect(observeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should handle disconnectedCallback when no MutationObserver was created', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (globalThis as any).MutationObserver = undefined;
+
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      expect(() => page.root?.remove()).not.toThrow();
+    });
+
+    it('should no-op when syncTooltipContent is called without a tooltip element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Set private property for testing
+      tooltipComponent.tooltipElement = null;
+
+      // @ts-expect-error - Access private method for testing
+      expect(() => tooltipComponent.syncTooltipContent()).not.toThrow();
+    });
+
+    it('should not observe when content source element is missing', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip content="Test">
+            <button>Trigger</button>
+            <div slot="content">Slot content</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      observeSpy.mockClear();
+
+      jest
+        .spyOn(tooltipComponent.el, 'querySelector')
+        .mockReturnValueOnce(null);
+
+      // @ts-expect-error - Access private method for testing
+      tooltipComponent.observeSlotContentChanges();
+
+      expect(observeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should update popper when slot content is re-synced while visible', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <modus-wc-tooltip>
+            <button>Trigger</button>
+            <div slot="content" class="slot-dynamic">Original</div>
+          </modus-wc-tooltip>
+        `,
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      const mockUpdate = jest.fn().mockResolvedValue(undefined);
+
+      // @ts-expect-error - Set private properties for testing
+      tooltipComponent.isVisible = true;
+      // @ts-expect-error - Set private properties for testing
+      tooltipComponent.popperInstance = {
+        update: mockUpdate,
+        destroy: jest.fn(),
+      };
+
+      const slotNode = page.root!.querySelector('.slot-dynamic') as HTMLElement;
+      slotNode.textContent = 'Updated slot text';
+
+      mutationCallback([{} as MutationRecord], {} as MutationObserver);
+      await page.waitForChanges();
+
+      expect(mockUpdate).toHaveBeenCalled();
+    });
+  });
 });

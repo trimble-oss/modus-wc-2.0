@@ -30,7 +30,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
-\nThe component supports a \`<slot>\` for injecting custom tooltip content.
+ \nThe component supports a named \`slot="content"\` for rich HTML tooltip content such as multiline text. Slotted content is cloned on mount and stays in sync when the slot DOM changes later. For plain dynamic text, use the \`content\` prop instead. The default slot is used for the trigger content, and the \`content\` prop is ignored when the named content slot is used.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -198,7 +198,7 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - In 1.0 tooltip positioning was handled by Popper.js. In 2.0, positioning is handled using CSS.
+  - In 1.0, tooltip positioning was managed using Popper.js. In 2.0, tooltip positioning continues to be handled by Popper.js.
   - The \`text\` prop has been renamed to \`content\`.
 
 #### Prop Mapping
