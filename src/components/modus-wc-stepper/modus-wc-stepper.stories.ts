@@ -126,10 +126,9 @@ export const Interactive: Story = {
   ];
 
   const getSteps = (selectedIndex) =>
-    steps.map((step, index) => ({
-      ...step,
-      color: index <= selectedIndex ? 'primary' : 'neutral',
-    }));
+    steps.map((step, index) =>
+      index <= selectedIndex ? { ...step, color: 'primary' } : { ...step }
+    );
 
   const stepper = document.getElementById('interactive-stepper');
   stepper.steps = getSteps(activeIndex);
@@ -153,10 +152,9 @@ export const Interactive: Story = {
     ];
 
     const getInteractiveSteps = (activeIndex: number): IStepperItem[] =>
-      interactiveSteps.map((step, index) => ({
-        ...step,
-        color: index <= activeIndex ? 'primary' : 'neutral',
-      }));
+      interactiveSteps.map((step, index) =>
+        index <= activeIndex ? { ...step, color: 'primary' } : { ...step }
+      );
 
     const handleInteractiveStepClick = (
       event: CustomEvent<{ index: number }>,
