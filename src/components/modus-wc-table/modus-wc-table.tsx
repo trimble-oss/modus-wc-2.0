@@ -128,6 +128,9 @@ export class ModusWcTable {
   /** Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows. */
   @Prop() selectable?: 'none' | 'single' | 'multi' = 'none';
 
+  /** Per-row predicate function controlling row selection eligibility. */
+  @Prop() isRowSelectable?: (row: Record<string, unknown>) => boolean;
+
   /** Array of selected row IDs. Used for controlled selection state. */
   @Prop() selectedRowIds?: string[];
 
@@ -202,10 +205,22 @@ export class ModusWcTable {
   handleDataChange(newData: Record<string, unknown>[]) {
     if (this.table) {
       this.table.setOptions((prev) => ({ ...prev, data: [...newData] }));
+      this.sanitizeRowSelection();
     } else if (newData && this.columns) {
       // If table doesn't exist yet but we have both data and columns, initialize
       this.initializeTable();
     }
+  }
+
+  @Watch('isRowSelectable')
+  handleIsRowSelectableChange() {
+    if (!this.table) return;
+
+    this.table.setOptions((prev) => ({
+      ...prev,
+      enableRowSelection: this.getEnableRowSelection(),
+    }));
+    this.sanitizeRowSelection();
   }
 
   @Watch('columns')
@@ -248,8 +263,7 @@ export class ModusWcTable {
   handleSelectedRowIdsChange(newIds: string[] | undefined) {
     if (!this.table) return;
     if (Array.isArray(newIds)) {
-      const selection: RowSelectionState = {};
-      newIds.forEach((id) => (selection[id] = true));
+      const selection = this.buildEligibleSelection(newIds);
       this.internalRowSelection = selection;
       this.table.setRowSelection(selection);
     }
@@ -269,11 +283,9 @@ export class ModusWcTable {
       pageIndex: this.currentPage - 1,
       pageSize: this.pageSizeOptions[0],
     };
-    // Initialize row selection from selectedRowIds prop
-    const rowSelection: RowSelectionState = Object.fromEntries(
-      this.selectedRowIds?.map((id) => [id, true]) ?? []
-    );
-    if (rowSelection && Object.keys(rowSelection).length > 0) {
+    // Initialize row selection from selectedRowIds prop (eligible rows only)
+    const rowSelection = this.buildEligibleSelection(this.selectedRowIds);
+    if (Object.keys(rowSelection).length > 0) {
       this.internalRowSelection = rowSelection;
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -391,7 +403,7 @@ export class ModusWcTable {
       data: dataForTable, // Use the copied data
       columns: this.tanStackColumns,
       rowSelection: this.internalRowSelection,
-      enableRowSelection: this.selectable !== 'none',
+      enableRowSelection: this.getEnableRowSelection(),
       pagination: this.internalPagination,
       enableSorting: this.sortable,
       manualPagination: !this.paginated,
@@ -399,10 +411,7 @@ export class ModusWcTable {
       onSortingChange: this.handleSortingChange,
       onPaginationChange: this.handlePaginationChange,
       onRowSelectionChange: this.handleRowSelectionChange,
-      getRowId: (orig: Record<string, unknown>, idx) =>
-        orig && orig['id'] !== undefined && orig['id'] !== null
-          ? String(orig['id'] as string | number)
-          : String(idx),
+      getRowId: (orig, idx) => this.getRowIdForData(orig, idx),
     });
 
     // If we already have a sorting state, apply it immediately
@@ -430,9 +439,12 @@ export class ModusWcTable {
     rowObj: Row<Record<string, unknown>>,
     index: number
   ) => {
-    if (this.selectable !== 'none' && this.table) {
+    const isSelectable = this.checkIsRowSelectable(rowObj.original);
+
+    if (this.selectable !== 'none' && this.table && isSelectable) {
       this.toggleRowSelection(rowObj);
     }
+
     this.rowClick.emit({ row: rowObj.original, index });
   };
 
@@ -591,6 +603,85 @@ export class ModusWcTable {
   private isRowEditable(row: Record<string, unknown>): boolean {
     if (typeof this.editable === 'function') return this.editable(row);
     return Boolean(this.editable);
+  }
+
+  private checkIsRowSelectable(row: Record<string, unknown>): boolean {
+    if (typeof this.isRowSelectable === 'function') {
+      return this.isRowSelectable(row);
+    }
+    return true;
+  }
+
+  private getRowIdForData(orig: Record<string, unknown>, idx: number): string {
+    return orig && orig['id'] !== undefined && orig['id'] !== null
+      ? String(orig['id'] as string | number)
+      : String(idx);
+  }
+
+  private getEnableRowSelection():
+    | boolean
+    | ((row: Row<Record<string, unknown>>) => boolean) {
+    return this.selectable !== 'none'
+      ? (row) => this.checkIsRowSelectable(row.original)
+      : false;
+  }
+
+  private buildEligibleSelection(ids?: string[]): RowSelectionState {
+    if (!ids?.length) return {};
+
+    const selection: RowSelectionState = {};
+
+    ids.forEach((id) => {
+      if (this.table) {
+        try {
+          const rowInstance = this.table.getRow(id);
+          if (rowInstance && this.checkIsRowSelectable(rowInstance.original)) {
+            selection[id] = true;
+          }
+        } catch {
+          // Row id is not in the current table model — skip.
+        }
+        return;
+      }
+
+      if (this.data) {
+        const rowIndex = this.data.findIndex(
+          (row, index) => this.getRowIdForData(row, index) === id
+        );
+        if (rowIndex >= 0 && this.checkIsRowSelectable(this.data[rowIndex])) {
+          selection[id] = true;
+        }
+      }
+    });
+
+    return selection;
+  }
+
+  private sanitizeRowSelection(): void {
+    if (!this.table) return;
+
+    const currentSelections = { ...this.internalRowSelection };
+    let stateChanged = false;
+
+    Object.keys(currentSelections).forEach((id) => {
+      let rowInstance: Row<Record<string, unknown>> | undefined;
+      try {
+        rowInstance = this.table!.getRow(id);
+      } catch {
+        delete currentSelections[id];
+        stateChanged = true;
+        return;
+      }
+
+      if (!rowInstance || !this.checkIsRowSelectable(rowInstance.original)) {
+        delete currentSelections[id];
+        stateChanged = true;
+      }
+    });
+
+    if (stateChanged) {
+      this.table.setRowSelection(currentSelections);
+    }
   }
 
   /**
@@ -871,6 +962,7 @@ export class ModusWcTable {
                 {displayData.length > 0 ? (
                   rows.map((rowObj, index) => {
                     const row = rowObj.original;
+                    const isRowSelectable = this.checkIsRowSelectable(row);
 
                     return (
                       <tr
@@ -879,7 +971,8 @@ export class ModusWcTable {
                           selected:
                             !!this.internalRowSelection[String(rowObj.id)] ||
                             rowObj.getIsSelected?.(),
-                          selectable: this.selectable !== 'none',
+                          selectable:
+                            this.selectable !== 'none' && isRowSelectable,
                           editable: this.isRowEditable(row),
                         }}
                         onClick={() => this.handleRowClick(rowObj, index)}
@@ -893,6 +986,7 @@ export class ModusWcTable {
                               aria-label="Select row"
                               size="sm"
                               value={rowObj.getIsSelected?.() ?? false}
+                              disabled={!isRowSelectable}
                             ></modus-wc-checkbox>
                           </td>
                         )}

@@ -5,6 +5,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
+  Row,
   RowSelectionState,
   SortingState,
   Table as TanStackTable,
@@ -35,7 +36,7 @@ export function createModusTable<
   enableSorting?: boolean;
   manualSorting?: boolean;
   manualPagination?: boolean;
-  enableRowSelection?: boolean;
+  enableRowSelection?: boolean | ((row: Row<TData>) => boolean);
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void;
   getRowId?: (originalRow: TData, index: number, parent?: unknown) => string;
