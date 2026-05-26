@@ -2275,7 +2275,7 @@
               "name": "multiline",
               "fieldName": "multiline",
               "default": "false",
-              "description": "Whether the chip height can grow and the label can wrap across multiple lines.",
+              "description": "Whether the chip height can grow and its content can wrap across multiple lines.",
               "type": {
                 "text": "boolean"
               }
