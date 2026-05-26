@@ -1,4 +1,10 @@
-modus-wc-app-menu {
+modus-wc-app-menu.modus-wc-app-menu {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  text-align: start;
+  width: fit-content;
+
   .modus-wc-panel {
     box-shadow:
       0 10px 15px -3px rgb(0 0 0 / 0.1),
@@ -15,7 +21,7 @@ modus-wc-app-menu {
       scrollbar-gutter: stable;
     }
 
-    .menu-header {
+    .modus-wc-app-menu-header {
       align-content: center;
       align-items: center;
       align-self: stretch;
@@ -25,7 +31,7 @@ modus-wc-app-menu {
       min-height: var(--modus-wc-size-sm);
       padding: 0 var(--modus-wc-spacing-lg);
 
-      .header-title {
+      .modus-wc-app-menu-header-title {
         align-content: flex-start;
         align-items: flex-start;
         display: flex;
@@ -33,7 +39,7 @@ modus-wc-app-menu {
         flex-wrap: wrap;
       }
 
-      .header-end-content {
+      .modus-wc-app-menu-header-end-content {
         align-items: center;
         display: flex;
         gap: var(--modus-wc-spacing-sm);
@@ -44,7 +50,7 @@ modus-wc-app-menu {
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
     }
 
-    .app-menu-items {
+    .modus-wc-app-menu-items {
       padding: 0 var(--modus-wc-spacing-xs);
 
       li.modus-wc-menu-item-active,
@@ -53,32 +59,34 @@ modus-wc-app-menu {
         color: inherit;
       }
 
-      /* Keyboard focus lives on `.app-menu-item-row` (the row owns the tab
+      /* Keyboard focus lives on `.modus-wc-app-menu-item-row` (the row owns the tab
          stop and key handling). The inner menu-item paints its hover
          background on top of any outline placed on the row, so we paint
          the focus outline on the inner menu-item element instead. The
          second selector overrides the global menu-item hover rule
          (`outline: none`) so the ring stays visible while hovering. */
-      .app-menu-item-row:focus-visible {
+      .modus-wc-app-menu-item-row:focus-visible {
         outline: none;
       }
 
-      .app-menu-item-row:focus-visible modus-wc-menu-item .modus-wc-menu-item,
-      .app-menu-item-row:focus-visible
+      .modus-wc-app-menu-item-row:focus-visible
+        modus-wc-menu-item
+        .modus-wc-menu-item,
+      .modus-wc-app-menu-item-row:focus-visible
         modus-wc-menu-item
         .modus-wc-menu-item:hover {
         outline: 2px solid var(--modus-wc-color-primary);
         outline-offset: -2px;
       }
 
-      .app-menu-item-row {
+      .modus-wc-app-menu-item-row {
         align-items: center;
         display: flex;
         margin-inline: calc(-1 * var(--modus-wc-spacing-xs));
         max-width: 256px;
         position: relative;
 
-        .drag-icon {
+        .modus-wc-app-menu-drag-icon {
           color: var(--modus-wc-color-base-content);
           position: absolute;
           transform: translateX(-10%);
@@ -90,10 +98,10 @@ modus-wc-app-menu {
           min-width: 0;
         }
 
-        &.draggable-item {
+        &.modus-wc-app-menu-draggable-item {
           cursor: grab;
 
-          .drag-icon {
+          .modus-wc-app-menu-drag-icon {
             cursor: grab;
           }
 
@@ -179,7 +187,7 @@ modus-wc-app-menu {
           flex-shrink: 0;
           padding-inline-end: 0;
 
-          .app-logo {
+          .modus-wc-app-menu-app-logo {
             height: var(--modus-wc-input-height-sm);
             width: var(--modus-wc-input-height-sm);
           }
@@ -187,7 +195,7 @@ modus-wc-app-menu {
       }
     }
 
-    .grid-menu {
+    .modus-wc-app-menu-grid {
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -196,7 +204,7 @@ modus-wc-app-menu {
       width: fit-content;
     }
 
-    .grid-row {
+    .modus-wc-app-menu-grid-row {
       align-self: stretch;
       display: grid;
       gap: 0 var(--modus-wc-spacing-sm);
@@ -207,7 +215,7 @@ modus-wc-app-menu {
       justify-items: stretch;
     }
 
-    .grid-item {
+    .modus-wc-app-menu-grid-item {
       align-items: center;
       border-radius: var(--modus-wc-border-radius-sm);
       display: flex;
@@ -237,7 +245,7 @@ modus-wc-app-menu {
       }
     }
 
-    .grid-emblem {
+    .modus-wc-app-menu-grid-emblem {
       aspect-ratio: 1 / 1;
       flex: 1 0 0;
       min-height: var(--modus-wc-size-xs);
@@ -245,7 +253,7 @@ modus-wc-app-menu {
       width: var(--modus-wc-line-height-h0);
     }
 
-    .grid-item-text-label {
+    .modus-wc-app-menu-grid-item-label {
       align-self: stretch;
       -webkit-box-orient: vertical;
       color: var(--modus-wc-color-base-content);
@@ -257,7 +265,7 @@ modus-wc-app-menu {
       text-overflow: ellipsis;
     }
 
-    .draggable-item {
+    .modus-wc-app-menu-draggable-item {
       cursor: grab;
       transition: box-shadow 0.2s ease;
 
@@ -269,7 +277,7 @@ modus-wc-app-menu {
       }
     }
 
-    .grabbed-item {
+    .modus-wc-app-menu-grabbed-item {
       background-color: var(--modus-wc-color-base-200);
       box-shadow:
         0 4px 6px -1px rgb(0 0 0 / 0.1),
@@ -278,11 +286,11 @@ modus-wc-app-menu {
       outline-offset: -2px;
     }
 
-    .drag-source {
+    .modus-wc-app-menu-drag-source {
       opacity: 0.3;
     }
 
-    .drop-target {
+    .modus-wc-app-menu-drop-target {
       border-radius: var(--modus-wc-border-radius-sm);
       outline: 2px solid var(--modus-wc-color-primary);
       outline-offset: -2px;
