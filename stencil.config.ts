@@ -91,6 +91,22 @@ export const config: Config = {
         './integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
       valueAccessorConfigs: angularValueAccessorBindings,
     }),
+    angularOutputTarget({
+      componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
+      outputType: 'standalone',
+      directivesProxyFile:
+        './integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
+      valueAccessorConfigs: angularValueAccessorBindings,
+    }),
+    angularOutputTarget({
+      componentCorePackage: '@trimble-oss/moduswebcomponents',
+      customElementsDir: 'components',
+      outputType: 'standalone',
+      directivesProxyFile:
+        './integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
+      valueAccessorConfigs: angularValueAccessorBindings,
+    }),
     reactOutputTarget({
       customElementsDir: 'components',
       outDir: './integrations/react/stencil-generated',

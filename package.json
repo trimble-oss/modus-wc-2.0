@@ -108,7 +108,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
-    "@stencil/angular-output-target": "^0.10.2",
+    "@stencil/angular-output-target": "^1.3.1",
     "@stencil/core": "^4.35.3",
     "@stencil/react-output-target": "^1.2.0",
     "@stencil/sass": "^3.2.3",
@@ -280,7 +280,9 @@
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
-        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
       ]
     },
     "stencil:watch": {
