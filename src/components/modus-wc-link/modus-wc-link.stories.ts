@@ -9,6 +9,7 @@ interface LinkArgs {
     | 'tertiary'
     | 'inherit'
     | 'success'
+    | 'info'
     | 'warning'
     | 'danger';
   'custom-class'?: string;
@@ -35,6 +36,7 @@ const meta: Meta<LinkArgs> = {
         'tertiary',
         'inherit',
         'success',
+        'info',
         'warning',
         'danger',
       ],

@@ -29,6 +29,7 @@ export class ModusWcLink {
     | 'tertiary'
     | 'inherit'
     | 'success'
+    | 'info'
     | 'warning'
     | 'danger' = 'primary';
 

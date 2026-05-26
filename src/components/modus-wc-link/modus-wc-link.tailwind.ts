@@ -8,6 +8,7 @@ export const convertPropsToClasses = ({
     | 'tertiary'
     | 'inherit'
     | 'success'
+    | 'info'
     | 'warning'
     | 'danger';
   underline?: 'always' | 'hover' | 'none';

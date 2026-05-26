@@ -917,6 +917,7 @@ export namespace Components {
     | 'tertiary'
     | 'inherit'
     | 'success'
+    | 'info'
     | 'warning'
     | 'danger';
         /**
@@ -4243,6 +4244,7 @@ declare namespace LocalJSX {
     | 'tertiary'
     | 'inherit'
     | 'success'
+    | 'info'
     | 'warning'
     | 'danger';
         /**
