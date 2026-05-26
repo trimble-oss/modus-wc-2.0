@@ -493,6 +493,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Whether the chip height can grow and its content can wrap across multiple lines.
+         */
+        "multiline"?: boolean;
+        /**
           * The shape of the chip: 'rectangle' (default) or 'circle'.
          */
         "shape"?: 'rectangle' | 'circle';
@@ -3756,6 +3760,10 @@ declare namespace LocalJSX {
           * The label to display in the chip.
          */
         "label"?: string;
+        /**
+          * Whether the chip height can grow and its content can wrap across multiple lines.
+         */
+        "multiline"?: boolean;
         /**
           * Event emitted when the chip is clicked or activated via keyboard.
          */
