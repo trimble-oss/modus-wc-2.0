@@ -3783,15 +3783,6 @@
               }
             },
             {
-              "name": "title",
-              "fieldName": "title",
-              "default": "''",
-              "description": "Advisory information describing the link.",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
               "name": "underline",
               "fieldName": "underline",
               "default": "'always'",
