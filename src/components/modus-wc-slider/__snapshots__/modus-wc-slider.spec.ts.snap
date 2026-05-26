@@ -2,7 +2,7 @@
 
 exports[`modus-wc-slider renders with default props 1`] = `
 <modus-wc-slider value="0">
-  <input aria-label="Default slider" class="modus-wc-range modus-wc-range-md" type="range" value="0">
+  <input aria-label="Default slider" class="modus-wc-range modus-wc-range-md" id="mwc_id_0" type="range" value="0">
 </modus-wc-slider>
 `;
 

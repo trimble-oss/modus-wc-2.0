@@ -2,13 +2,13 @@
 
 exports[`modus-wc-checkbox renders with default props 1`] = `
 <modus-wc-checkbox class="modus-wc-checkbox-host">
-  <input aria-label="Default checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+  <input aria-label="Default checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" id="mwc_id_0" type="checkbox">
 </modus-wc-checkbox>
 `;
 
 exports[`modus-wc-checkbox should render indeterminate state 1`] = `
 <modus-wc-checkbox class="modus-wc-checkbox-host" indeterminate="">
-  <input aria-checked="mixed" aria-label="Test checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" type="checkbox">
+  <input aria-checked="mixed" aria-label="Test checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" id="mwc_id_3" type="checkbox">
 </modus-wc-checkbox>
 `;
 

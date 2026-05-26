@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcDate } from './modus-wc-date';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp, WeekStartDay } from '../types';
+import { expectLabelLinkedToControl } from '../utils';
+import { ModusWcDate } from './modus-wc-date';
 
 describe('modus-wc-date', () => {
   it('renders with default props', async () => {
@@ -37,6 +39,15 @@ describe('modus-wc-date', () => {
       ></modus-wc-date>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate, ModusWcInputLabel],
+      html: '<modus-wc-date label="Birth date" aria-label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="text"]');
   });
 
   it('should render with error feedback', async () => {
