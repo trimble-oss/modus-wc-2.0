@@ -351,10 +351,9 @@ export class ModusWcTable {
         ? updater(this.internalRowSelection)
         : updater;
 
-    // If uncontrolled, update internal state (do NOT call setRowSelection again – would recurse)
-    if (!this.selectedRowIds) {
-      this.internalRowSelection = { ...newSelection };
-    }
+    // Always mirror TanStack selection into @State so Stencil re-renders (controlled + uncontrolled).
+    // Do NOT call this.table.setRowSelection here — that would recurse into this handler.
+    this.internalRowSelection = { ...newSelection };
 
     const selectedRowIds = Object.keys(newSelection).filter(
       (id) => newSelection[id]
