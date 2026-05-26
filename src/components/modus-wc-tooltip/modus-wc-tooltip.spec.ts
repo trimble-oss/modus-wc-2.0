@@ -682,6 +682,144 @@ describe('modus-wc-tooltip', () => {
     expect(tooltipComponent.isVisible).toBe(true);
   });
 
+  describe('contentElement prop', () => {
+    it('should render contentElement inside the tooltip balloon when set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const richEl = document.createElement('span');
+      richEl.textContent = 'Rich content';
+
+      if (page.root) {
+        page.root.contentElement = richEl;
+      }
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.contains(richEl)).toBe(true);
+      expect(
+        tooltipContent?.querySelector('.modus-wc-tooltip-arrow')
+      ).not.toBeNull();
+      // Arrow must remain the last child
+      expect(tooltipContent?.lastElementChild?.className).toBe(
+        'modus-wc-tooltip-arrow'
+      );
+    });
+
+    it('should fall back to content string when contentElement is not set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      // No contentElement assigned — plain text should be present
+      expect(tooltipContent?.textContent).toContain('Fallback text');
+    });
+
+    it('should prefer contentElement over content string', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Plain text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const richEl = document.createElement('em');
+      richEl.textContent = 'Rich text';
+
+      if (page.root) {
+        page.root.contentElement = richEl;
+      }
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      // Rich element present, plain text NOT present as a bare text node
+      expect(tooltipContent?.contains(richEl)).toBe(true);
+      const textNodes = Array.from(tooltipContent?.childNodes ?? []).filter(
+        (n) => n.nodeType === Node.TEXT_NODE
+      );
+      expect(textNodes.every((n) => n.textContent === '')).toBe(true);
+    });
+
+    it('should ignore content string watch updates while contentElement is set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const richEl = document.createElement('span');
+      richEl.textContent = 'Rich';
+
+      if (page.root) {
+        page.root.contentElement = richEl;
+      }
+      await page.waitForChanges();
+
+      // Now change the content string — the watch should be suppressed
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      tooltipComponent.handleContentChange('Updated plain text');
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.contains(richEl)).toBe(true);
+      expect(tooltipContent?.textContent).not.toContain('Updated plain text');
+    });
+
+    it('should revert to content string when contentElement is cleared', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const richEl = document.createElement('b');
+      richEl.textContent = 'Bold content';
+
+      if (page.root) {
+        page.root.contentElement = richEl;
+      }
+      await page.waitForChanges();
+
+      const tooltipContent = page.body.querySelector(
+        '.modus-wc-tooltip-content'
+      );
+      expect(tooltipContent?.contains(richEl)).toBe(true);
+
+      // Clear contentElement
+      if (page.root) {
+        page.root.contentElement = undefined;
+      }
+      await page.waitForChanges();
+
+      expect(tooltipContent?.contains(richEl)).toBe(false);
+      expect(tooltipContent?.textContent).toContain('Fallback');
+    });
+
+    it('should do nothing in applyContentToTooltip when tooltipElement is null', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Set private property for testing
+      tooltipComponent.tooltipElement = null;
+
+      // Should not throw
+      expect(() => {
+        // @ts-expect-error - Access private method for testing
+        tooltipComponent.applyContentToTooltip();
+      }).not.toThrow();
+    });
+  });
+
   // Set a longer timeout for this test (30 seconds)
   it('should perform a second popper update after setTimeout in showTooltip', async () => {
     const originalSetTimeout = globalThis.setTimeout;

@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface TooltipArgs {
   content?: string;
+  contentElement?: HTMLElement;
   'custom-class'?: string;
   disabled?: boolean;
   'force-open'?: boolean;
@@ -49,6 +50,13 @@ export default meta;
 
 type Story = StoryObj<TooltipArgs>;
 
+const getContentElementScript = (element: HTMLElement) => `
+<script>
+  const richEl = document.createElement('${element?.tagName?.toLowerCase() ?? 'div'}');
+  richEl.innerHTML = \`${element?.innerHTML ?? ''}\`;
+  document.querySelector('modus-wc-tooltip').contentElement = richEl;
+</script>`;
+
 const Template: Story = {
   parameters: {
     actions: {
@@ -73,6 +81,49 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const WithContentElement: Story = {
+  parameters: {
+    actions: { handles: ['dismissEscape'] },
+    docs: {
+      description: {
+        story:
+          'Use `contentElement` to pass rich HTML into the tooltip balloon via property binding. `contentElement` takes precedence over the `content` string prop.',
+      },
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tooltip
+  position="${args.position ?? 'auto'}"
+>
+  <modus-wc-badge>Hover</modus-wc-badge>
+</modus-wc-tooltip>${getContentElementScript(args.contentElement as HTMLElement)}`,
+      },
+    },
+  },
+  args: {
+    contentElement: Object.assign(document.createElement('div'), {
+      innerHTML: '<strong>Tooltip</strong><p>Rich HTML content</p>',
+    }),
+    position: 'auto',
+  },
+  argTypes: {
+    contentElement: { table: { disable: true } },
+  },
+
+  // prettier-ignore
+  render: (args) => html`
+    <modus-wc-tooltip
+      .contentElement=${args.contentElement}
+      content=${ifDefined(args.content)}
+      custom-class="${ifDefined(args['custom-class'])}"
+      ?disabled="${args.disabled}"
+      ?force-open="${args['force-open']}"
+      tooltip-id="${ifDefined(args['tooltip-id'])}"
+      position=${ifDefined(args.position)}
+    >
+      <modus-wc-badge>Hover</modus-wc-badge>
+    </modus-wc-tooltip>
+  `,
+};
 
 export const ShadowDomParent: Story = {
   render: (args) => {

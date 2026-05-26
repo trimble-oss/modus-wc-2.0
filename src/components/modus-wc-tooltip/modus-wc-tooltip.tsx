@@ -34,8 +34,14 @@ export class ModusWcTooltip {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The text content of the tooltip. */
+  /** The text content of the tooltip. When contentElement is also set, contentElement takes precedence. */
   @Prop() content: string = '';
+
+  /**
+   * An optional rich HTML element to render as the tooltip body.
+   * When set, this takes precedence over the `content` string prop.
+   */
+  @Prop() contentElement?: HTMLElement;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -89,7 +95,6 @@ export class ModusWcTooltip {
 
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
-    this.tooltipElement.textContent = this.content;
     this.tooltipElement.setAttribute('role', 'tooltip');
     if (this.tooltipId) {
       this.tooltipElement.id = this.tooltipId;
@@ -99,6 +104,8 @@ export class ModusWcTooltip {
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
     this.tooltipElement.setAttribute('popover', 'manual');
+
+    this.applyContentToTooltip();
 
     document.body.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
@@ -132,6 +139,25 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  /** Precedence: contentElement (rich HTML) → content (plain string). Arrow is always kept last. */
+  private applyContentToTooltip() {
+    if (!this.tooltipElement) return;
+    const arrow = this.tooltipElement.querySelector('.modus-wc-tooltip-arrow');
+    Array.from(this.tooltipElement.childNodes).forEach((node) => {
+      if (node !== arrow) {
+        this.tooltipElement!.removeChild(node);
+      }
+    });
+    if (this.contentElement) {
+      this.tooltipElement.insertBefore(this.contentElement, arrow);
+    } else {
+      this.tooltipElement.insertBefore(
+        document.createTextNode(this.content),
+        arrow
+      );
+    }
   }
 
   private initializePopper() {
@@ -261,6 +287,8 @@ export class ModusWcTooltip {
 
   @Watch('content')
   handleContentChange(newContent: string) {
+    // contentElement takes precedence; ignore plain-string updates while it is set
+    if (this.contentElement) return;
     if (this.tooltipElement) {
       const arrow = this.tooltipElement.querySelector(
         '.modus-wc-tooltip-arrow'
@@ -270,6 +298,11 @@ export class ModusWcTooltip {
         this.tooltipElement.appendChild(arrow);
       }
     }
+  }
+
+  @Watch('contentElement')
+  handleContentElementChange() {
+    this.applyContentToTooltip();
   }
 
   @Watch('forceOpen')
