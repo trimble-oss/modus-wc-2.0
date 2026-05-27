@@ -21,6 +21,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
  * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
  * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+ * Note: contentElement is moved into the body-mounted tooltip (not cloned), so pass a detached element dedicated to this tooltip.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -42,6 +43,7 @@ export class ModusWcTooltip {
   /**
    * An optional rich HTML element to render as the tooltip body.
    * When set, this takes precedence over the `content` string prop.
+   * The provided element is moved into the tooltip container (not cloned).
    */
   @Prop() contentElement?: HTMLElement;
 

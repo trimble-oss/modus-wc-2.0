@@ -34,7 +34,7 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
- \nThe component supports a \`contentElement\` prop for rich HTML tooltip content such as multiline text. When set, \`contentElement\` takes precedence over the \`content\` string prop. The default slot is used for the trigger element.
+ \nThe component supports a \`contentElement\` prop for rich HTML tooltip content such as multiline text. When set, \`contentElement\` takes precedence over the \`content\` string prop. The provided element is moved into the tooltip (not cloned), so pass a detached element dedicated to this tooltip. The default slot is used for the trigger element.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -78,7 +78,7 @@ export const WithContentElement: Story = {
     docs: {
       description: {
         story:
-          'Use `contentElement` to pass a rich HTML element as the tooltip body. `contentElement` takes precedence over the `content` string prop.',
+          'Use `contentElement` to pass a rich HTML element as the tooltip body. `contentElement` takes precedence over the `content` string prop, and the provided element is moved into the tooltip (not cloned).',
       },
       source: {
         transform: (_src, { args }) => `<modus-wc-tooltip
