@@ -11,6 +11,7 @@ import { Density } from '../types';
 interface TableStoryArgs {
   'custom-class'?: string;
   'current-page'?: number;
+  'is-row-selectable'?: (row: Record<string, unknown>) => boolean;
   'page-size-options'?: number[];
   'selected-row-ids'?: string[];
   'show-page-size-selector'?: boolean;
@@ -162,6 +163,14 @@ const meta: Meta<TableStoryArgs> = {
         'Enable cell editing. Either a boolean (all rows) or a predicate per row.',
       defaultValue: false,
     },
+    'is-row-selectable': {
+      control: false,
+      description:
+        'Per-row predicate function controlling row selection eligibility.',
+      table: {
+        type: { summary: '(row: Record<string, unknown>) => boolean' },
+      },
+    },
   },
 };
 
@@ -211,6 +220,76 @@ const createDemoData = (count = 5): Record<string, any>[] => {
   }
   return data;
 };
+
+const createStatusColumns = (): ITableColumn[] => [
+  {
+    id: 'id',
+    header: 'ID',
+    accessor: 'id',
+    width: '60px',
+  },
+  {
+    id: 'name',
+    header: 'Name',
+    accessor: 'name',
+    width: '140px',
+  },
+  {
+    id: 'email',
+    header: 'Email',
+    accessor: 'email',
+  },
+  {
+    id: 'status',
+    header: 'Status',
+    accessor: 'status',
+    width: '120px',
+    cellRenderer: (value) => {
+      const span = document.createElement('span');
+      const label = typeof value === 'string' ? value : '';
+      span.textContent = label;
+      span.style.fontWeight = label === 'Locked' ? '600' : '400';
+      span.style.color =
+        label === 'Locked'
+          ? 'var(--modus-wc-color-danger, #da212c)'
+          : 'var(--modus-wc-color-base-content, inherit)';
+      return span;
+    },
+  },
+];
+
+const createStatusSelectionData = (): Record<string, unknown>[] => [
+  {
+    id: '1',
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    status: 'Active',
+  },
+  {
+    id: '2',
+    name: 'Jane Smith',
+    email: 'jane.smith@example.com',
+    status: 'Locked',
+  },
+  {
+    id: '3',
+    name: 'Bob Johnson',
+    email: 'bob.johnson@example.com',
+    status: 'Active',
+  },
+  {
+    id: '4',
+    name: 'Carol White',
+    email: 'carol.white@example.com',
+    status: 'Locked',
+  },
+  {
+    id: '5',
+    name: 'David Lee',
+    email: 'david.lee@example.com',
+    status: 'Active',
+  },
+];
 
 export const Default: Story = {
   render: (args) => {
@@ -602,6 +681,115 @@ export const CheckBoxRowSelection: Story = {
   },
   args: {
     density: 'comfortable',
+    selectable: 'multi',
+  },
+};
+
+export const PartialRowSelection: Story = {
+  render: (args) => {
+    const columns = createStatusColumns();
+    const data = createStatusSelectionData();
+    const statusOptions = [
+      { label: 'Active', value: 'Active' },
+      { label: 'Locked', value: 'Locked' },
+    ];
+
+    return html`
+      <style>
+        .partial-select {
+          margin-bottom: var(--modus-wc-size-xl);
+          max-width: fit-content;
+        }
+      </style>
+      <modus-wc-select
+        custom-class="partial-select"
+        id="partial-row-status-select"
+        label="Non-selectable rows"
+        .options=${statusOptions}
+        value="Locked"
+      ></modus-wc-select>
+      <modus-wc-table
+        id="partial-row-selection-table"
+        .columns=${columns}
+        .data=${data}
+        .density=${args.density}
+        .hover=${args.hover ?? true}
+        .sortable=${args.sortable}
+        .paginated=${args.paginated}
+        .showPageSizeSelector=${args['show-page-size-selector']}
+        .customClass=${args['custom-class']}
+        .selectable=${args.selectable}
+        .zebra=${args.zebra}
+        .currentPage=${args['current-page']}
+        .pageSizeOptions=${args['page-size-options']}
+        .selectedRowIds=${args['selected-row-ids']}
+        caption="Team members with partial row selection"
+        @rowClick=${action('rowClick')}
+        @rowSelectionChange=${action('rowSelectionChange')}
+      ></modus-wc-table>
+      <script>
+        (() => {
+          const select = document.getElementById('partial-row-status-select');
+          const table = document.getElementById('partial-row-selection-table');
+          if (!select || !table) {
+            return;
+          }
+
+          const applyIsRowSelectable = () => {
+            const status = select.value || 'Locked';
+            table.isRowSelectable = (row) => row.status !== status;
+          };
+
+          select.addEventListener('inputChange', applyIsRowSelectable);
+          applyIsRowSelectable();
+        })();
+      </script>
+    `;
+  },
+  parameters: {
+    controls: {
+      include: [
+        'selectable',
+        'selected-row-ids',
+        'density',
+        'hover',
+        'sortable',
+        'zebra',
+      ],
+    },
+    docs: {
+      description: {
+        story: `
+Use \`isRowSelectable\` to control which rows can be selected when \`selectable\` is \`single\` or \`multi\`.
+
+**Type:** \`(row: Record<string, unknown>) => boolean\`
+
+**Default:** All rows are selectable when the prop is omitted.
+
+**Usage:**
+
+\`\`\`js
+table.isRowSelectable = (row) => row.status !== 'Locked';
+\`\`\`
+
+Return \`true\` when the row may be selected; return \`false\` to disable its selection checkbox. Ineligible rows stay interactive—cell clicks and \`rowClick\` still work, but row clicks do not toggle selection. Select-all and \`selectedRowIds\` ignore ineligible rows automatically.
+
+Storybook Controls cannot edit function props, so this story uses a **Non-selectable status** dropdown to pick which status is excluded (\`Active\` or \`Locked\`). That maps to:
+
+\`\`\`js
+isRowSelectable = (row) => row.status !== selectedStatus;
+\`\`\`
+
+Use Controls for **selectable** mode and **selected-row-ids**.
+        `,
+      },
+    },
+  },
+  args: {
+    density: 'comfortable',
+    hover: true,
+    sortable: true,
+    paginated: false,
     selectable: 'multi',
   },
 };

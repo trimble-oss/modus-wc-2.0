@@ -102,7 +102,7 @@ describe('modus-wc-app-menu', () => {
   it('should render header with "Trimble Apps" title when not in edit mode', async () => {
     const page = await createPage({ apps: mockApps });
     const headerTitle = page.root?.querySelector(
-      '.header-title modus-wc-typography'
+      '.modus-wc-app-menu-header-title modus-wc-typography'
     );
     expect(headerTitle?.getAttribute('label')).toBe('Trimble Apps');
   });
@@ -110,7 +110,7 @@ describe('modus-wc-app-menu', () => {
   it('should render header with "Edit" title when in edit mode', async () => {
     const { page } = await createEditModePage({ apps: mockApps });
     const headerTitle = page.root?.querySelector(
-      '.header-title modus-wc-typography'
+      '.modus-wc-app-menu-header-title modus-wc-typography'
     );
     expect(headerTitle?.getAttribute('label')).toBe('Edit');
   });
@@ -119,7 +119,7 @@ describe('modus-wc-app-menu', () => {
     const page = await createPage({ apps: mockApps });
 
     const editButton = page.root?.querySelector(
-      '.header-end-content modus-wc-button'
+      '.modus-wc-app-menu-header-end-content modus-wc-button'
     );
     expect(editButton).not.toBeNull();
     expect(editButton?.getAttribute('shape')).toBe('square');
@@ -132,7 +132,9 @@ describe('modus-wc-app-menu', () => {
     const { page } = await createEditModePage({ apps: mockApps });
 
     const buttons = Array.from(
-      page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
+      page.root?.querySelectorAll(
+        '.modus-wc-app-menu-header-end-content modus-wc-button'
+      ) || []
     );
     expect(buttons.length).toBe(2);
 
@@ -155,14 +157,6 @@ describe('modus-wc-app-menu', () => {
     expect(menuItems?.length).toBe(0);
   });
 
-  it('should render with inherited aria attributes', async () => {
-    const page = await createPage({
-      'aria-label': 'App menu',
-      apps: mockApps,
-    });
-    expect(page.root?.getAttribute('aria-label')).toBe('App menu');
-  });
-
   it('should render list layout with menu items and logos', async () => {
     const page = await createPage({ apps: mockApps, layout: 'list' });
 
@@ -178,7 +172,9 @@ describe('modus-wc-app-menu', () => {
   it('should render grid layout with all items', async () => {
     const page = await createPage({ apps: mockApps, layout: 'grid' });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     expect(gridItems?.length).toBe(4);
 
     const logos = page.root?.querySelectorAll('modus-wc-logo');
@@ -197,7 +193,9 @@ describe('modus-wc-app-menu', () => {
   it('should wrap grid layout labels with modus-wc-tooltip', async () => {
     const page = await createPage({ apps: mockApps, layout: 'grid' });
 
-    const tooltips = page.root?.querySelectorAll('.grid-item modus-wc-tooltip');
+    const tooltips = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item modus-wc-tooltip'
+    );
     expect(tooltips?.length).toBe(4);
     expect(tooltips?.[0]?.getAttribute('content')).toBe('Trimble Connect');
     expect(tooltips?.[1]?.getAttribute('content')).toBe('Viewpoint');
@@ -221,10 +219,12 @@ describe('modus-wc-app-menu', () => {
     async ({ scrollWidth, clientWidth, expectedTruncated }) => {
       const page = await createPage({ apps: mockApps, layout: 'grid' });
 
-      const gridItems = page.root?.querySelectorAll('.grid-item');
+      const gridItems = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-grid-item'
+      );
       gridItems?.forEach((gridItem) => {
         const mockLabel = document.createElement('span');
-        mockLabel.classList.add('grid-item-text-label');
+        mockLabel.classList.add('modus-wc-app-menu-grid-item-label');
         Object.defineProperty(mockLabel, 'scrollWidth', {
           value: scrollWidth,
         });
@@ -241,7 +241,7 @@ describe('modus-wc-app-menu', () => {
       await page.waitForChanges();
 
       const tooltips = page.root?.querySelectorAll(
-        '.grid-item modus-wc-tooltip'
+        '.modus-wc-app-menu-grid-item modus-wc-tooltip'
       );
       tooltips?.forEach((tooltip) => {
         expect(tooltip.getAttribute('disabled')).toBe(
@@ -255,7 +255,7 @@ describe('modus-wc-app-menu', () => {
     const page = await createPage({ apps: mockApps, layout: 'grid' });
 
     const labels = page.root?.querySelectorAll(
-      '.grid-item modus-wc-typography'
+      '.modus-wc-app-menu-grid-item modus-wc-typography'
     );
     expect(labels?.[0]?.getAttribute('label')).toBe('Trimble Connect');
     expect(labels?.[1]?.getAttribute('label')).toBe('Viewpoint');
@@ -278,13 +278,15 @@ describe('modus-wc-app-menu', () => {
     });
 
     const dragIcons = page.root?.querySelectorAll(
-      '.app-menu-item-row modus-wc-icon[name="drag_indicator"]'
+      '.modus-wc-app-menu-item-row modus-wc-icon[name="drag_indicator"]'
     );
     expect(dragIcons?.length).toBe(4);
 
-    const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
+    const itemRows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
     itemRows?.forEach((row) => {
-      expect(row.classList.contains('draggable-item')).toBe(true);
+      expect(row.classList.contains('modus-wc-app-menu-draggable-item')).toBe(
+        true
+      );
     });
   });
 
@@ -304,13 +306,17 @@ describe('modus-wc-app-menu', () => {
     });
 
     const dragIcons = page.root?.querySelectorAll(
-      '.grid-item modus-wc-icon[name="drag_indicator"]'
+      '.modus-wc-app-menu-grid-item modus-wc-icon[name="drag_indicator"]'
     );
     expect(dragIcons?.length).toBe(4);
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     gridItems?.forEach((item) => {
-      expect(item.classList.contains('draggable-item')).toBe(true);
+      expect(item.classList.contains('modus-wc-app-menu-draggable-item')).toBe(
+        true
+      );
     });
   });
 
@@ -551,7 +557,7 @@ describe('modus-wc-app-menu', () => {
       layout: 'list',
     });
 
-    const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
+    const itemRows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
     itemRows?.forEach((row) => {
       expect(row.getAttribute('draggable')).toBe('true');
     });
@@ -563,7 +569,9 @@ describe('modus-wc-app-menu', () => {
       layout: 'grid',
     });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     gridItems?.forEach((item) => {
       expect(item.getAttribute('draggable')).toBe('true');
     });
@@ -582,7 +590,9 @@ describe('modus-wc-app-menu', () => {
 
   it('should render empty grid when apps is empty', async () => {
     const page = await createPage({ apps: [], layout: 'grid' });
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     expect(gridItems?.length).toBe(0);
   });
 
@@ -592,7 +602,9 @@ describe('modus-wc-app-menu', () => {
     const logos = page.root?.querySelectorAll('modus-wc-logo');
     logos?.forEach((logo) => {
       expect(logo.hasAttribute('emblem')).toBe(true);
-      expect(logo.getAttribute('custom-class')).toBe('app-logo');
+      expect(logo.getAttribute('custom-class')).toBe(
+        'modus-wc-app-menu-app-logo'
+      );
     });
   });
 
@@ -602,7 +614,9 @@ describe('modus-wc-app-menu', () => {
     const logos = page.root?.querySelectorAll('modus-wc-logo');
     logos?.forEach((logo) => {
       expect(logo.hasAttribute('emblem')).toBe(true);
-      expect(logo.getAttribute('custom-class')).toBe('grid-emblem');
+      expect(logo.getAttribute('custom-class')).toBe(
+        'modus-wc-app-menu-grid-emblem'
+      );
     });
   });
 
@@ -616,19 +630,21 @@ describe('modus-wc-app-menu', () => {
 
     const bodySlot = page.root?.querySelector('[slot="body"]');
     expect(bodySlot).not.toBeNull();
-    expect(bodySlot?.querySelector('.menu-header')).not.toBeNull();
+    expect(bodySlot?.querySelector('.modus-wc-app-menu-header')).not.toBeNull();
   });
 
-  it('should render header-end-content container', async () => {
+  it('should render modus-wc-app-menu-header-end-content container', async () => {
     const page = await createPage({ apps: mockApps });
-    expect(page.root?.querySelector('.header-end-content')).not.toBeNull();
+    expect(
+      page.root?.querySelector('.modus-wc-app-menu-header-end-content')
+    ).not.toBeNull();
   });
 
   it('should enter edit mode when edit button fires buttonClick', async () => {
     const page = await createPage({ apps: mockApps });
 
     const editButton = page.root?.querySelector(
-      '.header-end-content modus-wc-button'
+      '.modus-wc-app-menu-header-end-content modus-wc-button'
     ) as HTMLElement;
     dispatchModusWcButtonClick(editButton);
     await page.waitForChanges();
@@ -644,7 +660,9 @@ describe('modus-wc-app-menu', () => {
     page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const buttons = Array.from(
-      page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
+      page.root?.querySelectorAll(
+        '.modus-wc-app-menu-header-end-content modus-wc-button'
+      ) || []
     );
     const doneButton = buttons.find(
       (btn) => btn.textContent?.trim() === 'Done'
@@ -665,7 +683,9 @@ describe('modus-wc-app-menu', () => {
     page.root?.addEventListener('itemsOrderChange', orderChangeSpy);
 
     const buttons = Array.from(
-      page.root?.querySelectorAll('.header-end-content modus-wc-button') || []
+      page.root?.querySelectorAll(
+        '.modus-wc-app-menu-header-end-content modus-wc-button'
+      ) || []
     );
     const cancelButton = buttons.find(
       (btn) => btn.textContent?.trim() === 'Cancel'
@@ -683,7 +703,7 @@ describe('modus-wc-app-menu', () => {
       layout: 'list',
     });
 
-    const itemRows = page.root?.querySelectorAll('.app-menu-item-row');
+    const itemRows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
     const firstItem = itemRows?.[0] as HTMLElement;
 
     const dragStartEvent = dragEvt('dragstart') as DragEvent;
@@ -700,29 +720,15 @@ describe('modus-wc-app-menu', () => {
     secondItem?.dispatchEvent(dragEvt('drop'));
   });
 
-  it('should trigger drag handlers on list container via DOM events', async () => {
-    const { page, component } = await createEditModePage({
-      apps: cloneApps(),
-      layout: 'list',
-    });
-
-    component.draggedItemPos = { appIndex: 0 };
-
-    const container = page.root?.querySelector(
-      '.app-menu-items'
-    ) as HTMLElement;
-
-    container?.dispatchEvent(dragEvt('dragover'));
-    container?.dispatchEvent(dragEvt('drop'));
-  });
-
   it('should trigger drag handlers on grid layout items via DOM events', async () => {
     const { page, component } = await createEditModePage({
       apps: cloneApps(),
       layout: 'grid',
     });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     const firstItem = gridItems?.[0] as HTMLElement;
 
     const dragStartEvent = dragEvt('dragstart') as DragEvent;
@@ -752,7 +758,9 @@ describe('modus-wc-app-menu', () => {
 
     component.draggedItemPos = { appIndex: 0 };
 
-    const gridMenu = page.root?.querySelector('.grid-menu') as HTMLElement;
+    const gridMenu = page.root?.querySelector(
+      '.modus-wc-app-menu-grid'
+    ) as HTMLElement;
 
     const dragOverEvent = dragEvt('dragover');
     gridMenu?.dispatchEvent(dragOverEvent);
@@ -770,7 +778,9 @@ describe('modus-wc-app-menu', () => {
 
       expect(page.root).not.toBeNull();
       if (layout === 'grid') {
-        expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(0);
+        expect(
+          page.root?.querySelectorAll('.modus-wc-app-menu-grid-item')?.length
+        ).toBe(0);
       }
     }
   );
@@ -779,12 +789,16 @@ describe('modus-wc-app-menu', () => {
     const page = await createPage({ apps: mockApps, layout: 'grid' });
     const component = page.rootInstance as ModusWcAppMenu;
 
-    expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(4);
+    expect(
+      page.root?.querySelectorAll('.modus-wc-app-menu-grid-item')?.length
+    ).toBe(4);
 
     component.apps = undefined;
     await page.waitForChanges();
 
-    expect(page.root?.querySelectorAll('.grid-item')?.length).toBe(0);
+    expect(
+      page.root?.querySelectorAll('.modus-wc-app-menu-grid-item')?.length
+    ).toBe(0);
   });
 
   it('should grab an item on Space key in edit mode', async () => {
@@ -919,7 +933,7 @@ describe('modus-wc-app-menu', () => {
     expect(component.grabbedItemPos).toBeNull();
   });
 
-  it('should add grabbed-item class when item is grabbed', async () => {
+  it('should add modus-wc-app-menu-grabbed-item class when item is grabbed', async () => {
     const { page, component } = await createEditModePage({
       apps: cloneApps(),
       layout: 'list',
@@ -928,32 +942,34 @@ describe('modus-wc-app-menu', () => {
     component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
 
-    const firstRow = page.root?.querySelector('.app-menu-item-row');
-    expect(firstRow?.classList.contains('grabbed-item')).toBe(true);
+    const firstRow = page.root?.querySelector('.modus-wc-app-menu-item-row');
+    expect(firstRow?.classList.contains('modus-wc-app-menu-grabbed-item')).toBe(
+      true
+    );
   });
 
   it.each([
     {
       layout: 'list' as const,
-      selector: '.app-menu-item-row',
+      selector: '.modus-wc-app-menu-item-row',
       editMode: true,
       expected: '0',
     },
     {
       layout: 'list' as const,
-      selector: '.app-menu-item-row',
+      selector: '.modus-wc-app-menu-item-row',
       editMode: false,
       expected: '-1',
     },
     {
       layout: 'grid' as const,
-      selector: '.grid-item',
+      selector: '.modus-wc-app-menu-grid-item',
       editMode: true,
       expected: '0',
     },
     {
       layout: 'grid' as const,
-      selector: '.grid-item',
+      selector: '.modus-wc-app-menu-grid-item',
       editMode: false,
       expected: '0',
     },
@@ -1141,8 +1157,8 @@ describe('modus-wc-app-menu', () => {
   );
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
   ])(
     'should trigger handleKeyDown on $layout item via DOM keydown event',
     async ({ layout, selector }) => {
@@ -1164,7 +1180,9 @@ describe('modus-wc-app-menu', () => {
       layout: 'grid',
     });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     if (gridItems && gridItems.length >= 4) {
       [0, 0, 100, 100].forEach((top, i) => {
         Object.defineProperty(gridItems[i], 'offsetTop', { value: top });
@@ -1239,8 +1257,8 @@ describe('modus-wc-app-menu', () => {
   }
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
   ])(
     'should release grabbedItemPos on $layout row when focus moves to a sibling row',
     async ({ layout, selector }) => {
@@ -1273,7 +1291,7 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     const grabbedRow = page.root?.querySelector(
-      '.app-menu-item-row'
+      '.modus-wc-app-menu-item-row'
     ) as HTMLElement;
     const innerChild = grabbedRow.querySelector(
       'modus-wc-menu-item'
@@ -1295,7 +1313,7 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     const otherRow = page.root?.querySelectorAll(
-      '.app-menu-item-row'
+      '.modus-wc-app-menu-item-row'
     )[0] as HTMLElement;
     otherRow.dispatchEvent(focusOutEventTo(null));
     await page.waitForChanges();
@@ -1317,7 +1335,7 @@ describe('modus-wc-app-menu', () => {
   it('should render grid items with correct aria attributes in non-edit mode', async () => {
     const page = await createPage({ apps: cloneApps(), layout: 'grid' });
 
-    const gridItem = page.root?.querySelector('.grid-item');
+    const gridItem = page.root?.querySelector('.modus-wc-app-menu-grid-item');
     expect(gridItem?.getAttribute('aria-roledescription')).toBeNull();
     expect(gridItem?.getAttribute('role')).toBe('listitem');
   });
@@ -1331,7 +1349,7 @@ describe('modus-wc-app-menu', () => {
     component.grabbedItemPos = { appIndex: 0 };
     await page.waitForChanges();
 
-    const firstItem = page.root?.querySelector('.grid-item');
+    const firstItem = page.root?.querySelector('.modus-wc-app-menu-grid-item');
     expect(firstItem?.getAttribute('draggable')).toBe('true');
     expect(firstItem?.getAttribute('aria-roledescription')).toBe(
       'reorderable item'
@@ -1373,26 +1391,26 @@ describe('modus-wc-app-menu', () => {
       layout: 'list',
     });
 
-    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
     rows?.forEach((row) => {
       expect(row.getAttribute('role')).toBe('option');
       expect(row.getAttribute('aria-roledescription')).toBe('reorderable item');
     });
   });
 
-  it('should render grid-row with role="listbox" in edit mode', async () => {
+  it('should render modus-wc-app-menu-grid-row with role="listbox" in edit mode', async () => {
     const { page } = await createEditModePage({
       apps: mockApps,
       layout: 'grid',
     });
 
-    const gridRow = page.root?.querySelector('.grid-row');
+    const gridRow = page.root?.querySelector('.modus-wc-app-menu-grid-row');
     expect(gridRow?.getAttribute('role')).toBe('listbox');
   });
 
-  it('should render grid-row with role="list" when not in edit mode', async () => {
+  it('should render modus-wc-app-menu-grid-row with role="list" when not in edit mode', async () => {
     const page = await createPage({ apps: mockApps, layout: 'grid' });
-    const gridRow = page.root?.querySelector('.grid-row');
+    const gridRow = page.root?.querySelector('.modus-wc-app-menu-grid-row');
     expect(gridRow?.getAttribute('role')).toBe('list');
   });
 
@@ -1440,7 +1458,9 @@ describe('modus-wc-app-menu', () => {
       (component as any).isEditMode = true;
       await page.waitForChanges();
 
-      const gridItems = page.root?.querySelectorAll('.grid-item');
+      const gridItems = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-grid-item'
+      );
       if (gridItems && gridItems.length >= 6) {
         [0, 0, 0, 100, 100, 100].forEach((top, i) => {
           Object.defineProperty(gridItems[i], 'offsetTop', { value: top });
@@ -1506,8 +1526,8 @@ describe('modus-wc-app-menu', () => {
   });
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
   ])(
     'should trigger onDragEnd on $layout item via DOM event',
     async ({ layout, selector }) => {
@@ -1528,8 +1548,8 @@ describe('modus-wc-app-menu', () => {
   );
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
   ])(
     'should trigger onDragEnter on $layout item via DOM event',
     async ({ layout, selector }) => {
@@ -1762,10 +1782,10 @@ describe('modus-wc-app-menu', () => {
   );
 
   it.each([
-    { layout: 'grid' as const, selector: '.grid-item' },
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
   ])(
-    'should render $layout layout with grabbed and drop-target classes',
+    'should render $layout layout with grabbed and modus-wc-app-menu-drop-target classes',
     async ({ layout, selector }) => {
       const { page, component } = await createEditModePage({
         apps: cloneApps(),
@@ -1777,14 +1797,18 @@ describe('modus-wc-app-menu', () => {
       await page.waitForChanges();
 
       const items = page.root?.querySelectorAll(selector);
-      expect(items?.[0]?.classList.contains('grabbed-item')).toBe(true);
-      expect(items?.[1]?.classList.contains('drop-target')).toBe(true);
+      expect(
+        items?.[0]?.classList.contains('modus-wc-app-menu-grabbed-item')
+      ).toBe(true);
+      expect(
+        items?.[1]?.classList.contains('modus-wc-app-menu-drop-target')
+      ).toBe(true);
     }
   );
 
   it.each([
-    { layout: 'list' as const, containerSelector: '.app-menu-items' },
-    { layout: 'grid' as const, containerSelector: '.grid-menu' },
+    { layout: 'list' as const, containerSelector: '.modus-wc-app-menu-items' },
+    { layout: 'grid' as const, containerSelector: '.modus-wc-app-menu-grid' },
   ])(
     'should handle onDrop on $layout container when draggedItemPos is null',
     async ({ layout, containerSelector }) => {
@@ -1805,10 +1829,10 @@ describe('modus-wc-app-menu', () => {
   );
 
   it.each([
-    { layout: 'grid' as const, selector: '.grid-item' },
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
   ])(
-    'should apply drag-source class to the dragged item in $layout layout',
+    'should apply modus-wc-app-menu-drag-source class to the dragged item in $layout layout',
     async ({ layout, selector }) => {
       const { page, component } = await createEditModePage({
         apps: cloneApps(),
@@ -1819,14 +1843,18 @@ describe('modus-wc-app-menu', () => {
       await page.waitForChanges();
 
       const items = page.root?.querySelectorAll(selector);
-      expect(items?.[1]?.classList.contains('drag-source')).toBe(true);
-      expect(items?.[0]?.classList.contains('drag-source')).toBe(false);
+      expect(
+        items?.[1]?.classList.contains('modus-wc-app-menu-drag-source')
+      ).toBe(true);
+      expect(
+        items?.[0]?.classList.contains('modus-wc-app-menu-drag-source')
+      ).toBe(false);
     }
   );
 
   it.each([
-    { layout: 'list' as const, containerSelector: '.app-menu-items' },
-    { layout: 'grid' as const, containerSelector: '.grid-menu' },
+    { layout: 'list' as const, containerSelector: '.modus-wc-app-menu-items' },
+    { layout: 'grid' as const, containerSelector: '.modus-wc-app-menu-grid' },
   ])(
     'should clear dropTargetIndex when cursor leaves the $layout container via DOM event',
     async ({ layout, containerSelector }) => {
@@ -1923,8 +1951,8 @@ describe('modus-wc-app-menu', () => {
   });
 
   it.each([
-    { layout: 'list' as const, selector: '.app-menu-item-row' },
-    { layout: 'grid' as const, selector: '.grid-item' },
+    { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+    { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
   ])(
     'should emit itemClick when $layout item is clicked',
     async ({ layout, selector }) => {
@@ -2014,10 +2042,12 @@ describe('modus-wc-app-menu', () => {
       layout: 'grid',
     });
 
-    const gridItems = page.root?.querySelectorAll('.grid-item');
+    const gridItems = page.root?.querySelectorAll(
+      '.modus-wc-app-menu-grid-item'
+    );
     gridItems?.forEach((gridItem) => {
       const mockLabel = document.createElement('span');
-      mockLabel.classList.add('grid-item-text-label');
+      mockLabel.classList.add('modus-wc-app-menu-grid-item-label');
       Object.defineProperty(mockLabel, 'scrollWidth', { value: 120 });
       Object.defineProperty(mockLabel, 'clientWidth', { value: 80 });
       Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
@@ -2141,7 +2171,7 @@ describe('modus-wc-app-menu', () => {
       'should mark apps as truncated when text overflows (tooltipWrapper=$withTooltipWrapper)',
       async ({ withTooltipWrapper }) => {
         const page = await createPage({ apps: mockApps, layout: 'list' });
-        const rows = page.root?.querySelectorAll('.app-menu-item-row');
+        const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
         rows?.forEach((row) => {
           appendLabel(row, makeTextNode(120, 80), withTooltipWrapper);
         });
@@ -2158,7 +2188,7 @@ describe('modus-wc-app-menu', () => {
 
     it('should not mark apps as truncated when text fits', async () => {
       const page = await createPage({ apps: mockApps, layout: 'list' });
-      const rows = page.root?.querySelectorAll('.app-menu-item-row');
+      const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
       rows?.forEach((row) => {
         appendLabel(row, makeTextNode(50, 80), false);
       });
@@ -2180,7 +2210,7 @@ describe('modus-wc-app-menu', () => {
 
     it('should skip rows whose labels container only has a sublabel', async () => {
       const page = await createPage({ apps: mockApps, layout: 'list' });
-      const rows = page.root?.querySelectorAll('.app-menu-item-row');
+      const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
       rows?.forEach((row) => {
         const labels = document.createElement('div');
         labels.classList.add('modus-wc-menu-item-labels');
@@ -2273,14 +2303,14 @@ describe('modus-wc-app-menu', () => {
     await page.waitForChanges();
 
     const menuItem = page.root?.querySelector(
-      '.app-menu-item-row modus-wc-menu-item'
+      '.modus-wc-app-menu-item-row modus-wc-menu-item'
     );
     expect(menuItem?.getAttribute('tooltipcontent')).toBe('Trimble Connect');
   });
 
   it('should treat empty tooltip wrappers in label container as no text element', async () => {
     const page = await createPage({ apps: mockApps, layout: 'list' });
-    const rows = page.root?.querySelectorAll('.app-menu-item-row');
+    const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
     rows?.forEach((row) => {
       const labels = document.createElement('div');
       labels.classList.add('modus-wc-menu-item-labels');
@@ -2352,5 +2382,216 @@ describe('modus-wc-app-menu', () => {
 
     expect(orderChangeSpy).toHaveBeenCalledTimes(1);
     expect(orderChangeSpy.mock.calls[0][0].detail).toEqual([]);
+  });
+
+  describe('host class composition', () => {
+    it('should render the host with only the base class when no customClass is provided', async () => {
+      const page = await createPage({ apps: mockApps });
+      expect(page.root?.getAttribute('class')).toBe('modus-wc-app-menu');
+    });
+
+    it('should append customClass to the base class on the host', async () => {
+      const page = await createPage({
+        apps: mockApps,
+        customClass: 'a-class b-class',
+      });
+      expect(page.root?.getAttribute('class')).toBe(
+        'modus-wc-app-menu a-class b-class'
+      );
+    });
+  });
+
+  describe('panel dimensions', () => {
+    it('should set fixed height and width on the wrapping modus-wc-panel', async () => {
+      const page = await createPage({ apps: mockApps });
+      const panel = page.root?.querySelector('modus-wc-panel');
+      expect(panel?.getAttribute('height')).toBe('568px');
+      expect(panel?.getAttribute('width')).toBe('320px');
+    });
+  });
+
+  describe('header rendering', () => {
+    it('should render header title typography with semibold h3 styling', async () => {
+      const page = await createPage({ apps: mockApps });
+      const titleTypography = page.root?.querySelector(
+        '.modus-wc-app-menu-header-title modus-wc-typography'
+      );
+      expect(titleTypography?.getAttribute('hierarchy')).toBe('h3');
+      expect(titleTypography?.getAttribute('size')).toBe('2xl');
+      expect(titleTypography?.getAttribute('weight')).toBe('semibold');
+    });
+
+    it('should render the edit button with a solid pencil icon', async () => {
+      const page = await createPage({ apps: mockApps });
+      const editIcon = page.root?.querySelector(
+        '.modus-wc-app-menu-header-end-content modus-wc-button modus-wc-icon'
+      );
+      expect(editIcon?.getAttribute('name')).toBe('pencil');
+      expect(editIcon?.getAttribute('variant')).toBe('solid');
+    });
+  });
+
+  describe('list layout attributes', () => {
+    it('should render list rows with role="listitem" and no aria-roledescription in non-edit mode', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
+      rows?.forEach((row) => {
+        expect(row.getAttribute('role')).toBe('listitem');
+        expect(row.getAttribute('aria-roledescription')).toBeNull();
+      });
+    });
+
+    it('should render list rows with draggable="false" in non-edit mode', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const rows = page.root?.querySelectorAll('.modus-wc-app-menu-item-row');
+      rows?.forEach((row) => {
+        expect(row.getAttribute('draggable')).toBe('false');
+      });
+    });
+
+    it('should render list logos in the menu-item start-icon slot', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const logos = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-item-row modus-wc-logo'
+      );
+      expect(logos?.length).toBe(mockApps.length);
+      logos?.forEach((logo) => {
+        expect(logo.getAttribute('slot')).toBe('start-icon');
+      });
+    });
+
+    it('should pass tooltipPosition="auto" to each menu-item', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const menuItems = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-item-row modus-wc-menu-item'
+      );
+      menuItems?.forEach((item) => {
+        expect(item.getAttribute('tooltipposition')).toBe('auto');
+      });
+    });
+
+    it('should wrap list items in a modus-wc-menu container', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'list' });
+      const menu = page.root?.querySelector(
+        '.modus-wc-app-menu-items > modus-wc-menu'
+      );
+      expect(menu).not.toBeNull();
+      expect(menu?.querySelectorAll('.modus-wc-app-menu-item-row').length).toBe(
+        mockApps.length
+      );
+    });
+  });
+
+  describe('grid layout attributes', () => {
+    it('should render grid items with draggable="false" in non-edit mode', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'grid' });
+      const gridItems = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-grid-item'
+      );
+      gridItems?.forEach((item) => {
+        expect(item.getAttribute('draggable')).toBe('false');
+      });
+    });
+
+    it('should pass position="auto" to each grid tooltip', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'grid' });
+      const tooltips = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-grid-item modus-wc-tooltip'
+      );
+      tooltips?.forEach((tooltip) => {
+        expect(tooltip.getAttribute('position')).toBe('auto');
+      });
+    });
+
+    it('should set aria-label on each grid item to its display name', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'grid' });
+      const gridItems = page.root?.querySelectorAll(
+        '.modus-wc-app-menu-grid-item'
+      );
+      const labels = Array.from(gridItems ?? []).map((g) =>
+        g.getAttribute('aria-label')
+      );
+      expect(labels).toEqual([
+        'Trimble Connect',
+        'Viewpoint',
+        'SketchUp',
+        'Tekla',
+      ]);
+    });
+  });
+
+  describe('layoutChange watcher', () => {
+    it('should emit layoutChange with detail when switching from grid back to list', async () => {
+      const page = await createPage({ apps: mockApps, layout: 'grid' });
+
+      const layoutChangeSpy = jest.fn();
+      page.root?.addEventListener('layoutChange', layoutChangeSpy);
+
+      const component = page.rootInstance as ModusWcAppMenu;
+      component.layout = 'list';
+      await page.waitForChanges();
+
+      expect(layoutChangeSpy).toHaveBeenCalledTimes(1);
+      expect(layoutChangeSpy.mock.calls[0][0].detail).toEqual({
+        layout: 'list',
+      });
+    });
+  });
+
+  describe('itemClick guard in edit mode', () => {
+    it.each([
+      { layout: 'list' as const, selector: '.modus-wc-app-menu-item-row' },
+      { layout: 'grid' as const, selector: '.modus-wc-app-menu-grid-item' },
+    ])(
+      'should not emit itemClick when clicking $layout item in edit mode',
+      async ({ layout, selector }) => {
+        const { page } = await createEditModePage({
+          apps: cloneApps(),
+          layout,
+        });
+
+        const itemClickSpy = jest.fn();
+        page.root?.addEventListener('itemClick', itemClickSpy);
+
+        const items = page.root?.querySelectorAll(selector);
+        (items?.[0] as HTMLElement)?.click();
+
+        expect(itemClickSpy).not.toHaveBeenCalled();
+      }
+    );
+  });
+
+  describe('aria attribute inheritance', () => {
+    it('should inherit multiple aria attributes onto the host', async () => {
+      const page = await createPage({
+        'aria-label': 'App menu',
+        'aria-describedby': 'menu-desc',
+        'aria-labelledby': 'menu-title',
+        apps: mockApps,
+      });
+
+      expect(page.root?.getAttribute('aria-label')).toBe('App menu');
+      expect(page.root?.getAttribute('aria-describedby')).toBe('menu-desc');
+      expect(page.root?.getAttribute('aria-labelledby')).toBe('menu-title');
+    });
+  });
+
+  describe('onAppsChange watcher', () => {
+    it('should not schedule a tooltip update when apps change during edit mode', async () => {
+      const restoreRaf = mockRaf();
+
+      const page = await createPage({ apps: cloneApps(), layout: 'grid' });
+      const component = page.rootInstance as ModusWcAppMenu;
+      (component as any).handleEdit();
+      await page.waitForChanges();
+
+      const scheduleSpy = jest.spyOn(component as any, 'scheduleTooltipUpdate');
+      component.apps = [{ appName: 'connect' }];
+      await page.waitForChanges();
+
+      expect(scheduleSpy).not.toHaveBeenCalled();
+      scheduleSpy.mockRestore();
+      restoreRaf();
+    });
   });
 });

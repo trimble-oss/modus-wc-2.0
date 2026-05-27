@@ -10,7 +10,11 @@ import {
 import { convertPropsToClasses } from './modus-wc-slider.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable slider component
@@ -22,6 +26,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcSlider {
   private inheritedAttributes: Attributes = {};
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -107,11 +112,13 @@ export class ModusWcSlider {
   };
 
   render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
+
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -121,7 +128,7 @@ export class ModusWcSlider {
           aria-disabled={this.disabled}
           class={this.getClasses()}
           disabled={this.disabled}
-          id={this.inputId}
+          id={effectiveId}
           max={this.max}
           min={this.min}
           name={this.name}
