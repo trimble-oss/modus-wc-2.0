@@ -1,10 +1,10 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 interface TooltipArgs {
   content?: string;
-  contentElement?: HTMLElement;
   'custom-class'?: string;
   disabled?: boolean;
   'force-open'?: boolean;
@@ -25,12 +25,16 @@ const meta: Meta<TooltipArgs> = {
       options: ['auto', 'top', 'right', 'left', 'bottom'],
     },
   },
+  decorators: [withActions],
   parameters: {
+    actions: {
+      handles: ['dismissEscape'],
+    },
     docs: {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
- \nThe component supports a named \`slot="content"\` for rich HTML tooltip content such as multiline text. Slotted content is cloned on mount and stays in sync when the slot DOM changes later. For plain dynamic text, use the \`content\` prop instead. The default slot is used for the trigger content, and the \`content\` prop is ignored when the named content slot is used.
+ \nThe component supports a \`contentElement\` prop for rich HTML tooltip content such as multiline text. When set, \`contentElement\` takes precedence over the \`content\` string prop. The default slot is used for the trigger element.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -50,23 +54,57 @@ export default meta;
 
 type Story = StoryObj<TooltipArgs>;
 
-const getContentElementScript = (element: HTMLElement) => `
-<script>
-  const richEl = document.createElement('${element?.tagName?.toLowerCase() ?? 'div'}');
-  richEl.innerHTML = \`${element?.innerHTML ?? ''}\`;
-  document.querySelector('modus-wc-tooltip').contentElement = richEl;
-</script>`;
+export const Default: Story = {
+  render: (args) =>
+    // prettier-ignore
+    html`
+      <modus-wc-tooltip
+        content=${ifDefined(args.content)}
+        custom-class="${ifDefined(args['custom-class'])}"
+        ?disabled="${args.disabled}"
+        ?force-open="${args['force-open']}"
+        tooltip-id="${ifDefined(args['tooltip-id'])}"
+        position=${ifDefined(args.position)}
+      >
+        <modus-wc-badge>Hover</modus-wc-badge>
+      </modus-wc-tooltip>
+    `,
+};
 
-const Template: Story = {
+const richHtml = '<strong>Tooltip</strong><p>Rich HTML content</p>';
+
+export const WithContentElement: Story = {
   parameters: {
-    actions: {
-      handles: ['dismissEscape'],
+    docs: {
+      description: {
+        story:
+          'Use `contentElement` to pass a rich HTML element as the tooltip body. `contentElement` takes precedence over the `content` string prop.',
+      },
+      source: {
+        transform: (_src, { args }) => `<modus-wc-tooltip
+  position="${args.position ?? 'auto'}"
+>
+  <modus-wc-badge>Hover</modus-wc-badge>
+</modus-wc-tooltip>
+
+<script>
+  const el = document.createElement('div');
+  el.innerHTML = '${richHtml}';
+  document.querySelector('modus-wc-tooltip').contentElement = el;
+</script>`,
+      },
     },
   },
+  args: {
+    position: 'auto',
+  },
   render: (args) => {
+    const el = document.createElement('div');
+    el.innerHTML = richHtml;
     // prettier-ignore
     return html`
       <modus-wc-tooltip
+        .contentElement=${el}
         content=${ifDefined(args.content)}
         custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
@@ -78,51 +116,6 @@ const Template: Story = {
       </modus-wc-tooltip>
     `;
   },
-};
-
-export const Default: Story = { ...Template };
-
-export const WithContentElement: Story = {
-  parameters: {
-    actions: { handles: ['dismissEscape'] },
-    docs: {
-      description: {
-        story:
-          'Use `contentElement` to pass rich HTML into the tooltip balloon via property binding. `contentElement` takes precedence over the `content` string prop.',
-      },
-      source: {
-        transform: (_src, { args }) => `<modus-wc-tooltip
-  position="${args.position ?? 'auto'}"
->
-  <modus-wc-badge>Hover</modus-wc-badge>
-</modus-wc-tooltip>${getContentElementScript(args.contentElement as HTMLElement)}`,
-      },
-    },
-  },
-  args: {
-    contentElement: Object.assign(document.createElement('div'), {
-      innerHTML: '<strong>Tooltip</strong><p>Rich HTML content</p>',
-    }),
-    position: 'auto',
-  },
-  argTypes: {
-    contentElement: { table: { disable: true } },
-  },
-
-  // prettier-ignore
-  render: (args) => html`
-    <modus-wc-tooltip
-      .contentElement=${args.contentElement}
-      content=${ifDefined(args.content)}
-      custom-class="${ifDefined(args['custom-class'])}"
-      ?disabled="${args.disabled}"
-      ?force-open="${args['force-open']}"
-      tooltip-id="${ifDefined(args['tooltip-id'])}"
-      position=${ifDefined(args.position)}
-    >
-      <modus-wc-badge>Hover</modus-wc-badge>
-    </modus-wc-tooltip>
-  `,
 };
 
 export const ShadowDomParent: Story = {
@@ -191,6 +184,7 @@ export const ShadowDomParent: Story = {
     ></tooltip-shadow-host>`;
   },
 };
+
 export const Migration: Story = {
   parameters: {
     docs: {

@@ -19,9 +19,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  *
  * The tooltip can be dismissed by pressing the Escape key when hovering over it.
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
- * Use the content slot to add rich HTML content to the tooltip such as multiline text.
- * Slotted content is cloned into the tooltip and kept in sync when the slot DOM changes after mount.
- * For plain dynamic text, prefer the content prop instead. The content prop is ignored when the content slot is used.
+ * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+ * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -31,7 +30,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export class ModusWcTooltip {
   private inheritedAttributes: Attributes = {};
   private popperInstance: PopperInstance | null = null;
-  private slotContentObserver: MutationObserver | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
 
@@ -118,17 +116,12 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
-    this.observeSlotContentChanges();
-
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
   }
 
   disconnectedCallback() {
-    this.slotContentObserver?.disconnect();
-    this.slotContentObserver = null;
-
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -159,8 +152,11 @@ export class ModusWcTooltip {
         this.tooltipElement!.removeChild(node);
       }
     });
-    if (this.contentElement) {
-      this.tooltipElement.insertBefore(this.contentElement, arrow);
+    if (this.contentElement && 'nodeType' in this.contentElement) {
+      this.tooltipElement.insertBefore(
+        this.contentElement as unknown as Node,
+        arrow
+      );
     } else {
       this.tooltipElement.insertBefore(
         document.createTextNode(this.content),
@@ -295,14 +291,14 @@ export class ModusWcTooltip {
   }
 
   @Watch('content')
-  handleContentChange(newContent: string) {
+  handleContentChange() {
     // contentElement takes precedence; ignore plain-string updates while it is set
     if (this.contentElement) return;
     if (this.tooltipElement) {
       const arrow = this.tooltipElement.querySelector(
         '.modus-wc-tooltip-arrow'
       );
-      this.tooltipElement.textContent = newContent;
+      this.tooltipElement.textContent = this.content;
       if (arrow) {
         this.tooltipElement.appendChild(arrow);
       }
@@ -345,9 +341,6 @@ export class ModusWcTooltip {
           {...this.inheritedAttributes}
         >
           <slot />
-        </div>
-        <div hidden class="modus-wc-tooltip-content-source">
-          <slot name="content" />
         </div>
       </Host>
     );
