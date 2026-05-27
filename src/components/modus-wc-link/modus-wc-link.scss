@@ -17,11 +17,11 @@ modus-wc-link a.modus-wc-link {
   }
 
   &.modus-wc-link-color-success {
-    color: var(--modus-wc-color-green-dark);
+    color: var(--modus-wc-color-success);
   }
 
   &.modus-wc-link-color-info {
-    color: var(--modus-wc-color-info-blue);
+    color: var(--modus-wc-color-info);
   }
 
   &.modus-wc-link-color-warning {
@@ -29,7 +29,7 @@ modus-wc-link a.modus-wc-link {
   }
 
   &.modus-wc-link-color-danger {
-    color: var(--modus-wc-color-red-dark);
+    color: var(--modus-wc-color-error);
   }
 
   &.modus-wc-link-color-inherit {
@@ -37,18 +37,4 @@ modus-wc-link a.modus-wc-link {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-link a.modus-wc-link,
-[data-theme='modus-modern-dark'] modus-wc-link a.modus-wc-link,
-[data-theme='connect-dark'] modus-wc-link a.modus-wc-link {
-  &.modus-wc-link-color-success {
-    color: var(--modus-wc-color-green-light);
-  }
 
-  &.modus-wc-link-color-info {
-    color: var(--modus-wc-color-blue-light);
-  }
-
-  &.modus-wc-link-color-danger {
-    color: var(--modus-wc-color-red-light);
-  }
-}
