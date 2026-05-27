@@ -3708,4 +3708,337 @@ describe('modus-wc-table', () => {
       expect(component['activeEditor']).toBeNull();
     });
   });
+
+  describe('isRowSelectable', () => {
+    const statusColumns: ITableColumn[] = [
+      { id: 'id', header: 'ID', accessor: 'id', width: '60px' },
+      { id: 'name', header: 'Name', accessor: 'name' },
+      { id: 'status', header: 'Status', accessor: 'status' },
+    ];
+
+    const statusData = [
+      { id: '1', name: 'John Doe', status: 'Active' },
+      { id: '2', name: 'Jane Smith', status: 'Locked' },
+      { id: '3', name: 'Bob Johnson', status: 'Active' },
+    ];
+
+    const isActiveRow = (row: Record<string, unknown>) =>
+      row.status !== 'Locked';
+
+    it('should return early from handleIsRowSelectableChange when table is not initialized', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="No table instance"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      expect(component['table']).toBeNull();
+      expect(() => component['handleIsRowSelectableChange']()).not.toThrow();
+    });
+
+    it('should return early from sanitizeRowSelection when table is not initialized', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Sanitize without table"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component['table'] = null;
+      component['internalRowSelection'] = { '1': true };
+
+      expect(() => component['sanitizeRowSelection']()).not.toThrow();
+      expect(component['internalRowSelection']).toEqual({ '1': true });
+    });
+
+    it('should build eligible selection from data before the table is initialized', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Pre-init selection"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+      component['table'] = null;
+
+      const selection = component['buildEligibleSelection']([
+        '1',
+        '2',
+        '3',
+        '99',
+      ]);
+
+      expect(selection).toEqual({ '1': true, '3': true });
+    });
+
+    it('should ignore unknown ids when building eligible selection from the table model', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Unknown id selection" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      const selection = component['buildEligibleSelection'](['1', '99']);
+
+      expect(selection).toEqual({ '1': true });
+    });
+
+    it('should filter selectedRowIds to eligible rows on first render', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Filtered init selection" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+      component.selectedRowIds = ['1', '2', '3'];
+
+      component.componentWillLoad();
+      await page.waitForChanges();
+
+      expect(component['internalRowSelection']).toEqual({
+        '1': true,
+        '3': true,
+      });
+    });
+
+    it('should filter selectedRowIds when the prop updates after initialization', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Filtered controlled selection" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      component.selectedRowIds = ['1', '2'];
+      await page.waitForChanges();
+
+      expect(component['internalRowSelection']).toEqual({ '1': true });
+    });
+
+    it('should disable checkbox and block row-click selection for ineligible rows', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Partial row selection" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      const rows = page.root!.querySelectorAll('tbody tr');
+      const lockedCheckbox = rows[1].querySelector('modus-wc-checkbox');
+      const activeCheckbox = rows[0].querySelector('modus-wc-checkbox');
+
+      expect(lockedCheckbox?.getAttribute('disabled')).not.toBeNull();
+      expect(activeCheckbox?.getAttribute('disabled')).toBeNull();
+      expect(rows[1].classList.contains('selectable')).toBe(false);
+      expect(rows[0].classList.contains('selectable')).toBe(true);
+
+      (rows[1] as HTMLTableRowElement).click();
+      await page.waitForChanges();
+      expect(component['internalRowSelection']).toEqual({});
+
+      (rows[0] as HTMLTableRowElement).click();
+      await page.waitForChanges();
+      expect(component['internalRowSelection']).toEqual({ '1': true });
+    });
+
+    it('should emit rowClick for ineligible rows without changing selection', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Row click on locked row" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      const rowClickSpy = jest.spyOn(component.rowClick, 'emit');
+      const lockedRow = component['table']!.getRowModel().rows[1];
+
+      component['handleRowClick'](lockedRow, 1);
+
+      expect(rowClickSpy).toHaveBeenCalledWith({
+        row: statusData[1],
+        index: 1,
+      });
+      expect(component['internalRowSelection']).toEqual({});
+    });
+
+    it('should sanitize selection when data makes a selected row ineligible', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Sanitize on data change" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = [...statusData];
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      component.selectedRowIds = ['1'];
+      await page.waitForChanges();
+      expect(component['internalRowSelection']).toEqual({ '1': true });
+
+      const rowSelectionChangeSpy = jest.spyOn(
+        component.rowSelectionChange,
+        'emit'
+      );
+      const updatedData = [
+        { id: '1', name: 'John Doe', status: 'Locked' },
+        ...statusData.slice(1),
+      ];
+
+      component.handleDataChange(updatedData);
+      await page.waitForChanges();
+
+      expect(component['internalRowSelection']).toEqual({});
+      expect(rowSelectionChangeSpy).toHaveBeenCalledWith({
+        selectedRows: [],
+        selectedRowIds: [],
+      });
+    });
+
+    it('should sanitize selection when isRowSelectable becomes stricter', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Sanitize on predicate change" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+
+      await page.waitForChanges();
+
+      component.selectedRowIds = ['1', '3'];
+      await page.waitForChanges();
+
+      const setRowSelectionSpy = jest.spyOn(
+        component['table']!,
+        'setRowSelection'
+      );
+      component.isRowSelectable = () => false;
+      component['handleIsRowSelectableChange']();
+      await page.waitForChanges();
+
+      expect(setRowSelectionSpy).toHaveBeenCalledWith({});
+      expect(component['internalRowSelection']).toEqual({});
+    });
+
+    it('should remove orphaned selection when a row is deleted from data', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Sanitize deleted row" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = [...statusData];
+
+      await page.waitForChanges();
+
+      component.selectedRowIds = ['3'];
+      await page.waitForChanges();
+
+      component.handleDataChange(statusData.slice(0, 2));
+      await page.waitForChanges();
+
+      expect(component['internalRowSelection']).toEqual({});
+    });
+
+    it('should update TanStack enableRowSelection when isRowSelectable changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Enable row selection update" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+
+      await page.waitForChanges();
+
+      const setOptionsSpy = jest.spyOn(component['table']!, 'setOptions');
+      component.isRowSelectable = isActiveRow;
+      component['handleIsRowSelectableChange']();
+
+      expect(setOptionsSpy).toHaveBeenCalled();
+      const updaterFn = setOptionsSpy.mock.calls[0][0] as unknown as (prev: {
+        enableRowSelection?: unknown;
+      }) => { enableRowSelection?: unknown };
+      const nextOptions = updaterFn({
+        enableRowSelection: false,
+      });
+      const enableRowSelection = nextOptions.enableRowSelection as (
+        row: Row<Record<string, unknown>>
+      ) => boolean;
+
+      const lockedRow = component['table']!.getRowModel().rows[1];
+      const activeRow = component['table']!.getRowModel().rows[0];
+
+      expect(enableRowSelection(lockedRow)).toBe(false);
+      expect(enableRowSelection(activeRow)).toBe(true);
+    });
+
+    it('should skip ineligible rows when select-all is toggled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Select all respects eligibility" selectable="multi"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = statusColumns;
+      component.data = statusData;
+      component.isRowSelectable = isActiveRow;
+
+      await page.waitForChanges();
+
+      component['table']!.toggleAllRowsSelected(true);
+      await page.waitForChanges();
+
+      expect(component['internalRowSelection']).toEqual({
+        '1': true,
+        '3': true,
+      });
+    });
+
+    it('should invoke isRowSelectable via checkIsRowSelectable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: `<modus-wc-table aria-label="Predicate invocation"></modus-wc-table>`,
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      const predicate = jest.fn(isActiveRow);
+      component.isRowSelectable = predicate;
+
+      expect(component['checkIsRowSelectable'](statusData[0])).toBe(true);
+      expect(component['checkIsRowSelectable'](statusData[1])).toBe(false);
+      expect(predicate).toHaveBeenCalledTimes(2);
+    });
+  });
 });

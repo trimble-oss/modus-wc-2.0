@@ -47,7 +47,7 @@ export function reorderGridItem<T>(
  * by comparing offsetTop values of consecutive items.
  */
 export function getGridColumnCount(el: HTMLElement): number {
-  const items = el.querySelectorAll('.grid-item');
+  const items = el.querySelectorAll('.modus-wc-app-menu-grid-item');
   if (items.length <= 1) return 1;
 
   const firstTop = (items[0] as HTMLElement).offsetTop;
@@ -112,10 +112,10 @@ export function focusAppMenuItem(
   appIndex: number
 ): void {
   if (layout === 'grid') {
-    const items = el.querySelectorAll('.grid-item');
+    const items = el.querySelectorAll('.modus-wc-app-menu-grid-item');
     (items[appIndex] as HTMLElement)?.focus();
   } else {
-    const rows = el.querySelectorAll('.app-menu-item-row');
+    const rows = el.querySelectorAll('.modus-wc-app-menu-item-row');
     const row = rows[appIndex] as HTMLElement;
     if (!row) return;
 

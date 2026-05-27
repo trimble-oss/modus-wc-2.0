@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcRadio } from './modus-wc-radio';
 
 describe('modus-wc-radio', () => {
@@ -29,6 +31,31 @@ describe('modus-wc-radio', () => {
       ></modus-wc-radio>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcRadio, ModusWcInputLabel],
+      html: '<modus-wc-radio label="Option A" aria-label="Option A"></modus-wc-radio>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="radio"]');
+  });
+
+  it('should retain the same generated id across re-renders', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcRadio, ModusWcInputLabel],
+      html: '<modus-wc-radio label="Re-render" aria-label="Re-render"></modus-wc-radio>',
+    });
+
+    const firstId = page.root!.querySelector('input[type="radio"]')!.id;
+    expect(firstId).toBeTruthy();
+
+    page.root!.setAttribute('disabled', 'true');
+    await page.waitForChanges();
+
+    const secondId = page.root!.querySelector('input[type="radio"]')!.id;
+    expect(secondId).toBe(firstId);
   });
 
   it('should emit blur event', async () => {

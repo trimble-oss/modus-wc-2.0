@@ -19,7 +19,7 @@ import {
 } from '../types';
 import {
   Attributes,
-  generateElementId,
+  createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
 } from '../utils';
@@ -36,7 +36,7 @@ import {
 })
 export class ModusWcTextInput {
   private inheritedAttributes: Attributes = {};
-  private generatedId: string = generateElementId();
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -211,7 +211,7 @@ export class ModusWcTextInput {
 
   render() {
     const showClear = this.shouldIncludeClear();
-    const effectiveId = this.inputId || this.generatedId;
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
 
     return (

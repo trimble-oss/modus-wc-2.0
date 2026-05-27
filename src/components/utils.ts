@@ -67,6 +67,16 @@ export function generateElementId(): string {
 }
 
 /**
+ * Creates a per-instance resolver for input element IDs.
+ * Uses inputId when provided; otherwise lazily generates and caches a fallback ID.
+ */
+export function createEffectiveIdResolver(): (inputId?: string) => string {
+  let generatedId: string | undefined;
+
+  return (inputId?: string) => inputId || (generatedId ??= generateElementId());
+}
+
+/**
  * List of available ARIA attributes + `role`.
  * Removed deprecated attributes.
  * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes
@@ -173,3 +183,28 @@ export const sanitizeUrl = (url?: string): string | undefined => {
 
   return ALLOWED_URL_PROTOCOLS.has(protocol) ? trimmed : undefined;
 };
+
+/**
+ * Shared assertions for form control label ↔ input id linkage.
+ */
+export function expectLabelLinkedToControl(
+  root: HTMLElement,
+  controlSelector: string
+): void {
+  const control = root.querySelector(controlSelector);
+  const labelHost = root.querySelector('modus-wc-input-label');
+
+  expect(control).not.toBeNull();
+  expect(labelHost).not.toBeNull();
+  expect(control!.id).toBeTruthy();
+
+  const nativeLabel = labelHost!.querySelector('label');
+  expect(nativeLabel).not.toBeNull();
+
+  const labelFor =
+    nativeLabel!.htmlFor ||
+    nativeLabel!.getAttribute('for') ||
+    nativeLabel!.getAttribute('htmlfor') ||
+    '';
+  expect(labelFor).toBe(control!.id);
+}

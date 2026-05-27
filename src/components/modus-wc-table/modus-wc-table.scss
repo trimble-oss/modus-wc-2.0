@@ -198,6 +198,11 @@ modus-wc-table .modus-wc-overflow-x-auto {
       transition: background-color 0.15s ease-in-out;
 
       @include common-states;
+
+      &:hover,
+      &.selected {
+        color: inherit;
+      }
     }
   }
 
@@ -271,6 +276,7 @@ modus-wc-table .modus-wc-overflow-x-auto {
 
 tr.selected {
   background-color: var(--modus-wc-color-primary-pale);
+  color: inherit;
 }
 
 /* === Editing cell overrides === */
