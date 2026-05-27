@@ -910,6 +910,42 @@ export namespace Components {
         "subLabelText"?: string;
     }
     /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface ModusWcLink {
+        /**
+          * The color of the link.
+         */
+        "color": | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href"?: string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
+        /**
+          * The underline behavior of the link.
+         */
+        "underline": 'always' | 'hover' | 'none';
+    }
+    /**
      * A customizable loader component used to indicate the loading of content
      */
     interface ModusWcLoader {
@@ -2611,6 +2647,15 @@ declare global {
         new (): HTMLModusWcInputLabelElement;
     };
     /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface HTMLModusWcLinkElement extends Components.ModusWcLink, HTMLStencilElement {
+    }
+    var HTMLModusWcLinkElement: {
+        prototype: HTMLModusWcLinkElement;
+        new (): HTMLModusWcLinkElement;
+    };
+    /**
      * A customizable loader component used to indicate the loading of content
      */
     interface HTMLModusWcLoaderElement extends Components.ModusWcLoader, HTMLStencilElement {
@@ -3212,6 +3257,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-link": HTMLModusWcLinkElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-logo": HTMLModusWcLogoElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
@@ -4212,6 +4258,42 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabelText"?: string;
+    }
+    /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface ModusWcLink {
+        /**
+          * The color of the link.
+         */
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href"?: string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
+        /**
+          * The underline behavior of the link.
+         */
+        "underline"?: 'always' | 'hover' | 'none';
     }
     /**
      * A customizable loader component used to indicate the loading of content
@@ -5684,6 +5766,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-link": ModusWcLink;
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-logo": ModusWcLogo;
         "modus-wc-menu": ModusWcMenu;
@@ -5819,6 +5902,10 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            /**
+             * A customizable link component used to navigate to URLs.
+             */
+            "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**
              * A customizable loader component used to indicate the loading of content
              */
