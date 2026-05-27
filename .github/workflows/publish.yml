@@ -204,11 +204,48 @@ jobs:
       - name: Rename the asset to package.tgz
         run: mv ${{ steps.find-asset.outputs.asset_path }} package.tgz
 
+      - name: Get draft release notes
+        id: release_notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          TAG="moduswebcomponents-${{ github.event.inputs.version }}"
+          body="$(gh api "repos/${{ github.repository }}/releases" \
+            --jq "[.[] | select(.draft == true and .tag_name == \"${TAG}\")][0].body // empty")"
+
+          if [ -z "$body" ]; then
+            body="$(gh api "repos/${{ github.repository }}/releases" \
+              --jq '[.[] | select(.draft == true)][0].body // empty')"
+          fi
+
+          delimiter="$(openssl rand -hex 16)"
+          {
+            echo "body<<${delimiter}"
+            echo "$body"
+            echo "${delimiter}"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-${{ github.event.inputs.version }}
           name: Modus Web Components ${{ github.event.inputs.version }}
+          body: ${{ steps.release_notes.outputs.body }}
           files: |
             package.tgz
+
+  notify-n8n:
+    needs: release-wc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Notify n8n with release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        run: bash .github/scripts/notify-n8n-release.sh "${{ github.event.inputs.version }}" publish
