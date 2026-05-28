@@ -1,9 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
+import { ModusWcButton, ModusWcLogo } from '@trimble-oss/moduswebcomponents-angular';
 
 @Component({
   selector: 'app-root',
-  imports: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [ModusWcButton, ModusWcLogo],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
