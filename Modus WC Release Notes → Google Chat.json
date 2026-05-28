@@ -1,0 +1,326 @@
+{
+  "name": "Modus WC Release Notes → Google Chat",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Setup\n\n1. GitHub secrets: `N8N_WEBHOOK_URL`, `TRIMBLE_N8N_CLIENT_ID`, `TRIMBLE_N8N_CLIENT_SECRET`, `N8N_APPROVAL_KEY`.\n2. GitHub Actions fetch a fresh Trimble OAuth token on each run (tokens expire ~1 hour).\n3. Set `APPROVAL_KEY` in Build Review Card + Load Approved/Rejected (same as `N8N_APPROVAL_KEY`).\n4. Google Chat card shows Approval ID — approve via GitHub **Approve Release Notify** workflow.",
+        "height": 300,
+        "width": 420
+      },
+      "id": "073da449-fa2b-43ca-8fd2-cf8cbc939b0a",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-48, -144]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "modus-wc-release",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "edf1cbd6-76da-42c1-afb1-4fb0bc54f0dd",
+      "name": "GitHub Release Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [416, 80],
+      "webhookId": "modus-wc-release"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "version",
+              "name": "version",
+              "value": "={{ $json.body?.version ?? $json.version }}",
+              "type": "string"
+            },
+            {
+              "id": "tag",
+              "name": "tag",
+              "value": "={{ $json.body?.tag ?? $json.tag }}",
+              "type": "string"
+            },
+            {
+              "id": "name",
+              "name": "name",
+              "value": "={{ $json.body?.name ?? $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "body",
+              "name": "body",
+              "value": "={{ typeof $json.body === 'string' ? $json.body : ($json.body?.body ?? '') }}",
+              "type": "string"
+            },
+            {
+              "id": "repo",
+              "name": "repo",
+              "value": "={{ $json.body?.repo ?? $json.repo }}",
+              "type": "string"
+            },
+            {
+              "id": "event",
+              "name": "event",
+              "value": "={{ $json.body?.event ?? $json.event ?? 'publish' }}",
+              "type": "string"
+            },
+            {
+              "id": "releaseUrl",
+              "name": "releaseUrl",
+              "value": "=https://github.com/{{ $json.body?.repo ?? $json.repo }}/releases/tag/{{ $json.body?.tag ?? $json.tag }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "04bc0a7a-5a15-4fb8-91fc-d5e9c5fe9446",
+      "name": "Prepare Release Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [656, 80]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Summarize these release notes in 2-3 concise sentences for a design system team. Do not use markdown headers.\n\nRelease: {{ $('Prepare Release Data').item.json.name }}\nRepository: {{ $('Prepare Release Data').item.json.repo }}\n\nRelease notes:\n{{ $('Prepare Release Data').item.json.body }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [896, 80],
+      "id": "6368a2cd-97b9-4f59-9602-5b2e6e0cf17e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.4",
+          "mode": "list",
+          "cachedResultName": "gpt-5.4"
+        },
+        "options": {}
+      },
+      "type": "CUSTOM.lmChatTrimbleGateway",
+      "typeVersion": 1,
+      "position": [768, 288],
+      "id": "a5b44a30-6d74-46eb-856e-2d9410d95552",
+      "name": "Trimble Model Gateway",
+      "credentials": {
+        "trimbleModelGatewayOAuth2Api": {
+          "id": "6sC2H2Re3rOpqZn1",
+          "name": "Trimble Identity account 412"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const release = $('Prepare Release Data').first().json;\nconst agentOutput = $input.first().json;\nconst summary = agentOutput.output\n  ?? agentOutput.text\n  ?? agentOutput.message?.content\n  ?? agentOutput.response\n  ?? `${release.name} is ready for review.`;\n\nconst APPROVAL_KEY = 'change-me-to-a-random-secret';\nconst repo = release.repo || 'trimble-oss/modus-wc-2.0';\nconst githubApprovalUrl = `https://github.com/${repo}/actions/workflows/approve-release-notify.yml`;\n\nconst staticData = $getWorkflowStaticData('global');\nstaticData.pending = staticData.pending || {};\n\nconst approvalId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;\nstaticData.pending[approvalId] = {\n  ...release,\n  summary,\n  createdAt: Date.now(),\n};\n\nconst card = {\n  cardsV2: [\n    {\n      cardId: `release-${release.version}`,\n      card: {\n        header: {\n          title: release.name,\n          subtitle: 'Release notes ready for review',\n          imageUrl: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',\n          imageType: 'CIRCLE',\n        },\n        sections: [\n          {\n            header: 'Summary',\n            widgets: [{ textParagraph: { text: summary } }],\n          },\n          {\n            header: 'Approval',\n            widgets: [\n              {\n                textParagraph: {\n                  text: `Approval ID: ${approvalId}\\n\\n1. Open GitHub Actions\\n2. Run \"Approve Release Notify\"\\n3. Paste this Approval ID\\n4. Choose approve or reject`,\n                },\n              },\n              {\n                buttonList: {\n                  buttons: [\n                    {\n                      text: 'Approve / Reject on GitHub',\n                      onClick: { openLink: { url: githubApprovalUrl } },\n                    },\n                  ],\n                },\n              },\n            ],\n          },\n          {\n            header: 'Details',\n            collapsible: true,\n            widgets: [\n              { textParagraph: { text: String(release.body || '').substring(0, 3500) } },\n              {\n                buttonList: {\n                  buttons: [\n                    { text: 'View on GitHub', onClick: { openLink: { url: release.releaseUrl } } },\n                  ],\n                },\n              },\n            ],\n          },\n        ],\n      },\n    },\n  ],\n};\n\nreturn [{ json: { ...release, summary, approvalId, reviewCard: card } }];"
+      },
+      "id": "a09c5e9c-5730-46cb-9f8d-386fe5c4b75d",
+      "name": "Build Review Card",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1136, 80]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.reviewCard }}",
+        "options": {}
+      },
+      "id": "17b776f4-f1bd-44fe-9cd7-7201bf71d003",
+      "name": "Send Review Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1376, 80]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Release review sent to Google Chat\",\n  \"version\": \"{{ $('Prepare Release Data').item.json.version }}\"\n}",
+        "options": {}
+      },
+      "id": "b9c3ac74-ca28-4775-a4ae-97eb150a73cc",
+      "name": "Respond to GitHub",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1376, -112]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "modus-wc-release-approve",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000020",
+      "name": "Approve Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [416, 480],
+      "webhookId": "modus-wc-release-approve"
+    },
+    {
+      "parameters": {
+        "jsCode": "const APPROVAL_KEY = 'change-me-to-a-random-secret';\nconst query = $json.query || {};\nconst approvalId = query.id;\nconst key = query.key;\n\nif (!approvalId || key !== APPROVAL_KEY) {\n  throw new Error('Invalid or missing approval token.');\n}\n\nconst staticData = $getWorkflowStaticData('global');\nconst pending = staticData.pending || {};\nconst release = pending[approvalId];\n\nif (!release) {\n  throw new Error('Approval request not found or already processed.');\n}\n\ndelete pending[approvalId];\n\nreturn [{ json: release }];"
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000021",
+      "name": "Load Approved Release",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [656, 480]
+    },
+    {
+      "parameters": {
+        "jsCode": "const release = $input.first().json;\n\nconst publishCard = {\n  cardsV2: [\n    {\n      cardId: `published-${release.version}`,\n      card: {\n        header: {\n          title: `🚀 ${release.name} is live`,\n          subtitle: release.repo,\n        },\n        sections: [\n          {\n            widgets: [{ textParagraph: { text: release.summary } }],\n          },\n          {\n            header: 'Release notes',\n            collapsible: true,\n            widgets: [\n              { textParagraph: { text: String(release.body || '').substring(0, 3500) } },\n              {\n                buttonList: {\n                  buttons: [\n                    { text: 'View Release', onClick: { openLink: { url: release.releaseUrl } } },\n                  ],\n                },\n              },\n            ],\n          },\n        ],\n      },\n    },\n  ],\n};\n\nreturn [{ json: { ...release, publishCard } }];"
+      },
+      "id": "61122dc4-8e11-4b50-80a8-9780237ccd71",
+      "name": "Build Publish Card",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [896, 480]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.publishCard }}",
+        "options": {}
+      },
+      "id": "4832c0b0-e222-4d63-a276-97e4c83eb597",
+      "name": "Post to Group",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1136, 480]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=✅ Approved and posted: {{ $('Load Approved Release').item.json.name }}",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000022",
+      "name": "Respond Approved",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1376, 480]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "modus-wc-release-reject",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000030",
+      "name": "Reject Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [416, 720],
+      "webhookId": "modus-wc-release-reject"
+    },
+    {
+      "parameters": {
+        "jsCode": "const APPROVAL_KEY = 'change-me-to-a-random-secret';\nconst query = $json.query || {};\nconst approvalId = query.id;\nconst key = query.key;\n\nif (!approvalId || key !== APPROVAL_KEY) {\n  throw new Error('Invalid or missing approval token.');\n}\n\nconst staticData = $getWorkflowStaticData('global');\nconst pending = staticData.pending || {};\nconst release = pending[approvalId];\n\nif (!release) {\n  throw new Error('Approval request not found or already processed.');\n}\n\ndelete pending[approvalId];\n\nreturn [{ json: release }];"
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000031",
+      "name": "Load Rejected Release",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [656, 720]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"❌ Release {{ $json.name }} was rejected and was not posted to the group.\"\n}",
+        "options": {}
+      },
+      "id": "ad053d28-4a76-4f6b-b022-d566ee6d756e",
+      "name": "Notify Rejected",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [896, 720]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=❌ Rejected: {{ $('Load Rejected Release').item.json.name }}",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0001-4000-8000-000000000032",
+      "name": "Respond Rejected",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1136, 720]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "GitHub Release Webhook": {
+      "main": [[{ "node": "Prepare Release Data", "type": "main", "index": 0 }]]
+    },
+    "Prepare Release Data": {
+      "main": [[{ "node": "AI Agent", "type": "main", "index": 0 }]]
+    },
+    "AI Agent": {
+      "main": [[{ "node": "Build Review Card", "type": "main", "index": 0 }]]
+    },
+    "Trimble Model Gateway": {
+      "ai_languageModel": [[{ "node": "AI Agent", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Build Review Card": {
+      "main": [
+        [
+          { "node": "Send Review Message", "type": "main", "index": 0 },
+          { "node": "Respond to GitHub", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Approve Webhook": {
+      "main": [[{ "node": "Load Approved Release", "type": "main", "index": 0 }]]
+    },
+    "Load Approved Release": {
+      "main": [[{ "node": "Build Publish Card", "type": "main", "index": 0 }]]
+    },
+    "Build Publish Card": {
+      "main": [[{ "node": "Post to Group", "type": "main", "index": 0 }]]
+    },
+    "Post to Group": {
+      "main": [[{ "node": "Respond Approved", "type": "main", "index": 0 }]]
+    },
+    "Reject Webhook": {
+      "main": [[{ "node": "Load Rejected Release", "type": "main", "index": 0 }]]
+    },
+    "Load Rejected Release": {
+      "main": [[{ "node": "Notify Rejected", "type": "main", "index": 0 }]]
+    },
+    "Notify Rejected": {
+      "main": [[{ "node": "Respond Rejected", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0f97716d-2981-4023-9011-dfec6b10e845",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9864951ea4472b9d0ea716c66bb2527efb446aa6309ab9f74077ab1db432402b"
+  },
+  "id": "tbgAPj7cCUG2NkPi",
+  "tags": []
+}
