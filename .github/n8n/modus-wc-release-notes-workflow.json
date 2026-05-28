@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Setup\n\n1. Activate workflow.\n2. GitHub secrets: `N8N_WEBHOOK_URL` + `N8N_WEBHOOK_TOKEN`.\n3. Set `APPROVAL_KEY` in Build Review Card, Load Approved Release, Load Rejected Release (same value).\n4. Update **Post to Group** URL if publish space differs from review space.\n5. Approve/Reject use GET webhooks — not Wait resume URL.",
+        "content": "## Setup\n\n1. GitHub secrets: `N8N_WEBHOOK_URL`, `TRIMBLE_N8N_CLIENT_ID`, `TRIMBLE_N8N_CLIENT_SECRET`, `N8N_APPROVAL_KEY`.\n2. GitHub Actions fetch a fresh Trimble OAuth token on each run.\n3. Set `APPROVAL_KEY` in **Load Approved Release** and **Load Rejected Release** only (same as `N8N_APPROVAL_KEY`).\n4. Paste Google Chat webhook URLs in HTTP nodes (do not commit secrets).\n5. Approve via GitHub **Approve Release Notify** using Approval ID from the card.",
         "height": 300,
         "width": 420
       },
@@ -119,7 +119,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const release = $('Prepare Release Data').first().json;\nconst agentOutput = $input.first().json;\nconst summary = agentOutput.output\n  ?? agentOutput.text\n  ?? agentOutput.message?.content\n  ?? agentOutput.response\n  ?? `${release.name} is ready for review.`;\n\nconst WEBHOOK_BASE = 'https://flows-webhook.stage.trimble-ai.com/agentic/workflows/v1/webhook';\nconst APPROVAL_KEY = 'change-me-to-a-random-secret';\nconst WEBHOOK_AUTH_TOKEN = 'PASTE_TRIMBLE_TOKEN_HERE';\n\nconst staticData = $getWorkflowStaticData('global');\nstaticData.pending = staticData.pending || {};\n\nconst approvalId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;\nstaticData.pending[approvalId] = {\n  ...release,\n  summary,\n  createdAt: Date.now(),\n};\n\nconst authQuery = WEBHOOK_AUTH_TOKEN\n  ? `&access_token=${encodeURIComponent(WEBHOOK_AUTH_TOKEN)}`\n  : '';\nconst approveUrl = `${WEBHOOK_BASE}/modus-wc-release-approve?id=${approvalId}&key=${APPROVAL_KEY}${authQuery}`;\nconst rejectUrl = `${WEBHOOK_BASE}/modus-wc-release-reject?id=${approvalId}&key=${APPROVAL_KEY}${authQuery}`;\n\nconst card = {\n  cardsV2: [\n    {\n      cardId: `release-${release.version}`,\n      card: {\n        header: {\n          title: release.name,\n          subtitle: 'Release notes ready for review',\n          imageUrl: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',\n          imageType: 'CIRCLE',\n        },\n        sections: [\n          {\n            header: 'Summary',\n            widgets: [{ textParagraph: { text: summary } }],\n          },\n          {\n            header: 'Details',\n            collapsible: true,\n            widgets: [\n              { textParagraph: { text: String(release.body || '').substring(0, 3500) } },\n              {\n                buttonList: {\n                  buttons: [\n                    { text: 'Approve & Post to Group', onClick: { openLink: { url: approveUrl } } },\n                    { text: 'Reject', onClick: { openLink: { url: rejectUrl } } },\n                  ],\n                },\n              },\n              {\n                buttonList: {\n                  buttons: [\n                    { text: 'View on GitHub', onClick: { openLink: { url: release.releaseUrl } } },\n                  ],\n                },\n              },\n            ],\n          },\n        ],\n      },\n    },\n  ],\n};\n\nreturn [{ json: { ...release, summary, approvalId, reviewCard: card } }];"
+        "jsCode": "const release = $('Prepare Release Data').first().json;\nconst agentOutput = $input.first().json;\nconst summary = agentOutput.output\n  ?? agentOutput.text\n  ?? agentOutput.message?.content\n  ?? agentOutput.response\n  ?? `${release.name} is ready for review.`;\n\nconst repo = release.repo || 'trimble-oss/modus-wc-2.0';\nconst githubApprovalUrl = `https://github.com/${repo}/actions/workflows/approve-release-notify.yml`;\n\nconst staticData = $getWorkflowStaticData('global');\nstaticData.pending = staticData.pending || {};\n\nconst approvalId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;\nstaticData.pending[approvalId] = {\n  ...release,\n  summary,\n  createdAt: Date.now(),\n};\n\nconst card = {\n  cardsV2: [\n    {\n      cardId: `release-${release.version}`,\n      card: {\n        header: {\n          title: release.name,\n          subtitle: 'Release notes ready for review',\n          imageUrl: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',\n          imageType: 'CIRCLE',\n        },\n        sections: [\n          {\n            header: 'Summary',\n            widgets: [{ textParagraph: { text: summary } }],\n          },\n          {\n            header: 'Approval',\n            widgets: [\n              {\n                textParagraph: {\n                  text: `Approval ID: ${approvalId}\\n\\n1. Open GitHub Actions\\n2. Run \"Approve Release Notify\"\\n3. Paste this Approval ID\\n4. Choose approve or reject`,\n                },\n              },\n              {\n                buttonList: {\n                  buttons: [\n                    {\n                      text: 'Approve / Reject on GitHub',\n                      onClick: { openLink: { url: githubApprovalUrl } },\n                    },\n                  ],\n                },\n              },\n            ],\n          },\n          {\n            header: 'Details',\n            collapsible: true,\n            widgets: [\n              { textParagraph: { text: String(release.body || '').substring(0, 3500) } },\n              {\n                buttonList: {\n                  buttons: [\n                    { text: 'View on GitHub', onClick: { openLink: { url: release.releaseUrl } } },\n                  ],\n                },\n              },\n            ],\n          },\n        ],\n      },\n    },\n  ],\n};\n\nreturn [{ json: { ...release, summary, approvalId, reviewCard: card } }];"
       },
       "id": "a09c5e9c-5730-46cb-9f8d-386fe5c4b75d",
       "name": "Build Review Card",
@@ -130,7 +130,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "url": "PASTE_GOOGLE_CHAT_REVIEW_WEBHOOK_URL_HERE",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ $json.reviewCard }}",
@@ -191,7 +191,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "url": "PASTE_GOOGLE_CHAT_PUBLISH_WEBHOOK_URL_HERE",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ $json.publishCard }}",
@@ -242,7 +242,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://chat.googleapis.com/v1/spaces/AAAANHGYBUU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=OQKuRrHuJ_CCjUSOm959ZRvO3cp6qD-yDAxQlJTEfDI",
+        "url": "PASTE_GOOGLE_CHAT_REVIEW_WEBHOOK_URL_HERE",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"text\": \"❌ Release {{ $json.name }} was rejected and was not posted to the group.\"\n}",
