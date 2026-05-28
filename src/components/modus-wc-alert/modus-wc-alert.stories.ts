@@ -13,7 +13,7 @@ interface AlertArgs {
   dismissible?: boolean;
   dismissClick?: () => void;
   icon?: string;
-  variant: 'error' | 'info' | 'success' | 'warning';
+  variant: 'default' | 'error' | 'info' | 'success' | 'warning';
   role: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
 }
 
@@ -35,7 +35,7 @@ const meta: Meta<AlertArgs> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['', 'error', 'info', 'success', 'warning'],
+      options: ['default', 'error', 'info', 'success', 'warning'],
     },
   },
   decorators: [withActions],
