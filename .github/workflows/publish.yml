@@ -248,4 +248,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
+          TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
         run: bash .github/scripts/notify-n8n-release.sh "${{ github.event.inputs.version }}" publish
