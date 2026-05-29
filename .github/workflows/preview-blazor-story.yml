@@ -19,7 +19,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: gh-pages-deploy-${{ github.ref }}
+  group: gh-pages-blazor-deploy-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -80,7 +80,7 @@ jobs:
 
       - name: Deploy preview
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: rossjrw/pr-preview-action@v1
+        uses: rossjrw/pr-preview-action@3446296876d12d4e3a0f3145a3c87e67bf0a16b5 # v1.0.0
         id: preview-deploy
         with:
           source-dir: ./blazing-story-dist/wwwroot/
@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.0.0
         id: deploy
         with:
           folder: blazing-story-dist/wwwroot

@@ -109,10 +109,8 @@ or, a more complex wrapper:
 import React from 'react';
 import { ModusWcTextInput } from '@trimble-oss/moduswebcomponents-react';
 
-interface Props extends Omit<
-  React.ComponentProps<typeof ModusWcTextInput>,
-  'inputChange'
-> {
+interface Props
+  extends Omit<React.ComponentProps<typeof ModusWcTextInput>, 'inputChange'> {
   onValueChange: (value: string) => void;
 }
 

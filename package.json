@@ -93,7 +93,7 @@
     "lint:prettier": "wireit",
     "lint:stylelint": "wireit",
     "format": "wireit",
-    "prettier": "prettier --write \"stencil.config.ts\"",
+    "prettier": "prettier --write \"src/**/*.*\"",
     "start": "wireit",
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
