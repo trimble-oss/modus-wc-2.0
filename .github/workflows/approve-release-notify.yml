@@ -1,0 +1,58 @@
+# Approve or reject a pending release notification in n8n.
+# Fetches a fresh Trimble OAuth token before each run (tokens expire ~1 hour).
+# Does NOT publish to npm.
+
+name: Approve Release Notify
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval_id:
+        description: 'Approval ID from the Google Chat review card'
+        required: true
+        type: string
+      action:
+        description: 'Approve posts to the group; reject cancels'
+        required: true
+        type: choice
+        options:
+          - approve
+          - reject
+
+permissions:
+  contents: read
+
+jobs:
+  approve-or-reject:
+    runs-on: ubuntu-latest
+    if: github.repository == 'trimble-oss/modus-wc-2.0'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Require Trimble OAuth secrets
+        env:
+          TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
+          TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
+          N8N_APPROVAL_KEY: ${{ secrets.N8N_APPROVAL_KEY }}
+        run: |
+          if [ -z "$TRIMBLE_N8N_CLIENT_ID" ] || [ -z "$TRIMBLE_N8N_CLIENT_SECRET" ]; then
+            echo "TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET secrets are required." >&2
+            exit 1
+          fi
+
+          if [ -z "$N8N_APPROVAL_KEY" ]; then
+            echo "N8N_APPROVAL_KEY secret is not configured." >&2
+            exit 1
+          fi
+
+      - name: Send approval decision to n8n
+        env:
+          TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
+          TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
+          N8N_APPROVAL_KEY: ${{ secrets.N8N_APPROVAL_KEY }}
+        run: |
+          bash .github/scripts/n8n-release-approval.sh \
+            "${{ github.event.inputs.action }}" \
+            "${{ github.event.inputs.approval_id }}"
