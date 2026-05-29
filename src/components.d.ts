@@ -5,12 +5,12 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+import { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
+import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-import { LogoName } from "./components/modus-wc-logo/logo-constants";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 import { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
@@ -22,12 +22,12 @@ import { SortingState } from "@tanstack/table-core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
-export { AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+export { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
+export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
-export { LogoName } from "./components/modus-wc-logo/logo-constants";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
 export { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
@@ -74,6 +74,10 @@ export namespace Components {
          */
         "delay"?: number;
         /**
+          * Whether to disable the icon
+         */
+        "disableIcon"?: boolean;
+        /**
           * Whether the alert has a dismiss button
           * @default false
          */
@@ -87,6 +91,20 @@ export namespace Components {
           * @default 'info'
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
+    }
+    interface ModusWcAppMenu {
+        /**
+          * The apps to display in the menu.
+         */
+        "apps"?: IAppMenuItem[];
+        /**
+          * custom class to apply to the menu
+         */
+        "customClass"?: string;
+        /**
+          * The layout of the menu.
+         */
+        "layout"?: 'list' | 'grid';
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -385,7 +403,7 @@ export namespace Components {
           * The size of the button.
           * @default 'md'
          */
-        "size": DaisySize;
+        "size": DaisySize | 'xl';
         /**
           * The type of the button.
           * @default 'button'
@@ -540,6 +558,10 @@ export namespace Components {
           * @default ''
          */
         "label"?: string;
+        /**
+          * Whether the chip height can grow and its content can wrap across multiple lines.
+         */
+        "multiline"?: boolean;
         /**
           * The shape of the chip: 'rectangle' (default) or 'circle'.
           * @default 'rectangle'
@@ -752,7 +774,7 @@ export namespace Components {
           * The size of the button.
           * @default 'md'
          */
-        "buttonSize"?: DaisySize;
+        "buttonSize"?: DaisySize | 'xl';
         /**
           * The variant of the button.
           * @default 'filled'
@@ -871,7 +893,7 @@ export namespace Components {
           * The size of the button.
           * @default 'md'
          */
-        "buttonSize"?: DaisySize;
+        "buttonSize"?: DaisySize | 'xl';
         /**
           * The variant of the button.
           * @default 'filled'
@@ -1007,6 +1029,42 @@ export namespace Components {
           * The text rendered beneath the label.
          */
         "subLabelText"?: string;
+    }
+    /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface ModusWcLink {
+        /**
+          * The color of the link.
+         */
+        "color": | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href"?: string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
+        /**
+          * The underline behavior of the link.
+         */
+        "underline": 'always' | 'hover' | 'none';
     }
     /**
      * A customizable loader component used to indicate the loading of content
@@ -1749,6 +1807,10 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
+          * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+         */
+        "interactive"?: boolean;
+        /**
           * The orientation of the steps.
          */
         "orientation"?: Orientation;
@@ -2365,6 +2427,10 @@ export interface ModusWcAlertCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAlertElement;
 }
+export interface ModusWcAppMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAppMenuElement;
+}
 export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
@@ -2449,6 +2515,10 @@ export interface ModusWcSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSliderElement;
 }
+export interface ModusWcStepperCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcStepperElement;
+}
 export interface ModusWcSwitchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcSwitchElement;
@@ -2530,6 +2600,27 @@ declare global {
     var HTMLModusWcAlertElement: {
         prototype: HTMLModusWcAlertElement;
         new (): HTMLModusWcAlertElement;
+    };
+    interface HTMLModusWcAppMenuElementEventMap {
+        "layoutChange": {
+    layout: 'list' | 'grid';
+  };
+        "itemsOrderChange": IAppMenuItem[];
+        "itemClick": { appName: AppName };
+    }
+    interface HTMLModusWcAppMenuElement extends Components.ModusWcAppMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAppMenuElementEventMap>(type: K, listener: (this: HTMLModusWcAppMenuElement, ev: ModusWcAppMenuCustomEvent<HTMLModusWcAppMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAppMenuElementEventMap>(type: K, listener: (this: HTMLModusWcAppMenuElement, ev: ModusWcAppMenuCustomEvent<HTMLModusWcAppMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcAppMenuElement: {
+        prototype: HTMLModusWcAppMenuElement;
+        new (): HTMLModusWcAppMenuElement;
     };
     interface HTMLModusWcAutocompleteElementEventMap {
         "chipRemove": IAutocompleteItem;
@@ -2836,6 +2927,15 @@ declare global {
     var HTMLModusWcInputLabelElement: {
         prototype: HTMLModusWcInputLabelElement;
         new (): HTMLModusWcInputLabelElement;
+    };
+    /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface HTMLModusWcLinkElement extends Components.ModusWcLink, HTMLStencilElement {
+    }
+    var HTMLModusWcLinkElement: {
+        prototype: HTMLModusWcLinkElement;
+        new (): HTMLModusWcLinkElement;
     };
     /**
      * A customizable loader component used to indicate the loading of content
@@ -3145,10 +3245,21 @@ declare global {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
     };
+    interface HTMLModusWcStepperElementEventMap {
+        "stepClick": { index: number };
+    }
     /**
      * Used to show a list of steps in a process.
      */
     interface HTMLModusWcStepperElement extends Components.ModusWcStepper, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcStepperElementEventMap>(type: K, listener: (this: HTMLModusWcStepperElement, ev: ModusWcStepperCustomEvent<HTMLModusWcStepperElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcStepperElementEventMap>(type: K, listener: (this: HTMLModusWcStepperElement, ev: ModusWcStepperCustomEvent<HTMLModusWcStepperElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcStepperElement: {
         prototype: HTMLModusWcStepperElement;
@@ -3409,6 +3520,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "modus-wc-accordion": HTMLModusWcAccordionElement;
         "modus-wc-alert": HTMLModusWcAlertElement;
+        "modus-wc-app-menu": HTMLModusWcAppMenuElement;
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
@@ -3427,6 +3539,7 @@ declare global {
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
+        "modus-wc-link": HTMLModusWcLinkElement;
         "modus-wc-loader": HTMLModusWcLoaderElement;
         "modus-wc-logo": HTMLModusWcLogoElement;
         "modus-wc-menu": HTMLModusWcMenuElement;
@@ -3502,6 +3615,10 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
+          * Whether to disable the icon
+         */
+        "disableIcon"?: boolean;
+        /**
           * Whether the alert has a dismiss button
           * @default false
          */
@@ -3519,6 +3636,34 @@ declare namespace LocalJSX {
           * @default 'info'
          */
         "variant"?: 'error' | 'info' | 'success' | 'warning';
+    }
+    interface ModusWcAppMenu {
+        /**
+          * The apps to display in the menu.
+         */
+        "apps"?: IAppMenuItem[];
+        /**
+          * custom class to apply to the menu
+         */
+        "customClass"?: string;
+        /**
+          * The layout of the menu.
+         */
+        "layout"?: 'list' | 'grid';
+        /**
+          * Emitted when an item is clicked
+         */
+        "onItemClick"?: (event: ModusWcAppMenuCustomEvent<{ appName: AppName }>) => void;
+        /**
+          * Emitted when reordering is confirmed via "Done" and the order differs from when edit started
+         */
+        "onItemsOrderChange"?: (event: ModusWcAppMenuCustomEvent<IAppMenuItem[]>) => void;
+        /**
+          * Emit event when the layout changes
+         */
+        "onLayoutChange"?: (event: ModusWcAppMenuCustomEvent<{
+    layout: 'list' | 'grid';
+  }>) => void;
     }
     /**
      * A customizable autocomplete component used to create searchable text inputs.
@@ -3829,7 +3974,7 @@ declare namespace LocalJSX {
           * The size of the button.
           * @default 'md'
          */
-        "size"?: DaisySize;
+        "size"?: DaisySize | 'xl';
         /**
           * The type of the button.
           * @default 'button'
@@ -4009,6 +4154,10 @@ declare namespace LocalJSX {
           * @default ''
          */
         "label"?: string;
+        /**
+          * Whether the chip height can grow and its content can wrap across multiple lines.
+         */
+        "multiline"?: boolean;
         /**
           * Event emitted when the chip is clicked or activated via keyboard.
          */
@@ -4253,7 +4402,7 @@ declare namespace LocalJSX {
           * The size of the button.
           * @default 'md'
          */
-        "buttonSize"?: DaisySize;
+        "buttonSize"?: DaisySize | 'xl';
         /**
           * The variant of the button.
           * @default 'filled'
@@ -4376,7 +4525,7 @@ declare namespace LocalJSX {
           * The size of the button.
           * @default 'md'
          */
-        "buttonSize"?: DaisySize;
+        "buttonSize"?: DaisySize | 'xl';
         /**
           * The variant of the button.
           * @default 'filled'
@@ -4512,6 +4661,42 @@ declare namespace LocalJSX {
           * The text rendered beneath the label.
          */
         "subLabelText"?: string;
+    }
+    /**
+     * A customizable link component used to navigate to URLs.
+     */
+    interface ModusWcLink {
+        /**
+          * The color of the link.
+         */
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'inherit'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger';
+        /**
+          * Custom CSS class to apply to the link element.
+         */
+        "customClass"?: string;
+        /**
+          * The URL to navigate to when the link is activated.
+         */
+        "href"?: string;
+        /**
+          * The relationship attribute for the link.
+         */
+        "rel"?: string;
+        /**
+          * The browsing context for the link.
+         */
+        "target"?: string;
+        /**
+          * The underline behavior of the link.
+         */
+        "underline"?: 'always' | 'hover' | 'none';
     }
     /**
      * A customizable loader component used to indicate the loading of content
@@ -5395,6 +5580,14 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
+          * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+         */
+        "interactive"?: boolean;
+        /**
+          * Emitted with the 0-based step index when a step is activated and `interactive` is true.
+         */
+        "onStepClick"?: (event: ModusWcStepperCustomEvent<{ index: number }>) => void;
+        /**
           * The orientation of the steps.
          */
         "orientation"?: Orientation;
@@ -6118,6 +6311,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "modus-wc-accordion": ModusWcAccordion;
         "modus-wc-alert": ModusWcAlert;
+        "modus-wc-app-menu": ModusWcAppMenu;
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
@@ -6136,6 +6330,7 @@ declare namespace LocalJSX {
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-link": ModusWcLink;
         "modus-wc-loader": ModusWcLoader;
         "modus-wc-logo": ModusWcLogo;
         "modus-wc-menu": ModusWcMenu;
@@ -6183,6 +6378,7 @@ declare module "@stencil/core" {
              * The component supports `<slot>` elements for injecting custom content and buttons.
              */
             "modus-wc-alert": LocalJSX.ModusWcAlert & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
+            "modus-wc-app-menu": LocalJSX.ModusWcAppMenu & JSXBase.HTMLAttributes<HTMLModusWcAppMenuElement>;
             /**
              * A customizable autocomplete component used to create searchable text inputs.
              * The component supports a `<slot>` for injecting custom content.
@@ -6270,6 +6466,10 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
              */
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            /**
+             * A customizable link component used to navigate to URLs.
+             */
+            "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**
              * A customizable loader component used to indicate the loading of content
              */

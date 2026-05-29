@@ -14,7 +14,11 @@ import {
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 import DatePickerCalendar from './utils/calendar';
 
 const MONTH_SHORT_NAMES = [
@@ -60,6 +64,7 @@ export class ModusWcDate {
   private locale: string = 'en-US';
   private minDate?: Date;
   private maxDate?: Date;
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -1216,11 +1221,12 @@ export class ModusWcDate {
   }
 
   render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -1232,7 +1238,7 @@ export class ModusWcDate {
             aria-disabled={this.disabled}
             class={this.getClasses()}
             disabled={this.disabled}
-            id={this.inputId}
+            id={effectiveId}
             name={this.name}
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}

@@ -10,7 +10,11 @@ import {
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
-import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 export interface ISelectOption {
   /** Whether the option is disabled and cannot be selected. */
@@ -31,7 +35,7 @@ export interface ISelectOption {
 })
 export class ModusWcSelect {
   private inheritedAttributes: Attributes = {};
-  private generatedId: string = generateElementId();
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -122,7 +126,7 @@ export class ModusWcSelect {
   };
 
   render() {
-    const effectiveId = this.inputId || this.generatedId;
+    const effectiveId = this.resolveEffectiveId(this.inputId);
 
     return (
       <Host>

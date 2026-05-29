@@ -21,7 +21,12 @@ import {
   IInputFeedbackProp,
   ModusSize,
 } from '../types';
-import { Attributes, inheritAriaAttributes, KEY } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+  KEY,
+} from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
   clearAllFocus,
@@ -64,6 +69,7 @@ export class ModusWcAutocomplete {
   @State() private searchText: string = ''; // Dedicated state for active search query
   @State() private showFeedback: boolean = true; // Track whether to show feedback
   private debounceTimer?: number;
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
   private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
@@ -896,6 +902,7 @@ export class ModusWcAutocomplete {
   };
 
   render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
     // Set CSS custom properties for dynamic min-width control
     const minWidth = this.minInputWidth || 10;
     const cssVariables = {
@@ -917,7 +924,7 @@ export class ModusWcAutocomplete {
                 ? `modus-wc-input-label--${this.feedback.level}`
                 : ''
             }
-            forId={this.inputId}
+            forId={effectiveId}
             labelText={this.label}
             required={this.required}
             size={this.size}
@@ -954,7 +961,7 @@ export class ModusWcAutocomplete {
                     : undefined,
                 includeClear: this.includeClear,
                 includeSearch: this.includeSearch,
-                inputId: this.inputId,
+                inputId: effectiveId,
                 inputTabIndex: this.inputTabIndex,
                 name: this.name,
                 placeholder: this.placeholder,
@@ -1002,7 +1009,7 @@ export class ModusWcAutocomplete {
                   : '',
               includeClear: this.includeClear,
               includeSearch: this.includeSearch,
-              inputId: this.inputId,
+              inputId: effectiveId,
               inputTabIndex: this.inputTabIndex,
               name: this.name,
               placeholder: this.placeholder,

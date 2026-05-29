@@ -11,6 +11,17 @@ exports[`modus-wc-chip should render label when provided 1`] = `
 </modus-wc-chip>
 `;
 
+exports[`modus-wc-chip should render multiline chip with slotted content 1`] = `
+<modus-wc-chip multiline="true">
+  <!---->
+  <button aria-label="Multiline slotted chip" class="modus-wc-btn modus-wc-btn-md modus-wc-chip modus-wc-chip-multiline" tabindex="0" type="button">
+    <span>
+      Slot content
+    </span>
+  </button>
+</modus-wc-chip>
+`;
+
 exports[`modus-wc-chip should render remove icon when showRemove is true 1`] = `
 <modus-wc-chip show-remove="true">
   <!---->
