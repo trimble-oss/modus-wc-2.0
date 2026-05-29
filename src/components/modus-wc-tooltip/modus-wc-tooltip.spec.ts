@@ -897,7 +897,7 @@ describe('modus-wc-tooltip', () => {
       }).not.toThrow();
     });
 
-    it("should leave the caller's original element in its parent (no reparenting)", async () => {
+    it("should leave the caller's original element in its parent", async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
         html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',

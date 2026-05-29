@@ -1,8 +1,6 @@
-import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
 interface TooltipArgs {
   content?: string;
   'custom-class'?: string;
@@ -25,15 +23,12 @@ const meta: Meta<TooltipArgs> = {
       options: ['auto', 'top', 'right', 'left', 'bottom'],
     },
   },
-  decorators: [withActions],
   parameters: {
-    actions: {
-      handles: ['dismissEscape'],
-    },
     docs: {
       description: {
         component: `
-A customizable tooltip component used to create tooltips with different content. The default slot is used for the trigger element.
+A customizable tooltip component used to create tooltips with different content.
+ \nThe component supports a \`<slot>\` for injecting custom tooltip content.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -48,15 +43,19 @@ A customizable tooltip component used to create tooltips with different content.
     },
   },
 };
-
 export default meta;
 
 type Story = StoryObj<TooltipArgs>;
 
-export const Default: Story = {
-  render: (args) =>
+const Template: Story = {
+  parameters: {
+    actions: {
+      handles: ['dismissEscape'],
+    },
+  },
+  render: (args) => {
     // prettier-ignore
-    html`
+    return html`
       <modus-wc-tooltip
         content=${ifDefined(args.content)}
         custom-class="${ifDefined(args['custom-class'])}"
@@ -67,8 +66,11 @@ export const Default: Story = {
       >
         <modus-wc-badge>Hover</modus-wc-badge>
       </modus-wc-tooltip>
-    `,
+    `;
+  },
 };
+
+export const Default: Story = { ...Template };
 
 const defaultRichHtml = `<strong>Tooltip</strong>
 <p>First line of multiline content.</p>
@@ -227,7 +229,6 @@ export const Migration: Story = {
 
   - In 1.0, tooltip positioning was managed using Popper.js. In 2.0, tooltip positioning continues to be handled by Popper.js.
   - The \`text\` prop has been renamed to \`content\`.
-  - \`contentElement\` is now deep-cloned instead of moved. See the **Content Element** story for usage.
 
 #### Prop Mapping
 
