@@ -80,7 +80,7 @@ jobs:
 
       - name: Deploy preview
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: rossjrw/pr-preview-action@3446296876d12d4e3a0f3145a3c87e67bf0a16b5 # v1.0.0
+        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1
         id: preview-deploy
         with:
           source-dir: ./blazing-story-dist/wwwroot/
@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: JamesIves/github-pages-deploy-action@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.0.0
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: deploy
         with:
           folder: blazing-story-dist/wwwroot
