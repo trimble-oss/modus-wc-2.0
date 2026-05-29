@@ -47,7 +47,10 @@ function doGet(e) {
   }
 
   if (!approvalKey) {
-    return html('Proxy not configured. Set APPROVAL_KEY in Script properties.', 500);
+    return html(
+      'Proxy not configured. Set APPROVAL_KEY in Script properties.',
+      500
+    );
   }
 
   const path =
@@ -69,7 +72,10 @@ function doGet(e) {
   }
 
   if (!trimbleToken) {
-    return html('Trimble OAuth token was empty. Check TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET.', 500);
+    return html(
+      'Trimble OAuth token was empty. Check TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET.',
+      500
+    );
   }
 
   const url =
@@ -93,7 +99,8 @@ function doGet(e) {
   const body = response.getContentText();
 
   if (code >= 200 && code < 300) {
-    const title = action === 'approve' ? 'Approved and posted' : 'Release rejected';
+    const title =
+      action === 'approve' ? 'Approved and posted' : 'Release rejected';
     return html('✅ ' + title + '\n\n' + body, code);
   }
 
@@ -132,8 +139,8 @@ function fetchTrimbleToken() {
     return cached;
   }
 
-  const creds = getTrimbleOAuthCredentials();
-  const token = requestTrimbleToken(creds);
+  const credentials = getTrimbleOAuthCredentials();
+  const token = requestTrimbleToken(credentials);
 
   cache.put('trimble_n8n_token', token, 3000);
   return token;
@@ -141,14 +148,21 @@ function fetchTrimbleToken() {
 
 function getTrimbleOAuthCredentials() {
   const props = PropertiesService.getScriptProperties();
-  const clientId = String(props.getProperty('TRIMBLE_N8N_CLIENT_ID') || '').trim();
-  const clientSecret = String(props.getProperty('TRIMBLE_N8N_CLIENT_SECRET') || '').trim();
+  const clientId = String(
+    props.getProperty('TRIMBLE_N8N_CLIENT_ID') || ''
+  ).trim();
+  const clientSecret = String(
+    props.getProperty('TRIMBLE_N8N_CLIENT_SECRET') || ''
+  ).trim();
   const tokenUrl =
-    props.getProperty('TRIMBLE_N8N_TOKEN_URL') || 'https://stage.id.trimblecloud.com/oauth/token';
+    props.getProperty('TRIMBLE_N8N_TOKEN_URL') ||
+    'https://stage.id.trimblecloud.com/oauth/token';
   const scope = props.getProperty('TRIMBLE_N8N_SCOPE') || 'Agentic-N8N-Webhook';
 
   if (!clientId || !clientSecret) {
-    throw new Error('Set TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET in Script properties.');
+    throw new Error(
+      'Set TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET in Script properties.'
+    );
   }
 
   if (clientId === clientSecret) {
@@ -165,12 +179,15 @@ function getTrimbleOAuthCredentials() {
   };
 }
 
-function requestTrimbleToken(creds) {
-  const basicAuth = Utilities.base64Encode(creds.clientId + ':' + creds.clientSecret);
+function requestTrimbleToken(credentials) {
+  const basicAuth = Utilities.base64Encode(
+    credentials.clientId + ':' + credentials.clientSecret
+  );
   const body =
-    'grant_type=client_credentials&scope=' + encodeURIComponent(creds.scope);
+    'grant_type=client_credentials&scope=' +
+    encodeURIComponent(credentials.scope);
 
-  const response = UrlFetchApp.fetch(creds.tokenUrl, {
+  const response = UrlFetchApp.fetch(credentials.tokenUrl, {
     method: 'post',
     muteHttpExceptions: true,
     contentType: 'application/x-www-form-urlencoded',
@@ -207,15 +224,24 @@ function testTrimbleAuth() {
 
 /** Logs non-secret config hints — run before testTrimbleAuth if OAuth fails. */
 function checkTrimbleConfig() {
-  const creds = getTrimbleOAuthCredentials();
+  const credentials = getTrimbleOAuthCredentials();
 
-  Logger.log('Token URL: ' + creds.tokenUrl);
-  Logger.log('Scope: ' + creds.scope);
-  Logger.log('Client ID length: ' + creds.clientId.length);
-  Logger.log('Client secret length: ' + creds.clientSecret.length);
-  Logger.log('Client ID starts with: ' + creds.clientId.substring(0, 8) + '...');
-  Logger.log('Client secret starts with: ' + creds.clientSecret.substring(0, 8) + '...');
-  Logger.log('Values are different: ' + (creds.clientId !== creds.clientSecret));
+  Logger.log('Token URL: ' + credentials.tokenUrl);
+  Logger.log('Scope: ' + credentials.scope);
+  Logger.log('Client ID length: ' + credentials.clientId.length);
+  Logger.log('Client secret length: ' + credentials.clientSecret.length);
+  Logger.log(
+    'Client ID starts with: ' + credentials.clientId.substring(0, 8) + '...'
+  );
+  Logger.log(
+    'Client secret starts with: ' +
+      credentials.clientSecret.substring(0, 8) +
+      '...'
+  );
+  Logger.log(
+    'Values are different: ' +
+      (credentials.clientId !== credentials.clientSecret)
+  );
 }
 
 function html(message, status) {

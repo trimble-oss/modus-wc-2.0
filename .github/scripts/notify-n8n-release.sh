@@ -16,16 +16,10 @@ REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}"
 N8N_WEBHOOK_URL="${N8N_WEBHOOK_URL:-}"
 TAG_PREFIX="moduswebcomponents-"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-N8N_WEBHOOK_TOKEN="$(bash "${script_dir}/resolve-trimble-n8n-token.sh")"
 
 if [ -z "$N8N_WEBHOOK_URL" ]; then
   echo "N8N_WEBHOOK_URL not configured, skipping n8n notification."
   exit 0
-fi
-
-if [[ "$N8N_WEBHOOK_URL" == *"trimble-ai.com"* ]] && [ -z "$N8N_WEBHOOK_TOKEN" ]; then
-  echo "Trimble n8n token is required. Set TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET, or N8N_WEBHOOK_TOKEN." >&2
-  exit 1
 fi
 
 version_from_tag() {
@@ -90,6 +84,13 @@ fi
 if [ -z "$body" ]; then
   echo "Release notes body is empty for ${TAG}, skipping n8n notification."
   exit 0
+fi
+
+N8N_WEBHOOK_TOKEN="$(bash "${script_dir}/resolve-trimble-n8n-token.sh")"
+
+if [[ "$N8N_WEBHOOK_URL" == *"trimble-ai.com"* ]] && [ -z "$N8N_WEBHOOK_TOKEN" ]; then
+  echo "Trimble n8n token is required. Set TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET, or N8N_WEBHOOK_TOKEN." >&2
+  exit 1
 fi
 
 curl_args=(
