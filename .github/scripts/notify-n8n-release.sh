@@ -2,14 +2,19 @@
 set -euo pipefail
 
 # Notify n8n with release notes for summarization and Google Chat approval flow.
-# Usage: notify-n8n-release.sh <version> [event]
-#   version - SemVer being published (e.g. 1.6.0)
+# Usage: notify-n8n-release.sh [version] [event]
+#   version - Optional SemVer hint to pick a draft/published release (e.g. 1.6.0).
+#             When omitted, uses the latest GitHub draft release.
 #   event   - Optional event type (default: publish)
+#
+# Version, tag, and name are always taken from the GitHub release record
+# (draft or published), not reconstructed from the version argument.
 
-VERSION="${1:?version is required}"
+VERSION_HINT="${1:-}"
 EVENT="${2:-publish}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}"
 N8N_WEBHOOK_URL="${N8N_WEBHOOK_URL:-}"
+TAG_PREFIX="moduswebcomponents-"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 N8N_WEBHOOK_TOKEN="$(bash "${script_dir}/resolve-trimble-n8n-token.sh")"
 
@@ -23,25 +28,63 @@ if [[ "$N8N_WEBHOOK_URL" == *"trimble-ai.com"* ]] && [ -z "$N8N_WEBHOOK_TOKEN" ]
   exit 1
 fi
 
-TAG="moduswebcomponents-${VERSION}"
-NAME="Modus Web Components ${VERSION}"
+version_from_tag() {
+  local tag="$1"
+  tag="${tag#${TAG_PREFIX}}"
+  tag="${tag#v}"
+  echo "$tag"
+}
 
-draft="$(gh api "repos/${REPO}/releases" --jq "[.[] | select(.draft == true and .tag_name == \"${TAG}\")][0]")"
+version_from_name() {
+  local name="$1"
+  if [[ "$name" =~ Modus\ Web\ Components\ ([0-9]+\.[0-9]+\.[0-9]+.*)$ ]]; then
+    echo "${BASH_REMATCH[1]}"
+  fi
+}
 
-if [ "$draft" = "null" ] || [ -z "$draft" ]; then
-  draft="$(gh api "repos/${REPO}/releases" --jq '[.[] | select(.draft == true)][0]')"
+find_release() {
+  local hint="$1"
+  local release="null"
+
+  if [ -n "$hint" ]; then
+    local tag="${TAG_PREFIX}${hint}"
+    release="$(gh api "repos/${REPO}/releases" --jq "[.[] | select(.tag_name == \"${tag}\")][0]")"
+  fi
+
+  if [ "$release" = "null" ] || [ -z "$release" ]; then
+    release="$(gh api "repos/${REPO}/releases" --jq '[.[] | select(.draft == true)][0]')"
+  fi
+
+  echo "$release"
+}
+
+release="$(find_release "$VERSION_HINT")"
+
+if [ "$release" = "null" ] || [ -z "$release" ]; then
+  if [ -n "$VERSION_HINT" ]; then
+    echo "No GitHub release found for ${TAG_PREFIX}${VERSION_HINT}, skipping n8n notification."
+  else
+    echo "No GitHub draft release found, skipping n8n notification."
+  fi
+  exit 0
 fi
 
-if [ "$draft" = "null" ] || [ -z "$draft" ]; then
-  published="$(gh api "repos/${REPO}/releases/tags/${TAG}" 2>/dev/null || echo "null")"
-  if [ "$published" != "null" ] && [ -n "$published" ]; then
-    body="$(echo "$published" | jq -r '.body // ""')"
-  else
-    echo "No release notes found for ${TAG}, skipping n8n notification."
-    exit 0
-  fi
-else
-  body="$(echo "$draft" | jq -r '.body // ""')"
+TAG="$(echo "$release" | jq -r '.tag_name // ""')"
+NAME="$(echo "$release" | jq -r '.name // ""')"
+body="$(echo "$release" | jq -r '.body // ""')"
+VERSION="$(version_from_tag "$TAG")"
+
+if [ -z "$VERSION" ]; then
+  VERSION="$(version_from_name "$NAME")"
+fi
+
+if [ -z "$VERSION" ]; then
+  echo "Could not determine version from release tag/name (${TAG}), skipping n8n notification."
+  exit 0
+fi
+
+if [ -z "$NAME" ] || [ "$NAME" = "null" ]; then
+  NAME="Modus Web Components ${VERSION}"
 fi
 
 if [ -z "$body" ]; then
@@ -69,4 +112,4 @@ jq -n \
   '{version: $version, tag: $tag, name: $name, body: $body, repo: $repo, event: $event}' | \
   curl "${curl_args[@]}" -d @-
 
-echo "Notified n8n for ${TAG} (${EVENT})."
+echo "Notified n8n for ${TAG} (${EVENT}, version ${VERSION} from GitHub release)."

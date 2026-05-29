@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Draft release version to test (e.g. 1.6.0)'
-        required: true
+        description: 'Optional SemVer hint (e.g. 1.6.0). Leave empty to use the latest GitHub draft release tag/name.'
+        required: false
         type: string
 
 permissions:

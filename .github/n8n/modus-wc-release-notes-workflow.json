@@ -34,7 +34,7 @@
             {
               "id": "version",
               "name": "version",
-              "value": "={{ $json.body?.version ?? $json.version }}",
+              "value": "={{ (($json.body?.tag ?? $json.tag ?? '').replace(/^moduswebcomponents-/, '').replace(/^v/, '')) || ($json.body?.version ?? $json.version ?? '') }}",
               "type": "string"
             },
             {
