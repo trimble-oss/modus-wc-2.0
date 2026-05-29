@@ -33,8 +33,7 @@ const meta: Meta<TooltipArgs> = {
     docs: {
       description: {
         component: `
-A customizable tooltip component used to create tooltips with different content.
- \nThe component supports a \`contentElement\` prop for rich HTML tooltip content such as multiline text. When set, \`contentElement\` takes precedence over the \`content\` string prop. The provided element is moved into the tooltip (not cloned), so pass a detached element dedicated to this tooltip. The default slot is used for the trigger element.
+A customizable tooltip component used to create tooltips with different content. The default slot is used for the trigger element.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -71,40 +70,74 @@ export const Default: Story = {
     `,
 };
 
-const richHtml = '<strong>Tooltip</strong><p>Rich HTML content</p>';
+const defaultRichHtml = `<strong>Tooltip</strong>
+<p>First line of multiline content.</p>
+<p>Second line of multiline content.</p>`;
 
-export const WithContentElement: Story = {
+function buildRichTooltipContent(html: string): HTMLDivElement {
+  const el = document.createElement('div');
+  el.style.cssText =
+    'align-items:flex-start;display:flex;gap:0.375rem;text-align:start';
+
+  const icon = document.createElement('modus-wc-icon');
+  icon.setAttribute('decorative', '');
+  icon.setAttribute('name', 'thumbs_up');
+  icon.setAttribute('size', 'sm');
+
+  const text = document.createElement('div');
+  text.innerHTML = html;
+
+  el.append(icon, text);
+  return el;
+}
+
+export const ContentElement: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Use `contentElement` to pass a rich HTML element as the tooltip body. `contentElement` takes precedence over the `content` string prop, and the provided element is moved into the tooltip (not cloned).',
+        story: `
+Use \`contentElement\` to pass rich HTML (icons, multiple lines, formatting) as the tooltip body. It takes precedence over the \`content\` string prop.
+
+The element is **deep-cloned** (\`cloneNode(true)\`) into the tooltip balloon on \`document.body\`. Your original node is **not moved or mutated**.
+
+- **Dynamic rich content** — create a new element whenever the HTML changes, or set \`contentElement\` to \`undefined\` and re-assign to refresh the clone.
+- **Interactive content** — attach listeners with event delegation on \`document\` (or a parent), and add \`custom-class\` with \`pointer-events: auto\` so the balloon accepts clicks.
+        `,
       },
       source: {
         transform: (_src, { args }) => `<modus-wc-tooltip
   position="${args.position ?? 'auto'}"
+  custom-class="tooltip-rich-html-demo"
 >
   <modus-wc-badge>Hover</modus-wc-badge>
 </modus-wc-tooltip>
 
 <script>
   const el = document.createElement('div');
-  el.innerHTML = '${richHtml}';
+  const icon = document.createElement('modus-wc-icon');
+  icon.setAttribute('decorative', '');
+  icon.setAttribute('name', 'thumbs_up');
+  icon.setAttribute('size', 'sm');
+
+  const text = document.createElement('div');
+  text.innerHTML = '<strong>Tooltip</strong><p>First line</p><p>Second line</p>';
+
+  el.append(icon, text);
   document.querySelector('modus-wc-tooltip').contentElement = el;
 </script>`,
       },
     },
   },
   args: {
-    position: 'auto',
+    position: 'top',
+    'custom-class': 'tooltip-rich-html-demo',
   },
   render: (args) => {
-    const el = document.createElement('div');
-    el.innerHTML = richHtml;
+    const contentElement = buildRichTooltipContent(defaultRichHtml);
     // prettier-ignore
     return html`
       <modus-wc-tooltip
-        .contentElement=${el}
+        .contentElement=${contentElement}
         content=${ifDefined(args.content)}
         custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
@@ -194,6 +227,7 @@ export const Migration: Story = {
 
   - In 1.0, tooltip positioning was managed using Popper.js. In 2.0, tooltip positioning continues to be handled by Popper.js.
   - The \`text\` prop has been renamed to \`content\`.
+  - \`contentElement\` is now deep-cloned instead of moved. See the **Content Element** story for usage.
 
 #### Prop Mapping
 
