@@ -52,8 +52,12 @@ export const Default: Story = {
   render: (args) => {
     let ctxBtn: HTMLElement | null = null;
     let ctxMenu: HTMLElement | null = null;
+    let dropdownInitialized = false;
 
     const setupDropdown = (btn: HTMLElement, menu: HTMLElement) => {
+      if (dropdownInitialized) return;
+      dropdownInitialized = true;
+
       btn.addEventListener('buttonClick', (e) => {
         e.stopPropagation();
         const isOpen = ctxMenu!.style.display === 'block';
@@ -67,11 +71,7 @@ export const Default: Story = {
         }
       });
 
-      menu.addEventListener('itemSelect', (e) => {
-        console.log(
-          'Action:',
-          (e as CustomEvent<{ value: string }>).detail.value
-        );
+      menu.addEventListener('itemSelect', () => {
         ctxMenu!.style.display = 'none';
       });
 
@@ -89,13 +89,13 @@ export const Default: Story = {
     const onBtnRef = (el: Element | undefined) => {
       if (!el) return;
       ctxBtn = el as HTMLElement;
-      if (ctxBtn && ctxMenu) setupDropdown(ctxBtn, ctxMenu);
+      if (ctxMenu) setupDropdown(ctxBtn, ctxMenu);
     };
 
     const onMenuRef = (el: Element | undefined) => {
       if (!el) return;
       ctxMenu = el as HTMLElement;
-      if (ctxBtn && ctxMenu) setupDropdown(ctxBtn, ctxMenu);
+      if (ctxBtn) setupDropdown(ctxBtn, ctxMenu);
     };
 
     // prettier-ignore

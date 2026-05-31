@@ -15,9 +15,9 @@ import { ModusSize, Orientation, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable tree view component used to display a list of li elements vertically or horizontally.
+ * A customizable tree view component used to display a list of modus-wc-tree-item elements vertically or horizontally.
  *
- * The component supports a `<slot>` for injecting custom li elements inside the ul element.
+ * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
  */
 @Component({
   tag: 'modus-wc-tree-view',

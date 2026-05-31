@@ -110,24 +110,22 @@ export const WithEndSlot: Story = {
   render: (args) => {
     const btnRef = createRef<HTMLElement>();
     const menuRef = createRef<HTMLElement>();
+    let listenersAttached = false;
 
     const attachListeners = () => {
       const btn = btnRef.value;
       const menu = menuRef.value;
       if (!btn || !menu) return;
-      console.log('attachListeners', btn, menu);
+      if (listenersAttached) return;
+      listenersAttached = true;
+
       btn.addEventListener('click', (e) => {
-        console.log('More options clicked', e.target);
         e.stopPropagation();
         const isOpen = menu.style.display !== 'block';
         menu.style.display = isOpen ? 'block' : 'none';
       });
 
-      menu.addEventListener('itemSelect', (e) => {
-        console.log(
-          'Action:',
-          (e as CustomEvent<{ value: string }>).detail.value
-        );
+      menu.addEventListener('itemSelect', () => {
         menu.style.display = 'none';
       });
 
@@ -142,7 +140,6 @@ export const WithEndSlot: Story = {
     };
 
     const handleButtonClick = (e: CustomEvent) => {
-      console.log('Button clicked', e.target);
       e.stopPropagation();
     };
 
