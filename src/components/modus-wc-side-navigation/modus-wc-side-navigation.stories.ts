@@ -299,7 +299,7 @@ export const WithSubmenu: Story = {
           background-color: unset;
         }
         .flex-right:active {
-          background-color: unset !important;
+          background-color: unset;
         }
       </style>
 
@@ -1229,7 +1229,7 @@ export const WithTreeViewDropdownMenu: Story = {
         .tree-flyout i.modus-icons::before,
         .tree-flyout i.modus-icons-outlined::before,
         .tree-flyout i.modus-icons-solid::before {
-          font-family: inherit !important;
+          font-family: inherit;
         }
 
         /* Replicate the tree-item SCSS flex layout that is scoped to

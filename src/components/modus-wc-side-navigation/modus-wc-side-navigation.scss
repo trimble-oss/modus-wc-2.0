@@ -250,4 +250,12 @@ modus-wc-side-navigation {
   modus-wc-tree-item [slot='end'] modus-wc-button:hover i.modus-wc-icon {
     color: var(--modus-wc-color-blue-light);
   }
+
+  modus-wc-tree-item .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
+    color: var(--modus-wc-color-white);
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-active {
+    box-shadow: inset 3px 0 0 0 var(--modus-wc-color-white);
+  }
 }

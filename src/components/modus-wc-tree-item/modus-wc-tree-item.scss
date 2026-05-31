@@ -92,6 +92,11 @@ modus-wc-tree-item .modus-wc-menu-item {
     border-radius: 0;
     border-top: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-base-200);
+
+    &.modus-wc-menu-item-selected,
+    &.modus-wc-menu-item-active {
+      border-color: transparent;
+    }
   }
 
   &:not(.modus-wc-menu-item-selected) {
@@ -268,19 +273,6 @@ modus-wc-tree-item .modus-wc-menu-item {
       .modus-wc-menu-item-interactive.modus-wc-arrow-focused {
         background-color: var(--modus-wc-color-gray-9);
       }
-    }
-  }
-}
-
-[data-theme='connect-light'],
-[data-theme='connect-dark'] {
-  modus-wc-tree-item .modus-wc-menu-item {
-    .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
-      color: var(--modus-wc-color-white);
-    }
-
-    &.modus-wc-menu-item-active {
-      box-shadow: inset 3px 0 0 0 var(--modus-wc-color-white) !important;
     }
   }
 }

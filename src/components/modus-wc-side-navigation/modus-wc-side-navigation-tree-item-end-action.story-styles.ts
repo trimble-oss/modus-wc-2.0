@@ -5,7 +5,8 @@
  */
 
 /** Apply to the modus-wc-tree-item to enable the full-height end-slot layout. */
-export const SIDE_NAV_TREE_ITEM_END_ACTION_CLASS = 'modus-wc-tree-item-end-action';
+export const SIDE_NAV_TREE_ITEM_END_ACTION_CLASS =
+  'modus-wc-tree-item-end-action';
 
 /** Apply to modus-wc-button in the end slot (button variant). */
 export const SIDE_NAV_TREE_ITEM_END_ACTION_BUTTON_CLASS =
@@ -24,8 +25,8 @@ export const sideNavTreeItemEndActionStyles = `
   .${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-interactive {
     align-items: stretch;
     height: 52px;
-    padding-block: 0 !important;
-    padding-inline-end: 0 !important;
+    padding-block: 0;
+    padding-inline-end: 0;
   }
 
   .${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-content {
@@ -66,8 +67,8 @@ export const sideNavTreeItemEndActionDropdownStyles = `
   .${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-interactive {
     align-items: stretch;
     height: 52px;
-    padding-block: 0 !important;
-    padding-inline-end: 0 !important;
+    padding-block: 0;
+    padding-inline-end: 0;
   }
 
   .${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-content {

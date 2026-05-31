@@ -13,8 +13,8 @@ export const treeItemEndActionStyles = `
   .${TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-interactive {
     align-items: stretch;
     height: 52px;
-    padding-block: 0 !important;
-    padding-inline-end: 0 !important;
+    padding-block: 0;
+    padding-inline-end: 0;
   }
 
   .${TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-content {
