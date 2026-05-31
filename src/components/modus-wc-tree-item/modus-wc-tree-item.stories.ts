@@ -2,15 +2,9 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { createRef, ref } from 'lit/directives/ref.js';
+import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
-import {
-  TREE_ITEM_END_ACTION_BUTTON_CLASS,
-  TREE_ITEM_END_ACTION_CLASS,
-  TREE_ITEM_END_ACTION_ICON_CLASS,
-  treeItemEndActionStyles,
-} from './modus-wc-tree-item-custom-class.story-styles';
 
 interface TreeItemArgs {
   bordered?: boolean;
@@ -108,39 +102,47 @@ export const WithStartSlot: Story = {
 
 export const WithEndSlot: Story = {
   render: (args) => {
-    const btnRef = createRef<HTMLElement>();
-    const menuRef = createRef<HTMLElement>();
-    let listenersAttached = false;
+    const btnRef = { el: null as HTMLElement | null };
+    const menuRef = { el: null as HTMLElement | null };
+    let outsideClickAttached = false;
 
-    const attachListeners = () => {
-      const btn = btnRef.value;
-      const menu = menuRef.value;
-      if (!btn || !menu) return;
-      if (listenersAttached) return;
-      listenersAttached = true;
-
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = menu.style.display !== 'block';
-        menu.style.display = isOpen ? 'block' : 'none';
-      });
-
-      menu.addEventListener('itemSelect', () => {
-        menu.style.display = 'none';
-      });
+    const attachOutsideClick = () => {
+      if (outsideClickAttached || !btnRef.el || !menuRef.el) return;
+      outsideClickAttached = true;
 
       document.addEventListener('click', (e) => {
-        if (
-          !btn.contains(e.target as Node) &&
-          !menu.contains(e.target as Node)
-        ) {
-          menu.style.display = 'none';
+        const btn = btnRef.el;
+        const menu = menuRef.el;
+        if (!btn || !menu || menu.style.display !== 'block') return;
+        if (btn.contains(e.target as Node) || menu.contains(e.target as Node)) {
+          return;
         }
+        menu.style.display = 'none';
       });
     };
 
-    const handleButtonClick = (e: CustomEvent) => {
+    const toggleMenu = (e: Event) => {
       e.stopPropagation();
+      const menu = menuRef.el;
+      if (!menu) return;
+      const isOpen = menu.style.display === 'block';
+      menu.style.display = isOpen ? 'none' : 'block';
+    };
+
+    const closeMenu = () => {
+      if (menuRef.el) menuRef.el.style.display = 'none';
+    };
+
+    const onBtnRef = (el: Element | undefined) => {
+      if (!el) return;
+      btnRef.el = el as HTMLElement;
+      attachOutsideClick();
+    };
+
+    const onMenuRef = (el: Element | undefined) => {
+      if (!el) return;
+      menuRef.el = el as HTMLElement;
+      attachOutsideClick();
     };
 
     // prettier-ignore
@@ -153,21 +155,21 @@ export const WithEndSlot: Story = {
     <modus-wc-icon slot="start" name="folder" size="sm"></modus-wc-icon>
     <div slot="end" style="position: relative; display: flex; align-items: center;">
       <modus-wc-button
-        ${ref((el) => { if (el) { (btnRef as { value: Element | undefined }).value = el; attachListeners(); } })}
+        ${ref(onBtnRef)}
         variant="borderless"
         size="sm"
         shape="circle"
         color="primary"
-        @buttonClick=${handleButtonClick}
         aria-label="More options"
+        @buttonClick=${toggleMenu}
       >
         <modus-wc-icon name="more_vertical" size="sm"></modus-wc-icon>
       </modus-wc-button>
       <div
-        ${ref((el) => { if (el) { (menuRef as { value: Element | undefined }).value = el; attachListeners(); } })}
+        ${ref(onMenuRef)}
         style="display: none; position: absolute; right: 0; top: 100%; z-index: 1000;"
       >
-        <modus-wc-menu size="sm" bordered="true">
+        <modus-wc-menu size="sm" bordered="true" @itemSelect=${closeMenu}>
           <modus-wc-menu-item label="Rename" value="rename"></modus-wc-menu-item>
           <modus-wc-menu-item label="Duplicate" value="duplicate"></modus-wc-menu-item>
           <modus-wc-menu-item label="Delete" value="delete"></modus-wc-menu-item>
@@ -180,42 +182,31 @@ export const WithEndSlot: Story = {
   },
 };
 
-export const WithCustomClass: Story = {
+export const CustomTreeItem: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-      <style>${treeItemEndActionStyles}</style>
-      <modus-wc-tree-view size="lg">
-        <modus-wc-tree-item
-          label=${args.label}
-          value=${args.value}
-          custom-class=${TREE_ITEM_END_ACTION_CLASS}
-        >
-          <modus-wc-icon slot="start" name="search"></modus-wc-icon>
-          <div slot="end" style="display: flex; align-items: stretch;">
-            <div
-              style="width: 1px; background: currentColor; opacity: 0.3; margin-inline-end: 4px;"
-            ></div>
-            <modus-wc-button
-              variant="borderless"
-              size="sm"
-              custom-class=${TREE_ITEM_END_ACTION_BUTTON_CLASS}
-              aria-label="Open folder"
-            >
-              <modus-wc-icon
-                name="folder_closed"
-                size="sm"
-                custom-class=${TREE_ITEM_END_ACTION_ICON_CLASS}
-              ></modus-wc-icon>
-              <modus-wc-icon
-                name="chevron_right"
-                size="sm"
-                custom-class=${TREE_ITEM_END_ACTION_ICON_CLASS}
-              ></modus-wc-icon>
-            </modus-wc-button>
-          </div>
-        </modus-wc-tree-item>
-      </modus-wc-tree-view>
+<modus-wc-tree-view size="sm">
+  <modus-wc-tree-item
+    label=${args.label}
+    value=${args.value}
+  >
+    <modus-wc-icon slot="start" name="search"></modus-wc-icon>
+    <div slot="end" style="display: flex; align-items: center;">
+      <div
+        style="width: 1px; background: currentColor; opacity: 0.3; margin-inline-end: 4px; align-self: stretch;"
+      ></div>
+      <modus-wc-button
+        variant="borderless"
+        size="sm"
+        aria-label="Open folder"
+      >
+        <modus-wc-icon name="folder_closed" size="sm"></modus-wc-icon>
+        <modus-wc-icon name="chevron_right" size="sm"></modus-wc-icon>
+      </modus-wc-button>
+    </div>
+  </modus-wc-tree-item>
+</modus-wc-tree-view>
     `;
   },
 };
