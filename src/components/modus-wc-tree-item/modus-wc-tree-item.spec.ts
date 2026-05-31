@@ -2,8 +2,8 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeItem } from './modus-wc-tree-item';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
-import { ModusWcTreeView } from '../modus-wc-tree-view/modus-wc-tree-view';
 import { ModusWcSideNavigation } from '../modus-wc-side-navigation/modus-wc-side-navigation';
+import { ModusWcTreeView } from '../modus-wc-tree-view/modus-wc-tree-view';
 
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
@@ -401,16 +401,61 @@ describe('modus-wc-tree-item', () => {
     const interactive = page.root?.querySelector(
       '.modus-wc-menu-item-interactive'
     ) as HTMLElement;
-    const startButton = page.root?.querySelector('[slot="start"]') as HTMLElement;
-    const clickEvent = new MouseEvent('click', { bubbles: true, composed: true });
+    const startButton = page.root?.querySelector(
+      '[slot="start"]'
+    ) as HTMLElement;
+    const innerSpan = document.createElement('span');
+    jest.spyOn(innerSpan, 'matches').mockReturnValue(false);
+    jest.spyOn(innerSpan, 'closest').mockReturnValue(startButton);
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      composed: true,
+    });
     Object.defineProperty(clickEvent, 'composedPath', {
-      value: () => [document.createTextNode(''), startButton, interactive, page.root],
+      value: () => [
+        innerSpan,
+        document.createTextNode(''),
+        startButton,
+        interactive,
+        page.root,
+      ],
     });
 
     interactive.dispatchEvent(clickEvent);
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();
+  });
+
+  it('should resolve interactive start slot targets through closest', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <button slot="start" type="button"></button>
+            </modus-wc-tree-item>`,
+    });
+
+    const instance = page.rootInstance as unknown as {
+      isInteractiveSlotClick: (
+        event: MouseEvent,
+        slotName: 'start' | 'end'
+      ) => boolean;
+    };
+    const startButton = page.root?.querySelector(
+      '[slot="start"]'
+    ) as HTMLButtonElement;
+    const innerSpan = document.createElement('span');
+    startButton.appendChild(innerSpan);
+
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      composed: true,
+    });
+    Object.defineProperty(clickEvent, 'composedPath', {
+      value: () => [innerSpan, startButton, page.root],
+    });
+
+    expect(instance.isInteractiveSlotClick(clickEvent, 'start')).toBeDefined();
   });
 
   describe('MutationObserver and handleSelectionModeChange', () => {
@@ -464,7 +509,9 @@ describe('modus-wc-tree-item', () => {
         </modus-wc-tree-view>`,
       });
 
-      const treeItem = page.doc.querySelector('modus-wc-tree-item') as HTMLElement & {
+      const treeItem = page.doc.querySelector(
+        'modus-wc-tree-item'
+      ) as HTMLElement & {
         selected?: boolean;
       };
       treeItem.selected = true;
@@ -636,11 +683,7 @@ describe('modus-wc-tree-item', () => {
     expect(deepItem.selected).toBe(true);
   });
 
-  it('should skip deselecting siblings when root tree-view cannot be resolved', async () => {
-    const getRootTreeViewSpy = jest
-      .spyOn(ModusWcTreeItem.prototype as ModusWcTreeItem, 'getRootTreeView')
-      .mockReturnValue(null);
-
+  it('should resolve root tree-view when tree-view has no parent element', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeView, ModusWcTreeItem],
       html: `
@@ -650,7 +693,15 @@ describe('modus-wc-tree-item', () => {
       `,
     });
 
-    const treeItem = page.doc.querySelector('modus-wc-tree-item') as HTMLElement & {
+    const treeView = page.root as HTMLElement;
+    Object.defineProperty(treeView, 'parentElement', {
+      get: () => null,
+      configurable: true,
+    });
+
+    const treeItem = page.doc.querySelector(
+      'modus-wc-tree-item'
+    ) as HTMLElement & {
       selected?: boolean;
     };
 
@@ -660,6 +711,42 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(treeItem.selected).toBe(true);
-    getRootTreeViewSpy.mockRestore();
+  });
+
+  it('should skip deselecting siblings when root tree-view cannot be resolved', async () => {
+    const getRootTreeViewSpy = jest
+      .spyOn(
+        ModusWcTreeItem.prototype as unknown as {
+          getRootTreeView: () => HTMLElement | null;
+        },
+        'getRootTreeView'
+      )
+      .mockReturnValue(null);
+
+    try {
+      const page = await newSpecPage({
+        components: [ModusWcTreeView, ModusWcTreeItem],
+        html: `
+          <modus-wc-tree-view selection-mode="single">
+            <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+          </modus-wc-tree-view>
+        `,
+      });
+
+      const treeItem = page.doc.querySelector(
+        'modus-wc-tree-item'
+      ) as HTMLElement & {
+        selected?: boolean;
+      };
+
+      (
+        treeItem.querySelector('.modus-wc-menu-item-interactive') as HTMLElement
+      )?.click();
+      await page.waitForChanges();
+
+      expect(treeItem.selected).toBe(true);
+    } finally {
+      getRootTreeViewSpy.mockRestore();
+    }
   });
 });

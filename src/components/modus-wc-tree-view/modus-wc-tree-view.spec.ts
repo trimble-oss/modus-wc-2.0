@@ -262,7 +262,7 @@ describe('modus-wc-tree-view', () => {
       </modus-wc-tree-view>`,
     });
 
-    const component = page.rootInstance as ModusWcTreeView & {
+    const component = page.rootInstance as unknown as {
       selectedItems: HTMLElement[];
     };
 
@@ -497,7 +497,9 @@ describe('modus-wc-tree-view', () => {
       `,
     });
 
-    const treeItem = page.doc.querySelector('modus-wc-tree-item') as HTMLElement;
+    const treeItem = page.doc.querySelector(
+      'modus-wc-tree-item'
+    ) as HTMLElement;
     jest.spyOn(treeItem, 'querySelector').mockReturnValue(null);
 
     const ul = page.root?.querySelector('ul') as HTMLUListElement;
