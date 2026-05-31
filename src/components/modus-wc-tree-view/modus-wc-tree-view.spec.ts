@@ -253,4 +253,263 @@ describe('modus-wc-tree-view', () => {
     expect(emitSpy).toHaveBeenCalledWith(focusoutEvent);
     expect(stopPropagationSpy).toHaveBeenCalled();
   });
+
+  it('should clear selected items when selection mode changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-tree-view selection-mode="multiple">
+        <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+      </modus-wc-tree-view>`,
+    });
+
+    const component = page.rootInstance as ModusWcTreeView & {
+      selectedItems: HTMLElement[];
+    };
+
+    (
+      page.doc
+        .querySelector('modus-wc-tree-item')
+        ?.querySelector('.modus-wc-menu-item-interactive') as HTMLElement
+    )?.click();
+    await page.waitForChanges();
+
+    expect(component.selectedItems).toHaveLength(1);
+
+    page.root!.selectionMode = 'single';
+    await page.waitForChanges();
+
+    expect(component.selectedItems).toHaveLength(0);
+  });
+
+  it('should remove item from selectedItems when deselected in multiple mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `<modus-wc-tree-view selection-mode="multiple">
+        <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+      </modus-wc-tree-view>`,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuSelectionChange, 'emit');
+    const interactive = page.doc
+      .querySelector('modus-wc-tree-item')
+      ?.querySelector('.modus-wc-menu-item-interactive') as HTMLElement;
+
+    interactive?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        selectedItems: expect.arrayContaining([
+          page.doc.querySelector('modus-wc-tree-item'),
+        ]),
+      })
+    );
+
+    interactive?.click();
+    await page.waitForChanges();
+
+    expect(emitSpy).toHaveBeenLastCalledWith({ selectedItems: [] });
+  });
+
+  it('should wrap focus to first item on ArrowDown from last item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
+    const firstInteractive = treeItems[0].querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    const lastInteractive = treeItems[1].querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+
+    lastInteractive.focus();
+    Object.defineProperty(document, 'activeElement', {
+      value: lastInteractive,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstInteractive, 'focus');
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+
+    ul.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should wrap focus to last item on ArrowUp from first item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
+    const firstInteractive = treeItems[0].querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    const lastInteractive = treeItems[1].querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+
+    firstInteractive.focus();
+    Object.defineProperty(document, 'activeElement', {
+      value: firstInteractive,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(lastInteractive, 'focus');
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+
+    ul.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowUp',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should focus first item on ArrowDown when no tree item is active', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const firstInteractive = page.doc
+      .querySelector('modus-wc-tree-item')
+      ?.querySelector('.modus-wc-menu-item-interactive') as HTMLElement;
+
+    Object.defineProperty(document, 'activeElement', {
+      value: null,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstInteractive, 'focus');
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+
+    ul.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should ignore non-arrow keys', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+    const preventDefaultSpy = jest.spyOn(
+      KeyboardEvent.prototype,
+      'preventDefault'
+    );
+
+    ul.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Tab',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    preventDefaultSpy.mockRestore();
+  });
+
+  it('should return early when all tree items are disabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1" disabled="true"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+    const interactive = page.doc.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    const focusSpy = jest.spyOn(interactive, 'focus');
+
+    ul.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not focus when tree item has no interactive element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeView, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-view aria-label="Test tree view">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+        </modus-wc-tree-view>
+      `,
+    });
+
+    const treeItem = page.doc.querySelector('modus-wc-tree-item') as HTMLElement;
+    jest.spyOn(treeItem, 'querySelector').mockReturnValue(null);
+
+    const ul = page.root?.querySelector('ul') as HTMLUListElement;
+
+    expect(() => {
+      ul.dispatchEvent(
+        new KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+    }).not.toThrow();
+  });
 });
