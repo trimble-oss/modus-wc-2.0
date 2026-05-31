@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-view renders with default props 1`] = `
+<modus-wc-tree-view selection-mode="single">
+  <!---->
+  <ul aria-label="Default tree view" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
+</modus-wc-tree-view>
+`;
+
+exports[`modus-wc-tree-view should add customClass to classList in submenu mode 1`] = `
+<modus-wc-tree-view class="modus-wc-menu-submenu" custom-class="test-submenu-class" is-sub-menu="true" selection-mode="single">
+  <!---->
+  <ul aria-label="Submenu test" aria-orientation="vertical" class="modus-wc-menu-dropdown test-submenu-class" role="menu"></ul>
+</modus-wc-tree-view>
+`;
+
+exports[`modus-wc-tree-view should render with custom props 1`] = `
+<modus-wc-tree-view bordered="true" custom-class="test-class" orientation="horizontal" selection-mode="single" size="lg">
+  <!---->
+  <ul aria-label="Test tree view" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-horizontal modus-wc-menu-lg modus-wc-w-full test-class" role="menubar"></ul>
+</modus-wc-tree-view>
+`;
