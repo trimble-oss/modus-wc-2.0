@@ -239,7 +239,8 @@ modus-wc-side-navigation {
     color: var(--modus-wc-color-blue-light);
   }
 
-  modus-wc-tree-item .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
+  modus-wc-tree-item
+    .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
     color: var(--modus-wc-color-white);
   }
 

@@ -187,7 +187,9 @@ describe('modus-wc-dropdown-menu', () => {
 
     await page.waitForChanges();
 
-    const menuWrapper = page.root?.querySelector('.menu-wrapper') as HTMLElement;
+    const menuWrapper = page.root?.querySelector(
+      '.menu-wrapper'
+    ) as HTMLElement;
     expect(menuWrapper.style.position).toBe('fixed');
   });
 
