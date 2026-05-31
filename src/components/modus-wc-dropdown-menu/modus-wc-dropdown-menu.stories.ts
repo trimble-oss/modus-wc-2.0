@@ -17,6 +17,7 @@ interface DropdownMenuArgs {
   'menu-offset'?: number;
   'menu-placement'?: PopoverPlacement;
   'menu-size'?: ModusSize;
+  'menu-strategy'?: 'absolute' | 'fixed';
   'menu-visible': boolean;
 }
 
@@ -34,6 +35,7 @@ const meta: Meta<DropdownMenuArgs> = {
     'menu-offset': 14,
     'menu-placement': 'bottom-start',
     'menu-size': 'md',
+    'menu-strategy': 'absolute',
     'menu-visible': false,
   },
   argTypes: {
@@ -73,6 +75,10 @@ const meta: Meta<DropdownMenuArgs> = {
     'menu-size': {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
+    },
+    'menu-strategy': {
+      control: { type: 'select' },
+      options: ['absolute', 'fixed'],
     },
   },
   decorators: [withActions],
@@ -144,6 +150,7 @@ const Template: Story = {
   menu-offset=${ifDefined(args['menu-offset'])}
   menu-placement=${ifDefined(args['menu-placement'])}
   menu-size=${ifDefined(args['menu-size'])}
+  menu-strategy=${ifDefined(args['menu-strategy'])}
   ?menu-visible=${args['menu-visible']}
 >
   <div slot="button">
@@ -235,6 +242,7 @@ export const ShadowDomParent: Story = {
             menuOffset: number;
             menuPlacement: PopoverPlacement;
             menuSize: ModusSize;
+            menuStrategy: 'absolute' | 'fixed';
             menuVisible: boolean;
           };
           dropdownEl.buttonAriaLabel = v['button-aria-label'] || '';
@@ -248,6 +256,7 @@ export const ShadowDomParent: Story = {
           dropdownEl.menuOffset = v['menu-offset'] ?? 10;
           dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
           dropdownEl.menuSize = v['menu-size'] as ModusSize;
+          dropdownEl.menuStrategy = v['menu-strategy'] || 'absolute';
           dropdownEl.menuVisible = Boolean(v['menu-visible']);
 
           // On first render: add slot content and append the Selected Value

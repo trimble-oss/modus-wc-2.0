@@ -39,18 +39,9 @@ modus-wc-side-navigation {
 
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
+    max-height: 32px;
     padding-inline-end: var(--modus-wc-spacing-xs);
     padding-inline-start: var(--modus-wc-spacing-xs);
-
-    &.modus-wc-menu-dropdown-toggle {
-      max-height: 32px;
-      padding-inline-start: var(--modus-wc-spacing-xs);
-    }
-
-    &:not(.modus-wc-menu-dropdown-toggle) {
-      max-height: 32px;
-      padding-inline-start: var(--modus-wc-spacing-xs);
-    }
   }
 }
 
@@ -75,7 +66,6 @@ modus-wc-side-navigation {
 
   .side-navigation-content {
     color: var(--modus-wc-color-base-page);
-    flex: 1 1 auto;
     padding: 0 var(--modus-wc-spacing-lg);
   }
 
@@ -156,7 +146,6 @@ modus-wc-side-navigation {
   .side-navigation-content {
     background: var(--modus-wc-color-blue-dark);
     color: var(--modus-wc-color-base-content);
-    flex: 1 1 auto;
 
     &button:hover {
       background: var(--modus-wc-color-primary);
@@ -178,7 +167,6 @@ modus-wc-side-navigation {
   }
 
   modus-wc-menu-item .modus-wc-menu-item button {
-    background-color: transparent;
     padding: var(--modus-wc-spacing-xs) 1.25rem;
     padding-inline-end: var(--modus-wc-spacing-lg);
     padding-inline-start: calc(var(--modus-wc-spacing-lg) + 0.25rem);

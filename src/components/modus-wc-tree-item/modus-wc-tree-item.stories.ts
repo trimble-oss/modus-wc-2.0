@@ -19,6 +19,7 @@ interface TreeItemArgs {
   disabled?: boolean;
   focused?: boolean;
   'has-submenu'?: boolean;
+  'block-expand'?: boolean;
   label: string;
   selected?: boolean;
   size?: ModusSize;
@@ -65,6 +66,7 @@ const Template: Story = {
 <modus-wc-tree-view>
   <modus-wc-tree-item
     ?bordered=${args.bordered}
+    ?block-expand=${args['block-expand']}
     ?checkbox=${args.checkbox}
     custom-class=${ifDefined(args['custom-class'])}
     ?disabled=${args.disabled}

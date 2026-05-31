@@ -9,12 +9,10 @@ import {
   connectIconClass,
 } from './modus-wc-side-navigation-connect-icons.story';
 import {
-  SIDE_NAV_TREE_ITEM_END_ACTION_BUTTON_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
   sideNavTreeItemEndActionDropdownStyles,
-  sideNavTreeItemEndActionStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
@@ -534,452 +532,6 @@ export const WithSubmenu: Story = {
 export const WithTreeView: Story = {
   args: { expanded: true },
   render: (args) => {
-    let ctxBtn: HTMLElement | null = null;
-    let ctxMenu: HTMLElement | null = null;
-    let flyoutContainer: HTMLElement | null = null;
-    let flyoutTreeView: HTMLElement | null = null;
-    let outsideClickHandler: ((e: MouseEvent) => void) | null = null;
-
-    const hideFlyout = () => {
-      if (flyoutContainer) flyoutContainer.style.display = 'none';
-    };
-
-    const hideOverlays = () => {
-      if (ctxMenu) ctxMenu.style.display = 'none';
-      hideFlyout();
-    };
-
-    const handleMenuOpenChange = (e: CustomEvent) => {
-      const eventSource = e.target as HTMLElement;
-      const storyContainer = eventSource?.closest('.layout-with-navbar');
-      const sideNav = storyContainer
-        ? storyContainer.querySelector('modus-wc-side-navigation')
-        : document.querySelector('modus-wc-side-navigation');
-
-      if (sideNav) {
-        (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
-      }
-    };
-
-    const handleExpandedChange = (e: CustomEvent) => {
-      hideOverlays();
-
-      if (!e.detail) {
-        const eventSource = e.target as HTMLElement;
-        const treeItems = eventSource.querySelectorAll('modus-wc-tree-item');
-        treeItems.forEach((treeItem) => {
-          const item = treeItem as unknown as {
-            hasSubmenu?: boolean;
-            collapseSubmenu?: () => Promise<void>;
-          };
-          if (item.hasSubmenu && typeof item.collapseSubmenu === 'function') {
-            void item.collapseSubmenu();
-          }
-        });
-      }
-    };
-
-    const populateFlyout = (treeItem: Element) => {
-      if (!flyoutContainer || !flyoutTreeView) return;
-
-      const nestedTreeView = treeItem.querySelector('modus-wc-tree-view');
-      if (!nestedTreeView) return;
-
-      flyoutTreeView.innerHTML = nestedTreeView.innerHTML;
-
-      const rect = treeItem.getBoundingClientRect();
-      flyoutContainer.style.top = `${rect.top + window.scrollY}px`;
-      flyoutContainer.style.left = `${rect.right + window.scrollX}px`;
-      flyoutContainer.style.display = 'block';
-    };
-
-    const handleTreeItemSelect = (e: CustomEvent) => {
-      const treeItem = (e.target as HTMLElement).closest('modus-wc-tree-item');
-      if (!treeItem) return;
-
-      const sideNav = treeItem.closest('modus-wc-side-navigation');
-      if (!sideNav) return;
-
-      const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
-        .expanded;
-      if (isExpanded) return;
-
-      const hasNestedTree = treeItem.querySelector('modus-wc-tree-view');
-      if (!hasNestedTree) return;
-
-      populateFlyout(treeItem);
-    };
-
-    const setupDropdown = (btn: HTMLElement, menu: HTMLElement) => {
-      btn.addEventListener('buttonClick', (e) => {
-        e.stopPropagation();
-        hideFlyout();
-        const isOpen = menu.style.display === 'block';
-        if (!isOpen) {
-          const rect = btn.getBoundingClientRect();
-          menu.style.top = `${rect.bottom + window.scrollY}px`;
-          menu.style.left = `${rect.left + window.scrollX}px`;
-          menu.style.display = 'block';
-        } else {
-          menu.style.display = 'none';
-        }
-      });
-
-      menu.addEventListener('itemSelect', (e) => {
-        console.log(
-          'Action:',
-          (e as CustomEvent<{ value: string }>).detail.value
-        );
-        menu.style.display = 'none';
-      });
-    };
-
-    const onBtnRef = (el: Element | undefined) => {
-      if (!el) return;
-      ctxBtn = el as HTMLElement;
-      if (ctxBtn && ctxMenu) setupDropdown(ctxBtn, ctxMenu);
-    };
-
-    const onMenuRef = (el: Element | undefined) => {
-      if (!el) return;
-      ctxMenu = el as HTMLElement;
-      if (ctxBtn && ctxMenu) setupDropdown(ctxBtn, ctxMenu);
-    };
-
-    const onDataItemRef = (el: Element | undefined) => {
-      if (!el) return;
-      // Auto-expand Data submenu to match design screenshot
-      requestAnimationFrame(() => {
-        const interactive = el.querySelector('.modus-wc-menu-item-interactive');
-        (interactive as HTMLElement)?.click();
-      });
-    };
-
-    const onFlyoutRef = (el: Element | undefined) => {
-      if (!el) return;
-      flyoutContainer = el as HTMLElement;
-      flyoutTreeView = flyoutContainer.querySelector('modus-wc-tree-view');
-
-      if (!outsideClickHandler) {
-        outsideClickHandler = (e: MouseEvent) => {
-          const target = e.target as Node;
-          if (
-            flyoutContainer?.style.display === 'block' &&
-            !flyoutContainer.contains(target) &&
-            !(
-              target instanceof Element &&
-              target
-                .closest('modus-wc-tree-item')
-                ?.closest('modus-wc-side-navigation')
-            )
-          ) {
-            hideFlyout();
-          }
-
-          if (
-            ctxMenu?.style.display === 'block' &&
-            ctxBtn &&
-            !ctxBtn.contains(target) &&
-            !ctxMenu.contains(target)
-          ) {
-            ctxMenu.style.display = 'none';
-          }
-        };
-        document.addEventListener('click', outsideClickHandler);
-      }
-    };
-
-    return html`
-      <link rel="stylesheet" href=${CONNECT_ICON_FONT_URL} />
-      <style>
-        .layout-with-navbar {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-        }
-        .main-content-row {
-          display: flex;
-          flex: 1;
-          overflow: hidden;
-        }
-        .panel-content {
-          margin-left: 4rem;
-          padding: 10px;
-        }
-        .side-navigation {
-          height: 500px;
-          align-self: flex-start;
-          position: relative;
-        }
-        .tree-flyout {
-          display: none;
-          position: fixed;
-          z-index: 1000;
-        }
-
-        ${sideNavTreeItemEndActionStyles}
-          modus-wc-side-navigation
-          modus-wc-tree-item {
-          display: block;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu
-          :where(li ul),
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu
-          :where(li ul) {
-          margin-inline-start: 0;
-          padding-inline-start: 0;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu-dropdown
-          .modus-wc-menu-item-content,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu-dropdown
-          .modus-wc-menu-item-content {
-          padding-inline-start: 1.5rem;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          .modus-wc-menu-item.modus-wc-menu-item-active,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          .modus-wc-menu-item.modus-wc-menu-item-active {
-          position: relative;
-          overflow: visible;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          .modus-wc-menu-item.modus-wc-menu-item-active::before,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          .modus-wc-menu-item.modus-wc-menu-item-active::before {
-          content: '';
-          position: absolute;
-          inset-block: 0;
-          inset-inline-start: 0;
-          width: 3px;
-          background: white;
-          z-index: 10;
-        }
-      </style>
-      <div class="layout-with-navbar">
-        <modus-wc-navbar
-          app-title="Modus App"
-          class="navbar"
-          @mainMenuOpenChange=${handleMenuOpenChange}
-          .userCard=${{
-            avatarAlt: 'User Avatar',
-            avatarSrc:
-              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-            email: 'user@trimble.com',
-            name: 'Sonic the Hedgehog',
-          }}
-          .visibility=${{
-            ai: true,
-            apps: true,
-            help: true,
-            mainMenu: true,
-            notifications: true,
-            search: true,
-            searchInput: false,
-            user: true,
-          }}
-          style="z-index: 2;"
-        ></modus-wc-navbar>
-        <div class="main-content-row">
-          <modus-wc-side-navigation
-            class="side-navigation"
-            collapse-on-click-outside=${args['collapse-on-click-outside']}
-            custom-class=${ifDefined(args['custom-class'])}
-            expanded=${args.expanded}
-            max-width=${args['max-width']}
-            mode=${ifDefined(args.mode)}
-            target-content=${ifDefined(args['target-content'])}
-            @expandedChange=${handleExpandedChange}
-            @itemSelect=${handleTreeItemSelect}
-          >
-            <modus-wc-tree-view size="lg" aria-label="Project navigation">
-              <modus-wc-tree-item label="All Projects" value="all-projects">
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="All Projects icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.allProjects)}
-                ></modus-wc-icon>
-              </modus-wc-tree-item>
-              <modus-wc-tree-item
-                ${ref(onDataItemRef)}
-                label="Data"
-                value="data"
-                has-submenu="true"
-              >
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="Data icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.data)}
-                ></modus-wc-icon>
-                <modus-wc-tree-view is-sub-menu="true">
-                  <modus-wc-tree-item
-                    label="Explorer"
-                    value="explorer"
-                    custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}
-                  >
-                    <modus-wc-icon
-                      slot="start"
-                      aria-label="Explorer icon"
-                      name=""
-                      custom-class=${connectIconClass(CONNECT_ICONS.explorer)}
-                    ></modus-wc-icon>
-                    <div
-                      slot="end"
-                      style="display: flex; align-items: stretch;"
-                    >
-                      <div
-                        style="width: 1px; background: currentColor; opacity: 0.3;"
-                      ></div>
-                      <modus-wc-button
-                        ${ref(onBtnRef)}
-                        variant="borderless"
-                        size="sm"
-                        custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_BUTTON_CLASS}
-                        aria-label="Open folder"
-                      >
-                        <modus-wc-icon
-                          aria-label="Folder icon"
-                          name=""
-                          size="sm"
-                          custom-class=${connectIconClass(
-                            CONNECT_ICONS.folder,
-                            SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
-                            'i16'
-                          )}
-                        ></modus-wc-icon>
-                        <modus-wc-icon
-                          aria-label="Open submenu icon"
-                          name=""
-                          size="sm"
-                          custom-class=${connectIconClass(
-                            CONNECT_ICONS.chevronRight,
-                            SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
-                            'i16'
-                          )}
-                        ></modus-wc-icon>
-                      </modus-wc-button>
-                    </div>
-                  </modus-wc-tree-item>
-                  <modus-wc-tree-item label="Views" value="views">
-                    <modus-wc-icon
-                      slot="start"
-                      aria-label="Views icon"
-                      name=""
-                      custom-class=${connectIconClass(CONNECT_ICONS.views)}
-                    ></modus-wc-icon>
-                  </modus-wc-tree-item>
-                  <modus-wc-tree-item label="Releases" value="releases">
-                    <modus-wc-icon
-                      slot="start"
-                      aria-label="Releases icon"
-                      name=""
-                      custom-class=${connectIconClass(CONNECT_ICONS.releases)}
-                    ></modus-wc-icon>
-                  </modus-wc-tree-item>
-                </modus-wc-tree-view>
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Activity" value="activity">
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="Activity icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.activity)}
-                ></modus-wc-icon>
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="BCF Topics" value="bcf-topics">
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="BCF Topics icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.bcfTopics)}
-                ></modus-wc-icon>
-              </modus-wc-tree-item>
-              <modus-wc-tree-item label="Field Data" value="field-data">
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="Field Data icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.fieldData)}
-                ></modus-wc-icon>
-              </modus-wc-tree-item>
-            </modus-wc-tree-view>
-          </modus-wc-side-navigation>
-          <div class="panel-content">
-            <h3>Side Navigation with Tree View</h3>
-            <p>
-              This example replicates Trimble project navigation using
-              modus-wc-tree-view and modus-wc-tree-item. When expanded, the full
-              hierarchical tree is shown inline. When collapsed, only icons are
-              visible and clicking a collapsible parent opens a flyout with its
-              children.
-            </p>
-            <p>
-              Expand the side navigation using the navbar hamburger menu to
-              reveal labels and the end-slot action button on Explorer.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        ${ref(onMenuRef)}
-        style="display: none; position: fixed; z-index: 1000;"
-      >
-        <modus-wc-menu size="sm" bordered="true">
-          <modus-wc-menu-item
-            label="Rename"
-            value="rename"
-          ></modus-wc-menu-item>
-          <modus-wc-menu-item
-            label="Duplicate"
-            value="duplicate"
-          ></modus-wc-menu-item>
-          <modus-wc-menu-item
-            label="Delete"
-            value="delete"
-          ></modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
-
-      <div ${ref(onFlyoutRef)} class="tree-flyout">
-        <modus-wc-tree-view
-          size="lg"
-          bordered="true"
-          aria-label="Submenu"
-        ></modus-wc-tree-view>
-      </div>
-    `;
-  },
-};
-
-export const WithTreeViewDropdownMenu: Story = {
-  args: { expanded: true },
-  render: (args) => {
     let flyoutContainer: HTMLElement | null = null;
     let flyoutTreeView: HTMLElement | null = null;
     let flyoutSourceItem: Element | null = null;
@@ -1117,8 +669,11 @@ export const WithTreeViewDropdownMenu: Story = {
       }
     };
 
+    let dataItemAutoClicked = false;
+
     const onDataItemRef = (el: Element | undefined) => {
-      if (!el) return;
+      if (!el || dataItemAutoClicked) return;
+      dataItemAutoClicked = true;
       requestAnimationFrame(() => {
         const interactive = el.querySelector('.modus-wc-menu-item-interactive');
         (interactive as HTMLElement)?.click();
@@ -1158,17 +713,23 @@ export const WithTreeViewDropdownMenu: Story = {
         outsideClickHandler = (e: MouseEvent) => {
           const target = e.target as Node;
           if (
-            flyoutContainer?.style.display === 'block' &&
-            !flyoutContainer.contains(target) &&
-            !(
-              target instanceof Element &&
-              target
-                .closest('modus-wc-tree-item')
-                ?.closest('modus-wc-side-navigation')
-            )
+            flyoutContainer?.style.display !== 'block' ||
+            flyoutContainer.contains(target)
           ) {
-            hideFlyout();
+            return;
           }
+
+          // Keep the flyout open only when clicking the same source tree-item
+          // that opened it; any other click (including other side-nav items) closes it.
+          const clickedTreeItem =
+            target instanceof Element
+              ? target.closest('modus-wc-tree-item')
+              : null;
+          if (clickedTreeItem && clickedTreeItem === flyoutSourceItem) {
+            return;
+          }
+
+          hideFlyout();
         };
         document.addEventListener('click', outsideClickHandler);
       }
