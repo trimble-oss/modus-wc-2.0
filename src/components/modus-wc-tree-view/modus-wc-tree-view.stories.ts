@@ -234,18 +234,22 @@ export const ShadowDomParent: Story = {
             bordered: boolean;
             customClass: string;
             orientation: string;
+            selectionMode: string;
             size: string;
           };
           treeViewEl.ariaLabel = 'Shadow DOM Tree View';
           treeViewEl.bordered = Boolean(v.bordered);
           treeViewEl.customClass = v['custom-class'] || '';
           treeViewEl.orientation = v.orientation || 'vertical';
+          treeViewEl.selectionMode = v['selection-mode'] || 'single';
           treeViewEl.size = v.size || 'md';
 
-          if (!el.querySelector('modus-wc-tree-item')) {
+          if (!el.hasAttribute('data-items-built')) {
+            el.setAttribute('data-items-built', '');
             el.innerHTML = `
               <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
               <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
             `;
           }
         },

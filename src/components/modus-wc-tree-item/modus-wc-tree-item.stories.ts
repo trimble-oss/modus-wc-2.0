@@ -252,13 +252,48 @@ export const ShadowDomParent: Story = {
     if (!customElements.get('tree-item-shadow-host')) {
       const TreeItemShadowHost = createShadowHostClass<TreeItemArgs>({
         componentTag: 'modus-wc-tree-view',
-        propsMapper: (_v: TreeItemArgs, el: HTMLElement) => {
+        propsMapper: (v: TreeItemArgs, el: HTMLElement) => {
           const treeViewEl = el as unknown as { ariaLabel: string };
           treeViewEl.ariaLabel = 'Shadow DOM Tree View';
 
-          if (!el.querySelector('modus-wc-tree-item')) {
-            el.innerHTML = `<modus-wc-tree-item label="${args.label}" value="${args.value}"></modus-wc-tree-item>`;
+          let treeItem = el.querySelector('modus-wc-tree-item');
+          if (!treeItem) {
+            treeItem = document.createElement('modus-wc-tree-item');
+            el.innerHTML = '';
+            el.appendChild(treeItem);
           }
+
+          const treeItemEl = treeItem as unknown as {
+            bordered: boolean;
+            blockExpand: boolean;
+            checkbox: boolean;
+            customClass: string;
+            disabled: boolean;
+            focused: boolean;
+            hasSubmenu: boolean;
+            label: string;
+            selected: boolean;
+            size: string;
+            subLabel: string;
+            tooltipContent: string;
+            tooltipPosition: string;
+            value: string;
+          };
+
+          treeItemEl.bordered = Boolean(v.bordered);
+          treeItemEl.blockExpand = Boolean(v['block-expand']);
+          treeItemEl.checkbox = Boolean(v.checkbox);
+          treeItemEl.customClass = v['custom-class'] || '';
+          treeItemEl.disabled = Boolean(v.disabled);
+          treeItemEl.focused = Boolean(v.focused);
+          treeItemEl.hasSubmenu = Boolean(v['has-submenu']);
+          treeItemEl.label = v.label;
+          treeItemEl.selected = Boolean(v.selected);
+          treeItemEl.size = v.size || 'md';
+          treeItemEl.subLabel = v['sub-label'] || '';
+          treeItemEl.tooltipContent = v['tooltip-content'] || '';
+          treeItemEl.tooltipPosition = v['tooltip-position'] || 'auto';
+          treeItemEl.value = v.value;
         },
       });
       customElements.define('tree-item-shadow-host', TreeItemShadowHost);
