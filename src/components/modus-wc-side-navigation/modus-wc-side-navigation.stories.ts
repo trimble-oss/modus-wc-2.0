@@ -14,6 +14,7 @@ import {
   SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
+import { getWithTreeViewSourceCode } from './modus-wc-side-navigation-with-tree-view.story-source';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface SideNavigationArgs {
@@ -531,6 +532,9 @@ export const WithSubmenu: Story = {
 
 export const WithTreeView: Story = {
   args: { expanded: true },
+  parameters: {
+    docs: { source: { code: getWithTreeViewSourceCode() } },
+  },
   render: (args) => {
     let flyoutContainer: HTMLElement | null = null;
     let flyoutTreeView: HTMLElement | null = null;

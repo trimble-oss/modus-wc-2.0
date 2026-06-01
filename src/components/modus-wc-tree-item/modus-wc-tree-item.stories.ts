@@ -5,6 +5,15 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
+import {
+  treeItemCustomSourceCode,
+  treeItemDefaultSourceCode,
+  treeItemShadowDomParentSourceCode,
+  treeItemWithCheckboxSourceCode,
+  treeItemWithEndSlotSourceCode,
+  treeItemWithStartSlotSourceCode,
+  treeItemWithTooltipSourceCode,
+} from './modus-wc-tree-item.story-source';
 
 interface TreeItemArgs {
   bordered?: boolean;
@@ -54,6 +63,9 @@ export default meta;
 type Story = StoryObj<TreeItemArgs>;
 
 const Template: Story = {
+  parameters: {
+    docs: { source: { code: treeItemDefaultSourceCode } },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -81,6 +93,9 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const WithStartSlot: Story = {
+  parameters: {
+    docs: { source: { code: treeItemWithStartSlotSourceCode } },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -101,6 +116,9 @@ export const WithStartSlot: Story = {
 };
 
 export const WithEndSlot: Story = {
+  parameters: {
+    docs: { source: { code: treeItemWithEndSlotSourceCode } },
+  },
   render: (args) => {
     const btnRef = { el: null as HTMLElement | null };
     const menuRef = { el: null as HTMLElement | null };
@@ -183,6 +201,9 @@ export const WithEndSlot: Story = {
 };
 
 export const CustomTreeItem: Story = {
+  parameters: {
+    docs: { source: { code: treeItemCustomSourceCode } },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -215,6 +236,9 @@ export const WithCheckbox: Story = {
   args: {
     checkbox: true,
   },
+  parameters: {
+    docs: { source: { code: treeItemWithCheckboxSourceCode } },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -233,6 +257,9 @@ export const WithTooltip: Story = {
   args: {
     'tooltip-content': 'Tooltip content',
   },
+  parameters: {
+    docs: { source: { code: treeItemWithTooltipSourceCode } },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -248,6 +275,9 @@ export const WithTooltip: Story = {
 };
 
 export const ShadowDomParent: Story = {
+  parameters: {
+    docs: { source: { code: treeItemShadowDomParentSourceCode } },
+  },
   render: (args) => {
     if (!customElements.get('tree-item-shadow-host')) {
       const TreeItemShadowHost = createShadowHostClass<TreeItemArgs>({

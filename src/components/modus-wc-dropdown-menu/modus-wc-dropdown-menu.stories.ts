@@ -234,6 +234,41 @@ export const WithTreeView: Story = {
     actions: {
       handles: ['menuVisibilityChange', 'itemSelect'],
     },
+    docs: {
+      source: {
+        code: `
+<modus-wc-dropdown-menu
+  button-variant="filled"
+  button-color="primary"
+  menu-placement="bottom-end"
+  menu-size="sm"
+  id="tree-dropdown-menu"
+>
+  <div slot="button">
+    Browse
+    <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
+  </div>
+    <modus-wc-tree-view slot="menu" aria-label="Tree menu" bordered="true" size="sm">
+      <modus-wc-tree-item label="Projects" value="projects"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Explorer" value="explorer"></modus-wc-tree-item>
+    </modus-wc-tree-view>
+</modus-wc-dropdown-menu>
+
+<div>
+  Selected Value: <span id="tree-dropdown-selected-value"></span>
+</div>
+<script>
+  const dropdown = document.getElementById('tree-dropdown-menu');
+  const display = document.getElementById('tree-dropdown-selected-value');
+
+  dropdown.addEventListener('itemSelect', (e) => {
+    display.textContent = e.detail.value;
+    dropdown.menuVisible = false;
+  });
+</script>
+`,
+      },
+    },
   },
   render: (args) => {
     const handleItemSelect = (event: CustomEvent) => {
@@ -294,8 +329,7 @@ export const WithTreeView: Story = {
     Browse
     <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
   </div>
-  <div slot="menu">
-    <modus-wc-tree-view aria-label="Tree menu" bordered="true" size="sm">
+    <modus-wc-tree-view slot="menu" aria-label="Tree menu" bordered="true" size="sm">
       <modus-wc-tree-item
         label="Projects"
         value="projects"
@@ -307,7 +341,6 @@ export const WithTreeView: Story = {
         @itemSelect=${handleItemSelect}
       ></modus-wc-tree-item>
     </modus-wc-tree-view>
-  </div>
 </modus-wc-dropdown-menu>
 
 <div class="value">
