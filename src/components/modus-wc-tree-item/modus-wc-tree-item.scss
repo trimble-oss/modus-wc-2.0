@@ -38,6 +38,11 @@ modus-wc-tree-item .modus-wc-menu-item {
       [slot='end'] {
         margin-inline-start: auto;
         padding-inline-start: var(--modus-wc-spacing-sm);
+
+        &:is(modus-wc-dropdown-menu) {
+          background-color: transparent;
+          padding-inline-start: 0;
+        }
       }
 
       modus-wc-checkbox {
@@ -192,21 +197,21 @@ modus-wc-tree-item .modus-wc-menu-item {
   &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
     ) {
-    .modus-wc-menu-item-interactive:focus-visible,
-    .modus-wc-menu-item-interactive.modus-wc-arrow-focused {
+    &:focus:not(:focus-visible),
+    &.modus-wc-arrow-focused {
       background-color: var(--modus-wc-color-base-100);
       color: var(--modus-wc-color-primary);
       outline: none;
     }
   }
 
-  .modus-wc-menu-item-interactive:focus-visible {
+  &:focus-visible {
     background-color: transparent;
     outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
 
-  &.modus-wc-menu-item-focused .modus-wc-menu-item-interactive {
+  &.modus-wc-menu-item-focused {
     border-radius: inherit;
     outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
@@ -270,8 +275,8 @@ modus-wc-tree-item .modus-wc-menu-item {
     &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
       ) {
-      .modus-wc-menu-item-interactive:focus-visible,
-      .modus-wc-menu-item-interactive.modus-wc-arrow-focused {
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
         background-color: var(--modus-wc-color-gray-9);
       }
     }
@@ -279,12 +284,8 @@ modus-wc-tree-item .modus-wc-menu-item {
 }
 
 // DaisyUI sets background-color on `.modus-wc-menu li > :not(...):active`.
-// .modus-wc-menu-item-interactive is a direct li child, so it gets DaisyUI's
-// neutral `:active` background whenever any descendant (including end-slot
-// buttons) is clicked. Override to transparent when the click is in [slot='end'].
-modus-wc-tree-item
-  .modus-wc-menu-item
-  .modus-wc-menu-item-interactive:active:has([slot='end']:active) {
+// Override to transparent when the click is in [slot='end'].
+modus-wc-tree-item .modus-wc-menu-item:active:has([slot='end']:active) {
   background-color: transparent;
   color: inherit;
 }
