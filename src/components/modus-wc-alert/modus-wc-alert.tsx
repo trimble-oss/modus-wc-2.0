@@ -52,7 +52,8 @@ export class ModusWcAlert {
   @Prop() icon?: string;
 
   /** The variant of the alert. */
-  @Prop() variant?: 'default' | 'error' | 'info' | 'success' | 'warning' = 'info';
+  @Prop() variant?: 'default' | 'error' | 'info' | 'success' | 'warning' =
+    'info';
 
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
