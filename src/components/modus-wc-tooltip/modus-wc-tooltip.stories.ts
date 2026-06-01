@@ -20,7 +20,7 @@ const meta: Meta<TooltipArgs> = {
   argTypes: {
     position: {
       control: { type: 'select' },
-      options: ['auto', 'top', 'right', 'left', 'bottom'],
+      options: ['auto', 'top', 'right', 'bottom', 'left'],
     },
   },
   parameters: {
@@ -28,7 +28,6 @@ const meta: Meta<TooltipArgs> = {
       description: {
         component: `
 A customizable tooltip component used to create tooltips with different content.
- \nThe component supports a \`<slot>\` for injecting custom tooltip content.
 
 ### Features
 - **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key
@@ -102,8 +101,8 @@ Use \`contentElement\` to pass rich HTML (icons, multiple lines, formatting) as 
 
 The element is **deep-cloned** (\`cloneNode(true)\`) into the tooltip balloon on \`document.body\`. Your original node is **not moved or mutated**.
 
-- **Dynamic rich content** — create a new element whenever the HTML changes, or set \`contentElement\` to \`undefined\` and re-assign to refresh the clone.
-- **Interactive content** — attach listeners with event delegation on \`document\` (or a parent), and add \`custom-class\` with \`pointer-events: auto\` so the balloon accepts clicks.
+- **Dynamic rich content** — create a new element whenever the HTML changes, or set \`contentElement\` to \`undefined\` and re-assign to refresh the clone. Mutating the source node without reassignment does not update the displayed clone.
+- **Interactive content** — attach listeners with event delegation on \`document\` (or a parent), add \`custom-class\` with \`pointer-events: auto\` so the balloon accepts clicks, and use \`force-open\` to keep the tooltip visible while interacting with it.
         `,
       },
       source: {
@@ -195,7 +194,6 @@ export const ShadowDomParent: Story = {
           this.tooltipEl!.appendChild(badge);
           this.sr.appendChild(this.tooltipEl!);
 
-          // Apply props after Stencil hydrates the tooltip element
           void Promise.resolve().then(() => this.applyProps());
         }
 
@@ -226,18 +224,15 @@ export const Migration: Story = {
       description: {
         story: `
 #### Breaking Changes
-
-  - In 1.0, tooltip positioning was managed using Popper.js. In 2.0, tooltip positioning continues to be handled by Popper.js.
-  - The \`text\` prop has been renamed to \`content\`.
+- The \`text\` prop has been renamed to \`content\`.
 
 #### Prop Mapping
-
-| 1.0 Prop    | 2.0 Prop    | Notes                                    |
-|-------------|-------------|------------------------------------------|
-| aria-label  | aria-label  |                                          |
-| disabled    | disabled    |                                          |
-| position    | position    | Added \`auto\` option as default value   |
-| text        | content     |                                          |
+| 1.0 Prop | 2.0 Prop | Notes |
+| :--- | :--- | :--- |
+| aria-label | aria-label | |
+| disabled | disabled | |
+| position | position | Added \`auto\` option as default value |
+| text | content | |
         `,
       },
     },
