@@ -97,12 +97,9 @@ export const ContentElement: Story = {
     docs: {
       description: {
         story: `
-Use \`contentElement\` to pass rich HTML (icons, multiple lines, formatting) as the tooltip body. It takes precedence over the \`content\` string prop.
+Use \`contentElement\` to pass rich HTML (icons, multiple lines, formatting) as the tooltip body. It takes precedence over the \`content\` string prop. Your original node is not moved or mutated.
 
-The element is **deep-cloned** (\`cloneNode(true)\`) into the tooltip balloon on \`document.body\`. Your original node is **not moved or mutated**.
-
-- **Dynamic rich content** — create a new element whenever the HTML changes, or set \`contentElement\` to \`undefined\` and re-assign to refresh the clone. Mutating the source node without reassignment does not update the displayed clone.
-- **Interactive content** — attach listeners with event delegation on \`document\` (or a parent), add \`custom-class\` with \`pointer-events: auto\` so the balloon accepts clicks, and use \`force-open\` to keep the tooltip visible while interacting with it.
+To update the tooltip content, reassign \`contentElement\` with a new element.
         `,
       },
       source: {

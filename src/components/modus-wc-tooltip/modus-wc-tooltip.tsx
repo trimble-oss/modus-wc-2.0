@@ -61,6 +61,36 @@ export class ModusWcTooltip {
   /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
 
+  @Watch('position')
+  handlePositionChange() {
+    if (this.popperInstance) {
+      void this.popperInstance.setOptions({
+        placement: this.position === 'auto' ? 'top' : this.position,
+      });
+      void this.popperInstance.update();
+    }
+  }
+
+  @Watch('content')
+  handleContentChange() {
+    if (this.contentElement) return;
+    this.applyContentToTooltip();
+  }
+
+  @Watch('contentElement')
+  handleContentElementChange() {
+    this.applyContentToTooltip();
+  }
+
+  @Watch('forceOpen')
+  handleForceOpenChange(forceOpen: boolean) {
+    if (forceOpen && !this.disabled) {
+      this.showTooltip();
+    } else {
+      this.hideTooltip();
+    }
+  }
+
   /** Track if tooltip was dismissed with Escape key */
   @State() private escapeDismissed: boolean = false;
 
@@ -278,45 +308,6 @@ export class ModusWcTooltip {
       }
       this.tooltipElement.style.display = 'none';
       this.isVisible = false;
-    }
-  }
-
-  @Watch('position')
-  handlePositionChange() {
-    if (this.popperInstance) {
-      void this.popperInstance.setOptions({
-        placement: this.position === 'auto' ? 'top' : this.position,
-      });
-      void this.popperInstance.update();
-    }
-  }
-
-  @Watch('content')
-  handleContentChange() {
-    // contentElement takes precedence; ignore plain-string updates while it is set
-    if (this.contentElement) return;
-    if (this.tooltipElement) {
-      const arrow = this.tooltipElement.querySelector(
-        '.modus-wc-tooltip-arrow'
-      );
-      this.tooltipElement.textContent = this.content;
-      if (arrow) {
-        this.tooltipElement.appendChild(arrow);
-      }
-    }
-  }
-
-  @Watch('contentElement')
-  handleContentElementChange() {
-    this.applyContentToTooltip();
-  }
-
-  @Watch('forceOpen')
-  handleForceOpenChange(forceOpen: boolean) {
-    if (forceOpen && !this.disabled) {
-      this.showTooltip();
-    } else {
-      this.hideTooltip();
     }
   }
 
