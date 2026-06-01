@@ -224,6 +224,100 @@ export const IconOnlyDropdownMenu: Story = {
   },
 };
 
+export const WithTreeView: Story = {
+  args: {
+    'menu-bordered': false,
+    'menu-placement': 'bottom-end',
+    'menu-size': 'sm',
+  },
+  parameters: {
+    actions: {
+      handles: ['menuVisibilityChange', 'itemSelect'],
+    },
+  },
+  render: (args) => {
+    const handleItemSelect = (event: CustomEvent) => {
+      const displayElement = document.querySelector(
+        '#tree-dropdown-selected-value'
+      );
+      if (displayElement) {
+        displayElement.textContent = event.detail.value;
+      }
+
+      const dropdownMenuElement = (event.target as HTMLElement).closest(
+        'modus-wc-dropdown-menu'
+      );
+      if (dropdownMenuElement) {
+        (
+          dropdownMenuElement as unknown as { menuVisible: boolean }
+        ).menuVisible = false;
+      }
+    };
+
+    // prettier-ignore
+    return html`
+<style>
+  div[id^='story--components-dropdown-menu--with-tree-view'] {
+    display: flex;
+    align-items: center;
+    height: 320px;
+  }
+
+  [slot='button'] {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .value {
+    font-size: 14px;
+    padding-top: 12px;
+  }
+</style>
+
+<modus-wc-dropdown-menu
+  button-aria-label=${ifDefined(args['button-aria-label'])}
+  button-color=${ifDefined(args['button-color'])}
+  button-shape=${ifDefined(args['button-shape'])}
+  button-size=${ifDefined(args['button-size'])}
+  button-variant=${ifDefined(args['button-variant'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?disabled=${args.disabled}
+  ?menu-bordered=${args['menu-bordered']}
+  menu-offset=${ifDefined(args['menu-offset'])}
+  menu-placement=${ifDefined(args['menu-placement'])}
+  menu-size=${ifDefined(args['menu-size'])}
+  menu-strategy=${ifDefined(args['menu-strategy'])}
+  ?menu-visible=${args['menu-visible']}
+>
+  <div slot="button">
+    Browse
+    <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
+  </div>
+  <div slot="menu">
+    <modus-wc-tree-view aria-label="Tree menu" bordered="true" size="sm">
+      <modus-wc-tree-item
+        label="Projects"
+        value="projects"
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-tree-item>
+      <modus-wc-tree-item
+        label="Explorer"
+        value="explorer"
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-tree-item>
+    </modus-wc-tree-view>
+  </div>
+</modus-wc-dropdown-menu>
+
+<div class="value">
+  Selected Value:
+  <span id="tree-dropdown-selected-value"></span>
+</div>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('dropdown-menu-shadow-host')) {
