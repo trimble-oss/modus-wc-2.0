@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
     "lib": [
       "dom",
@@ -19,7 +20,7 @@
 
     // Advanced Options
     "esModuleInterop": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
 
@@ -34,6 +35,7 @@
   ],
   "exclude": [
     "dist",
-    "node_modules"
+    "node_modules",
+    "src/stencil-generated/components.server.ts"
   ]
 }

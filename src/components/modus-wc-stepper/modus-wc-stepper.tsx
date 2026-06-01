@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-stepper.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Orientation } from '../types';
@@ -46,6 +54,12 @@ export class ModusWcStepper {
   /** The steps to display. */
   @Prop() steps: IStepperItem[] = [];
 
+  /** If true, steps will be rendered as buttons and emit `stepClick` when activated. */
+  @Prop() interactive?: boolean = false;
+
+  /** Emitted with the 0-based step index when a step is activated and `interactive` is true. */
+  @Event() stepClick!: EventEmitter<{ index: number }>;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -55,6 +69,7 @@ export class ModusWcStepper {
     const classList = ['modus-wc-steps'];
 
     const propClasses = convertPropsToClasses({
+      interactive: this.interactive,
       orientation: this.orientation,
     });
 
@@ -63,6 +78,16 @@ export class ModusWcStepper {
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
+  }
+
+  private getStepLabel(step: IStepperItem): string {
+    return step.label ?? step.content ?? '';
+  }
+
+  private getStepAriaLabel(step: IStepperItem, index: number): string {
+    const stepLabel = this.getStepLabel(step);
+
+    return stepLabel || `Step ${index + 1}`;
   }
 
   private getClassesForStep(step: IStepperItem): string {
@@ -75,22 +100,41 @@ export class ModusWcStepper {
     return classList.join(' ');
   }
 
+  private handleStepActivate(index: number): void {
+    if (!this.interactive) {
+      return;
+    }
+    this.stepClick.emit({ index });
+  }
+
   render() {
+    const isInteractive = !!this.interactive;
+
     return (
       <Host>
-        <div class={this.getClasses()} {...this.inheritedAttributes}>
+        <ul class={this.getClasses()} {...this.inheritedAttributes}>
           {this.steps.map((step, index) => {
+            const stepLabel = this.getStepLabel(step);
+
             return (
               <li
                 class={this.getClassesForStep(step)}
                 key={index}
                 data-content={step.content}
               >
-                {step.label}
+                {isInteractive && (
+                  <button
+                    type="button"
+                    class="modus-wc-stepper-step-button"
+                    aria-label={this.getStepAriaLabel(step, index)}
+                    onClick={() => this.handleStepActivate(index)}
+                  ></button>
+                )}
+                {stepLabel}
               </li>
             );
           })}
-        </div>
+        </ul>
       </Host>
     );
   }

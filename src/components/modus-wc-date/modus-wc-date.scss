@@ -227,6 +227,13 @@ modus-wc-date {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-date .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-date .modus-wc-input-label,
+[data-theme='modus-classic-light'] modus-wc-date .modus-wc-input-label,
+[data-theme='modus-classic-dark'] modus-wc-date .modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-sm);
+}
+
 [data-theme='modus-classic-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   &.modus-wc-input {

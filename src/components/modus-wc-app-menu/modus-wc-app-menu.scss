@@ -1,0 +1,299 @@
+modus-wc-app-menu.modus-wc-app-menu {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  text-align: start;
+  width: fit-content;
+
+  .modus-wc-panel {
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    gap: var(--modus-wc-spacing-lg);
+
+    [slot='body'] {
+      display: flex;
+      flex-direction: column;
+      gap: var(--modus-wc-spacing-lg);
+      overflow-y: auto;
+      padding: var(--modus-wc-spacing-lg);
+      padding-inline-end: 0;
+      scrollbar-gutter: stable;
+    }
+
+    .modus-wc-app-menu-header {
+      align-content: center;
+      align-items: center;
+      align-self: stretch;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--modus-wc-spacing-sm);
+      min-height: var(--modus-wc-size-sm);
+      padding: 0 var(--modus-wc-spacing-lg);
+
+      .modus-wc-app-menu-header-title {
+        align-content: flex-start;
+        align-items: flex-start;
+        display: flex;
+        flex: 1 0 0;
+        flex-wrap: wrap;
+      }
+
+      .modus-wc-app-menu-header-end-content {
+        align-items: center;
+        display: flex;
+        gap: var(--modus-wc-spacing-sm);
+      }
+    }
+
+    .modus-wc-menu {
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
+    }
+
+    .modus-wc-app-menu-items {
+      padding: 0 var(--modus-wc-spacing-xs);
+
+      li.modus-wc-menu-item-active,
+      .modus-wc-menu-item button:active {
+        background-color: transparent;
+        color: inherit;
+      }
+
+      /* Keyboard focus lives on `.modus-wc-app-menu-item-row` (the row owns the tab
+         stop and key handling). The inner menu-item paints its hover
+         background on top of any outline placed on the row, so we paint
+         the focus outline on the inner menu-item element instead. The
+         second selector overrides the global menu-item hover rule
+         (`outline: none`) so the ring stays visible while hovering. */
+      .modus-wc-app-menu-item-row:focus-visible {
+        outline: none;
+      }
+
+      .modus-wc-app-menu-item-row:focus-visible
+        modus-wc-menu-item
+        .modus-wc-menu-item,
+      .modus-wc-app-menu-item-row:focus-visible
+        modus-wc-menu-item
+        .modus-wc-menu-item:hover {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
+      }
+
+      .modus-wc-app-menu-item-row {
+        align-items: center;
+        display: flex;
+        margin-inline: calc(-1 * var(--modus-wc-spacing-xs));
+        max-width: 256px;
+        position: relative;
+
+        .modus-wc-app-menu-drag-icon {
+          color: var(--modus-wc-color-base-content);
+          position: absolute;
+          transform: translateX(-10%);
+          z-index: 1;
+        }
+
+        > modus-wc-menu-item {
+          flex: 1;
+          min-width: 0;
+        }
+
+        &.modus-wc-app-menu-draggable-item {
+          cursor: grab;
+
+          .modus-wc-app-menu-drag-icon {
+            cursor: grab;
+          }
+
+          /* Row is draggable; inner menu button would otherwise use pointer/default and shrink the grab hit visually. */
+          modus-wc-menu-item .modus-wc-menu-item button,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button
+            .modus-wc-menu-item-content,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button
+            .modus-wc-menu-item-content
+            * {
+            cursor: grab;
+          }
+
+          modus-wc-menu-item .modus-wc-menu-item button:active,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button:active
+            .modus-wc-menu-item-content,
+          modus-wc-menu-item
+            .modus-wc-menu-item
+            button:active
+            .modus-wc-menu-item-content
+            * {
+            cursor: grabbing;
+          }
+        }
+      }
+
+      /* No explicit width here: the menu item naturally fills its row,
+         which is constrained by the surrounding `modus-wc-panel` width
+         and its body padding. */
+      .modus-wc-menu-item button {
+        min-width: 0;
+
+        .modus-wc-menu-item-content {
+          gap: var(--modus-wc-spacing-lg);
+          min-width: 0;
+          width: 100%;
+        }
+
+        .modus-wc-menu-item-labels {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          padding-inline-start: 0;
+
+          > div:not(.modus-wc-menu-item-sublabel) {
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          > modus-wc-tooltip {
+            display: block;
+            flex: 1;
+            max-width: 100%;
+            min-width: 0;
+          }
+
+          > modus-wc-tooltip > div {
+            max-width: 100%;
+            min-width: 0;
+          }
+
+          > modus-wc-tooltip > div > div:first-child {
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .modus-wc-menu-item-content [slot='start-icon'] {
+          align-items: center;
+          display: inline-flex;
+          flex-shrink: 0;
+          padding-inline-end: 0;
+
+          .modus-wc-app-menu-app-logo {
+            height: var(--modus-wc-input-height-sm);
+            width: var(--modus-wc-input-height-sm);
+          }
+        }
+      }
+    }
+
+    .modus-wc-app-menu-grid {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: var(--modus-wc-spacing-sm);
+      margin-inline: auto;
+      width: fit-content;
+    }
+
+    .modus-wc-app-menu-grid-row {
+      align-self: stretch;
+      display: grid;
+      gap: 0 var(--modus-wc-spacing-sm);
+
+      /* minmax(0, 1fr) prevents a long label from making its column wider
+         than the others, so all three items share equal space per row. */
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-items: stretch;
+    }
+
+    .modus-wc-app-menu-grid-item {
+      align-items: center;
+      border-radius: var(--modus-wc-border-radius-sm);
+      display: flex;
+      flex-direction: column;
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xs);
+      position: relative;
+      width: var(--modus-wc-spacing-20);
+
+      > modus-wc-icon {
+        align-items: center;
+        display: inline-flex;
+        inset-inline-end: 0;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        width: var(--modus-wc-size-xs);
+      }
+
+      &:hover {
+        background-color: var(--modus-wc-color-base-100);
+      }
+
+      /* Focus outline that persists alongside the hover background. */
+      &:focus-visible {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
+      }
+    }
+
+    .modus-wc-app-menu-grid-emblem {
+      aspect-ratio: 1 / 1;
+      flex: 1 0 0;
+      min-height: var(--modus-wc-size-xs);
+      min-width: var(--modus-wc-size-xs);
+      width: var(--modus-wc-line-height-h0);
+    }
+
+    .modus-wc-app-menu-grid-item-label {
+      align-self: stretch;
+      -webkit-box-orient: vertical;
+      color: var(--modus-wc-color-base-content);
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-height: var(--modus-wc-font-size-2xl);
+      overflow: hidden;
+      text-align: center;
+      text-overflow: ellipsis;
+    }
+
+    .modus-wc-app-menu-draggable-item {
+      cursor: grab;
+      transition: box-shadow 0.2s ease;
+
+      &:active {
+        box-shadow:
+          0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        cursor: grabbing;
+      }
+    }
+
+    .modus-wc-app-menu-grabbed-item {
+      background-color: var(--modus-wc-color-base-200);
+      box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
+    }
+
+    .modus-wc-app-menu-drag-source {
+      opacity: 0.3;
+    }
+
+    .modus-wc-app-menu-drop-target {
+      border-radius: var(--modus-wc-border-radius-sm);
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
+    }
+  }
+}

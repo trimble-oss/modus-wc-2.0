@@ -1,7 +1,5 @@
-name-template: 'v$RESOLVED_VERSION 🌈'
-tag-template: 'v$RESOLVED_VERSION'
-prerelease: true
-prerelease-identifier: 'alpha' # will create a prerelease with version number x.x.x-alpha.x
+name-template: 'Modus Web Components $RESOLVED_VERSION'
+tag-template: 'moduswebcomponents-$RESOLVED_VERSION'
 exclude-labels:
   - 'skip-changelog'
 version-resolver:
@@ -41,8 +39,9 @@ categories:
     labels:
       - 'dependencies'
   - title: '🧰 Maintenance'
-    labels: 'chore'
-change-template: '- #$NUMBER: $TITLE (@$AUTHOR)'
+    labels:
+      - 'chore'
+change-template: '- [#$NUMBER]($URL): $TITLE (@$AUTHOR)'
 template: |
   ## Changes
 

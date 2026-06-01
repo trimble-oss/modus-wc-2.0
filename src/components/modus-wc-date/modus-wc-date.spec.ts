@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcDate } from './modus-wc-date';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp, WeekStartDay } from '../types';
+import { expectLabelLinkedToControl } from '../utils';
+import { ModusWcDate } from './modus-wc-date';
 
 describe('modus-wc-date', () => {
   it('renders with default props', async () => {
@@ -37,6 +39,15 @@ describe('modus-wc-date', () => {
       ></modus-wc-date>`,
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should link label to input when input-id is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate, ModusWcInputLabel],
+      html: '<modus-wc-date label="Birth date" aria-label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
+    });
+
+    expectLabelLinkedToControl(page.root!, 'input[type="text"]');
   });
 
   it('should render with error feedback', async () => {
@@ -1947,7 +1958,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('2025-10-05');
       expect(input.value).toBe('05-10-2025');
 
-      // Test date above max — same behaviour.
+      // Test date above max — same behavior.
       component.value = '2025-10-25';
       await page.waitForChanges();
       expect(component.value).toBe('2025-10-25');
@@ -1968,7 +1979,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('15-10');
       expect(input.value).toBe('');
 
-      // Test invalid format (empty parts) — same behaviour
+      // Test invalid format (empty parts) — same behavior
       component.value = '--';
       await page.waitForChanges();
       expect(component.value).toBe('--');
@@ -2084,7 +2095,7 @@ describe('modus-wc-date', () => {
       expect(component.value).toBe('2025-10-05');
       expect(page.root!.querySelector('input')?.value).toBe('Oct 05, 2025');
 
-      // Above max — same behaviour.
+      // Above max — same behavior.
       component.value = '2025-10-25';
       await page.waitForChanges();
       expect(component.value).toBe('2025-10-25');
@@ -2898,7 +2909,7 @@ describe('modus-wc-date', () => {
     const dispatchEventSpy = jest.spyOn(mockInputElement, 'dispatchEvent');
     component['inputRef'] = mockInputElement;
 
-    // Set an ISO value — handleValueChange will normalise and then dispatch
+    // Set an ISO value — handleValueChange will normalize and then dispatch
     component.value = '2025-10-15';
     component['handleValueChange']('2025-10-15');
     await page.waitForChanges();
