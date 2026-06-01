@@ -195,19 +195,38 @@ export const ShadowDomParent: Story = {
             selectionMode: string;
             size: string;
           };
-          treeViewEl.ariaLabel = 'Shadow DOM Tree View';
+          treeViewEl.ariaLabel = 'Tree view';
           treeViewEl.bordered = Boolean(v.bordered);
           treeViewEl.customClass = v['custom-class'] || '';
           treeViewEl.orientation = v.orientation || 'vertical';
           treeViewEl.selectionMode = v['selection-mode'] || 'single';
           treeViewEl.size = v.size || 'md';
 
-          if (!el.hasAttribute('data-items-built')) {
-            el.setAttribute('data-items-built', '');
+          if (!el.querySelector('modus-wc-tree-item')) {
             el.innerHTML = `
-              <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
-              <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
-              <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Small" value="1" size="sm"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Large" value="3" size="lg"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Bordered" value="4" bordered="true"></modus-wc-tree-item>
+              <modus-wc-tree-item label="With Sub-label" value="5" sub-label="Sub-label"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Selected" value="6" selected="true"></modus-wc-tree-item>
+              <modus-wc-tree-item label="With Start Icon" value="7">
+                <modus-wc-icon slot="start" name="info"></modus-wc-icon>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="With End Action" value="8">
+                <div slot="end" style="display: flex; align-items: center;">
+                  <modus-wc-button
+                    variant="borderless"
+                    size="sm"
+                    shape="circle"
+                    color="primary"
+                    aria-label="More options"
+                  >
+                    <modus-wc-icon name="more_vertical" size="sm"></modus-wc-icon>
+                  </modus-wc-button>
+                </div>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Disabled" value="9" disabled="true"></modus-wc-tree-item>
             `;
           }
         },

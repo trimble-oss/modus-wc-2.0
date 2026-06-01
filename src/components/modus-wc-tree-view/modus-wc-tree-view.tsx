@@ -140,11 +140,9 @@ export class ModusWcTreeView {
         currentIndex > 0 ? currentIndex - 1 : focusableItems.length - 1;
     }
 
-    const nextInteractive = focusableItems[nextIndex].querySelector(
-      '.modus-wc-menu-item-interactive'
-    );
-    if (nextInteractive) {
-      (nextInteractive as HTMLElement).focus();
+    const nextLi = focusableItems[nextIndex].querySelector('li');
+    if (nextLi) {
+      (nextLi as HTMLElement).focus();
     }
   }
 

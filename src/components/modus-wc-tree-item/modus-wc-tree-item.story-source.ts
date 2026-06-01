@@ -20,56 +20,20 @@ export const treeItemWithEndSlotSourceCode = `
 <modus-wc-tree-view>
   <modus-wc-tree-item label="Tree Item" value="treeItem">
     <modus-wc-icon slot="start" name="folder" size="sm"></modus-wc-icon>
-    <div slot="end" style="position: relative; display: flex; align-items: center;">
-      <modus-wc-button
-        id="tree-item-end-btn"
-        variant="borderless"
-        size="sm"
-        shape="circle"
-        color="primary"
-        aria-label="More options"
-      >
-        <modus-wc-icon name="more_vertical" size="sm"></modus-wc-icon>
-      </modus-wc-button>
-      <div
-        id="tree-item-end-menu"
-        style="display: none; position: absolute; right: 0; top: 100%; z-index: 1000;"
-      >
-        <modus-wc-menu id="tree-item-context-menu" size="sm" bordered="true">
-          <modus-wc-menu-item label="Rename" value="rename"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Duplicate" value="duplicate"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Delete" value="delete"></modus-wc-menu-item>
-        </modus-wc-menu>
-      </div>
-    </div>
+    <modus-wc-dropdown-menu
+      slot="end"
+      button-variant="borderless"
+      button-size="sm"
+      button-shape="circle"
+      button-aria-label="More options"
+    >
+      <modus-wc-icon slot="button" decorative name="more_vertical" size="sm"></modus-wc-icon>
+      <modus-wc-menu-item slot="menu" label="Rename" value="rename"></modus-wc-menu-item>
+      <modus-wc-menu-item slot="menu" label="Duplicate" value="duplicate"></modus-wc-menu-item>
+      <modus-wc-menu-item slot="menu" label="Delete" value="delete"></modus-wc-menu-item>
+    </modus-wc-dropdown-menu>
   </modus-wc-tree-item>
 </modus-wc-tree-view>
-<script>
-  const btn = document.getElementById('tree-item-end-btn');
-  const menu = document.getElementById('tree-item-end-menu');
-  const contextMenu = document.getElementById('tree-item-context-menu');
-
-  btn.addEventListener('buttonClick', (e) => {
-    e.stopPropagation();
-    const isOpen = menu.style.display === 'block';
-    menu.style.display = isOpen ? 'none' : 'block';
-  });
-
-  contextMenu.addEventListener('itemSelect', () => {
-    menu.style.display = 'none';
-  });
-
-  document.addEventListener('click', (e) => {
-    if (
-      menu.style.display !== 'block' ||
-      btn.contains(e.target) ||
-      menu.contains(e.target)
-    ) {
-      return;
-    }
-    menu.style.display = 'none';
-  });
-</script>
 `;
 
 export const treeItemCustomSourceCode = `

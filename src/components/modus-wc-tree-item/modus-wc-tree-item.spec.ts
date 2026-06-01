@@ -77,11 +77,13 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
     });
-    const li = page.root?.querySelector('.modus-wc-menu-item-interactive');
+    const interactive = page.root?.querySelector(
+      '.modus-wc-menu-item-interactive'
+    );
     const clickSpy = jest.fn();
     page.root?.addEventListener('itemSelect', clickSpy);
 
-    (li as HTMLElement)?.click();
+    (interactive as HTMLElement)?.click();
     await page.waitForChanges();
 
     expect(clickSpy).toHaveBeenCalledTimes(1);
@@ -116,7 +118,7 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
     });
 
-    const li = page.root?.querySelector('.modus-wc-menu-item-interactive');
+    const li = page.root?.querySelector('li');
     const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
 
     const enterEvent = new KeyboardEvent('keydown', {
@@ -140,7 +142,7 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item value="test-value" disabled="true"></modus-wc-tree-item>',
     });
 
-    const li = page.root?.querySelector('.modus-wc-menu-item-interactive');
+    const li = page.root?.querySelector('li');
     const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
 
     li?.dispatchEvent(
@@ -398,9 +400,7 @@ describe('modus-wc-tree-item', () => {
     const clickSpy = jest.fn();
     page.root?.addEventListener('itemSelect', clickSpy);
 
-    const interactive = page.root?.querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const interactive = page.root?.querySelector('li') as HTMLElement;
     const startButton = page.root?.querySelector(
       '[slot="start"]'
     ) as HTMLElement;
@@ -580,7 +580,7 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
     });
 
-    const li = page.root?.querySelector('.modus-wc-menu-item-interactive');
+    const li = page.root?.querySelector('li');
     const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
 
     li?.dispatchEvent(

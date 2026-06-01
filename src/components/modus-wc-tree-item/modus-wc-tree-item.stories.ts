@@ -2,7 +2,6 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize } from '../types';
 import {
@@ -120,49 +119,6 @@ export const WithEndSlot: Story = {
     docs: { source: { code: treeItemWithEndSlotSourceCode } },
   },
   render: (args) => {
-    const btnRef = { el: null as HTMLElement | null };
-    const menuRef = { el: null as HTMLElement | null };
-    let outsideClickAttached = false;
-
-    const attachOutsideClick = () => {
-      if (outsideClickAttached || !btnRef.el || !menuRef.el) return;
-      outsideClickAttached = true;
-
-      document.addEventListener('click', (e) => {
-        const btn = btnRef.el;
-        const menu = menuRef.el;
-        if (!btn || !menu || menu.style.display !== 'block') return;
-        if (btn.contains(e.target as Node) || menu.contains(e.target as Node)) {
-          return;
-        }
-        menu.style.display = 'none';
-      });
-    };
-
-    const toggleMenu = (e: Event) => {
-      e.stopPropagation();
-      const menu = menuRef.el;
-      if (!menu) return;
-      const isOpen = menu.style.display === 'block';
-      menu.style.display = isOpen ? 'none' : 'block';
-    };
-
-    const closeMenu = () => {
-      if (menuRef.el) menuRef.el.style.display = 'none';
-    };
-
-    const onBtnRef = (el: Element | undefined) => {
-      if (!el) return;
-      btnRef.el = el as HTMLElement;
-      attachOutsideClick();
-    };
-
-    const onMenuRef = (el: Element | undefined) => {
-      if (!el) return;
-      menuRef.el = el as HTMLElement;
-      attachOutsideClick();
-    };
-
     // prettier-ignore
     return html`
 <modus-wc-tree-view>
@@ -170,30 +126,22 @@ export const WithEndSlot: Story = {
     label=${args.label}
     value=${args.value}
   >
-    <modus-wc-icon slot="start" name="folder" size="sm"></modus-wc-icon>
-    <div slot="end" style="position: relative; display: flex; align-items: center;">
-      <modus-wc-button
-        ${ref(onBtnRef)}
-        variant="borderless"
-        size="sm"
-        shape="circle"
-        color="primary"
-        aria-label="More options"
-        @buttonClick=${toggleMenu}
-      >
-        <modus-wc-icon name="more_vertical" size="sm"></modus-wc-icon>
-      </modus-wc-button>
-      <div
-        ${ref(onMenuRef)}
-        style="display: none; position: absolute; right: 0; top: 100%; z-index: 1000;"
-      >
-        <modus-wc-menu size="sm" bordered="true" @itemSelect=${closeMenu}>
-          <modus-wc-menu-item label="Rename" value="rename"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Duplicate" value="duplicate"></modus-wc-menu-item>
-          <modus-wc-menu-item label="Delete" value="delete"></modus-wc-menu-item>
-        </modus-wc-menu>
+    <modus-wc-dropdown-menu
+      slot="end"
+      button-variant="borderless"
+      button-size="sm"
+      button-shape="circle"
+      button-aria-label="More options"
+    >
+        <div slot="button">
+          <modus-wc-icon name="more_vertical" size="sm"></modus-wc-icon>
+        </div>
+     <div slot="menu">
+        <modus-wc-menu-item label="Rename" value="rename"></modus-wc-menu-item>
+        <modus-wc-menu-item label="Duplicate" value="duplicate"></modus-wc-menu-item>
+        <modus-wc-menu-item label="Delete" value="delete"></modus-wc-menu-item>
       </div>
-    </div>
+    </modus-wc-dropdown-menu>
   </modus-wc-tree-item>
 </modus-wc-tree-view>
     `;

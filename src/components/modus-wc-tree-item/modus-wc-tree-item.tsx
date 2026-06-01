@@ -4,6 +4,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Method,
   Prop,
   State,
@@ -117,14 +118,15 @@ export class ModusWcTreeItem {
     this.selected = false;
   }
 
-  private handleKeyDown = (e: KeyboardEvent) => {
+  @Listen('keydown')
+  handleKeyDown(e: KeyboardEvent) {
     if (this.disabled) return;
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       this.handleItemSelect();
     }
-  };
+  }
 
   /**
    * Public method to collapse the submenu if it's expanded
@@ -259,9 +261,8 @@ export class ModusWcTreeItem {
 
     this.handleItemSelect();
 
-    // Match menu-item: clicks target the row, not a persistent focused control.
-    // Blurring prevents the primary-color focus style from sticking after mouse click.
-    (event.currentTarget as HTMLElement).blur();
+    // Blurring the li prevents the focus ring from sticking after mouse click.
+    this.el.querySelector('li')?.blur();
   };
 
   private handleItemSelect = () => {
@@ -316,19 +317,21 @@ export class ModusWcTreeItem {
 
     return (
       <Host>
-        <li class={this.getClasses()} {...this.inheritedAttributes}>
+        <li
+          aria-checked={this.getAriaChecked(mode)}
+          aria-disabled={this.disabled}
+          aria-expanded={this.hasSubmenu ? String(this.isExpanded) : undefined}
+          aria-selected={this.getAriaSelected(mode)}
+          class={this.getClasses()}
+          role={this.getRole(mode)}
+          tabIndex={this.disabled ? -1 : 0}
+          {...this.inheritedAttributes}
+        >
           <div
-            aria-checked={this.getAriaChecked(mode)}
-            aria-disabled={this.disabled}
-            aria-expanded={
-              this.hasSubmenu ? String(this.isExpanded) : undefined
-            }
-            aria-selected={this.getAriaSelected(mode)}
             class={this.getInteractiveClasses()}
             onClick={this.handleItemClick}
-            onKeyDown={this.handleKeyDown}
-            role={this.getRole(mode)}
-            tabIndex={this.disabled ? -1 : 0}
+            role="presentation"
+            tabIndex={-1}
           >
             <div class="modus-wc-menu-item-content">
               {(this.checkbox || mode === 'multiple') && (

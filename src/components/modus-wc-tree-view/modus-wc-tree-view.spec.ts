@@ -86,12 +86,8 @@ describe('modus-wc-tree-view', () => {
     });
 
     const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
-    const firstInteractive = treeItems[0].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
-    const secondInteractive = treeItems[1].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const firstInteractive = treeItems[0].querySelector('li') as HTMLElement;
+    const secondInteractive = treeItems[1].querySelector('li') as HTMLElement;
 
     firstInteractive.focus();
 
@@ -129,12 +125,8 @@ describe('modus-wc-tree-view', () => {
     });
 
     const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
-    const firstInteractive = treeItems[0].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
-    const secondInteractive = treeItems[1].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const firstInteractive = treeItems[0].querySelector('li') as HTMLElement;
+    const secondInteractive = treeItems[1].querySelector('li') as HTMLElement;
 
     secondInteractive.focus();
 
@@ -324,12 +316,8 @@ describe('modus-wc-tree-view', () => {
     });
 
     const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
-    const firstInteractive = treeItems[0].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
-    const lastInteractive = treeItems[1].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const firstInteractive = treeItems[0].querySelector('li') as HTMLElement;
+    const lastInteractive = treeItems[1].querySelector('li') as HTMLElement;
 
     lastInteractive.focus();
     Object.defineProperty(document, 'activeElement', {
@@ -365,12 +353,8 @@ describe('modus-wc-tree-view', () => {
     });
 
     const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
-    const firstInteractive = treeItems[0].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
-    const lastInteractive = treeItems[1].querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const firstInteractive = treeItems[0].querySelector('li') as HTMLElement;
+    const lastInteractive = treeItems[1].querySelector('li') as HTMLElement;
 
     firstInteractive.focus();
     Object.defineProperty(document, 'activeElement', {
@@ -405,9 +389,9 @@ describe('modus-wc-tree-view', () => {
       `,
     });
 
-    const firstInteractive = page.doc
+    const firstLi = page.doc
       .querySelector('modus-wc-tree-item')
-      ?.querySelector('.modus-wc-menu-item-interactive') as HTMLElement;
+      ?.querySelector('li') as HTMLElement;
 
     Object.defineProperty(document, 'activeElement', {
       value: null,
@@ -415,7 +399,7 @@ describe('modus-wc-tree-view', () => {
       configurable: true,
     });
 
-    const focusSpy = jest.spyOn(firstInteractive, 'focus');
+    const focusSpy = jest.spyOn(firstLi, 'focus');
     const ul = page.root?.querySelector('ul') as HTMLUListElement;
 
     ul.dispatchEvent(
@@ -470,9 +454,7 @@ describe('modus-wc-tree-view', () => {
     });
 
     const ul = page.root?.querySelector('ul') as HTMLUListElement;
-    const interactive = page.doc.querySelector(
-      '.modus-wc-menu-item-interactive'
-    ) as HTMLElement;
+    const interactive = page.doc.querySelector('li') as HTMLElement;
     const focusSpy = jest.spyOn(interactive, 'focus');
 
     ul.dispatchEvent(

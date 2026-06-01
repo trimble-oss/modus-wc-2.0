@@ -13,6 +13,17 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
     width: max-content;
   }
 
+  /* Popover menu — not a nested collapsible submenu. Suppress DaisyUI's
+     :where(li ul) indent and ::before indicator when placed inside a menu li. */
+  modus-wc-menu .modus-wc-menu {
+    margin-inline-start: 0;
+    padding-inline-start: 0;
+
+    &::before {
+      content: none;
+    }
+  }
+
   .modus-wc-menu-item > button:hover {
     border-radius: 0;
   }
