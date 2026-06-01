@@ -3728,6 +3728,105 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-link/modus-wc-link.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable link component used to navigate to URLs.",
+          "name": "ModusWcLink",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "color",
+              "fieldName": "color",
+              "default": "'primary'",
+              "description": "The color of the link.",
+              "type": {
+                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'inherit'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the link element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "href",
+              "fieldName": "href",
+              "description": "The URL to navigate to when the link is activated.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "rel",
+              "fieldName": "rel",
+              "description": "The relationship attribute for the link.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "target",
+              "fieldName": "target",
+              "description": "The browsing context for the link.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "underline",
+              "fieldName": "underline",
+              "default": "'always'",
+              "description": "The underline behavior of the link.",
+              "type": {
+                "text": "'always' | 'hover' | 'none'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-link",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcLink",
+          "declaration": {
+            "name": "ModusWcLink",
+            "module": "src/components/modus-wc-link/modus-wc-link.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-link",
+          "declaration": {
+            "name": "ModusWcLink",
+            "module": "src/components/modus-wc-link/modus-wc-link.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-loader/modus-wc-loader.tsx",
       "declarations": [
         {

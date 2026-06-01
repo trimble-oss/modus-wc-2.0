@@ -37,6 +37,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "overrides": {
+    "tmp": "^0.2.6"
+  },
   "engines": {
     "node": ">=18"
   }
