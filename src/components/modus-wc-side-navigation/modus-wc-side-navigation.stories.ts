@@ -1,6 +1,6 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ref } from 'lit/directives/ref.js';
 import {
@@ -9,11 +9,30 @@ import {
   connectIconClass,
 } from './modus-wc-side-navigation-connect-icons.story';
 import {
+  isConnectSideNavTheme,
+  SIDE_NAV_COLLAPSED_MIN_WIDTH,
+  SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS,
+  SIDE_NAV_DATA_FLYOUT_MENU_OFFSET,
   SIDE_NAV_TREE_ITEM_END_ACTION_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+  sideNavConnectCollapsedRailStyles,
+  sideNavConnectStoryLayoutStyles,
+  sideNavConnectTreeItemStyles,
+  sideNavConnectWithTreeViewStoryStyles,
+  sideNavDataFlyoutDropdownStyles,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
+import {
+  handleWithTreeViewExpandedChangeClassicModern,
+  handleWithTreeViewExpandedChangeConnect,
+  handleWithTreeViewMenuOpenChange,
+  hideWithTreeViewFlyout,
+  openWithTreeViewDataFlyout,
+  resetWithTreeViewForNonConnectTheme,
+  setWithTreeViewDataFlyoutDisabled,
+  type WithTreeViewFlyoutState,
+} from './modus-wc-side-navigation-with-tree-view.story-handlers';
 import { getWithTreeViewSourceCode } from './modus-wc-side-navigation-with-tree-view.story-source';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
@@ -21,6 +40,7 @@ interface SideNavigationArgs {
   'custom-class'?: string;
   expanded: boolean;
   'max-width': string;
+  'min-width'?: string;
   'collapse-on-click-outside'?: boolean;
   mode: 'overlay' | 'push';
   'target-content'?: string;
@@ -530,115 +550,99 @@ export const WithSubmenu: Story = {
   },
 };
 
+/** Persists across Lit re-renders so mount-only expandedChange skip is not reset. */
+let withTreeViewExpandedChangeReady = false;
+
+/** Persists across Lit re-renders for Connect flyout handlers. */
+const withTreeViewFlyoutState: WithTreeViewFlyoutState = {
+  dataIconDropdown: null,
+  flyoutOpenTimer: null,
+  collapseFlyoutTimer: null,
+};
+
+let withTreeViewThemeObserverWired = false;
+
 export const WithTreeView: Story = {
   args: { expanded: true },
   parameters: {
-    docs: { source: { code: getWithTreeViewSourceCode() } },
+    docs: {
+      description: {
+        story:
+          'This story is theme-specific: markup and styles differ between Connect and Modern/Classic. After changing the theme in the Storybook toolbar, re-render the story so it re-renders with the correct layout.',
+      },
+      source: { code: getWithTreeViewSourceCode() },
+    },
   },
-  render: (args) => {
-    let flyoutContainer: HTMLElement | null = null;
-    let flyoutTreeView: HTMLElement | null = null;
-    let flyoutSourceItem: Element | null = null;
-    let outsideClickHandler: ((e: MouseEvent) => void) | null = null;
-
-    const hideFlyout = () => {
-      if (flyoutContainer) flyoutContainer.style.display = 'none';
+  render: (args, context) => {
+    let suppressNextMenuOpen = false;
+    const menuOpenSuppress = {
+      get: () => suppressNextMenuOpen,
+      set: (value: boolean) => {
+        suppressNextMenuOpen = value;
+      },
     };
+    const globalsTheme = (context as { globals?: { theme?: string } }).globals
+      ?.theme;
+    const connectTheme = globalsTheme
+      ? globalsTheme === 'connect-light' || globalsTheme === 'connect-dark'
+      : isConnectSideNavTheme();
 
-    const handleMenuOpenChange = (e: CustomEvent) => {
-      const eventSource = e.target as HTMLElement;
-      const storyContainer = eventSource?.closest('.layout-with-navbar');
-      const sideNav = storyContainer
-        ? storyContainer.querySelector('modus-wc-side-navigation')
-        : document.querySelector('modus-wc-side-navigation');
+    if (!withTreeViewThemeObserverWired && typeof document !== 'undefined') {
+      withTreeViewThemeObserverWired = true;
+      new MutationObserver(() => {
+        if (!isConnectSideNavTheme()) {
+          resetWithTreeViewForNonConnectTheme(withTreeViewFlyoutState);
+        }
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
 
-      if (sideNav) {
-        (sideNav as HTMLElement & { expanded: boolean }).expanded = e.detail;
-      }
-    };
-
-    const handleExpandedChange = (e: CustomEvent) => {
-      hideFlyout();
-
-      const eventSource = e.target as HTMLElement;
-      const treeItems = eventSource.querySelectorAll('modus-wc-tree-item');
-      treeItems.forEach((treeItem) => {
-        const item = treeItem as unknown as {
-          hasSubmenu?: boolean;
-          blockExpand?: boolean;
-          collapseSubmenu?: () => Promise<void>;
-        };
-        if (item.hasSubmenu) {
-          // Enable blockExpand when collapsed so clicks emit itemSelect for flyout.
-          // Disable it when expanded so the built-in inline toggle is restored.
-          item.blockExpand = !e.detail;
-
-          if (!e.detail && typeof item.collapseSubmenu === 'function') {
-            void item.collapseSubmenu();
-          }
+    const selectSubmenuParent = (
+      sideNav: HTMLElement,
+      dataItem: HTMLElement & { selected?: boolean }
+    ) => {
+      dataItem.selected = true;
+      sideNav.querySelectorAll('modus-wc-tree-item').forEach((item) => {
+        if (item !== dataItem) {
+          (item as HTMLElement & { selected?: boolean }).selected = false;
         }
       });
     };
 
-    const populateFlyout = (treeItem: Element) => {
-      if (!flyoutContainer || !flyoutTreeView) return;
+    const handleMenuOpenChange = (e: CustomEvent<boolean>) => {
+      handleWithTreeViewMenuOpenChange(e, menuOpenSuppress);
+    };
 
-      const nestedTreeView = treeItem.querySelector('modus-wc-tree-view');
-      if (!nestedTreeView) return;
+    const handleExpandedChange = (e: CustomEvent<boolean>) => {
+      const eventSource = e.target as HTMLElement;
 
-      const sourceUl = nestedTreeView.querySelector('ul');
-      if (!sourceUl) return;
+      if (!withTreeViewExpandedChangeReady) {
+        withTreeViewExpandedChangeReady = true;
+        if (isConnectSideNavTheme()) {
+          setWithTreeViewDataFlyoutDisabled(
+            withTreeViewFlyoutState,
+            Boolean(e.detail)
+          );
+        }
+        return;
+      }
 
-      flyoutSourceItem = treeItem;
-      flyoutTreeView.innerHTML = '';
-
-      Array.from(
-        sourceUl.querySelectorAll(':scope > modus-wc-tree-item')
-      ).forEach((item) => {
-        const sourceLi = item.querySelector(':scope > li');
-        if (!sourceLi) return;
-
-        const liClone = sourceLi.cloneNode(true) as Element;
-
-        // Store the source item value so the flyout click handler can find
-        // and activate the real tree-item in the side-nav.
-        const value = item.getAttribute('value');
-        if (value) liClone.setAttribute('data-value', value);
-        liClone.querySelectorAll('[slot="end"]').forEach((el) => el.remove());
-
-        // Replace each Modus custom element with a plain <span> that carries
-        // the same classes and slot attribute. This prevents Stencil from
-        // re-rendering the element after DOM insertion, which would otherwise
-        // produce a duplicate <i> alongside the already-rendered one in the clone.
-        Array.from(
-          liClone.querySelectorAll(
-            'modus-wc-icon, modus-wc-button, modus-wc-checkbox'
-          )
-        )
-          .reverse()
-          .forEach((el) => {
-            const parent = el.parentNode as Node;
-            const span = document.createElement('span');
-            span.className = el.className;
-            if (el.hasAttribute('slot')) {
-              span.setAttribute('slot', el.getAttribute('slot')!);
-            }
-            Array.from(el.childNodes)
-              .filter((n) => n.nodeType !== Node.COMMENT_NODE)
-              .forEach((child) => span.appendChild(child));
-            parent.insertBefore(span, el);
-            parent.removeChild(el);
-          });
-
-        flyoutTreeView!.appendChild(liClone);
-      });
-
-      const anchorEl =
-        treeItem.querySelector('.modus-wc-menu-item-interactive') || treeItem;
-      const rect = anchorEl.getBoundingClientRect();
-      flyoutContainer.style.top = `${rect.top + window.scrollY}px`;
-      flyoutContainer.style.left = `${rect.right + window.scrollX + 4}px`;
-      flyoutContainer.style.display = 'block';
+      if (isConnectSideNavTheme()) {
+        handleWithTreeViewExpandedChangeConnect(
+          e,
+          eventSource,
+          withTreeViewFlyoutState,
+          menuOpenSuppress
+        );
+      } else {
+        handleWithTreeViewExpandedChangeClassicModern(
+          e,
+          eventSource,
+          menuOpenSuppress
+        );
+      }
     };
 
     const handleTreeItemSelect = (e: CustomEvent) => {
@@ -648,15 +652,58 @@ export const WithTreeView: Story = {
       const sideNav = treeItem.closest('modus-wc-side-navigation');
       if (!sideNav) return;
 
+      const value = treeItem.getAttribute('value');
       const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
         .expanded;
-      // When expanded, blockExpand is off so the built-in inline toggle already ran.
-      if (isExpanded) return;
 
-      const hasNestedTree = treeItem.querySelector('modus-wc-tree-view');
-      if (!hasNestedTree) return;
+      if (value === 'data') {
+        const dataItem = sideNav.querySelector<
+          HTMLElement & { selected?: boolean }
+        >('modus-wc-tree-item[value="data"]');
+        if (dataItem && isExpanded) {
+          selectSubmenuParent(sideNav as HTMLElement, dataItem);
+        }
+      }
 
-      populateFlyout(treeItem);
+      if (
+        isConnectSideNavTheme() &&
+        !isExpanded &&
+        treeItem.querySelector('modus-wc-tree-view')
+      ) {
+        openWithTreeViewDataFlyout(withTreeViewFlyoutState, true);
+      }
+    };
+
+    const handleFlyoutItemSelect = (e: CustomEvent) => {
+      if (!isConnectSideNavTheme()) return;
+
+      const value = (e as CustomEvent<{ value: string }>).detail?.value;
+      if (!value || !withTreeViewFlyoutState.dataIconDropdown) return;
+
+      hideWithTreeViewFlyout(withTreeViewFlyoutState);
+
+      const sideNav = withTreeViewFlyoutState.dataIconDropdown.closest(
+        'modus-wc-side-navigation'
+      ) as HTMLElement | null;
+
+      const realItem = sideNav?.querySelector(
+        `modus-wc-tree-item[value="${value}"]`
+      );
+      if (realItem) {
+        realItem
+          .querySelector<HTMLElement>(
+            ':scope > li > .modus-wc-menu-item-interactive'
+          )
+          ?.click();
+      }
+
+      // Drop focus from flyout trigger so borderless primary color does not stick.
+      withTreeViewFlyoutState.dataIconDropdown
+        ?.querySelector<HTMLElement>('modus-wc-button .modus-wc-btn')
+        ?.blur();
+
+      // Close after the tree-item click; cancels any deferred flyout open too.
+      setTimeout(() => hideWithTreeViewFlyout(withTreeViewFlyoutState), 0);
     };
 
     const handleContextItemSelect = (e: CustomEvent) => {
@@ -673,70 +720,57 @@ export const WithTreeView: Story = {
       }
     };
 
-    let dataItemAutoClicked = false;
-
     const onDataItemRef = (el: Element | undefined) => {
-      if (!el || dataItemAutoClicked) return;
-      dataItemAutoClicked = true;
-      requestAnimationFrame(() => {
-        const interactive = el.querySelector('.modus-wc-menu-item-interactive');
-        (interactive as HTMLElement)?.click();
-      });
+      if (!el) return;
+
+      if (!el.hasAttribute('data-flyout-wired')) {
+        el.setAttribute('data-flyout-wired', '');
+        el.addEventListener('itemSelect', (e: Event) => {
+          // Child tree-items bubble itemSelect; only handle Data's own row.
+          if (e.target !== el) return;
+
+          const sideNav = el.closest(
+            'modus-wc-side-navigation'
+          ) as HTMLElement | null;
+          if (!sideNav) return;
+
+          if ((sideNav as HTMLElement & { expanded: boolean }).expanded) {
+            selectSubmenuParent(
+              sideNav,
+              el as HTMLElement & { selected?: boolean }
+            );
+            return;
+          }
+
+          if (isConnectSideNavTheme()) {
+            openWithTreeViewDataFlyout(withTreeViewFlyoutState, true);
+          }
+        });
+      }
     };
 
-    const onFlyoutRef = (el: Element | undefined) => {
-      if (!el) return;
-      flyoutContainer = el as HTMLElement;
-      flyoutTreeView = flyoutContainer.querySelector('ul');
-
-      // When the user clicks a flyout item, activate the corresponding real
-      // tree-item in the side-nav (triggers selected state + itemSelect event)
-      // and close the flyout.
-      flyoutTreeView?.addEventListener('click', (e: MouseEvent) => {
-        const li = (e.target as Element).closest('[data-value]');
-        if (!li || !flyoutSourceItem) return;
-
-        const value = li.getAttribute('data-value');
-        if (!value) return;
-
-        const sideNav = flyoutSourceItem.closest('modus-wc-side-navigation');
-        const realItem = sideNav?.querySelector(
-          `modus-wc-tree-item[value="${value}"]`
-        );
-        if (realItem) {
-          const interactive = realItem.querySelector<HTMLElement>(
-            '.modus-wc-menu-item-interactive'
-          );
-          interactive?.click();
-        }
-
-        hideFlyout();
-      });
-
-      if (!outsideClickHandler) {
-        outsideClickHandler = (e: MouseEvent) => {
-          const target = e.target as Node;
-          if (
-            flyoutContainer?.style.display !== 'block' ||
-            flyoutContainer.contains(target)
-          ) {
-            return;
-          }
-
-          // Keep the flyout open only when clicking the same source tree-item
-          // that opened it; any other click (including other side-nav items) closes it.
-          const clickedTreeItem =
-            target instanceof Element
-              ? target.closest('modus-wc-tree-item')
-              : null;
-          if (clickedTreeItem && clickedTreeItem === flyoutSourceItem) {
-            return;
-          }
-
-          hideFlyout();
-        };
-        document.addEventListener('click', outsideClickHandler);
+    const onDataIconDropdownRef = (el: Element | undefined) => {
+      if (!el) {
+        withTreeViewFlyoutState.dataIconDropdown = null;
+        return;
       }
+
+      withTreeViewFlyoutState.dataIconDropdown = el as HTMLElement;
+
+      if (!isConnectSideNavTheme()) {
+        setWithTreeViewDataFlyoutDisabled(withTreeViewFlyoutState, true);
+        return;
+      }
+
+      const sideNav = withTreeViewFlyoutState.dataIconDropdown.closest(
+        'modus-wc-side-navigation'
+      );
+      const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
+        ?.expanded;
+      setWithTreeViewDataFlyoutDisabled(
+        withTreeViewFlyoutState,
+        Boolean(isExpanded)
+      );
     };
 
     return html`
@@ -753,7 +787,7 @@ export const WithTreeView: Story = {
           overflow: hidden;
         }
         .panel-content {
-          margin-left: 4rem;
+          margin-left: ${connectTheme ? SIDE_NAV_COLLAPSED_MIN_WIDTH : '4rem'};
           padding: 10px;
         }
         .side-navigation {
@@ -761,203 +795,12 @@ export const WithTreeView: Story = {
           align-self: flex-start;
           position: relative;
         }
-        .tree-flyout {
-          display: none;
-          position: fixed;
-          z-index: 1000;
-          min-width: 200px;
-          border-radius: var(--modus-wc-border-radius-md);
-          box-shadow:
-            0 4px 6px -1px rgba(0, 0, 0, 0.15),
-            0 2px 4px -1px rgba(0, 0, 0, 0.08);
-          overflow: hidden;
-          background-color: var(--modus-wc-color-base-page);
-        }
-
-        .tree-flyout > ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          border: var(--modus-wc-border-width-xs) solid
-            var(--modus-wc-color-base-200);
-          border-radius: var(--modus-wc-border-radius-md);
-          overflow: hidden;
-        }
-
-        /* Icon sizing/font-family when modus-wc-icon wrapper is absent.
-           populateFlyout replaces it with a <span> to prevent Stencil
-           from re-rendering and doubling the icon on DOM insertion. */
-        .tree-flyout .modus-wc-icon--md {
-          font-size: 1.5rem;
-        }
-
-        .tree-flyout i.modus-icons::before,
-        .tree-flyout i.modus-icons-outlined::before,
-        .tree-flyout i.modus-icons-solid::before {
-          font-family: inherit;
-        }
-
-        /* Replicate the tree-item SCSS flex layout that is scoped to
-           modus-wc-tree-item — it doesn't cascade into the flyout <ul>. */
-        .tree-flyout .modus-wc-menu-item {
-          list-style: none;
-        }
-
-        .tree-flyout .modus-wc-menu-item-interactive {
-          align-items: center;
-          cursor: pointer;
-          display: flex;
-          padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
-          width: 100%;
-        }
-
-        .tree-flyout .modus-wc-menu-item-interactive:hover {
-          background-color: var(--modus-wc-color-base-100);
-        }
-
-        .tree-flyout .modus-wc-menu-item-content {
-          align-items: center;
-          display: flex;
-          width: 100%;
-        }
-
-        .tree-flyout .modus-wc-menu-item-content [slot='start'] {
-          padding-inline-end: var(--modus-wc-spacing-sm);
-        }
-
-        .tree-flyout .modus-wc-menu-item-labels {
-          padding-inline-start: var(--modus-wc-spacing-sm);
-          white-space: nowrap;
-        }
-
-        /* Caret indicator for expandable items in the collapsed side-nav.
-           Scoped here (story-level) because it's tied to the flyout UX pattern:
-           centering the icon and repositioning the DaisyUI chevron as a small
-           badge at the bottom-right of the row. Consumers using blockExpand for
-           other purposes won't inherit this unexpectedly. */
-        modus-wc-side-navigation
-          .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
-          modus-wc-tree-item
-          .modus-wc-menu-item-interactive {
-          [slot='end'] {
-            display: none;
-          }
-        }
-
-        modus-wc-side-navigation
-          .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
-          modus-wc-tree-item
-          .modus-wc-menu-item-interactive
-          .modus-wc-menu-item-labels {
-          visibility: hidden;
-        }
-
-        modus-wc-side-navigation
-          .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
-          modus-wc-tree-item
-          .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle {
-          justify-content: center;
-          position: relative;
-        }
-
-        modus-wc-side-navigation
-          .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
-          modus-wc-tree-item
-          .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
-          margin-top: 0;
-          position: absolute;
-          inset-inline-end: 4px;
-          transform: scale(0.65) rotate(45deg);
-          transform-origin: 75% 75%;
-        }
-
+        ${sideNavConnectCollapsedRailStyles}
+        ${sideNavConnectTreeItemStyles}
         ${sideNavTreeItemEndActionDropdownStyles}
-          modus-wc-side-navigation
-          modus-wc-tree-item {
-          display: block;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu
-          :where(li ul),
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu
-          :where(li ul) {
-          margin-inline-start: 0;
-          padding-inline-start: 0;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu-dropdown
-          .modus-wc-menu-item-content,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-view
-          .modus-wc-menu-dropdown
-          > .modus-wc-menu-item-content {
-          padding-inline-start: 1.5rem;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          .modus-wc-tree-item-end-action-dropdown
-          li
-          button
-          .modus-wc-menu-item-content,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          .modus-wc-tree-item-end-action-dropdown
-          li
-          button
-          .modus-wc-menu-item-content {
-          padding-inline-start: 0;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          > li.modus-wc-menu-item.modus-wc-menu-item-active,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          > li.modus-wc-menu-item.modus-wc-menu-item-active {
-          position: relative;
-          overflow: visible;
-        }
-
-        [data-theme='connect-light']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          > li.modus-wc-menu-item.modus-wc-menu-item-active::before,
-        [data-theme='connect-dark']
-          modus-wc-side-navigation
-          modus-wc-tree-item
-          > li.modus-wc-menu-item.modus-wc-menu-item-active::before {
-          content: '';
-          position: absolute;
-          inset-block: 0;
-          inset-inline-start: 0;
-          width: 3px;
-          background: white;
-          z-index: 10;
-        }
-
-        modus-wc-dropdown-menu.modus-wc-dropdown-menu {
-          background-color: transparent;
-
-          modus-wc-menu .modus-wc-menu {
-            background-color: var(--modus-wc-color-base-page);
-            modus-wc-menu-item .modus-wc-menu-item {
-              color: var(--modus-wc-color-base-content);
-            }
-          }
-        }
+        ${sideNavDataFlyoutDropdownStyles}
+        ${sideNavConnectStoryLayoutStyles}
+        ${sideNavConnectWithTreeViewStoryStyles}
       </style>
       <div class="layout-with-navbar">
         <modus-wc-navbar
@@ -1010,12 +853,77 @@ export const WithTreeView: Story = {
                 value="data"
                 has-submenu="true"
               >
-                <modus-wc-icon
-                  slot="start"
-                  aria-label="Data icon"
-                  name=""
-                  custom-class=${connectIconClass(CONNECT_ICONS.data)}
-                ></modus-wc-icon>
+                ${connectTheme
+                  ? html`
+                      <modus-wc-dropdown-menu
+                        slot="start"
+                        ${ref(onDataIconDropdownRef)}
+                        menu-placement="right-start"
+                        menu-strategy="fixed"
+                        menu-offset=${SIDE_NAV_DATA_FLYOUT_MENU_OFFSET}
+                        menu-size="lg"
+                        button-variant="borderless"
+                        custom-class=${SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS}
+                        @itemSelect=${handleFlyoutItemSelect}
+                      >
+                        <modus-wc-icon
+                          aria-label="Data icon"
+                          name=""
+                          slot="button"
+                          custom-class=${connectIconClass(CONNECT_ICONS.data)}
+                        ></modus-wc-icon>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Explorer"
+                          value="explorer"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.explorer
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Views"
+                          value="views"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.views
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Releases"
+                          value="releases"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.releases
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                      </modus-wc-dropdown-menu>
+                    `
+                  : html`
+                      <modus-wc-icon
+                        slot="start"
+                        aria-label="Data icon"
+                        name="master_data"
+                        size="sm"
+                      ></modus-wc-icon>
+                    `}
                 <modus-wc-tree-view is-sub-menu="true">
                   <modus-wc-tree-item
                     label="Explorer"
@@ -1028,66 +936,70 @@ export const WithTreeView: Story = {
                       name=""
                       custom-class=${connectIconClass(CONNECT_ICONS.explorer)}
                     ></modus-wc-icon>
-                    <div
-                      slot="end"
-                      style="display: flex; align-items: stretch;"
-                    >
-                      <div
-                        style="width: 1px; background: currentColor; opacity: 0.3;"
-                      ></div>
-                      <modus-wc-dropdown-menu
-                        button-variant="borderless"
-                        button-size="sm"
-                        menu-size="sm"
-                        menu-placement="right-start"
-                        menu-strategy="fixed"
-                        menu-offset="0"
-                        button-aria-label="Open folder"
-                        custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS}
-                        @itemSelect=${handleContextItemSelect}
-                      >
-                        <div
-                          slot="button"
-                          style="display: flex; align-items: center; gap: 2px;"
-                        >
-                          <modus-wc-icon
-                            aria-label="Folder icon"
-                            name=""
-                            size="sm"
-                            custom-class=${connectIconClass(
-                              CONNECT_ICONS.folder,
-                              SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
-                              'i16'
-                            )}
-                          ></modus-wc-icon>
-                          <modus-wc-icon
-                            aria-label="Open submenu icon"
-                            name=""
-                            size="sm"
-                            custom-class=${connectIconClass(
-                              CONNECT_ICONS.chevronRight,
-                              SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
-                              'i16'
-                            )}
-                          ></modus-wc-icon>
-                        </div>
-                        <modus-wc-menu-item
-                          slot="menu"
-                          label="Rename"
-                          value="rename"
-                        ></modus-wc-menu-item>
-                        <modus-wc-menu-item
-                          slot="menu"
-                          label="Duplicate"
-                          value="duplicate"
-                        ></modus-wc-menu-item>
-                        <modus-wc-menu-item
-                          slot="menu"
-                          label="Delete"
-                          value="delete"
-                        ></modus-wc-menu-item>
-                      </modus-wc-dropdown-menu>
-                    </div>
+                    ${connectTheme
+                      ? html`
+                          <div
+                            slot="end"
+                            style="display: flex; align-items: stretch;"
+                          >
+                            <div
+                              style="width: 1px; background: currentColor; opacity: 0.3;"
+                            ></div>
+                            <modus-wc-dropdown-menu
+                              button-variant="borderless"
+                              button-size="sm"
+                              menu-size="sm"
+                              menu-placement="right-start"
+                              menu-strategy="fixed"
+                              menu-offset="0"
+                              button-aria-label="Open folder"
+                              custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS}
+                              @itemSelect=${handleContextItemSelect}
+                            >
+                              <div
+                                slot="button"
+                                style="display: flex; align-items: center; gap: 2px;"
+                              >
+                                <modus-wc-icon
+                                  aria-label="Folder icon"
+                                  name=""
+                                  size="sm"
+                                  custom-class=${connectIconClass(
+                                    CONNECT_ICONS.folder,
+                                    SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+                                    'i16'
+                                  )}
+                                ></modus-wc-icon>
+                                <modus-wc-icon
+                                  aria-label="Open submenu icon"
+                                  name=""
+                                  size="sm"
+                                  custom-class=${connectIconClass(
+                                    CONNECT_ICONS.chevronRight,
+                                    SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+                                    'i16'
+                                  )}
+                                ></modus-wc-icon>
+                              </div>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Rename"
+                                value="rename"
+                              ></modus-wc-menu-item>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Duplicate"
+                                value="duplicate"
+                              ></modus-wc-menu-item>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Delete"
+                                value="delete"
+                              ></modus-wc-menu-item>
+                            </modus-wc-dropdown-menu>
+                          </div>
+                        `
+                      : nothing}
                   </modus-wc-tree-item>
                   <modus-wc-tree-item label="Views" value="views">
                     <modus-wc-icon
@@ -1134,37 +1046,35 @@ export const WithTreeView: Story = {
             </modus-wc-tree-view>
           </modus-wc-side-navigation>
           <div class="panel-content">
-            <h3>Side Navigation with Tree View (Dropdown Menu)</h3>
+            <h3>Side Navigation with Tree View</h3>
+            <p>
+              <strong>Theme switch:</strong> This story renders different markup
+              and CSS per theme (Connect vs Modern/Classic). After you change
+              the theme in the Storybook toolbar, refresh or re-open this story
+              so it re-renders; otherwise layout and behavior may not match the
+              selected theme.
+            </p>
             <p>
               This example replicates Trimble project navigation using
-              modus-wc-tree-view and modus-wc-tree-item. The end-slot action on
-              Explorer uses modus-wc-dropdown-menu, which handles open/close,
-              outside-click, Escape key, and popper positioning via floating-ui
-              — no manual top/left calculation required.
+              modus-wc-tree-view and modus-wc-tree-item. Switch the Storybook
+              theme toolbar to compare behavior: <strong>Connect</strong> uses a
+              collapsed-rail flyout for the Data row;
+              <strong>Modern</strong> and <strong>Classic</strong> use the
+              built-in inline collapsible submenu (no flyout).
             </p>
             <p>
-              When collapsed, expandable items show a caret indicator and open a
-              flyout submenu panel to the right on click. This is powered by the
-              <code>block-expand</code> prop on modus-wc-tree-item, which is
-              toggled dynamically: disabled when the side-nav is expanded (so
-              the built-in inline toggle works) and enabled when collapsed (so
-              the item emits <code>itemSelect</code> for the consumer to show a
-              flyout).
+              On Connect, when the side nav is collapsed, Data uses
+              <code>block-expand</code> and a start-slot flyout dropdown. On
+              Modern/Classic, Data uses a standard start icon and expands or
+              collapses its submenu inline when the side nav is expanded.
             </p>
             <p>
-              Expand the side navigation using the navbar hamburger menu to
-              reveal labels and the end-slot action button on Explorer.
+              The Explorer end-slot action uses modus-wc-dropdown-menu (Connect
+              themes only for layout styling). Expand the side nav with the
+              navbar hamburger to reveal labels and that action.
             </p>
           </div>
         </div>
-      </div>
-
-      <div ${ref(onFlyoutRef)} class="tree-flyout">
-        <ul
-          role="menu"
-          aria-label="Submenu"
-          class="modus-wc-menu modus-wc-w-full"
-        ></ul>
       </div>
     `;
   },

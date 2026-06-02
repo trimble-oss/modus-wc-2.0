@@ -39,7 +39,6 @@ modus-wc-side-navigation {
 
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
-    max-height: 32px;
     padding-inline-end: var(--modus-wc-spacing-xs);
     padding-inline-start: var(--modus-wc-spacing-xs);
   }
@@ -114,7 +113,7 @@ modus-wc-side-navigation {
     background: transparent;
     color: var(--modus-wc-color-white);
 
-    &button:hover {
+    & button:hover {
       background: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-primary-content);
     }
@@ -133,7 +132,8 @@ modus-wc-side-navigation {
     }
   }
 
-  &li.modus-wc-menu-item {
+  /* Flat menu only — tree-view rows use story tree-item styles. */
+  modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item {
     background: transparent;
     color: var(--modus-wc-color-primary-content);
 
@@ -144,19 +144,15 @@ modus-wc-side-navigation {
   }
 
   .side-navigation-content {
-    background: var(--modus-wc-color-blue-dark);
+    background: var(--modus-wc-color-connect-blue);
     color: var(--modus-wc-color-base-content);
-
-    &button:hover {
-      background: var(--modus-wc-color-primary);
-    }
   }
 
   modus-wc-menu .modus-wc-menu {
     background: transparent;
     color: var(--modus-wc-color-white);
 
-    &button:hover {
+    & button:hover {
       background: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-white);
     }
@@ -190,61 +186,5 @@ modus-wc-side-navigation {
       background: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-white);
     }
-  }
-
-  modus-wc-tree-view .modus-wc-menu {
-    background: transparent;
-    color: var(--modus-wc-color-white);
-  }
-
-  modus-wc-tree-item {
-    max-width: 100%;
-  }
-
-  modus-wc-tree-item .modus-wc-menu-item {
-    color: var(--modus-wc-color-white);
-  }
-
-  modus-wc-tree-item .modus-wc-menu-item .modus-wc-menu-item-interactive {
-    background-color: transparent;
-
-    &:hover:not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
-      background: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-white);
-    }
-
-    &:focus {
-      color: var(--modus-wc-color-white);
-    }
-  }
-
-  modus-wc-tree-item
-    .modus-wc-menu-item.modus-wc-menu-item-active
-    .modus-wc-menu-item-interactive {
-    background: var(--modus-wc-color-blue-light);
-    color: var(--modus-wc-color-white);
-    font-weight: var(--modus-wc-font-weight-semibold);
-
-    &:hover:not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
-      background: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-white);
-    }
-  }
-
-  modus-wc-tree-item [slot='end'] modus-wc-button i.modus-wc-icon {
-    color: var(--modus-wc-color-white);
-  }
-
-  modus-wc-tree-item [slot='end'] modus-wc-button:hover i.modus-wc-icon {
-    color: var(--modus-wc-color-blue-light);
-  }
-
-  modus-wc-tree-item
-    .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
-    color: var(--modus-wc-color-white);
-  }
-
-  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-active {
-    box-shadow: inset 3px 0 0 0 var(--modus-wc-color-white);
   }
 }

@@ -80,6 +80,8 @@ describe('modus-wc-tree-item', () => {
     const interactive = page.root?.querySelector(
       '.modus-wc-menu-item-interactive'
     );
+    const li = page.root?.querySelector('li') as HTMLLIElement;
+    const blurSpy = jest.spyOn(li, 'blur');
     const clickSpy = jest.fn();
     page.root?.addEventListener('itemSelect', clickSpy);
 
@@ -91,6 +93,30 @@ describe('modus-wc-tree-item', () => {
       value: 'test-value',
       selected: true,
     });
+    expect(blurSpy).toHaveBeenCalled();
+  });
+
+  it('should not throw when li is absent during interactive click', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+
+    const hostEl = page.rootInstance.el;
+    const originalQuerySelector = hostEl.querySelector.bind(hostEl);
+    jest
+      .spyOn(hostEl, 'querySelector')
+      .mockImplementation((...args: unknown[]) => {
+        const selector = args[0] as string;
+        if (selector === 'li') return null;
+        return originalQuerySelector(selector);
+      });
+
+    const interactive = page.root?.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+
+    expect(() => interactive.click()).not.toThrow();
   });
 
   it('should not emit itemSelect when end slot action is clicked', async () => {
@@ -110,6 +136,46 @@ describe('modus-wc-tree-item', () => {
 
     expect(clickSpy).not.toHaveBeenCalled();
     expect(page.rootInstance.selected).toBeFalsy();
+  });
+
+  it('should not emit itemSelect when start slot button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcButton],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <modus-wc-button slot="start" variant="borderless" size="sm">Start</modus-wc-button>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    const startButton = page.root?.querySelector('[slot="start"]');
+    (startButton as HTMLElement)?.click();
+    await page.waitForChanges();
+
+    expect(clickSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit itemSelect when non-interactive start slot content is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <modus-wc-icon slot="start" name="check"></modus-wc-icon>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    const startIcon = page.root?.querySelector('[slot="start"]');
+    (startIcon as HTMLElement)?.click();
+    await page.waitForChanges();
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      selected: true,
+    });
   });
 
   it('should emit itemSelect event when Enter is pressed', async () => {
@@ -425,37 +491,6 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();
-  });
-
-  it('should resolve interactive start slot targets through closest', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTreeItem],
-      html: `<modus-wc-tree-item label="Test label" value="test-value">
-              <button slot="start" type="button"></button>
-            </modus-wc-tree-item>`,
-    });
-
-    const instance = page.rootInstance as unknown as {
-      isInteractiveSlotClick: (
-        event: MouseEvent,
-        slotName: 'start' | 'end'
-      ) => boolean;
-    };
-    const startButton = page.root?.querySelector(
-      '[slot="start"]'
-    ) as HTMLButtonElement;
-    const innerSpan = document.createElement('span');
-    startButton.appendChild(innerSpan);
-
-    const clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      composed: true,
-    });
-    Object.defineProperty(clickEvent, 'composedPath', {
-      value: () => [innerSpan, startButton, page.root],
-    });
-
-    expect(instance.isInteractiveSlotClick(clickEvent, 'start')).toBeDefined();
   });
 
   describe('MutationObserver and handleSelectionModeChange', () => {
