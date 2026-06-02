@@ -224,7 +224,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
   modus-wc-tree-item > li.modus-wc-menu-item > .modus-wc-menu-item-interactive {
     background-color: transparent;
 
-    &:hover:not(:has([slot='end']:hover)):not(:has([slot='end']:active)):not(
+    &:hover:not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
         :has([slot='start'] .menu-wrapper:hover)
       ) {
       background: var(--modus-wc-color-trimble-blue);
@@ -243,7 +243,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
     color: var(--modus-wc-color-white);
     font-weight: var(--modus-wc-font-weight-semibold);
 
-    &:hover:not(:has([slot='end']:hover)):not(:has([slot='end']:active)):not(
+    &:hover:not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
         :has([slot='start'] .menu-wrapper:hover)
       ) {
       background: var(--modus-wc-color-primary);
@@ -295,6 +295,20 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
   /* Parent row stays neutral when hovering an open submenu child. */
   modus-wc-tree-item > li.modus-wc-menu-item:has(modus-wc-tree-view):hover {
     background-color: transparent;
+  }
+
+  /* End-slot wrapper (div[slot=end]) + dropdown menu panel clicks. */
+  modus-wc-tree-item > li.modus-wc-menu-item.${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}:has(
+      [slot='end'] :active
+    ) {
+    background-color: transparent;
+  }
+
+  modus-wc-tree-item
+    > li.modus-wc-menu-item.${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}:has([slot='end'] :active)
+    > .modus-wc-menu-item-interactive {
+    background-color: transparent !important;
+    color: inherit;
   }
 `);
 

@@ -178,7 +178,9 @@ modus-wc-tree-item .modus-wc-menu-item {
 
   &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
       :has(.modus-wc-menu-dropdown)
-    ):not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
+    ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+      :has([slot='start'] :hover)
+    ):not(:has([slot='start'] :active)) {
     &:hover {
       background-color: var(--modus-wc-color-base-100);
       outline: none;
@@ -187,7 +189,9 @@ modus-wc-tree-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
-    ):not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
+    ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+      :has([slot='start'] :hover)
+    ):not(:has([slot='start'] :active)) {
     &:hover {
       background-color: var(--modus-wc-color-base-100);
     }
@@ -232,7 +236,9 @@ modus-wc-tree-item .modus-wc-menu-item {
 
     &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
         :has(.modus-wc-menu-dropdown)
-      ):not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
@@ -242,7 +248,9 @@ modus-wc-tree-item .modus-wc-menu-item {
 
     &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
-      ):not(:has([slot='end']:hover)):not(:has([slot='end']:active)) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
@@ -252,7 +260,7 @@ modus-wc-tree-item .modus-wc-menu-item {
     &.modus-wc-menu-item-active,
     &:active:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
-      ):not(:has([slot='end']:active)) {
+      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :active)) {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-primary) 30%,
@@ -283,8 +291,28 @@ modus-wc-tree-item .modus-wc-menu-item {
 }
 
 // DaisyUI sets background-color on `.modus-wc-menu li > :not(...):active`.
-// Override to transparent when the click is in [slot='end'].
-modus-wc-tree-item .modus-wc-menu-item:active:has([slot='end']:active) {
+// Override when the click is in [slot='end'] or [slot='start'] (descendant
+// :active covers wrapped dropdown panels, not only the slot node itself).
+modus-wc-tree-item .modus-wc-menu-item:has([slot='end'] :active) {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item
+  .modus-wc-menu-item:has([slot='end'] :active)
+  > .modus-wc-menu-item-interactive {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item .modus-wc-menu-item:has([slot='start'] :active) {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item
+  .modus-wc-menu-item:has([slot='start'] :active)
+  > .modus-wc-menu-item-interactive {
   background-color: transparent;
   color: inherit;
 }
