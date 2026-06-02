@@ -42,6 +42,14 @@ modus-wc-side-navigation {
     padding-inline-end: var(--modus-wc-spacing-xs);
     padding-inline-start: var(--modus-wc-spacing-xs);
   }
+
+  .side-navigation-content
+    > modus-wc-menu
+    modus-wc-menu-item
+    .modus-wc-menu-item
+    button {
+    max-height: 32px;
+  }
 }
 
 [data-theme='modus-modern-light'] modus-wc-side-navigation,
