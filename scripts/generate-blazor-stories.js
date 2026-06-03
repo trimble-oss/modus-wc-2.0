@@ -516,9 +516,7 @@ function parseRazorCs(filePath) {
       if (defaultVal !== null) {
         defaultVal = defaultVal
           .replace(/^"(.*)"$/, '$1')
-          .replace(/^null$/, '')
-          .replace(/^true$/, 'true')
-          .replace(/^false$/, 'false');
+          .replace(/^null$/, '');
       }
 
       if (
