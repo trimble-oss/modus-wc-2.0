@@ -227,18 +227,22 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
     color: var(--modus-wc-color-white);
   }
 
+  /* Suppress component li:hover base-100 and DaisyUI .modus-wc-menu li>*:hover flash. */
+  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover,
+  modus-wc-tree-item > li.modus-wc-menu-item:hover {
+    background-color: transparent !important;
+  }
+
   /* Direct row only — avoid matching nested submenu items via ancestor li. */
   modus-wc-tree-item > li.modus-wc-menu-item > .modus-wc-menu-item-interactive {
     background-color: transparent;
 
-    /* Hover highlight only when cursor is NOT over the end/start slot content.
-       The :not(:has([slot='end'] :active)) guard is intentionally omitted here;
-       the :hover guard already drops when the cursor is over the button. */
+    /* Hover highlight only when cursor is NOT over the end/start slot content. */
     &:hover:not(:has([slot='end'] :hover)):not(
         :has([slot='start'] .menu-wrapper:hover)
       ) {
-      background: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-white);
+      background: var(--modus-wc-color-trimble-blue) !important;
+      color: var(--modus-wc-color-white) !important;
     }
 
     &:focus {

@@ -290,6 +290,48 @@ modus-wc-tree-item .modus-wc-menu-item {
   }
 }
 
+/* Connect light side nav: suppress base-100 li hover; paint row on interactive. */
+[data-theme='connect-light'] modus-wc-side-navigation {
+  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover,
+  modus-wc-tree-item .modus-wc-menu-item:hover {
+    background-color: transparent;
+  }
+
+  modus-wc-tree-view
+    .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    :where(> .modus-wc-menu-item-interactive:hover),
+  modus-wc-tree-item
+    .modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    > .modus-wc-menu-item-interactive:hover {
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item {
+    &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
+        :has(.modus-wc-menu-dropdown)
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
+      &:hover {
+        background-color: transparent;
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
 // The li-level rules are guarded with :not(.modus-wc-menu-item-active) so
 // that an already-selected row's own active background is never stripped
 // (only the div needs to be neutralised; the li rule handles edge cases where

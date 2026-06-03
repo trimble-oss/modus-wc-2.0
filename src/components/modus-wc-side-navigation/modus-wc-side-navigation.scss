@@ -144,11 +144,27 @@ modus-wc-side-navigation {
   modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item {
     background: transparent;
     color: var(--modus-wc-color-primary-content);
+  }
 
-    &:hover {
-      background: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-primary-content);
-    }
+  /* Suppress component li:hover base-100 and DaisyUI menu li>*:hover (white flash). */
+  .modus-wc-menu li.modus-wc-menu-item:hover {
+    background-color: transparent !important;
+  }
+
+  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover {
+    background-color: transparent !important;
+  }
+
+  .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    :where(> *:hover) {
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item:hover {
+    background-color: transparent !important;
+    color: var(--modus-wc-color-primary-content);
   }
 
   .side-navigation-content {
@@ -161,9 +177,16 @@ modus-wc-side-navigation {
     color: var(--modus-wc-color-white);
 
     & button:hover {
-      background: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-white);
+      background: var(--modus-wc-color-trimble-blue) !important;
+      color: var(--modus-wc-color-white) !important;
     }
+  }
+
+  modus-wc-tree-item
+    > li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    > .modus-wc-menu-item-interactive:hover {
+    background: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
   }
 
   modus-wc-menu-item .modus-wc-menu-item {
@@ -176,8 +199,8 @@ modus-wc-side-navigation {
     padding-inline-start: calc(var(--modus-wc-spacing-lg) + 0.25rem);
 
     &:hover {
-      background: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-white);
+      background: var(--modus-wc-color-trimble-blue) !important;
+      color: var(--modus-wc-color-white) !important;
     }
 
     &:focus {
