@@ -1,11 +1,11 @@
 export const convertPropsToClasses = ({
   variant,
 }: {
-  variant?: 'default' | 'error' | 'info' | 'success' | 'warning';
+  variant?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
 }): string => {
   let classes = '';
 
-  if (variant && variant !== 'default') {
+  if (variant) {
     classes = `${classes} modus-wc-alert-${variant}`;
   }
 
