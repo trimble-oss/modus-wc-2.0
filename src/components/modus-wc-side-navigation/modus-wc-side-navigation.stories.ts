@@ -17,6 +17,7 @@ import {
   SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
   sideNavConnectCollapsedRailStyles,
+  sideNavConnectLightTreeItemEndSlotActiveStyles,
   sideNavConnectStoryLayoutStyles,
   sideNavConnectTreeItemStyles,
   sideNavConnectWithTreeViewStoryStyles,
@@ -797,6 +798,7 @@ export const WithTreeView: Story = {
         }
         ${sideNavConnectCollapsedRailStyles}
         ${sideNavConnectTreeItemStyles}
+        ${sideNavConnectLightTreeItemEndSlotActiveStyles}
         ${sideNavTreeItemEndActionDropdownStyles}
         ${sideNavDataFlyoutDropdownStyles}
         ${sideNavConnectStoryLayoutStyles}

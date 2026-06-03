@@ -66,6 +66,13 @@ ${rules}
 }
 `;
 
+/** Connect light only — dark uses li-level active styling, not blue-light on the div. */
+export const wrapConnectLightSideNavStyles = (rules: string): string => `
+[data-theme='connect-light'] modus-wc-side-navigation {
+${rules}
+}
+`;
+
 /** Layout styles for tree-items with a modus-wc-dropdown-menu end-slot action. */
 export const sideNavTreeItemEndActionDropdownStyles = wrapConnectSideNavStyles(`
   .${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS} .modus-wc-menu-item-interactive {
@@ -224,7 +231,10 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
   modus-wc-tree-item > li.modus-wc-menu-item > .modus-wc-menu-item-interactive {
     background-color: transparent;
 
-    &:hover:not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+    /* Hover highlight only when cursor is NOT over the end/start slot content.
+       The :not(:has([slot='end'] :active)) guard is intentionally omitted here;
+       the :hover guard already drops when the cursor is over the button. */
+    &:hover:not(:has([slot='end'] :hover)):not(
         :has([slot='start'] .menu-wrapper:hover)
       ) {
       background: var(--modus-wc-color-trimble-blue);
@@ -243,7 +253,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
     color: var(--modus-wc-color-white);
     font-weight: var(--modus-wc-font-weight-semibold);
 
-    &:hover:not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+    &:hover:not(:has([slot='end'] :hover)):not(
         :has([slot='start'] .menu-wrapper:hover)
       ) {
       background: var(--modus-wc-color-primary);
@@ -297,18 +307,27 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
     background-color: transparent;
   }
 
-  /* End-slot wrapper (div[slot=end]) + dropdown menu panel clicks. */
-  modus-wc-tree-item > li.modus-wc-menu-item.${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}:has(
-      [slot='end'] :active
-    ) {
-    background-color: transparent;
-  }
+  /* End-slot click: neutralise DaisyUI's :active flash on the interactive div.
+     Uses !important because DaisyUI's rule specificity can vary across themes.
 
+     Non-active rows: div stays transparent (it never carries the background). */
   modus-wc-tree-item
-    > li.modus-wc-menu-item.${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}:has([slot='end'] :active)
+    > li.modus-wc-menu-item:not(.modus-wc-menu-item-active):has([slot='end'] :active)
     > .modus-wc-menu-item-interactive {
     background-color: transparent !important;
-    color: inherit;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+`);
+
+/** Connect light: restore blue-light on active row div while end-slot is pressed. */
+export const sideNavConnectLightTreeItemEndSlotActiveStyles =
+  wrapConnectLightSideNavStyles(`
+  modus-wc-tree-item
+    > li.modus-wc-menu-item.modus-wc-menu-item-active:has([slot='end'] :active)
+    > .modus-wc-menu-item-interactive {
+    background: var(--modus-wc-color-blue-light) !important;
+    color: var(--modus-wc-color-white) !important;
   }
 `);
 
