@@ -138,6 +138,91 @@ describe('modus-wc-tree-item', () => {
     expect(page.rootInstance.selected).toBeFalsy();
   });
 
+  it('should emit itemSelect when click composedPath is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcButton],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <modus-wc-button slot="end" variant="borderless" size="sm">Action</modus-wc-button>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    const interactive = page.root?.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      composed: true,
+    });
+    Object.defineProperty(clickEvent, 'composedPath', {
+      value: () => [],
+    });
+
+    interactive.dispatchEvent(clickEvent);
+    await page.waitForChanges();
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy.mock.calls[0][0].detail).toEqual({
+      value: 'test-value',
+      selected: true,
+    });
+  });
+
+  it('should not emit itemSelect when composedPath target is the end slot element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <div slot="end">actions</div>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    const endSlot = page.root?.querySelector('[slot="end"]') as HTMLElement;
+    const interactive = page.root?.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      composed: true,
+    });
+    Object.defineProperty(clickEvent, 'composedPath', {
+      value: () => [endSlot, interactive, page.root],
+    });
+
+    interactive.dispatchEvent(clickEvent);
+    await page.waitForChanges();
+
+    expect(clickSpy).not.toHaveBeenCalled();
+    expect(page.rootInstance.selected).toBeFalsy();
+  });
+
+  it('should not emit itemSelect when inner button inside end slot wrapper is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcButton],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <div slot="end">
+                <modus-wc-button variant="borderless" size="sm">Action</modus-wc-button>
+              </div>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    // Simulate clicking the inner <button> rendered by modus-wc-button,
+    // which is a descendant of div[slot="end"] but does not itself have slot="end".
+    const innerButton = page.root?.querySelector('[slot="end"] button');
+    (innerButton as HTMLElement)?.click();
+    await page.waitForChanges();
+
+    expect(clickSpy).not.toHaveBeenCalled();
+    expect(page.rootInstance.selected).toBeFalsy();
+  });
+
   it('should not emit itemSelect when start slot button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem, ModusWcButton],

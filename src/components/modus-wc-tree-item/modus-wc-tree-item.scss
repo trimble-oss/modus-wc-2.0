@@ -290,10 +290,14 @@ modus-wc-tree-item .modus-wc-menu-item {
   }
 }
 
-// DaisyUI sets background-color on `.modus-wc-menu li > :not(...):active`.
-// Override when the click is in [slot='end'] or [slot='start'] (descendant
-// :active covers wrapped dropdown panels, not only the slot node itself).
-modus-wc-tree-item .modus-wc-menu-item:has([slot='end'] :active) {
+// The li-level rules are guarded with :not(.modus-wc-menu-item-active) so
+// that an already-selected row's own active background is never stripped
+// (only the div needs to be neutralised; the li rule handles edge cases where
+// DaisyUI also targets the li itself).
+modus-wc-tree-item
+  .modus-wc-menu-item:not(.modus-wc-menu-item-active):has(
+    [slot='end'] :active
+  ) {
   background-color: transparent;
   color: inherit;
 }
@@ -305,7 +309,10 @@ modus-wc-tree-item
   color: inherit;
 }
 
-modus-wc-tree-item .modus-wc-menu-item:has([slot='start'] :active) {
+modus-wc-tree-item
+  .modus-wc-menu-item:not(.modus-wc-menu-item-active):has(
+    [slot='start'] :active
+  ) {
   background-color: transparent;
   color: inherit;
 }

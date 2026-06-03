@@ -232,8 +232,12 @@ export class ModusWcTreeItem {
     );
     if (slotted.length === 0) return false;
 
-    const path = event.composedPath();
-    return slotted.some((el) => path.includes(el));
+    // Use the innermost event target so this works regardless of how
+    // Stencil's slot relocation affects composedPath ancestry order.
+    const innerTarget = event.composedPath()[0] as Node | undefined;
+    if (!innerTarget) return false;
+
+    return slotted.some((el) => el === innerTarget || el.contains(innerTarget));
   }
 
   private isInteractiveSlotClick(
