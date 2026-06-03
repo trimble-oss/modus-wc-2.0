@@ -18,7 +18,7 @@
  * `_all_components.json` to record that Blazor data is present.
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 
 // ---------------------------------------------------------------------------
