@@ -4,8 +4,8 @@ import {
   connectIconClass,
 } from './modus-wc-side-navigation-connect-icons.story';
 import {
-  SIDE_NAV_COLLAPSED_MIN_WIDTH_CLASS,
   SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS,
+  SIDE_NAV_DATA_FLYOUT_MENU_GAP,
   SIDE_NAV_DATA_FLYOUT_MENU_OFFSET,
   SIDE_NAV_TREE_ITEM_END_ACTION_CLASS,
   SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS,
@@ -18,6 +18,7 @@ import {
   sideNavDataFlyoutDropdownStyles,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
+import { WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS } from './modus-wc-side-navigation-with-tree-view.story-handlers';
 
 /** Consumer-facing Show code for the WithTreeView side-navigation story. */
 export const getWithTreeViewSourceCode = (): string => `
@@ -33,15 +34,18 @@ export const getWithTreeViewSourceCode = (): string => `
   ${sideNavConnectWithTreeViewStoryStyles}
 </style>
 
+<!-- App layout (navbar + main row) is illustrative; adjust for your shell. -->
 <modus-wc-navbar
   app-title="Modus App"
   id="connect-navbar"
 ></modus-wc-navbar>
 
+<!-- Optional Connect collapsed rail: custom-class="min-width: 15rem !important;" on side-navigation -->
 <modus-wc-side-navigation
   id="connect-side-nav"
   expanded="true"
-  custom-class="${SIDE_NAV_COLLAPSED_MIN_WIDTH_CLASS}"
+  collapse-on-click-outside="true"
+  target-content=".panel-content"
 >
   <modus-wc-tree-view size="lg" aria-label="Project navigation">
     <modus-wc-tree-item label="All Projects" value="all-projects">
@@ -55,7 +59,12 @@ export const getWithTreeViewSourceCode = (): string => `
 
     <!-- Data start slot: Connect uses flyout dropdown below.
          Modern/Classic: use <modus-wc-icon slot="start" name="master_data" size="sm" aria-label="Data icon"></modus-wc-icon> (no dropdown). -->
-    <modus-wc-tree-item label="Data" value="data" has-submenu="true">
+    <modus-wc-tree-item
+      id="data-tree-item"
+      label="Data"
+      value="data"
+      has-submenu="true"
+    >
       <modus-wc-dropdown-menu
         slot="start"
         id="data-flyout-dropdown"
@@ -115,7 +124,7 @@ export const getWithTreeViewSourceCode = (): string => `
               menu-size="sm"
               menu-placement="right-start"
               menu-strategy="fixed"
-              menu-offset="14"
+              menu-offset="0"
               button-aria-label="Open folder"
               custom-class="${SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS}"
             >
@@ -186,6 +195,9 @@ export const getWithTreeViewSourceCode = (): string => `
 </modus-wc-side-navigation>
 
 <script>
+  const SIDE_NAV_DATA_FLYOUT_MENU_GAP = ${SIDE_NAV_DATA_FLYOUT_MENU_GAP};
+  const SIDE_NAV_COLLAPSE_MS = ${WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS};
+
   const isConnectSideNavTheme = () => {
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
     return theme === 'connect-light' || theme === 'connect-dark';
@@ -193,13 +205,12 @@ export const getWithTreeViewSourceCode = (): string => `
 
   const sideNav = document.getElementById('connect-side-nav');
   const dataFlyoutDropdown = document.getElementById('data-flyout-dropdown');
-
-  if (dataFlyoutDropdown && isConnectSideNavTheme()) {
-    dataFlyoutDropdown.disabled = true;
-  }
+  const dataTreeItem = document.getElementById('data-tree-item');
 
   let flyoutOpenTimer = null;
   let collapseFlyoutTimer = null;
+  let expandedChangeReady = false;
+  let suppressNextMenuOpen = false;
 
   const cancelPendingFlyoutOpen = () => {
     if (flyoutOpenTimer) {
@@ -221,15 +232,64 @@ export const getWithTreeViewSourceCode = (): string => `
   };
 
   const setDataFlyoutDisabled = (disabled) => {
-    if (!isConnectSideNavTheme() || !dataFlyoutDropdown) return;
+    if (!dataFlyoutDropdown) return;
     dataFlyoutDropdown.disabled = disabled;
   };
 
+  const syncDataFlyoutMenuOffset = () => {
+    if (!dataFlyoutDropdown) return;
+
+    const sideNavHost = dataFlyoutDropdown.closest('modus-wc-side-navigation');
+    const navPanel = sideNavHost?.querySelector('.modus-wc-side-navigation');
+    const button = dataFlyoutDropdown.querySelector('modus-wc-button');
+
+    if (!navPanel || !button) return;
+
+    const navRect = navPanel.getBoundingClientRect();
+    const btnRect = button.getBoundingClientRect();
+    const triggerRect = dataFlyoutDropdown.getBoundingClientRect();
+    const anchorRight = Math.max(btnRect.right, triggerRect.right);
+    const offset = Math.round(
+      navRect.right - anchorRight + SIDE_NAV_DATA_FLYOUT_MENU_GAP
+    );
+
+    dataFlyoutDropdown.menuOffset = offset;
+  };
+
+  const openDataFlyout = (defer = false) => {
+    if (!isConnectSideNavTheme()) return;
+
+    cancelPendingFlyoutOpen();
+
+    const open = () => {
+      flyoutOpenTimer = null;
+      if (dataFlyoutDropdown) {
+        syncDataFlyoutMenuOffset();
+        dataFlyoutDropdown.menuVisible = true;
+      }
+    };
+
+    if (defer) {
+      flyoutOpenTimer = setTimeout(open, 0);
+    } else {
+      open();
+    }
+  };
+
+  const initDataFlyoutDisabled = () => {
+    if (!dataFlyoutDropdown) return;
+    if (!isConnectSideNavTheme()) {
+      setDataFlyoutDisabled(true);
+      return;
+    }
+    setDataFlyoutDisabled(Boolean(sideNav?.expanded));
+  };
+
+  initDataFlyoutDisabled();
+
   const resetForNonConnectTheme = () => {
     hideFlyout();
-    if (dataFlyoutDropdown) {
-      dataFlyoutDropdown.disabled = true;
-    }
+    setDataFlyoutDisabled(true);
     sideNav?.querySelectorAll('modus-wc-tree-item').forEach((treeItem) => {
       if (treeItem.hasSubmenu) {
         treeItem.blockExpand = false;
@@ -311,39 +371,20 @@ export const getWithTreeViewSourceCode = (): string => `
     }
   };
 
-  const SIDE_NAV_COLLAPSE_MS = 220;
-  let suppressNextMenuOpen = false;
-
-  // Navbar hamburger ↔ side-nav (all themes). Suppress stale "open" after click-outside collapse.
-  document.getElementById('connect-navbar').addEventListener('mainMenuOpenChange', (e) => {
-    if (suppressNextMenuOpen && e.detail) {
-      suppressNextMenuOpen = false;
-      return;
-    }
-    suppressNextMenuOpen = false;
-    sideNav.expanded = e.detail;
-  });
-
-  sideNav.addEventListener('expandedChange', (e) => {
-    const connectTheme = isConnectSideNavTheme();
-
-    if (!connectTheme) {
-      if (!e.detail) {
-        suppressNextMenuOpen = true;
-        sideNav.querySelectorAll('modus-wc-tree-item').forEach((treeItem) => {
-          if (treeItem.hasSubmenu && typeof treeItem.collapseSubmenu === 'function') {
-            treeItem.collapseSubmenu();
-          }
-        });
+  const collapseTreeSubmenus = () => {
+    sideNav.querySelectorAll('modus-wc-tree-item').forEach((treeItem) => {
+      if (treeItem.hasSubmenu && typeof treeItem.collapseSubmenu === 'function') {
+        treeItem.collapseSubmenu();
       }
-      return;
-    }
+    });
+  };
 
+  const handleExpandedChangeConnect = (expanded) => {
     hideFlyout();
 
     const treeItems = sideNav.querySelectorAll('modus-wc-tree-item');
 
-    if (e.detail) {
+    if (expanded) {
       setDataFlyoutDisabled(true);
       treeItems.forEach((treeItem) => {
         if (treeItem.hasSubmenu) {
@@ -372,12 +413,57 @@ export const getWithTreeViewSourceCode = (): string => `
         }
       });
 
-      if (shouldOpenDataFlyoutOnCollapse() && dataFlyoutDropdown) {
+      if (shouldOpenDataFlyoutOnCollapse()) {
         collapseFlyoutTimer = setTimeout(() => {
           collapseFlyoutTimer = null;
-          dataFlyoutDropdown.menuVisible = true;
+          openDataFlyout();
         }, SIDE_NAV_COLLAPSE_MS);
       }
+    }
+  };
+
+  // Navbar hamburger ↔ side-nav (all themes). Suppress stale "open" after click-outside collapse.
+  document.getElementById('connect-navbar').addEventListener('mainMenuOpenChange', (e) => {
+    if (suppressNextMenuOpen && e.detail) {
+      suppressNextMenuOpen = false;
+      return;
+    }
+    suppressNextMenuOpen = false;
+    sideNav.expanded = e.detail;
+  });
+
+  sideNav.addEventListener('expandedChange', (e) => {
+    const connectTheme = isConnectSideNavTheme();
+
+    if (!expandedChangeReady) {
+      expandedChangeReady = true;
+      if (connectTheme) {
+        setDataFlyoutDisabled(Boolean(e.detail));
+      }
+      return;
+    }
+
+    if (!connectTheme) {
+      if (!e.detail) {
+        suppressNextMenuOpen = true;
+        collapseTreeSubmenus();
+      }
+      return;
+    }
+
+    handleExpandedChangeConnect(e.detail);
+  });
+
+  dataTreeItem?.addEventListener('itemSelect', (e) => {
+    if (e.target !== dataTreeItem) return;
+
+    if (sideNav.expanded) {
+      selectSubmenuParent(dataTreeItem);
+      return;
+    }
+
+    if (isConnectSideNavTheme()) {
+      openDataFlyout(true);
     }
   });
 
@@ -398,13 +484,7 @@ export const getWithTreeViewSourceCode = (): string => `
       !sideNav.expanded &&
       treeItem.querySelector('modus-wc-tree-view')
     ) {
-      cancelPendingFlyoutOpen();
-      flyoutOpenTimer = setTimeout(() => {
-        flyoutOpenTimer = null;
-        if (dataFlyoutDropdown) {
-          dataFlyoutDropdown.menuVisible = true;
-        }
-      }, 0);
+      openDataFlyout(true);
     }
   });
 
