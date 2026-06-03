@@ -13,7 +13,8 @@ on:
         type: string
 
 permissions:
-  contents: read
+  # Draft releases are not visible to GITHUB_TOKEN with contents: read only.
+  contents: write
 
 jobs:
   test-notify-n8n:
