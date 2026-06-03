@@ -53,5 +53,6 @@ Then use components directly in any `.razor` file:
 ## Resources
 
 - [Component documentation & live examples](https://modus-web-components-v2.trimble.com)
+- [MAUI Blazor Hybrid integration guide](https://github.com/trimble-oss/ModusWebComponents.Maui/blob/main/AGENTS.md)
 - [GitHub repository](https://github.com/trimble-oss/modus-wc-2.0)
 - [Report an issue](https://github.com/trimble-oss/modus-wc-2.0/issues)
