@@ -334,7 +334,7 @@ modus-wc-tree-item .modus-wc-menu-item {
 
 // The li-level rules are guarded with :not(.modus-wc-menu-item-active) so
 // that an already-selected row's own active background is never stripped
-// (only the div needs to be neutralised; the li rule handles edge cases where
+// (only the div needs to be neutralized; the li rule handles edge cases where
 // DaisyUI also targets the li itself).
 modus-wc-tree-item
   .modus-wc-menu-item:not(.modus-wc-menu-item-active):has(

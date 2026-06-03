@@ -8,7 +8,9 @@ describe('getWithTreeViewSourceCode', () => {
     expect(source).toContain('syncDataFlyoutMenuOffset');
     expect(source).toContain('openDataFlyout');
     expect(source).toContain('expandedChangeReady');
-    expect(source).toContain(`SIDE_NAV_DATA_FLYOUT_MENU_GAP = ${SIDE_NAV_DATA_FLYOUT_MENU_GAP}`);
+    expect(source).toContain(
+      `SIDE_NAV_DATA_FLYOUT_MENU_GAP = ${SIDE_NAV_DATA_FLYOUT_MENU_GAP}`
+    );
   });
 
   it('should match WithTreeView markup anchors', () => {
@@ -19,7 +21,7 @@ describe('getWithTreeViewSourceCode', () => {
   });
 
   it('should wire Data row itemSelect for collapsed Connect flyout', () => {
-    expect(source).toContain('dataTreeItem?.addEventListener(\'itemSelect\'');
+    expect(source).toContain("dataTreeItem?.addEventListener('itemSelect'");
     expect(source).toContain('if (e.target !== dataTreeItem) return');
   });
 });

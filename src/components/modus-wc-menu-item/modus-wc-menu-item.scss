@@ -295,7 +295,9 @@ modus-wc-menu-item .modus-wc-menu-item {
 
 /* Connect side nav: never paint li with base-100 on hover (white flash on blue panel). */
 [data-theme='connect-light'] modus-wc-side-navigation {
-  modus-wc-menu .modus-wc-menu li.modus-wc-menu-item:not(.modus-wc-menu-item-active):hover {
+  modus-wc-menu
+    .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active):hover {
     background-color: transparent;
   }
 

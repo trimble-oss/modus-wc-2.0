@@ -311,7 +311,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
     background-color: transparent;
   }
 
-  /* End-slot click: neutralise DaisyUI's :active flash on the interactive div.
+  /* End-slot click: neutralize DaisyUI's :active flash on the interactive div.
      Uses !important because DaisyUI's rule specificity can vary across themes.
 
      Non-active rows: div stays transparent (it never carries the background). */
