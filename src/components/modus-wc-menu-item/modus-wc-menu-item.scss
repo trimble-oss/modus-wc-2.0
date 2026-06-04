@@ -292,3 +292,53 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 }
+
+/* Connect side nav: never paint li with base-100 on hover (white flash on blue panel). */
+[data-theme='connect-light'] modus-wc-side-navigation {
+  modus-wc-menu
+    .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active):hover {
+    background-color: transparent;
+  }
+
+  modus-wc-menu
+    .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    :where(> *:hover) {
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  modus-wc-menu-item .modus-wc-menu-item {
+    &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:hover {
+        background-color: transparent;
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
+        :has(.modus-wc-menu-dropdown)
+      ) {
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
+        background-color: transparent;
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active) > button:hover {
+      background-color: var(--modus-wc-color-trimble-blue);
+      color: var(--modus-wc-color-white);
+    }
+  }
+}

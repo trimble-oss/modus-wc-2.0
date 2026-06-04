@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Modus WC – MAUI Story</title>
+    <base href="/" />
+
+    <!-- 1. Modus design-system CSS (variables, component styles) -->
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-icons.css" />
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+
+    <!-- 2. BlazingStory shell UI (navigation panel, sidebar, tabs, toolbar) -->
+    <link rel="stylesheet" href="_content/BlazingStory/fonts/fonts.css" />
+    <link rel="stylesheet" href="_content/BlazingStory/css/styles.css" />
+
+    <!-- 3. Blazor CSS isolation bundle (SplitContainer, scoped component styles) -->
+    <link rel="stylesheet" href="MauiBlazorApp.styles.css" />
+
+    <!-- 4. App-specific overrides -->
+    <link rel="stylesheet" href="css/app.css" />
+
+    <!-- 5. Stencil bundle — USE modus-wc.esm.js, NOT loader/index.js -->
+    <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
+
+    <!-- 6. JS interop bridge (must come AFTER the Stencil bundle) -->
+    <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+    <!-- Story helper: CSP-safe element method invocation by ID (avoids eval) -->
+    <script>
+      window.modusWcInterop = window.modusWcInterop || {};
+      window.modusWcInterop.invokeElement = function (id, method) {
+        var el = document.getElementById(id);
+        if (el && typeof el[method] === 'function') el[method]();
+      };
+    </script>
+</head>
+
+<body>
+    <div id="app">Loading…</div>
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+</body>
+
+</html>

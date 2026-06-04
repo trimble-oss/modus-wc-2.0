@@ -55,11 +55,18 @@ find_release() {
 release="$(find_release "$VERSION_HINT")"
 
 if [ "$release" = "null" ] || [ -z "$release" ]; then
+  draft_count="$(gh api "repos/${REPO}/releases" --jq '[.[] | select(.draft == true)] | length' 2>/dev/null || echo 0)"
   if [ -n "$VERSION_HINT" ]; then
-    echo "No GitHub release found for ${TAG_PREFIX}${VERSION_HINT}, skipping n8n notification."
+    echo "No GitHub release found for ${TAG_PREFIX}${VERSION_HINT}." >&2
   else
-    echo "No GitHub draft release found, skipping n8n notification."
+    echo "No GitHub draft release found." >&2
   fi
+  echo "Visible draft releases from this token: ${draft_count}." >&2
+  echo "Ensure the workflow has contents: write (drafts are hidden from contents: read)." >&2
+  if [ "$EVENT" = "test" ]; then
+    exit 1
+  fi
+  echo "Skipping n8n notification."
   exit 0
 fi
 
@@ -82,7 +89,11 @@ if [ -z "$NAME" ] || [ "$NAME" = "null" ]; then
 fi
 
 if [ -z "$body" ]; then
-  echo "Release notes body is empty for ${TAG}, skipping n8n notification."
+  echo "Release notes body is empty for ${TAG}." >&2
+  if [ "$EVENT" = "test" ]; then
+    exit 1
+  fi
+  echo "Skipping n8n notification."
   exit 0
 fi
 
