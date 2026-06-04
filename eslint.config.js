@@ -12,6 +12,11 @@ export default [
   {
     files: ['**/*.js'],
     ...js.configs.recommended,
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
   },
   {
     files: ['**/*.{ts,tsx,spec.ts}'],
