@@ -17,6 +17,7 @@ interface DropdownMenuArgs {
   'menu-offset'?: number;
   'menu-placement'?: PopoverPlacement;
   'menu-size'?: ModusSize;
+  'menu-strategy'?: 'absolute' | 'fixed';
   'menu-visible': boolean;
 }
 
@@ -34,6 +35,7 @@ const meta: Meta<DropdownMenuArgs> = {
     'menu-offset': 14,
     'menu-placement': 'bottom-start',
     'menu-size': 'md',
+    'menu-strategy': 'absolute',
     'menu-visible': false,
   },
   argTypes: {
@@ -73,6 +75,10 @@ const meta: Meta<DropdownMenuArgs> = {
     'menu-size': {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
+    },
+    'menu-strategy': {
+      control: { type: 'select' },
+      options: ['absolute', 'fixed'],
     },
   },
   decorators: [withActions],
@@ -144,6 +150,7 @@ const Template: Story = {
   menu-offset=${ifDefined(args['menu-offset'])}
   menu-placement=${ifDefined(args['menu-placement'])}
   menu-size=${ifDefined(args['menu-size'])}
+  menu-strategy=${ifDefined(args['menu-strategy'])}
   ?menu-visible=${args['menu-visible']}
 >
   <div slot="button">
@@ -217,6 +224,133 @@ export const IconOnlyDropdownMenu: Story = {
   },
 };
 
+export const WithTreeMenu: Story = {
+  args: {
+    'menu-bordered': false,
+    'menu-placement': 'bottom-end',
+    'menu-size': 'sm',
+  },
+  parameters: {
+    actions: {
+      handles: ['menuVisibilityChange', 'itemSelect'],
+    },
+    docs: {
+      source: {
+        code: `
+<modus-wc-dropdown-menu
+  button-variant="filled"
+  button-color="primary"
+  menu-placement="bottom-end"
+  menu-size="sm"
+  id="tree-dropdown-menu"
+>
+  <div slot="button">
+    Browse
+    <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
+  </div>
+    <modus-wc-tree-menu slot="menu" aria-label="Tree menu" bordered="true" size="sm">
+      <modus-wc-tree-item label="Projects" value="projects"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Explorer" value="explorer"></modus-wc-tree-item>
+    </modus-wc-tree-menu>
+</modus-wc-dropdown-menu>
+
+<div>
+  Selected Value: <span id="tree-dropdown-selected-value"></span>
+</div>
+<script>
+  const dropdown = document.getElementById('tree-dropdown-menu');
+  const display = document.getElementById('tree-dropdown-selected-value');
+
+  dropdown.addEventListener('itemSelect', (e) => {
+    display.textContent = e.detail.value;
+    dropdown.menuVisible = false;
+  });
+</script>
+`,
+      },
+    },
+  },
+  render: (args) => {
+    const handleItemSelect = (event: CustomEvent) => {
+      const displayElement = document.querySelector(
+        '#tree-dropdown-selected-value'
+      );
+      if (displayElement) {
+        displayElement.textContent = event.detail.value;
+      }
+
+      const dropdownMenuElement = (event.target as HTMLElement).closest(
+        'modus-wc-dropdown-menu'
+      );
+      if (dropdownMenuElement) {
+        (
+          dropdownMenuElement as unknown as { menuVisible: boolean }
+        ).menuVisible = false;
+      }
+    };
+
+    // prettier-ignore
+    return html`
+<style>
+  div[id^='story--components-dropdown-menu--with-tree-menu'] {
+    display: flex;
+    align-items: center;
+    height: 320px;
+  }
+
+  [slot='button'] {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .value {
+    font-size: 14px;
+    padding-top: 12px;
+  }
+</style>
+
+<modus-wc-dropdown-menu
+  button-aria-label=${ifDefined(args['button-aria-label'])}
+  button-color=${ifDefined(args['button-color'])}
+  button-shape=${ifDefined(args['button-shape'])}
+  button-size=${ifDefined(args['button-size'])}
+  button-variant=${ifDefined(args['button-variant'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  ?disabled=${args.disabled}
+  ?menu-bordered=${args['menu-bordered']}
+  menu-offset=${ifDefined(args['menu-offset'])}
+  menu-placement=${ifDefined(args['menu-placement'])}
+  menu-size=${ifDefined(args['menu-size'])}
+  menu-strategy=${ifDefined(args['menu-strategy'])}
+  ?menu-visible=${args['menu-visible']}
+>
+  <div slot="button">
+    Browse
+    <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
+  </div>
+    <modus-wc-tree-menu slot="menu" aria-label="Tree menu" bordered="true" size="sm">
+      <modus-wc-tree-item
+        label="Projects"
+        value="projects"
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-tree-item>
+      <modus-wc-tree-item
+        label="Explorer"
+        value="explorer"
+        @itemSelect=${handleItemSelect}
+      ></modus-wc-tree-item>
+    </modus-wc-tree-menu>
+</modus-wc-dropdown-menu>
+
+<div class="value">
+  Selected Value:
+  <span id="tree-dropdown-selected-value"></span>
+</div>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('dropdown-menu-shadow-host')) {
@@ -235,6 +369,7 @@ export const ShadowDomParent: Story = {
             menuOffset: number;
             menuPlacement: PopoverPlacement;
             menuSize: ModusSize;
+            menuStrategy: 'absolute' | 'fixed';
             menuVisible: boolean;
           };
           dropdownEl.buttonAriaLabel = v['button-aria-label'] || '';
@@ -248,6 +383,7 @@ export const ShadowDomParent: Story = {
           dropdownEl.menuOffset = v['menu-offset'] ?? 10;
           dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
           dropdownEl.menuSize = v['menu-size'] as ModusSize;
+          dropdownEl.menuStrategy = v['menu-strategy'] || 'absolute';
           dropdownEl.menuVisible = Boolean(v['menu-visible']);
 
           // On first render: add slot content and append the Selected Value

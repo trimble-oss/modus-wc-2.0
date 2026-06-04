@@ -1,10 +1,13 @@
 /**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+* Only add styles here that should not be applied by Tailwind or the theme.
 */
 
-modus-wc-menu-item .modus-wc-menu-item {
-  button {
+modus-wc-tree-item .modus-wc-menu-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .modus-wc-menu-item-interactive {
     align-items: center;
     border-radius: inherit;
     display: flex;
@@ -27,8 +30,18 @@ modus-wc-menu-item .modus-wc-menu-item {
       display: flex;
       width: 100%;
 
-      [slot='start-icon'] {
+      [slot='start'] {
         padding-inline-end: var(--modus-wc-spacing-sm);
+      }
+
+      [slot='end'] {
+        margin-inline-start: auto;
+        padding-inline-start: var(--modus-wc-spacing-sm);
+
+        &:is(modus-wc-dropdown-menu) {
+          background-color: transparent;
+          padding-inline-start: 0;
+        }
       }
 
       modus-wc-checkbox {
@@ -45,15 +58,11 @@ modus-wc-menu-item .modus-wc-menu-item {
         font-size: var(--modus-wc-font-size-sm);
         white-space: nowrap;
       }
-
-      .modus-wc-menu-item-selected-icon {
-        margin-left: auto;
-      }
     }
   }
 
   &.modus-wc-menu-item-sm {
-    button {
+    .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-sm);
 
       .modus-wc-menu-item-sublabel {
@@ -63,7 +72,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-md {
-    button {
+    .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-md);
 
       .modus-wc-menu-item-sublabel {
@@ -73,7 +82,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 
   &.modus-wc-menu-item-lg {
-    button {
+    .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-lg);
 
       .modus-wc-menu-item-sublabel {
@@ -88,6 +97,11 @@ modus-wc-menu-item .modus-wc-menu-item {
     border-radius: 0;
     border-top: var(--modus-wc-border-width-xs) solid
       var(--modus-wc-color-base-200);
+
+    &.modus-wc-menu-item-selected,
+    &.modus-wc-menu-item-active {
+      border-color: transparent;
+    }
   }
 
   &:not(.modus-wc-menu-item-selected) {
@@ -111,7 +125,7 @@ modus-wc-menu-item .modus-wc-menu-item {
       );
     }
 
-    button {
+    .modus-wc-menu-item-interactive {
       background-color: transparent;
 
       &:hover,
@@ -141,7 +155,7 @@ modus-wc-menu-item .modus-wc-menu-item {
       );
     }
 
-    button {
+    .modus-wc-menu-item-interactive {
       background-color: transparent;
 
       &:hover,
@@ -157,34 +171,32 @@ modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-disabled {
     opacity: 0.4;
 
-    button {
+    .modus-wc-menu-item-interactive {
       pointer-events: none;
     }
   }
 
-  // Hover state for all items. The `:not(.modus-wc-menu-item-focused)` guard
-  // keeps the keyboard focus outline (and its border-radius) visible when the
-  // user hovers over a programmatically focused item.
   &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
       :has(.modus-wc-menu-dropdown)
-    ) {
+    ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+      :has([slot='start'] :hover)
+    ):not(:has([slot='start'] :active)) {
     &:hover {
       background-color: var(--modus-wc-color-base-100);
       outline: none;
     }
   }
 
-  // When the item is both hovered AND keyboard-focused, keep the focus outline
-  // on top of the hover background so the navigation cue persists.
   &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
-    ) {
+    ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+      :has([slot='start'] :hover)
+    ):not(:has([slot='start'] :active)) {
     &:hover {
       background-color: var(--modus-wc-color-base-100);
     }
   }
 
-  // Focus states for non-active items only
   &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
       :has(.modus-wc-menu-dropdown)
     ) {
@@ -196,16 +208,12 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
-  // Tab navigation focus state (outline only)
   &:focus-visible {
     background-color: transparent;
     outline: 2px solid var(--modus-wc-color-primary);
     outline-offset: -2px;
   }
 
-  // Programmatic focus marker (via the `focused` prop). Outline only so the
-  // underlying selected/hover background stays visible. Border-radius is
-  // inherited to match the menu item's own corner radius.
   &.modus-wc-menu-item-focused {
     border-radius: inherit;
     outline: 2px solid var(--modus-wc-color-primary);
@@ -215,23 +223,22 @@ modus-wc-menu-item .modus-wc-menu-item {
 
 [data-theme='modus-classic-dark'],
 [data-theme='connect-dark'] {
-  modus-wc-menu-item .modus-wc-menu-item {
+  modus-wc-tree-item .modus-wc-menu-item {
     &:not(.modus-wc-menu-item-active) {
       color: var(--modus-wc-color-gray-light);
     }
 
-    button {
+    .modus-wc-menu-item-interactive {
       &.modus-wc-menu-dropdown-toggle::after {
         color: var(--modus-wc-color-gray-3);
       }
     }
 
-    // Hover state for all items. The `:not(.modus-wc-menu-item-focused)` guard
-    // keeps the keyboard focus outline (and its border-radius) visible when the
-    // user hovers over a programmatically focused item.
     &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
         :has(.modus-wc-menu-dropdown)
-      ) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
@@ -239,11 +246,11 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
 
-    // When the item is both hovered AND keyboard-focused, keep the focus
-    // outline on top of the dark-theme hover background.
     &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
-      ) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: var(--modus-wc-color-gray-9);
         color: inherit;
@@ -253,14 +260,14 @@ modus-wc-menu-item .modus-wc-menu-item {
     &.modus-wc-menu-item-active,
     &:active:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
-      ) {
+      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :active)) {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-primary) 30%,
         transparent
       );
 
-      button {
+      .modus-wc-menu-item-interactive {
         background-color: transparent;
 
         &:hover,
@@ -272,7 +279,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       }
     }
 
-    // Focus states for non-active items only
     &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
       ) {
@@ -284,35 +290,30 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-[data-theme='connect-light'],
-[data-theme='connect-dark'] {
-  modus-wc-menu-item .modus-wc-menu-item {
-    & > button.modus-wc-menu-dropdown-toggle::after {
-      color: var(--modus-wc-color-white);
-    }
-  }
-}
-
-/* Connect side nav: never paint li with base-100 on hover (white flash on blue panel). */
+/* Connect light side nav: suppress base-100 li hover; paint row on interactive. */
 [data-theme='connect-light'] modus-wc-side-navigation {
-  modus-wc-menu
-    .modus-wc-menu
-    li.modus-wc-menu-item:not(.modus-wc-menu-item-active):hover {
+  modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover,
+  modus-wc-tree-item .modus-wc-menu-item:hover {
     background-color: transparent;
   }
 
-  modus-wc-menu
+  modus-wc-tree-menu
     .modus-wc-menu
     li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
-    :where(> *:hover) {
+    :where(> .modus-wc-menu-item-interactive:hover),
+  modus-wc-tree-item
+    .modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    > .modus-wc-menu-item-interactive:hover {
     background-color: var(--modus-wc-color-trimble-blue) !important;
     color: var(--modus-wc-color-white) !important;
   }
 
-  modus-wc-menu-item .modus-wc-menu-item {
+  modus-wc-tree-item .modus-wc-menu-item {
     &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
         :has(.modus-wc-menu-dropdown)
-      ) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: transparent;
         outline: none;
@@ -321,24 +322,46 @@ modus-wc-menu-item .modus-wc-menu-item {
 
     &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
         :has(.modus-wc-menu-dropdown)
-      ) {
+      ):not(:has([slot='end'] :hover)):not(:has([slot='end'] :active)):not(
+        :has([slot='start'] :hover)
+      ):not(:has([slot='start'] :active)) {
       &:hover {
         background-color: transparent;
       }
     }
-
-    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
-        :has(.modus-wc-menu-dropdown)
-      ) {
-      &:focus:not(:focus-visible),
-      &.modus-wc-arrow-focused {
-        background-color: transparent;
-      }
-    }
-
-    &:not(.modus-wc-menu-item-active) > button:hover {
-      background-color: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-white);
-    }
   }
+}
+
+// The li-level rules are guarded with :not(.modus-wc-menu-item-active) so
+// that an already-selected row's own active background is never stripped
+// (only the div needs to be neutralized; the li rule handles edge cases where
+// DaisyUI also targets the li itself).
+modus-wc-tree-item
+  .modus-wc-menu-item:not(.modus-wc-menu-item-active):has(
+    [slot='end'] :active
+  ) {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item
+  .modus-wc-menu-item:has([slot='end'] :active)
+  > .modus-wc-menu-item-interactive {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item
+  .modus-wc-menu-item:not(.modus-wc-menu-item-active):has(
+    [slot='start'] :active
+  ) {
+  background-color: transparent;
+  color: inherit;
+}
+
+modus-wc-tree-item
+  .modus-wc-menu-item:has([slot='start'] :active)
+  > .modus-wc-menu-item-interactive {
+  background-color: transparent;
+  color: inherit;
 }

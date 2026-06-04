@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-tree-item renders with default props 1`] = `
+<modus-wc-tree-item label="Test label" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item should render with a start slot 1`] = `
+<modus-wc-tree-item label="Test label" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="check" slot="start">
+          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+            check
+          </i>
+        </modus-wc-icon>
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item should render with an end slot 1`] = `
+<modus-wc-tree-item label="Test label" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+        <modus-wc-button size="sm" slot="end" variant="borderless">
+          <!---->
+          <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+            Action
+          </button>
+        </modus-wc-button>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item should render with checkbox 1`] = `
+<modus-wc-tree-item checkbox="true" label="Test label" value="Test value">
+  <!---->
+  <li aria-checked="false" class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <modus-wc-checkbox aria-label="Checkbox" size="md"></modus-wc-checkbox>
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item should render with custom props 1`] = `
+<modus-wc-tree-item bordered="true" custom-class="test-class" disabled="true" label="Test label" selected="true" size="lg" sub-label="Test sub-label" value="Test value">
+  <!---->
+  <li aria-disabled="" class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-bordered modus-wc-menu-item-disabled modus-wc-menu-item-lg test-class" role="menuitem" tabindex="-1">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <div>
+            Test label
+          </div>
+          <div class="modus-wc-menu-item-sublabel">
+            Test sub-label
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
+
+exports[`modus-wc-tree-item should render with tooltip content 1`] = `
+<modus-wc-tree-item label="Test label" tooltip-content="Tooltip text" tooltip-position="top" value="Test value">
+  <!---->
+  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+    <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+      <div class="modus-wc-menu-item-content">
+        <div class="modus-wc-menu-item-labels">
+          <modus-wc-tooltip content="Tooltip text" customclass="modus-wc-menu-item-tooltip" position="top">
+            <div>
+              Test label
+            </div>
+          </modus-wc-tooltip>
+        </div>
+      </div>
+    </div>
+  </li>
+</modus-wc-tree-item>
+`;
