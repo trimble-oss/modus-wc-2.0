@@ -78,7 +78,8 @@ jobs:
         run: |
           dotnet nuget push ./nuget-output/*.nupkg \
             --source "https://nuget.pkg.github.com/trimble-oss/index.json" \
-            --api-key "${{ secrets.GITHUB_TOKEN }}"
+            --api-key "${{ secrets.GITHUB_TOKEN }}" \
+            --skip-duplicate
 
   release-blazor:
     needs: build-and-publish-blazor
