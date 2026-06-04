@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modus Web Components – Story Canvas</title>
+    <base href="/modus-wc-2.0/blazor-preview/pr-1116/" />
+    <link href="_framework/dotnet.u50ig67akq.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-UqlKK0VUU5Izo88LoV5Yi6sUqbyMetM0mrbt+MTozVQ=" />
+    <!--
+    CSS and JavaScript for the story canvas (component preview iframe).
+    This is the correct place for component stylesheets and scripts.
+    -->
+    <!-- Modus icon font (served from the Blazor RCL static web assets) -->
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-icons.css" />
+    <!-- Modus component styles (from the Blazor RCL static web assets — same path as in consuming apps) -->
+    <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-styles.css" />
+    <link rel="stylesheet" href="css/blazor-ui.css" />
+    <link rel="stylesheet" href="BlazingStoryApp.styles.css" />
+    <!-- Stencil ESM bundle: registers all modus-wc-* custom elements in the browser.
+         Served from the Blazor RCL's static web assets — kept in sync by `npm run build`. -->
+    <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
+    <!-- Blazor ↔ web-component event interop helper (from the Blazor RCL) -->
+    <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+    <!-- Story helper: CSP-safe element method invocation by ID (avoids eval) -->
+    <script>
+      window.modusWcInterop = window.modusWcInterop || {};
+      window.modusWcInterop.invokeElement = function (id, method) {
+        var el = document.getElementById(id);
+        if (el && typeof el[method] === 'function') el[method]();
+      };
+    </script>
+    <script type="importmap">{
+  "imports": {
+    "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.66stpp682q.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.rjbmzc4jpg.js",
+    "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.r2kbxkuujc.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.u50ig67akq.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/blazor.webassembly.66stpp682q.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
+    "./_framework/blazor.webassembly.js": "sha256-3lCWrko3zwspV40aQhs2S/IMkRSarnHRKIdkHhuXIBA=",
+    "./_framework/dotnet.js": "sha256-UqlKK0VUU5Izo88LoV5Yi6sUqbyMetM0mrbt+MTozVQ=",
+    "./_framework/dotnet.native.js": "sha256-95bE510j3EADMNW2OKa/DMBhu8N632dl5HGeBfXNEf4=",
+    "./_framework/dotnet.native.rjbmzc4jpg.js": "sha256-95bE510j3EADMNW2OKa/DMBhu8N632dl5HGeBfXNEf4=",
+    "./_framework/dotnet.runtime.js": "sha256-YyudibIWETMKrLb+nAZdJ+xDY7HY6BWf6s32UAdcvCU=",
+    "./_framework/dotnet.runtime.r2kbxkuujc.js": "sha256-YyudibIWETMKrLb+nAZdJ+xDY7HY6BWf6s32UAdcvCU=",
+    "./_framework/dotnet.u50ig67akq.js": "sha256-UqlKK0VUU5Izo88LoV5Yi6sUqbyMetM0mrbt+MTozVQ="
+  }
+}</script>
+</head>
+
+<body>
+    <div id="app">
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.webassembly.66stpp682q.js"></script>
+</body>
+
+</html>
