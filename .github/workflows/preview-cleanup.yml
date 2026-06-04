@@ -18,7 +18,6 @@ jobs:
         with:
           ref: gh-pages # Checkout the gh-pages branch
           fetch-depth: 1
-          persist-credentials: false
 
       - name: Setup Git
         run: |

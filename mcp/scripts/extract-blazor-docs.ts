@@ -339,12 +339,6 @@ async function main() {
     const tag = classNameToTag(componentClass); // e.g. modus-wc-button
     const jsonPath = join(docsDir, `${tag}.json`);
 
-    if (!existsSync(jsonPath)) {
-      console.log(`  Skipping ${tag} (no JSON doc found in docs-dir)`);
-      skipped++;
-      continue;
-    }
-
     const csPath = join(blazorDir, csFile);
     const razorPath = join(blazorDir, csFile.replace('.razor.cs', '.razor'));
 
@@ -364,7 +358,17 @@ async function main() {
       usageExample,
     };
 
-    const existing = JSON.parse(readFileSync(jsonPath, 'utf-8'));
+    let existing: Record<string, unknown>;
+    try {
+      existing = JSON.parse(readFileSync(jsonPath, 'utf-8'));
+    } catch (err: unknown) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        console.log(`  Skipping ${tag} (no JSON doc found in docs-dir)`);
+        skipped++;
+        continue;
+      }
+      throw err;
+    }
     existing.blazor = blazorDoc;
     writeFileSync(jsonPath, JSON.stringify(existing, null, 2));
 
@@ -377,12 +381,14 @@ async function main() {
 
   // Update _all_components.json to record blazor coverage
   const allComponentsPath = join(docsDir, '_all_components.json');
-  if (existsSync(allComponentsPath)) {
+  try {
     const allComponents = JSON.parse(readFileSync(allComponentsPath, 'utf-8'));
     allComponents.blazor_components = blazorComponents.sort();
     allComponents.blazor_last_updated = String(Date.now() / 1000);
     writeFileSync(allComponentsPath, JSON.stringify(allComponents, null, 2));
     console.log(`\nUpdated _all_components.json (${blazorComponents.length} Blazor components)`);
+  } catch (err: unknown) {
+    if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err;
   }
 
   console.log(`\nDone. Augmented: ${augmented}, Skipped: ${skipped}`);

@@ -43,12 +43,12 @@ Add the following to your `wwwroot/index.html` (Blazor WASM) or `Pages/_Host.csh
 <body>
     <div id="app">...</div>
 
-    <!-- 3. Blazor framework script -->
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
-    <!-- 4. Stencil web-components bundle (must come BEFORE interop.js) -->
+    <!-- 3. Stencil web-components bundle (must come BEFORE interop.js) -->
     <script type="module" src="_content/ModusWebComponents.Blazor/modus-wc/modus-wc.esm.js"></script>
-    <!-- 5. JS interop bridge (must come AFTER the Stencil bundle) -->
+    <!-- 4. JS interop bridge (must come AFTER the Stencil bundle) -->
     <script src="_content/ModusWebComponents.Blazor/js/interop.js"></script>
+    <!-- 5. Blazor framework script (starts after Stencil + interop are ready) -->
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>
 ```

@@ -181,7 +181,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Blazor Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.2
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-blazor.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
