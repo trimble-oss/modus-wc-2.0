@@ -689,7 +689,7 @@ export const WithTreeMenu: Story = {
 
       const sideNav = withTreeMenuFlyoutState.dataIconDropdown.closest(
         'modus-wc-side-navigation'
-      ) as HTMLElement | null;
+      );
 
       const realItem = sideNav?.querySelector(
         `modus-wc-tree-item[value="${value}"]`
@@ -734,9 +734,7 @@ export const WithTreeMenu: Story = {
           // Child tree-items bubble itemSelect; only handle Data's own row.
           if (e.target !== el) return;
 
-          const sideNav = el.closest(
-            'modus-wc-side-navigation'
-          ) as HTMLElement | null;
+          const sideNav = el.closest('modus-wc-side-navigation');
           if (!sideNav) return;
 
           if ((sideNav as HTMLElement & { expanded: boolean }).expanded) {

@@ -4,11 +4,6 @@ import {
   connectIconClass,
 } from './modus-wc-side-navigation-connect-icons.story';
 import {
-  WITH_TREE_MENU_NAVBAR_USER_CARD,
-  WITH_TREE_MENU_NAVBAR_VISIBILITY,
-  withTreeMenuLayoutStyles,
-} from './modus-wc-side-navigation-with-tree-menu.story-demo';
-import {
   SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS,
   SIDE_NAV_DATA_FLYOUT_MENU_GAP,
   SIDE_NAV_DATA_FLYOUT_MENU_OFFSET,
@@ -23,6 +18,11 @@ import {
   sideNavDataFlyoutDropdownStyles,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
+import {
+  WITH_TREE_MENU_NAVBAR_USER_CARD,
+  WITH_TREE_MENU_NAVBAR_VISIBILITY,
+  withTreeMenuLayoutStyles,
+} from './modus-wc-side-navigation-with-tree-menu.story-demo';
 import { WITH_TREE_MENU_SIDE_NAV_COLLAPSE_MS } from './modus-wc-side-navigation-with-tree-menu.story-handlers';
 
 const navbarUserCardJson = JSON.stringify(WITH_TREE_MENU_NAVBAR_USER_CARD);

@@ -70,9 +70,7 @@ const syncDataFlyoutMenuOffset = (state: WithTreeMenuFlyoutState) => {
   const navPanel = sideNavHost?.querySelector(
     '.modus-wc-side-navigation'
   ) as HTMLElement | null;
-  const button = state.dataIconDropdown.querySelector(
-    'modus-wc-button'
-  ) as HTMLElement | null;
+  const button = state.dataIconDropdown.querySelector('modus-wc-button');
 
   if (!navPanel || !button) return;
 

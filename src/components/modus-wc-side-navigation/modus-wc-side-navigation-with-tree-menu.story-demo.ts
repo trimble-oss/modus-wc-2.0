@@ -1,14 +1,13 @@
+import { SIDE_NAV_COLLAPSED_MIN_WIDTH } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 import type {
   INavbarUserCard,
   INavbarVisibility,
 } from '../modus-wc-navbar/modus-wc-navbar';
-import { SIDE_NAV_COLLAPSED_MIN_WIDTH } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 
 /** Shared WithTreeMenu / Show code navbar user card (matches Storybook canvas). */
 export const WITH_TREE_MENU_NAVBAR_USER_CARD: INavbarUserCard = {
   avatarAlt: 'User Avatar',
-  avatarSrc:
-    'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+  avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
   email: 'user@trimble.com',
   name: 'Sonic the Hedgehog',
 };
