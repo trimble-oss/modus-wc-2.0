@@ -86,7 +86,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/download-artifact@v8
         with:
           name: blazor-distribution-v${{ github.event.inputs.version }}
           path: .
@@ -99,7 +99,7 @@ jobs:
         run: mv ${{ steps.find-asset.outputs.asset_path }} package-blazor.nupkg
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.0.0
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-blazor-${{ github.event.inputs.version }}
