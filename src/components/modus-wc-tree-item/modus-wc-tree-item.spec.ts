@@ -3,7 +3,7 @@ import { ModusWcTreeItem } from './modus-wc-tree-item';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcSideNavigation } from '../modus-wc-side-navigation/modus-wc-side-navigation';
-import { ModusWcTreeView } from '../modus-wc-tree-view/modus-wc-tree-view';
+import { ModusWcTreeMenu } from '../modus-wc-tree-menu/modus-wc-tree-menu';
 
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
@@ -339,15 +339,15 @@ describe('modus-wc-tree-item', () => {
 
   it('should toggle submenu when hasSubmenu is true', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view>
+        <modus-wc-tree-menu>
           <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -375,15 +375,15 @@ describe('modus-wc-tree-item', () => {
 
   it('should emit itemSelect and not expand submenu when blockExpand is true', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view>
+        <modus-wc-tree-menu>
           <modus-wc-tree-item label="Parent" value="parent" has-submenu="true" block-expand="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -415,15 +415,15 @@ describe('modus-wc-tree-item', () => {
 
   it('should collapse submenu via collapseSubmenu method', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view>
+        <modus-wc-tree-menu>
           <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -454,15 +454,15 @@ describe('modus-wc-tree-item', () => {
 
   it('should collapse submenu when toggled closed', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view>
+        <modus-wc-tree-menu>
           <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -503,16 +503,16 @@ describe('modus-wc-tree-item', () => {
 
   it('should emit itemSelect without expanding submenu when side nav is collapsed', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSideNavigation, ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcSideNavigation, ModusWcTreeMenu, ModusWcTreeItem],
       html: `
         <modus-wc-side-navigation expanded="false">
-          <modus-wc-tree-view>
+          <modus-wc-tree-menu>
             <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
-              <modus-wc-tree-view is-sub-menu="true">
+              <modus-wc-tree-menu is-sub-menu="true">
                 <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
-              </modus-wc-tree-view>
+              </modus-wc-tree-menu>
             </modus-wc-tree-item>
-          </modus-wc-tree-view>
+          </modus-wc-tree-menu>
         </modus-wc-side-navigation>
       `,
     });
@@ -589,7 +589,7 @@ describe('modus-wc-tree-item', () => {
       globalThis.MutationObserver = originalMutationObserver;
     });
 
-    it('should set up MutationObserver on parent tree-view in componentDidLoad', async () => {
+    it('should set up MutationObserver on parent tree-menu in componentDidLoad', async () => {
       const observeSpy = jest.fn();
       globalThis.MutationObserver = jest.fn(() => ({
         observe: observeSpy,
@@ -598,15 +598,15 @@ describe('modus-wc-tree-item', () => {
       })) as unknown as typeof MutationObserver;
 
       const page = await newSpecPage({
-        components: [ModusWcTreeView, ModusWcTreeItem],
-        html: `<modus-wc-tree-view selection-mode="single">
+        components: [ModusWcTreeMenu, ModusWcTreeItem],
+        html: `<modus-wc-tree-menu selection-mode="single">
           <modus-wc-tree-item label="Item" value="1"></modus-wc-tree-item>
-        </modus-wc-tree-view>`,
+        </modus-wc-tree-menu>`,
       });
 
-      const parentTreeView = page.doc.querySelector('modus-wc-tree-view');
+      const parentTreeMenu = page.doc.querySelector('modus-wc-tree-menu');
       expect(globalThis.MutationObserver).toHaveBeenCalled();
-      expect(observeSpy).toHaveBeenCalledWith(parentTreeView, {
+      expect(observeSpy).toHaveBeenCalledWith(parentTreeMenu, {
         attributes: true,
       });
     });
@@ -623,10 +623,10 @@ describe('modus-wc-tree-item', () => {
       }) as unknown as typeof MutationObserver;
 
       const page = await newSpecPage({
-        components: [ModusWcTreeView, ModusWcTreeItem],
-        html: `<modus-wc-tree-view selection-mode="single">
+        components: [ModusWcTreeMenu, ModusWcTreeItem],
+        html: `<modus-wc-tree-menu selection-mode="single">
           <modus-wc-tree-item label="Item" value="1"></modus-wc-tree-item>
-        </modus-wc-tree-view>`,
+        </modus-wc-tree-menu>`,
       });
 
       const treeItem = page.doc.querySelector(
@@ -656,10 +656,10 @@ describe('modus-wc-tree-item', () => {
       })) as unknown as typeof MutationObserver;
 
       const page = await newSpecPage({
-        components: [ModusWcTreeView, ModusWcTreeItem],
-        html: `<modus-wc-tree-view>
+        components: [ModusWcTreeMenu, ModusWcTreeItem],
+        html: `<modus-wc-tree-menu>
           <modus-wc-tree-item label="Item" value="1"></modus-wc-tree-item>
-        </modus-wc-tree-view>`,
+        </modus-wc-tree-menu>`,
       });
 
       page.doc.querySelector('modus-wc-tree-item')?.remove();
@@ -733,16 +733,16 @@ describe('modus-wc-tree-item', () => {
 
   it('should deselect root siblings from nested tree items in single-select mode', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view selection-mode="single">
+        <modus-wc-tree-menu selection-mode="single">
           <modus-wc-tree-item label="Root Item" value="root"></modus-wc-tree-item>
           <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Nested" value="nested"></modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -765,22 +765,22 @@ describe('modus-wc-tree-item', () => {
     expect(nestedItem.selected).toBe(true);
   });
 
-  it('should deselect siblings using root tree-view from deeply nested items', async () => {
+  it('should deselect siblings using root tree-menu from deeply nested items', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view selection-mode="single">
+        <modus-wc-tree-menu selection-mode="single">
           <modus-wc-tree-item label="Root Item" value="root"></modus-wc-tree-item>
           <modus-wc-tree-item label="Level 1" value="level-1" has-submenu="true">
-            <modus-wc-tree-view is-sub-menu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
               <modus-wc-tree-item label="Level 2" value="level-2" has-submenu="true">
-                <modus-wc-tree-view is-sub-menu="true">
+                <modus-wc-tree-menu is-sub-menu="true">
                   <modus-wc-tree-item label="Deep" value="deep"></modus-wc-tree-item>
-                </modus-wc-tree-view>
+                </modus-wc-tree-menu>
               </modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
@@ -803,18 +803,18 @@ describe('modus-wc-tree-item', () => {
     expect(deepItem.selected).toBe(true);
   });
 
-  it('should resolve root tree-view when tree-view has no parent element', async () => {
+  it('should resolve root tree-menu when tree-menu has no parent element', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTreeView, ModusWcTreeItem],
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
       html: `
-        <modus-wc-tree-view selection-mode="single">
+        <modus-wc-tree-menu selection-mode="single">
           <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
-        </modus-wc-tree-view>
+        </modus-wc-tree-menu>
       `,
     });
 
-    const treeView = page.root as HTMLElement;
-    Object.defineProperty(treeView, 'parentElement', {
+    const treeMenu = page.root as HTMLElement;
+    Object.defineProperty(treeMenu, 'parentElement', {
       get: () => null,
       configurable: true,
     });
@@ -833,23 +833,23 @@ describe('modus-wc-tree-item', () => {
     expect(treeItem.selected).toBe(true);
   });
 
-  it('should skip deselecting siblings when root tree-view cannot be resolved', async () => {
-    const getRootTreeViewSpy = jest
+  it('should skip deselecting siblings when root tree-menu cannot be resolved', async () => {
+    const getRootTreeMenuSpy = jest
       .spyOn(
         ModusWcTreeItem.prototype as unknown as {
-          getRootTreeView: () => HTMLElement | null;
+          getRootTreeMenu: () => HTMLElement | null;
         },
-        'getRootTreeView'
+        'getRootTreeMenu'
       )
       .mockReturnValue(null);
 
     try {
       const page = await newSpecPage({
-        components: [ModusWcTreeView, ModusWcTreeItem],
+        components: [ModusWcTreeMenu, ModusWcTreeItem],
         html: `
-          <modus-wc-tree-view selection-mode="single">
+          <modus-wc-tree-menu selection-mode="single">
             <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
-          </modus-wc-tree-view>
+          </modus-wc-tree-menu>
         `,
       });
 
@@ -866,7 +866,7 @@ describe('modus-wc-tree-item', () => {
 
       expect(treeItem.selected).toBe(true);
     } finally {
-      getRootTreeViewSpy.mockRestore();
+      getRootTreeMenuSpy.mockRestore();
     }
   });
 });

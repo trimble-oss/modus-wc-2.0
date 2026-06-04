@@ -1,6 +1,6 @@
-export const treeViewDefaultSourceCode = `
-<modus-wc-tree-view
-  aria-label="Tree view"
+export const treeMenuDefaultSourceCode = `
+<modus-wc-tree-menu
+  aria-label="Tree menu"
   orientation="vertical"
   selection-mode="single"
   size="md"
@@ -28,21 +28,21 @@ export const treeViewDefaultSourceCode = `
     </div>
   </modus-wc-tree-item>
   <modus-wc-tree-item label="Disabled" value="9" disabled="true"></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
-export const treeViewMultiSelectSourceCode = `
-<modus-wc-tree-view aria-label="Tree view" selection-mode="multiple">
+export const treeMenuMultiSelectSourceCode = `
+<modus-wc-tree-menu aria-label="Tree menu" selection-mode="multiple">
   <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
   <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
   <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
-</modus-wc-tree-view>
-<p id="tree-view-selection-output">Selected: none</p>
+</modus-wc-tree-menu>
+<p id="tree-menu-selection-output">Selected: none</p>
 <script>
-  const treeView = document.querySelector('modus-wc-tree-view');
-  const output = document.getElementById('tree-view-selection-output');
+  const treeMenu = document.querySelector('modus-wc-tree-menu');
+  const output = document.getElementById('tree-menu-selection-output');
 
-  treeView.addEventListener('menuSelectionChange', (e) => {
+  treeMenu.addEventListener('menuSelectionChange', (e) => {
     const { selectedItems } = e.detail;
     output.textContent =
       selectedItems.length > 0
@@ -52,22 +52,22 @@ export const treeViewMultiSelectSourceCode = `
 </script>
 `;
 
-export const treeViewCollapsibleMenuSourceCode = `
-<modus-wc-tree-view aria-label="Tree view">
+export const treeMenuCollapsibleMenuSourceCode = `
+<modus-wc-tree-menu aria-label="Tree menu">
   <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true">
-    <modus-wc-tree-view is-sub-menu="true">
+    <modus-wc-tree-menu is-sub-menu="true">
       <modus-wc-tree-item label="Child 1" value="child-1"></modus-wc-tree-item>
       <modus-wc-tree-item label="Child 2" value="child-2"></modus-wc-tree-item>
-    </modus-wc-tree-view>
+    </modus-wc-tree-menu>
   </modus-wc-tree-item>
   <modus-wc-tree-item label="Sibling Item" value="sibling"></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
-export const treeViewShadowDomParentSourceCode = `
-<tree-view-shadow-host></tree-view-shadow-host>
+export const treeMenuShadowDomParentSourceCode = `
+<tree-menu-shadow-host></tree-menu-shadow-host>
 <script>
-  const host = document.querySelector('tree-view-shadow-host');
+  const host = document.querySelector('tree-menu-shadow-host');
   host.props = {
     orientation: 'vertical',
     'selection-mode': 'single',

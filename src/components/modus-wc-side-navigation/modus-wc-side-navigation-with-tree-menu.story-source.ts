@@ -14,14 +14,14 @@ import {
   sideNavConnectLightTreeItemEndSlotActiveStyles,
   sideNavConnectStoryLayoutStyles,
   sideNavConnectTreeItemStyles,
-  sideNavConnectWithTreeViewStoryStyles,
+  sideNavConnectWithTreeMenuStoryStyles,
   sideNavDataFlyoutDropdownStyles,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
-import { WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS } from './modus-wc-side-navigation-with-tree-view.story-handlers';
+import { WITH_TREE_MENU_SIDE_NAV_COLLAPSE_MS } from './modus-wc-side-navigation-with-tree-menu.story-handlers';
 
-/** Consumer-facing Show code for the WithTreeView side-navigation story. */
-export const getWithTreeViewSourceCode = (): string => `
+/** Consumer-facing Show code for the WithTreeMenu side-navigation story. */
+export const getWithTreeMenuSourceCode = (): string => `
 <link rel="stylesheet" href="${CONNECT_ICON_FONT_URL}" />
 
 <style>
@@ -31,7 +31,7 @@ export const getWithTreeViewSourceCode = (): string => `
   ${sideNavTreeItemEndActionDropdownStyles}
   ${sideNavDataFlyoutDropdownStyles}
   ${sideNavConnectStoryLayoutStyles}
-  ${sideNavConnectWithTreeViewStoryStyles}
+  ${sideNavConnectWithTreeMenuStoryStyles}
 </style>
 
 <!-- App layout (navbar + main row) is illustrative; adjust for your shell. -->
@@ -47,7 +47,7 @@ export const getWithTreeViewSourceCode = (): string => `
   collapse-on-click-outside="true"
   target-content=".panel-content"
 >
-  <modus-wc-tree-view size="lg" aria-label="Project navigation">
+  <modus-wc-tree-menu size="lg" aria-label="Project navigation">
     <modus-wc-tree-item label="All Projects" value="all-projects">
       <modus-wc-icon
         slot="start"
@@ -103,7 +103,7 @@ export const getWithTreeViewSourceCode = (): string => `
           ></modus-wc-icon>
         </modus-wc-menu-item>
       </modus-wc-dropdown-menu>
-      <modus-wc-tree-view is-sub-menu="true">
+      <modus-wc-tree-menu is-sub-menu="true">
         <modus-wc-tree-item
           label="Explorer"
           value="explorer"
@@ -164,7 +164,7 @@ export const getWithTreeViewSourceCode = (): string => `
             custom-class="${connectIconClass(CONNECT_ICONS.releases)}"
           ></modus-wc-icon>
         </modus-wc-tree-item>
-      </modus-wc-tree-view>
+      </modus-wc-tree-menu>
     </modus-wc-tree-item>
 
     <modus-wc-tree-item label="Activity" value="activity">
@@ -191,12 +191,12 @@ export const getWithTreeViewSourceCode = (): string => `
         custom-class="${connectIconClass(CONNECT_ICONS.fieldData)}"
       ></modus-wc-icon>
     </modus-wc-tree-item>
-  </modus-wc-tree-view>
+  </modus-wc-tree-menu>
 </modus-wc-side-navigation>
 
 <script>
   const SIDE_NAV_DATA_FLYOUT_MENU_GAP = ${SIDE_NAV_DATA_FLYOUT_MENU_GAP};
-  const SIDE_NAV_COLLAPSE_MS = ${WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS};
+  const SIDE_NAV_COLLAPSE_MS = ${WITH_TREE_MENU_SIDE_NAV_COLLAPSE_MS};
 
   const isConnectSideNavTheme = () => {
     const theme = document.documentElement.getAttribute('data-theme') ?? '';
@@ -319,7 +319,7 @@ export const getWithTreeViewSourceCode = (): string => `
     if (!selected) return false;
     if (selected.getAttribute('value') === 'data') return true;
     return Boolean(
-      selected.closest('modus-wc-tree-item[value="data"] modus-wc-tree-view')
+      selected.closest('modus-wc-tree-item[value="data"] modus-wc-tree-menu')
     );
   };
 
@@ -482,7 +482,7 @@ export const getWithTreeViewSourceCode = (): string => `
     if (
       isConnectSideNavTheme() &&
       !sideNav.expanded &&
-      treeItem.querySelector('modus-wc-tree-view')
+      treeItem.querySelector('modus-wc-tree-menu')
     ) {
       openDataFlyout(true);
     }

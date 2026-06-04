@@ -224,7 +224,7 @@ export const IconOnlyDropdownMenu: Story = {
   },
 };
 
-export const WithTreeView: Story = {
+export const WithTreeMenu: Story = {
   args: {
     'menu-bordered': false,
     'menu-placement': 'bottom-end',
@@ -248,10 +248,10 @@ export const WithTreeView: Story = {
     Browse
     <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
   </div>
-    <modus-wc-tree-view slot="menu" aria-label="Tree menu" bordered="true" size="sm">
+    <modus-wc-tree-menu slot="menu" aria-label="Tree menu" bordered="true" size="sm">
       <modus-wc-tree-item label="Projects" value="projects"></modus-wc-tree-item>
       <modus-wc-tree-item label="Explorer" value="explorer"></modus-wc-tree-item>
-    </modus-wc-tree-view>
+    </modus-wc-tree-menu>
 </modus-wc-dropdown-menu>
 
 <div>
@@ -292,7 +292,7 @@ export const WithTreeView: Story = {
     // prettier-ignore
     return html`
 <style>
-  div[id^='story--components-dropdown-menu--with-tree-view'] {
+  div[id^='story--components-dropdown-menu--with-tree-menu'] {
     display: flex;
     align-items: center;
     height: 320px;
@@ -329,7 +329,7 @@ export const WithTreeView: Story = {
     Browse
     <modus-wc-icon name="expand_more" size="sm"></modus-wc-icon>
   </div>
-    <modus-wc-tree-view slot="menu" aria-label="Tree menu" bordered="true" size="sm">
+    <modus-wc-tree-menu slot="menu" aria-label="Tree menu" bordered="true" size="sm">
       <modus-wc-tree-item
         label="Projects"
         value="projects"
@@ -340,7 +340,7 @@ export const WithTreeView: Story = {
         value="explorer"
         @itemSelect=${handleItemSelect}
       ></modus-wc-tree-item>
-    </modus-wc-tree-view>
+    </modus-wc-tree-menu>
 </modus-wc-dropdown-menu>
 
 <div class="value">

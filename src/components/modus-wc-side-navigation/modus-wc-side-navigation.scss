@@ -91,7 +91,7 @@ modus-wc-side-navigation {
     }
   }
 
-  .side-navigation-content:has(modus-wc-tree-view) {
+  .side-navigation-content:has(modus-wc-tree-menu) {
     padding: 0;
   }
 }
@@ -140,7 +140,7 @@ modus-wc-side-navigation {
     }
   }
 
-  /* Flat menu only — tree-view rows use story tree-item styles. */
+  /* Flat menu only — tree-menu rows use story tree-item styles. */
   modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item {
     background: transparent;
     color: var(--modus-wc-color-primary-content);
@@ -151,7 +151,7 @@ modus-wc-side-navigation {
     background-color: transparent !important;
   }
 
-  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover {
+  modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover {
     background-color: transparent !important;
   }
 

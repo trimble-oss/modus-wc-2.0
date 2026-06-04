@@ -292,12 +292,12 @@ modus-wc-tree-item .modus-wc-menu-item {
 
 /* Connect light side nav: suppress base-100 li hover; paint row on interactive. */
 [data-theme='connect-light'] modus-wc-side-navigation {
-  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover,
+  modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover,
   modus-wc-tree-item .modus-wc-menu-item:hover {
     background-color: transparent;
   }
 
-  modus-wc-tree-view
+  modus-wc-tree-menu
     .modus-wc-menu
     li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
     :where(> .modus-wc-menu-item-interactive:hover),

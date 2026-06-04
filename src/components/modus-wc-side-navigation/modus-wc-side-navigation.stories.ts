@@ -20,21 +20,21 @@ import {
   sideNavConnectLightTreeItemEndSlotActiveStyles,
   sideNavConnectStoryLayoutStyles,
   sideNavConnectTreeItemStyles,
-  sideNavConnectWithTreeViewStoryStyles,
+  sideNavConnectWithTreeMenuStoryStyles,
   sideNavDataFlyoutDropdownStyles,
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 import {
-  handleWithTreeViewExpandedChangeClassicModern,
-  handleWithTreeViewExpandedChangeConnect,
-  handleWithTreeViewMenuOpenChange,
-  hideWithTreeViewFlyout,
-  openWithTreeViewDataFlyout,
-  resetWithTreeViewForNonConnectTheme,
-  setWithTreeViewDataFlyoutDisabled,
-  type WithTreeViewFlyoutState,
-} from './modus-wc-side-navigation-with-tree-view.story-handlers';
-import { getWithTreeViewSourceCode } from './modus-wc-side-navigation-with-tree-view.story-source';
+  handleWithTreeMenuExpandedChangeClassicModern,
+  handleWithTreeMenuExpandedChangeConnect,
+  handleWithTreeMenuMenuOpenChange,
+  hideWithTreeMenuFlyout,
+  openWithTreeMenuDataFlyout,
+  resetWithTreeMenuForNonConnectTheme,
+  setWithTreeMenuDataFlyoutDisabled,
+  type WithTreeMenuFlyoutState,
+} from './modus-wc-side-navigation-with-tree-menu.story-handlers';
+import { getWithTreeMenuSourceCode } from './modus-wc-side-navigation-with-tree-menu.story-source';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface SideNavigationArgs {
@@ -552,18 +552,18 @@ export const WithSubmenu: Story = {
 };
 
 /** Persists across Lit re-renders so mount-only expandedChange skip is not reset. */
-let withTreeViewExpandedChangeReady = false;
+let withTreeMenuExpandedChangeReady = false;
 
 /** Persists across Lit re-renders for Connect flyout handlers. */
-const withTreeViewFlyoutState: WithTreeViewFlyoutState = {
+const withTreeMenuFlyoutState: WithTreeMenuFlyoutState = {
   dataIconDropdown: null,
   flyoutOpenTimer: null,
   collapseFlyoutTimer: null,
 };
 
-let withTreeViewThemeObserverWired = false;
+let withTreeMenuThemeObserverWired = false;
 
-export const WithTreeView: Story = {
+export const WithTreeMenu: Story = {
   args: { expanded: true },
   parameters: {
     docs: {
@@ -571,7 +571,7 @@ export const WithTreeView: Story = {
         story:
           'This story is theme-specific: markup and styles differ between Connect and Modern/Classic. After changing the theme in the Storybook toolbar, re-render the story so it re-renders with the correct layout.',
       },
-      source: { code: getWithTreeViewSourceCode() },
+      source: { code: getWithTreeMenuSourceCode() },
     },
   },
   render: (args, context) => {
@@ -588,11 +588,11 @@ export const WithTreeView: Story = {
       ? globalsTheme === 'connect-light' || globalsTheme === 'connect-dark'
       : isConnectSideNavTheme();
 
-    if (!withTreeViewThemeObserverWired && typeof document !== 'undefined') {
-      withTreeViewThemeObserverWired = true;
+    if (!withTreeMenuThemeObserverWired && typeof document !== 'undefined') {
+      withTreeMenuThemeObserverWired = true;
       new MutationObserver(() => {
         if (!isConnectSideNavTheme()) {
-          resetWithTreeViewForNonConnectTheme(withTreeViewFlyoutState);
+          resetWithTreeMenuForNonConnectTheme(withTreeMenuFlyoutState);
         }
       }).observe(document.documentElement, {
         attributes: true,
@@ -613,17 +613,17 @@ export const WithTreeView: Story = {
     };
 
     const handleMenuOpenChange = (e: CustomEvent<boolean>) => {
-      handleWithTreeViewMenuOpenChange(e, menuOpenSuppress);
+      handleWithTreeMenuMenuOpenChange(e, menuOpenSuppress);
     };
 
     const handleExpandedChange = (e: CustomEvent<boolean>) => {
       const eventSource = e.target as HTMLElement;
 
-      if (!withTreeViewExpandedChangeReady) {
-        withTreeViewExpandedChangeReady = true;
+      if (!withTreeMenuExpandedChangeReady) {
+        withTreeMenuExpandedChangeReady = true;
         if (isConnectSideNavTheme()) {
-          setWithTreeViewDataFlyoutDisabled(
-            withTreeViewFlyoutState,
+          setWithTreeMenuDataFlyoutDisabled(
+            withTreeMenuFlyoutState,
             Boolean(e.detail)
           );
         }
@@ -631,14 +631,14 @@ export const WithTreeView: Story = {
       }
 
       if (isConnectSideNavTheme()) {
-        handleWithTreeViewExpandedChangeConnect(
+        handleWithTreeMenuExpandedChangeConnect(
           e,
           eventSource,
-          withTreeViewFlyoutState,
+          withTreeMenuFlyoutState,
           menuOpenSuppress
         );
       } else {
-        handleWithTreeViewExpandedChangeClassicModern(
+        handleWithTreeMenuExpandedChangeClassicModern(
           e,
           eventSource,
           menuOpenSuppress
@@ -669,9 +669,9 @@ export const WithTreeView: Story = {
       if (
         isConnectSideNavTheme() &&
         !isExpanded &&
-        treeItem.querySelector('modus-wc-tree-view')
+        treeItem.querySelector('modus-wc-tree-menu')
       ) {
-        openWithTreeViewDataFlyout(withTreeViewFlyoutState, true);
+        openWithTreeMenuDataFlyout(withTreeMenuFlyoutState, true);
       }
     };
 
@@ -679,11 +679,11 @@ export const WithTreeView: Story = {
       if (!isConnectSideNavTheme()) return;
 
       const value = (e as CustomEvent<{ value: string }>).detail?.value;
-      if (!value || !withTreeViewFlyoutState.dataIconDropdown) return;
+      if (!value || !withTreeMenuFlyoutState.dataIconDropdown) return;
 
-      hideWithTreeViewFlyout(withTreeViewFlyoutState);
+      hideWithTreeMenuFlyout(withTreeMenuFlyoutState);
 
-      const sideNav = withTreeViewFlyoutState.dataIconDropdown.closest(
+      const sideNav = withTreeMenuFlyoutState.dataIconDropdown.closest(
         'modus-wc-side-navigation'
       ) as HTMLElement | null;
 
@@ -699,12 +699,12 @@ export const WithTreeView: Story = {
       }
 
       // Drop focus from flyout trigger so borderless primary color does not stick.
-      withTreeViewFlyoutState.dataIconDropdown
+      withTreeMenuFlyoutState.dataIconDropdown
         ?.querySelector<HTMLElement>('modus-wc-button .modus-wc-btn')
         ?.blur();
 
       // Close after the tree-item click; cancels any deferred flyout open too.
-      setTimeout(() => hideWithTreeViewFlyout(withTreeViewFlyoutState), 0);
+      setTimeout(() => hideWithTreeMenuFlyout(withTreeMenuFlyoutState), 0);
     };
 
     const handleContextItemSelect = (e: CustomEvent) => {
@@ -744,7 +744,7 @@ export const WithTreeView: Story = {
           }
 
           if (isConnectSideNavTheme()) {
-            openWithTreeViewDataFlyout(withTreeViewFlyoutState, true);
+            openWithTreeMenuDataFlyout(withTreeMenuFlyoutState, true);
           }
         });
       }
@@ -752,24 +752,24 @@ export const WithTreeView: Story = {
 
     const onDataIconDropdownRef = (el: Element | undefined) => {
       if (!el) {
-        withTreeViewFlyoutState.dataIconDropdown = null;
+        withTreeMenuFlyoutState.dataIconDropdown = null;
         return;
       }
 
-      withTreeViewFlyoutState.dataIconDropdown = el as HTMLElement;
+      withTreeMenuFlyoutState.dataIconDropdown = el as HTMLElement;
 
       if (!isConnectSideNavTheme()) {
-        setWithTreeViewDataFlyoutDisabled(withTreeViewFlyoutState, true);
+        setWithTreeMenuDataFlyoutDisabled(withTreeMenuFlyoutState, true);
         return;
       }
 
-      const sideNav = withTreeViewFlyoutState.dataIconDropdown.closest(
+      const sideNav = withTreeMenuFlyoutState.dataIconDropdown.closest(
         'modus-wc-side-navigation'
       );
       const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
         ?.expanded;
-      setWithTreeViewDataFlyoutDisabled(
-        withTreeViewFlyoutState,
+      setWithTreeMenuDataFlyoutDisabled(
+        withTreeMenuFlyoutState,
         Boolean(isExpanded)
       );
     };
@@ -802,7 +802,7 @@ export const WithTreeView: Story = {
         ${sideNavTreeItemEndActionDropdownStyles}
         ${sideNavDataFlyoutDropdownStyles}
         ${sideNavConnectStoryLayoutStyles}
-        ${sideNavConnectWithTreeViewStoryStyles}
+        ${sideNavConnectWithTreeMenuStoryStyles}
       </style>
       <div class="layout-with-navbar">
         <modus-wc-navbar
@@ -840,7 +840,7 @@ export const WithTreeView: Story = {
             @expandedChange=${handleExpandedChange}
             @itemSelect=${handleTreeItemSelect}
           >
-            <modus-wc-tree-view size="lg" aria-label="Project navigation">
+            <modus-wc-tree-menu size="lg" aria-label="Project navigation">
               <modus-wc-tree-item label="All Projects" value="all-projects">
                 <modus-wc-icon
                   slot="start"
@@ -926,7 +926,7 @@ export const WithTreeView: Story = {
                         size="sm"
                       ></modus-wc-icon>
                     `}
-                <modus-wc-tree-view is-sub-menu="true">
+                <modus-wc-tree-menu is-sub-menu="true">
                   <modus-wc-tree-item
                     label="Explorer"
                     value="explorer"
@@ -1019,7 +1019,7 @@ export const WithTreeView: Story = {
                       custom-class=${connectIconClass(CONNECT_ICONS.releases)}
                     ></modus-wc-icon>
                   </modus-wc-tree-item>
-                </modus-wc-tree-view>
+                </modus-wc-tree-menu>
               </modus-wc-tree-item>
               <modus-wc-tree-item label="Activity" value="activity">
                 <modus-wc-icon
@@ -1045,10 +1045,10 @@ export const WithTreeView: Story = {
                   custom-class=${connectIconClass(CONNECT_ICONS.fieldData)}
                 ></modus-wc-icon>
               </modus-wc-tree-item>
-            </modus-wc-tree-view>
+            </modus-wc-tree-menu>
           </modus-wc-side-navigation>
           <div class="panel-content">
-            <h3>Side Navigation with Tree View</h3>
+            <h3>Side Navigation with Tree Menu</h3>
             <p>
               <strong>Theme switch:</strong> This story renders different markup
               and CSS per theme (Connect vs Modern/Classic). After you change
@@ -1058,7 +1058,7 @@ export const WithTreeView: Story = {
             </p>
             <p>
               This example replicates Trimble project navigation using
-              modus-wc-tree-view and modus-wc-tree-item. Switch the Storybook
+              modus-wc-tree-menu and modus-wc-tree-item. Switch the Storybook
               theme toolbar to compare behavior: <strong>Connect</strong> uses a
               collapsed-rail flyout for the Data row;
               <strong>Modern</strong> and <strong>Classic</strong> use the

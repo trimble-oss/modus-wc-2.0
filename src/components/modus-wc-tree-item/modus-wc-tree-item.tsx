@@ -16,7 +16,7 @@ import { ModusSize, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable tree item component used to display the item portion of a tree view.
+ * A customizable tree item component used to display the item portion of a tree menu.
  *
  * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
  */
@@ -27,7 +27,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcTreeItem {
   private inheritedAttributes: Attributes = {};
-  private parentTreeViewObserver?: MutationObserver;
+  private parentTreeMenuObserver?: MutationObserver;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -94,10 +94,10 @@ export class ModusWcTreeItem {
   componentDidLoad() {
     if (typeof MutationObserver === 'undefined') return;
 
-    const parentTreeView = this.el.closest('modus-wc-tree-view');
+    const parentTreeMenu = this.el.closest('modus-wc-tree-menu');
 
-    if (parentTreeView) {
-      this.parentTreeViewObserver = new MutationObserver((mutations) => {
+    if (parentTreeMenu) {
+      this.parentTreeMenuObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
           if (mutation.attributeName === 'selection-mode') {
             this.handleSelectionModeChange();
@@ -105,12 +105,12 @@ export class ModusWcTreeItem {
           }
         }
       });
-      this.parentTreeViewObserver.observe(parentTreeView, { attributes: true });
+      this.parentTreeMenuObserver.observe(parentTreeMenu, { attributes: true });
     }
   }
 
   disconnectedCallback() {
-    this.parentTreeViewObserver?.disconnect();
+    this.parentTreeMenuObserver?.disconnect();
   }
 
   private handleSelectionModeChange(): void {
@@ -149,22 +149,22 @@ export class ModusWcTreeItem {
     return Promise.resolve();
   }
 
-  private getRootTreeView(): HTMLElement | null {
-    let treeView = this.el.closest('modus-wc-tree-view');
-    while (treeView) {
+  private getRootTreeMenu(): HTMLElement | null {
+    let treeMenu = this.el.closest('modus-wc-tree-menu');
+    while (treeMenu) {
       const parent =
-        treeView.parentElement?.closest('modus-wc-tree-view') ?? null;
+        treeMenu.parentElement?.closest('modus-wc-tree-menu') ?? null;
       if (!parent) break;
-      treeView = parent;
+      treeMenu = parent;
     }
-    return treeView;
+    return treeMenu;
   }
 
   private deselectSiblings(): void {
-    const rootTreeView = this.getRootTreeView();
-    if (!rootTreeView) return;
+    const rootTreeMenu = this.getRootTreeMenu();
+    if (!rootTreeMenu) return;
 
-    const allItems = rootTreeView.querySelectorAll('modus-wc-tree-item');
+    const allItems = rootTreeMenu.querySelectorAll('modus-wc-tree-item');
     allItems.forEach((item) => {
       if (item !== this.el) {
         (item as HTMLElement & { selected?: boolean }).selected = false;
@@ -174,7 +174,7 @@ export class ModusWcTreeItem {
 
   private resolveSelectionMode() {
     return (
-      this.el.closest('modus-wc-tree-view') as HTMLElement & {
+      this.el.closest('modus-wc-tree-menu') as HTMLElement & {
         selectionMode?: SelectionMode;
       }
     )?.selectionMode;

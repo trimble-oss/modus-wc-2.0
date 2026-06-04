@@ -42,7 +42,7 @@ export const isConnectSideNavTheme = (theme?: string | null): boolean => {
   return resolved !== null && CONNECT_THEME_IDS.has(resolved);
 };
 
-/** Collapsed rail width — icon column plus caret column (WithTreeView / Connect). */
+/** Collapsed rail width — icon column plus caret column (WithTreeMenu / Connect). */
 export const SIDE_NAV_COLLAPSED_MIN_WIDTH = '15rem';
 
 export const SIDE_NAV_COLLAPSED_MIN_WIDTH_CLASS = `
@@ -212,9 +212,9 @@ export const sideNavDataFlyoutDropdownStyles = wrapConnectSideNavStyles(`
   }
 `);
 
-/** Connect WithTreeView: tree-item hover, active, carets, and end-slot icons. */
+/** Connect WithTreeMenu: tree-item hover, active, carets, and end-slot icons. */
 export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
-  modus-wc-tree-view .modus-wc-menu {
+  modus-wc-tree-menu .modus-wc-menu {
     background: transparent;
     color: var(--modus-wc-color-white);
   }
@@ -228,7 +228,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
   }
 
   /* Suppress component li:hover base-100 and DaisyUI .modus-wc-menu li>*:hover flash. */
-  modus-wc-tree-view .modus-wc-menu li.modus-wc-menu-item:hover,
+  modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover,
   modus-wc-tree-item > li.modus-wc-menu-item:hover {
     background-color: transparent !important;
   }
@@ -307,7 +307,7 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
   }
 
   /* Parent row stays neutral when hovering an open submenu child. */
-  modus-wc-tree-item > li.modus-wc-menu-item:has(modus-wc-tree-view):hover {
+  modus-wc-tree-item > li.modus-wc-menu-item:has(modus-wc-tree-menu):hover {
     background-color: transparent;
   }
 
@@ -426,14 +426,14 @@ export const sideNavConnectCollapsedRailStyles = wrapConnectSideNavStyles(`
   }
 `);
 
-/** Connect WithTreeView: submenu indent, active bar, Data row active styling. */
-export const sideNavConnectWithTreeViewStoryStyles = wrapConnectSideNavStyles(`
-  modus-wc-tree-view .modus-wc-menu :where(li ul) {
+/** Connect WithTreeMenu: submenu indent, active bar, Data row active styling. */
+export const sideNavConnectWithTreeMenuStoryStyles = wrapConnectSideNavStyles(`
+  modus-wc-tree-menu .modus-wc-menu :where(li ul) {
     margin-inline-start: 0;
     padding-inline-start: 0;
   }
 
-  modus-wc-tree-view .modus-wc-menu-dropdown .modus-wc-menu-item-content {
+  modus-wc-tree-menu .modus-wc-menu-dropdown .modus-wc-menu-item-content {
     padding-inline-start: 1.5rem;
   }
 
@@ -477,7 +477,7 @@ export const sideNavConnectWithTreeViewStoryStyles = wrapConnectSideNavStyles(`
   }
 `);
 
-/** Connect-only: tree-item block layout and flyout panel colors in WithTreeView. */
+/** Connect-only: tree-item block layout and flyout panel colors in WithTreeMenu. */
 export const sideNavConnectStoryLayoutStyles = wrapConnectSideNavStyles(`
   modus-wc-tree-item {
     display: block;

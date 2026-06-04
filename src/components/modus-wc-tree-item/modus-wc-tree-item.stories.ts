@@ -68,7 +68,7 @@ const Template: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     ?bordered=${args.bordered}
     ?block-expand=${args['block-expand']}
@@ -84,7 +84,7 @@ const Template: Story = {
     tooltip-position=${ifDefined(args['tooltip-position'])}
     value=${args.value}
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -98,7 +98,7 @@ export const WithStartSlot: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     ?bordered=${args.bordered}
     ?disabled=${args.disabled}
@@ -109,7 +109,7 @@ export const WithStartSlot: Story = {
   >
     <modus-wc-icon slot="start" name="alert" size="sm"></modus-wc-icon>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -121,7 +121,7 @@ export const WithEndSlot: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     label=${args.label}
     value=${args.value}
@@ -143,7 +143,7 @@ export const WithEndSlot: Story = {
       </div>
     </modus-wc-dropdown-menu>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -155,7 +155,7 @@ export const CustomTreeItem: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view size="sm">
+<modus-wc-tree-menu size="sm">
   <modus-wc-tree-item
     label=${args.label}
     value=${args.value}
@@ -175,7 +175,7 @@ export const CustomTreeItem: Story = {
       </modus-wc-button>
     </div>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -190,13 +190,13 @@ export const WithCheckbox: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     ?checkbox=${args.checkbox}
     label=${args.label}
     value=${args.value}
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -211,13 +211,13 @@ export const WithTooltip: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     label=${args.label}
     tooltip-content=${ifDefined(args['tooltip-content'])}
     value=${args.value}
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
     `;
   },
 };
@@ -229,10 +229,10 @@ export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('tree-item-shadow-host')) {
       const TreeItemShadowHost = createShadowHostClass<TreeItemArgs>({
-        componentTag: 'modus-wc-tree-view',
+        componentTag: 'modus-wc-tree-menu',
         propsMapper: (v: TreeItemArgs, el: HTMLElement) => {
-          const treeViewEl = el as unknown as { ariaLabel: string };
-          treeViewEl.ariaLabel = 'Shadow DOM Tree View';
+          const treeMenuEl = el as unknown as { ariaLabel: string };
+          treeMenuEl.ariaLabel = 'Shadow DOM Tree Menu';
 
           let treeItem = el.querySelector('modus-wc-tree-item');
           if (!treeItem) {

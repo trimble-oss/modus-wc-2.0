@@ -1,5 +1,5 @@
 /**
- * WithTreeView story behavior split by theme.
+ * WithTreeMenu story behavior split by theme.
  *
  * | Concern | Connect | Modern / Classic |
  * |---------|---------|-------------------|
@@ -18,20 +18,20 @@ import {
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 
 /** Side-nav width transition (modus-wc-side-navigation.scss). */
-export const WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS = 220;
+export const WITH_TREE_MENU_SIDE_NAV_COLLAPSE_MS = 220;
 
-export type WithTreeViewFlyoutState = {
+export type WithTreeMenuFlyoutState = {
   dataIconDropdown: HTMLElement | null;
   flyoutOpenTimer: ReturnType<typeof setTimeout> | null;
   collapseFlyoutTimer: ReturnType<typeof setTimeout> | null;
 };
 
-export type WithTreeViewMenuOpenSuppress = {
+export type WithTreeMenuMenuOpenSuppress = {
   get: () => boolean;
   set: (value: boolean) => void;
 };
 
-const cancelPendingFlyoutOpen = (state: WithTreeViewFlyoutState) => {
+const cancelPendingFlyoutOpen = (state: WithTreeMenuFlyoutState) => {
   if (state.flyoutOpenTimer) {
     clearTimeout(state.flyoutOpenTimer);
     state.flyoutOpenTimer = null;
@@ -42,7 +42,7 @@ const cancelPendingFlyoutOpen = (state: WithTreeViewFlyoutState) => {
   }
 };
 
-export const hideWithTreeViewFlyout = (state: WithTreeViewFlyoutState) => {
+export const hideWithTreeMenuFlyout = (state: WithTreeMenuFlyoutState) => {
   cancelPendingFlyoutOpen(state);
   if (state.dataIconDropdown) {
     (
@@ -51,8 +51,8 @@ export const hideWithTreeViewFlyout = (state: WithTreeViewFlyoutState) => {
   }
 };
 
-export const setWithTreeViewDataFlyoutDisabled = (
-  state: WithTreeViewFlyoutState,
+export const setWithTreeMenuDataFlyoutDisabled = (
+  state: WithTreeMenuFlyoutState,
   disabled: boolean
 ) => {
   if (state.dataIconDropdown) {
@@ -61,7 +61,7 @@ export const setWithTreeViewDataFlyoutDisabled = (
   }
 };
 
-const syncDataFlyoutMenuOffset = (state: WithTreeViewFlyoutState) => {
+const syncDataFlyoutMenuOffset = (state: WithTreeMenuFlyoutState) => {
   if (!state.dataIconDropdown) return;
 
   const sideNavHost = state.dataIconDropdown.closest(
@@ -88,8 +88,8 @@ const syncDataFlyoutMenuOffset = (state: WithTreeViewFlyoutState) => {
     offset;
 };
 
-export const openWithTreeViewDataFlyout = (
-  state: WithTreeViewFlyoutState,
+export const openWithTreeMenuDataFlyout = (
+  state: WithTreeMenuFlyoutState,
   defer = false
 ) => {
   if (!isConnectSideNavTheme()) return;
@@ -168,7 +168,7 @@ const selectionInDataSection = (root: HTMLElement) => {
   if (!selected) return false;
   if (selected.getAttribute('value') === 'data') return true;
   return Boolean(
-    selected.closest('modus-wc-tree-item[value="data"] modus-wc-tree-view')
+    selected.closest('modus-wc-tree-item[value="data"] modus-wc-tree-menu')
   );
 };
 
@@ -188,10 +188,10 @@ const collapseTreeSubmenus = (eventSource: HTMLElement) => {
 };
 
 /** Modern/Classic: same pattern as WithSubmenu — no flyout or blockExpand. */
-export const handleWithTreeViewExpandedChangeClassicModern = (
+export const handleWithTreeMenuExpandedChangeClassicModern = (
   e: CustomEvent<boolean>,
   eventSource: HTMLElement,
-  menuOpenSuppress: WithTreeViewMenuOpenSuppress
+  menuOpenSuppress: WithTreeMenuMenuOpenSuppress
 ) => {
   if (!e.detail) {
     menuOpenSuppress.set(true);
@@ -200,18 +200,18 @@ export const handleWithTreeViewExpandedChangeClassicModern = (
 };
 
 /** Connect: flyout, blockExpand, and inline submenu coordination. */
-export const handleWithTreeViewExpandedChangeConnect = (
+export const handleWithTreeMenuExpandedChangeConnect = (
   e: CustomEvent<boolean>,
   eventSource: HTMLElement,
-  flyoutState: WithTreeViewFlyoutState,
-  menuOpenSuppress: WithTreeViewMenuOpenSuppress
+  flyoutState: WithTreeMenuFlyoutState,
+  menuOpenSuppress: WithTreeMenuMenuOpenSuppress
 ) => {
-  hideWithTreeViewFlyout(flyoutState);
+  hideWithTreeMenuFlyout(flyoutState);
 
   const treeItems = eventSource.querySelectorAll('modus-wc-tree-item');
 
   if (e.detail) {
-    setWithTreeViewDataFlyoutDisabled(flyoutState, true);
+    setWithTreeMenuDataFlyoutDisabled(flyoutState, true);
     treeItems.forEach((treeItem) => {
       const item = treeItem as unknown as {
         hasSubmenu?: boolean;
@@ -232,7 +232,7 @@ export const handleWithTreeViewExpandedChangeConnect = (
     }
   } else {
     menuOpenSuppress.set(true);
-    setWithTreeViewDataFlyoutDisabled(flyoutState, false);
+    setWithTreeMenuDataFlyoutDisabled(flyoutState, false);
 
     treeItems.forEach((treeItem) => {
       const item = treeItem as unknown as {
@@ -253,16 +253,16 @@ export const handleWithTreeViewExpandedChangeConnect = (
     if (shouldOpenDataFlyoutOnCollapse(eventSource)) {
       flyoutState.collapseFlyoutTimer = setTimeout(() => {
         flyoutState.collapseFlyoutTimer = null;
-        openWithTreeViewDataFlyout(flyoutState);
-      }, WITH_TREE_VIEW_SIDE_NAV_COLLAPSE_MS);
+        openWithTreeMenuDataFlyout(flyoutState);
+      }, WITH_TREE_MENU_SIDE_NAV_COLLAPSE_MS);
     }
   }
 };
 
 /** Navbar hamburger ↔ side-nav expanded (all themes). */
-export const handleWithTreeViewMenuOpenChange = (
+export const handleWithTreeMenuMenuOpenChange = (
   e: CustomEvent<boolean>,
-  menuOpenSuppress: WithTreeViewMenuOpenSuppress
+  menuOpenSuppress: WithTreeMenuMenuOpenSuppress
 ) => {
   if (menuOpenSuppress.get() && e.detail) {
     menuOpenSuppress.set(false);
@@ -281,11 +281,11 @@ export const handleWithTreeViewMenuOpenChange = (
   }
 };
 
-export const resetWithTreeViewForNonConnectTheme = (
-  flyoutState: WithTreeViewFlyoutState
+export const resetWithTreeMenuForNonConnectTheme = (
+  flyoutState: WithTreeMenuFlyoutState
 ) => {
-  hideWithTreeViewFlyout(flyoutState);
-  setWithTreeViewDataFlyoutDisabled(flyoutState, true);
+  hideWithTreeMenuFlyout(flyoutState);
+  setWithTreeMenuDataFlyoutDisabled(flyoutState, true);
 
   document
     .querySelectorAll(

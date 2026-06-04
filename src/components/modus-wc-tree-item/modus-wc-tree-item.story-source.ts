@@ -1,23 +1,23 @@
 export const treeItemDefaultSourceCode = `
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     label="Tree Item"
     size="md"
     value="treeItem"
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemWithStartSlotSourceCode = `
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item label="Tree Item" size="md" value="treeItem">
     <modus-wc-icon slot="start" name="alert" size="sm"></modus-wc-icon>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemWithEndSlotSourceCode = `
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item label="Tree Item" value="treeItem">
     <modus-wc-icon slot="start" name="folder" size="sm"></modus-wc-icon>
     <modus-wc-dropdown-menu
@@ -33,11 +33,11 @@ export const treeItemWithEndSlotSourceCode = `
       <modus-wc-menu-item slot="menu" label="Delete" value="delete"></modus-wc-menu-item>
     </modus-wc-dropdown-menu>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemCustomSourceCode = `
-<modus-wc-tree-view size="sm">
+<modus-wc-tree-menu size="sm">
   <modus-wc-tree-item label="Tree Item" value="treeItem">
     <modus-wc-icon slot="start" name="search"></modus-wc-icon>
     <div slot="end" style="display: flex; align-items: center;">
@@ -50,27 +50,27 @@ export const treeItemCustomSourceCode = `
       </modus-wc-button>
     </div>
   </modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemWithCheckboxSourceCode = `
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     checkbox="true"
     label="Tree Item"
     value="treeItem"
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemWithTooltipSourceCode = `
-<modus-wc-tree-view>
+<modus-wc-tree-menu>
   <modus-wc-tree-item
     label="Tree Item"
     tooltip-content="Tooltip content"
     value="treeItem"
   ></modus-wc-tree-item>
-</modus-wc-tree-view>
+</modus-wc-tree-menu>
 `;
 
 export const treeItemShadowDomParentSourceCode = `

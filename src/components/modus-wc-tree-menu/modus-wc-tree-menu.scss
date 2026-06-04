@@ -2,11 +2,11 @@
 * Only add styles here that should not be applied by Tailwind or the theme.
 */
 
-modus-wc-tree-view.modus-wc-menu-submenu {
+modus-wc-tree-menu.modus-wc-menu-submenu {
   display: contents;
 }
 
-modus-wc-tree-view .modus-wc-menu {
+modus-wc-tree-menu .modus-wc-menu {
   background-color: var(--modus-wc-color-base-page);
   border-radius: var(--modus-wc-border-radius-md);
 
@@ -21,7 +21,7 @@ modus-wc-tree-view .modus-wc-menu {
   }
 }
 
-modus-wc-tree-view {
+modus-wc-tree-menu {
   .modus-wc-menu-dropdown {
     display: none;
     list-style: none;
@@ -32,12 +32,12 @@ modus-wc-tree-view {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-tree-view .modus-wc-menu {
+[data-theme='modus-classic-light'] modus-wc-tree-menu .modus-wc-menu {
   background-color: var(--modus-wc-color-white);
   border-color: var(--modus-wc-color-gray-0);
 }
 
-[data-theme='modus-classic-dark'] modus-wc-tree-view .modus-wc-menu {
+[data-theme='modus-classic-dark'] modus-wc-tree-menu .modus-wc-menu {
   background-color: var(--modus-wc-color-black);
   border-color: var(--modus-wc-color-gray-8);
 }

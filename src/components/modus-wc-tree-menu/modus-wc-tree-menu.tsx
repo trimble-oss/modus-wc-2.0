@@ -9,38 +9,38 @@ import {
   Event as StencilEvent,
   Watch,
 } from '@stencil/core';
-import { convertPropsToClasses } from './modus-wc-tree-view.tailwind';
+import { convertPropsToClasses } from './modus-wc-tree-menu.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize, Orientation, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
- * A customizable tree view component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+ * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
  *
  * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
  */
 @Component({
-  tag: 'modus-wc-tree-view',
-  styleUrl: 'modus-wc-tree-view.scss',
+  tag: 'modus-wc-tree-menu',
+  styleUrl: 'modus-wc-tree-menu.scss',
   shadow: false,
 })
-export class ModusWcTreeView {
+export class ModusWcTreeMenu {
   private inheritedAttributes: Attributes = {};
   private selectedItems: HTMLElement[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Indicates that the tree view should have a border. */
+  /** Indicates that the tree menu should have a border. */
   @Prop() bordered?: boolean;
 
   /** Custom CSS class to apply to the ul element. */
   @Prop() customClass?: string = '';
 
-  /** The orientation of the tree view. */
+  /** The orientation of the tree menu. */
   @Prop() orientation?: Orientation = 'vertical';
 
-  /** The selection mode of the tree view. */
+  /** The selection mode of the tree menu. */
   @Prop({ reflect: true }) selectionMode?: SelectionMode = 'single';
 
   @Watch('selectionMode')
@@ -48,13 +48,13 @@ export class ModusWcTreeView {
     this.selectedItems = [];
   }
 
-  /** The size of the tree view. */
+  /** The size of the tree menu. */
   @Prop() size?: ModusSize = 'md';
 
-  /** Indicates that this tree view is a submenu (dropdown). */
+  /** Indicates that this tree menu is a submenu (dropdown). */
   @Prop() isSubMenu?: boolean;
 
-  /** Event emitted when the tree view loses focus. */
+  /** Event emitted when the tree menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
   /** Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements. */
@@ -66,7 +66,7 @@ export class ModusWcTreeView {
     handleShadowDOMStyles(this.el);
 
     if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Tree view';
+      this.el.ariaLabel = 'Tree menu';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -94,7 +94,7 @@ export class ModusWcTreeView {
 
   private getTreeItems(): HTMLElement[] {
     return Array.from(this.el.querySelectorAll('modus-wc-tree-item')).filter(
-      (item) => item.closest('modus-wc-tree-view') === this.el
+      (item) => item.closest('modus-wc-tree-menu') === this.el
     ) as HTMLElement[];
   }
 
