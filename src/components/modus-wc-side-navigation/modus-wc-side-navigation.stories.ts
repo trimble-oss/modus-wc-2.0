@@ -25,6 +25,10 @@ import {
   sideNavTreeItemEndActionDropdownStyles,
 } from './modus-wc-side-navigation-tree-item-end-action.story-styles';
 import {
+  WITH_TREE_MENU_NAVBAR_USER_CARD,
+  WITH_TREE_MENU_NAVBAR_VISIBILITY,
+} from './modus-wc-side-navigation-with-tree-menu.story-demo';
+import {
   handleWithTreeMenuExpandedChangeClassicModern,
   handleWithTreeMenuExpandedChangeConnect,
   handleWithTreeMenuMenuOpenChange,
@@ -569,7 +573,7 @@ export const WithTreeMenu: Story = {
     docs: {
       description: {
         story:
-          'This story is theme-specific: markup and styles differ between Connect and Modern/Classic. After changing the theme in the Storybook toolbar, re-render the story so it re-renders with the correct layout.',
+          'This story is theme-specific: markup and styles differ between Connect and Modern/Classic. After changing the theme in the Storybook toolbar, re-render the story so it re-renders with the correct layout. Show code is a self-contained Connect copy-paste snippet (navbar, layout, and wiring included).',
       },
       source: { code: getWithTreeMenuSourceCode() },
     },
@@ -809,23 +813,8 @@ export const WithTreeMenu: Story = {
           app-title="Modus App"
           class="navbar"
           @mainMenuOpenChange=${handleMenuOpenChange}
-          .userCard=${{
-            avatarAlt: 'User Avatar',
-            avatarSrc:
-              'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
-            email: 'user@trimble.com',
-            name: 'Sonic the Hedgehog',
-          }}
-          .visibility=${{
-            ai: true,
-            apps: true,
-            help: true,
-            mainMenu: true,
-            notifications: true,
-            search: true,
-            searchInput: false,
-            user: true,
-          }}
+          .userCard=${WITH_TREE_MENU_NAVBAR_USER_CARD}
+          .visibility=${WITH_TREE_MENU_NAVBAR_VISIBILITY}
           style="z-index: 2;"
         ></modus-wc-navbar>
         <div class="main-content-row">
