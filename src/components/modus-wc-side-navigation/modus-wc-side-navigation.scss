@@ -41,16 +41,14 @@ modus-wc-side-navigation {
     background-color: transparent;
     padding-inline-end: var(--modus-wc-spacing-xs);
     padding-inline-start: var(--modus-wc-spacing-xs);
+  }
 
-    &.modus-wc-menu-dropdown-toggle {
-      max-height: 32px;
-      padding-inline-start: var(--modus-wc-spacing-xs);
-    }
-
-    &:not(.modus-wc-menu-dropdown-toggle) {
-      max-height: 32px;
-      padding-inline-start: var(--modus-wc-spacing-xs);
-    }
+  .side-navigation-content
+    > modus-wc-menu
+    modus-wc-menu-item
+    .modus-wc-menu-item
+    button {
+    max-height: 32px;
   }
 }
 
@@ -75,7 +73,6 @@ modus-wc-side-navigation {
 
   .side-navigation-content {
     color: var(--modus-wc-color-base-page);
-    flex: 1 1 auto;
     padding: 0 var(--modus-wc-spacing-lg);
   }
 
@@ -92,6 +89,10 @@ modus-wc-side-navigation {
       padding: 0;
       padding-inline-end: var(--modus-wc-spacing-md);
     }
+  }
+
+  .side-navigation-content:has(modus-wc-tree-menu) {
+    padding: 0;
   }
 }
 
@@ -120,7 +121,7 @@ modus-wc-side-navigation {
     background: transparent;
     color: var(--modus-wc-color-white);
 
-    &button:hover {
+    & button:hover {
       background: var(--modus-wc-color-primary);
       color: var(--modus-wc-color-primary-content);
     }
@@ -139,34 +140,53 @@ modus-wc-side-navigation {
     }
   }
 
-  &li.modus-wc-menu-item {
+  /* Flat menu only — tree-menu rows use story tree-item styles. */
+  modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item {
     background: transparent;
     color: var(--modus-wc-color-primary-content);
+  }
 
-    &:hover {
-      background: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-primary-content);
-    }
+  /* Suppress component li:hover base-100 and DaisyUI menu li>*:hover (white flash). */
+  .modus-wc-menu li.modus-wc-menu-item:hover {
+    background-color: transparent !important;
+  }
+
+  modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover {
+    background-color: transparent !important;
+  }
+
+  .modus-wc-menu
+    li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    :where(> *:hover) {
+    background-color: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
+  }
+
+  modus-wc-menu > modus-wc-menu-item .modus-wc-menu-item:hover {
+    background-color: transparent !important;
+    color: var(--modus-wc-color-primary-content);
   }
 
   .side-navigation-content {
-    background: var(--modus-wc-color-blue-dark);
+    background: var(--modus-wc-color-connect-blue);
     color: var(--modus-wc-color-base-content);
-    flex: 1 1 auto;
-
-    &button:hover {
-      background: var(--modus-wc-color-primary);
-    }
   }
 
   modus-wc-menu .modus-wc-menu {
     background: transparent;
     color: var(--modus-wc-color-white);
 
-    &button:hover {
-      background: var(--modus-wc-color-primary);
-      color: var(--modus-wc-color-white);
+    & button:hover {
+      background: var(--modus-wc-color-trimble-blue) !important;
+      color: var(--modus-wc-color-white) !important;
     }
+  }
+
+  modus-wc-tree-item
+    > li.modus-wc-menu-item:not(.modus-wc-menu-item-active)
+    > .modus-wc-menu-item-interactive:hover {
+    background: var(--modus-wc-color-trimble-blue) !important;
+    color: var(--modus-wc-color-white) !important;
   }
 
   modus-wc-menu-item .modus-wc-menu-item {
@@ -174,14 +194,13 @@ modus-wc-side-navigation {
   }
 
   modus-wc-menu-item .modus-wc-menu-item button {
-    background-color: transparent;
     padding: var(--modus-wc-spacing-xs) 1.25rem;
     padding-inline-end: var(--modus-wc-spacing-lg);
     padding-inline-start: calc(var(--modus-wc-spacing-lg) + 0.25rem);
 
     &:hover {
-      background: var(--modus-wc-color-trimble-blue);
-      color: var(--modus-wc-color-white);
+      background: var(--modus-wc-color-trimble-blue) !important;
+      color: var(--modus-wc-color-white) !important;
     }
 
     &:focus {

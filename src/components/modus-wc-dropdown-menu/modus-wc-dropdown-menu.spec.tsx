@@ -168,4 +168,64 @@ describe('modus-wc-dropdown-menu', () => {
     expect(menu).toBeTruthy();
     expect(menu.textContent).toContain('Item One');
   });
+
+  it('should use fixed positioning when menuStrategy is fixed', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-dropdown-menu menu-strategy="fixed" menu-visible={true}>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-menu-item label="Item One" value="1" />
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    await page.waitForChanges();
+
+    const menuWrapper = page.root?.querySelector(
+      '.menu-wrapper'
+    ) as HTMLElement;
+    expect(menuWrapper.style.position).toBe('fixed');
+  });
+
+  it('should emit menuVisibilityChange when menu visibility toggles', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-menu-item label="Item One" value="1" />
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    const visibilitySpy = jest.fn();
+    page.root?.addEventListener('menuVisibilityChange', visibilitySpy);
+
+    page.root?.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(visibilitySpy).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { isVisible: true } })
+    );
+
+    page.root!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(visibilitySpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { isVisible: false } })
+    );
+  });
 });

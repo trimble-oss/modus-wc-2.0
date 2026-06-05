@@ -99,7 +99,16 @@
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
-    "test:vue": "npm -C integrations/vue/v-latest run dev"
+    "test:vue": "npm -C integrations/vue/v-latest run dev",
+    "setup:auth": "bash scripts/setup-npm-auth.sh",
+    "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
+    "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run build first to generate the Blazor RCL.');process.exit(1)}\"",
+    "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",
+    "prestart:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run build first to generate the Blazor RCL.');process.exit(1)}\"",
+    "start:blazor": "dotnet run --project integrations/blazor/blazing-story/BlazingStoryApp.csproj",
+    "build:maui-android": "dotnet build integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android",
+    "publish:maui-android": "dotnet publish integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android",
+    "pack:nuget": "dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj -c Release && dotnet pack integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj -c Release --no-build -o nuget-output"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
@@ -108,7 +117,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
-    "@stencil/angular-output-target": "^0.10.2",
+    "@stencil/angular-output-target": "^1.3.1",
     "@stencil/core": "^4.35.3",
     "@stencil/react-output-target": "^1.2.0",
     "@stencil/sass": "^3.2.3",
@@ -124,7 +133,7 @@
     "@storybook/web-components": "^8.6.12",
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.19",
-    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3",
+    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.39",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.32.1",
@@ -151,7 +160,8 @@
     "ts-loader": "^9.5.7",
     "typescript": "^5.6.2",
     "vite": "^7.1.7",
-    "wireit": "^0.14.12"
+    "wireit": "^0.14.12",
+    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3"
   },
   "overrides": {
     "ts-morph": {
@@ -280,7 +290,10 @@
         "integrations/react/stencil-generated/**",
         "integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
-        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+        "integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/blazor/stencil-generated/**"
       ]
     },
     "stencil:watch": {

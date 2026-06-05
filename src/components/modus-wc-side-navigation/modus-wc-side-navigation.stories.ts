@@ -1,13 +1,51 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
+import {
+  CONNECT_ICON_FONT_URL,
+  CONNECT_ICONS,
+  connectIconClass,
+} from './modus-wc-side-navigation-connect-icons.story';
+import {
+  isConnectSideNavTheme,
+  SIDE_NAV_COLLAPSED_MIN_WIDTH,
+  SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS,
+  SIDE_NAV_DATA_FLYOUT_MENU_OFFSET,
+  SIDE_NAV_TREE_ITEM_END_ACTION_CLASS,
+  SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS,
+  SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+  sideNavConnectCollapsedRailStyles,
+  sideNavConnectLightTreeItemEndSlotActiveStyles,
+  sideNavConnectStoryLayoutStyles,
+  sideNavConnectTreeItemStyles,
+  sideNavConnectWithTreeMenuStoryStyles,
+  sideNavDataFlyoutDropdownStyles,
+  sideNavTreeItemEndActionDropdownStyles,
+} from './modus-wc-side-navigation-tree-item-end-action.story-styles';
+import {
+  WITH_TREE_MENU_NAVBAR_USER_CARD,
+  WITH_TREE_MENU_NAVBAR_VISIBILITY,
+} from './modus-wc-side-navigation-with-tree-menu.story-demo';
+import {
+  handleWithTreeMenuExpandedChangeClassicModern,
+  handleWithTreeMenuExpandedChangeConnect,
+  handleWithTreeMenuMenuOpenChange,
+  hideWithTreeMenuFlyout,
+  openWithTreeMenuDataFlyout,
+  resetWithTreeMenuForNonConnectTheme,
+  setWithTreeMenuDataFlyoutDisabled,
+  type WithTreeMenuFlyoutState,
+} from './modus-wc-side-navigation-with-tree-menu.story-handlers';
+import { getWithTreeMenuSourceCode } from './modus-wc-side-navigation-with-tree-menu.story-source';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface SideNavigationArgs {
   'custom-class'?: string;
   expanded: boolean;
   'max-width': string;
+  'min-width'?: string;
   'collapse-on-click-outside'?: boolean;
   mode: 'overlay' | 'push';
   'target-content'?: string;
@@ -285,7 +323,7 @@ export const WithSubmenu: Story = {
           background-color: unset;
         }
         .flex-right:active {
-          background-color: unset !important;
+          background-color: unset;
         }
       </style>
 
@@ -513,6 +551,520 @@ export const WithSubmenu: Story = {
         //   });
         //
       </script>
+    `;
+  },
+};
+
+/** Persists across Lit re-renders so mount-only expandedChange skip is not reset. */
+let withTreeMenuExpandedChangeReady = false;
+
+/** Persists across Lit re-renders for Connect flyout handlers. */
+const withTreeMenuFlyoutState: WithTreeMenuFlyoutState = {
+  dataIconDropdown: null,
+  flyoutOpenTimer: null,
+  collapseFlyoutTimer: null,
+};
+
+let withTreeMenuThemeObserverWired = false;
+
+export const WithTreeMenu: Story = {
+  args: { expanded: true },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This story is theme-specific: markup and styles differ between Connect and Modern/Classic. After changing the theme in the Storybook toolbar, re-render the story so it re-renders with the correct layout. Show code is a self-contained Connect copy-paste snippet (navbar, layout, and wiring included).',
+      },
+      source: { code: getWithTreeMenuSourceCode() },
+    },
+  },
+  render: (args, context) => {
+    let suppressNextMenuOpen = false;
+    const menuOpenSuppress = {
+      get: () => suppressNextMenuOpen,
+      set: (value: boolean) => {
+        suppressNextMenuOpen = value;
+      },
+    };
+    const globalsTheme = (context as { globals?: { theme?: string } }).globals
+      ?.theme;
+    const connectTheme = globalsTheme
+      ? globalsTheme === 'connect-light' || globalsTheme === 'connect-dark'
+      : isConnectSideNavTheme();
+
+    if (!withTreeMenuThemeObserverWired && typeof document !== 'undefined') {
+      withTreeMenuThemeObserverWired = true;
+      new MutationObserver(() => {
+        if (!isConnectSideNavTheme()) {
+          resetWithTreeMenuForNonConnectTheme(withTreeMenuFlyoutState);
+        }
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
+
+    const selectSubmenuParent = (
+      sideNav: HTMLElement,
+      dataItem: HTMLElement & { selected?: boolean }
+    ) => {
+      dataItem.selected = true;
+      sideNav.querySelectorAll('modus-wc-tree-item').forEach((item) => {
+        if (item !== dataItem) {
+          (item as HTMLElement & { selected?: boolean }).selected = false;
+        }
+      });
+    };
+
+    const handleMenuOpenChange = (e: CustomEvent<boolean>) => {
+      handleWithTreeMenuMenuOpenChange(e, menuOpenSuppress);
+    };
+
+    const handleExpandedChange = (e: CustomEvent<boolean>) => {
+      const eventSource = e.target as HTMLElement;
+
+      if (!withTreeMenuExpandedChangeReady) {
+        withTreeMenuExpandedChangeReady = true;
+        if (isConnectSideNavTheme()) {
+          setWithTreeMenuDataFlyoutDisabled(
+            withTreeMenuFlyoutState,
+            Boolean(e.detail)
+          );
+        }
+        return;
+      }
+
+      if (isConnectSideNavTheme()) {
+        handleWithTreeMenuExpandedChangeConnect(
+          e,
+          eventSource,
+          withTreeMenuFlyoutState,
+          menuOpenSuppress
+        );
+      } else {
+        handleWithTreeMenuExpandedChangeClassicModern(
+          e,
+          eventSource,
+          menuOpenSuppress
+        );
+      }
+    };
+
+    const handleTreeItemSelect = (e: CustomEvent) => {
+      const treeItem = (e.target as HTMLElement).closest('modus-wc-tree-item');
+      if (!treeItem) return;
+
+      const sideNav = treeItem.closest('modus-wc-side-navigation');
+      if (!sideNav) return;
+
+      const value = treeItem.getAttribute('value');
+      const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
+        .expanded;
+
+      if (value === 'data') {
+        const dataItem = sideNav.querySelector<
+          HTMLElement & { selected?: boolean }
+        >('modus-wc-tree-item[value="data"]');
+        if (dataItem && isExpanded) {
+          selectSubmenuParent(sideNav as HTMLElement, dataItem);
+        }
+      }
+
+      if (
+        isConnectSideNavTheme() &&
+        !isExpanded &&
+        treeItem.querySelector('modus-wc-tree-menu')
+      ) {
+        openWithTreeMenuDataFlyout(withTreeMenuFlyoutState, true);
+      }
+    };
+
+    const handleFlyoutItemSelect = (e: CustomEvent) => {
+      if (!isConnectSideNavTheme()) return;
+
+      const value = (e as CustomEvent<{ value: string }>).detail?.value;
+      if (!value || !withTreeMenuFlyoutState.dataIconDropdown) return;
+
+      hideWithTreeMenuFlyout(withTreeMenuFlyoutState);
+
+      const sideNav = withTreeMenuFlyoutState.dataIconDropdown.closest(
+        'modus-wc-side-navigation'
+      );
+
+      const realItem = sideNav?.querySelector(
+        `modus-wc-tree-item[value="${value}"]`
+      );
+      if (realItem) {
+        realItem
+          .querySelector<HTMLElement>(
+            ':scope > li > .modus-wc-menu-item-interactive'
+          )
+          ?.click();
+      }
+
+      // Drop focus from flyout trigger so borderless primary color does not stick.
+      withTreeMenuFlyoutState.dataIconDropdown
+        ?.querySelector<HTMLElement>('modus-wc-button .modus-wc-btn')
+        ?.blur();
+
+      // Close after the tree-item click; cancels any deferred flyout open too.
+      setTimeout(() => hideWithTreeMenuFlyout(withTreeMenuFlyoutState), 0);
+    };
+
+    const handleContextItemSelect = (e: CustomEvent) => {
+      console.log(
+        'Action:',
+        (e as CustomEvent<{ value: string }>).detail.value
+      );
+      const dropdown = (e.target as HTMLElement).closest(
+        'modus-wc-dropdown-menu'
+      );
+      if (dropdown) {
+        (dropdown as HTMLElement & { menuVisible: boolean }).menuVisible =
+          false;
+      }
+    };
+
+    const onDataItemRef = (el: Element | undefined) => {
+      if (!el) return;
+
+      if (!el.hasAttribute('data-flyout-wired')) {
+        el.setAttribute('data-flyout-wired', '');
+        el.addEventListener('itemSelect', (e: Event) => {
+          // Child tree-items bubble itemSelect; only handle Data's own row.
+          if (e.target !== el) return;
+
+          const sideNav = el.closest('modus-wc-side-navigation');
+          if (!sideNav) return;
+
+          if ((sideNav as HTMLElement & { expanded: boolean }).expanded) {
+            selectSubmenuParent(
+              sideNav,
+              el as HTMLElement & { selected?: boolean }
+            );
+            return;
+          }
+
+          if (isConnectSideNavTheme()) {
+            openWithTreeMenuDataFlyout(withTreeMenuFlyoutState, true);
+          }
+        });
+      }
+    };
+
+    const onDataIconDropdownRef = (el: Element | undefined) => {
+      if (!el) {
+        withTreeMenuFlyoutState.dataIconDropdown = null;
+        return;
+      }
+
+      withTreeMenuFlyoutState.dataIconDropdown = el as HTMLElement;
+
+      if (!isConnectSideNavTheme()) {
+        setWithTreeMenuDataFlyoutDisabled(withTreeMenuFlyoutState, true);
+        return;
+      }
+
+      const sideNav = withTreeMenuFlyoutState.dataIconDropdown.closest(
+        'modus-wc-side-navigation'
+      );
+      const isExpanded = (sideNav as HTMLElement & { expanded: boolean })
+        ?.expanded;
+      setWithTreeMenuDataFlyoutDisabled(
+        withTreeMenuFlyoutState,
+        Boolean(isExpanded)
+      );
+    };
+
+    return html`
+      <link rel="stylesheet" href=${CONNECT_ICON_FONT_URL} />
+      <style>
+        .layout-with-navbar {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+        .main-content-row {
+          display: flex;
+          flex: 1;
+          overflow: hidden;
+        }
+        .panel-content {
+          margin-left: ${connectTheme ? SIDE_NAV_COLLAPSED_MIN_WIDTH : '4rem'};
+          padding: 10px;
+        }
+        .side-navigation {
+          height: 500px;
+          align-self: flex-start;
+          position: relative;
+        }
+        ${sideNavConnectCollapsedRailStyles}
+        ${sideNavConnectTreeItemStyles}
+        ${sideNavConnectLightTreeItemEndSlotActiveStyles}
+        ${sideNavTreeItemEndActionDropdownStyles}
+        ${sideNavDataFlyoutDropdownStyles}
+        ${sideNavConnectStoryLayoutStyles}
+        ${sideNavConnectWithTreeMenuStoryStyles}
+      </style>
+      <div class="layout-with-navbar">
+        <modus-wc-navbar
+          app-title="Modus App"
+          class="navbar"
+          @mainMenuOpenChange=${handleMenuOpenChange}
+          .userCard=${WITH_TREE_MENU_NAVBAR_USER_CARD}
+          .visibility=${WITH_TREE_MENU_NAVBAR_VISIBILITY}
+          style="z-index: 2;"
+        ></modus-wc-navbar>
+        <div class="main-content-row">
+          <modus-wc-side-navigation
+            class="side-navigation"
+            collapse-on-click-outside=${args['collapse-on-click-outside']}
+            custom-class=${ifDefined(args['custom-class'])}
+            expanded=${args.expanded}
+            max-width=${args['max-width']}
+            mode=${ifDefined(args.mode)}
+            target-content=${ifDefined(args['target-content'])}
+            @expandedChange=${handleExpandedChange}
+            @itemSelect=${handleTreeItemSelect}
+          >
+            <modus-wc-tree-menu size="lg" aria-label="Project navigation">
+              <modus-wc-tree-item label="All Projects" value="all-projects">
+                <modus-wc-icon
+                  slot="start"
+                  aria-label="All Projects icon"
+                  name=""
+                  custom-class=${connectIconClass(CONNECT_ICONS.allProjects)}
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item
+                ${ref(onDataItemRef)}
+                label="Data"
+                value="data"
+                has-submenu="true"
+              >
+                ${connectTheme
+                  ? html`
+                      <modus-wc-dropdown-menu
+                        slot="start"
+                        ${ref(onDataIconDropdownRef)}
+                        menu-placement="right-start"
+                        menu-strategy="fixed"
+                        menu-offset=${SIDE_NAV_DATA_FLYOUT_MENU_OFFSET}
+                        menu-size="lg"
+                        button-variant="borderless"
+                        custom-class=${SIDE_NAV_DATA_FLYOUT_DROPDOWN_CLASS}
+                        @itemSelect=${handleFlyoutItemSelect}
+                      >
+                        <modus-wc-icon
+                          aria-label="Data icon"
+                          name=""
+                          slot="button"
+                          custom-class=${connectIconClass(CONNECT_ICONS.data)}
+                        ></modus-wc-icon>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Explorer"
+                          value="explorer"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.explorer
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Views"
+                          value="views"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.views
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                        <modus-wc-menu-item
+                          slot="menu"
+                          label="Releases"
+                          value="releases"
+                          size="lg"
+                        >
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name=""
+                            custom-class=${connectIconClass(
+                              CONNECT_ICONS.releases
+                            )}
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
+                      </modus-wc-dropdown-menu>
+                    `
+                  : html`
+                      <modus-wc-icon
+                        slot="start"
+                        aria-label="Data icon"
+                        name="master_data"
+                        size="sm"
+                      ></modus-wc-icon>
+                    `}
+                <modus-wc-tree-menu is-sub-menu="true">
+                  <modus-wc-tree-item
+                    label="Explorer"
+                    value="explorer"
+                    custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_CLASS}
+                  >
+                    <modus-wc-icon
+                      slot="start"
+                      aria-label="Explorer icon"
+                      name=""
+                      custom-class=${connectIconClass(CONNECT_ICONS.explorer)}
+                    ></modus-wc-icon>
+                    ${connectTheme
+                      ? html`
+                          <div
+                            slot="end"
+                            style="display: flex; align-items: stretch;"
+                          >
+                            <div
+                              style="width: 1px; background: currentColor; opacity: 0.3;"
+                            ></div>
+                            <modus-wc-dropdown-menu
+                              button-variant="borderless"
+                              button-size="sm"
+                              menu-size="sm"
+                              menu-placement="right-start"
+                              menu-strategy="fixed"
+                              menu-offset="0"
+                              button-aria-label="Open folder"
+                              custom-class=${SIDE_NAV_TREE_ITEM_END_ACTION_DROPDOWN_CLASS}
+                              @itemSelect=${handleContextItemSelect}
+                            >
+                              <div
+                                slot="button"
+                                style="display: flex; align-items: center; gap: 2px;"
+                              >
+                                <modus-wc-icon
+                                  aria-label="Folder icon"
+                                  name=""
+                                  size="sm"
+                                  custom-class=${connectIconClass(
+                                    CONNECT_ICONS.folder,
+                                    SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+                                    'i16'
+                                  )}
+                                ></modus-wc-icon>
+                                <modus-wc-icon
+                                  aria-label="Open submenu icon"
+                                  name=""
+                                  size="sm"
+                                  custom-class=${connectIconClass(
+                                    CONNECT_ICONS.chevronRight,
+                                    SIDE_NAV_TREE_ITEM_END_ACTION_ICON_CLASS,
+                                    'i16'
+                                  )}
+                                ></modus-wc-icon>
+                              </div>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Rename"
+                                value="rename"
+                              ></modus-wc-menu-item>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Duplicate"
+                                value="duplicate"
+                              ></modus-wc-menu-item>
+                              <modus-wc-menu-item
+                                slot="menu"
+                                label="Delete"
+                                value="delete"
+                              ></modus-wc-menu-item>
+                            </modus-wc-dropdown-menu>
+                          </div>
+                        `
+                      : nothing}
+                  </modus-wc-tree-item>
+                  <modus-wc-tree-item label="Views" value="views">
+                    <modus-wc-icon
+                      slot="start"
+                      aria-label="Views icon"
+                      name=""
+                      custom-class=${connectIconClass(CONNECT_ICONS.views)}
+                    ></modus-wc-icon>
+                  </modus-wc-tree-item>
+                  <modus-wc-tree-item label="Releases" value="releases">
+                    <modus-wc-icon
+                      slot="start"
+                      aria-label="Releases icon"
+                      name=""
+                      custom-class=${connectIconClass(CONNECT_ICONS.releases)}
+                    ></modus-wc-icon>
+                  </modus-wc-tree-item>
+                </modus-wc-tree-menu>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Activity" value="activity">
+                <modus-wc-icon
+                  slot="start"
+                  aria-label="Activity icon"
+                  name=""
+                  custom-class=${connectIconClass(CONNECT_ICONS.activity)}
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="BCF Topics" value="bcf-topics">
+                <modus-wc-icon
+                  slot="start"
+                  aria-label="BCF Topics icon"
+                  name=""
+                  custom-class=${connectIconClass(CONNECT_ICONS.bcfTopics)}
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item label="Field Data" value="field-data">
+                <modus-wc-icon
+                  slot="start"
+                  aria-label="Field Data icon"
+                  name=""
+                  custom-class=${connectIconClass(CONNECT_ICONS.fieldData)}
+                ></modus-wc-icon>
+              </modus-wc-tree-item>
+            </modus-wc-tree-menu>
+          </modus-wc-side-navigation>
+          <div class="panel-content">
+            <h3>Side Navigation with Tree Menu</h3>
+            <p>
+              <strong>Theme switch:</strong> This story renders different markup
+              and CSS per theme (Connect vs Modern/Classic). After you change
+              the theme in the Storybook toolbar, refresh or re-open this story
+              so it re-renders; otherwise layout and behavior may not match the
+              selected theme.
+            </p>
+            <p>
+              This example replicates Trimble project navigation using
+              modus-wc-tree-menu and modus-wc-tree-item. Switch the Storybook
+              theme toolbar to compare behavior: <strong>Connect</strong> uses a
+              collapsed-rail flyout for the Data row;
+              <strong>Modern</strong> and <strong>Classic</strong> use the
+              built-in inline collapsible submenu (no flyout).
+            </p>
+            <p>
+              On Connect, when the side nav is collapsed, Data uses
+              <code>block-expand</code> and a start-slot flyout dropdown. On
+              Modern/Classic, Data uses a standard start icon and expands or
+              collapses its submenu inline when the side nav is expanded.
+            </p>
+            <p>
+              The Explorer end-slot action uses modus-wc-dropdown-menu (Connect
+              themes only for layout styling). Expand the side nav with the
+              navbar hamburger to reveal labels and that action.
+            </p>
+          </div>
+        </div>
+      </div>
     `;
   },
 };
