@@ -72,6 +72,13 @@ export class ModusWcDropdownMenu {
   /** The size of the menu. */
   @Prop() menuSize?: ModusSize = 'md';
 
+  /**
+   * The positioning strategy for the menu. Use 'fixed' when the dropdown is
+   * inside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to
+   * the viewport coordinate space.
+   */
+  @Prop() menuStrategy?: 'absolute' | 'fixed' = 'absolute';
+
   /** Indicates that the menu is visible. */
   @Prop({ mutable: true }) menuVisible: boolean = false;
 
@@ -138,6 +145,7 @@ export class ModusWcDropdownMenu {
 
     const { x, y } = await computePosition(this.buttonRef, this.menuRef, {
       placement: this.menuPlacement,
+      strategy: this.menuStrategy,
       middleware: [offset(this.menuOffset), flip(), shift({ padding: 8 })],
     });
 
@@ -167,7 +175,7 @@ export class ModusWcDropdownMenu {
           ref={(el) => (this.menuRef = el)}
           style={{
             // Positioning
-            position: 'absolute',
+            position: this.menuStrategy,
             top: `${this.menuPosition.y}px`,
             left: `${this.menuPosition.x}px`,
             zIndex: '1000',

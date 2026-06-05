@@ -11,6 +11,7 @@ concurrency:
 
 permissions:
   contents: write
+  packages: read
   pull-requests: write
 
 jobs:
@@ -33,6 +34,7 @@ jobs:
         run: npm ci && npm run build:ci
         env:
           TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build React v17 integration
         working-directory: integrations/react/v17
@@ -64,6 +66,14 @@ jobs:
         working-directory: integrations/angular/ng19
         run: npm ci
 
+      - name: Install Angular ng20 dependencies
+        working-directory: integrations/angular/ng20
+        run: npm ci
+
+      - name: Install Angular ng21 dependencies
+        working-directory: integrations/angular/ng21
+        run: npm ci
+
       - name: Install React test app v17 dependencies
         working-directory: integrations/react/test-react-v17
         run: npm ci
@@ -85,6 +95,7 @@ jobs:
       - name: Run npm audit and apply fixes across all directories
         run: |
           DIRS=". integrations/angular/ng17 integrations/angular/ng18 integrations/angular/ng19 \
+            integrations/angular/ng20 integrations/angular/ng21 \
             integrations/react/v17 integrations/react/v18 integrations/react/v19 \
             integrations/react/test-react-v17 integrations/react/test-react-v18 integrations/react/test-react-v19 \
             integrations/vue/v-latest integrations/vue/test-app"
@@ -104,6 +115,8 @@ jobs:
             integrations/angular/ng17/audit-output.json
             integrations/angular/ng18/audit-output.json
             integrations/angular/ng19/audit-output.json
+            integrations/angular/ng20/audit-output.json
+            integrations/angular/ng21/audit-output.json
             integrations/react/v17/audit-output.json
             integrations/react/v18/audit-output.json
             integrations/react/v19/audit-output.json
@@ -128,6 +141,8 @@ jobs:
             integrations/angular/ng17/package.json integrations/angular/ng17/package-lock.json \
             integrations/angular/ng18/package.json integrations/angular/ng18/package-lock.json \
             integrations/angular/ng19/package.json integrations/angular/ng19/package-lock.json \
+            integrations/angular/ng20/package.json integrations/angular/ng20/package-lock.json \
+            integrations/angular/ng21/package.json integrations/angular/ng21/package-lock.json \
             integrations/react/v17/package.json integrations/react/v17/package-lock.json \
             integrations/react/v18/package.json integrations/react/v18/package-lock.json \
             integrations/react/v19/package.json integrations/react/v19/package-lock.json \
