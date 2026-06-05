@@ -60,6 +60,23 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.style.transform).toBe('translate(-50%, 0)');
   });
 
+  it('should toggle aria-modal with the open state so AT constrains navigation', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+
+    // Closed: aria-modal must be absent so the dialog is not flagged as modal.
+    expect(page.root?.hasAttribute('aria-modal')).toBe(false);
+
+    component.open = true;
+    await page.waitForChanges();
+
+    // Open: aria-modal="true" keeps screen readers within the sheet's content.
+    expect(page.root?.getAttribute('aria-modal')).toBe('true');
+  });
+
   it('should fill the height and apply the expanded class when expanded', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
@@ -533,6 +550,45 @@ describe('modus-wc-bottom-sheet', () => {
     expect(minimizedChange).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { minimized: false } })
     );
+  });
+
+  it('should move focus into the sheet when it opens (WCAG 2.4.3)', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const focusSpy = jest.spyOn(page.root as HTMLElement, 'focus');
+
+    component.open = true;
+    await page.waitForChanges();
+
+    expect(focusSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not move focus when the sheet closes', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const focusSpy = jest.spyOn(page.root as HTMLElement, 'focus');
+
+    component.open = false;
+    await page.waitForChanges();
+
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not steal focus on initial render when open at load', async () => {
+    const focusSpy = jest.spyOn(HTMLElement.prototype, 'focus');
+    await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
+    });
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    focusSpy.mockRestore();
   });
 
   it('should not render the header/footer wrappers when no slot content is provided', async () => {

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-bottom-sheet should render with default props 1`] = `
-<modus-wc-bottom-sheet aria-hidden="true" aria-label="Bottom sheet" class="modus-wc-bottom-sheet" inert="" role="dialog" style="transform: translate(-50%, 100%);">
+<modus-wc-bottom-sheet aria-hidden="true" aria-label="Bottom sheet" class="modus-wc-bottom-sheet" inert="" role="dialog" tabindex="-1" style="transform: translate(-50%, 100%);">
   <!---->
   <modus-wc-panel>
     <!---->

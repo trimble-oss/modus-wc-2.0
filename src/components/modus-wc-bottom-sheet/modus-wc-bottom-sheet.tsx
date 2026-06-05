@@ -46,6 +46,8 @@ export class ModusWcBottomSheet {
   private currentDelta = 0;
   /** Pixels the sheet must be dragged up before it expands to full height. */
   private readonly expandThresholdPx = 64;
+  /** Set when the sheet opens so focus can move inside it after the next render. */
+  private pendingFocus = false;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -102,11 +104,16 @@ export class ModusWcBottomSheet {
   handleOpenChange(isOpen: boolean) {
     // Keep a closed sheet out of the tab order / a11y tree.
     this.setInert(!isOpen);
-    // Enforce the invariant that a closed sheet is neither expanded nor
-    // minimized, even when `open` is toggled externally (bypassing setOpen).
-    // Route through the setters so expandedChange/minimizedChange are emitted
-    // and consumers mirroring state stay in sync.
-    if (!isOpen) {
+    if (isOpen) {
+      // WCAG 2.4.3 (Focus Order): opening a dialog must move focus inside it.
+      // Defer to componentDidRender so the sheet is rendered (and no longer
+      // inert/aria-hidden) before focus moves.
+      this.pendingFocus = true;
+    } else {
+      // Enforce the invariant that a closed sheet is neither expanded nor
+      // minimized, even when `open` is toggled externally (bypassing setOpen).
+      // Route through the setters so expandedChange/minimizedChange are emitted
+      // and consumers mirroring state stay in sync.
       this.setExpanded(false);
       this.setMinimized(false);
     }
@@ -124,6 +131,15 @@ export class ModusWcBottomSheet {
     const children = Array.from(this.el.children);
     this.hasHeader = children.some((c) => c.getAttribute('slot') === 'header');
     this.hasFooter = children.some((c) => c.getAttribute('slot') === 'footer');
+  }
+
+  componentDidRender() {
+    if (this.pendingFocus) {
+      this.pendingFocus = false;
+      // The host carries role="dialog" and an accessible name, so assistive
+      // technology announces the sheet when focus lands on it.
+      this.el.focus();
+    }
   }
 
   /** Toggle the `inert` attribute on the host so closed sheets cannot be focused. */
@@ -371,6 +387,7 @@ export class ModusWcBottomSheet {
         {...this.inheritedAttributes}
         class={this.getClasses()}
         role="dialog"
+        tabIndex={-1}
         aria-hidden={(!this.open).toString()}
         aria-modal={this.open ? 'true' : undefined}
         style={{
