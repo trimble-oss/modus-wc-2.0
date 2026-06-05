@@ -7,6 +7,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -15,10 +16,24 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * A customizable bottom sheet component used to display content in a dialog.
  *
  * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
+ * Alternatively, set the `header` prop for the built-in header layout. Do not set `header` if you use the
+ * 'header' slot.
  *
  * The drag handle lets the user drag the sheet down to dismiss it (past the dismiss threshold)
  * or drag it up to expand it to fill the page/iframe height. Smaller drags snap back to rest.
  */
+
+export interface IBottomSheetHeader {
+  /** Whether to show the back button. */
+  showBackButton?: boolean;
+  /** The title of the header. */
+  title?: string;
+  /** The subtitle of the header. */
+  subtitle?: string;
+  /** Whether to show the dismiss button. Clicking it closes the bottom sheet. */
+  showCloseButton?: boolean;
+}
+
 @Component({
   tag: 'modus-wc-bottom-sheet',
   styleUrl: 'modus-wc-bottom-sheet.scss',
@@ -26,7 +41,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcBottomSheet {
   private inheritedAttributes: Attributes = {};
-  private handleEl: HTMLElement | null = null;
   private startY = 0;
   private startHeight = 0;
   private currentDelta = 0;
@@ -51,14 +65,38 @@ export class ModusWcBottomSheet {
   /** Controls whether the bottom sheet is expanded to fill the page/iframe height. */
   @Prop({ mutable: true }) expanded?: boolean = false;
 
-  /** Fraction (0-1) of the sheet height it must be dragged down before it dismisses. */
+  /**
+   * Controls whether the bottom sheet is minimized to a peek state where only the
+   * handle is visible at the bottom and the content is hidden.
+   */
+  @Prop({ mutable: true }) minimized?: boolean = false;
+
+  /** Fraction (0-1) of the sheet height it must be dragged down before it minimizes. */
   @Prop() dismissThreshold?: number = 0.4;
+
+  /**
+   * Configuration for the built-in header layout.
+   * Do not set this prop if you intend to use the 'header' slot.
+   */
+  @Prop() header?: IBottomSheetHeader;
 
   /** Event emitted when the open prop is internally changed. */
   @StencilEvent() openChange!: EventEmitter<{ open: boolean }>;
 
   /** Event emitted when the expanded prop is internally changed. */
   @StencilEvent() expandedChange!: EventEmitter<{ expanded: boolean }>;
+
+  /** Event emitted when the minimized prop is internally changed. */
+  @StencilEvent() minimizedChange!: EventEmitter<{ minimized: boolean }>;
+
+  /** Event emitted when the header back button is clicked. Does not change sheet state. */
+  @StencilEvent() headerBackClick!: EventEmitter<void>;
+
+  /**
+   * Event emitted when the header dismiss button is clicked.
+   * The sheet is also closed automatically (`open` is set to `false`).
+   */
+  @StencilEvent() headerCloseClick!: EventEmitter<void>;
 
   /** Internal flag set while the handle is being dragged. */
   @State() isDragging = false;
@@ -69,28 +107,58 @@ export class ModusWcBottomSheet {
   /** Live sheet height while dragging upward (previews the expand gesture). */
   @State() dragHeight: string | null = null;
 
+  /** Whether the consumer supplied content for the header slot. */
+  @State() hasHeader = false;
+
+  /** Whether the consumer supplied content for the footer slot. */
+  @State() hasFooter = false;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    // A closed sheet must not be focusable or in the a11y tree (@Watch does not
+    // fire on initial load, so the initial state is set here).
+    this.setInert(!this.open);
+    // Captured before first render: the host's direct children are still the
+    // consumer-provided slotted nodes (Stencil relocates them into the panel
+    // once rendered, so this must run here).
+    const children = Array.from(this.el.children);
+    this.hasHeader = children.some((c) => c.getAttribute('slot') === 'header');
+    this.hasFooter = children.some((c) => c.getAttribute('slot') === 'footer');
   }
 
-  componentDidLoad() {
-    this.handleEl = this.el.querySelector('modus-wc-handle');
-    // istanbul ignore next (handle is always rendered; null-guards are defensive)
-    if (this.handleEl) {
-      this.handleEl.addEventListener('pointerdown', this.onPointerDown);
-      this.handleEl.addEventListener('keydown', this.onHandleKeyDown);
+  @Watch('open')
+  handleOpenChange(isOpen: boolean) {
+    // Keep a closed sheet out of the tab order / a11y tree.
+    this.setInert(!isOpen);
+    // Enforce the invariant that a closed sheet is neither expanded nor
+    // minimized, even when `open` is toggled externally (bypassing setOpen).
+    if (!isOpen) {
+      this.expanded = false;
+      this.minimized = false;
+    }
+  }
+
+  /** Toggle the `inert` attribute on the host so closed sheets cannot be focused. */
+  private setInert(inert: boolean) {
+    if (inert) {
+      this.el.setAttribute('inert', '');
+    } else {
+      this.el.removeAttribute('inert');
     }
   }
 
   disconnectedCallback() {
-    // istanbul ignore next (handle is always rendered; null-guards are defensive)
-    if (this.handleEl) {
-      this.handleEl.removeEventListener('pointerdown', this.onPointerDown);
-      this.handleEl.removeEventListener('keydown', this.onHandleKeyDown);
-    }
+    // The handle's pointerdown/keydown listeners are bound in JSX, so Stencil
+    // tears them down automatically. Only the document-level drag listeners
+    // (added in onPointerDown) need manual cleanup in case of a mid-drag teardown.
     document.removeEventListener('pointermove', this.onPointerMove);
     document.removeEventListener('pointerup', this.onPointerUp);
+    // Reset the global grab cursor if the sheet is torn down mid-drag
+    // (onPointerUp, which normally clears it, will never fire).
+    if (this.isDragging) {
+      document.body.style.cursor = '';
+    }
   }
 
   private readonly onPointerDown = (e: PointerEvent) => {
@@ -99,16 +167,14 @@ export class ModusWcBottomSheet {
     this.isDragging = true;
     this.startY = e.clientY;
     this.currentDelta = 0;
-    const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel');
-    // istanbul ignore next (defensive fallback; panel is always rendered)
-    this.startHeight = panel?.offsetHeight ?? 0;
+    // The panel is always rendered, so the reference is non-null.
+    this.startHeight =
+      this.el.querySelector<HTMLElement>('.modus-wc-panel')!.offsetHeight;
     document.addEventListener('pointermove', this.onPointerMove);
     document.addEventListener('pointerup', this.onPointerUp);
   };
 
   private readonly onPointerMove = (e: PointerEvent) => {
-    // istanbul ignore next (guard; the listener is only attached while dragging)
-    if (!this.isDragging) return;
     e.preventDefault();
     // Keep the grab cursor while dragging (re-asserted after the handle's own mousedown).
     document.body.style.cursor = 'grabbing';
@@ -119,12 +185,11 @@ export class ModusWcBottomSheet {
       this.dragOffset = this.currentDelta;
       this.dragHeight = null;
     } else {
-      // Dragging upward: grow the sheet height live to preview the expand.
+      // Dragging upward: grow the sheet height live to preview the expand,
+      // clamped to the viewport height.
       this.dragOffset = 0;
       const grown = this.startHeight - this.currentDelta;
-      // istanbul ignore next (defensive fallback; window.innerHeight is always set)
-      const maxHeight = window.innerHeight || grown;
-      this.dragHeight = `${Math.min(grown, maxHeight)}px`;
+      this.dragHeight = `${Math.min(grown, window.innerHeight)}px`;
     }
   };
 
@@ -139,58 +204,79 @@ export class ModusWcBottomSheet {
     this.dragHeight = null;
 
     if (delta > 0) {
-      const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel');
-      // istanbul ignore next (defensive fallbacks; panel and threshold are always set)
-      const height = panel?.offsetHeight ?? 0;
-      // istanbul ignore next (defensive fallback; dismissThreshold defaults to 0.4)
-      const dismissPx = (this.dismissThreshold ?? 0.4) * height;
+      // The panel is always rendered, so the reference is non-null.
+      const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel')!;
+      const dismissPx = (this.dismissThreshold ?? 0.4) * panel.offsetHeight;
 
+      // Drag down steps down one level (expanded -> open -> minimized).
+      // It never closes the sheet; closing is property/action driven only.
       if (delta > dismissPx) {
-        if (this.expanded) {
-          this.setExpanded(false);
-        } else {
-          this.setOpen(false);
-        }
+        this.stepDown();
       }
-    } else if (-delta > this.expandThresholdPx && !this.expanded) {
-      this.setExpanded(true);
+    } else if (-delta > this.expandThresholdPx) {
+      // Drag up steps up one level (minimized -> open -> expanded).
+      this.stepUp();
     }
   };
 
   private readonly onHandleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      this.setExpanded(true);
+      this.stepUp();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
-      if (this.expanded) {
-        this.setExpanded(false);
-      } else {
-        this.setOpen(false);
-      }
+      this.stepDown();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       this.setOpen(false);
     }
   };
 
+  /** Step up one level: minimized -> open -> expanded. */
+  private stepUp() {
+    if (this.minimized) {
+      this.setMinimized(false);
+    } else if (!this.expanded) {
+      this.setExpanded(true);
+    }
+  }
+
+  /** Step down one level: expanded -> open -> minimized (never closes). */
+  private stepDown() {
+    if (this.expanded) {
+      this.setExpanded(false);
+    } else if (!this.minimized) {
+      this.setMinimized(true);
+    }
+  }
+
   private setOpen(value: boolean) {
     if (this.open === value) return;
     this.open = value;
-    if (!value) this.expanded = false;
+    if (!value) {
+      this.expanded = false;
+      this.minimized = false;
+    }
     this.openChange.emit({ open: value });
   }
 
   private setExpanded(value: boolean) {
-    if (this.expanded === value) return;
     this.expanded = value;
+    if (value) this.minimized = false;
     this.expandedChange.emit({ expanded: value });
+  }
+
+  private setMinimized(value: boolean) {
+    this.minimized = value;
+    if (value) this.expanded = false;
+    this.minimizedChange.emit({ minimized: value });
   }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-bottom-sheet'];
 
     if (this.expanded) classList.push('modus-wc-bottom-sheet-expanded');
+    if (this.minimized) classList.push('modus-wc-bottom-sheet-minimized');
     if (this.isDragging) classList.push('modus-wc-bottom-sheet-dragging');
     if (this.customClass) classList.push(this.customClass);
 
@@ -205,9 +291,82 @@ export class ModusWcBottomSheet {
 
   private getPanelHeight(): string {
     if (this.isDragging && this.dragHeight) return this.dragHeight;
+    if (this.minimized) return 'auto';
     if (this.expanded) return '100dvh';
-    // istanbul ignore next (defensive fallback; height defaults to 'auto')
     return this.height ?? 'auto';
+  }
+
+  private hasDefaultHeader(): boolean {
+    if (!this.header) return false;
+
+    const { title, subtitle, showBackButton, showCloseButton } = this.header;
+
+    return !!(title || subtitle || showBackButton || showCloseButton);
+  }
+
+  private shouldRenderHeader(): boolean {
+    return this.hasHeader || this.hasDefaultHeader();
+  }
+
+  private readonly onHeaderBackClick = () => {
+    this.headerBackClick.emit();
+  };
+
+  private readonly onHeaderCloseClick = () => {
+    this.setOpen(false);
+    this.headerCloseClick.emit();
+  };
+
+  private renderDefaultHeader(header: IBottomSheetHeader) {
+    return (
+      <div class="modus-wc-bottom-sheet-header-top">
+        <div class="modus-wc-bottom-sheet-header-start">
+          {header.showBackButton && (
+            <modus-wc-button
+              aria-label="Back"
+              color="tertiary"
+              onButtonClick={this.onHeaderBackClick}
+              shape="square"
+              size="sm"
+              variant="borderless"
+            >
+              <modus-wc-icon name="chevron_left" decorative></modus-wc-icon>
+            </modus-wc-button>
+          )}
+          {(header.title || header.subtitle) && (
+            <div>
+              {header.title && (
+                <modus-wc-typography
+                  hierarchy="h4"
+                  size="lg"
+                  weight="semibold"
+                  label={header.title}
+                ></modus-wc-typography>
+              )}
+              {header.subtitle && (
+                <modus-wc-typography
+                  hierarchy="p"
+                  size="xs"
+                  label={header.subtitle}
+                ></modus-wc-typography>
+              )}
+            </div>
+          )}
+        </div>
+        {header.showCloseButton && (
+          <modus-wc-button
+            aria-label="Close"
+            color="tertiary"
+            onButtonClick={this.onHeaderCloseClick}
+            shape="square"
+            size="sm"
+            variant="borderless"
+          >
+            <modus-wc-icon name="close" decorative></modus-wc-icon>
+          </modus-wc-button>
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -230,19 +389,29 @@ export class ModusWcBottomSheet {
             orientation="vertical"
             size="default"
             type="bar"
+            onPointerDown={this.onPointerDown}
+            onKeyDown={this.onHandleKeyDown}
           />
 
-          <div class="modus-wc-bottom-sheet-header" slot="header">
-            <slot name="header"></slot>
-          </div>
+          {this.shouldRenderHeader() && (
+            <div class="modus-wc-bottom-sheet-header" slot="header">
+              {this.hasHeader ? (
+                <slot name="header"></slot>
+              ) : (
+                this.renderDefaultHeader(this.header!)
+              )}
+            </div>
+          )}
 
           <div class="modus-wc-bottom-sheet-content" slot="body">
             <slot name="content"></slot>
           </div>
 
-          <div class="modus-wc-bottom-sheet-footer" slot="footer">
-            <slot name="footer"></slot>
-          </div>
+          {this.hasFooter && (
+            <div class="modus-wc-bottom-sheet-footer" slot="footer">
+              <slot name="footer"></slot>
+            </div>
+          )}
         </modus-wc-panel>
       </Host>
     );

@@ -10,12 +10,26 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
     transition: none;
   }
 
+  &.modus-wc-bottom-sheet-minimized .modus-wc-panel {
+    .modus-wc-bottom-sheet-header,
+    .modus-wc-bottom-sheet-content,
+    .modus-wc-bottom-sheet-footer {
+      display: none;
+    }
+  }
+
   .modus-wc-panel {
     border-radius: var(--rounded-box) var(--rounded-box) 0 0;
+    box-shadow:
+      0 -20px 50px -8px
+        color-mix(in sRGB, var(--modus-wc-color-base-content) 22%, transparent),
+      0 -6px 16px
+        color-mix(in sRGB, var(--modus-wc-color-base-content) 12%, transparent);
     transition: height 0.3s ease;
 
     .modus-wc-bottom-sheet-handle {
       cursor: grab;
+      min-height: var(--modus-wc-font-size-2xl);
       touch-action: none;
 
       &:active {

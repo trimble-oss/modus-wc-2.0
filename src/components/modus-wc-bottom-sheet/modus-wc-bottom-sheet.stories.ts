@@ -1,6 +1,8 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { IBottomSheetHeader } from './modus-wc-bottom-sheet';
 
 interface BottomSheetArgs {
   'custom-class'?: string;
@@ -8,8 +10,17 @@ interface BottomSheetArgs {
   height?: string;
   open?: boolean;
   expanded?: boolean;
+  minimized?: boolean;
   'dismiss-threshold'?: number;
+  header?: IBottomSheetHeader;
 }
+
+const defaultHeader: IBottomSheetHeader = {
+  showBackButton: true,
+  title: 'Title',
+  subtitle: 'Subtitle',
+  showCloseButton: true,
+};
 
 const bottomSheetDemoStyles = `
   .modus-wc-bottom-sheet-footer-actions {
@@ -18,6 +29,12 @@ const bottomSheetDemoStyles = `
     gap: var(--modus-wc-spacing-sm);
     justify-content: flex-end;
     width: 100%;
+  }
+
+  .modus-wc-bottom-sheet-trigger-actions {
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    padding: var(--modus-wc-spacing-lg);
   }
 `;
 
@@ -29,7 +46,9 @@ const meta: Meta<BottomSheetArgs> = {
     width: '600px',
     open: true,
     expanded: false,
+    minimized: false,
     'dismiss-threshold': 0.4,
+    header: defaultHeader,
   },
   argTypes: {
     open: {
@@ -40,13 +59,30 @@ const meta: Meta<BottomSheetArgs> = {
       control: 'boolean',
       table: { defaultValue: { summary: 'false' } },
     },
+    minimized: {
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+    },
     'dismiss-threshold': {
       control: { type: 'number', min: 0, max: 1, step: 0.05 },
       table: { defaultValue: { summary: '0.4' } },
     },
+    header: {
+      control: 'object',
+    },
   },
+  decorators: [withActions],
   parameters: {
     layout: 'fullscreen',
+    actions: {
+      handles: [
+        'headerBackClick',
+        'headerCloseClick',
+        'expandedChange',
+        'minimizedChange',
+        'openChange',
+      ],
+    },
   },
 };
 
@@ -60,49 +96,19 @@ export const Default: Story = {
     return html`
       <style>
         div[id^='story--components-bottom-sheet--default'] {
-         height: 100vh;
-  }
+          height: 100vh;
+        }
         ${bottomSheetDemoStyles}
       </style>
         <modus-wc-bottom-sheet
           ?open="${args.open}"
           ?expanded="${args.expanded}"
+          ?minimized="${args.minimized}"
           dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
           height="${ifDefined(args.height)}"
           width="${ifDefined(args.width)}"
+          .header="${args.header}"
         >
-          <div slot="header">
-            <div class="modus-wc-bottom-sheet-header-top">
-              <div class="modus-wc-bottom-sheet-header-start">
-              <modus-wc-button color="tertiary" shape="square" size="sm" variant="borderless"> 
-                <modus-wc-icon name="chevron_left" decorative></modus-wc-icon>
-                </modus-wc-button>
-                <div>
-                  <modus-wc-typography
-                    hierarchy="h4"
-                    size="lg"
-                    weight="semibold"
-                    label="Title"
-                  ></modus-wc-typography>
-                  <modus-wc-typography
-                    hierarchy="p"
-                    size="xs"
-                    label="Subtitle"
-                  ></modus-wc-typography>
-                </div>
-              </div>
-              <modus-wc-button
-                aria-label="Close"
-                color="tertiary"
-                shape="square"
-                size="sm"
-                variant="borderless"
-              >
-                <modus-wc-icon name="close" decorative></modus-wc-icon>
-              </modus-wc-button>
-            </div>
-          </div>
-
           <div slot="content">
             <modus-wc-typography
               hierarchy="p"
@@ -127,17 +133,37 @@ export const Default: Story = {
 };
 
 export const TriggeredByButton: Story = {
+  args: {
+    header: {
+      showBackButton: false,
+      title: 'Bottom Sheet Title',
+      subtitle: 'Drag the handle down to minimize or up to expand.',
+      showCloseButton: false,
+    },
+  },
   render: (args) => {
     const sheetId = 'demo-triggered-bottom-sheet';
-
-    const openSheet = () => {
-      const sheet = document.getElementById(sheetId);
-      if (sheet) (sheet as HTMLElement & { open: boolean }).open = true;
-    };
 
     const closeSheet = () => {
       const sheet = document.getElementById(sheetId);
       if (sheet) (sheet as HTMLElement & { open: boolean }).open = false;
+    };
+
+    const minimizeSheet = () => {
+      const sheet = document.getElementById(sheetId);
+      if (sheet)
+        (sheet as HTMLElement & { minimized: boolean }).minimized = true;
+    };
+
+    const restoreSheet = () => {
+      const sheet = document.getElementById(sheetId);
+      if (sheet) {
+        (sheet as HTMLElement & { open: boolean; minimized: boolean }).open =
+          true;
+        (
+          sheet as HTMLElement & { open: boolean; minimized: boolean }
+        ).minimized = false;
+      }
     };
 
     // prettier-ignore
@@ -145,15 +171,23 @@ export const TriggeredByButton: Story = {
       <style>
         ${bottomSheetDemoStyles}
       </style>
-      <div style="padding: var(--modus-wc-spacing-lg);">
+      <div class="modus-wc-bottom-sheet-trigger-actions">
         <modus-wc-button
           color="primary"
           size="md"
           variant="filled"
-          @buttonClick="${openSheet}"
+          @buttonClick="${restoreSheet}"
         >
           <modus-wc-icon name="expand_more" size="sm" decorative></modus-wc-icon>
           Open bottom sheet
+        </modus-wc-button>
+        <modus-wc-button
+          color="tertiary"
+          size="md"
+          variant="outlined"
+          @buttonClick="${minimizeSheet}"
+        >
+          Minimize
         </modus-wc-button>
       </div>
 
@@ -162,37 +196,8 @@ export const TriggeredByButton: Story = {
         dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
         height="${ifDefined(args.height)}"
         width="${ifDefined(args.width)}"
+        .header="${ifDefined(args.header)}"
       >
-        <div slot="header">
-          <div class="modus-wc-bottom-sheet-header-top">
-            <div class="modus-wc-bottom-sheet-header-start">
-              <div>
-                <modus-wc-typography
-                  hierarchy="h4"
-                  size="lg"
-                  weight="semibold"
-                  label="Title"
-                ></modus-wc-typography>
-                <modus-wc-typography
-                  hierarchy="p"
-                  size="xs"
-                  label="Drag the handle down to dismiss or up to expand."
-                ></modus-wc-typography>
-              </div>
-            </div>
-            <modus-wc-button
-              aria-label="Close"
-              color="tertiary"
-              shape="square"
-              size="sm"
-              variant="borderless"
-              @buttonClick="${closeSheet}"
-            >
-              <modus-wc-icon name="close" decorative></modus-wc-icon>
-            </modus-wc-button>
-          </div>
-        </div>
-
         <div slot="content">
           <modus-wc-typography
             hierarchy="p"
@@ -229,6 +234,7 @@ export const TriggeredByButton: Story = {
 export const ContentOnly: Story = {
   args: {
     width: '400px',
+    header: undefined,
   },
   render: (args) => {
     // prettier-ignore
@@ -241,6 +247,7 @@ export const ContentOnly: Story = {
           ?open="${args.open}"
           custom-class="${ifDefined(args['custom-class'])}"
           width="${ifDefined(args.width)}"
+          .header="${args.header}"
         >
           <div slot="content">
             <modus-wc-typography
