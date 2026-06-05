@@ -175,11 +175,10 @@ export const ShadowDomParent: Story = {
         }
 
         private applyProps() {
-          const switcher = this.sr.querySelector('modus-wc-theme-switcher') as
-            | (HTMLElement & { customClass: string })
-            | null;
+          const switcher = this.sr.querySelector('modus-wc-theme-switcher');
           if (!switcher || !this._props) return;
-          switcher.customClass = this._props['custom-class'] || '';
+          (switcher as HTMLElement & { customClass: string }).customClass =
+            this._props['custom-class'] || '';
         }
       }
       customElements.define(
