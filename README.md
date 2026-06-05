@@ -56,8 +56,9 @@ import '@trimble-oss/moduswebcomponents';
 ### Getting Started
 
 1. Clone the repository
-2. `npm install`
-3. `npm start` to start a development version of Stencil and Storybook
+2. `npm run setup:auth` — one-time npm registry auth ([details](./docs/npm-auth-setup.md))
+3. `npm install`
+4. `npm start` to start a development version of Stencil and Storybook
 
 ### Building
 
