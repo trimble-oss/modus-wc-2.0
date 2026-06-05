@@ -100,6 +100,7 @@
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
     "test:vue": "npm -C integrations/vue/v-latest run dev",
+    "setup:auth": "bash scripts/setup-npm-auth.sh",
     "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
     "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run build first to generate the Blazor RCL.');process.exit(1)}\"",
     "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",

@@ -20,6 +20,7 @@
 
 - Node (>= v16)
 - npm CLI (>= v7)
+- Access to private npm registries — see [NPM auth setup](./docs/npm-auth-setup.md)
 
 ## Getting Started
 
@@ -39,10 +40,13 @@ To prepare for the predesign session please:
 
 Refer to our [README](./README.md) on running the app and [build scripts](./docs/build-scripts.md) for more information on how our scripts work.
 
-To get this application up and running locally, there are just two commands needed:
+To get this application up and running locally:
 
-- Run `npm install`
-- Run `npm start`
+1. Run `npm run setup:auth` (one-time; configures `~/.npmrc` for GitHub Packages and Artifactory)
+2. Run `npm install` or `npm ci`
+3. Run `npm start`
+
+See [NPM auth setup](./docs/npm-auth-setup.md) if install fails with `401 Unauthorized`.
 
 ### Implementation
 
