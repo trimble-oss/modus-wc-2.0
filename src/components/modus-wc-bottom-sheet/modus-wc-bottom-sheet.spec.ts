@@ -67,7 +67,7 @@ describe('modus-wc-bottom-sheet', () => {
     });
 
     expect(page.root?.className).toContain('modus-wc-bottom-sheet-expanded');
-    expect(getPanel(page).style.height).toBe('100dvh');
+    expect(getPanel(page).style.height).toBe('95dvh');
   });
 
   it('should expand and emit expandedChange when ArrowUp is pressed on the handle', async () => {
@@ -293,8 +293,11 @@ describe('modus-wc-bottom-sheet', () => {
     await page.waitForChanges();
 
     const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.isDragging).toBe(false);
     expect(component.open).toBe(false);
+    expect(page.root?.className).not.toContain(
+      'modus-wc-bottom-sheet-dragging'
+    );
+    expect(page.root?.style.transform).toBe('translate(-50%, 100%)');
   });
 
   it('should follow the pointer downward while dragging', async () => {
@@ -308,9 +311,7 @@ describe('modus-wc-bottom-sheet', () => {
     document.dispatchEvent(new MouseEvent('pointermove', { clientY: 250 }));
     await page.waitForChanges();
 
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.isDragging).toBe(true);
-    expect(component.dragOffset).toBe(150);
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
     expect(page.root?.style.transform).toBe('translate(-50%, 150px)');
 
     document.dispatchEvent(new MouseEvent('pointerup'));
@@ -322,25 +323,29 @@ describe('modus-wc-bottom-sheet', () => {
       html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
     });
 
-    // The sheet starts at a 300px rest height; dragging up 100px should grow it
-    // live to 400px (clamped to the 800px viewport set in beforeEach).
+    // The sheet starts at a 300px rest height; dragging up 50px should grow it
+    // live to 350px (clamped to the 800px viewport set in beforeEach). Stay
+    // below the 64px expand threshold so the sheet snaps back on release.
     Object.defineProperty(getPanel(page), 'offsetHeight', { value: 300 });
 
     const handle = getHandle(page);
     handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 300 }));
-    document.dispatchEvent(new MouseEvent('pointermove', { clientY: 200 }));
+    document.dispatchEvent(new MouseEvent('pointermove', { clientY: 250 }));
     await page.waitForChanges();
 
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.isDragging).toBe(true);
-    expect(component.dragOffset).toBe(0);
-    expect(component.dragHeight).toBe('400px');
     expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
-    expect(getPanel(page).style.height).toBe('400px');
+    expect(page.root?.style.transform).toBe('translate(-50%, 0)');
+    expect(getPanel(page).style.height).toBe('350px');
 
     document.dispatchEvent(new MouseEvent('pointerup'));
     await page.waitForChanges();
-    expect(component.dragHeight).toBeNull();
+    expect(page.root?.className).not.toContain(
+      'modus-wc-bottom-sheet-dragging'
+    );
+    expect(page.root?.className).not.toContain(
+      'modus-wc-bottom-sheet-expanded'
+    );
+    expect(getPanel(page).style.height).toBe('auto');
   });
 
   it('should collapse to the rest height when dragged down while expanded', async () => {
@@ -458,26 +463,13 @@ describe('modus-wc-bottom-sheet', () => {
       new MouseEvent('pointerdown', { clientY: 100 })
     );
     document.dispatchEvent(new MouseEvent('pointermove', { clientY: 200 }));
-    expect(component.isDragging).toBe(true);
+    await page.waitForChanges();
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
     expect(document.body.style.cursor).toBe('grabbing');
 
     component.disconnectedCallback();
 
     expect(document.body.style.cursor).toBe('');
-  });
-
-  it('should fall back to auto height when height is set to undefined', async () => {
-    const page = await newSpecPage({
-      components: bottomSheetComponents,
-      html: '<modus-wc-bottom-sheet open="true" height="400px"></modus-wc-bottom-sheet>',
-    });
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(getPanel(page).style.height).toBe('400px');
-
-    component.height = undefined;
-    await page.waitForChanges();
-
-    expect(getPanel(page).style.height).toBe('auto');
   });
 
   it('should fall back to the default dismiss threshold when dismissThreshold is undefined', async () => {
@@ -515,12 +507,16 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.hasAttribute('inert')).toBe(false);
   });
 
-  it('should become inert and collapse when open is set to false externally', async () => {
+  it('should become inert, collapse, and emit sibling events when open is set to false externally', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
       html: '<modus-wc-bottom-sheet open="true" expanded="true" minimized="true"></modus-wc-bottom-sheet>',
     });
     const component = page.rootInstance as ModusWcBottomSheet;
+    const expandedChange = jest.fn();
+    const minimizedChange = jest.fn();
+    page.root?.addEventListener('expandedChange', expandedChange);
+    page.root?.addEventListener('minimizedChange', minimizedChange);
     expect(page.root?.hasAttribute('inert')).toBe(false);
 
     component.open = false;
@@ -529,6 +525,14 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.hasAttribute('inert')).toBe(true);
     expect(component.expanded).toBe(false);
     expect(component.minimized).toBe(false);
+    // Resetting the siblings on close must emit their change events so consumers
+    // mirroring state stay in sync.
+    expect(expandedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: false } })
+    );
+    expect(minimizedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { minimized: false } })
+    );
   });
 
   it('should not render the header/footer wrappers when no slot content is provided', async () => {
@@ -537,9 +541,6 @@ describe('modus-wc-bottom-sheet', () => {
       html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
     });
 
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.hasHeader).toBe(false);
-    expect(component.hasFooter).toBe(false);
     expect(
       page.root?.querySelector('.modus-wc-bottom-sheet-header')
     ).toBeNull();
@@ -653,9 +654,6 @@ describe('modus-wc-bottom-sheet', () => {
       </modus-wc-bottom-sheet>`,
     });
 
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.hasHeader).toBe(true);
-    expect(component.hasFooter).toBe(true);
     expect(
       page.root?.querySelector('.modus-wc-bottom-sheet-header')
     ).not.toBeNull();
@@ -672,9 +670,6 @@ describe('modus-wc-bottom-sheet', () => {
       </modus-wc-bottom-sheet>`,
     });
 
-    const component = page.rootInstance as ModusWcBottomSheet;
-    expect(component.hasHeader).toBe(true);
-    expect(component.hasFooter).toBe(false);
     expect(
       page.root?.querySelector('.modus-wc-bottom-sheet-header')
     ).not.toBeNull();

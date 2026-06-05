@@ -5,7 +5,7 @@ exports[`modus-wc-bottom-sheet should render with default props 1`] = `
   <!---->
   <modus-wc-panel>
     <!---->
-    <div class="modus-wc-panel" style="width: 350px; height: auto;">
+    <div class="modus-wc-panel" style="width: 100%; height: auto;">
       <div class="modus-wc-panel-header">
         <modus-wc-handle aria-orientation="vertical" class="modus-wc-bottom-sheet-handle modus-wc-handle-comfortable modus-wc-handle-container modus-wc-handle-default modus-wc-handle-horizontal modus-wc-handle-type-bar" role="separator" slot="header" tabindex="0">
           <div class="modus-wc-handle-bar"></div>

@@ -6,8 +6,6 @@ import { IBottomSheetHeader } from './modus-wc-bottom-sheet';
 
 interface BottomSheetArgs {
   'custom-class'?: string;
-  width?: string;
-  height?: string;
   open?: boolean;
   expanded?: boolean;
   minimized?: boolean;
@@ -22,28 +20,11 @@ const defaultHeader: IBottomSheetHeader = {
   showCloseButton: true,
 };
 
-const bottomSheetDemoStyles = `
-  .modus-wc-bottom-sheet-footer-actions {
-    align-items: center;
-    display: flex;
-    gap: var(--modus-wc-spacing-sm);
-    justify-content: flex-end;
-    width: 100%;
-  }
-
-  .modus-wc-bottom-sheet-trigger-actions {
-    display: flex;
-    gap: var(--modus-wc-spacing-sm);
-    padding: var(--modus-wc-spacing-lg);
-  }
-`;
-
 const meta: Meta<BottomSheetArgs> = {
   title: 'Components/Bottom Sheet',
   component: 'modus-wc-bottom-sheet',
   args: {
     'custom-class': '',
-    width: '600px',
     open: true,
     expanded: false,
     minimized: false,
@@ -73,6 +54,7 @@ const meta: Meta<BottomSheetArgs> = {
   },
   decorators: [withActions],
   parameters: {
+    docs: { story: { inline: false, height: '480px' } },
     layout: 'fullscreen',
     actions: {
       handles: [
@@ -91,22 +73,33 @@ export default meta;
 type Story = StoryObj<BottomSheetArgs>;
 
 export const Default: Story = {
+  args: {
+    'custom-class': 'bottom-sheet-width-px',
+  },
   render: (args) => {
     // prettier-ignore
     return html`
       <style>
-        div[id^='story--components-bottom-sheet--default'] {
-          height: 100vh;
+        .modus-wc-bottom-sheet-footer-actions {
+          align-items: center;
+          display: flex;
+          gap: var(--modus-wc-spacing-sm);
+          justify-content: flex-end;
+          width: 100%;
         }
-        ${bottomSheetDemoStyles}
+
+        /* Width is set via customClass on the host, clamped by the component's
+           min-width: 25vw / max-width: 100vw. */
+        .bottom-sheet-width-px {
+          width: 600px;
+        }
       </style>
         <modus-wc-bottom-sheet
           ?open="${args.open}"
           ?expanded="${args.expanded}"
           ?minimized="${args.minimized}"
           dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
-          height="${ifDefined(args.height)}"
-          width="${ifDefined(args.width)}"
+          custom-class="${ifDefined(args['custom-class'])}"
           .header="${args.header}"
         >
           <div slot="content">
@@ -134,6 +127,7 @@ export const Default: Story = {
 
 export const TriggeredByButton: Story = {
   args: {
+    'custom-class': 'bottom-sheet-width-vw',
     header: {
       showBackButton: false,
       title: 'Bottom Sheet Title',
@@ -169,7 +163,25 @@ export const TriggeredByButton: Story = {
     // prettier-ignore
     return html`
       <style>
-        ${bottomSheetDemoStyles}
+        .modus-wc-bottom-sheet-footer-actions {
+          align-items: center;
+          display: flex;
+          gap: var(--modus-wc-spacing-sm);
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .modus-wc-bottom-sheet-trigger-actions {
+          display: flex;
+          gap: var(--modus-wc-spacing-sm);
+          padding: var(--modus-wc-spacing-lg);
+        }
+
+        /* Width is set via customClass on the host, clamped by the component's
+           min-width: 25vw / max-width: 100vw. */
+        .bottom-sheet-width-vw {
+          width: 50vw;
+        }
       </style>
       <div class="modus-wc-bottom-sheet-trigger-actions">
         <modus-wc-button
@@ -194,8 +206,7 @@ export const TriggeredByButton: Story = {
       <modus-wc-bottom-sheet
         id="${sheetId}"
         dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
-        height="${ifDefined(args.height)}"
-        width="${ifDefined(args.width)}"
+        custom-class="${ifDefined(args['custom-class'])}"
         .header="${ifDefined(args.header)}"
       >
         <div slot="content">
@@ -233,20 +244,23 @@ export const TriggeredByButton: Story = {
 
 export const ContentOnly: Story = {
   args: {
-    width: '400px',
+    'custom-class': 'bottom-sheet-width-percent',
     header: undefined,
   },
   render: (args) => {
     // prettier-ignore
     return html`
       <style>
-        ${bottomSheetDemoStyles}
+        /* Width is set via customClass on the host, clamped by the component's
+           min-width: 25vw / max-width: 100vw. */
+        .bottom-sheet-width-percent {
+          width: 60%;
+        }
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
           ?open="${args.open}"
           custom-class="${ifDefined(args['custom-class'])}"
-          width="${ifDefined(args.width)}"
           .header="${args.header}"
         >
           <div slot="content">

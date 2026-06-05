@@ -53,12 +53,6 @@ export class ModusWcBottomSheet {
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
 
-  /** Height of the bottom sheet in pixels. */
-  @Prop() height?: string = 'auto';
-
-  /** Width of the bottom sheet in pixels. */
-  @Prop() width?: string = '350px';
-
   /** Controls whether the bottom sheet is visible. */
   @Prop({ mutable: true }) open?: boolean = false;
 
@@ -98,20 +92,25 @@ export class ModusWcBottomSheet {
    */
   @StencilEvent() headerCloseClick!: EventEmitter<void>;
 
-  /** Internal flag set while the handle is being dragged. */
-  @State() isDragging = false;
+  @State() private isDragging = false;
+  @State() private dragOffset = 0;
+  @State() private dragHeight: string | null = null;
+  @State() private hasHeader = false;
+  @State() private hasFooter = false;
 
-  /** Live vertical drag offset in pixels (positive = dragged downward). */
-  @State() dragOffset = 0;
-
-  /** Live sheet height while dragging upward (previews the expand gesture). */
-  @State() dragHeight: string | null = null;
-
-  /** Whether the consumer supplied content for the header slot. */
-  @State() hasHeader = false;
-
-  /** Whether the consumer supplied content for the footer slot. */
-  @State() hasFooter = false;
+  @Watch('open')
+  handleOpenChange(isOpen: boolean) {
+    // Keep a closed sheet out of the tab order / a11y tree.
+    this.setInert(!isOpen);
+    // Enforce the invariant that a closed sheet is neither expanded nor
+    // minimized, even when `open` is toggled externally (bypassing setOpen).
+    // Route through the setters so expandedChange/minimizedChange are emitted
+    // and consumers mirroring state stay in sync.
+    if (!isOpen) {
+      this.setExpanded(false);
+      this.setMinimized(false);
+    }
+  }
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -125,18 +124,6 @@ export class ModusWcBottomSheet {
     const children = Array.from(this.el.children);
     this.hasHeader = children.some((c) => c.getAttribute('slot') === 'header');
     this.hasFooter = children.some((c) => c.getAttribute('slot') === 'footer');
-  }
-
-  @Watch('open')
-  handleOpenChange(isOpen: boolean) {
-    // Keep a closed sheet out of the tab order / a11y tree.
-    this.setInert(!isOpen);
-    // Enforce the invariant that a closed sheet is neither expanded nor
-    // minimized, even when `open` is toggled externally (bypassing setOpen).
-    if (!isOpen) {
-      this.expanded = false;
-      this.minimized = false;
-    }
   }
 
   /** Toggle the `inert` attribute on the host so closed sheets cannot be focused. */
@@ -252,24 +239,28 @@ export class ModusWcBottomSheet {
 
   private setOpen(value: boolean) {
     if (this.open === value) return;
+    // Assigning `open` runs the @Watch('open') handler, which resets and emits
+    // the expanded/minimized siblings when closing (so they stay in sync for
+    // both internal and external `open` changes).
     this.open = value;
-    if (!value) {
-      this.expanded = false;
-      this.minimized = false;
-    }
     this.openChange.emit({ open: value });
   }
 
   private setExpanded(value: boolean) {
+    if (this.expanded === value) return;
     this.expanded = value;
-    if (value) this.minimized = false;
     this.expandedChange.emit({ expanded: value });
+    // Expanded and minimized are mutually exclusive; clear the sibling via its
+    // setter so minimizedChange is emitted if it actually changes.
+    if (value) this.setMinimized(false);
   }
 
   private setMinimized(value: boolean) {
+    if (this.minimized === value) return;
     this.minimized = value;
-    if (value) this.expanded = false;
     this.minimizedChange.emit({ minimized: value });
+    // Clear the sibling via its setter so expandedChange is emitted if it changes.
+    if (value) this.setExpanded(false);
   }
 
   private getClasses(): string {
@@ -292,8 +283,8 @@ export class ModusWcBottomSheet {
   private getPanelHeight(): string {
     if (this.isDragging && this.dragHeight) return this.dragHeight;
     if (this.minimized) return 'auto';
-    if (this.expanded) return '100dvh';
-    return this.height ?? 'auto';
+    if (this.expanded) return '95dvh';
+    return 'auto';
   }
 
   private hasDefaultHeader(): boolean {
@@ -330,15 +321,20 @@ export class ModusWcBottomSheet {
               size="sm"
               variant="borderless"
             >
-              <modus-wc-icon name="chevron_left" decorative></modus-wc-icon>
+              <modus-wc-icon
+                name="chevron_left"
+                decorative
+                size="xs"
+              ></modus-wc-icon>
             </modus-wc-button>
           )}
           {(header.title || header.subtitle) && (
             <div>
               {header.title && (
                 <modus-wc-typography
-                  hierarchy="h4"
-                  size="lg"
+                  customClass="modus-wc-bottom-sheet-header-title"
+                  hierarchy="h2"
+                  size="md"
                   weight="semibold"
                   label={header.title}
                 ></modus-wc-typography>
@@ -346,7 +342,7 @@ export class ModusWcBottomSheet {
               {header.subtitle && (
                 <modus-wc-typography
                   hierarchy="p"
-                  size="xs"
+                  size="sm"
                   label={header.subtitle}
                 ></modus-wc-typography>
               )}
@@ -362,7 +358,7 @@ export class ModusWcBottomSheet {
             size="sm"
             variant="borderless"
           >
-            <modus-wc-icon name="close" decorative></modus-wc-icon>
+            <modus-wc-icon name="close" decorative size="xs"></modus-wc-icon>
           </modus-wc-button>
         )}
       </div>
@@ -376,12 +372,13 @@ export class ModusWcBottomSheet {
         class={this.getClasses()}
         role="dialog"
         aria-hidden={(!this.open).toString()}
+        aria-modal={this.open ? 'true' : undefined}
         style={{
           transform: this.getTransform(),
           transition: this.isDragging ? 'none' : undefined,
         }}
       >
-        <modus-wc-panel width={this.width} height={this.getPanelHeight()}>
+        <modus-wc-panel width="100%" height={this.getPanelHeight()}>
           <modus-wc-handle
             slot="header"
             customClass="modus-wc-bottom-sheet-handle"
