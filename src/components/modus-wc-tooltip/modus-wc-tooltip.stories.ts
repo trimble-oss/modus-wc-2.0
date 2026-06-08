@@ -71,24 +71,18 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-const defaultRichHtml = `<strong>Tooltip</strong>
-<p>First line of multiline content.</p>
-<p>Second line of multiline content.</p>`;
+const defaultRichHtml = `<div style="display:flex;flex-direction:column;gap:0.25rem;text-align:start">
+  <div style="align-items:center;display:flex;gap:0.375rem">
+    <modus-wc-icon decorative name="thumbs_up" size="sm"></modus-wc-icon>
+    <strong>Tooltip</strong>
+  </div>
+  <p>First line of multiline content.</p>
+  <p>Second line of multiline content.</p>
+</div>`;
 
 function buildRichTooltipContent(html: string): HTMLDivElement {
   const el = document.createElement('div');
-  el.style.cssText =
-    'align-items:flex-start;display:flex;gap:0.375rem;text-align:start';
-
-  const icon = document.createElement('modus-wc-icon');
-  icon.setAttribute('decorative', '');
-  icon.setAttribute('name', 'thumbs_up');
-  icon.setAttribute('size', 'sm');
-
-  const text = document.createElement('div');
-  text.innerHTML = html;
-
-  el.append(icon, text);
+  el.innerHTML = html;
   return el;
 }
 
@@ -112,15 +106,7 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
 
 <script>
   const el = document.createElement('div');
-  const icon = document.createElement('modus-wc-icon');
-  icon.setAttribute('decorative', '');
-  icon.setAttribute('name', 'thumbs_up');
-  icon.setAttribute('size', 'sm');
-
-  const text = document.createElement('div');
-  text.innerHTML = '<strong>Tooltip</strong><p>First line</p><p>Second line</p>';
-
-  el.append(icon, text);
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:0.25rem;text-align:start"><div style="align-items:center;display:flex;gap:0.375rem"><modus-wc-icon decorative name="thumbs_up" size="sm"></modus-wc-icon><strong>Tooltip</strong></div><p>First line</p><p>Second line</p></div>';
   document.querySelector('modus-wc-tooltip').contentElement = el;
 </script>`,
       },
