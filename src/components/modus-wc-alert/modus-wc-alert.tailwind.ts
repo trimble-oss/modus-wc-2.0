@@ -1,7 +1,7 @@
 export const convertPropsToClasses = ({
   variant,
 }: {
-  variant?: 'error' | 'info' | 'success' | 'warning';
+  variant?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
 }): string => {
   let classes = '';
 

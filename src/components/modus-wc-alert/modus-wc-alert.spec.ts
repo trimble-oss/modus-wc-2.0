@@ -43,6 +43,47 @@ describe('modus-wc-alert', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render neutral variant with neutral styling and info icon', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert, ModusWcIcon],
+      html: '<modus-wc-alert alert-title="Custom title" variant="neutral"></modus-wc-alert>',
+    });
+
+    const alertDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-neutral');
+
+    const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.textContent?.trim()).toBe('info');
+
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render neutral styling when variant is an empty string', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert, ModusWcIcon],
+      html: '<modus-wc-alert alert-title="Custom title" variant=""></modus-wc-alert>',
+    });
+
+    const alertDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert');
+
+    const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.textContent?.trim()).toBe('info');
+  });
+
+  it('should apply info variant class when variant attribute is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAlert, ModusWcIcon],
+      html: '<modus-wc-alert alert-title="Custom title"></modus-wc-alert>',
+    });
+
+    const alertDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-info');
+
+    const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.textContent?.trim()).toBe('info');
+  });
+
   it('should render success variant with check_circle icon', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon],
@@ -353,7 +394,7 @@ describe('modus-wc-alert', () => {
     expect(setTimeoutSpy).not.toHaveBeenCalled();
   });
 
-  it('should fall back to the info icon when variant is undefined', async () => {
+  it('should render neutral styling and info icon when variant is set to undefined', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert, ModusWcIcon],
       html: '<modus-wc-alert alert-title="No variant"></modus-wc-alert>',
@@ -363,12 +404,15 @@ describe('modus-wc-alert', () => {
     component.variant = undefined;
     await page.waitForChanges();
 
+    const alertDiv = page.root?.querySelector('.modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert');
+
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.textContent?.trim()).toBe('info');
   });
 
   describe('convertPropsToClasses', () => {
-    it('should return the variant-specific class when a variant is provided', () => {
+    it('should return the variant-specific class when a semantic variant is provided', () => {
       expect(convertPropsToClasses({ variant: 'error' })).toBe(
         'modus-wc-alert-error'
       );
@@ -383,7 +427,13 @@ describe('modus-wc-alert', () => {
       );
     });
 
-    it('should return an empty string when no variant is provided', () => {
+    it('should return modus-wc-alert-neutral for neutral variant', () => {
+      expect(convertPropsToClasses({ variant: 'neutral' })).toBe(
+        'modus-wc-alert-neutral'
+      );
+    });
+
+    it('should return an empty string when variant is not provided', () => {
       expect(convertPropsToClasses({})).toBe('');
       expect(convertPropsToClasses({ variant: undefined })).toBe('');
     });
