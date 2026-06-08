@@ -161,3 +161,460 @@
     display: list-item;
   }
 }
+
+/*
+ * Chrome <111 DaisyUI Color Fallbacks
+ *
+ * DaisyUI v4 stores theme colors as oklch() which Chrome 111+ is required to parse.
+ * On older browsers, DaisyUI falls back to its own default purple (#491eff).
+ * This block overrides those defaults with the correct Modus hex colors.
+ *
+ * These values must come AFTER @tailwind utilities to win the cascade over DaisyUI's
+ * own @supports not block.
+ *
+ * MAINTENANCE: If a theme color changes in src/styles/themes/*.ts, update the
+ * corresponding hex value below. Each --fallback-* maps to a DaisyUI semantic token:
+ *   p  = primary       s  = secondary    a  = accent       n  = neutral
+ *   b1 = base-100      b2 = base-200     b3 = base-300
+ *   in = info          su = success      wa = warning       er = error
+ *   (suffix 'c' = content/text color on that background)
+ *
+ * Source values taken from src/styles/themes/modus-modern.ts (light theme).
+ * Per-theme overrides (dark, classic, connect) follow in the blocks below.
+ */
+@supports not (color: oklch(0% 0 0)) {
+  /* modus-modern-light (default) — source: src/styles/themes/modus-modern.ts */
+  :root,
+  [data-theme='modus-modern-light'] {
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #fbad26; /* secondary: Yellow */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff;
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
+    --fallback-nc: #252a2e;
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
+    --fallback-inc: #ffffff;
+    --fallback-su: #1e8a44; /* success: Green */
+    --fallback-suc: #ffffff;
+    --fallback-wa: #e49325; /* warning: Yellow Dark */
+    --fallback-wac: #252a2e;
+    --fallback-er: #da212c; /* error: Red */
+    --fallback-erc: #ffffff;
+  }
+
+  /* modus-modern-dark — source: src/styles/themes/modus-modern.ts */
+  [data-theme='modus-modern-dark'] {
+    --fallback-p: #019aeb; /* primary: Highlight Blue */
+    --fallback-pc: #000000; /* primary-content: Black */
+    --fallback-s: #fec157; /* secondary: Yellow Light */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #217cbb; /* info: Blue Light */
+    --fallback-inc: #ffffff; /* info-content: White */
+    --fallback-su: #4ea646; /* success: Green Light */
+    --fallback-suc: #000000; /* success-content: Black */
+    --fallback-wa: #fec157; /* warning: Yellow Light */
+    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
+    --fallback-er: #e86363; /* error: Red Light */
+    --fallback-erc: #000000; /* error-content: Black */
+  }
+
+  /* modus-classic-light — source: src/styles/themes/modus-classic.ts */
+  [data-theme='modus-classic-light'] {
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #6a6e79; /* secondary: Gray 6 */
+    --fallback-sc: #ffffff; /* secondary-content: White */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
+    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
+    --fallback-inc: #ffffff; /* info-content: White */
+    --fallback-su: #1e8a44; /* success: Green */
+    --fallback-suc: #ffffff; /* success-content: White */
+    --fallback-wa: #fbad26; /* warning: Yellow */
+    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
+    --fallback-er: #da212c; /* error: Red */
+    --fallback-erc: #ffffff; /* error-content: White */
+  }
+
+  /* modus-classic-dark — source: src/styles/themes/modus-classic.ts */
+  [data-theme='modus-classic-dark'] {
+    --fallback-p: #0063a3; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #fbad26; /* secondary: Yellow */
+    --fallback-sc: #252a2e; /* secondary-content: Trimble Gray */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
+    --fallback-inc: #ffffff; /* info-content: White */
+    --fallback-su: #1e8a44; /* success: Green */
+    --fallback-suc: #ffffff; /* success-content: White */
+    --fallback-wa: #fbad26; /* warning: Yellow */
+    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
+    --fallback-er: #da212c; /* error: Red */
+    --fallback-erc: #ffffff; /* error-content: White */
+  }
+
+  /* connect-light — source: src/styles/themes/connect.ts */
+  [data-theme='connect-light'] {
+    --fallback-p: #005f9e; /* primary: Trimble Blue */
+    --fallback-pc: #ffffff; /* primary-content: White */
+    --fallback-s: #6a6976; /* secondary: Neutral Gray 10 */
+    --fallback-sc: #ffffff; /* secondary-content: White */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
+    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
+    --fallback-b1: #ffffff; /* base-100: White */
+    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
+    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
+    --fallback-in: #0063a3; /* info: Trimble Blue */
+    --fallback-inc: #ffffff; /* info-content: White */
+    --fallback-su: #72a544; /* success: Green */
+    --fallback-suc: #ffffff; /* success-content: White */
+    --fallback-wa: #ffbe00; /* warning: Yellow */
+    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
+    --fallback-er: #d52a33; /* error: Red */
+    --fallback-erc: #ffffff; /* error-content: White */
+  }
+
+  /* connect-dark — source: src/styles/themes/connect.ts */
+  [data-theme='connect-dark'] {
+    --fallback-p: #019aeb; /* primary: Highlight Blue */
+    --fallback-pc: #000000; /* primary-content: Black */
+    --fallback-s: #f1f1f6; /* secondary: Gray Light */
+    --fallback-sc: #000000; /* secondary-content: Black */
+    --fallback-a: #6a6e79; /* accent: Gray 6 */
+    --fallback-ac: #ffffff; /* accent-content: White */
+    --fallback-n: #353a40; /* neutral: Gray 9 */
+    --fallback-nc: #ffffff; /* neutral-content: White */
+    --fallback-b1: #171c1e; /* base-100: Gray 10 */
+    --fallback-b2: #353a40; /* base-200: Gray 9 */
+    --fallback-b3: #464b52; /* base-300: Gray 8 */
+    --fallback-in: #217cbb; /* info: Blue Light */
+    --fallback-inc: #ffffff; /* info-content: White */
+    --fallback-su: #4ea646; /* success: Green Light */
+    --fallback-suc: #000000; /* success-content: Black */
+    --fallback-wa: #fec157; /* warning: Yellow Light */
+    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
+    --fallback-er: #e86363; /* error: Red Light */
+    --fallback-erc: #000000; /* error-content: Black */
+  }
+}
+
+/*
+ * Button hover/active state fallbacks for Chrome <111 — modern themes only.
+ *
+ * WHY THIS EXISTS:
+ * DaisyUI v4 generates hover/active states using:
+ *   color-mix(in oklab, oklch(var(--btn-color)) 90%, #000)   ← modern Chrome
+ * This fails on Chrome <111. DaisyUI's own @supports not fallback
+ * uses the SAME flat color for both default and hover (no darkening):
+ *   @supports not (color: oklch()) { .btn:hover { background: var(--btn-color) } }
+ * Result: no visual state feedback on old Chrome.
+ *
+ * Classic themes already handle this fully in modus-wc-button.scss using
+ * plain hex --modus-wc-color-* vars (no oklch involved). Modern themes have
+ * no such SCSS overrides, so we add them here — inside @supports not so
+ * they ONLY apply on old Chrome and never interfere with modern behavior.
+ *
+ * MAINTENANCE: Colors sourced from src/styles/themes/modus-modern.ts.
+ * If theme colors change, update hover/active hex values here to match.
+ *
+ * Color reference (from src/styles/variables.css):
+ *   blue-pale=#dcedf9  blue-light=#217cbb  trimble-blue=#0063a3  blue-dark=#0e416c
+ *   highlight-blue=#019aeb  yellow-pale=#fff5e4  yellow-light=#fec157
+ *   yellow=#fbad26  yellow-dark=#e49325  red-pale=#fbd4d7
+ *   red-light=#e86363  red=#da212c  red-dark=#ab1f26
+ *   gray-0=#e0e1e9  gray-1=#cbcdd6  gray-2=#b7b9c3
+ *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e
+ */
+@supports not (color: oklch(0% 0 0)) {
+  /* ── modus-modern-light: filled buttons ──────────────────────────────── */
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-filled:hover {
+    background-color: #217cbb; /* blue-light — ~10% lighter than trimble-blue */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #0e416c; /* blue-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
+    background-color: #fec157; /* yellow-light */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #e49325; /* yellow-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
+    background-color: #e0e1e9; /* gray-0 */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #b7b9c3; /* gray-2 */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-filled:hover {
+    background-color: #fbad26; /* yellow — lighter than yellow-dark base */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #c97d1e; /* ~10% darker than yellow-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-filled:hover {
+    background-color: #e86363; /* red-light */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #ab1f26; /* red-dark */
+  }
+
+  /* ── modus-modern-light: outlined buttons ────────────────────────────── */
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-outline:hover {
+    background-color: #dcedf9; /* blue-pale */
+    border-color: #217cbb;
+    color: #217cbb;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-primary.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(0 99 163 / 0.18);
+    border-color: #0e416c;
+    color: #0e416c;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
+    background-color: #fff5e4; /* yellow-pale */
+    border-color: #fec157;
+    color: #fec157;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-secondary.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #fff5e4;
+    border-color: #e49325;
+    color: #e49325;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
+    background-color: #e0e1e9; /* gray-0 */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-neutral.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #cbcdd6; /* gray-1 */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-outline:hover {
+    border-color: #fbad26;
+    color: #fbad26;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-warning.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #fff5e4;
+    border-color: #e49325;
+    color: #e49325;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-outline:hover {
+    background-color: #fbd4d7; /* red-pale */
+    border-color: #e86363;
+    color: #e86363;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-error.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #fbd4d7;
+    border-color: #ab1f26;
+    color: #ab1f26;
+  }
+
+  /* ── modus-modern-dark: filled buttons ───────────────────────────────── */
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-filled:hover {
+    background-color: #217cbb; /* blue-light */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #0e416c; /* blue-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:hover {
+    background-color: #fbad26; /* yellow */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #e49325; /* yellow-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:hover {
+    background-color: #464b52; /* gray-8 */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #171c1e; /* gray-10 */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-filled:hover {
+    background-color: #fbad26; /* yellow */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #e49325; /* yellow-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-filled:hover {
+    background-color: #da212c; /* red */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #ab1f26; /* red-dark */
+  }
+
+  /* ── modus-modern-dark: outlined buttons ─────────────────────────────── */
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-outline:hover {
+    background-color: rgb(1 154 235 / 0.12);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-primary.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(1 154 235 / 0.3);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:hover {
+    background-color: rgb(254 193 87 / 0.12);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-secondary.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(254 193 87 / 0.3);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:hover {
+    background-color: rgb(203 205 214 / 0.12);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-neutral.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(203 205 214 / 0.3);
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-outline:hover {
+    background-color: rgb(254 193 87 / 0.12);
+    border-color: #fbad26;
+    color: #fbad26;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-warning.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(254 193 87 / 0.3);
+    border-color: #e49325;
+    color: #e49325;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-outline:hover {
+    background-color: rgb(232 99 99 / 0.12);
+    border-color: #da212c;
+    color: #da212c;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-error.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: rgb(232 99 99 / 0.3);
+    border-color: #ab1f26;
+    color: #ab1f26;
+  }
+}

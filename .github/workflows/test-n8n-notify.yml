@@ -1,0 +1,52 @@
+# Safe manual test for the n8n release-notes webhook.
+# Does NOT publish to npm or create a GitHub release.
+# Fetches the current draft release notes and POSTs them to n8n.
+
+name: Test n8n Release Notify
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Optional SemVer hint (e.g. 1.6.0). Leave empty to use the latest GitHub draft release tag/name.'
+        required: false
+        type: string
+
+permissions:
+  # Draft releases are not visible to GITHUB_TOKEN with contents: read only.
+  contents: write
+
+jobs:
+  test-notify-n8n:
+    runs-on: ubuntu-latest
+    if: github.repository == 'trimble-oss/modus-wc-2.0'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Require n8n secrets
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
+          TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
+        run: |
+          if [ -z "$N8N_WEBHOOK_URL" ]; then
+            echo "N8N_WEBHOOK_URL secret is not configured." >&2
+            exit 1
+          fi
+
+          if [ -z "$TRIMBLE_N8N_CLIENT_ID" ] || [ -z "$TRIMBLE_N8N_CLIENT_SECRET" ]; then
+            echo "TRIMBLE_N8N_CLIENT_ID and TRIMBLE_N8N_CLIENT_SECRET secrets are required." >&2
+            exit 1
+          fi
+
+      - name: Notify n8n with draft release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
+          TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
+        run: bash .github/scripts/notify-n8n-release.sh "${{ github.event.inputs.version }}" test

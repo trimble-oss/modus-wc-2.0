@@ -45,6 +45,7 @@ jobs:
         run: npm ci
         env:
           TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check if version data already exists
         id: check-version
@@ -80,6 +81,12 @@ jobs:
           npx tsx mcp/scripts/extract-docs.ts \
             --source-dir src/components \
             --output-dir "$TMPDIR/component-docs"
+
+          # Augment component docs with Blazor-specific data (params, events, slots, usage examples)
+          npx tsx mcp/scripts/extract-blazor-docs.ts \
+            --blazor-dir integrations/blazor/stencil-generated/ModusWebComponents.Blazor/Components \
+            --docs-dir "$TMPDIR/component-docs"
+
           mkdir -p "$TMPDIR/docs"
           cp src/stories/*.mdx "$TMPDIR/docs/"
           cp src/stories/frameworks/*.mdx "$TMPDIR/docs/"
@@ -150,7 +157,7 @@ jobs:
         run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN_MCP }}
 
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}

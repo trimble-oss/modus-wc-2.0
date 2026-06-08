@@ -4,15 +4,13 @@ import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 import { DIRECTIVES } from './stencil-generated';
 
 @NgModule({
-  imports: [...DIRECTIVES],
+  declarations: [...DIRECTIVES],
   exports: [...DIRECTIVES],
   providers: [
     provideAppInitializer(() => {
-      // Configure asset path for Angular applications
-      // Assets should be copied to /assets/ via angular.json configuration
       setAssetPath('/assets/');
       defineCustomElements(window);
-    })
-  ]
+    }),
+  ],
 })
 export class ModusAngularComponentsModule {}
