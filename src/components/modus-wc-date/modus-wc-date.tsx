@@ -102,10 +102,10 @@ export class ModusWcDate {
   /** The text to display within the label. */
   @Prop() label?: string;
 
-  /** Maximum date value. */
+  /** Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). */
   @Prop() max?: string;
 
-  /** Minimum date value. */
+  /** Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). */
   @Prop() min?: string;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */

@@ -69,7 +69,7 @@ jobs:
             --output ./nuget-output
 
       - name: Upload artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: blazor-distribution-v${{ github.event.inputs.version }}
           path: nuget-output/*.nupkg
@@ -78,7 +78,8 @@ jobs:
         run: |
           dotnet nuget push ./nuget-output/*.nupkg \
             --source "https://nuget.pkg.github.com/trimble-oss/index.json" \
-            --api-key "${{ secrets.GITHUB_TOKEN }}"
+            --api-key "${{ secrets.GITHUB_TOKEN }}" \
+            --skip-duplicate
 
   release-blazor:
     needs: build-and-publish-blazor
@@ -86,7 +87,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: blazor-distribution-v${{ github.event.inputs.version }}
           path: .
@@ -99,7 +100,7 @@ jobs:
         run: mv ${{ steps.find-asset.outputs.asset_path }} package-blazor.nupkg
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.0.0
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-blazor-${{ github.event.inputs.version }}
