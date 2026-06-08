@@ -116,6 +116,7 @@ export const Default: Story = {
           justify-content: flex-end;
           width: 100%;
         }
+
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
@@ -124,6 +125,7 @@ export const Default: Story = {
           ?minimized="${args.minimized}"
           step-down-threshold="${ifDefined(args['step-down-threshold'])}"
           custom-class="${ifDefined(args['custom-class'])}"
+          style="width: 600px"
           .header="${args.header}"
         >
           <div slot="content">
@@ -217,6 +219,7 @@ export const TriggeredByButton: Story = {
           gap: var(--modus-wc-spacing-sm);
           padding: var(--modus-wc-spacing-lg);
         }
+
       </style>
       <div class="bottom-sheet-demo">
       <div class="modus-wc-bottom-sheet-trigger-actions">
@@ -242,6 +245,7 @@ export const TriggeredByButton: Story = {
       <modus-wc-bottom-sheet
         id="${sheetId}"
         step-down-threshold="${ifDefined(args['step-down-threshold'])}"
+        style="width: 600px"
         .header="${ifDefined(args.header)}"
       >
         <div slot="content">
@@ -302,10 +306,12 @@ export const ContentOnly: Story = {
         .bottom-sheet-demo .modus-wc-panel {
           max-height: 480px;
         }
+
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
           ?open="${args.open}"
+          style="width: 600px"
           .header="${args.header}"
         >
           <div slot="content">

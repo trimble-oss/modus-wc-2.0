@@ -19,7 +19,6 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
     transform 0.3s ease,
     visibility 0s linear 0.3s;
   visibility: hidden;
-  width: 65vw;
   z-index: 999;
 
   // When open, become visible immediately so the slide-in animates into view.
