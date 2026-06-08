@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/blazing-story/">
+    <Project Path="blazing-story/BlazingStoryApp.csproj" />
+  </Folder>
+  <Folder Name="/maui-app/">
+    <Project Path="maui-app/MauiBlazorApp.csproj" />
+  </Folder>
+  <Folder Name="/stencil-generated/">
+    <Project Path="stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj" />
+  </Folder>
+</Solution>
