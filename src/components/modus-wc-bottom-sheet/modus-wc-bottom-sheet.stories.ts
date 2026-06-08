@@ -9,7 +9,7 @@ interface BottomSheetArgs {
   open?: boolean;
   expanded?: boolean;
   minimized?: boolean;
-  'dismiss-threshold'?: number;
+  'step-down-threshold'?: number;
   header?: IBottomSheetHeader;
 }
 
@@ -28,7 +28,7 @@ const meta: Meta<BottomSheetArgs> = {
     open: true,
     expanded: false,
     minimized: false,
-    'dismiss-threshold': 0.4,
+    'step-down-threshold': 0.4,
     header: defaultHeader,
   },
   argTypes: {
@@ -44,18 +44,33 @@ const meta: Meta<BottomSheetArgs> = {
       control: 'boolean',
       table: { defaultValue: { summary: 'false' } },
     },
-    'dismiss-threshold': {
+    'step-down-threshold': {
       control: { type: 'number', min: 0, max: 1, step: 0.05 },
       table: { defaultValue: { summary: '0.4' } },
     },
     header: {
-      control: 'object',
+      description:
+        'Configuration for the built-in header layout. Do not set if you use the header slot.',
+      table: {
+        type: {
+          detail: `
+            Interface: IBottomSheetHeader
+            Properties:
+            - showBackButton (boolean, optional): Whether to show the back button
+            - title (string, optional): The title of the header
+            - subtitle (string, optional): The subtitle of the header
+            - showCloseButton (boolean, optional): Whether to show the dismiss button. Clicking it closes the bottom sheet
+          `,
+        },
+      },
+      control: {
+        type: 'object',
+      },
     },
   },
   decorators: [withActions],
   parameters: {
-    docs: { story: { inline: false, height: '480px' } },
-    layout: 'fullscreen',
+    layout: 'padded',
     actions: {
       handles: [
         'headerBackClick',
@@ -73,13 +88,27 @@ export default meta;
 type Story = StoryObj<BottomSheetArgs>;
 
 export const Default: Story = {
-  args: {
-    'custom-class': 'bottom-sheet-width-px',
-  },
   render: (args) => {
     // prettier-ignore
     return html`
       <style>
+        /* Demo-only frame: the component is position: fixed, which would escape
+           to the page (and overlap other stories) on the docs canvas. 'contain'
+           makes this frame a containing block for the sheet's position: fixed
+           and clips it, so the sheet stays bounded WITHOUT changing its position
+           value (overriding position to absolute caused a render jump). */
+        .bottom-sheet-demo {
+          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
+          contain: layout paint;
+          height: 520px;
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .bottom-sheet-demo .modus-wc-panel {
+          max-height: 480px;
+        }
+
         .modus-wc-bottom-sheet-footer-actions {
           align-items: center;
           display: flex;
@@ -87,18 +116,13 @@ export const Default: Story = {
           justify-content: flex-end;
           width: 100%;
         }
-
-        /* Width is set via customClass on the host, clamped by the component's
-           min-width: 25vw / max-width: 100vw. */
-        .bottom-sheet-width-px {
-          width: 600px;
-        }
       </style>
+      <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
           ?open="${args.open}"
           ?expanded="${args.expanded}"
           ?minimized="${args.minimized}"
-          dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
+          step-down-threshold="${ifDefined(args['step-down-threshold'])}"
           custom-class="${ifDefined(args['custom-class'])}"
           .header="${args.header}"
         >
@@ -121,13 +145,13 @@ export const Default: Story = {
             </div>
           </div>
         </modus-wc-bottom-sheet>
+      </div>
     `;
   },
 };
 
 export const TriggeredByButton: Story = {
   args: {
-    'custom-class': 'bottom-sheet-width-vw',
     header: {
       showBackButton: false,
       title: 'Bottom Sheet Title',
@@ -163,6 +187,23 @@ export const TriggeredByButton: Story = {
     // prettier-ignore
     return html`
       <style>
+        /* Demo-only frame: the component is position: fixed, which would escape
+           to the page (and overlap other stories) on the docs canvas. 'contain'
+           makes this frame a containing block for the sheet's position: fixed
+           and clips it, so the sheet stays bounded WITHOUT changing its position
+           value (overriding position to absolute caused a render jump). */
+        .bottom-sheet-demo {
+          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
+          contain: layout paint;
+          height: 520px;
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .bottom-sheet-demo .modus-wc-panel {
+          max-height: 480px;
+        }
+
         .modus-wc-bottom-sheet-footer-actions {
           align-items: center;
           display: flex;
@@ -176,13 +217,8 @@ export const TriggeredByButton: Story = {
           gap: var(--modus-wc-spacing-sm);
           padding: var(--modus-wc-spacing-lg);
         }
-
-        /* Width is set via customClass on the host, clamped by the component's
-           min-width: 25vw / max-width: 100vw. */
-        .bottom-sheet-width-vw {
-          width: 50vw;
-        }
       </style>
+      <div class="bottom-sheet-demo">
       <div class="modus-wc-bottom-sheet-trigger-actions">
         <modus-wc-button
           color="primary"
@@ -205,8 +241,7 @@ export const TriggeredByButton: Story = {
 
       <modus-wc-bottom-sheet
         id="${sheetId}"
-        dismiss-threshold="${ifDefined(args['dismiss-threshold'])}"
-        custom-class="${ifDefined(args['custom-class'])}"
+        step-down-threshold="${ifDefined(args['step-down-threshold'])}"
         .header="${ifDefined(args.header)}"
       >
         <div slot="content">
@@ -238,29 +273,39 @@ export const TriggeredByButton: Story = {
           </div>
         </div>
       </modus-wc-bottom-sheet>
+      </div>
     `;
   },
 };
 
 export const ContentOnly: Story = {
   args: {
-    'custom-class': 'bottom-sheet-width-percent',
     header: undefined,
   },
   render: (args) => {
     // prettier-ignore
     return html`
       <style>
-        /* Width is set via customClass on the host, clamped by the component's
-           min-width: 25vw / max-width: 100vw. */
-        .bottom-sheet-width-percent {
-          width: 60%;
+        /* Demo-only frame: the component is position: fixed, which would escape
+           to the page (and overlap other stories) on the docs canvas. 'contain'
+           makes this frame a containing block for the sheet's position: fixed
+           and clips it, so the sheet stays bounded WITHOUT changing its position
+           value (overriding position to absolute caused a render jump). */
+        .bottom-sheet-demo {
+          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
+          contain: layout paint;
+          height: 520px;
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .bottom-sheet-demo .modus-wc-panel {
+          max-height: 480px;
         }
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
           ?open="${args.open}"
-          custom-class="${ifDefined(args['custom-class'])}"
           .header="${args.header}"
         >
           <div slot="content">

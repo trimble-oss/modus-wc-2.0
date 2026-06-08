@@ -19,8 +19,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * Alternatively, set the `header` prop for the built-in header layout. Do not set `header` if you use the
  * 'header' slot.
  *
- * The drag handle lets the user drag the sheet down to dismiss it (past the dismiss threshold)
- * or drag it up to expand it to fill the page/iframe height. Smaller drags snap back to rest.
+ * The drag handle lets the user drag the sheet down to step it down a level (past the
+ * step-down threshold) or drag it up to expand it to fill the page/iframe height. Smaller
+ * drags snap back to rest.
  */
 
 export interface IBottomSheetHeader {
@@ -67,8 +68,8 @@ export class ModusWcBottomSheet {
    */
   @Prop({ mutable: true }) minimized?: boolean = false;
 
-  /** Fraction (0-1) of the sheet height it must be dragged down before it minimizes. */
-  @Prop() dismissThreshold?: number = 0.4;
+  /** Fraction (0-1) of the sheet height it must be dragged down before it steps down a level. */
+  @Prop() stepDownThreshold?: number = 0.4;
 
   /**
    * Configuration for the built-in header layout.
@@ -112,11 +113,30 @@ export class ModusWcBottomSheet {
     } else {
       // Enforce the invariant that a closed sheet is neither expanded nor
       // minimized, even when `open` is toggled externally (bypassing setOpen).
-      // Route through the setters so expandedChange/minimizedChange are emitted
-      // and consumers mirroring state stay in sync.
+      // Route through the setters so @Watch handlers emit expandedChange /
+      // minimizedChange and consumers mirroring state stay in sync.
       this.setExpanded(false);
       this.setMinimized(false);
     }
+  }
+
+  @Watch('expanded')
+  handleExpandedChange(newValue: boolean) {
+    // Expanded and minimized are mutually exclusive; clear the sibling via its
+    // setter so minimizedChange is emitted if it actually changes.
+    if (newValue && this.minimized) {
+      this.setMinimized(false);
+    }
+    this.expandedChange.emit({ expanded: newValue });
+  }
+
+  @Watch('minimized')
+  handleMinimizedChange(newValue: boolean) {
+    // Clear the sibling via its setter so expandedChange is emitted if it changes.
+    if (newValue && this.expanded) {
+      this.setExpanded(false);
+    }
+    this.minimizedChange.emit({ minimized: newValue });
   }
 
   componentWillLoad() {
@@ -209,11 +229,11 @@ export class ModusWcBottomSheet {
     if (delta > 0) {
       // The panel is always rendered, so the reference is non-null.
       const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel')!;
-      const dismissPx = (this.dismissThreshold ?? 0.4) * panel.offsetHeight;
+      const stepDownPx = (this.stepDownThreshold ?? 0.4) * panel.offsetHeight;
 
       // Drag down steps down one level (expanded -> open -> minimized).
       // It never closes the sheet; closing is property/action driven only.
-      if (delta > dismissPx) {
+      if (delta > stepDownPx) {
         this.stepDown();
       }
     } else if (-delta > this.expandThresholdPx) {
@@ -265,18 +285,13 @@ export class ModusWcBottomSheet {
   private setExpanded(value: boolean) {
     if (this.expanded === value) return;
     this.expanded = value;
-    this.expandedChange.emit({ expanded: value });
-    // Expanded and minimized are mutually exclusive; clear the sibling via its
-    // setter so minimizedChange is emitted if it actually changes.
-    if (value) this.setMinimized(false);
+    // @Watch('expanded') emits expandedChange and clears minimized when needed.
   }
 
   private setMinimized(value: boolean) {
     if (this.minimized === value) return;
     this.minimized = value;
-    this.minimizedChange.emit({ minimized: value });
-    // Clear the sibling via its setter so expandedChange is emitted if it changes.
-    if (value) this.setExpanded(false);
+    // @Watch('minimized') emits minimizedChange and clears expanded when needed.
   }
 
   private getClasses(): string {

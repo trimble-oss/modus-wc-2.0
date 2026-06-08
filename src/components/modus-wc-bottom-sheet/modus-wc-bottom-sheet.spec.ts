@@ -167,7 +167,7 @@ describe('modus-wc-bottom-sheet', () => {
     });
     const minimizedChange = jest.fn();
     page.root?.addEventListener('minimizedChange', minimizedChange);
-    // jsdom reports offsetHeight as 0; stub it so the dismiss threshold (40% of
+    // jsdom reports offsetHeight as 0; stub it so the step-down threshold (40% of
     // 500 = 200px) is actually exercised by the 300px drag below.
     Object.defineProperty(getPanel(page), 'offsetHeight', { value: 500 });
 
@@ -372,7 +372,7 @@ describe('modus-wc-bottom-sheet', () => {
     });
     const expandedChange = jest.fn();
     page.root?.addEventListener('expandedChange', expandedChange);
-    // jsdom reports offsetHeight as 0; stub it so the dismiss threshold is real.
+    // jsdom reports offsetHeight as 0; stub it so the step-down threshold is real.
     Object.defineProperty(getPanel(page), 'offsetHeight', { value: 500 });
 
     const handle = getHandle(page);
@@ -489,13 +489,13 @@ describe('modus-wc-bottom-sheet', () => {
     expect(document.body.style.cursor).toBe('');
   });
 
-  it('should fall back to the default dismiss threshold when dismissThreshold is undefined', async () => {
+  it('should fall back to the default step-down threshold when stepDownThreshold is undefined', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
       html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
     });
     const component = page.rootInstance as ModusWcBottomSheet;
-    component.dismissThreshold = undefined;
+    component.stepDownThreshold = undefined;
     await page.waitForChanges();
     // With the threshold cleared, the fallback (0.4 * 500 = 200px) applies, so
     // a 300px drag down must still minimize the sheet.
@@ -549,6 +549,90 @@ describe('modus-wc-bottom-sheet', () => {
     );
     expect(minimizedChange).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { minimized: false } })
+    );
+  });
+
+  it('should emit minimizedChange when minimized is set externally', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const minimizedChange = jest.fn();
+    page.root?.addEventListener('minimizedChange', minimizedChange);
+
+    component.minimized = true;
+    await page.waitForChanges();
+
+    expect(component.minimized).toBe(true);
+    expect(minimizedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { minimized: true } })
+    );
+  });
+
+  it('should emit expandedChange when expanded is set externally', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const expandedChange = jest.fn();
+    page.root?.addEventListener('expandedChange', expandedChange);
+
+    component.expanded = true;
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(expandedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: true } })
+    );
+  });
+
+  it('should clear expanded and emit both change events when minimized is set externally while expanded', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true" expanded="true"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const expandedChange = jest.fn();
+    const minimizedChange = jest.fn();
+    page.root?.addEventListener('expandedChange', expandedChange);
+    page.root?.addEventListener('minimizedChange', minimizedChange);
+
+    component.minimized = true;
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(component.minimized).toBe(true);
+    expect(expandedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: false } })
+    );
+    expect(minimizedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { minimized: true } })
+    );
+  });
+
+  it('should clear minimized and emit both change events when expanded is set externally while minimized', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet open="true" minimized="true"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const expandedChange = jest.fn();
+    const minimizedChange = jest.fn();
+    page.root?.addEventListener('expandedChange', expandedChange);
+    page.root?.addEventListener('minimizedChange', minimizedChange);
+
+    component.expanded = true;
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(component.minimized).toBe(false);
+    expect(minimizedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { minimized: false } })
+    );
+    expect(expandedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { expanded: true } })
     );
   });
 

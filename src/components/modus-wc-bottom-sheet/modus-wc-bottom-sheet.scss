@@ -1,12 +1,32 @@
 modus-wc-bottom-sheet.modus-wc-bottom-sheet {
+  border-radius: var(--rounded-box) var(--rounded-box) 0 0;
   bottom: 0;
+  box-shadow:
+    0 -20px 50px -8px
+      color-mix(in sRGB, var(--modus-wc-color-base-content) 22%, transparent),
+    0 -6px 16px
+      color-mix(in sRGB, var(--modus-wc-color-base-content) 12%, transparent);
   left: 50%;
   max-width: 100vw;
   min-width: 25vw;
-  position: absolute;
+  position: fixed;
   transform: translateX(-50%);
-  transition: transform 0.3s ease;
+
+  // When closing, keep the sheet visible for the slide-out, then flip to
+  // hidden after the transform finishes so the panel's upward shadow does not
+  // linger at the bottom of the viewport.
+  transition:
+    transform 0.3s ease,
+    visibility 0s linear 0.3s;
+  visibility: hidden;
+  width: 65vw;
   z-index: 999;
+
+  // When open, become visible immediately so the slide-in animates into view.
+  &[aria-hidden='false'] {
+    transition: transform 0.3s ease;
+    visibility: visible;
+  }
 
   &.modus-wc-bottom-sheet-dragging .modus-wc-panel {
     transition: none;
@@ -22,11 +42,6 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
 
   .modus-wc-panel {
     border-radius: var(--rounded-box) var(--rounded-box) 0 0;
-    box-shadow:
-      0 -20px 50px -8px
-        color-mix(in sRGB, var(--modus-wc-color-base-content) 22%, transparent),
-      0 -6px 16px
-        color-mix(in sRGB, var(--modus-wc-color-base-content) 12%, transparent);
     transition: height 0.3s ease;
 
     .modus-wc-bottom-sheet-handle {
