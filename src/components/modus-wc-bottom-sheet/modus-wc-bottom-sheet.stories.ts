@@ -2,14 +2,16 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IBottomSheetHeader } from './modus-wc-bottom-sheet';
+import {
+  IBottomSheetHeader,
+  TBottomSheetDisplayMode,
+} from './modus-wc-bottom-sheet';
 
 interface BottomSheetArgs {
   'custom-class'?: string;
-  open?: boolean;
-  expanded?: boolean;
-  minimized?: boolean;
-  'step-down-threshold'?: number;
+  visible?: boolean;
+  'display-mode'?: TBottomSheetDisplayMode;
+  'drag-step-threshold'?: number;
   header?: IBottomSheetHeader;
 }
 
@@ -25,26 +27,22 @@ const meta: Meta<BottomSheetArgs> = {
   component: 'modus-wc-bottom-sheet',
   args: {
     'custom-class': '',
-    open: true,
-    expanded: false,
-    minimized: false,
-    'step-down-threshold': 0.4,
+    visible: true,
+    'display-mode': 'default',
+    'drag-step-threshold': 0.4,
     header: defaultHeader,
   },
   argTypes: {
-    open: {
+    visible: {
       control: 'boolean',
       table: { defaultValue: { summary: 'false' } },
     },
-    expanded: {
-      control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
+    'display-mode': {
+      control: 'select',
+      options: ['default', 'expanded', 'minimized'],
+      table: { defaultValue: { summary: 'default' } },
     },
-    minimized: {
-      control: 'boolean',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    'step-down-threshold': {
+    'drag-step-threshold': {
       control: { type: 'number', min: 0, max: 1, step: 0.05 },
       table: { defaultValue: { summary: '0.4' } },
     },
@@ -75,9 +73,8 @@ const meta: Meta<BottomSheetArgs> = {
       handles: [
         'headerBackClick',
         'headerCloseClick',
-        'expandedChange',
-        'minimizedChange',
-        'openChange',
+        'displayModeChange',
+        'sheetVisibilityChange',
       ],
     },
   },
@@ -120,10 +117,9 @@ export const Default: Story = {
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
-          ?open="${args.open}"
-          ?expanded="${args.expanded}"
-          ?minimized="${args.minimized}"
-          step-down-threshold="${ifDefined(args['step-down-threshold'])}"
+          ?visible="${args.visible}"
+          display-mode="${ifDefined(args['display-mode'])}"
+          drag-step-threshold="${ifDefined(args['drag-step-threshold'])}"
           custom-class="${ifDefined(args['custom-class'])}"
           style="width: 600px"
           .header="${args.header}"
@@ -166,23 +162,26 @@ export const TriggeredByButton: Story = {
 
     const closeSheet = () => {
       const sheet = document.getElementById(sheetId);
-      if (sheet) (sheet as HTMLElement & { open: boolean }).open = false;
+      if (sheet) (sheet as HTMLElement & { visible: boolean }).visible = false;
     };
 
     const minimizeSheet = () => {
       const sheet = document.getElementById(sheetId);
       if (sheet)
-        (sheet as HTMLElement & { minimized: boolean }).minimized = true;
+        (
+          sheet as HTMLElement & { displayMode: TBottomSheetDisplayMode }
+        ).displayMode = 'minimized';
     };
 
     const restoreSheet = () => {
       const sheet = document.getElementById(sheetId);
       if (sheet) {
-        (sheet as HTMLElement & { open: boolean; minimized: boolean }).open =
-          true;
-        (
-          sheet as HTMLElement & { open: boolean; minimized: boolean }
-        ).minimized = false;
+        const typed = sheet as HTMLElement & {
+          visible: boolean;
+          displayMode: TBottomSheetDisplayMode;
+        };
+        typed.visible = true;
+        typed.displayMode = 'default';
       }
     };
 
@@ -244,7 +243,7 @@ export const TriggeredByButton: Story = {
 
       <modus-wc-bottom-sheet
         id="${sheetId}"
-        step-down-threshold="${ifDefined(args['step-down-threshold'])}"
+        drag-step-threshold="${ifDefined(args['drag-step-threshold'])}"
         style="width: 600px"
         .header="${ifDefined(args.header)}"
       >
@@ -310,7 +309,7 @@ export const ContentOnly: Story = {
       </style>
       <div class="bottom-sheet-demo">
         <modus-wc-bottom-sheet
-          ?open="${args.open}"
+          ?visible="${args.visible}"
           style="width: 600px"
           .header="${args.header}"
         >

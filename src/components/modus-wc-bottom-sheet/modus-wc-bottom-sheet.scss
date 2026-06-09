@@ -15,15 +15,13 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
   // When closing, keep the sheet visible for the slide-out, then flip to
   // hidden after the transform finishes so the panel's upward shadow does not
   // linger at the bottom of the viewport.
-  transition:
-    transform 0.3s ease,
-    visibility 0s linear 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   visibility: hidden;
   z-index: 999;
 
   // When open, become visible immediately so the slide-in animates into view.
   &[aria-hidden='false'] {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     visibility: visible;
   }
 
@@ -41,7 +39,7 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
 
   .modus-wc-panel {
     border-radius: var(--rounded-box) var(--rounded-box) 0 0;
-    transition: height 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     .modus-wc-bottom-sheet-handle {
       cursor: grab;

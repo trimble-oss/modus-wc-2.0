@@ -19,10 +19,15 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * Alternatively, set the `header` prop for the built-in header layout. Do not set `header` if you use the
  * 'header' slot.
  *
- * The drag handle lets the user drag the sheet down to step it down a level (past the
- * step-down threshold) or drag it up to expand it to fill the page/iframe height. Smaller
- * drags snap back to rest.
+ * The sheet rests at one of three display modes: 'minimized' (only the handle peeks), 'default', and
+ * 'expanded' (fills the page/iframe height). The drag handle steps the sheet one level at a time
+ * (e.g. minimized -> default -> expanded); it never jumps two levels in a single gesture. Setting the
+ * `displayMode` prop directly applies the value immediately. The selected `displayMode` is preserved
+ * while the sheet is hidden, so reopening restores the same mode. Smaller drags snap back to rest.
  */
+
+/** The resting display mode of the bottom sheet. */
+export type TBottomSheetDisplayMode = 'default' | 'expanded' | 'minimized';
 
 export interface IBottomSheetHeader {
   /** Whether to show the back button. */
@@ -45,10 +50,19 @@ export class ModusWcBottomSheet {
   private startY = 0;
   private startHeight = 0;
   private currentDelta = 0;
-  /** Pixels the sheet must be dragged up before it expands to full height. */
+  /** Pixels the sheet must be dragged up before it steps up a level. */
   private readonly expandThresholdPx = 64;
   /** Set when the sheet opens so focus can move inside it after the next render. */
   private pendingFocus = false;
+  /**
+   * Ordered rungs used by drag/keyboard interactions. Stepping moves one rung at
+   * a time so the sheet never jumps straight from minimized to expanded.
+   */
+  private static readonly DISPLAY_MODE_LADDER: TBottomSheetDisplayMode[] = [
+    'minimized',
+    'default',
+    'expanded',
+  ];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -57,19 +71,19 @@ export class ModusWcBottomSheet {
   @Prop() customClass?: string = '';
 
   /** Controls whether the bottom sheet is visible. */
-  @Prop({ mutable: true }) open?: boolean = false;
-
-  /** Controls whether the bottom sheet is expanded to fill the page/iframe height. */
-  @Prop({ mutable: true }) expanded?: boolean = false;
+  @Prop({ mutable: true }) visible?: boolean = false;
 
   /**
-   * Controls whether the bottom sheet is minimized to a peek state where only the
-   * handle is visible at the bottom and the content is hidden.
+   * The resting display mode of the bottom sheet: 'minimized' (only the handle
+   * peeks), 'default', or 'expanded' (fills the page/iframe height). This is the
+   * single source of truth shared by drag/keyboard interactions and external
+   * property changes, so both stay in sync. The value is preserved while the
+   * sheet is hidden, so reopening restores the same mode.
    */
-  @Prop({ mutable: true }) minimized?: boolean = false;
+  @Prop({ mutable: true }) displayMode?: TBottomSheetDisplayMode = 'default';
 
   /** Fraction (0-1) of the sheet height it must be dragged down before it steps down a level. */
-  @Prop() stepDownThreshold?: number = 0.4;
+  @Prop() dragStepThreshold?: number = 0.4;
 
   /**
    * Configuration for the built-in header layout.
@@ -77,21 +91,24 @@ export class ModusWcBottomSheet {
    */
   @Prop() header?: IBottomSheetHeader;
 
-  /** Event emitted when the open prop is internally changed. */
-  @StencilEvent() openChange!: EventEmitter<{ open: boolean }>;
+  /** Event emitted when the visibility of the bottom sheet changes. */
+  @StencilEvent() sheetVisibilityChange!: EventEmitter<{ visible: boolean }>;
 
-  /** Event emitted when the expanded prop is internally changed. */
-  @StencilEvent() expandedChange!: EventEmitter<{ expanded: boolean }>;
-
-  /** Event emitted when the minimized prop is internally changed. */
-  @StencilEvent() minimizedChange!: EventEmitter<{ minimized: boolean }>;
+  /**
+   * Event emitted when the display mode changes, whether from a drag/keyboard
+   * interaction or from setting the `displayMode` prop. The new mode is in
+   * `detail.displayMode`.
+   */
+  @StencilEvent() displayModeChange!: EventEmitter<{
+    displayMode: TBottomSheetDisplayMode;
+  }>;
 
   /** Event emitted when the header back button is clicked. Does not change sheet state. */
   @StencilEvent() headerBackClick!: EventEmitter<void>;
 
   /**
    * Event emitted when the header dismiss button is clicked.
-   * The sheet is also closed automatically (`open` is set to `false`).
+   * The sheet is also closed automatically (`visible` is set to `false`).
    */
   @StencilEvent() headerCloseClick!: EventEmitter<void>;
 
@@ -101,42 +118,26 @@ export class ModusWcBottomSheet {
   @State() private hasHeader = false;
   @State() private hasFooter = false;
 
-  @Watch('open')
-  handleOpenChange(isOpen: boolean) {
+  @Watch('visible')
+  handleVisibleChange(isVisible: boolean) {
     // Keep a closed sheet out of the tab order / a11y tree.
-    this.setInert(!isOpen);
-    if (isOpen) {
+    this.setInert(!isVisible);
+    if (isVisible) {
       // WCAG 2.4.3 (Focus Order): opening a dialog must move focus inside it.
       // Defer to componentDidRender so the sheet is rendered (and no longer
       // inert/aria-hidden) before focus moves.
       this.pendingFocus = true;
-    } else {
-      // Enforce the invariant that a closed sheet is neither expanded nor
-      // minimized, even when `open` is toggled externally (bypassing setOpen).
-      // Route through the setters so @Watch handlers emit expandedChange /
-      // minimizedChange and consumers mirroring state stay in sync.
-      this.setExpanded(false);
-      this.setMinimized(false);
     }
+    // The display mode is intentionally preserved while hidden so reopening
+    // restores the same mode. Emit here so both internal (setVisible) and
+    // external (prop) changes notify consumers.
+    this.sheetVisibilityChange.emit({ visible: isVisible });
   }
 
-  @Watch('expanded')
-  handleExpandedChange(newValue: boolean) {
-    // Expanded and minimized are mutually exclusive; clear the sibling via its
-    // setter so minimizedChange is emitted if it actually changes.
-    if (newValue && this.minimized) {
-      this.setMinimized(false);
-    }
-    this.expandedChange.emit({ expanded: newValue });
-  }
-
-  @Watch('minimized')
-  handleMinimizedChange(newValue: boolean) {
-    // Clear the sibling via its setter so expandedChange is emitted if it changes.
-    if (newValue && this.expanded) {
-      this.setExpanded(false);
-    }
-    this.minimizedChange.emit({ minimized: newValue });
+  @Watch('displayMode')
+  handleDisplayModeChange(newValue: TBottomSheetDisplayMode) {
+    // Fires for both interaction-driven (setDisplayMode) and property-driven changes.
+    this.displayModeChange.emit({ displayMode: newValue });
   }
 
   componentWillLoad() {
@@ -144,7 +145,7 @@ export class ModusWcBottomSheet {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     // A closed sheet must not be focusable or in the a11y tree (@Watch does not
     // fire on initial load, so the initial state is set here).
-    this.setInert(!this.open);
+    this.setInert(!this.visible);
     // Captured before first render: the host's direct children are still the
     // consumer-provided slotted nodes (Stencil relocates them into the panel
     // once rendered, so this must run here).
@@ -185,7 +186,7 @@ export class ModusWcBottomSheet {
   }
 
   private readonly onPointerDown = (e: PointerEvent) => {
-    if (!this.open) return;
+    if (!this.visible) return;
     e.preventDefault();
     this.isDragging = true;
     this.startY = e.clientY;
@@ -229,15 +230,15 @@ export class ModusWcBottomSheet {
     if (delta > 0) {
       // The panel is always rendered, so the reference is non-null.
       const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel')!;
-      const stepDownPx = (this.stepDownThreshold ?? 0.4) * panel.offsetHeight;
+      const stepDownPx = (this.dragStepThreshold ?? 0.4) * panel.offsetHeight;
 
-      // Drag down steps down one level (expanded -> open -> minimized).
+      // Drag down steps down one level (expanded -> default -> minimized).
       // It never closes the sheet; closing is property/action driven only.
       if (delta > stepDownPx) {
         this.stepDown();
       }
     } else if (-delta > this.expandThresholdPx) {
-      // Drag up steps up one level (minimized -> open -> expanded).
+      // Drag up steps up one level (minimized -> default -> expanded).
       this.stepUp();
     }
   };
@@ -251,54 +252,44 @@ export class ModusWcBottomSheet {
       this.stepDown();
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      this.setOpen(false);
+      this.setVisible(false);
     }
   };
 
-  /** Step up one level: minimized -> open -> expanded. */
+  /** Step up one rung of the ladder: minimized -> default -> expanded. */
   private stepUp() {
-    if (this.minimized) {
-      this.setMinimized(false);
-    } else if (!this.expanded) {
-      this.setExpanded(true);
-    }
+    const ladder = ModusWcBottomSheet.DISPLAY_MODE_LADDER;
+    const index = ladder.indexOf(this.displayMode ?? 'default');
+    this.setDisplayMode(ladder[Math.min(index + 1, ladder.length - 1)]);
   }
 
-  /** Step down one level: expanded -> open -> minimized (never closes). */
+  /** Step down one rung of the ladder: expanded -> default -> minimized (never closes). */
   private stepDown() {
-    if (this.expanded) {
-      this.setExpanded(false);
-    } else if (!this.minimized) {
-      this.setMinimized(true);
-    }
+    const ladder = ModusWcBottomSheet.DISPLAY_MODE_LADDER;
+    const index = ladder.indexOf(this.displayMode ?? 'default');
+    this.setDisplayMode(ladder[Math.max(index - 1, 0)]);
   }
 
-  private setOpen(value: boolean) {
-    if (this.open === value) return;
-    // Assigning `open` runs the @Watch('open') handler, which resets and emits
-    // the expanded/minimized siblings when closing (so they stay in sync for
-    // both internal and external `open` changes).
-    this.open = value;
-    this.openChange.emit({ open: value });
+  private setVisible(value: boolean) {
+    if (this.visible === value) return;
+    // Assigning `visible` runs the @Watch('visible') handler, which emits
+    // sheetVisibilityChange (so it fires for both internal and external changes).
+    this.visible = value;
   }
 
-  private setExpanded(value: boolean) {
-    if (this.expanded === value) return;
-    this.expanded = value;
-    // @Watch('expanded') emits expandedChange and clears minimized when needed.
-  }
-
-  private setMinimized(value: boolean) {
-    if (this.minimized === value) return;
-    this.minimized = value;
-    // @Watch('minimized') emits minimizedChange and clears expanded when needed.
+  private setDisplayMode(value: TBottomSheetDisplayMode) {
+    if (this.displayMode === value) return;
+    this.displayMode = value;
+    // @Watch('displayMode') emits displayModeChange.
   }
 
   private getClasses(): string {
     const classList: string[] = ['modus-wc-bottom-sheet'];
 
-    if (this.expanded) classList.push('modus-wc-bottom-sheet-expanded');
-    if (this.minimized) classList.push('modus-wc-bottom-sheet-minimized');
+    if (this.displayMode === 'expanded')
+      classList.push('modus-wc-bottom-sheet-expanded');
+    if (this.displayMode === 'minimized')
+      classList.push('modus-wc-bottom-sheet-minimized');
     if (this.isDragging) classList.push('modus-wc-bottom-sheet-dragging');
     if (this.customClass) classList.push(this.customClass);
 
@@ -306,16 +297,14 @@ export class ModusWcBottomSheet {
   }
 
   private getTransform(): string {
-    if (!this.open) return 'translate(-50%, 100%)';
+    if (!this.visible) return 'translate(-50%, 100%)';
     if (this.dragOffset > 0) return `translate(-50%, ${this.dragOffset}px)`;
     return 'translate(-50%, 0)';
   }
 
   private getPanelHeight(): string {
     if (this.isDragging && this.dragHeight) return this.dragHeight;
-    if (this.minimized) return 'auto';
-    if (this.expanded) return '95dvh';
-    return 'auto';
+    return this.displayMode === 'expanded' ? '95dvh' : 'auto';
   }
 
   private hasDefaultHeader(): boolean {
@@ -335,7 +324,7 @@ export class ModusWcBottomSheet {
   };
 
   private readonly onHeaderCloseClick = () => {
-    this.setOpen(false);
+    this.setVisible(false);
     this.headerCloseClick.emit();
   };
 
@@ -403,8 +392,8 @@ export class ModusWcBottomSheet {
         class={this.getClasses()}
         role="dialog"
         tabIndex={-1}
-        aria-hidden={(!this.open).toString()}
-        aria-modal={this.open ? 'true' : undefined}
+        aria-hidden={(!this.visible).toString()}
+        aria-modal={this.visible ? 'true' : undefined}
         style={{
           transform: this.getTransform(),
           transition: this.isDragging ? 'none' : undefined,
