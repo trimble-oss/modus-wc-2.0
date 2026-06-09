@@ -105,7 +105,7 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
 
 <script>
   const el = document.createElement('div');
-  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:0.25rem;text-align:start"><div style="align-items:center;display:flex;gap:0.375rem"><modus-wc-icon decorative name="thumbs_up" size="sm"></modus-wc-icon><span>First line</span></div><p>Second line</p></div>';
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:0.25rem;text-align:start"><div style="align-items:center;display:flex;gap:0.375rem"><modus-wc-icon decorative name="thumbs_up" size="sm"></modus-wc-icon><span>First line of multiline content.</span></div><p>Second line of multiline content.</p></div>';
   document.querySelector('modus-wc-tooltip').contentElement = el;
 </script>`,
       },
