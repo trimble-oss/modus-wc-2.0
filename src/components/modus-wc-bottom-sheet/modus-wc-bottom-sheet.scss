@@ -12,17 +12,34 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
   position: fixed;
   transform: translateX(-50%);
 
-  // When closing, keep the sheet visible for the slide-out, then flip to
-  // hidden after the transform finishes so the panel's upward shadow does not
-  // linger at the bottom of the viewport.
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  visibility: hidden;
+  // The sheet stays rendered in both states so its transform animates smoothly
+  // in and out (toggling visibility:hidden suppressed the slide-in). When closed
+  // it is translated fully below the viewport; the upward box-shadow is removed
+  // only AFTER the slide-out finishes (0.3s delay) so no shadow sliver lingers
+  // at the bottom edge while the sheet rests off-screen.
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0s linear 0.3s;
   z-index: 999;
 
-  // When open, become visible immediately so the slide-in animates into view.
+  &[aria-hidden='true'] {
+    box-shadow: none;
+  }
+
+  // When open, restore the shadow immediately as the sheet slides into view.
   &[aria-hidden='false'] {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    visibility: visible;
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0s linear 0s;
+  }
+
+  // The host receives programmatic focus when it opens (WCAG 2.4.3) so screen
+  // readers announce the dialog. It is not keyboard-tabbable (tabindex=-1), so
+  // the default outline would draw a ring around the whole sheet. Suppress it
+  // on the host only; the interactive controls inside keep their focus rings.
+  &:focus,
+  &:focus-visible {
+    outline: none;
   }
 
   &.modus-wc-bottom-sheet-dragging .modus-wc-panel {

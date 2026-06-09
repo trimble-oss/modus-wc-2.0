@@ -22,8 +22,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * The sheet rests at one of three display modes: 'minimized' (only the handle peeks), 'default', and
  * 'expanded' (fills the page/iframe height). The drag handle steps the sheet one level at a time
  * (e.g. minimized -> default -> expanded); it never jumps two levels in a single gesture. Setting the
- * `displayMode` prop directly applies the value immediately. The selected `displayMode` is preserved
- * while the sheet is hidden, so reopening restores the same mode. Smaller drags snap back to rest.
+ * `displayMode` prop directly applies the value immediately. Drag/keyboard interactions change the
+ * live mode but do not overwrite the `displayMode` prop, so reopening the sheet always restores the
+ * mode set via that prop. Smaller drags snap back to rest.
  */
 
 /** The resting display mode of the bottom sheet. */
@@ -53,6 +54,17 @@ export class ModusWcBottomSheet {
   /** Set when the sheet opens so focus can move inside it after the next render. */
   private pendingFocus = false;
   /**
+   * The mode requested via the `displayMode` prop (as opposed to a drag/keyboard
+   * interaction). Reopening the sheet restores this value so the property always
+   * wins, discarding any live mode an earlier interaction left behind.
+   */
+  private propDisplayMode: TBottomSheetDisplayMode = 'default';
+  /**
+   * True only while an interaction (drag/keyboard) writes `displayMode`, so the
+   * watch can tell interaction-driven changes apart from property changes.
+   */
+  private isInteractionChange = false;
+  /**
    * Ordered rungs used by drag/keyboard interactions. Stepping moves one rung at
    * a time so the sheet never jumps straight from minimized to expanded.
    */
@@ -73,10 +85,10 @@ export class ModusWcBottomSheet {
 
   /**
    * The resting display mode of the bottom sheet: 'minimized' (only the handle
-   * peeks), 'default', or 'expanded' (fills the page/iframe height). This is the
-   * single source of truth shared by drag/keyboard interactions and external
-   * property changes, so both stay in sync. The value is preserved while the
-   * sheet is hidden, so reopening restores the same mode.
+   * peeks), 'default', or 'expanded' (fills the page/iframe height). Setting this
+   * prop applies the mode immediately. Drag/keyboard interactions change the live
+   * mode (and emit `displayModeChange`) but do not overwrite this property, so
+   * reopening the sheet always restores the mode set via this prop.
    */
   @Prop({ mutable: true }) displayMode?: TBottomSheetDisplayMode = 'default';
 
@@ -121,21 +133,32 @@ export class ModusWcBottomSheet {
     // Keep a closed sheet out of the tab order / a11y tree.
     this.setInert(!isVisible);
     if (isVisible) {
+      // Reopening must follow the `displayMode` property, discarding any live
+      // mode an earlier drag/keyboard interaction left behind on the last open.
+      if ((this.displayMode ?? 'default') !== this.propDisplayMode) {
+        this.displayMode = this.propDisplayMode;
+      }
       // WCAG 2.4.3 (Focus Order): opening a dialog must move focus inside it.
       // Defer to componentDidRender so the sheet is rendered (and no longer
       // inert/aria-hidden) before focus moves.
       this.pendingFocus = true;
     }
-    // The display mode is intentionally preserved while hidden so reopening
-    // restores the same mode. Emit here so both internal (setVisible) and
-    // external (prop) changes notify consumers.
+    // Emit here so both internal (setVisible) and external (prop) changes notify consumers.
     this.sheetVisibilityChange.emit({ visible: isVisible });
   }
 
   @Watch('displayMode')
   handleDisplayModeChange(newValue: TBottomSheetDisplayMode) {
-    // Fires for both interaction-driven (setDisplayMode) and property-driven changes.
-    this.displayModeChange.emit({ displayMode: newValue });
+    // A property-driven change (not a drag/keyboard interaction) becomes the
+    // mode that is restored on the next reopen.
+    if (!this.isInteractionChange) {
+      this.propDisplayMode = newValue ?? 'default';
+    }
+    // Only notify while the sheet is visible; mode changes made on a hidden sheet
+    // are not user-facing, so they should not emit.
+    if (this.visible) {
+      this.displayModeChange.emit({ displayMode: newValue });
+    }
   }
 
   componentWillLoad() {
@@ -144,6 +167,9 @@ export class ModusWcBottomSheet {
     // A closed sheet must not be focusable or in the a11y tree (@Watch does not
     // fire on initial load, so the initial state is set here).
     this.setInert(!this.visible);
+    // Remember the mode requested via the prop so reopening always restores it,
+    // even if a drag/keyboard interaction changes the live mode in between.
+    this.propDisplayMode = this.displayMode ?? 'default';
     // Captured before first render: the host's direct children are still the
     // consumer-provided slotted nodes (Stencil relocates them into the panel
     // once rendered, so this must run here).
@@ -276,7 +302,11 @@ export class ModusWcBottomSheet {
 
   private setDisplayMode(value: TBottomSheetDisplayMode) {
     if (this.displayMode === value) return;
+    // Mark this as interaction-driven so the watch does not adopt it as the new
+    // property mode; the prop's mode is what gets restored when the sheet reopens.
+    this.isInteractionChange = true;
     this.displayMode = value;
+    this.isInteractionChange = false;
     // @Watch('displayMode') emits displayModeChange.
   }
 

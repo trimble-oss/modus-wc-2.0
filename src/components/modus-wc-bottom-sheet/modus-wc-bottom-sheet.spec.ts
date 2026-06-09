@@ -639,6 +639,99 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.className).toContain('modus-wc-bottom-sheet-minimized');
   });
 
+  it('should not reset displayMode on reopen when the live mode already matches the property mode', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet visible="true" display-mode="minimized"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const displayModeChange = jest.fn();
+    page.root?.addEventListener('displayModeChange', displayModeChange);
+
+    component.handleVisibleChange(true);
+    await page.waitForChanges();
+
+    expect(component.displayMode).toBe('minimized');
+    expect(displayModeChange).not.toHaveBeenCalled();
+  });
+
+  it('should restore the property displayMode when reopening with an undefined live displayMode', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet visible="true" display-mode="expanded"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+
+    // Assigning `undefined` through the prop would run @Watch('displayMode') and
+    // overwrite propDisplayMode; define the field directly for this edge case.
+    Object.defineProperty(component, 'displayMode', {
+      value: undefined,
+      writable: true,
+      configurable: true,
+    });
+    component.handleVisibleChange(true);
+    await page.waitForChanges();
+
+    expect(component.displayMode).toBe('expanded');
+  });
+
+  it('should initialize propDisplayMode from default when displayMode is undefined at load', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet visible="true" display-mode="expanded"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+
+    Object.defineProperty(component, 'displayMode', {
+      value: undefined,
+      writable: true,
+      configurable: true,
+    });
+    component.componentWillLoad();
+
+    getHandle(page).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown' })
+    );
+    await page.waitForChanges();
+    expect(component.displayMode).toBe('minimized');
+
+    component.visible = false;
+    await page.waitForChanges();
+    component.visible = true;
+    await page.waitForChanges();
+
+    expect(component.displayMode).toBe('default');
+  });
+
+  it('should restore the property displayMode (not the interaction mode) when reopened', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet visible="true" display-mode="expanded"></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+
+    // Interactions step the live mode down to minimized, but must not overwrite
+    // the 'expanded' value set via the property.
+    getHandle(page).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown' })
+    );
+    await page.waitForChanges();
+    getHandle(page).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown' })
+    );
+    await page.waitForChanges();
+    expect(component.displayMode).toBe('minimized');
+
+    // Hide then show: the property mode ('expanded') wins, not the dragged mode.
+    component.visible = false;
+    await page.waitForChanges();
+    component.visible = true;
+    await page.waitForChanges();
+
+    expect(component.displayMode).toBe('expanded');
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-expanded');
+  });
+
   it('should emit sheetVisibilityChange when visible is toggled via property', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
@@ -695,6 +788,23 @@ describe('modus-wc-bottom-sheet', () => {
     expect(displayModeChange).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { displayMode: 'expanded' } })
     );
+  });
+
+  it('should not emit displayModeChange when displayMode changes while hidden', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: '<modus-wc-bottom-sheet></modus-wc-bottom-sheet>',
+    });
+    const component = page.rootInstance as ModusWcBottomSheet;
+    const displayModeChange = jest.fn();
+    page.root?.addEventListener('displayModeChange', displayModeChange);
+
+    component.displayMode = 'expanded';
+    await page.waitForChanges();
+
+    // The mode is tracked for the next reopen, but no event fires while hidden.
+    expect(component.displayMode).toBe('expanded');
+    expect(displayModeChange).not.toHaveBeenCalled();
   });
 
   it('should apply directly (not step) when displayMode changes from expanded to minimized via property', async () => {
