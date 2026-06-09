@@ -42,10 +42,6 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
     outline: none;
   }
 
-  &.modus-wc-bottom-sheet-dragging .modus-wc-panel {
-    transition: none;
-  }
-
   &.modus-wc-bottom-sheet-minimized .modus-wc-panel {
     .modus-wc-bottom-sheet-header,
     .modus-wc-bottom-sheet-content,
@@ -56,7 +52,6 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
 
   .modus-wc-panel {
     border-radius: var(--rounded-box) var(--rounded-box) 0 0;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     .modus-wc-bottom-sheet-handle {
       cursor: grab;
