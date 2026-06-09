@@ -496,13 +496,52 @@ describe('modus-wc-tooltip', () => {
     tooltipComponent.tooltipElement = mockTooltipElement;
 
     tooltipComponent.content = 'Updated content';
-    // Manually trigger watch handler
-    tooltipComponent.handleContentChange('Updated content');
+    tooltipComponent.handleContentChange();
 
     expect(mockTooltipElement.textContent).toContain('Updated content');
     expect(
       mockTooltipElement.querySelector('.modus-wc-tooltip-arrow')
     ).not.toBeNull();
+  });
+
+  it('should update tooltip body when content prop changes on the host element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Original content"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    await page.waitForChanges();
+
+    if (page.root) {
+      page.root.content = 'Updated content';
+    }
+    await page.waitForChanges();
+
+    const tooltipContent = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tooltipContent?.textContent).toContain('Updated content');
+    expect(tooltipContent?.textContent).not.toContain('Original content');
+    expect(
+      tooltipContent?.querySelector('.modus-wc-tooltip-arrow')
+    ).not.toBeNull();
+  });
+
+  it('should use the first slotted child as the popper trigger element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `
+        <modus-wc-tooltip content="Test">
+          <button id="trigger-button">Hover</button>
+        </modus-wc-tooltip>
+      `,
+    });
+
+    await page.waitForChanges();
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+    const trigger = page.root?.querySelector('#trigger-button');
+
+    // @ts-expect-error - Access private property for testing
+    expect(tooltipComponent.triggerElement).toBe(trigger);
   });
 
   it('should set popover="manual" attribute on the tooltip element', async () => {
@@ -680,6 +719,440 @@ describe('modus-wc-tooltip', () => {
     expect(mockTooltipElement.style.display).toBe('block');
     // @ts-expect-error - isVisible should remain true
     expect(tooltipComponent.isVisible).toBe(true);
+  });
+
+  describe('contentElement prop', () => {
+    it('should deep-clone contentElement into the tooltip balloon when set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const richEl = document.createElement('span');
+      richEl.textContent = 'Rich content';
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+
+      // A deep clone is rendered, not the caller's original node
+      expect(tooltipEl.contains(richEl)).toBe(false);
+      const renderedClone = tooltipEl.querySelector('span');
+      expect(renderedClone).not.toBeNull();
+      expect(renderedClone).not.toBe(richEl);
+      expect(renderedClone?.textContent).toBe('Rich content');
+      expect(tooltipEl.querySelector('.modus-wc-tooltip-arrow')).not.toBeNull();
+      // Arrow must remain the last child
+      expect(tooltipEl.lastElementChild?.className).toBe(
+        'modus-wc-tooltip-arrow'
+      );
+    });
+
+    it('should fall back to content string when contentElement is not set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      // No contentElement assigned — plain text should be present
+      expect(tooltipEl.textContent).toContain('Fallback text');
+    });
+
+    it('should prefer contentElement over content string', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Plain text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const richEl = document.createElement('em');
+      richEl.textContent = 'Rich text';
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+
+      // The cloned rich element is rendered (not the original), and the plain
+      // string is NOT present as a bare text node
+      const renderedClone = tooltipEl.querySelector('em');
+      expect(renderedClone).not.toBeNull();
+      expect(renderedClone).not.toBe(richEl);
+      expect(renderedClone?.textContent).toBe('Rich text');
+      const textNodes = Array.from(tooltipEl.childNodes).filter(
+        (n) => n.nodeType === Node.TEXT_NODE
+      );
+      expect(textNodes.every((n) => n.textContent === '')).toBe(true);
+    });
+
+    it('should ignore content string watch updates while contentElement is set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const richEl = document.createElement('span');
+      richEl.textContent = 'Rich';
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+
+      // Change the content string and trigger the watch — it should be suppressed
+      tooltipComponent.content = 'Updated plain text';
+      tooltipComponent.handleContentChange();
+
+      expect(tooltipEl.querySelector('span')?.textContent).toBe('Rich');
+      expect(tooltipEl.textContent).not.toContain('Updated plain text');
+    });
+
+    it('should update tooltip when contentElement watch fires', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Initial"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const richEl = document.createElement('p');
+      richEl.textContent = 'Watch content';
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+
+      const renderedClone = tooltipEl.querySelector('p');
+      expect(renderedClone).not.toBeNull();
+      expect(renderedClone).not.toBe(richEl);
+      expect(renderedClone?.textContent).toBe('Watch content');
+      expect(tooltipEl.querySelector('.modus-wc-tooltip-arrow')).not.toBeNull();
+    });
+
+    it('should not throw in handleContentChange when tooltipElement is null', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Set private property for testing
+      tooltipComponent.tooltipElement = null;
+
+      expect(() => {
+        tooltipComponent.handleContentChange();
+      }).not.toThrow();
+    });
+
+    it('should revert to content string when contentElement is cleared', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const richEl = document.createElement('b');
+      richEl.textContent = 'Bold content';
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+      expect(tooltipEl.querySelector('b')?.textContent).toBe('Bold content');
+
+      // Clear contentElement — should revert to plain text
+      tooltipComponent.contentElement = undefined;
+      tooltipComponent.handleContentElementChange();
+
+      expect(tooltipEl.querySelector('b')).toBeNull();
+      expect(tooltipEl.textContent).toContain('Fallback');
+    });
+
+    it('should do nothing in applyContentToTooltip when tooltipElement is null', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Set private property for testing
+      tooltipComponent.tooltipElement = null;
+
+      // Should not throw
+      expect(() => {
+        // @ts-expect-error - Access private method for testing
+        tooltipComponent.applyContentToTooltip();
+      }).not.toThrow();
+    });
+
+    it("should leave the caller's original element in its parent", async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+      // The caller keeps the element in their own DOM location
+      const ownerParent = document.createElement('div');
+      const richEl = document.createElement('span');
+      richEl.textContent = 'Owned content';
+      ownerParent.appendChild(richEl);
+
+      tooltipComponent.contentElement = richEl;
+      tooltipComponent.handleContentElementChange();
+
+      // The original node must NOT be moved out of its parent
+      expect(richEl.parentElement).toBe(ownerParent);
+      expect(ownerParent.contains(richEl)).toBe(true);
+    });
+
+    it('should not mutate or orphan the previous element when contentElement is reassigned', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Original"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      const firstParent = document.createElement('div');
+      const firstEl = document.createElement('span');
+      firstEl.textContent = 'First';
+      firstParent.appendChild(firstEl);
+
+      tooltipComponent.contentElement = firstEl;
+      tooltipComponent.handleContentElementChange();
+
+      const secondEl = document.createElement('span');
+      secondEl.textContent = 'Second';
+
+      tooltipComponent.contentElement = secondEl;
+      tooltipComponent.handleContentElementChange();
+
+      // The previous element is untouched: still has its parent, still has its content
+      expect(firstEl.parentElement).toBe(firstParent);
+      expect(firstEl.textContent).toBe('First');
+
+      // The tooltip now renders a clone of the second element
+      expect(tooltipEl.textContent).toContain('Second');
+      expect(tooltipEl.textContent).not.toContain('First');
+    });
+
+    it('should allow the same element to be used as content for multiple tooltips', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `
+          <div>
+            <modus-wc-tooltip id="t1"><button>One</button></modus-wc-tooltip>
+            <modus-wc-tooltip id="t2"><button>Two</button></modus-wc-tooltip>
+          </div>
+        `,
+      });
+
+      await page.waitForChanges();
+
+      const shared = document.createElement('span');
+      shared.textContent = 'Shared content';
+
+      const tooltips = Array.from(
+        page.body.querySelectorAll('modus-wc-tooltip')
+      ) as (HTMLElement & { contentElement?: HTMLElement })[];
+
+      tooltips.forEach((t) => {
+        t.contentElement = shared;
+      });
+      await page.waitForChanges();
+
+      // Both tooltips render the shared content via independent clones
+      const balloons = Array.from(
+        page.body.querySelectorAll('.modus-wc-tooltip-content')
+      );
+      expect(balloons.length).toBe(2);
+      balloons.forEach((balloon) => {
+        const clone = balloon.querySelector('span');
+        expect(clone).not.toBeNull();
+        expect(clone).not.toBe(shared);
+        expect(clone?.textContent).toBe('Shared content');
+      });
+
+      // The shared original was never adopted by either tooltip
+      expect(shared.parentElement).toBeNull();
+    });
+
+    it('should fall back to the content string when a non-Node value is assigned to contentElement', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Fallback text"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+      // Assign a value that is not a DOM Node
+      // @ts-expect-error - Deliberately assigning an invalid value for testing
+      tooltipComponent.contentElement = {};
+
+      expect(() => {
+        tooltipComponent.handleContentElementChange();
+      }).not.toThrow();
+
+      expect(tooltipEl.textContent).toContain('Fallback text');
+    });
+
+    describe('dynamic rich content', () => {
+      it('should not update the clone when the source contentElement node is mutated without reassignment', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+        });
+
+        const tooltipComponent = page.rootInstance as ModusWcTooltip;
+        // @ts-expect-error - Access private property for testing
+        const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+        const richEl = document.createElement('div');
+        richEl.textContent = 'Initial';
+
+        tooltipComponent.contentElement = richEl;
+        tooltipComponent.handleContentElementChange();
+
+        richEl.textContent = 'Updated';
+
+        const renderedClone = tooltipEl.querySelector('div');
+        expect(renderedClone?.textContent).toBe('Initial');
+        expect(renderedClone?.textContent).not.toBe('Updated');
+      });
+
+      it('should update the clone when a new contentElement is assigned', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+        });
+
+        const tooltipComponent = page.rootInstance as ModusWcTooltip;
+        // @ts-expect-error - Access private property for testing
+        const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+        const initialEl = document.createElement('div');
+        initialEl.textContent = 'Initial';
+
+        tooltipComponent.contentElement = initialEl;
+        tooltipComponent.handleContentElementChange();
+
+        const updatedEl = document.createElement('div');
+        updatedEl.textContent = 'Updated';
+
+        tooltipComponent.contentElement = updatedEl;
+        tooltipComponent.handleContentElementChange();
+
+        expect(tooltipEl.querySelector('div')?.textContent).toBe('Updated');
+        expect(tooltipEl.textContent).not.toContain('Initial');
+      });
+
+      it('should update the clone when contentElement is cleared and reassigned after mutating the source', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+        });
+
+        const tooltipComponent = page.rootInstance as ModusWcTooltip;
+        // @ts-expect-error - Access private property for testing
+        const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+        const richEl = document.createElement('div');
+        richEl.textContent = 'Initial';
+
+        tooltipComponent.contentElement = richEl;
+        tooltipComponent.handleContentElementChange();
+
+        richEl.textContent = 'Updated';
+        tooltipComponent.contentElement = undefined;
+        tooltipComponent.handleContentElementChange();
+        tooltipComponent.contentElement = richEl;
+        tooltipComponent.handleContentElementChange();
+
+        expect(tooltipEl.querySelector('div')?.textContent).toBe('Updated');
+      });
+
+      it('should deep-clone nested rich HTML structures', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+        });
+
+        const tooltipComponent = page.rootInstance as ModusWcTooltip;
+        // @ts-expect-error - Access private property for testing
+        const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+        const richEl = document.createElement('div');
+        const icon = document.createElement('span');
+        icon.className = 'tooltip-rich-icon';
+        const text = document.createElement('div');
+        text.innerHTML =
+          '<strong>Tooltip</strong><p>First line</p><p>Second line</p>';
+        richEl.append(icon, text);
+
+        tooltipComponent.contentElement = richEl;
+        tooltipComponent.handleContentElementChange();
+
+        expect(tooltipEl.contains(richEl)).toBe(false);
+        expect(tooltipEl.querySelector('.tooltip-rich-icon')).not.toBeNull();
+        expect(tooltipEl.querySelector('strong')?.textContent).toBe('Tooltip');
+        expect(tooltipEl.querySelectorAll('p').length).toBe(2);
+        expect(richEl.querySelector('.tooltip-rich-icon')).not.toBeNull();
+      });
+    });
+
+    describe('interactive content', () => {
+      it('should not copy addEventListener handlers to the contentElement clone', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: '<modus-wc-tooltip content="Fallback"><button>Trigger</button></modus-wc-tooltip>',
+        });
+
+        const tooltipComponent = page.rootInstance as ModusWcTooltip;
+        // @ts-expect-error - Access private property for testing
+        const tooltipEl = tooltipComponent.tooltipElement as HTMLElement;
+
+        let originalClicks = 0;
+        const richEl = document.createElement('div');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = 'Action';
+        button.addEventListener('click', () => {
+          originalClicks += 1;
+        });
+        richEl.appendChild(button);
+
+        tooltipComponent.contentElement = richEl;
+        tooltipComponent.handleContentElementChange();
+
+        const cloneButton = tooltipEl.querySelector('button');
+        expect(cloneButton).not.toBeNull();
+        expect(cloneButton).not.toBe(button);
+
+        cloneButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(originalClicks).toBe(0);
+
+        button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(originalClicks).toBe(1);
+      });
+    });
   });
 
   // Set a longer timeout for this test (30 seconds)
