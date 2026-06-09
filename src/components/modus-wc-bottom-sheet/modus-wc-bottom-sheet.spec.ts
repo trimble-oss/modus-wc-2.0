@@ -262,9 +262,12 @@ describe('modus-wc-bottom-sheet', () => {
     });
     const displayModeChange = jest.fn();
     page.root?.addEventListener('displayModeChange', displayModeChange);
+    // The step threshold is 40% of the rest height in either direction; stub it
+    // so a 300px up-drag (clientY 400 -> 100) clearly exceeds 0.4 * 500 = 200px.
+    Object.defineProperty(getPanel(page), 'offsetHeight', { value: 500 });
 
     const handle = getHandle(page);
-    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 300 }));
+    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 400 }));
     document.dispatchEvent(new MouseEvent('pointermove', { clientY: 100 }));
     document.dispatchEvent(new MouseEvent('pointerup'));
     await page.waitForChanges();
@@ -282,9 +285,12 @@ describe('modus-wc-bottom-sheet', () => {
       components: bottomSheetComponents,
       html: '<modus-wc-bottom-sheet visible="true"></modus-wc-bottom-sheet>',
     });
+    // Step threshold is 40% of the rest height; a 300px up-drag exceeds
+    // 0.4 * 500 = 200px and steps up one level.
+    Object.defineProperty(getPanel(page), 'offsetHeight', { value: 500 });
 
     const handle = getHandle(page);
-    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 300 }));
+    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 400 }));
     document.dispatchEvent(new MouseEvent('pointermove', { clientY: 100 }));
     document.dispatchEvent(new MouseEvent('pointerup'));
     await page.waitForChanges();

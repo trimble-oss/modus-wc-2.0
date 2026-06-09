@@ -50,8 +50,6 @@ export class ModusWcBottomSheet {
   private startY = 0;
   private startHeight = 0;
   private currentDelta = 0;
-  /** Pixels the sheet must be dragged up before it steps up a level. */
-  private readonly expandThresholdPx = 64;
   /** Set when the sheet opens so focus can move inside it after the next render. */
   private pendingFocus = false;
   /**
@@ -82,7 +80,7 @@ export class ModusWcBottomSheet {
    */
   @Prop({ mutable: true }) displayMode?: TBottomSheetDisplayMode = 'default';
 
-  /** Fraction (0-1) of the sheet height it must be dragged down before it steps down a level. */
+  /** Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level. */
   @Prop() dragStepThreshold?: number = 0.4;
 
   /**
@@ -227,17 +225,16 @@ export class ModusWcBottomSheet {
     this.dragOffset = 0;
     this.dragHeight = null;
 
-    if (delta > 0) {
-      // The panel is always rendered, so the reference is non-null.
-      const panel = this.el.querySelector<HTMLElement>('.modus-wc-panel')!;
-      const stepDownPx = (this.dragStepThreshold ?? 0.4) * panel.offsetHeight;
+    // The same fraction-of-height threshold governs both directions. It is based
+    // on the resting height captured at pointerdown (not the live height, which
+    // grows during an upward drag) so up and down behave symmetrically.
+    const stepThresholdPx = (this.dragStepThreshold ?? 0.4) * this.startHeight;
 
+    if (delta > stepThresholdPx) {
       // Drag down steps down one level (expanded -> default -> minimized).
       // It never closes the sheet; closing is property/action driven only.
-      if (delta > stepDownPx) {
-        this.stepDown();
-      }
-    } else if (-delta > this.expandThresholdPx) {
+      this.stepDown();
+    } else if (-delta > stepThresholdPx) {
       // Drag up steps up one level (minimized -> default -> expanded).
       this.stepUp();
     }
