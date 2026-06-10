@@ -54,7 +54,7 @@ jobs:
 
       - name: Deploy preview
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: preview-deploy
         with:
           folder: storybook-static
@@ -64,7 +64,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: deploy
         with:
           folder: storybook-static
