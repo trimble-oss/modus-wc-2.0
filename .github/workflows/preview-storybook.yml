@@ -54,38 +54,33 @@ jobs:
 
       - name: Deploy preview
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: rossjrw/pr-preview-action@v1
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: preview-deploy
         with:
-          source-dir: ./storybook-static/
-          preview-branch: gh-pages
-          umbrella-dir: pr-preview
+          folder: storybook-static
+          branch: gh-pages
+          target-folder: pr-preview/pr-${{ github.event.number }}
+          clean-exclude: blazor
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: deploy
         with:
           folder: storybook-static
           branch: gh-pages
           target-folder: ${{ github.event.inputs.branch || 'main' }}
+          clean-exclude: blazor
 
-      - name: Get preview URL
+      - name: Print preview URL
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.preview-deploy.outcome == 'success'
-        id: preview-url
         run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
-
-      - name: Get deployment URL
-        if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
-        id: deployment-url
-        run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/" >> $GITHUB_OUTPUT
+          echo "Storybook preview: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/"
 
       - name: Print deployment URL
         if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && steps.deploy.outcome == 'success'
         run: |
-          echo "Storybook deployed successfully to: ${{ steps.deployment-url.outputs.url }}"
+          echo "Storybook deployed successfully to: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${{ github.event.inputs.branch || 'main' }}/"
 
       - name: Print failure message
         if: failure()
