@@ -268,7 +268,7 @@ modus-wc-chip .modus-wc-chip {
     &.modus-wc-chip--outline {
       background-color: transparent;
       border-color: var(--modus-wc-color-base-100);
-    } 
+    }
 
     &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error) {
       background-color: var(--modus-wc-color-base-100);
