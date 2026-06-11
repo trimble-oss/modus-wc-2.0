@@ -63,10 +63,10 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "path=/${REPO_NAME}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+            echo "path=/${REPO_NAME}/pr-preview/pr-${{ github.event.number }}/blazor/" >> $GITHUB_OUTPUT
           else
             BRANCH="${{ github.event.inputs.branch || 'main' }}"
-            echo "path=/${REPO_NAME}/${BRANCH}/" >> $GITHUB_OUTPUT
+            echo "path=/${REPO_NAME}/${BRANCH}/blazor/" >> $GITHUB_OUTPUT
           fi
 
       - name: Publish Blazor Story (static site)
@@ -84,12 +84,12 @@ jobs:
 
       - name: Deploy preview
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: preview-deploy
         with:
-          source-dir: ./blazing-story-dist/wwwroot/
-          preview-branch: gh-pages
-          umbrella-dir: pr-preview
+          folder: blazing-story-dist/wwwroot
+          branch: gh-pages
+          target-folder: pr-preview/pr-${{ github.event.number }}/blazor
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -98,24 +98,18 @@ jobs:
         with:
           folder: blazing-story-dist/wwwroot
           branch: gh-pages
-          target-folder: ${{ github.event.inputs.branch || 'main' }}
-
-      - name: Get preview URL
-        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.preview-deploy.outcome == 'success'
-        id: preview-url
-        run: |
-          echo "url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+          target-folder: ${{ github.event.inputs.branch || 'main' }}/blazor
 
       - name: Print deployment URL
         if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && steps.deploy.outcome == 'success'
         run: |
           BRANCH="${{ github.event.inputs.branch || 'main' }}"
-          echo "Deployed to: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${BRANCH}/"
+          echo "Deployed to: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${BRANCH}/blazor/"
 
       - name: Print PR preview URL
         if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.preview-deploy.outcome == 'success'
         run: |
-          echo "PR preview: ${{ steps.preview-url.outputs.url }}"
+          echo "PR preview: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/pr-preview/pr-${{ github.event.number }}/blazor/"
 
       - name: Print failure message
         if: failure()

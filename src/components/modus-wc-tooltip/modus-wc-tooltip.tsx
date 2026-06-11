@@ -19,6 +19,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  *
  * The tooltip can be dismissed by pressing the Escape key when hovering over it.
  * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+ * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+ * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -34,8 +36,15 @@ export class ModusWcTooltip {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** The text content of the tooltip. */
+  /** The text content of the tooltip. When contentElement is also set, contentElement takes precedence. */
   @Prop() content: string = '';
+
+  /**
+   * An optional rich HTML element to render as the tooltip body.
+   * When set, this takes precedence over the `content` string prop.
+   * The element is deep-cloned into the tooltip container.
+   */
+  @Prop() contentElement?: HTMLElement;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -51,6 +60,36 @@ export class ModusWcTooltip {
 
   /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
+
+  @Watch('position')
+  handlePositionChange() {
+    if (this.popperInstance) {
+      void this.popperInstance.setOptions({
+        placement: this.position === 'auto' ? 'top' : this.position,
+      });
+      void this.popperInstance.update();
+    }
+  }
+
+  @Watch('content')
+  handleContentChange() {
+    if (this.contentElement) return;
+    this.applyContentToTooltip();
+  }
+
+  @Watch('contentElement')
+  handleContentElementChange() {
+    this.applyContentToTooltip();
+  }
+
+  @Watch('forceOpen')
+  handleForceOpenChange(forceOpen: boolean) {
+    if (forceOpen && !this.disabled) {
+      this.showTooltip();
+    } else {
+      this.hideTooltip();
+    }
+  }
 
   /** Track if tooltip was dismissed with Escape key */
   @State() private escapeDismissed: boolean = false;
@@ -89,7 +128,6 @@ export class ModusWcTooltip {
 
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
-    this.tooltipElement.textContent = this.content;
     this.tooltipElement.setAttribute('role', 'tooltip');
     if (this.tooltipId) {
       this.tooltipElement.id = this.tooltipId;
@@ -99,6 +137,8 @@ export class ModusWcTooltip {
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
     this.tooltipElement.setAttribute('popover', 'manual');
+
+    this.applyContentToTooltip();
 
     document.body.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
@@ -132,6 +172,28 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  /** Precedence: contentElement (rich HTML) → content (plain string). Arrow is always kept last. */
+  private applyContentToTooltip() {
+    if (!this.tooltipElement) return;
+    const arrow = this.tooltipElement.querySelector('.modus-wc-tooltip-arrow');
+    Array.from(this.tooltipElement.childNodes).forEach((node) => {
+      if (node !== arrow) {
+        this.tooltipElement!.removeChild(node);
+      }
+    });
+    if (this.contentElement && 'nodeType' in this.contentElement) {
+      this.tooltipElement.insertBefore(
+        this.contentElement.cloneNode(true),
+        arrow
+      );
+    } else {
+      this.tooltipElement.insertBefore(
+        document.createTextNode(this.content),
+        arrow
+      );
+    }
   }
 
   private initializePopper() {
@@ -246,38 +308,6 @@ export class ModusWcTooltip {
       }
       this.tooltipElement.style.display = 'none';
       this.isVisible = false;
-    }
-  }
-
-  @Watch('position')
-  handlePositionChange() {
-    if (this.popperInstance) {
-      void this.popperInstance.setOptions({
-        placement: this.position === 'auto' ? 'top' : this.position,
-      });
-      void this.popperInstance.update();
-    }
-  }
-
-  @Watch('content')
-  handleContentChange(newContent: string) {
-    if (this.tooltipElement) {
-      const arrow = this.tooltipElement.querySelector(
-        '.modus-wc-tooltip-arrow'
-      );
-      this.tooltipElement.textContent = newContent;
-      if (arrow) {
-        this.tooltipElement.appendChild(arrow);
-      }
-    }
-  }
-
-  @Watch('forceOpen')
-  handleForceOpenChange(forceOpen: boolean) {
-    if (forceOpen && !this.disabled) {
-      this.showTooltip();
-    } else {
-      this.hideTooltip();
     }
   }
 
