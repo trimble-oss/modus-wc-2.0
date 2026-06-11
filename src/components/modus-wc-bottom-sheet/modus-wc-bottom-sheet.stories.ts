@@ -98,7 +98,6 @@ export const Default: Story = {
           border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
           contain: layout paint;
           height: 520px;
-          overflow: hidden;
           width: 100%;
         }
 
@@ -197,7 +196,6 @@ export const TriggeredByButton: Story = {
           border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
           contain: layout paint;
           height: 520px;
-          overflow: hidden;
           width: 100%;
         }
 
@@ -298,7 +296,6 @@ export const ContentOnly: Story = {
           border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
           contain: layout paint;
           height: 520px;
-          overflow: hidden;
           width: 100%;
         }
 
