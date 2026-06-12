@@ -1,0 +1,102 @@
+{
+  "description": "A customizable tooltip component used to create tooltips with different content. The tooltip can be dismissed by pressing the Escape key when hovering over it. When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.",
+  "properties": [
+    {
+      "name": "content",
+      "type": "string",
+      "description": "The text content of the tooltip. When contentElement is also set, contentElement takes precedence.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "contentElement",
+      "type": "HTMLElement",
+      "description": "An optional rich HTML element to render as the tooltip body. When set, this takes precedence over the `content` string prop. The element is deep-cloned into the tooltip container.",
+      "default": null,
+      "mutable": false,
+      "end_line": 46
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 49
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables displaying the tooltip on hover",
+      "default": "false",
+      "mutable": false,
+      "end_line": 52
+    },
+    {
+      "name": "forceOpen",
+      "type": "boolean",
+      "description": "Use this attribute to force the tooltip to remain open.",
+      "default": null,
+      "mutable": false,
+      "end_line": 55
+    },
+    {
+      "name": "tooltipId",
+      "type": "string",
+      "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements.",
+      "default": null,
+      "mutable": false,
+      "end_line": 58
+    },
+    {
+      "name": "position",
+      "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+      "description": "The position that the tooltip will render in relation to the element.",
+      "default": "'auto'",
+      "mutable": false,
+      "end_line": 61
+    }
+  ],
+  "events": [
+    {
+      "name": "dismissEscape",
+      "detail": "void",
+      "description": "An event that fires when the tooltip is dismissed via Escape key",
+      "end_line": 268
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>",
+    "variations": [],
+    "args": {
+      "content": "'Tooltip content'",
+      "position": "'auto'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "dismissEscape"
+    ]
+  },
+  "tag": "modus-wc-tooltip",
+  "storyExample": {
+    "template": "<modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>",
+    "args": {
+      "content": "'Tooltip content'",
+      "position": "'auto'"
+    },
+    "argTypes": {},
+    "events": [
+      "dismissEscape"
+    ],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\ninterface TooltipArgs {\n  content?: string;\n  'custom-class'?: string;\n  disabled?: boolean;\n  'force-open'?: boolean;\n  'tooltip-id'?: string;\n  position: 'auto' | 'top' | 'right' | 'bottom' | 'left';\n}\n\nconst meta: Meta<TooltipArgs> = {\n  title: 'Components/Tooltip',\n  component: 'modus-wc-tooltip',\n  args: {\n    content: 'Tooltip content',\n    position: 'auto',\n  },\n  argTypes: {\n    position: {\n      control: { type: 'select' },\n      options: ['auto', 'top', 'right', 'bottom', 'left'],\n    },\n  },\n  parameters: {\n    docs: {\n      description: {\n        component: `\nA customizable tooltip component used to create tooltips with different content.\n\n### Features\n- **Escape Key Dismissal**: Tooltips can be dismissed by pressing the Escape key\n- **Auto-positioning**: Automatically positions the tooltip to avoid viewport edges\n- **Customizable**: Supports custom CSS classes and positioning\n\n### Keyboard Interaction\n- Press **Escape** to dismiss the tooltip while it's visible\n- The tooltip will automatically re-enable on mouse enter\n        `,\n      },\n    },\n  },\n};\nexport default meta;\n\ntype Story = StoryObj<TooltipArgs>;\n\nconst Template: Story = {\n  parameters: {\n    actions: {\n      handles: ['dismissEscape'],\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n      <modus-wc-tooltip\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nconst defaultRichHtml = `<div style=\"display:flex;flex-direction:column;gap:0.25rem;text-align:start\">\n  <div style=\"align-items:center;display:flex;gap:0.375rem\">\n    <modus-wc-icon decorative name=\"thumbs_up\" size=\"sm\"></modus-wc-icon>\n    <span>First line of multiline content.</span>\n  </div>\n  <p>Second line of multiline content.</p>\n</div>`;\n\nfunction buildRichTooltipContent(html: string): HTMLDivElement {\n  const el = document.createElement('div');\n  el.innerHTML = html;\n  return el;\n}\n\nexport const ContentElement: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\nUse \\`contentElement\\` to pass rich HTML (icons, multiple lines, formatting) as the tooltip body. It takes precedence over the \\`content\\` string prop. Your original node is not moved or mutated.\n\nTo update the tooltip content, reassign \\`contentElement\\` with a new element.\n        `,\n      },\n      source: {\n        transform: (_src, { args }) => `<modus-wc-tooltip\n  position=\"${args.position ?? 'auto'}\"\n  custom-class=\"tooltip-rich-html-demo\"\n>\n  <modus-wc-badge>Hover</modus-wc-badge>\n</modus-wc-tooltip>\n\n<script>\n  const el = document.createElement('div');\n  el.innerHTML = '<div style=\"display:flex;flex-direction:column;gap:0.25rem;text-align:start\"><div style=\"align-items:center;display:flex;gap:0.375rem\"><modus-wc-icon decorative name=\"thumbs_up\" size=\"sm\"></modus-wc-icon><span>First line of multiline content.</span></div><p>Second line of multiline content.</p></div>';\n  document.querySelector('modus-wc-tooltip').contentElement = el;\n</script>`,\n      },\n    },\n  },\n  args: {\n    position: 'top',\n    'custom-class': 'tooltip-rich-html-demo',\n  },\n  render: (args) => {\n    const contentElement = buildRichTooltipContent(defaultRichHtml);\n    // prettier-ignore\n    return html`\n      <modus-wc-tooltip\n        .contentElement=${contentElement}\n        content=${ifDefined(args.content)}\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?disabled=\"${args.disabled}\"\n        ?force-open=\"${args['force-open']}\"\n        tooltip-id=\"${ifDefined(args['tooltip-id'])}\"\n        position=${ifDefined(args.position)}\n      >\n        <modus-wc-badge>Hover</modus-wc-badge>\n      </modus-wc-tooltip>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    if (!customElements.get('tooltip-shadow-host')) {\n      class TooltipShadowHost extends HTMLElement {\n        private sr: ShadowRoot;\n        private _props?: TooltipArgs;\n        private tooltipEl?: HTMLElement & {\n          content: string;\n          customClass: string;\n          disabled: boolean;\n          forceOpen: boolean | undefined;\n          tooltipId: string;\n          position: string;\n        };\n\n        constructor() {\n          super();\n          this.sr = this.attachShadow({ mode: 'open' });\n        }\n\n        connectedCallback() {\n          if (this.tooltipEl) return;\n          this.renderContent();\n        }\n\n        set props(v: TooltipArgs) {\n          this._props = v;\n          if (this.tooltipEl) this.applyProps();\n        }\n\n        private renderContent() {\n          this.sr.innerHTML = '';\n\n          this.tooltipEl = document.createElement(\n            'modus-wc-tooltip'\n          ) as typeof this.tooltipEl;\n\n          const badge = document.createElement('modus-wc-badge');\n          badge.textContent = 'Hover';\n          this.tooltipEl!.appendChild(badge);\n          this.sr.appendChild(this.tooltipEl!);\n\n          void Promise.resolve().then(() => this.applyProps());\n        }\n\n        private applyProps() {\n          const v = this._props;\n          const tooltip = this.tooltipEl;\n          if (!v || !tooltip) return;\n          tooltip.content = v.content ?? 'Tooltip content';\n          tooltip.customClass = v['custom-class'] ?? '';\n          tooltip.disabled = Boolean(v.disabled);\n          tooltip.forceOpen = v['force-open'] ?? false;\n          tooltip.tooltipId = v['tooltip-id'] ?? '';\n          tooltip.position = v.position ?? 'auto';\n        }\n      }\n      customElements.define('tooltip-shadow-host', TooltipShadowHost);\n    }\n\n    return html`<tooltip-shadow-host\n      .props=${{ ...args }}\n    ></tooltip-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n- The \\`text\\` prop has been renamed to \\`content\\`.\n\n#### Prop Mapping\n| 1.0 Prop | 2.0 Prop | Notes |\n| :--- | :--- | :--- |\n| aria-label | aria-label | |\n| disabled | disabled | |\n| position | position | Added \\`auto\\` option as default value |\n| text | content | |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
