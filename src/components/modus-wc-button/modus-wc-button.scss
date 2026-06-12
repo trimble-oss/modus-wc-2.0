@@ -5,20 +5,7 @@
 
 modus-wc-button .modus-wc-btn {
   @include sizing-tokens;
-}
 
-modus-wc-button .modus-wc-btn-outline {
-  @include btn-state-colors;
-}
-
-modus-wc-button
-  .modus-wc-btn-xl:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-  font-size: var(--modus-wc-font-size-2xl);
-  padding-left: var(--modus-wc-spacing-2xl);
-  padding-right: var(--modus-wc-spacing-2xl);
-}
-
-modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-filled.modus-wc-btn-neutral:not(.modus-wc-btn-disabled) {
     background-color: var(--modus-wc-color-base-100);
     border-color: var(--modus-wc-color-base-100);
@@ -34,6 +21,17 @@ modus-wc-button .modus-wc-btn {
       border-color: var(--modus-wc-color-base-300);
     }
   }
+}
+
+modus-wc-button .modus-wc-btn-outline {
+  @include btn-state-colors;
+}
+
+modus-wc-button
+  .modus-wc-btn-xl:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
+  font-size: var(--modus-wc-font-size-2xl);
+  padding-left: var(--modus-wc-spacing-2xl);
+  padding-right: var(--modus-wc-spacing-2xl);
 }
 
 modus-wc-button .modus-wc-btn-borderless {
