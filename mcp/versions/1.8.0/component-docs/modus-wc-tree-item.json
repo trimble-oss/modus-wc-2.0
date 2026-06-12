@@ -1,0 +1,177 @@
+{
+  "description": "A customizable tree item component used to display the item portion of a tree menu. This component supports `start` and `end` slots for custom content at the beginning and end of the item.",
+  "properties": [
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "",
+      "default": null,
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "checkbox",
+      "type": "boolean",
+      "description": "If true, renders a checkbox at the start of the tree item.",
+      "default": null,
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the li element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 40
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "The disabled state of the tree item.",
+      "default": null,
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text rendered in the tree item.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 46
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "The selected state of the tree item.",
+      "default": null,
+      "mutable": true,
+      "end_line": 49
+    },
+    {
+      "name": "focused",
+      "type": "boolean",
+      "description": "The focused state of the tree item.",
+      "default": null,
+      "mutable": false,
+      "end_line": 52
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the tree item.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 55
+    },
+    {
+      "name": "subLabel",
+      "type": "string",
+      "description": "The text rendered beneath the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 58
+    },
+    {
+      "name": "tooltipContent",
+      "type": "string",
+      "description": "The tooltip text to display when hovering over the tree item.",
+      "default": null,
+      "mutable": false,
+      "end_line": 61
+    },
+    {
+      "name": "tooltipPosition",
+      "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+      "description": "The position of the tooltip relative to the tree item.",
+      "default": "'auto'",
+      "mutable": false,
+      "end_line": 65
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The unique identifying value of the tree item.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 68
+    },
+    {
+      "name": "hasSubmenu",
+      "type": "boolean",
+      "description": "Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
+      "default": null,
+      "mutable": false,
+      "end_line": 71
+    },
+    {
+      "name": "blockExpand",
+      "type": "boolean",
+      "description": "When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.",
+      "default": null,
+      "mutable": false,
+      "end_line": 74
+    }
+  ],
+  "events": [
+    {
+      "name": "itemSelect",
+      "detail": "{ value: string; selected?: boolean; }",
+      "description": "Event emitted when a tree item is selected.",
+      "end_line": 85
+    }
+  ],
+  "methods": [
+    {
+      "name": "collapseSubmenu",
+      "signature": "()",
+      "parameters": "",
+      "returnType": "P",
+      "description": "Public method to collapse the submenu if it's expanded",
+      "end_line": 134
+    }
+  ],
+  "slots": [
+    {
+      "name": "start",
+      "description": "Slot for start content"
+    },
+    {
+      "name": "end",
+      "description": "Slot for end content"
+    },
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    ?bordered=${args.bordered}\n    ?block-expand=${args['block-expand']}\n    ?checkbox=${args.checkbox}\n    custom-class=${ifDefined(args['custom-class'])}\n    ?disabled=${args.disabled}\n    ?focused=${args.focused}\n    label=${args.label}\n    ?selected=${args.selected}\n    size=${args.size}\n    sub-label=${ifDefined(args['sub-label'])}\n    tooltip-content=${ifDefined(args['tooltip-content'])}\n    tooltip-position=${ifDefined(args['tooltip-position'])}\n    value=${args.value}\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>",
+    "variations": [],
+    "args": {
+      "label": "'Tree Item'",
+      "size": "'md'",
+      "value": "'treeItem'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "itemSelect"
+    ]
+  },
+  "tag": "modus-wc-tree-item",
+  "storyExample": {
+    "template": "<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    ?bordered=${args.bordered}\n    ?block-expand=${args['block-expand']}\n    ?checkbox=${args.checkbox}\n    custom-class=${ifDefined(args['custom-class'])}\n    ?disabled=${args.disabled}\n    ?focused=${args.focused}\n    label=${args.label}\n    ?selected=${args.selected}\n    size=${args.size}\n    sub-label=${ifDefined(args['sub-label'])}\n    tooltip-content=${ifDefined(args['tooltip-content'])}\n    tooltip-position=${ifDefined(args['tooltip-position'])}\n    value=${args.value}\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>",
+    "args": {
+      "label": "'Tree Item'",
+      "size": "'md'",
+      "value": "'treeItem'"
+    },
+    "argTypes": {},
+    "events": [
+      "itemSelect"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\nimport {\n  treeItemCustomSourceCode,\n  treeItemDefaultSourceCode,\n  treeItemShadowDomParentSourceCode,\n  treeItemWithCheckboxSourceCode,\n  treeItemWithEndSlotSourceCode,\n  treeItemWithStartSlotSourceCode,\n  treeItemWithTooltipSourceCode,\n} from './modus-wc-tree-item.story-source';\n\ninterface TreeItemArgs {\n  bordered?: boolean;\n  checkbox?: boolean;\n  'custom-class'?: string;\n  disabled?: boolean;\n  focused?: boolean;\n  'has-submenu'?: boolean;\n  'block-expand'?: boolean;\n  label: string;\n  selected?: boolean;\n  size?: ModusSize;\n  'sub-label'?: string;\n  'tooltip-content'?: string;\n  'tooltip-position'?: 'auto' | 'top' | 'right' | 'bottom' | 'left';\n  value: string;\n}\n\nconst meta: Meta<TreeItemArgs> = {\n  title: 'Components/Tree Item',\n  component: 'modus-wc-tree-item',\n  args: {\n    label: 'Tree Item',\n    size: 'md',\n    value: 'treeItem',\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    'tooltip-position': {\n      control: { type: 'select' },\n      options: ['auto', 'top', 'right', 'bottom', 'left'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['itemSelect'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TreeItemArgs>;\n\nconst Template: Story = {\n  parameters: {\n    docs: { source: { code: treeItemDefaultSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    ?bordered=${args.bordered}\n    ?block-expand=${args['block-expand']}\n    ?checkbox=${args.checkbox}\n    custom-class=${ifDefined(args['custom-class'])}\n    ?disabled=${args.disabled}\n    ?focused=${args.focused}\n    label=${args.label}\n    ?selected=${args.selected}\n    size=${args.size}\n    sub-label=${ifDefined(args['sub-label'])}\n    tooltip-content=${ifDefined(args['tooltip-content'])}\n    tooltip-position=${ifDefined(args['tooltip-position'])}\n    value=${args.value}\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const WithStartSlot: Story = {\n  parameters: {\n    docs: { source: { code: treeItemWithStartSlotSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    ?bordered=${args.bordered}\n    ?disabled=${args.disabled}\n    label=${args.label}\n    ?selected=${args.selected}\n    size=${args.size}\n    value=${args.value}\n  >\n    <modus-wc-icon slot=\"start\" name=\"alert\" size=\"sm\"></modus-wc-icon>\n  </modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const WithEndSlot: Story = {\n  parameters: {\n    docs: { source: { code: treeItemWithEndSlotSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    label=${args.label}\n    value=${args.value}\n  >\n    <modus-wc-dropdown-menu\n      slot=\"end\"\n      button-variant=\"borderless\"\n      button-size=\"sm\"\n      button-shape=\"circle\"\n      button-aria-label=\"More options\"\n    >\n        <div slot=\"button\">\n          <modus-wc-icon name=\"more_vertical\" size=\"sm\"></modus-wc-icon>\n        </div>\n     <div slot=\"menu\">\n        <modus-wc-menu-item label=\"Rename\" value=\"rename\"></modus-wc-menu-item>\n        <modus-wc-menu-item label=\"Duplicate\" value=\"duplicate\"></modus-wc-menu-item>\n        <modus-wc-menu-item label=\"Delete\" value=\"delete\"></modus-wc-menu-item>\n      </div>\n    </modus-wc-dropdown-menu>\n  </modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const CustomTreeItem: Story = {\n  parameters: {\n    docs: { source: { code: treeItemCustomSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu size=\"sm\">\n  <modus-wc-tree-item\n    label=${args.label}\n    value=${args.value}\n  >\n    <modus-wc-icon slot=\"start\" name=\"search\"></modus-wc-icon>\n    <div slot=\"end\" style=\"display: flex; align-items: center;\">\n      <div\n        style=\"width: 1px; background: currentColor; opacity: 0.3; margin-inline-end: 4px; align-self: stretch;\"\n      ></div>\n      <modus-wc-button\n        variant=\"borderless\"\n        size=\"sm\"\n        aria-label=\"Open folder\"\n      >\n        <modus-wc-icon name=\"folder_closed\" size=\"sm\"></modus-wc-icon>\n        <modus-wc-icon name=\"chevron_right\" size=\"sm\"></modus-wc-icon>\n      </modus-wc-button>\n    </div>\n  </modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const WithCheckbox: Story = {\n  args: {\n    checkbox: true,\n  },\n  parameters: {\n    docs: { source: { code: treeItemWithCheckboxSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    ?checkbox=${args.checkbox}\n    label=${args.label}\n    value=${args.value}\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const WithTooltip: Story = {\n  args: {\n    'tooltip-content': 'Tooltip content',\n  },\n  parameters: {\n    docs: { source: { code: treeItemWithTooltipSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu>\n  <modus-wc-tree-item\n    label=${args.label}\n    tooltip-content=${ifDefined(args['tooltip-content'])}\n    value=${args.value}\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  parameters: {\n    docs: { source: { code: treeItemShadowDomParentSourceCode } },\n  },\n  render: (args) => {\n    if (!customElements.get('tree-item-shadow-host')) {\n      const TreeItemShadowHost = createShadowHostClass<TreeItemArgs>({\n        componentTag: 'modus-wc-tree-menu',\n        propsMapper: (v: TreeItemArgs, el: HTMLElement) => {\n          const treeMenuEl = el as unknown as { ariaLabel: string };\n          treeMenuEl.ariaLabel = 'Shadow DOM Tree Menu';\n\n          let treeItem = el.querySelector('modus-wc-tree-item');\n          if (!treeItem) {\n            treeItem = document.createElement('modus-wc-tree-item');\n            el.innerHTML = '';\n            el.appendChild(treeItem);\n          }\n\n          const treeItemEl = treeItem as unknown as {\n            bordered: boolean;\n            blockExpand: boolean;\n            checkbox: boolean;\n            customClass: string;\n            disabled: boolean;\n            focused: boolean;\n            hasSubmenu: boolean;\n            label: string;\n            selected: boolean;\n            size: string;\n            subLabel: string;\n            tooltipContent: string;\n            tooltipPosition: string;\n            value: string;\n          };\n\n          treeItemEl.bordered = Boolean(v.bordered);\n          treeItemEl.blockExpand = Boolean(v['block-expand']);\n          treeItemEl.checkbox = Boolean(v.checkbox);\n          treeItemEl.customClass = v['custom-class'] || '';\n          treeItemEl.disabled = Boolean(v.disabled);\n          treeItemEl.focused = Boolean(v.focused);\n          treeItemEl.hasSubmenu = Boolean(v['has-submenu']);\n          treeItemEl.label = v.label;\n          treeItemEl.selected = Boolean(v.selected);\n          treeItemEl.size = v.size || 'md';\n          treeItemEl.subLabel = v['sub-label'] || '';\n          treeItemEl.tooltipContent = v['tooltip-content'] || '';\n          treeItemEl.tooltipPosition = v['tooltip-position'] || 'auto';\n          treeItemEl.value = v.value;\n        },\n      });\n      customElements.define('tree-item-shadow-host', TreeItemShadowHost);\n    }\n\n    return html`<tree-item-shadow-host\n      .props=${{ ...args }}\n    ></tree-item-shadow-host>`;\n  },\n};\n"
+  }
+}
