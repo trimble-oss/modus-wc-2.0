@@ -8,6 +8,10 @@ modus-wc-card .modus-wc-card {
     background-color: var(--modus-wc-color-base-100);
   }
 
+  .modus-wc-card-title {
+    margin-bottom: 0;
+  }
+
   &.modus-wc-card-bordered {
     background-color: var(--modus-wc-color-base-page);
   }
