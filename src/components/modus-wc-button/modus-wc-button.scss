@@ -65,13 +65,23 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
   width: var(--modus-wc-size-xl);
 }
 
-[data-theme='modus-modern-light']
-  modus-wc-button
-  .modus-wc-btn-filled.modus-wc-btn-neutral,
-[data-theme='modus-modern-dark']
-  modus-wc-button
-  .modus-wc-btn-filled.modus-wc-btn-neutral {
-  background-color: var(--modus-wc-color-base-100);
+[data-theme='modus-modern-light'] modus-wc-button .modus-wc-btn,
+[data-theme='modus-modern-dark'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-filled.modus-wc-btn-neutral:not(.modus-wc-btn-disabled) {
+    background-color: var(--modus-wc-color-base-100);
+    border-color: var(--modus-wc-color-base-100);
+
+    &:hover {
+      background-color: var(--modus-wc-color-base-200);
+      border-color: var(--modus-wc-color-base-200);
+    }
+
+    &.modus-wc-btn-active,
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-base-300);
+      border-color: var(--modus-wc-color-base-300);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
