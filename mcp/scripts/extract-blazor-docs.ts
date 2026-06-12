@@ -314,8 +314,10 @@ async function main() {
   const { blazorDir, docsDir } = parseArgs();
 
   if (!existsSync(blazorDir)) {
-    console.error(`Blazor components directory not found: ${blazorDir}`);
-    process.exit(1);
+    console.warn(
+      `Blazor components directory not found: ${blazorDir} — skipping Blazor augmentation.`,
+    );
+    return;
   }
   if (!existsSync(docsDir)) {
     console.error(`Docs directory not found: ${docsDir}`);
