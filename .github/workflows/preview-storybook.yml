@@ -17,6 +17,7 @@ permissions:
   contents: write
   packages: read
   pull-requests: write
+  issues: write
 
 concurrency:
   group: gh-pages-deploy-${{ github.ref }}
@@ -81,7 +82,7 @@ jobs:
             const marker = '<!-- storybook-preview-comment -->';
             const body = `${marker}\n## :rocket: Storybook Preview\n\nPreview is available at: ${previewUrl}`;
 
-            const { data: comments } = await github.rest.issues.listComments({
+            const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
