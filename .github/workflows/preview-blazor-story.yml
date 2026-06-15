@@ -1,8 +1,6 @@
 name: Publish Blazor Story
 
 on:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
   workflow_dispatch:
@@ -16,7 +14,6 @@ on:
 permissions:
   contents: write
   packages: read
-  pull-requests: write
 
 concurrency:
   group: gh-pages-deploy-${{ github.ref }}
@@ -25,7 +22,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -62,12 +58,8 @@ jobs:
         id: base-path
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "path=/${REPO_NAME}/pr-preview/pr-${{ github.event.number }}/blazor/" >> $GITHUB_OUTPUT
-          else
-            BRANCH="${{ github.event.inputs.branch || 'main' }}"
-            echo "path=/${REPO_NAME}/${BRANCH}/blazor/" >> $GITHUB_OUTPUT
-          fi
+          BRANCH="${{ github.event.inputs.branch || 'main' }}"
+          echo "path=/${REPO_NAME}/${BRANCH}/blazor/" >> $GITHUB_OUTPUT
 
       - name: Publish Blazor Story (static site)
         run: |
@@ -82,17 +74,7 @@ jobs:
             blazing-story-dist/wwwroot/index.html \
             blazing-story-dist/wwwroot/iframe.html
 
-      - name: Deploy preview
-        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
-        id: preview-deploy
-        with:
-          folder: blazing-story-dist/wwwroot
-          branch: gh-pages
-          target-folder: pr-preview/pr-${{ github.event.number }}/blazor
-
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         id: deploy
         with:
@@ -101,42 +83,10 @@ jobs:
           target-folder: ${{ github.event.inputs.branch || 'main' }}/blazor
 
       - name: Print deployment URL
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && steps.deploy.outcome == 'success'
+        if: steps.deploy.outcome == 'success'
         run: |
           BRANCH="${{ github.event.inputs.branch || 'main' }}"
           echo "Deployed to: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${BRANCH}/blazor/"
-
-      - name: Post Blazor preview URL comment
-        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && steps.preview-deploy.outcome == 'success'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        with:
-          script: |
-            const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/pr-preview/pr-${context.issue.number}/blazor/`;
-            const marker = '<!-- blazor-preview-comment -->';
-            const body = `${marker}\n## :rocket: Blazor Story Preview\n\nPreview is available at: ${previewUrl}`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const existing = comments.find(c => c.body.includes(marker));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
 
       - name: Print failure message
         if: failure()
