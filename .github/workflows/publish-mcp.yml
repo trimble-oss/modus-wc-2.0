@@ -7,6 +7,12 @@ on:
         description: 'Version to publish'
         required: true
         type: string
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -51,7 +57,7 @@ jobs:
         id: check-version
         working-directory: .
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ inputs.version || github.event.inputs.version }}"
           BASE_VERSION="1.0.6"
 
           # Guard: base version must always live in mcp/versions/base only.
@@ -74,7 +80,7 @@ jobs:
         if: steps.check-version.outputs.generate == 'true'
         working-directory: .
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ inputs.version || github.event.inputs.version }}"
           TMPDIR=$(mktemp -d)
 
           # Extract full docs to temp dir
@@ -134,7 +140,7 @@ jobs:
 
       - name: Update package.json version
         run: |
-          jq --arg version "${{ github.event.inputs.version }}" \
+          jq --arg version "${{ inputs.version || github.event.inputs.version }}" \
           '.version = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
 
@@ -147,7 +153,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: mcp-distribution-v${{ github.event.inputs.version }}
+          name: mcp-distribution-v${{ inputs.version || github.event.inputs.version }}
           path: 'mcp/*.tgz'
 
       - name: Clean up tgz files
@@ -171,7 +177,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION="${{ inputs.version || github.event.inputs.version }}"
           BRANCH="chore/mcp-docs-v${VERSION}"
           DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
 
@@ -205,7 +211,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v8
         with:
-          name: mcp-distribution-v${{ github.event.inputs.version }}
+          name: mcp-distribution-v${{ inputs.version || github.event.inputs.version }}
           path: .
 
       - name: Find the release asset
@@ -219,7 +225,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: moduswebcomponents-mcp-${{ github.event.inputs.version }}
-          name: Modus Web Components MCP ${{ github.event.inputs.version }}
+          tag_name: moduswebcomponents-mcp-${{ inputs.version || github.event.inputs.version }}
+          name: Modus Web Components MCP ${{ inputs.version || github.event.inputs.version }}
           files: |
             **/package-mcp.tgz
