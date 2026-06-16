@@ -35,6 +35,13 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.2"
   },
+  "overrides": {
+    "@babel/core": "^7.29.6",
+    "esbuild": "^0.28.1",
+    "tar": "^7.5.16",
+    "tmp": "^0.2.6",
+    "vite": "^7.3.5"
+  },
   "engines": {
     "node": ">=20"
   }
