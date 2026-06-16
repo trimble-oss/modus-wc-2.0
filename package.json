@@ -177,8 +177,7 @@
     },
     "socks": "^2.8.8",
     "postcss": "^8.5.14",
-    "shell-quote": "1.8.4",
-    "minimatch": "^10.2.5"
+    "shell-quote": "1.8.4"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",
