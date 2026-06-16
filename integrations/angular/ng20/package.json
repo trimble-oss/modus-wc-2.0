@@ -37,6 +37,18 @@
   "publishConfig": {
     "access": "public"
   },
+  "overrides": {
+    "@babel/core": "^7.29.6",
+    "esbuild": "^0.28.1",
+    "tar": "^7.5.16",
+    "vite": "^7.3.5"
+  },
+  "overrides": {
+    "@babel/core": "^7.29.6",
+    "esbuild": "^0.28.1",
+    "tar": "^7.5.16",
+    "vite": "^7.3.5"
+  },
   "engines": {
     "node": ">=20.19"
   }
