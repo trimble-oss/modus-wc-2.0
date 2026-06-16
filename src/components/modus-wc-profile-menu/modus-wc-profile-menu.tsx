@@ -141,7 +141,7 @@ export class ModusWcProfileMenu {
               <modus-wc-avatar
                 img-src={this.profileProps.profileImageUrl}
                 alt={this.profileProps.userName || 'Profile'}
-                size="sm"
+                size="lg"
               ></modus-wc-avatar>
               <div class="text-container">
                 <modus-wc-typography

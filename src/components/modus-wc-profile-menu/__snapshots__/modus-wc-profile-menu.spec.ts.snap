@@ -5,7 +5,7 @@ exports[`modus-wc-profile-menu should render with both menus 1`] = `
   <modus-wc-panel height="auto" width="298px">
     <div class="profile-menu-header" slot="header">
       <div class="header-content">
-        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="sm"></modus-wc-avatar>
+        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="lg"></modus-wc-avatar>
         <div class="text-container">
           <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
           <modus-wc-typography customclass="user-name-text" label="John Doe" size="md" weight="semibold"></modus-wc-typography>
@@ -71,7 +71,7 @@ exports[`modus-wc-profile-menu should render with menuOne 1`] = `
   <modus-wc-panel height="auto" width="298px">
     <div class="profile-menu-header" slot="header">
       <div class="header-content">
-        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="sm"></modus-wc-avatar>
+        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="lg"></modus-wc-avatar>
         <div class="text-container">
           <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
           <modus-wc-typography customclass="user-name-text" label="John Doe" size="md" weight="semibold"></modus-wc-typography>
@@ -130,7 +130,7 @@ exports[`modus-wc-profile-menu should render with menuTwo 1`] = `
   <modus-wc-panel height="auto" width="298px">
     <div class="profile-menu-header" slot="header">
       <div class="header-content">
-        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="sm"></modus-wc-avatar>
+        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="lg"></modus-wc-avatar>
         <div class="text-container">
           <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
           <modus-wc-typography customclass="user-name-text" label="John Doe" size="md" weight="semibold"></modus-wc-typography>
@@ -185,7 +185,7 @@ exports[`modus-wc-profile-menu should render with required props 1`] = `
   <modus-wc-panel height="auto" width="298px">
     <div class="profile-menu-header" slot="header">
       <div class="header-content">
-        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="sm"></modus-wc-avatar>
+        <modus-wc-avatar alt="John Doe" img-src="https://example.com/avatar.jpg" size="lg"></modus-wc-avatar>
         <div class="text-container">
           <modus-wc-typography customclass="header-text" label="Test Header" size="xs" weight="semibold"></modus-wc-typography>
           <modus-wc-typography customclass="user-name-text" label="John Doe" size="md" weight="semibold"></modus-wc-typography>

@@ -38,7 +38,7 @@ export class ModusWcAvatar {
   @Prop() shape?: 'circle' | 'square' = 'circle';
 
   /** The size of the avatar. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: DaisySize | 'xl' = 'md';
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -91,7 +91,6 @@ export class ModusWcAvatar {
               <modus-wc-icon
                 aria-label={altText}
                 name="person"
-                size={this.size}
                 variant="solid"
               ></modus-wc-icon>
             )}

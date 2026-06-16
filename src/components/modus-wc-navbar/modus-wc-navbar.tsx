@@ -628,7 +628,7 @@ export class ModusWcNavbar {
                     alt={this.userCard?.avatarAlt || ''}
                     imgSrc={this.userCard?.avatarSrc}
                     initials={this.userCard?.name}
-                    size="xs"
+                    size="sm"
                   />
                 </modus-wc-button>
                 <div

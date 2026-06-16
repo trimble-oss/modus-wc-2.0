@@ -5,7 +5,7 @@ export const convertPropsToClasses = ({
   size,
 }: {
   shape?: string;
-  size?: DaisySize;
+  size?: DaisySize | 'xl';
 }): string => {
   let classes = '';
 
@@ -33,6 +33,9 @@ export const convertPropsToClasses = ({
         break;
       case 'lg':
         classes = `${classes} modus-wc-w-20`;
+        break;
+      case 'xl':
+        classes = `${classes} modus-wc-w-24`;
         break;
     }
   }
