@@ -10,15 +10,11 @@ modus-wc-button .modus-wc-btn {
     background-color: var(--modus-wc-color-base-100);
     border-color: var(--modus-wc-color-base-100);
 
-    &:hover {
-      background-color: var(--modus-wc-color-base-200);
-      border-color: var(--modus-wc-color-base-200);
-    }
-
+    &:hover,
     &.modus-wc-btn-active,
     &[aria-pressed='true'] {
-      background-color: var(--modus-wc-color-base-300);
-      border-color: var(--modus-wc-color-base-300);
+      background-color: var(--modus-wc-color-base-200);
+      border-color: var(--modus-wc-color-base-200);
     }
   }
 }
