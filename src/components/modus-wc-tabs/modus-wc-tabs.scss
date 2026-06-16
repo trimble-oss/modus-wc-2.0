@@ -40,7 +40,7 @@ modus-wc-tabs .modus-wc-tabs {
     .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
         .modus-wc-tab-disabled
       ):not([disabled]) {
-      background-color: var(--modus-wc-color-base-page);
+      background-color: transparent;
       border-bottom-color: var(--modus-wc-color-primary);
       border-bottom-width: var(--modus-wc-border-width-lg);
     }
@@ -94,6 +94,16 @@ modus-wc-tabs .modus-wc-tabs {
   }
 }
 
+[data-theme='modus-modern-dark'] modus-wc-tabs .modus-wc-tabs {
+  &.modus-wc-tabs-lifted
+    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
+      .modus-wc-tab-disabled
+    ):not([disabled]),
+  &.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    --tab-bg: transparent;
+  }
+}
+
 modus-wc-tabs .modus-wc-tab {
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
   height: inherit;
@@ -102,7 +112,7 @@ modus-wc-tabs .modus-wc-tab {
   @include common-states;
 
   &-active {
-    background-color: var(--modus-wc-color-base-page);
+    background-color: transparent;
     color: inherit;
   }
 
