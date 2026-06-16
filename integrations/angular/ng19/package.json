@@ -45,7 +45,6 @@
     "esbuild": "^0.28.1",
     "js-yaml": "^4.2.0",
     "launch-editor": "^2.14.1",
-    "uuid": "^11.1.1",
     "vite": "^6.4.3",
     "webpack-dev-server": "^5.2.4"
   },
