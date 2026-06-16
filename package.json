@@ -176,7 +176,8 @@
       "brace-expansion": "4.0.1"
     },
     "socks": "^2.8.8",
-    "postcss": "^8.5.14"
+    "postcss": "^8.5.14",
+    "shell-quote": "1.8.4"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",
