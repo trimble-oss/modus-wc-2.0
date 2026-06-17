@@ -61,11 +61,10 @@ modus-wc-tabs .modus-wc-tabs {
     }
   }
 
-  .modus-wc-tabs-boxed
-    :is(.modus-wc-tab-active, [aria-selected='true']):not(
+  &.modus-wc-tabs-boxed
+    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-boxed :is(input:checked) {
+    ):not([disabled]) {
     background: var(--modus-wc-color-primary);
     border-radius: var(--modus-wc-border-radius-tab);
     color: var(--modus-wc-color-primary-content);
@@ -86,8 +85,7 @@ modus-wc-tabs .modus-wc-tabs {
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  &.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    ):not([disabled]) {
     --tab-bg: transparent;
 
     color: var(--modus-wc-color-primary);
@@ -98,8 +96,7 @@ modus-wc-tabs .modus-wc-tabs {
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  &.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    ):not([disabled]) {
     --tab-bg: transparent;
   }
 }
@@ -155,8 +152,7 @@ modus-wc-tabs .modus-wc-tab {
   .modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    ):not([disabled]) {
     color: var(--modus-wc-color-white) !important;
   }
 }
@@ -196,8 +192,7 @@ modus-wc-tabs .modus-wc-tab {
   .modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    ):not([disabled]) {
     color: var(--modus-wc-color-white);
   }
 }
