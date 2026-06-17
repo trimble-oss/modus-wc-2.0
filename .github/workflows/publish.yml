@@ -2,9 +2,12 @@
 # It will update the package.json version, build the packages, publish them to the Artifactory NPM registry, as well as create a GitHub release.
 # The packages consist of:
 # - The Web Components package
+# - The MCP package (published first after build, before framework packages)
 # - The React package
 # - The Angular package
 # - The Vue package
+# - The Blazor package
+# - Storybook deploy to Azure (after GitHub release, before n8n notify)
 # This is triggered by a manual run with a specified version number.
 
 name: Publish & Release
@@ -136,8 +139,15 @@ jobs:
             --base main \
             --head "$BRANCH"
 
-  trigger-angular-publish:
+  publish-mcp:
     needs: build-and-publish-wc
+    uses: ./.github/workflows/publish-mcp.yml
+    with:
+      version: ${{ github.event.inputs.version }}
+    secrets: inherit
+
+  trigger-angular-publish:
+    needs: publish-mcp
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Angular Publish Workflow
@@ -147,7 +157,7 @@ jobs:
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   trigger-react-publish:
-    needs: build-and-publish-wc
+    needs: publish-mcp
     runs-on: ubuntu-latest
     steps:
       - name: Trigger React Publish Workflow
@@ -157,7 +167,7 @@ jobs:
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
   trigger-vue-publish:
-    needs: build-and-publish-wc
+    needs: publish-mcp
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Vue Publish Workflow
@@ -166,18 +176,8 @@ jobs:
           workflow: publish-vue.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
 
-  trigger-mcp-publish:
-    needs: build-and-publish-wc
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger MCP Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.3
-        with:
-          workflow: publish-mcp.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
-
   trigger-blazor-publish:
-    needs: build-and-publish-wc
+    needs: publish-mcp
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Blazor Publish Workflow
@@ -236,8 +236,13 @@ jobs:
           files: |
             package.tgz
 
-  notify-n8n:
+  deploy-storybook:
     needs: release-wc
+    uses: ./.github/workflows/azure-static-web-apps-gentle-mushroom-083c46a10.yml
+    secrets: inherit
+
+  notify-n8n:
+    needs: deploy-storybook
     runs-on: ubuntu-latest
     if: github.repository == 'trimble-oss/modus-wc-2.0'
     steps:
