@@ -166,7 +166,7 @@
   "overrides": {
     "ts-morph": {
       "@ts-morph/common": {
-        "minimatch": "^10.2.5"
+        "minimatch": "9.0.9"
       }
     },
     "@stencil/ssr": {
