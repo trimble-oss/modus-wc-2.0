@@ -148,13 +148,6 @@ modus-wc-tabs .modus-wc-tab {
     --fallback-p: var(--modus-wc-color-blue-light);
     --fallback-bc: transparent;
   }
-
-  .modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
-    color: var(--modus-wc-color-white) !important;
-  }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-tabs .modus-wc-tab {
@@ -187,12 +180,5 @@ modus-wc-tabs .modus-wc-tab {
     --tab-color: var(--modus-wc-color-gray-2);
 
     background-color: var(--modus-wc-color-gray-9);
-  }
-
-  .modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]) {
-    color: var(--modus-wc-color-white);
   }
 }
