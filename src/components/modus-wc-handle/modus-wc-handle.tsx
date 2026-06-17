@@ -239,7 +239,7 @@ export class ModusWcHandle {
   ): HTMLElement | null {
     if (!target) return null;
     if (typeof target === 'string') {
-      return document.querySelector(target) as HTMLElement;
+      return document.querySelector(target);
     }
     return target;
   }

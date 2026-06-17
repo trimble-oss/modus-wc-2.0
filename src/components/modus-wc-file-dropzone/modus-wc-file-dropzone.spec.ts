@@ -908,7 +908,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Call the handleDropzoneClick method with proper binding
     const boundClick = component.handleDropzoneClick.bind(component);
@@ -930,7 +930,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Call the handleDropzoneClick method with proper binding
     const boundClick = component.handleDropzoneClick.bind(component);
@@ -952,7 +952,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Create a mock keyboard event with Enter key
     const keyboardEvent = {
@@ -981,7 +981,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Create a mock keyboard event with Space key
     const keyboardEvent = {
@@ -1010,7 +1010,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Create a mock keyboard event with Enter key
     const keyboardEvent = {
@@ -1039,7 +1039,7 @@ describe('modus-wc-file-dropzone', () => {
     const mockInputElement = {
       click: jest.fn(),
     };
-    component.inputRef = mockInputElement as unknown as HTMLInputElement;
+    component.inputRef = mockInputElement;
 
     // Create a mock keyboard event with a different key
     const keyboardEvent = {
