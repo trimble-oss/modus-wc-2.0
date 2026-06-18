@@ -1167,8 +1167,8 @@ modus-wc-menu-item.hidden {
       value="John Doe"
       @itemSelect=${handleItemSelect}
     >
-           <div slot="start-icon">
-      <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
+      <div slot="start-icon">
+        <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
       </div>
     </modus-wc-menu-item>
     <modus-wc-menu-item
@@ -1178,7 +1178,7 @@ modus-wc-menu-item.hidden {
       @itemSelect=${handleItemSelect}
     >
       <div slot="start-icon">
-      <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
+        <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
       </div>
     </modus-wc-menu-item>
     <modus-wc-menu-item
@@ -1187,8 +1187,8 @@ modus-wc-menu-item.hidden {
       value="Bob Johnson"
       @itemSelect=${handleItemSelect}
     >
-                <div slot="start-icon">
-      <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
+      <div slot="start-icon">
+        <modus-wc-avatar aria-label="Avatar" size="sm" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
       </div>
     </modus-wc-menu-item>
     <modus-wc-menu-item
@@ -1198,7 +1198,7 @@ modus-wc-menu-item.hidden {
       @itemSelect=${handleItemSelect}
     >
       <div slot="start-icon">
-      <modus-wc-avatar aria-label="Avatar" size="sm" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle" ></modus-wc-avatar>
+        <modus-wc-avatar aria-label="Avatar" size="sm" alt="Example avatar" img-src="https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg" shape="circle"></modus-wc-avatar>
       </div>
     </modus-wc-menu-item>
     <li class="no-results-item">
