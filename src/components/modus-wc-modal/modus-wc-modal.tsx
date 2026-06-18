@@ -47,7 +47,7 @@ export class ModusWcModal {
   @Prop() showFullscreenToggle?: boolean = false;
 
   componentWillLoad() {
-    handleShadowDOMStyles(this.el);
+    handleShadowDOMStyles(this.el, true);
     if (!this.modalId) {
       console.error(
         "The modal component requires a unique 'modalId' to be passed in as a prop."

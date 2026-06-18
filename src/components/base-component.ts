@@ -18,13 +18,20 @@ import { ensureDaisyUIInShadow } from '../providers/theme/inject-daisyui';
  *     // ... rest of your code
  *   }
  * }
+ *
+ * Container components (card, utility-panel, side-navigation, modal, navbar, panel) should
+ * pass `true` for `includeComponentStyles` to also inject compiled per-component SCSS,
+ * ensuring slotted children render correctly inside consumer shadow roots.
  */
-export function handleShadowDOMStyles(element: HTMLElement): void {
+export function handleShadowDOMStyles(
+  element: HTMLElement,
+  includeComponentStyles = false
+): void {
   const root = element.getRootNode();
 
   // Only inject if we're inside a shadow root (user's component)
   if (root instanceof ShadowRoot) {
-    void ensureDaisyUIInShadow(root);
+    void ensureDaisyUIInShadow(root, includeComponentStyles);
   }
 }
 
