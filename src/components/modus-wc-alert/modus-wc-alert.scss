@@ -14,6 +14,7 @@ modus-wc-alert .modus-wc-alert {
   border-radius: var(--alert-border-radius);
   color: var(--modus-wc-color-base-content);
   display: flex;
+  text-align: start;
 
   .modus-wc-alert-content {
     flex: auto;
