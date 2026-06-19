@@ -50,7 +50,10 @@ for (const absolutePath of scssFiles) {
     const css = result.css.replace(/:host\b/g, tagName);
     componentCSS += css + '\n';
   } catch (error) {
-    globalThis.console.warn(`Could not compile ${absolutePath}:`, error.message);
+    globalThis.console.warn(
+      `Could not compile ${absolutePath}:`,
+      error.message
+    );
   }
 }
 
