@@ -1,16 +1,29 @@
 /* eslint-env node */
 
 import { compileString } from 'sass';
-import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { globSync } from 'glob';
+import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { join, dirname, basename } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
 
 const mixinsPath = join(root, 'src/styles/mixins.scss');
 const targetPath = join(root, 'src/providers/theme/component-css-content.ts');
+
+/** Recursively collect all .scss files under a directory. */
+function findScssFiles(dir) {
+  const results = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...findScssFiles(fullPath));
+    } else if (entry.name.endsWith('.scss')) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
 
 let mixins = '';
 try {
@@ -19,18 +32,25 @@ try {
   globalThis.console.warn('Could not read mixins.scss:', error.message);
 }
 
-const scssFiles = globSync('src/components/**/*.scss', { cwd: root });
+const scssFiles = findScssFiles(join(root, 'src/components'));
 
 let componentCSS = '';
-for (const file of scssFiles) {
+for (const absolutePath of scssFiles) {
   try {
-    const src = readFileSync(join(root, file), 'utf8');
+    // Derive component tag name from the parent directory name (e.g. modus-wc-button)
+    const tagName = basename(dirname(absolutePath));
+    const src = readFileSync(absolutePath, 'utf8');
     const result = compileString(mixins + '\n' + src, {
+      // Provide the file URL so relative @use/@import paths resolve correctly
+      url: pathToFileURL(absolutePath),
       loadPaths: [join(root, 'src/styles')],
     });
-    componentCSS += result.css + '\n';
+    // :host selectors only work inside the component's own shadow root.
+    // Rewrite them to the component tag name so they apply in consumer shadow roots.
+    const css = result.css.replace(/:host\b/g, tagName);
+    componentCSS += css + '\n';
   } catch (error) {
-    globalThis.console.warn(`Could not compile ${file}:`, error.message);
+    globalThis.console.warn(`Could not compile ${absolutePath}:`, error.message);
   }
 }
 

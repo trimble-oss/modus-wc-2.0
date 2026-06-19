@@ -1,5 +1,5 @@
-import { globalCSS, iconsCSS, outputCSS } from './css-content';
 import { componentCSS } from './component-css-content';
+import { globalCSS, iconsCSS, outputCSS } from './css-content';
 
 const injectedRoots = new WeakSet<ShadowRoot>();
 let sharedStyleSheet: CSSStyleSheet | null = null;
@@ -74,9 +74,13 @@ export async function ensureDaisyUIInShadow(
       root.appendChild(styleEl);
     }
 
+    // Also mark as base-injected so non-container components in the same shadow root
+    // don't re-inject the base bundle on top of the already-complete full bundle.
     injectedContainerRoots.add(root);
+    injectedRoots.add(root);
   } else {
-    if (injectedRoots.has(root)) return;
+    // Short-circuit if the full bundle was already injected by a container component
+    if (injectedContainerRoots.has(root) || injectedRoots.has(root)) return;
 
     // Combine the CSS content
     // outputCSS contains Tailwind/DaisyUI utility classes
