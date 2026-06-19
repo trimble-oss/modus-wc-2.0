@@ -129,8 +129,8 @@ export class ModusWcContentTree {
       this.draftLabel = node?.label ?? '';
       this.editFocusPending = true;
     } else {
-      // Session ended. Leave `editResolved` as-is (true after a commit/cancel)
-      // so a trailing blur fired when the input is removed cannot re-commit.
+      // Session ended. Mark resolved so any trailing blur from input removal cannot commit.
+      this.editResolved = true;
       this.editFocusPending = false;
     }
   }
@@ -450,7 +450,7 @@ export class ModusWcContentTree {
           )}
           {this.isMultiSelect() ? (
             <modus-wc-checkbox
-              aria-label={node.label}
+              aria-label={node.label ? `Select ${node.label}` : 'Select node'}
               disabled={node.disabled}
               indeterminate={
                 this.getCheckStateById(node.id) === 'indeterminate'
@@ -562,7 +562,7 @@ export class ModusWcContentTree {
     const nodes = this.getRenderNodes();
 
     return (
-      <Host class={this.customClass || undefined} role="tree">
+      <Host class={this.customClass || undefined}>
         {/* The inner menu stays in 'single' mode so a row click only sets the
             active node. Multi-select is handled by our own checkboxes (rendered
             in slot="start"), keeping "active" and "checked" fully independent. */}

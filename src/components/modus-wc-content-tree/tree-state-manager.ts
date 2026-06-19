@@ -3,10 +3,10 @@
  * `ITreeNode[]` data outside of the `modus-wc-content-tree` component.
  *
  * The content tree is stateless/controlled: the consuming application owns the
- * data (the single source of truth). These utilities never mutate the input;
- * they return a new tree so the application stays in full control of when (and
- * whether) the UI updates after intercepting, validating, or cancelling an
- * action.
+ * data (the single source of truth). These utilities never mutate the input.
+ * Helpers that transform the tree return updated copies so the application stays
+ * in full control of when (and whether) the UI updates after intercepting,
+ * validating, or cancelling an action.
  */
 import { ITreeNode } from '../types';
 

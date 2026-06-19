@@ -759,6 +759,20 @@ describe('modus-wc-content-tree', () => {
     );
   });
 
+  it('should use a fallback checkbox aria-label when the node label is empty in multi-select mode', async () => {
+    const nodes: ITreeNode[] = [{ id: 'new-node', label: '', icon: 'info' }];
+    const { page } = await createTreePage({
+      nodes,
+      selectionMode: 'multiple',
+    });
+
+    const checkbox = findTreeItem(page, 'new-node')?.querySelector(
+      'modus-wc-checkbox input'
+    );
+
+    expect(checkbox?.getAttribute('aria-label')).toBe('Select node');
+  });
+
   it('should render expanded child menus when a parent is open', async () => {
     const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
 
@@ -900,9 +914,11 @@ describe('modus-wc-content-tree', () => {
   });
 
   it('should ignore unrelated keys and missing edit state in handleInputKeyDown', async () => {
-    const { component } = await createTreePage();
+    const { page, component } = await createTreePage();
     const nodeRename = jest.fn();
     const nodeEditCancel = jest.fn();
+    page.root?.addEventListener('nodeRename', nodeRename);
+    page.root?.addEventListener('nodeEditCancel', nodeEditCancel);
 
     component.handleInputKeyDown(new KeyboardEvent('keydown', { key: 'Tab' }));
 

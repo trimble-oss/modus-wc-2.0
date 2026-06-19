@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-content-tree should render with custom props and sample nodes 1`] = `
-<modus-wc-content-tree class="my-tree" role="tree">
+<modus-wc-content-tree class="my-tree">
   <modus-wc-tree-menu selection-mode="single">
     <!---->
     <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
@@ -866,7 +866,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
 `;
 
 exports[`modus-wc-content-tree should render with default props 1`] = `
-<modus-wc-content-tree role="tree">
+<modus-wc-content-tree>
   <modus-wc-tree-menu selection-mode="single">
     <!---->
     <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
