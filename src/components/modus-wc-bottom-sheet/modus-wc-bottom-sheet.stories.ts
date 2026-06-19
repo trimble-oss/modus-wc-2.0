@@ -77,6 +77,20 @@ const meta: Meta<BottomSheetArgs> = {
         'sheetVisibilityChange',
       ],
     },
+    docs: {
+      description: {
+        component: [
+          'A bottom sheet that slides up from the bottom of the viewport.',
+          '',
+          '**Usage in your app**',
+          '- Render `<modus-wc-bottom-sheet>` as a **direct child of `<body>`** (or another top-level element) so its `position: fixed` anchors it to the window. When nested inside a positioned/`contain`ed container it falls back to `position: absolute` and is bounded by that container instead.',
+          '- Keep the **trigger button and its click handler in your own page**. Open the sheet by setting the `visible` property to `true` and close it with `visible = false`; set `displayMode` to control the resting size.',
+          '- Listen to `sheetVisibilityChange` and `displayModeChange` to react to state changes.',
+          '',
+          'The dashed frame in these stories is **demo-only**: it bounds the sheet so it does not overlap the rest of the Storybook canvas.',
+        ].join('\n'),
+      },
+    },
   },
 };
 
@@ -85,6 +99,14 @@ export default meta;
 type Story = StoryObj<BottomSheetArgs>;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Default sheet with the built-in header, content, and footer slots. Toggle the `visible` control to open and close it. In a real app, attach the sheet to `<body>` and drive `visible` from a button in your page (see **Triggered By Button**).',
+      },
+    },
+  },
   render: (args) => {
     // prettier-ignore
     return html`
@@ -154,6 +176,64 @@ export const TriggeredByButton: Story = {
       title: 'Bottom Sheet Title',
       subtitle: 'Drag the handle down to minimize or up to expand.',
       showCloseButton: false,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: [
+          'Open the sheet from a control in your own page.',
+          '',
+          '- Put the **trigger button (and its click handler) in your page markup**.',
+          '- Render `<modus-wc-bottom-sheet>` as a **direct child of `<body>`** so its `position: fixed` anchors it to the window.',
+          '- Open with `sheet.visible = true` (optionally set `sheet.displayMode`); close with `sheet.visible = false`.',
+          '',
+          'The dashed frame below is demo-only so the sheet stays bounded within this story.',
+        ].join('\n'),
+      },
+      source: {
+        code: `<!-- 1) Trigger button + handler live in YOUR page -->
+<modus-wc-button id="open-bottom-sheet" color="primary" variant="filled">
+  Open bottom sheet
+</modus-wc-button>
+
+<!-- 2) Attach the sheet as a direct child of <body> so position: fixed
+        pins it to the bottom of the window -->
+<modus-wc-bottom-sheet id="app-bottom-sheet">
+  <div slot="content">Main content area for forms, lists, or other components.</div>
+  <div slot="footer">
+    <modus-wc-button id="cancel-bottom-sheet" color="tertiary" variant="outlined">Cancel</modus-wc-button>
+    <modus-wc-button id="save-bottom-sheet" color="primary" variant="filled">Save</modus-wc-button>
+  </div>
+</modus-wc-bottom-sheet>
+
+<script>
+  const sheet = document.getElementById('app-bottom-sheet');
+
+  // Open from the page button
+  document
+    .getElementById('open-bottom-sheet')
+    .addEventListener('buttonClick', () => {
+      sheet.visible = true;
+      sheet.displayMode = 'default';
+    });
+
+  // Close from buttons inside the sheet
+  ['cancel-bottom-sheet', 'save-bottom-sheet'].forEach((id) =>
+    document
+      .getElementById(id)
+      .addEventListener('buttonClick', () => (sheet.visible = false))
+  );
+
+  // (Optional) react to state changes
+  sheet.addEventListener('sheetVisibilityChange', (e) =>
+    console.log('visible:', e.detail.visible)
+  );
+  sheet.addEventListener('displayModeChange', (e) =>
+    console.log('display mode:', e.detail.displayMode)
+  );
+</script>`,
+      },
     },
   },
   render: (args) => {
@@ -282,6 +362,14 @@ export const TriggeredByButton: Story = {
 export const ContentOnly: Story = {
   args: {
     header: undefined,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Sheet with only the `content` slot — no header or footer. The drag handle still lets users minimize/expand. As with the other stories, attach the sheet to `<body>` in production and toggle `visible` from your own page control.',
+      },
+    },
   },
   render: (args) => {
     // prettier-ignore
