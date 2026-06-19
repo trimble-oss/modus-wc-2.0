@@ -48,7 +48,7 @@ describe('modus-wc-app-menu', () => {
     globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
       cb(0);
       return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
+    });
     return () => {
       globalThis.requestAnimationFrame = origRaf;
     };
@@ -403,7 +403,7 @@ describe('modus-wc-app-menu', () => {
     const page = await createPage({ apps: mockApps });
     const component = page.rootInstance as ModusWcAppMenu;
 
-    (component as any).handleDragStart(new Event('dragstart') as DragEvent, 1);
+    (component as any).handleDragStart(new Event('dragstart'), 1);
 
     expect(component.draggedItemPos).toBeNull();
   });
@@ -461,24 +461,18 @@ describe('modus-wc-app-menu', () => {
   it('should not move item when handleDrop is called outside edit mode', async () => {
     const page = await createPage({ apps: cloneApps() });
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    const originalApps = cloneApps(component.apps);
 
-    (component as any).handleDrop(
-      new Event('drop', { cancelable: true }) as DragEvent,
-      1
-    );
+    (component as any).handleDrop(new Event('drop', { cancelable: true }), 1);
 
     expect(component.apps).toEqual(originalApps);
   });
 
   it('should not move item when handleDrop is called with null draggedItemPos', async () => {
     const { component } = await createEditModePage({ apps: cloneApps() });
-    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    const originalApps = cloneApps(component.apps);
 
-    (component as any).handleDrop(
-      new Event('drop', { cancelable: true }) as DragEvent,
-      1
-    );
+    (component as any).handleDrop(new Event('drop', { cancelable: true }), 1);
 
     expect(component.apps).toEqual(originalApps);
   });
@@ -506,10 +500,10 @@ describe('modus-wc-app-menu', () => {
   it('should not move item when handleContainerDrop is called outside edit mode', async () => {
     const page = await createPage({ apps: cloneApps() });
     const component = page.rootInstance as ModusWcAppMenu;
-    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    const originalApps = cloneApps(component.apps);
 
     (component as any).handleContainerDrop(
-      new Event('drop', { cancelable: true }) as DragEvent,
+      new Event('drop', { cancelable: true }),
       0
     );
 
@@ -518,10 +512,10 @@ describe('modus-wc-app-menu', () => {
 
   it('should not move item when handleContainerDrop is called with null draggedItemPos', async () => {
     const { component } = await createEditModePage({ apps: cloneApps() });
-    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    const originalApps = cloneApps(component.apps);
 
     (component as any).handleContainerDrop(
-      new Event('drop', { cancelable: true }) as DragEvent,
+      new Event('drop', { cancelable: true }),
       0
     );
 
@@ -902,7 +896,7 @@ describe('modus-wc-app-menu', () => {
       layout: 'list',
     });
 
-    const originalApps = cloneApps(component.apps as IAppMenuItem[]);
+    const originalApps = cloneApps(component.apps);
     (component as any).handleKeyDown(keyEvent('ArrowDown'), 0);
 
     expect(component.apps).toEqual(originalApps);
@@ -1772,10 +1766,7 @@ describe('modus-wc-app-menu', () => {
       (component as any).isEditMode = editMode;
       component.draggedItemPos = draggedItemPos;
 
-      (component as any).handleDragEnter(
-        { preventDefault: jest.fn() } as unknown as DragEvent,
-        1
-      );
+      (component as any).handleDragEnter({ preventDefault: jest.fn() }, 1);
 
       expect(component.dropTargetIndex).toBeNull();
     }

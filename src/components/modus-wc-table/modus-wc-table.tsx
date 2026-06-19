@@ -571,7 +571,7 @@ export class ModusWcTable {
           aria-label="Select page size"
           bordered
           size={paginationSize}
-          onInputChange={(e) => this.handlePageSizeOptionChange(e as Event)}
+          onInputChange={(e) => this.handlePageSizeOptionChange(e)}
           options={options}
         ></modus-wc-select>
       </div>
@@ -614,7 +614,7 @@ export class ModusWcTable {
 
   private getRowIdForData(orig: Record<string, unknown>, idx: number): string {
     return orig && orig['id'] !== undefined && orig['id'] !== null
-      ? String(orig['id'] as string | number)
+      ? String(orig['id'])
       : String(idx);
   }
 
