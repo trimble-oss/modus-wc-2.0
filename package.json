@@ -119,7 +119,7 @@
     "@eslint/js": "^9.26.0",
     "@stencil/angular-output-target": "^1.3.2",
     "@stencil/core": "^4.35.3",
-    "@stencil/react-output-target": "1.2.1",
+    "@stencil/react-output-target": "1.2.0",
     "@stencil/sass": "^3.2.3",
     "@stencil/ssr": "^0.3.1",
     "@stencil/store": "^2.2.2",
@@ -275,6 +275,7 @@
         "build:cem-json",
         "tailwind:build",
         "embed:css",
+        "embed:component-css",
         "generate:logo-data"
       ],
       "files": [
@@ -372,6 +373,20 @@
       "output": [
         "src/providers/theme/css-content.ts",
         "src/styles/modus-wc-variables.css"
+      ]
+    },
+    "embed:component-css": {
+      "command": "node scripts/embed-component-css.js",
+      "dependencies": [
+        "tailwind:build"
+      ],
+      "files": [
+        "src/components/**/*.scss",
+        "src/styles/mixins.scss",
+        "scripts/embed-component-css.js"
+      ],
+      "output": [
+        "src/providers/theme/component-css-content.ts"
       ]
     },
     "generate:logo-data": {
