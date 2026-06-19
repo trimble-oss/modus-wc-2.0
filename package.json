@@ -275,7 +275,6 @@
         "build:cem-json",
         "tailwind:build",
         "embed:css",
-        "embed:component-css",
         "generate:logo-data"
       ],
       "files": [
@@ -373,20 +372,6 @@
       "output": [
         "src/providers/theme/css-content.ts",
         "src/styles/modus-wc-variables.css"
-      ]
-    },
-    "embed:component-css": {
-      "command": "node scripts/embed-component-css.js",
-      "dependencies": [
-        "tailwind:build"
-      ],
-      "files": [
-        "src/components/**/*.scss",
-        "src/styles/mixins.scss",
-        "scripts/embed-component-css.js"
-      ],
-      "output": [
-        "src/providers/theme/component-css-content.ts"
       ]
     },
     "generate:logo-data": {
