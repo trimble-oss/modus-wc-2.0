@@ -72,12 +72,6 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
   border: none;
   outline: none;
 
-  // Allow Daisy to style circle and square shapes
-  &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-    height: fit-content;
-    min-height: fit-content;
-  }
-
   // Sizes
   &.modus-wc-btn-xs {
     font-size: var(--modus-wc-font-size-xs);

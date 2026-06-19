@@ -122,9 +122,7 @@ export class ModusWcTooltip {
   }
 
   componentDidLoad() {
-    this.triggerElement = this.el.querySelector(
-      'div > :first-child'
-    ) as HTMLElement;
+    this.triggerElement = this.el.querySelector('div > :first-child');
 
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;

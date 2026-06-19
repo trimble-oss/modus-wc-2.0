@@ -595,7 +595,7 @@ describe('modus-wc-tree-item', () => {
         observe: observeSpy,
         disconnect: jest.fn(),
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       const page = await newSpecPage({
         components: [ModusWcTreeMenu, ModusWcTreeItem],
@@ -620,7 +620,7 @@ describe('modus-wc-tree-item', () => {
           disconnect: jest.fn(),
           takeRecords: jest.fn(),
         };
-      }) as unknown as typeof MutationObserver;
+      });
 
       const page = await newSpecPage({
         components: [ModusWcTreeMenu, ModusWcTreeItem],
@@ -653,7 +653,7 @@ describe('modus-wc-tree-item', () => {
         observe: jest.fn(),
         disconnect: disconnectSpy,
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       const page = await newSpecPage({
         components: [ModusWcTreeMenu, ModusWcTreeItem],
@@ -674,7 +674,7 @@ describe('modus-wc-tree-item', () => {
         observe: observeSpy,
         disconnect: jest.fn(),
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       await newSpecPage({
         components: [ModusWcTreeItem],

@@ -1132,9 +1132,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     expect(component['calendar'].selectedMonth).toBe(5);
@@ -1159,9 +1157,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleYearChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleYearChange'](mockEvent);
     await page.waitForChanges();
 
     expect(component['calendar'].selectedYear).toBe(2023);
@@ -1187,9 +1183,7 @@ describe('modus-wc-date', () => {
     });
 
     const beforeMonth = component['calendar'].selectedMonth;
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     expect(component['calendar'].selectedMonth).toBe(beforeMonth);
@@ -1215,9 +1209,7 @@ describe('modus-wc-date', () => {
     });
 
     const beforeYear = component['calendar'].selectedYear;
-    component['handleYearChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleYearChange'](mockEvent);
     await page.waitForChanges();
 
     expect(component['calendar'].selectedYear).toBe(beforeYear);
@@ -1596,9 +1588,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     // When value is undefined, it uses '0' fallback: parseInt('0', 10) = 0 (January)
@@ -1621,9 +1611,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleYearChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleYearChange'](mockEvent);
     await page.waitForChanges();
 
     // parseInt(undefined || '0', 10) = parseInt('0', 10) = 0
@@ -1651,9 +1639,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     // When querySelector returns null, yearSelect is undefined, so it uses fallback
@@ -1682,9 +1668,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleYearChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleYearChange'](mockEvent);
     await page.waitForChanges();
 
     // When querySelector returns null, monthSelect is undefined, so it uses fallback
@@ -1706,9 +1690,7 @@ describe('modus-wc-date', () => {
       detail: null as unknown as InputEvent,
     });
 
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     // When detail is null, inputEvent?.target is undefined, selectTarget?.value is undefined
@@ -1755,9 +1737,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleMonthChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleMonthChange'](mockEvent);
     await page.waitForChanges();
 
     // When calendarRef is null, querySelector returns undefined, uses calendar.selectedYear fallback
@@ -1782,9 +1762,7 @@ describe('modus-wc-date', () => {
       } as unknown as InputEvent,
     });
 
-    component['handleYearChange'](
-      mockEvent as unknown as CustomEvent<InputEvent>
-    );
+    component['handleYearChange'](mockEvent);
     await page.waitForChanges();
 
     // When calendarRef is null, querySelector returns undefined, uses calendar.selectedMonth fallback
