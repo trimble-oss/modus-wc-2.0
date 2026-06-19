@@ -1,0 +1,163 @@
+/**
+* Only add styles here that should not be applied by Tailwind or the theme.
+*/
+
+modus-wc-content-tree {
+  display: block;
+  width: 100%;
+}
+
+/* The tree-menu and tree-item hosts default to `display: inline`, so they
+   shrink to their content. Force the menu and each row to fill the tree width
+   regardless of label length. (The nested submenu host uses `display: contents`
+   and is intentionally left alone.) */
+modus-wc-content-tree > modus-wc-tree-menu {
+  display: block;
+  width: 100%;
+}
+
+modus-wc-content-tree modus-wc-tree-item {
+  display: block;
+  width: 100%;
+}
+
+modus-wc-content-tree modus-wc-tree-item .modus-wc-menu-item-interactive {
+  width: 100%;
+}
+
+modus-wc-content-tree modus-wc-tree-item .modus-wc-menu-item-labels {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Start slot: chevron (or leaf spacer) → optional checkbox → optional icon.
+   Spacing follows tree-item slot rules: chevron/spacer gap via margin-inline-end;
+   checkbox gap via tree-item `modus-wc-checkbox { padding-inline-end }`; icon-to-label
+   gap via tree-item `[slot='start'] { padding-inline-end }`. */
+modus-wc-content-tree .modus-wc-content-tree-node-start {
+  align-items: center;
+  display: flex;
+}
+
+modus-wc-content-tree .modus-wc-content-tree-node-start modus-wc-button,
+modus-wc-content-tree .modus-wc-content-tree-toggle-spacer {
+  flex: 0 0 auto;
+  margin-inline-end: var(--modus-wc-spacing-md);
+}
+
+/* Leaf-row spacer width tracks the chevron button footprint per tree-item size. */
+modus-wc-content-tree
+  .modus-wc-menu-item-sm
+  .modus-wc-content-tree-toggle-spacer {
+  width: var(--modus-wc-size-xs);
+}
+
+modus-wc-content-tree
+  .modus-wc-menu-item-md
+  .modus-wc-content-tree-toggle-spacer {
+  width: var(--modus-wc-size-sm);
+}
+
+modus-wc-content-tree
+  .modus-wc-menu-item-lg
+  .modus-wc-content-tree-toggle-spacer {
+  width: var(--modus-wc-size-md);
+}
+
+modus-wc-content-tree .modus-wc-content-tree-toggle-spacer {
+  display: inline-block;
+}
+
+/* Inline rename/add input fills the remaining row width next to the icon. */
+modus-wc-content-tree .modus-wc-content-tree-edit-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The transactional actions menu (ellipsis) is hidden by default and revealed
+   only when its row is hovered, keyboard-focused, or the active/selected node.
+   `opacity` (rather than `display`) keeps the row layout stable and lets the
+   trigger stay focusable for keyboard users. Hover/focus is scoped to the row
+   (`.modus-wc-menu-item-interactive`) — not the whole `<li>` — so hovering a
+   child never reveals an ancestor parent's menu. */
+modus-wc-content-tree .modus-wc-content-tree-actions {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Match tree-item end-slot dropdown styling when the menu sits inside the
+   actions wrapper rather than carrying slot="end" directly. */
+modus-wc-content-tree .modus-wc-content-tree-actions modus-wc-dropdown-menu {
+  background-color: transparent;
+  padding-inline-start: 0;
+}
+
+modus-wc-content-tree
+  .modus-wc-menu-item-interactive:hover
+  .modus-wc-content-tree-actions,
+modus-wc-content-tree
+  .modus-wc-menu-item-interactive:focus-within
+  .modus-wc-content-tree-actions,
+modus-wc-content-tree
+  .modus-wc-menu-item-active
+  > .modus-wc-menu-item-interactive
+  .modus-wc-content-tree-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Footer actions in the delete-confirmation modal sit at the inline-end. */
+modus-wc-content-tree .modus-wc-content-tree-modal-footer {
+  display: flex;
+  gap: var(--modus-wc-spacing-sm);
+  justify-content: flex-end;
+}
+
+/* One shared blue indicator line per base-parent family. It is anchored to the
+   1st-level parent's `<li>` (`modus-wc-content-tree-family-active`), which wraps
+   both the row and the nested child submenu. With `inset-block: 0` the line
+   travels the full height of the family, running from the base parent down until
+   its last descendant ends. The base parent is tagged whenever it OR any
+   descendant is the selected node (see renderNode), so selecting a child,
+   grandchild, or nested parent shows this single family line rather than an
+   individual per-node margin. */
+modus-wc-content-tree .modus-wc-menu-item.modus-wc-content-tree-family-active {
+  position: relative;
+}
+
+modus-wc-content-tree
+  .modus-wc-menu-item.modus-wc-content-tree-family-active::before {
+  background-color: var(--modus-wc-color-primary);
+  border-end-start-radius: inherit;
+  border-start-start-radius: inherit;
+  content: '';
+  inset-block: 0;
+  inset-inline-start: 0;
+  position: absolute;
+  width: var(--modus-wc-border-width-md, 0.1875rem);
+}
+
+/* The base tree-item styles paint the active background on the whole `<li>`.
+   For a parent, that `<li>` also wraps the nested child submenu, so the
+   highlight would bleed over every descendant. Parent rows are tagged with
+   `modus-wc-content-tree-parent` (see renderNode); move the active fill from the
+   `<li>` onto the parent's own row so only the selected parent is highlighted,
+   while the indicator line above still spans the full subtree height. The extra
+   ancestors raise specificity above the base interactive-background rules. */
+modus-wc-content-tree
+  .modus-wc-menu-item.modus-wc-content-tree-parent.modus-wc-menu-item-active {
+  background-color: transparent;
+}
+
+modus-wc-content-tree
+  modus-wc-tree-item
+  .modus-wc-menu-item.modus-wc-content-tree-parent.modus-wc-menu-item-active
+  > .modus-wc-menu-item-interactive {
+  background-color: color-mix(
+    in sRGB,
+    var(--modus-wc-color-primary-pale) 50%,
+    transparent
+  );
+  border-radius: inherit;
+}

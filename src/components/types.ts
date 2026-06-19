@@ -103,6 +103,20 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export type SelectionMode = 'single' | 'multiple';
 
+/** A node in the `modus-wc-content-tree` data model. */
+export interface ITreeNode {
+  /** Nested child nodes. */
+  children?: ITreeNode[];
+  /** Whether the node is disabled. */
+  disabled?: boolean;
+  /** Unique identifier for the node. */
+  id: string;
+  /** Modus icon name displayed before the label. */
+  icon?: string;
+  /** Display text for the node. */
+  label: string;
+}
+
 export type TypographyHierarchy = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
 
 export type TypographySize =
