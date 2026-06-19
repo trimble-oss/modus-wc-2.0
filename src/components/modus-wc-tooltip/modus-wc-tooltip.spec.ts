@@ -247,7 +247,7 @@ describe('modus-wc-tooltip', () => {
     // Mock hidePopover to verify it is called during cleanup
     const hidePopoverSpy = jest.fn();
     if (tooltipElement) {
-      tooltipElement.hidePopover = hidePopoverSpy as unknown as () => void;
+      tooltipElement.hidePopover = hidePopoverSpy;
     }
 
     // Simulate component disconnection
@@ -570,7 +570,7 @@ describe('modus-wc-tooltip', () => {
     // Mock the showPopover API
     const showPopoverSpy = jest.fn();
     if (tooltipElement) {
-      tooltipElement.showPopover = showPopoverSpy as unknown as () => void;
+      tooltipElement.showPopover = showPopoverSpy;
     }
 
     // Trigger show via mouse enter
@@ -598,7 +598,7 @@ describe('modus-wc-tooltip', () => {
     }
     const hidePopoverSpy = jest.fn();
     if (tooltipElement) {
-      tooltipElement.hidePopover = hidePopoverSpy as unknown as () => void;
+      tooltipElement.hidePopover = hidePopoverSpy;
     }
 
     // Show then hide via mouse events

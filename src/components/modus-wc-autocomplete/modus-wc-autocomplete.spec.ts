@@ -1,4 +1,3 @@
-import { EventEmitter } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
@@ -1757,7 +1756,7 @@ describe('modus-wc-autocomplete', () => {
     const itemSelectSpy = jest.fn();
     autocomplete.itemSelect = {
       emit: itemSelectSpy,
-    } as unknown as EventEmitter<IAutocompleteItem>;
+    };
 
     const testItems: IAutocompleteItem[] = [
       { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
@@ -1792,7 +1791,7 @@ describe('modus-wc-autocomplete', () => {
     const chipsExpansionSpy = jest.fn();
     autocomplete.chipsExpansionChange = {
       emit: chipsExpansionSpy,
-    } as unknown as EventEmitter<{ expanded: boolean }>;
+    };
 
     const testItems: IAutocompleteItem[] = [
       { label: 'Item 1', value: '1', visibleInMenu: true, selected: true },
@@ -1828,7 +1827,7 @@ describe('modus-wc-autocomplete', () => {
     const inputBlurSpy = jest.fn();
     autocomplete.inputBlur = {
       emit: inputBlurSpy,
-    } as unknown as EventEmitter<FocusEvent>;
+    };
     autocomplete['menuVisible'] = true;
 
     // Create a focus event with relatedTarget outside the component
@@ -2047,7 +2046,7 @@ describe('modus-wc-autocomplete', () => {
     const itemSelectSpy = jest.fn();
     autocomplete.itemSelect = {
       emit: itemSelectSpy,
-    } as unknown as EventEmitter<IAutocompleteItem>;
+    };
 
     const testItem: IAutocompleteItem = {
       label: 'Test Item',
@@ -3330,7 +3329,7 @@ describe('modus-wc-autocomplete', () => {
     // Create event with null detail
     const event = new CustomEvent('input', {
       detail: null,
-    } as CustomEventInit<Event | null>);
+    });
 
     // Call handleChange directly
     autocomplete['handleChange'](event as CustomEvent<Event>);
@@ -3677,7 +3676,7 @@ describe('modus-wc-autocomplete', () => {
       detail: new Event('input'),
     });
     Object.defineProperty(event.detail, 'target', {
-      value: { value: 'test' } as HTMLInputElement,
+      value: { value: 'test' },
     });
 
     // Call handleChange directly
@@ -3702,7 +3701,7 @@ describe('modus-wc-autocomplete', () => {
       detail: new Event('input'),
     });
     Object.defineProperty(event.detail, 'target', {
-      value: { value: 'test' } as HTMLInputElement,
+      value: { value: 'test' },
     });
 
     // Call handleChange directly
@@ -4350,7 +4349,7 @@ describe('modus-wc-autocomplete', () => {
       const itemSelectSpy = jest.fn();
       autocomplete.itemSelect = {
         emit: itemSelectSpy,
-      } as EventEmitter<IAutocompleteItem>;
+      };
 
       autocomplete['handleEnter']();
       await page.waitForChanges();
@@ -4389,7 +4388,7 @@ describe('modus-wc-autocomplete', () => {
       const chipRemoveSpy = jest.fn();
       autocomplete.chipRemove = {
         emit: chipRemoveSpy,
-      } as EventEmitter<IAutocompleteItem>;
+      };
 
       autocomplete['handleBackspace'](input);
       await page.waitForChanges();
@@ -5063,7 +5062,7 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
 
     // Reset and test with undefined items
-    autocomplete.items = undefined as unknown as IAutocompleteItem[];
+    autocomplete.items = undefined;
     await page.waitForChanges();
 
     // Trigger arrow up to test filtering logic with undefined items
@@ -6060,30 +6059,28 @@ describe('modus-wc-autocomplete', () => {
     const targetItem = document.createElement('div');
     targetItem.classList.add('modus-wc-menu-item-active');
 
-    (menuEl as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 0,
-        bottom: 50,
-        left: 0,
-        right: 0,
-        height: 50,
-        width: 0,
-        x: 0,
-        y: 0,
-        toJSON: () => {},
-      }) as DOMRect;
-    (targetItem as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 60,
-        bottom: 70,
-        left: 0,
-        right: 0,
-        height: 10,
-        width: 0,
-        x: 0,
-        y: 60,
-        toJSON: () => {},
-      }) as DOMRect;
+    (menuEl as HTMLElement).getBoundingClientRect = () => ({
+      top: 0,
+      bottom: 50,
+      left: 0,
+      right: 0,
+      height: 50,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    (targetItem as HTMLElement).getBoundingClientRect = () => ({
+      top: 60,
+      bottom: 70,
+      left: 0,
+      right: 0,
+      height: 10,
+      width: 0,
+      x: 0,
+      y: 60,
+      toJSON: () => {},
+    });
 
     Object.defineProperty(targetItem, 'offsetTop', {
       get: () => 42,
@@ -6094,7 +6091,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === 'modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6102,7 +6099,7 @@ describe('modus-wc-autocomplete', () => {
       selector: string
     ) {
       if (selector === '.modus-wc-menu-item-active') return targetItem;
-      if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+      if (selector === '.modus-wc-menu') return menuEl;
       return null;
     });
     autocomplete['scrollToOptionSelected']();
@@ -6218,30 +6215,28 @@ describe('modus-wc-autocomplete', () => {
     const targetItem = document.createElement('div');
     targetItem.classList.add('modus-wc-menu-item-focused');
 
-    (menuEl as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 0,
-        bottom: 100,
-        left: 0,
-        right: 0,
-        height: 100,
-        width: 0,
-        x: 0,
-        y: 0,
-        toJSON: () => {},
-      }) as DOMRect;
-    (targetItem as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 110,
-        bottom: 130,
-        left: 0,
-        right: 0,
-        height: 20,
-        width: 0,
-        x: 0,
-        y: 110,
-        toJSON: () => {},
-      }) as DOMRect;
+    (menuEl as HTMLElement).getBoundingClientRect = () => ({
+      top: 0,
+      bottom: 100,
+      left: 0,
+      right: 0,
+      height: 100,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    (targetItem as HTMLElement).getBoundingClientRect = () => ({
+      top: 110,
+      bottom: 130,
+      left: 0,
+      right: 0,
+      height: 20,
+      width: 0,
+      x: 0,
+      y: 110,
+      toJSON: () => {},
+    });
 
     Object.defineProperty(targetItem, 'offsetTop', {
       get: () => 200,
@@ -6263,7 +6258,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === 'modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6271,7 +6266,7 @@ describe('modus-wc-autocomplete', () => {
       .spyOn(menuEl, 'querySelector')
       .mockImplementation((selector: string) => {
         if (selector === '.modus-wc-menu-item-focused') return targetItem;
-        if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === '.modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6305,30 +6300,28 @@ describe('modus-wc-autocomplete', () => {
     const targetItem = document.createElement('div');
     targetItem.classList.add('modus-wc-menu-item-focused');
 
-    (menuEl as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 50,
-        bottom: 150,
-        left: 0,
-        right: 0,
-        height: 100,
-        width: 0,
-        x: 0,
-        y: 50,
-        toJSON: () => {},
-      }) as DOMRect;
-    (targetItem as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 20,
-        bottom: 40,
-        left: 0,
-        right: 0,
-        height: 20,
-        width: 0,
-        x: 0,
-        y: 20,
-        toJSON: () => {},
-      }) as DOMRect;
+    (menuEl as HTMLElement).getBoundingClientRect = () => ({
+      top: 50,
+      bottom: 150,
+      left: 0,
+      right: 0,
+      height: 100,
+      width: 0,
+      x: 0,
+      y: 50,
+      toJSON: () => {},
+    });
+    (targetItem as HTMLElement).getBoundingClientRect = () => ({
+      top: 20,
+      bottom: 40,
+      left: 0,
+      right: 0,
+      height: 20,
+      width: 0,
+      x: 0,
+      y: 20,
+      toJSON: () => {},
+    });
 
     Object.defineProperty(targetItem, 'offsetTop', {
       get: () => 10,
@@ -6350,7 +6343,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === 'modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6358,7 +6351,7 @@ describe('modus-wc-autocomplete', () => {
       .spyOn(menuEl, 'querySelector')
       .mockImplementation((selector: string) => {
         if (selector === '.modus-wc-menu-item-focused') return targetItem;
-        if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === '.modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6392,30 +6385,28 @@ describe('modus-wc-autocomplete', () => {
     const targetItem = document.createElement('div');
     targetItem.classList.add('modus-wc-menu-item-focused');
 
-    (menuEl as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 0,
-        bottom: 100,
-        left: 0,
-        right: 0,
-        height: 100,
-        width: 0,
-        x: 0,
-        y: 0,
-        toJSON: () => {},
-      }) as DOMRect;
-    (targetItem as HTMLElement).getBoundingClientRect = () =>
-      ({
-        top: 30,
-        bottom: 50,
-        left: 0,
-        right: 0,
-        height: 20,
-        width: 0,
-        x: 0,
-        y: 30,
-        toJSON: () => {},
-      }) as DOMRect;
+    (menuEl as HTMLElement).getBoundingClientRect = () => ({
+      top: 0,
+      bottom: 100,
+      left: 0,
+      right: 0,
+      height: 100,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+    (targetItem as HTMLElement).getBoundingClientRect = () => ({
+      top: 30,
+      bottom: 50,
+      left: 0,
+      right: 0,
+      height: 20,
+      width: 0,
+      x: 0,
+      y: 30,
+      toJSON: () => {},
+    });
 
     const scrollToMock = jest.fn();
     (menuEl as HTMLElement).scrollTo = scrollToMock;
@@ -6424,7 +6415,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === 'modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === 'modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6432,7 +6423,7 @@ describe('modus-wc-autocomplete', () => {
       .spyOn(menuEl, 'querySelector')
       .mockImplementation((selector: string) => {
         if (selector === '.modus-wc-menu-item-focused') return targetItem;
-        if (selector === '.modus-wc-menu') return menuEl as HTMLElement;
+        if (selector === '.modus-wc-menu') return menuEl;
         return null;
       });
 
@@ -6482,7 +6473,7 @@ describe('modus-wc-autocomplete', () => {
     jest
       .spyOn(autocomplete.el, 'querySelector')
       .mockImplementation((selector: string) => {
-        if (selector === 'modus-wc-menu') return menuEl as unknown as Element;
+        if (selector === 'modus-wc-menu') return menuEl;
         return null;
       });
 
