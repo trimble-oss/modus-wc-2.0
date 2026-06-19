@@ -32,7 +32,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^20.3.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "jasmine-core": "~5.13.0"
   },
   "publishConfig": {
     "access": "public"
