@@ -83,13 +83,7 @@ export class ModusWcBottomSheet {
   /** Controls whether the bottom sheet is visible. */
   @Prop({ mutable: true }) visible?: boolean = false;
 
-  /**
-   * The resting display mode of the bottom sheet: 'minimized' (only the handle
-   * peeks), 'default', or 'expanded' (fills the page/iframe height). Setting this
-   * prop applies the mode immediately. Drag/keyboard interactions change the live
-   * mode (and emit `displayModeChange`) but do not overwrite this property, so
-   * reopening the sheet always restores the mode set via this prop.
-   */
+  /** Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop. */
   @Prop({ mutable: true }) displayMode?: TBottomSheetDisplayMode = 'default';
 
   /** Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level. */
