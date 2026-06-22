@@ -548,3 +548,11 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
     }
   }
 }
+
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-filled {
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-white);
+    }
+  }
+}
