@@ -812,7 +812,7 @@ export class ModusWcDate {
             options={monthOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleMonthChange(e as CustomEvent<InputEvent>)
+              (e) => this.handleMonthChange(e)
             }
             onInputBlur={
               // istanbul ignore next (unreachable code)
@@ -828,7 +828,7 @@ export class ModusWcDate {
             options={yearOptions}
             onInputChange={
               // istanbul ignore next (unreachable code)
-              (e) => this.handleYearChange(e as CustomEvent<InputEvent>)
+              (e) => this.handleYearChange(e)
             }
             onInputBlur={
               // istanbul ignore next (unreachable code)
