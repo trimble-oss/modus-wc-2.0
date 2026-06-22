@@ -79,16 +79,11 @@ const meta: Meta<BottomSheetArgs> = {
     },
     docs: {
       description: {
-        component: [
-          'A bottom sheet that slides up from the bottom of the viewport.',
-          '',
-          '**Usage in your app**',
-          '- Render `<modus-wc-bottom-sheet>` as a **direct child of `<body>`** (or another top-level element) so its `position: fixed` anchors it to the window. When nested inside a positioned/`contain`ed container it falls back to `position: absolute` and is bounded by that container instead.',
-          '- Keep the **trigger button and its click handler in your own page**. Open the sheet by setting the `visible` property to `true` and close it with `visible = false`; set `displayMode` to control the resting size.',
-          '- Listen to `sheetVisibilityChange` and `displayModeChange` to react to state changes.',
-          '',
-          'The dashed frame in these stories is **demo-only**: it bounds the sheet so it does not overlap the rest of the Storybook canvas.',
-        ].join('\n'),
+        component: `
+A bottom sheet that slides up from the bottom of the viewport. It supports three resting display modes — minimized, default, and expanded — controlled by the \`displayMode\` property or the drag handle.
+
+The component supports \`header\`, \`content\`, and \`footer\` slots. Alternatively, set the \`header\` prop for the built-in header layout (do not set \`header\` if you use the \`header\` slot).
+        `,
       },
     },
   },
