@@ -105,17 +105,60 @@ export const Default: Story = {
         story:
           'Default sheet with the built-in header, content, and footer slots. Toggle the `visible` control to open and close it. In a real app, attach the sheet to `<body>` and drive `visible` from a button in your page (see **Triggered By Button**).',
       },
+      source: {
+        code: `<style>
+  /* Demo-only frame: the component is position: fixed, which would escape
+     to the page (and overlap other stories) on the docs canvas. 'contain'
+     makes this frame a containing block for the sheet's position: fixed
+     and clips it, so the sheet stays bounded WITHOUT changing its position
+     value (overriding position to absolute caused a render jump). */
+  .bottom-sheet-demo {
+    border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
+    contain: layout paint;
+    height: 520px;
+    width: 100%;
+  }
+
+  .bottom-sheet-demo .modus-wc-panel {
+    max-height: 480px;
+  }
+
+  .modus-wc-bottom-sheet-footer-actions {
+    align-items: center;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    justify-content: flex-end;
+    width: 100%;
+  }
+</style>
+
+<div class="bottom-sheet-demo">
+  <modus-wc-bottom-sheet id="app-bottom-sheet" visible style="width: 600px">
+    <div slot="content">Main content area for forms, lists, or other components.</div>
+    <div slot="footer">
+      <div class="modus-wc-bottom-sheet-footer-actions">
+        <modus-wc-button color="tertiary" size="sm" variant="outlined">Cancel</modus-wc-button>
+        <modus-wc-button color="primary" size="sm" variant="filled">Save</modus-wc-button>
+      </div>
+    </div>
+  </modus-wc-bottom-sheet>
+</div>
+
+<script>
+  document.getElementById('app-bottom-sheet').header = {
+    showBackButton: true,
+    title: 'Title',
+    subtitle: 'Subtitle',
+    showCloseButton: true,
+  };
+</script>`,
+      },
     },
   },
   render: (args) => {
     // prettier-ignore
     return html`
       <style>
-        /* Demo-only frame: the component is position: fixed, which would escape
-           to the page (and overlap other stories) on the docs canvas. 'contain'
-           makes this frame a containing block for the sheet's position: fixed
-           and clips it, so the sheet stays bounded WITHOUT changing its position
-           value (overriding position to absolute caused a render jump). */
         .bottom-sheet-demo {
           border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
           contain: layout paint;
@@ -196,6 +239,9 @@ export const TriggeredByButton: Story = {
 <modus-wc-button id="open-bottom-sheet" color="primary" variant="filled">
   Open bottom sheet
 </modus-wc-button>
+<modus-wc-button id="minimize-bottom-sheet" color="tertiary" variant="outlined">
+  Minimize
+</modus-wc-button>
 
 <!-- 2) Attach the sheet as a direct child of <body> so position: fixed
         pins it to the bottom of the window -->
@@ -210,12 +256,26 @@ export const TriggeredByButton: Story = {
 <script>
   const sheet = document.getElementById('app-bottom-sheet');
 
+  sheet.header = {
+    showBackButton: false,
+    title: 'Bottom Sheet Title',
+    subtitle: 'Drag the handle down to minimize or up to expand.',
+    showCloseButton: false,
+  };
+
   // Open from the page button
   document
     .getElementById('open-bottom-sheet')
     .addEventListener('buttonClick', () => {
       sheet.visible = true;
       sheet.displayMode = 'default';
+    });
+
+  // Minimize from the page button
+  document
+    .getElementById('minimize-bottom-sheet')
+    .addEventListener('buttonClick', () => {
+      sheet.displayMode = 'minimized';
     });
 
   // Close from buttons inside the sheet
