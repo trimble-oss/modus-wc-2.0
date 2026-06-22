@@ -192,17 +192,18 @@ describe('modus-wc-content-tree', () => {
     globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
       cb(0);
       return 0;
-    }) as unknown as typeof globalThis.requestAnimationFrame;
+    });
     return () => {
       globalThis.requestAnimationFrame = origRaf;
     };
   };
 
+  const nodeContainsId = (node: ITreeNode, targetId: string): boolean =>
+    node.id === targetId ||
+    (node.children ?? []).some((child) => nodeContainsId(child, targetId));
+
   const hasNodeId = (nodes: ITreeNode[], id: string): boolean =>
-    nodes.some(
-      (node) =>
-        node.id === id || (node.children ? hasNodeId(node.children, id) : false)
-    );
+    nodes.some((node) => nodeContainsId(node, id));
 
   beforeAll(() => {
     if (typeof globalThis.HTMLDialogElement === 'undefined') {
