@@ -153,8 +153,12 @@
   /* 8px */
   --modus-wc-spacing-md: 0.75rem;
   /* 12px */
+  --modus-wc-spacing-3-5: 0.875rem;
+  /* 14px */
   --modus-wc-spacing-lg: 1rem;
   /* 16px */
+  --modus-wc-spacing-4-5: 1.125rem;
+  /* 18px */
   --modus-wc-spacing-xl: 1.5rem;
   /* 24px */
   --modus-wc-spacing-2xl: 2rem;
