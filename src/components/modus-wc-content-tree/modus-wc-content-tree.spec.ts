@@ -49,7 +49,11 @@ interface ContentTreeHarness {
   cancelEdit: (node: ITreeNode) => void;
   onEditingNodeIdChange: (newId?: string) => void;
   handleInputKeyDown: (e: KeyboardEvent) => void;
+  componentWillLoad: () => void;
   componentDidRender: () => void;
+  disconnectedCallback: () => void;
+  detachInputKeyDown: () => void;
+  editFocusPending: boolean;
   getActionButtonSize: () => 'xs' | 'sm' | 'md' | 'lg';
   getActionIconSize: () => 'xs' | 'sm' | 'md' | 'lg';
   getNodeIconSize: () => 'xs' | 'sm' | 'md' | 'lg';
@@ -366,6 +370,105 @@ describe('modus-wc-content-tree', () => {
     expect(component.isExpanded('root-1')).toBe(true);
     expect(component.isExpanded('parent-b')).toBe(true);
     expect(hasNodeId(component.getRenderNodes(), 'leaf-b2')).toBe(true);
+  });
+
+  it('should reveal a matched parent full subtree including non-matching children', async () => {
+    const { component } = await createTreePage({
+      filter: 'resources',
+    });
+
+    const rendered = component.getRenderNodes();
+    // 'parent-b' (Resources) matches the query, so its entire original subtree
+    // is revealed -- including 'leaf-b1' (Specifications), which does not match.
+    expect(hasNodeId(rendered, 'parent-b')).toBe(true);
+    expect(hasNodeId(rendered, 'leaf-b1')).toBe(true);
+    expect(hasNodeId(rendered, 'leaf-b2')).toBe(true);
+  });
+
+  it('should not emit nodeExpandChange when the chevron is toggled while filtering', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      filter: 'search',
+    });
+    const nodeExpandChange = jest.fn();
+    page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
+
+    component.handleExpandToggle(
+      new CustomEvent('buttonClick'),
+      getNode('root-1')
+    );
+    await page.waitForChanges();
+
+    // The controlled state must not be mutated while filtering.
+    expect(nodeExpandChange).not.toHaveBeenCalled();
+  });
+
+  it('should transiently collapse and re-expand a node via the chevron while filtering', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      filter: 'search',
+    });
+
+    // Forced open by the active filter.
+    expect(component.isExpanded('root-1')).toBe(true);
+
+    // First click collapses it for the duration of the filter session.
+    component.handleExpandToggle(
+      new CustomEvent('buttonClick'),
+      getNode('root-1')
+    );
+    await page.waitForChanges();
+    expect(component.isExpanded('root-1')).toBe(false);
+
+    // Second click re-expands it.
+    component.handleExpandToggle(
+      new CustomEvent('buttonClick'),
+      getNode('root-1')
+    );
+    await page.waitForChanges();
+    expect(component.isExpanded('root-1')).toBe(true);
+  });
+
+  it('should re-force parents open when the filter value changes after a transient collapse', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      filter: 'search',
+    });
+
+    component.handleExpandToggle(
+      new CustomEvent('buttonClick'),
+      getNode('root-1')
+    );
+    await page.waitForChanges();
+    expect(component.isExpanded('root-1')).toBe(false);
+
+    // Changing the filter discards the transient collapse and re-forces open.
+    component.filter = 'search index';
+    await page.waitForChanges();
+    expect(component.isExpanded('root-1')).toBe(true);
+  });
+
+  it('should restore the controlled expanded state once the filter is cleared', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      filter: 'search',
+    });
+    const nodeExpandChange = jest.fn();
+    page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
+
+    // Collapse transiently during the filter session.
+    component.handleExpandToggle(
+      new CustomEvent('buttonClick'),
+      getNode('root-1')
+    );
+    await page.waitForChanges();
+
+    // Clear the filter: persisted expandedNodeIds is untouched, so it stays open.
+    component.filter = '';
+    await page.waitForChanges();
+    expect(component.isFiltering()).toBe(false);
+    expect(component.isExpanded('root-1')).toBe(true);
+    expect(nodeExpandChange).not.toHaveBeenCalled();
   });
 
   it('should emit nodeCheckChange for unchecked and checked checkbox clicks in multi-select mode', async () => {
@@ -986,5 +1089,64 @@ describe('modus-wc-content-tree', () => {
 
     expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     restoreRaf();
+  });
+
+  it('should initialize the edit session on initial load when editingNodeId is preset', async () => {
+    const restoreRaf = mockRaf();
+    const { component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+    });
+
+    // @Watch does not fire on initial load. Simulate a fresh mount where the
+    // consumer set editingNodeId before load: assign the prop, clear the focus
+    // flag the @Watch set, then re-run componentWillLoad.
+    component.editingNodeId = 'leaf-a';
+    component.editFocusPending = false;
+    component.componentWillLoad();
+
+    expect(component.editFocusPending).toBe(true);
+
+    (
+      globalThis.requestAnimationFrame as jest.MockedFunction<
+        typeof globalThis.requestAnimationFrame
+      >
+    ).mockClear();
+    component.componentDidRender();
+
+    // The session armed by componentWillLoad schedules the input focus.
+    expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
+    restoreRaf();
+  });
+
+  it('should detach inline edit keydown listener on disconnect', async () => {
+    const restoreRaf = mockRaf();
+    const { component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      editingNodeId: 'leaf-a',
+    });
+
+    const input = document.createElement('input');
+    input.focus = jest.fn() as typeof input.focus;
+    input.select = jest.fn() as typeof input.select;
+    const removeEventListenerSpy = jest.spyOn(input, 'removeEventListener');
+    jest.spyOn(component.el, 'querySelector').mockReturnValue(input);
+
+    component.onEditingNodeIdChange('leaf-a');
+    component.componentDidRender();
+    component.disconnectedCallback();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'keydown',
+      expect.any(Function)
+    );
+    restoreRaf();
+    removeEventListenerSpy.mockRestore();
+  });
+
+  it('should safely detach when no inline edit input is bound', async () => {
+    const { component } = await createTreePage();
+
+    component.detachInputKeyDown();
+    component.disconnectedCallback();
   });
 });

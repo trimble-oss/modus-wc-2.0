@@ -169,7 +169,9 @@ export const filterTree = (nodes: ITreeNode[], query: string): ITreeNode[] => {
   const prune = (list: ITreeNode[]): ITreeNode[] =>
     list.reduce<ITreeNode[]>((acc, node) => {
       if (matches(node)) {
-        acc.push(node);
+        // Reveal the matching node's full subtree: copy the node but keep its
+        // original `children` untouched (no pruning).
+        acc.push({ ...node });
       } else {
         const children = node.children?.length ? prune(node.children) : [];
         if (children.length) acc.push({ ...node, children });

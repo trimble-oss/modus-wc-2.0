@@ -16,6 +16,9 @@ import { DaisySize, ITreeNode, ModusSize, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { filterTree, findNode } from './tree-state-manager';
 
+/** Aggregated checkbox state for a node and its descendants. */
+type CheckState = 'checked' | 'unchecked' | 'indeterminate';
+
 // Monotonic counter so each instance's delete modal gets a unique element id.
 let contentTreeInstanceId = 0;
 
@@ -38,6 +41,10 @@ export class ModusWcContentTree {
   // Recomputed on every render; drives the shared family indicator line.
   private activeRootId?: string;
 
+  // Per-render cache of every node's aggregated checkbox state, built once in
+  // render() so each checkbox lookup is O(1) instead of a recursive subtree walk.
+  private checkStateById = new Map<string, CheckState>();
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -48,19 +55,19 @@ export class ModusWcContentTree {
   @Prop() customClass?: string = '';
 
   /** The ids of the checked leaf nodes (multi-select). Controlled by the consuming application. */
-  @Prop() checkedNodeIds?: string[] = [];
+  @Prop() checkedNodeIds?: string[];
 
   /** The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to `nodeEdit`, `nodeAdd`, or `nodeDuplicate`). */
   @Prop() editingNodeId?: string;
 
   /** The ids of the currently expanded nodes. Controlled by the consuming application. */
-  @Prop() expandedNodeIds?: string[] = [];
+  @Prop() expandedNodeIds?: string[];
 
   /** When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. */
   @Prop() filter?: string = '';
 
   /** The tree data. The single source of truth, owned by the consuming application. */
-  @Prop() nodes?: ITreeNode[] = [];
+  @Prop() nodes?: ITreeNode[];
 
   /** The id of the currently selected (active) node. Controlled by the consuming application. */
   @Prop() selectedNodeId?: string;
@@ -110,6 +117,11 @@ export class ModusWcContentTree {
   // Id of the node awaiting delete confirmation; drives the built-in modal.
   @State() private pendingDeleteId?: string;
 
+  // Ids the user has manually collapsed during the CURRENT filter session.
+  // Transient, view-only state: it never touches the controlled
+  // `expandedNodeIds`, and it resets whenever the filter value changes.
+  @State() private filterCollapsedIds: Set<string> = new Set();
+
   // The id used by the inner <dialog> (must be unique per instance).
   private deleteModalId = `content-tree-delete-${contentTreeInstanceId++}`;
 
@@ -119,6 +131,9 @@ export class ModusWcContentTree {
   private editResolved = false;
   // Set when an edit session begins so the next render can focus the input.
   private editFocusPending = false;
+  // The inline-edit input currently bound to the native keydown handler, kept
+  // so the listener can be removed when the session ends or the host unmounts.
+  private editInput?: HTMLInputElement;
 
   @Watch('editingNodeId')
   onEditingNodeIdChange(newId?: string): void {
@@ -132,6 +147,16 @@ export class ModusWcContentTree {
       // Session ended. Mark resolved so any trailing blur from input removal cannot commit.
       this.editResolved = true;
       this.editFocusPending = false;
+      this.detachInputKeyDown();
+    }
+  }
+
+  @Watch('filter')
+  onFilterChange(): void {
+    // A new or changed filter re-forces every surviving parent open, so any
+    // transient collapses from the previous filter session are discarded.
+    if (this.filterCollapsedIds.size) {
+      this.filterCollapsedIds = new Set();
     }
   }
 
@@ -142,6 +167,12 @@ export class ModusWcContentTree {
       this.el.ariaLabel = 'Content tree';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    // @Watch does not fire on initial load, so initialize the edit session here
+    // when the consumer mounts with `editingNodeId` already set.
+    if (this.editingNodeId) {
+      this.onEditingNodeIdChange(this.editingNodeId);
+    }
   }
 
   componentDidRender() {
@@ -160,8 +191,22 @@ export class ModusWcContentTree {
       if (!input) return;
       input.focus();
       input.select();
+      // Drop any listener from a previous session before binding the new one.
+      this.detachInputKeyDown();
+      this.editInput = input;
       input.addEventListener('keydown', this.handleInputKeyDown);
     });
+  }
+
+  disconnectedCallback() {
+    this.detachInputKeyDown();
+  }
+
+  // Remove the native keydown listener bound to the inline-edit input and clear
+  // the reference. Safe to call when no input is bound.
+  private detachInputKeyDown(): void {
+    this.editInput?.removeEventListener('keydown', this.handleInputKeyDown);
+    this.editInput = undefined;
   }
 
   // Commit on Enter, cancel on Escape, straight from the input element. Reads
@@ -199,6 +244,21 @@ export class ModusWcContentTree {
 
   private handleExpandToggle = (e: CustomEvent, node: ITreeNode) => {
     (e as unknown as Event).stopPropagation?.();
+
+    // During filtering the toggle is transient and visual only: flip the local
+    // override and re-render, but DO NOT emit so the controlled
+    // `expandedNodeIds` is preserved and restored once the filter clears.
+    if (this.isFiltering()) {
+      const next = new Set(this.filterCollapsedIds);
+      if (next.has(node.id)) {
+        next.delete(node.id);
+      } else {
+        next.add(node.id);
+      }
+      this.filterCollapsedIds = next;
+      return;
+    }
+
     this.nodeExpandChange.emit({
       id: node.id,
       expanded: !this.isExpanded(node.id),
@@ -324,21 +384,34 @@ export class ModusWcContentTree {
     }
   }
 
-  // Derive a node's checkbox state: leaves read directly from `checkedNodeIds`;
-  // parents aggregate their descendants into checked / unchecked / mixed.
-  private getCheckState(
-    node: ITreeNode
-  ): 'checked' | 'unchecked' | 'indeterminate' {
-    if (!node.children?.length) {
-      return this.coerceArray<string>(this.checkedNodeIds).includes(node.id)
-        ? 'checked'
-        : 'unchecked';
-    }
+  // Build `checkStateById` for the whole tree in a single post-order pass:
+  // leaves read directly from `checkedNodeIds`; parents aggregate their
+  // descendants into checked / unchecked / mixed. Computed from the full
+  // (unfiltered) node set so a parent still aggregates over all of its
+  // descendants while filtering. Only populated in multi-select mode.
+  private buildCheckStateMap(): void {
+    this.checkStateById.clear();
+    if (!this.isMultiSelect()) return;
 
-    const states = node.children.map((child) => this.getCheckState(child));
-    if (states.every((s) => s === 'checked')) return 'checked';
-    if (states.every((s) => s === 'unchecked')) return 'unchecked';
-    return 'indeterminate';
+    const checked = new Set(this.coerceArray<string>(this.checkedNodeIds));
+
+    const visit = (node: ITreeNode): CheckState => {
+      let state: CheckState;
+      if (!node.children?.length) {
+        state = checked.has(node.id) ? 'checked' : 'unchecked';
+      } else {
+        const childStates = node.children.map(visit);
+        state = childStates.every((s) => s === 'checked')
+          ? 'checked'
+          : childStates.every((s) => s === 'unchecked')
+            ? 'unchecked'
+            : 'indeterminate';
+      }
+      this.checkStateById.set(node.id, state);
+      return state;
+    };
+
+    this.getNodes().forEach(visit);
   }
 
   private getNodes(): ITreeNode[] {
@@ -356,19 +429,18 @@ export class ModusWcContentTree {
     return this.isFiltering() ? filterTree(nodes, this.filter!) : nodes;
   }
 
-  // Derive check state from the ORIGINAL node so an ancestor with a pruned
-  // (filtered) child list still aggregates over its full set of descendants.
-  private getCheckStateById(
-    id: string
-  ): 'checked' | 'unchecked' | 'indeterminate' {
-    const node = findNode(this.getNodes(), id);
-    return node ? this.getCheckState(node) : 'unchecked';
+  // O(1) lookup into the per-render `checkStateById` cache (see
+  // buildCheckStateMap). Unknown ids read as unchecked.
+  private getCheckStateById(id: string): CheckState {
+    return this.checkStateById.get(id) ?? 'unchecked';
   }
 
   private isExpanded(id: string): boolean {
-    // While filtering, force every surviving parent open so the path to each
-    // match is visible regardless of the controlled `expandedNodeIds`.
-    if (this.isFiltering()) return true;
+    // While filtering, parents default to open so the path to each match is
+    // visible. The user may collapse one for the duration of this filter
+    // session (tracked in `filterCollapsedIds`); the persisted
+    // `expandedNodeIds` is left untouched and restored once the filter clears.
+    if (this.isFiltering()) return !this.filterCollapsedIds.has(id);
     return this.coerceArray<string>(this.expandedNodeIds).includes(id);
   }
 
@@ -559,6 +631,7 @@ export class ModusWcContentTree {
 
   render() {
     this.activeRootId = this.getActiveRootId();
+    this.buildCheckStateMap();
     const nodes = this.getRenderNodes();
 
     return (
