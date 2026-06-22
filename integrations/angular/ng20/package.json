@@ -9,14 +9,14 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@angular/animations": "^20.3.0",
-    "@angular/common": "^20.3.0",
-    "@angular/compiler": "^20.3.0",
-    "@angular/core": "^20.3.0",
-    "@angular/forms": "^20.3.0",
-    "@angular/platform-browser": "^20.3.0",
-    "@angular/platform-browser-dynamic": "^20.3.0",
-    "@angular/router": "^20.3.0",
+    "@angular/animations": "^20.3.25",
+    "@angular/common": "^20.3.25",
+    "@angular/compiler": "^20.3.25",
+    "@angular/core": "^20.3.25",
+    "@angular/forms": "^20.3.25",
+    "@angular/platform-browser": "^20.3.25",
+    "@angular/platform-browser-dynamic": "^20.3.25",
+    "@angular/router": "^20.3.25",
     "@trimble-oss/moduswebcomponents": "file:../../../dist",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -25,17 +25,24 @@
   "devDependencies": {
     "@angular/build": "^20.3.26",
     "@angular/cli": "^20.3.26",
-    "@angular/compiler-cli": "^20.3.0",
+    "@angular/compiler-cli": "^20.3.25",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^20.3.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "jasmine-core": "~5.13.0"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "overrides": {
+    "@babel/core": "^7.29.6",
+    "esbuild": "^0.28.1",
+    "tar": "^7.5.16",
+    "vite": "^7.3.5"
   },
   "engines": {
     "node": ">=20.19"
