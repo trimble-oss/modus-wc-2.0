@@ -37,10 +37,6 @@ let contentTreeInstanceId = 0;
 export class ModusWcContentTree {
   private inheritedAttributes: Attributes = {};
 
-  // Id of the 1st-level (base) parent whose family contains the selected node.
-  // Recomputed on every render; drives the shared family indicator line.
-  private activeRootId?: string;
-
   // Per-render cache of every node's aggregated checkbox state, built once in
   // render() so each checkbox lookup is O(1) instead of a recursive subtree walk.
   private checkStateById = new Map<string, CheckState>();
@@ -471,7 +467,7 @@ export class ModusWcContentTree {
     return [];
   }
 
-  private renderNode = (node: ITreeNode): VNode => {
+  private renderNode = (node: ITreeNode, activeRootId?: string): VNode => {
     const hasChildren = !!node.children?.length;
     const expanded = hasChildren && this.isExpanded(node.id);
     const editing = node.id === this.editingNodeId;
@@ -480,7 +476,7 @@ export class ModusWcContentTree {
     if (hasChildren) classes.push('modus-wc-content-tree-parent');
     // `activeRootId` is a root id (ids are unique), so this only matches the
     // 1st-level base parent of the selected node, never an inner node.
-    if (node.id === this.activeRootId) {
+    if (node.id === activeRootId) {
       classes.push('modus-wc-content-tree-family-active');
     }
 
@@ -622,7 +618,9 @@ export class ModusWcContentTree {
             isSubMenu
             customClass="modus-wc-menu-dropdown-show"
           >
-            {node.children!.map((child) => this.renderNode(child))}
+            {node.children!.map((child) =>
+              this.renderNode(child, activeRootId)
+            )}
           </modus-wc-tree-menu>
         ) : null}
       </modus-wc-tree-item>
@@ -630,8 +628,8 @@ export class ModusWcContentTree {
   };
 
   render() {
-    this.activeRootId = this.getActiveRootId();
     this.buildCheckStateMap();
+    const activeRootId = this.getActiveRootId();
     const nodes = this.getRenderNodes();
 
     return (
@@ -645,7 +643,7 @@ export class ModusWcContentTree {
           size={this.size}
           {...this.inheritedAttributes}
         >
-          {nodes.map((node) => this.renderNode(node))}
+          {nodes.map((node) => this.renderNode(node, activeRootId))}
         </modus-wc-tree-menu>
 
         <modus-wc-modal
