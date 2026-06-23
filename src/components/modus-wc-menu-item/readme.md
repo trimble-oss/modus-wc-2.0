@@ -54,6 +54,7 @@ Type: `Promise<void>`
 
 ### Used by
 
+ - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-navbar](../modus-wc-navbar)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
@@ -69,6 +70,7 @@ graph TD;
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-app-menu --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
   modus-wc-profile-menu --> modus-wc-menu-item

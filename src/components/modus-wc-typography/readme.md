@@ -33,11 +33,15 @@ providing your own custom values for the size or weight properties from the avai
 
 ### Used by
 
+ - [modus-wc-app-menu](../modus-wc-app-menu)
+ - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-app-menu --> modus-wc-typography
+  modus-wc-bottom-sheet --> modus-wc-typography
   modus-wc-profile-menu --> modus-wc-typography
   style modus-wc-typography fill:#f9f,stroke:#333,stroke-width:4px
 ```
