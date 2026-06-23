@@ -259,9 +259,7 @@ export const WithSubmenu: Story = {
       let sideNav: HTMLElement | null;
 
       if (storyContainer) {
-        sideNav = storyContainer.querySelector(
-          'modus-wc-side-navigation'
-        ) as HTMLElement;
+        sideNav = storyContainer.querySelector('modus-wc-side-navigation');
 
         if (sideNav) {
           // Toggle the side nav state (navbar and side nav can be out of sync)
@@ -666,7 +664,7 @@ export const WithTreeMenu: Story = {
           HTMLElement & { selected?: boolean }
         >('modus-wc-tree-item[value="data"]');
         if (dataItem && isExpanded) {
-          selectSubmenuParent(sideNav as HTMLElement, dataItem);
+          selectSubmenuParent(sideNav, dataItem);
         }
       }
 

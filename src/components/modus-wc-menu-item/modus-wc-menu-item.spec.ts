@@ -896,7 +896,7 @@ describe('modus-wc-menu-item', () => {
         observe: observeSpy,
         disconnect: disconnectSpy,
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -923,7 +923,7 @@ describe('modus-wc-menu-item', () => {
           disconnect: disconnectSpy,
           takeRecords: jest.fn(),
         };
-      }) as unknown as typeof MutationObserver;
+      });
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -958,7 +958,7 @@ describe('modus-wc-menu-item', () => {
         observe: jest.fn(),
         disconnect: disconnectSpy,
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -982,7 +982,7 @@ describe('modus-wc-menu-item', () => {
         observe: observeSpy,
         disconnect: jest.fn(),
         takeRecords: jest.fn(),
-      })) as unknown as typeof MutationObserver;
+      }));
 
       await newSpecPage({
         components: [ModusWcMenuItem],
@@ -1011,7 +1011,7 @@ describe('modus-wc-menu-item', () => {
           disconnect: jest.fn(),
           takeRecords: jest.fn(),
         };
-      }) as unknown as typeof MutationObserver;
+      });
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -1066,7 +1066,7 @@ describe('modus-wc-menu-item', () => {
           disconnect: jest.fn(),
           takeRecords: jest.fn(),
         };
-      }) as unknown as typeof MutationObserver;
+      });
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -1122,7 +1122,7 @@ describe('modus-wc-menu-item', () => {
           disconnect: jest.fn(),
           takeRecords: jest.fn(),
         };
-      }) as unknown as typeof MutationObserver;
+      });
 
       const page = await newSpecPage({
         components: [ModusWcMenu, ModusWcMenuItem],
@@ -1251,14 +1251,8 @@ describe('modus-wc-menu-item', () => {
       (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(
-        (barChart as HTMLElement & { selected?: boolean; value: string })
-          .selected
-      ).toBe(true);
-      expect(
-        (calendar as HTMLElement & { selected?: boolean; value: string })
-          .selected
-      ).toBeFalsy();
+      expect(barChart.selected).toBe(true);
+      expect(calendar.selected).toBeFalsy();
 
       // Select "Calendar" in the root menu — should deselect "Bar Chart"
       calendar.querySelector('button')?.click();
@@ -1306,10 +1300,7 @@ describe('modus-wc-menu-item', () => {
       (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(
-        (barChart as HTMLElement & { selected?: boolean; value: string })
-          .selected
-      ).toBe(true);
+      expect(barChart.selected).toBe(true);
 
       // Select "Monthly Report" in a different submenu — should deselect "Bar Chart"
       monthlyReport.querySelector('button')?.click();
@@ -1352,10 +1343,7 @@ describe('modus-wc-menu-item', () => {
       (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
 
-      expect(
-        (barChart as HTMLElement & { selected?: boolean; value: string })
-          .selected
-      ).toBe(true);
+      expect(barChart.selected).toBe(true);
 
       // The submenu header should NOT have the active class
       const headerLi = chartsHeader.querySelector('li') as HTMLLIElement;
@@ -1409,10 +1397,7 @@ describe('modus-wc-menu-item', () => {
       // Select Bar Chart
       (barChart as HTMLElement).querySelector('button')?.click();
       await page.waitForChanges();
-      expect(
-        (barChart as HTMLElement & { selected?: boolean; value: string })
-          .selected
-      ).toBe(true);
+      expect(barChart.selected).toBe(true);
 
       // Select Calendar — Bar Chart deselected
       calendar.querySelector('button')?.click();

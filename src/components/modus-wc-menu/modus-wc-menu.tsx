@@ -98,7 +98,7 @@ export class ModusWcMenu {
   private getMenuItems(): HTMLElement[] {
     return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).filter(
       (item) => item.closest('modus-wc-menu') === this.el
-    ) as HTMLElement[];
+    );
   }
 
   @Listen('itemSelect')

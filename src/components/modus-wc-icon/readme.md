@@ -27,8 +27,10 @@ A customizable icon component used to render Modus icons.
 ### Used by
 
  - [modus-wc-alert](../modus-wc-alert)
+ - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-avatar](../modus-wc-avatar)
+ - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
  - [modus-wc-chip](../modus-wc-chip)
  - [modus-wc-collapse](../modus-wc-collapse)
  - [modus-wc-date](../modus-wc-date)
@@ -43,8 +45,10 @@ A customizable icon component used to render Modus icons.
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-icon
+  modus-wc-app-menu --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-icon
   modus-wc-avatar --> modus-wc-icon
+  modus-wc-bottom-sheet --> modus-wc-icon
   modus-wc-chip --> modus-wc-icon
   modus-wc-collapse --> modus-wc-icon
   modus-wc-date --> modus-wc-icon
