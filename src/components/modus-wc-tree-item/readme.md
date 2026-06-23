@@ -7,7 +7,7 @@
 
 ## Overview
 
-A customizable tree item component used to display the item portion of a tree view.
+A customizable tree item component used to display the item portion of a tree menu.
 
 This component supports `start` and `end` slots for custom content at the beginning and end of the item.
 
