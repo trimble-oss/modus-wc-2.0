@@ -84,12 +84,6 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
   border: none;
   outline: none;
 
-  // Allow Daisy to style circle and square shapes
-  &:not(.modus-wc-btn-circle):not(.modus-wc-btn-square) {
-    height: fit-content;
-    min-height: fit-content;
-  }
-
   // Sizes
   &.modus-wc-btn-xs {
     font-size: var(--modus-wc-font-size-xs);
@@ -563,6 +557,14 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
         border-color: var(--modus-wc-color-red-dark);
         color: var(--modus-wc-color-red-dark);
       }
+    }
+  }
+}
+
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-filled {
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-white);
     }
   }
 }
