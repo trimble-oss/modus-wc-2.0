@@ -423,6 +423,61 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.CustomClass">
+            <summary>
+            Custom CSS class to apply to the outer div.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.DisplayMode">
+            <summary>
+            Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.DragStepThreshold">
+            <summary>
+            Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.Visible">
+            <summary>
+            Controls whether the bottom sheet is visible.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.Header">
+            <summary>
+            Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.OnDisplayModeChange">
+            <summary>
+            Event emitted when the display mode changes, whether from a drag/keyboard interaction or from setting the displayMode prop. The new mode is in detail.displayMode.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.OnHeaderBackClick">
+            <summary>
+            Event emitted when the header back button is clicked. Does not change sheet state.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.OnHeaderCloseClick">
+            <summary>
+            Event emitted when the header dismiss button is clicked. The sheet is also closed automatically (visible is set to false).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcBottomSheet.OnSheetVisibilityChange">
+            <summary>
+            Event emitted when the visibility of the bottom sheet changes.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcBreadcrumbs">
             <summary>
             A customizable breadcrumbs component used to help users navigate through a website.
