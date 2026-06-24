@@ -290,6 +290,58 @@ modus-wc-tree-item .modus-wc-menu-item {
   }
 }
 
+[data-theme='connect-light'],
+[data-theme='connect-dark'] {
+  modus-wc-tree-item .modus-wc-menu-item {
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-content {
+      &:not(:has([slot='start'])) .modus-wc-menu-item-labels {
+        padding-inline-start: 0;
+      }
+
+      &:not(:has([slot='end'])) .modus-wc-menu-item-labels {
+        padding-inline-end: 0;
+      }
+    }
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-md {
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-labels {
+      font-size: var(--modus-wc-font-size-connect-md);
+      font-weight: var(--modus-wc-font-weight-normal);
+      line-height: var(--modus-wc-line-height-connect-md);
+    }
+
+    &.modus-wc-menu-item-active
+      .modus-wc-menu-item-interactive
+      .modus-wc-menu-item-labels {
+      font-weight: var(--modus-wc-font-weight-semibold);
+    }
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item:has(modus-wc-tree-menu) {
+    &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
+        :has([slot='end'] :hover)
+      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
+        :has([slot='start'] :active)
+      ) {
+      &:hover {
+        background-color: var(--modus-wc-color-base-100);
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        :has([slot='end'] :hover)
+      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
+        :has([slot='start'] :active)
+      ) {
+      &:hover {
+        background-color: var(--modus-wc-color-base-100);
+      }
+    }
+  }
+}
+
 /* Connect light side nav: suppress base-100 li hover; paint row on interactive. */
 [data-theme='connect-light'] modus-wc-side-navigation {
   modus-wc-tree-menu .modus-wc-menu li.modus-wc-menu-item:hover,
