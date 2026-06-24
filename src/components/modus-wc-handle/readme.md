@@ -14,7 +14,7 @@ A draggable handle component for resizing adjacent elements
 | Property        | Attribute        | Description                                                                                                        | Type                                                                           | Default         |
 | --------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --------------- |
 | `buttonColor`   | `button-color`   | The color of the button.                                                                                           | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning" \| undefined` | `'tertiary'`    |
-| `buttonSize`    | `button-size`    | The size of the button.                                                                                            | `"lg" \| "md" \| "sm" \| "xs" \| undefined`                                    | `'md'`          |
+| `buttonSize`    | `button-size`    | The size of the button.                                                                                            | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined`                            | `'md'`          |
 | `buttonVariant` | `button-variant` | The variant of the button.                                                                                         | `"borderless" \| "filled" \| "outlined" \| undefined`                          | `'filled'`      |
 | `customClass`   | `custom-class`   | Custom CSS class to apply to the handle element.                                                                   | `string \| undefined`                                                          | `''`            |
 | `defaultSplit`  | `default-split`  | The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage. | `number \| undefined`                                                          | `50`            |
@@ -28,6 +28,10 @@ A draggable handle component for resizing adjacent elements
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
+
 ### Depends on
 
 - [modus-wc-button](../modus-wc-button)
@@ -38,6 +42,7 @@ A draggable handle component for resizing adjacent elements
 graph TD;
   modus-wc-handle --> modus-wc-button
   modus-wc-handle --> modus-wc-icon
+  modus-wc-bottom-sheet --> modus-wc-handle
   style modus-wc-handle fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

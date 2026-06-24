@@ -25,11 +25,15 @@ This component provides 'header', 'body', and 'footer' `<slot>` elements for ins
 
 ### Used by
 
+ - [modus-wc-app-menu](../modus-wc-app-menu)
+ - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-app-menu --> modus-wc-panel
+  modus-wc-bottom-sheet --> modus-wc-panel
   modus-wc-profile-menu --> modus-wc-panel
   style modus-wc-panel fill:#f9f,stroke:#333,stroke-width:4px
 ```

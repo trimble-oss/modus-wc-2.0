@@ -25,11 +25,13 @@ Logo colors automatically adapt to the active Modus theme via CSS variables.
 
 ### Used by
 
+ - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-navbar](../modus-wc-navbar)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-app-menu --> modus-wc-logo
   modus-wc-navbar --> modus-wc-logo
   style modus-wc-logo fill:#f9f,stroke:#333,stroke-width:4px
 ```

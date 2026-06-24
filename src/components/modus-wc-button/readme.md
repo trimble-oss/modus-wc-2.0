@@ -19,7 +19,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 | `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                            | `false`       |
 | `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                            | `false`       |
 | `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                | `'rectangle'` |
-| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xs"`                                    | `'md'`        |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                            | `'md'`        |
 | `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                 | `'button'`    |
 | `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                          | `'filled'`    |
 
@@ -36,7 +36,9 @@ The component supports a `<slot>` for injecting content within the button, simil
 ### Used by
 
  - [modus-wc-alert](../modus-wc-alert)
+ - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-handle](../modus-wc-handle)
@@ -47,7 +49,9 @@ The component supports a `<slot>` for injecting content within the button, simil
 ```mermaid
 graph TD;
   modus-wc-alert --> modus-wc-button
+  modus-wc-app-menu --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-button
+  modus-wc-bottom-sheet --> modus-wc-button
   modus-wc-date --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-handle --> modus-wc-button
