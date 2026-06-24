@@ -324,7 +324,7 @@ modus-wc-tree-item .modus-wc-menu-item {
       ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
         :has([slot='start'] :active)
       ) {
-      &:hover {
+      > .modus-wc-menu-item-interactive:hover {
         background-color: var(--modus-wc-color-base-100);
         outline: none;
       }
@@ -335,7 +335,7 @@ modus-wc-tree-item .modus-wc-menu-item {
       ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
         :has([slot='start'] :active)
       ) {
-      &:hover {
+      > .modus-wc-menu-item-interactive:hover {
         background-color: var(--modus-wc-color-base-100);
       }
     }
