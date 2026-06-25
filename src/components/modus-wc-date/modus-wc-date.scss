@@ -52,6 +52,17 @@ modus-wc-date {
     }
   }
 
+  .date-range-inputs {
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    width: 100%;
+
+    .date-input-container {
+      flex: 1 0 0;
+      min-width: 0;
+    }
+  }
+
   .calendar-container {
     background: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-200);
@@ -65,6 +76,22 @@ modus-wc-date {
 
     &.has-week-numbers {
       width: 320px;
+    }
+
+    &.calendar-container--range {
+      display: flex;
+      height: auto;
+      width: 560px;
+
+      .calendar-panel {
+        flex: 1 0 0;
+        min-width: 0;
+        overflow: hidden;
+
+        & + .calendar-panel {
+          border-inline-start: 1px solid var(--modus-wc-color-base-200);
+        }
+      }
     }
 
     .calendar-header {
@@ -142,87 +169,122 @@ modus-wc-date {
         }
       }
 
-      .calendar-dates {
-        display: grid;
-        grid-template-columns: var(--calendar-grid-columns);
+        .calendar-dates {
+          display: grid;
+          grid-template-columns: var(--calendar-grid-columns);
 
-        &.has-week-numbers {
-          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
-        }
-
-        .week-number {
-          align-items: center;
-          border-inline-end: 1px solid
-            color-mix(
-              in sRGB,
-              var(--modus-wc-color-base-inverted) 10%,
-              transparent
-            );
-          display: flex;
-          font-size: var(--modus-wc-font-size-sm);
-          font-weight: var(--modus-wc-font-weight-bold);
-          justify-content: center;
-          padding-inline-end: var(--modus-wc-spacing-sm);
-        }
-
-        .calendar-day {
-          align-items: center;
-          background: none;
-          border: none;
-          border-radius: 50%;
-          color: var(--modus-wc-color-base-content-high-contrast);
-          cursor: pointer;
-          display: flex;
-          height: 32px;
-          justify-content: center;
-          width: 32px;
-
-          &:hover {
-            background-color: var(--modus-wc-color-primary);
-            color: var(--modus-wc-color-white);
+          &.has-week-numbers {
+            grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
           }
 
-          &:focus {
-            background-color: var(--modus-wc-color-primary);
-            color: var(--modus-wc-color-white);
-            outline: none;
+          .week-number {
+            align-items: center;
+            border-inline-end: 1px solid
+              color-mix(
+                in sRGB,
+                var(--modus-wc-color-base-inverted) 10%,
+                transparent
+              );
+            display: flex;
+            font-size: var(--modus-wc-font-size-sm);
+            font-weight: var(--modus-wc-font-weight-bold);
+            justify-content: center;
+            padding-inline-end: var(--modus-wc-spacing-sm);
           }
 
-          &.current-day {
-            border: 2px solid var(--modus-wc-color-primary);
-            outline: none;
-          }
+          // Wrapper cell used in range mode to carry the range highlight background
+          .calendar-day-cell {
+            align-items: center;
+            display: flex;
+            justify-content: center;
 
-          &.selected {
-            background-color: var(--modus-wc-color-primary);
-            color: var(--modus-wc-color-primary-content);
-            font-weight: var(--modus-wc-font-weight-semibold);
-          }
+            &.in-range,
+            &.hover-preview {
+              background-color: color-mix(
+                in sRGB,
+                var(--modus-wc-color-primary) 15%,
+                var(--modus-wc-color-base-page)
+              );
+              border-radius: 0;
+            }
 
-          &.other-month {
-            color: var(--modus-wc-color-base-content-high-contrast);
-            opacity: 0.5;
+            &.range-start {
+              background-color: color-mix(
+                in sRGB,
+                var(--modus-wc-color-primary) 15%,
+                var(--modus-wc-color-base-page)
+              );
+              border-radius: 50% 0 0 50%;
+            }
 
-            &:hover {
-              background-color: var(--modus-wc-color-base-200);
-              color: var(--modus-wc-color-base-content);
+            &.range-end {
+              background-color: color-mix(
+                in sRGB,
+                var(--modus-wc-color-primary) 15%,
+                var(--modus-wc-color-base-page)
+              );
+              border-radius: 0 50% 50% 0;
             }
           }
 
-          &.disabled {
-            color: var(--modus-wc-color-gray-4);
+          .calendar-day {
+            align-items: center;
+            background: none;
+            border: none;
+            border-radius: 50%;
+            color: var(--modus-wc-color-base-content-high-contrast);
+            cursor: pointer;
+            display: flex;
+            height: 32px;
+            justify-content: center;
+            width: 32px;
 
             &:hover {
-              background-color: transparent;
-              color: var(--modus-wc-color-gray-4);
+              background-color: var(--modus-wc-color-primary);
+              color: var(--modus-wc-color-white);
             }
 
             &:focus {
-              border: none;
+              background-color: var(--modus-wc-color-primary);
+              color: var(--modus-wc-color-white);
+              outline: none;
+            }
+
+            &.current-day {
+              border: 2px solid var(--modus-wc-color-primary);
+              outline: none;
+            }
+
+            &.selected {
+              background-color: var(--modus-wc-color-primary);
+              color: var(--modus-wc-color-primary-content);
+              font-weight: var(--modus-wc-font-weight-semibold);
+            }
+
+            &.other-month {
+              color: var(--modus-wc-color-base-content-high-contrast);
+              opacity: 0.5;
+
+              &:hover {
+                background-color: var(--modus-wc-color-base-200);
+                color: var(--modus-wc-color-base-content);
+              }
+            }
+
+            &.disabled {
+              color: var(--modus-wc-color-gray-4);
+
+              &:hover {
+                background-color: transparent;
+                color: var(--modus-wc-color-gray-4);
+              }
+
+              &:focus {
+                border: none;
+              }
             }
           }
         }
-      }
     }
   }
 }

@@ -9,6 +9,7 @@ interface DateArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  'end-value'?: string;
   feedback?: IInputFeedbackProp;
   format?:
     | 'yyyy-mm-dd'
@@ -28,6 +29,7 @@ interface DateArgs {
   required?: boolean;
   'show-week-numbers'?: boolean;
   size?: ModusSize;
+  type?: 'single' | 'range';
   value: string;
   'week-start-day'?: WeekStartDay;
 }
@@ -64,6 +66,10 @@ const meta: Meta<DateArgs> = {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    type: {
+      control: { type: 'select' },
+      options: ['single', 'range'],
+    },
     format: {
       control: { type: 'select' },
       options: [
@@ -99,6 +105,7 @@ const meta: Meta<DateArgs> = {
         'inputFocus',
         'calendarMonthChange',
         'calendarYearChange',
+        'rangeChange',
       ],
     },
   },
@@ -122,6 +129,7 @@ const Template: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
+        end-value=${ifDefined(args['end-value'])}
         .feedback=${args.feedback}
         format=${ifDefined(args.format)}
         input-id=${ifDefined(args['input-id'])}
@@ -134,6 +142,7 @@ const Template: Story = {
         ?required=${args.required}
         ?show-week-numbers=${args['show-week-numbers']}
         size=${ifDefined(args.size)}
+        type=${ifDefined(args.type)}
         .value=${args.value}
         week-start-day=${ifDefined(args['week-start-day'])}
       ></modus-wc-date>
@@ -224,6 +233,33 @@ export const ShadowDomParent: Story = {
     return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
   },
 };
+export const Range: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        div[id^='story--components-forms-date--range'] {
+          min-height: 450px;
+          width: 580px;
+        }
+      </style>
+      <modus-wc-date
+        aria-label="Date range input"
+        ?bordered=${args.bordered}
+        ?disabled=${args.disabled}
+        end-value=${ifDefined(args['end-value'])}
+        label=${ifDefined(args.label)}
+        type="range"
+        .value=${args.value}
+      ></modus-wc-date>
+    `;
+  },
+  args: {
+    label: 'Select Date',
+    value: '2026-06-10',
+    'end-value': '2026-07-08',
+  },
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {

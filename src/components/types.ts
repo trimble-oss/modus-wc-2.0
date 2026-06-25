@@ -326,3 +326,8 @@ export interface IAutocompleteNoResults {
   /** The sub-label or additional text to display below the main label. */
   subLabel: string;
 }
+
+export interface IDateRange {
+  startDate: string;
+  endDate: string;
+}
