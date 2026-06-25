@@ -1083,16 +1083,13 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
-            // Range-mode class calculations
+            // Range-mode class calculations — only show range styling once both endpoints are set
+            const hasFullRange = this.isRange && !!startDate && !!endDate;
             const isRangeStart =
-              this.isRange &&
-              !!startDate &&
-              this.compareDate(date, startDate) === 0;
+              hasFullRange && this.compareDate(date, startDate!) === 0;
             const isRangeEnd =
-              this.isRange &&
-              !!endDate &&
-              this.compareDate(date, endDate) === 0;
-            const isInRange = this.isRange && this.isDateInRange(date);
+              hasFullRange && this.compareDate(date, endDate!) === 0;
+            const isInRange = hasFullRange && this.isDateInRange(date);
 
             // Single-mode selection
             const isSelected =
