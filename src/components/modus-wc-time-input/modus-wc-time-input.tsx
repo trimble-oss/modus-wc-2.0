@@ -16,7 +16,6 @@ import { IInputFeedbackProp, ModusSize } from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
-  generateRandomId,
   inheritAriaAttributes,
 } from '../utils';
 
@@ -44,9 +43,6 @@ export class ModusWcTimeInput {
   /** Enables free-text entry after "Other" is selected in datalist picker */
   @State() private allowFreeInput = false;
 
-  /** Hint for form autofill feature. */
-  @Prop() autoComplete?: 'on' | 'off';
-
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
@@ -68,30 +64,18 @@ export class ModusWcTimeInput {
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
 
-  /**
-   * ID of a `<datalist>` element that contains pre-defined time options.
-   * The value must be the ID of a `<datalist>` element in the same document.
-   */
-  @Prop({ mutable: true }) datalistId?: string;
-
   /** The text to display within the label. */
   @Prop() label?: string;
-
-  /** Maximum value. Format: `HH:mm`, `HH:mm:ss`. */
-  @Prop() max?: string;
-
-  /** Minimum value. Format: `HH:mm`, `HH:mm:ss.`*/
-  @Prop() min?: string;
 
   /** Name of the form control. Submitted with the form as part of a name/value pair. */
   @Prop() name?: string;
 
   /**
-   * The type of custom picker to render. When undefined (default), the native browser time picker is used.
+   * The type of custom picker to render.
    * - `'picker'`: Renders a popper panel with side-by-side scrollable columns for hours, minutes, seconds, and AM/PM.
    * - `'datalist'`: Renders a popper panel with a flat list sourced from `datalistOptions`.
    */
-  @Prop() pickerType?: 'picker' | 'datalist';
+  @Prop() pickerType?: 'picker' | 'datalist' = 'picker';
 
   /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
@@ -108,13 +92,6 @@ export class ModusWcTimeInput {
 
   /** The size of the input. */
   @Prop() size?: ModusSize = 'md';
-
-  /**
-   * Specifies the granularity that the `value` must adhere to.
-   * Value of step given in seconds. Default value is 60 seconds.
-   * Overrides the `seconds` attribute if both are provided.
-   */
-  @Prop() step?: number;
 
   /**
    * Display time in 12-hour (AM/PM) format in the picker columns.
@@ -146,11 +123,6 @@ export class ModusWcTimeInput {
 
     if (!this.el.ariaLabel) {
       this.el.ariaLabel = 'Time input';
-    }
-
-    // if no datalistId value provided, use internal datalist id to enable time options
-    if (!this.datalistId) {
-      this.datalistId = this.internalDatalistId;
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -239,10 +211,6 @@ export class ModusWcTimeInput {
     this.inputFocus.emit(event);
   };
 
-  private handleInput = (event: Event) => {
-    this.inputChange.emit(event);
-  };
-
   private handleInputClick = () => {
     if (this.disabled || this.readOnly || this.allowFreeInput) return;
     this.showDropdown = !this.showDropdown;
@@ -258,34 +226,6 @@ export class ModusWcTimeInput {
     this.allowFreeInput = false;
     this.inputBlur.emit(event);
   };
-
-  /*
-   * The ID of the internal <datalist> element. Unique to each instance of the time input component.
-   * This is used as the `datalistId` id when `datalistOptions` are provided.
-   */
-  private readonly internalDatalistId = `modus-wc-datalist-${generateRandomId(10)}`;
-
-  /*
-   * Conditionally renders the datalist element with the time options.
-   * If no time options are provided or the datalistId prop is not the default,
-   * the datalist element will not be rendered (returns `null`).
-   */
-  private renderDatalist(): HTMLElement | null {
-    if (
-      this.datalistOptions.length === 0 ||
-      this.datalistId !== this.internalDatalistId
-    ) {
-      return null;
-    }
-
-    return (
-      <datalist id={this.internalDatalistId}>
-        {this.datalistOptions.map((time) => (
-          <option value={time} />
-        ))}
-      </datalist>
-    );
-  }
 
   private parseTimeValue(): {
     hours: number;
@@ -305,7 +245,7 @@ export class ModusWcTimeInput {
     const { hours, minutes, seconds } = this.parseTimeValue();
     if (this.use12Hour) {
       const ampm = hours >= 12 ? 'PM' : 'AM';
-      const h12 = hours % 12 || 12;
+      const h12 = String(hours % 12 || 12).padStart(2, '0');
       const base = `${h12}:${String(minutes).padStart(2, '0')}`;
       return this.showSeconds
         ? `${base}:${String(seconds).padStart(2, '0')} ${ampm}`
@@ -485,7 +425,6 @@ export class ModusWcTimeInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
-    const useCustomPicker = this.pickerType !== undefined;
 
     return (
       <Host>
@@ -498,7 +437,7 @@ export class ModusWcTimeInput {
           />
         )}
 
-        {useCustomPicker ? (
+        <div class="time-picker-input-container">
           <input
             ref={(el) => (this.inputRef = el)}
             aria-required={this.required}
@@ -521,33 +460,21 @@ export class ModusWcTimeInput {
             value={this.getCustomInputDisplayValue()}
             {...this.inheritedAttributes}
           />
-        ) : (
-          <input
-            aria-required={this.required}
-            autocomplete={this.autoComplete}
-            class={this.getClasses()}
-            disabled={this.disabled}
-            id={effectiveId}
-            list={this.datalistId}
-            max={this.max}
-            min={this.min}
-            name={this.name}
-            onBlur={this.handleBlur}
-            onFocus={this.handleFocus}
-            onInput={this.handleInput}
-            readonly={this.readOnly}
-            required={this.required}
-            step={this.step || this.showSeconds ? 1 : 60}
-            tabIndex={this.inputTabIndex}
-            type="time"
-            value={this.value}
-            {...this.inheritedAttributes}
-          />
-        )}
+          <modus-wc-button
+            aria-label="Open time picker"
+            disabled={this.disabled || this.readOnly}
+            variant="borderless"
+            shape="circle"
+            size="xs"
+            color="tertiary"
+            class="time-picker-icon-button"
+            onButtonClick={this.handleInputClick}
+          >
+            <modus-wc-icon name="clock" size="sm" />
+          </modus-wc-button>
+        </div>
 
-        {!useCustomPicker && this.renderDatalist()}
-
-        {useCustomPicker && this.showDropdown && (
+        {this.showDropdown && (
           <div
             ref={(el) => (this.dropdownRef = el)}
             class="time-picker-dropdown"
