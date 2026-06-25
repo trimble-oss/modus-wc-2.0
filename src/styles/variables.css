@@ -82,7 +82,6 @@
   /* Line heights */
   --modus-wc-line-height-xs: 0.5rem;
   --modus-wc-line-height-sm: 1rem;
-  --modus-wc-line-height-connect-md: 1.125rem;
   --modus-wc-line-height-md: 1.5rem;
   --modus-wc-line-height-lg: 2rem;
   --modus-wc-line-height-xl: 3rem;
@@ -110,8 +109,6 @@
   /* 10px */
   --modus-wc-font-size-sm: 0.75rem;
   /* 12px */
-  --modus-wc-font-size-connect-md: 0.8125rem;
-  /* 13px */
   --modus-wc-font-size-md: 0.875rem;
   /* 14px */
   --modus-wc-font-size-lg: 1rem;
