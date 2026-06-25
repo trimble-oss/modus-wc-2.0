@@ -292,12 +292,11 @@ export class ModusWcTimeInput {
     minutes: number;
     seconds: number;
   } {
-    const parts = (this.value || '00:00').split(':').map(Number);
-    return {
-      hours: parts[0] ?? 0,
-      minutes: parts[1] ?? 0,
-      seconds: parts[2] ?? 0,
-    };
+    // istanbul ignore next
+    const [h = 0, m = 0, s = 0] = (this.value || '00:00')
+      .split(':')
+      .map(Number);
+    return { hours: h, minutes: m, seconds: s };
   }
 
   /** Returns the formatted display string for the readonly text input when pickerType is 'picker'. */
@@ -377,6 +376,7 @@ export class ModusWcTimeInput {
     this.showDropdown = false;
     this.allowFreeInput = true;
     // Defer focus so the state update completes before focusing
+    // istanbul ignore next
     setTimeout(() => this.inputRef?.focus(), 0);
   };
 

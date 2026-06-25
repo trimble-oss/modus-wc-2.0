@@ -15,8 +15,8 @@ modus-wc-time-input {
 
   .time-picker-dropdown {
     background: var(--modus-wc-color-base-page, #fff);
-    border: 1px solid #e9eaf0;
-    border-radius: 16px;
+    border: 1px solid var(--modus-wc-color-base-200, #e9eaf0);
+    border-radius: var(--rounded-box, 16px);
     box-shadow:
       0 4px 6px -1px rgb(0 0 0 / 10%),
       0 2px 4px -2px rgb(0 0 0 / 10%);
@@ -27,17 +27,20 @@ modus-wc-time-input {
 
   .time-picker-panel {
     display: flex;
+    gap: 12px;
+    padding: var(--modus-wc-spacing-sm, 8px);
   }
 
   .time-picker-column {
     display: flex;
     flex-direction: column;
-    max-height: 200px;
+
+    // 6 items × 40px (line-height 24px + 8px vertical padding × 2) – 5 × 4px (negative overlap) = 220px
+    max-height: 220px;
     overflow-y: auto;
-    padding: var(--modus-wc-spacing-xs, 4px);
 
     &:not(:last-child) {
-      border-inline-end: 1px solid #e9eaf0;
+      border-inline-end: 1px solid var(--modus-wc-color-base-200, #e9eaf0);
     }
   }
 
@@ -45,19 +48,25 @@ modus-wc-time-input {
     display: flex;
     flex-direction: column;
     min-width: 180px;
-    padding: var(--modus-wc-spacing-xs, 4px);
+    overflow: hidden;
   }
 
   .time-picker-item {
     background: none;
     border: none;
-    border-radius: 8px;
-    color: var(--modus-wc-color-base-content, inherit);
+    border-radius: var(--modus-wc-border-radius-btn, 8px);
+    color: var(--modus-wc-color-base-content, #171c1e);
     cursor: pointer;
-    font-size: 14px;
-    padding: 8px 16px;
+    font-size: var(--modus-wc-font-size-sm, 14px);
+    line-height: 24px;
+    margin-bottom: -4px;
+    padding: var(--modus-wc-spacing-sm, 8px) var(--modus-wc-spacing-md, 16px);
     text-align: start;
     white-space: nowrap;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     &:hover {
       background-color: var(--modus-wc-color-primary-pale, #dcedf9);
@@ -68,9 +77,10 @@ modus-wc-time-input {
     }
 
     &--other {
-      border-top: 1px solid #e9eaf0;
-      color: var(--modus-wc-color-base-content, inherit);
-      margin-top: var(--modus-wc-spacing-xs, 4px);
+      border-top: 1px solid var(--modus-wc-color-base-200, #e9eaf0);
+      color: var(--modus-wc-color-base-content, #171c1e);
+      margin-bottom: 0;
+      margin-top: var(--modus-wc-spacing-sm, 8px);
     }
   }
 }

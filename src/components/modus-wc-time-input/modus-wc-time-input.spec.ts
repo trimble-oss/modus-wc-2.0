@@ -584,4 +584,254 @@ describe('modus-wc-time-input', () => {
 
     expect(instance['showDropdown']).toBe(false);
   });
+
+  it('should clean up popper instance on disconnectedCallback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" value="09:45"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    // Simulate a live popper instance
+    const destroySpy = jest.fn();
+    instance['popperInstance'] = {
+      destroy: destroySpy,
+    } as unknown as ReturnType<typeof import('@popperjs/core').createPopper>;
+
+    instance.disconnectedCallback();
+
+    expect(destroySpy).toHaveBeenCalled();
+    expect(instance['popperInstance']).toBeNull();
+  });
+
+  it('should update value on free input change after Other is selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Datalist picker" picker-type="datalist" value="9:15 AM"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance.datalistOptions = ['9:15 AM', '9:30 AM'];
+    instance['allowFreeInput'] = true;
+    await page.waitForChanges();
+
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.value = '10:00 AM';
+    input.dispatchEvent(new Event('input'));
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(instance.value).toBe('10:00 AM');
+  });
+
+  it('should emit blur event and reset allowFreeInput on free input blur', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Datalist picker" picker-type="datalist" value="9:15 AM"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['allowFreeInput'] = true;
+    await page.waitForChanges();
+
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent('blur'));
+    await page.waitForChanges();
+
+    expect(blurSpy).toHaveBeenCalled();
+    expect(instance['allowFreeInput']).toBe(false);
+  });
+
+  it('should update value correctly when selecting hour while currently PM', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="15:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['showDropdown'] = true;
+    await page.waitForChanges();
+
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    // Select hour 3 (which is 15:00 → 15:xx in PM when non-12 is clicked)
+    const hourColumn = page.root!.querySelector('.time-picker-column');
+    // Hour buttons in 12-hour mode: 01..12. Click the 5th button (05 → maps to 17)
+    const fifthHourBtn = hourColumn!.querySelectorAll('button')[4];
+    fifthHourBtn.click();
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    // 5 in PM = 5 + 12 = 17
+    expect(instance.value).toBe('17:00');
+  });
+
+  it('should update value when selecting hour 12 while currently PM', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="15:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['showDropdown'] = true;
+    await page.waitForChanges();
+
+    // Click hour 12 (last button in 12-hour column)
+    const hourColumn = page.root!.querySelector('.time-picker-column');
+    const twelfthHourBtn = hourColumn!.querySelectorAll('button')[11];
+    twelfthHourBtn.click();
+    await page.waitForChanges();
+
+    // 12 in PM stays 12:00
+    expect(instance.value).toBe('12:00');
+  });
+
+  it('should update value when selecting hour 12 while currently AM', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="09:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['showDropdown'] = true;
+    await page.waitForChanges();
+
+    // Click hour 12 (last button, index 11) while currently AM → should become 00:00
+    const hourColumn = page.root!.querySelector('.time-picker-column');
+    const twelfthHourBtn = hourColumn!.querySelectorAll('button')[11];
+    twelfthHourBtn.click();
+    await page.waitForChanges();
+
+    // 12 in AM = 0 (midnight)
+    expect(instance.value).toBe('00:00');
+  });
+
+  it('should update value when second is selected from picker', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" show-seconds value="09:00:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['showDropdown'] = true;
+    await page.waitForChanges();
+
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    // Columns in 24-hour with-seconds: hours, minutes, seconds
+    const columns = page.root!.querySelectorAll('.time-picker-column');
+    const secondColumn = columns[2];
+    // Click second 30
+    const thirtiethSecBtn = secondColumn.querySelectorAll('button')[30];
+    thirtiethSecBtn.click();
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(instance.value).toBe('09:00:30');
+  });
+
+  it('should not open dropdown when input is disabled and clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" disabled value="09:45"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    // Directly call the click handler (disabled attribute prevents DOM click)
+    instance['handleInputClick']();
+    await page.waitForChanges();
+
+    expect(instance['showDropdown']).toBe(false);
+  });
+
+  it('should not open dropdown when input is readonly and clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" read-only value="09:45"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['handleInputClick']();
+    await page.waitForChanges();
+
+    expect(instance['showDropdown']).toBe(false);
+  });
+
+  it('should return empty string from formatPickerDisplayValue when value is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker"></modus-wc-time-input>`,
+    });
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    expect(input.value).toBe('');
+  });
+
+  it('should not change value when AM is clicked and already AM', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="09:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    // Directly invoke handlePickerAmPm with AM when already AM (no-op branch)
+    instance['handlePickerAmPm']('AM');
+    await page.waitForChanges();
+
+    // Value stays the same
+    expect(instance.value).toBe('09:00');
+  });
+
+  it('should convert PM to AM via handlePickerAmPm', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="15:30"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['handlePickerAmPm']('AM');
+    await page.waitForChanges();
+
+    // 15:30 PM → 03:30 AM
+    expect(instance.value).toBe('03:30');
+  });
+
+  it('should set hour to 0 when selecting 12 while AM via handlePickerHour', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="09:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    instance['handlePickerHour'](12);
+    await page.waitForChanges();
+
+    // 12 in AM = midnight (00:00)
+    expect(instance.value).toBe('00:00');
+  });
+
+  it('should set correct hour when selecting non-12 while AM via handlePickerHour', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: `<modus-wc-time-input aria-label="Picker" picker-type="picker" use12-hour value="09:00"></modus-wc-time-input>`,
+    });
+
+    const instance = page.rootInstance as ModusWcTimeInput;
+    // Select hour 5 while AM (isCurrentPM=false, hour !== 12)
+    instance['handlePickerHour'](5);
+    await page.waitForChanges();
+
+    expect(instance.value).toBe('05:00');
+  });
 });
