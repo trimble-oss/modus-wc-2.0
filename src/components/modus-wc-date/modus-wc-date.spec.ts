@@ -3469,6 +3469,54 @@ describe('modus-wc-date', () => {
       expect(component['activeCalendar']).toBe('start');
     });
 
+    it('should not allow end date to be before start date', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['activeCalendar'] = 'end';
+      const beforeStart = new Date(2026, 5, 10); // June 10, before start June 15
+      component['handleRangeDateSelect'](beforeStart);
+      await page.waitForChanges();
+
+      // endValue should remain empty; activeCalendar should stay open
+      expect(component['endValue']).toBe('');
+      expect(component['activeCalendar']).toBe('end');
+    });
+
+    it('should allow end date equal to start date', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['activeCalendar'] = 'end';
+      component['handleRangeDateSelect'](new Date(2026, 5, 15)); // same as start
+      await page.waitForChanges();
+
+      expect(component['endValue']).toBe('2026-06-15');
+      expect(component['activeCalendar']).toBe('none');
+    });
+
+    it('should not swap start and end in the end calendar when picked date is before start', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-07-01"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['activeCalendar'] = 'end';
+      component['handleRangeDateSelect'](new Date(2026, 5, 1)); // June 1, before July 1
+      await page.waitForChanges();
+
+      // Start value must not be overwritten
+      expect(component['value']).toBe('2026-07-01');
+      expect(component['endValue']).toBe('');
+    });
+
     it('should navigate end calendar independently', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
