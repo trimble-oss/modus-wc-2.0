@@ -380,13 +380,9 @@ export class ModusWcTimeInput {
     setTimeout(() => this.inputRef?.focus(), 0);
   };
 
-  private renderPickerColumn(
-    items: Array<{
-      label: string;
-      value: number | string;
-      isSelected: boolean;
-    }>,
-    onSelect: (val: number | string) => void
+  private renderPickerColumn<T extends number | string>(
+    items: Array<{ label: string; value: T; isSelected: boolean }>,
+    onSelect: (val: T) => void
   ) {
     return (
       <div class="time-picker-column">
@@ -442,7 +438,7 @@ export class ModusWcTimeInput {
 
     const ampmItems: Array<{
       label: string;
-      value: string;
+      value: 'AM' | 'PM';
       isSelected: boolean;
     }> = [
       { label: 'AM', value: 'AM', isSelected: hours < 12 },
@@ -456,9 +452,7 @@ export class ModusWcTimeInput {
         {this.showSeconds &&
           this.renderPickerColumn(secondItems, this.handlePickerSecond)}
         {this.use12Hour &&
-          this.renderPickerColumn(ampmItems, (v) =>
-            this.handlePickerAmPm(v as 'AM' | 'PM')
-          )}
+          this.renderPickerColumn(ampmItems, this.handlePickerAmPm)}
       </div>
     );
   }

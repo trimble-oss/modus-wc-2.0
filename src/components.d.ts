@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
 import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+import { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -24,6 +25,7 @@ import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
 export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+export { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
@@ -75,6 +77,7 @@ export namespace Components {
         "delay"?: number;
         /**
           * Whether to disable the icon
+          * @default false
          */
         "disableIcon"?: boolean;
         /**
@@ -90,19 +93,22 @@ export namespace Components {
           * The variant of the alert.
           * @default 'info'
          */
-        "variant"?: 'error' | 'info' | 'success' | 'warning';
+        "variant"?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
     }
     interface ModusWcAppMenu {
         /**
           * The apps to display in the menu.
+          * @default []
          */
         "apps"?: IAppMenuItem[];
         /**
           * custom class to apply to the menu
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The layout of the menu.
+          * @default 'list'
          */
         "layout"?: 'list' | 'grid';
     }
@@ -344,6 +350,32 @@ export namespace Components {
          */
         "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
+    interface ModusWcBottomSheet {
+        /**
+          * Custom CSS class to apply to the outer div.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.
+          * @default 'default'
+         */
+        "displayMode"?: TBottomSheetDisplayMode;
+        /**
+          * Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.
+          * @default 0.4
+         */
+        "dragStepThreshold"?: number;
+        /**
+          * Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.
+         */
+        "header"?: IBottomSheetHeader;
+        /**
+          * Controls whether the bottom sheet is visible.
+          * @default false
+         */
+        "visible"?: boolean;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      */
@@ -560,6 +592,7 @@ export namespace Components {
         "label"?: string;
         /**
           * Whether the chip height can grow and its content can wrap across multiple lines.
+          * @default false
          */
         "multiline"?: boolean;
         /**
@@ -664,11 +697,11 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Maximum date value.
+          * Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "max"?: string;
         /**
-          * Minimum date value.
+          * Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "min"?: string;
         /**
@@ -810,6 +843,11 @@ export namespace Components {
           * @default 'md'
          */
         "menuSize"?: ModusSize;
+        /**
+          * The positioning strategy for the menu. Use 'fixed' when the dropdown is inside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to the viewport coordinate space.
+          * @default 'absolute'
+         */
+        "menuStrategy"?: 'absolute' | 'fixed';
         /**
           * Indicates that the menu is visible.
           * @default false
@@ -1036,6 +1074,7 @@ export namespace Components {
     interface ModusWcLink {
         /**
           * The color of the link.
+          * @default 'primary'
          */
         "color": | 'primary'
     | 'secondary'
@@ -1047,6 +1086,7 @@ export namespace Components {
     | 'danger';
         /**
           * Custom CSS class to apply to the link element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1063,6 +1103,7 @@ export namespace Components {
         "target"?: string;
         /**
           * The underline behavior of the link.
+          * @default 'always'
          */
         "underline": 'always' | 'hover' | 'none';
     }
@@ -1808,6 +1849,7 @@ export namespace Components {
         "customClass"?: string;
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+          * @default false
          */
         "interactive"?: boolean;
         /**
@@ -1910,6 +1952,10 @@ export namespace Components {
           * @default true
          */
         "hover"?: boolean;
+        /**
+          * Per-row predicate function controlling row selection eligibility.
+         */
+        "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
         /**
           * Available options for the number of rows per page.
           * @default [5, 10, 15]
@@ -2267,6 +2313,10 @@ export namespace Components {
          */
         "name"?: string;
         /**
+          * The type of custom picker to render. When undefined (default), the native browser time picker is used. - `'picker'`: Renders a popper panel with side-by-side scrollable columns for hours, minutes, seconds, and AM/PM. - `'datalist'`: Renders a popper panel with a flat list sourced from `datalistOptions`.
+         */
+        "pickerType"?: 'picker' | 'datalist';
+        /**
           * Whether the value is editable.
           * @default false
          */
@@ -2290,6 +2340,11 @@ export namespace Components {
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
+        /**
+          * Display time in 12-hour (AM/PM) format in the picker columns. Only applies when `pickerType` is `'picker'`.
+          * @default false
+         */
+        "use12Hour"?: boolean;
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
           * @default ''
@@ -2331,13 +2386,19 @@ export namespace Components {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface ModusWcTooltip {
         /**
-          * The text content of the tooltip.
+          * The text content of the tooltip. When contentElement is also set, contentElement takes precedence.
           * @default ''
          */
         "content": string;
+        /**
+          * An optional rich HTML element to render as the tooltip body. When set, this takes precedence over the `content` string prop. The element is deep-cloned into the tooltip container.
+         */
+        "contentElement"?: HTMLElement;
         /**
           * Custom CSS class to apply to the inner div.
           * @default ''
@@ -2361,6 +2422,108 @@ export namespace Components {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.
+         */
+        "blockExpand"?: boolean;
+        "bordered"?: boolean;
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Public method to collapse the submenu if it's expanded
+         */
+        "collapseSubmenu": () => Promise<void>;
+        /**
+          * Custom CSS class to apply to the li element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The focused state of the tree item.
+         */
+        "focused"?: boolean;
+        /**
+          * Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
+        /**
+          * The text rendered in the tree item.
+          * @default ''
+         */
+        "label": string;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the tree item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the tree item.
+          * @default 'auto'
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The unique identifying value of the tree item.
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface ModusWcTreeMenu {
+        /**
+          * Indicates that the tree menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this tree menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
+          * The orientation of the tree menu.
+          * @default 'vertical'
+         */
+        "orientation"?: Orientation;
+        /**
+          * The selection mode of the tree menu.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the tree menu.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -2434,6 +2597,10 @@ export interface ModusWcAppMenuCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
+}
+export interface ModusWcBottomSheetCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcBottomSheetElement;
 }
 export interface ModusWcBreadcrumbsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2550,6 +2717,14 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeItemElement;
+}
+export interface ModusWcTreeMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeMenuElement;
 }
 export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2669,6 +2844,28 @@ declare global {
     var HTMLModusWcBadgeElement: {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
+    };
+    interface HTMLModusWcBottomSheetElementEventMap {
+        "sheetVisibilityChange": { visible: boolean };
+        "displayModeChange": {
+    displayMode: TBottomSheetDisplayMode;
+  };
+        "headerBackClick": void;
+        "headerCloseClick": void;
+    }
+    interface HTMLModusWcBottomSheetElement extends Components.ModusWcBottomSheet, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcBottomSheetElementEventMap>(type: K, listener: (this: HTMLModusWcBottomSheetElement, ev: ModusWcBottomSheetCustomEvent<HTMLModusWcBottomSheetElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcBottomSheetElementEventMap>(type: K, listener: (this: HTMLModusWcBottomSheetElement, ev: ModusWcBottomSheetCustomEvent<HTMLModusWcBottomSheetElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcBottomSheetElement: {
+        prototype: HTMLModusWcBottomSheetElement;
+        new (): HTMLModusWcBottomSheetElement;
     };
     interface HTMLModusWcBreadcrumbsElementEventMap {
         "breadcrumbClick": IBreadcrumb;
@@ -3469,6 +3666,8 @@ declare global {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3483,6 +3682,54 @@ declare global {
     var HTMLModusWcTooltipElement: {
         prototype: HTMLModusWcTooltipElement;
         new (): HTMLModusWcTooltipElement;
+    };
+    interface HTMLModusWcTreeItemElementEventMap {
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface HTMLModusWcTreeItemElement extends Components.ModusWcTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeItemElement: {
+        prototype: HTMLModusWcTreeItemElement;
+        new (): HTMLModusWcTreeItemElement;
+    };
+    interface HTMLModusWcTreeMenuElementEventMap {
+        "menuFocusout": FocusEvent;
+        "menuSelectionChange": {
+    selectedItems: HTMLElement[];
+  };
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface HTMLModusWcTreeMenuElement extends Components.ModusWcTreeMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeMenuElementEventMap>(type: K, listener: (this: HTMLModusWcTreeMenuElement, ev: ModusWcTreeMenuCustomEvent<HTMLModusWcTreeMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeMenuElementEventMap>(type: K, listener: (this: HTMLModusWcTreeMenuElement, ev: ModusWcTreeMenuCustomEvent<HTMLModusWcTreeMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeMenuElement: {
+        prototype: HTMLModusWcTreeMenuElement;
+        new (): HTMLModusWcTreeMenuElement;
     };
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -3524,6 +3771,7 @@ declare global {
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
+        "modus-wc-bottom-sheet": HTMLModusWcBottomSheetElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-button-group": HTMLModusWcButtonGroupElement;
@@ -3569,6 +3817,8 @@ declare global {
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
+        "modus-wc-tree-item": HTMLModusWcTreeItemElement;
+        "modus-wc-tree-menu": HTMLModusWcTreeMenuElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
@@ -3616,6 +3866,7 @@ declare namespace LocalJSX {
         "delay"?: number;
         /**
           * Whether to disable the icon
+          * @default false
          */
         "disableIcon"?: boolean;
         /**
@@ -3635,19 +3886,22 @@ declare namespace LocalJSX {
           * The variant of the alert.
           * @default 'info'
          */
-        "variant"?: 'error' | 'info' | 'success' | 'warning';
+        "variant"?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
     }
     interface ModusWcAppMenu {
         /**
           * The apps to display in the menu.
+          * @default []
          */
         "apps"?: IAppMenuItem[];
         /**
           * custom class to apply to the menu
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The layout of the menu.
+          * @default 'list'
          */
         "layout"?: 'list' | 'grid';
         /**
@@ -3907,6 +4161,50 @@ declare namespace LocalJSX {
          */
         "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
     }
+    interface ModusWcBottomSheet {
+        /**
+          * Custom CSS class to apply to the outer div.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.
+          * @default 'default'
+         */
+        "displayMode"?: TBottomSheetDisplayMode;
+        /**
+          * Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.
+          * @default 0.4
+         */
+        "dragStepThreshold"?: number;
+        /**
+          * Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.
+         */
+        "header"?: IBottomSheetHeader;
+        /**
+          * Event emitted when the display mode changes, whether from a drag/keyboard interaction or from setting the `displayMode` prop. The new mode is in `detail.displayMode`.
+         */
+        "onDisplayModeChange"?: (event: ModusWcBottomSheetCustomEvent<{
+    displayMode: TBottomSheetDisplayMode;
+  }>) => void;
+        /**
+          * Event emitted when the header back button is clicked. Does not change sheet state.
+         */
+        "onHeaderBackClick"?: (event: ModusWcBottomSheetCustomEvent<void>) => void;
+        /**
+          * Event emitted when the header dismiss button is clicked. The sheet is also closed automatically (`visible` is set to `false`).
+         */
+        "onHeaderCloseClick"?: (event: ModusWcBottomSheetCustomEvent<void>) => void;
+        /**
+          * Event emitted when the visibility of the bottom sheet changes.
+         */
+        "onSheetVisibilityChange"?: (event: ModusWcBottomSheetCustomEvent<{ visible: boolean }>) => void;
+        /**
+          * Controls whether the bottom sheet is visible.
+          * @default false
+         */
+        "visible"?: boolean;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      */
@@ -4156,6 +4454,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Whether the chip height can grow and its content can wrap across multiple lines.
+          * @default false
          */
         "multiline"?: boolean;
         /**
@@ -4272,11 +4571,11 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Maximum date value.
+          * Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "max"?: string;
         /**
-          * Minimum date value.
+          * Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "min"?: string;
         /**
@@ -4438,6 +4737,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "menuSize"?: ModusSize;
+        /**
+          * The positioning strategy for the menu. Use 'fixed' when the dropdown is inside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to the viewport coordinate space.
+          * @default 'absolute'
+         */
+        "menuStrategy"?: 'absolute' | 'fixed';
         /**
           * Indicates that the menu is visible.
           * @default false
@@ -4668,6 +4972,7 @@ declare namespace LocalJSX {
     interface ModusWcLink {
         /**
           * The color of the link.
+          * @default 'primary'
          */
         "color"?: | 'primary'
     | 'secondary'
@@ -4679,6 +4984,7 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * Custom CSS class to apply to the link element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4695,6 +5001,7 @@ declare namespace LocalJSX {
         "target"?: string;
         /**
           * The underline behavior of the link.
+          * @default 'always'
          */
         "underline"?: 'always' | 'hover' | 'none';
     }
@@ -5581,6 +5888,7 @@ declare namespace LocalJSX {
         "customClass"?: string;
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+          * @default false
          */
         "interactive"?: boolean;
         /**
@@ -5699,6 +6007,10 @@ declare namespace LocalJSX {
           * @default true
          */
         "hover"?: boolean;
+        /**
+          * Per-row predicate function controlling row selection eligibility.
+         */
+        "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
         /**
           * Emits when cell editing is committed with the new value.
          */
@@ -6145,6 +6457,10 @@ declare namespace LocalJSX {
          */
         "onInputFocus"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
         /**
+          * The type of custom picker to render. When undefined (default), the native browser time picker is used. - `'picker'`: Renders a popper panel with side-by-side scrollable columns for hours, minutes, seconds, and AM/PM. - `'datalist'`: Renders a popper panel with a flat list sourced from `datalistOptions`.
+         */
+        "pickerType"?: 'picker' | 'datalist';
+        /**
           * Whether the value is editable.
           * @default false
          */
@@ -6168,6 +6484,11 @@ declare namespace LocalJSX {
           * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
          */
         "step"?: number;
+        /**
+          * Display time in 12-hour (AM/PM) format in the picker columns. Only applies when `pickerType` is `'picker'`.
+          * @default false
+         */
+        "use12Hour"?: boolean;
         /**
           * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
           * @default ''
@@ -6209,13 +6530,19 @@ declare namespace LocalJSX {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface ModusWcTooltip {
         /**
-          * The text content of the tooltip.
+          * The text content of the tooltip. When contentElement is also set, contentElement takes precedence.
           * @default ''
          */
         "content"?: string;
+        /**
+          * An optional rich HTML element to render as the tooltip body. When set, this takes precedence over the `content` string prop. The element is deep-cloned into the tooltip container.
+         */
+        "contentElement"?: HTMLElement;
         /**
           * Custom CSS class to apply to the inner div.
           * @default ''
@@ -6243,6 +6570,121 @@ declare namespace LocalJSX {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.
+         */
+        "blockExpand"?: boolean;
+        "bordered"?: boolean;
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The focused state of the tree item.
+         */
+        "focused"?: boolean;
+        /**
+          * Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
+        /**
+          * The text rendered in the tree item.
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Event emitted when a tree item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the tree item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the tree item.
+          * @default 'auto'
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The unique identifying value of the tree item.
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface ModusWcTreeMenu {
+        /**
+          * Indicates that the tree menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this tree menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
+          * Event emitted when the tree menu loses focus.
+         */
+        "onMenuFocusout"?: (event: ModusWcTreeMenuCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements.
+         */
+        "onMenuSelectionChange"?: (event: ModusWcTreeMenuCustomEvent<{
+    selectedItems: HTMLElement[];
+  }>) => void;
+        /**
+          * The orientation of the tree menu.
+          * @default 'vertical'
+         */
+        "orientation"?: Orientation;
+        /**
+          * The selection mode of the tree menu.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the tree menu.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -6315,6 +6757,7 @@ declare namespace LocalJSX {
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
+        "modus-wc-bottom-sheet": ModusWcBottomSheet;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
         "modus-wc-button-group": ModusWcButtonGroup;
@@ -6360,6 +6803,8 @@ declare namespace LocalJSX {
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-item": ModusWcTreeItem;
+        "modus-wc-tree-menu": ModusWcTreeMenu;
         "modus-wc-typography": ModusWcTypography;
         "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
@@ -6395,6 +6840,7 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting content within the badge.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
+            "modus-wc-bottom-sheet": LocalJSX.ModusWcBottomSheet & JSXBase.HTMLAttributes<HTMLModusWcBottomSheetElement>;
             /**
              * A customizable breadcrumbs component used to help users navigate through a website.
              */
@@ -6590,8 +7036,20 @@ declare module "@stencil/core" {
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+             * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+             * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            /**
+             * A customizable tree item component used to display the item portion of a tree menu.
+             * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+             */
+            "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
+            /**
+             * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+             * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+             */
+            "modus-wc-tree-menu": LocalJSX.ModusWcTreeMenu & JSXBase.HTMLAttributes<HTMLModusWcTreeMenuElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
              * Note:
