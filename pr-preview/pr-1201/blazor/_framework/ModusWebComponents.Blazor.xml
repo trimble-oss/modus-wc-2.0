@@ -3187,12 +3187,6 @@
             A customizable input component used to create time inputs.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.AutoComplete">
-            <summary>
-            Hint for form autofill feature.
-            Allowed values: "on", "off"
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Bordered">
             <summary>
             Indicates that the input should have a border.
@@ -3201,11 +3195,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.CustomClass">
             <summary>
             Custom CSS class to apply to the input.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.DatalistId">
-            <summary>
-            ID of a datalist element that contains pre-defined time options. The value must be the ID of a datalist element in the same document.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Disabled">
@@ -3228,16 +3217,6 @@
             The text to display within the label.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Max">
-            <summary>
-            Maximum value. Format: HH:mm, HH:mm:ss.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Min">
-            <summary>
-            Minimum value. Format: HH:mm, HH:mm:ss.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Name">
             <summary>
             Name of the form control. Submitted with the form as part of a name/value pair.
@@ -3245,7 +3224,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.PickerType">
             <summary>
-            The type of custom picker to render. When undefined (default), the native browser time picker is used. - 'picker': Renders a popper panel with side-by-side scrollable columns for hours, minutes, seconds, and AM/PM. - 'datalist': Renders a popper panel with a flat list sourced from datalistOptions.
+            The type of custom picker to render. - 'picker': Renders a popper panel with side-by-side scrollable columns for hours, minutes, seconds, and AM/PM. - 'datalist': Renders a popper panel with a flat list sourced from datalistOptions.
             Allowed values: "picker", "datalist"
             </summary>
         </member>
@@ -3267,11 +3246,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Size">
             <summary>
             The size of the input.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Step">
-            <summary>
-            Specifies the granularity that the value must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the seconds attribute if both are provided.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Use12Hour">
