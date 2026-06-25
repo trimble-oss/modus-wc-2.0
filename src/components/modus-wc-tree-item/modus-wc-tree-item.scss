@@ -309,19 +309,22 @@ modus-wc-tree-item .modus-wc-menu-item {
         padding-inline-end: 0;
       }
     }
-  }
 
-  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-md {
     .modus-wc-menu-item-interactive .modus-wc-menu-item-labels {
-      font-size: 0.8125rem;
       font-weight: var(--modus-wc-font-weight-normal);
-      line-height: 1.125rem;
     }
 
     &.modus-wc-menu-item-active
       .modus-wc-menu-item-interactive
       .modus-wc-menu-item-labels {
       font-weight: var(--modus-wc-font-weight-semibold);
+    }
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-md {
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-labels {
+      font-size: 0.8125rem;
+      line-height: 1.125rem;
     }
   }
 }
