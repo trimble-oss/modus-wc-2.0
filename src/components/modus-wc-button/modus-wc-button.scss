@@ -5,6 +5,18 @@
 
 modus-wc-button .modus-wc-btn {
   @include sizing-tokens;
+
+  &.modus-wc-btn-filled.modus-wc-btn-neutral:not(.modus-wc-btn-disabled) {
+    background-color: var(--modus-wc-color-base-100);
+    border-color: var(--modus-wc-color-base-100);
+
+    &:hover,
+    &.modus-wc-btn-active,
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-base-200);
+      border-color: var(--modus-wc-color-base-200);
+    }
+  }
 }
 
 modus-wc-button .modus-wc-btn-outline {
