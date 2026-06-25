@@ -3469,7 +3469,7 @@ describe('modus-wc-date', () => {
       expect(component['activeCalendar']).toBe('start');
     });
 
-    it('should not allow end date to be before start date', async () => {
+    it('should set end date and clear start when picked end date is before start', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-15"></modus-wc-date>',
@@ -3481,9 +3481,9 @@ describe('modus-wc-date', () => {
       component['handleRangeDateSelect'](beforeStart);
       await page.waitForChanges();
 
-      // endValue should remain empty; activeCalendar should stay open
-      expect(component['endValue']).toBe('');
-      expect(component['activeCalendar']).toBe('end');
+      expect(component['endValue']).toBe('2026-06-10');
+      expect(component['value']).toBe('');
+      expect(component['activeCalendar']).toBe('none');
     });
 
     it('should allow end date equal to start date', async () => {
@@ -3501,7 +3501,7 @@ describe('modus-wc-date', () => {
       expect(component['activeCalendar']).toBe('none');
     });
 
-    it('should not swap start and end in the end calendar when picked date is before start', async () => {
+    it('should not swap start and end — picks before start set new end and clear start', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-07-01"></modus-wc-date>',
@@ -3512,9 +3512,9 @@ describe('modus-wc-date', () => {
       component['handleRangeDateSelect'](new Date(2026, 5, 1)); // June 1, before July 1
       await page.waitForChanges();
 
-      // Start value must not be overwritten
-      expect(component['value']).toBe('2026-07-01');
-      expect(component['endValue']).toBe('');
+      // endValue = picked date, start is cleared (not swapped)
+      expect(component['endValue']).toBe('2026-06-01');
+      expect(component['value']).toBe('');
     });
 
     it('should navigate end calendar independently', async () => {

@@ -641,8 +641,13 @@ export class ModusWcDate {
     } else if (this.activeCalendar === 'end') {
       const startParsed = this.parseISODate(this.value);
 
-      // Block selection if picked date is before start date
       if (startParsed && this.compareDate(date, startParsed) < 0) {
+        // Picked date is before start: set as new end and clear start so the
+        // user can re-pick a start date that is before the new end.
+        this.hasFocus = false;
+        this.endValue = this.formatISODate(date);
+        this.value = '';
+        this.activeCalendar = 'none';
         return;
       }
 
@@ -1096,7 +1101,7 @@ export class ModusWcDate {
     );
   }
 
-  private renderCalendarBody(cal: DatePickerCalendar, endCalendarMin?: Date) {
+  private renderCalendarBody(cal: DatePickerCalendar) {
     const today = new Date();
     const selectedDate = this.parseISODate(this.value);
     const startDate = this.parsedStartDate;
@@ -1135,9 +1140,7 @@ export class ModusWcDate {
 
             const isToday = this.compareDate(date, today) === 0;
             const isCurrentMonth = date.getMonth() === currentMonth;
-            const isDisabled =
-              this.isDateDisabled(date) ||
-              (!!endCalendarMin && this.compareDate(date, endCalendarMin) < 0);
+            const isDisabled = this.isDateDisabled(date);
 
             // Range-mode class calculations — only when both endpoints are set.
             // isCurrentMonth guard prevents other-month overflow dates from inheriting range styles.
@@ -1756,7 +1759,7 @@ export class ModusWcDate {
               (e) => this.handleEndMonthChange(e),
               (e) => this.handleEndYearChange(e)
             )}
-            {this.renderCalendarBody(this.endCalendar, this.parsedStartDate)}
+            {this.renderCalendarBody(this.endCalendar)}
           </div>
         )}
 
