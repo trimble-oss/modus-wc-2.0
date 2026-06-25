@@ -3306,33 +3306,46 @@ describe('modus-wc-date', () => {
       expect(inputs[1].value).not.toBe('');
     });
 
-    it('should open dual-panel calendar when calendar icon is clicked in range mode', async () => {
+    it('should open start calendar when left calendar icon is clicked', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
-      component['showCalendar'] = true;
+      component['activeCalendar'] = 'start';
       await page.waitForChanges();
 
-      const calendarContainer = page.root!.querySelector('.calendar-container--range');
+      const calendarContainer = page.root!.querySelector('.calendar-container');
       expect(calendarContainer).not.toBeNull();
-      const panels = page.root!.querySelectorAll('.calendar-panel');
-      expect(panels.length).toBe(2);
+      // No dual panel — each calendar is a standalone container
+      expect(page.root!.querySelectorAll('.calendar-container').length).toBe(1);
     });
 
-    it('should set rangeSelectStep to end after first date click', async () => {
+    it('should open end calendar when right calendar icon is clicked', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
+      component['activeCalendar'] = 'end';
+      await page.waitForChanges();
+
+      expect(page.root!.querySelector('.calendar-container')).not.toBeNull();
+    });
+
+    it('should advance to end step after first date click and set activeCalendar to end', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['activeCalendar'] = 'start';
 
       const date = new Date(2026, 5, 10);
       component['handleRangeDateSelect'](date);
       await page.waitForChanges();
 
-      expect(component['rangeSelectStep']).toBe('end');
+      expect(component['activeCalendar']).toBe('end');
       expect(component['value']).toBe('2026-06-10');
       expect(component['endValue']).toBe('');
     });
@@ -3349,18 +3362,18 @@ describe('modus-wc-date', () => {
         rangeChangeEmitted = (e as CustomEvent).detail;
       });
 
-      // First click: start date
+      component['activeCalendar'] = 'start';
       component['handleRangeDateSelect'](new Date(2026, 5, 10));
       await page.waitForChanges();
 
-      // Second click: end date
+      // activeCalendar auto-advances to 'end'
       component['handleRangeDateSelect'](new Date(2026, 6, 8));
       await page.waitForChanges();
 
       expect(rangeChangeEmitted).not.toBeNull();
       expect(rangeChangeEmitted!.startDate).toBe('2026-06-10');
       expect(rangeChangeEmitted!.endDate).toBe('2026-07-08');
-      expect(component['rangeSelectStep']).toBe('start');
+      expect(component['activeCalendar']).toBe('none');
     });
 
     it('should swap start and end when end is selected before start', async () => {
@@ -3375,8 +3388,10 @@ describe('modus-wc-date', () => {
         rangeChangeEmitted = (e as CustomEvent).detail;
       });
 
+      component['activeCalendar'] = 'start';
       component['handleRangeDateSelect'](new Date(2026, 6, 8));
       await page.waitForChanges();
+      // activeCalendar is now 'end'
       component['handleRangeDateSelect'](new Date(2026, 5, 10));
       await page.waitForChanges();
 
@@ -3390,7 +3405,7 @@ describe('modus-wc-date', () => {
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
-      component['showCalendar'] = true;
+      component['activeCalendar'] = 'start';
       await page.waitForChanges();
 
       const inRangeCells = page.root!.querySelectorAll('.calendar-day-cell.in-range');
@@ -3403,7 +3418,7 @@ describe('modus-wc-date', () => {
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
-      component['showCalendar'] = true;
+      component['activeCalendar'] = 'start';
       await page.waitForChanges();
 
       const startCell = page.root!.querySelector('.calendar-day-cell.range-start');
@@ -3416,26 +3431,26 @@ describe('modus-wc-date', () => {
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
-      component['showCalendar'] = true;
+      component['activeCalendar'] = 'start';
       await page.waitForChanges();
 
       const endCell = page.root!.querySelector('.calendar-day-cell.range-end');
       expect(endCell).not.toBeNull();
     });
 
-    it('should close calendar and reset step after second date selection', async () => {
+    it('should close calendar after second date selection', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
 
+      component['activeCalendar'] = 'start';
       component['handleRangeDateSelect'](new Date(2026, 5, 10));
       component['handleRangeDateSelect'](new Date(2026, 6, 8));
       await page.waitForChanges();
 
-      expect(component['showCalendar']).toBe(false);
-      expect(component['rangeSelectStep']).toBe('start');
+      expect(component['activeCalendar']).toBe('none');
     });
 
     it('should not select a disabled date in range mode', async () => {
@@ -3445,12 +3460,13 @@ describe('modus-wc-date', () => {
       });
       const component = page.rootInstance as ModusWcDate;
 
+      component['activeCalendar'] = 'start';
       const beforeMin = new Date(2026, 5, 10);
       component['handleRangeDateSelect'](beforeMin);
       await page.waitForChanges();
 
       expect(component['value']).toBe('');
-      expect(component['rangeSelectStep']).toBe('start');
+      expect(component['activeCalendar']).toBe('start');
     });
 
     it('should navigate end calendar independently', async () => {

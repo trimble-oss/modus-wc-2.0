@@ -78,21 +78,6 @@ modus-wc-date {
       width: 320px;
     }
 
-    &.calendar-container--range {
-      display: flex;
-      height: auto;
-      width: 560px;
-
-      .calendar-panel {
-        flex: 1 0 0;
-        min-width: 0;
-        overflow: hidden;
-
-        & + .calendar-panel {
-          border-inline-start: 1px solid var(--modus-wc-color-base-200);
-        }
-      }
-    }
 
     .calendar-header {
       align-items: center;
