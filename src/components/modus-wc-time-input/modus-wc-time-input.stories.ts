@@ -21,11 +21,13 @@ interface TimeInputArgs {
   max?: string;
   min?: string;
   name?: string;
+  'picker-type'?: 'picker' | 'datalist';
   'read-only'?: boolean;
   required?: boolean;
   'show-seconds'?: boolean;
   size?: ModusSize;
   step?: number;
+  'use-12-hour'?: boolean;
   value: string;
 }
 
@@ -54,6 +56,10 @@ const meta: Meta<TimeInputArgs> = {
           `,
         },
       },
+    },
+    'picker-type': {
+      control: { type: 'select' },
+      options: [undefined, 'picker', 'datalist'],
     },
     size: {
       control: { type: 'select' },
@@ -88,13 +94,15 @@ const Template: Story = {
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
+      picker-type=${ifDefined(args['picker-type'])}
       ?read-only=${args['read-only']}
       ?required=${args.required}
       show-seconds=${ifDefined(args['show-seconds'])}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
-      .datalistOptions=${args['datalist-options']}
-      .value=${args.value}
+      ?use12-hour=${args['use-12-hour']}
+      .datalistOptions=${args['datalist-options'] ?? []}
+      .value=${args.value ?? ''}
     ></modus-wc-time-input>
   `,
 };
@@ -139,6 +147,52 @@ export const WithDatalistOptions: Story = {
 <modus-wc-time-input
   aria-label="Example time input"
   id="time-input-with-options"
+></modus-wc-time-input>
+    `;
+  },
+};
+
+export const WithPicker: Story = {
+  render: () => html`
+    <modus-wc-time-input
+      aria-label="Time picker"
+      label="Time"
+      picker-type="picker"
+      ?use12-hour=${true}
+      .value=${'09:45'}
+    ></modus-wc-time-input>
+  `,
+};
+
+export const WithPickerSeconds: Story = {
+  render: () => html`
+    <modus-wc-time-input
+      aria-label="Time picker with seconds"
+      label="Time"
+      picker-type="picker"
+      ?use12-hour=${true}
+      ?show-seconds=${true}
+      .value=${'09:45:00'}
+    ></modus-wc-time-input>
+  `,
+};
+
+export const WithPickerDatalist: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const options = ['9:15 AM', '9:30 AM', '9:45 AM', '10:00 AM', '10:15 AM'];
+    document.querySelector('#time-input-datalist-picker').datalistOptions = options;
+  });
+</script>
+<modus-wc-time-input
+  aria-label="Time datalist picker"
+  label="Time"
+  picker-type="datalist"
+  id="time-input-datalist-picker"
+  .value=${'9:45 AM'}
 ></modus-wc-time-input>
     `;
   },
@@ -189,11 +243,13 @@ export const ShadowDomParent: Story = {
             max: string;
             min: string;
             name: string;
+            pickerType: string;
             readOnly: boolean;
             required: boolean;
             showSeconds: boolean;
             size: string;
             step: number;
+            use12Hour: boolean;
             value: string;
           };
           timeInputEl.autoComplete = v['auto-complete'] ?? '';
@@ -211,6 +267,7 @@ export const ShadowDomParent: Story = {
           timeInputEl.max = v.max ?? '';
           timeInputEl.min = v.min ?? '';
           timeInputEl.name = v.name ?? '';
+          timeInputEl.pickerType = v['picker-type'] ?? '';
           timeInputEl.readOnly = Boolean(v['read-only']);
           timeInputEl.required = Boolean(v.required);
           timeInputEl.showSeconds = Boolean(v['show-seconds']);
@@ -219,6 +276,7 @@ export const ShadowDomParent: Story = {
           if (v.step !== undefined) {
             timeInputEl.step = v.step;
           }
+          timeInputEl.use12Hour = Boolean(v['use-12-hour']);
           timeInputEl.value = v.value ?? '';
         },
       });

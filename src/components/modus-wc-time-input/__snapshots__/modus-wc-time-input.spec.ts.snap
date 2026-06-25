@@ -28,3 +28,21 @@ exports[`modus-wc-time-input should render with error feedback 1`] = `
   </modus-wc-input-feedback>
 </modus-wc-time-input>
 `;
+
+exports[`modus-wc-time-input should snapshot datalist picker type 1`] = `
+<modus-wc-time-input picker-type="datalist" value="9:45 AM">
+  <input aria-label="Datalist picker" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" id="mwc_id_34" readonly="" type="text" value="9:45 AM">
+</modus-wc-time-input>
+`;
+
+exports[`modus-wc-time-input should snapshot picker type with 12-hour format 1`] = `
+<modus-wc-time-input picker-type="picker" use12-hour="" value="09:45">
+  <input aria-label="Picker" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" id="mwc_id_27" readonly="" type="text" value="9:45 AM">
+</modus-wc-time-input>
+`;
+
+exports[`modus-wc-time-input should snapshot picker type with seconds 1`] = `
+<modus-wc-time-input picker-type="picker" show-seconds="" value="09:45:30">
+  <input aria-label="Picker" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input modus-wc-w-full" id="mwc_id_28" readonly="" type="text" value="09:45:30">
+</modus-wc-time-input>
+`;

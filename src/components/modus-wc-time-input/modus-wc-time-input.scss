@@ -12,6 +12,67 @@ modus-wc-time-input {
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
+
+  .time-picker-dropdown {
+    background: var(--modus-wc-color-base-page, #ffffff);
+    border: 1px solid #e9eaf0;
+    border-radius: 16px;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: fixed;
+    z-index: 9999;
+  }
+
+  .time-picker-panel {
+    display: flex;
+  }
+
+  .time-picker-column {
+    display: flex;
+    flex-direction: column;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: var(--modus-wc-spacing-xs, 4px);
+
+    &:not(:last-child) {
+      border-inline-end: 1px solid #e9eaf0;
+    }
+  }
+
+  .time-datalist-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    padding: var(--modus-wc-spacing-xs, 4px);
+  }
+
+  .time-picker-item {
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: var(--modus-wc-color-base-content, inherit);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 16px;
+    text-align: start;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: var(--modus-wc-color-primary-pale, #dcedf9);
+    }
+
+    &--selected {
+      background-color: var(--modus-wc-color-primary-pale, #dcedf9);
+    }
+
+    &--other {
+      border-top: 1px solid #e9eaf0;
+      color: var(--modus-wc-color-base-content, inherit);
+      margin-top: var(--modus-wc-spacing-xs, 4px);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-time-input .modus-wc-time-input,
