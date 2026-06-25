@@ -198,8 +198,7 @@ modus-wc-date {
             display: flex;
             justify-content: center;
 
-            &.in-range,
-            &.hover-preview {
+            &.in-range {
               background-color: color-mix(
                 in sRGB,
                 var(--modus-wc-color-primary) 15%,

@@ -13,7 +13,12 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-date.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { IDateRange, IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
+import {
+  IDateRange,
+  IInputFeedbackProp,
+  ModusSize,
+  WeekStartDay,
+} from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
@@ -82,9 +87,6 @@ export class ModusWcDate {
 
   /** Tracks which endpoint is being selected in range mode */
   @State() private rangeSelectStep: 'start' | 'end' = 'start';
-
-  /** Date being hovered during range end selection (for preview highlighting) */
-  @State() private hoverDate: Date | null = null;
 
   /** Calendar state object for the end (right) panel in range mode */
   @State() private endCalendar: DatePickerCalendar = new DatePickerCalendar();
@@ -294,7 +296,8 @@ export class ModusWcDate {
     }
 
     // Navigate end calendar to the end date's month
-    const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     const newCal = new DatePickerCalendar(firstDayOfWeek);
     newCal.gotoDate(parsed.getFullYear(), parsed.getMonth());
     this.endCalendar = newCal;
@@ -331,7 +334,10 @@ export class ModusWcDate {
       if (endDate) {
         endCal.gotoDate(endDate.getFullYear(), endDate.getMonth());
       } else {
-        endCal.gotoDate(this.calendar.selectedYear, this.calendar.selectedMonth + 1);
+        endCal.gotoDate(
+          this.calendar.selectedYear,
+          this.calendar.selectedMonth + 1
+        );
       }
       this.endCalendar = endCal;
     }
@@ -453,7 +459,8 @@ export class ModusWcDate {
 
         // Navigate right calendar to end date or left + 1 month
         const endDate = this.parseISODate(this.endValue);
-        const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+        const firstDayOfWeek =
+          WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
         const endCal = new DatePickerCalendar(firstDayOfWeek);
         if (endDate) {
           endCal.gotoDate(endDate.getFullYear(), endDate.getMonth());
@@ -488,7 +495,6 @@ export class ModusWcDate {
       this.focusedDateIndex = -1;
       if (this.isRange) {
         this.rangeSelectStep = 'start';
-        this.hoverDate = null;
       }
     }
 
@@ -534,7 +540,8 @@ export class ModusWcDate {
   };
 
   private addEndMonthOffset = (offset: number) => {
-    const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     const newCal = new DatePickerCalendar(firstDayOfWeek);
     newCal.gotoDate(
       this.endCalendar.selectedYear,
@@ -551,7 +558,8 @@ export class ModusWcDate {
     if (Number.isNaN(newMonth)) {
       return;
     }
-    const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     const newCal = new DatePickerCalendar(firstDayOfWeek);
     newCal.gotoDate(this.endCalendar.selectedYear, newMonth);
     this.endCalendar = newCal;
@@ -565,7 +573,8 @@ export class ModusWcDate {
     if (Number.isNaN(newYear)) {
       return;
     }
-    const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const firstDayOfWeek =
+      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
     const newCal = new DatePickerCalendar(firstDayOfWeek);
     newCal.gotoDate(newYear, this.endCalendar.selectedMonth);
     this.endCalendar = newCal;
@@ -581,7 +590,6 @@ export class ModusWcDate {
       this.value = this.formatISODate(date);
       this.endValue = '';
       this.rangeSelectStep = 'end';
-      this.hoverDate = null;
       this.ensureCalendarWithinBounds(date);
     } else {
       const startParsed = this.parseISODate(this.value);
@@ -596,23 +604,12 @@ export class ModusWcDate {
       this.value = this.formatISODate(startDate);
       this.endValue = this.formatISODate(endDate);
       this.rangeSelectStep = 'start';
-      this.hoverDate = null;
       this.showCalendar = false;
       this.rangeChange.emit({
         startDate: this.formatISODate(startDate),
         endDate: this.formatISODate(endDate),
       });
     }
-  };
-
-  private handleRangeDateHover = (date: Date) => {
-    if (this.rangeSelectStep === 'end') {
-      this.hoverDate = date;
-    }
-  };
-
-  private handleRangeDateLeave = () => {
-    this.hoverDate = null;
   };
 
   private handleEndBlur = (event: FocusEvent) => {
@@ -626,7 +623,8 @@ export class ModusWcDate {
     this.inputBlur.emit(event);
   };
 
-  private handleEndInput = (_event: InputEvent) => {
+  private handleEndInput = (event: InputEvent) => {
+    event.stopPropagation();
     // End date value is validated and synced on blur
   };
 
@@ -1058,11 +1056,9 @@ export class ModusWcDate {
           class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
           {this.showWeekNumbers && <div class="week-number-header"></div>}
-          {cal
-            .getDaysOfWeek('default', weekStartNum)
-            .map((d) => {
-              return <div class="day-header">{d}</div>;
-            })}
+          {cal.getDaysOfWeek('default', weekStartNum).map((d) => {
+            return <div class="day-header">{d}</div>;
+          })}
         </div>
         <div
           class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
@@ -1097,10 +1093,6 @@ export class ModusWcDate {
               !!endDate &&
               this.compareDate(date, endDate) === 0;
             const isInRange = this.isRange && this.isDateInRange(date);
-            const isHoverRange =
-              this.isRange &&
-              this.rangeSelectStep === 'end' &&
-              this.isDateInHoverRange(date);
 
             // Single-mode selection
             const isSelected =
@@ -1127,18 +1119,6 @@ export class ModusWcDate {
                     : this.handleDateSelect(date)
                 }
                 onKeyDown={(e) => this.handleDateKeyDown(e, date)}
-                onMouseEnter={
-                  this.isRange
-                    ? // istanbul ignore next (unreachable code)
-                      () => this.handleRangeDateHover(date)
-                    : undefined
-                }
-                onMouseLeave={
-                  this.isRange
-                    ? // istanbul ignore next (unreachable code)
-                      this.handleRangeDateLeave
-                    : undefined
-                }
                 tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
@@ -1153,8 +1133,6 @@ export class ModusWcDate {
                     'range-start': isRangeStart,
                     'range-end': isRangeEnd,
                     'in-range': isInRange && !isRangeStart && !isRangeEnd,
-                    'hover-preview':
-                      isHoverRange && !isRangeStart && !isRangeEnd,
                   }}
                 >
                   {button}
@@ -1510,19 +1488,6 @@ export class ModusWcDate {
     return this.compareDate(date, lo) > 0 && this.compareDate(date, hi) < 0;
   }
 
-  private isDateInHoverRange(date: Date): boolean {
-    if (!this.hoverDate || this.rangeSelectStep !== 'end') return false;
-    const start = this.parsedStartDate;
-    if (!start) return false;
-    const [lo, hi] =
-      this.compareDate(start, this.hoverDate) <= 0
-        ? [start, this.hoverDate]
-        : [this.hoverDate, start];
-    return (
-      this.compareDate(date, lo) >= 0 && this.compareDate(date, hi) <= 0
-    );
-  }
-
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -1621,10 +1586,7 @@ export class ModusWcDate {
             size={this.size}
           />
         )}
-        <div
-          class="date-range-inputs"
-          ref={(el) => (this.rangeInputsRef = el)}
-        >
+        <div class="date-range-inputs" ref={(el) => (this.rangeInputsRef = el)}>
           <div class="date-input-container">
             <input
               ref={(el) => (this.inputRef = el)}

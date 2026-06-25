@@ -3423,37 +3423,6 @@ describe('modus-wc-date', () => {
       expect(endCell).not.toBeNull();
     });
 
-    it('should update hoverDate on mouse enter when in end selection step', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['handleRangeDateSelect'](new Date(2026, 5, 10));
-      await page.waitForChanges();
-
-      const hoverDate = new Date(2026, 5, 20);
-      component['handleRangeDateHover'](hoverDate);
-      await page.waitForChanges();
-
-      expect(component['hoverDate']).toEqual(hoverDate);
-    });
-
-    it('should clear hoverDate on mouse leave', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['rangeSelectStep'] = 'end';
-      component['hoverDate'] = new Date(2026, 5, 20);
-      component['handleRangeDateLeave']();
-
-      expect(component['hoverDate']).toBeNull();
-    });
-
     it('should close calendar and reset step after second date selection', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
@@ -3496,19 +3465,6 @@ describe('modus-wc-date', () => {
       await page.waitForChanges();
 
       expect(component['endCalendar'].selectedMonth).not.toBe(initialEndMonth);
-    });
-
-    it('should not set hoverDate when rangeSelectStep is start', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['rangeSelectStep'] = 'start';
-      component['handleRangeDateHover'](new Date(2026, 5, 20));
-
-      expect(component['hoverDate']).toBeNull();
     });
 
     it('should compute isDateInRange correctly', async () => {
