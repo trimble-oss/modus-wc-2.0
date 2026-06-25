@@ -14,12 +14,12 @@ modus-wc-time-input {
   }
 
   .time-picker-dropdown {
-    background: var(--modus-wc-color-base-page, #ffffff);
+    background: var(--modus-wc-color-base-page, #fff);
     border: 1px solid #e9eaf0;
     border-radius: 16px;
     box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      0 4px 6px -1px rgb(0 0 0 / 10%),
+      0 2px 4px -2px rgb(0 0 0 / 10%);
     overflow: hidden;
     position: fixed;
     z-index: 9999;

@@ -287,7 +287,11 @@ export class ModusWcTimeInput {
     );
   }
 
-  private parseTimeValue(): { hours: number; minutes: number; seconds: number } {
+  private parseTimeValue(): {
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } {
     const parts = (this.value || '00:00').split(':').map(Number);
     return {
       hours: parts[0] ?? 0,
@@ -377,7 +381,11 @@ export class ModusWcTimeInput {
   };
 
   private renderPickerColumn(
-    items: Array<{ label: string; value: number | string; isSelected: boolean }>,
+    items: Array<{
+      label: string;
+      value: number | string;
+      isSelected: boolean;
+    }>,
     onSelect: (val: number | string) => void
   ) {
     return (
@@ -385,7 +393,10 @@ export class ModusWcTimeInput {
         {items.map((item) => (
           <button
             type="button"
-            class={{ 'time-picker-item': true, 'time-picker-item--selected': item.isSelected }}
+            class={{
+              'time-picker-item': true,
+              'time-picker-item--selected': item.isSelected,
+            }}
             onClick={() => onSelect(item.value)}
           >
             {item.label}
@@ -429,7 +440,11 @@ export class ModusWcTimeInput {
       isSelected: i === seconds,
     }));
 
-    const ampmItems: Array<{ label: string; value: string; isSelected: boolean }> = [
+    const ampmItems: Array<{
+      label: string;
+      value: string;
+      isSelected: boolean;
+    }> = [
       { label: 'AM', value: 'AM', isSelected: hours < 12 },
       { label: 'PM', value: 'PM', isSelected: hours >= 12 },
     ];
@@ -438,8 +453,12 @@ export class ModusWcTimeInput {
       <div class="time-picker-panel">
         {this.renderPickerColumn(hourItems, this.handlePickerHour)}
         {this.renderPickerColumn(minuteItems, this.handlePickerMinute)}
-        {this.showSeconds && this.renderPickerColumn(secondItems, this.handlePickerSecond)}
-        {this.use12Hour && this.renderPickerColumn(ampmItems, (v) => this.handlePickerAmPm(v as 'AM' | 'PM'))}
+        {this.showSeconds &&
+          this.renderPickerColumn(secondItems, this.handlePickerSecond)}
+        {this.use12Hour &&
+          this.renderPickerColumn(ampmItems, (v) =>
+            this.handlePickerAmPm(v as 'AM' | 'PM')
+          )}
       </div>
     );
   }
@@ -450,7 +469,10 @@ export class ModusWcTimeInput {
         {this.datalistOptions.map((option) => (
           <button
             type="button"
-            class={{ 'time-picker-item': true, 'time-picker-item--selected': option === this.value }}
+            class={{
+              'time-picker-item': true,
+              'time-picker-item--selected': option === this.value,
+            }}
             onClick={() => this.handleDatalistSelect(option)}
           >
             {option}
@@ -490,9 +512,13 @@ export class ModusWcTimeInput {
             disabled={this.disabled}
             id={effectiveId}
             name={this.name}
-            onBlur={this.allowFreeInput ? this.handleFreeInputBlur : this.handleBlur}
+            onBlur={
+              this.allowFreeInput ? this.handleFreeInputBlur : this.handleBlur
+            }
             onFocus={this.handleFocus}
-            onInput={this.allowFreeInput ? this.handleFreeInputChange : undefined}
+            onInput={
+              this.allowFreeInput ? this.handleFreeInputChange : undefined
+            }
             onClick={this.handleInputClick}
             readonly={!this.allowFreeInput}
             required={this.required}

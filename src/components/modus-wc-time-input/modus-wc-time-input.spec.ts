@@ -288,7 +288,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const columns = page.root!.querySelectorAll('.time-picker-column');
@@ -303,7 +303,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const columns = page.root!.querySelectorAll('.time-picker-column');
@@ -318,7 +318,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const columns = page.root!.querySelectorAll('.time-picker-column');
@@ -333,10 +333,12 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
-    const selectedItems = page.root!.querySelectorAll('.time-picker-item--selected');
+    const selectedItems = page.root!.querySelectorAll(
+      '.time-picker-item--selected'
+    );
     // Both hour (09) and minute (45) should be selected
     expect(selectedItems.length).toBeGreaterThanOrEqual(2);
   });
@@ -348,7 +350,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const changeSpy = jest.fn();
@@ -356,12 +358,14 @@ describe('modus-wc-time-input', () => {
 
     // Click the first hour button (00 in 24-hour mode)
     const hourColumn = page.root!.querySelector('.time-picker-column');
-    const firstHourBtn = hourColumn!.querySelector('button') as HTMLButtonElement;
+    const firstHourBtn = hourColumn!.querySelector(
+      'button'
+    ) as HTMLButtonElement;
     firstHourBtn.click();
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
-    expect((instance as any).value).toBe('00:45');
+    expect(instance.value).toBe('00:45');
   });
 
   it('should update value when minute is selected from picker', async () => {
@@ -371,7 +375,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const changeSpy = jest.fn();
@@ -380,12 +384,12 @@ describe('modus-wc-time-input', () => {
     // Click the second column (minutes), select the 30th item (value=30)
     const columns = page.root!.querySelectorAll('.time-picker-column');
     const minuteColumn = columns[1];
-    const thirtiethMinBtn = minuteColumn.querySelectorAll('button')[30] as HTMLButtonElement;
+    const thirtiethMinBtn = minuteColumn.querySelectorAll('button')[30];
     thirtiethMinBtn.click();
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
-    expect((instance as any).value).toBe('09:30');
+    expect(instance.value).toBe('09:30');
   });
 
   it('should toggle AM/PM correctly in 12-hour picker', async () => {
@@ -395,7 +399,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const changeSpy = jest.fn();
@@ -405,13 +409,13 @@ describe('modus-wc-time-input', () => {
     const columns = page.root!.querySelectorAll('.time-picker-column');
     const ampmColumn = columns[columns.length - 1];
     // Click PM (second button)
-    const pmBtn = ampmColumn.querySelectorAll('button')[1] as HTMLButtonElement;
+    const pmBtn = ampmColumn.querySelectorAll('button')[1];
     pmBtn.click();
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
     // 09:00 AM → 21:00 (9 + 12)
-    expect((instance as any).value).toBe('21:00');
+    expect(instance.value).toBe('21:00');
   });
 
   it('should snapshot picker type with 12-hour format', async () => {
@@ -451,7 +455,7 @@ describe('modus-wc-time-input', () => {
 
     const instance = page.rootInstance as ModusWcTimeInput;
     instance.datalistOptions = ['9:15 AM', '9:30 AM', '9:45 AM'];
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const panel = page.root!.querySelector('.time-datalist-panel');
@@ -471,7 +475,7 @@ describe('modus-wc-time-input', () => {
 
     const instance = page.rootInstance as ModusWcTimeInput;
     instance.datalistOptions = ['9:15 AM', '9:30 AM', '9:45 AM'];
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const selected = page.root!.querySelector('.time-picker-item--selected');
@@ -487,19 +491,21 @@ describe('modus-wc-time-input', () => {
 
     const instance = page.rootInstance as ModusWcTimeInput;
     instance.datalistOptions = ['9:15 AM', '9:30 AM', '9:45 AM'];
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
 
     const panel = page.root!.querySelector('.time-datalist-panel')!;
-    const optionBtns = panel.querySelectorAll('.time-picker-item:not(.time-picker-item--other)');
+    const optionBtns = panel.querySelectorAll(
+      '.time-picker-item:not(.time-picker-item--other)'
+    );
     (optionBtns[1] as HTMLButtonElement).click();
     await page.waitForChanges();
 
     expect(changeSpy).toHaveBeenCalled();
-    expect((instance as any).value).toBe('9:30 AM');
+    expect(instance.value).toBe('9:30 AM');
     // Dropdown should close
     const dropdown = page.root!.querySelector('.time-picker-dropdown');
     expect(dropdown).toBeNull();
@@ -513,10 +519,12 @@ describe('modus-wc-time-input', () => {
 
     const instance = page.rootInstance as ModusWcTimeInput;
     instance.datalistOptions = ['9:15 AM', '9:30 AM'];
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
-    const otherBtn = page.root!.querySelector('.time-picker-item--other') as HTMLButtonElement;
+    const otherBtn = page.root!.querySelector(
+      '.time-picker-item--other'
+    ) as HTMLButtonElement;
     otherBtn.click();
     await page.waitForChanges();
 
@@ -524,7 +532,7 @@ describe('modus-wc-time-input', () => {
     const dropdown = page.root!.querySelector('.time-picker-dropdown');
     expect(dropdown).toBeNull();
     // Free input should be enabled (input is no longer readonly)
-    expect((instance as any).allowFreeInput).toBe(true);
+    expect(instance['allowFreeInput']).toBe(true);
   });
 
   it('should snapshot datalist picker type', async () => {
@@ -542,7 +550,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     // Verify dropdown is open
@@ -562,7 +570,7 @@ describe('modus-wc-time-input', () => {
     });
 
     const instance = page.rootInstance as ModusWcTimeInput;
-    (instance as any).showDropdown = true;
+    instance['showDropdown'] = true;
     await page.waitForChanges();
 
     // Simulate outside click
@@ -574,6 +582,6 @@ describe('modus-wc-time-input', () => {
     instance.handleClickOutside(clickEvent);
     await page.waitForChanges();
 
-    expect((instance as any).showDropdown).toBe(false);
+    expect(instance['showDropdown']).toBe(false);
   });
 });
