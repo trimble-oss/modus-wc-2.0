@@ -13,10 +13,6 @@ modus-wc-tree-item .modus-wc-menu-item {
     display: flex;
     width: 100%;
 
-    &:hover {
-      background-color: transparent;
-    }
-
     &:focus {
       background-color: transparent;
     }
@@ -221,6 +217,17 @@ modus-wc-tree-item .modus-wc-menu-item {
   }
 }
 
+[data-theme='modus-modern-light'],
+[data-theme='modus-modern-dark'],
+[data-theme='modus-classic-light'],
+[data-theme='modus-classic-dark'] {
+  modus-wc-tree-item .modus-wc-menu-item .modus-wc-menu-item-interactive {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
 [data-theme='modus-classic-dark'],
 [data-theme='connect-dark'] {
   modus-wc-tree-item .modus-wc-menu-item {
@@ -315,29 +322,6 @@ modus-wc-tree-item .modus-wc-menu-item {
       .modus-wc-menu-item-interactive
       .modus-wc-menu-item-labels {
       font-weight: var(--modus-wc-font-weight-semibold);
-    }
-  }
-
-  modus-wc-tree-item .modus-wc-menu-item:has(modus-wc-tree-menu) {
-    &:not(.modus-wc-menu-item-disabled):not(.modus-wc-menu-item-focused):not(
-        :has([slot='end'] :hover)
-      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
-        :has([slot='start'] :active)
-      ) {
-      > .modus-wc-menu-item-interactive:hover {
-        background-color: var(--modus-wc-color-base-100);
-        outline: none;
-      }
-    }
-
-    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
-        :has([slot='end'] :hover)
-      ):not(:has([slot='end'] :active)):not(:has([slot='start'] :hover)):not(
-        :has([slot='start'] :active)
-      ) {
-      > .modus-wc-menu-item-interactive:hover {
-        background-color: var(--modus-wc-color-base-100);
-      }
     }
   }
 }
