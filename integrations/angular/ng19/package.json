@@ -46,7 +46,9 @@
     "js-yaml": "^4.2.0",
     "launch-editor": "^2.14.1",
     "vite": "^6.4.3",
-    "webpack-dev-server": "^5.2.4"
+    "webpack-dev-server": "^5.2.4",
+    "http-proxy-middleware": "^3.0.7",
+    "piscina": "^4.9.3"
   },
   "engines": {
     "node": ">=18"
