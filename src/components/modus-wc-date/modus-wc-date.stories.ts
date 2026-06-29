@@ -176,6 +176,33 @@ export const WithErrorFeedback: Story = {
   },
 };
 
+export const Range: Story = {
+  render: (args) => {
+    return html`
+      <style>
+        div[id^='story--components-forms-date--range'] {
+          min-height: 450px;
+          width: 1280px;
+        }
+      </style>
+      <modus-wc-date
+        aria-label="Date range input"
+        ?bordered=${args.bordered}
+        ?disabled=${args.disabled}
+        end-value=${ifDefined(args['end-value'])}
+        label=${ifDefined(args.label)}
+        type="range"
+        .value=${args.value}
+      ></modus-wc-date>
+    `;
+  },
+  args: {
+    label: 'Select Date',
+    value: '2026-06-10',
+    'end-value': '2026-07-08',
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for date component
@@ -231,32 +258,6 @@ export const ShadowDomParent: Story = {
     }
 
     return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
-  },
-};
-export const Range: Story = {
-  render: (args) => {
-    return html`
-      <style>
-        div[id^='story--components-forms-date--range'] {
-          min-height: 450px;
-          width: 580px;
-        }
-      </style>
-      <modus-wc-date
-        aria-label="Date range input"
-        ?bordered=${args.bordered}
-        ?disabled=${args.disabled}
-        end-value=${ifDefined(args['end-value'])}
-        label=${ifDefined(args.label)}
-        type="range"
-        .value=${args.value}
-      ></modus-wc-date>
-    `;
-  },
-  args: {
-    label: 'Select Date',
-    value: '2026-06-10',
-    'end-value': '2026-07-08',
   },
 };
 

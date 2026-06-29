@@ -78,7 +78,6 @@ modus-wc-date {
       width: 320px;
     }
 
-
     .calendar-header {
       align-items: center;
       background-color: var(--modus-wc-color-primary);
@@ -154,121 +153,121 @@ modus-wc-date {
         }
       }
 
-        .calendar-dates {
-          display: grid;
-          grid-template-columns: var(--calendar-grid-columns);
+      .calendar-dates {
+        display: grid;
+        grid-template-columns: var(--calendar-grid-columns);
 
-          &.has-week-numbers {
-            grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        &.has-week-numbers {
+          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
+        }
+
+        .week-number {
+          align-items: center;
+          border-inline-end: 1px solid
+            color-mix(
+              in sRGB,
+              var(--modus-wc-color-base-inverted) 10%,
+              transparent
+            );
+          display: flex;
+          font-size: var(--modus-wc-font-size-sm);
+          font-weight: var(--modus-wc-font-weight-bold);
+          justify-content: center;
+          padding-inline-end: var(--modus-wc-spacing-sm);
+        }
+
+        // Wrapper cell used in range mode to carry the range highlight background
+        .calendar-day-cell {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+
+          &.in-range {
+            background-color: color-mix(
+              in sRGB,
+              var(--modus-wc-color-primary) 15%,
+              var(--modus-wc-color-base-page)
+            );
+            border-radius: 0;
           }
 
-          .week-number {
-            align-items: center;
-            border-inline-end: 1px solid
-              color-mix(
-                in sRGB,
-                var(--modus-wc-color-base-inverted) 10%,
-                transparent
-              );
-            display: flex;
-            font-size: var(--modus-wc-font-size-sm);
-            font-weight: var(--modus-wc-font-weight-bold);
-            justify-content: center;
-            padding-inline-end: var(--modus-wc-spacing-sm);
+          &.range-start {
+            background-color: color-mix(
+              in sRGB,
+              var(--modus-wc-color-primary) 15%,
+              var(--modus-wc-color-base-page)
+            );
+            border-radius: 50% 0 0 50%;
           }
 
-          // Wrapper cell used in range mode to carry the range highlight background
-          .calendar-day-cell {
-            align-items: center;
-            display: flex;
-            justify-content: center;
+          &.range-end {
+            background-color: color-mix(
+              in sRGB,
+              var(--modus-wc-color-primary) 15%,
+              var(--modus-wc-color-base-page)
+            );
+            border-radius: 0 50% 50% 0;
+          }
+        }
 
-            &.in-range {
-              background-color: color-mix(
-                in sRGB,
-                var(--modus-wc-color-primary) 15%,
-                var(--modus-wc-color-base-page)
-              );
-              border-radius: 0;
-            }
+        .calendar-day {
+          align-items: center;
+          background: none;
+          border: none;
+          border-radius: 50%;
+          color: var(--modus-wc-color-base-content-high-contrast);
+          cursor: pointer;
+          display: flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
 
-            &.range-start {
-              background-color: color-mix(
-                in sRGB,
-                var(--modus-wc-color-primary) 15%,
-                var(--modus-wc-color-base-page)
-              );
-              border-radius: 50% 0 0 50%;
-            }
-
-            &.range-end {
-              background-color: color-mix(
-                in sRGB,
-                var(--modus-wc-color-primary) 15%,
-                var(--modus-wc-color-base-page)
-              );
-              border-radius: 0 50% 50% 0;
-            }
+          &:hover {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-white);
           }
 
-          .calendar-day {
-            align-items: center;
-            background: none;
-            border: none;
-            border-radius: 50%;
+          &:focus {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-white);
+            outline: none;
+          }
+
+          &.current-day {
+            border: 2px solid var(--modus-wc-color-primary);
+            outline: none;
+          }
+
+          &.selected {
+            background-color: var(--modus-wc-color-primary);
+            color: var(--modus-wc-color-primary-content);
+            font-weight: var(--modus-wc-font-weight-semibold);
+          }
+
+          &.other-month {
             color: var(--modus-wc-color-base-content-high-contrast);
-            cursor: pointer;
-            display: flex;
-            height: 32px;
-            justify-content: center;
-            width: 32px;
+            opacity: 0.5;
 
             &:hover {
-              background-color: var(--modus-wc-color-primary);
-              color: var(--modus-wc-color-white);
+              background-color: var(--modus-wc-color-base-200);
+              color: var(--modus-wc-color-base-content);
+            }
+          }
+
+          &.disabled {
+            color: var(--modus-wc-color-gray-4);
+
+            &:hover {
+              background-color: transparent;
+              color: var(--modus-wc-color-gray-4);
             }
 
             &:focus {
-              background-color: var(--modus-wc-color-primary);
-              color: var(--modus-wc-color-white);
-              outline: none;
-            }
-
-            &.current-day {
-              border: 2px solid var(--modus-wc-color-primary);
-              outline: none;
-            }
-
-            &.selected {
-              background-color: var(--modus-wc-color-primary);
-              color: var(--modus-wc-color-primary-content);
-              font-weight: var(--modus-wc-font-weight-semibold);
-            }
-
-            &.other-month {
-              color: var(--modus-wc-color-base-content-high-contrast);
-              opacity: 0.5;
-
-              &:hover {
-                background-color: var(--modus-wc-color-base-200);
-                color: var(--modus-wc-color-base-content);
-              }
-            }
-
-            &.disabled {
-              color: var(--modus-wc-color-gray-4);
-
-              &:hover {
-                background-color: transparent;
-                color: var(--modus-wc-color-gray-4);
-              }
-
-              &:focus {
-                border: none;
-              }
+              border: none;
             }
           }
         }
+      }
     }
   }
 }
