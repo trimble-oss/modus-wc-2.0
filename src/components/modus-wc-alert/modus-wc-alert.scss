@@ -46,7 +46,7 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-red-pale) 80%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
@@ -62,7 +62,7 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-success-pale) 80%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
@@ -78,7 +78,7 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-yellow-pale) 60%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
