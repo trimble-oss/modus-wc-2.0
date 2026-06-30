@@ -27,20 +27,78 @@ modus-wc-avatar .modus-wc-avatar {
     justify-content: center;
   }
 
-  // Size-specific styling for the text based on the Tailwind classes
-  .modus-wc-w-8 .initials {
-    font-size: var(--modus-wc-font-size-xs, 0.75rem);
+  .modus-wc-w-8 {
+    height: var(--modus-wc-size-xs);
+    width: var(--modus-wc-size-xs);
+
+    .initials {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: var(--modus-wc-font-size-2xl);
+    }
+
+    .modus-wc-icon {
+      font-size: var(--modus-wc-font-size-md);
+      line-height: 1;
+    }
   }
 
-  .modus-wc-w-12 .initials {
-    font-size: var(--modus-wc-font-size-sm, 0.875rem);
+  .modus-wc-w-12 {
+    height: var(--modus-wc-size-sm);
+    width: var(--modus-wc-size-sm);
+
+    .initials {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: var(--modus-wc-line-height-md);
+    }
+
+    .modus-wc-icon {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: 1;
+    }
   }
 
-  .modus-wc-w-16 .initials {
-    font-size: var(--modus-wc-font-size-md, 1rem);
+  .modus-wc-w-16 {
+    height: var(--modus-wc-size-md);
+    width: var(--modus-wc-size-md);
+
+    .initials {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+
+    .modus-wc-icon {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: 1;
+    }
   }
 
-  .modus-wc-w-20 .initials {
-    font-size: var(--modus-wc-font-size-lg, 1.25rem);
+  .modus-wc-w-20 {
+    height: var(--modus-wc-size-lg);
+    width: var(--modus-wc-size-lg);
+
+    .initials {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+
+    .modus-wc-icon {
+      font-size: var(--modus-wc-font-size-3xl);
+      line-height: 1;
+    }
+  }
+
+  .modus-wc-w-24 {
+    height: var(--modus-wc-size-xl);
+    width: var(--modus-wc-size-xl);
+
+    .initials {
+      font-size: var(--modus-wc-font-size-2xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+
+    .modus-wc-icon {
+      font-size: var(--modus-wc-line-height-h1);
+      line-height: 1;
+    }
   }
 }

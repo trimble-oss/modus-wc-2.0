@@ -25,9 +25,9 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
-        height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+      modus-wc-avatar .modus-wc-avatar > div {
+        height: 14px;
+        width: 14px;
       }
 
       .modus-wc-chip-remove-icon {
@@ -43,7 +43,7 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
+      modus-wc-avatar .modus-wc-avatar > div {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
@@ -61,9 +61,9 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-md);
 
-      .modus-wc-avatar {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+      modus-wc-avatar .modus-wc-avatar > div {
+        height: 18px;
+        width: 18px;
       }
 
       .modus-wc-chip-remove-icon {
@@ -179,9 +179,9 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-xl);
       padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
-      .modus-wc-avatar {
+      modus-wc-avatar .modus-wc-avatar > div {
         height: var(--modus-wc-spacing-lg);
-        width: var(--modus-wc-spacing-lg);
+        width: var(--modus-wc-font-size-lg);
       }
 
       .modus-wc-chip-remove-icon {
@@ -198,7 +198,7 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-2xl);
       padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
 
-      .modus-wc-avatar {
+      modus-wc-avatar .modus-wc-avatar > div {
         height: var(--modus-wc-spacing-lg);
         width: var(--modus-wc-spacing-lg);
       }
@@ -217,9 +217,9 @@ modus-wc-chip .modus-wc-chip {
       min-height: var(--modus-wc-spacing-3xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
 
-      .modus-wc-avatar {
-        height: var(--modus-wc-spacing-xl);
-        width: var(--modus-wc-spacing-xl);
+      modus-wc-avatar .modus-wc-avatar > div {
+        height: 18px;
+        width: 18px;
       }
 
       .modus-wc-chip-remove-icon {
