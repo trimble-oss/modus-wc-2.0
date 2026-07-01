@@ -12,6 +12,10 @@ import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+export interface IAvatarImageLoadError {
+  originalEvent: Event;
+}
+
 /**
  * A customizable avatar component used to create avatars with different images or user initials.
  * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
@@ -49,7 +53,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize | 'xl' = 'md';
 
   /** Event emitted when the avatar image fails to load. */
-  @Event() imageLoadError!: EventEmitter<{ originalEvent: Event }>;
+  @Event() imageLoadError!: EventEmitter<IAvatarImageLoadError>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
