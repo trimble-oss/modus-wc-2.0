@@ -1,4 +1,12 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
@@ -40,6 +48,9 @@ export class ModusWcAvatar {
   /** The size of the avatar. */
   @Prop() size?: DaisySize | 'xl' = 'md';
 
+  /** Event emitted when the avatar image fails to load. */
+  @Event() imageLoadError!: EventEmitter<Event>;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -74,6 +85,10 @@ export class ModusWcAvatar {
       .toUpperCase();
   }
 
+  private handleImageError = (event: Event) => {
+    this.imageLoadError.emit(event);
+  };
+
   render() {
     const altText = this.alt || 'User avatar';
 
@@ -82,7 +97,11 @@ export class ModusWcAvatar {
         <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
             {this.imgSrc ? (
-              <img src={this.imgSrc} alt={altText} />
+              <img
+                src={this.imgSrc}
+                alt={altText}
+                onError={this.handleImageError}
+              />
             ) : this.initials ? (
               <span class="initials" aria-label={this.alt || this.initials}>
                 {this.getUserInitials()}
