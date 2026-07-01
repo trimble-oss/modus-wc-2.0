@@ -1,7 +1,7 @@
 import {
   Component,
   Element,
-  Event,
+  Event as StencilEvent,
   EventEmitter,
   h,
   Host,
@@ -53,7 +53,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize | 'xl' = 'md';
 
   /** Event emitted when the avatar image fails to load. */
-  @Event() imageLoadError!: EventEmitter<IAvatarImageLoadError>;
+  @StencilEvent() imageLoadError!: EventEmitter<IAvatarImageLoadError>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
