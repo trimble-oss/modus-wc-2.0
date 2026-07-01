@@ -25,9 +25,9 @@ The component will extract the first letter of each word in the initials string.
 
 ## Events
 
-| Event        | Description                                        | Type                 |
-| ------------ | -------------------------------------------------- | -------------------- |
-| `imageLoadError` | Event emitted when the avatar image fails to load. | `CustomEvent<Event>` |
+| Event            | Description                                        | Type                                     |
+| ---------------- | -------------------------------------------------- | ---------------------------------------- |
+| `imageLoadError` | Event emitted when the avatar image fails to load. | `CustomEvent<{ originalEvent: Event; }>` |
 
 
 ## Dependencies

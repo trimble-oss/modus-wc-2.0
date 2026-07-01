@@ -85,7 +85,9 @@ describe('modus-wc-avatar', () => {
     await page.waitForChanges();
 
     expect(errorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy.mock.calls[0][0].detail).toBeInstanceOf(Event);
+    expect(errorSpy.mock.calls[0][0].detail.originalEvent).toBeInstanceOf(
+      Event
+    );
   });
 
   it('should render with initials when size is xl', async () => {

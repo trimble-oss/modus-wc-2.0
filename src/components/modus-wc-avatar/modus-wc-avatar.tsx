@@ -49,7 +49,7 @@ export class ModusWcAvatar {
   @Prop() size?: DaisySize | 'xl' = 'md';
 
   /** Event emitted when the avatar image fails to load. */
-  @Event() imageLoadError!: EventEmitter<Event>;
+  @Event() imageLoadError!: EventEmitter<{ originalEvent: Event }>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -86,7 +86,7 @@ export class ModusWcAvatar {
   }
 
   private handleImageError = (event: Event) => {
-    this.imageLoadError.emit(event);
+    this.imageLoadError.emit({ originalEvent: event });
   };
 
   render() {
