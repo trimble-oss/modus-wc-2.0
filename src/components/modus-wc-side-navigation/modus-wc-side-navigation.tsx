@@ -68,8 +68,8 @@ export class ModusWcSideNavigation {
   }
 
   componentWillLoad() {
-    // Auto-inject CSS if component is used inside user's shadow DOM
-    handleShadowDOMStyles(this.el);
+    // Inject full CSS bundle (including per-component SCSS) for slotted children
+    handleShadowDOMStyles(this.el, true);
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
