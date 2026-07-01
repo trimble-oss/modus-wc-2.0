@@ -36,8 +36,7 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-error {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-red-pale (#fbd4d7) at 80% opacity
+    // Fallback for Chrome <111: --modus-wc-color-red-pale (#fbd4d7) at 80% opacity
     background-color: rgb(251 212 215 / 0.8);
     border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-color-gray-10);
@@ -52,8 +51,7 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-success {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-green-pale (#e0eccf) at 80% opacity
+    // Fallback for Chrome <111: --modus-wc-color-green-pale (#e0eccf) at 80% opacity
     background-color: rgb(224 236 207 / 0.8);
     border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-color-gray-10);
@@ -68,8 +66,7 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-warning {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-yellow-pale (#fff5e4) at 60% opacity
+    // Fallback for Chrome <111: --modus-wc-color-yellow-pale (#fff5e4) at 60% opacity
     background-color: rgb(255 245 228 / 0.6);
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
