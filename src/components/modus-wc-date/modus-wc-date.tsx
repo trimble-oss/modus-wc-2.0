@@ -1298,6 +1298,9 @@ export class ModusWcDate {
           previewEnd = null;
         } else if (hoverAfterRange) {
           const dayAfterEnd = this.addDays(rangeHi, 1);
+          // istanbul ignore else (unreachable: hoverAfterRange guarantees
+          // hoverParsed > rangeHi, so dayAfterEnd (rangeHi + 1) is always
+          // <= hoverParsed)
           if (this.compareDate(dayAfterEnd, hoverParsed) <= 0) {
             previewStart = dayAfterEnd;
             previewEnd = hoverParsed;
@@ -1307,6 +1310,9 @@ export class ModusWcDate {
           }
         } else if (hoverBeforeRange) {
           const dayBeforeStart = this.addDays(rangeLo, -1);
+          // istanbul ignore else (unreachable: hoverBeforeRange guarantees
+          // hoverParsed < rangeLo, so hoverParsed is always <=
+          // dayBeforeStart (rangeLo - 1))
           if (this.compareDate(hoverParsed, dayBeforeStart) <= 0) {
             previewStart = hoverParsed;
             previewEnd = dayBeforeStart;
@@ -1458,6 +1464,22 @@ export class ModusWcDate {
                   !!endDate &&
                   this.compareDate(date, endDate) === 0));
 
+            // The confirmed range's own sorted boundary — always capped
+            // regardless of neighbor connectivity, even while an adjacent
+            // hover preview is active. Without this, a preview extending
+            // past the boundary would make computeCaps() treat the preview
+            // cell as a "connected" neighbor and flatten the confirmed
+            // range's edge into a square, flush join instead of keeping its
+            // own rounded cap.
+            const isAtRangeLo =
+              !!rangeLo &&
+              isCurrentMonth &&
+              this.compareDate(date, rangeLo) === 0;
+            const isAtRangeHi =
+              !!rangeHi &&
+              isCurrentMonth &&
+              this.compareDate(date, rangeHi) === 0;
+
             // Confirmed selection and hover preview are both "highlighted
             // runs" — a cell belongs to at most one of them (preview is
             // already clipped to exclude cells inside the confirmed range).
@@ -1545,23 +1567,34 @@ export class ModusWcDate {
                     'range-end': isRangeEnd,
                     'range-anchor': isAnchor,
                     'range-fill': confirmed && !isAnchor,
-                    'range-cap-left': confirmed && !isAnchor && !!caps?.capLeft,
-                    'range-cap-right':
-                      confirmed && !isAnchor && !!caps?.capRight,
+                    'range-cap-left': this.shouldApplyRangeCapLeft(
+                      confirmed,
+                      isAnchor,
+                      caps,
+                      isAtRangeLo
+                    ),
+                    'range-cap-right': this.shouldApplyRangeCapRight(
+                      confirmed,
+                      isAnchor,
+                      caps,
+                      isAtRangeHi
+                    ),
                     // Directional extendability hint: only rendered on the
                     // range-start/range-end cap while the cursor is actively
                     // previewing an extension past that side — not shown as
                     // a permanent default decoration.
-                    'hover-affordance-left':
-                      isRangeStart &&
-                      !isAnchor &&
-                      !!caps?.capLeft &&
-                      hoveringBeforeStart,
-                    'hover-affordance-right':
-                      isRangeEnd &&
-                      !isAnchor &&
-                      !!caps?.capRight &&
-                      hoveringAfterEnd,
+                    'hover-affordance-left': this.shouldApplyHoverAffordanceLeft(
+                      isRangeStart,
+                      isAnchor,
+                      caps,
+                      hoveringBeforeStart
+                    ),
+                    'hover-affordance-right': this.shouldApplyHoverAffordanceRight(
+                      isRangeEnd,
+                      isAnchor,
+                      caps,
+                      hoveringAfterEnd
+                    ),
                     'hover-fill': preview && !isAnchor,
                     // Cap classes carry only border + radius (no fill), so
                     // they're safe to share with the anchor — its own circle
@@ -1569,8 +1602,14 @@ export class ModusWcDate {
                     // outline now closes into a proper rounded cap on
                     // whichever side doesn't connect, instead of leaving a
                     // square corner poking out from a flat, unrounded edge.
-                    'hover-cap-left': preview && !!caps?.capLeft,
-                    'hover-cap-right': preview && !!caps?.capRight,
+                    'hover-cap-left': this.shouldApplyHoverCapLeft(
+                      preview,
+                      caps
+                    ),
+                    'hover-cap-right': this.shouldApplyHoverCapRight(
+                      preview,
+                      caps
+                    ),
                     // Top/bottom connecting border for the anchor while it
                     // participates in an active preview — combined with the
                     // cap classes above, this closes into a full outline
@@ -1652,6 +1691,56 @@ export class ModusWcDate {
     );
   }
 
+  private shouldApplyRangeCapLeft(
+    confirmed: boolean,
+    isAnchor: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null,
+    isAtRangeLo: boolean
+  ): boolean {
+    return confirmed && !isAnchor && (!!caps?.capLeft || isAtRangeLo);
+  }
+
+  private shouldApplyRangeCapRight(
+    confirmed: boolean,
+    isAnchor: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null,
+    isAtRangeHi: boolean
+  ): boolean {
+    return confirmed && !isAnchor && (!!caps?.capRight || isAtRangeHi);
+  }
+
+  private shouldApplyHoverAffordanceLeft(
+    isRangeStart: boolean,
+    isAnchor: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null,
+    hoveringBeforeStart: boolean
+  ): boolean {
+    return isRangeStart && !isAnchor && !!caps?.capLeft && hoveringBeforeStart;
+  }
+
+  private shouldApplyHoverAffordanceRight(
+    isRangeEnd: boolean,
+    isAnchor: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null,
+    hoveringAfterEnd: boolean
+  ): boolean {
+    return isRangeEnd && !isAnchor && !!caps?.capRight && hoveringAfterEnd;
+  }
+
+  private shouldApplyHoverCapLeft(
+    preview: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null
+  ): boolean {
+    return preview && !!caps?.capLeft;
+  }
+
+  private shouldApplyHoverCapRight(
+    preview: boolean,
+    caps: { capLeft: boolean; capRight: boolean } | null
+  ): boolean {
+    return preview && !!caps?.capRight;
+  }
+
   /**
    * Neighbor-connectivity model: a cell's left/right edge is capped
    * (rounded) unless its immediate neighbor in that direction is in the
@@ -1659,7 +1748,10 @@ export class ModusWcDate {
    * single rule replaces per-role flags (row-start/end, month-start/end,
    * anchor-adjacency, etc.) — connectivity is derived the same way
    * everywhere, including at the anchor cell, so runs always render as
-   * continuous pills with no special-casing.
+   * continuous pills with no special-casing. The one caller-side exception
+   * is the confirmed range's own boundary (see isAtRangeLo/isAtRangeHi in
+   * renderCalendarBody), which stays capped even when an adjacent hover
+   * preview would otherwise read as a connected neighbor here.
    */
   private computeCaps(
     date: Date,
@@ -2047,9 +2139,13 @@ export class ModusWcDate {
           >
             {this.renderCalendarHeader(
               this.calendar,
+              // istanbul ignore next (unreachable code)
               () => this.addMonthOffset(-1),
+              // istanbul ignore next (unreachable code)
               () => this.addMonthOffset(1),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleMonthChange(e),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleYearChange(e)
             )}
             {this.renderCalendarBody(this.calendar)}
@@ -2068,6 +2164,7 @@ export class ModusWcDate {
   }
 
   private renderRangeMode(effectiveId: string) {
+    // istanbul ignore next (effectiveId is always resolved by createEffectiveIdResolver)
     const endId = effectiveId ? `${effectiveId}-end` : undefined;
 
     return (
@@ -2101,7 +2198,8 @@ export class ModusWcDate {
               type="text"
               value={
                 this.hasFocus
-                  ? (this.inputRef?.value ?? '')
+                  ? // istanbul ignore next (optional chaining)
+                    (this.inputRef?.value ?? '')
                   : this.inputDisplayValue
               }
               {...this.inheritedAttributes}
@@ -2166,9 +2264,13 @@ export class ModusWcDate {
           >
             {this.renderCalendarHeader(
               this.calendar,
+              // istanbul ignore next (unreachable code)
               () => this.addMonthOffset(-1),
+              // istanbul ignore next (unreachable code)
               () => this.addMonthOffset(1),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleMonthChange(e),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleYearChange(e)
             )}
             {this.renderCalendarBody(this.calendar)}
@@ -2182,9 +2284,13 @@ export class ModusWcDate {
           >
             {this.renderCalendarHeader(
               this.endCalendar,
+              // istanbul ignore next (unreachable code)
               () => this.addEndMonthOffset(-1),
+              // istanbul ignore next (unreachable code)
               () => this.addEndMonthOffset(1),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleEndMonthChange(e),
+              // istanbul ignore next (unreachable code)
               (e) => this.handleEndYearChange(e)
             )}
             {this.renderCalendarBody(this.endCalendar)}

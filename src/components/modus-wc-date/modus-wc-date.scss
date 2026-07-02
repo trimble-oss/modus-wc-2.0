@@ -204,12 +204,18 @@ modus-wc-date {
             background-color: var(--modus-wc-color-base-100);
           }
 
+          // Longhand corner properties (not the border-radius shorthand) so
+          // a cell that needs caps on both sides at once — e.g. an isolated
+          // single-cell preview/range run — gets both sets of rounded
+          // corners instead of one side's shorthand clobbering the other's.
           &.range-cap-left {
-            border-radius: 999px 0 0 999px;
+            border-bottom-left-radius: 999px;
+            border-top-left-radius: 999px;
           }
 
           &.range-cap-right {
-            border-radius: 0 999px 999px 0;
+            border-bottom-right-radius: 999px;
+            border-top-right-radius: 999px;
           }
 
           // Directional affordance: the outward-facing half of a range
@@ -252,11 +258,13 @@ modus-wc-date {
           }
 
           &.range-start.range-anchor.range-anchor-fill {
-            border-radius: 999px 0 0 999px;
+            border-bottom-left-radius: 999px;
+            border-top-left-radius: 999px;
           }
 
           &.range-end.range-anchor.range-anchor-fill {
-            border-radius: 0 999px 999px 0;
+            border-bottom-right-radius: 999px;
+            border-top-right-radius: 999px;
           }
 
           // Non-anchor endpoint: base-100 fill + dashed border (4px dash / 4px gap)
@@ -281,14 +289,20 @@ modus-wc-date {
           // Cap classes are shared with the anchor (border + radius only,
           // no fill) so its non-connecting side closes into a proper
           // rounded cap instead of a flat edge with a square corner.
+          // Longhand corner properties so an isolated single-cell preview
+          // (capped on both sides at once, e.g. the last column of a row)
+          // gets all four corners rounded instead of one side's
+          // border-radius shorthand overwriting the other's.
           &.hover-cap-left {
             border-left: 2px dashed var(--modus-wc-color-base-200);
-            border-radius: 999px 0 0 999px;
+            border-bottom-left-radius: 999px;
+            border-top-left-radius: 999px;
           }
 
           &.hover-cap-right {
             border-right: 2px dashed var(--modus-wc-color-base-200);
-            border-radius: 0 999px 999px 0;
+            border-bottom-right-radius: 999px;
+            border-top-right-radius: 999px;
           }
         }
 

@@ -3486,7 +3486,7 @@ describe('modus-wc-date', () => {
       expect(component['showEndCalendar']).toBe(true);
     });
 
-    it('should set end date equal to start date when clicking the same date twice', async () => {
+    it('should keep the sole start anchor unchanged when clicking the same date twice', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
@@ -3495,13 +3495,15 @@ describe('modus-wc-date', () => {
 
       component['handleRangeDateSelect'](new Date(2026, 5, 15));
       await page.waitForChanges();
-      // Second click on same date is >= start, sets end = start
+      // Clicking the sole start anchor again is a no-op — it doesn't create
+      // a single-day range, since the anchor is still awaiting its
+      // opposite endpoint.
       component['handleRangeDateSelect'](new Date(2026, 5, 15));
       await page.waitForChanges();
 
       expect(component['value']).toBe('2026-06-15');
-      expect(component['endValue']).toBe('2026-06-15');
-      expect(component['anchorEndpoint']).toBe('end');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
     });
 
     it('should not select a disabled date in range mode', async () => {
@@ -3830,5 +3832,1243 @@ describe('modus-wc-date', () => {
 
       expect(component['endCalendar']).toBe(initialEndCalendar);
     });
+
+    describe('computeCaps', () => {
+      it('should cap both sides when neither neighbor is a member', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const caps = component['computeCaps'](
+          new Date(2026, 5, 15),
+          3,
+          5,
+          () => false
+        );
+
+        expect(caps).toEqual({ capLeft: true, capRight: true });
+      });
+
+      it('should not cap a side whose neighbor is a same-month member', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const caps = component['computeCaps'](
+          new Date(2026, 5, 15),
+          3,
+          5,
+          () => true
+        );
+
+        expect(caps).toEqual({ capLeft: false, capRight: false });
+      });
+
+      it('should cap the left side at the first grid column regardless of membership', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const caps = component['computeCaps'](
+          new Date(2026, 5, 15),
+          0,
+          5,
+          () => true
+        );
+
+        expect(caps.capLeft).toBe(true);
+      });
+
+      it('should cap the right side at the last grid column regardless of membership', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const caps = component['computeCaps'](
+          new Date(2026, 5, 15),
+          6,
+          5,
+          () => true
+        );
+
+        expect(caps.capRight).toBe(true);
+      });
+
+      it('should cap a side whose neighbor falls in a different month even if a member', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        // June 30 → next day is July 1, a different month than currentMonth (5 = June)
+        const caps = component['computeCaps'](
+          new Date(2026, 5, 30),
+          3,
+          5,
+          () => true
+        );
+
+        expect(caps.capRight).toBe(true);
+      });
+    });
+
+    describe('range and hover cap rendering', () => {
+      it('should apply range-cap-left to the confirmed range start when it is not the anchor', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        // The end date is the anchor, so the start date's cap classes apply.
+        component['anchorEndpoint'] = 'end';
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector(
+            '.calendar-day-cell.range-start.range-cap-left'
+          )
+        ).not.toBeNull();
+      });
+
+      it('should apply range-cap-right to the confirmed range end when it is not the anchor', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        // The start date is the anchor, so the end date's cap classes apply.
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector(
+            '.calendar-day-cell.range-end.range-cap-right'
+          )
+        ).not.toBeNull();
+      });
+
+      it('should keep the confirmed range boundary capped while a hover preview extends past it', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        // Hover past the confirmed end date to preview an extension.
+        component['hoverDate'] = '2026-06-25';
+        await page.waitForChanges();
+
+        const endCell = page.root!.querySelector(
+          '.calendar-day-cell.range-end'
+        );
+        expect(endCell).not.toBeNull();
+        expect(endCell!.classList.contains('range-cap-right')).toBe(true);
+      });
+
+      it('should not add hover-cap classes when hovering directly on the anchor', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        // Hover the anchor date itself — a zero-length "extension".
+        component['hoverDate'] = '2026-06-10';
+        await page.waitForChanges();
+
+        const anchorCell = page.root!.querySelector(
+          '.calendar-day-cell.range-anchor'
+        );
+        expect(anchorCell).not.toBeNull();
+        expect(anchorCell!.classList.contains('hover-cap-left')).toBe(false);
+        expect(anchorCell!.classList.contains('hover-cap-right')).toBe(false);
+        expect(anchorCell!.classList.contains('anchor-preview-connector')).toBe(
+          false
+        );
+      });
+
+      it('should add hover-cap and anchor-preview-connector classes when previewing past a sole anchor', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        // Hover before the sole anchor to preview a backward extension.
+        component['hoverDate'] = '2026-06-09';
+        await page.waitForChanges();
+
+        const anchorCell = page.root!.querySelector(
+          '.calendar-day-cell.range-anchor'
+        );
+        expect(anchorCell).not.toBeNull();
+        expect(anchorCell!.classList.contains('hover-cap-right')).toBe(true);
+        expect(anchorCell!.classList.contains('anchor-preview-connector')).toBe(
+          true
+        );
+
+        const previewCells = Array.from(
+          page.root!.querySelectorAll('.calendar-day-cell.hover-fill')
+        );
+        const previewDayCell = previewCells.find(
+          (cell) =>
+            cell.querySelector('.calendar-day')?.textContent?.trim() === '9'
+        );
+        expect(previewDayCell).toBeTruthy();
+        expect(previewDayCell!.classList.contains('hover-cap-left')).toBe(true);
+      });
+
+      it('should apply range-anchor-fill when the anchor connects to a neighbor in a confirmed range', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        const anchorCell = page.root!.querySelector(
+          '.calendar-day-cell.range-anchor'
+        );
+        expect(anchorCell).not.toBeNull();
+        expect(anchorCell!.classList.contains('range-anchor-fill')).toBe(true);
+      });
+
+      it('should apply hover-affordance-right only while previewing an extension past the confirmed end', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          // End date is the last day of June — its "next day" neighbor
+          // (July 1) falls in a different month, so it's guaranteed to stay
+          // capped rather than joining with the adjacent preview cell.
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        // No active preview yet — the affordance should be absent.
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-affordance-right')
+        ).toBeNull();
+
+        // Hover past the confirmed end date to preview an extension.
+        component['hoverDate'] = '2026-07-15';
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-affordance-right')
+        ).not.toBeNull();
+      });
+
+      it('should apply hover-affordance-left only while previewing an extension past the confirmed start', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          // Start date is the first day of June — its "previous day"
+          // neighbor (May 31) falls in a different month, so it's
+          // guaranteed to stay capped rather than joining with the
+          // adjacent preview cell.
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'end';
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-affordance-left')
+        ).toBeNull();
+
+        // Hover before the confirmed start date to preview a backward extension.
+        component['hoverDate'] = '2026-05-15';
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-affordance-left')
+        ).not.toBeNull();
+      });
+    });
+
+    describe('hideOverflowDates', () => {
+      it('should render current-month dates by default without hiding overflow dates', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-07-08"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day.other-month')
+        ).not.toBeNull();
+        expect(
+          page.root!.querySelector('.calendar-container.dynamic-height')
+        ).toBeNull();
+      });
+
+      it('should blank individual overflow cells and remove fully-overflow rows when hide-overflow-dates is set', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-07-08" hide-overflow-dates></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        // No leading/trailing overflow dates should render as visible buttons.
+        expect(
+          page.root!.querySelector('.calendar-day.other-month')
+        ).toBeNull();
+
+        // The mixed first row (May/June) blanks its overflow cells rather
+        // than removing the whole row.
+        expect(
+          page.root!.querySelector(
+            '.calendar-day-cell.calendar-day-cell--empty'
+          )
+        ).not.toBeNull();
+
+        // The fully-overflow trailing row (all July) is removed outright,
+        // shrinking the total cell count below the full 42-cell grid.
+        const totalCells =
+          page.root!.querySelectorAll('.calendar-day-cell').length;
+        expect(totalCells).toBeLessThan(42);
+
+        expect(
+          page.root!.querySelector('.calendar-container.dynamic-height')
+        ).not.toBeNull();
+      });
+    });
+
+    describe('end-value watcher and lifecycle cleanup', () => {
+      it('should ignore an unparseable end-value prop update', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const initialEndCalendar = component['endCalendar'];
+
+        component['handleEndValueChange']('not-a-date');
+        await page.waitForChanges();
+
+        expect(component['endCalendar']).toBe(initialEndCalendar);
+      });
+
+      it('should destroy the start popper instance when the start calendar closes', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+        expect(component['startPopperInstance']).not.toBeNull();
+
+        component['showStartCalendar'] = false;
+        await page.waitForChanges();
+
+        expect(component['startPopperInstance']).toBeNull();
+      });
+
+      it('should destroy the end popper instance when the end calendar closes', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+        expect(component['endPopperInstance']).not.toBeNull();
+
+        component['showEndCalendar'] = false;
+        await page.waitForChanges();
+
+        expect(component['endPopperInstance']).toBeNull();
+      });
+
+      it('should destroy the start popper instance on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+        expect(component['startPopperInstance']).not.toBeNull();
+
+        component.disconnectedCallback();
+
+        expect(component['startPopperInstance']).toBeNull();
+      });
+
+      it('should destroy the end popper instance on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+        expect(component['endPopperInstance']).not.toBeNull();
+
+        component.disconnectedCallback();
+
+        expect(component['endPopperInstance']).toBeNull();
+      });
+    });
+
+    describe('opening and toggling the start/end calendars', () => {
+      it('should navigate the end calendar to the existing end-value month when opened', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" end-value="2026-09-15"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['openEndCalendar']();
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedMonth).toBe(8);
+        expect(component['endCalendar'].selectedYear).toBe(2026);
+      });
+
+      it('should navigate the end calendar to the month after start when no end-value is set', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-03-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['openEndCalendar']();
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedMonth).toBe(3);
+        expect(component['endCalendar'].selectedYear).toBe(2026);
+      });
+
+      it('should close the start calendar when toggled while open', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['toggleStartCalendar']();
+        await page.waitForChanges();
+        expect(component['showStartCalendar']).toBe(true);
+
+        component['toggleStartCalendar']();
+        await page.waitForChanges();
+        expect(component['showStartCalendar']).toBe(false);
+      });
+
+      it('should close the end calendar when toggled while open', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['toggleEndCalendar']();
+        await page.waitForChanges();
+        expect(component['showEndCalendar']).toBe(true);
+
+        component['toggleEndCalendar']();
+        await page.waitForChanges();
+        expect(component['showEndCalendar']).toBe(false);
+      });
+
+      it('should not open the start calendar when disabled', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" disabled></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['handleStartInputClick']();
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(false);
+      });
+
+      it('should not open the end calendar when read-only', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" read-only></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['handleEndInputClick']();
+        await page.waitForChanges();
+
+        expect(component['showEndCalendar']).toBe(false);
+      });
+    });
+
+    describe('end calendar month/year navigation', () => {
+      it('should navigate the end calendar month via select component event', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockSelectElement = document.createElement('select');
+        mockSelectElement.value = '5';
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: { target: mockSelectElement } as unknown as InputEvent,
+        });
+
+        component['handleEndMonthChange'](mockEvent);
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedMonth).toBe(5);
+      });
+
+      it('should navigate the end calendar year via select component event', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockSelectElement = document.createElement('select');
+        mockSelectElement.value = '2030';
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: { target: mockSelectElement } as unknown as InputEvent,
+        });
+
+        component['handleEndYearChange'](mockEvent);
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedYear).toBe(2030);
+      });
+
+      it('should no-op when end calendar month select value is invalid', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockSelectElement = document.createElement('select');
+        mockSelectElement.value = 'invalid';
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: { target: mockSelectElement } as unknown as InputEvent,
+        });
+
+        const beforeMonth = component['endCalendar'].selectedMonth;
+        component['handleEndMonthChange'](mockEvent);
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedMonth).toBe(beforeMonth);
+      });
+
+      it('should no-op when end calendar year select value is invalid', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockSelectElement = document.createElement('select');
+        mockSelectElement.value = 'invalid';
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: { target: mockSelectElement } as unknown as InputEvent,
+        });
+
+        const beforeYear = component['endCalendar'].selectedYear;
+        component['handleEndYearChange'](mockEvent);
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedYear).toBe(beforeYear);
+      });
+    });
+
+    describe('defaulting a null anchor with both endpoints set', () => {
+      it('should handle a date click when anchor was never initialized', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = null;
+
+        component['handleRangeDateSelect'](new Date(2026, 5, 15));
+        await page.waitForChanges();
+
+        expect(component['anchorEndpoint']).toBe('start');
+        expect(component['value']).toBe('2026-06-15');
+        expect(component['endValue']).toBe('2026-06-20');
+      });
+    });
+
+    describe('end input blur/input handling', () => {
+      it('should sync the end value and emit inputBlur on end input blur', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        let blurred = false;
+        page.root!.addEventListener('inputBlur', () => {
+          blurred = true;
+        });
+
+        endInput.value = '2026-07-15';
+        endInput.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(component['endValue']).toBe('2026-07-15');
+        expect(blurred).toBe(true);
+      });
+
+      it('should stop propagation on end input without validating', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const mockEvent = {
+          stopPropagation: jest.fn(),
+        } as unknown as InputEvent;
+
+        component['handleEndInput'](mockEvent);
+
+        expect(mockEvent.stopPropagation).toHaveBeenCalled();
+        // Validation happens on blur, not on input — endValue is untouched.
+        expect(component['endValue']).toBe('');
+      });
+    });
+
+    describe('syncEndValueFromInput', () => {
+      it('should no-op when there is no end input ref', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['endInputRef'] = undefined;
+
+        expect(() => component['syncEndValueFromInput']()).not.toThrow();
+      });
+
+      it('should clear the end value when the end input is emptied', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        endInput.value = '   ';
+        component['syncEndValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['endValue']).toBe('');
+      });
+
+      it('should restore the display value when the end input has an unparseable date', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        endInput.value = 'garbage';
+        component['syncEndValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['endValue']).toBe('2026-06-20');
+        expect(endInput.value).not.toBe('garbage');
+      });
+
+      it('should update the end value from a valid clamped input date', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        endInput.value = '07/15/2026';
+        component['syncEndValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['endValue']).toBe('2026-07-15');
+      });
+    });
+
+    describe('range-mode keyboard and dismissal handlers', () => {
+      it('should select a date via Enter key in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        const testDate = new Date(2026, 5, 15);
+        const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+        component['handleDateKeyDown'](enterEvent, testDate);
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('2026-06-15');
+      });
+
+      it('should close both calendars when clicking outside in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const clickEvent = new MouseEvent('click', { bubbles: true });
+        Object.defineProperty(clickEvent, 'composedPath', {
+          value: () => [],
+        });
+
+        component['handleClickOutside'](clickEvent);
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(false);
+        expect(component['showEndCalendar']).toBe(false);
+      });
+
+      it('should close both calendars on Escape in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+        component['handleEscapeKey'](escapeEvent);
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(false);
+        expect(component['showEndCalendar']).toBe(false);
+      });
+    });
+
+    describe('hover preview edge cases', () => {
+      it('should clear the preview when hovering a date already inside the confirmed range', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        // Hover a date already inside the confirmed range.
+        component['hoverDate'] = '2026-06-15';
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-fill')
+        ).toBeNull();
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-cap-left')
+        ).toBeNull();
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-cap-right')
+        ).toBeNull();
+      });
+
+      it('should still render a continuous fill when start/end are set in reverse order while hovering', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          // value (start) is after end-value — a reversed range set directly via props.
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-20" end-value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-06-25';
+        await page.waitForChanges();
+
+        const filledCells = page.root!.querySelectorAll(
+          '.calendar-day-cell.range-fill'
+        );
+        expect(filledCells.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe('branch coverage gaps', () => {
+      it('should evaluate range cell class helpers across all branches', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Class helper test" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const caps = { capLeft: true, capRight: false };
+
+        expect(
+          component['shouldApplyRangeCapLeft'](true, false, caps, false)
+        ).toBe(true);
+        expect(
+          component['shouldApplyRangeCapLeft'](true, false, null, true)
+        ).toBe(true);
+        expect(
+          component['shouldApplyRangeCapLeft'](false, false, caps, true)
+        ).toBe(false);
+
+        expect(
+          component['shouldApplyRangeCapRight'](true, false, caps, false)
+        ).toBe(false);
+        expect(
+          component['shouldApplyRangeCapRight'](true, false, null, true)
+        ).toBe(true);
+        expect(
+          component['shouldApplyRangeCapRight'](true, true, caps, true)
+        ).toBe(false);
+
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            false,
+            caps,
+            true
+          )
+        ).toBe(true);
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            false,
+            false,
+            caps,
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            false,
+            null,
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            false,
+            { capLeft: false, capRight: true },
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            false,
+            caps,
+            false
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            true,
+            caps,
+            true
+          )
+        ).toBe(false);
+
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            false,
+            { capLeft: false, capRight: true },
+            true
+          )
+        ).toBe(true);
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            false,
+            false,
+            { capLeft: false, capRight: true },
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            true,
+            { capLeft: false, capRight: true },
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            false,
+            null,
+            true
+          )
+        ).toBe(false);
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            false,
+            { capLeft: false, capRight: true },
+            false
+          )
+        ).toBe(false);
+
+        expect(component['shouldApplyHoverCapLeft'](true, caps)).toBe(true);
+        expect(component['shouldApplyHoverCapLeft'](false, caps)).toBe(false);
+        expect(component['shouldApplyHoverCapLeft'](true, null)).toBe(false);
+
+        expect(
+          component['shouldApplyHoverCapRight'](true, {
+            capLeft: false,
+            capRight: true,
+          })
+        ).toBe(true);
+        expect(
+          component['shouldApplyHoverCapRight'](true, {
+            capLeft: true,
+            capRight: false,
+          })
+        ).toBe(false);
+        expect(component['shouldApplyHoverCapRight'](true, null)).toBe(false);
+        expect(component['shouldApplyHoverCapRight'](false, caps)).toBe(false);
+      });
+
+      it('should default createPopperOptions placement to bottom-start', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Popper options test"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const options = component['createPopperOptions']();
+        expect(options.placement).toBe('bottom-start');
+      });
+
+      it('should use bottom-end fallback placements in createPopperOptions', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Popper options test"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        const options = component['createPopperOptions']('bottom-end');
+        expect(options.placement).toBe('bottom-end');
+        expect(
+          options.modifiers[1].options.fallbackPlacements
+        ).toContain('top-end');
+      });
+
+      it('should navigate the start calendar to today when opened without a value', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const today = new Date();
+
+        component['openStartCalendar']();
+        await page.waitForChanges();
+
+        expect(component['calendar'].selectedMonth).toBe(today.getMonth());
+        expect(component['calendar'].selectedYear).toBe(today.getFullYear());
+      });
+
+      it('should navigate the start calendar to the existing value when opening with a value set', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-03-15"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        component['openStartCalendar']();
+        await page.waitForChanges();
+
+        expect(component['calendar'].selectedMonth).toBe(2);
+        expect(component['calendar'].selectedYear).toBe(2026);
+      });
+
+      it('should use the 0 fallback when end calendar month detail is null', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: null as unknown as InputEvent,
+        });
+
+        component['handleEndMonthChange'](mockEvent);
+        await page.waitForChanges();
+
+        expect(component['endCalendar'].selectedMonth).toBe(0);
+      });
+
+      it('should use the 0 fallback when end calendar year detail is null', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const mockEvent = new CustomEvent('inputChange', {
+          detail: null as unknown as InputEvent,
+        });
+
+        component['handleEndYearChange'](mockEvent);
+        await page.waitForChanges();
+
+        // When detail is null, parseInt(undefined || '0', 10) = 0 (year 1900).
+        expect(component['endCalendar'].selectedYear).toBe(1900);
+      });
+
+      it('should return an empty end input display value for an unparseable end-value', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" end-value="not-a-date"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+
+        expect(component['endInputDisplayValue']).toBe('');
+      });
+
+      it('should close only the end calendar when clicking outside with just the end calendar open', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const clickEvent = new MouseEvent('click', { bubbles: true });
+        Object.defineProperty(clickEvent, 'composedPath', {
+          value: () => [],
+        });
+
+        component['handleClickOutside'](clickEvent);
+        await page.waitForChanges();
+
+        expect(component['showEndCalendar']).toBe(false);
+        expect(component['showStartCalendar']).toBe(false);
+      });
+
+      it('should close only the end calendar on Escape when just the end calendar is open', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+        component['handleEscapeKey'](escapeEvent);
+        await page.waitForChanges();
+
+        expect(component['showEndCalendar']).toBe(false);
+      });
+
+      it('should ignore non-Escape keys in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        component['handleEscapeKey'](
+          new KeyboardEvent('keydown', { key: 'Enter' })
+        );
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(true);
+      });
+
+      it('should render range mode with a label, name, and focused start input value', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" label="Trip dates" name="trip-dates" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const startInput = page.root!.querySelectorAll('input')[0];
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        expect(page.root!.querySelector('modus-wc-input-label')).not.toBeNull();
+        expect(endInput.getAttribute('name')).toBe('trip-dates-end');
+
+        component['hasFocus'] = true;
+        startInput.value = '06/15/2026';
+        await page.waitForChanges();
+
+        expect(startInput.value).toBe('06/15/2026');
+      });
+
+      it('should render feedback in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component.feedback = { level: 'error', message: 'Invalid range' };
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('modus-wc-input-feedback')
+        ).not.toBeNull();
+      });
+
+      it('should render week numbers and blank overflow cells when hide-overflow-dates is set', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-07-08" hide-overflow-dates show-week-numbers></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        expect(page.root!.querySelectorAll('.week-number').length).toBeGreaterThan(
+          0
+        );
+        expect(
+          page.root!.querySelector(
+            '.calendar-day-cell.calendar-day-cell--empty'
+          )
+        ).not.toBeNull();
+        expect(
+          page.root!.querySelector('.calendar-container.has-week-numbers')
+        ).not.toBeNull();
+      });
+
+      it('should render week numbers on range cells and apply hover-cap-right on a forward preview cell', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20" show-week-numbers></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-06-25';
+        await page.waitForChanges();
+
+        expect(page.root!.querySelectorAll('.week-number').length).toBeGreaterThan(
+          0
+        );
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-cap-right')
+        ).not.toBeNull();
+      });
+
+      it('should keep range-cap-left via isAtRangeLo while previewing before the confirmed start', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'end';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-05-15';
+        await page.waitForChanges();
+
+        const startCell = page.root!.querySelector(
+          '.calendar-day-cell.range-start'
+        );
+        expect(startCell).not.toBeNull();
+        expect(startCell!.classList.contains('range-cap-left')).toBe(true);
+        expect(startCell!.classList.contains('hover-affordance-left')).toBe(
+          true
+        );
+      });
+
+      it('should keep range-cap-right via isAtRangeHi while previewing past the confirmed end', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-07-15';
+        await page.waitForChanges();
+
+        const endCell = page.root!.querySelector('.calendar-day-cell.range-end');
+        expect(endCell).not.toBeNull();
+        expect(endCell!.classList.contains('range-cap-right')).toBe(true);
+        expect(endCell!.classList.contains('hover-affordance-right')).toBe(true);
+      });
+
+      it('should render the end calendar with week numbers and dynamic height classes', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-07-08" hide-overflow-dates show-week-numbers></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const endCalendar = page.root!.querySelectorAll('.calendar-container')[0];
+        expect(endCalendar.classList.contains('has-week-numbers')).toBe(true);
+        expect(endCalendar.classList.contains('dynamic-height')).toBe(true);
+      });
+    });
+  });
+
+  it('should add dynamic-height class in single mode when hide-overflow-dates is set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate],
+      html: '<modus-wc-date aria-label="Hide overflow test" hide-overflow-dates value="2026-06-10"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    component['showCalendar'] = true;
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.calendar-container.dynamic-height')
+    ).not.toBeNull();
   });
 });
