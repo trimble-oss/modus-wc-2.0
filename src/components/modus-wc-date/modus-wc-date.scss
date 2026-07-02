@@ -242,12 +242,10 @@ modus-wc-date {
 
           &.hover-affordance-left::after {
             left: 0;
-            border-radius: 999px 0 0 999px;
           }
 
           &.hover-affordance-right::after {
             right: 0;
-            border-radius: 0 999px 999px 0;
           }
 
           // Anchor sitting inside a confirmed range: same flat fill as its

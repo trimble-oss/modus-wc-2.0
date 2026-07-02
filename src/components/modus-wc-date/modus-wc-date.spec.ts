@@ -4102,6 +4102,88 @@ describe('modus-wc-date', () => {
           page.root!.querySelector('.calendar-day-cell.hover-affordance-left')
         ).not.toBeNull();
       });
+
+      it('should still apply hover-affordance-left when hovering the day immediately before a same-month start', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          // Start (9) and its previous day (8) are in the same month, so the
+          // natural neighbor-connectivity check would normally flatten the
+          // start's left cap. isAtRangeLo forces it to stay rounded — the
+          // affordance dash must track that same forced cap, not the raw
+          // (unforced) connectivity result.
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-09" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'end';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-06-08';
+        await page.waitForChanges();
+
+        const startCell = page.root!.querySelector(
+          '.calendar-day-cell.range-start'
+        );
+        expect(startCell).not.toBeNull();
+        expect(startCell!.classList.contains('range-cap-left')).toBe(true);
+        expect(startCell!.classList.contains('hover-affordance-left')).toBe(
+          true
+        );
+      });
+
+      it('should still apply hover-affordance-right when hovering the day immediately after a same-month end (anchor=start)', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-06-21';
+        await page.waitForChanges();
+
+        const endCell = page.root!.querySelector('.calendar-day-cell.range-end');
+        expect(endCell).not.toBeNull();
+        expect(endCell!.classList.contains('range-cap-right')).toBe(true);
+        expect(endCell!.classList.contains('hover-affordance-right')).toBe(true);
+      });
+
+      it('should apply hover-affordance-right on the end-anchor when hovering past it (anchor=end)', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          // The typical post-selection state: anchorEndpoint='end' because the
+          // user clicked start first then end. Hovering past the (anchor) end
+          // should still show the affordance hint.
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'end';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-07-05';
+        await page.waitForChanges();
+
+        const endCell = page.root!.querySelector('.calendar-day-cell.range-end');
+        expect(endCell).not.toBeNull();
+        expect(endCell!.classList.contains('hover-affordance-right')).toBe(true);
+      });
+
+      it('should apply hover-affordance-left on the start-anchor when hovering before it (anchor=start)', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-20"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-05-25';
+        await page.waitForChanges();
+
+        const startCell = page.root!.querySelector(
+          '.calendar-day-cell.range-start'
+        );
+        expect(startCell).not.toBeNull();
+        expect(startCell!.classList.contains('hover-affordance-left')).toBe(
+          true
+        );
+      });
     });
 
     describe('hideOverflowDates', () => {
@@ -4663,92 +4745,135 @@ describe('modus-wc-date', () => {
           component['shouldApplyRangeCapRight'](true, true, caps, true)
         ).toBe(false);
 
+        // hover-affordance-left: basic truthy path (non-anchor)
         expect(
           component['shouldApplyHoverAffordanceLeft'](
             true,
             false,
             caps,
-            true
+            true,
+            false
           )
         ).toBe(true);
+        // hover-affordance-left: also true when the cell IS the anchor —
+        // the affordance is no longer suppressed on the anchor itself.
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            true,
+            caps,
+            true,
+            false
+          )
+        ).toBe(true);
+        // isRangeStart: false → always false
         expect(
           component['shouldApplyHoverAffordanceLeft'](
             false,
             false,
             caps,
-            true
-          )
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](
             true,
-            false,
-            null,
-            true
-          )
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](
-            true,
-            false,
-            { capLeft: false, capRight: true },
-            true
-          )
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](
-            true,
-            false,
-            caps,
             false
           )
         ).toBe(false);
+        // No cap (null) and no forced cap → false
         expect(
           component['shouldApplyHoverAffordanceLeft'](
             true,
+            false,
+            null,
             true,
-            caps,
-            true
+            false
           )
         ).toBe(false);
-
+        // capLeft false, isAtRangeLo false → false
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          component['shouldApplyHoverAffordanceLeft'](
             true,
             false,
             { capLeft: false, capRight: true },
+            true,
+            false
+          )
+        ).toBe(false);
+        // Forced via isAtRangeLo even when the natural cap is false
+        expect(
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
+            false,
+            { capLeft: false, capRight: true },
+            true,
             true
           )
         ).toBe(true);
+        // hoveringBeforeStart: false → false
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          component['shouldApplyHoverAffordanceLeft'](
+            true,
             false,
+            caps,
             false,
-            { capLeft: false, capRight: true },
-            true
+            false
           )
         ).toBe(false);
+
+        // hover-affordance-right: basic truthy path (non-anchor)
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            false,
+            { capLeft: false, capRight: true },
+            true,
+            false
+          )
+        ).toBe(true);
+        // hover-affordance-right: also true when the cell IS the anchor
         expect(
           component['shouldApplyHoverAffordanceRight'](
             true,
             true,
             { capLeft: false, capRight: true },
-            true
+            true,
+            false
+          )
+        ).toBe(true);
+        // isRangeEnd: false → always false
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            false,
+            false,
+            { capLeft: false, capRight: true },
+            true,
+            false
           )
         ).toBe(false);
+        // No cap and no forced cap → false
         expect(
           component['shouldApplyHoverAffordanceRight'](
             true,
             false,
             null,
-            true
+            true,
+            false
           )
         ).toBe(false);
+        // Forced via isAtRangeHi
+        expect(
+          component['shouldApplyHoverAffordanceRight'](
+            true,
+            false,
+            { capLeft: true, capRight: false },
+            true,
+            true
+          )
+        ).toBe(true);
+        // hoveringAfterEnd: false → false
         expect(
           component['shouldApplyHoverAffordanceRight'](
             true,
             false,
             { capLeft: false, capRight: true },
+            false,
             false
           )
         ).toBe(false);

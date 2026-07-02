@@ -1583,18 +1583,22 @@ export class ModusWcDate {
                     // range-start/range-end cap while the cursor is actively
                     // previewing an extension past that side — not shown as
                     // a permanent default decoration.
-                    'hover-affordance-left': this.shouldApplyHoverAffordanceLeft(
-                      isRangeStart,
-                      isAnchor,
-                      caps,
-                      hoveringBeforeStart
-                    ),
-                    'hover-affordance-right': this.shouldApplyHoverAffordanceRight(
-                      isRangeEnd,
-                      isAnchor,
-                      caps,
-                      hoveringAfterEnd
-                    ),
+                    'hover-affordance-left':
+                      this.shouldApplyHoverAffordanceLeft(
+                        isRangeStart,
+                        isAnchor,
+                        caps,
+                        hoveringBeforeStart,
+                        isAtRangeLo
+                      ),
+                    'hover-affordance-right':
+                      this.shouldApplyHoverAffordanceRight(
+                        isRangeEnd,
+                        isAnchor,
+                        caps,
+                        hoveringAfterEnd,
+                        isAtRangeHi
+                      ),
                     'hover-fill': preview && !isAnchor,
                     // Cap classes carry only border + radius (no fill), so
                     // they're safe to share with the anchor — its own circle
@@ -1711,20 +1715,25 @@ export class ModusWcDate {
 
   private shouldApplyHoverAffordanceLeft(
     isRangeStart: boolean,
-    isAnchor: boolean,
+    _isAnchor: boolean,
     caps: { capLeft: boolean; capRight: boolean } | null,
-    hoveringBeforeStart: boolean
+    hoveringBeforeStart: boolean,
+    isAtRangeLo: boolean
   ): boolean {
-    return isRangeStart && !isAnchor && !!caps?.capLeft && hoveringBeforeStart;
+    // The affordance applies regardless of whether this cell is the anchor —
+    // when hovering before the confirmed start, the start cell (anchor or not)
+    // always needs the left-half dashed hint so the user can see it's extendable.
+    return isRangeStart && (!!caps?.capLeft || isAtRangeLo) && hoveringBeforeStart;
   }
 
   private shouldApplyHoverAffordanceRight(
     isRangeEnd: boolean,
-    isAnchor: boolean,
+    _isAnchor: boolean,
     caps: { capLeft: boolean; capRight: boolean } | null,
-    hoveringAfterEnd: boolean
+    hoveringAfterEnd: boolean,
+    isAtRangeHi: boolean
   ): boolean {
-    return isRangeEnd && !isAnchor && !!caps?.capRight && hoveringAfterEnd;
+    return isRangeEnd && (!!caps?.capRight || isAtRangeHi) && hoveringAfterEnd;
   }
 
   private shouldApplyHoverCapLeft(
