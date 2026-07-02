@@ -3339,14 +3339,11 @@ describe('modus-wc-date', () => {
 
       component['openStartCalendar']();
       await page.waitForChanges();
-      expect(component['showStartCalendar']).toBe(true);
-
       component['openEndCalendar']();
       await page.waitForChanges();
-      expect(component['showEndCalendar']).toBe(true);
 
-      // Both calendars should be open at the same time
       expect(component['showStartCalendar']).toBe(true);
+      expect(component['showEndCalendar']).toBe(true);
       expect(page.root!.querySelectorAll('.calendar-container').length).toBe(2);
     });
 
@@ -3359,10 +3356,9 @@ describe('modus-wc-date', () => {
 
       component['openEndCalendar']();
       await page.waitForChanges();
-      expect(component['showEndCalendar']).toBe(true);
-
       component['openStartCalendar']();
       await page.waitForChanges();
+
       expect(component['showStartCalendar']).toBe(true);
       expect(component['showEndCalendar']).toBe(true);
     });
@@ -3395,66 +3391,353 @@ describe('modus-wc-date', () => {
       expect(component['showEndCalendar']).toBe(true);
     });
 
-    it('should set start value on start date click without auto-opening end calendar', async () => {
+    // --- Anchor-driven selection logic ---
+
+    it('should set start date and anchor on first click (nothing selected)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('should set end date and move anchor to end when clicking after start (only start set)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+      component['handleRangeDateSelect'](new Date(2026, 6, 8));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('2026-07-08');
+      expect(component['anchorEndpoint']).toBe('end');
+    });
+
+    it('should move start date left when clicking before start (only start set)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 15));
+      await page.waitForChanges();
+      component['handleRangeDateSelect'](new Date(2026, 5, 5));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-05');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('should keep start date unchanged when clicking the sole start anchor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 15));
+      await page.waitForChanges();
+      component['handleRangeDateSelect'](new Date(2026, 5, 15));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-15');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('should emit rangeChange and keep calendars open when range is completed', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
       component['showStartCalendar'] = true;
+      component['showEndCalendar'] = true;
 
-      const date = new Date(2026, 5, 10);
-      component['handleRangeDateSelect'](date, 'start');
+      let emitted: { startDate: string; endDate: string } | null = null;
+      page.root!.addEventListener('rangeChange', (e: Event) => {
+        emitted = (e as CustomEvent).detail;
+      });
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+      component['handleRangeDateSelect'](new Date(2026, 6, 8));
       await page.waitForChanges();
 
-      expect(component['value']).toBe('2026-06-10');
-      expect(component['endValue']).toBe('');
-      // End calendar should NOT auto-open
-      expect(component['showEndCalendar']).toBe(false);
+      expect(emitted).not.toBeNull();
+      expect(emitted!.startDate).toBe('2026-06-10');
+      expect(emitted!.endDate).toBe('2026-07-08');
+      // Calendars stay open — only click-outside or Escape closes them
+      expect(component['showStartCalendar']).toBe(true);
+      expect(component['showEndCalendar']).toBe(true);
     });
 
-    it('should emit rangeChange with correct dates after selecting start then end', async () => {
+    it('should set end date equal to start date when clicking the same date twice', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
 
-      let rangeChangeEmitted: { startDate: string; endDate: string } | null =
-        null;
-      page.root!.addEventListener('rangeChange', (e: Event) => {
-        rangeChangeEmitted = (e as CustomEvent).detail;
-      });
-
-      component['handleRangeDateSelect'](new Date(2026, 5, 10), 'start');
+      component['handleRangeDateSelect'](new Date(2026, 5, 15));
+      await page.waitForChanges();
+      // Second click on same date is >= start, sets end = start
+      component['handleRangeDateSelect'](new Date(2026, 5, 15));
       await page.waitForChanges();
 
-      component['handleRangeDateSelect'](new Date(2026, 6, 8), 'end');
-      await page.waitForChanges();
-
-      expect(rangeChangeEmitted).not.toBeNull();
-      expect(rangeChangeEmitted!.startDate).toBe('2026-06-10');
-      expect(rangeChangeEmitted!.endDate).toBe('2026-07-08');
-      expect(component['showStartCalendar']).toBe(false);
-      expect(component['showEndCalendar']).toBe(false);
+      expect(component['value']).toBe('2026-06-15');
+      expect(component['endValue']).toBe('2026-06-15');
+      expect(component['anchorEndpoint']).toBe('end');
     });
 
-    it('should clear end value when new start is picked after existing end', async () => {
+    it('should not select a disabled date in range mode', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-15"></modus-wc-date>',
+        html: '<modus-wc-date aria-label="Range input" type="range" min="2026-06-15"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
 
-      // Pick a start date after the current end
-      component['handleRangeDateSelect'](new Date(2026, 6, 8), 'start');
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
       await page.waitForChanges();
 
-      expect(component['value']).toBe('2026-07-08');
-      expect(component['endValue']).toBe('');
+      expect(component['value']).toBe('');
+      expect(component['anchorEndpoint']).toBeNull();
     });
 
-    it('should apply in-range class to dates between start and end', async () => {
+    // --- Both dates set, anchor = 'start' ---
+
+    it('anchor=start: clicking inside range sets new end and moves anchor to end', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-01';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 20));
+      await page.waitForChanges();
+
+      expect(component['endValue']).toBe('2026-06-20');
+      expect(component['value']).toBe('2026-06-01');
+      expect(component['anchorEndpoint']).toBe('end');
+    });
+
+    it('anchor=start: clicking before start resets to new start', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 1));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-01');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=start: clicking after end extends the end date (non-anchor side)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-01';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      component['handleRangeDateSelect'](new Date(2026, 6, 15));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-01');
+      expect(component['endValue']).toBe('2026-07-15');
+      expect(component['anchorEndpoint']).toBe('end');
+    });
+
+    it('anchor=start: clicking the darker start anchor keeps it as start and clears end', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=start: clicking the lighter end swaps anchor without changing values', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 30));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('2026-06-30');
+      expect(component['anchorEndpoint']).toBe('end');
+    });
+
+    // --- Both dates set, anchor = 'end' ---
+
+    it('anchor=end: clicking inside range sets new start and moves anchor to start', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-01';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'end';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('2026-06-30');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=end: clicking before start extends the start date (non-anchor side)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'end';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 1));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-01');
+      expect(component['endValue']).toBe('2026-06-30');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=end: clicking after end resets to new start (past locked anchor)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-01';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'end';
+
+      component['handleRangeDateSelect'](new Date(2026, 6, 15));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-07-15');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=end: clicking the darker end anchor pivots it to become the new start', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'end';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 30));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-30');
+      expect(component['endValue']).toBe('');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('anchor=end: clicking the lighter start swaps anchor without changing values', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'end';
+
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+
+      expect(component['value']).toBe('2026-06-10');
+      expect(component['endValue']).toBe('2026-06-30');
+      expect(component['anchorEndpoint']).toBe('start');
+    });
+
+    it('rangeChange should NOT emit on reset', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['value'] = '2026-06-10';
+      component['endValue'] = '2026-06-30';
+      component['anchorEndpoint'] = 'start';
+
+      let emitCount = 0;
+      page.root!.addEventListener('rangeChange', () => emitCount++);
+
+      // Reset by clicking anchor
+      component['handleRangeDateSelect'](new Date(2026, 5, 10));
+      await page.waitForChanges();
+
+      expect(emitCount).toBe(0);
+    });
+
+    it('should apply range-anchor class to the anchor endpoint cell', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['anchorEndpoint'] = 'start';
+      component['showStartCalendar'] = true;
+      await page.waitForChanges();
+
+      expect(
+        page.root!.querySelector('.calendar-day-cell.range-anchor')
+      ).not.toBeNull();
+    });
+
+    it('should apply range-fill class to dates between start and end', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
@@ -3464,7 +3747,7 @@ describe('modus-wc-date', () => {
       await page.waitForChanges();
 
       const inRangeCells = page.root!.querySelectorAll(
-        '.calendar-day-cell.in-range'
+        '.calendar-day-cell.range-fill'
       );
       expect(inRangeCells.length).toBeGreaterThan(0);
     });
@@ -3478,10 +3761,9 @@ describe('modus-wc-date', () => {
       component['showStartCalendar'] = true;
       await page.waitForChanges();
 
-      const startCell = page.root!.querySelector(
-        '.calendar-day-cell.range-start'
-      );
-      expect(startCell).not.toBeNull();
+      expect(
+        page.root!.querySelector('.calendar-day-cell.range-start')
+      ).not.toBeNull();
     });
 
     it('should apply range-end class to the end date cell when in the same calendar', async () => {
@@ -3493,86 +3775,9 @@ describe('modus-wc-date', () => {
       component['showStartCalendar'] = true;
       await page.waitForChanges();
 
-      const endCell = page.root!.querySelector('.calendar-day-cell.range-end');
-      expect(endCell).not.toBeNull();
-    });
-
-    it('should close both calendars after end date selection', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['showStartCalendar'] = true;
-      component['showEndCalendar'] = true;
-      component['handleRangeDateSelect'](new Date(2026, 5, 10), 'start');
-      component['handleRangeDateSelect'](new Date(2026, 6, 8), 'end');
-      await page.waitForChanges();
-
-      expect(component['showStartCalendar']).toBe(false);
-      expect(component['showEndCalendar']).toBe(false);
-    });
-
-    it('should not select a disabled date in range mode', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" min="2026-06-15"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      const beforeMin = new Date(2026, 5, 10);
-      component['handleRangeDateSelect'](beforeMin, 'start');
-      await page.waitForChanges();
-
-      expect(component['value']).toBe('');
-    });
-
-    it('should set end date and clear start when picked end date is before start', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-15"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      const beforeStart = new Date(2026, 5, 10); // June 10, before start June 15
-      component['handleRangeDateSelect'](beforeStart, 'end');
-      await page.waitForChanges();
-
-      expect(component['endValue']).toBe('2026-06-10');
-      expect(component['value']).toBe('');
-      expect(component['showStartCalendar']).toBe(false);
-      expect(component['showEndCalendar']).toBe(false);
-    });
-
-    it('should allow end date equal to start date', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-15"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['handleRangeDateSelect'](new Date(2026, 5, 15), 'end'); // same as start
-      await page.waitForChanges();
-
-      expect(component['endValue']).toBe('2026-06-15');
-      expect(component['showStartCalendar']).toBe(false);
-      expect(component['showEndCalendar']).toBe(false);
-    });
-
-    it('should set new end and clear start when picked end is before start', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-07-01"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
-
-      component['handleRangeDateSelect'](new Date(2026, 5, 1), 'end'); // June 1, before July 1
-      await page.waitForChanges();
-
-      // endValue = picked date, start is cleared
-      expect(component['endValue']).toBe('2026-06-01');
-      expect(component['value']).toBe('');
+      expect(
+        page.root!.querySelector('.calendar-day-cell.range-end')
+      ).not.toBeNull();
     });
 
     it('should navigate end calendar independently', async () => {
@@ -3589,17 +3794,27 @@ describe('modus-wc-date', () => {
       expect(component['endCalendar'].selectedMonth).not.toBe(initialEndMonth);
     });
 
-    it('should compute isDateInRange correctly', async () => {
+    it('should compute isInHighlightRun correctly', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
       });
       const component = page.rootInstance as ModusWcDate;
+      const lo = new Date(2026, 5, 1);
+      const hi = new Date(2026, 5, 30);
 
-      expect(component['isDateInRange'](new Date(2026, 5, 15))).toBe(true);
-      expect(component['isDateInRange'](new Date(2026, 5, 1))).toBe(false);
-      expect(component['isDateInRange'](new Date(2026, 5, 30))).toBe(false);
-      expect(component['isDateInRange'](new Date(2026, 4, 31))).toBe(false);
+      expect(
+        component['isInHighlightRun'](new Date(2026, 5, 15), lo, hi, true)
+      ).toBe(true);
+      expect(
+        component['isInHighlightRun'](new Date(2026, 5, 1), lo, hi, true)
+      ).toBe(true);
+      expect(
+        component['isInHighlightRun'](new Date(2026, 4, 31), lo, hi, true)
+      ).toBe(false);
+      expect(
+        component['isInHighlightRun'](new Date(2026, 5, 15), lo, hi, false)
+      ).toBe(false);
     });
 
     it('should handle handleEndValueChange when type is not range', async () => {

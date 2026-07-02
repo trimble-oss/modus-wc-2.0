@@ -17,8 +17,8 @@ modus-wc-date .modus-wc-date-input {
 
 // Calendar styles
 modus-wc-date {
-  --calendar-grid-columns: repeat(7, 1fr);
-  --calendar-grid-columns-with-week-numbers: auto repeat(7, 1fr);
+  --calendar-grid-columns: repeat(7, 36px);
+  --calendar-grid-columns-with-week-numbers: auto repeat(7, 36px);
 
   position: relative;
 
@@ -68,14 +68,22 @@ modus-wc-date {
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
-    height: 327px;
+    height: 368px;
     overflow: hidden;
     position: fixed;
-    width: 272px;
+    width: 300px;
     z-index: 9999;
 
     &.has-week-numbers {
       width: 320px;
+    }
+
+    &.dynamic-height {
+      height: auto;
+
+      .calendar-body {
+        height: auto;
+      }
     }
 
     .calendar-header {
@@ -127,12 +135,11 @@ modus-wc-date {
     .calendar-body {
       background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
-      height: 272px;
+      height: 316px;
       padding: var(--modus-wc-spacing-xl);
 
       .calendar-days-week {
         display: grid;
-        gap: var(--modus-wc-spacing-xs);
         grid-template-columns: var(--calendar-grid-columns);
         margin-bottom: var(--modus-wc-spacing-sm);
 
@@ -156,6 +163,7 @@ modus-wc-date {
       .calendar-dates {
         display: grid;
         grid-template-columns: var(--calendar-grid-columns);
+        row-gap: var(--modus-wc-spacing-xs);
 
         &.has-week-numbers {
           grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
@@ -179,34 +187,108 @@ modus-wc-date {
         // Wrapper cell used in range mode to carry the range highlight background
         .calendar-day-cell {
           align-items: center;
+          box-sizing: border-box;
           display: flex;
+          height: 36px;
           justify-content: center;
 
-          &.in-range {
-            background-color: color-mix(
-              in sRGB,
-              var(--modus-wc-color-primary) 15%,
-              var(--modus-wc-color-base-page)
-            );
-            border-radius: 0;
+          &--empty {
+            background: none;
           }
 
-          &.range-start {
-            background-color: color-mix(
-              in sRGB,
-              var(--modus-wc-color-primary) 15%,
-              var(--modus-wc-color-base-page)
-            );
-            border-radius: 50% 0 0 50%;
+          // Confirmed-range fill. Caps are derived once via the
+          // neighbor-connectivity model (computeCaps in modus-wc-date.tsx)
+          // instead of separate row/month-boundary classes, so ranges that
+          // span rows or months render as continuous pills automatically.
+          &.range-fill {
+            background-color: var(--modus-wc-color-base-100);
           }
 
-          &.range-end {
-            background-color: color-mix(
-              in sRGB,
-              var(--modus-wc-color-primary) 15%,
-              var(--modus-wc-color-base-page)
-            );
-            border-radius: 0 50% 50% 0;
+          &.range-cap-left {
+            border-radius: 999px 0 0 999px;
+          }
+
+          &.range-cap-right {
+            border-radius: 0 999px 999px 0;
+          }
+
+          // Directional affordance: the outward-facing half of a range
+          // endpoint carries a dashed edge hinting the range can still be
+          // extended in that direction (left for range-start, right for
+          // range-end). Only rendered while a hover preview is actively
+          // extending past that side (see hoveringBeforeStart/AfterEnd in
+          // modus-wc-date.tsx) — not shown as a static default decoration.
+          &.hover-affordance-left,
+          &.hover-affordance-right {
+            position: relative;
+
+            &::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 50%;
+              border-bottom: 2px dashed var(--modus-wc-color-base-200);
+              border-top: 2px dashed var(--modus-wc-color-base-200);
+              pointer-events: none;
+            }
+          }
+
+          &.hover-affordance-left::after {
+            left: 0;
+            border-radius: 999px 0 0 999px;
+          }
+
+          &.hover-affordance-right::after {
+            right: 0;
+            border-radius: 0 999px 999px 0;
+          }
+
+          // Anchor sitting inside a confirmed range: same flat fill as its
+          // neighbors (no radius — the anchor's own circle is the visual
+          // cap), so the pill background never stops short around it.
+          &.range-anchor-fill {
+            background-color: var(--modus-wc-color-base-100);
+          }
+
+          &.range-start.range-anchor.range-anchor-fill {
+            border-radius: 999px 0 0 999px;
+          }
+
+          &.range-end.range-anchor.range-anchor-fill {
+            border-radius: 0 999px 999px 0;
+          }
+
+          // Non-anchor endpoint: base-100 fill + dashed border (4px dash / 4px gap)
+          // to distinguish it from the darker anchor endpoint.
+          &.range-start:not(.range-anchor) .calendar-day.selected,
+          &.range-end:not(.range-anchor) .calendar-day.selected {
+            background-color: var(--modus-wc-color-primary-pale);
+            color: var(--modus-wc-color-base-content);
+          }
+
+          // Hover-preview fill: dashed horizontal borders across all cells in
+          // the preview run, plus the same connecting line through the
+          // anchor cell whenever it's part of the active preview — the
+          // anchor never gets a fill (only its own circle), so this border
+          // never grows a halo.
+          &.hover-fill,
+          &.range-anchor.anchor-preview-connector {
+            border-bottom: 2px dashed var(--modus-wc-color-base-200);
+            border-top: 2px dashed var(--modus-wc-color-base-200);
+          }
+
+          // Cap classes are shared with the anchor (border + radius only,
+          // no fill) so its non-connecting side closes into a proper
+          // rounded cap instead of a flat edge with a square corner.
+          &.hover-cap-left {
+            border-left: 2px dashed var(--modus-wc-color-base-200);
+            border-radius: 999px 0 0 999px;
+          }
+
+          &.hover-cap-right {
+            border-right: 2px dashed var(--modus-wc-color-base-200);
+            border-radius: 0 999px 999px 0;
           }
         }
 
@@ -222,9 +304,16 @@ modus-wc-date {
           justify-content: center;
           width: 32px;
 
-          &:hover {
-            background-color: var(--modus-wc-color-primary);
-            color: var(--modus-wc-color-white);
+          // Hovered date (preview end) gets base-200 fill
+          &.hover-preview-end {
+            background-color: var(--modus-wc-color-base-200);
+            color: var(--modus-wc-color-base-content);
+          }
+
+          &:hover:not(.hover-preview-end) {
+            background-color: var(--modus-wc-color-base-200);
+            border: 2px dashed var(--modus-wc-color-base-200);
+            color: var(--modus-wc-color-base-content);
           }
 
           &:focus {

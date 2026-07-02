@@ -93,6 +93,12 @@ export class ModusWcDate {
   /** Whether the end calendar popover is open in range mode */
   @State() private showEndCalendar = false;
 
+  /** Tracks the most recently clicked endpoint in range mode (null when nothing selected) */
+  @State() private anchorEndpoint: 'start' | 'end' | null = null;
+
+  /** Hovered date during range selection — drives the dashed preview range */
+  @State() private hoverDate: string = '';
+
   /** Calendar state object for the end (right) panel in range mode */
   @State() private endCalendar: DatePickerCalendar = new DatePickerCalendar();
 
@@ -156,6 +162,9 @@ export class ModusWcDate {
 
   /** Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week. */
   @Prop() showWeekNumbers?: boolean = false;
+
+  /** Hides leading/trailing dates from adjacent months. Rows that mix current-month and overflow dates blank the overflow cells; rows made entirely of overflow dates are removed, shrinking the calendar height. */
+  @Prop() hideOverflowDates?: boolean = false;
 
   /** Activates range mode. `value` is the start date; `endValue` is the end date. */
   @Prop() type?: 'single' | 'range' = 'single';
@@ -345,6 +354,13 @@ export class ModusWcDate {
         );
       }
       this.endCalendar = endCal;
+
+      // Initialize anchor from pre-set prop values so clicks work on load.
+      if (this.parseISODate(this.endValue)) {
+        this.anchorEndpoint = 'end';
+      } else if (this.parseISODate(this.value)) {
+        this.anchorEndpoint = 'start';
+      }
     }
   }
 
@@ -449,16 +465,22 @@ export class ModusWcDate {
     }
   };
 
-  private createPopperOptions() {
+  private createPopperOptions(
+    placement: 'bottom-start' | 'bottom-end' = 'bottom-start'
+  ) {
+    const fallbackPlacements =
+      placement === 'bottom-end'
+        ? (['top-end', 'bottom-start', 'top-start'] as const)
+        : (['top-start', 'bottom-end', 'top-end'] as const);
     return {
-      placement: 'bottom-start' as const,
+      placement,
       strategy: 'fixed' as const,
       modifiers: [
         { name: 'offset', options: { offset: [0, 8] } },
         {
           name: 'flip',
           options: {
-            fallbackPlacements: ['top-start', 'bottom-end', 'top-end'],
+            fallbackPlacements,
           },
         },
       ],
@@ -472,7 +494,7 @@ export class ModusWcDate {
     this.popperInstance = createPopper(
       anchor,
       calendar,
-      this.createPopperOptions()
+      this.createPopperOptions('bottom-start')
     );
   };
 
@@ -483,7 +505,7 @@ export class ModusWcDate {
     this.startPopperInstance = createPopper(
       anchor,
       calendar,
-      this.createPopperOptions()
+      this.createPopperOptions('bottom-start')
     );
   };
 
@@ -494,7 +516,7 @@ export class ModusWcDate {
     this.endPopperInstance = createPopper(
       anchor,
       calendar,
-      this.createPopperOptions()
+      this.createPopperOptions('bottom-end')
     );
   };
 
@@ -666,42 +688,111 @@ export class ModusWcDate {
     this.endCalendar = newCal;
   };
 
-  private handleRangeDateSelect = (date: Date, role: 'start' | 'end') => {
+  private handleRangeDateSelect = (date: Date) => {
     if (this.isDateDisabled(date)) {
       return;
     }
 
-    if (role === 'start') {
-      this.hasFocus = false;
+    this.hasFocus = false;
+
+    const startParsed = this.parseISODate(this.value);
+    const endParsed = this.parseISODate(this.endValue);
+
+    const isOnStart =
+      !!startParsed && this.compareDate(date, startParsed) === 0;
+    const isOnEnd = !!endParsed && this.compareDate(date, endParsed) === 0;
+
+    // --- Case: nothing selected ---
+    if (!startParsed && !endParsed) {
       this.value = this.formatISODate(date);
+      this.anchorEndpoint = 'start';
+      return;
+    }
 
-      // Clear end value if it is now before the new start
-      const existingEnd = this.parseISODate(this.endValue);
-      if (existingEnd && this.compareDate(existingEnd, date) < 0) {
-        this.endValue = '';
+    // --- Case: only start set (anchor is always 'start' here) ---
+    if (startParsed && !endParsed) {
+      if (isOnStart) {
+        // Clicking the sole start anchor keeps it — nothing changes
+        return;
       }
-    } else {
-      const startParsed = this.parseISODate(this.value);
-
-      if (startParsed && this.compareDate(date, startParsed) < 0) {
-        // Picked date is before start: set as new end and clear start so the
-        // user can re-pick a start date that is before the new end.
-        this.hasFocus = false;
+      if (this.compareDate(date, startParsed) >= 0) {
+        // On or after start → set end
         this.endValue = this.formatISODate(date);
-        this.value = '';
-        this.showStartCalendar = false;
-        this.showEndCalendar = false;
+        this.anchorEndpoint = 'end';
+        this.rangeChange.emit({
+          startDate: this.value,
+          endDate: this.formatISODate(date),
+        });
+      } else {
+        // Before start → move start left
+        this.value = this.formatISODate(date);
+        this.anchorEndpoint = 'start';
+      }
+      return;
+    }
+
+    // --- Case: both start and end set ---
+    if (startParsed && endParsed) {
+      // Defensive: if anchor was never initialized (e.g. props set externally),
+      // default to 'end' so clicks are always handled.
+      if (this.anchorEndpoint === null) {
+        this.anchorEndpoint = 'end';
+      }
+
+      if (this.anchorEndpoint === 'start') {
+        if (isOnStart) {
+          // Clicking the locked anchor keeps it as start and clears end
+          this.endValue = '';
+          this.anchorEndpoint = 'start';
+          return;
+        }
+        if (isOnEnd) {
+          // Clicking the lighter endpoint swaps the anchor (no value change)
+          this.anchorEndpoint = 'end';
+          return;
+        }
+        if (this.compareDate(date, startParsed) < 0) {
+          // Before the locked start anchor → reset, this date becomes new start
+          this.value = this.formatISODate(date);
+          this.endValue = '';
+          this.anchorEndpoint = 'start';
+          return;
+        }
+        // On or after start (inside range OR extending past end) → set new end
+        this.endValue = this.formatISODate(date);
+        this.anchorEndpoint = 'end';
+        this.rangeChange.emit({
+          startDate: this.value,
+          endDate: this.formatISODate(date),
+        });
         return;
       }
 
-      this.hasFocus = false;
-      this.endValue = this.formatISODate(date);
-      this.showStartCalendar = false;
-      this.showEndCalendar = false;
-      this.rangeChange.emit({
-        startDate: this.value,
-        endDate: this.formatISODate(date),
-      });
+      if (this.anchorEndpoint === 'end') {
+        if (isOnEnd) {
+          // Clicking the locked end anchor pivots it to become the new start
+          this.value = this.endValue;
+          this.endValue = '';
+          this.anchorEndpoint = 'start';
+          return;
+        }
+        if (isOnStart) {
+          // Clicking the lighter endpoint swaps the anchor (no value change)
+          this.anchorEndpoint = 'start';
+          return;
+        }
+        if (this.compareDate(date, endParsed) > 0) {
+          // After the locked end anchor → reset, this date becomes new start
+          this.value = this.formatISODate(date);
+          this.endValue = '';
+          this.anchorEndpoint = 'start';
+          return;
+        }
+        // On or before end (inside range OR extending past start) → set new start
+        this.value = this.formatISODate(date);
+        this.anchorEndpoint = 'start';
+        return;
+      }
     }
   };
 
@@ -757,19 +848,15 @@ export class ModusWcDate {
     this.updateCalendarAndEmitEvents(newYear, currentMonth);
   };
 
-  private handleDateKeyDown = (
-    event: KeyboardEvent,
-    date: Date,
-    role?: 'start' | 'end'
-  ) => {
+  private handleDateKeyDown = (event: KeyboardEvent, date: Date) => {
     if (this.isDateDisabled(date)) {
       return;
     }
 
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      if (this.isRange && role) {
-        this.handleRangeDateSelect(date, role);
+      if (this.isRange) {
+        this.handleRangeDateSelect(date);
       } else {
         this.handleDateSelect(date);
       }
@@ -1151,7 +1238,7 @@ export class ModusWcDate {
     );
   }
 
-  private renderCalendarBody(cal: DatePickerCalendar, role?: 'start' | 'end') {
+  private renderCalendarBody(cal: DatePickerCalendar) {
     const today = new Date();
     const selectedDate = this.parseISODate(this.value);
     const startDate = this.parsedStartDate;
@@ -1159,8 +1246,136 @@ export class ModusWcDate {
     const currentMonth = cal.selectedMonth;
     const weekStartNum = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
 
+    // --- Hover preview range computation ---
+    // Only active in range mode when an anchor is set and a date is being hovered.
+    const anchorDate =
+      this.anchorEndpoint === 'start'
+        ? startDate
+        : this.anchorEndpoint === 'end'
+          ? endDate
+          : null;
+    const hoverParsed = this.isRange ? this.parseISODate(this.hoverDate) : null;
+    let previewStart: Date | null = null;
+    let previewEnd: Date | null = null;
+    // Hovering directly on the anchor itself is a zero-length "extension"
+    // (nothing would change on click) — skip the preview run entirely so
+    // the anchor doesn't grow dashed caps on both sides with nothing to
+    // connect to.
+    const isHoveringAnchor =
+      !!anchorDate &&
+      !!hoverParsed &&
+      this.compareDate(hoverParsed, anchorDate) === 0;
+    if (
+      anchorDate &&
+      hoverParsed &&
+      !isHoveringAnchor &&
+      !this.isDateDisabled(hoverParsed)
+    ) {
+      if (this.compareDate(hoverParsed, anchorDate) >= 0) {
+        previewStart = anchorDate;
+        previewEnd = hoverParsed;
+      } else {
+        previewStart = hoverParsed;
+        previewEnd = anchorDate;
+      }
+
+      // When a full range exists, preview only the extension beyond it — not
+      // cells already in the confirmed selection. The extension zone touches
+      // the confirmed range flush (no gap), so the neighbor-connectivity
+      // model in computeCaps() joins the two runs into one continuous pill
+      // without needing any special-cased "suppress this cap" logic.
+      if (startDate && endDate) {
+        const [rangeLo, rangeHi] =
+          this.compareDate(startDate, endDate) <= 0
+            ? [startDate, endDate]
+            : [endDate, startDate];
+        const hoverBeforeRange = this.compareDate(hoverParsed, rangeLo) < 0;
+        const hoverAfterRange = this.compareDate(hoverParsed, rangeHi) > 0;
+        const hoverInRange = !hoverBeforeRange && !hoverAfterRange;
+
+        if (hoverInRange) {
+          previewStart = null;
+          previewEnd = null;
+        } else if (hoverAfterRange) {
+          const dayAfterEnd = this.addDays(rangeHi, 1);
+          if (this.compareDate(dayAfterEnd, hoverParsed) <= 0) {
+            previewStart = dayAfterEnd;
+            previewEnd = hoverParsed;
+          } else {
+            previewStart = null;
+            previewEnd = null;
+          }
+        } else if (hoverBeforeRange) {
+          const dayBeforeStart = this.addDays(rangeLo, -1);
+          if (this.compareDate(hoverParsed, dayBeforeStart) <= 0) {
+            previewStart = hoverParsed;
+            previewEnd = dayBeforeStart;
+          } else {
+            previewStart = null;
+            previewEnd = null;
+          }
+        }
+      }
+    }
+
+    // Confirmed range bounds, sorted. A single-day selection (start === end)
+    // has no fill/pill — only the anchor's own selected circle renders.
+    const hasFullRange = this.isRange && !!startDate && !!endDate;
+    const isSameStartEnd =
+      hasFullRange && startDate && endDate
+        ? this.compareDate(startDate, endDate) === 0
+        : false;
+    let rangeLo: Date | null = null;
+    let rangeHi: Date | null = null;
+    if (hasFullRange && startDate && endDate && !isSameStartEnd) {
+      [rangeLo, rangeHi] =
+        this.compareDate(startDate, endDate) <= 0
+          ? [startDate, endDate]
+          : [endDate, startDate];
+    }
+
+    // The extendability affordance (dashed half on the range endpoint cap)
+    // is only meaningful while the cursor is actively previewing an
+    // extension past that boundary — it's derived from the same clipped
+    // preview run used for the fill/border, not shown as a static hint.
+    const hoveringBeforeStart =
+      !!previewEnd && !!rangeLo && this.compareDate(previewEnd, rangeLo) < 0;
+    const hoveringAfterEnd =
+      !!previewStart &&
+      !!rangeHi &&
+      this.compareDate(previewStart, rangeHi) > 0;
+
+    // Single source of truth for "is this date visually highlighted" —
+    // confirmed selection and hover preview are both considered so
+    // connectivity is computed the same way across their shared boundary.
+    const isHighlighted = (d: Date): boolean => {
+      const dMonth = d.getMonth();
+      const inConfirmed =
+        !!rangeLo &&
+        !!rangeHi &&
+        this.isInHighlightRun(d, rangeLo, rangeHi, dMonth === currentMonth);
+      const inPreview =
+        !!previewStart &&
+        !!previewEnd &&
+        this.isInHighlightRun(
+          d,
+          previewStart,
+          previewEnd,
+          dMonth === currentMonth
+        );
+      return inConfirmed || inPreview;
+    };
+
     return (
-      <div class="calendar-body">
+      <div
+        class="calendar-body"
+        onMouseLeave={
+          // istanbul ignore next (unreachable code)
+          () => {
+            this.hoverDate = '';
+          }
+        }
+      >
         <div
           class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
@@ -1173,6 +1388,19 @@ export class ModusWcDate {
           class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
         >
           {cal.dates.map((date, index) => {
+            const rowIndex = Math.floor(index / 7);
+            // A row is entirely overflow when none of its 7 dates belong to
+            // the displayed month — skip rendering it completely so the
+            // calendar height shrinks.
+            if (this.hideOverflowDates && date) {
+              const rowIsFullyOverflow = cal.dates
+                .slice(rowIndex * 7, rowIndex * 7 + 7)
+                .every((d) => !d || d.getMonth() !== currentMonth);
+              if (rowIsFullyOverflow) {
+                return null;
+              }
+            }
+
             // Add week number at the start of each row (every 7 days)
             const weekNumberElement =
               this.showWeekNumbers && index % 7 === 0 ? (
@@ -1192,25 +1420,80 @@ export class ModusWcDate {
             const isCurrentMonth = date.getMonth() === currentMonth;
             const isDisabled = this.isDateDisabled(date);
 
+            // Within a retained (mixed) row, blank out individual overflow
+            // cells while preserving the grid column alignment.
+            if (this.hideOverflowDates && !isCurrentMonth) {
+              const blankCell = (
+                <div class="calendar-day-cell calendar-day-cell--empty" />
+              );
+              return weekNumberElement
+                ? [weekNumberElement, blankCell]
+                : blankCell;
+            }
+
             // Range-mode class calculations — only when both endpoints are set.
             // isCurrentMonth guard prevents other-month overflow dates from inheriting range styles.
-            const hasFullRange = this.isRange && !!startDate && !!endDate;
-            let isSameStartEnd = false;
-            let isRangeStart = false;
-            let isRangeEnd = false;
-            let isInRange = false;
-            if (hasFullRange && startDate && endDate) {
-              isSameStartEnd = this.compareDate(startDate, endDate) === 0;
-              isRangeStart =
-                isCurrentMonth &&
-                !isSameStartEnd &&
-                this.compareDate(date, startDate) === 0;
-              isRangeEnd =
-                isCurrentMonth &&
-                !isSameStartEnd &&
-                this.compareDate(date, endDate) === 0;
-              isInRange = isCurrentMonth && this.isDateInRange(date);
-            }
+            const isRangeStart =
+              !!rangeLo &&
+              !!rangeHi &&
+              isCurrentMonth &&
+              !!startDate &&
+              this.compareDate(date, startDate) === 0;
+            const isRangeEnd =
+              !!rangeLo &&
+              !!rangeHi &&
+              isCurrentMonth &&
+              !!endDate &&
+              this.compareDate(date, endDate) === 0;
+
+            // isAnchor covers both single-date (start only) and full-range cases
+            // so the anchor endpoint always appears darker.
+            const isAnchor =
+              this.isRange &&
+              isCurrentMonth &&
+              ((this.anchorEndpoint === 'start' &&
+                !!startDate &&
+                this.compareDate(date, startDate) === 0) ||
+                (this.anchorEndpoint === 'end' &&
+                  !!endDate &&
+                  this.compareDate(date, endDate) === 0));
+
+            // Confirmed selection and hover preview are both "highlighted
+            // runs" — a cell belongs to at most one of them (preview is
+            // already clipped to exclude cells inside the confirmed range).
+            const colIndex = index % 7;
+            const confirmed =
+              !!rangeLo &&
+              !!rangeHi &&
+              this.isInHighlightRun(date, rangeLo, rangeHi, isCurrentMonth);
+            const preview =
+              !!previewStart &&
+              !!previewEnd &&
+              this.isInHighlightRun(
+                date,
+                previewStart,
+                previewEnd,
+                isCurrentMonth
+              );
+            // The actively hovered date gets a solid button fill; suppressed
+            // when it coincides with the anchor (anchor already renders its
+            // own selected circle). Compared against the actual cursor date
+            // (not previewEnd) since previewEnd is the anchor itself — not
+            // the hovered cell — whenever hovering backward past the anchor.
+            const isHoveredDay =
+              preview &&
+              !!hoverParsed &&
+              this.compareDate(date, hoverParsed) === 0 &&
+              !isAnchor;
+
+            // Connectivity is derived once, identically for confirmed and
+            // preview cells (and for the anchor), from a single shared
+            // "is this neighbor highlighted" predicate — no per-role
+            // row/month special-casing needed.
+            const caps =
+              confirmed || preview
+                ? this.computeCaps(date, colIndex, currentMonth, isHighlighted)
+                : null;
 
             // Single-mode selection
             const isSelected =
@@ -1224,7 +1507,9 @@ export class ModusWcDate {
                 class={{
                   'calendar-day': true,
                   'current-day': isToday,
-                  selected: isSelected || isRangeStart || isRangeEnd,
+                  selected:
+                    isSelected || isRangeStart || isRangeEnd || isAnchor,
+                  'hover-preview-end': isHoveredDay,
                   'current-month': isCurrentMonth,
                   'other-month': !isCurrentMonth,
                   disabled: isDisabled,
@@ -1232,11 +1517,19 @@ export class ModusWcDate {
                 disabled={isDisabled}
                 onClick={() =>
                   // istanbul ignore next (unreachable code)
-                  this.isRange && role
-                    ? this.handleRangeDateSelect(date, role)
+                  this.isRange
+                    ? this.handleRangeDateSelect(date)
                     : this.handleDateSelect(date)
                 }
-                onKeyDown={(e) => this.handleDateKeyDown(e, date, role)}
+                onMouseEnter={
+                  // istanbul ignore next (unreachable code)
+                  this.isRange && !isDisabled
+                    ? () => {
+                        this.hoverDate = this.formatISODate(date);
+                      }
+                    : undefined
+                }
+                onKeyDown={(e) => this.handleDateKeyDown(e, date)}
                 tabIndex={isDisabled ? -1 : 0}
               >
                 {date.getDate()}
@@ -1250,7 +1543,50 @@ export class ModusWcDate {
                     'calendar-day-cell': true,
                     'range-start': isRangeStart,
                     'range-end': isRangeEnd,
-                    'in-range': isInRange && !isRangeStart && !isRangeEnd,
+                    'range-anchor': isAnchor,
+                    'range-fill': confirmed && !isAnchor,
+                    'range-cap-left': confirmed && !isAnchor && !!caps?.capLeft,
+                    'range-cap-right':
+                      confirmed && !isAnchor && !!caps?.capRight,
+                    // Directional extendability hint: only rendered on the
+                    // range-start/range-end cap while the cursor is actively
+                    // previewing an extension past that side — not shown as
+                    // a permanent default decoration.
+                    'hover-affordance-left':
+                      isRangeStart &&
+                      !isAnchor &&
+                      !!caps?.capLeft &&
+                      hoveringBeforeStart,
+                    'hover-affordance-right':
+                      isRangeEnd &&
+                      !isAnchor &&
+                      !!caps?.capRight &&
+                      hoveringAfterEnd,
+                    'hover-fill': preview && !isAnchor,
+                    // Cap classes carry only border + radius (no fill), so
+                    // they're safe to share with the anchor — its own circle
+                    // still reads as the visual endpoint, but the wrapper's
+                    // outline now closes into a proper rounded cap on
+                    // whichever side doesn't connect, instead of leaving a
+                    // square corner poking out from a flat, unrounded edge.
+                    'hover-cap-left': preview && !!caps?.capLeft,
+                    'hover-cap-right': preview && !!caps?.capRight,
+                    // Top/bottom connecting border for the anchor while it
+                    // participates in an active preview — combined with the
+                    // cap classes above, this closes into a full outline
+                    // (flat where it connects to a neighbor, rounded where
+                    // it doesn't).
+                    'anchor-preview-connector': isAnchor && preview,
+                    // The anchor never gets a rounded fill cap (that would
+                    // mismatch its circle and reintroduce a halo), but when
+                    // it sits inside a confirmed range it still needs the
+                    // same flat fill as its neighbors — otherwise a white
+                    // gap appears where the pill background stops short.
+                    'range-anchor-fill':
+                      isAnchor &&
+                      confirmed &&
+                      !!caps &&
+                      (!caps.capLeft || !caps.capRight),
                   }}
                 >
                   {button}
@@ -1289,6 +1625,55 @@ export class ModusWcDate {
     }
 
     return date1.getDate() - date2.getDate();
+  }
+
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  /**
+   * Shared membership test for both the confirmed range and the hover
+   * preview: is `date` inside the inclusive [lo, hi] run, and part of the
+   * displayed month? Used as the single source of truth for "is this cell
+   * highlighted" so caps/fills are derived identically for both cases.
+   */
+  private isInHighlightRun(
+    date: Date,
+    lo: Date,
+    hi: Date,
+    isCurrentMonth: boolean
+  ): boolean {
+    return (
+      isCurrentMonth &&
+      this.compareDate(date, lo) >= 0 &&
+      this.compareDate(date, hi) <= 0
+    );
+  }
+
+  /**
+   * Neighbor-connectivity model: a cell's left/right edge is capped
+   * (rounded) unless its immediate neighbor in that direction is in the
+   * displayed month and also a member of the same highlighted run. This
+   * single rule replaces per-role flags (row-start/end, month-start/end,
+   * anchor-adjacency, etc.) — connectivity is derived the same way
+   * everywhere, including at the anchor cell, so runs always render as
+   * continuous pills with no special-casing.
+   */
+  private computeCaps(
+    date: Date,
+    colIndex: number,
+    currentMonth: number,
+    isMember: (d: Date) => boolean
+  ): { capLeft: boolean; capRight: boolean } {
+    const prevDay = this.addDays(date, -1);
+    const nextDay = this.addDays(date, 1);
+    const connectsLeft =
+      colIndex > 0 && prevDay.getMonth() === currentMonth && isMember(prevDay);
+    const connectsRight =
+      colIndex < 6 && nextDay.getMonth() === currentMonth && isMember(nextDay);
+    return { capLeft: !connectsLeft, capRight: !connectsRight };
   }
 
   private get effectiveFormat(): string {
@@ -1597,15 +1982,6 @@ export class ModusWcDate {
     return parsed ? this.formatForDisplay(parsed) : '';
   }
 
-  private isDateInRange(date: Date): boolean {
-    const start = this.parsedStartDate;
-    const end = this.parsedEndDate;
-    if (!start || !end) return false;
-    const [lo, hi] =
-      this.compareDate(start, end) <= 0 ? [start, end] : [end, start];
-    return this.compareDate(date, lo) > 0 && this.compareDate(date, hi) < 0;
-  }
-
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -1667,7 +2043,7 @@ export class ModusWcDate {
         {this.showCalendar && (
           <div
             ref={(el) => (this.calendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.calendar,
@@ -1786,7 +2162,7 @@ export class ModusWcDate {
         {this.showStartCalendar && (
           <div
             ref={(el) => (this.calendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.calendar,
@@ -1795,14 +2171,14 @@ export class ModusWcDate {
               (e) => this.handleMonthChange(e),
               (e) => this.handleYearChange(e)
             )}
-            {this.renderCalendarBody(this.calendar, 'start')}
+            {this.renderCalendarBody(this.calendar)}
           </div>
         )}
 
         {this.showEndCalendar && (
           <div
             ref={(el) => (this.endCalendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.endCalendar,
@@ -1811,7 +2187,7 @@ export class ModusWcDate {
               (e) => this.handleEndMonthChange(e),
               (e) => this.handleEndYearChange(e)
             )}
-            {this.renderCalendarBody(this.endCalendar, 'end')}
+            {this.renderCalendarBody(this.endCalendar)}
           </div>
         )}
 
