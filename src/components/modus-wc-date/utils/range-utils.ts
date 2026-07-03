@@ -13,9 +13,7 @@ export function isInHighlightRun(
   isCurrentMonth: boolean
 ): boolean {
   return (
-    isCurrentMonth &&
-    compareDate(date, lo) >= 0 &&
-    compareDate(date, hi) <= 0
+    isCurrentMonth && compareDate(date, lo) >= 0 && compareDate(date, hi) <= 0
   );
 }
 
@@ -112,9 +110,7 @@ export function computeHoverPreviewRange(
   let previewEnd: Date | null = null;
 
   const isHoveringAnchor =
-    !!anchorDate &&
-    !!hoverParsed &&
-    compareDate(hoverParsed, anchorDate) === 0;
+    !!anchorDate && !!hoverParsed && compareDate(hoverParsed, anchorDate) === 0;
 
   if (
     !anchorDate ||
