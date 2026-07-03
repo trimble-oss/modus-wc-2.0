@@ -3,11 +3,13 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
+import { IFileDropzoneFeedback } from '../types';
 
 interface FileDropzoneArgs {
   'accept-file-types'?: string;
   'custom-class'?: string;
   disabled?: boolean;
+  feedback?: IFileDropzoneFeedback;
   'file-dragged-over-instructions'?: string;
   'include-state-icon'?: boolean;
   instructions?: string;
@@ -43,6 +45,20 @@ const meta: Meta<FileDropzoneArgs> = {
       description: 'Disable the file input',
       table: {
         defaultValue: { summary: 'false' },
+      },
+    },
+    feedback: {
+      control: 'object',
+      description:
+        'External feedback to display dragging, success, or error state with an optional custom message',
+      table: {
+        type: {
+          summary: 'IFileDropzoneFeedback',
+          detail: `{
+  type: 'dragging' | 'error' | 'success';
+  message?: string;
+}`,
+        },
       },
     },
     instructions: {
@@ -113,6 +129,7 @@ export const Default: Story = {
       max-total-file-size-bytes=${ifDefined(args['max-total-file-size-bytes'])}
       ?multiple=${args.multiple}
       success-message=${ifDefined(args['success-message'])}
+      .feedback=${args.feedback}
     ></modus-wc-file-dropzone>
   `,
 };
@@ -227,6 +244,134 @@ export const multipleFiles: Story = {
   `,
 };
 
+const successFeedback: IFileDropzoneFeedback = {
+  type: 'success',
+  message: 'Files uploaded successfully!',
+};
+
+const errorFeedback: IFileDropzoneFeedback = {
+  type: 'error',
+  message: 'Upload failed. Please try again.',
+};
+
+const draggingFeedback: IFileDropzoneFeedback = {
+  type: 'dragging',
+  message: 'Release to upload your files',
+};
+
+export const withFeedback: Story = {
+  args: {
+    'accept-file-types': '.pdf, .doc, .docx',
+    feedback: successFeedback,
+  },
+
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style="display: flex; flex-direction: column; gap: 1rem;">
+  <modus-wc-file-dropzone
+    id="feedback-dropzone"
+    accept-file-types=".pdf, .doc, .docx"
+    instructions="Drag files here or browse to upload"
+  ></modus-wc-file-dropzone>
+
+  <div style="display: flex; gap: 0.5rem;">
+    <modus-wc-button id="success-button">Show Success</modus-wc-button>
+    <modus-wc-button id="error-button" color="danger">Show Error</modus-wc-button>
+    <modus-wc-button id="dragging-button" color="tertiary">Show Dragging</modus-wc-button>
+    <modus-wc-button id="clear-button" color="secondary">Clear Feedback</modus-wc-button>
+  </div>
+</div>
+
+<script>
+  const dropzone = document.getElementById('feedback-dropzone');
+  const successFeedback = { type: 'success', message: 'Files uploaded successfully!' };
+  const errorFeedback = { type: 'error', message: 'Upload failed. Please try again.' };
+  const draggingFeedback = { type: 'dragging', message: 'Release to upload your files' };
+
+  document.getElementById('success-button')?.addEventListener('click', () => {
+    if (dropzone) dropzone.feedback = successFeedback;
+  });
+  document.getElementById('error-button')?.addEventListener('click', () => {
+    if (dropzone) dropzone.feedback = errorFeedback;
+  });
+  document.getElementById('dragging-button')?.addEventListener('click', () => {
+    if (dropzone) dropzone.feedback = draggingFeedback;
+  });
+  document.getElementById('clear-button')?.addEventListener('click', () => {
+    if (dropzone) dropzone.feedback = undefined;
+  });
+</script>`,
+      },
+    },
+  },
+
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <modus-wc-file-dropzone
+        id="feedback-dropzone"
+        accept-file-types=${ifDefined(args['accept-file-types'])}
+        .feedback=${args.feedback}
+        instructions="Drag files here or browse to upload"
+      ></modus-wc-file-dropzone>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <modus-wc-button
+          @buttonClick=${() => {
+            const dropzone = document.getElementById(
+              'feedback-dropzone'
+            ) as HTMLElement & { feedback?: IFileDropzoneFeedback };
+            if (dropzone) {
+              dropzone.feedback = successFeedback;
+            }
+          }}
+        >
+          Show Success
+        </modus-wc-button>
+        <modus-wc-button
+          color="danger"
+          @buttonClick=${() => {
+            const dropzone = document.getElementById(
+              'feedback-dropzone'
+            ) as HTMLElement & { feedback?: IFileDropzoneFeedback };
+            if (dropzone) {
+              dropzone.feedback = errorFeedback;
+            }
+          }}
+        >
+          Show Error
+        </modus-wc-button>
+        <modus-wc-button
+          color="tertiary"
+          @buttonClick=${() => {
+            const dropzone = document.getElementById(
+              'feedback-dropzone'
+            ) as HTMLElement & { feedback?: IFileDropzoneFeedback };
+            if (dropzone) {
+              dropzone.feedback = draggingFeedback;
+            }
+          }}
+        >
+          Show Dragging
+        </modus-wc-button>
+        <modus-wc-button
+          color="secondary"
+          @buttonClick=${() => {
+            const dropzone = document.getElementById(
+              'feedback-dropzone'
+            ) as HTMLElement & { feedback?: IFileDropzoneFeedback };
+            if (dropzone) {
+              dropzone.feedback = undefined;
+            }
+          }}
+        >
+          Clear Feedback
+        </modus-wc-button>
+      </div>
+    </div>
+  `,
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('file-dropzone-shadow-host')) {
@@ -237,6 +382,7 @@ export const ShadowDomParent: Story = {
             acceptFileTypes: string;
             customClass: string;
             disabled: boolean;
+            feedback?: IFileDropzoneFeedback;
             fileDraggedOverInstructions: string;
             includeStateIcon: boolean;
             instructions: string;
@@ -250,6 +396,7 @@ export const ShadowDomParent: Story = {
           dropzoneEl.acceptFileTypes = v['accept-file-types'] ?? '';
           dropzoneEl.customClass = v['custom-class'] || '';
           dropzoneEl.disabled = Boolean(v.disabled);
+          dropzoneEl.feedback = v.feedback;
           dropzoneEl.fileDraggedOverInstructions =
             v['file-dragged-over-instructions'] ?? '';
           dropzoneEl.includeStateIcon = Boolean(v['include-state-icon']);

@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-file-dropzone.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import { IFileDropzoneFeedback } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
@@ -51,6 +52,9 @@ export class ModusWcFileDropzone {
 
   /** Disable the file input */
   @Prop() disabled?: boolean;
+
+  /** External feedback to display dragging, success, or error state with an optional custom message */
+  @Prop() feedback?: IFileDropzoneFeedback;
 
   /** Custom instructions shown when files are dragged over the dropzone */
   @Prop() fileDraggedOverInstructions?: string;
@@ -335,14 +339,93 @@ export class ModusWcFileDropzone {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  render() {
-    const messages = {
-      success: this.successMessage || 'Successfully uploaded',
-      dragOver: this.fileDraggedOverInstructions || 'Drop files here',
-    };
+  private getFeedbackMessage(
+    message: string | undefined,
+    fallback: string
+  ): string {
+    return message ?? fallback;
+  }
 
-    const hasState =
-      this.isDraggingOver || this.invalidFile !== 'none' || this.uploadSuccess;
+  private getDisplayState(): {
+    isDragging: boolean;
+    isError: boolean;
+    isSuccess: boolean;
+    message: string | undefined;
+  } {
+    const defaultDragMessage =
+      this.fileDraggedOverInstructions || 'Drop files here';
+    const defaultSuccessMessage =
+      this.successMessage || 'Successfully uploaded';
+    const defaultErrorMessage = 'An error occurred';
+    const hasFeedbackDragging = this.feedback?.type === 'dragging';
+    const hasFeedbackError = this.feedback?.type === 'error';
+    const hasFeedbackSuccess = this.feedback?.type === 'success';
+    const isDragging = this.isDraggingOver || hasFeedbackDragging;
+
+    if (isDragging) {
+      return {
+        isDragging: true,
+        isError: false,
+        isSuccess: false,
+        message: hasFeedbackDragging
+          ? this.getFeedbackMessage(this.feedback!.message, defaultDragMessage)
+          : defaultDragMessage,
+      };
+    }
+
+    if (hasFeedbackError) {
+      return {
+        isDragging: false,
+        isError: true,
+        isSuccess: false,
+        message: this.getFeedbackMessage(
+          this.feedback!.message,
+          defaultErrorMessage
+        ),
+      };
+    }
+
+    if (hasFeedbackSuccess) {
+      return {
+        isDragging: false,
+        isError: false,
+        isSuccess: true,
+        message: this.getFeedbackMessage(
+          this.feedback!.message,
+          defaultSuccessMessage
+        ),
+      };
+    }
+
+    if (this.invalidFile !== 'none') {
+      return {
+        isDragging: false,
+        isError: true,
+        isSuccess: false,
+        message: this.errorMessage,
+      };
+    }
+
+    if (this.uploadSuccess) {
+      return {
+        isDragging: false,
+        isError: false,
+        isSuccess: true,
+        message: defaultSuccessMessage,
+      };
+    }
+
+    return {
+      isDragging: false,
+      isError: false,
+      isSuccess: false,
+      message: this.instructions,
+    };
+  }
+
+  render() {
+    const { isDragging, isError, isSuccess, message } = this.getDisplayState();
+    const hasState = isDragging || isError || isSuccess;
     const showIcon = this.includeStateIcon !== false;
 
     const iconMap = {
@@ -352,29 +435,21 @@ export class ModusWcFileDropzone {
       default: 'cloud_upload',
     };
 
-    const iconState = this.isDraggingOver
+    const iconState = isDragging
       ? iconMap.dragging
-      : this.invalidFile !== 'none'
+      : isError
         ? iconMap.invalid
-        : this.uploadSuccess
+        : isSuccess
           ? iconMap.success
           : iconMap.default;
 
-    const iconClass = this.isDraggingOver
+    const iconClass = isDragging
       ? 'upload-icon'
-      : this.invalidFile !== 'none'
+      : isError
         ? 'error-icon'
-        : this.uploadSuccess
+        : isSuccess
           ? 'success-icon'
           : 'upload-icon';
-
-    const message = this.isDraggingOver
-      ? messages.dragOver
-      : this.invalidFile !== 'none'
-        ? this.errorMessage
-        : this.uploadSuccess
-          ? messages.success
-          : this.instructions;
 
     const showDropzoneSlot = hasState || this.disabled ? 'none' : 'block';
 
@@ -393,9 +468,9 @@ export class ModusWcFileDropzone {
           <div
             aria-disabled={this.disabled ? 'true' : 'false'}
             class={`dropzone-content 
-              ${this.isDraggingOver ? 'dragging-over' : ''} 
-              ${!this.isDraggingOver && this.invalidFile !== 'none' ? 'invalid-file-type' : ''} 
-              ${!this.isDraggingOver && this.uploadSuccess ? 'upload-success' : ''} 
+              ${isDragging ? 'dragging-over' : ''} 
+              ${!isDragging && isError ? 'invalid-file-type' : ''} 
+              ${!isDragging && isSuccess ? 'upload-success' : ''} 
               ${this.customClass || ''}`}
             onClick={this.handleDropzoneClick}
             onDragLeave={this.handleDropzoneDragLeave}
