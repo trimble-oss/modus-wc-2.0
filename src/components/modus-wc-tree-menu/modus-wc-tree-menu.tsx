@@ -95,7 +95,7 @@ export class ModusWcTreeMenu {
   private getTreeItems(): HTMLElement[] {
     return Array.from(this.el.querySelectorAll('modus-wc-tree-item')).filter(
       (item) => item.closest('modus-wc-tree-menu') === this.el
-    ) as HTMLElement[];
+    );
   }
 
   @Listen('itemSelect')

@@ -4,6 +4,18 @@ import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label'
 import { IInputFeedbackProp, WeekStartDay } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcDate } from './modus-wc-date';
+import { cloneDate, compareDate, formatISODate } from './utils/date-utils';
+import { createPopperOptions } from './utils/popper-utils';
+import {
+  computeCaps,
+  isInHighlightRun,
+  shouldApplyHoverAffordanceLeft,
+  shouldApplyHoverAffordanceRight,
+  shouldApplyHoverCapLeft,
+  shouldApplyHoverCapRight,
+  shouldApplyRangeCapLeft,
+  shouldApplyRangeCapRight,
+} from './utils/range-utils';
 
 async function createDatePage(html: string) {
   const page = await newSpecPage({
@@ -518,14 +530,8 @@ describe('modus-wc-date', () => {
   });
 
   it('should format date to ISO string', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Format date test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
     const date = new Date(2025, 9, 15);
-    const formatted = component['formatISODate'](date);
+    const formatted = formatISODate(date);
 
     expect(formatted).toBe('2025-10-15');
   });
@@ -568,20 +574,14 @@ describe('modus-wc-date', () => {
     expect(component['calendar'].selectedMonth).toBe(10);
   });
 
-  it('should compare dates correctly', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Compare dates test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
+  it('should compare dates correctly', () => {
     const date1 = new Date(2025, 9, 15);
     const date2 = new Date(2025, 9, 15);
     const date3 = new Date(2025, 9, 20);
 
-    expect(component['compareDate'](date1, date2)).toBe(0);
-    expect(component['compareDate'](date1, date3)).toBeLessThan(0);
-    expect(component['compareDate'](date3, date1)).toBeGreaterThan(0);
+    expect(compareDate(date1, date2)).toBe(0);
+    expect(compareDate(date1, date3)).toBeLessThan(0);
+    expect(compareDate(date3, date1)).toBeGreaterThan(0);
   });
 
   it('should handle empty value', async () => {
@@ -618,19 +618,13 @@ describe('modus-wc-date', () => {
   });
 
   it('should handle compareDate with null/undefined values', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Compare null dates test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
     const date = new Date(2025, 9, 15);
 
-    expect(
-      component['compareDate'](null as unknown as Date, null as unknown as Date)
-    ).toBe(0);
-    expect(component['compareDate'](null as unknown as Date, date)).toBe(-1);
-    expect(component['compareDate'](date, null as unknown as Date)).toBe(1);
+    expect(compareDate(null as unknown as Date, null as unknown as Date)).toBe(
+      0
+    );
+    expect(compareDate(null as unknown as Date, date)).toBe(-1);
+    expect(compareDate(date, null as unknown as Date)).toBe(1);
   });
 
   it('should allow viewing months before min date', async () => {
@@ -977,15 +971,9 @@ describe('modus-wc-date', () => {
     expect(component['parseISODate']('31-04-2025')).toBeUndefined();
   });
 
-  it('should clone date correctly', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Clone date test"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
+  it('should clone date correctly', () => {
     const original = new Date(2025, 9, 15, 14, 30, 0);
-    const cloned = component['cloneDate'](original);
+    const cloned = cloneDate(original);
 
     expect(cloned.getFullYear()).toBe(2025);
     expect(cloned.getMonth()).toBe(9);
@@ -1924,9 +1912,7 @@ describe('modus-wc-date', () => {
     );
     await page.waitForChanges();
 
-    const endInput = page.root!.querySelectorAll(
-      'input'
-    )[1] as HTMLInputElement;
+    const endInput = page.root!.querySelectorAll('input')[1];
     expect(endInput.value).toBe('20-11-2025');
 
     component.format = 'mm/dd/yyyy';
@@ -2599,12 +2585,7 @@ describe('modus-wc-date', () => {
   it('should always format the value prop as ISO 8601 regardless of display format', async () => {
     const date = new Date(2025, 9, 15);
 
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Format ISO test" format="dd-mm-yyyy"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-    expect(component['formatISODate'](date)).toBe('2025-10-15');
+    expect(formatISODate(date)).toBe('2025-10-15');
   });
 
   it('should format date for display according to the selected format', async () => {
@@ -2659,14 +2640,8 @@ describe('modus-wc-date', () => {
   });
 
   it('should use default yyyy-mm-dd format for unknown format values', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Unknown format test" format="unknown-format"></modus-wc-date>',
-    });
-    const component = page.rootInstance as ModusWcDate;
-
     const date = new Date(2025, 9, 15); // October 15, 2025
-    const formatted = component['formatISODate'](date);
+    const formatted = formatISODate(date);
 
     expect(formatted).toBe('2025-10-15');
   });
@@ -3716,27 +3691,16 @@ describe('modus-wc-date', () => {
       expect(component['endCalendar'].selectedMonth).not.toBe(initialEndMonth);
     });
 
-    it('should compute isInHighlightRun correctly', async () => {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
-      });
-      const component = page.rootInstance as ModusWcDate;
+    it('should compute isInHighlightRun correctly', () => {
       const lo = new Date(2026, 5, 1);
       const hi = new Date(2026, 5, 30);
 
-      expect(
-        component['isInHighlightRun'](new Date(2026, 5, 15), lo, hi, true)
-      ).toBe(true);
-      expect(
-        component['isInHighlightRun'](new Date(2026, 5, 1), lo, hi, true)
-      ).toBe(true);
-      expect(
-        component['isInHighlightRun'](new Date(2026, 4, 31), lo, hi, true)
-      ).toBe(false);
-      expect(
-        component['isInHighlightRun'](new Date(2026, 5, 15), lo, hi, false)
-      ).toBe(false);
+      expect(isInHighlightRun(new Date(2026, 5, 15), lo, hi, true)).toBe(true);
+      expect(isInHighlightRun(new Date(2026, 5, 1), lo, hi, true)).toBe(true);
+      expect(isInHighlightRun(new Date(2026, 4, 31), lo, hi, true)).toBe(false);
+      expect(isInHighlightRun(new Date(2026, 5, 15), lo, hi, false)).toBe(
+        false
+      );
     });
 
     it('should handle handleEndValueChange when type is not range', async () => {
@@ -3754,88 +3718,31 @@ describe('modus-wc-date', () => {
     });
 
     describe('computeCaps', () => {
-      it('should cap both sides when neither neighbor is a member', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const caps = component['computeCaps'](
-          new Date(2026, 5, 15),
-          3,
-          5,
-          () => false
-        );
+      it('should cap both sides when neither neighbor is a member', () => {
+        const caps = computeCaps(new Date(2026, 5, 15), 3, 5, () => false);
 
         expect(caps).toEqual({ capLeft: true, capRight: true });
       });
 
-      it('should not cap a side whose neighbor is a same-month member', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const caps = component['computeCaps'](
-          new Date(2026, 5, 15),
-          3,
-          5,
-          () => true
-        );
+      it('should not cap a side whose neighbor is a same-month member', () => {
+        const caps = computeCaps(new Date(2026, 5, 15), 3, 5, () => true);
 
         expect(caps).toEqual({ capLeft: false, capRight: false });
       });
 
-      it('should cap the left side at the first grid column regardless of membership', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const caps = component['computeCaps'](
-          new Date(2026, 5, 15),
-          0,
-          5,
-          () => true
-        );
+      it('should cap the left side at the first grid column regardless of membership', () => {
+        const caps = computeCaps(new Date(2026, 5, 15), 0, 5, () => true);
 
         expect(caps.capLeft).toBe(true);
       });
 
-      it('should cap the right side at the last grid column regardless of membership', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const caps = component['computeCaps'](
-          new Date(2026, 5, 15),
-          6,
-          5,
-          () => true
-        );
-
+      it('should cap the right side at the last grid column regardless of membership', () => {
+        const caps = computeCaps(new Date(2026, 5, 15), 6, 5, () => true);
         expect(caps.capRight).toBe(true);
       });
-
-      it('should cap a side whose neighbor falls in a different month even if a member', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
+      it('should cap a side whose neighbor falls in a different month even if a member', () => {
         // June 30 → next day is July 1, a different month than currentMonth (5 = June)
-        const caps = component['computeCaps'](
-          new Date(2026, 5, 30),
-          3,
-          5,
-          () => true
-        );
+        const caps = computeCaps(new Date(2026, 5, 30), 3, 5, () => true);
 
         expect(caps.capRight).toBe(true);
       });
@@ -4164,6 +4071,13 @@ describe('modus-wc-date', () => {
         expect(
           page.root!.querySelector('.calendar-container.dynamic-height')
         ).toBeNull();
+
+        component['showStartCalendar'] = false;
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const endCalendar = page.root!.querySelector('.calendar-container');
+        expect(endCalendar?.classList.contains('dynamic-height')).toBe(false);
       });
 
       it('should blank individual overflow cells and remove fully-overflow rows when hide-overflow-dates is enabled', async () => {
@@ -4706,48 +4620,31 @@ describe('modus-wc-date', () => {
 
     describe('branch coverage gaps', () => {
       it('should evaluate range cell class helpers across all branches', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Class helper test" type="range"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
         const caps = { capLeft: true, capRight: false };
 
-        expect(
-          component['shouldApplyRangeCapLeft'](true, false, caps, false)
-        ).toBe(true);
-        expect(
-          component['shouldApplyRangeCapLeft'](true, false, null, true)
-        ).toBe(true);
-        expect(
-          component['shouldApplyRangeCapLeft'](false, false, caps, true)
-        ).toBe(false);
+        expect(shouldApplyRangeCapLeft(true, false, caps, false)).toBe(true);
+        expect(shouldApplyRangeCapLeft(true, false, null, true)).toBe(true);
+        expect(shouldApplyRangeCapLeft(false, false, caps, true)).toBe(false);
 
-        expect(
-          component['shouldApplyRangeCapRight'](true, false, caps, false)
-        ).toBe(false);
-        expect(
-          component['shouldApplyRangeCapRight'](true, false, null, true)
-        ).toBe(true);
-        expect(
-          component['shouldApplyRangeCapRight'](true, true, caps, true)
-        ).toBe(false);
+        expect(shouldApplyRangeCapRight(true, false, caps, false)).toBe(false);
+        expect(shouldApplyRangeCapRight(true, false, null, true)).toBe(true);
+        expect(shouldApplyRangeCapRight(true, true, caps, true)).toBe(false);
 
         // hover-affordance-left: basic truthy path (non-anchor)
+        expect(shouldApplyHoverAffordanceLeft(true, caps, true, false)).toBe(
+          true
+        );
+        expect(shouldApplyHoverAffordanceLeft(true, caps, true, false)).toBe(
+          true
+        );
+        expect(shouldApplyHoverAffordanceLeft(false, caps, true, false)).toBe(
+          false
+        );
+        expect(shouldApplyHoverAffordanceLeft(true, null, true, false)).toBe(
+          false
+        );
         expect(
-          component['shouldApplyHoverAffordanceLeft'](true, caps, true, false)
-        ).toBe(true);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](true, caps, true, false)
-        ).toBe(true);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](false, caps, true, false)
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](true, null, true, false)
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](
+          shouldApplyHoverAffordanceLeft(
             true,
             { capLeft: false, capRight: true },
             true,
@@ -4755,19 +4652,19 @@ describe('modus-wc-date', () => {
           )
         ).toBe(false);
         expect(
-          component['shouldApplyHoverAffordanceLeft'](
+          shouldApplyHoverAffordanceLeft(
             true,
             { capLeft: false, capRight: true },
             true,
             true
           )
         ).toBe(true);
-        expect(
-          component['shouldApplyHoverAffordanceLeft'](true, caps, false, false)
-        ).toBe(false);
+        expect(shouldApplyHoverAffordanceLeft(true, caps, false, false)).toBe(
+          false
+        );
 
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          shouldApplyHoverAffordanceRight(
             true,
             { capLeft: false, capRight: true },
             true,
@@ -4775,7 +4672,7 @@ describe('modus-wc-date', () => {
           )
         ).toBe(true);
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          shouldApplyHoverAffordanceRight(
             true,
             { capLeft: false, capRight: true },
             true,
@@ -4783,18 +4680,18 @@ describe('modus-wc-date', () => {
           )
         ).toBe(true);
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          shouldApplyHoverAffordanceRight(
             false,
             { capLeft: false, capRight: true },
             true,
             false
           )
         ).toBe(false);
+        expect(shouldApplyHoverAffordanceRight(true, null, true, false)).toBe(
+          false
+        );
         expect(
-          component['shouldApplyHoverAffordanceRight'](true, null, true, false)
-        ).toBe(false);
-        expect(
-          component['shouldApplyHoverAffordanceRight'](
+          shouldApplyHoverAffordanceRight(
             true,
             { capLeft: true, capRight: false },
             true,
@@ -4802,7 +4699,7 @@ describe('modus-wc-date', () => {
           )
         ).toBe(true);
         expect(
-          component['shouldApplyHoverAffordanceRight'](
+          shouldApplyHoverAffordanceRight(
             true,
             { capLeft: false, capRight: true },
             false,
@@ -4810,45 +4707,33 @@ describe('modus-wc-date', () => {
           )
         ).toBe(false);
 
-        expect(component['shouldApplyHoverCapLeft'](true, caps)).toBe(true);
-        expect(component['shouldApplyHoverCapLeft'](false, caps)).toBe(false);
-        expect(component['shouldApplyHoverCapLeft'](true, null)).toBe(false);
+        expect(shouldApplyHoverCapLeft(true, caps)).toBe(true);
+        expect(shouldApplyHoverCapLeft(false, caps)).toBe(false);
+        expect(shouldApplyHoverCapLeft(true, null)).toBe(false);
 
         expect(
-          component['shouldApplyHoverCapRight'](true, {
+          shouldApplyHoverCapRight(true, {
             capLeft: false,
             capRight: true,
           })
         ).toBe(true);
         expect(
-          component['shouldApplyHoverCapRight'](true, {
+          shouldApplyHoverCapRight(true, {
             capLeft: true,
             capRight: false,
           })
         ).toBe(false);
-        expect(component['shouldApplyHoverCapRight'](true, null)).toBe(false);
-        expect(component['shouldApplyHoverCapRight'](false, caps)).toBe(false);
+        expect(shouldApplyHoverCapRight(true, null)).toBe(false);
+        expect(shouldApplyHoverCapRight(false, caps)).toBe(false);
       });
 
-      it('should default createPopperOptions placement to bottom-start', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Popper options test"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const options = component['createPopperOptions']();
+      it('should default createPopperOptions placement to bottom-start', () => {
+        const options = createPopperOptions();
         expect(options.placement).toBe('bottom-start');
       });
 
-      it('should use bottom-end fallback placements in createPopperOptions', async () => {
-        const page = await newSpecPage({
-          components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Popper options test"></modus-wc-date>',
-        });
-        const component = page.rootInstance as ModusWcDate;
-
-        const options = component['createPopperOptions']('bottom-end');
+      it('should use bottom-end fallback placements in createPopperOptions', () => {
+        const options = createPopperOptions('bottom-end');
         expect(options.placement).toBe('bottom-end');
         expect(options.modifiers[1].options.fallbackPlacements).toContain(
           'top-end'
