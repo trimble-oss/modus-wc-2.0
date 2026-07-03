@@ -1,5 +1,5 @@
-import { WeekStartDay } from '../../types';
 import { cloneDate } from './date-utils';
+import { WeekStartDay } from '../../types';
 
 export const MONTH_SHORT_NAMES = [
   'Jan',

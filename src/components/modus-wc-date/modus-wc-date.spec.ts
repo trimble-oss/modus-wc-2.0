@@ -5,6 +5,7 @@ import { IInputFeedbackProp, WeekStartDay } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcDate } from './modus-wc-date';
 import { cloneDate, compareDate, formatISODate } from './utils/date-utils';
+import { formatForDisplay } from './utils/date-format';
 import { createPopperOptions } from './utils/popper-utils';
 import {
   computeCaps,
@@ -529,7 +530,7 @@ describe('modus-wc-date', () => {
     expect(component['parseISODate']('2025-13-01')).toBeUndefined();
   });
 
-  it('should format date to ISO string', async () => {
+  it('should format date to ISO string', () => {
     const date = new Date(2025, 9, 15);
     const formatted = formatISODate(date);
 
@@ -617,7 +618,7 @@ describe('modus-wc-date', () => {
     expect(input.value).toBe('15-10-2025');
   });
 
-  it('should handle compareDate with null/undefined values', async () => {
+  it('should handle compareDate with null/undefined values', () => {
     const date = new Date(2025, 9, 15);
 
     expect(compareDate(null as unknown as Date, null as unknown as Date)).toBe(
@@ -2582,13 +2583,13 @@ describe('modus-wc-date', () => {
     });
   });
 
-  it('should always format the value prop as ISO 8601 regardless of display format', async () => {
+  it('should always format the value prop as ISO 8601 regardless of display format', () => {
     const date = new Date(2025, 9, 15);
 
     expect(formatISODate(date)).toBe('2025-10-15');
   });
 
-  it('should format date for display according to the selected format', async () => {
+  it('should format date for display according to the selected format', () => {
     const date = new Date(2025, 9, 15);
 
     const tests = [
@@ -2602,12 +2603,7 @@ describe('modus-wc-date', () => {
     ];
 
     for (const { format, expected } of tests) {
-      const page = await newSpecPage({
-        components: [ModusWcDate],
-        html: `<modus-wc-date aria-label="Display format test" format="${format}"></modus-wc-date>`,
-      });
-      const component = page.rootInstance as ModusWcDate;
-      expect(component['formatForDisplay'](date)).toBe(expected);
+      expect(formatForDisplay(date, format)).toBe(expected);
     }
   });
 
@@ -2639,7 +2635,7 @@ describe('modus-wc-date', () => {
     expect(parsed?.getDate()).toBe(15);
   });
 
-  it('should use default yyyy-mm-dd format for unknown format values', async () => {
+  it('should use default yyyy-mm-dd format for unknown format values', () => {
     const date = new Date(2025, 9, 15); // October 15, 2025
     const formatted = formatISODate(date);
 
@@ -4497,7 +4493,10 @@ describe('modus-wc-date', () => {
 
         component['handleEndInput'](mockEvent);
 
-        expect(mockEvent.stopPropagation).toHaveBeenCalled();
+        expect(
+          (mockEvent as unknown as { stopPropagation: jest.Mock })
+            .stopPropagation
+        ).toHaveBeenCalled();
         // Validation happens on blur, not on input — endValue is untouched.
         expect(component['endValue']).toBe('');
       });
@@ -4665,7 +4664,7 @@ describe('modus-wc-date', () => {
     });
 
     describe('branch coverage gaps', () => {
-      it('should evaluate range cell class helpers across all branches', async () => {
+      it('should evaluate range cell class helpers across all branches', () => {
         const caps = { capLeft: true, capRight: false };
 
         expect(shouldApplyRangeCapLeft(true, false, caps, false)).toBe(true);
