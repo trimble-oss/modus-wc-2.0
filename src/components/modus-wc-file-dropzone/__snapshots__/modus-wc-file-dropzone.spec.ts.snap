@@ -1,5 +1,185 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-file-dropzone should display default dragging message when feedback type is dragging without message 1`] = `
+<modus-wc-file-dropzone file-dragged-over-instructions="Drop files here now">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Drop files here now
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display default dragging message when feedback type is dragging without message or drag-over instructions 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Drop files here
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display default error message when feedback type is error without message 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="error-icon" name="alert" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          An error occurred
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display default success message when feedback type is success without message 1`] = `
+<modus-wc-file-dropzone success-message="Files uploaded successfully">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="success-icon" name="check_circle" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Files uploaded successfully
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display default success message when feedback type is success without message or success-message prop 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="success-icon" name="check_circle" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Successfully uploaded
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display dragging state when feedback type is dragging 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Release to upload
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display error state when feedback type is error 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="error-icon" name="alert" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Upload failed
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should display success state when feedback type is success 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="success-icon" name="check_circle" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Upload complete!
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should prioritize actual drag over feedback error state 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Drop files here
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone should prioritize feedback over internal validation state 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="success-icon" name="check_circle" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Override success
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
 exports[`modus-wc-file-dropzone should render with accept-file-types prop 1`] = `
 <modus-wc-file-dropzone accept-file-types=".jpg,.png,image/*">
   <!---->
