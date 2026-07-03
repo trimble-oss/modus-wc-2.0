@@ -10,7 +10,7 @@ interface AvatarArgs {
   'img-src': string;
   initials: string;
   shape: string;
-  size: DaisySize;
+  size: DaisySize | 'xl';
 }
 
 const meta: Meta<AvatarArgs> = {
@@ -31,7 +31,7 @@ const meta: Meta<AvatarArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
 };
