@@ -6,10 +6,6 @@
 modus-wc-date .modus-wc-date-input {
   background-color: var(--modus-wc-color-base-page);
 
-  .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
-  }
-
   &--readonly {
     background-color: var(--modus-wc-color-base-200);
   }
@@ -21,12 +17,6 @@ modus-wc-date {
   --calendar-grid-columns-with-week-numbers: auto repeat(7, 36px);
 
   position: relative;
-
-  &.modus-wc-date-input {
-    background-color: var(--modus-wc-color-base-page);
-    border-radius: var(--modus-wc-border-radius-input);
-    color: var(--modus-wc-color-base-content);
-  }
 
   .date-input-container {
     align-items: center;
@@ -41,11 +31,11 @@ modus-wc-date {
       position: absolute;
       right: var(--modus-wc-spacing-md);
 
-      :hover {
+      &:hover {
         color: var(--modus-wc-color-primary);
       }
 
-      :disabled {
+      &:disabled {
         background-color: transparent;
         cursor: not-allowed;
       }
@@ -68,7 +58,6 @@ modus-wc-date {
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
-    height: 368px;
     overflow: hidden;
     position: fixed;
     width: 300px;
@@ -76,14 +65,6 @@ modus-wc-date {
 
     &.has-week-numbers {
       width: 320px;
-    }
-
-    &.dynamic-height {
-      height: auto;
-
-      .calendar-body {
-        height: auto;
-      }
     }
 
     .calendar-header {
@@ -117,10 +98,7 @@ modus-wc-date {
           color: var(--modus-wc-color-base-content);
         }
 
-        .month-select {
-          border-radius: var(--modus-wc-border-radius-input);
-        }
-
+        .month-select,
         .year-select {
           border-radius: var(--modus-wc-border-radius-input);
         }
@@ -135,17 +113,20 @@ modus-wc-date {
     .calendar-body {
       background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
-      height: 316px;
       padding: var(--modus-wc-spacing-xl);
 
-      .calendar-days-week {
+      .calendar-days-week,
+      .calendar-dates {
         display: grid;
         grid-template-columns: var(--calendar-grid-columns);
-        margin-bottom: var(--modus-wc-spacing-sm);
 
         &.has-week-numbers {
           grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
         }
+      }
+
+      .calendar-days-week {
+        margin-bottom: var(--modus-wc-spacing-sm);
 
         .week-number-header {
           margin-inline-end: var(--modus-wc-spacing-md);
@@ -161,13 +142,7 @@ modus-wc-date {
       }
 
       .calendar-dates {
-        display: grid;
-        grid-template-columns: var(--calendar-grid-columns);
         row-gap: var(--modus-wc-spacing-xs);
-
-        &.has-week-numbers {
-          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
-        }
 
         .week-number {
           align-items: center;
@@ -189,7 +164,6 @@ modus-wc-date {
           align-items: center;
           box-sizing: border-box;
           display: flex;
-          height: 36px;
           justify-content: center;
 
           &--empty {
@@ -200,20 +174,21 @@ modus-wc-date {
           // neighbor-connectivity model (computeCaps in modus-wc-date.tsx)
           // instead of separate row/month-boundary classes, so ranges that
           // span rows or months render as continuous pills automatically.
-          &.range-fill {
+          &.range-fill,
+          &.range-anchor-fill {
             background-color: var(--modus-wc-color-base-100);
           }
 
-          // Longhand corner properties (not the border-radius shorthand) so
-          // a cell that needs caps on both sides at once — e.g. an isolated
-          // single-cell preview/range run — gets both sets of rounded
-          // corners instead of one side's shorthand clobbering the other's.
-          &.range-cap-left {
+          &.range-cap-left,
+          &.range-start.range-anchor.range-anchor-fill,
+          &.hover-cap-left {
             border-bottom-left-radius: 999px;
             border-top-left-radius: 999px;
           }
 
-          &.range-cap-right {
+          &.range-cap-right,
+          &.range-end.range-anchor.range-anchor-fill,
+          &.hover-cap-right {
             border-bottom-right-radius: 999px;
             border-top-right-radius: 999px;
           }
@@ -248,23 +223,6 @@ modus-wc-date {
             right: 0;
           }
 
-          // Anchor sitting inside a confirmed range: same flat fill as its
-          // neighbors (no radius — the anchor's own circle is the visual
-          // cap), so the pill background never stops short around it.
-          &.range-anchor-fill {
-            background-color: var(--modus-wc-color-base-100);
-          }
-
-          &.range-start.range-anchor.range-anchor-fill {
-            border-bottom-left-radius: 999px;
-            border-top-left-radius: 999px;
-          }
-
-          &.range-end.range-anchor.range-anchor-fill {
-            border-bottom-right-radius: 999px;
-            border-top-right-radius: 999px;
-          }
-
           // Non-anchor endpoint: base-100 fill + dashed border (4px dash / 4px gap)
           // to distinguish it from the darker anchor endpoint.
           &.range-start:not(.range-anchor) .calendar-day.selected,
@@ -293,14 +251,10 @@ modus-wc-date {
           // border-radius shorthand overwriting the other's.
           &.hover-cap-left {
             border-left: 2px dashed var(--modus-wc-color-base-200);
-            border-bottom-left-radius: 999px;
-            border-top-left-radius: 999px;
           }
 
           &.hover-cap-right {
             border-right: 2px dashed var(--modus-wc-color-base-200);
-            border-bottom-right-radius: 999px;
-            border-top-right-radius: 999px;
           }
         }
 
@@ -312,9 +266,9 @@ modus-wc-date {
           color: var(--modus-wc-color-base-content-high-contrast);
           cursor: pointer;
           display: flex;
-          height: 32px;
+          height: 36px;
           justify-content: center;
-          width: 32px;
+          width: 36px;
 
           // Hovered date (preview end) gets base-200 fill
           &.hover-preview-end {

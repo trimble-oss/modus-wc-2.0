@@ -102,8 +102,11 @@ export class ModusWcDate {
   /** Calendar state object for the end (right) panel in range mode */
   @State() private endCalendar: DatePickerCalendar = new DatePickerCalendar();
 
-  /** Tracks whether the component currently has focus */
-  private hasFocus = false;
+  /** Tracks whether the start input currently has focus */
+  private hasStartFocus = false;
+
+  /** Tracks whether the end input currently has focus (range mode) */
+  private hasEndFocus = false;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -163,8 +166,8 @@ export class ModusWcDate {
   /** Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week. */
   @Prop() showWeekNumbers?: boolean = false;
 
-  /** Hides leading/trailing dates from adjacent months. Rows that mix current-month and overflow dates blank the overflow cells; rows made entirely of overflow dates are removed, shrinking the calendar height. */
-  @Prop() hideOverflowDates?: boolean = false;
+  /** When omitted, defaults to `true` in range mode and `false` in single mode. */
+  @Prop() hideOverflowDates?: boolean;
 
   /** Activates range mode. `value` is the start date; `endValue` is the end date. */
   @Prop() type?: 'single' | 'range' = 'single';
@@ -197,6 +200,13 @@ export class ModusWcDate {
       const parsed = this.parseISODate(this.value);
       if (parsed) {
         this.inputRef.value = this.formatForDisplay(parsed);
+      }
+    }
+
+    if (this.isRange && this.endValue && this.endInputRef) {
+      const parsed = this.parseISODate(this.endValue);
+      if (parsed) {
+        this.endInputRef.value = this.formatForDisplay(parsed);
       }
     }
   }
@@ -237,7 +247,7 @@ export class ModusWcDate {
     // so that controlled input patterns (e.g. React) work correctly.
     // Only reformat strict ISO 8601 values set programmatically; all other
     // typed/partial input passes through unchanged.
-    if (this.hasFocus) {
+    if (this.hasStartFocus) {
       const isISO = /^\d{4}-\d{2}-\d{2}$/.test(newValue);
       if (isISO) {
         const parsed = this.parseISODate(newValue);
@@ -280,9 +290,7 @@ export class ModusWcDate {
   @Watch('weekStartDay')
   handleWeekStartDayChange() {
     // Reinitialize calendar with new first day of week
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    this.calendar = new DatePickerCalendar(firstDayOfWeek);
+    this.calendar = new DatePickerCalendar(this.firstDayOfWeek);
 
     // Navigate to currently selected date if exists
     const selectedDate = this.parseISODate(this.value);
@@ -310,9 +318,7 @@ export class ModusWcDate {
     }
 
     // Navigate end calendar to the end date's month
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCal = new DatePickerCalendar(firstDayOfWeek);
+    const newCal = new DatePickerCalendar(this.firstDayOfWeek);
     newCal.gotoDate(parsed.getFullYear(), parsed.getMonth());
     this.endCalendar = newCal;
   }
@@ -335,15 +341,13 @@ export class ModusWcDate {
     }
 
     // Initialize calendar with the correct first day of week
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    this.calendar = new DatePickerCalendar(firstDayOfWeek);
+    this.calendar = new DatePickerCalendar(this.firstDayOfWeek);
     this.handleMinChange(this.min);
     this.handleMaxChange(this.max);
     this.handleValueChange(this.value);
 
     if (this.type === 'range') {
-      const endCal = new DatePickerCalendar(firstDayOfWeek);
+      const endCal = new DatePickerCalendar(this.firstDayOfWeek);
       const endDate = this.parseISODate(this.endValue);
       if (endDate) {
         endCal.gotoDate(endDate.getFullYear(), endDate.getMonth());
@@ -367,21 +371,21 @@ export class ModusWcDate {
   componentDidUpdate() {
     if (this.isRange) {
       if (this.showStartCalendar && this.inputRef && this.calendarRef) {
-        this.setupStartPopper(this.inputRef, this.calendarRef);
+        this.setupCalendarPopper(this.inputRef, this.calendarRef, 'start');
       } else if (this.startPopperInstance) {
         this.startPopperInstance.destroy();
         this.startPopperInstance = null;
       }
 
       if (this.showEndCalendar && this.endInputRef && this.endCalendarRef) {
-        this.setupEndPopper(this.endInputRef, this.endCalendarRef);
+        this.setupCalendarPopper(this.endInputRef, this.endCalendarRef, 'end');
       } else if (this.endPopperInstance) {
         this.endPopperInstance.destroy();
         this.endPopperInstance = null;
       }
     } else {
       if (this.showCalendar && this.inputRef && this.calendarRef) {
-        this.setupPopper(this.inputRef, this.calendarRef);
+        this.setupCalendarPopper(this.inputRef, this.calendarRef, 'single');
       } else if (this.popperInstance) {
         this.popperInstance.destroy();
         this.popperInstance = null;
@@ -436,15 +440,22 @@ export class ModusWcDate {
     }
 
     // Focus is leaving the component
-    this.hasFocus = false;
+    this.hasStartFocus = false;
     this.syncValueFromInput();
     this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
-    // Only emit focus if component didn't already have focus
-    if (!this.hasFocus) {
-      this.hasFocus = true;
+    // Only emit focus if the start input didn't already have focus
+    if (!this.hasStartFocus) {
+      this.hasStartFocus = true;
+      this.inputFocus.emit(event);
+    }
+  };
+
+  private handleEndFocus = (event: FocusEvent) => {
+    if (!this.hasEndFocus) {
+      this.hasEndFocus = true;
       this.inputFocus.emit(event);
     }
   };
@@ -487,38 +498,35 @@ export class ModusWcDate {
     };
   }
 
-  private setupPopper = (anchor: HTMLElement, calendar: HTMLElement) => {
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-    }
-    this.popperInstance = createPopper(
-      anchor,
-      calendar,
-      this.createPopperOptions('bottom-start')
-    );
-  };
+  private setupCalendarPopper(
+    anchor: HTMLElement,
+    calendar: HTMLElement,
+    target: 'single' | 'start' | 'end'
+  ): void {
+    const placement = target === 'end' ? 'bottom-end' : 'bottom-start';
+    const options = this.createPopperOptions(placement);
 
-  private setupStartPopper = (anchor: HTMLElement, calendar: HTMLElement) => {
-    if (this.startPopperInstance) {
-      this.startPopperInstance.destroy();
+    if (target === 'single') {
+      if (this.popperInstance) {
+        this.popperInstance.destroy();
+      }
+      this.popperInstance = createPopper(anchor, calendar, options);
+      return;
     }
-    this.startPopperInstance = createPopper(
-      anchor,
-      calendar,
-      this.createPopperOptions('bottom-start')
-    );
-  };
 
-  private setupEndPopper = (anchor: HTMLElement, calendar: HTMLElement) => {
+    if (target === 'start') {
+      if (this.startPopperInstance) {
+        this.startPopperInstance.destroy();
+      }
+      this.startPopperInstance = createPopper(anchor, calendar, options);
+      return;
+    }
+
     if (this.endPopperInstance) {
       this.endPopperInstance.destroy();
     }
-    this.endPopperInstance = createPopper(
-      anchor,
-      calendar,
-      this.createPopperOptions('bottom-end')
-    );
-  };
+    this.endPopperInstance = createPopper(anchor, calendar, options);
+  }
 
   private toggleCalendar = () => {
     this.showCalendar = !this.showCalendar;
@@ -558,9 +566,7 @@ export class ModusWcDate {
 
   private openEndCalendar = () => {
     this.showEndCalendar = true;
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const endCal = new DatePickerCalendar(firstDayOfWeek);
+    const endCal = new DatePickerCalendar(this.firstDayOfWeek);
     const endDate = this.parseISODate(this.endValue);
     if (endDate) {
       endCal.gotoDate(endDate.getFullYear(), endDate.getMonth());
@@ -617,9 +623,9 @@ export class ModusWcDate {
       return;
     }
 
-    // Clear hasFocus before setting value so the @Watch('value') handler
+    // Clear hasStartFocus before setting value so the @Watch('value') handler
     // takes the full validation path and dispatches the input event.
-    this.hasFocus = false;
+    this.hasStartFocus = false;
     this.value = this.formatISODate(date);
 
     // If the selected date is from a different month, navigate to that month
@@ -628,8 +634,7 @@ export class ModusWcDate {
       date.getMonth() !== this.calendar.selectedMonth ||
       date.getFullYear() !== this.calendar.selectedYear
     ) {
-      const firstDayOfWeek = WEEK_START_DAY_MAP[this.weekStartDay || 'sunday'];
-      const newCalendar = new DatePickerCalendar(firstDayOfWeek);
+      const newCalendar = new DatePickerCalendar(this.firstDayOfWeek);
       newCalendar.gotoDate(date.getFullYear(), date.getMonth());
       this.calendar = newCalendar;
     }
@@ -648,14 +653,12 @@ export class ModusWcDate {
   };
 
   private addEndMonthOffset = (offset: number) => {
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCal = new DatePickerCalendar(firstDayOfWeek);
-    newCal.gotoDate(
+    const target = new Date(
       this.endCalendar.selectedYear,
-      this.endCalendar.selectedMonth + offset
+      this.endCalendar.selectedMonth + offset,
+      1
     );
-    this.endCalendar = newCal;
+    this.updateEndCalendar(target.getFullYear(), target.getMonth());
   };
 
   private handleEndMonthChange = (event: CustomEvent<InputEvent>) => {
@@ -666,11 +669,7 @@ export class ModusWcDate {
     if (Number.isNaN(newMonth)) {
       return;
     }
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCal = new DatePickerCalendar(firstDayOfWeek);
-    newCal.gotoDate(this.endCalendar.selectedYear, newMonth);
-    this.endCalendar = newCal;
+    this.updateEndCalendar(this.endCalendar.selectedYear, newMonth);
   };
 
   private handleEndYearChange = (event: CustomEvent<InputEvent>) => {
@@ -681,11 +680,7 @@ export class ModusWcDate {
     if (Number.isNaN(newYear)) {
       return;
     }
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCal = new DatePickerCalendar(firstDayOfWeek);
-    newCal.gotoDate(newYear, this.endCalendar.selectedMonth);
-    this.endCalendar = newCal;
+    this.updateEndCalendar(newYear, this.endCalendar.selectedMonth);
   };
 
   private handleRangeDateSelect = (date: Date) => {
@@ -693,7 +688,7 @@ export class ModusWcDate {
       return;
     }
 
-    this.hasFocus = false;
+    this.hasStartFocus = false;
 
     const startParsed = this.parseISODate(this.value);
     const endParsed = this.parseISODate(this.endValue);
@@ -802,14 +797,15 @@ export class ModusWcDate {
     if (relatedTarget && this.el.contains(relatedTarget)) {
       return;
     }
-    this.hasFocus = false;
+    this.hasEndFocus = false;
     this.syncEndValueFromInput();
     this.inputBlur.emit(event);
   };
 
   private handleEndInput = (event: InputEvent) => {
+    // Prevent the event from bubbling to a parent form/listener — end value
+    // is validated and synced on blur, not on each keystroke.
     event.stopPropagation();
-    // End date value is validated and synced on blur
   };
 
   private handleMonthChange = (event: CustomEvent<InputEvent>) => {
@@ -871,10 +867,11 @@ export class ModusWcDate {
       if (this.isRange && (this.showStartCalendar || this.showEndCalendar)) {
         this.showStartCalendar = false;
         this.showEndCalendar = false;
-        this.hasFocus = false;
+        this.hasStartFocus = false;
+        this.hasEndFocus = false;
       } else if (this.showCalendar) {
         this.showCalendar = false;
-        this.hasFocus = false;
+        this.hasStartFocus = false;
       }
     }
   }
@@ -1238,93 +1235,207 @@ export class ModusWcDate {
     );
   }
 
+  private computeHoverPreviewRange(
+    anchorDate: Date | null,
+    hoverParsed: Date | null,
+    rangeLo: Date | null,
+    rangeHi: Date | null
+  ): { previewStart: Date | null; previewEnd: Date | null } {
+    let previewStart: Date | null = null;
+    let previewEnd: Date | null = null;
+
+    const isHoveringAnchor =
+      !!anchorDate &&
+      !!hoverParsed &&
+      this.compareDate(hoverParsed, anchorDate) === 0;
+
+    if (
+      !anchorDate ||
+      !hoverParsed ||
+      isHoveringAnchor ||
+      this.isDateDisabled(hoverParsed)
+    ) {
+      return { previewStart, previewEnd };
+    }
+
+    if (this.compareDate(hoverParsed, anchorDate) >= 0) {
+      previewStart = anchorDate;
+      previewEnd = hoverParsed;
+    } else {
+      previewStart = hoverParsed;
+      previewEnd = anchorDate;
+    }
+
+    if (rangeLo && rangeHi) {
+      const hoverBeforeRange = this.compareDate(hoverParsed, rangeLo) < 0;
+      const hoverAfterRange = this.compareDate(hoverParsed, rangeHi) > 0;
+      const hoverInRange = !hoverBeforeRange && !hoverAfterRange;
+
+      if (hoverInRange) {
+        previewStart = null;
+        previewEnd = null;
+      } else if (hoverAfterRange) {
+        const dayAfterEnd = this.addDays(rangeHi, 1);
+        // istanbul ignore else (unreachable: hoverAfterRange guarantees
+        // hoverParsed > rangeHi, so dayAfterEnd (rangeHi + 1) is always
+        // <= hoverParsed)
+        if (this.compareDate(dayAfterEnd, hoverParsed) <= 0) {
+          previewStart = dayAfterEnd;
+          previewEnd = hoverParsed;
+        } else {
+          previewStart = null;
+          previewEnd = null;
+        }
+      } else if (hoverBeforeRange) {
+        const dayBeforeStart = this.addDays(rangeLo, -1);
+        // istanbul ignore else (unreachable: hoverBeforeRange guarantees
+        // hoverParsed < rangeLo, so hoverParsed is always <=
+        // dayBeforeStart (rangeLo - 1))
+        if (this.compareDate(hoverParsed, dayBeforeStart) <= 0) {
+          previewStart = hoverParsed;
+          previewEnd = dayBeforeStart;
+        } else {
+          previewStart = null;
+          previewEnd = null;
+        }
+      }
+    }
+
+    return { previewStart, previewEnd };
+  }
+
+  private getRangeDayCellClasses(context: {
+    isRangeStart: boolean;
+    isRangeEnd: boolean;
+    isAnchor: boolean;
+    confirmed: boolean;
+    preview: boolean;
+    caps: { capLeft: boolean; capRight: boolean } | null;
+    isAtRangeLo: boolean;
+    isAtRangeHi: boolean;
+    hoveringBeforeStart: boolean;
+    hoveringAfterEnd: boolean;
+  }): Record<string, boolean> {
+    const {
+      isRangeStart,
+      isRangeEnd,
+      isAnchor,
+      confirmed,
+      preview,
+      caps,
+      isAtRangeLo,
+      isAtRangeHi,
+      hoveringBeforeStart,
+      hoveringAfterEnd,
+    } = context;
+
+    return {
+      'calendar-day-cell': true,
+      'range-start': isRangeStart,
+      'range-end': isRangeEnd,
+      'range-anchor': isAnchor,
+      'range-fill': confirmed && !isAnchor,
+      'range-cap-left': this.shouldApplyRangeCapLeft(
+        confirmed,
+        isAnchor,
+        caps,
+        isAtRangeLo
+      ),
+      'range-cap-right': this.shouldApplyRangeCapRight(
+        confirmed,
+        isAnchor,
+        caps,
+        isAtRangeHi
+      ),
+      'hover-affordance-left': this.shouldApplyHoverAffordanceLeft(
+        isRangeStart,
+        caps,
+        hoveringBeforeStart,
+        isAtRangeLo
+      ),
+      'hover-affordance-right': this.shouldApplyHoverAffordanceRight(
+        isRangeEnd,
+        caps,
+        hoveringAfterEnd,
+        isAtRangeHi
+      ),
+      'hover-fill': preview && !isAnchor,
+      'hover-cap-left': this.shouldApplyHoverCapLeft(preview, caps),
+      'hover-cap-right': this.shouldApplyHoverCapRight(preview, caps),
+      'anchor-preview-connector': isAnchor && preview,
+      'range-anchor-fill':
+        isAnchor && confirmed && !!caps && (!caps.capLeft || !caps.capRight),
+    };
+  }
+
+  private renderDayButton(
+    date: Date,
+    flags: {
+      isToday: boolean;
+      isCurrentMonth: boolean;
+      isDisabled: boolean;
+      isSelected: boolean;
+      isRangeStart: boolean;
+      isRangeEnd: boolean;
+      isAnchor: boolean;
+      isHoveredDay: boolean;
+    }
+  ) {
+    const {
+      isToday,
+      isCurrentMonth,
+      isDisabled,
+      isSelected,
+      isRangeStart,
+      isRangeEnd,
+      isAnchor,
+      isHoveredDay,
+    } = flags;
+
+    return (
+      <button
+        type="button"
+        class={{
+          'calendar-day': true,
+          'current-day': isToday,
+          selected: isSelected || isRangeStart || isRangeEnd || isAnchor,
+          'hover-preview-end': isHoveredDay,
+          'current-month': isCurrentMonth,
+          'other-month': !isCurrentMonth,
+          disabled: isDisabled,
+        }}
+        disabled={isDisabled}
+        onClick={() =>
+          // istanbul ignore next (unreachable code)
+          this.isRange
+            ? this.handleRangeDateSelect(date)
+            : this.handleDateSelect(date)
+        }
+        onMouseEnter={
+          // istanbul ignore next (unreachable code)
+          this.isRange && !isDisabled
+            ? () => {
+                this.hoverDate = this.formatISODate(date);
+              }
+            : undefined
+        }
+        onKeyDown={(e) => this.handleDateKeyDown(e, date)}
+        tabIndex={isDisabled ? -1 : 0}
+      >
+        {date.getDate()}
+      </button>
+    );
+  }
+
   private renderCalendarBody(cal: DatePickerCalendar) {
     const today = new Date();
     const selectedDate = this.parseISODate(this.value);
     const startDate = this.parsedStartDate;
     const endDate = this.parsedEndDate;
     const currentMonth = cal.selectedMonth;
-    const weekStartNum = WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
+    const weekStartNum = this.firstDayOfWeek;
 
-    // --- Hover preview range computation ---
-    // Only active in range mode when an anchor is set and a date is being hovered.
-    const anchorDate =
-      this.anchorEndpoint === 'start'
-        ? startDate
-        : this.anchorEndpoint === 'end'
-          ? endDate
-          : null;
-    const hoverParsed = this.isRange ? this.parseISODate(this.hoverDate) : null;
-    let previewStart: Date | null = null;
-    let previewEnd: Date | null = null;
-    // Hovering directly on the anchor itself is a zero-length "extension"
-    // (nothing would change on click) — skip the preview run entirely so
-    // the anchor doesn't grow dashed caps on both sides with nothing to
-    // connect to.
-    const isHoveringAnchor =
-      !!anchorDate &&
-      !!hoverParsed &&
-      this.compareDate(hoverParsed, anchorDate) === 0;
-    if (
-      anchorDate &&
-      hoverParsed &&
-      !isHoveringAnchor &&
-      !this.isDateDisabled(hoverParsed)
-    ) {
-      if (this.compareDate(hoverParsed, anchorDate) >= 0) {
-        previewStart = anchorDate;
-        previewEnd = hoverParsed;
-      } else {
-        previewStart = hoverParsed;
-        previewEnd = anchorDate;
-      }
-
-      // When a full range exists, preview only the extension beyond it — not
-      // cells already in the confirmed selection. The extension zone touches
-      // the confirmed range flush (no gap), so the neighbor-connectivity
-      // model in computeCaps() joins the two runs into one continuous pill
-      // without needing any special-cased "suppress this cap" logic.
-      if (startDate && endDate) {
-        const [rangeLo, rangeHi] =
-          this.compareDate(startDate, endDate) <= 0
-            ? [startDate, endDate]
-            : [endDate, startDate];
-        const hoverBeforeRange = this.compareDate(hoverParsed, rangeLo) < 0;
-        const hoverAfterRange = this.compareDate(hoverParsed, rangeHi) > 0;
-        const hoverInRange = !hoverBeforeRange && !hoverAfterRange;
-
-        if (hoverInRange) {
-          previewStart = null;
-          previewEnd = null;
-        } else if (hoverAfterRange) {
-          const dayAfterEnd = this.addDays(rangeHi, 1);
-          // istanbul ignore else (unreachable: hoverAfterRange guarantees
-          // hoverParsed > rangeHi, so dayAfterEnd (rangeHi + 1) is always
-          // <= hoverParsed)
-          if (this.compareDate(dayAfterEnd, hoverParsed) <= 0) {
-            previewStart = dayAfterEnd;
-            previewEnd = hoverParsed;
-          } else {
-            previewStart = null;
-            previewEnd = null;
-          }
-        } else if (hoverBeforeRange) {
-          const dayBeforeStart = this.addDays(rangeLo, -1);
-          // istanbul ignore else (unreachable: hoverBeforeRange guarantees
-          // hoverParsed < rangeLo, so hoverParsed is always <=
-          // dayBeforeStart (rangeLo - 1))
-          if (this.compareDate(hoverParsed, dayBeforeStart) <= 0) {
-            previewStart = hoverParsed;
-            previewEnd = dayBeforeStart;
-          } else {
-            previewStart = null;
-            previewEnd = null;
-          }
-        }
-      }
-    }
-
-    // Confirmed range bounds, sorted. A single-day selection (start === end)
+    // Confirmed range bounds, sorted once. A single-day selection (start === end)
     // has no fill/pill — only the anchor's own selected circle renders.
     const hasFullRange = this.isRange && !!startDate && !!endDate;
     const isSameStartEnd =
@@ -1339,6 +1450,21 @@ export class ModusWcDate {
           ? [startDate, endDate]
           : [endDate, startDate];
     }
+
+    // Hover preview range — only active in range mode when an anchor is set.
+    const anchorDate =
+      this.anchorEndpoint === 'start'
+        ? startDate
+        : this.anchorEndpoint === 'end'
+          ? endDate
+          : null;
+    const hoverParsed = this.isRange ? this.parseISODate(this.hoverDate) : null;
+    const { previewStart, previewEnd } = this.computeHoverPreviewRange(
+      anchorDate ?? null,
+      hoverParsed ?? null,
+      rangeLo,
+      rangeHi
+    );
 
     // The extendability affordance (dashed half on the range endpoint cap)
     // is only meaningful while the cursor is actively previewing an
@@ -1398,7 +1524,7 @@ export class ModusWcDate {
             // A row is entirely overflow when none of its 7 dates belong to
             // the displayed month — skip rendering it completely so the
             // calendar height shrinks.
-            if (this.hideOverflowDates && date) {
+            if (this.effectiveHideOverflowDates && date) {
               const rowIsFullyOverflow = cal.dates
                 .slice(rowIndex * 7, rowIndex * 7 + 7)
                 .every((d) => !d || d.getMonth() !== currentMonth);
@@ -1428,7 +1554,7 @@ export class ModusWcDate {
 
             // Within a retained (mixed) row, blank out individual overflow
             // cells while preserving the grid column alignment.
-            if (this.hideOverflowDates && !isCurrentMonth) {
+            if (this.effectiveHideOverflowDates && !isCurrentMonth) {
               const blankCell = (
                 <div class="calendar-day-cell calendar-day-cell--empty" />
               );
@@ -1517,120 +1643,37 @@ export class ModusWcDate {
                 ? this.computeCaps(date, colIndex, currentMonth, isHighlighted)
                 : null;
 
-            // Single-mode selection
             const isSelected =
               !this.isRange &&
               ((selectedDate && this.compareDate(date, selectedDate) === 0) ||
                 false);
 
-            const button = (
-              <button
-                type="button"
-                class={{
-                  'calendar-day': true,
-                  'current-day': isToday,
-                  selected:
-                    isSelected || isRangeStart || isRangeEnd || isAnchor,
-                  'hover-preview-end': isHoveredDay,
-                  'current-month': isCurrentMonth,
-                  'other-month': !isCurrentMonth,
-                  disabled: isDisabled,
-                }}
-                disabled={isDisabled}
-                onClick={() =>
-                  // istanbul ignore next (unreachable code)
-                  this.isRange
-                    ? this.handleRangeDateSelect(date)
-                    : this.handleDateSelect(date)
-                }
-                onMouseEnter={
-                  // istanbul ignore next (unreachable code)
-                  this.isRange && !isDisabled
-                    ? () => {
-                        this.hoverDate = this.formatISODate(date);
-                      }
-                    : undefined
-                }
-                onKeyDown={(e) => this.handleDateKeyDown(e, date)}
-                tabIndex={isDisabled ? -1 : 0}
-              >
-                {date.getDate()}
-              </button>
-            );
+            const button = this.renderDayButton(date, {
+              isToday,
+              isCurrentMonth,
+              isDisabled,
+              isSelected,
+              isRangeStart,
+              isRangeEnd,
+              isAnchor,
+              isHoveredDay,
+            });
 
             if (this.isRange) {
               const cell = (
                 <div
-                  class={{
-                    'calendar-day-cell': true,
-                    'range-start': isRangeStart,
-                    'range-end': isRangeEnd,
-                    'range-anchor': isAnchor,
-                    'range-fill': confirmed && !isAnchor,
-                    'range-cap-left': this.shouldApplyRangeCapLeft(
-                      confirmed,
-                      isAnchor,
-                      caps,
-                      isAtRangeLo
-                    ),
-                    'range-cap-right': this.shouldApplyRangeCapRight(
-                      confirmed,
-                      isAnchor,
-                      caps,
-                      isAtRangeHi
-                    ),
-                    // Directional extendability hint: only rendered on the
-                    // range-start/range-end cap while the cursor is actively
-                    // previewing an extension past that side — not shown as
-                    // a permanent default decoration.
-                    'hover-affordance-left':
-                      this.shouldApplyHoverAffordanceLeft(
-                        isRangeStart,
-                        isAnchor,
-                        caps,
-                        hoveringBeforeStart,
-                        isAtRangeLo
-                      ),
-                    'hover-affordance-right':
-                      this.shouldApplyHoverAffordanceRight(
-                        isRangeEnd,
-                        isAnchor,
-                        caps,
-                        hoveringAfterEnd,
-                        isAtRangeHi
-                      ),
-                    'hover-fill': preview && !isAnchor,
-                    // Cap classes carry only border + radius (no fill), so
-                    // they're safe to share with the anchor — its own circle
-                    // still reads as the visual endpoint, but the wrapper's
-                    // outline now closes into a proper rounded cap on
-                    // whichever side doesn't connect, instead of leaving a
-                    // square corner poking out from a flat, unrounded edge.
-                    'hover-cap-left': this.shouldApplyHoverCapLeft(
-                      preview,
-                      caps
-                    ),
-                    'hover-cap-right': this.shouldApplyHoverCapRight(
-                      preview,
-                      caps
-                    ),
-                    // Top/bottom connecting border for the anchor while it
-                    // participates in an active preview — combined with the
-                    // cap classes above, this closes into a full outline
-                    // (flat where it connects to a neighbor, rounded where
-                    // it doesn't).
-                    'anchor-preview-connector': isAnchor && preview,
-                    // The anchor never gets a rounded fill cap (that would
-                    // mismatch its circle and reintroduce a halo), but when
-                    // it sits inside a confirmed range it still needs the
-                    // same flat fill as its neighbors — otherwise a white
-                    // gap appears where the pill background stops short.
-                    'range-anchor-fill':
-                      isAnchor &&
-                      confirmed &&
-                      !!caps &&
-                      (!caps.capLeft || !caps.capRight),
-                  }}
+                  class={this.getRangeDayCellClasses({
+                    isRangeStart,
+                    isRangeEnd,
+                    isAnchor,
+                    confirmed,
+                    preview,
+                    caps,
+                    isAtRangeLo,
+                    isAtRangeHi,
+                    hoveringBeforeStart,
+                    hoveringAfterEnd,
+                  })}
                 >
                   {button}
                 </div>
@@ -1715,7 +1758,6 @@ export class ModusWcDate {
 
   private shouldApplyHoverAffordanceLeft(
     isRangeStart: boolean,
-    _isAnchor: boolean,
     caps: { capLeft: boolean; capRight: boolean } | null,
     hoveringBeforeStart: boolean,
     isAtRangeLo: boolean
@@ -1723,12 +1765,13 @@ export class ModusWcDate {
     // The affordance applies regardless of whether this cell is the anchor —
     // when hovering before the confirmed start, the start cell (anchor or not)
     // always needs the left-half dashed hint so the user can see it's extendable.
-    return isRangeStart && (!!caps?.capLeft || isAtRangeLo) && hoveringBeforeStart;
+    return (
+      isRangeStart && (!!caps?.capLeft || isAtRangeLo) && hoveringBeforeStart
+    );
   }
 
   private shouldApplyHoverAffordanceRight(
     isRangeEnd: boolean,
-    _isAnchor: boolean,
     caps: { capLeft: boolean; capRight: boolean } | null,
     hoveringAfterEnd: boolean,
     isAtRangeHi: boolean
@@ -1978,9 +2021,7 @@ export class ModusWcDate {
   private ensureCalendarWithinBounds(referenceDate?: Date) {
     // Allow viewing any month, just disable dates outside min/max
     if (referenceDate) {
-      const firstDayOfWeek =
-        WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-      const newCalendar = new DatePickerCalendar(firstDayOfWeek);
+      const newCalendar = new DatePickerCalendar(this.firstDayOfWeek);
       newCalendar.gotoDate(
         referenceDate.getFullYear(),
         referenceDate.getMonth()
@@ -1990,11 +2031,15 @@ export class ModusWcDate {
   }
 
   private setCalendarMonth(year: number, month: number) {
-    const firstDayOfWeek =
-      WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
-    const newCalendar = new DatePickerCalendar(firstDayOfWeek);
+    const newCalendar = new DatePickerCalendar(this.firstDayOfWeek);
     newCalendar.gotoDate(year, month);
     this.calendar = newCalendar;
+  }
+
+  private updateEndCalendar(year: number, month: number): void {
+    const newCal = new DatePickerCalendar(this.firstDayOfWeek);
+    newCal.gotoDate(year, month);
+    this.endCalendar = newCal;
   }
 
   private updateCalendarAndEmitEvents(year: number, month: number) {
@@ -2013,16 +2058,21 @@ export class ModusWcDate {
     }
   }
 
-  private syncValueFromInput() {
-    if (!this.inputRef) {
+  private syncInputToValue(
+    ref: HTMLInputElement | undefined,
+    getValue: () => string,
+    setValue: (v: string) => void,
+    getDisplayValue: () => string
+  ): void {
+    if (!ref) {
       return;
     }
 
-    const value = this.inputRef.value.trim();
+    const value = ref.value.trim();
 
     if (!value) {
-      if (this.value) {
-        this.value = '';
+      if (getValue()) {
+        setValue('');
       }
       return;
     }
@@ -2030,43 +2080,47 @@ export class ModusWcDate {
     const parsed = this.parseISODate(value);
 
     if (!parsed) {
-      this.inputRef.value = this.inputDisplayValue;
+      ref.value = getDisplayValue();
       return;
     }
 
     const clamped = this.clampDate(parsed);
-    this.value = this.formatISODate(clamped);
-    this.inputRef.value = this.formatForDisplay(clamped);
+    setValue(this.formatISODate(clamped));
+    ref.value = this.formatForDisplay(clamped);
+  }
+
+  private syncValueFromInput() {
+    this.syncInputToValue(
+      this.inputRef,
+      () => this.value,
+      (v) => {
+        this.value = v;
+      },
+      () => this.inputDisplayValue
+    );
   }
 
   private syncEndValueFromInput() {
-    if (!this.endInputRef) {
-      return;
-    }
-
-    const value = this.endInputRef.value.trim();
-
-    if (!value) {
-      if (this.endValue) {
-        this.endValue = '';
-      }
-      return;
-    }
-
-    const parsed = this.parseISODate(value);
-
-    if (!parsed) {
-      this.endInputRef.value = this.endInputDisplayValue;
-      return;
-    }
-
-    const clamped = this.clampDate(parsed);
-    this.endValue = this.formatISODate(clamped);
-    this.endInputRef.value = this.formatForDisplay(clamped);
+    this.syncInputToValue(
+      this.endInputRef,
+      () => this.endValue,
+      (v) => {
+        this.endValue = v;
+      },
+      () => this.endInputDisplayValue
+    );
   }
 
   private get isRange(): boolean {
     return this.type === 'range';
+  }
+
+  private get effectiveHideOverflowDates(): boolean {
+    return this.hideOverflowDates ?? this.type === 'range';
+  }
+
+  private get firstDayOfWeek(): number {
+    return WEEK_START_DAY_MAP[this.weekStartDay as WeekStartDay];
   }
 
   private get parsedStartDate(): Date | undefined {
@@ -2118,7 +2172,7 @@ export class ModusWcDate {
             tabIndex={this.inputTabIndex}
             type="text"
             value={
-              this.hasFocus
+              this.hasStartFocus
                 ? (this.inputRef?.value ?? '')
                 : this.inputDisplayValue
             }
@@ -2144,7 +2198,7 @@ export class ModusWcDate {
         {this.showCalendar && (
           <div
             ref={(el) => (this.calendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.calendar,
@@ -2206,7 +2260,7 @@ export class ModusWcDate {
               tabIndex={this.inputTabIndex}
               type="text"
               value={
-                this.hasFocus
+                this.hasStartFocus
                   ? // istanbul ignore next (optional chaining)
                     (this.inputRef?.value ?? '')
                   : this.inputDisplayValue
@@ -2239,14 +2293,19 @@ export class ModusWcDate {
               name={this.name ? `${this.name}-end` : undefined}
               onBlur={this.handleEndBlur}
               onClick={this.handleEndInputClick}
-              onFocus={this.handleFocus}
+              onFocus={this.handleEndFocus}
               onInput={this.handleEndInput}
               onKeyDown={this.handleInputKeyDown}
               placeholder={this.effectiveFormat}
               readonly={this.readOnly}
               tabIndex={this.inputTabIndex}
               type="text"
-              value={this.endInputDisplayValue}
+              value={
+                this.hasEndFocus
+                  ? // istanbul ignore next (optional chaining)
+                    (this.endInputRef?.value ?? '')
+                  : this.endInputDisplayValue
+              }
             />
             <modus-wc-button
               aria-label="Open end calendar"
@@ -2269,7 +2328,7 @@ export class ModusWcDate {
         {this.showStartCalendar && (
           <div
             ref={(el) => (this.calendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.calendar,
@@ -2289,7 +2348,7 @@ export class ModusWcDate {
         {this.showEndCalendar && (
           <div
             ref={(el) => (this.endCalendarRef = el)}
-            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.hideOverflowDates ? ' dynamic-height' : ''}`}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
           >
             {this.renderCalendarHeader(
               this.endCalendar,

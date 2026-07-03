@@ -19,6 +19,7 @@ interface DateArgs {
     | 'dd/mm/yyyy'
     | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
+  'hide-overflow-dates'?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -132,6 +133,7 @@ const Template: Story = {
         end-value=${ifDefined(args['end-value'])}
         .feedback=${args.feedback}
         format=${ifDefined(args.format)}
+        ?hide-overflow-dates=${args['hide-overflow-dates']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -177,23 +179,60 @@ export const WithErrorFeedback: Story = {
 };
 
 export const Range: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
+  argTypes: {
+    type: { control: false, table: { disable: true } },
+  },
   render: (args) => {
     return html`
-      <style>
-        div[id^='story--components-forms-date--range'] {
-          min-height: 450px;
-          width: 1280px;
-        }
-      </style>
-      <modus-wc-date
-        aria-label="Date range input"
-        ?bordered=${args.bordered}
-        ?disabled=${args.disabled}
-        end-value=${ifDefined(args['end-value'])}
-        label=${ifDefined(args.label)}
-        type="range"
-        .value=${args.value}
-      ></modus-wc-date>
+      <div class="modus-wc-date-range-story-layout">
+        <style>
+          .modus-wc-date-range-story-layout {
+            align-items: flex-start;
+            display: flex;
+            justify-content: center;
+            min-height: 450px;
+            padding-top: var(--modus-wc-spacing-xl, 2rem);
+            width: 100%;
+          }
+
+          .modus-wc-date-range-story {
+            width: 780px;
+          }
+
+          .modus-wc-date-range-story modus-wc-date {
+            display: block;
+            width: 100%;
+          }
+        </style>
+        <div class="modus-wc-date-range-story">
+          <modus-wc-date
+            aria-label="Date range input"
+            ?bordered=${args.bordered}
+            custom-class=${ifDefined(args['custom-class'])}
+            ?disabled=${args.disabled}
+            end-value=${ifDefined(args['end-value'])}
+            .feedback=${args.feedback}
+            format=${ifDefined(args.format)}
+            ?hide-overflow-dates=${args['hide-overflow-dates']}
+            input-id=${ifDefined(args['input-id'])}
+            input-tab-index=${ifDefined(args['input-tab-index'])}
+            label=${ifDefined(args.label)}
+            max=${ifDefined(args.max)}
+            min=${ifDefined(args.min)}
+            name=${ifDefined(args.name)}
+            ?read-only=${args['read-only']}
+            ?required=${args.required}
+            ?show-week-numbers=${args['show-week-numbers']}
+            size=${ifDefined(args.size)}
+            type="range"
+            .value=${args.value}
+            week-start-day=${ifDefined(args['week-start-day'])}
+          ></modus-wc-date>
+        </div>
+      </div>
     `;
   },
   args: {
@@ -223,6 +262,7 @@ export const ShadowDomParent: Story = {
               | 'dd/mm/yyyy'
               | 'mm/dd/yyyy'
               | 'MMM DD, YYYY';
+            hideOverflowDates: boolean;
             inputId: string;
             inputTabIndex: number;
             label: string;
@@ -240,6 +280,9 @@ export const ShadowDomParent: Story = {
           dateEl.customClass = v['custom-class'] || '';
           dateEl.disabled = Boolean(v.disabled);
           dateEl.format = v.format;
+          if (v['hide-overflow-dates'] !== undefined) {
+            dateEl.hideOverflowDates = v['hide-overflow-dates'];
+          }
           dateEl.inputId = v['input-id'] ?? '';
           dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
           dateEl.label = v.label ?? '';
