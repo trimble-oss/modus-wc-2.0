@@ -4442,6 +4442,52 @@ describe('modus-wc-date', () => {
         expect(blurred).toBe(true);
       });
 
+      it('should sync the end value when Enter is pressed in the end input', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10" format="mm/dd/yyyy"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        endInput.value = '07/15/2026';
+        endInput.dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+        );
+        await page.waitForChanges();
+
+        expect(component['endValue']).toBe('2026-07-15');
+      });
+
+      it('should mark both range inputs as required when required is true', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" required></modus-wc-date>',
+        });
+        const inputs = page.root!.querySelectorAll('input');
+
+        expect(inputs[0].hasAttribute('required')).toBe(true);
+        expect(inputs[1].hasAttribute('required')).toBe(true);
+      });
+
+      it('should give the end input a distinct accessible name', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Trip dates" type="range"></modus-wc-date>',
+        });
+        const inputs = page.root!.querySelectorAll('input');
+
+        expect(inputs[0].getAttribute('aria-label')).toBe('Trip dates');
+        expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
+      });
+
+      it('should default the end input accessible name when aria-label is absent', async () => {
+        const { component } = await createRangePage();
+        component['inheritedAttributes'] = { 'aria-describedby': 'desc' };
+
+        expect(component['endInputAttributes']['aria-label']).toBe('End date');
+      });
+
       it('should stop propagation on end input without validating', async () => {
         const { component } = await createRangePage();
 

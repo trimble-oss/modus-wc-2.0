@@ -466,6 +466,13 @@ export class ModusWcDate {
     }
   };
 
+  private handleEndInputKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.syncEndValueFromInput();
+    }
+  };
+
   private setupCalendarPopper(
     anchor: HTMLElement,
     calendar: HTMLElement,
@@ -1691,6 +1698,17 @@ export class ModusWcDate {
     return parsed ? this.formatForDisplay(parsed) : '';
   }
 
+  private get endInputAttributes(): Attributes {
+    const attrs = { ...this.inheritedAttributes };
+    const ariaLabel = attrs['aria-label'];
+    delete attrs['aria-labelledby'];
+
+    return {
+      ...attrs,
+      'aria-label': ariaLabel ? `${ariaLabel} end` : 'End date',
+    };
+  }
+
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -1849,9 +1867,10 @@ export class ModusWcDate {
               onClick={this.handleEndInputClick}
               onFocus={this.handleEndFocus}
               onInput={this.handleEndInput}
-              onKeyDown={this.handleInputKeyDown}
+              onKeyDown={this.handleEndInputKeyDown}
               placeholder={this.effectiveFormat}
               readonly={this.readOnly}
+              required={this.required}
               tabIndex={this.inputTabIndex}
               type="text"
               value={
@@ -1860,6 +1879,7 @@ export class ModusWcDate {
                     (this.endInputRef?.value ?? '')
                   : this.endInputDisplayValue
               }
+              {...this.endInputAttributes}
             />
             <modus-wc-button
               aria-label="Open end calendar"
