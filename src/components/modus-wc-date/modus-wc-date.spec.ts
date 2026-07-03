@@ -4,8 +4,8 @@ import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label'
 import { IInputFeedbackProp, WeekStartDay } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcDate } from './modus-wc-date';
-import { cloneDate, compareDate, formatISODate } from './utils/date-utils';
 import { formatForDisplay } from './utils/date-format';
+import { cloneDate, compareDate, formatISODate } from './utils/date-utils';
 import { createPopperOptions } from './utils/popper-utils';
 import {
   computeCaps,
