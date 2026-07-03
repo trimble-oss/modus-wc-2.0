@@ -164,7 +164,9 @@ modus-wc-date {
           align-items: center;
           box-sizing: border-box;
           display: flex;
+          height: 36px;
           justify-content: center;
+          position: relative;
 
           &--empty {
             background: none;
@@ -180,15 +182,13 @@ modus-wc-date {
           }
 
           &.range-cap-left,
-          &.range-start.range-anchor.range-anchor-fill,
-          &.hover-cap-left {
+          &.range-start.range-anchor.range-anchor-fill {
             border-bottom-left-radius: 999px;
             border-top-left-radius: 999px;
           }
 
           &.range-cap-right,
-          &.range-end.range-anchor.range-anchor-fill,
-          &.hover-cap-right {
+          &.range-end.range-anchor.range-anchor-fill {
             border-bottom-right-radius: 999px;
             border-top-right-radius: 999px;
           }
@@ -201,17 +201,16 @@ modus-wc-date {
           // modus-wc-date.tsx) — not shown as a static default decoration.
           &.hover-affordance-left,
           &.hover-affordance-right {
-            position: relative;
-
             &::after {
-              content: '';
-              position: absolute;
-              top: 0;
-              bottom: 0;
-              width: 50%;
               border-bottom: 2px dashed var(--modus-wc-color-base-200);
               border-top: 2px dashed var(--modus-wc-color-base-200);
+              bottom: 0;
+              box-sizing: border-box;
+              content: '';
               pointer-events: none;
+              position: absolute;
+              top: 0;
+              width: 50%;
             }
           }
 
@@ -231,44 +230,54 @@ modus-wc-date {
             color: var(--modus-wc-color-base-content);
           }
 
-          // Hover-preview fill: dashed horizontal borders across all cells in
-          // the preview run, plus the same connecting line through the
-          // anchor cell whenever it's part of the active preview — the
-          // anchor never gets a fill (only its own circle), so this border
-          // never grows a halo.
+          // Hover-preview dashed borders on ::before so row height stays fixed
+          // at 36px (Figma does not grow the row when preview lines appear).
           &.hover-fill,
+          &.hover-cap-left,
+          &.hover-cap-right,
           &.range-anchor.anchor-preview-connector {
+            &::before {
+              box-sizing: border-box;
+              content: '';
+              inset: 0;
+              pointer-events: none;
+              position: absolute;
+            }
+          }
+
+          &.hover-fill::before,
+          &.range-anchor.anchor-preview-connector::before {
             border-bottom: 2px dashed var(--modus-wc-color-base-200);
             border-top: 2px dashed var(--modus-wc-color-base-200);
           }
 
-          // Cap classes are shared with the anchor (border + radius only,
-          // no fill) so its non-connecting side closes into a proper
-          // rounded cap instead of a flat edge with a square corner.
-          // Longhand corner properties so an isolated single-cell preview
-          // (capped on both sides at once, e.g. the last column of a row)
-          // gets all four corners rounded instead of one side's
-          // border-radius shorthand overwriting the other's.
-          &.hover-cap-left {
+          &.hover-cap-left::before {
+            border-bottom-left-radius: 999px;
             border-left: 2px dashed var(--modus-wc-color-base-200);
+            border-top-left-radius: 999px;
           }
 
-          &.hover-cap-right {
+          &.hover-cap-right::before {
+            border-bottom-right-radius: 999px;
             border-right: 2px dashed var(--modus-wc-color-base-200);
+            border-top-right-radius: 999px;
           }
         }
 
         .calendar-day {
           align-items: center;
           background: none;
-          border: none;
+          border: 2px solid transparent;
           border-radius: 50%;
+          box-sizing: border-box;
           color: var(--modus-wc-color-base-content-high-contrast);
           cursor: pointer;
           display: flex;
           height: 36px;
           justify-content: center;
+          position: relative;
           width: 36px;
+          z-index: 1;
 
           // Hovered date (preview end) gets base-200 fill
           &.hover-preview-end {
@@ -278,7 +287,8 @@ modus-wc-date {
 
           &:hover:not(.hover-preview-end) {
             background-color: var(--modus-wc-color-base-200);
-            border: 2px dashed var(--modus-wc-color-base-200);
+            border-color: var(--modus-wc-color-base-200);
+            border-style: dashed;
             color: var(--modus-wc-color-base-content);
           }
 
@@ -289,7 +299,7 @@ modus-wc-date {
           }
 
           &.current-day {
-            border: 2px solid var(--modus-wc-color-primary);
+            border-color: var(--modus-wc-color-primary);
             outline: none;
           }
 
@@ -314,11 +324,12 @@ modus-wc-date {
 
             &:hover {
               background-color: transparent;
+              border-color: transparent;
               color: var(--modus-wc-color-gray-4);
             }
 
             &:focus {
-              border: none;
+              border-color: transparent;
             }
           }
         }
