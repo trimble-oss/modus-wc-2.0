@@ -6,7 +6,13 @@ import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 interface HTMLModusWcButtonGroupElement extends HTMLElement {
   disabled?: boolean;
   variant?: 'borderless' | 'filled' | 'outlined';
-  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' | 'success';
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'success';
   selectionType?: 'default' | 'single' | 'multiple';
 }
 
