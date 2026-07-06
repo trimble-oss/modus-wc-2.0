@@ -13,13 +13,13 @@ The component supports a `<slot>` for injecting content within the buttongroup.
 
 ## Properties
 
-| Property        | Attribute        | Description                                                   | Type                                                                           | Default        |
-| --------------- | ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------- |
-| `color`         | `color`          | Color to apply to all buttons within the button group         | `"danger" \| "primary" \| "secondary" \| "tertiary" \| "warning" \| undefined` | `undefined`    |
-| `disabled`      | `disabled`       | Disables all buttons within the button group                  | `boolean \| undefined`                                                         | `false`        |
-| `orientation`   | `orientation`    | Orientation of the button group: horizontal or vertical       | `"horizontal" \| "vertical" \| undefined`                                      | `'horizontal'` |
-| `selectionType` | `selection-type` | Selection type for button group                               | `"default" \| "multiple" \| "single" \| undefined`                             | `'default'`    |
-| `variant`       | `variant`        | Style variant to apply to all buttons within the button group | `"borderless" \| "filled" \| "outlined"`                                       | `'outlined'`   |
+| Property        | Attribute        | Description                                                   | Type                                                                                        | Default        |
+| --------------- | ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| `color`         | `color`          | Color to apply to all buttons within the button group         | `"danger" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning" \| undefined` | `undefined`    |
+| `disabled`      | `disabled`       | Disables all buttons within the button group                  | `boolean \| undefined`                                                                      | `false`        |
+| `orientation`   | `orientation`    | Orientation of the button group: horizontal or vertical       | `"horizontal" \| "vertical" \| undefined`                                                   | `'horizontal'` |
+| `selectionType` | `selection-type` | Selection type for button group                               | `"default" \| "multiple" \| "single" \| undefined`                                          | `'default'`    |
+| `variant`       | `variant`        | Style variant to apply to all buttons within the button group | `"borderless" \| "filled" \| "outlined"`                                                    | `'outlined'`   |
 
 
 ## Events

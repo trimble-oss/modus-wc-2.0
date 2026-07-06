@@ -75,6 +75,24 @@ exports[`modus-wc-button-group should render with single selection type 1`] = `
 </modus-wc-button-group>
 `;
 
+exports[`modus-wc-button-group should render with success color 1`] = `
+<modus-wc-button-group class="modus-wc-button-group" color="success" role="group">
+  <!---->
+  <modus-wc-button color="success" variant="outlined">
+    <!---->
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success" tabindex="0" type="button">
+      Button 1
+    </button>
+  </modus-wc-button>
+  <modus-wc-button color="success" variant="outlined">
+    <!---->
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success" tabindex="0" type="button">
+      Button 2
+    </button>
+  </modus-wc-button>
+</modus-wc-button-group>
+`;
+
 exports[`modus-wc-button-group should render with vertical orientation 1`] = `
 <modus-wc-button-group class="modus-wc-button-group modus-wc-join-vertical" orientation="vertical" role="group">
   <!---->
