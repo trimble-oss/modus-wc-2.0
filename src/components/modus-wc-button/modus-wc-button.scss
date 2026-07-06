@@ -118,6 +118,12 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
       );
     }
   }
+
+  &.modus-wc-btn-outline:not(:hover):not(:active):not([aria-pressed='true']) {
+    background-color: transparent;
+    border-color: var(--modus-wc-color-base-inverted);
+    color: var(--modus-wc-color-base-inverted);
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
