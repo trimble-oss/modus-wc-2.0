@@ -6,7 +6,13 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { DaisySize } from '../types';
 
 interface ButtonArgs {
-  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral';
   'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
@@ -33,7 +39,14 @@ const meta: Meta<ButtonArgs> = {
   argTypes: {
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'warning',
+        'danger',
+        'neutral',
+      ],
     },
     shape: {
       control: { type: 'select' },
@@ -243,6 +256,131 @@ export const ShadowDomParent: Story = {
     ></button-shadow-host>`;
   },
 };
+export const NeutralColorStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Why Neutral needs custom state CSS
+
+Most button colors (Primary, Secondary, Warning, etc.) use **DaisyUI color slots**. DaisyUI auto-calculates hover and pressed from the theme color.
+
+**Neutral** uses the Modus **base-inverted** token (\`--modus-wc-color-base-inverted\`) — not a DaisyUI slot — so we define states in CSS using the **same rules** DaisyUI uses elsewhere.
+
+| | Primary / Secondary | Neutral (new) |
+|--|---------------------|---------------|
+| Base color | Theme / DaisyUI slot | \`base-inverted\` token |
+| Hover / pressed | Automatic | Custom CSS (same darken/tint pattern) |
+| Design impact | Specify base color only | Specify base-inverted only; states follow |
+
+**Neutral ≠ Tertiary:** \`tertiary\` uses DaisyUI's neutral slot. \`neutral\` uses base-inverted.
+
+Full design notes: \`docs/button-neutral-color-design-notes.md\`
+
+#### State rules (Neutral)
+
+| Variant | Hover | Pressed |
+|---------|-------|---------|
+| Filled | 90% base-inverted + 10% black | 80% base-inverted + 20% black |
+| Outlined / borderless | 12% base-inverted tint | Fills like filled default |
+
+Compare **Primary** and **Neutral** below — interaction should feel the same; only the color differs.
+        `,
+      },
+    },
+  },
+  render: () => html`
+    <style>
+      .neutral-states-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .neutral-states-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .neutral-states-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        min-width: 5.5rem;
+      }
+
+      .neutral-states-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+      }
+
+      .neutral-states-note {
+        font-size: 0.875rem;
+        margin: 0 0 1rem;
+        max-width: 48rem;
+      }
+    </style>
+    <div class="neutral-states-grid">
+      <div>
+        <p class="neutral-states-section-title">Filled — compare Primary vs Neutral</p>
+        <p class="neutral-states-note">
+          Hover and press each button. Neutral should darken the same way Primary does.
+        </p>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Primary</span>
+          <modus-wc-button color="primary" variant="filled">Default</modus-wc-button>
+          <modus-wc-button color="primary" variant="filled" pressed>Pressed</modus-wc-button>
+        </div>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Neutral</span>
+          <modus-wc-button color="neutral" variant="filled">Default</modus-wc-button>
+          <modus-wc-button color="neutral" variant="filled" pressed>Pressed</modus-wc-button>
+        </div>
+      </div>
+
+      <div>
+        <p class="neutral-states-section-title">Outlined — compare Primary vs Neutral</p>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Primary</span>
+          <modus-wc-button color="primary" variant="outlined">Default</modus-wc-button>
+          <modus-wc-button color="primary" variant="outlined" pressed>Pressed</modus-wc-button>
+        </div>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Neutral</span>
+          <modus-wc-button color="neutral" variant="outlined">Default</modus-wc-button>
+          <modus-wc-button color="neutral" variant="outlined" pressed>Pressed</modus-wc-button>
+        </div>
+      </div>
+
+      <div>
+        <p class="neutral-states-section-title">Borderless — compare Primary vs Neutral</p>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Primary</span>
+          <modus-wc-button color="primary" variant="borderless">Default</modus-wc-button>
+          <modus-wc-button color="primary" variant="borderless" pressed>Pressed</modus-wc-button>
+        </div>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Neutral</span>
+          <modus-wc-button color="neutral" variant="borderless">Default</modus-wc-button>
+          <modus-wc-button color="neutral" variant="borderless" pressed>Pressed</modus-wc-button>
+        </div>
+      </div>
+
+      <div>
+        <p class="neutral-states-section-title">Tertiary (for reference — uses DaisyUI neutral slot)</p>
+        <div class="neutral-states-row">
+          <span class="neutral-states-label">Tertiary</span>
+          <modus-wc-button color="tertiary" variant="filled">Filled</modus-wc-button>
+          <modus-wc-button color="tertiary" variant="outlined">Outlined</modus-wc-button>
+          <modus-wc-button color="tertiary" variant="borderless">Borderless</modus-wc-button>
+        </div>
+      </div>
+    </div>
+  `,
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {

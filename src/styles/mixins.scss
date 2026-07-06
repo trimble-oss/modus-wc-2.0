@@ -207,6 +207,25 @@
       color: var(--modus-wc-color-error);
     }
   }
+
+  // Neutral color uses --modus-wc-color-base-inverted (no DaisyUI slot / -pale
+  // token), so the hover tint and pressed text are derived from that variable.
+  &.modus-wc-btn-base-inverted {
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-base-inverted);
+      border: 1px solid transparent;
+      color: var(--modus-wc-color-base-page);
+    }
+
+    &:hover {
+      background-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-base-inverted) 12%,
+        transparent
+      );
+      color: var(--modus-wc-color-base-inverted);
+    }
+  }
 }
 
 @mixin outline-styles {
