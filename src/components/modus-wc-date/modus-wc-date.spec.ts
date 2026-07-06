@@ -9,6 +9,7 @@ import { cloneDate, compareDate, formatISODate } from './utils/date-utils';
 import { createPopperOptions } from './utils/popper-utils';
 import {
   computeCaps,
+  computeHoverPreviewRange,
   isInHighlightRun,
   shouldApplyHoverAffordanceLeft,
   shouldApplyHoverAffordanceRight,
@@ -3831,15 +3832,14 @@ describe('modus-wc-date', () => {
         const component = page.rootInstance as ModusWcDate;
         component['anchorEndpoint'] = 'start';
         component['showStartCalendar'] = true;
-        // Hover before the sole anchor to preview a backward extension.
-        component['hoverDate'] = '2026-06-09';
+        // Hover after the sole anchor to preview selecting an end date.
+        component['hoverDate'] = '2026-06-11';
         await page.waitForChanges();
 
         const anchorCell = page.root!.querySelector(
           '.calendar-day-cell.range-anchor'
         );
         expect(anchorCell).not.toBeNull();
-        expect(anchorCell!.classList.contains('hover-cap-right')).toBe(true);
         expect(anchorCell!.classList.contains('anchor-preview-connector')).toBe(
           true
         );
@@ -3849,10 +3849,31 @@ describe('modus-wc-date', () => {
         );
         const previewDayCell = previewCells.find(
           (cell) =>
-            cell.querySelector('.calendar-day')?.textContent?.trim() === '9'
+            cell.querySelector('.calendar-day')?.textContent?.trim() === '11'
         );
         expect(previewDayCell).toBeTruthy();
-        expect(previewDayCell!.classList.contains('hover-cap-left')).toBe(true);
+        expect(previewDayCell!.classList.contains('hover-cap-right')).toBe(
+          true
+        );
+      });
+
+      it('should not preview hover fill when hovering before a sole start anchor', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+        component['showStartCalendar'] = true;
+        component['hoverDate'] = '2026-06-09';
+        await page.waitForChanges();
+
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-fill')
+        ).toBeNull();
+        expect(
+          page.root!.querySelector('.calendar-day-cell.anchor-preview-connector')
+        ).toBeNull();
       });
 
       it('should apply range-anchor-fill when the anchor connects to a neighbor in a confirmed range', async () => {
@@ -3973,12 +3994,9 @@ describe('modus-wc-date', () => {
         );
       });
 
-      it('should apply hover-affordance-right on the end-anchor when hovering past it (anchor=end)', async () => {
+      it('should not apply hover-affordance-right when hovering past the end anchor (anchor=end)', async () => {
         const page = await newSpecPage({
           components: [ModusWcDate],
-          // The typical post-selection state: anchorEndpoint='end' because the
-          // user clicked start first then end. Hovering past the (anchor) end
-          // should still show the affordance hint.
           html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-30"></modus-wc-date>',
         });
         const component = page.rootInstance as ModusWcDate;
@@ -3992,11 +4010,14 @@ describe('modus-wc-date', () => {
         );
         expect(endCell).not.toBeNull();
         expect(endCell!.classList.contains('hover-affordance-right')).toBe(
-          true
+          false
         );
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-fill')
+        ).toBeNull();
       });
 
-      it('should apply hover-affordance-left on the start-anchor when hovering before it (anchor=start)', async () => {
+      it('should not apply hover-affordance-left when hovering before the start anchor (anchor=start)', async () => {
         const page = await newSpecPage({
           components: [ModusWcDate],
           html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-01" end-value="2026-06-20"></modus-wc-date>',
@@ -4012,8 +4033,11 @@ describe('modus-wc-date', () => {
         );
         expect(startCell).not.toBeNull();
         expect(startCell!.classList.contains('hover-affordance-left')).toBe(
-          true
+          false
         );
+        expect(
+          page.root!.querySelector('.calendar-day-cell.hover-fill')
+        ).toBeNull();
       });
     });
 
@@ -4660,6 +4684,115 @@ describe('modus-wc-date', () => {
           '.calendar-day-cell.range-fill'
         );
         expect(filledCells.length).toBeGreaterThan(0);
+      });
+
+      it('should preview only forward from a sole start anchor', () => {
+        const anchor = new Date(2026, 5, 10);
+        const hoverAfter = new Date(2026, 5, 15);
+        const hoverBefore = new Date(2026, 5, 8);
+
+        expect(
+          computeHoverPreviewRange(
+            anchor,
+            'start',
+            hoverAfter,
+            null,
+            null,
+            () => false
+          )
+        ).toEqual({ previewStart: anchor, previewEnd: hoverAfter });
+
+        expect(
+          computeHoverPreviewRange(
+            anchor,
+            'start',
+            hoverBefore,
+            null,
+            null,
+            () => false
+          )
+        ).toEqual({ previewStart: null, previewEnd: null });
+      });
+
+      it('should preview only backward from a sole end anchor', () => {
+        const anchor = new Date(2026, 5, 20);
+        const hoverBefore = new Date(2026, 5, 15);
+        const hoverAfter = new Date(2026, 5, 25);
+
+        expect(
+          computeHoverPreviewRange(
+            anchor,
+            'end',
+            hoverBefore,
+            null,
+            null,
+            () => false
+          )
+        ).toEqual({ previewStart: hoverBefore, previewEnd: anchor });
+
+        expect(
+          computeHoverPreviewRange(
+            anchor,
+            'end',
+            hoverAfter,
+            null,
+            null,
+            () => false
+          )
+        ).toEqual({ previewStart: null, previewEnd: null });
+      });
+
+      it('should preview extensions only on the clickable side of a confirmed range', () => {
+        const rangeLo = new Date(2026, 5, 10);
+        const rangeHi = new Date(2026, 5, 20);
+        const hoverBefore = new Date(2026, 5, 5);
+        const hoverAfter = new Date(2026, 5, 25);
+        const dayBeforeStart = new Date(2026, 5, 9);
+        const dayAfterEnd = new Date(2026, 5, 21);
+
+        expect(
+          computeHoverPreviewRange(
+            rangeLo,
+            'start',
+            hoverBefore,
+            rangeLo,
+            rangeHi,
+            () => false
+          )
+        ).toEqual({ previewStart: null, previewEnd: null });
+
+        expect(
+          computeHoverPreviewRange(
+            rangeHi,
+            'start',
+            hoverAfter,
+            rangeLo,
+            rangeHi,
+            () => false
+          )
+        ).toEqual({ previewStart: dayAfterEnd, previewEnd: hoverAfter });
+
+        expect(
+          computeHoverPreviewRange(
+            rangeHi,
+            'end',
+            hoverAfter,
+            rangeLo,
+            rangeHi,
+            () => false
+          )
+        ).toEqual({ previewStart: null, previewEnd: null });
+
+        expect(
+          computeHoverPreviewRange(
+            rangeLo,
+            'end',
+            hoverBefore,
+            rangeLo,
+            rangeHi,
+            () => false
+          )
+        ).toEqual({ previewStart: hoverBefore, previewEnd: dayBeforeStart });
       });
     });
 

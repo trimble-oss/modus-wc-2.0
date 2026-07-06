@@ -1302,6 +1302,7 @@ export class ModusWcDate {
     const hoverParsed = this.isRange ? this.parseISODate(this.hoverDate) : null;
     const { previewStart, previewEnd } = computeHoverPreviewRange(
       anchorDate ?? null,
+      this.anchorEndpoint,
       hoverParsed ?? null,
       rangeLo,
       rangeHi,

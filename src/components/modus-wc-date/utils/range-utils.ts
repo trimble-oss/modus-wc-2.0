@@ -41,9 +41,7 @@ export function shouldApplyHoverAffordanceLeft(
   hoveringBeforeStart: boolean,
   isAtRangeLo: boolean
 ): boolean {
-  // The affordance applies regardless of whether this cell is the anchor —
-  // when hovering before the confirmed start, the start cell (anchor or not)
-  // always needs the left-half dashed hint so the user can see it's extendable.
+  // Shown on the range start while previewing a backward extension (anchor=end).
   return (
     isRangeStart && (!!caps?.capLeft || isAtRangeLo) && hoveringBeforeStart
   );
@@ -101,6 +99,7 @@ export function computeCaps(
 
 export function computeHoverPreviewRange(
   anchorDate: Date | null,
+  anchorEndpoint: 'start' | 'end' | null,
   hoverParsed: Date | null,
   rangeLo: Date | null,
   rangeHi: Date | null,
@@ -114,6 +113,7 @@ export function computeHoverPreviewRange(
 
   if (
     !anchorDate ||
+    !anchorEndpoint ||
     !hoverParsed ||
     isHoveringAnchor ||
     isDateDisabled(hoverParsed)
@@ -121,46 +121,51 @@ export function computeHoverPreviewRange(
     return { previewStart, previewEnd };
   }
 
-  if (compareDate(hoverParsed, anchorDate) >= 0) {
-    previewStart = anchorDate;
-    previewEnd = hoverParsed;
-  } else {
-    previewStart = hoverParsed;
-    previewEnd = anchorDate;
+  // Sole anchor (no confirmed range yet): preview only the direction that
+  // would complete or extend the range — not dates that would become a new anchor.
+  if (!rangeLo || !rangeHi) {
+    if (
+      anchorEndpoint === 'start' &&
+      compareDate(hoverParsed, anchorDate) > 0
+    ) {
+      previewStart = anchorDate;
+      previewEnd = hoverParsed;
+    } else if (
+      anchorEndpoint === 'end' &&
+      compareDate(hoverParsed, anchorDate) < 0
+    ) {
+      previewStart = hoverParsed;
+      previewEnd = anchorDate;
+    }
+
+    return { previewStart, previewEnd };
   }
 
-  if (rangeLo && rangeHi) {
-    const hoverBeforeRange = compareDate(hoverParsed, rangeLo) < 0;
-    const hoverAfterRange = compareDate(hoverParsed, rangeHi) > 0;
-    const hoverInRange = !hoverBeforeRange && !hoverAfterRange;
+  const hoverBeforeRange = compareDate(hoverParsed, rangeLo) < 0;
+  const hoverAfterRange = compareDate(hoverParsed, rangeHi) > 0;
+  const hoverInRange = !hoverBeforeRange && !hoverAfterRange;
 
-    if (hoverInRange) {
-      previewStart = null;
-      previewEnd = null;
-    } else if (hoverAfterRange) {
-      const dayAfterEnd = addDays(rangeHi, 1);
-      // istanbul ignore else (unreachable: hoverAfterRange guarantees
-      // hoverParsed > rangeHi, so dayAfterEnd (rangeHi + 1) is always
-      // <= hoverParsed)
-      if (compareDate(dayAfterEnd, hoverParsed) <= 0) {
-        previewStart = dayAfterEnd;
-        previewEnd = hoverParsed;
-      } else {
-        previewStart = null;
-        previewEnd = null;
-      }
-    } else if (hoverBeforeRange) {
-      const dayBeforeStart = addDays(rangeLo, -1);
-      // istanbul ignore else (unreachable: hoverBeforeRange guarantees
-      // hoverParsed < rangeLo, so hoverParsed is always <=
-      // dayBeforeStart (rangeLo - 1))
-      if (compareDate(hoverParsed, dayBeforeStart) <= 0) {
-        previewStart = hoverParsed;
-        previewEnd = dayBeforeStart;
-      } else {
-        previewStart = null;
-        previewEnd = null;
-      }
+  if (hoverInRange) {
+    return { previewStart, previewEnd };
+  }
+
+  if (hoverAfterRange && anchorEndpoint === 'start') {
+    const dayAfterEnd = addDays(rangeHi, 1);
+    // istanbul ignore else (unreachable: hoverAfterRange guarantees
+    // hoverParsed > rangeHi, so dayAfterEnd (rangeHi + 1) is always
+    // <= hoverParsed)
+    if (compareDate(dayAfterEnd, hoverParsed) <= 0) {
+      previewStart = dayAfterEnd;
+      previewEnd = hoverParsed;
+    }
+  } else if (hoverBeforeRange && anchorEndpoint === 'end') {
+    const dayBeforeStart = addDays(rangeLo, -1);
+    // istanbul ignore else (unreachable: hoverBeforeRange guarantees
+    // hoverParsed < rangeLo, so hoverParsed is always <=
+    // dayBeforeStart (rangeLo - 1))
+    if (compareDate(hoverParsed, dayBeforeStart) <= 0) {
+      previewStart = hoverParsed;
+      previewEnd = dayBeforeStart;
     }
   }
 
