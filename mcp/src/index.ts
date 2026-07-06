@@ -193,6 +193,159 @@ function resolveVersionOrError(
   return { version: result.resolved, warning };
 }
 
+function textJson(value: unknown) {
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: JSON.stringify(value, null, 2),
+      },
+    ],
+  };
+}
+
+const ACCESSIBILITY_RULES = {
+  conformance_target: "WCAG 2.2 AA",
+  rules: [
+    {
+      id: "text-contrast",
+      requirement: "Text and images of text must have contrast ratio >= 4.5:1.",
+      wcag: ["1.4.3 Contrast (Minimum)"],
+    },
+    {
+      id: "non-text-contrast",
+      requirement: "Controls, focus indicators, meaningful icons, chart marks, and visual boundaries must have contrast ratio >= 3:1 against adjacent colors.",
+      wcag: ["1.4.11 Non-text Contrast"],
+    },
+    {
+      id: "no-color-only-meaning",
+      requirement: "Color must not be the only way to communicate status, risk, ranking, required action, or selection.",
+      wcag: ["1.4.1 Use of Color"],
+    },
+    {
+      id: "keyboard",
+      requirement: "Interactive content must be operable with a keyboard, in a logical focus order, with no keyboard trap.",
+      wcag: ["2.1.1 Keyboard", "2.1.2 No Keyboard Trap", "2.4.3 Focus Order"],
+    },
+    {
+      id: "focus-visible",
+      requirement: "Keyboard focus indicators must be visible and not fully obscured.",
+      wcag: ["2.4.7 Focus Visible", "2.4.11 Focus Not Obscured (Minimum)"],
+    },
+    {
+      id: "target-size",
+      requirement: "Pointer targets should be at least 24 by 24 CSS pixels unless an allowed WCAG exception applies.",
+      wcag: ["2.5.8 Target Size (Minimum)"],
+    },
+    {
+      id: "name-role-value",
+      requirement: "Controls and meaningful custom elements must expose programmatic name, role, value, and state.",
+      wcag: ["4.1.2 Name, Role, Value"],
+    },
+    {
+      id: "status-messages",
+      requirement: "Status changes that do not move focus should be exposed through status/live-region semantics.",
+      wcag: ["4.1.3 Status Messages"],
+    },
+  ],
+  modus_guidance: [
+    "Prefer Modus semantic tokens over fixed hex values so light and dark themes remain legible.",
+    "Use status variants and labels together; do not rely on status color alone.",
+    "Use Modus components when they provide native keyboard and screen-reader behavior.",
+    "Honor prefers-reduced-motion for non-essential motion.",
+  ],
+};
+
+const MODUS_MODERN_TOKENS = {
+  light: {
+    primary: "#0063A3",
+    primaryContent: "#FFFFFF",
+    base100: "#FFFFFF",
+    base200: "#CBCDD6",
+    base300: "#B7B9C3",
+    baseContent: "#252A2E",
+    info: "#0063A3",
+    infoContent: "#FFFFFF",
+    success: "#1E8A44",
+    successContent: "#FFFFFF",
+    warning: "#E49325",
+    warningContent: "#252A2E",
+    error: "#DA212C",
+    errorContent: "#FFFFFF",
+  },
+  dark: {
+    primary: "#019AEB",
+    primaryContent: "#000000",
+    base100: "#171C1E",
+    base200: "#353A40",
+    base300: "#464B52",
+    baseContent: "#FFFFFF",
+    info: "#217CBB",
+    infoContent: "#FFFFFF",
+    success: "#4EA646",
+    successContent: "#000000",
+    warning: "#FEC157",
+    warningContent: "#252A2E",
+    error: "#E86363",
+    errorContent: "#000000",
+  },
+};
+
+const ICON_GUIDANCE = {
+  component: "modus-wc-icon",
+  usage: [
+    "Load the Modus icon stylesheet once in the host application.",
+    "Use real Modus icon names and variant=\"outlined\" or variant=\"solid\".",
+    "Decorative icons should set decorative/aria-hidden semantics and must not be the only visible cue.",
+    "Meaningful icons need visible text or an accessible name such as aria-label or title.",
+    "For status icons, pair the icon with text and semantic status color.",
+  ],
+  examples: {
+    decorative: '<modus-wc-icon decorative name="info" size="sm"></modus-wc-icon>',
+    meaningful: '<modus-wc-icon name="warning" variant="solid" aria-label="Schedule risk"></modus-wc-icon><span>Schedule risk</span>',
+  },
+};
+
+function validateMarkup(html: string) {
+  const issues: Array<{ id: string; message: string }> = [];
+
+  if (/<(?:Chart|Modus[A-Z][A-Za-z0-9]*)\b/.test(html)) {
+    issues.push({
+      id: "pseudo-component",
+      message: "Use real HTML or real modus-wc-* elements, not JSX/pseudo-components.",
+    });
+  }
+  if (/<script\b[^>]*\bsrc\s*=/.test(html)) {
+    issues.push({
+      id: "remote-script",
+      message: "Do not load remote or external scripts inside response HTML.",
+    });
+  }
+  if (/<modus-wc-icon\b(?![^>]*(?:decorative|aria-hidden|aria-label|title=))[^>]*><\/modus-wc-icon>/i.test(html)) {
+    issues.push({
+      id: "icon-name",
+      message: "Meaningful icons need visible text or an accessible name; decorative icons need decorative/aria-hidden semantics.",
+    });
+  }
+  if (/color\s*:\s*(?:red|green|#(?:f00|0f0|ff0000|00ff00)\b)/i.test(html)) {
+    issues.push({
+      id: "color-only-risk",
+      message: "Avoid bare red/green color cues; pair semantic color with text or icons and verify contrast.",
+    });
+  }
+  if (/<canvas\b/i.test(html) && !/(?:aria-label|aria-describedby|<figcaption|<caption|summary)/i.test(html)) {
+    issues.push({
+      id: "visual-summary",
+      message: "Charts and primary visuals need an accessible text summary, caption, or label.",
+    });
+  }
+
+  return {
+    is_valid: issues.length === 0,
+    issues,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // MCP server
 // ---------------------------------------------------------------------------
@@ -375,6 +528,122 @@ Examples: "modus-wc-table", "modus-wc-button", "modus-wc-alert"`,
       ],
     };
   }
+);
+
+// ---------------------------------------------------------------------------
+// Tool: get_modus_accessibility_rules
+// ---------------------------------------------------------------------------
+
+server.tool(
+  "get_modus_accessibility_rules",
+  `Returns a compact, deterministic Modus + WCAG accessibility checklist for generated UI.
+
+Use this instead of asking the model to infer accessibility requirements from prose documentation.
+The rules target WCAG 2.2 AA and Modus theme-aware UI output.`,
+  {
+    version: z.string().optional().describe(
+      "The version of @trimble-oss/moduswebcomponents installed in the user's project. Defaults to the latest available version."
+    ),
+  },
+  ({ version }) => {
+    const versionResult = resolveVersionOrError(version);
+    if ("error" in versionResult) return textJson(versionResult);
+    return textJson({
+      type: "accessibility_rules",
+      version: versionResult.version,
+      ...(versionResult.warning ? { warning: versionResult.warning } : {}),
+      ...ACCESSIBILITY_RULES,
+    });
+  }
+);
+
+// ---------------------------------------------------------------------------
+// Tool: get_modus_design_tokens
+// ---------------------------------------------------------------------------
+
+server.tool(
+  "get_modus_design_tokens",
+  `Returns compact Modus semantic design tokens for theme-aware generated UI.
+
+Use these tokens for accessible light/dark color choices instead of hard-coded one-theme values.`,
+  {
+    version: z.string().optional().describe(
+      "The version of @trimble-oss/moduswebcomponents installed in the user's project. Defaults to the latest available version."
+    ),
+    theme: z.string().optional().describe("Theme name. Currently returns modus-modern semantic tokens."),
+    mode: z.enum(["light", "dark", "both"]).optional().describe("Theme mode to return. Defaults to both."),
+  },
+  ({ version, theme, mode }) => {
+    const versionResult = resolveVersionOrError(version);
+    if ("error" in versionResult) return textJson(versionResult);
+    const requestedMode = mode ?? "both";
+    return textJson({
+      type: "design_tokens",
+      version: versionResult.version,
+      ...(versionResult.warning ? { warning: versionResult.warning } : {}),
+      theme: theme ?? "modus-modern",
+      mode: requestedMode,
+      tokens: requestedMode === "both"
+        ? MODUS_MODERN_TOKENS
+        : { [requestedMode]: MODUS_MODERN_TOKENS[requestedMode] },
+      css_variables: {
+        primary: "var(--modus-wc-color-primary)",
+        primaryContent: "var(--modus-wc-color-primary-content)",
+        base100: "var(--modus-wc-color-base-100)",
+        base200: "var(--modus-wc-color-base-200)",
+        base300: "var(--modus-wc-color-base-300)",
+        baseContent: "var(--modus-wc-color-base-content)",
+        info: "var(--modus-wc-color-info)",
+        success: "var(--modus-wc-color-success)",
+        warning: "var(--modus-wc-color-warning)",
+        error: "var(--modus-wc-color-error)",
+      },
+    });
+  }
+);
+
+// ---------------------------------------------------------------------------
+// Tool: get_modus_icon_data
+// ---------------------------------------------------------------------------
+
+server.tool(
+  "get_modus_icon_data",
+  `Returns compact Modus icon usage and accessibility guidance for generated UI.
+
+Use this when adding iconography so icons remain real Modus components and accessible.`,
+  {
+    version: z.string().optional().describe(
+      "The version of @trimble-oss/moduswebcomponents installed in the user's project. Defaults to the latest available version."
+    ),
+  },
+  ({ version }) => {
+    const versionResult = resolveVersionOrError(version);
+    if ("error" in versionResult) return textJson(versionResult);
+    return textJson({
+      type: "icon_guidance",
+      version: versionResult.version,
+      ...(versionResult.warning ? { warning: versionResult.warning } : {}),
+      ...ICON_GUIDANCE,
+    });
+  }
+);
+
+// ---------------------------------------------------------------------------
+// Tool: validate_modus_markup
+// ---------------------------------------------------------------------------
+
+server.tool(
+  "validate_modus_markup",
+  `Runs lightweight static checks over generated Modus/HTML markup.
+
+This is not a full accessibility audit; it catches common AI-output mistakes before verifier retry.`,
+  {
+    html: z.string().describe("The generated response_html fragment to validate."),
+  },
+  ({ html }) => textJson({
+    type: "markup_validation",
+    ...validateMarkup(html),
+  })
 );
 
 // ---------------------------------------------------------------------------
