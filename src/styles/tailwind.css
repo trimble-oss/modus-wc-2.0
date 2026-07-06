@@ -347,6 +347,7 @@
  *   highlight-blue=#019aeb  yellow-pale=#fff5e4  yellow-light=#fec157
  *   yellow=#fbad26  yellow-dark=#e49325  red-pale=#fbd4d7
  *   red-light=#e86363  red=#da212c  red-dark=#ab1f26
+ *   green-pale=#e0eccf  green=#1e8a44  green-light=#4ea646  green-dark=#006638
  *   gray-0=#e0e1e9  gray-1=#cbcdd6  gray-2=#b7b9c3
  *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e
  */
@@ -410,6 +411,18 @@
   [data-theme='modus-modern-light']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled:hover {
+    background-color: #1b7c3d; /* green @ 90% + black */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #006638; /* green-dark */
   }
 
   /* ── modus-modern-light: outlined buttons ────────────────────────────── */
@@ -488,6 +501,22 @@
     color: #ab1f26;
   }
 
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline:hover {
+    background-color: #e0eccf; /* green-pale */
+    border-color: #1e8a44;
+    color: #1e8a44;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #1e8a44; /* green */
+    border-color: transparent;
+    color: #ffffff;
+  }
+
   /* ── modus-modern-dark: filled buttons ───────────────────────────────── */
   [data-theme='modus-modern-dark']
     .modus-wc-btn-primary.modus-wc-btn-filled:hover {
@@ -547,6 +576,18 @@
   [data-theme='modus-modern-dark']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled:hover {
+    background-color: #46953f; /* green-light @ 90% + black */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #3e8538; /* green-light @ 80% + black */
   }
 
   /* ── modus-modern-dark: outlined buttons ─────────────────────────────── */
@@ -616,5 +657,21 @@
     background-color: rgb(232 99 99 / 0.3);
     border-color: #ab1f26;
     color: #ab1f26;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline:hover {
+    background-color: rgb(78 166 70 / 0.12); /* green-light @ 12% */
+    border-color: #4ea646;
+    color: #4ea646;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #4ea646; /* green-light */
+    border-color: transparent;
+    color: #000000;
   }
 }

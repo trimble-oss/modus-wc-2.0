@@ -207,6 +207,19 @@
       color: var(--modus-wc-color-error);
     }
   }
+
+  &.modus-wc-btn-success {
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-success);
+      border: 1px solid transparent;
+      color: var(--modus-wc-color-success-content);
+    }
+
+    &:hover {
+      background-color: var(--modus-wc-color-success-pale);
+      color: var(--modus-wc-color-success);
+    }
+  }
 }
 
 @mixin outline-styles {

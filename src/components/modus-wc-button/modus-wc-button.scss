@@ -56,6 +56,10 @@ modus-wc-button .modus-wc-btn-borderless {
   &.modus-wc-btn-error {
     color: var(--modus-wc-color-error);
   }
+
+  &.modus-wc-btn-success {
+    color: var(--modus-wc-color-success);
+  }
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-ellipse {
