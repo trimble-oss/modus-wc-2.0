@@ -107,6 +107,49 @@ describe('modus-wc-button', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with neutral color when color is neutral', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="neutral">Neutral</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render neutral color with outlined variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="neutral" variant="outlined">Neutral</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(button?.classList.contains('modus-wc-btn-outline')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render neutral color with borderless variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="neutral" variant="borderless">Neutral</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(button?.classList.contains('modus-wc-btn-borderless')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render neutral color with pressed state', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="neutral" pressed="true">Neutral</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(button?.getAttribute('aria-pressed')).toBe('true');
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should not emit buttonClick event on key press when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
