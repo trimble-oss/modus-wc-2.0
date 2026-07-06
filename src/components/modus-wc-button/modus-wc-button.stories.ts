@@ -324,57 +324,96 @@ Compare **Primary** and **Neutral** below — interaction should feel the same; 
     </style>
     <div class="neutral-states-grid">
       <div>
-        <p class="neutral-states-section-title">Filled — compare Primary vs Neutral</p>
+        <p class="neutral-states-section-title">
+          Filled — compare Primary vs Neutral
+        </p>
         <p class="neutral-states-note">
-          Hover and press each button. Neutral should darken the same way Primary does.
+          Hover and press each button. Neutral should darken the same way
+          Primary does.
         </p>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Primary</span>
-          <modus-wc-button color="primary" variant="filled">Default</modus-wc-button>
-          <modus-wc-button color="primary" variant="filled" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="primary" variant="filled"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="primary" variant="filled" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Neutral</span>
-          <modus-wc-button color="neutral" variant="filled">Default</modus-wc-button>
-          <modus-wc-button color="neutral" variant="filled" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="neutral" variant="filled"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="neutral" variant="filled" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
       </div>
 
       <div>
-        <p class="neutral-states-section-title">Outlined — compare Primary vs Neutral</p>
+        <p class="neutral-states-section-title">
+          Outlined — compare Primary vs Neutral
+        </p>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Primary</span>
-          <modus-wc-button color="primary" variant="outlined">Default</modus-wc-button>
-          <modus-wc-button color="primary" variant="outlined" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="primary" variant="outlined"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="primary" variant="outlined" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Neutral</span>
-          <modus-wc-button color="neutral" variant="outlined">Default</modus-wc-button>
-          <modus-wc-button color="neutral" variant="outlined" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="neutral" variant="outlined"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="neutral" variant="outlined" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
       </div>
 
       <div>
-        <p class="neutral-states-section-title">Borderless — compare Primary vs Neutral</p>
+        <p class="neutral-states-section-title">
+          Borderless — compare Primary vs Neutral
+        </p>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Primary</span>
-          <modus-wc-button color="primary" variant="borderless">Default</modus-wc-button>
-          <modus-wc-button color="primary" variant="borderless" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="primary" variant="borderless"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="primary" variant="borderless" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Neutral</span>
-          <modus-wc-button color="neutral" variant="borderless">Default</modus-wc-button>
-          <modus-wc-button color="neutral" variant="borderless" pressed>Pressed</modus-wc-button>
+          <modus-wc-button color="neutral" variant="borderless"
+            >Default</modus-wc-button
+          >
+          <modus-wc-button color="neutral" variant="borderless" pressed
+            >Pressed</modus-wc-button
+          >
         </div>
       </div>
 
       <div>
-        <p class="neutral-states-section-title">Tertiary (for reference — uses DaisyUI neutral slot)</p>
+        <p class="neutral-states-section-title">
+          Tertiary (for reference — uses DaisyUI neutral slot)
+        </p>
         <div class="neutral-states-row">
           <span class="neutral-states-label">Tertiary</span>
-          <modus-wc-button color="tertiary" variant="filled">Filled</modus-wc-button>
-          <modus-wc-button color="tertiary" variant="outlined">Outlined</modus-wc-button>
-          <modus-wc-button color="tertiary" variant="borderless">Borderless</modus-wc-button>
+          <modus-wc-button color="tertiary" variant="filled"
+            >Filled</modus-wc-button
+          >
+          <modus-wc-button color="tertiary" variant="outlined"
+            >Outlined</modus-wc-button
+          >
+          <modus-wc-button color="tertiary" variant="borderless"
+            >Borderless</modus-wc-button
+          >
         </div>
       </div>
     </div>
