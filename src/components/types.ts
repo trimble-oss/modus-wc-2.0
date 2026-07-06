@@ -109,12 +109,22 @@ export interface ITreeNode {
   children?: ITreeNode[];
   /** Whether the node is disabled. */
   disabled?: boolean;
+  /** Lazy loading: marks the node as expandable before its `children` are loaded. While `hasChildren` is `true` and `children` is `undefined`, the component renders a chevron and, on first expand, emits `nodeLoadChildren` and shows a spinner. The application should then fetch and assign `children` (use `[]` when there are none). */
+  hasChildren?: boolean;
   /** Unique identifier for the node. */
   id: string;
   /** Modus icon name displayed before the label. */
   icon?: string;
   /** Display text for the node. */
   label: string;
+}
+
+/** Configures the optional toolbar rendered above the content tree. */
+export interface IContentTreeToolbar {
+  /** Show the expand-all / collapse-all toggle button. */
+  expandCollapse?: boolean;
+  /** Show the delete button (enabled only when nodes are checked in multi-select). */
+  delete?: boolean;
 }
 
 export type TypographyHierarchy = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';

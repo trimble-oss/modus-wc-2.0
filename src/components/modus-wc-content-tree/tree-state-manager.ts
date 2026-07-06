@@ -86,6 +86,15 @@ export const deleteNode = (nodes: ITreeNode[], id: string): ITreeNode[] =>
         : node
     );
 
+/**
+ * Remove every node in `ids` (and their descendants), returning a new tree. Safe
+ * for ids that overlap (e.g. a parent and one of its children): once an ancestor
+ * is removed, deleting a descendant id is simply a no-op. Use this to apply the
+ * content tree's `nodesDelete` event.
+ */
+export const deleteNodes = (nodes: ITreeNode[], ids: string[]): ITreeNode[] =>
+  ids.reduce((acc, id) => deleteNode(acc, id), nodes);
+
 /** Move an existing node to a new parent and/or index, returning a new tree. */
 export const moveNode = (
   nodes: ITreeNode[],
@@ -115,6 +124,57 @@ export const getNodeLocation = (
     }
   }
   return undefined;
+};
+
+/** Where a dragged node is dropped relative to a target node. */
+export type TreeDropPosition = 'before' | 'after' | 'inside';
+
+/**
+ * Whether `nodeId` is `ancestorId` itself or lives anywhere in its subtree. Use
+ * this to reject a drag-and-drop move that would drop a node into its own
+ * descendants (which would orphan the branch).
+ */
+export const isDescendant = (
+  nodes: ITreeNode[],
+  ancestorId: string,
+  nodeId: string
+): boolean => {
+  if (ancestorId === nodeId) return true;
+  const ancestor = findNode(nodes, ancestorId);
+  if (!ancestor?.children?.length) return false;
+  return !!findNode(ancestor.children, nodeId);
+};
+
+/**
+ * Resolve a relative drag-and-drop drop into an immutable move, returning a new
+ * tree. `before`/`after` place the node among the target's siblings; `inside`
+ * nests it as the target's first child. Invalid moves (dropping onto itself, a
+ * missing node/target, or into its own subtree) return the input unchanged, so
+ * the consuming application can pass the result straight back to `nodes`.
+ */
+export const moveNodeRelative = (
+  nodes: ITreeNode[],
+  id: string,
+  targetId: string,
+  position: TreeDropPosition
+): ITreeNode[] => {
+  if (id === targetId) return nodes;
+  const node = findNode(nodes, id);
+  if (!node || !findNode(nodes, targetId)) return nodes;
+  if (isDescendant(nodes, id, targetId)) return nodes;
+
+  if (position === 'inside') {
+    return moveNode(nodes, id, { parentId: targetId, index: 0 });
+  }
+
+  // Remove first, then locate the target in the pruned tree so the insertion
+  // index accounts for the removal shift when both share a parent.
+  const without = deleteNode(nodes, id);
+  const location = getNodeLocation(without, targetId);
+  if (!location) return nodes;
+
+  const index = location.index + (position === 'after' ? 1 : 0);
+  return addNode(without, node, { parentId: location.parentId, index });
 };
 
 /** Deep-clone a node and its subtree, assigning a fresh id to every node via `makeId`. */
@@ -151,6 +211,19 @@ export const duplicateNode = (
 /** Collect the ids of every leaf under `node` (or the node itself when it is a leaf). */
 export const collectLeafIds = (node: ITreeNode): string[] =>
   node.children?.length ? node.children.flatMap(collectLeafIds) : [node.id];
+
+/**
+ * Collect the ids of every expandable node (any node that has children) across
+ * the whole tree. Use this to drive "expand all" by setting `expandedNodeIds` to
+ * the result, and "collapse all" by setting it to an empty array.
+ */
+export const getExpandableNodeIds = (nodes: ITreeNode[]): string[] =>
+  nodes.reduce<string[]>((acc, node) => {
+    if (node.children?.length) {
+      acc.push(node.id, ...getExpandableNodeIds(node.children));
+    }
+    return acc;
+  }, []);
 
 /**
  * Prune the tree to branches relevant to `query` (case-insensitive label match).
@@ -201,4 +274,53 @@ export const setNodeChecked = (
     checked ? next.add(leafId) : next.delete(leafId)
   );
   return [...next];
+};
+
+/**
+ * Set a single node's own `disabled` (lock) state, returning a new tree. The
+ * change is intentionally NOT cascaded into descendants' data: a locked ancestor
+ * already disables its whole subtree via the component's effective-disabled
+ * computation, while each node keeps its own lock state. This way, unlocking a
+ * parent restores its children to whatever lock state they had before.
+ */
+export const setNodeDisabled = (
+  nodes: ITreeNode[],
+  id: string,
+  disabled: boolean
+): ITreeNode[] =>
+  nodes.map((node) => {
+    if (node.id === id) return { ...node, disabled };
+    if (node.children?.length) {
+      return {
+        ...node,
+        children: setNodeDisabled(node.children, id, disabled),
+      };
+    }
+    return node;
+  });
+
+/**
+ * Whether any ANCESTOR of `id` is disabled (locked). The node itself is not
+ * considered. Used to prevent unlocking a child while a parent is locked.
+ * Returns `false` when the node is not found or has no locked ancestor.
+ */
+export const hasDisabledAncestor = (
+  nodes: ITreeNode[],
+  id: string
+): boolean => {
+  const walk = (
+    list: ITreeNode[],
+    ancestorDisabled: boolean
+  ): boolean | null => {
+    for (const node of list) {
+      if (node.id === id) return ancestorDisabled;
+      if (node.children?.length) {
+        const result = walk(node.children, ancestorDisabled || !!node.disabled);
+        if (result !== null) return result;
+      }
+    }
+    return null;
+  };
+
+  return walk(nodes, false) ?? false;
 };

@@ -12,9 +12,21 @@ import {
   Watch,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
-import { DaisySize, ITreeNode, ModusSize, SelectionMode } from '../types';
+import {
+  DaisySize,
+  IContentTreeToolbar,
+  ITreeNode,
+  ModusSize,
+  SelectionMode,
+} from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import { filterTree, findNode } from './tree-state-manager';
+import {
+  filterTree,
+  findNode,
+  getExpandableNodeIds,
+  hasDisabledAncestor,
+  isDescendant,
+} from './tree-state-manager';
 
 /** Aggregated checkbox state for a node and its descendants. */
 type CheckState = 'checked' | 'unchecked' | 'indeterminate';
@@ -44,6 +56,9 @@ export class ModusWcContentTree {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). On drop the component emits `nodeMove`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in. */
+  @Prop() allowDragDrop?: boolean;
+
   /** Indicates that the content tree should have a border. */
   @Prop() bordered?: boolean;
 
@@ -59,11 +74,14 @@ export class ModusWcContentTree {
   /** The ids of the currently expanded nodes. Controlled by the consuming application. */
   @Prop() expandedNodeIds?: string[];
 
-  /** When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. */
+  /** When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When `searchable` is enabled, this only seeds the built-in search box's initial value. */
   @Prop() filter?: string = '';
 
   /** The tree data. The single source of truth, owned by the consuming application. */
   @Prop() nodes?: ITreeNode[];
+
+  /** Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the `filter` prop is used only to seed its initial value. */
+  @Prop() searchable?: boolean;
 
   /** The id of the currently selected (active) node. Controlled by the consuming application. */
   @Prop() selectedNodeId?: string;
@@ -73,6 +91,12 @@ export class ModusWcContentTree {
 
   /** The size of the content tree items. */
   @Prop() size?: ModusSize = 'md';
+
+  /** Modus icon variant for node `icon` glyphs in the start column. */
+  @Prop() nodeIconVariant?: 'outlined' | 'solid';
+
+  /** Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select). */
+  @Prop() toolbar?: IContentTreeToolbar;
 
   /** Event emitted when a node is selected. The consuming application should update `selectedNodeId`. */
   @StencilEvent() nodeSelect!: EventEmitter<{ id: string }>;
@@ -110,13 +134,58 @@ export class ModusWcContentTree {
   /** Event emitted when an inline edit is cancelled. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty). */
   @StencilEvent() nodeEditCancel!: EventEmitter<{ id: string }>;
 
-  // Id of the node awaiting delete confirmation; drives the built-in modal.
+  /** Event emitted when a node is dropped onto a new location via drag-and-drop. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child. The app should apply the move (e.g. via `moveNodeRelative`). */
+  @StencilEvent() nodeMove!: EventEmitter<{
+    id: string;
+    targetId: string;
+    position: 'before' | 'after' | 'inside';
+  }>;
+
+  /** Event emitted the first time a lazy node (`hasChildren: true` with no `children` yet) is expanded. The app should fetch the node's children and assign them to `nodes` (use `[]` when there are none); the component shows a spinner until `children` is defined. */
+  @StencilEvent() nodeLoadChildren!: EventEmitter<{ id: string }>;
+
+  /** Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set `expandedNodeIds` to every expandable id (e.g. via `getExpandableNodeIds`) when `expanded` is `true`, or to `[]` when `false`. */
+  @StencilEvent() expandAllChange!: EventEmitter<{ expanded: boolean }>;
+
+  /** Event emitted when the toolbar's delete button is confirmed. `ids` are the top-most checked nodes; the app should remove them (e.g. via `deleteNodes`). */
+  @StencilEvent() nodesDelete!: EventEmitter<{ ids: string[] }>;
+
+  /** Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should apply it to the node and its descendants (e.g. via `setNodeDisabled`). */
+  @StencilEvent() nodeVisibilityChange!: EventEmitter<{
+    id: string;
+    disabled: boolean;
+  }>;
+
+  // Id of the node awaiting single-delete confirmation; drives the built-in modal.
   @State() private pendingDeleteId?: string;
+
+  // Ids awaiting bulk-delete confirmation (from the toolbar); drives the modal.
+  @State() private pendingDeleteIds?: string[];
+
+  // The built-in search box's current query (self-managed when `searchable`).
+  // Seeded from `filter` on load; drives filtering in place of the prop.
+  @State() private searchQuery = '';
 
   // Ids the user has manually collapsed during the CURRENT filter session.
   // Transient, view-only state: it never touches the controlled
   // `expandedNodeIds`, and it resets whenever the filter value changes.
   @State() private filterCollapsedIds: Set<string> = new Set();
+
+  // Ids of lazy nodes whose children are currently being fetched by the app
+  // (after `nodeLoadChildren`). Transient: it drives the per-node spinner and
+  // guards against re-emitting a load while one is already in flight. Cleared
+  // once the node's `children` are provided (see onNodesChange).
+  @State() private loadingIds: Set<string> = new Set();
+
+  // Transient drag-and-drop state (only meaningful while `allowDragDrop`).
+  @State() private draggingId?: string;
+  @State() private dragOverId?: string;
+  @State() private dropPosition?: 'before' | 'after' | 'inside';
+
+  // Spring-load: auto-expand a collapsed parent after a short dwell while the
+  // pointer hovers its "inside" zone during a drag.
+  private springLoadId?: string;
+  private springLoadTimer?: ReturnType<typeof setTimeout>;
 
   // The id used by the inner <dialog> (must be unique per instance).
   private deleteModalId = `content-tree-delete-${contentTreeInstanceId++}`;
@@ -156,6 +225,24 @@ export class ModusWcContentTree {
     }
   }
 
+  @Watch('nodes')
+  onNodesChange(): void {
+    if (!this.loadingIds.size) return;
+    // A lazy node finishes loading once its `children` are defined (even `[]`,
+    // which is treated as "loaded, no items"). Drop those ids (and any node
+    // that has since left the tree) so the spinner gives way to the loaded rows.
+    const next = new Set(this.loadingIds);
+    for (const id of this.loadingIds) {
+      const node = findNode(this.getNodes(), id);
+      if (!node || node.children !== undefined) {
+        next.delete(id);
+      }
+    }
+    if (next.size !== this.loadingIds.size) {
+      this.loadingIds = next;
+    }
+  }
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
@@ -163,6 +250,9 @@ export class ModusWcContentTree {
       this.el.ariaLabel = 'Content tree';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    // Seed the built-in search box from any initial `filter` value.
+    this.searchQuery = this.filter ?? '';
 
     // @Watch does not fire on initial load, so initialize the edit session here
     // when the consumer mounts with `editingNodeId` already set.
@@ -172,6 +262,8 @@ export class ModusWcContentTree {
   }
 
   componentDidRender() {
+    this.syncDragHandleDraggable();
+
     if (!this.editFocusPending || !this.editingNodeId) return;
     this.editFocusPending = false;
 
@@ -196,6 +288,20 @@ export class ModusWcContentTree {
 
   disconnectedCallback() {
     this.detachInputKeyDown();
+    this.clearSpringLoad();
+  }
+
+  // modus-wc-button does not expose draggable; set it on the inner native
+  // button so HTML5 drag-and-drop works from the per-row reorder handle.
+  private syncDragHandleDraggable(): void {
+    if (!this.allowDragDrop) return;
+    this.el
+      .querySelectorAll<HTMLButtonElement>(
+        'modus-wc-button.modus-wc-content-tree-drag-handle button'
+      )
+      .forEach((button) => {
+        button.draggable = true;
+      });
   }
 
   // Remove the native keydown listener bound to the inline-edit input and clear
@@ -208,14 +314,20 @@ export class ModusWcContentTree {
   // Commit on Enter, cancel on Escape, straight from the input element. Reads
   // the live value so the latest keystroke is never lost.
   private handleInputKeyDown = (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' && e.key !== 'Escape') return;
     if (!this.editingNodeId) return;
+
+    // Keep every keystroke (notably Space) inside the edit input: the enclosing
+    // modus-wc-tree-item listens for bubbling keydown and calls preventDefault()
+    // on Enter/Space to select the row, which would otherwise swallow spaces and
+    // commit on Enter before the edit handler runs.
+    e.stopPropagation();
+
+    if (e.key !== 'Enter' && e.key !== 'Escape') return;
 
     const node = findNode(this.getNodes(), this.editingNodeId);
     if (!node) return;
 
     e.preventDefault();
-    e.stopPropagation();
 
     if (e.key === 'Enter') {
       this.draftLabel = (e.target as HTMLInputElement).value ?? this.draftLabel;
@@ -255,10 +367,21 @@ export class ModusWcContentTree {
       return;
     }
 
-    this.nodeExpandChange.emit({
-      id: node.id,
-      expanded: !this.isExpanded(node.id),
-    });
+    const expanded = !this.isExpanded(node.id);
+
+    // Lazy loading: the first time a not-yet-loaded node is expanded, ask the
+    // application to fetch its children and show a spinner until they arrive.
+    // The loadingIds guard prevents re-fetching while a load is in flight.
+    if (
+      expanded &&
+      this.isLazyUnloaded(node) &&
+      !this.loadingIds.has(node.id)
+    ) {
+      this.loadingIds = new Set(this.loadingIds).add(node.id);
+      this.nodeLoadChildren.emit({ id: node.id });
+    }
+
+    this.nodeExpandChange.emit({ id: node.id, expanded });
   };
 
   private handleCheckboxChange = (e: CustomEvent, node: ITreeNode) => {
@@ -268,6 +391,165 @@ export class ModusWcContentTree {
     const checked = this.getCheckStateById(node.id) !== 'checked';
     this.nodeCheckChange.emit({ id: node.id, checked });
   };
+
+  private handleVisibilityToggle = (e: CustomEvent, node: ITreeNode) => {
+    (e as unknown as Event).stopPropagation?.();
+    // A node whose ancestor is locked cannot be toggled: the ancestor must be
+    // unlocked first. Only the top-most locked node (or an enabled node) is
+    // interactive.
+    if (hasDisabledAncestor(this.getNodes(), node.id)) return;
+    // The eye toggles this node's OWN `disabled` (lock) state. The component
+    // stays stateless: the app applies the new state (e.g. via
+    // `setNodeDisabled`). Descendants inherit the lock at render time, so their
+    // own state is preserved and restored when this node is unlocked.
+    this.nodeVisibilityChange.emit({ id: node.id, disabled: !node.disabled });
+  };
+
+  // --- Drag & drop (opt-in via `allowDragDrop`) ---
+  // The component stays stateless: dropping emits `nodeMove` with the resolved
+  // intent and the application applies it (e.g. via `moveNodeRelative`).
+
+  private handleDragStart = (e: DragEvent, node: ITreeNode) => {
+    if (!this.allowDragDrop || node.disabled) return;
+    this.draggingId = node.id;
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      // Some browsers require drag data for the drag to initiate.
+      e.dataTransfer.setData('text/plain', node.id);
+    }
+  };
+
+  private handleDragEnter = (e: DragEvent) => {
+    if (!this.allowDragDrop || !this.draggingId) return;
+    // stopPropagation keeps only the innermost (hovered) row reacting, so a
+    // nested child never also marks its ancestor row as the drop target.
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  private handleDragOver = (e: DragEvent, node: ITreeNode) => {
+    if (!this.allowDragDrop || !this.draggingId) return;
+    e.stopPropagation();
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+
+    if (this.isInvalidDropTarget(node)) {
+      this.clearDropState();
+      this.clearSpringLoad();
+      return;
+    }
+
+    const position = this.computeDropPosition(e, node);
+    this.dragOverId = node.id;
+    this.dropPosition = position;
+    this.scheduleSpringLoad(node, position);
+  };
+
+  private handleDragLeave = (e: DragEvent, node: ITreeNode) => {
+    const host = e.currentTarget as HTMLElement;
+    const related = e.relatedTarget as Node | null;
+    // Ignore moves between the row's own descendants.
+    if (related && host.contains(related)) return;
+    if (this.dragOverId === node.id) this.clearDropState();
+    if (this.springLoadId === node.id) this.clearSpringLoad();
+  };
+
+  private handleDrop = (e: DragEvent, node: ITreeNode) => {
+    if (!this.allowDragDrop || !this.draggingId) return;
+    e.stopPropagation();
+    e.preventDefault();
+
+    const id = this.draggingId;
+    const position = this.dropPosition;
+    const valid = !this.isInvalidDropTarget(node);
+
+    this.clearSpringLoad();
+    this.clearDropState();
+    this.draggingId = undefined;
+
+    if (valid && position) {
+      this.nodeMove.emit({ id, targetId: node.id, position });
+    }
+  };
+
+  private handleDragEnd = () => {
+    this.draggingId = undefined;
+    this.clearDropState();
+    this.clearSpringLoad();
+  };
+
+  private clearDropState(): void {
+    this.dragOverId = undefined;
+    this.dropPosition = undefined;
+  }
+
+  private clearSpringLoad(): void {
+    if (this.springLoadTimer) {
+      clearTimeout(this.springLoadTimer);
+      this.springLoadTimer = undefined;
+    }
+    this.springLoadId = undefined;
+  }
+
+  // A node cannot be dropped onto itself, into its own subtree (would orphan the
+  // branch), or onto a disabled row.
+  private isInvalidDropTarget(node: ITreeNode): boolean {
+    const id = this.draggingId;
+    if (!id) return true;
+    if (node.disabled || node.id === id) return true;
+    return isDescendant(this.getNodes(), id, node.id);
+  }
+
+  // Split the target row into three zones by pointer position: the top edge
+  // reorders before the target, the bottom edge after it, and the middle nests
+  // inside it.
+  private computeDropPosition(
+    e: DragEvent,
+    node: ITreeNode
+  ): 'before' | 'after' | 'inside' {
+    const host = e.currentTarget as HTMLElement;
+    const row = host.querySelector<HTMLElement>(
+      '.modus-wc-menu-item-interactive'
+    );
+    const rect = row?.getBoundingClientRect();
+
+    if (!rect || !rect.height) {
+      // Layout unavailable (e.g. unit tests): nest into parents, reorder after leaves.
+      return node.children?.length ? 'inside' : 'after';
+    }
+
+    const ratio = (e.clientY - rect.top) / rect.height;
+    if (ratio < 0.3) return 'before';
+    if (ratio > 0.7) return 'after';
+    return 'inside';
+  }
+
+  // Auto-expand a collapsed parent after a short dwell when hovering its inside
+  // zone, so the user can drop into its children (spring-loading).
+  private scheduleSpringLoad(
+    node: ITreeNode,
+    position: 'before' | 'after' | 'inside'
+  ): void {
+    const shouldSpring =
+      position === 'inside' &&
+      !!node.children?.length &&
+      !this.isExpanded(node.id);
+
+    if (!shouldSpring) {
+      this.clearSpringLoad();
+      return;
+    }
+    // A dwell is already scheduled for this node; let it run.
+    if (this.springLoadId === node.id) return;
+
+    this.clearSpringLoad();
+    this.springLoadId = node.id;
+    this.springLoadTimer = setTimeout(() => {
+      this.nodeExpandChange.emit({ id: node.id, expanded: true });
+      this.springLoadId = undefined;
+      this.springLoadTimer = undefined;
+    }, 500);
+  }
 
   // --- Transactional menu (Edit / Duplicate / Add / Delete) ---
 
@@ -311,6 +593,7 @@ export class ModusWcContentTree {
   }
 
   private openDeleteConfirm(id: string): void {
+    this.pendingDeleteIds = undefined;
     this.pendingDeleteId = id;
     this.getDeleteDialog()?.showModal();
   }
@@ -318,14 +601,183 @@ export class ModusWcContentTree {
   private closeDeleteConfirm(): void {
     this.getDeleteDialog()?.close();
     this.pendingDeleteId = undefined;
+    this.pendingDeleteIds = undefined;
   }
 
   private confirmDelete = () => {
-    if (this.pendingDeleteId) {
+    // A pending bulk selection (toolbar) takes precedence over a single-row delete.
+    if (this.pendingDeleteIds?.length) {
+      this.nodesDelete.emit({ ids: this.pendingDeleteIds });
+    } else if (this.pendingDeleteId) {
       this.nodeDelete.emit({ id: this.pendingDeleteId });
     }
     this.closeDeleteConfirm();
   };
+
+  // The confirmation copy adapts to a single-row delete vs a bulk toolbar delete.
+  private getDeleteMessage(): string {
+    const count = this.pendingDeleteIds?.length ?? 0;
+    if (count > 0) {
+      return `Are you sure you want to delete ${count} selected item${
+        count === 1 ? '' : 's'
+      }?`;
+    }
+    return 'Are you sure you want to delete this item?';
+  }
+
+  // --- Toolbar (opt-in via `toolbar`) ---
+
+  // The toolbar renders only when the prop is set with at least one control on.
+  private hasToolbar(): boolean {
+    return (
+      !!this.toolbar && (!!this.toolbar.expandCollapse || !!this.toolbar.delete)
+    );
+  }
+
+  // The delete button is enabled only in multi-select once something is checked.
+  private hasCheckedSelection(): boolean {
+    return (
+      this.isMultiSelect() &&
+      this.coerceArray<string>(this.checkedNodeIds).length > 0
+    );
+  }
+
+  // True when every expandable node is already open (drives the toggle's label/icon).
+  private isAllExpanded(): boolean {
+    const expandable = getExpandableNodeIds(this.getNodes());
+    if (!expandable.length) return false;
+    const expanded = new Set(this.coerceArray<string>(this.expandedNodeIds));
+    return expandable.every((id: string) => expanded.has(id));
+  }
+
+  private handleExpandAllToggle = () => {
+    this.expandAllChange.emit({ expanded: !this.isAllExpanded() });
+  };
+
+  private handleToolbarDelete = () => {
+    // Rebuild the check-state map so the selection reflects the latest data,
+    // then confirm deletion of the top-most checked nodes.
+    this.buildCheckStateMap();
+    const ids = this.getTopMostCheckedIds();
+    if (!ids.length) return;
+    this.pendingDeleteId = undefined;
+    this.pendingDeleteIds = ids;
+    this.getDeleteDialog()?.showModal();
+  };
+
+  // Collect the top-most checked nodes: a node whose derived state is 'checked'
+  // and whose parent is not fully checked. This captures each checked branch once
+  // (a checked parent covers its descendants) plus any individually checked leaf.
+  private getTopMostCheckedIds(): string[] {
+    const ids: string[] = [];
+    const visit = (node: ITreeNode, parentChecked: boolean): void => {
+      const checked = this.getCheckStateById(node.id) === 'checked';
+      if (checked && !parentChecked) ids.push(node.id);
+      node.children?.forEach((child) => visit(child, checked));
+    };
+    this.getNodes().forEach((node) => visit(node, false));
+    return ids;
+  }
+
+  private handleSearchInput = (e: CustomEvent) => {
+    const value =
+      (e as unknown as { detail?: { target?: HTMLInputElement } }).detail
+        ?.target?.value ?? '';
+    this.setSearchQuery(value);
+  };
+
+  private handleSearchClear = () => this.setSearchQuery('');
+
+  // Update the built-in search query; a changed query re-forces surviving
+  // parents open (mirroring onFilterChange for the controlled `filter` prop).
+  private setSearchQuery(value: string): void {
+    if (value === this.searchQuery) return;
+    this.searchQuery = value;
+    if (this.filterCollapsedIds.size) {
+      this.filterCollapsedIds = new Set();
+    }
+  }
+
+  private renderSearch(): VNode | null {
+    if (!this.searchable) return null;
+
+    return (
+      <modus-wc-text-input
+        aria-label="Search tree"
+        customClass="modus-wc-content-tree-search"
+        includeClear
+        includeSearch
+        placeholder="Search…"
+        size={this.getSearchInputSize() as ModusSize}
+        type="search"
+        value={this.searchQuery}
+        onInputChange={this.handleSearchInput}
+        onClearClick={this.handleSearchClear}
+      />
+    );
+  }
+
+  private renderToolbar(): VNode | null {
+    if (!this.hasToolbar()) return null;
+
+    const toolbar = this.toolbar!;
+    const allExpanded = this.isAllExpanded();
+
+    return (
+      <modus-wc-toolbar
+        aria-label="Content tree toolbar"
+        customClass="modus-wc-content-tree-toolbar"
+      >
+        <div class="modus-wc-content-tree-toolbar-end" slot="end">
+          {toolbar.delete ? (
+            <modus-wc-button
+              aria-label="Delete selected"
+              color="tertiary"
+              disabled={!this.hasCheckedSelection()}
+              shape="square"
+              size={this.getControlButtonSize()}
+              variant="borderless"
+              onButtonClick={this.handleToolbarDelete}
+            >
+              <modus-wc-icon
+                decorative
+                name="delete"
+                size={this.getActionIconSize()}
+              />
+            </modus-wc-button>
+          ) : null}
+          {toolbar.expandCollapse ? (
+            <modus-wc-button
+              aria-label={allExpanded ? 'Collapse all' : 'Expand all'}
+              color="tertiary"
+              shape="square"
+              size={this.getControlButtonSize()}
+              variant="borderless"
+              onButtonClick={this.handleExpandAllToggle}
+            >
+              <modus-wc-icon
+                decorative
+                name={allExpanded ? 'unfold_less' : 'unfold_more'}
+                size={this.getActionIconSize()}
+              />
+            </modus-wc-button>
+          ) : null}
+        </div>
+      </modus-wc-toolbar>
+    );
+  }
+
+  // The search box and toolbar stack vertically (one per row) above the tree.
+  private renderControls(): VNode | null {
+    if (!this.searchable && !this.hasToolbar()) return null;
+
+    return (
+      <div class="modus-wc-content-tree-controls">
+        {this.renderSearch()}
+        {this.renderToolbar()}
+      </div>
+    );
+  }
 
   // --- Inline editing ---
 
@@ -351,8 +803,28 @@ export class ModusWcContentTree {
     return this.selectionMode === 'multiple';
   }
 
-  /** Icon-only row controls (chevron, ellipsis): one step below tree `size`. */
-  private getActionButtonSize(): DaisySize {
+  /**
+   * Icon-only row/toolbar controls (chevron, drag handle, eye, ellipsis, toolbar
+   * buttons). Uses the atom's default sizes — no custom width/height. `md` tree →
+   * `xs` button; `lg` → `sm`; `sm` clamps at `xs` (the smallest `DaisySize`).
+   */
+  private getControlButtonSize(): DaisySize {
+    return this.size === 'lg' ? 'sm' : 'xs';
+  }
+
+  private getSearchInputSize(): DaisySize {
+    switch (this.size) {
+      case 'sm':
+        return 'sm';
+      case 'lg':
+        return 'md';
+      default:
+        return 'sm';
+    }
+  }
+
+  /** Glyph inside icon-only controls: `sm` tree → `xs`; `md` → `sm`; `lg` → `md`. */
+  private getActionIconSize(): DaisySize {
     switch (this.size) {
       case 'sm':
         return 'xs';
@@ -363,12 +835,7 @@ export class ModusWcContentTree {
     }
   }
 
-  /** Icons inside icon-only buttons: one step below the action button. */
-  private getActionIconSize(): DaisySize {
-    return this.size === 'lg' ? 'sm' : 'xs';
-  }
-
-  /** Node glyph in the start slot: matches tree row density. */
+  /** Node glyph (start icon): `sm` tree → `xs`; `md` → `sm`; `lg` → `md`. */
   private getNodeIconSize(): DaisySize {
     switch (this.size) {
       case 'sm':
@@ -378,6 +845,11 @@ export class ModusWcContentTree {
       default:
         return 'sm';
     }
+  }
+
+  /** Checkbox: `sm` and `md` trees → `sm`; `lg` → `md`. */
+  private getCheckboxSize(): ModusSize {
+    return this.size === 'lg' ? 'md' : 'sm';
   }
 
   // Build `checkStateById` for the whole tree in a single post-order pass:
@@ -414,15 +886,23 @@ export class ModusWcContentTree {
     return this.coerceArray<ITreeNode>(this.nodes);
   }
 
+  // The filter string currently driving the view: the built-in search box's
+  // query when `searchable`, otherwise the controlled `filter` prop.
+  private getActiveFilter(): string {
+    return (this.searchable ? this.searchQuery : this.filter) ?? '';
+  }
+
   private isFiltering(): boolean {
-    return !!this.filter && this.filter.trim().length > 0;
+    return this.getActiveFilter().trim().length > 0;
   }
 
   // The tree actually rendered: pruned to matches + their ancestors when a
   // filter is active, otherwise the full data set.
   private getRenderNodes(): ITreeNode[] {
     const nodes = this.getNodes();
-    return this.isFiltering() ? filterTree(nodes, this.filter!) : nodes;
+    return this.isFiltering()
+      ? filterTree(nodes, this.getActiveFilter())
+      : nodes;
   }
 
   // O(1) lookup into the per-render `checkStateById` cache (see
@@ -438,6 +918,13 @@ export class ModusWcContentTree {
     // `expandedNodeIds` is left untouched and restored once the filter clears.
     if (this.isFiltering()) return !this.filterCollapsedIds.has(id);
     return this.coerceArray<string>(this.expandedNodeIds).includes(id);
+  }
+
+  // A node marked expandable via `hasChildren` whose `children` have not been
+  // provided yet. Expanding it triggers lazy loading (see handleExpandToggle);
+  // once `children` are set (even `[]`) it is no longer "lazy unloaded".
+  private isLazyUnloaded(node: ITreeNode): boolean {
+    return !!node.hasChildren && node.children === undefined;
   }
 
   // Find the 1st-level node whose subtree (itself or any descendant) contains
@@ -467,10 +954,48 @@ export class ModusWcContentTree {
     return [];
   }
 
-  private renderNode = (node: ITreeNode, activeRootId?: string): VNode => {
-    const hasChildren = !!node.children?.length;
+  // A placeholder row shown in place of a lazy node's children while the
+  // application fetches them (see `nodeLoadChildren`). Disabled so it is not
+  // selectable; only the spinner is shown, which announces the loading state
+  // via its built-in role="status" / "Loading" accessible name.
+  private renderLoadingRow(node: ITreeNode): VNode {
+    return (
+      <modus-wc-tree-item
+        key={`${node.id}-loading`}
+        customClass="modus-wc-content-tree-loading"
+        label=""
+        size={this.size}
+        value={`${node.id}-loading`}
+      >
+        <div class="modus-wc-content-tree-node-start" slot="start">
+          <modus-wc-loader
+            class="modus-wc-content-tree-loader"
+            size={this.getNodeIconSize()}
+            variant="spinner"
+          />
+        </div>
+      </modus-wc-tree-item>
+    );
+  }
+
+  private renderNode = (
+    node: ITreeNode,
+    activeRootId?: string,
+    index = 0,
+    ancestorDisabled = false
+  ): VNode => {
+    // `hasChildren` is truthy when the node has loaded children OR is a lazy
+    // node still awaiting them (so it still shows an expand chevron).
+    const hasChildren = !!node.children?.length || this.isLazyUnloaded(node);
     const expanded = hasChildren && this.isExpanded(node.id);
     const editing = node.id === this.editingNodeId;
+
+    // A node is effectively disabled (locked) when it OR any ancestor is locked.
+    // Only the topmost locked node ("lock owner") keeps an interactive eye so it
+    // can be unlocked; descendants inherit the lock and cannot be toggled until
+    // the ancestor is unlocked. Each node still keeps its OWN `disabled` state.
+    const effectiveDisabled = !!node.disabled || ancestorDisabled;
+    const isLockOwner = effectiveDisabled && !ancestorDisabled;
 
     const classes: string[] = [];
     if (hasChildren) classes.push('modus-wc-content-tree-parent');
@@ -479,26 +1004,87 @@ export class ModusWcContentTree {
     if (node.id === activeRootId) {
       classes.push('modus-wc-content-tree-family-active');
     }
+    if (this.allowDragDrop) {
+      if (this.draggingId === node.id) {
+        classes.push('modus-wc-content-tree-dragging');
+      }
+      if (this.dragOverId === node.id && this.dropPosition) {
+        classes.push(`modus-wc-content-tree-drop-${this.dropPosition}`);
+      }
+    }
 
+    // A drag handle appears on hover; dragging is disabled while filtering
+    // (order is ambiguous in a pruned view), while editing, and on disabled rows.
+    const showDragHandle =
+      this.allowDragDrop &&
+      !this.isFiltering() &&
+      !editing &&
+      !effectiveDisabled;
+
+    // Folding the sibling index into the key makes a reordered row's key change,
+    // so Stencil recreates it at the new position instead of trying to move it.
+    // With `shadow: false`, slot-relocated custom elements are not physically
+    // moved on a keyed reorder, so the create/destroy path (the same one add and
+    // delete rely on) is what actually reflects the new order in the DOM.
     return (
       <modus-wc-tree-item
-        key={node.id}
+        key={`${node.id}#${index}`}
         customClass={classes.join(' ') || undefined}
-        disabled={node.disabled}
+        disabled={effectiveDisabled}
         label={editing ? '' : node.label}
         selected={node.id === this.selectedNodeId}
         size={this.size}
         value={node.id}
+        onDragEnter={
+          this.allowDragDrop
+            ? (e: DragEvent) => this.handleDragEnter(e)
+            : undefined
+        }
+        onDragOver={
+          this.allowDragDrop
+            ? (e: DragEvent) => this.handleDragOver(e, node)
+            : undefined
+        }
+        onDragLeave={
+          this.allowDragDrop
+            ? (e: DragEvent) => this.handleDragLeave(e, node)
+            : undefined
+        }
+        onDrop={
+          this.allowDragDrop
+            ? (e: DragEvent) => this.handleDrop(e, node)
+            : undefined
+        }
       >
+        {showDragHandle ? (
+          <modus-wc-button
+            slot="start"
+            aria-label={`Reorder ${node.label}`}
+            class="modus-wc-content-tree-drag-handle"
+            color="tertiary"
+            shape="square"
+            size={this.getControlButtonSize()}
+            variant="borderless"
+            onDragStart={(e: DragEvent) => this.handleDragStart(e, node)}
+            onDragEnd={this.handleDragEnd}
+          >
+            <modus-wc-icon
+              decorative
+              name="drag_indicator"
+              size={this.getActionIconSize()}
+            />
+          </modus-wc-button>
+        ) : null}
         <div class="modus-wc-content-tree-node-start" slot="start">
           {hasChildren ? (
             <modus-wc-button
               aria-expanded={String(expanded)}
               aria-label={`${expanded ? 'Collapse' : 'Expand'} ${node.label}`}
+              class="modus-wc-content-tree-chevron"
               color="tertiary"
-              disabled={node.disabled}
+              disabled={effectiveDisabled}
               shape="square"
-              size={this.getActionButtonSize()}
+              size={this.getControlButtonSize()}
               variant="borderless"
               onButtonClick={(e: CustomEvent) =>
                 this.handleExpandToggle(e, node)
@@ -511,19 +1097,32 @@ export class ModusWcContentTree {
               />
             </modus-wc-button>
           ) : (
-            <span
+            // Invisible, same-sized chevron placeholder so leaf labels align
+            // under parent labels without a custom-width spacer.
+            <modus-wc-button
               aria-hidden="true"
               class="modus-wc-content-tree-toggle-spacer"
-            />
+              color="tertiary"
+              shape="square"
+              size={this.getControlButtonSize()}
+              tabIndex={-1}
+              variant="borderless"
+            >
+              <modus-wc-icon
+                decorative
+                name="chevron_right"
+                size={this.getActionIconSize()}
+              />
+            </modus-wc-button>
           )}
           {this.isMultiSelect() ? (
             <modus-wc-checkbox
               aria-label={node.label ? `Select ${node.label}` : 'Select node'}
-              disabled={node.disabled}
+              disabled={effectiveDisabled}
               indeterminate={
                 this.getCheckStateById(node.id) === 'indeterminate'
               }
-              size={this.size}
+              size={this.getCheckboxSize()}
               value={this.getCheckStateById(node.id) === 'checked'}
               onInputChange={(e: CustomEvent) =>
                 this.handleCheckboxChange(e, node)
@@ -535,6 +1134,7 @@ export class ModusWcContentTree {
               decorative
               name={node.icon}
               size={this.getNodeIconSize()}
+              variant={this.nodeIconVariant}
             />
           ) : null}
           {editing ? (
@@ -549,68 +1149,116 @@ export class ModusWcContentTree {
             />
           ) : null}
         </div>
-        {!editing && !node.disabled ? (
-          <div class="modus-wc-content-tree-actions" slot="end">
-            <modus-wc-dropdown-menu
-              buttonAriaLabel={`Actions for ${node.label}`}
-              buttonColor="tertiary"
-              buttonShape="square"
-              buttonSize={this.getActionButtonSize()}
-              buttonVariant="borderless"
-              menuPlacement="bottom-end"
-              menuSize={this.size}
+        {!editing ? (
+          <div
+            class={`modus-wc-content-tree-actions${
+              isLockOwner ? ' modus-wc-content-tree-lock-owner' : ''
+            }`}
+            slot="end"
+          >
+            <modus-wc-button
+              aria-label={
+                effectiveDisabled
+                  ? `Enable ${node.label}`
+                  : `Disable ${node.label}`
+              }
+              class="modus-wc-content-tree-visibility"
+              color="tertiary"
+              disabled={ancestorDisabled}
+              shape="square"
+              size={this.getControlButtonSize()}
+              variant="borderless"
+              onButtonClick={(e: CustomEvent) =>
+                this.handleVisibilityToggle(e, node)
+              }
             >
               <modus-wc-icon
-                slot="button"
                 decorative
-                name="more_vertical"
+                name={effectiveDisabled ? 'visibility_off' : 'visibility_on'}
                 size={this.getActionIconSize()}
               />
-              <div slot="menu">
-                <modus-wc-menu-item
-                  label="Edit name"
-                  value="edit"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'edit', node)
-                  }
+            </modus-wc-button>
+            {!effectiveDisabled ? (
+              <modus-wc-dropdown-menu
+                buttonAriaLabel={`Actions for ${node.label}`}
+                buttonColor="tertiary"
+                buttonShape="square"
+                buttonSize={this.getControlButtonSize()}
+                buttonVariant="borderless"
+                menuPlacement="bottom-end"
+                menuSize={this.size}
+              >
+                <modus-wc-icon
+                  slot="button"
+                  decorative
+                  name="more_vertical"
+                  size={this.getActionIconSize()}
                 />
-                <modus-wc-menu-item
-                  label="Duplicate"
-                  value="duplicate"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'duplicate', node)
-                  }
+                <div slot="menu">
+                  <modus-wc-menu-item
+                    label="Edit name"
+                    value="edit"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'edit', node)
+                    }
+                  />
+                  <modus-wc-menu-item
+                    label="Duplicate"
+                    value="duplicate"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'duplicate', node)
+                    }
+                  />
+                  <modus-wc-menu-item
+                    label="Add New Above"
+                    value="above"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'above', node)
+                    }
+                  />
+                  <modus-wc-menu-item
+                    label="Add New Below"
+                    value="below"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'below', node)
+                    }
+                  />
+                  <modus-wc-menu-item
+                    label="Add Child Node"
+                    value="child"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'child', node)
+                    }
+                  />
+                  <modus-wc-menu-item
+                    label="Delete"
+                    value="delete"
+                    onItemSelect={(e: CustomEvent<{ value: string }>) =>
+                      this.onMenuAction(e, 'delete', node)
+                    }
+                  />
+                </div>
+              </modus-wc-dropdown-menu>
+            ) : (
+              // A disabled row hides the ellipsis menu, but an equally sized,
+              // invisible placeholder reserves its width so the eye toggle keeps
+              // the same horizontal position as on enabled rows (no jump).
+              <modus-wc-button
+                aria-hidden="true"
+                class="modus-wc-content-tree-actions-spacer"
+                color="tertiary"
+                shape="square"
+                size={this.getControlButtonSize()}
+                tabIndex={-1}
+                variant="borderless"
+              >
+                <modus-wc-icon
+                  decorative
+                  name="more_vertical"
+                  size={this.getActionIconSize()}
                 />
-                <modus-wc-menu-item
-                  label="Add New Above"
-                  value="above"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'above', node)
-                  }
-                />
-                <modus-wc-menu-item
-                  label="Add New Below"
-                  value="below"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'below', node)
-                  }
-                />
-                <modus-wc-menu-item
-                  label="Add Child Node"
-                  value="child"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'child', node)
-                  }
-                />
-                <modus-wc-menu-item
-                  label="Delete"
-                  value="delete"
-                  onItemSelect={(e: CustomEvent<{ value: string }>) =>
-                    this.onMenuAction(e, 'delete', node)
-                  }
-                />
-              </div>
-            </modus-wc-dropdown-menu>
+              </modus-wc-button>
+            )}
           </div>
         ) : null}
         {expanded ? (
@@ -618,9 +1266,11 @@ export class ModusWcContentTree {
             isSubMenu
             customClass="modus-wc-menu-dropdown-show"
           >
-            {node.children!.map((child) =>
-              this.renderNode(child, activeRootId)
-            )}
+            {node.children === undefined
+              ? this.renderLoadingRow(node)
+              : node.children.map((child, index) =>
+                  this.renderNode(child, activeRootId, index, effectiveDisabled)
+                )}
           </modus-wc-tree-menu>
         ) : null}
       </modus-wc-tree-item>
@@ -634,6 +1284,7 @@ export class ModusWcContentTree {
 
     return (
       <Host class={this.customClass || undefined}>
+        {this.renderControls()}
         {/* The inner menu stays in 'single' mode so a row click only sets the
             active node. Multi-select is handled by our own checkboxes (rendered
             in slot="start"), keeping "active" and "checked" fully independent. */}
@@ -643,21 +1294,26 @@ export class ModusWcContentTree {
           size={this.size}
           {...this.inheritedAttributes}
         >
-          {nodes.map((node) => this.renderNode(node, activeRootId))}
+          {nodes.map((node, index) =>
+            this.renderNode(node, activeRootId, index)
+          )}
         </modus-wc-tree-menu>
 
         <modus-wc-modal
-          aria-label="Confirm delete"
+          aria-label="Confirm deletion"
           backdrop="static"
+          customClass="modus-wc-content-tree-modal"
           modalId={this.deleteModalId}
           position="center"
         >
-          <span slot="header">Are you sure you want to delete?</span>
-          <div slot="content">
-            <modus-wc-typography
-              label="This action cannot be undone."
-              size="md"
-            />
+          <modus-wc-typography
+            slot="header"
+            hierarchy="h6"
+            weight="semibold"
+            label="Confirm Deletion"
+          />
+          <div class="modus-wc-content-tree-modal-content" slot="content">
+            <modus-wc-typography label={this.getDeleteMessage()} size="sm" />
           </div>
           <div class="modus-wc-content-tree-modal-footer" slot="footer">
             <modus-wc-button
@@ -666,14 +1322,14 @@ export class ModusWcContentTree {
               variant="outlined"
               onButtonClick={() => this.closeDeleteConfirm()}
             >
-              No
+              Cancel
             </modus-wc-button>
             <modus-wc-button
               color="danger"
               size="sm"
               onButtonClick={this.confirmDelete}
             >
-              Yes
+              Delete
             </modus-wc-button>
           </div>
         </modus-wc-modal>

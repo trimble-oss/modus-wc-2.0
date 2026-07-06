@@ -11,11 +11,11 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
             <div class="modus-wc-menu-item-content">
               <div class="modus-wc-content-tree-node-start" slot="start">
-                <modus-wc-button>
+                <modus-wc-button class="modus-wc-content-tree-chevron">
                   <!---->
-                  <button aria-expanded="true" aria-label="Collapse Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                  <button aria-expanded="true" aria-label="Collapse Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                         expand_more
                       </i>
                     </modus-wc-icon>
@@ -33,13 +33,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                 </div>
               </div>
               <div class="modus-wc-content-tree-actions" slot="end">
+                <modus-wc-button class="modus-wc-content-tree-visibility">
+                  <!---->
+                  <button aria-label="Disable Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
                 <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                   <!---->
                   <modus-wc-button>
                     <!---->
-                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                           more_vertical
                         </i>
                       </modus-wc-icon>
@@ -151,7 +161,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <span aria-hidden="true" class="modus-wc-content-tree-toggle-spacer"></span>
+                        <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
                         <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
                           <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                             info
@@ -164,13 +183,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                         </div>
                       </div>
                       <div class="modus-wc-content-tree-actions" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Disable Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
                         <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                           <!---->
                           <modus-wc-button>
                             <!---->
-                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                               <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                                   more_vertical
                                 </i>
                               </modus-wc-icon>
@@ -281,12 +310,43 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <span aria-hidden="true" class="modus-wc-content-tree-toggle-spacer"></span>
+                        <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
                       </div>
                       <div class="modus-wc-menu-item-labels">
                         <div>
                           Disabled Leaf
                         </div>
+                      </div>
+                      <div class="modus-wc-content-tree-actions modus-wc-content-tree-lock-owner" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Enable Disabled Leaf" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_off
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                        <modus-wc-button class="modus-wc-content-tree-actions-spacer">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                more_vertical
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
                       </div>
                     </div>
                   </div>
@@ -298,11 +358,11 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <modus-wc-button>
+                        <modus-wc-button class="modus-wc-content-tree-chevron">
                           <!---->
-                          <button aria-expanded="true" aria-label="Collapse Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                          <button aria-expanded="true" aria-label="Collapse Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                                 expand_more
                               </i>
                             </modus-wc-icon>
@@ -315,13 +375,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                         </div>
                       </div>
                       <div class="modus-wc-content-tree-actions" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Disable Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
                         <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                           <!---->
                           <modus-wc-button>
                             <!---->
-                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                               <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                                   more_vertical
                                 </i>
                               </modus-wc-icon>
@@ -433,7 +503,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                             <div class="modus-wc-menu-item-content">
                               <div class="modus-wc-content-tree-node-start" slot="start">
-                                <span aria-hidden="true" class="modus-wc-content-tree-toggle-spacer"></span>
+                                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                                  <!---->
+                                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
                               </div>
                               <div class="modus-wc-menu-item-labels">
                                 <div>
@@ -441,13 +520,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                 </div>
                               </div>
                               <div class="modus-wc-content-tree-actions" slot="end">
+                                <modus-wc-button class="modus-wc-content-tree-visibility">
+                                  <!---->
+                                  <button aria-label="Disable Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
                                 <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                                   <!---->
                                   <modus-wc-button>
                                     <!---->
-                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                                           more_vertical
                                         </i>
                                       </modus-wc-icon>
@@ -558,7 +647,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                             <div class="modus-wc-menu-item-content">
                               <div class="modus-wc-content-tree-node-start" slot="start">
-                                <span aria-hidden="true" class="modus-wc-content-tree-toggle-spacer"></span>
+                                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                                  <!---->
+                                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
                               </div>
                               <div class="modus-wc-menu-item-labels">
                                 <div>
@@ -566,13 +664,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                 </div>
                               </div>
                               <div class="modus-wc-content-tree-actions" slot="end">
+                                <modus-wc-button class="modus-wc-content-tree-visibility">
+                                  <!---->
+                                  <button aria-label="Disable Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
                                 <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                                   <!---->
                                   <modus-wc-button>
                                     <!---->
-                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                                           more_vertical
                                         </i>
                                       </modus-wc-icon>
@@ -691,7 +799,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
             <div class="modus-wc-menu-item-content">
               <div class="modus-wc-content-tree-node-start" slot="start">
-                <span aria-hidden="true" class="modus-wc-content-tree-toggle-spacer"></span>
+                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                  <!---->
+                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        chevron_right
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
               </div>
               <div class="modus-wc-menu-item-labels">
                 <div>
@@ -699,13 +816,23 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                 </div>
               </div>
               <div class="modus-wc-content-tree-actions" slot="end">
+                <modus-wc-button class="modus-wc-content-tree-visibility">
+                  <!---->
+                  <button aria-label="Disable Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
                 <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
                   <!---->
                   <modus-wc-button>
                     <!---->
-                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-neutral modus-wc-btn-square" tabindex="0" type="button">
+                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
                           more_vertical
                         </i>
                       </modus-wc-icon>
@@ -814,12 +941,17 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
   </modus-wc-tree-menu>
   <modus-wc-modal>
     <!---->
-    <dialog aria-label="Confirm delete" class="modus-wc-modal" id="content-tree-delete-2">
+    <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-2">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
-          <span slot="header">
-            Are you sure you want to delete?
-          </span>
+          <modus-wc-typography slot="header">
+            <!---->
+            <h6 class="modus-wc-text-md modus-wc-typography modus-wc-typography-override modus-wc-typography-weight-semibold">
+              <slot-fb>
+                Confirm Deletion
+              </slot-fb>
+            </h6>
+          </modus-wc-typography>
           <div class="modus-wc-modal-top-icon-buttons">
             <modus-wc-button>
               <!---->
@@ -832,12 +964,12 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
           </div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">
-          <div slot="content">
+          <div class="modus-wc-content-tree-modal-content" slot="content">
             <modus-wc-typography>
               <!---->
-              <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
+              <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
                 <slot-fb>
-                  This action cannot be undone.
+                  Are you sure you want to delete this item?
                 </slot-fb>
               </p>
             </modus-wc-typography>
@@ -848,13 +980,13 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
             <modus-wc-button>
               <!---->
               <button class="modus-wc-btn modus-wc-btn-neutral modus-wc-btn-outline modus-wc-btn-sm" tabindex="0" type="button">
-                No
+                Cancel
               </button>
             </modus-wc-button>
             <modus-wc-button>
               <!---->
               <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-filled modus-wc-btn-sm" tabindex="0" type="button">
-                Yes
+                Delete
               </button>
             </modus-wc-button>
           </div>
@@ -873,12 +1005,17 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
   </modus-wc-tree-menu>
   <modus-wc-modal>
     <!---->
-    <dialog aria-label="Confirm delete" class="modus-wc-modal" id="content-tree-delete-0">
+    <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-0">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
-          <span slot="header">
-            Are you sure you want to delete?
-          </span>
+          <modus-wc-typography slot="header">
+            <!---->
+            <h6 class="modus-wc-text-md modus-wc-typography modus-wc-typography-override modus-wc-typography-weight-semibold">
+              <slot-fb>
+                Confirm Deletion
+              </slot-fb>
+            </h6>
+          </modus-wc-typography>
           <div class="modus-wc-modal-top-icon-buttons">
             <modus-wc-button>
               <!---->
@@ -891,12 +1028,12 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
           </div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">
-          <div slot="content">
+          <div class="modus-wc-content-tree-modal-content" slot="content">
             <modus-wc-typography>
               <!---->
-              <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-normal">
+              <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
                 <slot-fb>
-                  This action cannot be undone.
+                  Are you sure you want to delete this item?
                 </slot-fb>
               </p>
             </modus-wc-typography>
@@ -907,13 +1044,13 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
             <modus-wc-button>
               <!---->
               <button class="modus-wc-btn modus-wc-btn-neutral modus-wc-btn-outline modus-wc-btn-sm" tabindex="0" type="button">
-                No
+                Cancel
               </button>
             </modus-wc-button>
             <modus-wc-button>
               <!---->
               <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-filled modus-wc-btn-sm" tabindex="0" type="button">
-                Yes
+                Delete
               </button>
             </modus-wc-button>
           </div>

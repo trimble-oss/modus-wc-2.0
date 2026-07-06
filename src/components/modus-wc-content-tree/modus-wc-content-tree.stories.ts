@@ -3,25 +3,39 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ref } from 'lit/directives/ref.js';
-import { ITreeNode, ModusSize, SelectionMode } from '../types';
+import {
+  IContentTreeToolbar,
+  ITreeNode,
+  ModusSize,
+  SelectionMode,
+} from '../types';
 import {
   contentTreeDefaultSourceCode,
+  contentTreeDragAndDropSourceCode,
+  contentTreeLazyLoadingSourceCode,
   contentTreeMultiSelectSourceCode,
   contentTreeSearchFilterSourceCode,
+  contentTreeToolbarSourceCode,
   contentTreeTransactionalMenuSourceCode,
 } from './modus-wc-content-tree-story-source';
 import {
   addNode,
   deleteNode,
+  deleteNodes,
   duplicateNode,
+  findNode,
+  getExpandableNodeIds,
   getNodeLocation,
+  moveNodeRelative,
   setNodeChecked,
+  setNodeDisabled,
   updateNode,
 } from './tree-state-manager';
 
 interface ContentTreeArgs {
   bordered?: boolean;
   'custom-class'?: string;
+  'node-icon-variant'?: 'outlined' | 'solid';
   'selection-mode'?: SelectionMode;
   size?: ModusSize;
 }
@@ -34,6 +48,9 @@ type ContentTreeElement = HTMLElement & {
   checkedNodeIds?: string[];
   filter?: string;
   editingNodeId?: string;
+  allowDragDrop?: boolean;
+  toolbar?: IContentTreeToolbar;
+  searchable?: boolean;
 };
 
 const sampleNodes: ITreeNode[] = [
@@ -63,10 +80,15 @@ const meta: Meta<ContentTreeArgs> = {
   title: 'Components/Content Tree',
   component: 'modus-wc-content-tree',
   args: {
+    'node-icon-variant': 'solid',
     'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
+    'node-icon-variant': {
+      control: { type: 'select' },
+      options: ['outlined', 'solid'],
+    },
     'selection-mode': {
       control: { type: 'select' },
       options: ['single', 'multiple'],
@@ -89,6 +111,11 @@ const meta: Meta<ContentTreeArgs> = {
         'nodeDelete',
         'nodeRename',
         'nodeEditCancel',
+        'nodeMove',
+        'nodeLoadChildren',
+        'expandAllChange',
+        'nodesDelete',
+        'nodeVisibilityChange',
       ],
     },
   },
@@ -145,6 +172,7 @@ export const Default: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
     ></modus-wc-content-tree>`;
@@ -211,9 +239,99 @@ export const MultiSelect: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeCheckChange=${handleCheckChange}
+    ></modus-wc-content-tree>`;
+  },
+};
+
+export const Toolbar: Story = {
+  args: {
+    'selection-mode': 'multiple',
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: contentTreeToolbarSourceCode,
+      },
+    },
+  },
+  render: (args) => {
+    let treeEl: ContentTreeElement | undefined;
+    // A private copy so bulk deletes never mutate the shared sampleNodes.
+    let nodes: ITreeNode[] = structuredClone(sampleNodes);
+    let selectedNodeId = '1-1';
+    let expandedNodeIds: string[] = ['1', '1-2'];
+    let checkedNodeIds: string[] = ['1-2-1'];
+
+    const sync = () => {
+      if (!treeEl) return;
+      treeEl.nodes = nodes;
+      treeEl.selectedNodeId = selectedNodeId;
+      treeEl.expandedNodeIds = [...expandedNodeIds];
+      treeEl.checkedNodeIds = [...checkedNodeIds];
+      treeEl.toolbar = { expandCollapse: true, delete: true };
+      // Built-in search filters the tree internally (self-managed).
+      treeEl.searchable = true;
+    };
+
+    const handleSelect = (e: CustomEvent<{ id: string }>) => {
+      selectedNodeId = e.detail.id;
+      sync();
+    };
+
+    const handleExpandChange = (
+      e: CustomEvent<{ id: string; expanded: boolean }>
+    ) => {
+      const { id, expanded } = e.detail;
+      expandedNodeIds = expanded
+        ? [...new Set([...expandedNodeIds, id])]
+        : expandedNodeIds.filter((x) => x !== id);
+      sync();
+    };
+
+    const handleCheckChange = (
+      e: CustomEvent<{ id: string; checked: boolean }>
+    ) => {
+      const { id, checked } = e.detail;
+      checkedNodeIds = setNodeChecked(nodes, checkedNodeIds, id, checked);
+      sync();
+    };
+
+    // Expand-all / collapse-all: set every expandable id, or clear to collapse.
+    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
+      expandedNodeIds = e.detail.expanded ? getExpandableNodeIds(nodes) : [];
+      sync();
+    };
+
+    // Bulk delete: remove the checked branches, then drop any now-missing ids
+    // from the checked set so the selection stays consistent.
+    const handleNodesDelete = (e: CustomEvent<{ ids: string[] }>) => {
+      nodes = deleteNodes(nodes, e.detail.ids);
+      checkedNodeIds = checkedNodeIds.filter((id) => !!findNode(nodes, id));
+      sync();
+    };
+
+    // prettier-ignore
+    return html`
+    <modus-wc-content-tree
+      ${ref((el) => {
+        treeEl = (el as ContentTreeElement) ?? undefined;
+        sync();
+      })}
+      aria-label="Content tree"
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      selection-mode=${ifDefined(args['selection-mode'])}
+      size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
+      @nodeSelect=${handleSelect}
+      @nodeExpandChange=${handleExpandChange}
+      @nodeCheckChange=${handleCheckChange}
+      @expandAllChange=${handleExpandAll}
+      @nodesDelete=${handleNodesDelete}
     ></modus-wc-content-tree>`;
   },
 };
@@ -230,14 +348,17 @@ export const SearchFilter: Story = {
     let treeEl: ContentTreeElement | undefined;
     let selectedNodeId = '1-2-2';
     let expandedNodeIds: string[] = ['1', '1-2'];
-    let filter = '';
 
+    // Search is handled by the component itself (`searchable`); the app only
+    // owns node/selection/expansion state. The toolbar's expand/collapse toggle
+    // renders on its own row below the search box.
     const sync = () => {
       if (!treeEl) return;
       treeEl.nodes = sampleNodes;
       treeEl.selectedNodeId = selectedNodeId;
       treeEl.expandedNodeIds = [...expandedNodeIds];
-      treeEl.filter = filter;
+      treeEl.searchable = true;
+      treeEl.toolbar = { expandCollapse: true };
     };
 
     const handleSelect = (e: CustomEvent<{ id: string }>) => {
@@ -250,55 +371,36 @@ export const SearchFilter: Story = {
     ) => {
       const { id, expanded } = e.detail;
       expandedNodeIds = expanded
-        ? [...expandedNodeIds, id]
+        ? [...new Set([...expandedNodeIds, id])]
         : expandedNodeIds.filter((x) => x !== id);
       sync();
     };
 
-    const handleFilter = (e: CustomEvent<InputEvent>) => {
-      filter = (e.detail?.target as HTMLInputElement)?.value ?? '';
-      sync();
-    };
-
-    const handleClear = () => {
-      filter = '';
+    // The toolbar's single expand/collapse-all toggle emits `expandAllChange`;
+    // the app applies it to its own expansion state.
+    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
+      expandedNodeIds = e.detail.expanded
+        ? getExpandableNodeIds(sampleNodes)
+        : [];
       sync();
     };
 
     // prettier-ignore
     return html`
-    <style>
-      .modus-wc-content-tree-search-demo {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        max-width: 20rem;
-      }
-    </style>
-    <div class="modus-wc-content-tree-search-demo">
-      <modus-wc-text-input
-        aria-label="Filter tree"
-        include-clear
-        include-search
-        placeholder="Filter nodes…"
-        size=${ifDefined(args.size)}
-        type="text"
-        @inputChange=${handleFilter}
-        @clearClick=${handleClear}
-      ></modus-wc-text-input>
-      <modus-wc-content-tree
-        ${ref((el) => {
-          treeEl = (el as ContentTreeElement) ?? undefined;
-          sync();
-        })}
-        aria-label="Content tree"
-        ?bordered=${args.bordered}
-        selection-mode=${ifDefined(args['selection-mode'])}
-        size=${ifDefined(args.size)}
+    <modus-wc-content-tree
+      ${ref((el) => {
+        treeEl = (el as ContentTreeElement) ?? undefined;
+        sync();
+      })}
+      aria-label="Content tree"
+      ?bordered=${args.bordered}
+      selection-mode=${ifDefined(args['selection-mode'])}
+      size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
-    ></modus-wc-content-tree>
-    </div>`;
+      @expandAllChange=${handleExpandAll}
+    ></modus-wc-content-tree>`;
   },
 };
 
@@ -413,6 +515,17 @@ export const TransactionalMenu: Story = {
       sync();
     };
 
+    // The eye toggle flips the node's OWN lock state; a locked parent disables
+    // its subtree via the component's effective-disabled inheritance, while each
+    // node keeps its own state (so unlocking a parent restores the children).
+    const handleVisibilityChange = (
+      e: CustomEvent<{ id: string; disabled: boolean }>
+    ) => {
+      const { id, disabled } = e.detail;
+      nodes = setNodeDisabled(nodes, id, disabled);
+      sync();
+    };
+
     // prettier-ignore
     return html`
     <modus-wc-content-tree
@@ -425,6 +538,7 @@ export const TransactionalMenu: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeEdit=${handleEdit}
@@ -433,6 +547,182 @@ export const TransactionalMenu: Story = {
       @nodeDelete=${handleDelete}
       @nodeRename=${handleRename}
       @nodeEditCancel=${handleEditCancel}
+      @nodeVisibilityChange=${handleVisibilityChange}
+    ></modus-wc-content-tree>`;
+  },
+};
+
+export const DragAndDrop: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: contentTreeDragAndDropSourceCode,
+      },
+    },
+  },
+  render: (args) => {
+    let treeEl: ContentTreeElement | undefined;
+    // A private copy so the shared sampleNodes stays untouched across stories.
+    let nodes: ITreeNode[] = structuredClone(sampleNodes);
+    let selectedNodeId = '1-1';
+    let expandedNodeIds: string[] = ['1', '1-2'];
+
+    const sync = () => {
+      if (!treeEl) return;
+      treeEl.nodes = nodes;
+      treeEl.selectedNodeId = selectedNodeId;
+      treeEl.expandedNodeIds = [...expandedNodeIds];
+      treeEl.allowDragDrop = true;
+    };
+
+    const handleSelect = (e: CustomEvent<{ id: string }>) => {
+      selectedNodeId = e.detail.id;
+      sync();
+    };
+
+    const handleExpandChange = (
+      e: CustomEvent<{ id: string; expanded: boolean }>
+    ) => {
+      const { id, expanded } = e.detail;
+      expandedNodeIds = expanded
+        ? [...new Set([...expandedNodeIds, id])]
+        : expandedNodeIds.filter((x) => x !== id);
+      sync();
+    };
+
+    // Apply the move to the app-owned data, then keep a reparented target open
+    // so the moved node is visible inside it.
+    const handleMove = (
+      e: CustomEvent<{
+        id: string;
+        targetId: string;
+        position: 'before' | 'after' | 'inside';
+      }>
+    ) => {
+      const { id, targetId, position } = e.detail;
+      nodes = moveNodeRelative(nodes, id, targetId, position);
+      if (position === 'inside' && !expandedNodeIds.includes(targetId)) {
+        expandedNodeIds = [...expandedNodeIds, targetId];
+      }
+      sync();
+    };
+
+    // prettier-ignore
+    return html`
+    <modus-wc-content-tree
+      ${ref((el) => {
+        treeEl = (el as ContentTreeElement) ?? undefined;
+        sync();
+      })}
+      aria-label="Content tree"
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      selection-mode=${ifDefined(args['selection-mode'])}
+      size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
+      @nodeSelect=${handleSelect}
+      @nodeExpandChange=${handleExpandChange}
+      @nodeMove=${handleMove}
+    ></modus-wc-content-tree>`;
+  },
+};
+
+export const LazyLoading: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: contentTreeLazyLoadingSourceCode,
+      },
+    },
+  },
+  render: (args) => {
+    let treeEl: ContentTreeElement | undefined;
+    // Lazy roots declare `hasChildren` but ship no `children` yet, so each shows
+    // an expand chevron and defers its content until the user opens it.
+    let nodes: ITreeNode[] = [
+      {
+        id: 'documents',
+        label: 'Documents',
+        icon: 'folder_closed',
+        hasChildren: true,
+      },
+      { id: 'media', label: 'Media', icon: 'folder_closed', hasChildren: true },
+      {
+        id: 'empty',
+        label: 'Empty Folder',
+        icon: 'folder_closed',
+        hasChildren: true,
+      },
+      { id: 'readme', label: 'Read Me', icon: 'info' },
+    ];
+    let selectedNodeId = 'readme';
+    let expandedNodeIds: string[] = [];
+
+    // Children returned by the mock "server". The nested subfolder is itself
+    // lazy so the spinner can be seen again one level deeper. The "Empty Folder"
+    // resolves to an empty array — it becomes a plain leaf once loaded.
+    const loadChildren = (id: string): ITreeNode[] =>
+      id === 'empty'
+        ? []
+        : [
+            { id: `${id}-1`, label: 'First item', icon: 'info' },
+            {
+              id: `${id}-2`,
+              label: 'Subfolder',
+              icon: 'folder_closed',
+              hasChildren: true,
+            },
+            { id: `${id}-3`, label: 'Last item', icon: 'info' },
+          ];
+
+    const sync = () => {
+      if (!treeEl) return;
+      treeEl.nodes = nodes;
+      treeEl.selectedNodeId = selectedNodeId;
+      treeEl.expandedNodeIds = [...expandedNodeIds];
+    };
+
+    const handleSelect = (e: CustomEvent<{ id: string }>) => {
+      selectedNodeId = e.detail.id;
+      sync();
+    };
+
+    const handleExpandChange = (
+      e: CustomEvent<{ id: string; expanded: boolean }>
+    ) => {
+      const { id, expanded } = e.detail;
+      expandedNodeIds = expanded
+        ? [...new Set([...expandedNodeIds, id])]
+        : expandedNodeIds.filter((x) => x !== id);
+      sync();
+    };
+
+    // Fetch children on first expand, with a deliberate delay so the spinner is
+    // visible. Assigning `children` (even `[]`) ends the loading state.
+    const handleLoadChildren = (e: CustomEvent<{ id: string }>) => {
+      const { id } = e.detail;
+      window.setTimeout(() => {
+        nodes = updateNode(nodes, id, { children: loadChildren(id) });
+        sync();
+      }, 1200);
+    };
+
+    // prettier-ignore
+    return html`
+    <modus-wc-content-tree
+      ${ref((el) => {
+        treeEl = (el as ContentTreeElement) ?? undefined;
+        sync();
+      })}
+      aria-label="Content tree"
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      selection-mode=${ifDefined(args['selection-mode'])}
+      size=${ifDefined(args.size)}
+      node-icon-variant=${ifDefined(args['node-icon-variant'])}
+      @nodeSelect=${handleSelect}
+      @nodeExpandChange=${handleExpandChange}
+      @nodeLoadChildren=${handleLoadChildren}
     ></modus-wc-content-tree>`;
   },
 };

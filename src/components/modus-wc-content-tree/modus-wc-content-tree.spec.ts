@@ -1,11 +1,20 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { ModusWcContentTree } from './modus-wc-content-tree';
-import { findNode } from './tree-state-manager';
+import {
+  findNode,
+  getExpandableNodeIds,
+  hasDisabledAncestor,
+  isDescendant,
+  moveNodeRelative,
+  setNodeDisabled,
+} from './tree-state-manager';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcCheckbox } from '../modus-wc-checkbox/modus-wc-checkbox';
 import { ModusWcDropdownMenu } from '../modus-wc-dropdown-menu/modus-wc-dropdown-menu';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { ModusWcLoader } from '../modus-wc-loader/modus-wc-loader';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcModal } from '../modus-wc-modal/modus-wc-modal';
@@ -27,8 +36,34 @@ interface ContentTreeHarness {
   bordered?: boolean;
   customClass?: string;
   size?: 'sm' | 'md' | 'lg';
+  allowDragDrop?: boolean;
+  draggingId?: string;
+  dragOverId?: string;
+  dropPosition?: 'before' | 'after' | 'inside';
+  springLoadId?: string;
+  loadingIds?: Set<string>;
+  isLazyUnloaded: (node: ITreeNode) => boolean;
+  onNodesChange: () => void;
+  handleDragStart: (e: DragEvent, node: ITreeNode) => void;
+  handleDragEnter: (e: DragEvent) => void;
+  handleDragOver: (e: DragEvent, node: ITreeNode) => void;
+  handleDragLeave: (e: DragEvent, node: ITreeNode) => void;
+  handleDrop: (e: DragEvent, node: ITreeNode) => void;
+  handleDragEnd: () => void;
+  clearDropState: () => void;
+  clearSpringLoad: () => void;
+  isInvalidDropTarget: (node: ITreeNode) => boolean;
+  computeDropPosition: (
+    e: DragEvent,
+    node: ITreeNode
+  ) => 'before' | 'after' | 'inside';
+  scheduleSpringLoad: (
+    node: ITreeNode,
+    position: 'before' | 'after' | 'inside'
+  ) => void;
   handleExpandToggle: (e: CustomEvent, node: ITreeNode) => void;
   handleCheckboxChange: (e: CustomEvent, node: ITreeNode) => void;
+  handleVisibilityToggle: (e: CustomEvent, node: ITreeNode) => void;
   onMenuAction: (
     e: CustomEvent<{ value: string }>,
     action: 'edit' | 'duplicate' | 'above' | 'below' | 'child' | 'delete',
@@ -54,9 +89,33 @@ interface ContentTreeHarness {
   disconnectedCallback: () => void;
   detachInputKeyDown: () => void;
   editFocusPending: boolean;
-  getActionButtonSize: () => 'xs' | 'sm' | 'md' | 'lg';
+  getControlButtonSize: () => 'xs' | 'sm' | 'md' | 'lg';
+  getSearchInputSize: () => 'xs' | 'sm' | 'md' | 'lg';
   getActionIconSize: () => 'xs' | 'sm' | 'md' | 'lg';
+  getCheckboxSize: () => 'sm' | 'md' | 'lg';
   getNodeIconSize: () => 'xs' | 'sm' | 'md' | 'lg';
+  toolbar?: { expandCollapse?: boolean; delete?: boolean };
+  pendingDeleteIds?: string[];
+  hasToolbar: () => boolean;
+  hasCheckedSelection: () => boolean;
+  isAllExpanded: () => boolean;
+  handleExpandAllToggle: () => void;
+  handleToolbarDelete: () => void;
+  getTopMostCheckedIds: () => string[];
+  getDeleteMessage: () => string;
+  searchable?: boolean;
+  searchQuery: string;
+  filterCollapsedIds: Set<string>;
+  getActiveFilter: () => string;
+  handleSearchInput: (e: CustomEvent) => void;
+  handleSearchClear: () => void;
+  setSearchQuery: (value: string) => void;
+  renderNode: (
+    node: ITreeNode,
+    activeRootId?: string,
+    index?: number,
+    ancestorDisabled?: boolean
+  ) => unknown;
 }
 
 describe('modus-wc-content-tree', () => {
@@ -69,6 +128,7 @@ describe('modus-wc-content-tree', () => {
     ModusWcIcon,
     ModusWcTextInput,
     ModusWcInputLabel,
+    ModusWcLoader,
     ModusWcDropdownMenu,
     ModusWcMenu,
     ModusWcMenuItem,
@@ -113,6 +173,9 @@ describe('modus-wc-content-tree', () => {
       bordered?: boolean;
       customClass?: string;
       size?: 'sm' | 'md' | 'lg';
+      allowDragDrop?: boolean;
+      toolbar?: { expandCollapse?: boolean; delete?: boolean };
+      searchable?: boolean;
     } = {}
   ): Promise<{ page: SpecPage; component: ContentTreeHarness }> => {
     const page = await newSpecPage({
@@ -150,6 +213,15 @@ describe('modus-wc-content-tree', () => {
     }
     if (options.size) {
       component.size = options.size;
+    }
+    if (options.allowDragDrop !== undefined) {
+      component.allowDragDrop = options.allowDragDrop;
+    }
+    if (options.toolbar !== undefined) {
+      component.toolbar = options.toolbar;
+    }
+    if (options.searchable !== undefined) {
+      component.searchable = options.searchable;
     }
 
     await page.waitForChanges();
@@ -201,6 +273,34 @@ describe('modus-wc-content-tree', () => {
       globalThis.requestAnimationFrame = origRaf;
     };
   };
+
+  // A minimal DragEvent stand-in for the drag-and-drop handlers (mock-doc has no
+  // real DragEvent). preventDefault/stopPropagation are spies so tests can assert
+  // whether the drop was allowed.
+  const makeDragEvent = (
+    overrides: {
+      dataTransfer?: unknown;
+      currentTarget?: unknown;
+      relatedTarget?: unknown;
+      clientY?: number;
+    } = {}
+  ): DragEvent =>
+    ({
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      dataTransfer: undefined,
+      currentTarget: undefined,
+      relatedTarget: undefined,
+      clientY: 0,
+      ...overrides,
+    }) as unknown as DragEvent;
+
+  // A fake currentTarget whose `querySelector('.modus-wc-menu-item-interactive')`
+  // returns a row element with the given rect (or null when `rect` is null).
+  const makeRowHost = (rect: { top: number; height: number } | null) => ({
+    querySelector: () => (rect ? { getBoundingClientRect: () => rect } : null),
+    contains: () => false,
+  });
 
   const nodeContainsId = (node: ITreeNode, targetId: string): boolean =>
     node.id === targetId ||
@@ -270,22 +370,28 @@ describe('modus-wc-content-tree', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should map tree size to action button, action icon, and node icon sizes', async () => {
+  it('should map tree size to control button, action icon, node icon, and checkbox sizes', async () => {
     const { component } = await createTreePage({ size: 'sm' });
 
-    expect(component.getActionButtonSize()).toBe('xs');
+    expect(component.getControlButtonSize()).toBe('xs');
+    expect(component.getSearchInputSize()).toBe('sm');
     expect(component.getActionIconSize()).toBe('xs');
     expect(component.getNodeIconSize()).toBe('xs');
+    expect(component.getCheckboxSize()).toBe('sm');
 
     component.size = 'md';
-    expect(component.getActionButtonSize()).toBe('sm');
-    expect(component.getActionIconSize()).toBe('xs');
+    expect(component.getControlButtonSize()).toBe('xs');
+    expect(component.getSearchInputSize()).toBe('sm');
+    expect(component.getActionIconSize()).toBe('sm');
     expect(component.getNodeIconSize()).toBe('sm');
+    expect(component.getCheckboxSize()).toBe('sm');
 
     component.size = 'lg';
-    expect(component.getActionButtonSize()).toBe('md');
-    expect(component.getActionIconSize()).toBe('sm');
+    expect(component.getControlButtonSize()).toBe('sm');
+    expect(component.getSearchInputSize()).toBe('md');
+    expect(component.getActionIconSize()).toBe('md');
     expect(component.getNodeIconSize()).toBe('md');
+    expect(component.getCheckboxSize()).toBe('md');
   });
 
   it('should ignore itemSelect when the event detail is missing', async () => {
@@ -592,10 +698,14 @@ describe('modus-wc-content-tree', () => {
     component.openDeleteConfirm('root-1');
     await page.waitForChanges();
 
-    const noButton = Array.from(
-      page.root!.querySelectorAll('modus-wc-button')
-    ).find((button) => button.textContent?.trim() === 'No');
-    noButton?.dispatchEvent(new CustomEvent('buttonClick', { bubbles: true }));
+    const cancelButton = Array.from(
+      page.root!.querySelectorAll(
+        '.modus-wc-content-tree-modal-footer modus-wc-button'
+      )
+    ).find((button) => button.textContent?.trim() === 'Cancel');
+    cancelButton?.dispatchEvent(
+      new CustomEvent('buttonClick', { bubbles: true })
+    );
     await page.waitForChanges();
 
     expect(nodeDelete).not.toHaveBeenCalled();
@@ -623,6 +733,662 @@ describe('modus-wc-content-tree', () => {
     component.confirmDelete();
 
     expect(nodeDelete).not.toHaveBeenCalled();
+  });
+
+  describe('toolbar', () => {
+    const getToolbar = (page: SpecPage) =>
+      page.root!.querySelector('modus-wc-toolbar');
+
+    // The toolbar buttons are icon-only; modus-wc-button forwards `aria-label`
+    // onto its inner <button>, so match on the inner element's accessible name.
+    const getToolbarButton = (page: SpecPage, label: string) =>
+      Array.from(
+        page.root!.querySelectorAll(
+          '.modus-wc-content-tree-toolbar-end modus-wc-button'
+        )
+      ).find((b) =>
+        b.querySelector('button')?.getAttribute('aria-label')?.includes(label)
+      ) as (HTMLElement & { disabled?: boolean; color?: string }) | undefined;
+
+    const getToolbarIconName = (
+      button: (HTMLElement & { disabled?: boolean }) | undefined
+    ) =>
+      (
+        button?.querySelector('modus-wc-icon') as
+          | (HTMLElement & { name?: string })
+          | null
+      )?.name;
+
+    it('should not render a toolbar by default', async () => {
+      const { page } = await createTreePage();
+      expect(getToolbar(page)).toBeNull();
+    });
+
+    it('should not render a toolbar when both controls are disabled', async () => {
+      const { page } = await createTreePage({
+        toolbar: { expandCollapse: false, delete: false },
+      });
+      expect(getToolbar(page)).toBeNull();
+    });
+
+    it('should render both controls when configured', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        toolbar: { expandCollapse: true, delete: true },
+      });
+      expect(getToolbar(page)).not.toBeNull();
+      expect(getToolbarButton(page, 'Expand all')).toBeDefined();
+      expect(getToolbarButton(page, 'Delete')).toBeDefined();
+    });
+
+    it('should render only the expand/collapse control when delete is off', async () => {
+      const { page } = await createTreePage({
+        toolbar: { expandCollapse: true },
+      });
+      expect(getToolbarButton(page, 'Expand all')).toBeDefined();
+      expect(getToolbarButton(page, 'Delete')).toBeUndefined();
+    });
+
+    it('should omit delete when expand/collapse is on and delete is explicitly false', async () => {
+      const { page } = await createTreePage({
+        toolbar: { expandCollapse: true, delete: false },
+      });
+      expect(getToolbar(page)).not.toBeNull();
+      expect(getToolbarButton(page, 'Expand all')).toBeDefined();
+      expect(getToolbarButton(page, 'Delete')).toBeUndefined();
+    });
+
+    it('should render delete alongside search when both controls are enabled', async () => {
+      const { page } = await createTreePage({
+        searchable: true,
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true, expandCollapse: true },
+      });
+
+      expect(
+        page.root!.querySelector('.modus-wc-content-tree-search')
+      ).not.toBeNull();
+      expect(getToolbarButton(page, 'Delete')?.disabled).toBe(false);
+      expect(getToolbarButton(page, 'Expand all')).toBeDefined();
+    });
+
+    it('should render only the delete control when expand/collapse is off', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        toolbar: { delete: true },
+      });
+      expect(getToolbarButton(page, 'Expand all')).toBeUndefined();
+      expect(getToolbarButton(page, 'Delete')).toBeDefined();
+    });
+
+    it('should disable delete when no nodes are checked in multi-select', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        toolbar: { delete: true },
+      });
+      expect(getToolbarButton(page, 'Delete')?.disabled).toBe(true);
+    });
+
+    it('should enable delete when nodes are checked in multi-select', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+      expect(getToolbarButton(page, 'Delete')?.disabled).toBe(false);
+    });
+
+    it('should keep delete disabled outside multi-select even with checked ids', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'single',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+      expect(getToolbarButton(page, 'Delete')?.disabled).toBe(true);
+    });
+
+    it('should show the expand-all icon when not everything is open', async () => {
+      const { page } = await createTreePage({
+        toolbar: { expandCollapse: true },
+      });
+      expect(getToolbarIconName(getToolbarButton(page, 'Expand all'))).toBe(
+        'unfold_more'
+      );
+    });
+
+    it('should show the collapse-all icon when everything is open', async () => {
+      const { page } = await createTreePage({
+        expandedNodeIds: getExpandableNodeIds(sampleNodes),
+        toolbar: { expandCollapse: true },
+      });
+      expect(getToolbarIconName(getToolbarButton(page, 'Collapse all'))).toBe(
+        'unfold_less'
+      );
+    });
+
+    it('should emit expandAllChange with expanded true when not all are open', async () => {
+      const { page, component } = await createTreePage({
+        toolbar: { expandCollapse: true },
+      });
+      const expandAllChange = jest.fn();
+      page.root?.addEventListener('expandAllChange', expandAllChange);
+
+      component.handleExpandAllToggle();
+
+      expect(expandAllChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { expanded: true } })
+      );
+    });
+
+    it('should emit expandAllChange with expanded false when all are open', async () => {
+      const { page, component } = await createTreePage({
+        expandedNodeIds: getExpandableNodeIds(sampleNodes),
+        toolbar: { expandCollapse: true },
+      });
+      const expandAllChange = jest.fn();
+      page.root?.addEventListener('expandAllChange', expandAllChange);
+
+      component.handleExpandAllToggle();
+
+      expect(expandAllChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { expanded: false } })
+      );
+    });
+
+    it('should emit expandAllChange when the toggle button is clicked', async () => {
+      const { page } = await createTreePage({
+        toolbar: { expandCollapse: true },
+      });
+      const expandAllChange = jest.fn();
+      page.root?.addEventListener('expandAllChange', expandAllChange);
+
+      getToolbarButton(page, 'Expand all')?.dispatchEvent(
+        new CustomEvent('buttonClick', { bubbles: true })
+      );
+
+      expect(expandAllChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { expanded: true } })
+      );
+    });
+
+    it('should report not-all-expanded when there are no expandable nodes', async () => {
+      const { component } = await createTreePage({
+        nodes: [{ id: 'a', label: 'A' }],
+        toolbar: { expandCollapse: true },
+      });
+      expect(component.isAllExpanded()).toBe(false);
+    });
+
+    it('should confirm and emit nodesDelete with the top-most checked ids', async () => {
+      const { page, component } = await createTreePage({
+        selectionMode: 'multiple',
+        expandedNodeIds: ['root-1', 'parent-b'],
+        // A fully-checked parent (parent-b via its leaves) plus a standalone leaf.
+        checkedNodeIds: ['leaf-a', 'leaf-b1', 'leaf-b2'],
+        toolbar: { delete: true },
+      });
+      const nodesDelete = jest.fn();
+      page.root?.addEventListener('nodesDelete', nodesDelete);
+
+      component.handleToolbarDelete();
+      await page.waitForChanges();
+
+      const dialog = page.root!.querySelector('dialog') as HTMLDialogElement & {
+        showModal: jest.Mock;
+      };
+      expect(dialog.showModal).toHaveBeenCalled();
+      expect(component.getDeleteMessage()).toBe(
+        'Are you sure you want to delete 2 selected items?'
+      );
+
+      component.confirmDelete();
+      expect(nodesDelete).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { ids: ['leaf-a', 'parent-b'] } })
+      );
+    });
+
+    it('should not open the confirm modal when nothing is checked', async () => {
+      const { page, component } = await createTreePage({
+        selectionMode: 'multiple',
+        toolbar: { delete: true },
+      });
+      const nodesDelete = jest.fn();
+      page.root?.addEventListener('nodesDelete', nodesDelete);
+
+      component.handleToolbarDelete();
+      await page.waitForChanges();
+
+      const dialog = page.root!.querySelector('dialog') as HTMLDialogElement & {
+        showModal: jest.Mock;
+      };
+      expect(dialog.showModal).not.toHaveBeenCalled();
+      component.confirmDelete();
+      expect(nodesDelete).not.toHaveBeenCalled();
+    });
+
+    it('should run the full bulk-delete flow from the toolbar button', async () => {
+      const { page, component } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+      const nodesDelete = jest.fn();
+      page.root?.addEventListener('nodesDelete', nodesDelete);
+
+      getToolbarButton(page, 'Delete')?.dispatchEvent(
+        new CustomEvent('buttonClick', { bubbles: true })
+      );
+      await page.waitForChanges();
+      expect(component.pendingDeleteIds).toEqual(['leaf-a']);
+
+      // Confirm via the modal footer's Delete button (scoped to the modal).
+      const confirmButton = Array.from(
+        page.root!.querySelectorAll(
+          '.modus-wc-content-tree-modal-footer modus-wc-button'
+        )
+      ).find((b) => b.textContent?.trim() === 'Delete');
+      confirmButton?.dispatchEvent(
+        new CustomEvent('buttonClick', { bubbles: true })
+      );
+
+      expect(nodesDelete).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { ids: ['leaf-a'] } })
+      );
+    });
+
+    it('should use a singular delete message for a single checked node', async () => {
+      const { component } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+
+      component.handleToolbarDelete();
+
+      expect(component.getDeleteMessage()).toBe(
+        'Are you sure you want to delete 1 selected item?'
+      );
+    });
+
+    it('should clear the bulk selection when the single-delete flow starts', async () => {
+      const { component } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+
+      component.handleToolbarDelete();
+      expect(component.pendingDeleteIds).toEqual(['leaf-a']);
+
+      component.openDeleteConfirm('root-2');
+      expect(component.pendingDeleteIds).toBeUndefined();
+    });
+
+    it('should tolerate bulk delete when the confirm dialog is missing', async () => {
+      const { page, component } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+      page.root!.querySelector('dialog')?.remove();
+
+      expect(() => component.handleToolbarDelete()).not.toThrow();
+      expect(component.pendingDeleteIds).toEqual(['leaf-a']);
+    });
+
+    it('should compute top-most checked ids without duplicating descendants', async () => {
+      const { component } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-b1', 'leaf-b2'],
+      });
+
+      // parent-b becomes fully checked, so only it is returned (not its leaves).
+      expect(component.getTopMostCheckedIds()).toEqual(['parent-b']);
+    });
+
+    it('should render the delete button before the expand/collapse button', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        toolbar: { expandCollapse: true, delete: true },
+      });
+
+      const labels = Array.from(
+        page.root!.querySelectorAll(
+          '.modus-wc-content-tree-toolbar-end modus-wc-button'
+        )
+      ).map((b) => b.querySelector('button')?.getAttribute('aria-label'));
+      expect(labels[0]).toBe('Delete selected');
+      expect(labels[1]).toBe('Expand all');
+    });
+
+    it('should render the delete button in the neutral tertiary color', async () => {
+      const { page } = await createTreePage({
+        selectionMode: 'multiple',
+        checkedNodeIds: ['leaf-a'],
+        toolbar: { delete: true },
+      });
+
+      expect(getToolbarButton(page, 'Delete')?.color).toBe('tertiary');
+    });
+  });
+
+  describe('search', () => {
+    const getSearch = (page: SpecPage) =>
+      page.root!.querySelector('modus-wc-text-input');
+
+    it('should not render the search box by default', async () => {
+      const { page } = await createTreePage();
+      expect(getSearch(page)).toBeNull();
+    });
+
+    it('should render the search box when searchable', async () => {
+      const { page } = await createTreePage({ searchable: true });
+      expect(getSearch(page)).not.toBeNull();
+    });
+
+    it('should render the controls container for search even without a toolbar', async () => {
+      const { page } = await createTreePage({ searchable: true });
+      expect(
+        page.root!.querySelector('.modus-wc-content-tree-controls')
+      ).not.toBeNull();
+      expect(page.root!.querySelector('modus-wc-toolbar')).toBeNull();
+    });
+
+    it('should filter the tree internally when the search box changes', async () => {
+      const { page, component } = await createTreePage({
+        searchable: true,
+        expandedNodeIds: ['root-1', 'parent-b'],
+      });
+
+      component.handleSearchInput(
+        new CustomEvent('inputChange', {
+          detail: { target: { value: 'Overview' } },
+        })
+      );
+      await page.waitForChanges();
+
+      expect(component.searchQuery).toBe('Overview');
+      expect(component.getActiveFilter()).toBe('Overview');
+
+      const rendered = component.getRenderNodes();
+      expect(rendered).toHaveLength(1);
+      expect(rendered[0].id).toBe('root-1');
+      expect(rendered[0].children?.map((c) => c.id)).toEqual(['leaf-a']);
+    });
+
+    it('should tolerate a search input event without detail', async () => {
+      const { component } = await createTreePage({ searchable: true });
+      component.setSearchQuery('Settings');
+
+      component.handleSearchInput(new CustomEvent('inputChange'));
+
+      expect(component.searchQuery).toBe('');
+    });
+
+    it('should tolerate a search input event without a target value', async () => {
+      const { component } = await createTreePage({ searchable: true });
+
+      component.handleSearchInput(
+        new CustomEvent('inputChange', {
+          detail: { target: {} as HTMLInputElement },
+        })
+      );
+
+      expect(component.searchQuery).toBe('');
+    });
+
+    it('should update the search query from the rendered search input', async () => {
+      const { page, component } = await createTreePage({ searchable: true });
+
+      page.root!.querySelector('.modus-wc-content-tree-search')?.dispatchEvent(
+        new CustomEvent('inputChange', {
+          bubbles: true,
+          detail: { target: { value: 'Settings' } },
+        })
+      );
+
+      expect(component.searchQuery).toBe('Settings');
+    });
+
+    it('should clear the internal filter via the clear handler', async () => {
+      const { page, component } = await createTreePage({ searchable: true });
+
+      component.setSearchQuery('Settings');
+      await page.waitForChanges();
+      expect(component.isFiltering()).toBe(true);
+
+      component.handleSearchClear();
+      await page.waitForChanges();
+      expect(component.searchQuery).toBe('');
+      expect(component.isFiltering()).toBe(false);
+    });
+
+    it('should seed the search box from the initial filter value', async () => {
+      const page = await newSpecPage({
+        components: contentTreeComponents,
+        html: '<modus-wc-content-tree aria-label="Content tree" searchable filter="Overview"></modus-wc-content-tree>',
+      });
+      const component = asHarness(page.rootInstance as ModusWcContentTree);
+      component.nodes = sampleNodes;
+      await page.waitForChanges();
+
+      expect(component.searchQuery).toBe('Overview');
+    });
+
+    it('should use the controlled filter prop when not searchable', async () => {
+      const { component } = await createTreePage({ filter: 'Settings' });
+      expect(component.getActiveFilter()).toBe('Settings');
+      expect(component.isFiltering()).toBe(true);
+    });
+
+    it('should ignore a search update that does not change the query', async () => {
+      const { component } = await createTreePage({ searchable: true });
+
+      component.setSearchQuery('abc');
+      component.setSearchQuery('abc');
+
+      expect(component.searchQuery).toBe('abc');
+    });
+
+    it('should reset transient collapses when the search query changes', async () => {
+      const { component, page } = await createTreePage({ searchable: true });
+      component.filterCollapsedIds = new Set(['root-1']);
+
+      component.setSearchQuery('Settings');
+      await page.waitForChanges();
+
+      expect(component.filterCollapsedIds.size).toBe(0);
+    });
+
+    it('should default the active filter when filter is undefined and not searchable', async () => {
+      const { component } = await createTreePage();
+      component.filter = undefined;
+      component.searchable = false;
+
+      expect(component.getActiveFilter()).toBe('');
+    });
+
+    it('should default the active filter when search query is undefined and searchable', async () => {
+      const { component } = await createTreePage({ searchable: true });
+      component.searchQuery = undefined as unknown as string;
+
+      expect(component.getActiveFilter()).toBe('');
+    });
+
+    it('should default search query on load when filter is undefined', async () => {
+      const page = await newSpecPage({
+        components: contentTreeComponents,
+        html: '<modus-wc-content-tree aria-label="Content tree" searchable></modus-wc-content-tree>',
+      });
+      const component = asHarness(page.rootInstance as ModusWcContentTree);
+      component.filter = undefined;
+      component.componentWillLoad();
+
+      expect(component.searchQuery).toBe('');
+    });
+  });
+
+  describe('visibility toggle', () => {
+    type VisibilityButtonEl = HTMLElement & { disabled?: boolean };
+
+    const getVisibilityButton = (
+      page: SpecPage,
+      value: string
+    ): VisibilityButtonEl | null => {
+      const el = findTreeItem(page, value)?.querySelector(
+        '.modus-wc-content-tree-visibility'
+      );
+      if (!(el instanceof HTMLElement)) return null;
+      return el;
+    };
+
+    const getIconName = (button: VisibilityButtonEl | null) =>
+      (
+        button?.querySelector('modus-wc-icon') as
+          | (HTMLElement & { name?: string })
+          | null
+      )?.name;
+
+    it('should render an eye toggle showing visibility_on for an enabled node', async () => {
+      const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
+      expect(getIconName(getVisibilityButton(page, 'leaf-a'))).toBe(
+        'visibility_on'
+      );
+    });
+
+    it('should render the eye toggle showing visibility_off for a disabled node', async () => {
+      const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
+      expect(getIconName(getVisibilityButton(page, 'leaf-disabled'))).toBe(
+        'visibility_off'
+      );
+    });
+
+    it('should keep the eye toggle but hide the ellipsis menu on a disabled node', async () => {
+      const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
+      expect(getVisibilityButton(page, 'leaf-disabled')).not.toBeNull();
+      expect(
+        findTreeItem(page, 'leaf-disabled')?.querySelector(
+          'modus-wc-dropdown-menu'
+        )
+      ).toBeNull();
+    });
+
+    it('should render the eye toggle before the ellipsis menu', async () => {
+      const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
+      const actions = findTreeItem(page, 'leaf-a')!.querySelector(
+        '.modus-wc-content-tree-actions'
+      )!;
+      expect(
+        actions.children[0].classList.contains(
+          'modus-wc-content-tree-visibility'
+        )
+      ).toBe(true);
+      expect(actions.children[1].tagName.toLowerCase()).toBe(
+        'modus-wc-dropdown-menu'
+      );
+    });
+
+    it('should emit nodeVisibilityChange with disabled true when disabling an enabled node', async () => {
+      const { page, component } = await createTreePage();
+      const nodeVisibilityChange = jest.fn();
+      page.root?.addEventListener('nodeVisibilityChange', nodeVisibilityChange);
+
+      component.handleVisibilityToggle(
+        { stopPropagation: jest.fn() } as unknown as CustomEvent,
+        getNode('leaf-a')
+      );
+
+      expect(nodeVisibilityChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { id: 'leaf-a', disabled: true } })
+      );
+    });
+
+    it('should emit nodeVisibilityChange with disabled false when enabling a disabled node', async () => {
+      const { page, component } = await createTreePage();
+      const nodeVisibilityChange = jest.fn();
+      page.root?.addEventListener('nodeVisibilityChange', nodeVisibilityChange);
+
+      component.handleVisibilityToggle(
+        { stopPropagation: jest.fn() } as unknown as CustomEvent,
+        getNode('leaf-disabled')
+      );
+
+      expect(nodeVisibilityChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { id: 'leaf-disabled', disabled: false },
+        })
+      );
+    });
+
+    it('should emit nodeVisibilityChange when the rendered eye toggle is clicked', async () => {
+      const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
+      const nodeVisibilityChange = jest.fn();
+      page.root?.addEventListener('nodeVisibilityChange', nodeVisibilityChange);
+
+      getVisibilityButton(page, 'leaf-a')?.dispatchEvent(
+        new CustomEvent('buttonClick', { bubbles: true })
+      );
+
+      expect(nodeVisibilityChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { id: 'leaf-a', disabled: true } })
+      );
+    });
+
+    const getActions = (page: SpecPage, value: string) =>
+      findTreeItem(page, value)?.querySelector(
+        '.modus-wc-content-tree-actions'
+      ) as HTMLElement | null;
+
+    it('should mark the top-most locked node as the lock owner with an interactive eye', async () => {
+      const { page } = await createTreePage({
+        nodes: setNodeDisabled(sampleNodes, 'root-1', true),
+        expandedNodeIds: ['root-1'],
+      });
+      const actions = getActions(page, 'root-1');
+      expect(
+        actions?.classList.contains('modus-wc-content-tree-lock-owner')
+      ).toBe(true);
+      // The owner's eye stays interactive so it can be unlocked.
+      expect(getVisibilityButton(page, 'root-1')?.disabled).toBeFalsy();
+    });
+
+    it('should render a locked descendant as effectively disabled with a non-interactive eye', async () => {
+      const { page } = await createTreePage({
+        nodes: setNodeDisabled(sampleNodes, 'root-1', true),
+        expandedNodeIds: ['root-1'],
+      });
+      // The child inherits the lock: eye shows the locked icon, is disabled, and
+      // is not a lock owner; its ellipsis menu is hidden.
+      expect(getIconName(getVisibilityButton(page, 'leaf-a'))).toBe(
+        'visibility_off'
+      );
+      expect(getVisibilityButton(page, 'leaf-a')?.disabled).toBe(true);
+      expect(
+        getActions(page, 'leaf-a')?.classList.contains(
+          'modus-wc-content-tree-lock-owner'
+        )
+      ).toBe(false);
+      expect(
+        findTreeItem(page, 'leaf-a')?.querySelector('modus-wc-dropdown-menu')
+      ).toBeNull();
+    });
+
+    it('should not emit nodeVisibilityChange for a node whose ancestor is locked', async () => {
+      const { page, component } = await createTreePage({
+        nodes: setNodeDisabled(sampleNodes, 'root-1', true),
+        expandedNodeIds: ['root-1'],
+      });
+      const nodeVisibilityChange = jest.fn();
+      page.root?.addEventListener('nodeVisibilityChange', nodeVisibilityChange);
+
+      component.handleVisibilityToggle(
+        { stopPropagation: jest.fn() } as unknown as CustomEvent,
+        getNode('leaf-a')
+      );
+
+      expect(nodeVisibilityChange).not.toHaveBeenCalled();
+    });
   });
 
   it('should not render action menus for disabled or editing nodes', async () => {
@@ -909,6 +1675,7 @@ describe('modus-wc-content-tree', () => {
     component.handleExpandToggle(bareEvent, getNode('root-1'));
     component.handleCheckboxChange(bareEvent, getNode('leaf-a'));
     component.onMenuAction(bareEvent, 'edit', getNode('root-1'));
+    component.handleVisibilityToggle(bareEvent, getNode('leaf-a'));
   });
 
   it('should focus, select, and bind keydown on the inline edit input after render', async () => {
@@ -1043,6 +1810,32 @@ describe('modus-wc-content-tree', () => {
     expect(nodeEditCancel).not.toHaveBeenCalled();
   });
 
+  it('should stop propagation for non-commit keys (e.g. Space) while editing so the tree-item cannot swallow them', async () => {
+    const { component } = await createTreePage();
+    component.editingNodeId = 'leaf-a';
+
+    const spaceKey = new KeyboardEvent('keydown', { key: ' ' });
+    const stopPropagation = jest.spyOn(spaceKey, 'stopPropagation');
+    const preventDefault = jest.spyOn(spaceKey, 'preventDefault');
+
+    component.handleInputKeyDown(spaceKey);
+
+    expect(stopPropagation).toHaveBeenCalled();
+    expect(preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('should not stop propagation when no node is being edited', async () => {
+    const { component } = await createTreePage();
+    component.editingNodeId = undefined;
+
+    const spaceKey = new KeyboardEvent('keydown', { key: ' ' });
+    const stopPropagation = jest.spyOn(spaceKey, 'stopPropagation');
+
+    component.handleInputKeyDown(spaceKey);
+
+    expect(stopPropagation).not.toHaveBeenCalled();
+  });
+
   it('should commit using the draft label when Enter target value is missing', async () => {
     const restoreRaf = mockRaf();
     const { page, component } = await createTreePage({
@@ -1148,5 +1941,829 @@ describe('modus-wc-content-tree', () => {
 
     component.detachInputKeyDown();
     component.disconnectedCallback();
+  });
+
+  it('should collect every expandable node id for expand all / collapse all', () => {
+    expect(getExpandableNodeIds(sampleNodes)).toEqual(['root-1', 'parent-b']);
+    expect(getExpandableNodeIds([{ id: 'leaf', label: 'Leaf' }])).toEqual([]);
+    expect(getExpandableNodeIds([])).toEqual([]);
+  });
+
+  // --- Drag & drop: state-manager helpers ---
+
+  it('isDescendant identifies self, descendants, and unrelated nodes', () => {
+    expect(isDescendant(sampleNodes, 'root-1', 'root-1')).toBe(true);
+    expect(isDescendant(sampleNodes, 'root-1', 'leaf-b1')).toBe(true);
+    expect(isDescendant(sampleNodes, 'root-1', 'root-2')).toBe(false);
+    // Ancestor is a leaf (no children).
+    expect(isDescendant(sampleNodes, 'leaf-a', 'leaf-b1')).toBe(false);
+    // Ancestor id is not in the tree.
+    expect(isDescendant(sampleNodes, 'missing', 'root-1')).toBe(false);
+  });
+
+  it('moveNodeRelative reorders before/after siblings and nests inside', () => {
+    const before: ITreeNode[] = moveNodeRelative(
+      sampleNodes,
+      'root-2',
+      'root-1',
+      'before'
+    );
+    expect(before.map((n) => n.id)).toEqual(['root-2', 'root-1']);
+
+    const beforeSibling: ITreeNode[] = moveNodeRelative(
+      sampleNodes,
+      'leaf-a',
+      'parent-b',
+      'before'
+    );
+    expect(
+      findNode(beforeSibling, 'root-1')!.children!.map((c) => c.id)
+    ).toEqual(['leaf-disabled', 'leaf-a', 'parent-b']);
+
+    const afterSibling: ITreeNode[] = moveNodeRelative(
+      sampleNodes,
+      'leaf-a',
+      'parent-b',
+      'after'
+    );
+    expect(
+      findNode(afterSibling, 'root-1')!.children!.map((c) => c.id)
+    ).toEqual(['leaf-disabled', 'parent-b', 'leaf-a']);
+
+    const inside: ITreeNode[] = moveNodeRelative(
+      sampleNodes,
+      'root-2',
+      'parent-b',
+      'inside'
+    );
+    expect(findNode(inside, 'parent-b')!.children!.map((c) => c.id)).toEqual([
+      'root-2',
+      'leaf-b1',
+      'leaf-b2',
+    ]);
+  });
+
+  it('moveNodeRelative rejects invalid moves and returns the input unchanged', () => {
+    expect(moveNodeRelative(sampleNodes, 'root-1', 'root-1', 'before')).toBe(
+      sampleNodes
+    );
+    expect(moveNodeRelative(sampleNodes, 'missing', 'root-1', 'before')).toBe(
+      sampleNodes
+    );
+    expect(moveNodeRelative(sampleNodes, 'root-1', 'missing', 'before')).toBe(
+      sampleNodes
+    );
+    // Cannot drop a node into its own subtree.
+    expect(moveNodeRelative(sampleNodes, 'root-1', 'leaf-b1', 'before')).toBe(
+      sampleNodes
+    );
+  });
+
+  // --- Visibility / lock: state-manager helpers ---
+
+  it('setNodeDisabled sets only the target node and does not cascade to descendants', () => {
+    const disabled: ITreeNode[] = setNodeDisabled(sampleNodes, 'root-1', true);
+    expect(findNode(disabled, 'root-1')!.disabled).toBe(true);
+    // Descendants keep their OWN state (inheritance is applied at render time).
+    expect(findNode(disabled, 'leaf-a')!.disabled).toBeFalsy();
+    expect(findNode(disabled, 'parent-b')!.disabled).toBeFalsy();
+    // A node outside the subtree is untouched.
+    expect(findNode(disabled, 'root-2')!.disabled).toBeFalsy();
+  });
+
+  it('setNodeDisabled preserves a descendant lock when a parent is unlocked and does not mutate input', () => {
+    // Lock the parent while a child (leaf-disabled) is already locked.
+    const locked: ITreeNode[] = setNodeDisabled(sampleNodes, 'root-1', true);
+    // Unlocking the parent leaves the child's own lock intact.
+    const unlocked: ITreeNode[] = setNodeDisabled(locked, 'root-1', false);
+    expect(findNode(unlocked, 'root-1')!.disabled).toBe(false);
+    expect(findNode(unlocked, 'leaf-disabled')!.disabled).toBe(true);
+    // The original tree is unchanged.
+    expect(findNode(sampleNodes, 'root-1')!.disabled).toBeFalsy();
+  });
+
+  it('hasDisabledAncestor detects a locked ancestor and ignores the node itself', () => {
+    const locked = setNodeDisabled(sampleNodes, 'root-1', true);
+    // leaf-a has a locked ancestor (root-1).
+    expect(hasDisabledAncestor(locked, 'leaf-a')).toBe(true);
+    expect(hasDisabledAncestor(locked, 'leaf-b1')).toBe(true);
+    // root-1 is locked itself but has no locked ancestor.
+    expect(hasDisabledAncestor(locked, 'root-1')).toBe(false);
+    // Unrelated node.
+    expect(hasDisabledAncestor(locked, 'root-2')).toBe(false);
+    // Missing node.
+    expect(hasDisabledAncestor(locked, 'missing')).toBe(false);
+  });
+
+  // --- Drag & drop: component handlers ---
+
+  it('should set the dragging id and drag data on drag start', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const setData = jest.fn();
+    const e = makeDragEvent({ dataTransfer: { setData, effectAllowed: '' } });
+
+    component.handleDragStart(e, getNode('leaf-a'));
+
+    expect(component.draggingId).toBe('leaf-a');
+    expect(setData).toHaveBeenCalledWith('text/plain', 'leaf-a');
+    expect((e.dataTransfer as DataTransfer).effectAllowed).toBe('move');
+  });
+
+  it('should tolerate a missing dataTransfer on drag start', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    component.handleDragStart(makeDragEvent(), getNode('leaf-a'));
+
+    expect(component.draggingId).toBe('leaf-a');
+  });
+
+  it('should ignore drag start for disabled nodes and when drag-drop is off', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    component.handleDragStart(makeDragEvent(), getNode('leaf-disabled'));
+    expect(component.draggingId).toBeUndefined();
+
+    component.allowDragDrop = false;
+    component.handleDragStart(makeDragEvent(), getNode('leaf-a'));
+    expect(component.draggingId).toBeUndefined();
+  });
+
+  it('should allow a drop on drag enter only while actively dragging', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    const disabled = makeDragEvent();
+    component.allowDragDrop = false;
+    component.handleDragEnter(disabled);
+    expect(disabled.preventDefault).not.toHaveBeenCalled();
+
+    component.allowDragDrop = true;
+    const notDragging = makeDragEvent();
+    component.draggingId = undefined;
+    component.handleDragEnter(notDragging);
+    expect(notDragging.preventDefault).not.toHaveBeenCalled();
+
+    component.draggingId = 'leaf-a';
+    const dragging = makeDragEvent();
+    component.handleDragEnter(dragging);
+    expect(dragging.preventDefault).toHaveBeenCalled();
+    expect(dragging.stopPropagation).toHaveBeenCalled();
+  });
+
+  it('should mark a valid drop target with the computed position on drag over', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('leaf-a')
+    );
+
+    const dataTransfer = { dropEffect: '' };
+    const e = makeDragEvent({
+      currentTarget: makeRowHost({ top: 0, height: 100 }),
+      clientY: 10,
+      dataTransfer,
+    });
+    component.handleDragOver(e, getNode('root-2'));
+
+    expect(e.preventDefault).toHaveBeenCalled();
+    expect(dataTransfer.dropEffect).toBe('move');
+    expect(component.dragOverId).toBe('root-2');
+    expect(component.dropPosition).toBe('before');
+  });
+
+  it('should clear drop state over an invalid target (and without a dataTransfer)', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    component.handleDragStart(makeDragEvent(), getNode('root-1'));
+
+    component.handleDragOver(
+      makeDragEvent({
+        currentTarget: makeRowHost({ top: 0, height: 100 }),
+        clientY: 10,
+      }),
+      getNode('root-1')
+    );
+
+    expect(component.dragOverId).toBeUndefined();
+    expect(component.dropPosition).toBeUndefined();
+  });
+
+  it('should return early from drag over when not dragging or drag-drop is off', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    const disabled = makeDragEvent();
+    component.allowDragDrop = false;
+    component.handleDragOver(disabled, getNode('root-1'));
+    expect(disabled.preventDefault).not.toHaveBeenCalled();
+
+    component.allowDragDrop = true;
+    component.draggingId = undefined;
+    const notDragging = makeDragEvent();
+    component.handleDragOver(notDragging, getNode('root-1'));
+    expect(notDragging.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('should ignore drag leave within the same row', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    component.dragOverId = 'root-1';
+
+    const inside = { querySelector: () => null, contains: () => true };
+    component.handleDragLeave(
+      makeDragEvent({ currentTarget: inside, relatedTarget: {} }),
+      getNode('root-1')
+    );
+
+    expect(component.dragOverId).toBe('root-1');
+  });
+
+  it('should clear drop state and spring-load when leaving the drop-target row', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: [],
+    });
+    jest.useFakeTimers();
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('leaf-a')
+    );
+    component.dragOverId = 'root-1';
+    component.dropPosition = 'inside';
+    component.scheduleSpringLoad(getNode('root-1'), 'inside');
+
+    const host = { querySelector: () => null, contains: () => false };
+    component.handleDragLeave(
+      makeDragEvent({ currentTarget: host, relatedTarget: null }),
+      getNode('root-1')
+    );
+
+    expect(component.dragOverId).toBeUndefined();
+    expect(component.dropPosition).toBeUndefined();
+    expect(component.springLoadId).toBeUndefined();
+    jest.useRealTimers();
+  });
+
+  it('should leave state intact on drag leave toward an outside, non-matching row', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    component.dragOverId = 'root-2';
+
+    const host = { querySelector: () => null, contains: () => false };
+    component.handleDragLeave(
+      makeDragEvent({ currentTarget: host, relatedTarget: {} }),
+      getNode('root-1')
+    );
+
+    expect(component.dragOverId).toBe('root-2');
+  });
+
+  it('should reject self, descendants, disabled targets, and no active drag', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    expect(component.isInvalidDropTarget(getNode('root-1'))).toBe(true);
+
+    component.draggingId = 'root-1';
+    expect(component.isInvalidDropTarget(getNode('root-1'))).toBe(true);
+    expect(component.isInvalidDropTarget(getNode('leaf-b1'))).toBe(true);
+    expect(component.isInvalidDropTarget(getNode('leaf-disabled'))).toBe(true);
+
+    component.draggingId = 'leaf-a';
+    expect(component.isInvalidDropTarget(getNode('root-2'))).toBe(false);
+  });
+
+  it('should split a row into before/inside/after zones', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const at = (clientY: number) =>
+      component.computeDropPosition(
+        makeDragEvent({
+          currentTarget: makeRowHost({ top: 0, height: 100 }),
+          clientY,
+        }),
+        getNode('root-1')
+      );
+
+    expect(at(10)).toBe('before');
+    expect(at(50)).toBe('inside');
+    expect(at(90)).toBe('after');
+  });
+
+  it('should fall back when the drop-target row rect is unavailable', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const noRowHost = { querySelector: () => null, contains: () => false };
+
+    expect(
+      component.computeDropPosition(
+        makeDragEvent({ currentTarget: noRowHost }),
+        getNode('root-1')
+      )
+    ).toBe('inside');
+    expect(
+      component.computeDropPosition(
+        makeDragEvent({ currentTarget: noRowHost }),
+        getNode('leaf-a')
+      )
+    ).toBe('after');
+    // A zero-height rect also falls back.
+    expect(
+      component.computeDropPosition(
+        makeDragEvent({ currentTarget: makeRowHost({ top: 0, height: 0 }) }),
+        getNode('leaf-a')
+      )
+    ).toBe('after');
+  });
+
+  it('should spring-load a collapsed parent hovered in its inside zone', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: [],
+    });
+    const nodeExpandChange = jest.fn();
+    page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
+
+    jest.useFakeTimers();
+    component.scheduleSpringLoad(getNode('root-1'), 'inside');
+    jest.advanceTimersByTime(500);
+
+    expect(nodeExpandChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'root-1', expanded: true } })
+    );
+    expect(component.springLoadId).toBeUndefined();
+    jest.useRealTimers();
+  });
+
+  it('should not spring-load for non-inside, leaf, or already-expanded targets', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['parent-b'],
+    });
+    const setTimeoutSpy = jest.spyOn(globalThis, 'setTimeout');
+
+    component.scheduleSpringLoad(getNode('root-1'), 'before');
+    component.scheduleSpringLoad(getNode('leaf-a'), 'inside');
+    component.scheduleSpringLoad(getNode('parent-b'), 'inside');
+
+    expect(setTimeoutSpy).not.toHaveBeenCalled();
+    setTimeoutSpy.mockRestore();
+  });
+
+  it('should not reschedule spring-load while one is pending for the same node', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: [],
+    });
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(globalThis, 'setTimeout');
+
+    component.scheduleSpringLoad(getNode('root-1'), 'inside');
+    component.scheduleSpringLoad(getNode('root-1'), 'inside');
+
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
+    component.clearSpringLoad();
+    setTimeoutSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it('should emit nodeMove for a valid drop', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('leaf-a')
+    );
+    component.handleDragOver(
+      makeDragEvent({
+        currentTarget: makeRowHost({ top: 0, height: 100 }),
+        clientY: 10,
+      }),
+      getNode('root-2')
+    );
+
+    const dropEvent = makeDragEvent();
+    component.handleDrop(dropEvent, getNode('root-2'));
+
+    expect(dropEvent.preventDefault).toHaveBeenCalled();
+    expect(nodeMove).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'leaf-a', targetId: 'root-2', position: 'before' },
+      })
+    );
+    expect(component.draggingId).toBeUndefined();
+  });
+
+  it('should not emit nodeMove for invalid targets or a missing position', async () => {
+    const { page, component } = await createTreePage({ allowDragDrop: true });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+
+    // Invalid target: dropping onto itself.
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('root-1')
+    );
+    component.handleDrop(makeDragEvent(), getNode('root-1'));
+    expect(nodeMove).not.toHaveBeenCalled();
+
+    // Valid target but no drag-over resolved a position.
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('leaf-a')
+    );
+    component.handleDrop(makeDragEvent(), getNode('root-2'));
+    expect(nodeMove).not.toHaveBeenCalled();
+  });
+
+  it('should return early from drop when not dragging or drag-drop is off', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    const disabled = makeDragEvent();
+    component.allowDragDrop = false;
+    component.handleDrop(disabled, getNode('root-1'));
+    expect(disabled.preventDefault).not.toHaveBeenCalled();
+
+    component.allowDragDrop = true;
+    component.draggingId = undefined;
+    const notDragging = makeDragEvent();
+    component.handleDrop(notDragging, getNode('root-1'));
+    expect(notDragging.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('should clear all drag state on drag end', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    component.draggingId = 'root-1';
+    component.dragOverId = 'root-1';
+    component.dropPosition = 'inside';
+
+    component.handleDragEnd();
+
+    expect(component.draggingId).toBeUndefined();
+    expect(component.dragOverId).toBeUndefined();
+    expect(component.dropPosition).toBeUndefined();
+  });
+
+  it('should render drag handles when enabled and hide them on disabled rows', async () => {
+    const { page } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+
+    expect(
+      findTreeItem(page, 'root-1')?.querySelector(
+        '.modus-wc-content-tree-drag-handle'
+      )
+    ).not.toBeNull();
+    expect(
+      findTreeItem(page, 'leaf-disabled')?.querySelector(
+        '.modus-wc-content-tree-drag-handle'
+      )
+    ).toBeNull();
+  });
+
+  it('should route drag-and-drop through rendered tree-item and drag-handle listeners', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+
+    const makeDomDragEvent = (
+      type: string,
+      extra: Record<string, unknown> = {}
+    ) => {
+      const event = new Event(type, {
+        bubbles: true,
+        cancelable: true,
+      }) as DragEvent;
+      Object.defineProperty(event, 'dataTransfer', {
+        value: {
+          setData: jest.fn(),
+          effectAllowed: '',
+          dropEffect: '',
+        },
+        enumerable: true,
+      });
+      Object.assign(event, extra);
+      return event;
+    };
+
+    const dragHandle = findTreeItem(page, 'leaf-a')?.querySelector(
+      '.modus-wc-content-tree-drag-handle'
+    ) as HTMLElement;
+    dragHandle.dispatchEvent(makeDomDragEvent('dragstart'));
+    expect(component.draggingId).toBe('leaf-a');
+
+    const dropTarget = findTreeItem(page, 'root-2')!;
+    const row = dropTarget.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    jest.spyOn(row, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 100,
+      right: 100,
+      bottom: 100,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+
+    dropTarget.dispatchEvent(makeDomDragEvent('dragenter'));
+    dropTarget.dispatchEvent(makeDomDragEvent('dragover', { clientY: 10 }));
+    expect(component.dragOverId).toBe('root-2');
+    expect(component.dropPosition).toBe('before');
+
+    dropTarget.dispatchEvent(
+      makeDomDragEvent('dragleave', { relatedTarget: null })
+    );
+    expect(component.dragOverId).toBeUndefined();
+
+    dropTarget.dispatchEvent(makeDomDragEvent('dragover', { clientY: 10 }));
+    dropTarget.dispatchEvent(makeDomDragEvent('drop'));
+    dragHandle.dispatchEvent(makeDomDragEvent('dragend'));
+
+    expect(component.draggingId).toBeUndefined();
+    expect(component.dragOverId).toBeUndefined();
+  });
+
+  it('should not render drag handles while filtering or editing', async () => {
+    const { page: filtering } = await createTreePage({
+      allowDragDrop: true,
+      filter: 'search',
+    });
+    expect(
+      filtering.root!.querySelector('.modus-wc-content-tree-drag-handle')
+    ).toBeNull();
+
+    const { page: editing } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+      editingNodeId: 'leaf-a',
+    });
+    expect(
+      findTreeItem(editing, 'leaf-a')?.querySelector(
+        '.modus-wc-content-tree-drag-handle'
+      )
+    ).toBeNull();
+  });
+
+  it('should apply dragging and drop-target classes during a drag', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+
+    component.handleDragStart(
+      makeDragEvent({ dataTransfer: { setData: jest.fn() } }),
+      getNode('leaf-a')
+    );
+    component.handleDragOver(
+      makeDragEvent({
+        currentTarget: makeRowHost({ top: 0, height: 100 }),
+        clientY: 50,
+      }),
+      getNode('parent-b')
+    );
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.modus-wc-content-tree-dragging')
+    ).not.toBeNull();
+    expect(
+      page.root!.querySelector('.modus-wc-content-tree-drop-inside')
+    ).not.toBeNull();
+  });
+
+  it('should not add a drop class when a drag-over target has no resolved position', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+
+    component.dragOverId = 'root-1';
+    component.dropPosition = undefined;
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('[class*="modus-wc-content-tree-drop-"]')
+    ).toBeNull();
+  });
+
+  // --- Lazy loading ---
+
+  const lazyNode = (over: Partial<ITreeNode> = {}): ITreeNode => ({
+    id: 'lazy',
+    label: 'Lazy',
+    hasChildren: true,
+    ...over,
+  });
+
+  it('isLazyUnloaded distinguishes unloaded lazy nodes from loaded or empty ones', async () => {
+    const { component } = await createTreePage();
+
+    expect(component.isLazyUnloaded(lazyNode())).toBe(true);
+    expect(component.isLazyUnloaded(lazyNode({ children: [] }))).toBe(false);
+    expect(
+      component.isLazyUnloaded(
+        lazyNode({ children: [{ id: 'x', label: 'X' }] })
+      )
+    ).toBe(false);
+    expect(component.isLazyUnloaded({ id: 'leaf', label: 'Leaf' })).toBe(false);
+  });
+
+  it('should render an expand chevron for a lazy node that has no children yet', async () => {
+    const nodes: ITreeNode[] = [lazyNode(), { id: 'leaf', label: 'Leaf' }];
+    const { page } = await createTreePage({ nodes, expandedNodeIds: [] });
+
+    // The lazy node gets a chevron toggle button; a real leaf gets a spacer.
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector(
+        '.modus-wc-content-tree-node-start modus-wc-button'
+      )
+    ).not.toBeNull();
+    expect(
+      findTreeItem(page, 'leaf')?.querySelector(
+        '.modus-wc-content-tree-toggle-spacer'
+      )
+    ).not.toBeNull();
+  });
+
+  it('should emit nodeLoadChildren, track loading, and show a spinner on first expand', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+    const nodeLoadChildren = jest.fn();
+    const nodeExpandChange = jest.fn();
+    page.root?.addEventListener('nodeLoadChildren', nodeLoadChildren);
+    page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+
+    expect(nodeLoadChildren).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'lazy' } })
+    );
+    expect(nodeExpandChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'lazy', expanded: true } })
+    );
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+
+    // The app applies the expansion; children are still absent, so a spinner shows.
+    component.expandedNodeIds = ['lazy'];
+    await page.waitForChanges();
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector('modus-wc-loader')
+    ).not.toBeNull();
+  });
+
+  it('should clear loading and render children once they are provided', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    component.expandedNodeIds = ['lazy'];
+    await page.waitForChanges();
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+
+    component.nodes = [
+      lazyNode({ children: [{ id: 'child', label: 'Child' }] }),
+    ];
+    await page.waitForChanges();
+
+    expect(component.loadingIds?.has('lazy')).toBe(false);
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector('modus-wc-loader')
+    ).toBeNull();
+    expect(findTreeItem(page, 'child')).toBeTruthy();
+  });
+
+  it('should treat an empty children array as a loaded leaf', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    component.expandedNodeIds = ['lazy'];
+    await page.waitForChanges();
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+
+    // The app reports "loaded, no items" by assigning an empty array.
+    component.nodes = [lazyNode({ children: [] })];
+    await page.waitForChanges();
+
+    expect(component.loadingIds?.has('lazy')).toBe(false);
+    // No chevron and no spinner: the node collapsed to a plain leaf. It gets an
+    // invisible toggle spacer (a hidden button) so its label stays aligned.
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector(
+        '.modus-wc-content-tree-chevron'
+      )
+    ).toBeNull();
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector('modus-wc-loader')
+    ).toBeNull();
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector(
+        '.modus-wc-content-tree-toggle-spacer'
+      )
+    ).not.toBeNull();
+  });
+
+  it('should not emit nodeLoadChildren when collapsing a lazy node', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { component } = await createTreePage({
+      nodes,
+      expandedNodeIds: ['lazy'],
+    });
+    const nodeLoadChildren = jest.fn();
+    component.el.addEventListener('nodeLoadChildren', nodeLoadChildren);
+
+    // Already expanded: toggling collapses it, which must not trigger a load.
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+
+    expect(nodeLoadChildren).not.toHaveBeenCalled();
+  });
+
+  it('should not emit nodeLoadChildren again while a load is already in flight', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+    const nodeLoadChildren = jest.fn();
+    component.el.addEventListener('nodeLoadChildren', nodeLoadChildren);
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    component.expandedNodeIds = ['lazy'];
+    // Collapse, then re-expand before the children have arrived.
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    component.expandedNodeIds = [];
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+
+    expect(nodeLoadChildren).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not emit nodeLoadChildren for the transient toggle while filtering', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { component } = await createTreePage({
+      nodes,
+      filter: 'lazy',
+      expandedNodeIds: [],
+    });
+    const nodeLoadChildren = jest.fn();
+    component.el.addEventListener('nodeLoadChildren', nodeLoadChildren);
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+
+    expect(nodeLoadChildren).not.toHaveBeenCalled();
+  });
+
+  it('should drop loading ids for nodes that leave the tree before loading', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+
+    // The node is removed entirely before its children ever arrive.
+    component.nodes = [{ id: 'other', label: 'Other' }];
+    await page.waitForChanges();
+    expect(component.loadingIds?.has('lazy')).toBe(false);
+  });
+
+  it('should keep the loading state while children are still absent after a nodes update', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+
+    component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+
+    // An unrelated data change: the lazy node's children are still not loaded.
+    component.nodes = [
+      lazyNode({ label: 'Lazy (renamed)' }),
+      { id: 'new', label: 'New' },
+    ];
+    await page.waitForChanges();
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+  });
+
+  it('should render a node with the default sibling index parameter', async () => {
+    const { component } = await createTreePage({ expandedNodeIds: ['root-1'] });
+
+    expect(() => component.renderNode(getNode('leaf-a'))).not.toThrow();
   });
 });
