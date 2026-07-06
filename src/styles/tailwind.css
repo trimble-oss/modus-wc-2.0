@@ -338,6 +338,8 @@
  * plain hex --modus-wc-color-* vars (no oklch involved). Modern themes have
  * no such SCSS overrides, so we add them here — inside @supports not so
  * they ONLY apply on old Chrome and never interfere with modern behavior.
+ * Neutral (modus-wc-btn-base-inverted) uses color-mix in modus-wc-button.scss
+ * for all themes; modern-theme fallbacks for that variant are included below.
  *
  * MAINTENANCE: Colors sourced from src/styles/themes/modus-modern.ts.
  * If theme colors change, update hover/active hex values here to match.
@@ -348,7 +350,7 @@
  *   yellow=#fbad26  yellow-dark=#e49325  red-pale=#fbd4d7
  *   red-light=#e86363  red=#da212c  red-dark=#ab1f26
  *   gray-0=#e0e1e9  gray-1=#cbcdd6  gray-2=#b7b9c3
- *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e
+ *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e  gray-light=#f1f1f6
  */
 @supports not (color: oklch(0% 0 0)) {
   /* ── modus-modern-light: filled buttons ──────────────────────────────── */
@@ -410,6 +412,20 @@
   [data-theme='modus-modern-light']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:hover {
+    background-color: #15191b; /* gray-10 @ 90% + black */
+    border-color: #15191b;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #121618; /* gray-10 @ 80% + black */
+    border-color: #121618;
   }
 
   /* ── modus-modern-light: outlined buttons ────────────────────────────── */
@@ -488,6 +504,26 @@
     color: #ab1f26;
   }
 
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:hover,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:hover {
+    background-color: rgb(23 28 30 / 0.12); /* gray-10 @ 12% */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline[aria-pressed='true'],
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless[aria-pressed='true'] {
+    background-color: #171c1e; /* gray-10 */
+    border-color: transparent;
+    color: #ffffff;
+  }
+
   /* ── modus-modern-dark: filled buttons ───────────────────────────────── */
   [data-theme='modus-modern-dark']
     .modus-wc-btn-primary.modus-wc-btn-filled:hover {
@@ -547,6 +583,20 @@
   [data-theme='modus-modern-dark']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:hover {
+    background-color: #d9d9dd; /* gray-light @ 90% + black */
+    border-color: #d9d9dd;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #c1c1c5; /* gray-light @ 80% + black */
+    border-color: #c1c1c5;
   }
 
   /* ── modus-modern-dark: outlined buttons ─────────────────────────────── */
@@ -616,5 +666,25 @@
     background-color: rgb(232 99 99 / 0.3);
     border-color: #ab1f26;
     color: #ab1f26;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:hover,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:hover {
+    background-color: rgb(241 241 246 / 0.12); /* gray-light @ 12% */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline[aria-pressed='true'],
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless[aria-pressed='true'] {
+    background-color: #f1f1f6; /* gray-light */
+    border-color: transparent;
+    color: #252a2e; /* trimble-gray */
   }
 }
