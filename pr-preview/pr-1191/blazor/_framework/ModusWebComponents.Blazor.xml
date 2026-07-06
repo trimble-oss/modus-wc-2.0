@@ -890,6 +890,11 @@
             A data-driven, stateless/controlled tree component. The consuming application owns the nodes data (the single source of truth) and the controlled selectedNodeId / expandedNodeIds state. The component renders the tree and emits nodeSelect / nodeExpandChange; the application decides whether to apply the change and passes the updated state back in.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.AllowDragDrop">
+            <summary>
+            Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). On drop the component emits nodeMove; the application applies it (e.g. via moveNodeRelative) and passes updated nodes back in.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Bordered">
             <summary>
             Indicates that the content tree should have a border.
@@ -907,7 +912,18 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Filter">
             <summary>
-            When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree.
+            When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When searchable is enabled, this only seeds the built-in search box's initial value.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.NodeIconVariant">
+            <summary>
+            Modus icon variant for node icon glyphs in the start column.
+            Allowed values: "outlined", "solid"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Searchable">
+            <summary>
+            Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the filter prop is used only to seed its initial value.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.SelectedNodeId">
@@ -940,6 +956,11 @@
             The tree data. The single source of truth, owned by the consuming application.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Toolbar">
+            <summary>
+            Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.ChildContent">
             <summary>
             Content to render inside the component (default slot).
@@ -948,6 +969,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.AdditionalAttributes">
             <summary>
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnExpandAllChange">
+            <summary>
+            Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set expandedNodeIds to every expandable id (e.g. via getExpandableNodeIds) when expanded is true, or to [] when false.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeAdd">
@@ -985,14 +1011,34 @@
             Event emitted when a node's expansion is toggled. The consuming application should update expandedNodeIds.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeLoadChildren">
+            <summary>
+            Event emitted the first time a lazy node (hasChildren: true with no children yet) is expanded. The app should fetch the node's children and assign them to nodes (use [] when there are none); the component shows a spinner until children is defined.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeMove">
+            <summary>
+            Event emitted when a node is dropped onto a new location via drag-and-drop. position is relative to targetId: before/after reorder among the target's siblings; inside nests the node as the target's first child. The app should apply the move (e.g. via moveNodeRelative).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeRename">
             <summary>
             Event emitted when an inline edit is committed. The app should apply the new label and clear editingNodeId.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodesDelete">
+            <summary>
+            Event emitted when the toolbar's delete button is confirmed. ids are the top-most checked nodes; the app should remove them (e.g. via deleteNodes).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeSelect">
             <summary>
             Event emitted when a node is selected. The consuming application should update selectedNodeId.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeVisibilityChange">
+            <summary>
+            Event emitted when a node's visibility (eye) toggle is clicked. disabled is the new state. The app should apply it to the node and its descendants (e.g. via setNodeDisabled).
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcDate">
