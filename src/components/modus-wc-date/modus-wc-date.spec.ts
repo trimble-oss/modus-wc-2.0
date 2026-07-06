@@ -3872,7 +3872,9 @@ describe('modus-wc-date', () => {
           page.root!.querySelector('.calendar-day-cell.hover-fill')
         ).toBeNull();
         expect(
-          page.root!.querySelector('.calendar-day-cell.anchor-preview-connector')
+          page.root!.querySelector(
+            '.calendar-day-cell.anchor-preview-connector'
+          )
         ).toBeNull();
       });
 
