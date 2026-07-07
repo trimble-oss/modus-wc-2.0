@@ -912,7 +912,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.EndValue">
             <summary>
-            The end date value in range mode. Always ISO 8601 (YYYY-MM-DD) or empty string.
+            The end date in range mode (type=&quot;range&quot;). Always ISO 8601 (YYYY-MM-DD) or empty string. Ignored in single mode.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Format">
@@ -983,7 +983,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Value">
             <summary>
-            The value of the control.
+            The selected date in single mode. In range mode (type=&quot;range&quot;), the start date of the range. Always ISO 8601 (YYYY-MM-DD) or empty string.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.WeekStartDay">
@@ -1008,27 +1008,37 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnCalendarMonthChange">
             <summary>
-            Event emitted when the calendar month selection changes.
+            Event emitted when the start (or single-mode) calendar month selection changes.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnCalendarYearChange">
             <summary>
-            Event emitted when the calendar year selection changes.
+            Event emitted when the start (or single-mode) calendar year selection changes.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnEndCalendarMonthChange">
+            <summary>
+            Event emitted when the end calendar month selection changes in range mode.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnEndCalendarYearChange">
+            <summary>
+            Event emitted when the end calendar year selection changes in range mode.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputBlur">
             <summary>
-            Event emitted when the input loses focus.
+            Event emitted when the input loses focus. In range mode, detail.field is 'start' or 'end'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputChange">
             <summary>
-            Event emitted when the input value changes. target.value is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
+            Event emitted when the input value changes. target.value is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, detail.field is 'start' or 'end'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputFocus">
             <summary>
-            Event emitted when the input gains focus.
+            Event emitted when the input gains focus. In range mode, detail.field is 'start' or 'end'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnRangeChange">
