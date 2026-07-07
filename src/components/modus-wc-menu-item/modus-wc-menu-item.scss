@@ -287,6 +287,55 @@ modus-wc-menu-item .modus-wc-menu-item {
 [data-theme='connect-light'],
 [data-theme='connect-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
+    &.modus-wc-menu-item-active,
+    &.modus-wc-menu-item-selected {
+      background-color: transparent;
+
+      > button {
+        background-color: #e5f0f8;
+        color: var(--modus-wc-color-primary);
+        font-weight: var(--modus-wc-font-weight-semibold);
+
+        &:hover,
+          &:focus {
+            background-color: #e5f0f8;
+          color: var(--modus-wc-color-primary);
+        }
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-selected):not(
+        .modus-wc-menu-item-disabled
+      ):not(.modus-wc-menu-item-focused):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
+        background-color: transparent;
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        .modus-wc-menu-item-active
+      ):not(.modus-wc-menu-item-selected):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-selected):not(
+        .modus-wc-menu-item-disabled
+      ) {
+      > button:hover,
+      > button:focus {
+        background-color: var(--modus-wc-color-base-100);
+      }
+
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
+        background-color: var(--modus-wc-color-base-100);
+        outline: none;
+      }
+    }
+
     & > button.modus-wc-menu-dropdown-toggle::after {
       color: var(--modus-wc-color-white);
     }

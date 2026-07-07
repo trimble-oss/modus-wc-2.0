@@ -28,3 +28,15 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
     border-radius: 0;
   }
 }
+
+[data-theme='connect-light'] modus-wc-dropdown-menu,
+[data-theme='connect-dark'] modus-wc-dropdown-menu {
+  .modus-wc-menu {
+    border-radius: 0.125rem;
+  }
+
+  .menu-wrapper {
+    box-shadow: 0 0 0.375rem #aeaeb6;
+    border-radius: 0.125rem;
+  }
+}
