@@ -72,6 +72,24 @@ describe('modus-wc-avatar', () => {
     }
   );
 
+  it('should emit imageLoadError event when image fails to load', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAvatar, ModusWcIcon],
+      html: '<modus-wc-avatar alt="Avatar" img-src="https://example.com/bad.jpg"></modus-wc-avatar>',
+    });
+    const img = page.root?.querySelector('img');
+    const errorSpy = jest.fn();
+    page.root?.addEventListener('imageLoadError', errorSpy);
+
+    img?.dispatchEvent(new Event('error'));
+    await page.waitForChanges();
+
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy.mock.calls[0][0].detail.originalEvent).toBeInstanceOf(
+      Event
+    );
+  });
+
   it('should render with initials when size is xl', async () => {
     const page = await newSpecPage({
       components: [ModusWcAvatar, ModusWcIcon],
