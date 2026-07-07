@@ -192,8 +192,8 @@ export class ModusWcNavbar {
   private themeObserver: MutationObserver | null = null;
 
   componentWillLoad() {
-    // Auto-inject CSS if component is used inside user's shadow DOM
-    handleShadowDOMStyles(this.el);
+    // Inject full CSS bundle (including per-component SCSS) for slotted children
+    handleShadowDOMStyles(this.el, true);
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
@@ -628,7 +628,7 @@ export class ModusWcNavbar {
                     alt={this.userCard?.avatarAlt || ''}
                     imgSrc={this.userCard?.avatarSrc}
                     initials={this.userCard?.name}
-                    size="xs"
+                    size="sm"
                   />
                 </modus-wc-button>
                 <div

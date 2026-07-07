@@ -1,8 +1,20 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  Event as StencilEvent,
+} from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-avatar.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
+
+export interface IAvatarImageLoadError {
+  originalEvent: Event;
+}
 
 /**
  * A customizable avatar component used to create avatars with different images or user initials.
@@ -38,7 +50,10 @@ export class ModusWcAvatar {
   @Prop() shape?: 'circle' | 'square' = 'circle';
 
   /** The size of the avatar. */
-  @Prop() size?: DaisySize = 'md';
+  @Prop() size?: DaisySize | 'xl' = 'md';
+
+  /** Event emitted when the avatar image fails to load. */
+  @StencilEvent() imageLoadError!: EventEmitter<IAvatarImageLoadError>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -74,6 +89,10 @@ export class ModusWcAvatar {
       .toUpperCase();
   }
 
+  private handleImageError = (event: Event) => {
+    this.imageLoadError.emit({ originalEvent: event });
+  };
+
   render() {
     const altText = this.alt || 'User avatar';
 
@@ -82,7 +101,11 @@ export class ModusWcAvatar {
         <div class="modus-wc-avatar" {...this.inheritedAttributes}>
           <div class={this.getClasses()}>
             {this.imgSrc ? (
-              <img src={this.imgSrc} alt={altText} />
+              <img
+                src={this.imgSrc}
+                alt={altText}
+                onError={this.handleImageError}
+              />
             ) : this.initials ? (
               <span class="initials" aria-label={this.alt || this.initials}>
                 {this.getUserInitials()}
@@ -91,7 +114,6 @@ export class ModusWcAvatar {
               <modus-wc-icon
                 aria-label={altText}
                 name="person"
-                size={this.size}
                 variant="solid"
               ></modus-wc-icon>
             )}

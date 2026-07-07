@@ -85,6 +85,7 @@ export default [
       'node_modules/**',
       'src/components.d.ts',
       'src/providers/theme/css-content.ts',
+      'src/providers/theme/component-css-content.ts',
       'storybook-static/**',
       'www/**',
     ],

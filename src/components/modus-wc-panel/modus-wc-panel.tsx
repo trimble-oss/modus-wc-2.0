@@ -32,7 +32,7 @@ export class ModusWcPanel {
   @Prop() floating?: boolean = false;
 
   componentWillLoad() {
-    handleShadowDOMStyles(this.el);
+    handleShadowDOMStyles(this.el, true);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

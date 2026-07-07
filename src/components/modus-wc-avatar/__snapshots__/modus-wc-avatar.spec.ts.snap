@@ -14,7 +14,11 @@ exports[`modus-wc-avatar should render with default props 1`] = `
 <modus-wc-avatar alt="Default avatar">
   <div aria-label="Default avatar" class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
-      <modus-wc-icon aria-label="Default avatar" name="person" size="md" variant="solid"></modus-wc-icon>
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Default avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
     </div>
   </div>
 </modus-wc-avatar>
@@ -44,11 +48,97 @@ exports[`modus-wc-avatar should render with initials when imgSrc is not provided
 </modus-wc-avatar>
 `;
 
+exports[`modus-wc-avatar should render with initials when size is xl 1`] = `
+<modus-wc-avatar alt="User initials" initials="Jane Doe" size="xl">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-24">
+      <span aria-label="User initials" class="initials">
+        JD
+      </span>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
 exports[`modus-wc-avatar should render with no props 1`] = `
 <modus-wc-avatar>
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
-      <modus-wc-icon aria-label="User avatar" name="person" size="md" variant="solid"></modus-wc-icon>
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="User avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
+exports[`modus-wc-avatar should render with size lg 1`] = `
+<modus-wc-avatar alt="Avatar" size="lg">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-20 no-image">
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
+exports[`modus-wc-avatar should render with size md 1`] = `
+<modus-wc-avatar alt="Avatar" size="md">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
+exports[`modus-wc-avatar should render with size sm 1`] = `
+<modus-wc-avatar alt="Avatar" size="sm">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-12 no-image">
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
+exports[`modus-wc-avatar should render with size xl 1`] = `
+<modus-wc-avatar alt="Avatar" size="xl">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-24 no-image">
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-avatar>
+`;
+
+exports[`modus-wc-avatar should render with size xs 1`] = `
+<modus-wc-avatar alt="Avatar" size="xs">
+  <div class="modus-wc-avatar">
+    <div class="modus-wc-rounded-full modus-wc-w-8 no-image">
+      <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
+      </modus-wc-icon>
     </div>
   </div>
 </modus-wc-avatar>

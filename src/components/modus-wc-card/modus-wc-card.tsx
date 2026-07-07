@@ -35,7 +35,7 @@ export class ModusWcCard {
   @Prop() padding?: 'compact' | 'comfortable' = 'compact';
 
   componentWillLoad() {
-    handleShadowDOMStyles(this.el);
+    handleShadowDOMStyles(this.el, true);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

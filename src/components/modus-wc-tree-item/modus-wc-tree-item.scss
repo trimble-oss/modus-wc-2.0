@@ -13,10 +13,6 @@ modus-wc-tree-item .modus-wc-menu-item {
     display: flex;
     width: 100%;
 
-    &:hover {
-      background-color: transparent;
-    }
-
     &:focus {
       background-color: transparent;
     }
@@ -221,6 +217,17 @@ modus-wc-tree-item .modus-wc-menu-item {
   }
 }
 
+[data-theme='modus-modern-light'],
+[data-theme='modus-modern-dark'],
+[data-theme='modus-classic-light'],
+[data-theme='modus-classic-dark'] {
+  modus-wc-tree-item .modus-wc-menu-item .modus-wc-menu-item-interactive {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
 [data-theme='modus-classic-dark'],
 [data-theme='connect-dark'] {
   modus-wc-tree-item .modus-wc-menu-item {
@@ -286,6 +293,38 @@ modus-wc-tree-item .modus-wc-menu-item {
       &.modus-wc-arrow-focused {
         background-color: var(--modus-wc-color-gray-9);
       }
+    }
+  }
+}
+
+[data-theme='connect-light'],
+[data-theme='connect-dark'] {
+  modus-wc-tree-item .modus-wc-menu-item {
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-content {
+      &:not(:has([slot='start'])) .modus-wc-menu-item-labels {
+        padding-inline-start: 0;
+      }
+
+      &:not(:has([slot='end'])) .modus-wc-menu-item-labels {
+        padding-inline-end: 0;
+      }
+    }
+
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-labels {
+      font-weight: var(--modus-wc-font-weight-normal);
+    }
+
+    &.modus-wc-menu-item-active
+      .modus-wc-menu-item-interactive
+      .modus-wc-menu-item-labels {
+      font-weight: var(--modus-wc-font-weight-semibold);
+    }
+  }
+
+  modus-wc-tree-item .modus-wc-menu-item.modus-wc-menu-item-md {
+    .modus-wc-menu-item-interactive .modus-wc-menu-item-labels {
+      font-size: 0.8125rem;
+      line-height: 1.125rem;
     }
   }
 }
