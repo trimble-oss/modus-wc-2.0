@@ -1216,7 +1216,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.Feedback">
             <summary>
-            External feedback to display dragging, success, or error state with an optional custom message
+            External feedback to display info, success, or error state with an optional custom message
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.ChildContent">
