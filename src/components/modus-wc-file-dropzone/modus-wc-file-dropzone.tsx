@@ -53,7 +53,7 @@ export class ModusWcFileDropzone {
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
-  /** External feedback to display dragging, success, or error state with an optional custom message */
+  /** External feedback to display info, success, or error state with an optional custom message */
   @Prop() feedback?: IFileDropzoneFeedback;
 
   /** Custom instructions shown when files are dragged over the dropzone */
@@ -339,13 +339,6 @@ export class ModusWcFileDropzone {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  private getFeedbackMessage(
-    message: string | undefined,
-    fallback: string
-  ): string {
-    return message ?? fallback;
-  }
-
   private getDisplayState(): {
     isDragging: boolean;
     isError: boolean;
@@ -356,20 +349,17 @@ export class ModusWcFileDropzone {
       this.fileDraggedOverInstructions || 'Drop files here';
     const defaultSuccessMessage =
       this.successMessage || 'Successfully uploaded';
-    const defaultErrorMessage = 'An error occurred';
-    const hasFeedbackDragging = this.feedback?.type === 'dragging';
+    const hasFeedbackInfo = this.feedback?.type === 'info';
     const hasFeedbackError = this.feedback?.type === 'error';
     const hasFeedbackSuccess = this.feedback?.type === 'success';
-    const isDragging = this.isDraggingOver || hasFeedbackDragging;
+    const isDragging = this.isDraggingOver || hasFeedbackInfo;
 
     if (isDragging) {
       return {
         isDragging: true,
         isError: false,
         isSuccess: false,
-        message: hasFeedbackDragging
-          ? this.getFeedbackMessage(this.feedback!.message, defaultDragMessage)
-          : defaultDragMessage,
+        message: hasFeedbackInfo ? this.feedback?.message : defaultDragMessage,
       };
     }
 
@@ -378,10 +368,7 @@ export class ModusWcFileDropzone {
         isDragging: false,
         isError: true,
         isSuccess: false,
-        message: this.getFeedbackMessage(
-          this.feedback!.message,
-          defaultErrorMessage
-        ),
+        message: this.feedback?.message,
       };
     }
 
@@ -390,10 +377,7 @@ export class ModusWcFileDropzone {
         isDragging: false,
         isError: false,
         isSuccess: true,
-        message: this.getFeedbackMessage(
-          this.feedback!.message,
-          defaultSuccessMessage
-        ),
+        message: this.feedback?.message,
       };
     }
 

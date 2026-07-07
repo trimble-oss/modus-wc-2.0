@@ -50,12 +50,12 @@ const meta: Meta<FileDropzoneArgs> = {
     feedback: {
       control: 'object',
       description:
-        'External feedback to display dragging, success, or error state with an optional custom message',
+        'External feedback to display info, success, or error state with an optional custom message',
       table: {
         type: {
           summary: 'IFileDropzoneFeedback',
           detail: `{
-  type: 'dragging' | 'error' | 'success';
+  type: 'info' | 'error' | 'success';
   message?: string;
 }`,
         },
@@ -254,8 +254,8 @@ const errorFeedback: IFileDropzoneFeedback = {
   message: 'Upload failed. Please try again.',
 };
 
-const draggingFeedback: IFileDropzoneFeedback = {
-  type: 'dragging',
+const infoFeedback: IFileDropzoneFeedback = {
+  type: 'info',
   message: 'Release to upload your files',
 };
 
@@ -278,7 +278,7 @@ export const withFeedback: Story = {
   <div style="display: flex; gap: 0.5rem;">
     <modus-wc-button id="success-button">Show Success</modus-wc-button>
     <modus-wc-button id="error-button" color="danger">Show Error</modus-wc-button>
-    <modus-wc-button id="dragging-button" color="tertiary">Show Dragging</modus-wc-button>
+    <modus-wc-button id="info-button" color="tertiary">Show Info</modus-wc-button>
     <modus-wc-button id="clear-button" color="secondary">Clear Feedback</modus-wc-button>
   </div>
 </div>
@@ -287,7 +287,7 @@ export const withFeedback: Story = {
   const dropzone = document.getElementById('feedback-dropzone');
   const successFeedback = { type: 'success', message: 'Files uploaded successfully!' };
   const errorFeedback = { type: 'error', message: 'Upload failed. Please try again.' };
-  const draggingFeedback = { type: 'dragging', message: 'Release to upload your files' };
+  const infoFeedback = { type: 'info', message: 'Release to upload your files' };
 
   document.getElementById('success-button')?.addEventListener('click', () => {
     if (dropzone) dropzone.feedback = successFeedback;
@@ -295,8 +295,8 @@ export const withFeedback: Story = {
   document.getElementById('error-button')?.addEventListener('click', () => {
     if (dropzone) dropzone.feedback = errorFeedback;
   });
-  document.getElementById('dragging-button')?.addEventListener('click', () => {
-    if (dropzone) dropzone.feedback = draggingFeedback;
+  document.getElementById('info-button')?.addEventListener('click', () => {
+    if (dropzone) dropzone.feedback = infoFeedback;
   });
   document.getElementById('clear-button')?.addEventListener('click', () => {
     if (dropzone) dropzone.feedback = undefined;
@@ -348,11 +348,11 @@ export const withFeedback: Story = {
               'feedback-dropzone'
             ) as HTMLElement & { feedback?: IFileDropzoneFeedback };
             if (dropzone) {
-              dropzone.feedback = draggingFeedback;
+              dropzone.feedback = infoFeedback;
             }
           }}
         >
-          Show Dragging
+          Show Info
         </modus-wc-button>
         <modus-wc-button
           color="secondary"
