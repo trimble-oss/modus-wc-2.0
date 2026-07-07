@@ -283,6 +283,7 @@ export interface IInputFeedbackProp {
 
 export interface IFileDropzoneFeedback {
   type: 'info' | 'error' | 'success';
+  icon?: string;
   message?: string;
 }
 

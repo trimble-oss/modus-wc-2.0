@@ -1,5 +1,155 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide custom feedback icon when include-state-icon is false and feedback type is error 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide custom feedback icon when include-state-icon is false and feedback type is info 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide custom feedback icon when include-state-icon is false and feedback type is success 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide preset feedback icon when include-state-icon is false and feedback type is error 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide preset feedback icon when include-state-icon is false and feedback type is info 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback include-state-icon should hide preset feedback icon when include-state-icon is false and feedback type is success 1`] = `
+<modus-wc-file-dropzone include-state-icon="false">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <span>
+          Feedback message
+        </span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback should display custom icon when feedback type is error with icon 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="error-icon" name="warning" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback should display custom icon when feedback type is info with icon 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="info" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
+exports[`modus-wc-file-dropzone feedback should display custom icon when feedback type is success with icon 1`] = `
+<modus-wc-file-dropzone>
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="success-icon" name="calendar_check" size="lg" variant="solid"></modus-wc-icon>
+        <span></span>
+        <div style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
 exports[`modus-wc-file-dropzone feedback should display error state when feedback type is error with message 1`] = `
 <modus-wc-file-dropzone>
   <!---->

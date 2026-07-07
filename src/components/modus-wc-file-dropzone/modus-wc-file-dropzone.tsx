@@ -53,13 +53,13 @@ export class ModusWcFileDropzone {
   /** Disable the file input */
   @Prop() disabled?: boolean;
 
-  /** External feedback to display info, success, or error state with an optional custom message */
+  /** External feedback to display info, success, or error state with optional custom icon and message */
   @Prop() feedback?: IFileDropzoneFeedback;
 
   /** Custom instructions shown when files are dragged over the dropzone */
   @Prop() fileDraggedOverInstructions?: string;
 
-  /** Include state icon (upload, success, error) */
+  /** Include state icon for default, validation, upload, and feedback states */
   @Prop() includeStateIcon?: boolean = true;
 
   /** Custom instructions shown as the default dropzone message */
@@ -344,6 +344,7 @@ export class ModusWcFileDropzone {
     isError: boolean;
     isSuccess: boolean;
     message: string | undefined;
+    icon?: string;
   } {
     const defaultDragMessage =
       this.fileDraggedOverInstructions || 'Drop files here';
@@ -360,6 +361,7 @@ export class ModusWcFileDropzone {
         isError: false,
         isSuccess: false,
         message: hasFeedbackInfo ? this.feedback!.message : defaultDragMessage,
+        icon: hasFeedbackInfo ? this.feedback!.icon : undefined,
       };
     }
 
@@ -369,6 +371,7 @@ export class ModusWcFileDropzone {
         isError: true,
         isSuccess: false,
         message: this.feedback!.message,
+        icon: this.feedback!.icon,
       };
     }
 
@@ -378,6 +381,7 @@ export class ModusWcFileDropzone {
         isError: false,
         isSuccess: true,
         message: this.feedback!.message,
+        icon: this.feedback!.icon,
       };
     }
 
@@ -408,7 +412,13 @@ export class ModusWcFileDropzone {
   }
 
   render() {
-    const { isDragging, isError, isSuccess, message } = this.getDisplayState();
+    const {
+      isDragging,
+      isError,
+      isSuccess,
+      message,
+      icon: feedbackIcon,
+    } = this.getDisplayState();
     const hasState = isDragging || isError || isSuccess;
     const showIcon = this.includeStateIcon !== false;
 
@@ -419,13 +429,15 @@ export class ModusWcFileDropzone {
       default: 'cloud_upload',
     };
 
-    const iconState = isDragging
+    const defaultIconState = isDragging
       ? iconMap.dragging
       : isError
         ? iconMap.invalid
         : isSuccess
           ? iconMap.success
           : iconMap.default;
+
+    const iconState = feedbackIcon ?? defaultIconState;
 
     const iconClass = isDragging
       ? 'upload-icon'

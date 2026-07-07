@@ -50,12 +50,13 @@ const meta: Meta<FileDropzoneArgs> = {
     feedback: {
       control: 'object',
       description:
-        'External feedback to display info, success, or error state with an optional custom message',
+        'External feedback to display info, success, or error state with optional custom icon and message',
       table: {
         type: {
           summary: 'IFileDropzoneFeedback',
           detail: `{
   type: 'info' | 'error' | 'success';
+  icon?: string;
   message?: string;
 }`,
         },
@@ -312,6 +313,7 @@ export const withFeedback: Story = {
         id="feedback-dropzone"
         accept-file-types=${ifDefined(args['accept-file-types'])}
         .feedback=${args.feedback}
+        ?include-state-icon=${args['include-state-icon']}
         instructions="Drag files here or browse to upload"
       ></modus-wc-file-dropzone>
 

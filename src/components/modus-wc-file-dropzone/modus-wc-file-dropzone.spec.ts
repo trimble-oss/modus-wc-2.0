@@ -1542,6 +1542,104 @@ describe('modus-wc-file-dropzone', () => {
       }
     );
 
+    it.each([
+      ['success', 'calendar_check'],
+      ['error', 'warning'],
+      ['info', 'info'],
+    ] as const)(
+      'should display custom icon when feedback type is %s with icon',
+      async (type, customIcon) => {
+        const page = await newSpecPage({
+          components: [ModusWcFileDropzone],
+          html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+        });
+
+        page.root!.feedback = { type, icon: customIcon };
+        await page.waitForChanges();
+
+        expect(page.root).toMatchSnapshot();
+
+        const iconElement = page.root!.querySelector('modus-wc-icon');
+        expect(iconElement?.getAttribute('name')).toBe(customIcon);
+      }
+    );
+
+    describe('include-state-icon', () => {
+      it('should hide default state icon when include-state-icon is false', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcFileDropzone],
+          html: '<modus-wc-file-dropzone include-state-icon="false" instructions="Upload files"></modus-wc-file-dropzone>',
+        });
+
+        await page.waitForChanges();
+
+        expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+        const messageElement = page.root!.querySelector(
+          '.default-content span'
+        );
+        expect(messageElement?.textContent).toBe('Upload files');
+      });
+
+      it.each([
+        ['success', 'upload-success'],
+        ['error', 'invalid-file-type'],
+        ['info', 'dragging-over'],
+      ] as const)(
+        'should hide preset feedback icon when include-state-icon is false and feedback type is %s',
+        async (type, expectedClass) => {
+          const page = await newSpecPage({
+            components: [ModusWcFileDropzone],
+            html: '<modus-wc-file-dropzone include-state-icon="false"></modus-wc-file-dropzone>',
+          });
+
+          page.root!.feedback = { type, message: 'Feedback message' };
+          await page.waitForChanges();
+
+          expect(page.root).toMatchSnapshot();
+
+          const dropzoneContent = page.root!.querySelector('.dropzone-content');
+          expect(dropzoneContent?.classList.contains(expectedClass)).toBe(true);
+          expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+          const messageElement = page.root!.querySelector(
+            '.default-content span'
+          );
+          expect(messageElement?.textContent).toBe('Feedback message');
+        }
+      );
+
+      it.each([
+        ['success', 'calendar_check'],
+        ['error', 'warning'],
+        ['info', 'info'],
+      ] as const)(
+        'should hide custom feedback icon when include-state-icon is false and feedback type is %s',
+        async (type, customIcon) => {
+          const page = await newSpecPage({
+            components: [ModusWcFileDropzone],
+            html: '<modus-wc-file-dropzone include-state-icon="false"></modus-wc-file-dropzone>',
+          });
+
+          page.root!.feedback = {
+            type,
+            message: 'Feedback message',
+            icon: customIcon,
+          };
+          await page.waitForChanges();
+
+          expect(page.root).toMatchSnapshot();
+
+          expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+          const messageElement = page.root!.querySelector(
+            '.default-content span'
+          );
+          expect(messageElement?.textContent).toBe('Feedback message');
+        }
+      );
+    });
+
     it('should not use success-message prop when feedback type is success without message', async () => {
       const page = await newSpecPage({
         components: [ModusWcFileDropzone],
