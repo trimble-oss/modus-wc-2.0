@@ -20,7 +20,7 @@ modus-wc-date {
 
   .date-input-container {
     align-items: center;
-    display: inline-flex;
+    display: inline-flex; 
     position: relative;
     width: 100%;
 
@@ -142,6 +142,7 @@ modus-wc-date {
       }
 
       .calendar-dates {
+        column-gap: 0;
         row-gap: var(--modus-wc-spacing-xs);
 
         .week-number {
@@ -179,6 +180,7 @@ modus-wc-date {
           &.range-fill,
           &.range-anchor-fill {
             background-color: var(--modus-wc-color-base-100);
+            margin-inline: -1px;
           }
 
           &.range-cap-left,
@@ -262,6 +264,15 @@ modus-wc-date {
             border-right: 2px dashed var(--modus-wc-color-base-200);
             border-top-right-radius: 999px;
           }
+
+          &.range-anchor .calendar-day {
+            &:hover:not(.hover-preview-end) {
+              background-color: var(--modus-wc-color-primary);
+              border-color: var(--modus-wc-color-primary);
+              border-style: solid;
+              color: var(--modus-wc-color-primary-content);
+            }
+          }
         }
 
         .calendar-day {
@@ -285,7 +296,7 @@ modus-wc-date {
             color: var(--modus-wc-color-base-content);
           }
 
-          &:hover:not(.hover-preview-end) {
+          &:hover:not(.hover-preview-end):not(.selected) {
             background-color: var(--modus-wc-color-base-200);
             border-color: var(--modus-wc-color-base-200);
             border-style: dashed;
@@ -306,7 +317,7 @@ modus-wc-date {
           &.selected {
             background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-primary-content);
-            font-weight: var(--modus-wc-font-weight-semibold);
+            font-weight: var(--modus-wc-font-weight-bold);
           }
 
           &.other-month {

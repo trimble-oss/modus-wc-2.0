@@ -106,6 +106,8 @@ const meta: Meta<DateArgs> = {
         'inputFocus',
         'calendarMonthChange',
         'calendarYearChange',
+        'endCalendarMonthChange',
+        'endCalendarYearChange',
         'rangeChange',
       ],
     },
@@ -181,6 +183,17 @@ export const WithErrorFeedback: Story = {
 export const Range: Story = {
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        story: `
+Range mode uses \`value\` as the **start date** and \`end-value\` as the **end date** (both ISO \`YYYY-MM-DD\`).
+
+**Hover preview (anchor model):** After both dates are selected, the anchor defaults to the end date. Dashed hover preview only extends in the clickable direction — forward past the end requires clicking the start date to swap the anchor to \`start\`. Hovering inside the confirmed range shows no preview.
+
+**Events in range mode:** \`inputChange\`, \`inputFocus\`, and \`inputBlur\` include \`detail.field\` (\`'start'\` or \`'end'\`). End calendar navigation emits \`endCalendarMonthChange\` / \`endCalendarYearChange\`. Completing a range emits \`rangeChange\` with \`{ startDate, endDate }\`.
+        `,
+      },
+    },
   },
   argTypes: {
     type: { control: false, table: { disable: true } },
@@ -345,16 +358,22 @@ export const Migration: Story = {
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type               |                  | Not carried over                        |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
-| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`)   |
+| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`); start date in range mode |
+|                    | end-value        | End date in range mode (ISO \`YYYY-MM-DD\`) |
+|                    | type             | \`'single'\` (default) or \`'range'\` |
+|                    | hide-overflow-dates | Defaults to \`true\` in range mode |
 
 #### Event Mapping
 
 | 1.0 Event           | 2.0 Event   | Notes            |
 |---------------------|-------------|------------------|
 | calendarIconClicked |             | Not carried over |
-| dateInputBlur       | inputBlur   |                  |
-| valueChange         | inputChange |                  |
+| dateInputBlur       | inputBlur   | Range mode: \`detail.field\` is \`'start'\` or \`'end'\` |
+| valueChange         | inputChange | Range mode: \`detail.field\` is \`'start'\` or \`'end'\` |
 | valueError          |             | Not carried over |
+|                     | rangeChange | Range mode only: \`{ startDate, endDate }\` |
+|                     | endCalendarMonthChange | Range mode: end calendar month nav |
+|                     | endCalendarYearChange  | Range mode: end calendar year nav |
         `,
       },
     },

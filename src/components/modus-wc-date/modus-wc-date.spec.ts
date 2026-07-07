@@ -4510,21 +4510,338 @@ describe('modus-wc-date', () => {
         expect(component['endInputAttributes']['aria-label']).toBe('End date');
       });
 
-      it('should stop propagation on end input without validating', async () => {
-        const { component } = await createRangePage();
+      it('should emit inputChange with field end on end input', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" format="mm/dd/yyyy"'
+        );
+        const endInput = page.root!.querySelectorAll('input')[1];
+        const changeSpy = jest.fn();
+        page.root!.addEventListener('inputChange', changeSpy);
 
-        const mockEvent = {
+        endInput.value = '07/15/2026';
+        endInput.dispatchEvent(new Event('input', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(changeSpy).toHaveBeenCalled();
+        expect(changeSpy.mock.calls[0][0].detail.field).toBe('end');
+        expect(changeSpy.mock.calls[0][0].detail.target.value).toBe(
+          '2026-07-15'
+        );
+        expect(component['endValue']).toBe('');
+      });
+
+      it('should emit inputBlur with field end on end input blur', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const endInput = page.root!.querySelectorAll('input')[1];
+        const blurSpy = jest.fn();
+        page.root!.addEventListener('inputBlur', blurSpy);
+
+        endInput.value = '2026-07-15';
+        endInput.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(blurSpy.mock.calls[0][0].detail.field).toBe('end');
+      });
+
+      it('should emit rangeChange when end input blur completes a valid range', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range" value="2026-06-10"></modus-wc-date>',
+        });
+        const endInput = page.root!.querySelectorAll('input')[1];
+        const rangeSpy = jest.fn();
+        page.root!.addEventListener('rangeChange', rangeSpy);
+
+        endInput.value = '2026-07-15';
+        endInput.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(rangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { startDate: '2026-06-10', endDate: '2026-07-15' },
+          })
+        );
+      });
+
+      it('should not include field on inputChange in single mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Date input" value="2026-06-10" format="mm/dd/yyyy"></modus-wc-date>',
+        });
+        const input = page.root!.querySelector('input')!;
+        const changeSpy = jest.fn();
+        page.root!.addEventListener('inputChange', changeSpy);
+
+        input.value = '06/15/2026';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(changeSpy.mock.calls[0][0].detail.field).toBeUndefined();
+      });
+    });
+
+    describe('end calendar events', () => {
+      it('should emit endCalendarMonthChange when the end calendar month changes', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        component['showEndCalendar'] = true;
+        await page.waitForChanges();
+
+        const monthSpy = jest.fn();
+        page.root!.addEventListener('endCalendarMonthChange', monthSpy);
+
+        component['handleEndMonthChange'](
+          createSelectChangeEvent(
+            String(component['endCalendar'].selectedMonth)
+          )
+        );
+        await page.waitForChanges();
+
+        expect(monthSpy).not.toHaveBeenCalled();
+
+        component['handleEndMonthChange'](createSelectChangeEvent('5'));
+        await page.waitForChanges();
+
+        expect(monthSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ detail: 5 })
+        );
+      });
+
+      it('should emit rangeChange when anchor is end and a new start is selected inside the range', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-06-30"'
+        );
+        component['anchorEndpoint'] = 'end';
+        const rangeSpy = jest.fn();
+        page.root!.addEventListener('rangeChange', rangeSpy);
+
+        component['handleRangeDateSelect'](new Date(2026, 5, 15));
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('2026-06-15');
+        expect(rangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { startDate: '2026-06-15', endDate: '2026-06-30' },
+          })
+        );
+      });
+
+      it('should emit inputFocus with field start in range mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const startInput = page.root!.querySelectorAll('input')[0];
+        const focusSpy = jest.fn();
+        page.root!.addEventListener('inputFocus', focusSpy);
+
+        startInput.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(focusSpy.mock.calls[0][0].detail.field).toBe('start');
+      });
+
+      it('should emit empty inputChange for invalid end input text', async () => {
+        const { component } = await createRangePage('value="2026-06-10"');
+        const changeSpy = jest.fn();
+        component.inputChange = { emit: changeSpy };
+
+        component['handleEndInput']({
           stopPropagation: jest.fn(),
-        } as unknown as InputEvent;
+          target: { value: 'not-a-date' },
+        } as unknown as InputEvent);
 
-        component['handleEndInput'](mockEvent);
+        expect(changeSpy).toHaveBeenCalledWith({
+          target: { value: '' },
+          field: 'end',
+        });
+      });
+
+      it('should refocus the start input when closing the start calendar', async () => {
+        const { component, page } = await createRangePage();
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        const focusSpy = jest.spyOn(component['inputRef']!, 'focus');
+        component['toggleStartCalendar']();
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(false);
+        expect(focusSpy).toHaveBeenCalled();
+      });
+
+      it('should refocus the end input when closing the end calendar', async () => {
+        const { component } = await createRangePage();
+        component['showEndCalendar'] = true;
+        const focus = jest.fn();
+        component['endInputRef'] = { focus } as unknown as HTMLInputElement;
+
+        component['toggleEndCalendar']();
+
+        expect(component['showEndCalendar']).toBe(false);
+        expect(focus).toHaveBeenCalled();
+      });
+
+      it('should focus the selected day when the start calendar opens', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-06-20"'
+        );
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+        component['openStartCalendar']();
+        await page.waitForChanges();
+
+        expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['calendarRef'],
+          expect.any(Date)
+        );
+        expect(focusSpy.mock.calls[0][1].getDate()).toBe(10);
+        expect(focusSpy.mock.calls[0][1].getMonth()).toBe(5);
+      });
+
+      it('should focus the correct day when overflow dates are hidden', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" format="mm/dd/yyyy"'
+        );
+        component['openStartCalendar']();
+        await page.waitForChanges();
+
+        const june10Button = page.root!.querySelector(
+          '.calendar-day[data-iso-date="2026-06-10"]'
+        );
+        expect(june10Button).not.toBeNull();
+
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+        component['focusOpenCalendarDay'](
+          component['calendarRef'],
+          component['calendar'],
+          new Date(2026, 5, 10)
+        );
+
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['calendarRef'],
+          new Date(2026, 5, 10)
+        );
+        expect(june10Button!.textContent?.trim()).toBe('10');
+      });
+
+      it('should emit endCalendarYearChange when the end calendar year changes', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const yearSpy = jest.fn();
+        page.root!.addEventListener('endCalendarYearChange', yearSpy);
+
+        component['handleEndYearChange'](createSelectChangeEvent('2027'));
+        await page.waitForChanges();
+
+        expect(yearSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ detail: 2027 })
+        );
+      });
+
+      it('should no-op calendar focus when the target date is not in the grid', async () => {
+        const { component } = await createRangePage('value="2026-06-10"');
+        component['focusedDateIndex'] = 5;
+
+        component['focusOpenCalendarDay'](
+          undefined,
+          component['calendar'],
+          new Date(1999, 0, 1)
+        );
+
+        expect(component['focusedDateIndex']).toBe(5);
+      });
+
+      it('should fallback to empty string when handleEndInput receives null target', async () => {
+        const { component } = await createRangePage();
+        const changeSpy = jest.fn();
+        component.inputChange = { emit: changeSpy };
+
+        component['handleEndInput']({
+          stopPropagation: jest.fn(),
+          target: null,
+        } as unknown as InputEvent);
+
+        expect(changeSpy).toHaveBeenCalledWith({
+          target: { value: '' },
+          field: 'end',
+        });
+      });
+
+      it('should close the start calendar without error when inputRef is missing', async () => {
+        const { component } = await createRangePage();
+        component['inputRef'] = undefined;
+        component['showStartCalendar'] = true;
+
+        expect(() => component['toggleStartCalendar']()).not.toThrow();
+        expect(component['showStartCalendar']).toBe(false);
+      });
+
+      it('should focus today when no date is passed to focusOpenCalendarDay', async () => {
+        const { component, page } = await createRangePage();
+        component['openStartCalendar']();
+        await page.waitForChanges();
+
+        component['focusOpenCalendarDay'](
+          component['calendarRef'],
+          component['calendar']
+        );
+
+        expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
+      });
+
+      it('should no-op focus when the calendar container is missing', async () => {
+        const { component } = await createRangePage('value="2026-06-10"');
+
+        expect(() =>
+          component['focusOpenCalendarDay'](
+            undefined,
+            component['calendar'],
+            new Date(2026, 5, 10)
+          )
+        ).not.toThrow();
+      });
+    });
+
+    describe('single mode input blur', () => {
+      it('should emit inputBlur without field in single mode', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Date input"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const blurSpy = jest.fn();
+        component.inputBlur = { emit: blurSpy };
+
+        component['handleBlur'](new FocusEvent('blur'));
+
+        expect(blurSpy).toHaveBeenCalled();
+        expect(
+          (blurSpy.mock.calls[0][0] as FocusEvent & { field?: string }).field
+        ).toBeUndefined();
+      });
+
+      it('should emit inputBlur with field start in range mode', async () => {
+        const { component } = await createRangePage();
+        const blurSpy = jest.fn();
+        component.inputBlur = { emit: blurSpy };
+
+        component['handleBlur'](new FocusEvent('blur'));
 
         expect(
-          (mockEvent as unknown as { stopPropagation: jest.Mock })
-            .stopPropagation
-        ).toHaveBeenCalled();
-        // Validation happens on blur, not on input — endValue is untouched.
-        expect(component['endValue']).toBe('');
+          (blurSpy.mock.calls[0][0] as FocusEvent & { field?: string }).field
+        ).toBe('start');
       });
     });
 
