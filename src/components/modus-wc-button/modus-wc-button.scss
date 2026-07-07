@@ -86,7 +86,7 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
 // Filled hover/pressed are darkened from that same color; the outline and
 // borderless hover/pressed come from the shared btn-state-colors mixin.
 modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
-  &.modus-wc-btn-filled {
+  &.modus-wc-btn-filled:not(.modus-wc-btn-disabled) {
     background-color: var(--modus-wc-color-base-inverted);
     border-color: var(--modus-wc-color-base-inverted);
     color: var(--modus-wc-color-base-page);
@@ -119,7 +119,9 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     }
   }
 
-  &.modus-wc-btn-outline:not(:hover):not(:active):not([aria-pressed='true']) {
+  &.modus-wc-btn-outline:not(:hover):not(:active):not(
+      [aria-pressed='true']
+    ):not(.modus-wc-btn-disabled) {
     background-color: transparent;
     border-color: var(--modus-wc-color-base-inverted);
     color: var(--modus-wc-color-base-inverted);
