@@ -32,7 +32,7 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
 [data-theme='connect-light'] modus-wc-dropdown-menu,
 [data-theme='connect-dark'] modus-wc-dropdown-menu {
   .modus-wc-menu {
-    border-radius: 0.125rem;
+    border-radius: var(--modus-wc-border-radius-sm);
   }
 
   .menu-wrapper {
