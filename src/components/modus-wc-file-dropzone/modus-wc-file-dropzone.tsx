@@ -359,7 +359,7 @@ export class ModusWcFileDropzone {
         isDragging: true,
         isError: false,
         isSuccess: false,
-        message: hasFeedbackInfo ? this.feedback?.message : defaultDragMessage,
+        message: hasFeedbackInfo ? this.feedback!.message : defaultDragMessage,
       };
     }
 
@@ -368,7 +368,7 @@ export class ModusWcFileDropzone {
         isDragging: false,
         isError: true,
         isSuccess: false,
-        message: this.feedback?.message,
+        message: this.feedback!.message,
       };
     }
 
@@ -377,7 +377,7 @@ export class ModusWcFileDropzone {
         isDragging: false,
         isError: false,
         isSuccess: true,
-        message: this.feedback?.message,
+        message: this.feedback!.message,
       };
     }
 

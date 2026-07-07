@@ -138,6 +138,24 @@ exports[`modus-wc-file-dropzone feedback should prioritize feedback over interna
 </modus-wc-file-dropzone>
 `;
 
+exports[`modus-wc-file-dropzone feedback should return to default state when feedback is cleared 1`] = `
+<modus-wc-file-dropzone instructions="Upload files here">
+  <!---->
+  <div class="modus-wc-file-dropzone">
+    <input class="file-input modus-wc-file-input" type="file">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
+      <div class="default-content">
+        <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
+        <span>
+          Upload files here
+        </span>
+        <div style="display: block;"></div>
+      </div>
+    </div>
+  </div>
+</modus-wc-file-dropzone>
+`;
+
 exports[`modus-wc-file-dropzone should render with accept-file-types prop 1`] = `
 <modus-wc-file-dropzone accept-file-types=".jpg,.png,image/*">
   <!---->

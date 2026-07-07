@@ -1512,12 +1512,12 @@ describe('modus-wc-file-dropzone', () => {
     });
 
     it.each([
-      ['success', 'upload-success'],
-      ['error', 'invalid-file-type'],
-      ['info', 'dragging-over'],
+      ['success', 'upload-success', 'check_circle', 'success-icon'],
+      ['error', 'invalid-file-type', 'alert', 'error-icon'],
+      ['info', 'dragging-over', 'cloud_upload', 'upload-icon'],
     ] as const)(
       'should display no message when feedback type is %s without message',
-      async (type, expectedClass) => {
+      async (type, expectedClass, expectedIcon, expectedIconClass) => {
         const page = await newSpecPage({
           components: [ModusWcFileDropzone],
           html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
@@ -1530,6 +1530,10 @@ describe('modus-wc-file-dropzone', () => {
 
         const dropzoneContent = page.root!.querySelector('.dropzone-content');
         expect(dropzoneContent?.classList.contains(expectedClass)).toBe(true);
+
+        const iconElement = page.root!.querySelector('modus-wc-icon');
+        expect(iconElement?.getAttribute('name')).toBe(expectedIcon);
+        expect(iconElement?.classList.contains(expectedIconClass)).toBe(true);
 
         const messageElement = page.root!.querySelector(
           '.default-content span'
@@ -1562,6 +1566,77 @@ describe('modus-wc-file-dropzone', () => {
 
       const messageElement = page.root!.querySelector('.default-content span');
       expect(messageElement?.textContent).toBe('');
+    });
+
+    it('should return to default state when feedback is cleared', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone instructions="Upload files here"></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'error', message: 'Upload failed' };
+      await page.waitForChanges();
+
+      page.root!.feedback = undefined;
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        false
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Upload files here');
+
+      const slotContainer = page.root!.querySelector(
+        '.default-content > div[style]'
+      );
+      expect(slotContainer?.getAttribute('style')).toContain('display: block');
+    });
+
+    it('should not clear feedback when reset is called', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      const component = page.rootInstance;
+      page.root!.feedback = { type: 'error', message: 'External error' };
+      component.invalidFile = 'type';
+      component.errorMessage = 'Invalid file type';
+      await page.waitForChanges();
+
+      await component.reset();
+      await page.waitForChanges();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        true
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('External error');
+    });
+
+    it('should hide dropzone slot when feedback is set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: `<modus-wc-file-dropzone>
+          <div slot="dropzone">Custom content</div>
+        </modus-wc-file-dropzone>`,
+      });
+
+      const slotContainer = page.root!.querySelector(
+        '.default-content > div[style]'
+      );
+      expect(slotContainer?.getAttribute('style')).toContain('display: block');
+
+      page.root!.feedback = { type: 'info', message: 'Uploading...' };
+      await page.waitForChanges();
+
+      expect(slotContainer?.getAttribute('style')).toContain('display: none');
     });
 
     it('should prioritize feedback over internal validation state', async () => {
