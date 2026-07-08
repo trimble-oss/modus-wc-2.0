@@ -458,9 +458,7 @@ export class ModusWcDate {
 
   private emitInputFocus(event: FocusEvent, field?: DateRangeField): void {
     if (this.isRange && field) {
-      this.inputFocus.emit({ ...event, field } as FocusEvent & {
-        field: DateRangeField;
-      });
+      this.inputFocus.emit(Object.assign(event, { field }));
       return;
     }
 
@@ -469,9 +467,7 @@ export class ModusWcDate {
 
   private emitInputBlur(event: FocusEvent, field?: DateRangeField): void {
     if (this.isRange && field) {
-      this.inputBlur.emit({ ...event, field } as FocusEvent & {
-        field: DateRangeField;
-      });
+      this.inputBlur.emit(Object.assign(event, { field }));
       return;
     }
 
@@ -535,11 +531,15 @@ export class ModusWcDate {
   }
 
   private handleBlur = (event: FocusEvent) => {
-    // Check if focus is moving to an element within the component
-    const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
     // istanbul ignore next (unreachable code)
     if (relatedTarget && this.el.contains(relatedTarget)) {
-      // Focus is moving within the component, don't emit blur
+      // istanbul ignore next
+      if (this.isRange && relatedTarget === this.endInputRef) {
+        this.hasStartFocus = false;
+        this.syncValueFromInput();
+        this.emitInputBlur(event, 'start');
+      }
       return;
     }
 
@@ -880,14 +880,20 @@ export class ModusWcDate {
   };
 
   private handleEndBlur = (event: FocusEvent) => {
-    const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
     // istanbul ignore next (unreachable code)
     if (relatedTarget && this.el.contains(relatedTarget)) {
+      // istanbul ignore next
+      if (relatedTarget === this.inputRef) {
+        this.hasEndFocus = false;
+        this.syncEndValueFromInput();
+        this.emitInputBlur(event, 'end');
+      }
       return;
     }
+
     this.hasEndFocus = false;
     this.syncEndValueFromInput();
-    this.emitRangeChangeIfComplete();
     this.emitInputBlur(event, 'end');
   };
 
@@ -1227,8 +1233,7 @@ export class ModusWcDate {
       const date = updatedCal.dates[indexInWeek];
       if (
         indexInWeek < updatedCal.dates.length &&
-        // istanbul ignore next (optional chaining)
-        date?.getMonth() === updatedCal.selectedMonth &&
+        date.getMonth() === updatedCal.selectedMonth &&
         this.isFocusableCalendarIndex(updatedCal, indexInWeek)
       ) {
         this.focusedDateIndex = indexInWeek;

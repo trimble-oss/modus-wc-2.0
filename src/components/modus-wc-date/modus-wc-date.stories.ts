@@ -135,7 +135,7 @@ const Template: Story = {
         end-value=${ifDefined(args['end-value'])}
         .feedback=${args.feedback}
         format=${ifDefined(args.format)}
-        ?hide-overflow-dates=${args['hide-overflow-dates']}
+        .hideOverflowDates=${args['hide-overflow-dates']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -231,7 +231,7 @@ Range mode uses \`value\` as the **start date** and \`end-value\` as the **end d
             end-value=${ifDefined(args['end-value'])}
             .feedback=${args.feedback}
             format=${ifDefined(args.format)}
-            ?hide-overflow-dates=${args['hide-overflow-dates']}
+            .hideOverflowDates=${args['hide-overflow-dates']}
             input-id=${ifDefined(args['input-id'])}
             input-tab-index=${ifDefined(args['input-tab-index'])}
             label=${ifDefined(args.label)}
