@@ -927,7 +927,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.InputId">
             <summary>
-            The ID of the input element.
+            The ID of the start input in single mode. In range mode, the end input id is {inputId}-end (or {generated-id}-end when omitted). There is no separate prop for the end input id.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.InputTabIndex">
@@ -952,7 +952,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Name">
             <summary>
-            Name of the form control. Submitted with the form as part of a name/value pair.
+            Name of the form control. In range mode, the end input name is {name}-end. There is no separate prop for the end input name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.ReadOnly">
