@@ -338,8 +338,8 @@
  * plain hex --modus-wc-color-* vars (no oklch involved). Modern themes have
  * no such SCSS overrides, so we add them here — inside @supports not so
  * they ONLY apply on old Chrome and never interfere with modern behavior.
- * Neutral (modus-wc-btn-base-inverted) uses color-mix in modus-wc-button.scss
- * for all themes; modern-theme fallbacks for that variant are included below.
+ * Neutral (modus-wc-btn-base-inverted) uses --modus-wc-color-trimble-neutral
+ * via color-mix in modus-wc-button.scss; modern-theme fallbacks below.
  *
  * MAINTENANCE: Colors sourced from src/styles/themes/modus-modern.ts.
  * If theme colors change, update hover/active hex values here to match.
@@ -351,6 +351,7 @@
  *   red-light=#e86363  red=#da212c  red-dark=#ab1f26
  *   gray-0=#e0e1e9  gray-1=#cbcdd6  gray-2=#b7b9c3
  *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e  gray-light=#f1f1f6
+ *   trimble-gray=#252a2e
  */
 @supports not (color: oklch(0% 0 0)) {
   /* ── modus-modern-light: filled buttons ──────────────────────────────── */
@@ -416,16 +417,16 @@
 
   [data-theme='modus-modern-light']
     .modus-wc-btn-base-inverted.modus-wc-btn-filled:hover {
-    background-color: #15191b; /* gray-10 @ 90% + black */
-    border-color: #15191b;
+    background-color: #212629; /* trimble-gray @ 90% + black */
+    border-color: #212629;
   }
 
   [data-theme='modus-modern-light']
     .modus-wc-btn-base-inverted.modus-wc-btn-filled:active,
   [data-theme='modus-modern-light']
     .modus-wc-btn-base-inverted.modus-wc-btn-filled[aria-pressed='true'] {
-    background-color: #121618; /* gray-10 @ 80% + black */
-    border-color: #121618;
+    background-color: #1e2225; /* trimble-gray @ 80% + black */
+    border-color: #1e2225;
   }
 
   /* ── modus-modern-light: outlined buttons ────────────────────────────── */
@@ -508,7 +509,7 @@
     .modus-wc-btn-base-inverted.modus-wc-btn-outline:hover,
   [data-theme='modus-modern-light']
     .modus-wc-btn-base-inverted.modus-wc-btn-borderless:hover {
-    background-color: rgb(23 28 30 / 0.12); /* gray-10 @ 12% */
+    background-color: rgb(37 42 46 / 0.12); /* trimble-gray @ 12% */
   }
 
   [data-theme='modus-modern-light']
@@ -519,7 +520,7 @@
     .modus-wc-btn-base-inverted.modus-wc-btn-borderless:active,
   [data-theme='modus-modern-light']
     .modus-wc-btn-base-inverted.modus-wc-btn-borderless[aria-pressed='true'] {
-    background-color: #171c1e; /* gray-10 */
+    background-color: #252a2e; /* trimble-gray */
     border-color: transparent;
     color: #ffffff;
   }
