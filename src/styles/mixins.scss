@@ -208,8 +208,9 @@
     }
   }
 
-  // Neutral color uses --modus-wc-color-trimble-neutral (no DaisyUI slot / -pale
-  // token), so the hover tint and pressed text are derived from that variable.
+  // Button `color="neutral"` maps to `.modus-wc-btn-base-inverted`, which uses
+  // --modus-wc-color-trimble-neutral (no DaisyUI slot / -pale token). Hover tint
+  // and pressed styles are derived from that variable.
   &.modus-wc-btn-base-inverted {
     &[aria-pressed='true'] {
       background-color: var(--modus-wc-color-trimble-neutral);
