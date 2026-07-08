@@ -387,6 +387,11 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcAvatar.OnImageLoadError">
+            <summary>
+            Event emitted when the avatar image fails to load.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcBadge">
             <summary>
             A customizable badge component used to create badges with different sizes, types, and colors.  The component supports a slot for injecting content within the badge.
@@ -1169,7 +1174,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.IncludeStateIcon">
             <summary>
-            Include state icon (upload, success, error)
+            Include state icon for default, validation, upload, and feedback states
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.Instructions">
@@ -1205,6 +1210,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.SuccessMessage">
             <summary>
             Success message displayed when files are uploaded successfully
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.Feedback">
+            <summary>
+            External feedback to display info, success, or error state with optional custom icon and message
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.ChildContent">
