@@ -327,6 +327,8 @@ export interface IAutocompleteNoResults {
   subLabel: string;
 }
 
+export type DateRangeField = 'start' | 'end';
+
 export interface IDateRange {
   startDate: string;
   endDate: string;
