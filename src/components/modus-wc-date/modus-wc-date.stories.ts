@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
+import { dateRangeSourceCode } from './modus-wc-date.story-source';
 
 interface DateArgs {
   bordered?: boolean;
@@ -184,6 +185,7 @@ export const Range: Story = {
   parameters: {
     layout: 'fullscreen',
     docs: {
+      source: { code: dateRangeSourceCode },
       description: {
         story: `
 Range mode uses \`value\` as the **start date** and \`end-value\` as the **end date** (both ISO \`YYYY-MM-DD\`).
