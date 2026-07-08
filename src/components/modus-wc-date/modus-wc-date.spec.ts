@@ -4926,8 +4926,9 @@ describe('modus-wc-date', () => {
         const { component, page } = await createRangePage(
           'value="2026-06-10" end-value="2026-07-08"'
         );
-        component['showEndCalendar'] = true;
-        component['showStartCalendar'] = true;
+        component['openEndCalendar']();
+        component['openStartCalendar']();
+        component['activeRangeCalendarPanel'] = 'end';
         await page.waitForChanges();
 
         const startMonthBefore = component['calendar'].selectedMonth;
@@ -4943,40 +4944,29 @@ describe('modus-wc-date', () => {
         const endButton = component['endCalendarRef']!.querySelector(
           '.calendar-day[data-iso-date="2026-07-08"]'
         ) as HTMLButtonElement;
-        const originalActiveElement = Object.getOwnPropertyDescriptor(
-          document,
-          'activeElement'
-        );
-        Object.defineProperty(document, 'activeElement', {
-          configurable: true,
-          get: () => endButton,
-        });
-        await page.waitForChanges();
 
         const focusSpy = jest.spyOn(
           component as unknown as { focusCalendarDayButton: jest.Mock },
           'focusCalendarDayButton'
         );
 
-        component['handleArrowKeys'](
-          new KeyboardEvent('keydown', { key: 'ArrowDown' })
-        );
+        const downEvent = {
+          key: 'ArrowDown',
+          target: endButton,
+          preventDefault: jest.fn(),
+        } as unknown as KeyboardEvent;
+
+        component['handleArrowKeys'](downEvent);
         await page.waitForChanges();
 
-        if (originalActiveElement) {
-          Object.defineProperty(
-            document,
-            'activeElement',
-            originalActiveElement
-          );
-        }
-
         expect(component['calendar'].selectedMonth).toBe(startMonthBefore);
+        expect(component['activeRangeCalendarPanel']).toBe('end');
         expect(component['focusedDateIndex']).toBe(endJuly8Index + 7);
-        expect(focusSpy).toHaveBeenCalledWith(
-          component['endCalendarRef'],
-          expect.any(Date)
-        );
+        expect(focusSpy).toHaveBeenCalledTimes(1);
+
+        const focusDate = focusSpy.mock.calls[0][1] as Date;
+        expect(focusDate.getMonth()).toBe(6);
+        expect(focusDate.getDate()).toBe(15);
       });
 
       it('should fall back to the start value in the end calendar context when endValue is empty', async () => {

@@ -105,6 +105,9 @@ export class ModusWcDate {
     date: Date;
   } | null = null;
 
+  /** Last range calendar panel that received focus — used when both are open */
+  private activeRangeCalendarPanel: 'start' | 'end' | null = null;
+
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
 
@@ -645,6 +648,7 @@ export class ModusWcDate {
   private openStartCalendar = () => {
     this.hoverDate = '';
     this.showStartCalendar = true;
+    this.activeRangeCalendarPanel = 'start';
     const startDate = this.parseISODate(this.value);
     this.ensureCalendarWithinBounds(startDate ?? new Date());
   };
@@ -652,6 +656,7 @@ export class ModusWcDate {
   private openEndCalendar = () => {
     this.hoverDate = '';
     this.showEndCalendar = true;
+    this.activeRangeCalendarPanel = 'end';
     const endCal = new DatePickerCalendar(this.firstDayOfWeek);
     const endDate = this.parseISODate(this.endValue);
     if (endDate) {
@@ -976,21 +981,116 @@ export class ModusWcDate {
     }
   }
 
-  private isFocusWithinCalendar(calendarRef?: HTMLElement): boolean {
-    const activeEl = document.activeElement as HTMLElement | null;
-    return !!(activeEl && calendarRef?.contains(activeEl));
+  private getCalendarContainerFromNode(
+    focusNode?: Node | null
+  ): HTMLElement | undefined {
+    if (!(focusNode instanceof Node)) {
+      return undefined;
+    }
+
+    let node: Node | null = focusNode;
+    while (node && node !== this.el) {
+      if (
+        node instanceof HTMLElement &&
+        node.classList.contains('calendar-container')
+      ) {
+        return node;
+      }
+      node = node.parentNode;
+    }
+
+    return undefined;
   }
 
-  private getFocusedCalendarDayIsoDate(): string | null {
-    const activeEl = document.activeElement as HTMLElement | null;
-    return (
-      activeEl
-        ?.closest('.calendar-day[data-iso-date]')
-        ?.getAttribute('data-iso-date') ?? null
-    );
+  private isFocusWithinCalendar(
+    calendarRef: HTMLElement | undefined,
+    focusNode?: Node | null
+  ): boolean {
+    if (!calendarRef || !(focusNode instanceof Node)) {
+      return false;
+    }
+
+    let node: Node | null = focusNode;
+    while (node && node !== this.el) {
+      if (node === calendarRef) {
+        return true;
+      }
+      node = node.parentNode;
+    }
+
+    const container = this.getCalendarContainerFromNode(focusNode);
+    if (container) {
+      return container === calendarRef;
+    }
+
+    if (calendarRef.contains(focusNode)) {
+      return true;
+    }
+
+    if (
+      focusNode instanceof HTMLElement &&
+      focusNode.hasAttribute('data-iso-date')
+    ) {
+      const isoDate = focusNode.getAttribute('data-iso-date');
+      return (
+        calendarRef.querySelector(`[data-iso-date="${isoDate}"]`) === focusNode
+      );
+    }
+
+    return false;
   }
 
-  private getActiveCalendarContext():
+  private syncActiveRangeCalendarPanel(focusNode?: Node | null): void {
+    if (!this.isRange || !(focusNode instanceof Node)) {
+      return;
+    }
+
+    if (
+      this.showEndCalendar &&
+      this.isFocusWithinCalendar(this.endCalendarRef, focusNode)
+    ) {
+      this.activeRangeCalendarPanel = 'end';
+      return;
+    }
+
+    if (
+      this.showStartCalendar &&
+      this.isFocusWithinCalendar(this.calendarRef, focusNode)
+    ) {
+      this.activeRangeCalendarPanel = 'start';
+    }
+  }
+
+  @Listen('focusin')
+  handleCalendarFocusIn(event: FocusEvent) {
+    this.syncActiveRangeCalendarPanel(event.target as Node | null);
+  }
+
+  private getFocusedCalendarDayIsoDate(focusNode?: Node | null): string | null {
+    if (!(focusNode instanceof HTMLElement)) {
+      if (!(document.activeElement instanceof HTMLElement)) {
+        return null;
+      }
+
+      return this.getIsoDateFromCalendarDay(document.activeElement);
+    }
+
+    return this.getIsoDateFromCalendarDay(focusNode);
+  }
+
+  private getIsoDateFromCalendarDay(element: HTMLElement): string | null {
+    let node: HTMLElement | null = element;
+    while (node && node !== this.el) {
+      if (node.hasAttribute('data-iso-date')) {
+        return node.getAttribute('data-iso-date');
+      }
+      node = node.parentElement;
+    }
+
+    return null;
+  }
+
+  private getActiveCalendarContext(focusNode?: Node | null):
     | {
         getCal: () => DatePickerCalendar;
         getRef: () => HTMLElement | undefined;
@@ -1001,7 +1101,7 @@ export class ModusWcDate {
     if (this.isRange) {
       if (
         this.showEndCalendar &&
-        this.isFocusWithinCalendar(this.endCalendarRef)
+        this.isFocusWithinCalendar(this.endCalendarRef, focusNode)
       ) {
         return {
           getCal: () => this.endCalendar,
@@ -1014,8 +1114,28 @@ export class ModusWcDate {
 
       if (
         this.showStartCalendar &&
-        this.isFocusWithinCalendar(this.calendarRef)
+        this.isFocusWithinCalendar(this.calendarRef, focusNode)
       ) {
+        return {
+          getCal: () => this.calendar,
+          getRef: () => this.calendarRef,
+          updateMonth: (year, month) =>
+            this.updateCalendarAndEmitEvents(year, month),
+          getValue: () => this.value,
+        };
+      }
+
+      if (this.activeRangeCalendarPanel === 'end' && this.showEndCalendar) {
+        return {
+          getCal: () => this.endCalendar,
+          getRef: () => this.endCalendarRef,
+          updateMonth: (year, month) =>
+            this.updateEndCalendarAndEmitEvents(year, month),
+          getValue: () => this.endValue || this.value,
+        };
+      }
+
+      if (this.activeRangeCalendarPanel === 'start' && this.showStartCalendar) {
         return {
           getCal: () => this.calendar,
           getRef: () => this.calendarRef,
@@ -1122,7 +1242,8 @@ export class ModusWcDate {
 
   @Listen('keydown')
   handleArrowKeys(event: KeyboardEvent) {
-    const active = this.getActiveCalendarContext();
+    this.syncActiveRangeCalendarPanel(event.target as Node | null);
+    const active = this.getActiveCalendarContext(event.target as Node | null);
     if (!active) {
       return;
     }
@@ -1139,7 +1260,9 @@ export class ModusWcDate {
     const totalDates = cal.dates.length;
     let newIndex = this.focusedDateIndex;
 
-    const focusedIsoDate = this.getFocusedCalendarDayIsoDate();
+    const focusedIsoDate = this.getFocusedCalendarDayIsoDate(
+      event.target as Node | null
+    );
     if (focusedIsoDate) {
       const focusedDate = this.parseISODate(focusedIsoDate);
       if (focusedDate) {
