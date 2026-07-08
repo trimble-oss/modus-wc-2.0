@@ -281,6 +281,12 @@ export interface IInputFeedbackProp {
   message?: string;
 }
 
+export interface IFileDropzoneFeedback {
+  type: 'info' | 'error' | 'success';
+  icon?: string;
+  message?: string;
+}
+
 export type PopoverPlacement =
   | 'top'
   | 'top-start'
