@@ -99,8 +99,11 @@ export class ModusWcDate {
   /** Tracks whether the end input currently has focus (range mode) */
   private hasEndFocus = false;
 
-  /** Defers calendar grid focus until after the popover renders */
-  private pendingCalendarFocus: 'start' | 'end' | null = null;
+  /** Deferred keyboard focus — applied in componentDidUpdate after the calendar re-renders */
+  private pendingCalendarDayFocus: {
+    container?: HTMLElement;
+    date: Date;
+  } | null = null;
 
   /** Indicates that the input should have a border. */
   @Prop() bordered?: boolean = true;
@@ -114,7 +117,7 @@ export class ModusWcDate {
   /** Feedback to render below the input. */
   @Prop() feedback?: IInputFeedbackProp;
 
-  /** The ID of the input element. */
+  /** The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id. */
   @Prop() inputId?: string;
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
@@ -129,7 +132,7 @@ export class ModusWcDate {
   /** Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). */
   @Prop() min?: string;
 
-  /** Name of the form control. Submitted with the form as part of a name/value pair. */
+  /** Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name. */
   @Prop() name?: string;
 
   /** Whether the value is editable. */
@@ -383,24 +386,6 @@ export class ModusWcDate {
         this.endPopperInstance.destroy();
         this.endPopperInstance = null;
       }
-
-      if (this.pendingCalendarFocus === 'start' && this.calendarRef) {
-        this.focusOpenCalendarDay(
-          this.calendarRef,
-          this.calendar,
-          this.parseISODate(this.value) ?? new Date()
-        );
-        this.pendingCalendarFocus = null;
-      } else if (this.pendingCalendarFocus === 'end' && this.endCalendarRef) {
-        this.focusOpenCalendarDay(
-          this.endCalendarRef,
-          this.endCalendar,
-          this.parseISODate(this.endValue) ??
-            this.parseISODate(this.value) ??
-            new Date()
-        );
-        this.pendingCalendarFocus = null;
-      }
     } else {
       if (this.showCalendar && this.inputRef && this.calendarRef) {
         this.setupCalendarPopper(this.inputRef, this.calendarRef, 'single');
@@ -408,6 +393,12 @@ export class ModusWcDate {
         this.popperInstance.destroy();
         this.popperInstance = null;
       }
+    }
+
+    if (this.pendingCalendarDayFocus) {
+      const { container, date } = this.pendingCalendarDayFocus;
+      this.pendingCalendarDayFocus = null;
+      this.focusCalendarDayButton(container, date);
     }
   }
 
@@ -507,21 +498,37 @@ export class ModusWcDate {
     button?.focus();
   }
 
-  private focusOpenCalendarDay(
+  private scheduleCalendarDayFocus(
     calendarContainer: HTMLElement | undefined,
-    calendar: DatePickerCalendar,
-    date?: Date
+    date: Date
   ): void {
-    const targetDate = date ?? new Date();
-    const index = calendar.dates.findIndex(
-      (d) => d && compareDate(d, targetDate) === 0
-    );
-    if (index === -1) {
-      return;
+    this.pendingCalendarDayFocus = { container: calendarContainer, date };
+  }
+
+  /** Whether a grid index maps to a rendered, focusable day button */
+  private isFocusableCalendarIndex(
+    cal: DatePickerCalendar,
+    index: number
+  ): boolean {
+    const date = cal.dates[index];
+    if (!date || this.isDateDisabled(date)) {
+      return false;
     }
 
-    this.focusedDateIndex = index;
-    this.focusCalendarDayButton(calendarContainer, targetDate);
+    if (!this.effectiveHideOverflowDates) {
+      return true;
+    }
+
+    if (date.getMonth() !== cal.selectedMonth) {
+      return false;
+    }
+
+    const rowIndex = Math.floor(index / 7);
+    const rowIsFullyOverflow = cal.dates
+      .slice(rowIndex * 7, rowIndex * 7 + 7)
+      .every((d) => !d || d.getMonth() !== cal.selectedMonth);
+
+    return !rowIsFullyOverflow;
   }
 
   private handleBlur = (event: FocusEvent) => {
@@ -640,7 +647,6 @@ export class ModusWcDate {
     this.showStartCalendar = true;
     const startDate = this.parseISODate(this.value);
     this.ensureCalendarWithinBounds(startDate ?? new Date());
-    this.pendingCalendarFocus = 'start';
   };
 
   private openEndCalendar = () => {
@@ -660,7 +666,6 @@ export class ModusWcDate {
       }
     }
     this.endCalendar = endCal;
-    this.pendingCalendarFocus = 'end';
   };
 
   private toggleStartCalendar = () => {
@@ -684,20 +689,6 @@ export class ModusWcDate {
       return;
     }
 
-    this.openEndCalendar();
-  };
-
-  private handleStartInputClick = () => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-    this.openStartCalendar();
-  };
-
-  private handleEndInputClick = () => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
     this.openEndCalendar();
   };
 
@@ -985,50 +976,154 @@ export class ModusWcDate {
     }
   }
 
-  private navigateToAdjacentMonth(currentIndex: number, isUp: boolean): void {
+  private isFocusWithinCalendar(calendarRef?: HTMLElement): boolean {
+    const activeEl = document.activeElement as HTMLElement | null;
+    return !!(activeEl && calendarRef?.contains(activeEl));
+  }
+
+  private getFocusedCalendarDayIsoDate(): string | null {
+    const activeEl = document.activeElement as HTMLElement | null;
+    return (
+      activeEl
+        ?.closest('.calendar-day[data-iso-date]')
+        ?.getAttribute('data-iso-date') ?? null
+    );
+  }
+
+  private getActiveCalendarContext():
+    | {
+        getCal: () => DatePickerCalendar;
+        getRef: () => HTMLElement | undefined;
+        updateMonth: (year: number, month: number) => void;
+        getValue: () => string;
+      }
+    | undefined {
+    if (this.isRange) {
+      if (
+        this.showEndCalendar &&
+        this.isFocusWithinCalendar(this.endCalendarRef)
+      ) {
+        return {
+          getCal: () => this.endCalendar,
+          getRef: () => this.endCalendarRef,
+          updateMonth: (year, month) =>
+            this.updateEndCalendarAndEmitEvents(year, month),
+          getValue: () => this.endValue || this.value,
+        };
+      }
+
+      if (
+        this.showStartCalendar &&
+        this.isFocusWithinCalendar(this.calendarRef)
+      ) {
+        return {
+          getCal: () => this.calendar,
+          getRef: () => this.calendarRef,
+          updateMonth: (year, month) =>
+            this.updateCalendarAndEmitEvents(year, month),
+          getValue: () => this.value,
+        };
+      }
+
+      if (this.showEndCalendar && !this.showStartCalendar) {
+        return {
+          getCal: () => this.endCalendar,
+          getRef: () => this.endCalendarRef,
+          updateMonth: (year, month) =>
+            this.updateEndCalendarAndEmitEvents(year, month),
+          getValue: () => this.endValue || this.value,
+        };
+      }
+
+      if (this.showStartCalendar) {
+        return {
+          getCal: () => this.calendar,
+          getRef: () => this.calendarRef,
+          updateMonth: (year, month) =>
+            this.updateCalendarAndEmitEvents(year, month),
+          getValue: () => this.value,
+        };
+      }
+
+      if (this.showEndCalendar) {
+        return {
+          getCal: () => this.endCalendar,
+          getRef: () => this.endCalendarRef,
+          updateMonth: (year, month) =>
+            this.updateEndCalendarAndEmitEvents(year, month),
+          getValue: () => this.endValue || this.value,
+        };
+      }
+
+      return undefined;
+    }
+
+    if (this.showCalendar) {
+      return {
+        getCal: () => this.calendar,
+        getRef: () => this.calendarRef,
+        updateMonth: (year, month) =>
+          this.updateCalendarAndEmitEvents(year, month),
+        getValue: () => this.value,
+      };
+    }
+
+    return undefined;
+  }
+
+  private navigateToAdjacentMonth(
+    active: {
+      getCal: () => DatePickerCalendar;
+      updateMonth: (year: number, month: number) => void;
+    },
+    currentIndex: number,
+    isUp: boolean
+  ): void {
+    const cal = active.getCal();
     const currentColumn = currentIndex % 7;
 
     // Navigate to previous/next month
     // Date constructor will normalize out-of-bounds months (e.g., -1 → Dec of prev year, 12 → Jan of next year)
-    this.updateCalendarAndEmitEvents(
-      this.calendar.selectedYear,
-      this.calendar.selectedMonth + (isUp ? -1 : 1)
-    );
+    active.updateMonth(cal.selectedYear, cal.selectedMonth + (isUp ? -1 : 1));
+
+    const updatedCal = active.getCal();
 
     // Find target date in same column
     const weekRange = isUp ? [5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5];
 
     for (const week of weekRange) {
       const indexInWeek = week * 7 + currentColumn;
-      // istanbul ignore next (optional chaining)
+      const date = updatedCal.dates[indexInWeek];
       if (
-        indexInWeek < this.calendar.dates.length &&
-        this.calendar.dates[indexInWeek]?.getMonth() ===
-          this.calendar.selectedMonth
+        indexInWeek < updatedCal.dates.length &&
+        date?.getMonth() === updatedCal.selectedMonth &&
+        this.isFocusableCalendarIndex(updatedCal, indexInWeek)
       ) {
         this.focusedDateIndex = indexInWeek;
         return;
       }
     }
 
-    // Fallback to first/last current-month date
-    // istanbul ignore next (fallback scenario)
-    const currentMonthIndices = this.calendar.dates
-      .map((date, index) =>
-        date?.getMonth() === this.calendar.selectedMonth ? index : -1
+    // Fallback to first/last focusable current-month date
+    const focusableMonthIndices = updatedCal.dates
+      .map((_date, index) =>
+        updatedCal.dates[index]?.getMonth() === updatedCal.selectedMonth &&
+        this.isFocusableCalendarIndex(updatedCal, index)
+          ? index
+          : -1
       )
       .filter((index) => index !== -1);
 
-    // istanbul ignore next (fallback scenario)
     this.focusedDateIndex = isUp
-      ? (currentMonthIndices[currentMonthIndices.length - 1] ??
-        this.calendar.dates.length - 1)
-      : (currentMonthIndices[0] ?? 0);
+      ? (focusableMonthIndices[focusableMonthIndices.length - 1] ??
+        updatedCal.dates.length - 1)
+      : (focusableMonthIndices[0] ?? 0);
   }
 
   @Listen('keydown')
   handleArrowKeys(event: KeyboardEvent) {
-    if (!this.showCalendar) {
+    const active = this.getActiveCalendarContext();
+    if (!active) {
       return;
     }
 
@@ -1040,18 +1135,30 @@ export class ModusWcDate {
 
     event.preventDefault();
 
-    const totalDates = this.calendar.dates.length;
+    let cal = active.getCal();
+    const totalDates = cal.dates.length;
     let newIndex = this.focusedDateIndex;
+
+    const focusedIsoDate = this.getFocusedCalendarDayIsoDate();
+    if (focusedIsoDate) {
+      const focusedDate = this.parseISODate(focusedIsoDate);
+      if (focusedDate) {
+        const indexFromDom = cal.dates.findIndex(
+          (date) => date && compareDate(date, focusedDate) === 0
+        );
+        if (indexFromDom !== -1) {
+          newIndex = indexFromDom;
+        }
+      }
+    }
 
     // If no date is focused, start with the first date or selected date
     if (newIndex === -1) {
-      if (this.value) {
-        const selectedDate = this.parseISODate(this.value);
-        if (selectedDate) {
-          newIndex = this.calendar.dates.findIndex(
-            (date) => compareDate(date, selectedDate) === 0
-          );
-        }
+      const selectedDate = this.parseISODate(active.getValue());
+      if (selectedDate) {
+        newIndex = cal.dates.findIndex(
+          (date) => date && compareDate(date, selectedDate) === 0
+        );
       }
       // istanbul ignore next (unreachable code)
       if (newIndex === -1) {
@@ -1082,11 +1189,14 @@ export class ModusWcDate {
     }
 
     // Check if target index is valid and get the target date
-    if (targetIndex >= 0 && targetIndex < totalDates) {
-      targetDate = this.calendar.dates[targetIndex];
+    let crossMonthBoundary = targetIndex < 0 || targetIndex >= totalDates;
+
+    if (!crossMonthBoundary) {
+      targetDate = cal.dates[targetIndex];
 
       if (targetDate) {
-        // Skip disabled dates - keep moving in the same direction until we find a valid date
+        // Skip disabled / non-rendered overflow cells — keep moving in the same
+        // direction until we find a focusable date or leave the grid.
         let searchIndex = targetIndex;
         const direction =
           key === 'ArrowLeft'
@@ -1100,62 +1210,66 @@ export class ModusWcDate {
         while (
           searchIndex >= 0 &&
           searchIndex < totalDates &&
-          this.isDateDisabled(this.calendar.dates[searchIndex])
+          !this.isFocusableCalendarIndex(cal, searchIndex)
         ) {
           searchIndex += direction;
         }
 
-        // If we found a valid date within bounds
         if (
           searchIndex >= 0 &&
           searchIndex < totalDates &&
-          this.calendar.dates[searchIndex]
+          this.isFocusableCalendarIndex(cal, searchIndex)
         ) {
-          targetDate = this.calendar.dates[searchIndex];
+          targetDate = cal.dates[searchIndex];
           targetIndex = searchIndex;
-        } else {
-          // No valid date found in this direction, don't move
-          return;
-        }
 
-        // If target date is from a different month, navigate to that month
-        // istanbul ignore next (optional chaining)
-        if (targetDate.getMonth() !== this.calendar.selectedMonth) {
-          shouldChangeMonth = true;
+          // If target date is from a different month, navigate to that month
+          // istanbul ignore next (optional chaining)
+          if (targetDate.getMonth() !== cal.selectedMonth) {
+            shouldChangeMonth = true;
+          }
+          this.focusedDateIndex = targetIndex;
+        } else {
+          crossMonthBoundary = true;
         }
-        this.focusedDateIndex = targetIndex;
       }
-    } else {
+    }
+
+    if (crossMonthBoundary) {
       // Target is outside current calendar, navigate to appropriate month
       shouldChangeMonth = true;
 
       if (key === 'ArrowUp') {
         // Check if we can navigate to previous month
         const prevMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth - 1,
+          cal.selectedYear,
+          cal.selectedMonth - 1,
           1
         );
         if (!this.isDateDisabled(prevMonthDate)) {
-          this.navigateToAdjacentMonth(newIndex, true);
+          this.navigateToAdjacentMonth(active, newIndex, true);
           shouldChangeMonth = false; // Already handled in helper
+        } else {
+          return;
         }
       } else if (key === 'ArrowDown') {
         // Check if we can navigate to next month
         const nextMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth + 1,
+          cal.selectedYear,
+          cal.selectedMonth + 1,
           1
         );
         if (!this.isDateDisabled(nextMonthDate)) {
-          this.navigateToAdjacentMonth(newIndex, false);
+          this.navigateToAdjacentMonth(active, newIndex, false);
           shouldChangeMonth = false; // Already handled in helper
+        } else {
+          return;
         }
       } else if (key === 'ArrowLeft') {
         // Go to previous month's last day
         const prevMonthDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth - 1,
+          cal.selectedYear,
+          cal.selectedMonth - 1,
           1
         );
         targetDate = new Date(
@@ -1170,28 +1284,24 @@ export class ModusWcDate {
         }
       } else {
         // Go to next month's first day
-        targetDate = new Date(
-          this.calendar.selectedYear,
-          this.calendar.selectedMonth + 1,
-          1
-        ); // First day of next month
+        targetDate = new Date(cal.selectedYear, cal.selectedMonth + 1, 1); // First day of next month
 
         // Only navigate if not disabled
         if (this.isDateDisabled(targetDate)) {
           return;
         }
       }
+    } else if (!targetDate) {
+      return;
     }
 
     // Handle month change if needed
     if (shouldChangeMonth && targetDate) {
-      this.updateCalendarAndEmitEvents(
-        targetDate.getFullYear(),
-        targetDate.getMonth()
-      );
+      active.updateMonth(targetDate.getFullYear(), targetDate.getMonth());
+      cal = active.getCal();
 
       // Find the target date in the new calendar
-      const newTargetIndex = this.calendar.dates.findIndex(
+      const newTargetIndex = cal.dates.findIndex(
         // istanbul ignore next (optional chaining)
         (date) => date && compareDate(date, targetDate) === 0
       );
@@ -1205,7 +1315,7 @@ export class ModusWcDate {
         if (key === 'ArrowLeft' || key === 'ArrowUp') {
           // Focus on last current-month date
           // istanbul ignore next (fallback scenario)
-          const lastCurrentMonthIndex = this.calendar.dates
+          const lastCurrentMonthIndex = cal.dates
             .map((date, index) =>
               date && date.getMonth() === targetDate.getMonth() ? index : -1
             )
@@ -1215,11 +1325,11 @@ export class ModusWcDate {
           this.focusedDateIndex =
             lastCurrentMonthIndex !== undefined
               ? lastCurrentMonthIndex
-              : this.calendar.dates.length - 1;
+              : cal.dates.length - 1;
         } else {
           // Focus on first current-month date
           // istanbul ignore next (fallback scenario)
-          const firstCurrentMonthIndex = this.calendar.dates.findIndex(
+          const firstCurrentMonthIndex = cal.dates.findIndex(
             (date) => date && date.getMonth() === targetDate.getMonth()
           );
           // istanbul ignore next (fallback scenario)
@@ -1231,9 +1341,9 @@ export class ModusWcDate {
 
     // Focus the corresponding button by date — grid index ≠ button index when
     // overflow dates are hidden (blank cells have no .calendar-day button).
-    const focusedDate = this.calendar.dates[this.focusedDateIndex];
+    const focusedDate = active.getCal().dates[this.focusedDateIndex];
     if (focusedDate) {
-      this.focusCalendarDayButton(this.calendarRef, focusedDate);
+      this.scheduleCalendarDayFocus(active.getRef(), focusedDate);
     }
   }
 
@@ -1956,7 +2066,6 @@ export class ModusWcDate {
               id={effectiveId}
               name={this.name}
               onBlur={this.handleBlur}
-              onClick={this.handleStartInputClick}
               onFocus={this.handleFocus}
               onInput={this.handleInput}
               onKeyDown={this.handleInputKeyDown}
@@ -1989,27 +2098,6 @@ export class ModusWcDate {
               <modus-wc-icon name="calendar_blank" size="sm" />
             </modus-wc-button>
           </div>
-
-          {this.showStartCalendar && (
-            <div
-              ref={(el) => (this.calendarRef = el)}
-              class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
-            >
-              {this.renderCalendarHeader(
-                this.calendar,
-                // istanbul ignore next (unreachable code)
-                () => this.addMonthOffset(-1),
-                // istanbul ignore next (unreachable code)
-                () => this.addMonthOffset(1),
-                // istanbul ignore next (unreachable code)
-                (e) => this.handleMonthChange(e),
-                // istanbul ignore next (unreachable code)
-                (e) => this.handleYearChange(e)
-              )}
-              {this.renderCalendarBody(this.calendar)}
-            </div>
-          )}
-
           <div class="date-input-container">
             <input
               ref={(el) => (this.endInputRef = el)}
@@ -2019,7 +2107,6 @@ export class ModusWcDate {
               id={endId}
               name={this.name ? `${this.name}-end` : undefined}
               onBlur={this.handleEndBlur}
-              onClick={this.handleEndInputClick}
               onFocus={this.handleEndFocus}
               onInput={this.handleEndInput}
               onKeyDown={this.handleEndInputKeyDown}
@@ -2052,27 +2139,47 @@ export class ModusWcDate {
               <modus-wc-icon name="calendar_blank" size="sm" />
             </modus-wc-button>
           </div>
-
-          {this.showEndCalendar && (
-            <div
-              ref={(el) => (this.endCalendarRef = el)}
-              class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
-            >
-              {this.renderCalendarHeader(
-                this.endCalendar,
-                // istanbul ignore next (unreachable code)
-                () => this.addEndMonthOffset(-1),
-                // istanbul ignore next (unreachable code)
-                () => this.addEndMonthOffset(1),
-                // istanbul ignore next (unreachable code)
-                (e) => this.handleEndMonthChange(e),
-                // istanbul ignore next (unreachable code)
-                (e) => this.handleEndYearChange(e)
-              )}
-              {this.renderCalendarBody(this.endCalendar)}
-            </div>
-          )}
         </div>
+
+        {this.showStartCalendar && (
+          <div
+            ref={(el) => (this.calendarRef = el)}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
+          >
+            {this.renderCalendarHeader(
+              this.calendar,
+              // istanbul ignore next (unreachable code)
+              () => this.addMonthOffset(-1),
+              // istanbul ignore next (unreachable code)
+              () => this.addMonthOffset(1),
+              // istanbul ignore next (unreachable code)
+              (e) => this.handleMonthChange(e),
+              // istanbul ignore next (unreachable code)
+              (e) => this.handleYearChange(e)
+            )}
+            {this.renderCalendarBody(this.calendar)}
+          </div>
+        )}
+
+        {this.showEndCalendar && (
+          <div
+            ref={(el) => (this.endCalendarRef = el)}
+            class={`calendar-container${this.showWeekNumbers ? ' has-week-numbers' : ''}${this.effectiveHideOverflowDates ? ' dynamic-height' : ''}`}
+          >
+            {this.renderCalendarHeader(
+              this.endCalendar,
+              // istanbul ignore next (unreachable code)
+              () => this.addEndMonthOffset(-1),
+              // istanbul ignore next (unreachable code)
+              () => this.addEndMonthOffset(1),
+              // istanbul ignore next (unreachable code)
+              (e) => this.handleEndMonthChange(e),
+              // istanbul ignore next (unreachable code)
+              (e) => this.handleEndYearChange(e)
+            )}
+            {this.renderCalendarBody(this.endCalendar)}
+          </div>
+        )}
 
         {this.feedback && (
           <modus-wc-input-feedback

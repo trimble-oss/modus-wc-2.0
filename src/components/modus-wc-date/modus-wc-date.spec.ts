@@ -2328,6 +2328,39 @@ describe('modus-wc-date', () => {
       expect(component['calendar'].selectedMonth).toBe(1); // February
     });
 
+    it('should focus a May date when ArrowUp crosses from June with hide-overflow-dates false', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Arrow up overflow visible" value="2026-06-01" hide-overflow-dates="false"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const june1Index = component['calendar'].dates.findIndex(
+        (date) =>
+          date &&
+          date.getFullYear() === 2026 &&
+          date.getMonth() === 5 &&
+          date.getDate() === 1
+      );
+      component['focusedDateIndex'] = june1Index;
+
+      component['handleArrowKeys'](
+        new KeyboardEvent('keydown', { key: 'ArrowUp' })
+      );
+      await page.waitForChanges();
+
+      expect(component['calendar'].selectedMonth).toBe(4);
+      expect(component['calendar'].selectedYear).toBe(2026);
+
+      const focusedDate =
+        component['calendar'].dates[component['focusedDateIndex']];
+      expect(focusedDate?.getMonth()).toBe(4);
+      expect(focusedDate?.getFullYear()).toBe(2026);
+    });
+
     it('should navigate to next month when ArrowDown at bottom boundary', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
@@ -3272,7 +3305,7 @@ describe('modus-wc-date', () => {
       expect(component['showEndCalendar']).toBe(true);
     });
 
-    it('should open start calendar when start input is clicked', async () => {
+    it('should not open start calendar when start input is clicked', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
@@ -3283,10 +3316,10 @@ describe('modus-wc-date', () => {
       inputs[0].dispatchEvent(new Event('click'));
       await page.waitForChanges();
 
-      expect(component['showStartCalendar']).toBe(true);
+      expect(component['showStartCalendar']).toBe(false);
     });
 
-    it('should open end calendar when end input is clicked', async () => {
+    it('should not open end calendar when end input is clicked', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
@@ -3297,7 +3330,7 @@ describe('modus-wc-date', () => {
       inputs[1].dispatchEvent(new Event('click'));
       await page.waitForChanges();
 
-      expect(component['showEndCalendar']).toBe(true);
+      expect(component['showEndCalendar']).toBe(false);
     });
 
     // --- Anchor-driven selection logic ---
@@ -4279,27 +4312,56 @@ describe('modus-wc-date', () => {
         expect(component['showEndCalendar']).toBe(false);
       });
 
-      it('should not open the start calendar when disabled', async () => {
+      it('should not open the start calendar when the start input is clicked', async () => {
         const page = await newSpecPage({
           components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range" disabled></modus-wc-date>',
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
         });
         const component = page.rootInstance as ModusWcDate;
+        const startInput = page.root!.querySelectorAll('input')[0];
 
-        component['handleStartInputClick']();
+        startInput.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         await page.waitForChanges();
 
         expect(component['showStartCalendar']).toBe(false);
       });
 
-      it('should not open the end calendar when read-only', async () => {
+      it('should open the start calendar when the start calendar icon is clicked', async () => {
         const page = await newSpecPage({
           components: [ModusWcDate],
-          html: '<modus-wc-date aria-label="Range input" type="range" read-only></modus-wc-date>',
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
         });
         const component = page.rootInstance as ModusWcDate;
 
-        component['handleEndInputClick']();
+        component['toggleStartCalendar']();
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(true);
+      });
+
+      it('should focus the start input when the label is clicked without opening the calendar', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate, ModusWcInputLabel],
+          html: '<modus-wc-date aria-label="Range input" type="range" label="Date range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const label = page.root!.querySelector('modus-wc-input-label label')!;
+
+        label.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        await page.waitForChanges();
+
+        expect(component['showStartCalendar']).toBe(false);
+      });
+
+      it('should not open the end calendar when the end input is clicked', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Range input" type="range"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        endInput.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         await page.waitForChanges();
 
         expect(component['showEndCalendar']).toBe(false);
@@ -4686,26 +4748,6 @@ describe('modus-wc-date', () => {
         expect(focus).toHaveBeenCalled();
       });
 
-      it('should focus the selected day when the start calendar opens', async () => {
-        const { component, page } = await createRangePage(
-          'value="2026-06-10" end-value="2026-06-20"'
-        );
-        const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
-        );
-        component['openStartCalendar']();
-        await page.waitForChanges();
-
-        expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
-        expect(focusSpy).toHaveBeenCalledWith(
-          component['calendarRef'],
-          expect.any(Date)
-        );
-        expect(focusSpy.mock.calls[0][1].getDate()).toBe(10);
-        expect(focusSpy.mock.calls[0][1].getMonth()).toBe(5);
-      });
-
       it('should focus the correct day when overflow dates are hidden', async () => {
         const { component, page } = await createRangePage(
           'value="2026-06-10" format="mm/dd/yyyy"'
@@ -4722,9 +4764,8 @@ describe('modus-wc-date', () => {
           component as unknown as { focusCalendarDayButton: jest.Mock },
           'focusCalendarDayButton'
         );
-        component['focusOpenCalendarDay'](
+        component['focusCalendarDayButton'](
           component['calendarRef'],
-          component['calendar'],
           new Date(2026, 5, 10)
         );
 
@@ -4733,6 +4774,245 @@ describe('modus-wc-date', () => {
           new Date(2026, 5, 10)
         );
         expect(june10Button!.textContent?.trim()).toBe('10');
+      });
+
+      it('should navigate with ArrowRight when the start range calendar is open', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-06-20"'
+        );
+        component['showStartCalendar'] = true;
+        const startIndex = component['calendar'].dates.findIndex(
+          (date) => date && date.getDate() === 10 && date.getMonth() === 5
+        );
+        component['focusedDateIndex'] = startIndex;
+        await page.waitForChanges();
+
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowRight' })
+        );
+        await page.waitForChanges();
+
+        expect(component['focusedDateIndex']).toBe(startIndex + 1);
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['calendarRef'],
+          expect.any(Date)
+        );
+      });
+
+      it('should use the start value when navigating the start range calendar without a focused day', async () => {
+        const { component, page } = await createRangePage('value="2026-06-10"');
+        component['showStartCalendar'] = true;
+        component['focusedDateIndex'] = -1;
+        await page.waitForChanges();
+
+        const june10Index = component['calendar'].dates.findIndex(
+          (date) => date && date.getDate() === 10 && date.getMonth() === 5
+        );
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowRight' })
+        );
+        await page.waitForChanges();
+
+        expect(component['focusedDateIndex']).toBe(june10Index + 1);
+      });
+
+      it('should emit calendarMonthChange when arrow keys cross months on the start range calendar', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-30" end-value="2026-07-08"'
+        );
+        component['showStartCalendar'] = true;
+        const lastJuneIndex = component['calendar'].dates.findIndex(
+          (date) =>
+            date &&
+            date.getMonth() === 5 &&
+            date.getDate() === 30 &&
+            date.getFullYear() === 2026
+        );
+        component['focusedDateIndex'] = lastJuneIndex;
+        await page.waitForChanges();
+
+        const monthSpy = jest.fn();
+        page.root!.addEventListener('calendarMonthChange', monthSpy);
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowRight' })
+        );
+        await page.waitForChanges();
+
+        expect(monthSpy).toHaveBeenCalled();
+      });
+
+      it('should navigate to May with ArrowUp from the first June week when hide-overflow-dates is enabled', async () => {
+        const { component, page } = await createRangePage('value="2026-06-01"');
+        component['showStartCalendar'] = true;
+        const june1Index = component['calendar'].dates.findIndex(
+          (date) =>
+            date &&
+            date.getFullYear() === 2026 &&
+            date.getMonth() === 5 &&
+            date.getDate() === 1
+        );
+        component['focusedDateIndex'] = june1Index;
+        await page.waitForChanges();
+
+        const monthSpy = jest.fn();
+        page.root!.addEventListener('calendarMonthChange', monthSpy);
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowUp' })
+        );
+        await page.waitForChanges();
+
+        expect(component['calendar'].selectedMonth).toBe(4);
+        expect(monthSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ detail: 4 })
+        );
+
+        const focusedDate =
+          component['calendar'].dates[component['focusedDateIndex']];
+        expect(focusedDate.getMonth()).toBe(4);
+        expect(focusedDate.getFullYear()).toBe(2026);
+
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['calendarRef'],
+          focusedDate
+        );
+
+        const focusedButton = page.root!.querySelector(
+          `.calendar-day[data-iso-date="${formatISODate(focusedDate)}"]`
+        );
+        expect(focusedButton).not.toBeNull();
+      });
+
+      it('should navigate with ArrowRight when the end range calendar is open', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        component['showEndCalendar'] = true;
+        const endIndex = component['endCalendar'].dates.findIndex(
+          (date) => date && date.getDate() === 8 && date.getMonth() === 6
+        );
+        component['focusedDateIndex'] = endIndex;
+        await page.waitForChanges();
+
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowRight' })
+        );
+        await page.waitForChanges();
+
+        expect(component['focusedDateIndex']).toBe(endIndex + 1);
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['endCalendarRef'],
+          expect.any(Date)
+        );
+      });
+
+      it('should navigate the end calendar when both calendars are open and focus is in the end panel', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        component['showEndCalendar'] = true;
+        component['showStartCalendar'] = true;
+        await page.waitForChanges();
+
+        const startMonthBefore = component['calendar'].selectedMonth;
+        const endJuly8Index = component['endCalendar'].dates.findIndex(
+          (date) => date && date.getDate() === 8 && date.getMonth() === 6
+        );
+        const startJune10Index = component['calendar'].dates.findIndex(
+          (date) => date && date.getDate() === 10 && date.getMonth() === 5
+        );
+        component['focusedDateIndex'] = startJune10Index;
+        await page.waitForChanges();
+
+        const endButton = component['endCalendarRef']!.querySelector(
+          '.calendar-day[data-iso-date="2026-07-08"]'
+        ) as HTMLButtonElement;
+        const originalActiveElement = Object.getOwnPropertyDescriptor(
+          document,
+          'activeElement'
+        );
+        Object.defineProperty(document, 'activeElement', {
+          configurable: true,
+          get: () => endButton,
+        });
+        await page.waitForChanges();
+
+        const focusSpy = jest.spyOn(
+          component as unknown as { focusCalendarDayButton: jest.Mock },
+          'focusCalendarDayButton'
+        );
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowDown' })
+        );
+        await page.waitForChanges();
+
+        if (originalActiveElement) {
+          Object.defineProperty(
+            document,
+            'activeElement',
+            originalActiveElement
+          );
+        }
+
+        expect(component['calendar'].selectedMonth).toBe(startMonthBefore);
+        expect(component['focusedDateIndex']).toBe(endJuly8Index + 7);
+        expect(focusSpy).toHaveBeenCalledWith(
+          component['endCalendarRef'],
+          expect.any(Date)
+        );
+      });
+
+      it('should fall back to the start value in the end calendar context when endValue is empty', async () => {
+        const { component } = await createRangePage('value="2026-07-08"');
+        component['showEndCalendar'] = true;
+        component['endValue'] = '';
+
+        const context = component['getActiveCalendarContext']();
+
+        expect(context?.getValue()).toBe('2026-07-08');
+      });
+
+      it('should emit endCalendarMonthChange when arrow keys cross months on the end calendar', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-31"'
+        );
+        component['showEndCalendar'] = true;
+        const lastJulyIndex = component['endCalendar'].dates.findIndex(
+          (date) =>
+            date &&
+            date.getMonth() === 6 &&
+            date.getDate() === 31 &&
+            date.getFullYear() === 2026
+        );
+        component['focusedDateIndex'] = lastJulyIndex;
+        await page.waitForChanges();
+
+        const monthSpy = jest.fn();
+        page.root!.addEventListener('endCalendarMonthChange', monthSpy);
+
+        component['handleArrowKeys'](
+          new KeyboardEvent('keydown', { key: 'ArrowRight' })
+        );
+        await page.waitForChanges();
+
+        expect(monthSpy).toHaveBeenCalled();
       });
 
       it('should emit endCalendarYearChange when the end calendar year changes', async () => {
@@ -4748,19 +5028,6 @@ describe('modus-wc-date', () => {
         expect(yearSpy).toHaveBeenCalledWith(
           expect.objectContaining({ detail: 2027 })
         );
-      });
-
-      it('should no-op calendar focus when the target date is not in the grid', async () => {
-        const { component } = await createRangePage('value="2026-06-10"');
-        component['focusedDateIndex'] = 5;
-
-        component['focusOpenCalendarDay'](
-          undefined,
-          component['calendar'],
-          new Date(1999, 0, 1)
-        );
-
-        expect(component['focusedDateIndex']).toBe(5);
       });
 
       it('should fallback to empty string when handleEndInput receives null target', async () => {
@@ -4788,28 +5055,11 @@ describe('modus-wc-date', () => {
         expect(component['showStartCalendar']).toBe(false);
       });
 
-      it('should focus today when no date is passed to focusOpenCalendarDay', async () => {
-        const { component, page } = await createRangePage();
-        component['openStartCalendar']();
-        await page.waitForChanges();
-
-        component['focusOpenCalendarDay'](
-          component['calendarRef'],
-          component['calendar']
-        );
-
-        expect(component['focusedDateIndex']).toBeGreaterThanOrEqual(0);
-      });
-
       it('should no-op focus when the calendar container is missing', async () => {
         const { component } = await createRangePage('value="2026-06-10"');
 
         expect(() =>
-          component['focusOpenCalendarDay'](
-            undefined,
-            component['calendar'],
-            new Date(2026, 5, 10)
-          )
+          component['focusCalendarDayButton'](undefined, new Date(2026, 5, 10))
         ).not.toThrow();
       });
     });

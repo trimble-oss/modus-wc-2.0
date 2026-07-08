@@ -190,6 +190,8 @@ Range mode uses \`value\` as the **start date** and \`end-value\` as the **end d
 
 **Hover preview (anchor model):** After both dates are selected, the anchor defaults to the end date. Dashed hover preview only extends in the clickable direction — forward past the end requires clicking the start date to swap the anchor to \`start\`. Hovering inside the confirmed range shows no preview.
 
+**IDs and names:** \`input-id\` and \`name\` apply to the start input only. In range mode the end input uses \`{input-id}-end\` and \`{name}-end\` (or \`{generated-id}-end\` when \`input-id\` is omitted). There are no separate props for the end input id or name.
+
 **Events in range mode:** \`inputChange\`, \`inputFocus\`, and \`inputBlur\` include \`detail.field\` (\`'start'\` or \`'end'\`). End calendar navigation emits \`endCalendarMonthChange\` / \`endCalendarYearChange\`. Completing a range emits \`rangeChange\` with \`{ startDate, endDate }\`.
         `,
       },
@@ -360,6 +362,8 @@ export const Migration: Story = {
 | valid-text         | feedback.message | Use \`feedback\` level                  |
 | value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`); start date in range mode |
 |                    | end-value        | End date in range mode (ISO \`YYYY-MM-DD\`) |
+|                    | input-id (end)   | Range mode only: \`{input-id}-end\`; no separate prop |
+|                    | name (end)       | Range mode only: \`{name}-end\`; no separate prop |
 |                    | type             | \`'single'\` (default) or \`'range'\` |
 |                    | hide-overflow-dates | Defaults to \`true\` in range mode |
 

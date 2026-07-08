@@ -265,12 +265,14 @@ modus-wc-date {
             border-top-right-radius: 999px;
           }
 
-          &.range-anchor .calendar-day {
+          &.range-start .calendar-day.selected,
+          &.range-end .calendar-day.selected {
             &:hover:not(.hover-preview-end) {
-              background-color: var(--modus-wc-color-primary);
-              border-color: var(--modus-wc-color-primary);
+              background-color: var(--modus-wc-color-base-200);
+              border-color: var(--modus-wc-color-base-200);
+              border-radius: 999px;
               border-style: solid;
-              color: var(--modus-wc-color-primary-content);
+              color: var(--modus-wc-color-base-content);
             }
           }
         }
