@@ -128,8 +128,12 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn,
-[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
+[data-theme='modus-classic-light']
+  modus-wc-button
+  .modus-wc-btn:not(.modus-wc-btn-base-inverted),
+[data-theme='modus-classic-dark']
+  modus-wc-button
+  .modus-wc-btn:not(.modus-wc-btn-base-inverted) {
   --rounded-btn: var(--modus-wc-border-radius-md);
 
   border: none;
@@ -232,7 +236,9 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-button .modus-wc-btn {
+[data-theme='modus-classic-light']
+  modus-wc-button
+  .modus-wc-btn:not(.modus-wc-btn-base-inverted) {
   &.modus-wc-btn-disabled {
     opacity: 0.3;
   }
@@ -424,7 +430,9 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
   }
 }
 
-[data-theme='modus-classic-dark'] modus-wc-button .modus-wc-btn {
+[data-theme='modus-classic-dark']
+  modus-wc-button
+  .modus-wc-btn:not(.modus-wc-btn-base-inverted) {
   &.modus-wc-btn-disabled {
     opacity: 0.4;
   }
