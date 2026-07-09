@@ -243,6 +243,11 @@ const ACCESSIBILITY_RULES = {
       wcag: ["4.1.2 Name, Role, Value"],
     },
     {
+      id: "sortable-table-sort-state",
+      requirement: "Sortable table column headers must expose their sort state with aria-sort: 'ascending' or 'descending' on the actively sorted column and 'none' on the other sortable columns so assistive tech announces sortability and the current order. Non-sortable columns omit aria-sort.",
+      wcag: ["4.1.2 Name, Role, Value"],
+    },
+    {
       id: "status-messages",
       requirement: "Status changes that do not move focus should be exposed through status/live-region semantics.",
       wcag: ["4.1.3 Status Messages"],
@@ -252,6 +257,7 @@ const ACCESSIBILITY_RULES = {
     "Prefer Modus semantic tokens over fixed hex values so light and dark themes remain legible.",
     "Use status variants and labels together; do not rely on status color alone.",
     "Use Modus components when they provide native keyboard and screen-reader behavior.",
+    "For sortable modus-wc-table columns, keep the built-in sort affordance so each sortable header reports aria-sort (ascending/descending/none); do not suppress it or rebuild sortable headers as plain markup that drops the sort state.",
     "Honor prefers-reduced-motion for non-essential motion.",
   ],
 };
