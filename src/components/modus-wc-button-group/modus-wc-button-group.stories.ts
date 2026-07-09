@@ -13,6 +13,7 @@ interface ButtonGroupArgs {
     | 'tertiary'
     | 'warning'
     | 'danger'
+    | 'neutral'
     | 'success';
   disabled: boolean;
   orientation: Orientation;
@@ -42,6 +43,7 @@ const meta: Meta<ButtonGroupArgs> = {
         'tertiary',
         'warning',
         'danger',
+        'neutral',
         'success',
       ],
     },

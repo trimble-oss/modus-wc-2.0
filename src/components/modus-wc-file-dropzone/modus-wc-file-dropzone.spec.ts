@@ -1441,4 +1441,347 @@ describe('modus-wc-file-dropzone', () => {
     expect(mockInput.value).toBe('');
     expect(component.uploadSuccess).toBe(false);
   });
+
+  describe('feedback', () => {
+    it('should display success state when feedback type is success with message', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'success', message: 'Upload complete!' };
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('upload-success')).toBe(true);
+
+      const iconElement = page.root!.querySelector('modus-wc-icon');
+      expect(iconElement?.getAttribute('name')).toBe('check_circle');
+      expect(iconElement?.classList.contains('success-icon')).toBe(true);
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Upload complete!');
+    });
+
+    it('should display error state when feedback type is error with message', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'error', message: 'Upload failed' };
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        true
+      );
+
+      const iconElement = page.root!.querySelector('modus-wc-icon');
+      expect(iconElement?.getAttribute('name')).toBe('alert');
+      expect(iconElement?.classList.contains('error-icon')).toBe(true);
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Upload failed');
+    });
+
+    it('should display info state when feedback type is info with message', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'info', message: 'Release to upload' };
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('dragging-over')).toBe(true);
+
+      const iconElement = page.root!.querySelector('modus-wc-icon');
+      expect(iconElement?.getAttribute('name')).toBe('cloud_upload');
+      expect(iconElement?.classList.contains('upload-icon')).toBe(true);
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Release to upload');
+    });
+
+    it.each([
+      ['success', 'upload-success', 'check_circle', 'success-icon'],
+      ['error', 'invalid-file-type', 'alert', 'error-icon'],
+      ['info', 'dragging-over', 'cloud_upload', 'upload-icon'],
+    ] as const)(
+      'should display no message when feedback type is %s without message',
+      async (type, expectedClass, expectedIcon, expectedIconClass) => {
+        const page = await newSpecPage({
+          components: [ModusWcFileDropzone],
+          html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+        });
+
+        page.root!.feedback = { type };
+        await page.waitForChanges();
+
+        expect(page.root).toMatchSnapshot();
+
+        const dropzoneContent = page.root!.querySelector('.dropzone-content');
+        expect(dropzoneContent?.classList.contains(expectedClass)).toBe(true);
+
+        const iconElement = page.root!.querySelector('modus-wc-icon');
+        expect(iconElement?.getAttribute('name')).toBe(expectedIcon);
+        expect(iconElement?.classList.contains(expectedIconClass)).toBe(true);
+
+        const messageElement = page.root!.querySelector(
+          '.default-content span'
+        );
+        expect(messageElement?.textContent).toBe('');
+      }
+    );
+
+    it.each([
+      ['success', 'calendar_check'],
+      ['error', 'warning'],
+      ['info', 'info'],
+    ] as const)(
+      'should display custom icon when feedback type is %s with icon',
+      async (type, customIcon) => {
+        const page = await newSpecPage({
+          components: [ModusWcFileDropzone],
+          html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+        });
+
+        page.root!.feedback = { type, icon: customIcon };
+        await page.waitForChanges();
+
+        expect(page.root).toMatchSnapshot();
+
+        const iconElement = page.root!.querySelector('modus-wc-icon');
+        expect(iconElement?.getAttribute('name')).toBe(customIcon);
+      }
+    );
+
+    describe('include-state-icon', () => {
+      it('should hide default state icon when include-state-icon is false', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcFileDropzone],
+          html: '<modus-wc-file-dropzone include-state-icon="false" instructions="Upload files"></modus-wc-file-dropzone>',
+        });
+
+        await page.waitForChanges();
+
+        expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+        const messageElement = page.root!.querySelector(
+          '.default-content span'
+        );
+        expect(messageElement?.textContent).toBe('Upload files');
+      });
+
+      it.each([
+        ['success', 'upload-success'],
+        ['error', 'invalid-file-type'],
+        ['info', 'dragging-over'],
+      ] as const)(
+        'should hide preset feedback icon when include-state-icon is false and feedback type is %s',
+        async (type, expectedClass) => {
+          const page = await newSpecPage({
+            components: [ModusWcFileDropzone],
+            html: '<modus-wc-file-dropzone include-state-icon="false"></modus-wc-file-dropzone>',
+          });
+
+          page.root!.feedback = { type, message: 'Feedback message' };
+          await page.waitForChanges();
+
+          expect(page.root).toMatchSnapshot();
+
+          const dropzoneContent = page.root!.querySelector('.dropzone-content');
+          expect(dropzoneContent?.classList.contains(expectedClass)).toBe(true);
+          expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+          const messageElement = page.root!.querySelector(
+            '.default-content span'
+          );
+          expect(messageElement?.textContent).toBe('Feedback message');
+        }
+      );
+
+      it.each([
+        ['success', 'calendar_check'],
+        ['error', 'warning'],
+        ['info', 'info'],
+      ] as const)(
+        'should hide custom feedback icon when include-state-icon is false and feedback type is %s',
+        async (type, customIcon) => {
+          const page = await newSpecPage({
+            components: [ModusWcFileDropzone],
+            html: '<modus-wc-file-dropzone include-state-icon="false"></modus-wc-file-dropzone>',
+          });
+
+          page.root!.feedback = {
+            type,
+            message: 'Feedback message',
+            icon: customIcon,
+          };
+          await page.waitForChanges();
+
+          expect(page.root).toMatchSnapshot();
+
+          expect(page.root!.querySelector('modus-wc-icon')).toBeNull();
+
+          const messageElement = page.root!.querySelector(
+            '.default-content span'
+          );
+          expect(messageElement?.textContent).toBe('Feedback message');
+        }
+      );
+    });
+
+    it('should not use success-message prop when feedback type is success without message', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone success-message="Files uploaded successfully"></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'success' };
+      await page.waitForChanges();
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('');
+    });
+
+    it('should not use file-dragged-over-instructions when feedback type is info without message', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone file-dragged-over-instructions="Drop files here now"></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'info' };
+      await page.waitForChanges();
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('');
+    });
+
+    it('should return to default state when feedback is cleared', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone instructions="Upload files here"></modus-wc-file-dropzone>',
+      });
+
+      page.root!.feedback = { type: 'error', message: 'Upload failed' };
+      await page.waitForChanges();
+
+      page.root!.feedback = undefined;
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        false
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Upload files here');
+
+      const slotContainer = page.root!.querySelector(
+        '.default-content > div[style]'
+      );
+      expect(slotContainer?.getAttribute('style')).toContain('display: block');
+    });
+
+    it('should not clear feedback when reset is called', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      const component = page.rootInstance;
+      page.root!.feedback = { type: 'error', message: 'External error' };
+      component.invalidFile = 'type';
+      component.errorMessage = 'Invalid file type';
+      await page.waitForChanges();
+
+      await component.reset();
+      await page.waitForChanges();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        true
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('External error');
+    });
+
+    it('should hide dropzone slot when feedback is set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: `<modus-wc-file-dropzone>
+          <div slot="dropzone">Custom content</div>
+        </modus-wc-file-dropzone>`,
+      });
+
+      const slotContainer = page.root!.querySelector(
+        '.default-content > div[style]'
+      );
+      expect(slotContainer?.getAttribute('style')).toContain('display: block');
+
+      page.root!.feedback = { type: 'info', message: 'Uploading...' };
+      await page.waitForChanges();
+
+      expect(slotContainer?.getAttribute('style')).toContain('display: none');
+    });
+
+    it('should prioritize feedback over internal validation state', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      const component = page.rootInstance;
+      component.invalidFile = 'type';
+      component.errorMessage = 'Invalid file type';
+      page.root!.feedback = { type: 'success', message: 'Override success' };
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('upload-success')).toBe(true);
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        false
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Override success');
+    });
+
+    it('should prioritize actual drag over feedback error state', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcFileDropzone],
+        html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+      });
+
+      const component = page.rootInstance;
+      page.root!.feedback = { type: 'error', message: 'Upload failed' };
+      component.isDraggingOver = true;
+      await page.waitForChanges();
+
+      expect(page.root).toMatchSnapshot();
+
+      const dropzoneContent = page.root!.querySelector('.dropzone-content');
+      expect(dropzoneContent?.classList.contains('dragging-over')).toBe(true);
+      expect(dropzoneContent?.classList.contains('invalid-file-type')).toBe(
+        false
+      );
+
+      const messageElement = page.root!.querySelector('.default-content span');
+      expect(messageElement?.textContent).toBe('Drop files here');
+    });
+  });
 });

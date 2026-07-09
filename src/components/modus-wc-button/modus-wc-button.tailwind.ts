@@ -15,6 +15,7 @@ export const convertPropsToClasses = ({
     | 'tertiary'
     | 'warning'
     | 'danger'
+    | 'neutral'
     | 'success';
   disabled?: boolean;
   fullWidth?: boolean;
@@ -41,6 +42,9 @@ export const convertPropsToClasses = ({
         break;
       case 'danger':
         classes = `${classes} modus-wc-btn-error`;
+        break;
+      case 'neutral':
+        classes = `${classes} modus-wc-btn-base-inverted`;
         break;
       case 'success':
         classes = `${classes} modus-wc-btn-success`;

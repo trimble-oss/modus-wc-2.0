@@ -12,6 +12,7 @@ interface ButtonArgs {
     | 'tertiary'
     | 'warning'
     | 'danger'
+    | 'neutral'
     | 'success';
   'custom-class'?: string;
   disabled: boolean;
@@ -45,6 +46,7 @@ const meta: Meta<ButtonArgs> = {
         'tertiary',
         'warning',
         'danger',
+        'neutral',
         'success',
       ],
     },

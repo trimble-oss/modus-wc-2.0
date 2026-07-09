@@ -12,6 +12,7 @@ interface HTMLModusWcButtonGroupElement extends HTMLElement {
     | 'tertiary'
     | 'warning'
     | 'danger'
+    | 'neutral'
     | 'success';
   selectionType?: 'default' | 'single' | 'multiple';
 }

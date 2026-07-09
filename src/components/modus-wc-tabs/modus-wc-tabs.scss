@@ -61,11 +61,10 @@ modus-wc-tabs .modus-wc-tabs {
     }
   }
 
-  .modus-wc-tabs-boxed
-    :is(.modus-wc-tab-active, [aria-selected='true']):not(
+  &.modus-wc-tabs-boxed
+    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-boxed :is(input:checked) {
+    ):not([disabled]) {
     background: var(--modus-wc-color-primary);
     border-radius: var(--modus-wc-border-radius-tab);
     color: var(--modus-wc-color-primary-content);
@@ -79,6 +78,18 @@ modus-wc-tabs .modus-wc-tabs {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-tabs .modus-wc-tabs,
+[data-theme='modus-modern-dark'] modus-wc-tabs .modus-wc-tabs {
+  font-weight: var(--modus-wc-font-weight-semibold);
+}
+
+[data-theme='modus-modern-light'] modus-wc-tabs .modus-wc-tab-active,
+[data-theme='modus-modern-dark'] modus-wc-tabs .modus-wc-tab-active,
+[data-theme='connect-light'] modus-wc-tabs .modus-wc-tab-active,
+[data-theme='connect-dark'] modus-wc-tabs .modus-wc-tab-active {
+  background-color: transparent;
+}
+
 // Note: This is a workaround to apply the lifted style changes for the modern and connect themes. It will be removed in the future release with the classic theme lifted tab fixed.
 [data-theme='modus-modern-light'] modus-wc-tabs .modus-wc-tabs,
 [data-theme='connect-light'] modus-wc-tabs .modus-wc-tabs,
@@ -86,8 +97,7 @@ modus-wc-tabs .modus-wc-tabs {
   &.modus-wc-tabs-lifted
     > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
       .modus-wc-tab-disabled
-    ):not([disabled]),
-  &.modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
+    ):not([disabled]) {
     --tab-bg: var(--modus-wc-color-base-page);
 
     color: var(--modus-wc-color-primary);
@@ -141,14 +151,6 @@ modus-wc-tabs .modus-wc-tab {
     --fallback-p: var(--modus-wc-color-blue-light);
     --fallback-bc: transparent;
   }
-
-  .modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-white) !important;
-  }
 }
 
 [data-theme='modus-classic-dark'] modus-wc-tabs .modus-wc-tab {
@@ -181,13 +183,5 @@ modus-wc-tabs .modus-wc-tab {
     --tab-color: var(--modus-wc-color-gray-2);
 
     background-color: var(--modus-wc-color-gray-9);
-  }
-
-  .modus-wc-tabs-lifted
-    > .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-      .modus-wc-tab-disabled
-    ):not([disabled]),
-  .modus-wc-tabs-lifted > .modus-wc-tab:is(input:checked) {
-    color: var(--modus-wc-color-white);
   }
 }

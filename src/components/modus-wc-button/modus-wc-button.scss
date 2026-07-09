@@ -60,6 +60,10 @@ modus-wc-button .modus-wc-btn-borderless {
   &.modus-wc-btn-success {
     color: var(--modus-wc-color-success);
   }
+
+  &.modus-wc-btn-base-inverted {
+    color: var(--modus-wc-color-trimble-neutral);
+  }
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-ellipse {
@@ -81,12 +85,59 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
   width: var(--modus-wc-size-xl);
 }
 
+// Neutral color (base-inverted). It is not a DaisyUI color slot, so the base
+// filled/outline colors are declared here from --modus-wc-color-trimble-neutral.
+// Filled hover/pressed are darkened from that same color; the outline and
+// borderless hover/pressed come from the shared btn-state-colors mixin.
+modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
+  &.modus-wc-btn-filled:not(.modus-wc-btn-disabled) {
+    background-color: var(--modus-wc-color-trimble-neutral);
+    border-color: var(--modus-wc-color-trimble-neutral);
+    color: var(--modus-wc-color-base-page);
+
+    &:hover {
+      background-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-trimble-neutral) 90%,
+        var(--modus-wc-color-black)
+      );
+      border-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-trimble-neutral) 90%,
+        var(--modus-wc-color-black)
+      );
+    }
+
+    &:active,
+    &[aria-pressed='true'] {
+      background-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-trimble-neutral) 80%,
+        var(--modus-wc-color-black)
+      );
+      border-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-trimble-neutral) 80%,
+        var(--modus-wc-color-black)
+      );
+    }
+  }
+
+  &.modus-wc-btn-outline:not(:hover):not(:active):not(
+      [aria-pressed='true']
+    ):not(.modus-wc-btn-disabled) {
+    background-color: transparent;
+    border-color: var(--modus-wc-color-trimble-neutral);
+    color: var(--modus-wc-color-trimble-neutral);
+  }
+}
+
 [data-theme='modus-classic-light']
   modus-wc-button
-  .modus-wc-btn:not(.modus-wc-btn-success),
+  .modus-wc-btn:not(.modus-wc-btn-success):not(.modus-wc-btn-base-inverted),
 [data-theme='modus-classic-dark']
   modus-wc-button
-  .modus-wc-btn:not(.modus-wc-btn-success) {
+  .modus-wc-btn:not(.modus-wc-btn-success):not(.modus-wc-btn-base-inverted) {
   --rounded-btn: var(--modus-wc-border-radius-md);
 
   border: none;
@@ -191,7 +242,7 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
 
 [data-theme='modus-classic-light']
   modus-wc-button
-  .modus-wc-btn:not(.modus-wc-btn-success) {
+  .modus-wc-btn:not(.modus-wc-btn-success):not(.modus-wc-btn-base-inverted) {
   &.modus-wc-btn-disabled {
     opacity: 0.3;
   }
@@ -385,7 +436,7 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
 
 [data-theme='modus-classic-dark']
   modus-wc-button
-  .modus-wc-btn:not(.modus-wc-btn-success) {
+  .modus-wc-btn:not(.modus-wc-btn-success):not(.modus-wc-btn-base-inverted) {
   &.modus-wc-btn-disabled {
     opacity: 0.4;
   }
