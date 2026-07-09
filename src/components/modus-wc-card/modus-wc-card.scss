@@ -72,13 +72,11 @@ modus-wc-card .modus-wc-card {
 
   @include common-states;
 
-  &:hover:not(.modus-wc-card-bordered) {
-    background-color: var(--modus-wc-color-base-100);
+  &:hover {
     color: var(--modus-wc-color-base-content);
   }
 
-  &:hover:is(.modus-wc-card-bordered) {
+  &.modus-wc-card-bordered:hover {
     background-color: var(--modus-wc-color-base-page);
-    color: var(--modus-wc-color-base-content);
   }
 }
