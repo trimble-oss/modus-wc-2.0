@@ -526,7 +526,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.Color">
             <summary>
             The color variant of the button.
-            Allowed values: "primary", "secondary", "tertiary", "warning", "danger"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.CustomClass">
@@ -595,7 +594,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcButtonGroup.Color">
             <summary>
             Color to apply to all buttons within the button group
-            Allowed values: "primary", "secondary", "tertiary", "warning", "danger"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButtonGroup.Disabled">
