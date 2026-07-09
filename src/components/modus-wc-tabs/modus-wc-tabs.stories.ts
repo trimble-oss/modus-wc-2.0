@@ -178,7 +178,6 @@ export const CustomContent: Story = {
 >
   <span
     slot="home-tab-content"
-    style="display: inline-flex; align-items: center;padding-top: 6px"
   >
     <modus-wc-badge
       color="warning"
