@@ -9,7 +9,13 @@ export const convertPropsToClasses = ({
   size,
   variant,
 }: {
-  color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral';
   disabled?: boolean;
   fullWidth?: boolean;
   pressed?: boolean;
@@ -35,6 +41,9 @@ export const convertPropsToClasses = ({
         break;
       case 'danger':
         classes = `${classes} modus-wc-btn-error`;
+        break;
+      case 'neutral':
+        classes = `${classes} modus-wc-btn-base-inverted`;
         break;
     }
   }

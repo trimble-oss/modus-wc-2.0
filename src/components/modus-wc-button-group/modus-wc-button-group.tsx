@@ -36,7 +36,13 @@ export class ModusWcButtonGroup {
   @Prop() variant: 'borderless' | 'filled' | 'outlined' = 'outlined';
 
   /** Color to apply to all buttons within the button group */
-  @Prop() color?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  @Prop() color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral';
 
   /** Disables all buttons within the button group */
   @Prop() disabled?: boolean = false;
