@@ -3649,6 +3649,211 @@ describe('modus-wc-date', () => {
       expect(emitCount).toBe(0);
     });
 
+    describe('range selection state sync', () => {
+      it('should preserve start when end input is cleared and a calendar day is clicked', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const endInput = page.root!.querySelectorAll('input')[1];
+        const rangeSpy = jest.fn();
+        page.root!.addEventListener('rangeChange', rangeSpy);
+
+        component['hasEndFocus'] = true;
+        endInput.value = '';
+        component['handleRangeDateSelect'](new Date(2026, 6, 15));
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('2026-06-10');
+        expect(component['endValue']).toBe('2026-07-15');
+        expect(rangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { startDate: '2026-06-10', endDate: '2026-07-15' },
+          })
+        );
+      });
+
+      it('should complete range when start input is cleared and an earlier date is clicked', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const startInput = page.root!.querySelectorAll('input')[0];
+        const rangeSpy = jest.fn();
+        page.root!.addEventListener('rangeChange', rangeSpy);
+
+        component['hasStartFocus'] = true;
+        startInput.value = '';
+        component['handleRangeDateSelect'](new Date(2026, 5, 1));
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('2026-06-01');
+        expect(component['endValue']).toBe('2026-07-08');
+        expect(rangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { startDate: '2026-06-01', endDate: '2026-07-08' },
+          })
+        );
+      });
+
+      it('should normalize anchor to end when start is cleared via input sync', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const startInput = page.root!.querySelectorAll('input')[0];
+        component['anchorEndpoint'] = 'start';
+
+        startInput.value = '';
+        component['syncValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('');
+        expect(component['endValue']).toBe('2026-07-08');
+        expect(component['anchorEndpoint']).toBe('end');
+      });
+
+      it('should normalize anchor to start when end is cleared via input sync', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const endInput = page.root!.querySelectorAll('input')[1];
+        component['anchorEndpoint'] = 'end';
+
+        endInput.value = '';
+        component['syncEndValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('2026-06-10');
+        expect(component['endValue']).toBe('');
+        expect(component['anchorEndpoint']).toBe('start');
+      });
+
+      it('should normalize anchor to null when both dates are cleared via input sync', async () => {
+        const { component, page } = await createRangePage(
+          'value="2026-06-10" end-value="2026-07-08"'
+        );
+        const startInput = page.root!.querySelectorAll('input')[0];
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        startInput.value = '';
+        component['syncValueFromInput']();
+        endInput.value = '';
+        component['syncEndValueFromInput']();
+        await page.waitForChanges();
+
+        expect(component['value']).toBe('');
+        expect(component['endValue']).toBe('');
+        expect(component['anchorEndpoint']).toBeNull();
+      });
+
+      describe('end-only selection', () => {
+        it('should complete range when clicking before the lone end date', async () => {
+          const { component, page } = await createRangePage();
+          component['value'] = '';
+          component['endValue'] = '2026-07-08';
+          component['normalizeRangeAnchor']();
+          const rangeSpy = jest.fn();
+          page.root!.addEventListener('rangeChange', rangeSpy);
+
+          component['handleRangeDateSelect'](new Date(2026, 5, 1));
+          await page.waitForChanges();
+
+          expect(component['value']).toBe('2026-06-01');
+          expect(component['endValue']).toBe('2026-07-08');
+          expect(rangeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: { startDate: '2026-06-01', endDate: '2026-07-08' },
+            })
+          );
+        });
+
+        it('should pivot end to start when clicking the lone end date', async () => {
+          const { component, page } = await createRangePage();
+          component['value'] = '';
+          component['endValue'] = '2026-07-08';
+          component['normalizeRangeAnchor']();
+
+          component['handleRangeDateSelect'](new Date(2026, 6, 8));
+          await page.waitForChanges();
+
+          expect(component['value']).toBe('2026-07-08');
+          expect(component['endValue']).toBe('');
+          expect(component['anchorEndpoint']).toBe('start');
+        });
+
+        it('should reset when clicking after the lone end date', async () => {
+          const { component, page } = await createRangePage();
+          component['value'] = '';
+          component['endValue'] = '2026-07-08';
+          component['normalizeRangeAnchor']();
+
+          component['handleRangeDateSelect'](new Date(2026, 7, 1));
+          await page.waitForChanges();
+
+          expect(component['value']).toBe('2026-08-01');
+          expect(component['endValue']).toBe('');
+          expect(component['anchorEndpoint']).toBe('start');
+        });
+
+        it('should render range-anchor on the lone end date with backward hover preview', async () => {
+          const page = await newSpecPage({
+            components: [ModusWcDate],
+            html: '<modus-wc-date aria-label="Range input" type="range" end-value="2026-07-08"></modus-wc-date>',
+          });
+          const component = page.rootInstance as ModusWcDate;
+          component['showEndCalendar'] = true;
+          component['normalizeRangeAnchor']();
+          component['hoverDate'] = '2026-07-01';
+          await page.waitForChanges();
+
+          expect(
+            page.root!.querySelector('.calendar-day-cell.range-anchor')
+          ).not.toBeNull();
+          expect(
+            page.root!.querySelectorAll('.calendar-day-cell.range-fill').length
+          ).toBe(0);
+          expect(
+            page.root!.querySelectorAll('.calendar-day-cell.hover-fill').length
+          ).toBeGreaterThan(0);
+        });
+      });
+
+      it('should not normalize anchor when type is not range', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date aria-label="Date input"></modus-wc-date>',
+        });
+        const component = page.rootInstance as ModusWcDate;
+        component['anchorEndpoint'] = 'start';
+
+        component['normalizeRangeAnchor']();
+
+        expect(component['anchorEndpoint']).toBe('start');
+      });
+
+      it('should handle exhaustive default in normalizeRangeAnchor', async () => {
+        const { component } = await createRangePage();
+        const stateSpy = jest
+          .spyOn(Object.getPrototypeOf(component), 'rangeSelectionState', 'get')
+          .mockReturnValue('invalid');
+
+        expect(() => component['normalizeRangeAnchor']()).not.toThrow();
+
+        stateSpy.mockRestore();
+      });
+
+      it('should handle exhaustive default in handleRangeDateSelect', async () => {
+        const { component } = await createRangePage();
+        const stateSpy = jest
+          .spyOn(Object.getPrototypeOf(component), 'rangeSelectionState', 'get')
+          .mockReturnValue('invalid');
+
+        expect(() =>
+          component['handleRangeDateSelect'](new Date(2026, 5, 1))
+        ).not.toThrow();
+
+        stateSpy.mockRestore();
+      });
+    });
+
     it('should apply range-anchor class to the anchor endpoint cell', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],

@@ -245,6 +245,9 @@ export class ModusWcDate {
       if (this.inputRef) {
         this.inputRef.value = '';
       }
+      if (this.isRange) {
+        this.normalizeRangeAnchor();
+      }
       return;
     }
 
@@ -291,6 +294,10 @@ export class ModusWcDate {
     }
 
     this.ensureCalendarWithinBounds(clamped);
+
+    if (this.isRange) {
+      this.normalizeRangeAnchor();
+    }
   }
 
   @Watch('weekStartDay')
@@ -313,6 +320,8 @@ export class ModusWcDate {
     if (newValue === undefined || !this.isRange) {
       return;
     }
+
+    this.normalizeRangeAnchor();
 
     if (!newValue) {
       return;
@@ -776,7 +785,15 @@ export class ModusWcDate {
       return;
     }
 
+    if (this.hasStartFocus) {
+      this.syncValueFromInput();
+    }
+    if (this.hasEndFocus) {
+      this.syncEndValueFromInput();
+    }
+
     this.hasStartFocus = false;
+    this.hasEndFocus = false;
 
     const startParsed = this.parseISODate(this.value);
     const endParsed = this.parseISODate(this.endValue);
@@ -784,97 +801,109 @@ export class ModusWcDate {
     const isOnStart = !!startParsed && compareDate(date, startParsed) === 0;
     const isOnEnd = !!endParsed && compareDate(date, endParsed) === 0;
 
-    // --- Case: nothing selected ---
-    if (!startParsed && !endParsed) {
-      this.value = formatISODate(date);
-      this.anchorEndpoint = 'start';
-      return;
-    }
-
-    // --- Case: only start set (anchor is always 'start' here) ---
-    if (startParsed && !endParsed) {
-      if (isOnStart) {
-        // Clicking the sole start anchor keeps it — nothing changes
-        return;
-      }
-      if (compareDate(date, startParsed) >= 0) {
-        // On or after start → set end
-        this.endValue = formatISODate(date);
-        this.anchorEndpoint = 'end';
-        this.rangeChange.emit({
-          startDate: this.value,
-          endDate: formatISODate(date),
-        });
-      } else {
-        // Before start → move start left
+    switch (this.rangeSelectionState) {
+      case 'empty':
         this.value = formatISODate(date);
-        this.anchorEndpoint = 'start';
-      }
-      return;
-    }
-
-    // --- Case: both start and end set ---
-    if (startParsed && endParsed) {
-      // Defensive: if anchor was never initialized (e.g. props set externally),
-      // default to 'end' so clicks are always handled.
-      if (this.anchorEndpoint === null) {
-        this.anchorEndpoint = 'end';
-      }
-
-      if (this.anchorEndpoint === 'start') {
-        if (isOnStart) {
-          // Clicking the locked anchor keeps it as start and clears end
-          this.endValue = '';
-          this.anchorEndpoint = 'start';
-          return;
-        }
-        if (isOnEnd) {
-          // Clicking the lighter endpoint swaps the anchor (no value change)
-          this.anchorEndpoint = 'end';
-          return;
-        }
-        if (compareDate(date, startParsed) < 0) {
-          // Before the locked start anchor → reset, this date becomes new start
-          this.value = formatISODate(date);
-          this.endValue = '';
-          this.anchorEndpoint = 'start';
-          return;
-        }
-        // On or after start (inside range OR extending past end) → set new end
-        this.endValue = formatISODate(date);
-        this.anchorEndpoint = 'end';
-        this.rangeChange.emit({
-          startDate: this.value,
-          endDate: formatISODate(date),
-        });
+        this.normalizeRangeAnchor();
         return;
-      }
 
-      if (this.anchorEndpoint === 'end') {
+      case 'start-only':
+        if (isOnStart) {
+          return;
+        }
+        if (compareDate(date, startParsed!) >= 0) {
+          this.endValue = formatISODate(date);
+          this.anchorEndpoint = 'end';
+          this.normalizeRangeAnchor();
+          this.rangeChange.emit({
+            startDate: this.value,
+            endDate: formatISODate(date),
+          });
+        } else {
+          this.value = formatISODate(date);
+          this.normalizeRangeAnchor();
+        }
+        return;
+
+      case 'end-only':
         if (isOnEnd) {
-          // Clicking the locked end anchor pivots it to become the new start
           this.value = this.endValue;
           this.endValue = '';
-          this.anchorEndpoint = 'start';
+          this.normalizeRangeAnchor();
           return;
         }
-        if (isOnStart) {
-          // Clicking the lighter endpoint swaps the anchor (no value change)
-          this.anchorEndpoint = 'start';
-          return;
-        }
-        if (compareDate(date, endParsed) > 0) {
-          // After the locked end anchor → reset, this date becomes new start
+        if (compareDate(date, endParsed!) > 0) {
           this.value = formatISODate(date);
           this.endValue = '';
-          this.anchorEndpoint = 'start';
+          this.normalizeRangeAnchor();
           return;
         }
-        // On or before end (inside range OR extending past start) → set new start
         this.value = formatISODate(date);
         this.anchorEndpoint = 'start';
-        this.emitRangeChangeIfComplete();
+        this.normalizeRangeAnchor();
+        this.rangeChange.emit({
+          startDate: this.value,
+          endDate: this.endValue,
+        });
         return;
+
+      case 'complete':
+        if (this.anchorEndpoint === null) {
+          this.anchorEndpoint = 'end';
+        }
+
+        if (this.anchorEndpoint === 'start') {
+          if (isOnStart) {
+            this.endValue = '';
+            this.normalizeRangeAnchor();
+            return;
+          }
+          if (isOnEnd) {
+            this.anchorEndpoint = 'end';
+            return;
+          }
+          if (compareDate(date, startParsed!) < 0) {
+            this.value = formatISODate(date);
+            this.endValue = '';
+            this.normalizeRangeAnchor();
+            return;
+          }
+          this.endValue = formatISODate(date);
+          this.anchorEndpoint = 'end';
+          this.normalizeRangeAnchor();
+          this.rangeChange.emit({
+            startDate: this.value,
+            endDate: formatISODate(date),
+          });
+          return;
+        }
+
+        if (this.anchorEndpoint === 'end') {
+          if (isOnEnd) {
+            this.value = this.endValue;
+            this.endValue = '';
+            this.normalizeRangeAnchor();
+            return;
+          }
+          if (isOnStart) {
+            this.anchorEndpoint = 'start';
+            return;
+          }
+          if (compareDate(date, endParsed!) > 0) {
+            this.value = formatISODate(date);
+            this.endValue = '';
+            this.normalizeRangeAnchor();
+            return;
+          }
+          this.value = formatISODate(date);
+          this.anchorEndpoint = 'start';
+          this.emitRangeChangeIfComplete();
+        }
+        return;
+
+      default: {
+        const exhaustiveCheck: never = this.rangeSelectionState;
+        return exhaustiveCheck;
       }
     }
   };
@@ -2048,6 +2077,9 @@ export class ModusWcDate {
       },
       () => this.inputDisplayValue
     );
+    if (this.isRange) {
+      this.normalizeRangeAnchor();
+    }
   }
 
   private syncEndValueFromInput() {
@@ -2059,11 +2091,58 @@ export class ModusWcDate {
       },
       () => this.endInputDisplayValue
     );
+    if (this.isRange) {
+      this.normalizeRangeAnchor();
+    }
     this.emitRangeChangeIfComplete();
   }
 
   private get isRange(): boolean {
     return this.type === 'range';
+  }
+
+  private get rangeSelectionState():
+    | 'empty'
+    | 'start-only'
+    | 'end-only'
+    | 'complete' {
+    const hasStart = !!this.parseISODate(this.value);
+    const hasEnd = !!this.parseISODate(this.endValue);
+    if (hasStart && hasEnd) {
+      return 'complete';
+    }
+    if (hasStart) {
+      return 'start-only';
+    }
+    if (hasEnd) {
+      return 'end-only';
+    }
+    return 'empty';
+  }
+
+  private normalizeRangeAnchor(): void {
+    if (!this.isRange) {
+      return;
+    }
+
+    switch (this.rangeSelectionState) {
+      case 'complete':
+        this.anchorEndpoint = this.anchorEndpoint ?? 'end';
+        break;
+      case 'start-only':
+        this.anchorEndpoint = 'start';
+        break;
+      case 'end-only':
+        this.anchorEndpoint = 'end';
+        break;
+      case 'empty':
+        this.anchorEndpoint = null;
+        break;
+      default: {
+        const exhaustiveCheck: never = this.rangeSelectionState;
+        return exhaustiveCheck;
+      }
+    }
   }
 
   private get effectiveHideOverflowDates(): boolean {
