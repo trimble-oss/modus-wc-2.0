@@ -912,7 +912,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.EndValue">
             <summary>
-            The end date in range mode (type=&quot;range&quot;). Always ISO 8601 (YYYY-MM-DD) or empty string. Ignored in single mode.
+            The end date in range mode (type=&quot;range&quot;). Must match the format prop pattern (or the locale-derived format when unset) or ISO 8601 (YYYY-MM-DD). Empty string when unset. Ignored in single mode.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Format">
@@ -983,7 +983,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Value">
             <summary>
-            The selected date in single mode. In range mode (type=&quot;range&quot;), the start date of the range. Always ISO 8601 (YYYY-MM-DD) or empty string.
+            The selected date in single mode. In range mode (type=&quot;range&quot;), the start date of the range. Must match the format prop pattern (or the locale-derived format when unset) or ISO 8601 (YYYY-MM-DD). Empty string when unset.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.WeekStartDay">
