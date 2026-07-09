@@ -216,16 +216,8 @@
     var(--modus-wc-color-black),
     var(--modus-wc-color-white)
   );
-  --modus-wc-color-trimble-neutral-content: light-dark(
-    var(--modus-wc-color-white),
-    var(--modus-wc-color-black)
-  );
   --modus-wc-color-base-inverted: light-dark(
     var(--modus-wc-color-gray-10),
-    var(--modus-wc-color-gray-light)
-  );
-  --modus-wc-color-trimble-neutral: light-dark(
-    var(--modus-wc-color-trimble-gray),
     var(--modus-wc-color-gray-light)
   );
 
@@ -287,6 +279,14 @@
   --modus-wc-color-neutral-pale: light-dark(
     var(--modus-wc-color-base-100),
     var(--modus-wc-color-base-100)
+  );
+  --modus-wc-color-trimble-neutral: light-dark(
+    var(--modus-wc-color-trimble-gray),
+    var(--modus-wc-color-gray-light)
+  );
+  --modus-wc-color-trimble-neutral-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
   );
 
   /* Info Colors */
