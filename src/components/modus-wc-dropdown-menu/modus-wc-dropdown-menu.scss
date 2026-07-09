@@ -29,8 +29,8 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   }
 }
 
-[data-theme='connect-light'] modus-wc-dropdown-menu,
-[data-theme='connect-dark'] modus-wc-dropdown-menu {
+[data-theme='connect-light'] modus-wc-dropdown-menu.modus-wc-dropdown-menu,
+[data-theme='connect-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   .modus-wc-menu {
     border-radius: var(--modus-wc-border-radius-sm);
   }
@@ -38,5 +38,54 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   .menu-wrapper {
     border-radius: var(--modus-wc-border-radius-sm);
     box-shadow: 0 0 0.375rem #aeaeb6;
+  }
+
+  /* Connect: paint hover/active on the inner button, not the li row. */
+  modus-wc-menu-item .modus-wc-menu-item {
+    &.modus-wc-menu-item-active {
+      background-color: transparent;
+
+      > button {
+        background-color: #e5f0f8;
+        color: var(--modus-wc-color-primary);
+        font-weight: var(--modus-wc-font-weight-semibold);
+
+        &:hover,
+        &:focus {
+          background-color: #e5f0f8;
+          color: var(--modus-wc-color-primary);
+        }
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled):not(
+        .modus-wc-menu-item-focused
+      ):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
+        background-color: transparent;
+        outline: none;
+      }
+    }
+
+    &.modus-wc-menu-item-focused:not(.modus-wc-menu-item-disabled):not(
+        .modus-wc-menu-item-active
+      ):not(:has(.modus-wc-menu-dropdown)) {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    &:not(.modus-wc-menu-item-active):not(.modus-wc-menu-item-disabled) {
+      > button:hover,
+      > button:focus {
+        background-color: var(--modus-wc-color-base-100);
+      }
+
+      &:focus:not(:focus-visible),
+      &.modus-wc-arrow-focused {
+        background-color: var(--modus-wc-color-base-100);
+        outline: none;
+      }
+    }
   }
 }
