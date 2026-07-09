@@ -157,7 +157,7 @@ export class ModusWcDate {
     | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
 
-  /** The selected date in single mode. In range mode (`type="range"`), the start date of the range. Always ISO 8601 (YYYY-MM-DD) or empty string. */
+  /** The selected date in single mode. In range mode (`type="range"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** The first day of the week for the calendar display */
@@ -172,7 +172,7 @@ export class ModusWcDate {
   /** Activates range mode. `value` is the start date; `endValue` is the end date. */
   @Prop() type?: 'single' | 'range' = 'single';
 
-  /** The end date in range mode (`type="range"`). Always ISO 8601 (YYYY-MM-DD) or empty string. Ignored in single mode. */
+  /** The end date in range mode (`type="range"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode. */
   @Prop({ mutable: true, reflect: true }) endValue: string = '';
 
   /** Event emitted when the input loses focus. In range mode, `detail.field` is `'start'` or `'end'`. */

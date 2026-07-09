@@ -188,7 +188,7 @@ export const Range: Story = {
       source: { code: dateRangeSourceCode },
       description: {
         story: `
-Range mode uses \`value\` as the **start date** and \`end-value\` as the **end date** (both ISO \`YYYY-MM-DD\`).
+Range mode uses \`value\` as the **start date** and \`end-value\` as the **end date**. Both must match the \`format\` prop pattern (or the locale-derived format when unset) or ISO 8601 (\`YYYY-MM-DD\`).
 
 **Hover preview (anchor model):** After both dates are selected, the anchor defaults to the end date. Dashed hover preview only extends in the clickable direction — forward past the end requires clicking the start date to swap the anchor to \`start\`. Hovering inside the confirmed range shows no preview.
 
@@ -332,8 +332,8 @@ export const Migration: Story = {
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
-  - The \`value\` prop now always outputs **ISO 8601 format** (\`YYYY-MM-DD\`), regardless of the display format.
-  Previously, \`value\` matched the display format (e.g. \`dd-mm-yyyy\`).
+  - The \`value\` and \`end-value\` props accept the \`format\` pattern (or locale-derived format when unset) or ISO 8601 (\`YYYY-MM-DD\`). User interactions and \`inputChange\` / \`rangeChange\` events still emit ISO 8601.
+  Previously, \`value\` matched only the display format (e.g. \`dd-mm-yyyy\`) and did not accept ISO.
   - The \`format\` prop is now automatically derived from the user's locale when not explicitly set.
   Previously, it defaulted to \`dd-mm-yyyy\`. The accepted values remain the same fixed union
   (\`'yyyy-mm-dd'\`, \`'dd-mm-yyyy'\`, \`'mm-dd-yyyy'\`, \`'yyyy/mm/dd'\`, \`'dd/mm/yyyy'\`, \`'mm/dd/yyyy'\`, \`'MMM DD, YYYY'\`).
@@ -362,8 +362,8 @@ export const Migration: Story = {
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type               |                  | Not carried over                        |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
-| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`); start date in range mode |
-|                    | end-value        | End date in range mode (ISO \`YYYY-MM-DD\`) |
+| value              | value            | Accepts \`format\` pattern or ISO 8601; start date in range mode |
+|                    | end-value        | Accepts \`format\` pattern or ISO 8601; end date in range mode |
 |                    | input-id (end)   | Range mode only: \`{input-id}-end\`; no separate prop |
 |                    | name (end)       | Range mode only: \`{name}-end\`; no separate prop |
 |                    | type             | \`'single'\` (default) or \`'range'\` |
