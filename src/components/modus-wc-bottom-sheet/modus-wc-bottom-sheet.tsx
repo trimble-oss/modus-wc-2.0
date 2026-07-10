@@ -117,7 +117,7 @@ export class ModusWcBottomSheet {
   @StencilEvent() headerCloseClick!: EventEmitter<void>;
 
   @State() private isDragging = false;
-  @State() private dragOffset = 0;
+  @State() private isDraggingUp = false;
   @State() private dragHeight: string | null = null;
   @State() private hasHeader = false;
   @State() private hasFooter = false;
@@ -206,12 +206,17 @@ export class ModusWcBottomSheet {
   private readonly onPointerDown = (e: PointerEvent) => {
     if (!this.visible) return;
     e.preventDefault();
-    this.isDragging = true;
     this.startY = e.clientY;
     this.currentDelta = 0;
-    // The panel is always rendered, so the reference is non-null.
+    this.isDraggingUp = false;
+    // Measure before isDragging re-renders so minimized peek height is captured.
     this.startHeight =
       this.el.querySelector<HTMLElement>('.modus-wc-panel')!.offsetHeight;
+    this.isDragging = true;
+    // Lock minimized height on grab so the panel does not jump to `auto` before move.
+    if (this.displayMode === 'minimized') {
+      this.dragHeight = `${this.startHeight}px`;
+    }
     document.addEventListener('pointermove', this.onPointerMove);
     document.addEventListener('pointerup', this.onPointerUp);
   };
@@ -221,15 +226,13 @@ export class ModusWcBottomSheet {
     // Keep the grab cursor while dragging (re-asserted after the handle's own mousedown).
     document.body.style.cursor = 'grabbing';
     this.currentDelta = e.clientY - this.startY;
+    this.isDraggingUp = this.currentDelta < 0;
 
     if (this.currentDelta >= 0) {
-      // Dragging downward: the whole sheet follows the pointer.
-      this.dragOffset = this.currentDelta;
-      this.dragHeight = null;
+      // Dragging downward: shrink height in place (mirror of upward grow).
+      const shrunk = this.startHeight - this.currentDelta;
+      this.dragHeight = `${shrunk}px`;
     } else {
-      // Dragging upward: grow the sheet height live to preview the expand,
-      // clamped to the viewport height.
-      this.dragOffset = 0;
       const grown = this.startHeight - this.currentDelta;
       this.dragHeight = `${Math.min(grown, window.innerHeight)}px`;
     }
@@ -242,7 +245,7 @@ export class ModusWcBottomSheet {
 
     const delta = this.currentDelta;
     this.isDragging = false;
-    this.dragOffset = 0;
+    this.isDraggingUp = false;
     this.dragHeight = null;
 
     // The same fraction-of-height threshold governs both directions. It is based
@@ -309,7 +312,10 @@ export class ModusWcBottomSheet {
 
     if (this.displayMode === 'expanded')
       classList.push('modus-wc-bottom-sheet-expanded');
-    if (this.displayMode === 'minimized')
+    // Suspend minimized chrome only while dragging upward so the expand preview
+    // can show header/content/footer as height grows. Grabbing the handle alone
+    // must not expand the sheet to default `auto` height.
+    if (this.displayMode === 'minimized' && !this.isDraggingUp)
       classList.push('modus-wc-bottom-sheet-minimized');
     if (this.isDragging) classList.push('modus-wc-bottom-sheet-dragging');
     if (this.customClass) classList.push(this.customClass);
@@ -319,7 +325,6 @@ export class ModusWcBottomSheet {
 
   private getTransform(): string {
     if (!this.visible) return 'translate(-50%, 100%)';
-    if (this.dragOffset > 0) return `translate(-50%, ${this.dragOffset}px)`;
     return 'translate(-50%, 0)';
   }
 

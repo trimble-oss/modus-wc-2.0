@@ -255,6 +255,57 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.querySelector('modus-wc-handle')).not.toBeNull();
   });
 
+  it('should stay minimized on pointer down before dragging up', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: `<modus-wc-bottom-sheet visible="true" display-mode="minimized">
+        <div slot="content">Sheet content</div>
+      </modus-wc-bottom-sheet>`,
+    });
+
+    Object.defineProperty(getPanel(page), 'offsetHeight', { value: 48 });
+
+    const handle = getHandle(page);
+    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 200 }));
+    await page.waitForChanges();
+
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-minimized');
+    expect(getPanel(page).style.height).toBe('48px');
+  });
+
+  it('should show content while dragging up from minimized', async () => {
+    const page = await newSpecPage({
+      components: bottomSheetComponents,
+      html: `<modus-wc-bottom-sheet visible="true" display-mode="minimized">
+        <div slot="content">Sheet content</div>
+      </modus-wc-bottom-sheet>`,
+    });
+
+    Object.defineProperty(getPanel(page), 'offsetHeight', { value: 48 });
+
+    const handle = getHandle(page);
+    handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 200 }));
+    document.dispatchEvent(new MouseEvent('pointermove', { clientY: 100 }));
+    await page.waitForChanges();
+
+    expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
+    expect(page.root?.className).not.toContain(
+      'modus-wc-bottom-sheet-minimized'
+    );
+    expect(
+      page.root?.querySelector('.modus-wc-bottom-sheet-content')
+    ).not.toBeNull();
+    expect(getPanel(page).style.height).toBe('148px');
+
+    document.dispatchEvent(new MouseEvent('pointerup'));
+    await page.waitForChanges();
+
+    expect(page.root?.className).not.toContain(
+      'modus-wc-bottom-sheet-dragging'
+    );
+  });
+
   it('should restore from minimized to default when dragged up', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
@@ -339,11 +390,13 @@ describe('modus-wc-bottom-sheet', () => {
     expect(page.root?.style.transform).toBe('translate(-50%, 100%)');
   });
 
-  it('should follow the pointer downward while dragging', async () => {
+  it('should shrink the sheet height live while dragging downward', async () => {
     const page = await newSpecPage({
       components: bottomSheetComponents,
       html: '<modus-wc-bottom-sheet visible="true"></modus-wc-bottom-sheet>',
     });
+
+    Object.defineProperty(getPanel(page), 'offsetHeight', { value: 300 });
 
     const handle = getHandle(page);
     handle.dispatchEvent(new MouseEvent('pointerdown', { clientY: 100 }));
@@ -351,7 +404,8 @@ describe('modus-wc-bottom-sheet', () => {
     await page.waitForChanges();
 
     expect(page.root?.className).toContain('modus-wc-bottom-sheet-dragging');
-    expect(page.root?.style.transform).toBe('translate(-50%, 150px)');
+    expect(page.root?.style.transform).toBe('translate(-50%, 0)');
+    expect(getPanel(page).style.height).toBe('150px');
 
     document.dispatchEvent(new MouseEvent('pointerup'));
   });
