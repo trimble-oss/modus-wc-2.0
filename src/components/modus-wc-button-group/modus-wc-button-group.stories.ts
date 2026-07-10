@@ -7,7 +7,13 @@ import { Orientation } from '../types';
 
 interface ButtonGroupArgs {
   variant: 'borderless' | 'filled' | 'outlined';
-  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral';
   disabled: boolean;
   orientation: Orientation;
   'selection-type': 'default' | 'single' | 'multiple';
@@ -30,7 +36,14 @@ const meta: Meta<ButtonGroupArgs> = {
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'warning',
+        'danger',
+        'neutral',
+      ],
     },
     disabled: { control: 'boolean' },
     orientation: {

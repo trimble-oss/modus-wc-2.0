@@ -176,7 +176,20 @@ modus-wc-text-input {
   }
 }
 
-[data-theme='connect-light'] modus-wc-text-input .modus-wc-text-input,
-[data-theme='connect-dark'] modus-wc-text-input .modus-wc-text-input {
-  @include connect-input-styles;
+[data-theme='connect-light'] modus-wc-text-input,
+[data-theme='connect-dark'] modus-wc-text-input {
+  input {
+    font-weight: var(--modus-wc-font-weight-normal);
+  }
+
+  input::placeholder {
+    color: #9d9da6;
+    font-style: italic;
+    font-weight: var(--modus-wc-font-weight-normal);
+    opacity: 1;
+  }
+
+  .modus-wc-text-input {
+    @include connect-input-styles;
+  }
 }

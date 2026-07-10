@@ -22,7 +22,7 @@ export class ModusWcToolbar {
   @Prop() customClass?: string = '';
 
   componentWillLoad() {
-    handleShadowDOMStyles(this.el);
+    handleShadowDOMStyles(this.el, true);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
