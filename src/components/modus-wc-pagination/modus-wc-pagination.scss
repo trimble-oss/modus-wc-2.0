@@ -41,6 +41,18 @@ modus-wc-pagination .modus-wc-pagination {
     width: auto !important;
   }
 
+  .modus-wc-pagination-page-label {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .modus-wc-pagination-page-active {
+    padding-inline: calc(var(--modus-wc-spacing-sm) - 2px);
+    width: auto !important;
+  }
+
   .modus-wc-pagination-btn:not(:disabled) {
     background-color: var(--modus-wc-color-base-100);
     color: var(--modus-wc-color-base-content);

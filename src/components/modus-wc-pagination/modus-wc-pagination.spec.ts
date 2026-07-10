@@ -1,5 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcPagination } from './modus-wc-pagination';
+import { ModusWcTooltip } from '../modus-wc-tooltip/modus-wc-tooltip';
+
+const getPageButton = (root: HTMLElement, pageNumber: number) =>
+  root.querySelector(
+    `button[aria-labelledby="modus-wc-pagination-page-${pageNumber}"]`
+  );
 
 describe('modus-wc-pagination', () => {
   it('should render with default props', async () => {
@@ -169,10 +175,7 @@ describe('modus-wc-pagination', () => {
     const pageChangeSpy = jest.fn();
     pagination.addEventListener('pageChange', pageChangeSpy);
 
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageThreeButton = Array.from(pageButtons).find(
-      (button) => button.textContent === '3'
-    );
+    const pageThreeButton = getPageButton(page.root!, 3);
 
     pageThreeButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
@@ -198,10 +201,7 @@ describe('modus-wc-pagination', () => {
     const pageChangeSpy = jest.fn();
     pagination.addEventListener('pageChange', pageChangeSpy);
 
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageTwoButton = Array.from(pageButtons).find(
-      (button) => button.textContent === '2'
-    );
+    const pageTwoButton = getPageButton(page.root!, 2);
 
     pageTwoButton!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
@@ -358,17 +358,18 @@ describe('modus-wc-pagination', () => {
       'button[aria-label="Go to last"]'
     );
 
-    // Find the button with text "3" and check its aria-label
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageThreeButton = Array.from(pageButtons).find(
-      (button) => button.textContent?.trim() === '3'
+    // Find the button for page 3 and check its accessible label
+    const pageThreeButton = getPageButton(page.root!, 3);
+    const pageThreeLabel = page.root!.querySelector(
+      '#modus-wc-pagination-page-3'
     );
 
     expect(firstPageButton).not.toBeNull();
     expect(previousPageButton).not.toBeNull();
     expect(nextPageButton).not.toBeNull();
     expect(lastPageButton).not.toBeNull();
-    expect(pageThreeButton!.getAttribute('aria-label')).toBe('Page number 3');
+    expect(pageThreeButton).not.toBeNull();
+    expect(pageThreeLabel!.textContent).toBe('Page number 3');
   });
 
   it('should use default aria label values when none are provided', async () => {
@@ -393,17 +394,18 @@ describe('modus-wc-pagination', () => {
       'button[aria-label="Last page"]'
     );
 
-    // Find the button with text "3" and check its aria-label
-    const pageButtons = page.root!.querySelectorAll('button');
-    const pageThreeButton = Array.from(pageButtons).find(
-      (button) => button.textContent?.trim() === '3'
+    // Find the button for page 3 and check its accessible label
+    const pageThreeButton = getPageButton(page.root!, 3);
+    const pageThreeLabel = page.root!.querySelector(
+      '#modus-wc-pagination-page-3'
     );
 
     expect(firstPageButton).not.toBeNull();
     expect(previousPageButton).not.toBeNull();
     expect(nextPageButton).not.toBeNull();
     expect(lastPageButton).not.toBeNull();
-    expect(pageThreeButton!.getAttribute('aria-label')).toBe('Page 3');
+    expect(pageThreeButton).not.toBeNull();
+    expect(pageThreeLabel!.textContent).toBe('Page 3');
   });
 
   it('should apply custom text for the previous page button', async () => {
@@ -450,5 +452,123 @@ describe('modus-wc-pagination', () => {
 
     expect(nextPageButton).not.toBeNull();
     expect(nextPageButton!.textContent?.trim()).toBe('Go Forward');
+  });
+
+  it('should truncate non-current page numbers with more than 5 digits from the front', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="1000000"
+        page="123456"
+      ></modus-wc-pagination>`,
+    });
+
+    const truncatedPageButton = getPageButton(page.root!, 123455);
+    const visualLabel = truncatedPageButton!.querySelector(
+      '.modus-wc-pagination-page-label[aria-hidden="true"]'
+    );
+
+    expect(visualLabel!.textContent).toBe('...455');
+  });
+
+  it('should display the current page number in full without truncation', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="1000000"
+        page="123456"
+      ></modus-wc-pagination>`,
+    });
+
+    const currentPageButton = getPageButton(page.root!, 123456);
+    const visualLabel = currentPageButton!.querySelector(
+      '.modus-wc-pagination-page-label[aria-hidden="true"]'
+    );
+
+    expect(
+      currentPageButton!.classList.contains('modus-wc-pagination-page-active')
+    ).toBe(true);
+    expect(visualLabel!.textContent).toBe('123456');
+    expect(currentPageButton!.querySelector('modus-wc-tooltip')).toBeNull();
+  });
+
+  it('should keep the full page number in the DOM for screen readers', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="1000000"
+        page="123456"
+      ></modus-wc-pagination>`,
+    });
+
+    const srOnlyLabel = page.root!.querySelector(
+      '#modus-wc-pagination-page-123455'
+    );
+
+    expect(srOnlyLabel!.classList.contains('modus-wc-sr-only')).toBe(true);
+    expect(srOnlyLabel!.textContent).toBe('Page 123455');
+  });
+
+  it('should show a tooltip only for truncated page numbers', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="1000000"
+        page="123456"
+      ></modus-wc-pagination>`,
+    });
+
+    const truncatedPageButton = getPageButton(page.root!, 123455);
+    const currentPageButton = getPageButton(page.root!, 123456);
+    const truncatedTooltip = truncatedPageButton!.querySelector(
+      'modus-wc-tooltip'
+    ) as HTMLElement & { content: string };
+
+    expect(truncatedTooltip).not.toBeNull();
+    expect(truncatedTooltip.content).toBe('123455');
+    expect(currentPageButton!.querySelector('modus-wc-tooltip')).toBeNull();
+
+    const shortPageSpec = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="100"
+        page="50"
+      ></modus-wc-pagination>`,
+    });
+
+    const shortPageButton = getPageButton(shortPageSpec.root!, 49);
+    expect(shortPageButton!.querySelector('modus-wc-tooltip')).toBeNull();
+  });
+
+  it('should emit pageChange event when clicking a truncated page button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcTooltip],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="1000000"
+        page="123456"
+      ></modus-wc-pagination>`,
+    });
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    const pageChangeSpy = jest.fn();
+    pagination.addEventListener('pageChange', pageChangeSpy);
+
+    const truncatedPageButton = getPageButton(page.root!, 123457);
+    truncatedPageButton!.dispatchEvent(
+      new MouseEvent('click', { bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(pageChangeSpy).toHaveBeenCalled();
+    const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
+    expect(eventDetail.newPage).toBe(123457);
+    expect(eventDetail.prevPage).toBe(123456);
   });
 });

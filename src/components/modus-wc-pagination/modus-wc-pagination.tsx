@@ -48,6 +48,7 @@ export interface IPageChange {
 })
 export class ModusWcPagination {
   private inheritedAttributes: Attributes = {};
+  private readonly maxPageDigits: number = 5;
   private readonly maxVisibleButtons: number = 5;
 
   /** Reference to the host element */
@@ -142,6 +143,53 @@ export class ModusWcPagination {
     this.page = newPage;
   };
 
+  private isTruncatedPage(page: number): boolean {
+    return page !== this.page && page.toString().length > this.maxPageDigits;
+  }
+
+  private formatTruncatedPage(page: number): string {
+    const pageStr = page.toString();
+    return `...${pageStr.slice(-3)}`;
+  }
+
+  private renderPageButton(
+    page: number,
+    buttonClasses: string,
+    pageAriaLabel: string
+  ) {
+    const isCurrentPage = this.page === page;
+    const pageStr = page.toString();
+    const isTruncated = this.isTruncatedPage(page);
+    const labelId = `modus-wc-pagination-page-${page}`;
+    const visualLabel = isTruncated ? this.formatTruncatedPage(page) : pageStr;
+
+    const pageLabel = (
+      <span class="modus-wc-pagination-page-label" aria-hidden="true">
+        {visualLabel}
+      </span>
+    );
+
+    return (
+      <button
+        aria-current={isCurrentPage ? 'page' : undefined}
+        aria-labelledby={labelId}
+        class={`${buttonClasses} ${isCurrentPage ? 'modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
+        onClick={() => this.handlePageClick(page)}
+      >
+        <span id={labelId} class="modus-wc-sr-only">
+          {pageAriaLabel}
+        </span>
+        {isTruncated ? (
+          <modus-wc-tooltip content={pageStr} position="top">
+            {pageLabel}
+          </modus-wc-tooltip>
+        ) : (
+          pageLabel
+        )}
+      </button>
+    );
+  }
+
   render() {
     const { paginationClasses, buttonClasses } = this.getClasses();
     const isFirstPage = this.page === 1;
@@ -183,16 +231,13 @@ export class ModusWcPagination {
           )}
         </button>
 
-        {this.visiblePages.map((page) => (
-          <button
-            aria-current={this.page === page ? 'page' : undefined}
-            aria-label={ariaLabels.page.replace('{0}', page.toString())}
-            class={`${buttonClasses} ${this.page === page ? 'modus-wc-btn-active' : ''}`}
-            onClick={() => this.handlePageClick(page)}
-          >
-            {page}
-          </button>
-        ))}
+        {this.visiblePages.map((page) =>
+          this.renderPageButton(
+            page,
+            buttonClasses,
+            ariaLabels.page.replace('{0}', page.toString())
+          )
+        )}
 
         <button
           aria-label={this.nextButtonText ? undefined : ariaLabels.nextPage}

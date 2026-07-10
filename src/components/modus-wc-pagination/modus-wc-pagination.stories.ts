@@ -99,6 +99,24 @@ export const Default: Story = {
   `,
 };
 
+export const LargePageNumbers: Story = {
+  args: {
+    count: 1000000,
+    page: 123456,
+  },
+  render: (args) => html`
+    <modus-wc-pagination
+      .ariaLabelValues=${args['aria-label-values']}
+      count=${args.count}
+      custom-class=${ifDefined(args['custom-class'])}
+      next-button-text="${ifDefined(args['next-button-text'])}"
+      page=${args.page}
+      prev-button-text="${ifDefined(args['prev-button-text'])}"
+      size=${ifDefined(args.size)}
+    ></modus-wc-pagination>
+  `,
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('pagination-shadow-host')) {
