@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-button should render neutral color with borderless variant 1`] = `
+<modus-wc-button color="neutral" variant="borderless">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-borderless modus-wc-btn-md" tabindex="0" type="button">
+    Neutral
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render neutral color with outlined variant 1`] = `
+<modus-wc-button color="neutral" variant="outlined">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-md modus-wc-btn-outline" tabindex="0" type="button">
+    Neutral
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render neutral color with pressed state 1`] = `
+<modus-wc-button color="neutral" pressed="">
+  <!---->
+  <button aria-pressed="true" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-base-inverted modus-wc-btn-filled modus-wc-btn-md" tabindex="0" type="button">
+    Neutral
+  </button>
+</modus-wc-button>
+`;
+
 exports[`modus-wc-button should render with custom props 1`] = `
 <modus-wc-button color="secondary" custom-class="test-class" full-width="true" pressed="" size="lg" type="submit" variant="outlined">
   <!---->
@@ -23,6 +50,15 @@ exports[`modus-wc-button should render with disabled attribute 1`] = `
   <!---->
   <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
     Test
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render with neutral color when color is neutral 1`] = `
+<modus-wc-button color="neutral">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-filled modus-wc-btn-md" tabindex="0" type="button">
+    Neutral
   </button>
 </modus-wc-button>
 `;

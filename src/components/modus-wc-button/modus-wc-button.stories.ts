@@ -6,7 +6,13 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { DaisySize } from '../types';
 
 interface ButtonArgs {
-  color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral';
   'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
@@ -33,7 +39,14 @@ const meta: Meta<ButtonArgs> = {
   argTypes: {
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'tertiary', 'warning', 'danger'],
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'warning',
+        'danger',
+        'neutral',
+      ],
     },
     shape: {
       control: { type: 'select' },

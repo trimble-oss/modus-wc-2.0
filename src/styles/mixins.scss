@@ -207,6 +207,26 @@
       color: var(--modus-wc-color-error);
     }
   }
+
+  // Button `color="neutral"` maps to `.modus-wc-btn-base-inverted`, which uses
+  // --modus-wc-color-trimble-neutral (no DaisyUI slot / -pale token). Hover tint
+  // and pressed styles are derived from that variable.
+  &.modus-wc-btn-base-inverted {
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-trimble-neutral);
+      border: 1px solid transparent;
+      color: var(--modus-wc-color-trimble-neutral-content);
+    }
+
+    &:hover {
+      background-color: color-mix(
+        in oklab,
+        var(--modus-wc-color-trimble-neutral) 12%,
+        transparent
+      );
+      color: var(--modus-wc-color-trimble-neutral);
+    }
+  }
 }
 
 @mixin outline-styles {
