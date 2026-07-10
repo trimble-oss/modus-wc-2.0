@@ -231,7 +231,8 @@ export class ModusWcBottomSheet {
     if (this.currentDelta >= 0) {
       // Dragging downward: shrink height in place (mirror of upward grow).
       const shrunk = this.startHeight - this.currentDelta;
-      this.dragHeight = `${shrunk}px`;
+      const minHeight = this.displayMode === 'minimized' ? this.startHeight : 0;
+      this.dragHeight = `${Math.max(minHeight, shrunk)}px`;
     } else {
       const grown = this.startHeight - this.currentDelta;
       this.dragHeight = `${Math.min(grown, window.innerHeight)}px`;
