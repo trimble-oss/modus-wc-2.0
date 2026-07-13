@@ -12,7 +12,8 @@ interface HTMLModusWcButtonGroupElement extends HTMLElement {
     | 'tertiary'
     | 'warning'
     | 'danger'
-    | 'neutral';
+    | 'neutral'
+    | 'success';
   selectionType?: 'default' | 'single' | 'multiple';
 }
 
@@ -70,6 +71,20 @@ describe('modus-wc-button-group', () => {
         <modus-wc-button>Button 2</modus-wc-button>
       </modus-wc-button-group>`,
     });
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with success color', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButtonGroup, ModusWcButton],
+      html: `<modus-wc-button-group color="success">
+        <modus-wc-button>Button 1</modus-wc-button>
+        <modus-wc-button>Button 2</modus-wc-button>
+      </modus-wc-button-group>`,
+    });
+    const buttons = page.root?.querySelectorAll('modus-wc-button');
+    expect(buttons?.[0]?.getAttribute('color')).toBe('success');
+    expect(buttons?.[1]?.getAttribute('color')).toBe('success');
     expect(page.root).toMatchSnapshot();
   });
 

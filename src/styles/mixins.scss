@@ -208,6 +208,19 @@
     }
   }
 
+  &.modus-wc-btn-success {
+    &[aria-pressed='true'] {
+      background-color: var(--modus-wc-color-success);
+      border: 1px solid transparent;
+      color: var(--modus-wc-color-success-content);
+    }
+
+    &:hover {
+      background-color: var(--modus-wc-color-success-pale);
+      color: var(--modus-wc-color-success);
+    }
+  }
+
   // Button `color="neutral"` maps to `.modus-wc-btn-base-inverted`, which uses
   // --modus-wc-color-trimble-neutral (no DaisyUI slot / -pale token). Hover tint
   // and pressed styles are derived from that variable.

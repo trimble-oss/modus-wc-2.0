@@ -42,7 +42,8 @@ export class ModusWcButtonGroup {
     | 'tertiary'
     | 'warning'
     | 'danger'
-    | 'neutral';
+    | 'neutral'
+    | 'success';
 
   /** Disables all buttons within the button group */
   @Prop() disabled?: boolean = false;

@@ -171,14 +171,14 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-success {
-    // Fallback for Chrome <111: --modus-wc-color-green (#1e8a44) at 50% opacity
-    background-color: rgb(30 138 68 / 0.5);
+    // Fallback for Chrome <111: --modus-wc-color-green-dark (#006638) at 50% opacity
+    background-color: rgb(0 102 56 / 0.5);
     border-color: var(--modus-wc-color-green-light);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
       background-color: color-mix(
         in sRGB,
-        var(--modus-wc-color-green) 50%,
+        var(--modus-wc-color-success) 50%,
         transparent
       );
     }
