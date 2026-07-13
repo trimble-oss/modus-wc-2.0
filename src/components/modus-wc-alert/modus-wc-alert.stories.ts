@@ -7,6 +7,7 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 interface AlertArgs {
   'alert-description'?: string;
   'alert-title': string;
+  'content-display-mode'?: 'full' | 'truncated';
   'custom-class'?: string;
   delay?: number;
   'disable-icon'?: boolean;
@@ -23,6 +24,7 @@ const meta: Meta<AlertArgs> = {
   args: {
     'alert-description': 'You have 3 new messages.',
     'alert-title': 'New message!',
+    'content-display-mode': 'full',
     'disable-icon': false,
     dismissible: false,
     role: 'status',
@@ -36,6 +38,10 @@ const meta: Meta<AlertArgs> = {
     variant: {
       control: { type: 'select' },
       options: ['neutral', 'error', 'info', 'success', 'warning'],
+    },
+    'content-display-mode': {
+      control: { type: 'select' },
+      options: ['full', 'truncated'],
     },
   },
   decorators: [withActions],
@@ -58,6 +64,7 @@ const Template: Story = {
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -80,6 +87,7 @@ export const CustomButton: Story = {
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -105,6 +113,7 @@ export const WithCustomContent: Story = {
     return html`
 <modus-wc-alert
   id="alert-123"
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -128,6 +137,7 @@ export const ShadowDomParent: Story = {
           const alertEl = el as unknown as {
             alertDescription: string;
             alertTitle: string;
+            contentDisplayMode: string;
             customClass: string;
             delay: number;
             disableIcon: boolean;
@@ -137,6 +147,7 @@ export const ShadowDomParent: Story = {
           };
           alertEl.alertDescription = v['alert-description'] ?? '';
           alertEl.alertTitle = v['alert-title'];
+          alertEl.contentDisplayMode = v['content-display-mode'] ?? 'full';
           alertEl.customClass = v['custom-class'] || '';
           alertEl.delay = v.delay ?? 0;
           alertEl.disableIcon = Boolean(v['disable-icon']);
@@ -163,14 +174,22 @@ export const Migration: Story = {
 
 #### Prop Mapping
 
-| 1.0 Prop          | 2.0 Prop    | Notes                                 |
-|-------------------|-------------|---------------------------------------|
-| aria-label        | aria-label  |                                       |
-| button-aria-label |             | Not carried over, use \`button\` slot |
-| button-text       |             | Not carried over, use \`button\` slot |
-| dismissible       | dismissible |                                       |
-| message           | alert-title |                                       |
-| type              | variant     |                                       |
+| 1.0 Prop          | 2.0 Prop               | Notes                                                                 |
+|-------------------|------------------------|-----------------------------------------------------------------------|
+| aria-label        | aria-label             |                                                                       |
+| button-aria-label |                        | Not carried over, use \`button\` slot                               |
+| button-text       |                        | Not carried over, use \`button\` slot                               |
+| dismissible       | dismissible            |                                                                       |
+| message           | alert-title            |                                                                       |
+| type              | variant                |                                                                       |
+|                   | content-display-mode   | New in 2.0. \`full\` (default) or \`truncated\` (2-line clamp + tooltip on overflow) |
+
+#### content-display-mode
+
+- \`full\`: Description and \`content\` slot text wrap normally. Backward compatible default.
+- \`truncated\`: Description or \`content\` slot is limited to two lines. A tooltip shows the full text on hover when content overflows.
+- \`alert-title\` is always shown in full and is not truncated.
+- Rich HTML is supported in the \`content\` slot; \`alert-description\` remains plain text only.
 
 #### Event Mapping
 

@@ -1,5 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-alert contentDisplayMode should render with truncated contentDisplayMode 1`] = `
+<modus-wc-alert alert-description="A very long description that should be truncated when displayed in truncated mode." alert-title="Title" content-display-mode="truncated">
+  <!---->
+  <div class="modus-wc-alert modus-wc-alert-info" role="status">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
+    </modus-wc-icon>
+    <div class="modus-wc-alert-content modus-wc-alert-content--truncated">
+      <div class="title">
+        Title
+      </div>
+      <modus-wc-tooltip>
+        <!---->
+        <div>
+          <div class="description">
+            A very long description that should be truncated when displayed in truncated mode.
+          </div>
+        </div>
+      </modus-wc-tooltip>
+    </div>
+  </div>
+</modus-wc-alert>
+`;
+
+exports[`modus-wc-alert contentDisplayMode should wrap slot content in tooltip when truncated 1`] = `
+<modus-wc-alert content-display-mode="truncated">
+  <!---->
+  <div class="modus-wc-alert modus-wc-alert-info" role="status">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
+    </modus-wc-icon>
+    <div class="modus-wc-alert-content modus-wc-alert-content--truncated">
+      <div class="title"></div>
+      <modus-wc-tooltip>
+        <!---->
+        <div>
+          <div class="modus-wc-alert-slot-content">
+            <div slot="content">
+              Custom slot content that is long enough to truncate
+            </div>
+          </div>
+        </div>
+      </modus-wc-tooltip>
+    </div>
+  </div>
+</modus-wc-alert>
+`;
+
 exports[`modus-wc-alert should render neutral variant with neutral styling and info icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="neutral">
   <!---->

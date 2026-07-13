@@ -18,6 +18,20 @@ modus-wc-alert .modus-wc-alert {
 
   .modus-wc-alert-content {
     flex: auto;
+    min-width: 0;
+  }
+
+  .modus-wc-alert-content--truncated {
+    .description,
+    .modus-wc-alert-slot-content {
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .title {

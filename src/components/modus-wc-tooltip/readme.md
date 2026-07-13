@@ -38,6 +38,7 @@ For plain dynamic text, prefer the content prop instead. When contentElement is 
 
 ### Used by
 
+ - [modus-wc-alert](../modus-wc-alert)
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-tree-item](../modus-wc-tree-item)
@@ -45,6 +46,7 @@ For plain dynamic text, prefer the content prop instead. When contentElement is 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-alert --> modus-wc-tooltip
   modus-wc-app-menu --> modus-wc-tooltip
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-tree-item --> modus-wc-tooltip

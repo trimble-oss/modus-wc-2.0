@@ -8,6 +8,7 @@ import {
   Host,
   Listen,
   Prop,
+  State,
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
@@ -26,6 +27,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcAlert {
   private inheritedAttributes: Attributes = {};
+  private truncatedContentRef?: HTMLElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -35,6 +37,9 @@ export class ModusWcAlert {
 
   /** The title of the alert. */
   @Prop() alertTitle!: string;
+
+  /** Controls whether description or slot content wraps fully or truncates after 2 lines. */
+  @Prop() contentDisplayMode?: 'full' | 'truncated' = 'full';
 
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
@@ -58,6 +63,8 @@ export class ModusWcAlert {
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
+  @State() isContentTruncated = false;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     // Set default role if none provided
@@ -80,6 +87,100 @@ export class ModusWcAlert {
     if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
+  }
+
+  private getContentClasses(): string {
+    const classList = ['modus-wc-alert-content'];
+
+    if (this.contentDisplayMode === 'truncated') {
+      classList.push('modus-wc-alert-content--truncated');
+    }
+
+    return classList.join(' ');
+  }
+
+  private isElement(node: Element | null): node is HTMLElement {
+    return !!node && 'nodeType' in node && node.nodeType === 1;
+  }
+
+  private getSlotContentElement(): HTMLElement | undefined {
+    const slotted = this.el.querySelector('[slot="content"]');
+    if (this.isElement(slotted)) {
+      return slotted;
+    }
+
+    const projected = this.el.querySelector(
+      '.modus-wc-alert-slot-content [slot="content"], .modus-wc-alert-slot-content > *'
+    );
+
+    return this.isElement(projected) ? projected : undefined;
+  }
+
+  private getTooltipProps(): {
+    content?: string;
+    contentElement?: HTMLElement;
+  } {
+    if (this.alertDescription) {
+      return { content: this.alertDescription };
+    }
+
+    const slotContent = this.getSlotContentElement();
+    if (!slotContent) {
+      return { content: '' };
+    }
+
+    return {
+      content: slotContent.textContent?.trim() ?? '',
+      contentElement: slotContent,
+    };
+  }
+
+  private scheduleTruncationCheck(): void {
+    if (this.contentDisplayMode !== 'truncated') {
+      return;
+    }
+
+    requestAnimationFrame(() => this.updateTruncationState());
+  }
+
+  private updateTruncationState(): void {
+    const element = this.truncatedContentRef;
+    const isTruncated =
+      !!element && element.scrollHeight > element.clientHeight;
+
+    if (isTruncated !== this.isContentTruncated) {
+      this.isContentTruncated = isTruncated;
+    }
+  }
+
+  private setTruncatedContentRef = (el: HTMLElement | undefined) => {
+    this.truncatedContentRef = el;
+  };
+
+  private renderTruncatableContent(
+    className: string,
+    children: unknown,
+    tooltipProps: { content?: string; contentElement?: HTMLElement } = {}
+  ) {
+    const contentClass = className || 'modus-wc-alert-slot-content';
+
+    if (this.contentDisplayMode !== 'truncated') {
+      return className ? <div class={className}>{children}</div> : children;
+    }
+
+    return (
+      <modus-wc-tooltip
+        content={tooltipProps.content ?? ''}
+        contentElement={tooltipProps.contentElement}
+        customClass="modus-wc-alert-tooltip"
+        disabled={!this.isContentTruncated}
+        position="auto"
+      >
+        <div class={contentClass} ref={this.setTruncatedContentRef}>
+          {children}
+        </div>
+      </modus-wc-tooltip>
+    );
   }
 
   private getLeadingIcon(): FunctionalComponent {
@@ -153,6 +254,10 @@ export class ModusWcAlert {
     }
   }
 
+  componentDidRender(): void {
+    this.scheduleTruncationCheck();
+  }
+
   disconnectedCallback(): void {
     clearTimeout(this.timerId);
   }
@@ -171,18 +276,27 @@ export class ModusWcAlert {
   }
 
   render() {
+    const tooltipProps = this.getTooltipProps();
+
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
           {!this.disableIcon && this.getLeadingIcon()}
-          <div class="modus-wc-alert-content">
+          <div class={this.getContentClasses()}>
             <div class="title">{this.alertTitle}</div>
-            {this.alertDescription && (
-              <div class="description">{this.alertDescription}</div>
-            )}
-            {!this.alertTitle && !this.alertDescription && (
-              <slot name="content" />
-            )}
+            {this.alertDescription &&
+              this.renderTruncatableContent(
+                'description',
+                this.alertDescription,
+                tooltipProps
+              )}
+            {!this.alertTitle &&
+              !this.alertDescription &&
+              this.renderTruncatableContent(
+                '',
+                <slot name="content" />,
+                tooltipProps
+              )}
           </div>
           <slot name="button" />
           {this.dismissible && (
