@@ -22,7 +22,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   </button>
                 </modus-wc-button>
                 <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                  <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                  <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
                     folder_closed
                   </i>
                 </modus-wc-icon>
@@ -172,7 +172,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           </button>
                         </modus-wc-button>
                         <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                          <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
                             info
                           </i>
                         </modus-wc-icon>

@@ -103,6 +103,14 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export type SelectionMode = 'single' | 'multiple';
 
+/** Modus icon displayed before a content-tree node label. */
+export interface ITreeNodeIcon {
+  /** Modus icon name (basename from @trimble-oss/modus-icons). */
+  name: string;
+  /** Icon set variant. Omit for `modus-wc-icon` default. */
+  variant?: 'outlined' | 'solid';
+}
+
 /** A node in the `modus-wc-content-tree` data model. */
 export interface ITreeNode {
   /** Nested child nodes. */
@@ -113,8 +121,8 @@ export interface ITreeNode {
   hasChildren?: boolean;
   /** Unique identifier for the node. */
   id: string;
-  /** Modus icon name displayed before the label. */
-  icon?: string;
+  /** Modus icon displayed before the label. */
+  icon?: ITreeNodeIcon;
   /** Display text for the node. */
   label: string;
 }

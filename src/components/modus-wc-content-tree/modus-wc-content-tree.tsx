@@ -92,9 +92,6 @@ export class ModusWcContentTree {
   /** The size of the content tree items. */
   @Prop() size?: ModusSize = 'md';
 
-  /** Modus icon variant for node `icon` glyphs in the start column. */
-  @Prop() nodeIconVariant?: 'outlined' | 'solid';
-
   /** Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select). */
   @Prop() toolbar?: IContentTreeToolbar;
 
@@ -336,6 +333,33 @@ export class ModusWcContentTree {
       this.cancelEdit(node);
     }
   };
+
+  @Listen('keydown')
+  handleRowCheckboxKeyDown(e: KeyboardEvent) {
+    if (!this.isMultiSelect() || e.key !== ' ') return;
+
+    const target = e.target;
+    if (!(target instanceof HTMLInputElement) || target.type !== 'checkbox') {
+      return;
+    }
+
+    const treeItem = target.closest('modus-wc-tree-item');
+    if (!treeItem || !this.el.contains(treeItem)) return;
+
+    // Row checkboxes live inside content-tree start chrome, not the tree-item's
+    // built-in checkbox (multi-select uses slotted checkboxes only).
+    if (!target.closest('.modus-wc-content-tree-node-start')) return;
+
+    const node = findNode(
+      this.getNodes(),
+      (treeItem as HTMLElement & { value: string }).value
+    );
+    if (!node || node.disabled) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    this.handleCheckboxChange(new CustomEvent('inputChange'), node);
+  }
 
   @Listen('itemSelect')
   handleItemSelect(e: CustomEvent<{ value: string; selected?: boolean }>) {
@@ -1132,9 +1156,9 @@ export class ModusWcContentTree {
           {node.icon ? (
             <modus-wc-icon
               decorative
-              name={node.icon}
+              name={node.icon.name}
               size={this.getNodeIconSize()}
-              variant={this.nodeIconVariant}
+              variant={node.icon.variant}
             />
           ) : null}
           {editing ? (

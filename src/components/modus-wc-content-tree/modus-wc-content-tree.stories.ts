@@ -6,6 +6,7 @@ import { ref } from 'lit/directives/ref.js';
 import {
   IContentTreeToolbar,
   ITreeNode,
+  ITreeNodeIcon,
   ModusSize,
   SelectionMode,
 } from '../types';
@@ -35,7 +36,6 @@ import {
 interface ContentTreeArgs {
   bordered?: boolean;
   'custom-class'?: string;
-  'node-icon-variant'?: 'outlined' | 'solid';
   'selection-mode'?: SelectionMode;
   size?: ModusSize;
 }
@@ -53,42 +53,42 @@ type ContentTreeElement = HTMLElement & {
   searchable?: boolean;
 };
 
+const treeIcon = (
+  name: string,
+  variant: 'outlined' | 'solid' = 'solid'
+): ITreeNodeIcon => ({ name, variant });
+
 const sampleNodes: ITreeNode[] = [
   {
     id: '1',
     label: 'Project Files',
-    icon: 'folder_closed',
+    icon: treeIcon('folder_closed'),
     children: [
-      { id: '1-1', label: 'Overview', icon: 'info' },
+      { id: '1-1', label: 'Overview', icon: treeIcon('info') },
       {
         id: '1-2',
         label: 'Resources',
-        icon: 'folder_closed',
+        icon: treeIcon('folder_closed'),
         children: [
-          { id: '1-2-1', label: 'Specifications', icon: 'info' },
-          { id: '1-2-2', label: 'Search Index', icon: 'search' },
+          { id: '1-2-1', label: 'Specifications', icon: treeIcon('info') },
+          { id: '1-2-2', label: 'Search Index', icon: treeIcon('search') },
         ],
       },
-      { id: '1-3', label: 'Archived', icon: 'alert' },
+      { id: '1-3', label: 'Archived', icon: treeIcon('alert') },
     ],
   },
-  { id: '2', label: 'Settings', icon: 'settings' },
-  { id: '3', label: 'Notifications', icon: 'info' },
+  { id: '2', label: 'Settings', icon: treeIcon('settings') },
+  { id: '3', label: 'Notifications', icon: treeIcon('info') },
 ];
 
 const meta: Meta<ContentTreeArgs> = {
   title: 'Components/Content Tree',
   component: 'modus-wc-content-tree',
   args: {
-    'node-icon-variant': 'solid',
     'selection-mode': 'single',
     size: 'md',
   },
   argTypes: {
-    'node-icon-variant': {
-      control: { type: 'select' },
-      options: ['outlined', 'solid'],
-    },
     'selection-mode': {
       control: { type: 'select' },
       options: ['single', 'multiple'],
@@ -172,7 +172,6 @@ export const Default: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
     ></modus-wc-content-tree>`;
@@ -239,7 +238,6 @@ export const MultiSelect: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeCheckChange=${handleCheckChange}
@@ -326,7 +324,6 @@ export const Toolbar: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeCheckChange=${handleCheckChange}
@@ -396,7 +393,6 @@ export const SearchFilter: Story = {
       ?bordered=${args.bordered}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @expandAllChange=${handleExpandAll}
@@ -538,7 +534,6 @@ export const TransactionalMenu: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeEdit=${handleEdit}
@@ -619,7 +614,6 @@ export const DragAndDrop: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeMove=${handleMove}
@@ -643,17 +637,22 @@ export const LazyLoading: Story = {
       {
         id: 'documents',
         label: 'Documents',
-        icon: 'folder_closed',
+        icon: treeIcon('folder_closed'),
         hasChildren: true,
       },
-      { id: 'media', label: 'Media', icon: 'folder_closed', hasChildren: true },
+      {
+        id: 'media',
+        label: 'Media',
+        icon: treeIcon('folder_closed'),
+        hasChildren: true,
+      },
       {
         id: 'empty',
         label: 'Empty Folder',
-        icon: 'folder_closed',
+        icon: treeIcon('folder_closed'),
         hasChildren: true,
       },
-      { id: 'readme', label: 'Read Me', icon: 'info' },
+      { id: 'readme', label: 'Read Me', icon: treeIcon('info') },
     ];
     let selectedNodeId = 'readme';
     let expandedNodeIds: string[] = [];
@@ -665,14 +664,14 @@ export const LazyLoading: Story = {
       id === 'empty'
         ? []
         : [
-            { id: `${id}-1`, label: 'First item', icon: 'info' },
+            { id: `${id}-1`, label: 'First item', icon: treeIcon('info') },
             {
               id: `${id}-2`,
               label: 'Subfolder',
-              icon: 'folder_closed',
+              icon: treeIcon('folder_closed'),
               hasChildren: true,
             },
-            { id: `${id}-3`, label: 'Last item', icon: 'info' },
+            { id: `${id}-3`, label: 'Last item', icon: treeIcon('info') },
           ];
 
     const sync = () => {
@@ -719,7 +718,6 @@ export const LazyLoading: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       selection-mode=${ifDefined(args['selection-mode'])}
       size=${ifDefined(args.size)}
-      node-icon-variant=${ifDefined(args['node-icon-variant'])}
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeLoadChildren=${handleLoadChildren}

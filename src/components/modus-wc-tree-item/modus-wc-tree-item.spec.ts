@@ -1,7 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTreeItem } from './modus-wc-tree-item';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { ModusWcCheckbox } from '../modus-wc-checkbox/modus-wc-checkbox';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcSideNavigation } from '../modus-wc-side-navigation/modus-wc-side-navigation';
 import { ModusWcTreeMenu } from '../modus-wc-tree-menu/modus-wc-tree-menu';
 
@@ -236,6 +238,33 @@ describe('modus-wc-tree-item', () => {
 
     const startButton = page.root?.querySelector('[slot="start"]');
     (startButton as HTMLElement)?.click();
+    await page.waitForChanges();
+
+    expect(clickSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit itemSelect when Space is pressed on an interactive start slot control', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcCheckbox, ModusWcInputLabel],
+      html: `<modus-wc-tree-item label="Test label" value="test-value">
+              <modus-wc-checkbox slot="start" aria-label="Select row"></modus-wc-checkbox>
+            </modus-wc-tree-item>`,
+    });
+
+    const clickSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', clickSpy);
+
+    const checkboxInput = page.root?.querySelector(
+      'modus-wc-checkbox input'
+    ) as HTMLInputElement;
+
+    checkboxInput.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
     await page.waitForChanges();
 
     expect(clickSpy).not.toHaveBeenCalled();
@@ -716,6 +745,89 @@ describe('modus-wc-tree-item', () => {
       value: 'test-value',
       selected: true,
     });
+  });
+
+  it('should emit itemSelect only for the nested row when Space is pressed on a child', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu selection-mode="single">
+          <modus-wc-tree-item label="Parent" value="parent">
+            <modus-wc-tree-menu is-sub-menu="true">
+              <modus-wc-tree-item label="Nested" value="nested"></modus-wc-tree-item>
+            </modus-wc-tree-menu>
+          </modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const nestedItem = page.doc.querySelectorAll(
+      'modus-wc-tree-item'
+    )[1] as HTMLElement;
+
+    const selections: string[] = [];
+    page.doc.addEventListener('itemSelect', (e: Event) => {
+      selections.push((e as CustomEvent<{ value: string }>).detail.value);
+    });
+
+    nestedItem.querySelector('li')?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(selections).toContain('nested');
+    expect(selections).not.toContain('parent');
+  });
+
+  it('should ignore Space when the event target belongs to a nested tree-item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcTreeMenu],
+      html: `
+        <modus-wc-tree-item label="Parent" value="parent">
+          <modus-wc-tree-menu is-sub-menu="true">
+            <modus-wc-tree-item label="Nested" value="nested"></modus-wc-tree-item>
+          </modus-wc-tree-menu>
+        </modus-wc-tree-item>
+      `,
+    });
+    const parent = page.rootInstance as ModusWcTreeItem & {
+      handleKeyDown: (e: KeyboardEvent) => void;
+    };
+    const emitSpy = jest.spyOn(parent.itemSelect, 'emit');
+    const nestedLi = page.doc
+      .querySelectorAll('modus-wc-tree-item')[1]
+      .querySelector('li') as HTMLElement;
+
+    parent.handleKeyDown({
+      key: ' ',
+      target: nestedLi,
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    } as unknown as KeyboardEvent);
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should tolerate keydown events without an element target', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+    const instance = page.rootInstance as ModusWcTreeItem & {
+      handleKeyDown: (e: KeyboardEvent) => void;
+    };
+    const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
+
+    instance.handleKeyDown({
+      key: ' ',
+      target: null,
+    } as unknown as KeyboardEvent);
+
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 
   it('should render with tooltip content', async () => {

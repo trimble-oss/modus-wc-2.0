@@ -1,5 +1,5 @@
 export const contentTreeDefaultSourceCode = `
-<modus-wc-content-tree id="content-tree" aria-label="Content tree" node-icon-variant="solid"></modus-wc-content-tree>
+<modus-wc-content-tree id="content-tree" aria-label="Content tree"></modus-wc-content-tree>
 
 <script type="module">
   const tree = document.getElementById('content-tree');
@@ -9,23 +9,23 @@ export const contentTreeDefaultSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert', disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
 
   // Controlled state lives in the application.
@@ -51,7 +51,6 @@ export const contentTreeMultiSelectSourceCode = `
 <modus-wc-content-tree
   id="content-tree"
   aria-label="Content tree"
-  node-icon-variant="solid"
   selection-mode="multiple"
 ></modus-wc-content-tree>
 
@@ -62,23 +61,23 @@ export const contentTreeMultiSelectSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert', disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
 
   tree.nodes = nodes;
@@ -139,7 +138,7 @@ export const contentTreeMultiSelectSourceCode = `
 export const contentTreeSearchFilterSourceCode = `
 <!-- \`searchable\` renders the built-in search box; the toolbar's expand/collapse
      control stacks on its own row below it. Both are provided by the component. -->
-<modus-wc-content-tree id="content-tree" aria-label="Content tree" node-icon-variant="solid"></modus-wc-content-tree>
+<modus-wc-content-tree id="content-tree" aria-label="Content tree"></modus-wc-content-tree>
 
 <script type="module">
   const tree = document.getElementById('content-tree');
@@ -148,23 +147,23 @@ export const contentTreeSearchFilterSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert', disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
 
   // Every node that has children — "expand all" opens all of them at once.
@@ -202,7 +201,7 @@ export const contentTreeSearchFilterSourceCode = `
 `;
 
 export const contentTreeTransactionalMenuSourceCode = `
-<modus-wc-content-tree id="content-tree" aria-label="Content tree" node-icon-variant="solid"></modus-wc-content-tree>
+<modus-wc-content-tree id="content-tree" aria-label="Content tree"></modus-wc-content-tree>
 
 <script type="module">
   const tree = document.getElementById('content-tree');
@@ -306,23 +305,23 @@ export const contentTreeTransactionalMenuSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert', disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
   let expandedNodeIds = ['1', '1-2'];
   let editingNodeId;
@@ -420,7 +419,6 @@ export const contentTreeDragAndDropSourceCode = `
 <modus-wc-content-tree
   id="content-tree"
   aria-label="Content tree"
-  node-icon-variant="solid"
 ></modus-wc-content-tree>
 
 <script type="module">
@@ -515,23 +513,23 @@ export const contentTreeDragAndDropSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert' },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
   let expandedNodeIds = ['1', '1-2'];
 
@@ -573,7 +571,6 @@ export const contentTreeLazyLoadingSourceCode = `
 <modus-wc-content-tree
   id="content-tree"
   aria-label="Content tree"
-  node-icon-variant="solid"
 ></modus-wc-content-tree>
 
 <script type="module">
@@ -594,10 +591,10 @@ export const contentTreeLazyLoadingSourceCode = `
   // Lazy nodes declare \`hasChildren: true\` but ship no \`children\` yet, so each
   // shows an expand chevron and defers its content until first opened.
   let nodes = [
-    { id: 'documents', label: 'Documents', icon: 'folder_closed', hasChildren: true },
-    { id: 'media', label: 'Media', icon: 'folder_closed', hasChildren: true },
-    { id: 'empty', label: 'Empty Folder', icon: 'folder_closed', hasChildren: true },
-    { id: 'readme', label: 'Read Me', icon: 'info' },
+    { id: 'documents', label: 'Documents', icon: { name: 'folder_closed', variant: 'solid' }, hasChildren: true },
+    { id: 'media', label: 'Media', icon: { name: 'folder_closed', variant: 'solid' }, hasChildren: true },
+    { id: 'empty', label: 'Empty Folder', icon: { name: 'folder_closed', variant: 'solid' }, hasChildren: true },
+    { id: 'readme', label: 'Read Me', icon: { name: 'info', variant: 'solid' } },
   ];
   let expandedNodeIds = [];
 
@@ -607,9 +604,9 @@ export const contentTreeLazyLoadingSourceCode = `
     id === 'empty'
       ? []
       : [
-          { id: id + '-1', label: 'First item', icon: 'info' },
-          { id: id + '-2', label: 'Subfolder', icon: 'folder_closed', hasChildren: true },
-          { id: id + '-3', label: 'Last item', icon: 'info' },
+          { id: id + '-1', label: 'First item', icon: { name: 'info', variant: 'solid' } },
+          { id: id + '-2', label: 'Subfolder', icon: { name: 'folder_closed', variant: 'solid' }, hasChildren: true },
+          { id: id + '-3', label: 'Last item', icon: { name: 'info', variant: 'solid' } },
         ];
 
   const sync = () => {
@@ -648,7 +645,6 @@ export const contentTreeToolbarSourceCode = `
 <modus-wc-content-tree
   id="content-tree"
   aria-label="Content tree"
-  node-icon-variant="solid"
   selection-mode="multiple"
   searchable
 ></modus-wc-content-tree>
@@ -660,23 +656,23 @@ export const contentTreeToolbarSourceCode = `
     {
       id: '1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: '1-1', label: 'Overview', icon: 'info' },
+        { id: '1-1', label: 'Overview', icon: { name: 'info', variant: 'solid' } },
         {
           id: '1-2',
           label: 'Resources',
-          icon: 'folder_closed',
+          icon: { name: 'folder_closed', variant: 'solid' },
           children: [
-            { id: '1-2-1', label: 'Specifications', icon: 'info' },
-            { id: '1-2-2', label: 'Search Index', icon: 'search' },
+            { id: '1-2-1', label: 'Specifications', icon: { name: 'info', variant: 'solid' } },
+            { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: 'alert' },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
-    { id: '2', label: 'Settings', icon: 'settings' },
-    { id: '3', label: 'Notifications', icon: 'info' },
+    { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
+    { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
 
   let expandedNodeIds = ['1', '1-2'];

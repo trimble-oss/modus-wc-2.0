@@ -56,6 +56,7 @@ The component supports a `<slot>` for injecting additional custom content inside
 ### Used by
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-navbar](../modus-wc-navbar)
 
 ### Depends on
@@ -70,6 +71,7 @@ graph TD;
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-text-input
+  modus-wc-content-tree --> modus-wc-text-input
   modus-wc-navbar --> modus-wc-text-input
   style modus-wc-text-input fill:#f9f,stroke:#333,stroke-width:4px
 ```

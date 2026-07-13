@@ -84,6 +84,7 @@ interface ContentTreeHarness {
   cancelEdit: (node: ITreeNode) => void;
   onEditingNodeIdChange: (newId?: string) => void;
   handleInputKeyDown: (e: KeyboardEvent) => void;
+  handleRowCheckboxKeyDown: (e: KeyboardEvent) => void;
   componentWillLoad: () => void;
   componentDidRender: () => void;
   disconnectedCallback: () => void;
@@ -140,9 +141,13 @@ describe('modus-wc-content-tree', () => {
     {
       id: 'root-1',
       label: 'Project Files',
-      icon: 'folder_closed',
+      icon: { name: 'folder_closed', variant: 'solid' },
       children: [
-        { id: 'leaf-a', label: 'Overview', icon: 'info' },
+        {
+          id: 'leaf-a',
+          label: 'Overview',
+          icon: { name: 'info', variant: 'solid' },
+        },
         { id: 'leaf-disabled', label: 'Disabled Leaf', disabled: true },
         {
           id: 'parent-b',
@@ -604,6 +609,132 @@ describe('modus-wc-content-tree', () => {
         detail: { id: 'leaf-b1', checked: false },
       })
     );
+  });
+
+  it('should emit nodeCheckChange and not nodeSelect when Space is pressed on a row checkbox in multi-select mode', async () => {
+    const { page } = await createTreePage({
+      selectionMode: 'multiple',
+      checkedNodeIds: [],
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeCheckChange = jest.fn();
+    const nodeSelect = jest.fn();
+    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
+    page.root?.addEventListener('nodeSelect', nodeSelect);
+
+    const checkboxInput = findTreeItem(page, 'leaf-a')?.querySelector(
+      'modus-wc-checkbox input'
+    ) as HTMLInputElement;
+
+    checkboxInput.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: ' ',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(nodeCheckChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'leaf-a', checked: true },
+      })
+    );
+    expect(nodeSelect).not.toHaveBeenCalled();
+  });
+
+  it('should ignore Space on non-checkbox targets in multi-select mode', async () => {
+    const { component } = await createTreePage({
+      selectionMode: 'multiple',
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeCheckChange = jest.fn();
+    component.el.addEventListener('nodeCheckChange', nodeCheckChange);
+
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: textInput,
+    } as unknown as KeyboardEvent);
+
+    const button = document.createElement('button');
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: button,
+    } as unknown as KeyboardEvent);
+
+    expect(nodeCheckChange).not.toHaveBeenCalled();
+  });
+
+  it('should ignore row checkbox Space outside multi-select or for non-space keys', async () => {
+    const { page, component } = await createTreePage({
+      selectionMode: 'single',
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeCheckChange = jest.fn();
+    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
+    const checkboxInput = findTreeItem(page, 'leaf-a')?.querySelector(
+      'modus-wc-checkbox input'
+    ) as HTMLInputElement;
+
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: checkboxInput,
+    } as unknown as KeyboardEvent);
+    component.handleRowCheckboxKeyDown({
+      key: 'Enter',
+      target: checkboxInput,
+    } as unknown as KeyboardEvent);
+
+    expect(nodeCheckChange).not.toHaveBeenCalled();
+  });
+
+  it('should ignore row checkbox Space when the checkbox is outside tree row chrome', async () => {
+    const { page, component } = await createTreePage({
+      selectionMode: 'multiple',
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeCheckChange = jest.fn();
+    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
+
+    const orphanCheckbox = document.createElement('input');
+    orphanCheckbox.type = 'checkbox';
+    page.root!.appendChild(orphanCheckbox);
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: orphanCheckbox,
+    } as unknown as KeyboardEvent);
+
+    const treeItem = findTreeItem(page, 'leaf-a')!;
+    const slottedCheckbox = document.createElement('input');
+    slottedCheckbox.type = 'checkbox';
+    treeItem.appendChild(slottedCheckbox);
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: slottedCheckbox,
+    } as unknown as KeyboardEvent);
+
+    expect(nodeCheckChange).not.toHaveBeenCalled();
+  });
+
+  it('should ignore row checkbox Space for disabled nodes', async () => {
+    const { page, component } = await createTreePage({
+      selectionMode: 'multiple',
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeCheckChange = jest.fn();
+    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
+    const checkboxInput = findTreeItem(page, 'leaf-disabled')?.querySelector(
+      'modus-wc-checkbox input'
+    ) as HTMLInputElement;
+
+    component.handleRowCheckboxKeyDown({
+      key: ' ',
+      target: checkboxInput,
+    } as unknown as KeyboardEvent);
+
+    expect(nodeCheckChange).not.toHaveBeenCalled();
   });
 
   it('should derive checked, unchecked, and indeterminate parent checkbox states', async () => {
@@ -1613,7 +1744,11 @@ describe('modus-wc-content-tree', () => {
 
   it('should use the new-node aria label when inline editing an empty label', async () => {
     const nodes: ITreeNode[] = [
-      { id: 'new-node', label: '', icon: 'folder_closed' },
+      {
+        id: 'new-node',
+        label: '',
+        icon: { name: 'folder_closed', variant: 'solid' },
+      },
     ];
     const { page } = await createTreePage({
       nodes,
@@ -1630,7 +1765,9 @@ describe('modus-wc-content-tree', () => {
   });
 
   it('should use a fallback checkbox aria-label when the node label is empty in multi-select mode', async () => {
-    const nodes: ITreeNode[] = [{ id: 'new-node', label: '', icon: 'info' }];
+    const nodes: ITreeNode[] = [
+      { id: 'new-node', label: '', icon: { name: 'info', variant: 'solid' } },
+    ];
     const { page } = await createTreePage({
       nodes,
       selectionMode: 'multiple',

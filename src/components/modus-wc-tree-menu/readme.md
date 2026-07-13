@@ -31,6 +31,19 @@ The component supports a `<slot>` for injecting custom modus-wc-tree-item elemen
 | `menuSelectionChange` | Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements. | `CustomEvent<{ selectedItems: HTMLElement[]; }>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [modus-wc-content-tree](../modus-wc-content-tree)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-content-tree --> modus-wc-tree-menu
+  style modus-wc-tree-menu fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

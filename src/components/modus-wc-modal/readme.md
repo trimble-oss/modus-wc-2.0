@@ -26,6 +26,10 @@ This component supports 'header', 'content', and 'footer' `<slot>` elements for 
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-content-tree](../modus-wc-content-tree)
+
 ### Depends on
 
 - [modus-wc-button](../modus-wc-button)
@@ -34,6 +38,7 @@ This component supports 'header', 'content', and 'footer' `<slot>` elements for 
 ```mermaid
 graph TD;
   modus-wc-modal --> modus-wc-button
+  modus-wc-content-tree --> modus-wc-modal
   style modus-wc-modal fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
