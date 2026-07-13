@@ -13,7 +13,7 @@ The component supports a `<slot>` for injecting content within the button, simil
 
 | Property      | Attribute      | Description                                                          | Type                                                                           | Default       |
 | ------------- | -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------- |
-| `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "neutral" \| "primary" \| "secondary" \| "tertiary" \| "warning"` | `'primary'`   |
+| `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "neutral" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning"` | `'primary'`   |
 | `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                                          | `''`          |
 | `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                                         | `false`       |
 | `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                                         | `false`       |

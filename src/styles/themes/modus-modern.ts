@@ -35,7 +35,7 @@ export const modusModern = {
     // State/Feedback Colors
     info: '#0063A3', // Trimble Blue
     'info-content': '#FFFFFF', // White
-    success: '#1E8A44', // Green
+    success: '#006638', // Green Dark
     'success-content': '#FFFFFF', // White
     warning: '#E49325', // Yellow
     'warning-content': '#252A2E', // Trimble Gray

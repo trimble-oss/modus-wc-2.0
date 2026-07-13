@@ -36,7 +36,8 @@ export class ModusWcButton {
     | 'tertiary'
     | 'warning'
     | 'danger'
-    | 'neutral' = 'primary';
+    | 'neutral'
+    | 'success' = 'primary';
 
   /** Custom CSS class to apply to the button element. */
   @Prop() customClass?: string = '';

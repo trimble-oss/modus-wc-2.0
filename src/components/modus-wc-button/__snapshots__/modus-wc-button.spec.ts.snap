@@ -27,6 +27,33 @@ exports[`modus-wc-button should render neutral color with pressed state 1`] = `
 </modus-wc-button>
 `;
 
+exports[`modus-wc-button should render success color with borderless variant 1`] = `
+<modus-wc-button color="success" variant="borderless">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-success" tabindex="0" type="button">
+    Success
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render success color with outlined variant 1`] = `
+<modus-wc-button color="success" variant="outlined">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success" tabindex="0" type="button">
+    Success
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render success color with pressed state 1`] = `
+<modus-wc-button color="success" pressed="">
+  <!---->
+  <button aria-pressed="true" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-success" tabindex="0" type="button">
+    Success
+  </button>
+</modus-wc-button>
+`;
+
 exports[`modus-wc-button should render with custom props 1`] = `
 <modus-wc-button color="secondary" custom-class="test-class" full-width="true" pressed="" size="lg" type="submit" variant="outlined">
   <!---->
@@ -68,6 +95,15 @@ exports[`modus-wc-button should render with size xl 1`] = `
   <!---->
   <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-xl" tabindex="0" type="button">
     XL Button
+  </button>
+</modus-wc-button>
+`;
+
+exports[`modus-wc-button should render with success color when color is success 1`] = `
+<modus-wc-button color="success">
+  <!---->
+  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-success" tabindex="0" type="button">
+    Success
   </button>
 </modus-wc-button>
 `;
