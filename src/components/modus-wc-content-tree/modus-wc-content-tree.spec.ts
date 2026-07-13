@@ -1070,7 +1070,7 @@ describe('modus-wc-content-tree', () => {
       };
       expect(dialog.showModal).toHaveBeenCalled();
       expect(component.getDeleteMessage()).toBe(
-        'Are you sure you want to delete 2 selected items?'
+        'Are you sure you want to delete 3 selected items?'
       );
 
       component.confirmDelete();
@@ -1140,6 +1140,22 @@ describe('modus-wc-content-tree', () => {
       expect(component.getDeleteMessage()).toBe(
         'Are you sure you want to delete 1 selected item?'
       );
+    });
+
+    it('should count each checked leaf in the bulk delete message', async () => {
+      const { component } = await createTreePage({
+        selectionMode: 'multiple',
+        expandedNodeIds: ['root-1', 'parent-b'],
+        checkedNodeIds: ['leaf-b1', 'leaf-b2'],
+        toolbar: { delete: true },
+      });
+
+      component.handleToolbarDelete();
+
+      expect(component.getDeleteMessage()).toBe(
+        'Are you sure you want to delete 2 selected items?'
+      );
+      expect(component.getTopMostCheckedIds()).toEqual(['parent-b']);
     });
 
     it('should clear the bulk selection when the single-delete flow starts', async () => {

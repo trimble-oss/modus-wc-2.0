@@ -639,9 +639,11 @@ export class ModusWcContentTree {
   };
 
   // The confirmation copy adapts to a single-row delete vs a bulk toolbar delete.
+  // Bulk copy counts checked leaves (`checkedNodeIds`); deletion still emits
+  // top-most branch ids via `nodesDelete` so the app removes whole subtrees once.
   private getDeleteMessage(): string {
-    const count = this.pendingDeleteIds?.length ?? 0;
-    if (count > 0) {
+    if (this.pendingDeleteIds?.length) {
+      const count = this.coerceArray<string>(this.checkedNodeIds).length;
       return `Are you sure you want to delete ${count} selected item${
         count === 1 ? '' : 's'
       }?`;
@@ -1329,21 +1331,27 @@ export class ModusWcContentTree {
           customClass="modus-wc-content-tree-modal"
           modalId={this.deleteModalId}
           position="center"
+          showClose={false}
         >
-          <modus-wc-typography
-            slot="header"
-            hierarchy="h6"
-            weight="semibold"
-            label="Confirm Deletion"
-          />
-          <div class="modus-wc-content-tree-modal-content" slot="content">
-            <modus-wc-typography label={this.getDeleteMessage()} size="sm" />
+          <div class="modus-wc-content-tree-modal-body" slot="content">
+            <div class="modus-wc-content-tree-modal-message">
+              <modus-wc-typography
+                label="Confirm Deletion"
+                size="md"
+                weight="semibold"
+              />
+              <modus-wc-typography
+                label={this.getDeleteMessage()}
+                size="sm"
+                weight="normal"
+              />
+            </div>
           </div>
           <div class="modus-wc-content-tree-modal-footer" slot="footer">
             <modus-wc-button
               color="tertiary"
               size="sm"
-              variant="outlined"
+              variant="filled"
               onButtonClick={() => this.closeDeleteConfirm()}
             >
               Cancel

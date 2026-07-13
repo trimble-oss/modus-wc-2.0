@@ -944,42 +944,35 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
     <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-2">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
-          <modus-wc-typography slot="header">
-            <!---->
-            <h6 class="modus-wc-text-md modus-wc-typography modus-wc-typography-override modus-wc-typography-weight-semibold">
-              <slot-fb>
-                Confirm Deletion
-              </slot-fb>
-            </h6>
-          </modus-wc-typography>
-          <div class="modus-wc-modal-top-icon-buttons">
-            <modus-wc-button>
-              <!---->
-              <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-                <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-                </svg>
-              </button>
-            </modus-wc-button>
-          </div>
+          <div class="modus-wc-modal-top-icon-buttons"></div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">
-          <div class="modus-wc-content-tree-modal-content" slot="content">
-            <modus-wc-typography>
-              <!---->
-              <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
-                <slot-fb>
-                  Are you sure you want to delete this item?
-                </slot-fb>
-              </p>
-            </modus-wc-typography>
+          <div class="modus-wc-content-tree-modal-body" slot="content">
+            <div class="modus-wc-content-tree-modal-message">
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-semibold">
+                  <slot-fb>
+                    Confirm Deletion
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
+                  <slot-fb>
+                    Are you sure you want to delete this item?
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+            </div>
           </div>
         </div>
         <div class="modus-wc-modal-action">
           <div class="modus-wc-content-tree-modal-footer" slot="footer">
             <modus-wc-button>
               <!---->
-              <button class="modus-wc-btn modus-wc-btn-neutral modus-wc-btn-outline modus-wc-btn-sm" tabindex="0" type="button">
+              <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-neutral modus-wc-btn-sm" tabindex="0" type="button">
                 Cancel
               </button>
             </modus-wc-button>
@@ -1008,42 +1001,35 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
     <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-0">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
-          <modus-wc-typography slot="header">
-            <!---->
-            <h6 class="modus-wc-text-md modus-wc-typography modus-wc-typography-override modus-wc-typography-weight-semibold">
-              <slot-fb>
-                Confirm Deletion
-              </slot-fb>
-            </h6>
-          </modus-wc-typography>
-          <div class="modus-wc-modal-top-icon-buttons">
-            <modus-wc-button>
-              <!---->
-              <button aria-label="Close modal" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
-                <svg aria-hidden="true" fill="currentColor" tabindex="-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
-                </svg>
-              </button>
-            </modus-wc-button>
-          </div>
+          <div class="modus-wc-modal-top-icon-buttons"></div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">
-          <div class="modus-wc-content-tree-modal-content" slot="content">
-            <modus-wc-typography>
-              <!---->
-              <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
-                <slot-fb>
-                  Are you sure you want to delete this item?
-                </slot-fb>
-              </p>
-            </modus-wc-typography>
+          <div class="modus-wc-content-tree-modal-body" slot="content">
+            <div class="modus-wc-content-tree-modal-message">
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-semibold">
+                  <slot-fb>
+                    Confirm Deletion
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
+                  <slot-fb>
+                    Are you sure you want to delete this item?
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+            </div>
           </div>
         </div>
         <div class="modus-wc-modal-action">
           <div class="modus-wc-content-tree-modal-footer" slot="footer">
             <modus-wc-button>
               <!---->
-              <button class="modus-wc-btn modus-wc-btn-neutral modus-wc-btn-outline modus-wc-btn-sm" tabindex="0" type="button">
+              <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-neutral modus-wc-btn-sm" tabindex="0" type="button">
                 Cancel
               </button>
             </modus-wc-button>
