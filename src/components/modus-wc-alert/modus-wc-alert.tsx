@@ -130,7 +130,7 @@ export class ModusWcAlert {
     }
 
     return {
-      content: slotContent.textContent?.trim() ?? '',
+      content: slotContent.textContent ?? '',
       contentElement: slotContent,
     };
   }
