@@ -184,13 +184,6 @@ export const Migration: Story = {
 | type              | variant                |                                                                       |
 |                   | content-display-mode   | New in 2.0. \`full\` (default) or \`truncated\` (2-line clamp + tooltip on overflow) |
 
-#### content-display-mode
-
-- \`full\`: Description and \`content\` slot text wrap normally. Backward compatible default.
-- \`truncated\`: Description or \`content\` slot is limited to two lines. A tooltip shows the full text on hover when content overflows.
-- \`alert-title\` is always shown in full and is not truncated.
-- Rich HTML is supported in the \`content\` slot; \`alert-description\` remains plain text only.
-
 #### Event Mapping
 
 | 1.0 Event    | 2.0 Event    | Notes                                 |

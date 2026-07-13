@@ -28,6 +28,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 export class ModusWcAlert {
   private inheritedAttributes: Attributes = {};
   private truncatedContentRef?: HTMLElement;
+  private truncationResizeObserver?: ResizeObserver;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -63,7 +64,7 @@ export class ModusWcAlert {
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
-  @State() isContentTruncated = false;
+  @State() private isContentTruncated = false;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -153,8 +154,31 @@ export class ModusWcAlert {
     }
   }
 
+  private disconnectTruncationResizeObserver(): void {
+    this.truncationResizeObserver?.disconnect();
+    this.truncationResizeObserver = undefined;
+  }
+
+  private syncTruncationResizeObserver(): void {
+    this.disconnectTruncationResizeObserver();
+
+    if (
+      this.contentDisplayMode !== 'truncated' ||
+      !this.truncatedContentRef ||
+      typeof ResizeObserver === 'undefined'
+    ) {
+      return;
+    }
+
+    this.truncationResizeObserver = new ResizeObserver(() => {
+      this.updateTruncationState();
+    });
+    this.truncationResizeObserver.observe(this.truncatedContentRef);
+  }
+
   private setTruncatedContentRef = (el: HTMLElement | undefined) => {
     this.truncatedContentRef = el;
+    this.syncTruncationResizeObserver();
   };
 
   private renderTruncatableContent(
@@ -241,6 +265,12 @@ export class ModusWcAlert {
     }, newDelay);
   }
 
+  @Watch('contentDisplayMode')
+  contentDisplayModeChanged(): void {
+    this.syncTruncationResizeObserver();
+    this.scheduleTruncationCheck();
+  }
+
   dismissElement() {
     this.dismissClick.emit();
     this.el.remove();
@@ -260,6 +290,7 @@ export class ModusWcAlert {
 
   disconnectedCallback(): void {
     clearTimeout(this.timerId);
+    this.disconnectTruncationResizeObserver();
   }
 
   @Listen('keyup')

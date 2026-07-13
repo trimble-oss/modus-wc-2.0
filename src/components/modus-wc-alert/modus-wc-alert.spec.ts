@@ -529,11 +529,14 @@ describe('modus-wc-alert', () => {
       });
 
       const title = page.root?.querySelector('.title');
+      const description = page.root?.querySelector('.description');
       const tooltip = page.root?.querySelector('modus-wc-tooltip');
 
       expect(title).not.toBeNull();
+      expect(description).not.toBeNull();
       expect(tooltip).not.toBeNull();
       expect(tooltip?.contains(title as Node)).toBe(false);
+      expect(tooltip?.contains(description as Node)).toBe(true);
     });
 
     it('should wrap slot content in tooltip when truncated', async () => {
@@ -619,6 +622,7 @@ describe('modus-wc-alert', () => {
       component.updateTruncationState();
       await page.waitForChanges();
 
+      // @ts-expect-error - Access private property for testing
       expect(component.isContentTruncated).toBe(false);
 
       const tooltip = page.root?.querySelector(
@@ -651,6 +655,7 @@ describe('modus-wc-alert', () => {
       component.updateTruncationState();
       await page.waitForChanges();
 
+      // @ts-expect-error - Access private property for testing
       expect(component.isContentTruncated).toBe(true);
 
       const tooltip = page.root?.querySelector(
@@ -692,6 +697,23 @@ describe('modus-wc-alert', () => {
         'modus-wc-tooltip'
       ) as HTMLModusWcTooltipElement;
       expect(tooltip.content).toBe('');
+    });
+
+    it('should preserve slot whitespace in tooltip content prop', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+        html: '<modus-wc-alert content-display-mode="truncated"><div slot="content">  spaced text  </div></modus-wc-alert>',
+      });
+      await page.waitForChanges();
+
+      const component = page.rootInstance as ModusWcAlert;
+      // @ts-expect-error - testing private method
+      expect(component.getTooltipProps().content).toBe('  spaced text  ');
+
+      const tooltip = page.root?.querySelector(
+        'modus-wc-tooltip'
+      ) as HTMLModusWcTooltipElement;
+      expect(tooltip.content).toBe('  spaced text  ');
     });
 
     it('should return empty tooltip props when no slot content is present', async () => {
@@ -802,10 +824,12 @@ describe('modus-wc-alert', () => {
 
       // @ts-expect-error - testing private truncation state update
       component.updateTruncationState();
+      // @ts-expect-error - Access private property for testing
       expect(component.isContentTruncated).toBe(false);
 
       // @ts-expect-error - testing private truncation state update
       component.updateTruncationState();
+      // @ts-expect-error - Access private property for testing
       expect(component.isContentTruncated).toBe(false);
     });
 
@@ -897,7 +921,166 @@ describe('modus-wc-alert', () => {
       animationFrameCallbacks.forEach((callback) => callback(0));
 
       expect(requestAnimationFrameSpy).toHaveBeenCalled();
+      // @ts-expect-error - Access private property for testing
       expect(component.isContentTruncated).toBe(true);
+    });
+
+    describe('truncation resize observer', () => {
+      let resizeCallback: ResizeObserverCallback;
+      let observeSpy: jest.Mock;
+      let disconnectSpy: jest.Mock;
+      const originalResizeObserver = globalThis.ResizeObserver;
+
+      beforeEach(() => {
+        observeSpy = jest.fn();
+        disconnectSpy = jest.fn();
+        globalThis.ResizeObserver = jest.fn(
+          (callback: ResizeObserverCallback) => {
+            resizeCallback = callback;
+            return {
+              observe: observeSpy,
+              disconnect: disconnectSpy,
+              unobserve: jest.fn(),
+            };
+          }
+        ) as unknown as typeof ResizeObserver;
+      });
+
+      afterEach(() => {
+        globalThis.ResizeObserver = originalResizeObserver;
+      });
+
+      it('should observe truncated content when contentDisplayMode is truncated', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="truncated"></modus-wc-alert>',
+        });
+
+        const truncatedElement = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        expect(globalThis.ResizeObserver).toHaveBeenCalled();
+        expect(observeSpy).toHaveBeenCalledWith(truncatedElement);
+      });
+
+      it('should update truncation state when resize observer fires', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Short" content-display-mode="truncated"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const truncatedElement = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        Object.defineProperty(truncatedElement, 'scrollHeight', {
+          configurable: true,
+          value: 20,
+        });
+        Object.defineProperty(truncatedElement, 'clientHeight', {
+          configurable: true,
+          value: 20,
+        });
+
+        // @ts-expect-error - testing private truncation state update
+        component.updateTruncationState();
+        // @ts-expect-error - Access private property for testing
+        expect(component.isContentTruncated).toBe(false);
+
+        Object.defineProperty(truncatedElement, 'scrollHeight', {
+          configurable: true,
+          value: 60,
+        });
+        Object.defineProperty(truncatedElement, 'clientHeight', {
+          configurable: true,
+          value: 40,
+        });
+
+        resizeCallback([], {} as ResizeObserver);
+        // @ts-expect-error - Access private property for testing
+        expect(component.isContentTruncated).toBe(true);
+      });
+
+      it('should disconnect resize observer when the component is disconnected', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="truncated"></modus-wc-alert>',
+        });
+
+        page.root?.remove();
+        await page.waitForChanges();
+
+        expect(disconnectSpy).toHaveBeenCalled();
+      });
+
+      it('should disconnect resize observer when contentDisplayMode changes to full', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="truncated"></modus-wc-alert>',
+        });
+
+        page.root?.setAttribute('content-display-mode', 'full');
+        await page.waitForChanges();
+
+        expect(disconnectSpy).toHaveBeenCalled();
+      });
+
+      it('should observe slot content when truncated mode uses the content slot', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert content-display-mode="truncated"><div slot="content">Slot content</div></modus-wc-alert>',
+        });
+        await page.waitForChanges();
+
+        const slotContent = page.root?.querySelector(
+          '.modus-wc-alert-slot-content'
+        ) as HTMLElement;
+
+        expect(observeSpy).toHaveBeenCalledWith(slotContent);
+      });
+
+      it('should not create resize observer when ResizeObserver is unavailable', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="truncated"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const description = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        globalThis.ResizeObserver =
+          undefined as unknown as typeof ResizeObserver;
+        observeSpy.mockClear();
+
+        // @ts-expect-error - testing private ref callback
+        component.setTruncatedContentRef(description);
+
+        expect(observeSpy).not.toHaveBeenCalled();
+      });
+
+      it('should schedule truncation check when contentDisplayMode changes to truncated', async () => {
+        const animationFrameCallbacks: FrameRequestCallback[] = [];
+        jest
+          .spyOn(globalThis, 'requestAnimationFrame')
+          .mockImplementation((callback: FrameRequestCallback) => {
+            animationFrameCallbacks.push(callback);
+            return animationFrameCallbacks.length;
+          });
+
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcTooltip],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="full"></modus-wc-alert>',
+        });
+
+        page.root?.setAttribute('content-display-mode', 'truncated');
+        await page.waitForChanges();
+
+        expect(animationFrameCallbacks.length).toBeGreaterThan(0);
+      });
     });
   });
 
