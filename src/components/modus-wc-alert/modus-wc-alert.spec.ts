@@ -738,7 +738,9 @@ describe('modus-wc-alert', () => {
         html: '<modus-wc-alert content-display-mode="full"><div slot="content">Only slot</div></modus-wc-alert>',
       });
 
-      expect(page.root?.querySelector('.modus-wc-alert-slot-content')).toBeNull();
+      expect(
+        page.root?.querySelector('.modus-wc-alert-slot-content')
+      ).toBeNull();
       expect(page.root?.querySelector('[slot="content"]')?.textContent).toBe(
         'Only slot'
       );
