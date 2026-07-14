@@ -558,11 +558,11 @@ export class ModusWcTable {
   private getSelectSize(): ModusSize {
     const paginationSize = this.getPaginationSize();
 
-    if (paginationSize === 'xs' || paginationSize === 'sm') {
+    if (paginationSize === 'xs') {
       return 'sm';
     }
 
-    if (paginationSize === 'lg' || paginationSize === 'xl') {
+    if (paginationSize === 'xl') {
       return 'lg';
     }
 

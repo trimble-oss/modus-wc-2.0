@@ -13,40 +13,40 @@ exports[`modus-wc-pagination should disable both first and previous page buttons
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         1
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-2" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-2">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 2
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         2
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-3" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-3">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 3
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         3
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-4" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-4">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 4
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         4
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -80,40 +80,40 @@ exports[`modus-wc-pagination should disable both last and next page buttons when
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-11" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-11">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 11
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         11
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-12" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-12">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 12
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         12
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-13" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-13">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 13
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         13
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-14" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-14">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 14
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         14
       </span>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-15" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-15">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 15
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -142,40 +142,40 @@ exports[`modus-wc-pagination should disable next page button when on the last pa
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         1
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-2" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-2">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 2
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         2
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-3" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-3">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 3
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         3
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-4" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-4">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 4
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         4
       </span>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -199,40 +199,40 @@ exports[`modus-wc-pagination should disable previous page button when on the fir
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         1
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-2" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-2">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 2
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         2
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-3" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-3">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 3
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         3
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-4" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-4">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 4
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         4
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -256,40 +256,40 @@ exports[`modus-wc-pagination should not render first and last page nav buttons w
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         1
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-2" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-2">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 2
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         2
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-3" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-3">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 3
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         3
       </span>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-4" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-4">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 4
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         4
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -318,40 +318,40 @@ exports[`modus-wc-pagination should render first and last page nav buttons when 
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         5
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-6" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-6">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 6
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         6
       </span>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-7" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-7">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 7
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         7
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-8" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-8">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 8
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         8
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-9" class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-9">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 9
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -385,40 +385,40 @@ exports[`modus-wc-pagination should render with custom props 1`] = `
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         1
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-2" class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-2">
+    <button class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 2
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         2
       </span>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-3" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-3">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 3
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         3
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-4" class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-4">
+    <button class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 4
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
         4
       </span>
     </button>
-    <button aria-labelledby="modus-wc-pagination-page-5" class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-5">
+    <button class="modus-wc-btn modus-wc-btn-lg modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 5
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">
@@ -447,8 +447,8 @@ exports[`modus-wc-pagination should render with default props 1`] = `
         <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.39-.39.38-1.03 0-1.41"></path>
       </svg>
     </button>
-    <button aria-current="page" aria-labelledby="modus-wc-pagination-page-1" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
-      <span class="modus-wc-sr-only" id="modus-wc-pagination-page-1">
+    <button aria-current="page" class="modus-wc-btn modus-wc-btn-active modus-wc-btn-md modus-wc-join-item modus-wc-pagination-btn modus-wc-pagination-page-active modus-wc-pagination-page-btn">
+      <span class="modus-wc-sr-only">
         Page 1
       </span>
       <span aria-hidden="true" class="modus-wc-pagination-page-label">

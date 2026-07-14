@@ -4,8 +4,12 @@ import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ModusWcTooltip } from '../modus-wc-tooltip/modus-wc-tooltip';
 
 const getPageButton = (root: HTMLElement, pageNumber: number) =>
-  root.querySelector(
-    `button[aria-labelledby="modus-wc-pagination-page-${pageNumber}"]`
+  Array.from(root.querySelectorAll('button.modus-wc-pagination-page-btn')).find(
+    (button) => {
+      const label =
+        button.querySelector('.modus-wc-sr-only')?.textContent ?? '';
+      return new RegExp(`\\b${pageNumber}$`).test(label.trim());
+    }
   );
 
 describe('modus-wc-pagination', () => {
@@ -361,9 +365,7 @@ describe('modus-wc-pagination', () => {
 
     // Find the button for page 3 and check its accessible label
     const pageThreeButton = getPageButton(page.root!, 3);
-    const pageThreeLabel = page.root!.querySelector(
-      '#modus-wc-pagination-page-3'
-    );
+    const pageThreeLabel = pageThreeButton!.querySelector('.modus-wc-sr-only');
 
     expect(firstPageButton).not.toBeNull();
     expect(previousPageButton).not.toBeNull();
@@ -397,9 +399,7 @@ describe('modus-wc-pagination', () => {
 
     // Find the button for page 3 and check its accessible label
     const pageThreeButton = getPageButton(page.root!, 3);
-    const pageThreeLabel = page.root!.querySelector(
-      '#modus-wc-pagination-page-3'
-    );
+    const pageThreeLabel = pageThreeButton!.querySelector('.modus-wc-sr-only');
 
     expect(firstPageButton).not.toBeNull();
     expect(previousPageButton).not.toBeNull();
@@ -505,12 +505,29 @@ describe('modus-wc-pagination', () => {
       ></modus-wc-pagination>`,
     });
 
-    const srOnlyLabel = page.root!.querySelector(
-      '#modus-wc-pagination-page-123455'
+    const srOnlyLabel = getPageButton(page.root!, 123455)!.querySelector(
+      '.modus-wc-sr-only'
     );
 
     expect(srOnlyLabel!.classList.contains('modus-wc-sr-only')).toBe(true);
     expect(srOnlyLabel!.textContent).toBe('Page 123455');
+  });
+
+  it('should not use ids on page button accessible labels', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination aria-label="pagination test" count="5" page="1"></modus-wc-pagination>`,
+    });
+
+    const srOnlyLabels = page.root!.querySelectorAll(
+      'button.modus-wc-pagination-page-btn .modus-wc-sr-only'
+    );
+    const ids = Array.from(srOnlyLabels)
+      .map((label) => label.id)
+      .filter(Boolean);
+
+    expect(srOnlyLabels.length).toBe(5);
+    expect(ids).toHaveLength(0);
   });
 
   it('should show a tooltip only for truncated page numbers', async () => {

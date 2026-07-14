@@ -50,6 +50,7 @@ export class ModusWcPagination {
   private inheritedAttributes: Attributes = {};
   private readonly maxPageDigits: number = 5;
   private readonly maxVisibleButtons: number = 5;
+  private readonly truncatedSuffixLength: number = 3;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -163,7 +164,7 @@ export class ModusWcPagination {
 
   private formatTruncatedPage(page: number): string {
     const pageStr = page.toString();
-    return `...${pageStr.slice(-3)}`;
+    return `...${pageStr.slice(-this.truncatedSuffixLength)}`;
   }
 
   private renderPageButton(
@@ -174,7 +175,6 @@ export class ModusWcPagination {
     const isCurrentPage = this.page === page;
     const pageStr = page.toString();
     const isTruncated = this.isTruncatedPage(page);
-    const labelId = `modus-wc-pagination-page-${page}`;
     const visualLabel = isTruncated ? this.formatTruncatedPage(page) : pageStr;
 
     const pageLabel = (
@@ -186,13 +186,10 @@ export class ModusWcPagination {
     return (
       <button
         aria-current={isCurrentPage ? 'page' : undefined}
-        aria-labelledby={labelId}
         class={`${buttonClasses} ${isCurrentPage ? 'modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
         onClick={() => this.handlePageClick(page)}
       >
-        <span id={labelId} class="modus-wc-sr-only">
-          {pageAriaLabel}
-        </span>
+        <span class="modus-wc-sr-only">{pageAriaLabel}</span>
         {isTruncated ? (
           <modus-wc-tooltip content={pageStr} position="top">
             {pageLabel}
