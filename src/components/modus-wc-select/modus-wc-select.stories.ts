@@ -7,6 +7,7 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 import { IInputFeedbackProp, ModusSize } from '../types';
 
 const options: ISelectOption[] = [
+  { label: 'Select an option', value: '', disabled: true, hidden: true },
   { label: 'Option 1', value: '1' },
   { label: 'Option 2', value: '2' },
   { label: 'Option 3', value: '3' },
@@ -65,6 +66,7 @@ const meta: Meta<SelectArgs> = {
             Interface: ISelectOption
             Properties:
             - disabled (boolean, optional): Whether the option is disabled and cannot be selected
+            - hidden (boolean, optional): Whether the option is hidden from the dropdown list
             - label (string): Display text for the option
             - value (string): The value of the option
           `,
@@ -108,6 +110,7 @@ export const Default: Story = {
     ></modus-wc-select>
     <script>
       const options = [
+        { label: 'Select an option', value: '', disabled: true, hidden: true },
         { label: 'Option 1', value: '1' },
         { label: 'Option 2', value: '2' },
         { label: 'Option 3', value: '3' },

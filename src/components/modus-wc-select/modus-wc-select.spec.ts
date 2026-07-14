@@ -6,11 +6,30 @@ import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcSelect } from './modus-wc-select';
 
 describe('modus-wc-select', () => {
+  const defaultOptions = [
+    { label: 'Select an option', value: '', disabled: true, hidden: true },
+    { label: 'Option 1', value: '1' },
+    { label: 'Option 2', value: '2' },
+    { label: 'Option 3', value: '3' },
+  ];
+
   it('renders with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcSelect],
-      html: '<modus-wc-select aria-label="Default select"></modus-wc-select>',
+      components: [ModusWcSelect, ModusWcInputLabel],
+      html: '<modus-wc-select label="Label" aria-label="Default select"></modus-wc-select>',
     });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.options = defaultOptions;
+
+    await page.waitForChanges();
+
+    const renderedOptions = page.root?.querySelectorAll('option');
+
+    expect(renderedOptions?.length).toBe(4);
+    expect(renderedOptions?.[0]).toHaveAttribute('hidden');
+    expect(renderedOptions?.[0]).toHaveAttribute('disabled');
+    expect(renderedOptions?.[0]).toHaveAttribute('selected');
     expect(page.root).toMatchSnapshot();
   });
 
@@ -138,9 +157,11 @@ describe('modus-wc-select', () => {
 
     await page.waitForChanges();
 
-    const selectElement = page.root?.querySelector('select');
-    const renderedOptions = selectElement?.querySelectorAll('option');
+    const renderedOptions = page.root?.querySelectorAll('option');
 
     expect(renderedOptions?.length).toBe(3);
+    expect(renderedOptions?.[1]).toHaveAttribute('disabled');
+    expect(renderedOptions?.[1]).toHaveAttribute('selected');
+    expect(page.root).toMatchSnapshot();
   });
 });
