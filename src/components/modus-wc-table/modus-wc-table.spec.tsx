@@ -608,6 +608,7 @@ describe('modus-wc-table', () => {
     expect(component['getPaginationSize']()).toBe('md'); // Default
     component.density = 'compact';
     expect(component['getPaginationSize']()).toBe('xs');
+    expect(component['getSelectSize']()).toBe('sm');
     component.density = 'relaxed';
     expect(component['getPaginationSize']()).toBe('xl');
     expect(component['getSelectSize']()).toBe('lg');
