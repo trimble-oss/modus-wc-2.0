@@ -21,6 +21,7 @@ const themeable = [
   'modus-wc-btn-sm',
   'modus-wc-btn-md',
   'modus-wc-btn-lg',
+  'modus-wc-btn-xl',
   //group
   'modus-wc-join',
   'modus-wc-join-item',

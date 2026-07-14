@@ -607,9 +607,10 @@ describe('modus-wc-table', () => {
     // Test pagination density/size changes
     expect(component['getPaginationSize']()).toBe('md'); // Default
     component.density = 'compact';
-    expect(component['getPaginationSize']()).toBe('sm');
+    expect(component['getPaginationSize']()).toBe('xs');
     component.density = 'relaxed';
-    expect(component['getPaginationSize']()).toBe('lg');
+    expect(component['getPaginationSize']()).toBe('xl');
+    expect(component['getSelectSize']()).toBe('lg');
   });
 
   it('should handle different editor types and empty data cases', async () => {

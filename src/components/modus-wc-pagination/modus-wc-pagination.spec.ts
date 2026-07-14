@@ -1,5 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcPagination } from './modus-wc-pagination';
+import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ModusWcTooltip } from '../modus-wc-tooltip/modus-wc-tooltip';
 
 const getPageButton = (root: HTMLElement, pageNumber: number) =>
@@ -570,5 +571,31 @@ describe('modus-wc-pagination', () => {
     const eventDetail = pageChangeSpy.mock.calls[0][0].detail;
     expect(eventDetail.newPage).toBe(123457);
     expect(eventDetail.prevPage).toBe(123456);
+  });
+
+  it('should map pagination sizes to button classes', () => {
+    expect(convertPropsToClasses({ size: 'xs' })).toBe('modus-wc-btn-xs');
+    expect(convertPropsToClasses({ size: 'xl' })).toBe('modus-wc-btn-xl');
+  });
+
+  it('should use square classes for icon buttons and padded classes for page buttons', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination],
+      html: `<modus-wc-pagination count="5" page="3"></modus-wc-pagination>`,
+    });
+
+    const iconButton = page.root!.querySelector(
+      'button[aria-label="Previous page"]'
+    );
+    const pageButton = getPageButton(page.root!, 3);
+
+    expect(iconButton!.classList.contains('modus-wc-btn-square')).toBe(true);
+    expect(iconButton!.classList.contains('modus-wc-pagination-page-btn')).toBe(
+      false
+    );
+    expect(pageButton!.classList.contains('modus-wc-btn-square')).toBe(false);
+    expect(pageButton!.classList.contains('modus-wc-pagination-page-btn')).toBe(
+      true
+    );
   });
 });

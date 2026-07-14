@@ -20,7 +20,7 @@ interface PaginationArgs {
   'next-button-text'?: string;
   page: number;
   'prev-button-text'?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 const meta: Meta<PaginationArgs> = {
@@ -52,7 +52,7 @@ const meta: Meta<PaginationArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -114,6 +114,26 @@ export const LargePageNumbers: Story = {
       prev-button-text="${ifDefined(args['prev-button-text'])}"
       size=${ifDefined(args.size)}
     ></modus-wc-pagination>
+  `,
+};
+
+export const AllSizes: Story = {
+  parameters: {
+    controls: { disable: true },
+  },
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      ${['xs', 'sm', 'md', 'lg', 'xl'].map(
+        (size) => html`
+          <modus-wc-pagination
+            .ariaLabelValues=${args['aria-label-values']}
+            count=${args.count}
+            page=${args.page}
+            size=${size}
+          ></modus-wc-pagination>
+        `
+      )}
+    </div>
   `,
 };
 

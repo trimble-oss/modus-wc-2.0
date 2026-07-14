@@ -8,14 +8,14 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
-import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ChevronDoubleLeftSolidIcon } from '../../icons/chevron-double-left-solid.icon';
 import { ChevronDoubleRightSolidIcon } from '../../icons/chevron-double-right-solid.icon';
 import { ChevronLeftSolidIcon } from '../../icons/chevron-left-solid.icon';
 import { ChevronRightSolidIcon } from '../../icons/chevron-right-solid.icon';
+import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
+import { Attributes, inheritAriaAttributes } from '../utils';
+import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 
 /** Aria label values for pagination buttons */
 export interface IAriaLabelValues {
@@ -73,7 +73,7 @@ export class ModusWcPagination {
   @Prop() prevButtonText?: string;
 
   /** Size of the pagination buttons */
-  @Prop() size: ModusSize = 'md';
+  @Prop() size: ModusSize | 'xs' | 'xl' = 'md';
 
   /** Event emitted when page changes */
   @Event() pageChange!: EventEmitter<IPageChange>;
@@ -112,26 +112,40 @@ export class ModusWcPagination {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getClasses(): { paginationClasses: string; buttonClasses: string } {
-    const buttonClassList = [
+  private getClasses(): {
+    paginationClasses: string;
+    iconButtonClasses: string;
+    pageButtonClasses: string;
+  } {
+    const sharedButtonClasses = [
       'modus-wc-pagination-btn',
       'modus-wc-join-item',
       'modus-wc-btn',
-      'modus-wc-btn-square',
     ];
 
     const paginationClassList = ['modus-wc-pagination', 'modus-wc-join'];
 
-    // The order CSS classes are added matters to CSS specificity
     if (this.customClass) paginationClassList.push(this.customClass);
     const paginationClasses = paginationClassList.join(' ');
 
-    const propClasses = convertPropsToClasses({ size: this.size });
+    const sizeClass = convertPropsToClasses({ size: this.size });
 
-    if (propClasses) buttonClassList.push(propClasses);
-    const buttonClasses = buttonClassList.join(' ');
+    const iconButtonClassList = [...sharedButtonClasses, 'modus-wc-btn-square'];
+    const pageButtonClassList = [
+      ...sharedButtonClasses,
+      'modus-wc-pagination-page-btn',
+    ];
 
-    return { paginationClasses, buttonClasses };
+    if (sizeClass) {
+      iconButtonClassList.push(sizeClass);
+      pageButtonClassList.push(sizeClass);
+    }
+
+    return {
+      paginationClasses,
+      iconButtonClasses: iconButtonClassList.join(' '),
+      pageButtonClasses: pageButtonClassList.join(' '),
+    };
   }
 
   private handlePageClick = (newPage: number) => {
@@ -191,7 +205,8 @@ export class ModusWcPagination {
   }
 
   render() {
-    const { paginationClasses, buttonClasses } = this.getClasses();
+    const { paginationClasses, iconButtonClasses, pageButtonClasses } =
+      this.getClasses();
     const isFirstPage = this.page === 1;
     const isLastPage = this.page === this.count;
     const shouldShowFirstLastButtons = this.count > this.maxVisibleButtons;
@@ -210,7 +225,7 @@ export class ModusWcPagination {
         {shouldShowFirstLastButtons && (
           <button
             aria-label={ariaLabels.firstPage}
-            class={buttonClasses}
+            class={iconButtonClasses}
             disabled={isFirstPage}
             onClick={() => this.handlePageClick(1)}
           >
@@ -220,7 +235,7 @@ export class ModusWcPagination {
 
         <button
           aria-label={this.prevButtonText ? undefined : ariaLabels.previousPage}
-          class={`${buttonClasses} ${this.prevButtonText ? 'modus-wc-pagination-button-text' : ''}`}
+          class={`${iconButtonClasses} ${this.prevButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isFirstPage}
           onClick={() => this.handlePageClick(this.page - 1)}
         >
@@ -234,14 +249,14 @@ export class ModusWcPagination {
         {this.visiblePages.map((page) =>
           this.renderPageButton(
             page,
-            buttonClasses,
+            pageButtonClasses,
             ariaLabels.page.replace('{0}', page.toString())
           )
         )}
 
         <button
           aria-label={this.nextButtonText ? undefined : ariaLabels.nextPage}
-          class={`${buttonClasses} ${this.nextButtonText ? 'modus-wc-pagination-button-text' : ''}`}
+          class={`${iconButtonClasses} ${this.nextButtonText ? 'modus-wc-pagination-button-text' : ''}`}
           disabled={isLastPage}
           onClick={() => this.handlePageClick(this.page + 1)}
         >
@@ -255,7 +270,7 @@ export class ModusWcPagination {
         {shouldShowFirstLastButtons && (
           <button
             aria-label={ariaLabels.lastPage}
-            class={buttonClasses}
+            class={iconButtonClasses}
             disabled={isLastPage}
             onClick={() => this.handlePageClick(this.count)}
           >

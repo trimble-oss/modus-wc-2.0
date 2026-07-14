@@ -3,7 +3,7 @@ import { ModusSize } from '../types';
 export const convertPropsToClasses = ({
   size,
 }: {
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }): string => {
   let classes = '';
 
