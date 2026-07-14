@@ -164,4 +164,55 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.[1]).toHaveAttribute('selected');
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should not select the first real option when value is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcInputLabel],
+      html: '<modus-wc-select label="Select an account" aria-label="Select an account"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.value = '';
+    component.options = [
+      { label: 'Select an account', value: '', disabled: true, hidden: true },
+      { label: 'Account 1', value: 'acc-1' },
+      { label: 'Account 2', value: 'acc-2' },
+    ];
+
+    await page.waitForChanges();
+
+    const select = page.root?.querySelector('select');
+    const renderedOptions = select?.querySelectorAll('option');
+
+    expect(component.value).toBe('');
+    expect(renderedOptions?.length).toBe(3);
+    expect(renderedOptions?.[0]).toHaveAttribute('selected');
+    expect(renderedOptions?.[0]).toHaveAttribute('hidden');
+    expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
+    expect(renderedOptions?.[1]?.textContent).toBe('Account 1');
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should not mark the first real option as selected when value is empty and options omit an empty-value option', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Select an account"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.value = '';
+    component.options = [
+      { label: 'Account 1', value: 'acc-1' },
+      { label: 'Account 2', value: 'acc-2' },
+    ];
+
+    await page.waitForChanges();
+
+    const renderedOptions = page.root?.querySelectorAll('option');
+
+    expect(component.value).toBe('');
+    expect(renderedOptions?.length).toBe(2);
+    expect(renderedOptions?.[0]).not.toHaveAttribute('selected');
+    expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
+  });
 });

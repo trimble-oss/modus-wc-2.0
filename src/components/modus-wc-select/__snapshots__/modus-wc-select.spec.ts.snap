@@ -25,6 +25,28 @@ exports[`modus-wc-select renders with default props 1`] = `
 </modus-wc-select>
 `;
 
+exports[`modus-wc-select should not select the first real option when value is empty 1`] = `
+<modus-wc-select label="Select an account" value="">
+  <modus-wc-input-label class="modus-wc-input-label-host">
+    <!---->
+    <label class="modus-wc-input-label modus-wc-input-label-size-md" htmlfor="mwc_id_7">
+      Select an account
+    </label>
+  </modus-wc-input-label>
+  <select aria-label="Select an account" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_7">
+    <option disabled="" hidden="" selected="" value="">
+      Select an account
+    </option>
+    <option value="acc-1">
+      Account 1
+    </option>
+    <option value="acc-2">
+      Account 2
+    </option>
+  </select>
+</modus-wc-select>
+`;
+
 exports[`modus-wc-select should render options with various states 1`] = `
 <modus-wc-select value="2">
   <select aria-label="Options test" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_6">
