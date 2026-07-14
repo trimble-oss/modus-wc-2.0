@@ -943,7 +943,7 @@ describe('modus-wc-alert', () => {
               unobserve: jest.fn(),
             };
           }
-        ) as unknown as typeof ResizeObserver;
+        );
       });
 
       afterEach(() => {
