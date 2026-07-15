@@ -29,6 +29,12 @@ export class ModusWcButton {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Sets `aria-current` on the native button element. */
+  @Prop({ attribute: 'aria-current' }) ariaCurrent?: string;
+
+  /** Sets `aria-label` on the native button element. */
+  @Prop({ attribute: 'aria-label' }) ariaLabel?: string;
+
   /** The color variant of the button. */
   @Prop() color:
     | 'primary'
@@ -69,8 +75,13 @@ export class ModusWcButton {
   componentWillLoad() {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
+  }
 
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  componentWillRender() {
+    this.inheritedAttributes = inheritAriaAttributes(this.el, [
+      'aria-current',
+      'aria-label',
+    ]);
   }
 
   private getClasses(): string {
@@ -117,13 +128,15 @@ export class ModusWcButton {
       <Host>
         <button
           class={this.getClasses()}
+          {...this.inheritedAttributes}
           aria-pressed={ariaPressed}
+          aria-current={this.ariaCurrent ?? undefined}
+          aria-label={this.ariaLabel ?? undefined}
           disabled={this.disabled}
           onClick={this.handleClick}
           onKeyDown={this.handleKeyDown}
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
-          {...this.inheritedAttributes}
         >
           <slot />
         </button>

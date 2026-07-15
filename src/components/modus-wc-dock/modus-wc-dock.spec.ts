@@ -175,6 +175,8 @@ describe('modus-wc-dock', () => {
       ).detail
     ).toEqual({ index: 1, item: items[1] });
     expect(component.activeItemIndex).toBe(1);
+    expect(buttons?.[0]?.getAttribute('aria-current')).toBeNull();
+    expect(buttons?.[1]?.getAttribute('aria-current')).toBe('page');
   });
 
   it('should not emit itemSelect when a disabled item is clicked', async () => {
