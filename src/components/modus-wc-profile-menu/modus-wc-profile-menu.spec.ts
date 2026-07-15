@@ -102,7 +102,7 @@ describe('modus-wc-profile-menu', () => {
     ]);
   });
 
-  it('should not render main menu section when main menu items is empty', async () => {
+  it('should not render main menu section when main menu items are empty', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],
       template: () =>
