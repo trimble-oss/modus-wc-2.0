@@ -1,0 +1,170 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-dock {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+modus-wc-dock .modus-wc-dock {
+  background-color: var(--modus-wc-color-base-page);
+  display: flex;
+  width: 100%;
+
+  &.modus-wc-dock-bottom,
+  &.modus-wc-dock-top {
+    align-items: stretch;
+    flex-direction: row;
+    min-height: var(--modus-wc-dock-item-height);
+  }
+
+  &.modus-wc-dock-left,
+  &.modus-wc-dock-right {
+    flex-direction: column;
+    height: 100%;
+    min-height: var(--modus-wc-dock-item-height);
+    width: var(--modus-wc-spacing-24);
+  }
+
+  &.modus-wc-dock-sm {
+    --modus-wc-dock-indicator-width: var(--modus-wc-border-width-sm);
+    --modus-wc-dock-item-gap: var(--modus-wc-spacing-2xs);
+    --modus-wc-dock-item-height: 3rem;
+    --modus-wc-dock-label-font-size: var(--modus-wc-font-size-sm);
+    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-xs);
+  }
+
+  &.modus-wc-dock-md {
+    --modus-wc-dock-indicator-width: var(--modus-wc-border-width-lg);
+    --modus-wc-dock-item-gap: var(--modus-wc-spacing-xs);
+    --modus-wc-dock-item-height: 4rem;
+    --modus-wc-dock-label-font-size: var(--modus-wc-font-size-md);
+    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-sm);
+  }
+
+  &.modus-wc-dock-lg {
+    --modus-wc-dock-indicator-width: var(--modus-wc-border-width-lg);
+    --modus-wc-dock-item-gap: var(--modus-wc-spacing-xs);
+    --modus-wc-dock-item-height: 5rem;
+    --modus-wc-dock-label-font-size: var(--modus-wc-font-size-lg);
+    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-md);
+  }
+}
+
+modus-wc-dock .modus-wc-dock-item {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+
+  &.modus-wc-dock-item-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &:not(.modus-wc-dock-item-disabled):not(.modus-wc-dock-item-active):hover {
+    background-color: var(--modus-wc-color-base-100);
+  }
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-bottom .modus-wc-dock-item,
+modus-wc-dock .modus-wc-dock.modus-wc-dock-top .modus-wc-dock-item {
+  min-height: var(--modus-wc-dock-item-height);
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-left .modus-wc-dock-item,
+modus-wc-dock .modus-wc-dock.modus-wc-dock-right .modus-wc-dock-item {
+  width: 100%;
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-bottom .modus-wc-dock-item-active {
+  border-top: var(--modus-wc-dock-indicator-width) solid
+    var(--modus-wc-color-primary);
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-top .modus-wc-dock-item-active {
+  border-bottom: var(--modus-wc-dock-indicator-width) solid
+    var(--modus-wc-color-primary);
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-left .modus-wc-dock-item-active {
+  border-inline-end: var(--modus-wc-dock-indicator-width) solid
+    var(--modus-wc-color-primary);
+}
+
+modus-wc-dock .modus-wc-dock.modus-wc-dock-right .modus-wc-dock-item-active {
+  border-inline-start: var(--modus-wc-dock-indicator-width) solid
+    var(--modus-wc-color-primary);
+}
+
+modus-wc-dock .modus-wc-dock-item modus-wc-button .modus-wc-dock-item-button {
+  align-items: center;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--modus-wc-dock-item-gap);
+  height: 100%;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  width: 100%;
+}
+
+modus-wc-dock
+  .modus-wc-dock-item:not(.modus-wc-dock-item-disabled)
+  modus-wc-button
+  .modus-wc-dock-item-button:hover {
+  background-color: var(--modus-wc-color-base-100);
+  color: var(--modus-wc-color-base-content);
+}
+
+modus-wc-dock .modus-wc-dock-item modus-wc-button {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+modus-wc-dock .modus-wc-dock-item-label {
+  align-self: stretch;
+  color: var(--modus-wc-color-base-content);
+  font-size: var(--modus-wc-dock-label-font-size);
+  font-weight: var(--modus-wc-font-weight-normal);
+  hyphens: auto;
+  line-height: var(--modus-wc-dock-label-line-height);
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+  width: 100%;
+}
+
+modus-wc-dock .modus-wc-dock-item-active {
+  .modus-wc-dock-item-label,
+  modus-wc-icon i.modus-wc-icon {
+    color: var(--modus-wc-color-primary);
+  }
+}
+
+modus-wc-dock .modus-wc-dock-item modus-wc-icon {
+  flex-shrink: 0;
+}
+
+modus-wc-dock
+  .modus-wc-dock-icons-only
+  .modus-wc-dock-item
+  modus-wc-button
+  .modus-wc-dock-item-button {
+  justify-content: center;
+}
