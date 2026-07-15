@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property                    | Attribute       | Description                                                 | Type                    | Default     |
-| --------------------------- | --------------- | ----------------------------------------------------------- | ----------------------- | ----------- |
-| `menuOne`                   | `menu-one`      | Configuration for the first menu including title and items  | `ISubMenu \| undefined` | `undefined` |
-| `menuTwo`                   | `menu-two`      | Configuration for the second menu including title and items | `ISubMenu \| undefined` | `undefined` |
-| `profileProps` _(required)_ | `profile-props` | Profile menu properties containing user information         | `IProfileMenuProps`     | `undefined` |
+| Property                    | Attribute       | Description                                                                                                                                                                                                    | Type                     | Default     |
+| --------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------- |
+| `mainMenu`                  | `main-menu`     | Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, `items` defines the full ordered list of built-in references and custom entries. | `IMainMenu \| undefined` | `undefined` |
+| `menuOne`                   | `menu-one`      | Configuration for the first menu including title and items                                                                                                                                                     | `ISubMenu \| undefined`  | `undefined` |
+| `menuTwo`                   | `menu-two`      | Configuration for the second menu including title and items                                                                                                                                                    | `ISubMenu \| undefined`  | `undefined` |
+| `profileProps` _(required)_ | `profile-props` | Profile menu properties containing user information                                                                                                                                                            | `IProfileMenuProps`      | `undefined` |
 
 
 ## Events

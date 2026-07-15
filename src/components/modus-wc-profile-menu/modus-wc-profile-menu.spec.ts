@@ -30,6 +30,90 @@ describe('modus-wc-profile-menu', () => {
 
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBeGreaterThan(0);
+
+    const mainMenuItems = Array.from(
+      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
+    );
+    expect(mainMenuItems.map((item) => item.getAttribute('label'))).toEqual([
+      'My Profile',
+      'My Products',
+      'Support center',
+      'Admin settings',
+    ]);
+  });
+
+  it('should render custom main menu order and omit omitted built-in items', async () => {
+    const mainMenu = {
+      items: [
+        { id: 'my-products' as const },
+        { id: 'my-profile' as const },
+        { id: 'support-center' as const },
+      ],
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu,
+        }),
+    });
+
+    const mainMenuItems = Array.from(
+      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
+    );
+    expect(mainMenuItems.map((item) => item.getAttribute('label'))).toEqual([
+      'My Products',
+      'My Profile',
+      'Support center',
+    ]);
+  });
+
+  it('should render custom main menu items alongside built-in references', async () => {
+    const mainMenu = {
+      items: [
+        { id: 'my-profile' as const },
+        {
+          label: 'Billing',
+          icon: 'invoice',
+          iconVariant: 'solid' as const,
+          iconSize: 'sm' as const,
+          value: 'billing',
+        },
+      ],
+    };
+
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu,
+        }),
+    });
+
+    const mainMenuItems = Array.from(
+      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
+    );
+    expect(mainMenuItems.map((item) => item.getAttribute('value'))).toEqual([
+      'my-profile',
+      'billing',
+    ]);
+  });
+
+  it('should not render main menu section when main menu items is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu: { items: [] },
+        }),
+    });
+
+    const mainMenuSection = page.root?.querySelectorAll('.main-menu-section');
+    expect(mainMenuSection?.length).toBe(0);
   });
 
   it('should render with menuOne', async () => {

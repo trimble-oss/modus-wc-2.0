@@ -42,6 +42,25 @@ export interface ISubMenu {
   items: IMenuItem[];
 }
 
+export type BuiltInMainMenuId =
+  | 'my-profile'
+  | 'my-products'
+  | 'support-center'
+  | 'admin-settings';
+
+export interface IBuiltInMainMenuEntry {
+  /** Built-in main menu item identifier. */
+  id: BuiltInMainMenuId;
+}
+
+/** Built-in menu reference or a custom menu item. */
+export type IMainMenuEntry = IBuiltInMainMenuEntry | IMenuItem;
+
+export interface IMainMenu {
+  /** Ordered list of built-in references and/or custom menu items. */
+  items?: IMainMenuEntry[];
+}
+
 export interface IProfileMenuProps {
   /** The URL of the profile image. */
   profileImageUrl: string;
@@ -74,6 +93,13 @@ export class ModusWcProfileMenu {
   /** Configuration for the second menu including title and items */
   @Prop() menuTwo?: ISubMenu;
 
+  /**
+   * Configuration for the default main menu section.
+   * When omitted, all built-in items render in the default order.
+   * When provided, `items` defines the full ordered list of built-in references and custom entries.
+   */
+  @Prop() mainMenu?: IMainMenu;
+
   /** Emitted when the Sign Out menu item is clicked */
   @StencilEvent() signOutClick!: EventEmitter<void>;
 
@@ -95,38 +121,75 @@ export class ModusWcProfileMenu {
   };
 
   private currentYear = new Date().getFullYear();
-  private mainMenu: ISubMenu = {
-    items: [
-      {
-        label: 'My Profile',
-        icon: 'info',
-        iconVariant: 'solid',
-        iconSize: 'sm',
-        value: 'my-profile',
-      },
-      {
-        label: 'My Products',
-        icon: 'home',
-        iconVariant: 'solid',
-        iconSize: 'sm',
-        value: 'my-products',
-      },
-      {
-        label: 'Support center',
-        icon: 'bar_graph',
-        iconVariant: 'solid',
-        iconSize: 'sm',
-        value: 'support-center',
-      },
-      {
-        label: 'Admin settings',
-        icon: 'download',
-        iconVariant: 'solid',
-        iconSize: 'sm',
-        value: 'admin-settings',
-      },
-    ],
+
+  private static readonly DEFAULT_MAIN_MENU_CATALOG: Record<
+    BuiltInMainMenuId,
+    IMenuItem
+  > = {
+    'my-profile': {
+      label: 'My Profile',
+      icon: 'info',
+      iconVariant: 'solid',
+      iconSize: 'sm',
+      value: 'my-profile',
+    },
+    'my-products': {
+      label: 'My Products',
+      icon: 'home',
+      iconVariant: 'solid',
+      iconSize: 'sm',
+      value: 'my-products',
+    },
+    'support-center': {
+      label: 'Support center',
+      icon: 'bar_graph',
+      iconVariant: 'solid',
+      iconSize: 'sm',
+      value: 'support-center',
+    },
+    'admin-settings': {
+      label: 'Admin settings',
+      icon: 'download',
+      iconVariant: 'solid',
+      iconSize: 'sm',
+      value: 'admin-settings',
+    },
   };
+
+  private static readonly DEFAULT_MAIN_MENU_ORDER: BuiltInMainMenuId[] = [
+    'my-profile',
+    'my-products',
+    'support-center',
+    'admin-settings',
+  ];
+
+  private isBuiltInMainMenuEntry(
+    entry: IMainMenuEntry
+  ): entry is IBuiltInMainMenuEntry {
+    return 'id' in entry && !('label' in entry);
+  }
+
+  private getResolvedMainMenu(): ISubMenu {
+    const entries: IMainMenuEntry[] =
+      this.mainMenu?.items !== undefined
+        ? this.mainMenu.items
+        : ModusWcProfileMenu.DEFAULT_MAIN_MENU_ORDER.map((id) => ({ id }));
+
+    const items = entries.reduce<IMenuItem[]>((resolved, entry) => {
+      if (this.isBuiltInMainMenuEntry(entry)) {
+        const builtIn = ModusWcProfileMenu.DEFAULT_MAIN_MENU_CATALOG[entry.id];
+        if (builtIn) {
+          resolved.push(builtIn);
+        }
+        return resolved;
+      }
+
+      resolved.push(entry);
+      return resolved;
+    }, []);
+
+    return { items };
+  }
 
   render() {
     const manageTrimbleIdLink = sanitizeUrl(
@@ -197,7 +260,11 @@ export class ModusWcProfileMenu {
             </div>
           </div>
           <div slot="body">
-            {renderSubMenu(this.mainMenu, this.handleMenuItemClick, true)}
+            {renderSubMenu(
+              this.getResolvedMainMenu(),
+              this.handleMenuItemClick,
+              true
+            )}
             {this.menuOne &&
               renderSubMenu(this.menuOne, this.handleMenuItemClick)}
             {this.menuTwo &&
