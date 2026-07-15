@@ -42,7 +42,7 @@ describe('modus-wc-profile-menu', () => {
     ]);
   });
 
-  it('should render custom main menu order and omit omitted built-in items', async () => {
+  it('should render custom main menu order and omit excluded built-in items', async () => {
     const mainMenu = {
       items: [
         { id: 'my-products' as const },
