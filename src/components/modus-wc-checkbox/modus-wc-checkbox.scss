@@ -27,6 +27,13 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-checkbox .modus-wc-checkbox,
+[data-theme='modus-modern-dark'] modus-wc-checkbox .modus-wc-checkbox {
+  &:disabled:not(:checked) {
+    background-color: var(--modus-wc-color-base-300);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
   --check-bg: var(--modus-wc-color-highlight-blue);

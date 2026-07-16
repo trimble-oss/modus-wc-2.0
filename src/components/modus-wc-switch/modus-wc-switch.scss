@@ -94,6 +94,10 @@ modus-wc-switch .modus-wc-toggle {
 
   &:disabled {
     background-color: var(--modus-wc-color-white);
+
+    &:not(:checked) {
+      --fallback-b1: var(--modus-wc-color-base-300);
+    }
   }
 }
 
@@ -190,6 +194,10 @@ modus-wc-switch .modus-wc-toggle {
 
   &:disabled {
     background-color: var(--modus-wc-color-white);
+
+    &:not(:checked) {
+      --fallback-b1: var(--modus-wc-color-base-300);
+    }
   }
 }
 
@@ -249,6 +257,10 @@ modus-wc-switch .modus-wc-toggle {
       outline: var(--modus-wc-border-width-sm) solid
         var(--modus-wc-color-primary);
       outline-offset: var(--modus-wc-border-width-sm);
+    }
+
+    &:disabled:not(:checked) {
+      --fallback-b1: var(--modus-wc-color-base-300);
     }
 
     // Sizes

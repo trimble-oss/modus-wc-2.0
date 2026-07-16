@@ -17,6 +17,10 @@ modus-wc-radio.modus-wc-radio-host {
       --fallback-bc: var(--modus-wc-color-primary);
     }
 
+    &:disabled:not(:checked) {
+      background-color: var(--modus-wc-color-base-300);
+    }
+
     &:focus {
       outline-color: var(--modus-wc-color-primary);
     }
