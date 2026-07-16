@@ -119,8 +119,8 @@ export class ModusWcTreeItem {
   }
 
   private isOwnKeydownTarget(e: KeyboardEvent): boolean {
-    const target = e.target as Element | null;
-    if (!target) return false;
+    const { target } = e;
+    if (!(target instanceof Element)) return false;
 
     return target.closest('modus-wc-tree-item') === this.el;
   }
