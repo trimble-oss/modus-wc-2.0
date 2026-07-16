@@ -555,6 +555,68 @@ describe('modus-wc-menu-item', () => {
     });
   });
 
+  it('should emit itemSelect only once with child value when Enter is pressed on nested child item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu>
+          <modus-wc-menu-item label="Parent" value="parent" has-submenu="true">
+            <modus-wc-menu is-sub-menu="true">
+              <modus-wc-menu-item label="Child" value="child"></modus-wc-menu-item>
+            </modus-wc-menu>
+          </modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const childItem = page.doc.querySelector(
+      'modus-wc-menu-item[value="child"]'
+    ) as HTMLElement;
+    const childLi = childItem.querySelector('li') as HTMLLIElement;
+
+    const emittedValues: string[] = [];
+    page.doc.addEventListener('itemSelect', (event) => {
+      emittedValues.push(
+        (event as CustomEvent<{ value: string }>).detail.value
+      );
+    });
+
+    childLi.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(emittedValues).toEqual(['child']);
+  });
+
+  it('should not handle keydown when event target is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: null,
+      configurable: true,
+    });
+
+    page.rootInstance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
   it('should emit itemSelect event when Space key is pressed on li element', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],

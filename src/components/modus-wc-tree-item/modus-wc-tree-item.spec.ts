@@ -287,6 +287,68 @@ describe('modus-wc-tree-item', () => {
     });
   });
 
+  it('should emit itemSelect only once with child value when Enter is pressed on nested child item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu>
+          <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
+              <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
+            </modus-wc-tree-menu>
+          </modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const childItem = page.doc.querySelector(
+      'modus-wc-tree-item[value="child"]'
+    ) as HTMLElement;
+    const childLi = childItem.querySelector('li') as HTMLLIElement;
+
+    const emittedValues: string[] = [];
+    page.doc.addEventListener('itemSelect', (event) => {
+      emittedValues.push(
+        (event as CustomEvent<{ value: string }>).detail.value
+      );
+    });
+
+    childLi.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(emittedValues).toEqual(['child']);
+  });
+
+  it('should not handle keydown when event target is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+
+    const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: null,
+      configurable: true,
+    });
+
+    page.rootInstance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
   it('should not emit itemSelect when disabled and Enter is pressed', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem],

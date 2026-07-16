@@ -118,12 +118,21 @@ export class ModusWcTreeItem {
     this.selected = false;
   }
 
+  private isOwnKeydownTarget(e: KeyboardEvent): boolean {
+    const target = e.target as Element | null;
+    if (!target) return false;
+
+    return target.closest('modus-wc-tree-item') === this.el;
+  }
+
   @Listen('keydown')
   handleKeyDown(e: KeyboardEvent) {
     if (this.disabled) return;
+    if (!this.isOwnKeydownTarget(e)) return;
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
+      e.stopPropagation();
       this.handleItemSelect();
     }
   }
