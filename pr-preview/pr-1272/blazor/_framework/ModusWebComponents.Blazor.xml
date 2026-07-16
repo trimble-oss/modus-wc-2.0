@@ -2120,7 +2120,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MainMenu">
             <summary>
-            Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, items defines the full ordered list of built-in references and custom entries.
+            Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and items appends custom entries.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MenuOne">
