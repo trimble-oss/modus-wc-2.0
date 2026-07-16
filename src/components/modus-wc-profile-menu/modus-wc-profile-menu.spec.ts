@@ -42,13 +42,9 @@ describe('modus-wc-profile-menu', () => {
     ]);
   });
 
-  it('should render custom main menu order and omit excluded built-in items', async () => {
+  it('should hide built-in main menu items when their visibility flag is false', async () => {
     const mainMenu = {
-      items: [
-        { id: 'my-products' as const },
-        { id: 'my-profile' as const },
-        { id: 'support-center' as const },
-      ],
+      adminSettings: false,
     };
 
     const page = await newSpecPage({
@@ -64,16 +60,16 @@ describe('modus-wc-profile-menu', () => {
       page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
     );
     expect(mainMenuItems.map((item) => item.getAttribute('label'))).toEqual([
-      'My Products',
       'My Profile',
+      'My Products',
       'Support center',
     ]);
   });
 
-  it('should render custom main menu items alongside built-in references', async () => {
+  it('should render custom main menu items after visible built-in items', async () => {
     const mainMenu = {
+      adminSettings: false,
       items: [
-        { id: 'my-profile' as const },
         {
           label: 'Billing',
           icon: 'invoice',
@@ -98,17 +94,24 @@ describe('modus-wc-profile-menu', () => {
     );
     expect(mainMenuItems.map((item) => item.getAttribute('value'))).toEqual([
       'my-profile',
+      'my-products',
+      'support-center',
       'billing',
     ]);
   });
 
-  it('should not render main menu section when main menu items are empty', async () => {
+  it('should not render main menu section when all built-in items are hidden and no custom items are provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],
       template: () =>
         h('modus-wc-profile-menu', {
           profileProps: mockProfileProps,
-          mainMenu: { items: [] },
+          mainMenu: {
+            myProfile: false,
+            myProducts: false,
+            supportCenter: false,
+            adminSettings: false,
+          },
         }),
     });
 

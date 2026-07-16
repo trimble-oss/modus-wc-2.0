@@ -60,14 +60,16 @@ const meta: Meta<ProfileMenuArgs> = {
           detail: `
             Interface: IMainMenu
             Properties:
-            - items (IMainMenuEntry[], optional): Ordered list of built-in references and custom menu items
-              - Built-in reference: { id: 'my-profile' | 'my-products' | 'support-center' | 'admin-settings' }
-              - Custom item (IMenuItem):
-                - label (string): The display text for the menu item
-                - icon (string, optional): The name of the icon to display
-                - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
-                - iconVariant ('solid' | 'outlined', optional): The variant of the icon
-                - value (string, optional): The value associated with the menu item, used for selection
+            - myProfile (boolean, optional): Controls visibility of the My Profile menu item
+            - myProducts (boolean, optional): Controls visibility of the My Products menu item
+            - supportCenter (boolean, optional): Controls visibility of the Support center menu item
+            - adminSettings (boolean, optional): Controls visibility of the Admin settings menu item
+            - items (IMenuItem[], optional): Additional custom menu items appended after visible built-in items
+              - label (string): The display text for the menu item
+              - icon (string, optional): The name of the icon to display
+              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
+              - iconVariant ('solid' | 'outlined', optional): The variant of the icon
+              - value (string, optional): The value associated with the menu item, used for selection
             When omitted, all built-in items render in the default order.
           `,
         },
@@ -119,7 +121,7 @@ A customizable profile menu component that displays user information with option
 
 ### Features
 - **User Profile Display**: Shows profile image, header name, username, and email
-- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings) that can be reordered, removed, or extended via \`mainMenu\`
+- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings) that can be hidden or extended via \`mainMenu\`
 - **Custom Submenus**: Supports up to two additional custom submenus with titles and icons
 - **Manage Trimble ID Link**: Optional link for managing user's Trimble ID
 - **Sign Out**: Built-in sign out menu item in the footer
@@ -222,7 +224,7 @@ export const WithCustomMainMenu: Story = {
     docs: {
       description: {
         story:
-          'Reorders built-in items, omits Admin settings, and inserts a custom Billing item between defaults.',
+          'Hides Admin settings and appends a custom Billing item after the remaining built-in items.',
       },
       source: {
         transform: (_src, { args }: { args: ProfileMenuArgs }) =>
@@ -232,8 +234,8 @@ export const WithCustomMainMenu: Story = {
   },
   args: {
     'main-menu': {
+      adminSettings: false,
       items: [
-        { id: 'my-products' },
         {
           label: 'Billing',
           icon: 'invoice',
@@ -241,8 +243,6 @@ export const WithCustomMainMenu: Story = {
           iconSize: 'sm',
           value: 'billing',
         },
-        { id: 'my-profile' },
-        { id: 'support-center' },
       ],
     },
   },
@@ -347,10 +347,10 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-profile-menu',
         propsMapper: (v: ProfileMenuArgs, el: HTMLElement) => {
           const profileMenuEl = el as unknown as {
-            profileProps: IProfileMenuProps;
-            mainMenu: IMainMenu | undefined;
-            menuOne: ISubMenu | undefined;
-            menuTwo: ISubMenu | undefined;
+            profileProps: ProfileMenuArgs['profile-props'];
+            mainMenu?: ProfileMenuArgs['main-menu'];
+            menuOne?: ProfileMenuArgs['menu-one'];
+            menuTwo?: ProfileMenuArgs['menu-two'];
           };
           profileMenuEl.profileProps = v['profile-props'];
           profileMenuEl.mainMenu = v['main-menu'];
