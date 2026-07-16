@@ -13,6 +13,8 @@ The component supports a `<slot>` for injecting content within the button, simil
 
 | Property      | Attribute      | Description                                                          | Type                                                                                        | Default       |
 | ------------- | -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------- |
+| `ariaCurrent` | `aria-current` | Sets `aria-current` on the native button element.                    | `null \| string`                                                                            | `null`        |
+| `ariaLabel`   | `aria-label`   | Sets `aria-label` on the native button element.                      | `null \| string`                                                                            | `null`        |
 | `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "neutral" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning"` | `'primary'`   |
 | `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                                                       | `''`          |
 | `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                                                      | `false`       |

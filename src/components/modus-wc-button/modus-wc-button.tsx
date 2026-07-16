@@ -30,10 +30,10 @@ export class ModusWcButton {
   @Element() el!: HTMLElement;
 
   /** Sets `aria-current` on the native button element. */
-  @Prop({ attribute: 'aria-current' }) ariaCurrent?: string;
+  @Prop({ attribute: 'aria-current' }) ariaCurrent: string | null = null;
 
   /** Sets `aria-label` on the native button element. */
-  @Prop({ attribute: 'aria-label' }) ariaLabel?: string;
+  @Prop({ attribute: 'aria-label' }) ariaLabel: string | null = null;
 
   /** The color variant of the button. */
   @Prop() color:
