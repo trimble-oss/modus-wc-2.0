@@ -30,8 +30,14 @@ export class ModusWcButton {
   @Element() el!: HTMLElement;
 
   /** The color variant of the button. */
-  @Prop() color: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger' =
-    'primary';
+  @Prop() color:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral'
+    | 'success' = 'primary';
 
   /** Custom CSS class to apply to the button element. */
   @Prop() customClass?: string = '';

@@ -313,6 +313,12 @@ export interface IInputFeedbackProp {
   message?: string;
 }
 
+export interface IFileDropzoneFeedback {
+  type: 'info' | 'error' | 'success';
+  icon?: string;
+  message?: string;
+}
+
 export type PopoverPlacement =
   | 'top'
   | 'top-start'
@@ -357,4 +363,11 @@ export interface IAutocompleteNoResults {
   label: string;
   /** The sub-label or additional text to display below the main label. */
   subLabel: string;
+}
+
+export type DateRangeField = 'start' | 'end';
+
+export interface IDateRange {
+  startDate: string;
+  endDate: string;
 }

@@ -36,9 +36,8 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-error {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-red-pale (#fbd4d7) 80% + --modus-wc-color-gray-light (#f1f1f6) 20%
-    background-color: #fce0e2;
+    // Fallback for Chrome <111: --modus-wc-color-red-pale (#fbd4d7) at 80% opacity
+    background-color: rgb(251 212 215 / 0.8);
     border-color: var(--modus-wc-color-red-dark);
     color: var(--modus-wc-color-gray-10);
 
@@ -46,15 +45,14 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-red-pale) 80%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
 
   &.modus-wc-alert-success {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-green-pale (#e0eccf) 80% + --modus-wc-color-gray-light (#f1f1f6) 20%
-    background-color: #e6efd9;
+    // Fallback for Chrome <111: --modus-wc-color-green-pale (#e0eccf) at 80% opacity
+    background-color: rgb(224 236 207 / 0.8);
     border-color: var(--modus-wc-color-green-dark);
     color: var(--modus-wc-color-gray-10);
 
@@ -62,15 +60,14 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-success-pale) 80%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
 
   &.modus-wc-alert-warning {
-    // Fallback for Chrome <111: precomputed solid blend of
-    // --modus-wc-color-yellow-pale (#fff5e4) 60% + --modus-wc-color-gray-light (#f1f1f6) 40%
-    background-color: #f9f0e8;
+    // Fallback for Chrome <111: --modus-wc-color-yellow-pale (#fff5e4) at 60% opacity
+    background-color: rgb(255 245 228 / 0.6);
     border-color: var(--modus-wc-color-yellow-dark);
     color: var(--modus-wc-color-black);
 
@@ -78,7 +75,7 @@ modus-wc-alert .modus-wc-alert {
       background-color: color-mix(
         in sRGB,
         var(--modus-wc-color-yellow-pale) 60%,
-        var(--modus-wc-color-gray-light)
+        transparent
       );
     }
   }
@@ -160,14 +157,14 @@ modus-wc-alert .modus-wc-alert {
   }
 
   &.modus-wc-alert-success {
-    // Fallback for Chrome <111: --modus-wc-color-green (#1e8a44) at 50% opacity
-    background-color: rgb(30 138 68 / 0.5);
+    // Fallback for Chrome <111: --modus-wc-color-green-dark (#006638) at 50% opacity
+    background-color: rgb(0 102 56 / 0.5);
     border-color: var(--modus-wc-color-green-light);
 
     @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
       background-color: color-mix(
         in sRGB,
-        var(--modus-wc-color-green) 50%,
+        var(--modus-wc-color-success) 50%,
         transparent
       );
     }
