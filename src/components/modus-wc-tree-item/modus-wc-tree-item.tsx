@@ -134,7 +134,6 @@ export class ModusWcTreeItem {
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      e.stopPropagation();
       this.handleItemSelect();
     }
   }

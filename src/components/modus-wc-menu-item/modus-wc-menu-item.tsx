@@ -131,7 +131,6 @@ export class ModusWcMenuItem {
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      e.stopPropagation();
       this.handleItemSelect();
     }
   }

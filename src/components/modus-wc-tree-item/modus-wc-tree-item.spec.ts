@@ -277,10 +277,12 @@ describe('modus-wc-tree-item', () => {
       bubbles: true,
       cancelable: true,
     });
+    const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
 
     li?.dispatchEvent(enterEvent);
     await page.waitForChanges();
 
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
     expect(emitSpy).toHaveBeenCalledWith({
       value: 'test-value',
       selected: true,
@@ -313,16 +315,51 @@ describe('modus-wc-tree-item', () => {
       );
     });
 
-    childLi.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Enter',
-        bubbles: true,
-        cancelable: true,
-      })
-    );
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
+
+    childLi.dispatchEvent(enterEvent);
     await page.waitForChanges();
 
     expect(emittedValues).toEqual(['child']);
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when event target belongs to nested child item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcTreeMenu],
+      html: `
+        <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
+          <modus-wc-tree-menu is-sub-menu="true">
+            <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
+          </modus-wc-tree-menu>
+        </modus-wc-tree-item>
+      `,
+    });
+
+    const childLi = page.doc.querySelector(
+      'modus-wc-tree-item[value="child"] li'
+    ) as HTMLLIElement;
+    const parentEmitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: childLi,
+      configurable: true,
+    });
+
+    page.rootInstance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(parentEmitSpy).not.toHaveBeenCalled();
   });
 
   it('should not handle keydown when event target is null', async () => {
@@ -765,15 +802,17 @@ describe('modus-wc-tree-item', () => {
     const li = page.root?.querySelector('li');
     const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
 
-    li?.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: ' ',
-        bubbles: true,
-        cancelable: true,
-      })
-    );
+    const spaceEvent = new KeyboardEvent('keydown', {
+      key: ' ',
+      bubbles: true,
+      cancelable: true,
+    });
+    const stopPropagationSpy = jest.spyOn(spaceEvent, 'stopPropagation');
+
+    li?.dispatchEvent(spaceEvent);
     await page.waitForChanges();
 
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
     expect(emitSpy).toHaveBeenCalledWith({
       value: 'test-value',
       selected: true,
