@@ -56,7 +56,7 @@ export class ModusWcContentTree {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). On drop the component emits `nodeMove`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in. */
+  /** Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in. */
   @Prop() allowDragDrop?: boolean;
 
   /** Indicates that the content tree should have a border. */
@@ -131,7 +131,7 @@ export class ModusWcContentTree {
   /** Event emitted when an inline edit is cancelled. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty). */
   @StencilEvent() nodeEditCancel!: EventEmitter<{ id: string }>;
 
-  /** Event emitted when a node is dropped onto a new location via drag-and-drop. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child. The app should apply the move (e.g. via `moveNodeRelative`). */
+  /** Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child. */
   @StencilEvent() nodeMove!: EventEmitter<{
     id: string;
     targetId: string;
@@ -183,6 +183,17 @@ export class ModusWcContentTree {
   // pointer hovers its "inside" zone during a drag.
   private springLoadId?: string;
   private springLoadTimer?: ReturnType<typeof setTimeout>;
+
+  // Off-document clone passed to setDragImage; removed on drop / drag end.
+  private dragGhost?: HTMLElement;
+
+  // Stashed on drop; emitted from dragend so a nodes update cannot destroy the
+  // drag source while the browser still owns the gesture.
+  private pendingMove?: {
+    id: string;
+    targetId: string;
+    position: 'before' | 'after' | 'inside';
+  };
 
   // The id used by the inner <dialog> (must be unique per instance).
   private deleteModalId = `content-tree-delete-${contentTreeInstanceId++}`;
@@ -260,6 +271,9 @@ export class ModusWcContentTree {
 
   componentDidRender() {
     this.syncDragHandleDraggable();
+    // Child modus-wc-button hosts may finish their inner <button> one frame
+    // later after a keyed recreate — re-sync so draggable is never missed.
+    requestAnimationFrame(() => this.syncDragHandleDraggable());
 
     if (!this.editFocusPending || !this.editingNodeId) return;
     this.editFocusPending = false;
@@ -286,6 +300,8 @@ export class ModusWcContentTree {
   disconnectedCallback() {
     this.detachInputKeyDown();
     this.clearSpringLoad();
+    this.pendingMove = undefined;
+    this.removeDragGhost();
   }
 
   // modus-wc-button does not expose draggable; set it on the inner native
@@ -333,33 +349,6 @@ export class ModusWcContentTree {
       this.cancelEdit(node);
     }
   };
-
-  @Listen('keydown')
-  handleRowCheckboxKeyDown(e: KeyboardEvent) {
-    if (!this.isMultiSelect() || e.key !== ' ') return;
-
-    const target = e.target;
-    if (!(target instanceof HTMLInputElement) || target.type !== 'checkbox') {
-      return;
-    }
-
-    const treeItem = target.closest('modus-wc-tree-item');
-    if (!treeItem || !this.el.contains(treeItem)) return;
-
-    // Row checkboxes live inside content-tree start chrome, not the tree-item's
-    // built-in checkbox (multi-select uses slotted checkboxes only).
-    if (!target.closest('.modus-wc-content-tree-node-start')) return;
-
-    const node = findNode(
-      this.getNodes(),
-      (treeItem as HTMLElement & { value: string }).value
-    );
-    if (!node || node.disabled) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    this.handleCheckboxChange(new CustomEvent('inputChange'), node);
-  }
 
   @Listen('itemSelect')
   handleItemSelect(e: CustomEvent<{ value: string; selected?: boolean }>) {
@@ -430,16 +419,19 @@ export class ModusWcContentTree {
   };
 
   // --- Drag & drop (opt-in via `allowDragDrop`) ---
-  // The component stays stateless: dropping emits `nodeMove` with the resolved
-  // intent and the application applies it (e.g. via `moveNodeRelative`).
+  // The component stays stateless: a valid drop stashes the intent and
+  // `dragend` emits `nodeMove` so the app can apply it (e.g. via
+  // `moveNodeRelative`) without tearing down the drag source mid-gesture.
 
   private handleDragStart = (e: DragEvent, node: ITreeNode) => {
     if (!this.allowDragDrop || node.disabled) return;
+    this.pendingMove = undefined;
     this.draggingId = node.id;
     if (e.dataTransfer) {
       e.dataTransfer.effectAllowed = 'move';
       // Some browsers require drag data for the drag to initiate.
       e.dataTransfer.setData('text/plain', node.id);
+      this.setRowDragImage(e, node);
     }
   };
 
@@ -489,18 +481,119 @@ export class ModusWcContentTree {
 
     this.clearSpringLoad();
     this.clearDropState();
-    this.draggingId = undefined;
-
-    if (valid && position) {
-      this.nodeMove.emit({ id, targetId: node.id, position });
-    }
+    // Keep `draggingId` until dragend so the source row (and its dragend
+    // listener) stay mounted; only stash the move for emission on dragend.
+    this.pendingMove =
+      valid && position ? { id, targetId: node.id, position } : undefined;
+    this.removeDragGhost();
   };
 
   private handleDragEnd = () => {
+    const move = this.pendingMove;
+    this.pendingMove = undefined;
     this.draggingId = undefined;
     this.clearDropState();
     this.clearSpringLoad();
+    this.removeDragGhost();
+
+    if (move) {
+      this.nodeMove.emit(move);
+    }
   };
+
+  private resolveDragRow(
+    node: ITreeNode,
+    event: DragEvent
+  ): HTMLElement | null {
+    const target = event.target;
+    const fromTarget =
+      target instanceof HTMLElement
+        ? target.closest('modus-wc-tree-item')
+        : null;
+    const treeItem =
+      fromTarget && this.el.contains(fromTarget)
+        ? fromTarget
+        : Array.from(this.el.querySelectorAll('modus-wc-tree-item')).find(
+            (item) =>
+              (item as HTMLElement & { value: string }).value === node.id
+          );
+
+    return (
+      treeItem?.querySelector<HTMLElement>('.modus-wc-menu-item-interactive') ??
+      null
+    );
+  }
+
+  // Drag starts from the handle only; use the full row as the drag image so the node travels with the cursor.
+  private setRowDragImage(event: DragEvent, node: ITreeNode): void {
+    const dataTransfer = event.dataTransfer;
+    if (!dataTransfer?.setDragImage) return;
+
+    const row = this.resolveDragRow(node, event);
+    if (!row) return;
+
+    this.removeDragGhost();
+    const ghost = this.buildDragGhost(row);
+    document.body.appendChild(ghost);
+    this.dragGhost = ghost;
+
+    const rect = row.getBoundingClientRect();
+    const offsetX =
+      rect.width > 0
+        ? Math.min(rect.width, Math.max(0, event.clientX - rect.left))
+        : 0;
+    const offsetY =
+      rect.height > 0
+        ? Math.min(rect.height, Math.max(0, event.clientY - rect.top))
+        : 0;
+
+    dataTransfer.setDragImage(ghost, offsetX, offsetY);
+  }
+
+  private buildDragGhost(row: HTMLElement): HTMLElement {
+    const ghost = row.cloneNode(true) as HTMLElement;
+    ghost.classList.add('modus-wc-content-tree-drag-ghost');
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.style.position = 'fixed';
+    ghost.style.top = '-9999px';
+    ghost.style.left = '-9999px';
+    ghost.style.pointerEvents = 'none';
+    ghost.querySelector('.modus-wc-content-tree-actions')?.remove();
+    const { width } = row.getBoundingClientRect();
+    if (width > 0) {
+      ghost.style.width = `${width}px`;
+      ghost.style.minWidth = `${width}px`;
+    }
+    // The row's font size comes from a size class on its <li> ancestor
+    // (e.g. `.modus-wc-menu-item-md`), which the clone does not include —
+    // copy the resolved values so ghost text matches the live row exactly.
+    const rowStyle = window.getComputedStyle(row);
+    ghost.style.fontSize = rowStyle.fontSize;
+    ghost.style.lineHeight = rowStyle.lineHeight;
+    this.copyComputedFontSize(row, ghost, '.modus-wc-menu-item-labels');
+    this.copyComputedFontSize(row, ghost, '.modus-wc-menu-item-sublabel');
+    return ghost;
+  }
+
+  // Some themes set a more specific font-size on the label/sublabel itself
+  // (beyond the row-level size class); mirror it directly on the ghost clone.
+  private copyComputedFontSize(
+    liveRow: HTMLElement,
+    ghostRow: HTMLElement,
+    selector: string
+  ): void {
+    const liveEl = liveRow.querySelector(selector);
+    const ghostEl = ghostRow.querySelector<HTMLElement>(selector);
+    if (!liveEl || !ghostEl) return;
+    const liveStyle = window.getComputedStyle(liveEl);
+    ghostEl.style.fontSize = liveStyle.fontSize;
+    ghostEl.style.lineHeight = liveStyle.lineHeight;
+  }
+
+  private removeDragGhost(): void {
+    this.dragGhost?.remove();
+    this.dragGhost = undefined;
+  }
 
   private clearDropState(): void {
     this.dragOverId = undefined;

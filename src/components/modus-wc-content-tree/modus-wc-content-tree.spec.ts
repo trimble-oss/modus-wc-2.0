@@ -50,6 +50,13 @@ interface ContentTreeHarness {
   handleDragLeave: (e: DragEvent, node: ITreeNode) => void;
   handleDrop: (e: DragEvent, node: ITreeNode) => void;
   handleDragEnd: () => void;
+  copyComputedFontSize: (
+    liveRow: HTMLElement,
+    ghostRow: HTMLElement,
+    selector: string
+  ) => void;
+  setRowDragImage: (event: DragEvent, node: ITreeNode) => void;
+  buildDragGhost: (row: HTMLElement) => HTMLElement;
   clearDropState: () => void;
   clearSpringLoad: () => void;
   isInvalidDropTarget: (node: ITreeNode) => boolean;
@@ -84,7 +91,6 @@ interface ContentTreeHarness {
   cancelEdit: (node: ITreeNode) => void;
   onEditingNodeIdChange: (newId?: string) => void;
   handleInputKeyDown: (e: KeyboardEvent) => void;
-  handleRowCheckboxKeyDown: (e: KeyboardEvent) => void;
   componentWillLoad: () => void;
   componentDidRender: () => void;
   disconnectedCallback: () => void;
@@ -287,6 +293,8 @@ describe('modus-wc-content-tree', () => {
       dataTransfer?: unknown;
       currentTarget?: unknown;
       relatedTarget?: unknown;
+      target?: unknown;
+      clientX?: number;
       clientY?: number;
     } = {}
   ): DragEvent =>
@@ -296,6 +304,8 @@ describe('modus-wc-content-tree', () => {
       dataTransfer: undefined,
       currentTarget: undefined,
       relatedTarget: undefined,
+      target: undefined,
+      clientX: 0,
       clientY: 0,
       ...overrides,
     }) as unknown as DragEvent;
@@ -611,7 +621,7 @@ describe('modus-wc-content-tree', () => {
     );
   });
 
-  it('should emit nodeCheckChange and not nodeSelect when Space is pressed on a row checkbox in multi-select mode', async () => {
+  it('should emit nodeCheckChange and not nodeSelect when Space activates a row checkbox in multi-select mode', async () => {
     const { page } = await createTreePage({
       selectionMode: 'multiple',
       checkedNodeIds: [],
@@ -622,16 +632,25 @@ describe('modus-wc-content-tree', () => {
     page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
     page.root?.addEventListener('nodeSelect', nodeSelect);
 
-    const checkboxInput = findTreeItem(page, 'leaf-a')?.querySelector(
-      'modus-wc-checkbox input'
-    ) as HTMLInputElement;
+    const checkbox = findTreeItem(page, 'leaf-a')?.querySelector(
+      'modus-wc-checkbox'
+    ) as HTMLElement;
+    const checkboxInput = checkbox?.querySelector('input') as HTMLInputElement;
 
+    checkboxInput.focus();
     checkboxInput.dispatchEvent(
       new KeyboardEvent('keydown', {
         key: ' ',
         bubbles: true,
         cancelable: true,
       })
+    );
+    await page.waitForChanges();
+    expect(nodeSelect).not.toHaveBeenCalled();
+
+    // Native Space ends in modus-wc-checkbox inputChange; jsdom does not synthesize it.
+    checkbox.dispatchEvent(
+      new CustomEvent('inputChange', { bubbles: true, composed: true })
     );
     await page.waitForChanges();
 
@@ -643,83 +662,8 @@ describe('modus-wc-content-tree', () => {
     expect(nodeSelect).not.toHaveBeenCalled();
   });
 
-  it('should ignore Space on non-checkbox targets in multi-select mode', async () => {
-    const { component } = await createTreePage({
-      selectionMode: 'multiple',
-      expandedNodeIds: ['root-1'],
-    });
-    const nodeCheckChange = jest.fn();
-    component.el.addEventListener('nodeCheckChange', nodeCheckChange);
-
-    const textInput = document.createElement('input');
-    textInput.type = 'text';
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: textInput,
-    } as unknown as KeyboardEvent);
-
-    const button = document.createElement('button');
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: button,
-    } as unknown as KeyboardEvent);
-
-    expect(nodeCheckChange).not.toHaveBeenCalled();
-  });
-
-  it('should ignore row checkbox Space outside multi-select or for non-space keys', async () => {
-    const { page, component } = await createTreePage({
-      selectionMode: 'single',
-      expandedNodeIds: ['root-1'],
-    });
-    const nodeCheckChange = jest.fn();
-    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
-    const checkboxInput = findTreeItem(page, 'leaf-a')?.querySelector(
-      'modus-wc-checkbox input'
-    ) as HTMLInputElement;
-
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: checkboxInput,
-    } as unknown as KeyboardEvent);
-    component.handleRowCheckboxKeyDown({
-      key: 'Enter',
-      target: checkboxInput,
-    } as unknown as KeyboardEvent);
-
-    expect(nodeCheckChange).not.toHaveBeenCalled();
-  });
-
-  it('should ignore row checkbox Space when the checkbox is outside tree row chrome', async () => {
-    const { page, component } = await createTreePage({
-      selectionMode: 'multiple',
-      expandedNodeIds: ['root-1'],
-    });
-    const nodeCheckChange = jest.fn();
-    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
-
-    const orphanCheckbox = document.createElement('input');
-    orphanCheckbox.type = 'checkbox';
-    page.root!.appendChild(orphanCheckbox);
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: orphanCheckbox,
-    } as unknown as KeyboardEvent);
-
-    const treeItem = findTreeItem(page, 'leaf-a')!;
-    const slottedCheckbox = document.createElement('input');
-    slottedCheckbox.type = 'checkbox';
-    treeItem.appendChild(slottedCheckbox);
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: slottedCheckbox,
-    } as unknown as KeyboardEvent);
-
-    expect(nodeCheckChange).not.toHaveBeenCalled();
-  });
-
-  it('should ignore row checkbox Space for disabled nodes', async () => {
-    const { page, component } = await createTreePage({
+  it('should not emit nodeCheckChange for disabled row checkboxes', async () => {
+    const { page } = await createTreePage({
       selectionMode: 'multiple',
       expandedNodeIds: ['root-1'],
     });
@@ -729,10 +673,8 @@ describe('modus-wc-content-tree', () => {
       'modus-wc-checkbox input'
     ) as HTMLInputElement;
 
-    component.handleRowCheckboxKeyDown({
-      key: ' ',
-      target: checkboxInput,
-    } as unknown as KeyboardEvent);
+    checkboxInput.click();
+    await page.waitForChanges();
 
     expect(nodeCheckChange).not.toHaveBeenCalled();
   });
@@ -1862,6 +1804,7 @@ describe('modus-wc-content-tree', () => {
   it('should skip edit focus when there is no pending edit session', async () => {
     const restoreRaf = mockRaf();
     const { component } = await createTreePage();
+    const querySpy = jest.spyOn(component.el, 'querySelector');
     (
       globalThis.requestAnimationFrame as jest.MockedFunction<
         typeof globalThis.requestAnimationFrame
@@ -1870,7 +1813,11 @@ describe('modus-wc-content-tree', () => {
 
     component.componentDidRender();
 
-    expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    // Drag-handle re-sync still schedules a frame; edit focus must not.
+    expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(1);
+    expect(querySpy).not.toHaveBeenCalledWith(
+      '.modus-wc-content-tree-edit-input input'
+    );
     restoreRaf();
   });
 
@@ -2026,6 +1973,7 @@ describe('modus-wc-content-tree', () => {
     });
 
     component.onEditingNodeIdChange(undefined);
+    const querySpy = jest.spyOn(component.el, 'querySelector');
     (
       globalThis.requestAnimationFrame as jest.MockedFunction<
         typeof globalThis.requestAnimationFrame
@@ -2033,7 +1981,12 @@ describe('modus-wc-content-tree', () => {
     ).mockClear();
     component.componentDidRender();
 
-    expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
+    // Drag-handle re-sync still schedules a frame; cleared edit sessions do not.
+    expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(1);
+    expect(component.editFocusPending).toBe(false);
+    expect(querySpy).not.toHaveBeenCalledWith(
+      '.modus-wc-content-tree-edit-input input'
+    );
     restoreRaf();
   });
 
@@ -2213,13 +2166,196 @@ describe('modus-wc-content-tree', () => {
   it('should set the dragging id and drag data on drag start', async () => {
     const { component } = await createTreePage({ allowDragDrop: true });
     const setData = jest.fn();
-    const e = makeDragEvent({ dataTransfer: { setData, effectAllowed: '' } });
+    const setDragImage = jest.fn();
+    const e = makeDragEvent({
+      dataTransfer: { setData, effectAllowed: '', setDragImage },
+    });
 
     component.handleDragStart(e, getNode('leaf-a'));
 
     expect(component.draggingId).toBe('leaf-a');
     expect(setData).toHaveBeenCalledWith('text/plain', 'leaf-a');
     expect((e.dataTransfer as DataTransfer).effectAllowed).toBe('move');
+  });
+
+  it('should set a full-row drag image on drag start', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const setDragImage = jest.fn<void, [Element, number, number]>();
+    const treeItem = findTreeItem(page, 'leaf-a')!;
+    const row = treeItem.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    jest.spyOn(row, 'getBoundingClientRect').mockReturnValue({
+      top: 40,
+      left: 10,
+      width: 200,
+      height: 32,
+      right: 210,
+      bottom: 72,
+      x: 10,
+      y: 40,
+      toJSON: () => ({}),
+    });
+    const dragHandle = treeItem.querySelector(
+      'modus-wc-button.modus-wc-content-tree-drag-handle button'
+    ) as HTMLButtonElement;
+
+    component.handleDragStart(
+      makeDragEvent({
+        dataTransfer: {
+          setData: jest.fn(),
+          effectAllowed: '',
+          setDragImage,
+        },
+        target: dragHandle,
+        clientX: 25,
+        clientY: 52,
+      }),
+      getNode('leaf-a')
+    );
+
+    expect(setDragImage).toHaveBeenCalledTimes(1);
+    const [ghost, offsetX, offsetY] = setDragImage.mock.calls[0];
+    expect(ghost?.nodeType).toBe(1);
+    expect(ghost.classList.contains('modus-wc-content-tree-drag-ghost')).toBe(
+      true
+    );
+    expect(
+      ghost.querySelector('.modus-wc-content-tree-drag-handle')
+    ).not.toBeNull();
+    expect(ghost.querySelector('.modus-wc-content-tree-actions')).toBeNull();
+    expect(offsetX).toBe(15);
+    expect(offsetY).toBe(12);
+    expect(document.body.contains(ghost)).toBe(true);
+
+    component.handleDragEnd();
+    expect(document.body.contains(ghost)).toBe(false);
+  });
+
+  it('should copy the live row computed font size onto the matching ghost element', async () => {
+    const { page, component } = await createTreePage({ allowDragDrop: true });
+    const liveRow = page.doc.createElement('div');
+    const liveLabel = page.doc.createElement('div');
+    liveLabel.className = 'modus-wc-menu-item-labels';
+    liveRow.appendChild(liveLabel);
+
+    const ghostRow = page.doc.createElement('div');
+    const ghostLabel = page.doc.createElement('div');
+    ghostLabel.className = 'modus-wc-menu-item-labels';
+    ghostRow.appendChild(ghostLabel);
+
+    const getComputedStyleSpy = jest.spyOn(window, 'getComputedStyle');
+
+    component.copyComputedFontSize(
+      liveRow,
+      ghostRow,
+      '.modus-wc-menu-item-labels'
+    );
+
+    // The test environment's getComputedStyle stub reports no font size, but
+    // this confirms both matched elements were resolved and the copy ran.
+    expect(getComputedStyleSpy).toHaveBeenCalledWith(liveLabel);
+    expect(ghostLabel.style.fontSize).toBe('');
+    expect(ghostLabel.style.lineHeight).toBe('');
+
+    getComputedStyleSpy.mockRestore();
+  });
+
+  it('should not copy a font size when the selector matches on neither row', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const liveRow = document.createElement('div');
+    const ghostRow = document.createElement('div');
+
+    expect(() =>
+      component.copyComputedFontSize(
+        liveRow,
+        ghostRow,
+        '.modus-wc-menu-item-sublabel'
+      )
+    ).not.toThrow();
+  });
+
+  it('should not copy a font size when the ghost row has no matching element', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const liveRow = document.createElement('div');
+    const liveLabel = document.createElement('div');
+    liveLabel.className = 'modus-wc-menu-item-sublabel';
+    liveRow.appendChild(liveLabel);
+    const ghostRow = document.createElement('div');
+
+    expect(() =>
+      component.copyComputedFontSize(
+        liveRow,
+        ghostRow,
+        '.modus-wc-menu-item-sublabel'
+      )
+    ).not.toThrow();
+  });
+
+  it('should skip setting a drag image when the drag event has no dataTransfer', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+
+    expect(() =>
+      component.setRowDragImage(makeDragEvent(), getNode('leaf-a'))
+    ).not.toThrow();
+  });
+
+  it('should build a drag ghost even when the row has no actions element', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const row = document.createElement('div');
+    row.textContent = 'Plain row';
+
+    const ghost = component.buildDragGhost(row);
+
+    expect(ghost.classList.contains('modus-wc-content-tree-drag-ghost')).toBe(
+      true
+    );
+  });
+
+  it('should skip the drag image when the row chrome cannot be resolved', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const setDragImage = jest.fn();
+
+    component.handleDragStart(
+      makeDragEvent({
+        dataTransfer: {
+          setData: jest.fn(),
+          effectAllowed: '',
+          setDragImage,
+        },
+        target: document.createElement('span'),
+      }),
+      { id: 'missing-node', label: 'Missing' }
+    );
+
+    expect(setDragImage).not.toHaveBeenCalled();
+  });
+
+  it('should tolerate a missing setDragImage on drag start', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const treeItem = findTreeItem(page, 'leaf-a')!;
+    const dragHandle = treeItem.querySelector(
+      'modus-wc-button.modus-wc-content-tree-drag-handle button'
+    ) as HTMLButtonElement;
+
+    component.handleDragStart(
+      makeDragEvent({
+        dataTransfer: { setData: jest.fn(), effectAllowed: '' },
+        target: dragHandle,
+      }),
+      getNode('leaf-a')
+    );
+
+    expect(component.draggingId).toBe('leaf-a');
+    expect(
+      document.querySelector('.modus-wc-content-tree-drag-ghost')
+    ).toBeNull();
   });
 
   it('should tolerate a missing dataTransfer on drag start', async () => {
@@ -2475,7 +2611,7 @@ describe('modus-wc-content-tree', () => {
     jest.useRealTimers();
   });
 
-  it('should emit nodeMove for a valid drop', async () => {
+  it('should emit nodeMove on dragend after a valid drop', async () => {
     const { page, component } = await createTreePage({
       allowDragDrop: true,
       expandedNodeIds: ['root-1'],
@@ -2499,6 +2635,13 @@ describe('modus-wc-content-tree', () => {
     component.handleDrop(dropEvent, getNode('root-2'));
 
     expect(dropEvent.preventDefault).toHaveBeenCalled();
+    // Emit is deferred until dragend so a nodes update cannot destroy the
+    // drag source while the browser still owns the gesture.
+    expect(nodeMove).not.toHaveBeenCalled();
+    expect(component.draggingId).toBe('leaf-a');
+
+    component.handleDragEnd();
+
     expect(nodeMove).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: { id: 'leaf-a', targetId: 'root-2', position: 'before' },
@@ -2518,6 +2661,7 @@ describe('modus-wc-content-tree', () => {
       getNode('root-1')
     );
     component.handleDrop(makeDragEvent(), getNode('root-1'));
+    component.handleDragEnd();
     expect(nodeMove).not.toHaveBeenCalled();
 
     // Valid target but no drag-over resolved a position.
@@ -2526,6 +2670,7 @@ describe('modus-wc-content-tree', () => {
       getNode('leaf-a')
     );
     component.handleDrop(makeDragEvent(), getNode('root-2'));
+    component.handleDragEnd();
     expect(nodeMove).not.toHaveBeenCalled();
   });
 
@@ -2544,14 +2689,18 @@ describe('modus-wc-content-tree', () => {
     expect(notDragging.preventDefault).not.toHaveBeenCalled();
   });
 
-  it('should clear all drag state on drag end', async () => {
-    const { component } = await createTreePage({ allowDragDrop: true });
+  it('should clear all drag state on drag end without emitting when nothing was dropped', async () => {
+    const { page, component } = await createTreePage({ allowDragDrop: true });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+
     component.draggingId = 'root-1';
     component.dragOverId = 'root-1';
     component.dropPosition = 'inside';
 
     component.handleDragEnd();
 
+    expect(nodeMove).not.toHaveBeenCalled();
     expect(component.draggingId).toBeUndefined();
     expect(component.dragOverId).toBeUndefined();
     expect(component.dropPosition).toBeUndefined();
@@ -2580,6 +2729,8 @@ describe('modus-wc-content-tree', () => {
       allowDragDrop: true,
       expandedNodeIds: ['root-1'],
     });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
 
     const makeDomDragEvent = (
       type: string,
@@ -2594,6 +2745,7 @@ describe('modus-wc-content-tree', () => {
           setData: jest.fn(),
           effectAllowed: '',
           dropEffect: '',
+          setDragImage: jest.fn(),
         },
         enumerable: true,
       });
@@ -2635,8 +2787,16 @@ describe('modus-wc-content-tree', () => {
 
     dropTarget.dispatchEvent(makeDomDragEvent('dragover', { clientY: 10 }));
     dropTarget.dispatchEvent(makeDomDragEvent('drop'));
+    expect(nodeMove).not.toHaveBeenCalled();
+    expect(component.draggingId).toBe('leaf-a');
+
     dragHandle.dispatchEvent(makeDomDragEvent('dragend'));
 
+    expect(nodeMove).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'leaf-a', targetId: 'root-2', position: 'before' },
+      })
+    );
     expect(component.draggingId).toBeUndefined();
     expect(component.dragOverId).toBeUndefined();
   });

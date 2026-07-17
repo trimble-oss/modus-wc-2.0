@@ -303,7 +303,7 @@ modus-wc-content-tree {
   }
 
   .modus-wc-content-tree-dragging > .modus-wc-menu-item-interactive {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
   .modus-wc-content-tree-modal {
@@ -410,5 +410,95 @@ modus-wc-content-tree {
   /* Parent active fill on the row only, not the nested submenu. */
   .modus-wc-menu-item.modus-wc-content-tree-parent.modus-wc-menu-item-active {
     background-color: transparent;
+  }
+}
+
+/* Lifted row clone — layout mirrors live content-tree rows (orphaned on body). */
+.modus-wc-content-tree-drag-ghost {
+  align-items: center;
+  background-color: var(--modus-wc-color-base-100);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  overflow: visible;
+  padding-block: var(--modus-wc-spacing-xs);
+  padding-inline: var(--modus-wc-spacing-sm);
+  position: relative;
+
+  .modus-wc-menu-item-content {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    gap: var(--modus-wc-spacing-md);
+    min-width: 0;
+    width: 100%;
+  }
+
+  .modus-wc-content-tree-node-start {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    gap: var(--modus-wc-spacing-md);
+    padding-inline-end: 0;
+  }
+
+  .modus-wc-content-tree-node-start
+    modus-wc-button.modus-wc-content-tree-chevron {
+    margin-inline-start: var(--modus-wc-spacing-md);
+  }
+
+  .modus-wc-menu-item-labels {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible;
+    padding-inline: 0;
+    text-overflow: clip;
+    white-space: nowrap;
+
+    > div,
+    modus-wc-tooltip > div {
+      overflow: visible;
+      text-overflow: clip;
+      white-space: nowrap;
+    }
+  }
+
+  modus-wc-button,
+  modus-wc-checkbox,
+  modus-wc-icon {
+    flex: 0 0 auto;
+  }
+
+  modus-wc-button {
+    display: inline-flex;
+  }
+
+  modus-wc-button.modus-wc-content-tree-drag-handle {
+    align-items: center;
+    cursor: grabbing;
+    display: inline-flex;
+    inset-inline-start: 0;
+    justify-content: center;
+    line-height: 0;
+    margin: 0;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+
+    i.modus-wc-icon {
+      color: var(--modus-wc-color-base-content);
+      cursor: grabbing;
+    }
+  }
+
+  .modus-wc-content-tree-toggle-spacer {
+    flex: 0 0 auto;
+    margin-inline-start: var(--modus-wc-spacing-sm);
+    visibility: hidden;
   }
 }
