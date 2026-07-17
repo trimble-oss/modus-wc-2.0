@@ -12,7 +12,8 @@ interface ButtonArgs {
     | 'tertiary'
     | 'warning'
     | 'danger'
-    | 'neutral';
+    | 'neutral'
+    | 'success';
   'custom-class'?: string;
   disabled: boolean;
   'full-width': boolean;
@@ -46,6 +47,7 @@ const meta: Meta<ButtonArgs> = {
         'warning',
         'danger',
         'neutral',
+        'success',
       ],
     },
     shape: {

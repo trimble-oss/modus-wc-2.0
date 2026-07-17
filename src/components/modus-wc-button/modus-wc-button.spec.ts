@@ -117,6 +117,16 @@ describe('modus-wc-button', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with success color when color is success', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="success">Success</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-success')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should render neutral color with outlined variant', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
@@ -124,6 +134,17 @@ describe('modus-wc-button', () => {
     });
     const button = page.root?.querySelector('button');
     expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(button?.classList.contains('modus-wc-btn-outline')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render success color with outlined variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="success" variant="outlined">Success</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-success')).toBe(true);
     expect(button?.classList.contains('modus-wc-btn-outline')).toBe(true);
     expect(page.root).toMatchSnapshot();
   });
@@ -139,6 +160,17 @@ describe('modus-wc-button', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render success color with borderless variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="success" variant="borderless">Success</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-success')).toBe(true);
+    expect(button?.classList.contains('modus-wc-btn-borderless')).toBe(true);
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should render neutral color with pressed state', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],
@@ -146,6 +178,17 @@ describe('modus-wc-button', () => {
     });
     const button = page.root?.querySelector('button');
     expect(button?.classList.contains('modus-wc-btn-base-inverted')).toBe(true);
+    expect(button?.getAttribute('aria-pressed')).toBe('true');
+    expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render success color with pressed state', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="success" pressed="true">Success</modus-wc-button>',
+    });
+    const button = page.root?.querySelector('button');
+    expect(button?.classList.contains('modus-wc-btn-success')).toBe(true);
     expect(button?.getAttribute('aria-pressed')).toBe('true');
     expect(page.root).toMatchSnapshot();
   });

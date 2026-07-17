@@ -6,10 +6,6 @@
 modus-wc-date .modus-wc-date-input {
   background-color: var(--modus-wc-color-base-page);
 
-  .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
-  }
-
   &--readonly {
     background-color: var(--modus-wc-color-base-200);
   }
@@ -17,16 +13,10 @@ modus-wc-date .modus-wc-date-input {
 
 // Calendar styles
 modus-wc-date {
-  --calendar-grid-columns: repeat(7, 1fr);
-  --calendar-grid-columns-with-week-numbers: auto repeat(7, 1fr);
+  --calendar-grid-columns: repeat(7, 36px);
+  --calendar-grid-columns-with-week-numbers: auto repeat(7, 36px);
 
   position: relative;
-
-  &.modus-wc-date-input {
-    background-color: var(--modus-wc-color-base-page);
-    border-radius: var(--modus-wc-border-radius-input);
-    color: var(--modus-wc-color-base-content);
-  }
 
   .date-input-container {
     align-items: center;
@@ -41,14 +31,25 @@ modus-wc-date {
       position: absolute;
       right: var(--modus-wc-spacing-md);
 
-      :hover {
+      &:hover {
         color: var(--modus-wc-color-primary);
       }
 
-      :disabled {
+      &:disabled {
         background-color: transparent;
         cursor: not-allowed;
       }
+    }
+  }
+
+  .date-range-inputs {
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+    width: 100%;
+
+    .date-input-container {
+      flex: 1 0 0;
+      min-width: 0;
     }
   }
 
@@ -57,10 +58,9 @@ modus-wc-date {
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
-    height: 327px;
     overflow: hidden;
     position: fixed;
-    width: 272px;
+    width: 300px;
     z-index: 9999;
 
     &.has-week-numbers {
@@ -98,10 +98,7 @@ modus-wc-date {
           color: var(--modus-wc-color-base-content);
         }
 
-        .month-select {
-          border-radius: var(--modus-wc-border-radius-input);
-        }
-
+        .month-select,
         .year-select {
           border-radius: var(--modus-wc-border-radius-input);
         }
@@ -116,18 +113,20 @@ modus-wc-date {
     .calendar-body {
       background-color: var(--modus-wc-color-base-page);
       font-size: var(--modus-wc-font-size-md);
-      height: 272px;
       padding: var(--modus-wc-spacing-xl);
 
-      .calendar-days-week {
+      .calendar-days-week,
+      .calendar-dates {
         display: grid;
-        gap: var(--modus-wc-spacing-xs);
         grid-template-columns: var(--calendar-grid-columns);
-        margin-bottom: var(--modus-wc-spacing-sm);
 
         &.has-week-numbers {
           grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
         }
+      }
+
+      .calendar-days-week {
+        margin-bottom: var(--modus-wc-spacing-sm);
 
         .week-number-header {
           margin-inline-end: var(--modus-wc-spacing-md);
@@ -143,12 +142,8 @@ modus-wc-date {
       }
 
       .calendar-dates {
-        display: grid;
-        grid-template-columns: var(--calendar-grid-columns);
-
-        &.has-week-numbers {
-          grid-template-columns: var(--calendar-grid-columns-with-week-numbers);
-        }
+        column-gap: 0;
+        row-gap: var(--modus-wc-spacing-xs);
 
         .week-number {
           align-items: center;
@@ -165,21 +160,149 @@ modus-wc-date {
           padding-inline-end: var(--modus-wc-spacing-sm);
         }
 
+        // Wrapper cell used in range mode to carry the range highlight background
+        .calendar-day-cell {
+          align-items: center;
+          box-sizing: border-box;
+          display: flex;
+          height: 36px;
+          justify-content: center;
+          position: relative;
+
+          &--empty {
+            background: none;
+          }
+
+          // Confirmed-range fill. Caps are derived once via the
+          // neighbor-connectivity model (computeCaps in modus-wc-date.tsx)
+          // instead of separate row/month-boundary classes, so ranges that
+          // span rows or months render as continuous pills automatically.
+          &.range-fill,
+          &.range-anchor-fill {
+            background-color: var(--modus-wc-color-base-100);
+            margin-inline: -1px;
+          }
+
+          &.range-cap-left,
+          &.range-start.range-anchor.range-anchor-fill {
+            border-bottom-left-radius: 999px;
+            border-top-left-radius: 999px;
+          }
+
+          &.range-cap-right,
+          &.range-end.range-anchor.range-anchor-fill {
+            border-bottom-right-radius: 999px;
+            border-top-right-radius: 999px;
+          }
+
+          // Directional affordance: the outward-facing half of a range
+          // endpoint carries a dashed edge hinting the range can still be
+          // extended in that direction (left for range-start, right for
+          // range-end). Only rendered while a hover preview is actively
+          // extending past that side (see hoveringBeforeStart/AfterEnd in
+          // modus-wc-date.tsx) — not shown as a static default decoration.
+          &.hover-affordance-left,
+          &.hover-affordance-right {
+            &::after {
+              border-bottom: 2px dashed var(--modus-wc-color-base-200);
+              border-top: 2px dashed var(--modus-wc-color-base-200);
+              bottom: 0;
+              box-sizing: border-box;
+              content: '';
+              pointer-events: none;
+              position: absolute;
+              top: 0;
+              width: 50%;
+            }
+          }
+
+          &.hover-affordance-left::after {
+            left: 0;
+          }
+
+          &.hover-affordance-right::after {
+            right: 0;
+          }
+
+          // Non-anchor endpoint: base-100 fill + dashed border (4px dash / 4px gap)
+          // to distinguish it from the darker anchor endpoint.
+          &.range-start:not(.range-anchor) .calendar-day.selected,
+          &.range-end:not(.range-anchor) .calendar-day.selected {
+            background-color: var(--modus-wc-color-primary-pale);
+            color: var(--modus-wc-color-base-content);
+          }
+
+          // Hover-preview dashed borders on ::before so row height stays fixed
+          // at 36px (Figma does not grow the row when preview lines appear).
+          &.hover-fill,
+          &.hover-cap-left,
+          &.hover-cap-right,
+          &.range-anchor.anchor-preview-connector {
+            &::before {
+              box-sizing: border-box;
+              content: '';
+              inset: 0;
+              pointer-events: none;
+              position: absolute;
+            }
+          }
+
+          &.hover-fill::before,
+          &.range-anchor.anchor-preview-connector::before {
+            border-bottom: 2px dashed var(--modus-wc-color-base-200);
+            border-top: 2px dashed var(--modus-wc-color-base-200);
+          }
+
+          &.hover-cap-left::before {
+            border-bottom-left-radius: 999px;
+            border-left: 2px dashed var(--modus-wc-color-base-200);
+            border-top-left-radius: 999px;
+          }
+
+          &.hover-cap-right::before {
+            border-bottom-right-radius: 999px;
+            border-right: 2px dashed var(--modus-wc-color-base-200);
+            border-top-right-radius: 999px;
+          }
+
+          &.range-start .calendar-day.selected,
+          &.range-end .calendar-day.selected {
+            &:hover:not(.hover-preview-end) {
+              background-color: var(--modus-wc-color-base-200);
+              border-color: var(--modus-wc-color-base-200);
+              border-radius: 999px;
+              border-style: solid;
+              color: var(--modus-wc-color-base-content);
+            }
+          }
+        }
+
         .calendar-day {
           align-items: center;
           background: none;
-          border: none;
+          border: 2px solid transparent;
           border-radius: 50%;
+          box-sizing: border-box;
           color: var(--modus-wc-color-base-content-high-contrast);
           cursor: pointer;
           display: flex;
-          height: 32px;
+          height: 36px;
           justify-content: center;
-          width: 32px;
+          position: relative;
+          width: 36px;
+          z-index: 1;
 
-          &:hover {
-            background-color: var(--modus-wc-color-primary);
-            color: var(--modus-wc-color-white);
+          // Hovered date (preview end) gets base-200 fill
+          &.hover-preview-end {
+            background-color: var(--modus-wc-color-base-200);
+            color: var(--modus-wc-color-base-content);
+          }
+
+          &:hover:not(.hover-preview-end):not(.selected) {
+            background-color: var(--modus-wc-color-base-200);
+            border-color: var(--modus-wc-color-base-200);
+            border-style: dashed;
+            color: var(--modus-wc-color-base-content);
           }
 
           &:focus {
@@ -189,14 +312,14 @@ modus-wc-date {
           }
 
           &.current-day {
-            border: 2px solid var(--modus-wc-color-primary);
+            border-color: var(--modus-wc-color-primary);
             outline: none;
           }
 
           &.selected {
             background-color: var(--modus-wc-color-primary);
             color: var(--modus-wc-color-primary-content);
-            font-weight: var(--modus-wc-font-weight-semibold);
+            font-weight: var(--modus-wc-font-weight-bold);
           }
 
           &.other-month {
@@ -214,11 +337,12 @@ modus-wc-date {
 
             &:hover {
               background-color: transparent;
+              border-color: transparent;
               color: var(--modus-wc-color-gray-4);
             }
 
             &:focus {
-              border: none;
+              border-color: transparent;
             }
           }
         }
