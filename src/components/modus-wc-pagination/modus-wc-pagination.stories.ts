@@ -182,7 +182,7 @@ export const Migration: Story = {
   - In 1.0 the \`active-page\` prop was used, while 2.0 uses \`page\` instead.
   - The \`pageChange\` event in 1.0 emitted just the page number value. In 2.0, it emits an object
   with \`newPage\` and \`prevPage\` properties.
-  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`). Two new sizes \`xs\` and \`xl\` have been added in 2.0 with no 1.0 equivalent.
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`, \`xl\`).
 
 #### Prop Mapping
 
@@ -194,7 +194,7 @@ export const Migration: Story = {
 | min-page              |                    | Not carried over, minimum page is always 1                  |
 | next-page-button-text | next-button-text   |                                                             |
 | prev-page-button-text | prev-button-text   |                                                             |
-| size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\`. New in 2.0: \`xs\`, \`xl\` (no 1.0 equivalent) |
+| size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\`. Supported values: \`xs\`, \`sm\`, \`md\`, \`lg\`, \`xl\` |
 
 #### Event Mapping
 
