@@ -117,7 +117,9 @@ export class ModusWcMenuItem {
 
   private isOwnKeydownTarget(e: KeyboardEvent): boolean {
     const { target } = e;
-    if (!(target instanceof Element)) return false;
+    if (!target || typeof (target as Element).closest !== 'function') {
+      return false;
+    }
 
     return target.closest('modus-wc-menu-item') === this.el;
   }
