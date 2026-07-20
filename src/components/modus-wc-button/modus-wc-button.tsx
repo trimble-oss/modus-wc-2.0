@@ -29,12 +29,6 @@ export class ModusWcButton {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
-  /** Reflects the aria-current state onto the inner button (e.g. "page" for the active dock item). */
-  @Prop() ariaCurrent: string | null = null;
-
-  /** Reflects aria-label onto the inner button when the label must update reactively. */
-  @Prop() ariaLabel: string | null = null;
-
   /** The color variant of the button. */
   @Prop() color:
     | 'primary'
@@ -123,8 +117,6 @@ export class ModusWcButton {
         <button
           class={this.getClasses()}
           aria-pressed={ariaPressed}
-          aria-current={this.ariaCurrent ?? undefined}
-          aria-label={this.ariaLabel ?? undefined}
           disabled={this.disabled}
           onClick={this.handleClick}
           onKeyDown={this.handleKeyDown}

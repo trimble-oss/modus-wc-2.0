@@ -11,19 +11,17 @@ The component supports a `<slot>` for injecting content within the button, simil
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                                   | Type                                                                                        | Default       |
-| ------------- | -------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------- |
-| `ariaCurrent` | `aria-current` | Reflects the aria-current state onto the inner button (e.g. "page" for the active dock item). | `null \| string`                                                                            | `null`        |
-| `ariaLabel`   | `aria-label`   | Reflects aria-label onto the inner button when the label must update reactively.              | `null \| string`                                                                            | `null`        |
-| `color`       | `color`        | The color variant of the button.                                                              | `"danger" \| "neutral" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning"` | `'primary'`   |
-| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                                              | `string \| undefined`                                                                       | `''`          |
-| `disabled`    | `disabled`     | If true, the button will be disabled.                                                         | `boolean \| undefined`                                                                      | `false`       |
-| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.                                | `boolean \| undefined`                                                                      | `false`       |
-| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons).                          | `boolean \| undefined`                                                                      | `false`       |
-| `shape`       | `shape`        | The shape of the button.                                                                      | `"circle" \| "ellipse" \| "rectangle" \| "square"`                                          | `'rectangle'` |
-| `size`        | `size`         | The size of the button.                                                                       | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                                                      | `'md'`        |
-| `type`        | `type`         | The type of the button.                                                                       | `"button" \| "reset" \| "submit"`                                                           | `'button'`    |
-| `variant`     | `variant`      | The variant of the button.                                                                    | `"borderless" \| "filled" \| "outlined"`                                                    | `'filled'`    |
+| Property      | Attribute      | Description                                                          | Type                                                                           | Default       |
+| ------------- | -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------- |
+| `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "neutral" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning"` | `'primary'`   |
+| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                                          | `''`          |
+| `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                                         | `false`       |
+| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                                         | `false`       |
+| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                                         | `false`       |
+| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                             | `'rectangle'` |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                                         | `'md'`        |
+| `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                              | `'button'`    |
+| `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                                       | `'filled'`    |
 
 
 ## Events
