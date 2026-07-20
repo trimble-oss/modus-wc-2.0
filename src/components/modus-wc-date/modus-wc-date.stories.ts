@@ -4,11 +4,13 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';
+import { dateRangeSourceCode } from './modus-wc-date.story-source';
 
 interface DateArgs {
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
+  'end-value'?: string;
   feedback?: IInputFeedbackProp;
   format?:
     | 'yyyy-mm-dd'
@@ -18,6 +20,7 @@ interface DateArgs {
     | 'dd/mm/yyyy'
     | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
+  'hide-overflow-dates'?: boolean;
   'input-id'?: string;
   'input-tab-index'?: number;
   label?: string;
@@ -28,6 +31,7 @@ interface DateArgs {
   required?: boolean;
   'show-week-numbers'?: boolean;
   size?: ModusSize;
+  type?: 'single' | 'range';
   value: string;
   'week-start-day'?: WeekStartDay;
 }
@@ -64,6 +68,10 @@ const meta: Meta<DateArgs> = {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
+    type: {
+      control: { type: 'select' },
+      options: ['single', 'range'],
+    },
     format: {
       control: { type: 'select' },
       options: [
@@ -99,6 +107,9 @@ const meta: Meta<DateArgs> = {
         'inputFocus',
         'calendarMonthChange',
         'calendarYearChange',
+        'endCalendarMonthChange',
+        'endCalendarYearChange',
+        'rangeChange',
       ],
     },
   },
@@ -122,8 +133,10 @@ const Template: Story = {
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
+        end-value=${ifDefined(args['end-value'])}
         .feedback=${args.feedback}
         format=${ifDefined(args.format)}
+        .hideOverflowDates=${args['hide-overflow-dates']}
         input-id=${ifDefined(args['input-id'])}
         input-tab-index=${ifDefined(args['input-tab-index'])}
         label=${ifDefined(args.label)}
@@ -134,6 +147,7 @@ const Template: Story = {
         ?required=${args.required}
         ?show-week-numbers=${args['show-week-numbers']}
         size=${ifDefined(args.size)}
+        type=${ifDefined(args.type)}
         .value=${args.value}
         week-start-day=${ifDefined(args['week-start-day'])}
       ></modus-wc-date>
@@ -167,6 +181,84 @@ export const WithErrorFeedback: Story = {
   },
 };
 
+export const Range: Story = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: { code: dateRangeSourceCode },
+      description: {
+        story: `
+Range mode uses \`value\` as the **start date** and \`end-value\` as the **end date**. Both must match the \`format\` prop pattern (or the locale-derived format when unset) or ISO 8601 (\`YYYY-MM-DD\`).
+
+**Hover preview (anchor model):** After both dates are selected, the anchor defaults to the end date. Dashed hover preview only extends in the clickable direction — forward past the end requires clicking the start date to swap the anchor to \`start\`. Hovering inside the confirmed range shows no preview.
+
+**IDs and names:** \`input-id\` and \`name\` apply to the start input only. In range mode the end input uses \`{input-id}-end\` and \`{name}-end\` (or \`{generated-id}-end\` when \`input-id\` is omitted). There are no separate props for the end input id or name.
+
+**Events in range mode:** \`inputChange\`, \`inputFocus\`, and \`inputBlur\` include \`detail.field\` (\`'start'\` or \`'end'\`). End calendar navigation emits \`endCalendarMonthChange\` / \`endCalendarYearChange\`. Completing a range emits \`rangeChange\` with \`{ startDate, endDate }\`.
+        `,
+      },
+    },
+  },
+  argTypes: {
+    type: { control: false, table: { disable: true } },
+  },
+  render: (args) => {
+    return html`
+      <div class="modus-wc-date-range-story-layout">
+        <style>
+          .modus-wc-date-range-story-layout {
+            align-items: flex-start;
+            display: flex;
+            justify-content: center;
+            min-height: 450px;
+            padding-top: var(--modus-wc-spacing-xl, 2rem);
+            width: 100%;
+          }
+
+          .modus-wc-date-range-story {
+            width: 780px;
+          }
+
+          .modus-wc-date-range-story modus-wc-date {
+            display: block;
+            width: 100%;
+          }
+        </style>
+        <div class="modus-wc-date-range-story">
+          <modus-wc-date
+            aria-label="Date range input"
+            ?bordered=${args.bordered}
+            custom-class=${ifDefined(args['custom-class'])}
+            ?disabled=${args.disabled}
+            end-value=${ifDefined(args['end-value'])}
+            .feedback=${args.feedback}
+            format=${ifDefined(args.format)}
+            .hideOverflowDates=${args['hide-overflow-dates']}
+            input-id=${ifDefined(args['input-id'])}
+            input-tab-index=${ifDefined(args['input-tab-index'])}
+            label=${ifDefined(args.label)}
+            max=${ifDefined(args.max)}
+            min=${ifDefined(args.min)}
+            name=${ifDefined(args.name)}
+            ?read-only=${args['read-only']}
+            ?required=${args.required}
+            ?show-week-numbers=${args['show-week-numbers']}
+            size=${ifDefined(args.size)}
+            type="range"
+            .value=${args.value}
+            week-start-day=${ifDefined(args['week-start-day'])}
+          ></modus-wc-date>
+        </div>
+      </div>
+    `;
+  },
+  args: {
+    label: 'Select Date',
+    value: '2026-06-10',
+    'end-value': '2026-07-08',
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for date component
@@ -187,6 +279,7 @@ export const ShadowDomParent: Story = {
               | 'dd/mm/yyyy'
               | 'mm/dd/yyyy'
               | 'MMM DD, YYYY';
+            hideOverflowDates: boolean;
             inputId: string;
             inputTabIndex: number;
             label: string;
@@ -204,6 +297,9 @@ export const ShadowDomParent: Story = {
           dateEl.customClass = v['custom-class'] || '';
           dateEl.disabled = Boolean(v.disabled);
           dateEl.format = v.format;
+          if (v['hide-overflow-dates'] !== undefined) {
+            dateEl.hideOverflowDates = v['hide-overflow-dates'];
+          }
           dateEl.inputId = v['input-id'] ?? '';
           dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
           dateEl.label = v.label ?? '';
@@ -224,6 +320,7 @@ export const ShadowDomParent: Story = {
     return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;
   },
 };
+
 export const Migration: Story = {
   parameters: {
     docs: {
@@ -235,8 +332,8 @@ export const Migration: Story = {
   input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for
   additional info and examples.
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
-  - The \`value\` prop now always outputs **ISO 8601 format** (\`YYYY-MM-DD\`), regardless of the display format.
-  Previously, \`value\` matched the display format (e.g. \`dd-mm-yyyy\`).
+  - The \`value\` and \`end-value\` props accept the \`format\` pattern (or locale-derived format when unset) or ISO 8601 (\`YYYY-MM-DD\`). User interactions and \`inputChange\` / \`rangeChange\` events still emit ISO 8601.
+  Previously, \`value\` matched only the display format (e.g. \`dd-mm-yyyy\`) and did not accept ISO.
   - The \`format\` prop is now automatically derived from the user's locale when not explicitly set.
   Previously, it defaulted to \`dd-mm-yyyy\`. The accepted values remain the same fixed union
   (\`'yyyy-mm-dd'\`, \`'dd-mm-yyyy'\`, \`'mm-dd-yyyy'\`, \`'yyyy/mm/dd'\`, \`'dd/mm/yyyy'\`, \`'mm/dd/yyyy'\`, \`'MMM DD, YYYY'\`).
@@ -265,16 +362,24 @@ export const Migration: Story = {
 | size               | size             | \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type               |                  | Not carried over                        |
 | valid-text         | feedback.message | Use \`feedback\` level                  |
-| value              | value            | Now outputs ISO 8601 (\`YYYY-MM-DD\`)   |
+| value              | value            | Accepts \`format\` pattern or ISO 8601; start date in range mode |
+|                    | end-value        | Accepts \`format\` pattern or ISO 8601; end date in range mode |
+|                    | input-id (end)   | Range mode only: \`{input-id}-end\`; no separate prop |
+|                    | name (end)       | Range mode only: \`{name}-end\`; no separate prop |
+|                    | type             | \`'single'\` (default) or \`'range'\` |
+|                    | hide-overflow-dates | Defaults to \`true\` in range mode |
 
 #### Event Mapping
 
 | 1.0 Event           | 2.0 Event   | Notes            |
 |---------------------|-------------|------------------|
 | calendarIconClicked |             | Not carried over |
-| dateInputBlur       | inputBlur   |                  |
-| valueChange         | inputChange |                  |
+| dateInputBlur       | inputBlur   | Range mode: \`detail.field\` is \`'start'\` or \`'end'\` |
+| valueChange         | inputChange | Range mode: \`detail.field\` is \`'start'\` or \`'end'\` |
 | valueError          |             | Not carried over |
+|                     | rangeChange | Range mode only: \`{ startDate, endDate }\` |
+|                     | endCalendarMonthChange | Range mode: end calendar month nav |
+|                     | endCalendarYearChange  | Range mode: end calendar year nav |
         `,
       },
     },
