@@ -41,10 +41,6 @@ modus-wc-card .modus-wc-card {
 
   box-shadow: 0 0 2px 0 rgb(54, 53, 69, 0.3);
 
-  &:hover {
-    box-shadow: 0 0 8px 0 rgb(54, 53, 69, 0.3);
-  }
-
   .modus-wc-card-subtitle {
     font-weight: var(--modus-wc-font-weight-bold);
   }
@@ -77,6 +73,10 @@ modus-wc-card .modus-wc-card {
   @include common-states;
 
   &:hover {
-    box-shadow: 0 0 0.375rem var(--modus-wc-color-base-100);
+    color: var(--modus-wc-color-base-content);
+  }
+
+  &.modus-wc-card-bordered:hover {
+    background-color: var(--modus-wc-color-base-page);
   }
 }

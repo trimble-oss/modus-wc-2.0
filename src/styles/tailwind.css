@@ -199,7 +199,7 @@
     --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
     --fallback-in: #0063a3; /* info: Trimble Blue */
     --fallback-inc: #ffffff;
-    --fallback-su: #1e8a44; /* success: Green */
+    --fallback-su: #006638; /* success: Green Dark */
     --fallback-suc: #ffffff;
     --fallback-wa: #e49325; /* warning: Yellow Dark */
     --fallback-wac: #252a2e;
@@ -338,6 +338,8 @@
  * plain hex --modus-wc-color-* vars (no oklch involved). Modern themes have
  * no such SCSS overrides, so we add them here — inside @supports not so
  * they ONLY apply on old Chrome and never interfere with modern behavior.
+ * Neutral (modus-wc-btn-base-inverted) uses --modus-wc-color-trimble-neutral
+ * via color-mix in modus-wc-button.scss; modern-theme fallbacks below.
  *
  * MAINTENANCE: Colors sourced from src/styles/themes/modus-modern.ts.
  * If theme colors change, update hover/active hex values here to match.
@@ -347,8 +349,10 @@
  *   highlight-blue=#019aeb  yellow-pale=#fff5e4  yellow-light=#fec157
  *   yellow=#fbad26  yellow-dark=#e49325  red-pale=#fbd4d7
  *   red-light=#e86363  red=#da212c  red-dark=#ab1f26
+ *   green-pale=#e0eccf  green=#1e8a44  green-light=#4ea646  green-dark=#006638
  *   gray-0=#e0e1e9  gray-1=#cbcdd6  gray-2=#b7b9c3
- *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e
+ *   gray-8=#464b52  gray-9=#353a40  gray-10=#171c1e  gray-light=#f1f1f6
+ *   trimble-gray=#252a2e
  */
 @supports not (color: oklch(0% 0 0)) {
   /* ── modus-modern-light: filled buttons ──────────────────────────────── */
@@ -410,6 +414,32 @@
   [data-theme='modus-modern-light']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled:hover {
+    background-color: #005c32; /* green-dark @ 90% + black */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #00522d; /* green-dark @ 80% + black */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:hover {
+    background-color: #212629; /* trimble-gray @ 90% + black */
+    border-color: #212629;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #1e2225; /* trimble-gray @ 80% + black */
+    border-color: #1e2225;
   }
 
   /* ── modus-modern-light: outlined buttons ────────────────────────────── */
@@ -488,6 +518,42 @@
     color: #ab1f26;
   }
 
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline:hover {
+    background-color: #e0eccf; /* green-pale */
+    border-color: #006638;
+    color: #006638;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-success.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #006638; /* green-dark */
+    border-color: transparent;
+    color: #ffffff;
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:hover,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:hover {
+    background-color: rgb(37 42 46 / 0.12); /* trimble-gray @ 12% */
+  }
+
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline[aria-pressed='true'],
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:active,
+  [data-theme='modus-modern-light']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless[aria-pressed='true'] {
+    background-color: #252a2e; /* trimble-gray */
+    border-color: transparent;
+    color: #ffffff;
+  }
+
   /* ── modus-modern-dark: filled buttons ───────────────────────────────── */
   [data-theme='modus-modern-dark']
     .modus-wc-btn-primary.modus-wc-btn-filled:hover {
@@ -547,6 +613,32 @@
   [data-theme='modus-modern-dark']
     .modus-wc-btn-error.modus-wc-btn-filled[aria-pressed='true'] {
     background-color: #ab1f26; /* red-dark */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled:hover {
+    background-color: #46953f; /* green-light @ 90% + black */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #3e8538; /* green-light @ 80% + black */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:hover {
+    background-color: #d9d9dd; /* gray-light @ 90% + black */
+    border-color: #d9d9dd;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-filled[aria-pressed='true'] {
+    background-color: #c1c1c5; /* gray-light @ 80% + black */
+    border-color: #c1c1c5;
   }
 
   /* ── modus-modern-dark: outlined buttons ─────────────────────────────── */
@@ -616,5 +708,41 @@
     background-color: rgb(232 99 99 / 0.3);
     border-color: #ab1f26;
     color: #ab1f26;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline:hover {
+    background-color: rgb(78 166 70 / 0.12); /* green-light @ 12% */
+    border-color: #4ea646;
+    color: #4ea646;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-success.modus-wc-btn-outline[aria-pressed='true'] {
+    background-color: #4ea646; /* green-light */
+    border-color: transparent;
+    color: #000000;
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:hover,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:hover {
+    background-color: rgb(241 241 246 / 0.12); /* gray-light @ 12% */
+  }
+
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-outline[aria-pressed='true'],
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless:active,
+  [data-theme='modus-modern-dark']
+    .modus-wc-btn-base-inverted.modus-wc-btn-borderless[aria-pressed='true'] {
+    background-color: #f1f1f6; /* gray-light */
+    border-color: transparent;
+    color: #252a2e; /* trimble-gray */
   }
 }
