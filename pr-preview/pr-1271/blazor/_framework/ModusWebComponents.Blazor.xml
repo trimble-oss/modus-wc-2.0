@@ -571,16 +571,6 @@
             Allowed values: "borderless", "filled", "outlined"
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaCurrent">
-            <summary>
-            Reflects the aria-current state onto the inner button (e.g. &quot;page&quot; for the active dock item).
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaLabel">
-            <summary>
-            Reflects aria-label onto the inner button when the label must update reactively.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.ChildContent">
             <summary>
             Content to render inside the component (default slot).
