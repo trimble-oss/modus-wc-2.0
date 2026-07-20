@@ -7,6 +7,7 @@ import {
   Listen,
   Prop,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
@@ -53,6 +54,13 @@ export interface IMainMenu {
   adminSettings?: boolean;
   /** Additional custom menu items appended after the visible built-in items. */
   items?: IMenuItem[];
+}
+
+type BuiltInMainMenuKey = keyof Omit<IMainMenu, 'items'>;
+
+interface IBuiltInMainMenuEntry {
+  key: BuiltInMainMenuKey;
+  item: IMenuItem;
 }
 
 export interface IProfileMenuProps {
@@ -103,6 +111,12 @@ export class ModusWcProfileMenu {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.updateResolvedMainMenu();
+  }
+
+  @Watch('mainMenu')
+  handleMainMenuChange() {
+    this.updateResolvedMainMenu();
   }
 
   @Listen('itemSelect')
@@ -116,55 +130,73 @@ export class ModusWcProfileMenu {
 
   private currentYear = new Date().getFullYear();
 
-  private static readonly DEFAULT_MAIN_MENU_ITEMS: IMenuItem[] = [
+  private static readonly DEFAULT_MAIN_MENU_ITEMS: IBuiltInMainMenuEntry[] = [
     {
-      label: 'My Profile',
-      icon: 'info',
-      iconVariant: 'solid',
-      iconSize: 'sm',
-      value: 'my-profile',
+      key: 'myProfile',
+      item: {
+        label: 'My Profile',
+        icon: 'info',
+        iconVariant: 'solid',
+        iconSize: 'sm',
+        value: 'my-profile',
+      },
     },
     {
-      label: 'My Products',
-      icon: 'home',
-      iconVariant: 'solid',
-      iconSize: 'sm',
-      value: 'my-products',
+      key: 'myProducts',
+      item: {
+        label: 'My Products',
+        icon: 'home',
+        iconVariant: 'solid',
+        iconSize: 'sm',
+        value: 'my-products',
+      },
     },
     {
-      label: 'Support center',
-      icon: 'bar_graph',
-      iconVariant: 'solid',
-      iconSize: 'sm',
-      value: 'support-center',
+      key: 'supportCenter',
+      item: {
+        label: 'Support center',
+        icon: 'bar_graph',
+        iconVariant: 'solid',
+        iconSize: 'sm',
+        value: 'support-center',
+      },
     },
     {
-      label: 'Admin settings',
-      icon: 'download',
-      iconVariant: 'solid',
-      iconSize: 'sm',
-      value: 'admin-settings',
+      key: 'adminSettings',
+      item: {
+        label: 'Admin settings',
+        icon: 'download',
+        iconVariant: 'solid',
+        iconSize: 'sm',
+        value: 'admin-settings',
+      },
     },
   ];
 
-  private getResolvedMainMenu(): ISubMenu {
-    const config = this.mainMenu;
-    const builtInVisibility = [
-      config?.myProfile !== false,
-      config?.myProducts !== false,
-      config?.supportCenter !== false,
-      config?.adminSettings !== false,
-    ];
+  private resolvedMainMenu: ISubMenu = { items: [] };
 
+  private mainMenuSnapshot = '';
+
+  private buildResolvedMainMenu(config?: IMainMenu): ISubMenu {
     const items = ModusWcProfileMenu.DEFAULT_MAIN_MENU_ITEMS.filter(
-      (_, index) => builtInVisibility[index]
-    );
+      ({ key }) => config?.[key] !== false
+    ).map(({ item }) => item);
 
     if (config?.items?.length) {
       items.push(...config.items);
     }
 
     return { items };
+  }
+
+  private updateResolvedMainMenu() {
+    const snapshot = JSON.stringify(this.mainMenu ?? null);
+    if (snapshot === this.mainMenuSnapshot) {
+      return;
+    }
+
+    this.mainMenuSnapshot = snapshot;
+    this.resolvedMainMenu = this.buildResolvedMainMenu(this.mainMenu);
   }
 
   render() {
@@ -237,7 +269,7 @@ export class ModusWcProfileMenu {
           </div>
           <div slot="body">
             {renderSubMenu(
-              this.getResolvedMainMenu(),
+              this.resolvedMainMenu,
               this.handleMenuItemClick,
               true
             )}

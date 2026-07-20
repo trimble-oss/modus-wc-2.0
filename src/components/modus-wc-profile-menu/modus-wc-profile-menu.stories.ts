@@ -70,7 +70,7 @@ const meta: Meta<ProfileMenuArgs> = {
               - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
               - iconVariant ('solid' | 'outlined', optional): The variant of the icon
               - value (string, optional): The value associated with the menu item, used for selection
-            When omitted, all built-in items render in the default order.
+            When omitted, all built-in items render in the default order. Each boolean flag maps to its matching built-in item by key, not by array position.
           `,
         },
       },
@@ -121,7 +121,7 @@ A customizable profile menu component that displays user information with option
 
 ### Features
 - **User Profile Display**: Shows profile image, header name, username, and email
-- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings) that can be hidden or extended via \`mainMenu\`
+- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings). Use \`mainMenu\` boolean flags to show or hide each built-in item by key, and \`items\` to append custom entries.
 - **Custom Submenus**: Supports up to two additional custom submenus with titles and icons
 - **Manage Trimble ID Link**: Optional link for managing user's Trimble ID
 - **Sign Out**: Built-in sign out menu item in the footer
@@ -218,13 +218,35 @@ export const Default: Story = {
   },
 };
 
+export const WithMainMenuVisibilityFlags: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hides specific built-in items using their matching visibility flags (myProfile and supportCenter).',
+      },
+      source: {
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
+      },
+    },
+  },
+  args: {
+    'main-menu': {
+      myProfile: false,
+      supportCenter: false,
+    },
+  },
+};
+
 export const WithCustomMainMenu: Story = {
   ...Template,
   parameters: {
     docs: {
       description: {
         story:
-          'Hides Admin settings and appends a custom Billing item after the remaining built-in items.',
+          'Hides Admin settings via adminSettings: false and appends a custom Billing item after the remaining built-in items.',
       },
       source: {
         transform: (_src, { args }: { args: ProfileMenuArgs }) =>
@@ -242,6 +264,39 @@ export const WithCustomMainMenu: Story = {
           iconVariant: 'solid',
           iconSize: 'sm',
           value: 'billing',
+        },
+      ],
+    },
+  },
+};
+
+export const WithCustomMainMenuItemsOnly: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hides all built-in items and renders only custom main menu entries from mainMenu.items.',
+      },
+      source: {
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
+      },
+    },
+  },
+  args: {
+    'main-menu': {
+      myProfile: false,
+      myProducts: false,
+      supportCenter: false,
+      adminSettings: false,
+      items: [
+        {
+          label: 'Preferences',
+          icon: 'settings',
+          iconVariant: 'solid',
+          iconSize: 'sm',
+          value: 'preferences',
         },
       ],
     },

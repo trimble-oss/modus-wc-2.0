@@ -11,6 +11,16 @@ describe('modus-wc-profile-menu', () => {
     manageTrimbleId: { link: 'https://example.com/manage' },
   };
 
+  const getMainMenuItemLabels = (root: HTMLElement | null | undefined) =>
+    Array.from(
+      root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
+    ).map((item) => item.getAttribute('label'));
+
+  const getMainMenuItemValues = (root: HTMLElement | null | undefined) =>
+    Array.from(
+      root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
+    ).map((item) => item.getAttribute('value'));
+
   it('should render with required props', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],
@@ -31,13 +41,45 @@ describe('modus-wc-profile-menu', () => {
     const menuItems = page.root?.querySelectorAll('modus-wc-menu-item');
     expect(menuItems?.length).toBeGreaterThan(0);
 
-    const mainMenuItems = Array.from(
-      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
-    );
-    expect(mainMenuItems.map((item) => item.getAttribute('label'))).toEqual([
+    const mainMenuItems = getMainMenuItemLabels(page.root);
+    expect(mainMenuItems).toEqual([
       'My Profile',
       'My Products',
       'Support center',
+      'Admin settings',
+    ]);
+  });
+
+  it('should hide My Profile when myProfile visibility flag is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu: { myProfile: false },
+        }),
+    });
+
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Products',
+      'Support center',
+      'Admin settings',
+    ]);
+  });
+
+  it('should hide Support center when supportCenter visibility flag is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu: { supportCenter: false },
+        }),
+    });
+
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Profile',
+      'My Products',
       'Admin settings',
     ]);
   });
@@ -56,10 +98,8 @@ describe('modus-wc-profile-menu', () => {
         }),
     });
 
-    const mainMenuItems = Array.from(
-      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
-    );
-    expect(mainMenuItems.map((item) => item.getAttribute('label'))).toEqual([
+    const mainMenuItems = getMainMenuItemLabels(page.root);
+    expect(mainMenuItems).toEqual([
       'My Profile',
       'My Products',
       'Support center',
@@ -89,14 +129,55 @@ describe('modus-wc-profile-menu', () => {
         }),
     });
 
-    const mainMenuItems = Array.from(
-      page.root?.querySelectorAll('.main-menu-section modus-wc-menu-item') || []
-    );
-    expect(mainMenuItems.map((item) => item.getAttribute('value'))).toEqual([
+    expect(getMainMenuItemValues(page.root)).toEqual([
       'my-profile',
       'my-products',
       'support-center',
       'billing',
+    ]);
+  });
+
+  it('should render only custom main menu items when all built-in visibility flags are false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu: {
+            myProfile: false,
+            myProducts: false,
+            supportCenter: false,
+            adminSettings: false,
+            items: [{ label: 'Preferences', value: 'preferences' }],
+          },
+        }),
+    });
+
+    expect(getMainMenuItemLabels(page.root)).toEqual(['Preferences']);
+    expect(getMainMenuItemValues(page.root)).toEqual(['preferences']);
+  });
+
+  it('should update resolved main menu when mainMenu prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Profile',
+      'My Products',
+      'Support center',
+      'Admin settings',
+    ]);
+
+    page.root!.mainMenu = { adminSettings: false };
+    await page.waitForChanges();
+
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Profile',
+      'My Products',
+      'Support center',
     ]);
   });
 
