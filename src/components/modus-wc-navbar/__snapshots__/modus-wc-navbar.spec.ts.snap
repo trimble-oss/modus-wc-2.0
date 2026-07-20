@@ -8,7 +8,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
     <div class="modus-wc-navbar">
       <div class="modus-wc-navbar-start">
         <div slot="start">
-          <modus-wc-button aria-label="Trimble logo">
+          <modus-wc-button>
             <!---->
             <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
               <modus-wc-logo name="trimble"></modus-wc-logo>
@@ -31,7 +31,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           <div slot="end">
             End
           </div>
-          <modus-wc-button aria-label="User profile">
+          <modus-wc-button>
             <!---->
             <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="sm"></modus-wc-avatar>
@@ -77,7 +77,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
     <div class="modus-wc-navbar">
       <div class="modus-wc-navbar-start">
         <div slot="start">
-          <modus-wc-button aria-label="Trimble logo">
+          <modus-wc-button>
             <!---->
             <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
               <modus-wc-logo name="trimble"></modus-wc-logo>
@@ -90,7 +90,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
       </div>
       <div class="modus-wc-navbar-end">
         <div slot="end">
-          <modus-wc-button aria-label="User profile">
+          <modus-wc-button>
             <!---->
             <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="sm"></modus-wc-avatar>

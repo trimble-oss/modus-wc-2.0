@@ -39,6 +39,21 @@ describe('modus-wc-dock', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should apply a default aria-label to the nav when one is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const nav = page.root?.querySelector('nav.modus-wc-dock');
+    expect(nav?.getAttribute('aria-label')).toBe('Dock');
+  });
+
   it('should arrange items horizontally for bottom and top positions', async () => {
     const page = await newSpecPage({
       components: [ModusWcDock, ModusWcButton, ModusWcIcon],
@@ -177,6 +192,47 @@ describe('modus-wc-dock', () => {
     expect(component.activeItemIndex).toBe(1);
     expect(buttons?.[0]?.getAttribute('aria-current')).toBeNull();
     expect(buttons?.[1]?.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('should log an error when items is undefined', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = undefined as unknown as IDockItem[];
+    consoleSpy.mockClear();
+    component['validateItems']();
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'ModusWcDock: dock items data is required.'
+    );
+    consoleSpy.mockRestore();
+  });
+
+  it('should log an error when items is cleared after initial load', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+    await page.waitForChanges();
+
+    consoleSpy.mockClear();
+    component.items = [];
+    await page.waitForChanges();
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'ModusWcDock: dock items data is required.'
+    );
+    consoleSpy.mockRestore();
   });
 
   it('should not emit itemSelect when a disabled item is clicked', async () => {

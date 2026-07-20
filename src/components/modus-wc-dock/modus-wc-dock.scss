@@ -32,23 +32,23 @@ modus-wc-dock .modus-wc-dock {
   &.modus-wc-dock-sm {
     --modus-wc-dock-indicator-width: var(--modus-wc-border-width-sm);
     --modus-wc-dock-item-gap: var(--modus-wc-spacing-2xs);
-    --modus-wc-dock-item-height: 3rem;
+    --modus-wc-dock-item-height: var(--modus-wc-spacing-3xl);
     --modus-wc-dock-label-font-size: var(--modus-wc-font-size-sm);
-    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-xs);
+    --modus-wc-dock-label-line-height: var(--modus-wc-font-size-2xl);
   }
 
   &.modus-wc-dock-md {
     --modus-wc-dock-indicator-width: var(--modus-wc-border-width-lg);
     --modus-wc-dock-item-gap: var(--modus-wc-spacing-xs);
-    --modus-wc-dock-item-height: 4rem;
+    --modus-wc-dock-item-height: var(--modus-wc-spacing-16);
     --modus-wc-dock-label-font-size: var(--modus-wc-font-size-md);
-    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-sm);
+    --modus-wc-dock-label-line-height: var(--modus-wc-line-height-md);
   }
 
   &.modus-wc-dock-lg {
     --modus-wc-dock-indicator-width: var(--modus-wc-border-width-lg);
     --modus-wc-dock-item-gap: var(--modus-wc-spacing-xs);
-    --modus-wc-dock-item-height: 5rem;
+    --modus-wc-dock-item-height: var(--modus-wc-spacing-20);
     --modus-wc-dock-label-font-size: var(--modus-wc-font-size-lg);
     --modus-wc-dock-label-line-height: var(--modus-wc-line-height-md);
   }

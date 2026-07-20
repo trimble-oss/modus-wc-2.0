@@ -97,13 +97,9 @@ const buildDockSourceCode = ({
     '<div class="dock-demo-frame__content" aria-hidden="true"></div>';
 
   const frameBody =
-    position === 'top'
+    position === 'top' || position === 'left'
       ? `${dockMarkup}\n  ${contentMarkup}`
-      : position === 'left'
-        ? `${dockMarkup}\n  ${contentMarkup}`
-        : position === 'right'
-          ? `${contentMarkup}\n  ${dockMarkup}`
-          : `${contentMarkup}\n  ${dockMarkup}`;
+      : `${contentMarkup}\n  ${dockMarkup}`;
 
   return `<style>
   .dock-demo-frame {

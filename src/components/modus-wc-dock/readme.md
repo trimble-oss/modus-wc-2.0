@@ -14,7 +14,7 @@ Dock navigation bar for navigating between primary screens.
 | Property          | Attribute           | Description                                                                         | Type                                     | Default    |
 | ----------------- | ------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------- | ---------- |
 | `activeItemIndex` | `active-item-index` | The currently active dock item index.                                               | `number`                                 | `0`        |
-| `customClass`     | `custom-class`      | Custom CSS class to apply to the inner nav element.                                 | `string \| undefined`                    | `''`       |
+| `customClass`     | `custom-class`      | Custom CSS class to apply to the inner nav element.                                 | `string`                                 | `''`       |
 | `items`           | `items`             | The dock items to display.                                                          | `IDockItem[]`                            | `[]`       |
 | `position`        | `position`          | The edge the dock is anchored to. Controls layout and active indicator orientation. | `"bottom" \| "left" \| "right" \| "top"` | `'bottom'` |
 | `showLabels`      | `show-labels`       | If true, text labels are shown below icons.                                         | `boolean`                                | `true`     |

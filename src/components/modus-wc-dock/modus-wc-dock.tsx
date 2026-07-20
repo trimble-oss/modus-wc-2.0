@@ -6,6 +6,7 @@ import {
   h,
   Host,
   Prop,
+  Watch,
 } from '@stencil/core';
 import {
   convertItemPropsToClasses,
@@ -45,7 +46,7 @@ export class ModusWcDock {
   @Prop({ mutable: true }) activeItemIndex = 0;
 
   /** Custom CSS class to apply to the inner nav element. */
-  @Prop() customClass?: string = '';
+  @Prop() customClass = '';
 
   /** The dock items to display. */
   @Prop() items: IDockItem[] = [];
@@ -65,15 +66,23 @@ export class ModusWcDock {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Dock';
+    if (!this.el.hasAttribute('aria-label')) {
+      this.el.setAttribute('aria-label', 'Dock');
     }
 
-    if (!this.items || this.items.length === 0) {
+    this.validateItems();
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  @Watch('items')
+  handleItemsChange() {
+    this.validateItems();
+  }
+
+  private validateItems(): void {
+    if (!this.items?.length) {
       console.error('ModusWcDock: dock items data is required.');
     }
-
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getClasses(): string {
@@ -98,15 +107,7 @@ export class ModusWcDock {
     });
   }
 
-  private getButtonSize(): DaisySize {
-    if (this.size === 'lg') {
-      return 'md';
-    }
-
-    return 'sm';
-  }
-
-  private getIconSize(): DaisySize {
+  private getChildSize(): DaisySize {
     if (this.size === 'lg') {
       return 'md';
     }
@@ -136,21 +137,21 @@ export class ModusWcDock {
                 key={`${item.label}-${index}`}
               >
                 <modus-wc-button
-                  aria-current={isActive ? 'page' : undefined}
-                  aria-label={!this.showLabels ? item.label : undefined}
+                  ariaCurrent={isActive ? 'page' : undefined}
+                  ariaLabel={!this.showLabels ? item.label : undefined}
                   color="neutral"
                   customClass="modus-wc-dock-item-button"
                   disabled={item.disabled}
                   fullWidth={true}
                   onClick={() => this.handleItemClick(index, item)}
-                  size={this.getButtonSize()}
+                  size={this.getChildSize()}
                   type="button"
                   variant="borderless"
                 >
                   <modus-wc-icon
                     decorative={true}
                     name={item.icon}
-                    size={this.getIconSize()}
+                    size={this.getChildSize()}
                   />
                   {this.showLabels && (
                     <span class="modus-wc-dock-item-label">{item.label}</span>
