@@ -523,16 +523,6 @@
             A customizable button component used to create buttons with different sizes, variants, and types.  The component supports a slot for injecting content within the button, similar to a native HTML button.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaCurrent">
-            <summary>
-            Reflects the aria-current state onto the inner button (e.g. &quot;page&quot; for the active dock item).
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaLabel">
-            <summary>
-            Reflects aria-label onto the inner button when the label must update reactively.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.Color">
             <summary>
             The color variant of the button.
@@ -579,6 +569,16 @@
             <summary>
             The variant of the button.
             Allowed values: "borderless", "filled", "outlined"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaCurrent">
+            <summary>
+            Reflects the aria-current state onto the inner button (e.g. &quot;page&quot; for the active dock item).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.AriaLabel">
+            <summary>
+            Reflects aria-label onto the inner button when the label must update reactively.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.ChildContent">
