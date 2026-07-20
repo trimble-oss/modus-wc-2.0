@@ -71,9 +71,7 @@ export class ModusWcButtonGroup {
   }
 
   componentDidLoad() {
-    this.buttonElements = this.el.querySelectorAll(
-      'modus-wc-button'
-    ) as unknown as NodeListOf<HTMLElement>;
+    this.buttonElements = this.el.querySelectorAll('modus-wc-button');
     this.syncButtonStates();
     this.initializeSelectedButtons();
   }
@@ -114,9 +112,7 @@ export class ModusWcButtonGroup {
 
   @Listen('slotchange')
   handleSlotChange() {
-    this.buttonElements = this.el.querySelectorAll(
-      'modus-wc-button'
-    ) as unknown as NodeListOf<HTMLElement>;
+    this.buttonElements = this.el.querySelectorAll('modus-wc-button');
     this.syncButtonStates();
     this.initializeSelectedButtons();
   }
