@@ -181,6 +181,30 @@ describe('modus-wc-profile-menu', () => {
     ]);
   });
 
+  it('should not recompute resolved main menu when mainMenu prop is set to an equivalent value', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          mainMenu: { adminSettings: false },
+        }),
+    });
+
+    const component = page.rootInstance as ModusWcProfileMenu;
+    const resolvedBefore = component['resolvedMainMenu'];
+
+    page.root!.mainMenu = { adminSettings: false };
+    await page.waitForChanges();
+
+    expect(component['resolvedMainMenu']).toBe(resolvedBefore);
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Profile',
+      'My Products',
+      'Support center',
+    ]);
+  });
+
   it('should not render main menu section when all built-in items are hidden and no custom items are provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],
@@ -398,6 +422,51 @@ describe('modus-wc-profile-menu', () => {
       components: [ModusWcProfileMenu],
       template: () =>
         h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const signOutItem = Array.from(
+      page.root?.querySelectorAll('modus-wc-menu-item') || []
+    ).find((item) => item.getAttribute('label') === 'Sign Out');
+    expect(signOutItem).not.toBeUndefined();
+  });
+
+  it('should render sign out menu item by default when showSignOut is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const signOutItem = Array.from(
+      page.root?.querySelectorAll('modus-wc-menu-item') || []
+    ).find((item) => item.getAttribute('label') === 'Sign Out');
+    expect(signOutItem).not.toBeUndefined();
+  });
+
+  it('should hide sign out menu item when showSignOut is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          showSignOut: false,
+        }),
+    });
+
+    const signOutItem = Array.from(
+      page.root?.querySelectorAll('modus-wc-menu-item') || []
+    ).find((item) => item.getAttribute('label') === 'Sign Out');
+    expect(signOutItem).toBeUndefined();
+  });
+
+  it('should show sign out menu item when showSignOut is explicitly true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', {
+          profileProps: mockProfileProps,
+          showSignOut: true,
+        }),
     });
 
     const signOutItem = Array.from(

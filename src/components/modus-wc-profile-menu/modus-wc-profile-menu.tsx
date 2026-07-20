@@ -102,6 +102,9 @@ export class ModusWcProfileMenu {
    */
   @Prop() mainMenu?: IMainMenu;
 
+  /** Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted. */
+  @Prop() showSignOut?: boolean = true;
+
   /** Emitted when the Sign Out menu item is clicked */
   @StencilEvent() signOutClick!: EventEmitter<void>;
 
@@ -277,20 +280,22 @@ export class ModusWcProfileMenu {
               renderSubMenu(this.menuOne, this.handleMenuItemClick)}
             {this.menuTwo &&
               renderSubMenu(this.menuTwo, this.handleMenuItemClick)}
-            <modus-wc-menu>
-              <modus-wc-menu-item
-                label="Sign Out"
-                size="md"
-                onItemSelect={() => this.signOutClick.emit()}
-              >
-                <modus-wc-icon
-                  slot="start-icon"
-                  name="sign_out"
-                  size="sm"
-                  variant="solid"
-                ></modus-wc-icon>
-              </modus-wc-menu-item>
-            </modus-wc-menu>
+            {this.showSignOut !== false && (
+              <modus-wc-menu>
+                <modus-wc-menu-item
+                  label="Sign Out"
+                  size="md"
+                  onItemSelect={() => this.signOutClick.emit()}
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="sign_out"
+                    size="sm"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+              </modus-wc-menu>
+            )}
           </div>
           <div slot="footer" class="profile-menu-footer">
             <modus-wc-typography
