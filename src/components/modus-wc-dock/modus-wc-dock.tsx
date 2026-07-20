@@ -175,7 +175,7 @@ export class ModusWcDock {
               >
                 <modus-wc-button
                   ref={(el) => {
-                    this.buttonEls[index] = el as HTMLElement | undefined;
+                    this.buttonEls[index] = el;
                   }}
                   color="neutral"
                   customClass="modus-wc-dock-item-button"
