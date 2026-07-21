@@ -161,14 +161,31 @@ package is required.
 npm install @trimble-oss/moduswebcomponents
 ```
 
-### 2. Set up styling and register custom elements:
+### 2. Set up styling, assets, and register custom elements:
 
-```js
+Configure Angular to copy Modus static assets (needed for components like `modus-wc-logo`) in `angular.json` under `projects > your-app > architect > build > options`:
+
+```json
+{
+  "assets": [
+    {
+      "glob": "**/*",
+      "input": "node_modules/@trimble-oss/moduswebcomponents/assets",
+      "output": "/assets"
+    }
+  ]
+}
+```
+
+Then import styles and initialize Modus once during application startup (for example in `main.ts`):
+
+```ts
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
 
-// Call once during application startup (for example in main.ts)
-defineCustomElements();
+setAssetPath('/assets/');
+defineCustomElements(window);
 ```
 
 ### 3. Tell Angular about custom elements:
@@ -208,7 +225,8 @@ Angular allows `[]` and `()` markup syntax for the web component's inputs and ou
 <modus-wc-button
   [buttonStyle]="'fill'"
   [color]="'primary'"
-  (buttonClick)="onClick()">
+  (buttonClick)="onClick()"
+>
   Click Me
 </modus-wc-button>
 ```
