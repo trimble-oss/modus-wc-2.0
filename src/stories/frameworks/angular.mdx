@@ -4,9 +4,19 @@ import { Meta } from '@storybook/blocks';
 
 # Angular Framework Integration
 
+> **Angular 17, 18, and 19 notice:** The `@trimble-oss/moduswebcomponents-angular`
+> wrapper packages for Angular 17, 18, and 19 are no longer maintained due to
+> unresolvable security vulnerabilities in those Angular versions.
+>
+> If you are on Angular 17, 18, or 19 you can use Modus Web Components **directly**
+> without the Angular wrapper package — Angular supports custom elements natively via
+> `CUSTOM_ELEMENTS_SCHEMA`. See the [Using Web Components Directly](#using-web-components-directly-in-angular) section below.
+>
+> We recommend upgrading to Angular 20 or later to continue using the full Angular wrapper.
+
 This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project.
 
-We highly recommend using the Modus Angular Components library for Angular based projects.
+We highly recommend using the Modus Angular Components library for Angular based projects on **Angular 20+**.
 These components are automatically generated using the Stencil Angular Framework Integration.
 
 Follow the steps outlined below to integrate and use Modus Angular Web Components effectively.
@@ -20,7 +30,7 @@ installation of both packages.
 
 ### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
 
-Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
+Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng20` for Angular 20).
 
 <b>
   Lock the installed package versions to avoid unintended breakages on future
@@ -95,7 +105,7 @@ installation of both packages.
 
 ### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
 
-Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
+Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng20` for Angular 20).
 
 <b>
   Lock the installed package versions to avoid unintended breakages on future
@@ -139,12 +149,31 @@ export class AppComponent {}
 <modus-wc-button label="Click Me" />
 ```
 
-### Custom Elements Schema
+## Using Web Components Directly in Angular
 
-In the `app.module.ts` file, you need to tell angular that you are using custom element schemas
-so that it does not throw errors when unknown element names are used in the markup.
+If you are on Angular 17, 18, or 19 (or prefer not to use the Angular wrapper), you can
+consume `@trimble-oss/moduswebcomponents` directly. No `@trimble-oss/moduswebcomponents-angular`
+package is required.
 
-Import `CUSTOM_ELEMENTS_SCHEMA` and add it to your `@NgModule`'s schemas:
+### 1. Install only the web components package:
+
+```bash
+npm install @trimble-oss/moduswebcomponents
+```
+
+### 2. Set up styling and register custom elements:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+
+// Call once during application startup (for example in main.ts)
+defineCustomElements();
+```
+
+### 3. Tell Angular about custom elements:
+
+In an NgModule app, add `CUSTOM_ELEMENTS_SCHEMA` so Angular does not error on unknown element names:
 
 ```ts
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -154,6 +183,34 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
   ...
 })
+export class AppModule {}
+```
+
+In a standalone app, add the schema on the root component (or each component that uses Modus tags):
+
+```ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {}
+```
+
+### 4. Use Modus tags with Angular template bindings:
+
+Angular allows `[]` and `()` markup syntax for the web component's inputs and outputs:
+
+```html
+<modus-wc-button
+  [buttonStyle]="'fill'"
+  [color]="'primary'"
+  (buttonClick)="onClick()">
+  Click Me
+</modus-wc-button>
 ```
 
 ### Wrapping Components
