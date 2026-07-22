@@ -1000,7 +1000,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeEditCancel">
             <summary>
-            Event emitted when an inline edit is cancelled. The app should clear editingNodeId (and discard a freshly added node if its name is still empty).
+            Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear editingNodeId (and discard a freshly added node if its name is still empty).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeExpandChange">
@@ -1020,7 +1020,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeRename">
             <summary>
-            Event emitted when an inline edit is committed. The app should apply the new label and clear editingNodeId.
+            Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear editingNodeId.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodesDelete">
@@ -2297,6 +2297,16 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcPanel.AdditionalAttributes">
             <summary>
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.ShowSignOut">
+            <summary>
+            Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MainMenu">
+            <summary>
+            Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and items appends custom entries.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MenuOne">
