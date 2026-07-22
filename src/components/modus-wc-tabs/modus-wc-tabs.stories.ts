@@ -241,8 +241,7 @@ export const CustomContent: Story = {
       aria-label="Custom tab group"
     >
       <span
-        slot="home-tab-content"
-       
+        slot="home-tab-content" 
       >
         <modus-wc-badge
           color="warning"

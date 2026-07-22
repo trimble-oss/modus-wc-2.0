@@ -4,8 +4,6 @@
 */
 
 modus-wc-tabs {
-  display: inline-flex;
-
   .modus-wc-tab modus-wc-icon + span,
   .modus-wc-tab span + modus-wc-icon {
     padding-inline-start: var(--modus-wc-spacing-xs);
