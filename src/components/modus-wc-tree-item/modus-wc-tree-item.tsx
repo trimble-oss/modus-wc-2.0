@@ -118,9 +118,19 @@ export class ModusWcTreeItem {
     this.selected = false;
   }
 
+  private isOwnKeydownTarget(e: KeyboardEvent): boolean {
+    const { target } = e;
+    if (!target || typeof (target as Element).closest !== 'function') {
+      return false;
+    }
+
+    return target.closest('modus-wc-tree-item') === this.el;
+  }
+
   @Listen('keydown')
   handleKeyDown(e: KeyboardEvent) {
     if (this.disabled) return;
+    if (!this.isOwnKeydownTarget(e)) return;
 
     // Nested submenu rows live inside an ancestor tree-item host. Without this
     // guard, Space/Enter on a child bubbles up and activates the parent too.

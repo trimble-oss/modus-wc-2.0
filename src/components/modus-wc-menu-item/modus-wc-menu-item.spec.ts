@@ -536,23 +536,121 @@ describe('modus-wc-menu-item', () => {
     const selectSpy = jest.fn();
     menuItem.addEventListener('itemSelect', selectSpy);
 
-    // Create and dispatch Enter key event
     const enterEvent = new KeyboardEvent('keydown', {
       key: 'Enter',
       bubbles: true,
       cancelable: true,
     });
     const preventDefaultSpy = jest.spyOn(enterEvent, 'preventDefault');
+    const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
 
     liElement.dispatchEvent(enterEvent);
     await page.waitForChanges();
 
     expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
     expect(selectSpy).toHaveBeenCalledTimes(1);
     expect(selectSpy.mock.calls[0][0].detail).toEqual({
       value: 'test-value',
       selected: true,
     });
+  });
+
+  it('should emit itemSelect only once with child value when Enter is pressed on nested child item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu>
+          <modus-wc-menu-item label="Parent" value="parent" has-submenu="true">
+            <modus-wc-menu is-sub-menu="true">
+              <modus-wc-menu-item label="Child" value="child"></modus-wc-menu-item>
+            </modus-wc-menu>
+          </modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const childItem = page.doc.querySelector(
+      'modus-wc-menu-item[value="child"]'
+    ) as HTMLElement;
+    const childLi = childItem.querySelector('li') as HTMLLIElement;
+
+    const emittedValues: string[] = [];
+    page.doc.addEventListener('itemSelect', (event) => {
+      emittedValues.push(
+        (event as CustomEvent<{ value: string }>).detail.value
+      );
+    });
+
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    const stopPropagationSpy = jest.spyOn(enterEvent, 'stopPropagation');
+
+    childLi.dispatchEvent(enterEvent);
+    await page.waitForChanges();
+
+    expect(emittedValues).toEqual(['child']);
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when event target belongs to nested child item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcMenu],
+      html: `
+        <modus-wc-menu-item label="Parent" value="parent" has-submenu="true">
+          <modus-wc-menu is-sub-menu="true">
+            <modus-wc-menu-item label="Child" value="child"></modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      `,
+    });
+
+    const childLi = page.doc.querySelector(
+      'modus-wc-menu-item[value="child"] li'
+    ) as HTMLLIElement;
+    const parentEmitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: childLi,
+      configurable: true,
+    });
+
+    page.rootInstance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(parentEmitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when event target is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Test label" value="test-value"></modus-wc-menu-item>',
+    });
+
+    const emitSpy = jest.spyOn(page.rootInstance.itemSelect, 'emit');
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: null,
+      configurable: true,
+    });
+
+    page.rootInstance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 
   it('should emit itemSelect event when Space key is pressed on li element', async () => {
@@ -566,18 +664,19 @@ describe('modus-wc-menu-item', () => {
     const selectSpy = jest.fn();
     menuItem.addEventListener('itemSelect', selectSpy);
 
-    // Create and dispatch Space key event
     const spaceEvent = new KeyboardEvent('keydown', {
       key: ' ',
       bubbles: true,
       cancelable: true,
     });
     const preventDefaultSpy = jest.spyOn(spaceEvent, 'preventDefault');
+    const stopPropagationSpy = jest.spyOn(spaceEvent, 'stopPropagation');
 
     liElement.dispatchEvent(spaceEvent);
     await page.waitForChanges();
 
     expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(stopPropagationSpy).not.toHaveBeenCalled();
     expect(selectSpy).toHaveBeenCalledTimes(1);
     expect(selectSpy.mock.calls[0][0].detail).toEqual({
       value: 'test-value',
