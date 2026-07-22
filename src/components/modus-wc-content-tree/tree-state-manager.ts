@@ -54,7 +54,9 @@ export const addNode = (
       return { ...node, children };
     }
     if (node.children?.length) {
-      return { ...node, children: addNode(node.children, newNode, options) };
+      const nextChildren = addNode(node.children, newNode, options);
+      if (nextChildren === node.children) return node;
+      return { ...node, children: nextChildren };
     }
     return node;
   });
@@ -71,7 +73,9 @@ export const updateNode = (
       return { ...node, ...changes };
     }
     if (node.children?.length) {
-      return { ...node, children: updateNode(node.children, id, changes) };
+      const nextChildren = updateNode(node.children, id, changes);
+      if (nextChildren === node.children) return node;
+      return { ...node, children: nextChildren };
     }
     return node;
   });
@@ -80,11 +84,12 @@ export const updateNode = (
 export const deleteNode = (nodes: ITreeNode[], id: string): ITreeNode[] =>
   nodes
     .filter((node) => node.id !== id)
-    .map((node) =>
-      node.children?.length
-        ? { ...node, children: deleteNode(node.children, id) }
-        : node
-    );
+    .map((node) => {
+      if (!node.children?.length) return node;
+      const nextChildren = deleteNode(node.children, id);
+      if (nextChildren === node.children) return node;
+      return { ...node, children: nextChildren };
+    });
 
 /**
  * Remove every node in `ids` (and their descendants), returning a new tree. Safe
@@ -291,10 +296,9 @@ export const setNodeDisabled = (
   nodes.map((node) => {
     if (node.id === id) return { ...node, disabled };
     if (node.children?.length) {
-      return {
-        ...node,
-        children: setNodeDisabled(node.children, id, disabled),
-      };
+      const nextChildren = setNodeDisabled(node.children, id, disabled);
+      if (nextChildren === node.children) return node;
+      return { ...node, children: nextChildren };
     }
     return node;
   });

@@ -124,7 +124,8 @@ export class ModusWcTreeItem {
 
     // Nested submenu rows live inside an ancestor tree-item host. Without this
     // guard, Space/Enter on a child bubbles up and activates the parent too.
-    const owningItem = (e.target as HTMLElement)?.closest('modus-wc-tree-item');
+    const owningItem =
+      (e.target as Element | null)?.closest?.('modus-wc-tree-item') ?? null;
     if (owningItem !== this.el) return;
 
     if (e.key === 'Enter' || e.key === ' ') {
@@ -163,10 +164,11 @@ export class ModusWcTreeItem {
   }
 
   private getRootTreeMenu(): HTMLElement | null {
-    let treeMenu = this.el.closest('modus-wc-tree-menu');
+    let treeMenu = this.el.closest<HTMLElement>('modus-wc-tree-menu');
     while (treeMenu) {
       const parent =
-        treeMenu.parentElement?.closest('modus-wc-tree-menu') ?? null;
+        treeMenu.parentElement?.closest<HTMLElement>('modus-wc-tree-menu') ??
+        null;
       if (!parent) break;
       treeMenu = parent;
     }

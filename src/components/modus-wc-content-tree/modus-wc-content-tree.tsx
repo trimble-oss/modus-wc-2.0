@@ -1107,6 +1107,7 @@ export class ModusWcContentTree {
       <modus-wc-tree-item
         key={`${node.id}-loading`}
         customClass="modus-wc-content-tree-loading"
+        disabled
         label=""
         size={this.size}
         value={`${node.id}-loading`}
