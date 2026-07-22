@@ -205,6 +205,28 @@ describe('modus-wc-profile-menu', () => {
     ]);
   });
 
+  it('should rebuild the resolved main menu when snapshotting the prop throws', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcProfileMenu],
+      template: () =>
+        h('modus-wc-profile-menu', { profileProps: mockProfileProps }),
+    });
+
+    const component = page.rootInstance as ModusWcProfileMenu;
+    const circularMainMenu: Record<string, unknown> = { adminSettings: false };
+    circularMainMenu.self = circularMainMenu;
+
+    page.root!.mainMenu = circularMainMenu;
+    await page.waitForChanges();
+
+    expect(component['mainMenuSnapshot']).toBe('');
+    expect(getMainMenuItemLabels(page.root)).toEqual([
+      'My Profile',
+      'My Products',
+      'Support center',
+    ]);
+  });
+
   it('should not render main menu section when all built-in items are hidden and no custom items are provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcProfileMenu],

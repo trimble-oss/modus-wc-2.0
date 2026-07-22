@@ -193,7 +193,15 @@ export class ModusWcProfileMenu {
   }
 
   private updateResolvedMainMenu() {
-    const snapshot = JSON.stringify(this.mainMenu ?? null);
+    let snapshot: string;
+    try {
+      snapshot = JSON.stringify(this.mainMenu ?? null);
+    } catch {
+      this.mainMenuSnapshot = '';
+      this.resolvedMainMenu = this.buildResolvedMainMenu(this.mainMenu);
+      return;
+    }
+
     if (snapshot === this.mainMenuSnapshot) {
       return;
     }

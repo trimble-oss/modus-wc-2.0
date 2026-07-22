@@ -201,7 +201,7 @@ const Template: Story = {
     .mainMenu=${ifDefined(args['main-menu'])}
     .menuOne=${ifDefined(args['menu-one'])}
     .menuTwo=${ifDefined(args['menu-two'])}
-    .showSignOut=${ifDefined(args['show-sign-out'])}
+    .showSignOut=${args['show-sign-out']}
     @signOutClick=${action('signOutClick')}
     @menuItemClick=${action('menuItemClick')}
   ></modus-wc-profile-menu>
