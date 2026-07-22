@@ -38,6 +38,11 @@ interface ContentTreeHarness {
   size?: 'sm' | 'md' | 'lg';
   allowDragDrop?: boolean;
   draggingId?: string;
+  pendingMove?: {
+    id: string;
+    targetId: string;
+    position: 'before' | 'after' | 'inside';
+  };
   dragOverId?: string;
   dropPosition?: 'before' | 'after' | 'inside';
   springLoadId?: string;
@@ -719,7 +724,11 @@ describe('modus-wc-content-tree', () => {
     Object.defineProperty(menuEvent, 'target', { value: menuItem ?? dropdown });
 
     const rootNode = getNode('root-1');
+    (menuItem as HTMLElement & { selected?: boolean }).selected = true;
     component.onMenuAction(menuEvent, 'edit', rootNode);
+    expect((menuItem as HTMLElement & { selected?: boolean }).selected).toBe(
+      false
+    );
     component.onMenuAction(menuEvent, 'duplicate', rootNode);
     component.onMenuAction(menuEvent, 'above', rootNode);
     component.onMenuAction(menuEvent, 'below', rootNode);
@@ -1546,8 +1555,75 @@ describe('modus-wc-content-tree', () => {
     component.onEditingNodeIdChange('missing-node');
     component.handleEditInput(new CustomEvent('inputChange'));
     component.onEditingNodeIdChange('leaf-a');
-    textInput.dispatchEvent(new FocusEvent('blur'));
     expect(nodeRename).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit nodeEditCancel when committing an unchanged inline edit', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      editingNodeId: 'leaf-a',
+    });
+    const nodeRename = jest.fn();
+    const nodeEditCancel = jest.fn();
+    page.root?.addEventListener('nodeRename', nodeRename);
+    page.root?.addEventListener('nodeEditCancel', nodeEditCancel);
+
+    component.commitEdit(getNode('leaf-a'));
+
+    expect(nodeRename).not.toHaveBeenCalled();
+    expect(nodeEditCancel).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'leaf-a' } })
+    );
+  });
+
+  it('should emit nodeEditCancel when Enter is pressed without changing the label', async () => {
+    const { page, component } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      editingNodeId: 'leaf-a',
+    });
+    const nodeRename = jest.fn();
+    const nodeEditCancel = jest.fn();
+    page.root?.addEventListener('nodeRename', nodeRename);
+    page.root?.addEventListener('nodeEditCancel', nodeEditCancel);
+
+    const input = page.root!.querySelector(
+      '.modus-wc-content-tree-edit-input input'
+    ) as HTMLInputElement;
+    const enterKey = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(enterKey, 'target', { value: input });
+    component.handleInputKeyDown(enterKey);
+
+    expect(nodeRename).not.toHaveBeenCalled();
+    expect(nodeEditCancel).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'leaf-a' } })
+    );
+  });
+
+  it('should emit nodeEditCancel when the edit input blurs without changing the label', async () => {
+    const { page } = await createTreePage({
+      expandedNodeIds: ['root-1'],
+      editingNodeId: 'leaf-a',
+    });
+    const nodeRename = jest.fn();
+    const nodeEditCancel = jest.fn();
+    page.root?.addEventListener('nodeRename', nodeRename);
+    page.root?.addEventListener('nodeEditCancel', nodeEditCancel);
+
+    const textInput = page.root!.querySelector(
+      '.modus-wc-content-tree-edit-input'
+    ) as HTMLElement;
+    textInput.dispatchEvent(
+      new CustomEvent('inputBlur', { bubbles: true, composed: true })
+    );
+
+    expect(nodeRename).not.toHaveBeenCalled();
+    expect(nodeEditCancel).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'leaf-a' } })
+    );
   });
 
   it('should ignore duplicate commit and cancel resolutions in the same edit session', async () => {
@@ -1565,8 +1641,8 @@ describe('modus-wc-content-tree', () => {
     component.commitEdit(node);
     component.cancelEdit(node);
 
-    expect(nodeRename).toHaveBeenCalledTimes(1);
-    expect(nodeEditCancel).not.toHaveBeenCalled();
+    expect(nodeRename).not.toHaveBeenCalled();
+    expect(nodeEditCancel).toHaveBeenCalledTimes(1);
   });
 
   it('should coerce JSON string props into arrays', async () => {
@@ -1657,10 +1733,12 @@ describe('modus-wc-content-tree', () => {
     const nodeExpandChange = jest.fn();
     const nodeCheckChange = jest.fn();
     const nodeRename = jest.fn();
+    const nodeEditCancel = jest.fn();
     const nodeEdit = jest.fn();
     page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
     page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
     page.root?.addEventListener('nodeRename', nodeRename);
+    page.root?.addEventListener('nodeEditCancel', nodeEditCancel);
     page.root?.addEventListener('nodeEdit', nodeEdit);
 
     const rootItem = findTreeItem(page, 'root-1');
@@ -1684,7 +1762,8 @@ describe('modus-wc-content-tree', () => {
     textInput.dispatchEvent(
       new CustomEvent('inputBlur', { bubbles: true, composed: true })
     );
-    expect(nodeRename).toHaveBeenCalled();
+    expect(nodeRename).not.toHaveBeenCalled();
+    expect(nodeEditCancel).toHaveBeenCalled();
 
     findTreeItem(page, 'root-2')
       ?.querySelectorAll('modus-wc-menu-item')

@@ -491,12 +491,7 @@ export const TransactionalMenu: Story = {
 
     const handleRename = (e: CustomEvent<{ id: string; label: string }>) => {
       const { id, label } = e.detail;
-      // An empty name on a brand-new node discards it; otherwise apply the label.
-      if (!label && freshIds.has(id)) {
-        nodes = deleteNode(nodes, id);
-      } else {
-        nodes = updateNode(nodes, id, { label: label || 'Untitled' });
-      }
+      nodes = updateNode(nodes, id, { label: label || 'Untitled' });
       freshIds.delete(id);
       editingNodeId = undefined;
       sync();

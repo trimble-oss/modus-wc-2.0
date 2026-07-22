@@ -3,8 +3,34 @@
 */
 
 modus-wc-content-tree {
+  --modus-wc-content-tree-disabled-control-color: color-mix(
+    in sRGB,
+    var(--modus-wc-color-base-content-high-contrast) 20%,
+    transparent
+  );
+
   display: block;
   width: 100%;
+
+  /* Disabled tree buttons: muted icon/text via color only (no extra opacity). */
+  modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
+    color: var(--modus-wc-content-tree-disabled-control-color);
+    opacity: 1;
+
+    i.modus-wc-icon {
+      color: inherit;
+    }
+  }
+
+  /* Tab focus: primary outline flush with the button border box. */
+  modus-wc-button:not(.modus-wc-content-tree-drag-handle) .modus-wc-btn {
+    &:focus-visible {
+      border: none;
+      box-shadow: none;
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: 0;
+    }
+  }
 
   /* Tree menu/item hosts fill tree width (nested submenu uses display: contents). */
   > modus-wc-tree-menu {
@@ -14,6 +40,7 @@ modus-wc-content-tree {
 
   /* Search and toolbar stack vertically above the tree. */
   .modus-wc-content-tree-controls {
+    background-color: var(--modus-wc-color-base-page);
     display: flex;
     flex-direction: column;
     gap: var(--modus-wc-spacing-xs);
@@ -78,9 +105,9 @@ modus-wc-content-tree {
       }
 
       modus-wc-button.modus-wc-content-tree-drag-handle[slot='start'] {
-        flex: 0 0 0;
+        flex: 0 0 auto;
         margin: 0;
-        min-width: 0;
+        min-width: auto;
         overflow: visible;
         padding: 0;
       }
@@ -126,26 +153,56 @@ modus-wc-content-tree {
   /* Invisible chevron spacer so leaf labels align with parents. */
   .modus-wc-content-tree-toggle-spacer {
     flex: 0 0 auto;
-    margin-inline-start: var(--modus-wc-spacing-sm);
+    margin-inline-start: var(--modus-wc-spacing-md);
     pointer-events: none;
     visibility: hidden;
   }
 
-  /* Expand/collapse chevron: sized by atom `size` prop. */
-  .modus-wc-content-tree-node-start
-    modus-wc-button.modus-wc-content-tree-chevron {
+  /* Icon-only row controls: square hit target (chevron, eye, ellipsis). */
+  modus-wc-button.modus-wc-content-tree-row-control,
+  modus-wc-dropdown-menu.modus-wc-content-tree-row-control {
     align-items: center;
     display: inline-flex;
     flex: 0 0 auto;
     justify-content: center;
     line-height: 0;
-    margin-inline-start: var(--modus-wc-spacing-md);
 
     .modus-wc-btn {
       align-items: center;
+      border-radius: var(--modus-wc-border-radius-sm);
+      box-sizing: border-box;
       display: inline-flex;
       justify-content: center;
+      line-height: 0;
+      padding: 0 !important;
+      padding-inline: 0 !important;
+
+      modus-wc-icon {
+        display: inline-flex;
+        line-height: 0;
+      }
+
+      &:focus-visible {
+        border: none;
+        outline-offset: 0;
+      }
     }
+
+    .modus-wc-btn-square.modus-wc-btn-xs {
+      min-width: var(--modus-wc-size-xs);
+      width: var(--modus-wc-size-xs);
+    }
+
+    .modus-wc-btn-square.modus-wc-btn-sm {
+      min-width: var(--modus-wc-size-sm);
+      width: var(--modus-wc-size-sm);
+    }
+  }
+
+  /* Chevron column indent (not applied to eye/ellipsis). */
+  .modus-wc-content-tree-node-start
+    modus-wc-button.modus-wc-content-tree-chevron {
+    margin-inline-start: var(--modus-wc-spacing-md);
   }
 
   /* Inline rename/add input fills remaining row width. */
@@ -164,7 +221,7 @@ modus-wc-content-tree {
   .modus-wc-content-tree-actions {
     align-items: center;
     display: flex;
-    gap: 0;
+    gap: var(--modus-wc-content-tree-end-gap);
     margin-inline-start: auto;
     opacity: 0;
     padding-inline-start: var(--modus-wc-content-tree-end-gap);
@@ -202,6 +259,13 @@ modus-wc-content-tree {
     pointer-events: auto;
   }
 
+  .modus-wc-menu-item-active
+    > .modus-wc-menu-item-interactive
+    .modus-wc-content-tree-drag-handle {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   /* Locked rows hide ellipsis; eye stays visible. */
   .modus-wc-menu-item-disabled .modus-wc-content-tree-actions {
     opacity: 1;
@@ -224,30 +288,59 @@ modus-wc-content-tree {
     opacity: 1;
   }
 
-  /* Drag handle: absolute at row start; shown on hover/focus. */
+  /* Drag handle: absolute at row start; shown on hover/focus/selection/move. */
   modus-wc-button.modus-wc-content-tree-drag-handle {
     align-items: center;
     cursor: grab;
     display: inline-flex;
+    flex: 0 0 auto;
     inset-inline-start: 0;
     justify-content: center;
     line-height: 0;
     margin: 0;
+    min-height: auto;
+    min-width: var(--modus-wc-size-xs);
     opacity: 0;
     pointer-events: none;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     transition: opacity 0.1s ease-in-out;
+    width: var(--modus-wc-size-xs);
     z-index: 2;
+
+    &:has(.modus-wc-btn-sm) {
+      min-width: var(--modus-wc-size-sm);
+      width: var(--modus-wc-size-sm);
+    }
 
     /* Preflight sets button cursor:pointer — use grab on hit target. */
     .modus-wc-btn {
       align-items: center;
+      border-radius: var(--modus-wc-border-radius-sm);
+      box-sizing: border-box;
       cursor: grab;
       display: inline-flex;
       justify-content: center;
+      line-height: 0;
       overflow: visible;
+      padding: 0 !important;
+      padding-inline: 0 !important;
+
+      &:focus-visible {
+        box-shadow: none;
+        outline: none;
+      }
+
+      &.modus-wc-btn-square.modus-wc-btn-xs {
+        min-width: calc(var(--modus-wc-size-xs) - var(--modus-wc-spacing-sm));
+        width: calc(var(--modus-wc-size-xs) - var(--modus-wc-spacing-sm));
+      }
+
+      &.modus-wc-btn-square.modus-wc-btn-sm {
+        min-width: calc(var(--modus-wc-size-sm) - var(--modus-wc-spacing-sm));
+        width: calc(var(--modus-wc-size-sm) - var(--modus-wc-spacing-sm));
+      }
 
       &:active {
         cursor: grabbing;
@@ -269,6 +362,14 @@ modus-wc-content-tree {
       opacity: 1;
       pointer-events: auto;
     }
+  }
+
+  .modus-wc-content-tree-dragging
+    > .modus-wc-menu-item-interactive
+    .modus-wc-content-tree-drag-handle {
+    cursor: grabbing;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   /* Drop indicators: before/after line, inside fill + outline. */
@@ -378,7 +479,6 @@ modus-wc-content-tree {
       0.1875rem
     );
 
-    padding-inline-start: var(--modus-wc-content-tree-family-line-width);
     position: relative;
 
     &::before {
@@ -491,7 +591,6 @@ modus-wc-content-tree {
     z-index: 2;
 
     i.modus-wc-icon {
-      color: var(--modus-wc-color-base-content);
       cursor: grabbing;
     }
   }
@@ -500,5 +599,20 @@ modus-wc-content-tree {
     flex: 0 0 auto;
     margin-inline-start: var(--modus-wc-spacing-sm);
     visibility: hidden;
+  }
+}
+
+/* Drag handle: modern/connect use primary outline; classic keeps borderless focus border. */
+[data-theme='modus-modern-light'],
+[data-theme='modus-modern-dark'],
+[data-theme='connect-light'],
+[data-theme='connect-dark'] {
+  modus-wc-content-tree
+    modus-wc-button.modus-wc-content-tree-drag-handle
+    .modus-wc-btn:focus-visible {
+    border: none;
+    box-shadow: none;
+    outline: 2px solid var(--modus-wc-color-primary);
+    outline-offset: 0;
   }
 }

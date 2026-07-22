@@ -5,7 +5,7 @@ export const contentTreeDefaultSourceCode = `
   const tree = document.getElementById('content-tree');
 
   // The application owns the data (the single source of truth).
-  tree.nodes = [
+  const nodes = [
     {
       id: '1',
       label: 'Project Files',
@@ -21,7 +21,7 @@ export const contentTreeDefaultSourceCode = `
             { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
     { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
@@ -29,20 +29,29 @@ export const contentTreeDefaultSourceCode = `
   ];
 
   // Controlled state lives in the application.
-  tree.expandedNodeIds = ['1'];
-  tree.selectedNodeId = '1-1';
+  let selectedNodeId = '1-1';
+  let expandedNodeIds = ['1'];
 
-  // Selecting a node: decide whether to apply, then update the data/state.
+  const sync = () => {
+    tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
+    tree.expandedNodeIds = [...expandedNodeIds];
+  };
+
+  await customElements.whenDefined('modus-wc-content-tree');
+  sync();
+
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
-  // Expanding/collapsing a node.
   tree.addEventListener('nodeExpandChange', (e) => {
     const { id, expanded } = e.detail;
-    tree.expandedNodeIds = expanded
-      ? [...tree.expandedNodeIds, id]
-      : tree.expandedNodeIds.filter((x) => x !== id);
+    expandedNodeIds = expanded
+      ? [...expandedNodeIds, id]
+      : expandedNodeIds.filter((x) => x !== id);
+    sync();
   });
 </script>
 `;
@@ -73,17 +82,16 @@ export const contentTreeMultiSelectSourceCode = `
             { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
     { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
     { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
 
-  tree.nodes = nodes;
-  tree.expandedNodeIds = ['1', '1-2'];
-  tree.selectedNodeId = '1-1';
-  tree.checkedNodeIds = ['1-2-1'];
+  let selectedNodeId = '1-1';
+  let expandedNodeIds = ['1', '1-2'];
+  let checkedNodeIds = ['1-2-1'];
 
   const findNode = (list, id) => {
     for (const node of list) {
@@ -112,25 +120,33 @@ export const contentTreeMultiSelectSourceCode = `
     return [...next];
   };
 
+  const sync = () => {
+    tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
+    tree.expandedNodeIds = [...expandedNodeIds];
+    tree.checkedNodeIds = [...checkedNodeIds];
+  };
+
+  await customElements.whenDefined('modus-wc-content-tree');
+  sync();
+
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
   tree.addEventListener('nodeExpandChange', (e) => {
     const { id, expanded } = e.detail;
-    tree.expandedNodeIds = expanded
-      ? [...tree.expandedNodeIds, id]
-      : tree.expandedNodeIds.filter((x) => x !== id);
+    expandedNodeIds = expanded
+      ? [...expandedNodeIds, id]
+      : expandedNodeIds.filter((x) => x !== id);
+    sync();
   });
 
   tree.addEventListener('nodeCheckChange', (e) => {
     const { id, checked } = e.detail;
-    tree.checkedNodeIds = setNodeChecked(
-      nodes,
-      tree.checkedNodeIds,
-      id,
-      checked
-    );
+    checkedNodeIds = setNodeChecked(nodes, checkedNodeIds, id, checked);
+    sync();
   });
 </script>
 `;
@@ -159,7 +175,7 @@ export const contentTreeSearchFilterSourceCode = `
             { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
     { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
@@ -175,27 +191,38 @@ export const contentTreeSearchFilterSourceCode = `
       return acc;
     }, []);
 
-  tree.nodes = nodes;
-  tree.expandedNodeIds = ['1', '1-2'];
-  tree.selectedNodeId = '1-2-2';
-  // The component owns the search query internally; the app just enables it.
-  tree.searchable = true;
-  tree.toolbar = { expandCollapse: true };
+  let selectedNodeId = '1-2-2';
+  let expandedNodeIds = ['1', '1-2'];
+
+  const sync = () => {
+    tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
+    tree.expandedNodeIds = [...expandedNodeIds];
+    // The component owns the search query internally; the app just enables it.
+    tree.searchable = true;
+    tree.toolbar = { expandCollapse: true };
+  };
+
+  await customElements.whenDefined('modus-wc-content-tree');
+  sync();
 
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
   tree.addEventListener('nodeExpandChange', (e) => {
     const { id, expanded } = e.detail;
-    tree.expandedNodeIds = expanded
-      ? [...new Set([...tree.expandedNodeIds, id])]
-      : tree.expandedNodeIds.filter((x) => x !== id);
+    expandedNodeIds = expanded
+      ? [...new Set([...expandedNodeIds, id])]
+      : expandedNodeIds.filter((x) => x !== id);
+    sync();
   });
 
   // The toolbar's single expand/collapse-all toggle emits \`expandAllChange\`.
   tree.addEventListener('expandAllChange', (e) => {
-    tree.expandedNodeIds = e.detail.expanded ? getExpandableNodeIds(nodes) : [];
+    expandedNodeIds = e.detail.expanded ? getExpandableNodeIds(nodes) : [];
+    sync();
   });
 </script>
 `;
@@ -317,29 +344,43 @@ export const contentTreeTransactionalMenuSourceCode = `
             { id: '1-2-2', label: 'Search Index', icon: { name: 'search', variant: 'solid' } },
           ],
         },
-        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' }, disabled: true },
+        { id: '1-3', label: 'Archived', icon: { name: 'alert', variant: 'solid' } },
       ],
     },
     { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
     { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
+  let selectedNodeId = '1-1';
   let expandedNodeIds = ['1', '1-2'];
-  let editingNodeId;
+  let editingNodeId = null;
   const freshIds = new Set();
   let idCounter = 0;
   const makeId = () => \`new-\${Date.now()}-\${idCounter++}\`;
 
+  // Push every controlled prop from app state. Use \`null\` (not \`undefined\`) when
+  // clearing \`editingNodeId\` — vanilla property assignment of \`undefined\` often
+  // leaves the previous id on the host, so autofocus never re-arms.
   const sync = () => {
     tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
     tree.expandedNodeIds = [...expandedNodeIds];
     tree.editingNodeId = editingNodeId;
   };
 
-  tree.selectedNodeId = '1-1';
+  const startEditing = (id, fresh) => {
+    editingNodeId = id;
+    if (fresh) freshIds.add(id);
+    sync();
+  };
+
+  // Wait until the custom element is upgraded so the first prop assignments stick
+  // (Storybook already has components defined; a standalone app may not).
+  await customElements.whenDefined('modus-wc-content-tree');
   sync();
 
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
   tree.addEventListener('nodeExpandChange', (e) => {
@@ -351,15 +392,14 @@ export const contentTreeTransactionalMenuSourceCode = `
   });
 
   tree.addEventListener('nodeEdit', (e) => {
-    editingNodeId = e.detail.id;
-    sync();
+    startEditing(e.detail.id, false);
   });
 
   tree.addEventListener('nodeDuplicate', (e) => {
     const result = duplicateNode(nodes, e.detail.id, makeId);
     nodes = result.nodes;
-    editingNodeId = result.newId;
-    sync();
+    if (result.newId) startEditing(result.newId, false);
+    else sync();
   });
 
   tree.addEventListener('nodeAdd', (e) => {
@@ -376,9 +416,7 @@ export const contentTreeTransactionalMenuSourceCode = `
       const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
       nodes = addNode(nodes, newNode, { parentId: loc?.parentId, index });
     }
-    editingNodeId = newId;
-    freshIds.add(newId);
-    sync();
+    startEditing(newId, true);
   });
 
   tree.addEventListener('nodeDelete', (e) => {
@@ -388,13 +426,9 @@ export const contentTreeTransactionalMenuSourceCode = `
 
   tree.addEventListener('nodeRename', (e) => {
     const { id, label } = e.detail;
-    if (!label && freshIds.has(id)) {
-      nodes = deleteNode(nodes, id);
-    } else {
-      nodes = updateNode(nodes, id, { label: label || 'Untitled' });
-    }
+    nodes = updateNode(nodes, id, { label: label || 'Untitled' });
     freshIds.delete(id);
-    editingNodeId = undefined;
+    editingNodeId = null;
     sync();
   });
 
@@ -402,7 +436,7 @@ export const contentTreeTransactionalMenuSourceCode = `
     const { id } = e.detail;
     if (freshIds.has(id)) nodes = deleteNode(nodes, id);
     freshIds.delete(id);
-    editingNodeId = undefined;
+    editingNodeId = null;
     sync();
   });
 
@@ -531,20 +565,24 @@ export const contentTreeDragAndDropSourceCode = `
     { id: '2', label: 'Settings', icon: { name: 'settings', variant: 'solid' } },
     { id: '3', label: 'Notifications', icon: { name: 'info', variant: 'solid' } },
   ];
+  let selectedNodeId = '1-1';
   let expandedNodeIds = ['1', '1-2'];
 
+  // Push every controlled prop from app state on each update (including
+  // \`allowDragDrop\`, so it is not lost if sync runs before upgrade completes).
   const sync = () => {
     tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
     tree.expandedNodeIds = [...expandedNodeIds];
-    // Opt in to drag-and-drop; a drag handle appears on each row on hover.
     tree.allowDragDrop = true;
   };
 
-  tree.selectedNodeId = '1-1';
+  await customElements.whenDefined('modus-wc-content-tree');
   sync();
 
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
   tree.addEventListener('nodeExpandChange', (e) => {
@@ -596,6 +634,7 @@ export const contentTreeLazyLoadingSourceCode = `
     { id: 'empty', label: 'Empty Folder', icon: { name: 'folder_closed', variant: 'solid' }, hasChildren: true },
     { id: 'readme', label: 'Read Me', icon: { name: 'info', variant: 'solid' } },
   ];
+  let selectedNodeId = 'readme';
   let expandedNodeIds = [];
 
   // Children returned by the mock "server". The nested subfolder is itself lazy;
@@ -611,14 +650,16 @@ export const contentTreeLazyLoadingSourceCode = `
 
   const sync = () => {
     tree.nodes = nodes;
+    tree.selectedNodeId = selectedNodeId;
     tree.expandedNodeIds = [...expandedNodeIds];
   };
 
-  tree.selectedNodeId = 'readme';
+  await customElements.whenDefined('modus-wc-content-tree');
   sync();
 
   tree.addEventListener('nodeSelect', (e) => {
-    tree.selectedNodeId = e.detail.id;
+    selectedNodeId = e.detail.id;
+    sync();
   });
 
   tree.addEventListener('nodeExpandChange', (e) => {
@@ -726,8 +767,8 @@ export const contentTreeToolbarSourceCode = `
 
   const sync = () => {
     tree.nodes = nodes;
-    tree.expandedNodeIds = [...expandedNodeIds];
     tree.selectedNodeId = selectedNodeId;
+    tree.expandedNodeIds = [...expandedNodeIds];
     tree.checkedNodeIds = [...checkedNodeIds];
     // Toolbar config: toggle each control on/off.
     tree.toolbar = { expandCollapse: true, delete: true };
@@ -735,6 +776,7 @@ export const contentTreeToolbarSourceCode = `
     tree.searchable = true;
   };
 
+  await customElements.whenDefined('modus-wc-content-tree');
   sync();
 
   tree.addEventListener('nodeSelect', (e) => {

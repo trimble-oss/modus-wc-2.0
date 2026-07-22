@@ -125,10 +125,10 @@ export class ModusWcContentTree {
   /** Event emitted after the user confirms deletion. The app should remove the node from `nodes`. */
   @StencilEvent() nodeDelete!: EventEmitter<{ id: string }>;
 
-  /** Event emitted when an inline edit is committed. The app should apply the new label and clear `editingNodeId`. */
+  /** Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear `editingNodeId`. */
   @StencilEvent() nodeRename!: EventEmitter<{ id: string; label: string }>;
 
-  /** Event emitted when an inline edit is cancelled. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty). */
+  /** Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty). */
   @StencilEvent() nodeEditCancel!: EventEmitter<{ id: string }>;
 
   /** Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child. */
@@ -201,6 +201,7 @@ export class ModusWcContentTree {
   // Draft label while inline-editing, plus a guard so a single edit session
   // resolves exactly once (Enter/blur commit vs Escape cancel never double-fire).
   private draftLabel = '';
+  private editOriginalLabel = '';
   private editResolved = false;
   // Set when an edit session begins so the next render can focus the input.
   private editFocusPending = false;
@@ -215,6 +216,7 @@ export class ModusWcContentTree {
       this.editResolved = false;
       const node = findNode(this.getNodes(), newId);
       this.draftLabel = node?.label ?? '';
+      this.editOriginalLabel = this.draftLabel;
       this.editFocusPending = true;
     } else {
       // Session ended. Mark resolved so any trailing blur from input removal cannot commit.
@@ -524,6 +526,14 @@ export class ModusWcContentTree {
     );
   }
 
+  private attachDragGhost(row: HTMLElement): HTMLElement {
+    this.removeDragGhost();
+    const ghost = this.buildDragGhost(row);
+    document.body.appendChild(ghost);
+    this.dragGhost = ghost;
+    return ghost;
+  }
+
   // Drag starts from the handle only; use the full row as the drag image so the node travels with the cursor.
   private setRowDragImage(event: DragEvent, node: ITreeNode): void {
     const dataTransfer = event.dataTransfer;
@@ -532,10 +542,7 @@ export class ModusWcContentTree {
     const row = this.resolveDragRow(node, event);
     if (!row) return;
 
-    this.removeDragGhost();
-    const ghost = this.buildDragGhost(row);
-    document.body.appendChild(ghost);
-    this.dragGhost = ghost;
+    const ghost = this.attachDragGhost(row);
 
     const rect = row.getBoundingClientRect();
     const offsetX =
@@ -610,11 +617,13 @@ export class ModusWcContentTree {
 
   // A node cannot be dropped onto itself, into its own subtree (would orphan the
   // branch), or onto a disabled row.
-  private isInvalidDropTarget(node: ITreeNode): boolean {
-    const id = this.draggingId;
-    if (!id) return true;
-    if (node.disabled || node.id === id) return true;
-    return isDescendant(this.getNodes(), id, node.id);
+  private isInvalidDropTarget(
+    node: ITreeNode,
+    moveId = this.draggingId
+  ): boolean {
+    if (!moveId) return true;
+    if (node.disabled || node.id === moveId) return true;
+    return isDescendant(this.getNodes(), moveId, node.id);
   }
 
   // Split the target row into three zones by pointer position: the top edge
@@ -702,7 +711,14 @@ export class ModusWcContentTree {
     const trigger = (e.target as HTMLElement | null)?.closest(
       'modus-wc-dropdown-menu'
     ) as (HTMLElement & { menuVisible?: boolean }) | null;
-    if (trigger) trigger.menuVisible = false;
+    if (!trigger) return;
+
+    // Action menus should not keep single-select highlight after close.
+    trigger.querySelectorAll('modus-wc-menu-item').forEach((item) => {
+      (item as HTMLElement & { selected?: boolean }).selected = false;
+    });
+
+    trigger.menuVisible = false;
   }
 
   private getDeleteDialog(): HTMLDialogElement | null {
@@ -861,6 +877,7 @@ export class ModusWcContentTree {
               <modus-wc-icon
                 decorative
                 name="delete"
+                variant="solid"
                 size={this.getActionIconSize()}
               />
             </modus-wc-button>
@@ -906,9 +923,17 @@ export class ModusWcContentTree {
     this.draftLabel = target?.value ?? '';
   };
 
+  private hasEditChanged(): boolean {
+    return this.draftLabel.trim() !== this.editOriginalLabel.trim();
+  }
+
   private commitEdit = (node: ITreeNode) => {
     if (this.editResolved) return;
     this.editResolved = true;
+    if (!this.hasEditChanged()) {
+      this.nodeEditCancel.emit({ id: node.id });
+      return;
+    }
     this.nodeRename.emit({ id: node.id, label: this.draftLabel.trim() });
   };
 
@@ -1181,6 +1206,7 @@ export class ModusWcContentTree {
             aria-label={`Reorder ${node.label}`}
             class="modus-wc-content-tree-drag-handle"
             color="tertiary"
+            data-node-id={node.id}
             shape="square"
             size={this.getControlButtonSize()}
             variant="borderless"
@@ -1199,7 +1225,7 @@ export class ModusWcContentTree {
             <modus-wc-button
               aria-expanded={String(expanded)}
               aria-label={`${expanded ? 'Collapse' : 'Expand'} ${node.label}`}
-              class="modus-wc-content-tree-chevron"
+              class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control"
               color="tertiary"
               disabled={effectiveDisabled}
               shape="square"
@@ -1220,7 +1246,7 @@ export class ModusWcContentTree {
             // under parent labels without a custom-width spacer.
             <modus-wc-button
               aria-hidden="true"
-              class="modus-wc-content-tree-toggle-spacer"
+              class="modus-wc-content-tree-toggle-spacer modus-wc-content-tree-row-control"
               color="tertiary"
               shape="square"
               size={this.getControlButtonSize()}
@@ -1281,7 +1307,7 @@ export class ModusWcContentTree {
                   ? `Enable ${node.label}`
                   : `Disable ${node.label}`
               }
-              class="modus-wc-content-tree-visibility"
+              class="modus-wc-content-tree-visibility modus-wc-content-tree-row-control"
               color="tertiary"
               disabled={ancestorDisabled}
               shape="square"
@@ -1304,6 +1330,7 @@ export class ModusWcContentTree {
                 buttonShape="square"
                 buttonSize={this.getControlButtonSize()}
                 buttonVariant="borderless"
+                customClass="modus-wc-content-tree-row-control"
                 menuPlacement="bottom-end"
                 menuSize={this.size}
               >
@@ -1364,7 +1391,7 @@ export class ModusWcContentTree {
               // the same horizontal position as on enabled rows (no jump).
               <modus-wc-button
                 aria-hidden="true"
-                class="modus-wc-content-tree-actions-spacer"
+                class="modus-wc-content-tree-actions-spacer modus-wc-content-tree-row-control"
                 color="tertiary"
                 shape="square"
                 size={this.getControlButtonSize()}

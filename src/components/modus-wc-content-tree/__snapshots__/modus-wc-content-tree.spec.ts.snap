@@ -11,7 +11,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
             <div class="modus-wc-menu-item-content">
               <div class="modus-wc-content-tree-node-start" slot="start">
-                <modus-wc-button class="modus-wc-content-tree-chevron">
+                <modus-wc-button class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control">
                   <!---->
                   <button aria-expanded="true" aria-label="Collapse Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -33,7 +33,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                 </div>
               </div>
               <div class="modus-wc-content-tree-actions" slot="end">
-                <modus-wc-button class="modus-wc-content-tree-visibility">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                   <!---->
                   <button aria-label="Disable Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -43,7 +43,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
-                <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                   <!---->
                   <modus-wc-button>
                     <!---->
@@ -161,7 +161,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -183,7 +183,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                         </div>
                       </div>
                       <div class="modus-wc-content-tree-actions" slot="end">
-                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                           <!---->
                           <button aria-label="Disable Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -193,7 +193,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
-                        <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                        <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                           <!---->
                           <modus-wc-button>
                             <!---->
@@ -310,7 +310,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -327,7 +327,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                         </div>
                       </div>
                       <div class="modus-wc-content-tree-actions modus-wc-content-tree-lock-owner" slot="end">
-                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                           <!---->
                           <button aria-label="Enable Disabled Leaf" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -337,7 +337,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
-                        <modus-wc-button class="modus-wc-content-tree-actions-spacer">
+                        <modus-wc-button class="modus-wc-content-tree-actions-spacer modus-wc-content-tree-row-control">
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -358,7 +358,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                     <div class="modus-wc-menu-item-content">
                       <div class="modus-wc-content-tree-node-start" slot="start">
-                        <modus-wc-button class="modus-wc-content-tree-chevron">
+                        <modus-wc-button class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control">
                           <!---->
                           <button aria-expanded="true" aria-label="Collapse Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -375,7 +375,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                         </div>
                       </div>
                       <div class="modus-wc-content-tree-actions" slot="end">
-                        <modus-wc-button class="modus-wc-content-tree-visibility">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                           <!---->
                           <button aria-label="Disable Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -385,7 +385,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
-                        <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                        <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                           <!---->
                           <modus-wc-button>
                             <!---->
@@ -503,7 +503,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                             <div class="modus-wc-menu-item-content">
                               <div class="modus-wc-content-tree-node-start" slot="start">
-                                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
                                   <!---->
                                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -520,7 +520,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                 </div>
                               </div>
                               <div class="modus-wc-content-tree-actions" slot="end">
-                                <modus-wc-button class="modus-wc-content-tree-visibility">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                                   <!---->
                                   <button aria-label="Disable Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -530,7 +530,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
-                                <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                                   <!---->
                                   <modus-wc-button>
                                     <!---->
@@ -647,7 +647,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
                             <div class="modus-wc-menu-item-content">
                               <div class="modus-wc-content-tree-node-start" slot="start">
-                                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
                                   <!---->
                                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -664,7 +664,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                 </div>
                               </div>
                               <div class="modus-wc-content-tree-actions" slot="end">
-                                <modus-wc-button class="modus-wc-content-tree-visibility">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                                   <!---->
                                   <button aria-label="Disable Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -674,7 +674,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
-                                <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                                   <!---->
                                   <modus-wc-button>
                                     <!---->
@@ -799,7 +799,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
           <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
             <div class="modus-wc-menu-item-content">
               <div class="modus-wc-content-tree-node-start" slot="start">
-                <modus-wc-button class="modus-wc-content-tree-toggle-spacer">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
                   <!---->
                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -816,7 +816,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                 </div>
               </div>
               <div class="modus-wc-content-tree-actions" slot="end">
-                <modus-wc-button class="modus-wc-content-tree-visibility">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
                   <!---->
                   <button aria-label="Disable Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -826,7 +826,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
-                <modus-wc-dropdown-menu class="modus-wc-dropdown-menu">
+                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
                   <!---->
                   <modus-wc-button>
                     <!---->
