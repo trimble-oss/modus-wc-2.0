@@ -13,7 +13,7 @@ import {
 import {
   contentTreeDefaultSourceCode,
   contentTreeDragAndDropSourceCode,
-  contentTreeEmptySourceCode,
+  contentTreeBuildSourceCode,
   contentTreeLazyLoadingSourceCode,
   contentTreeMultiSelectSourceCode,
   contentTreeSearchFilterSourceCode,
@@ -179,8 +179,8 @@ export const Default: Story = {
   },
 };
 
-/** Persists Empty story tree data across Storybook control updates (re-renders). */
-const emptyStoryState = {
+/** Persists Build Tree story data across Storybook control updates (re-renders). */
+const buildTreeStoryState = {
   nodes: [] as ITreeNode[],
   selectedNodeId: undefined as string | undefined,
   expandedNodeIds: [] as string[],
@@ -189,11 +189,11 @@ const emptyStoryState = {
   idCounter: 0,
 };
 
-export const Empty: Story = {
+export const BuildTree: Story = {
   parameters: {
     docs: {
       source: {
-        code: contentTreeEmptySourceCode,
+        code: contentTreeBuildSourceCode,
       },
     },
   },
@@ -201,7 +201,7 @@ export const Empty: Story = {
     let treeEl: ContentTreeElement | undefined;
     let shellEl: HTMLElement | undefined;
     let emptyPanelEl: HTMLElement | undefined;
-    const state = emptyStoryState;
+    const state = buildTreeStoryState;
     const makeId = () => `new-${Date.now()}-${state.idCounter++}`;
 
     const sync = () => {

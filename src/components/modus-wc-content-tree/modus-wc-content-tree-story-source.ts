@@ -829,7 +829,7 @@ export const contentTreeToolbarSourceCode = `
 </script>
 `;
 
-export const contentTreeEmptySourceCode = `
+export const contentTreeBuildSourceCode = `
 <style>
   .modus-wc-content-tree-empty-story {
     background-color: var(--modus-wc-color-base-page);
