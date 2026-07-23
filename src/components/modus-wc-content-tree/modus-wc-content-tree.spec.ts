@@ -2,12 +2,16 @@
 import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { ModusWcContentTree } from './modus-wc-content-tree';
 import {
+  collectLeafIds,
   findNode,
   getExpandableNodeIds,
   hasDisabledAncestor,
   isDescendant,
+  isLazyUnloaded,
   moveNodeRelative,
+  setNodeChecked,
   setNodeDisabled,
+  updateNode,
 } from './tree-state-manager';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcCheckbox } from '../modus-wc-checkbox/modus-wc-checkbox';
@@ -47,7 +51,6 @@ interface ContentTreeHarness {
   dropPosition?: 'before' | 'after' | 'inside';
   springLoadId?: string;
   loadingIds?: Set<string>;
-  isLazyUnloaded: (node: ITreeNode) => boolean;
   onNodesChange: () => void;
   handleDragStart: (e: DragEvent, node: ITreeNode) => void;
   handleDragEnter: (e: DragEvent) => void;
@@ -2151,6 +2154,33 @@ describe('modus-wc-content-tree', () => {
     ]);
   });
 
+  it('should leave collectLeafIds empty for lazy unloaded nodes', () => {
+    expect(
+      collectLeafIds({ id: 'lazy', label: 'Lazy', hasChildren: true })
+    ).toEqual([]);
+    expect(
+      collectLeafIds({
+        id: 'loaded',
+        label: 'Loaded',
+        children: [{ id: 'child', label: 'Child' }],
+      })
+    ).toEqual(['child']);
+  });
+
+  it('should not check lazy unloaded nodes via setNodeChecked', () => {
+    const nodes: ITreeNode[] = [
+      { id: 'lazy', label: 'Lazy', hasChildren: true },
+    ];
+
+    expect(setNodeChecked(nodes, [], 'lazy', true)).toEqual([]);
+  });
+
+  it('should return the same tree reference from updateNode when the id is missing', () => {
+    expect(updateNode(sampleNodes, 'missing', { label: 'Nope' })).toBe(
+      sampleNodes
+    );
+  });
+
   // --- Drag & drop: state-manager helpers ---
 
   it('isDescendant identifies self, descendants, and unrelated nodes', () => {
@@ -2987,17 +3017,13 @@ describe('modus-wc-content-tree', () => {
     ...over,
   });
 
-  it('isLazyUnloaded distinguishes unloaded lazy nodes from loaded or empty ones', async () => {
-    const { component } = await createTreePage();
-
-    expect(component.isLazyUnloaded(lazyNode())).toBe(true);
-    expect(component.isLazyUnloaded(lazyNode({ children: [] }))).toBe(false);
+  it('isLazyUnloaded distinguishes unloaded lazy nodes from loaded or empty ones', () => {
+    expect(isLazyUnloaded(lazyNode())).toBe(true);
+    expect(isLazyUnloaded(lazyNode({ children: [] }))).toBe(false);
     expect(
-      component.isLazyUnloaded(
-        lazyNode({ children: [{ id: 'x', label: 'X' }] })
-      )
+      isLazyUnloaded(lazyNode({ children: [{ id: 'x', label: 'X' }] }))
     ).toBe(false);
-    expect(component.isLazyUnloaded({ id: 'leaf', label: 'Leaf' })).toBe(false);
+    expect(isLazyUnloaded({ id: 'leaf', label: 'Leaf' })).toBe(false);
   });
 
   it('should render an expand chevron for a lazy node that has no children yet', async () => {
@@ -3036,6 +3062,58 @@ describe('modus-wc-content-tree', () => {
 
     expect(leafSpacerBtn?.tabIndex).toBe(-1);
     expect(disabledActionsSpacer?.tabIndex).toBe(-1);
+  });
+
+  it('should emit nodeLoadChildren when expandedNodeIds is updated directly', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      expandedNodeIds: [],
+    });
+    const nodeLoadChildren = jest.fn();
+    page.root?.addEventListener('nodeLoadChildren', nodeLoadChildren);
+
+    component.expandedNodeIds = ['lazy'];
+    await page.waitForChanges();
+
+    expect(nodeLoadChildren).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'lazy' } })
+    );
+    expect(component.loadingIds?.has('lazy')).toBe(true);
+  });
+
+  it('should emit nodeLoadChildren for lazy nodes that mount already expanded', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const nodeLoadChildren = jest.fn();
+    const page = await newSpecPage({
+      components: contentTreeComponents,
+      html: '<modus-wc-content-tree aria-label="Content tree"></modus-wc-content-tree>',
+    });
+    page.root?.addEventListener('nodeLoadChildren', nodeLoadChildren);
+    const component = asHarness(page.rootInstance as ModusWcContentTree);
+    component.nodes = nodes;
+    component.expandedNodeIds = ['lazy'];
+    component.componentWillLoad();
+    await page.waitForChanges();
+
+    expect(nodeLoadChildren).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { id: 'lazy' } })
+    );
+  });
+
+  it('should disable checkboxes on lazy unloaded nodes in multi-select mode', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page } = await createTreePage({
+      nodes,
+      selectionMode: 'multiple',
+      expandedNodeIds: [],
+    });
+
+    const checkbox = findTreeItem(page, 'lazy')?.querySelector(
+      'modus-wc-checkbox'
+    ) as (HTMLElement & { disabled?: boolean }) | null;
+
+    expect(checkbox?.disabled).toBe(true);
   });
 
   it('should emit nodeLoadChildren, track loading, and show a spinner on first expand', async () => {

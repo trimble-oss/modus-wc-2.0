@@ -26,6 +26,7 @@ import {
   getExpandableNodeIds,
   hasDisabledAncestor,
   isDescendant,
+  isLazyUnloaded,
 } from './tree-state-manager';
 
 /** Aggregated checkbox state for a node and its descendants. */
@@ -253,6 +254,11 @@ export class ModusWcContentTree {
     }
   }
 
+  @Watch('expandedNodeIds')
+  onExpandedNodeIdsChange(): void {
+    this.syncLazyLoadsForExpandedNodes();
+  }
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
@@ -269,6 +275,10 @@ export class ModusWcContentTree {
     if (this.editingNodeId) {
       this.onEditingNodeIdChange(this.editingNodeId);
     }
+
+    // @Watch does not fire on initial load; fetch children for any lazy nodes
+    // that mount already expanded (e.g. expand-all or deep-linked state).
+    this.syncLazyLoadsForExpandedNodes();
   }
 
   componentDidRender() {
@@ -386,16 +396,8 @@ export class ModusWcContentTree {
 
     const expanded = !this.isExpanded(node.id);
 
-    // Lazy loading: the first time a not-yet-loaded node is expanded, ask the
-    // application to fetch its children and show a spinner until they arrive.
-    // The loadingIds guard prevents re-fetching while a load is in flight.
-    if (
-      expanded &&
-      this.isLazyUnloaded(node) &&
-      !this.loadingIds.has(node.id)
-    ) {
-      this.loadingIds = new Set(this.loadingIds).add(node.id);
-      this.nodeLoadChildren.emit({ id: node.id });
+    if (expanded) {
+      this.requestLazyLoadIfNeeded(node.id);
     }
 
     this.nodeExpandChange.emit({ id: node.id, expanded });
@@ -403,6 +405,7 @@ export class ModusWcContentTree {
 
   private handleCheckboxChange = (e: CustomEvent, node: ITreeNode) => {
     (e as unknown as Event).stopPropagation?.();
+    if (isLazyUnloaded(node)) return;
     // Clicking an unchecked or mixed checkbox checks the whole branch; clicking
     // a fully checked one unchecks it. The app cascades via `setNodeChecked`.
     const checked = this.getCheckStateById(node.id) !== 'checked';
@@ -1011,7 +1014,10 @@ export class ModusWcContentTree {
 
     const visit = (node: ITreeNode): CheckState => {
       let state: CheckState;
-      if (!node.children?.length) {
+      if (isLazyUnloaded(node)) {
+        // Leaves are unknown until children load; treat as unchecked.
+        state = 'unchecked';
+      } else if (!node.children?.length) {
         state = checked.has(node.id) ? 'checked' : 'unchecked';
       } else {
         const childStates = node.children.map(visit);
@@ -1066,11 +1072,21 @@ export class ModusWcContentTree {
     return this.coerceArray<string>(this.expandedNodeIds).includes(id);
   }
 
-  // A node marked expandable via `hasChildren` whose `children` have not been
-  // provided yet. Expanding it triggers lazy loading (see handleExpandToggle);
-  // once `children` are set (even `[]`) it is no longer "lazy unloaded".
-  private isLazyUnloaded(node: ITreeNode): boolean {
-    return !!node.hasChildren && node.children === undefined;
+  // Ask the app to fetch children the first time a lazy node is expanded,
+  // whether via the chevron or a controlled `expandedNodeIds` update.
+  private requestLazyLoadIfNeeded(id: string): void {
+    if (this.isFiltering()) return;
+    const node = findNode(this.getNodes(), id);
+    if (!node || !isLazyUnloaded(node) || this.loadingIds.has(id)) return;
+    this.loadingIds = new Set(this.loadingIds).add(id);
+    this.nodeLoadChildren.emit({ id });
+  }
+
+  private syncLazyLoadsForExpandedNodes(): void {
+    if (this.isFiltering()) return;
+    for (const id of this.coerceArray<string>(this.expandedNodeIds)) {
+      this.requestLazyLoadIfNeeded(id);
+    }
   }
 
   // Find the 1st-level node whose subtree (itself or any descendant) contains
@@ -1133,7 +1149,7 @@ export class ModusWcContentTree {
   ): VNode => {
     // `hasChildren` is truthy when the node has loaded children OR is a lazy
     // node still awaiting them (so it still shows an expand chevron).
-    const hasChildren = !!node.children?.length || this.isLazyUnloaded(node);
+    const hasChildren = !!node.children?.length || isLazyUnloaded(node);
     const expanded = hasChildren && this.isExpanded(node.id);
     const editing = node.id === this.editingNodeId;
 
@@ -1266,7 +1282,7 @@ export class ModusWcContentTree {
           {this.isMultiSelect() ? (
             <modus-wc-checkbox
               aria-label={node.label ? `Select ${node.label}` : 'Select node'}
-              disabled={effectiveDisabled}
+              disabled={effectiveDisabled || isLazyUnloaded(node)}
               indeterminate={
                 this.getCheckStateById(node.id) === 'indeterminate'
               }

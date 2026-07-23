@@ -67,18 +67,23 @@ export const updateNode = (
   nodes: ITreeNode[],
   id: string,
   changes: Partial<Omit<ITreeNode, 'id'>>
-): ITreeNode[] =>
-  nodes.map((node) => {
+): ITreeNode[] => {
+  let changed = false;
+  const next = nodes.map((node) => {
     if (node.id === id) {
+      changed = true;
       return { ...node, ...changes };
     }
     if (node.children?.length) {
       const nextChildren = updateNode(node.children, id, changes);
       if (nextChildren === node.children) return node;
+      changed = true;
       return { ...node, children: nextChildren };
     }
     return node;
   });
+  return changed ? next : nodes;
+};
 
 /** Remove the node with the given id (and its descendants), returning a new tree. */
 export const deleteNode = (nodes: ITreeNode[], id: string): ITreeNode[] =>
@@ -213,9 +218,17 @@ export const duplicateNode = (
   };
 };
 
+/** Whether a lazy node is expandable but its `children` have not been loaded yet. */
+export const isLazyUnloaded = (node: ITreeNode): boolean =>
+  !!node.hasChildren && node.children === undefined;
+
 /** Collect the ids of every leaf under `node` (or the node itself when it is a leaf). */
-export const collectLeafIds = (node: ITreeNode): string[] =>
-  node.children?.length ? node.children.flatMap(collectLeafIds) : [node.id];
+export const collectLeafIds = (node: ITreeNode): string[] => {
+  if (isLazyUnloaded(node)) return [];
+  return node.children?.length
+    ? node.children.flatMap(collectLeafIds)
+    : [node.id];
+};
 
 /**
  * Collect the ids of every expandable node (any node that has children) across
