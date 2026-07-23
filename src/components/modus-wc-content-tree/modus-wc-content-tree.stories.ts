@@ -13,6 +13,7 @@ import {
 import {
   contentTreeDefaultSourceCode,
   contentTreeDragAndDropSourceCode,
+  contentTreeEmptySourceCode,
   contentTreeLazyLoadingSourceCode,
   contentTreeMultiSelectSourceCode,
   contentTreeSearchFilterSourceCode,
@@ -175,6 +176,265 @@ export const Default: Story = {
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
     ></modus-wc-content-tree>`;
+  },
+};
+
+/** Persists Empty story tree data across Storybook control updates (re-renders). */
+const emptyStoryState = {
+  nodes: [] as ITreeNode[],
+  selectedNodeId: undefined as string | undefined,
+  expandedNodeIds: [] as string[],
+  editingNodeId: undefined as string | undefined,
+  freshIds: new Set<string>(),
+  idCounter: 0,
+};
+
+export const Empty: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: contentTreeEmptySourceCode,
+      },
+    },
+  },
+  render: (args) => {
+    let treeEl: ContentTreeElement | undefined;
+    let shellEl: HTMLElement | undefined;
+    let emptyPanelEl: HTMLElement | undefined;
+    const state = emptyStoryState;
+    const makeId = () => `new-${Date.now()}-${state.idCounter++}`;
+
+    const sync = () => {
+      const isEmpty = state.nodes.length === 0;
+      shellEl?.classList.toggle('is-empty', isEmpty);
+      if (emptyPanelEl) emptyPanelEl.hidden = !isEmpty;
+      if (!treeEl) return;
+      treeEl.nodes = state.nodes;
+      treeEl.selectedNodeId = state.selectedNodeId;
+      treeEl.expandedNodeIds = [...state.expandedNodeIds];
+      treeEl.editingNodeId = state.editingNodeId;
+      treeEl.searchable = true;
+      treeEl.toolbar = { expandCollapse: true };
+    };
+
+    const startEditing = (id: string, fresh: boolean) => {
+      state.editingNodeId = id;
+      if (fresh) state.freshIds.add(id);
+      sync();
+    };
+
+    const createFirstNode = () => {
+      const newId = makeId();
+      state.nodes = [
+        {
+          id: newId,
+          label: '',
+          icon: treeIcon('folder_closed'),
+        },
+      ];
+      state.selectedNodeId = newId;
+      startEditing(newId, true);
+    };
+
+    const handleSelect = (e: CustomEvent<{ id: string }>) => {
+      state.selectedNodeId = e.detail.id;
+      sync();
+    };
+
+    const handleExpandChange = (
+      e: CustomEvent<{ id: string; expanded: boolean }>
+    ) => {
+      const { id, expanded } = e.detail;
+      state.expandedNodeIds = expanded
+        ? [...new Set([...state.expandedNodeIds, id])]
+        : state.expandedNodeIds.filter((x) => x !== id);
+      sync();
+    };
+
+    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
+      state.expandedNodeIds = e.detail.expanded
+        ? getExpandableNodeIds(state.nodes)
+        : [];
+      sync();
+    };
+
+    const handleEdit = (e: CustomEvent<{ id: string }>) => {
+      startEditing(e.detail.id, false);
+    };
+
+    const handleDuplicate = (e: CustomEvent<{ id: string }>) => {
+      const result = duplicateNode(state.nodes, e.detail.id, makeId);
+      state.nodes = result.nodes;
+      if (result.newId) startEditing(result.newId, false);
+      else sync();
+    };
+
+    const handleAdd = (
+      e: CustomEvent<{
+        referenceId: string;
+        position: 'above' | 'below' | 'child';
+      }>
+    ) => {
+      const { referenceId, position } = e.detail;
+      const newId = makeId();
+      const newNode: ITreeNode = { id: newId, label: '' };
+
+      if (position === 'child') {
+        state.nodes = addNode(state.nodes, newNode, { parentId: referenceId });
+        if (!state.expandedNodeIds.includes(referenceId)) {
+          state.expandedNodeIds = [...state.expandedNodeIds, referenceId];
+        }
+      } else {
+        const loc = getNodeLocation(state.nodes, referenceId);
+        const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
+        state.nodes = addNode(state.nodes, newNode, {
+          parentId: loc?.parentId,
+          index,
+        });
+      }
+      startEditing(newId, true);
+    };
+
+    const handleDelete = (e: CustomEvent<{ id: string }>) => {
+      state.nodes = deleteNode(state.nodes, e.detail.id);
+      state.freshIds.delete(e.detail.id);
+      if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
+        state.selectedNodeId = state.nodes[0]?.id;
+      }
+      sync();
+    };
+
+    const handleRename = (e: CustomEvent<{ id: string; label: string }>) => {
+      const { id, label } = e.detail;
+      state.nodes = updateNode(state.nodes, id, { label: label || 'Untitled' });
+      state.freshIds.delete(id);
+      state.editingNodeId = undefined;
+      sync();
+    };
+
+    const handleEditCancel = (e: CustomEvent<{ id: string }>) => {
+      const { id } = e.detail;
+      if (state.freshIds.has(id)) state.nodes = deleteNode(state.nodes, id);
+      state.freshIds.delete(id);
+      state.editingNodeId = undefined;
+      if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
+        state.selectedNodeId = state.nodes[0]?.id;
+      }
+      sync();
+    };
+
+    const handleVisibilityChange = (
+      e: CustomEvent<{ id: string; disabled: boolean }>
+    ) => {
+      const { id, disabled } = e.detail;
+      state.nodes = setNodeDisabled(state.nodes, id, disabled);
+      sync();
+    };
+
+    // prettier-ignore
+    return html`
+    <style>
+      .modus-wc-content-tree-empty-story {
+        background-color: var(--modus-wc-color-base-page);
+        display: flex;
+        flex-direction: column;
+        min-height: 24rem;
+        width: 18rem;
+      }
+
+      .modus-wc-content-tree-empty-story.is-empty modus-wc-content-tree > modus-wc-tree-menu {
+        display: none;
+      }
+
+      .modus-wc-content-tree-empty-story.is-empty modus-wc-content-tree {
+        flex: 0 0 auto;
+      }
+
+      .modus-wc-content-tree-empty-story.is-empty .modus-wc-content-tree-empty-story-panel {
+        align-items: center;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: var(--modus-wc-spacing-md);
+        justify-content: center;
+        padding: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-content-tree-empty-story:not(.is-empty) .modus-wc-content-tree-empty-story-panel {
+        display: none;
+      }
+
+      .modus-wc-content-tree-empty-story-icon {
+        color: var(--modus-wc-color-base-content-low-contrast);
+        font-size: 4rem;
+        line-height: 1;
+        opacity: 0.6;
+      }
+
+      .modus-wc-content-tree-empty-story-title {
+        color: var(--modus-wc-color-base-content-low-contrast);
+        margin: 0;
+        text-align: center;
+      }
+    </style>
+    <div
+      class="modus-wc-content-tree-empty-story is-empty"
+      ${ref((el) => {
+        shellEl = (el as HTMLElement | undefined) ?? undefined;
+        sync();
+      })}
+    >
+      <modus-wc-content-tree
+        ${ref((el) => {
+          treeEl = (el as ContentTreeElement) ?? undefined;
+          sync();
+        })}
+        aria-label="Content tree"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        selection-mode=${ifDefined(args['selection-mode'])}
+        size=${ifDefined(args.size)}
+        @nodeSelect=${handleSelect}
+        @nodeExpandChange=${handleExpandChange}
+        @expandAllChange=${handleExpandAll}
+        @nodeEdit=${handleEdit}
+        @nodeDuplicate=${handleDuplicate}
+        @nodeAdd=${handleAdd}
+        @nodeDelete=${handleDelete}
+        @nodeRename=${handleRename}
+        @nodeEditCancel=${handleEditCancel}
+        @nodeVisibilityChange=${handleVisibilityChange}
+      ></modus-wc-content-tree>
+      <div
+        class="modus-wc-content-tree-empty-story-panel"
+        ${ref((el) => {
+          emptyPanelEl = (el as HTMLElement | undefined) ?? undefined;
+          sync();
+        })}
+      >
+        <modus-wc-icon
+          custom-class="modus-wc-content-tree-empty-story-icon"
+          decorative
+          name="box_select"
+          size="lg"
+        ></modus-wc-icon>
+        <modus-wc-typography
+          custom-class="modus-wc-content-tree-empty-story-title"
+          hierarchy="p"
+          label="Empty content tree"
+          size="lg"
+        ></modus-wc-typography>
+        <modus-wc-button
+          color="primary"
+          size="sm"
+          variant="filled"
+          @buttonClick=${createFirstNode}
+        >
+          <modus-wc-icon decorative name="add" size="xs"></modus-wc-icon>
+          Create node
+        </modus-wc-button>
+      </div>
+    </div>`;
   },
 };
 
