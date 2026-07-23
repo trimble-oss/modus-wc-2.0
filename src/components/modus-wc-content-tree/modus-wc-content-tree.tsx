@@ -147,7 +147,7 @@ export class ModusWcContentTree {
   /** Event emitted when the toolbar's delete button is confirmed. `ids` are the top-most checked nodes; the app should remove them (e.g. via `deleteNodes`). */
   @StencilEvent() nodesDelete!: EventEmitter<{ ids: string[] }>;
 
-  /** Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should apply it to the node and its descendants (e.g. via `setNodeDisabled`). */
+  /** Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should update the node's own `disabled` state (e.g. via `setNodeDisabled`); descendants become effectively disabled via ancestor inheritance. */
   @StencilEvent() nodeVisibilityChange!: EventEmitter<{
     id: string;
     disabled: boolean;
@@ -272,10 +272,12 @@ export class ModusWcContentTree {
   }
 
   componentDidRender() {
-    this.syncDragHandleDraggable();
-    // Child modus-wc-button hosts may finish their inner <button> one frame
-    // later after a keyed recreate — re-sync so draggable is never missed.
-    requestAnimationFrame(() => this.syncDragHandleDraggable());
+    if (this.allowDragDrop) {
+      this.syncDragHandleDraggable();
+      // Child modus-wc-button hosts may finish their inner <button> one frame
+      // later after a keyed recreate — re-sync so draggable is never missed.
+      requestAnimationFrame(() => this.syncDragHandleDraggable());
+    }
 
     if (!this.editFocusPending || !this.editingNodeId) return;
     this.editFocusPending = false;
@@ -1249,9 +1251,9 @@ export class ModusWcContentTree {
               aria-hidden="true"
               class="modus-wc-content-tree-toggle-spacer modus-wc-content-tree-row-control"
               color="tertiary"
+              disabled
               shape="square"
               size={this.getControlButtonSize()}
-              tabIndex={-1}
               variant="borderless"
             >
               <modus-wc-icon
@@ -1394,9 +1396,9 @@ export class ModusWcContentTree {
                 aria-hidden="true"
                 class="modus-wc-content-tree-actions-spacer modus-wc-content-tree-row-control"
                 color="tertiary"
+                disabled
                 shape="square"
                 size={this.getControlButtonSize()}
-                tabIndex={-1}
                 variant="borderless"
               >
                 <modus-wc-icon

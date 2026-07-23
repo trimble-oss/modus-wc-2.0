@@ -6,14 +6,16 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
-import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+import { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-avatar";
+import { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 import { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-import { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
+import { IMainMenu, IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
 import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
@@ -23,14 +25,16 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
-export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IInputFeedbackProp, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+export { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-avatar";
+export { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
 export { IAriaLabelValues, IPageChange } from "./components/modus-wc-pagination/modus-wc-pagination";
-export { IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
+export { IMainMenu, IProfileMenuProps, ISubMenu } from "./components/modus-wc-profile-menu/modus-wc-profile-menu";
 export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-rating/modus-wc-rating";
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
@@ -75,6 +79,7 @@ export namespace Components {
         "delay"?: number;
         /**
           * Whether to disable the icon
+          * @default false
          */
         "disableIcon"?: boolean;
         /**
@@ -90,19 +95,22 @@ export namespace Components {
           * The variant of the alert.
           * @default 'info'
          */
-        "variant"?: 'error' | 'info' | 'success' | 'warning';
+        "variant"?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
     }
     interface ModusWcAppMenu {
         /**
           * The apps to display in the menu.
+          * @default []
          */
         "apps"?: IAppMenuItem[];
         /**
           * custom class to apply to the menu
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The layout of the menu.
+          * @default 'list'
          */
         "layout"?: 'list' | 'grid';
     }
@@ -310,7 +318,7 @@ export namespace Components {
           * The size of the avatar.
           * @default 'md'
          */
-        "size"?: DaisySize;
+        "size"?: DaisySize | 'xl';
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -344,6 +352,32 @@ export namespace Components {
          */
         "variant": 'counter' | 'filled' | 'outlined' | 'text';
     }
+    interface ModusWcBottomSheet {
+        /**
+          * Custom CSS class to apply to the outer div.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.
+          * @default 'default'
+         */
+        "displayMode"?: TBottomSheetDisplayMode;
+        /**
+          * Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.
+          * @default 0.4
+         */
+        "dragStepThreshold"?: number;
+        /**
+          * Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.
+         */
+        "header"?: IBottomSheetHeader;
+        /**
+          * Controls whether the bottom sheet is visible.
+          * @default false
+         */
+        "visible"?: boolean;
+    }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
      */
@@ -373,7 +407,13 @@ export namespace Components {
           * The color variant of the button.
           * @default 'primary'
          */
-        "color": 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color": | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral'
+    | 'success';
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -423,7 +463,13 @@ export namespace Components {
         /**
           * Color to apply to all buttons within the button group
          */
-        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral'
+    | 'success';
         /**
           * Disables all buttons within the button group
           * @default false
@@ -560,6 +606,7 @@ export namespace Components {
         "label"?: string;
         /**
           * Whether the chip height can grow and its content can wrap across multiple lines.
+          * @default false
          */
         "multiline"?: boolean;
         /**
@@ -618,6 +665,71 @@ export namespace Components {
         "options"?: ICollapseOptions;
     }
     /**
+     * A data-driven, stateless/controlled tree component. The consuming application
+     * owns the `nodes` data (the single source of truth) and the controlled
+     * `selectedNodeId` / `expandedNodeIds` state. The component renders the tree and
+     * emits `nodeSelect` / `nodeExpandChange`; the application decides whether to
+     * apply the change and passes the updated state back in.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
+         */
+        "allowDragDrop"?: boolean;
+        /**
+          * Indicates that the content tree should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The ids of the checked leaf nodes (multi-select). Controlled by the consuming application.
+         */
+        "checkedNodeIds"?: string[];
+        /**
+          * Custom CSS class to apply to the host element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to `nodeEdit`, `nodeAdd`, or `nodeDuplicate`).
+         */
+        "editingNodeId"?: string;
+        /**
+          * The ids of the currently expanded nodes. Controlled by the consuming application.
+         */
+        "expandedNodeIds"?: string[];
+        /**
+          * When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When `searchable` is enabled, this only seeds the built-in search box's initial value.
+          * @default ''
+         */
+        "filter"?: string;
+        /**
+          * The tree data. The single source of truth, owned by the consuming application.
+         */
+        "nodes"?: ITreeNode[];
+        /**
+          * Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the `filter` prop is used only to seed its initial value.
+         */
+        "searchable"?: boolean;
+        /**
+          * The id of the currently selected (active) node. Controlled by the consuming application.
+         */
+        "selectedNodeId"?: string;
+        /**
+          * The selection mode of the content tree.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the content tree items.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select).
+         */
+        "toolbar"?: IContentTreeToolbar;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -638,6 +750,11 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * The end date in range mode (`type="range"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode.
+          * @default ''
+         */
+        "endValue": string;
+        /**
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
@@ -652,7 +769,11 @@ export namespace Components {
     | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
         /**
-          * The ID of the input element.
+          * When omitted, defaults to `true` in range mode and `false` in single mode.
+         */
+        "hideOverflowDates"?: boolean;
+        /**
+          * The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id.
          */
         "inputId"?: string;
         /**
@@ -664,15 +785,15 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Maximum date value.
+          * Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "max"?: string;
         /**
-          * Minimum date value.
+          * Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "min"?: string;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
+          * Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name.
          */
         "name"?: string;
         /**
@@ -696,7 +817,12 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * Activates range mode. `value` is the start date; `endValue` is the end date.
+          * @default 'single'
+         */
+        "type"?: 'single' | 'range';
+        /**
+          * The selected date in single mode. In range mode (`type="range"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset.
           * @default ''
          */
         "value": string;
@@ -811,6 +937,11 @@ export namespace Components {
          */
         "menuSize"?: ModusSize;
         /**
+          * The positioning strategy for the menu. Use 'fixed' when the dropdown is inside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to the viewport coordinate space.
+          * @default 'absolute'
+         */
+        "menuStrategy"?: 'absolute' | 'fixed';
+        /**
           * Indicates that the menu is visible.
           * @default false
          */
@@ -835,11 +966,15 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
+          * External feedback to display info, success, or error state with optional custom icon and message
+         */
+        "feedback"?: IFileDropzoneFeedback;
+        /**
           * Custom instructions shown when files are dragged over the dropzone
          */
         "fileDraggedOverInstructions"?: string;
         /**
-          * Include state icon (upload, success, error)
+          * Include state icon for default, validation, upload, and feedback states
           * @default true
          */
         "includeStateIcon"?: boolean;
@@ -1036,6 +1171,7 @@ export namespace Components {
     interface ModusWcLink {
         /**
           * The color of the link.
+          * @default 'primary'
          */
         "color": | 'primary'
     | 'secondary'
@@ -1047,6 +1183,7 @@ export namespace Components {
     | 'danger';
         /**
           * Custom CSS class to apply to the link element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -1063,6 +1200,7 @@ export namespace Components {
         "target"?: string;
         /**
           * The underline behavior of the link.
+          * @default 'always'
          */
         "underline": 'always' | 'hover' | 'none';
     }
@@ -1478,6 +1616,10 @@ export namespace Components {
     }
     interface ModusWcProfileMenu {
         /**
+          * Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and `items` appends custom entries.
+         */
+        "mainMenu"?: IMainMenu;
+        /**
           * Configuration for the first menu including title and items
          */
         "menuOne"?: ISubMenu;
@@ -1489,6 +1631,11 @@ export namespace Components {
           * Profile menu properties containing user information
          */
         "profileProps": IProfileMenuProps;
+        /**
+          * Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.
+          * @default true
+         */
+        "showSignOut"?: boolean;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -1808,6 +1955,7 @@ export namespace Components {
         "customClass"?: string;
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+          * @default false
          */
         "interactive"?: boolean;
         /**
@@ -1910,6 +2058,10 @@ export namespace Components {
           * @default true
          */
         "hover"?: boolean;
+        /**
+          * Per-row predicate function controlling row selection eligibility.
+         */
+        "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
         /**
           * Available options for the number of rows per page.
           * @default [5, 10, 15]
@@ -2331,13 +2483,19 @@ export namespace Components {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface ModusWcTooltip {
         /**
-          * The text content of the tooltip.
+          * The text content of the tooltip. When contentElement is also set, contentElement takes precedence.
           * @default ''
          */
         "content": string;
+        /**
+          * An optional rich HTML element to render as the tooltip body. When set, this takes precedence over the `content` string prop. The element is deep-cloned into the tooltip container.
+         */
+        "contentElement"?: HTMLElement;
         /**
           * Custom CSS class to apply to the inner div.
           * @default ''
@@ -2361,6 +2519,108 @@ export namespace Components {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.
+         */
+        "blockExpand"?: boolean;
+        "bordered"?: boolean;
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Public method to collapse the submenu if it's expanded
+         */
+        "collapseSubmenu": () => Promise<void>;
+        /**
+          * Custom CSS class to apply to the li element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The focused state of the tree item.
+         */
+        "focused"?: boolean;
+        /**
+          * Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
+        /**
+          * The text rendered in the tree item.
+          * @default ''
+         */
+        "label": string;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the tree item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the tree item.
+          * @default 'auto'
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The unique identifying value of the tree item.
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface ModusWcTreeMenu {
+        /**
+          * Indicates that the tree menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this tree menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
+          * The orientation of the tree menu.
+          * @default 'vertical'
+         */
+        "orientation"?: Orientation;
+        /**
+          * The selection mode of the tree menu.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the tree menu.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -2435,6 +2695,14 @@ export interface ModusWcAutocompleteCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcAutocompleteElement;
 }
+export interface ModusWcAvatarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcAvatarElement;
+}
+export interface ModusWcBottomSheetCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcBottomSheetElement;
+}
 export interface ModusWcBreadcrumbsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcBreadcrumbsElement;
@@ -2458,6 +2726,10 @@ export interface ModusWcChipCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcCollapseCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcCollapseElement;
+}
+export interface ModusWcContentTreeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcContentTreeElement;
 }
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2550,6 +2822,14 @@ export interface ModusWcTimeInputCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcTooltipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcTooltipElement;
+}
+export interface ModusWcTreeItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeItemElement;
+}
+export interface ModusWcTreeMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcTreeMenuElement;
 }
 export interface ModusWcUtilityPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2649,12 +2929,23 @@ declare global {
         prototype: HTMLModusWcAutocompleteElement;
         new (): HTMLModusWcAutocompleteElement;
     };
+    interface HTMLModusWcAvatarElementEventMap {
+        "imageLoadError": IAvatarImageLoadError;
+    }
     /**
      * A customizable avatar component used to create avatars with different images or user initials.
      * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
      * The component will extract the first letter of each word in the initials string.
      */
     interface HTMLModusWcAvatarElement extends Components.ModusWcAvatar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcAvatarElementEventMap>(type: K, listener: (this: HTMLModusWcAvatarElement, ev: ModusWcAvatarCustomEvent<HTMLModusWcAvatarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcAvatarElementEventMap>(type: K, listener: (this: HTMLModusWcAvatarElement, ev: ModusWcAvatarCustomEvent<HTMLModusWcAvatarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLModusWcAvatarElement: {
         prototype: HTMLModusWcAvatarElement;
@@ -2669,6 +2960,28 @@ declare global {
     var HTMLModusWcBadgeElement: {
         prototype: HTMLModusWcBadgeElement;
         new (): HTMLModusWcBadgeElement;
+    };
+    interface HTMLModusWcBottomSheetElementEventMap {
+        "sheetVisibilityChange": { visible: boolean };
+        "displayModeChange": {
+    displayMode: TBottomSheetDisplayMode;
+  };
+        "headerBackClick": void;
+        "headerCloseClick": void;
+    }
+    interface HTMLModusWcBottomSheetElement extends Components.ModusWcBottomSheet, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcBottomSheetElementEventMap>(type: K, listener: (this: HTMLModusWcBottomSheetElement, ev: ModusWcBottomSheetCustomEvent<HTMLModusWcBottomSheetElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcBottomSheetElementEventMap>(type: K, listener: (this: HTMLModusWcBottomSheetElement, ev: ModusWcBottomSheetCustomEvent<HTMLModusWcBottomSheetElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcBottomSheetElement: {
+        prototype: HTMLModusWcBottomSheetElement;
+        new (): HTMLModusWcBottomSheetElement;
     };
     interface HTMLModusWcBreadcrumbsElementEventMap {
         "breadcrumbClick": IBreadcrumb;
@@ -2813,12 +3126,68 @@ declare global {
         prototype: HTMLModusWcCollapseElement;
         new (): HTMLModusWcCollapseElement;
     };
+    interface HTMLModusWcContentTreeElementEventMap {
+        "nodeSelect": { id: string };
+        "nodeExpandChange": {
+    id: string;
+    expanded: boolean;
+  };
+        "nodeCheckChange": {
+    id: string;
+    checked: boolean;
+  };
+        "nodeEdit": { id: string };
+        "nodeDuplicate": { id: string };
+        "nodeAdd": {
+    referenceId: string;
+    position: 'above' | 'below' | 'child';
+  };
+        "nodeDelete": { id: string };
+        "nodeRename": { id: string; label: string };
+        "nodeEditCancel": { id: string };
+        "nodeMove": {
+    id: string;
+    targetId: string;
+    position: 'before' | 'after' | 'inside';
+  };
+        "nodeLoadChildren": { id: string };
+        "expandAllChange": { expanded: boolean };
+        "nodesDelete": { ids: string[] };
+        "nodeVisibilityChange": {
+    id: string;
+    disabled: boolean;
+  };
+    }
+    /**
+     * A data-driven, stateless/controlled tree component. The consuming application
+     * owns the `nodes` data (the single source of truth) and the controlled
+     * `selectedNodeId` / `expandedNodeIds` state. The component renders the tree and
+     * emits `nodeSelect` / `nodeExpandChange`; the application decides whether to
+     * apply the change and passes the updated state back in.
+     */
+    interface HTMLModusWcContentTreeElement extends Components.ModusWcContentTree, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcContentTreeElementEventMap>(type: K, listener: (this: HTMLModusWcContentTreeElement, ev: ModusWcContentTreeCustomEvent<HTMLModusWcContentTreeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcContentTreeElementEventMap>(type: K, listener: (this: HTMLModusWcContentTreeElement, ev: ModusWcContentTreeCustomEvent<HTMLModusWcContentTreeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcContentTreeElement: {
+        prototype: HTMLModusWcContentTreeElement;
+        new (): HTMLModusWcContentTreeElement;
+    };
     interface HTMLModusWcDateElementEventMap {
         "inputBlur": FocusEvent;
         "inputChange": InputEvent;
         "inputFocus": FocusEvent;
         "calendarMonthChange": number;
         "calendarYearChange": number;
+        "endCalendarMonthChange": number;
+        "endCalendarYearChange": number;
+        "rangeChange": IDateRange;
     }
     /**
      * A customizable date picker component used to create date inputs.
@@ -3469,6 +3838,8 @@ declare global {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3483,6 +3854,54 @@ declare global {
     var HTMLModusWcTooltipElement: {
         prototype: HTMLModusWcTooltipElement;
         new (): HTMLModusWcTooltipElement;
+    };
+    interface HTMLModusWcTreeItemElementEventMap {
+        "itemSelect": {
+    value: string;
+    selected?: boolean;
+  };
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface HTMLModusWcTreeItemElement extends Components.ModusWcTreeItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeItemElementEventMap>(type: K, listener: (this: HTMLModusWcTreeItemElement, ev: ModusWcTreeItemCustomEvent<HTMLModusWcTreeItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeItemElement: {
+        prototype: HTMLModusWcTreeItemElement;
+        new (): HTMLModusWcTreeItemElement;
+    };
+    interface HTMLModusWcTreeMenuElementEventMap {
+        "menuFocusout": FocusEvent;
+        "menuSelectionChange": {
+    selectedItems: HTMLElement[];
+  };
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface HTMLModusWcTreeMenuElement extends Components.ModusWcTreeMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcTreeMenuElementEventMap>(type: K, listener: (this: HTMLModusWcTreeMenuElement, ev: ModusWcTreeMenuCustomEvent<HTMLModusWcTreeMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcTreeMenuElementEventMap>(type: K, listener: (this: HTMLModusWcTreeMenuElement, ev: ModusWcTreeMenuCustomEvent<HTMLModusWcTreeMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcTreeMenuElement: {
+        prototype: HTMLModusWcTreeMenuElement;
+        new (): HTMLModusWcTreeMenuElement;
     };
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -3524,6 +3943,7 @@ declare global {
         "modus-wc-autocomplete": HTMLModusWcAutocompleteElement;
         "modus-wc-avatar": HTMLModusWcAvatarElement;
         "modus-wc-badge": HTMLModusWcBadgeElement;
+        "modus-wc-bottom-sheet": HTMLModusWcBottomSheetElement;
         "modus-wc-breadcrumbs": HTMLModusWcBreadcrumbsElement;
         "modus-wc-button": HTMLModusWcButtonElement;
         "modus-wc-button-group": HTMLModusWcButtonGroupElement;
@@ -3531,6 +3951,7 @@ declare global {
         "modus-wc-checkbox": HTMLModusWcCheckboxElement;
         "modus-wc-chip": HTMLModusWcChipElement;
         "modus-wc-collapse": HTMLModusWcCollapseElement;
+        "modus-wc-content-tree": HTMLModusWcContentTreeElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
@@ -3569,6 +3990,8 @@ declare global {
         "modus-wc-toast": HTMLModusWcToastElement;
         "modus-wc-toolbar": HTMLModusWcToolbarElement;
         "modus-wc-tooltip": HTMLModusWcTooltipElement;
+        "modus-wc-tree-item": HTMLModusWcTreeItemElement;
+        "modus-wc-tree-menu": HTMLModusWcTreeMenuElement;
         "modus-wc-typography": HTMLModusWcTypographyElement;
         "modus-wc-utility-panel": HTMLModusWcUtilityPanelElement;
     }
@@ -3616,6 +4039,7 @@ declare namespace LocalJSX {
         "delay"?: number;
         /**
           * Whether to disable the icon
+          * @default false
          */
         "disableIcon"?: boolean;
         /**
@@ -3635,19 +4059,22 @@ declare namespace LocalJSX {
           * The variant of the alert.
           * @default 'info'
          */
-        "variant"?: 'error' | 'info' | 'success' | 'warning';
+        "variant"?: 'error' | 'info' | 'neutral' | 'success' | 'warning';
     }
     interface ModusWcAppMenu {
         /**
           * The apps to display in the menu.
+          * @default []
          */
         "apps"?: IAppMenuItem[];
         /**
           * custom class to apply to the menu
+          * @default ''
          */
         "customClass"?: string;
         /**
           * The layout of the menu.
+          * @default 'list'
          */
         "layout"?: 'list' | 'grid';
         /**
@@ -3865,6 +4292,10 @@ declare namespace LocalJSX {
          */
         "initials"?: string;
         /**
+          * Event emitted when the avatar image fails to load.
+         */
+        "onImageLoadError"?: (event: ModusWcAvatarCustomEvent<IAvatarImageLoadError>) => void;
+        /**
           * The shape of the avatar.
           * @default 'circle'
          */
@@ -3873,7 +4304,7 @@ declare namespace LocalJSX {
           * The size of the avatar.
           * @default 'md'
          */
-        "size"?: DaisySize;
+        "size"?: DaisySize | 'xl';
     }
     /**
      * A customizable badge component used to create badges with different sizes, types, and colors.
@@ -3906,6 +4337,50 @@ declare namespace LocalJSX {
           * @default 'filled'
          */
         "variant"?: 'counter' | 'filled' | 'outlined' | 'text';
+    }
+    interface ModusWcBottomSheet {
+        /**
+          * Custom CSS class to apply to the outer div.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.
+          * @default 'default'
+         */
+        "displayMode"?: TBottomSheetDisplayMode;
+        /**
+          * Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.
+          * @default 0.4
+         */
+        "dragStepThreshold"?: number;
+        /**
+          * Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.
+         */
+        "header"?: IBottomSheetHeader;
+        /**
+          * Event emitted when the display mode changes, whether from a drag/keyboard interaction or from setting the `displayMode` prop. The new mode is in `detail.displayMode`.
+         */
+        "onDisplayModeChange"?: (event: ModusWcBottomSheetCustomEvent<{
+    displayMode: TBottomSheetDisplayMode;
+  }>) => void;
+        /**
+          * Event emitted when the header back button is clicked. Does not change sheet state.
+         */
+        "onHeaderBackClick"?: (event: ModusWcBottomSheetCustomEvent<void>) => void;
+        /**
+          * Event emitted when the header dismiss button is clicked. The sheet is also closed automatically (`visible` is set to `false`).
+         */
+        "onHeaderCloseClick"?: (event: ModusWcBottomSheetCustomEvent<void>) => void;
+        /**
+          * Event emitted when the visibility of the bottom sheet changes.
+         */
+        "onSheetVisibilityChange"?: (event: ModusWcBottomSheetCustomEvent<{ visible: boolean }>) => void;
+        /**
+          * Controls whether the bottom sheet is visible.
+          * @default false
+         */
+        "visible"?: boolean;
     }
     /**
      * A customizable breadcrumbs component used to help users navigate through a website.
@@ -3940,7 +4415,13 @@ declare namespace LocalJSX {
           * The color variant of the button.
           * @default 'primary'
          */
-        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral'
+    | 'success';
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -3994,7 +4475,13 @@ declare namespace LocalJSX {
         /**
           * Color to apply to all buttons within the button group
          */
-        "color"?: 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
+        "color"?: | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'warning'
+    | 'danger'
+    | 'neutral'
+    | 'success';
         /**
           * Disables all buttons within the button group
           * @default false
@@ -4156,6 +4643,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Whether the chip height can grow and its content can wrap across multiple lines.
+          * @default false
          */
         "multiline"?: boolean;
         /**
@@ -4226,6 +4714,143 @@ declare namespace LocalJSX {
         "options"?: ICollapseOptions;
     }
     /**
+     * A data-driven, stateless/controlled tree component. The consuming application
+     * owns the `nodes` data (the single source of truth) and the controlled
+     * `selectedNodeId` / `expandedNodeIds` state. The component renders the tree and
+     * emits `nodeSelect` / `nodeExpandChange`; the application decides whether to
+     * apply the change and passes the updated state back in.
+     */
+    interface ModusWcContentTree {
+        /**
+          * Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
+         */
+        "allowDragDrop"?: boolean;
+        /**
+          * Indicates that the content tree should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * The ids of the checked leaf nodes (multi-select). Controlled by the consuming application.
+         */
+        "checkedNodeIds"?: string[];
+        /**
+          * Custom CSS class to apply to the host element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to `nodeEdit`, `nodeAdd`, or `nodeDuplicate`).
+         */
+        "editingNodeId"?: string;
+        /**
+          * The ids of the currently expanded nodes. Controlled by the consuming application.
+         */
+        "expandedNodeIds"?: string[];
+        /**
+          * When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When `searchable` is enabled, this only seeds the built-in search box's initial value.
+          * @default ''
+         */
+        "filter"?: string;
+        /**
+          * The tree data. The single source of truth, owned by the consuming application.
+         */
+        "nodes"?: ITreeNode[];
+        /**
+          * Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set `expandedNodeIds` to every expandable id (e.g. via `getExpandableNodeIds`) when `expanded` is `true`, or to `[]` when `false`.
+         */
+        "onExpandAllChange"?: (event: ModusWcContentTreeCustomEvent<{ expanded: boolean }>) => void;
+        /**
+          * Event emitted when "Add New Above/Below" or "Add Child Node" is chosen. The app should insert a node at the requested position and set `editingNodeId` to the new id.
+         */
+        "onNodeAdd"?: (event: ModusWcContentTreeCustomEvent<{
+    referenceId: string;
+    position: 'above' | 'below' | 'child';
+  }>) => void;
+        /**
+          * Event emitted when a checkbox is toggled (multi-select). The consuming application should update `checkedNodeIds`.
+         */
+        "onNodeCheckChange"?: (event: ModusWcContentTreeCustomEvent<{
+    id: string;
+    checked: boolean;
+  }>) => void;
+        /**
+          * Event emitted after the user confirms deletion. The app should remove the node from `nodes`.
+         */
+        "onNodeDelete"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted when "Duplicate" is chosen. The app should clone the node below it and set `editingNodeId` to the new id.
+         */
+        "onNodeDuplicate"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted when "Edit name" is chosen. The app should set `editingNodeId` to this id.
+         */
+        "onNodeEdit"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty).
+         */
+        "onNodeEditCancel"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted when a node's expansion is toggled. The consuming application should update `expandedNodeIds`.
+         */
+        "onNodeExpandChange"?: (event: ModusWcContentTreeCustomEvent<{
+    id: string;
+    expanded: boolean;
+  }>) => void;
+        /**
+          * Event emitted the first time a lazy node (`hasChildren: true` with no `children` yet) is expanded. The app should fetch the node's children and assign them to `nodes` (use `[]` when there are none); the component shows a spinner until `children` is defined.
+         */
+        "onNodeLoadChildren"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child.
+         */
+        "onNodeMove"?: (event: ModusWcContentTreeCustomEvent<{
+    id: string;
+    targetId: string;
+    position: 'before' | 'after' | 'inside';
+  }>) => void;
+        /**
+          * Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear `editingNodeId`.
+         */
+        "onNodeRename"?: (event: ModusWcContentTreeCustomEvent<{ id: string; label: string }>) => void;
+        /**
+          * Event emitted when a node is selected. The consuming application should update `selectedNodeId`.
+         */
+        "onNodeSelect"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
+        /**
+          * Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should update the node's own `disabled` state (e.g. via `setNodeDisabled`); descendants become effectively disabled via ancestor inheritance.
+         */
+        "onNodeVisibilityChange"?: (event: ModusWcContentTreeCustomEvent<{
+    id: string;
+    disabled: boolean;
+  }>) => void;
+        /**
+          * Event emitted when the toolbar's delete button is confirmed. `ids` are the top-most checked nodes; the app should remove them (e.g. via `deleteNodes`).
+         */
+        "onNodesDelete"?: (event: ModusWcContentTreeCustomEvent<{ ids: string[] }>) => void;
+        /**
+          * Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the `filter` prop is used only to seed its initial value.
+         */
+        "searchable"?: boolean;
+        /**
+          * The id of the currently selected (active) node. Controlled by the consuming application.
+         */
+        "selectedNodeId"?: string;
+        /**
+          * The selection mode of the content tree.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the content tree items.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select).
+         */
+        "toolbar"?: IContentTreeToolbar;
+    }
+    /**
      * A customizable date picker component used to create date inputs.
      * Adheres to WCAG 2.2 standards.
      */
@@ -4246,6 +4871,11 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * The end date in range mode (`type="range"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode.
+          * @default ''
+         */
+        "endValue"?: string;
+        /**
           * Feedback to render below the input.
          */
         "feedback"?: IInputFeedbackProp;
@@ -4260,7 +4890,11 @@ declare namespace LocalJSX {
     | 'mm/dd/yyyy'
     | 'MMM DD, YYYY';
         /**
-          * The ID of the input element.
+          * When omitted, defaults to `true` in range mode and `false` in single mode.
+         */
+        "hideOverflowDates"?: boolean;
+        /**
+          * The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id.
          */
         "inputId"?: string;
         /**
@@ -4272,37 +4906,49 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Maximum date value.
+          * Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "max"?: string;
         /**
-          * Minimum date value.
+          * Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).
          */
         "min"?: string;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
+          * Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name.
          */
         "name"?: string;
         /**
-          * Event emitted when the calendar month selection changes.
+          * Event emitted when the start (or single-mode) calendar month selection changes.
          */
         "onCalendarMonthChange"?: (event: ModusWcDateCustomEvent<number>) => void;
         /**
-          * Event emitted when the calendar year selection changes.
+          * Event emitted when the start (or single-mode) calendar year selection changes.
          */
         "onCalendarYearChange"?: (event: ModusWcDateCustomEvent<number>) => void;
         /**
-          * Event emitted when the input loses focus.
+          * Event emitted when the end calendar month selection changes in range mode.
+         */
+        "onEndCalendarMonthChange"?: (event: ModusWcDateCustomEvent<number>) => void;
+        /**
+          * Event emitted when the end calendar year selection changes in range mode.
+         */
+        "onEndCalendarYearChange"?: (event: ModusWcDateCustomEvent<number>) => void;
+        /**
+          * Event emitted when the input loses focus. In range mode, `detail.field` is `'start'` or `'end'`.
          */
         "onInputBlur"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
         /**
-          * Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
+          * Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, `detail.field` is `'start'` or `'end'`.
          */
         "onInputChange"?: (event: ModusWcDateCustomEvent<InputEvent>) => void;
         /**
-          * Event emitted when the input gains focus.
+          * Event emitted when the input gains focus. In range mode, `detail.field` is `'start'` or `'end'`.
          */
         "onInputFocus"?: (event: ModusWcDateCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when a complete date range is selected in range mode.
+         */
+        "onRangeChange"?: (event: ModusWcDateCustomEvent<IDateRange>) => void;
         /**
           * Whether the value is editable.
           * @default false
@@ -4324,7 +4970,12 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * The value of the control.
+          * Activates range mode. `value` is the start date; `endValue` is the end date.
+          * @default 'single'
+         */
+        "type"?: 'single' | 'range';
+        /**
+          * The selected date in single mode. In range mode (`type="range"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset.
           * @default ''
          */
         "value"?: string;
@@ -4439,6 +5090,11 @@ declare namespace LocalJSX {
          */
         "menuSize"?: ModusSize;
         /**
+          * The positioning strategy for the menu. Use 'fixed' when the dropdown is inside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to the viewport coordinate space.
+          * @default 'absolute'
+         */
+        "menuStrategy"?: 'absolute' | 'fixed';
+        /**
           * Indicates that the menu is visible.
           * @default false
          */
@@ -4467,11 +5123,15 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * External feedback to display info, success, or error state with optional custom icon and message
+         */
+        "feedback"?: IFileDropzoneFeedback;
+        /**
           * Custom instructions shown when files are dragged over the dropzone
          */
         "fileDraggedOverInstructions"?: string;
         /**
-          * Include state icon (upload, success, error)
+          * Include state icon for default, validation, upload, and feedback states
           * @default true
          */
         "includeStateIcon"?: boolean;
@@ -4668,6 +5328,7 @@ declare namespace LocalJSX {
     interface ModusWcLink {
         /**
           * The color of the link.
+          * @default 'primary'
          */
         "color"?: | 'primary'
     | 'secondary'
@@ -4679,6 +5340,7 @@ declare namespace LocalJSX {
     | 'danger';
         /**
           * Custom CSS class to apply to the link element.
+          * @default ''
          */
         "customClass"?: string;
         /**
@@ -4695,6 +5357,7 @@ declare namespace LocalJSX {
         "target"?: string;
         /**
           * The underline behavior of the link.
+          * @default 'always'
          */
         "underline"?: 'always' | 'hover' | 'none';
     }
@@ -5199,6 +5862,10 @@ declare namespace LocalJSX {
     }
     interface ModusWcProfileMenu {
         /**
+          * Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and `items` appends custom entries.
+         */
+        "mainMenu"?: IMainMenu;
+        /**
           * Configuration for the first menu including title and items
          */
         "menuOne"?: ISubMenu;
@@ -5218,6 +5885,11 @@ declare namespace LocalJSX {
           * Profile menu properties containing user information
          */
         "profileProps": IProfileMenuProps;
+        /**
+          * Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.
+          * @default true
+         */
+        "showSignOut"?: boolean;
     }
     /**
      * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -5581,6 +6253,7 @@ declare namespace LocalJSX {
         "customClass"?: string;
         /**
           * If true, steps will be rendered as buttons and emit `stepClick` when activated.
+          * @default false
          */
         "interactive"?: boolean;
         /**
@@ -5699,6 +6372,10 @@ declare namespace LocalJSX {
           * @default true
          */
         "hover"?: boolean;
+        /**
+          * Per-row predicate function controlling row selection eligibility.
+         */
+        "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
         /**
           * Emits when cell editing is committed with the new value.
          */
@@ -6209,13 +6886,19 @@ declare namespace LocalJSX {
      * A customizable tooltip component used to create tooltips with different content.
      * The tooltip can be dismissed by pressing the Escape key when hovering over it.
      * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+     * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
      */
     interface ModusWcTooltip {
         /**
-          * The text content of the tooltip.
+          * The text content of the tooltip. When contentElement is also set, contentElement takes precedence.
           * @default ''
          */
         "content"?: string;
+        /**
+          * An optional rich HTML element to render as the tooltip body. When set, this takes precedence over the `content` string prop. The element is deep-cloned into the tooltip container.
+         */
+        "contentElement"?: HTMLElement;
         /**
           * Custom CSS class to apply to the inner div.
           * @default ''
@@ -6243,6 +6926,121 @@ declare namespace LocalJSX {
           * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
          */
         "tooltipId"?: string;
+    }
+    /**
+     * A customizable tree item component used to display the item portion of a tree menu.
+     * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+     */
+    interface ModusWcTreeItem {
+        /**
+          * When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.
+         */
+        "blockExpand"?: boolean;
+        "bordered"?: boolean;
+        /**
+          * If true, renders a checkbox at the start of the tree item.
+         */
+        "checkbox"?: boolean;
+        /**
+          * Custom CSS class to apply to the li element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The disabled state of the tree item.
+         */
+        "disabled"?: boolean;
+        /**
+          * The focused state of the tree item.
+         */
+        "focused"?: boolean;
+        /**
+          * Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.
+         */
+        "hasSubmenu"?: boolean;
+        /**
+          * The text rendered in the tree item.
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Event emitted when a tree item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcTreeItemCustomEvent<{
+    value: string;
+    selected?: boolean;
+  }>) => void;
+        /**
+          * The selected state of the tree item.
+         */
+        "selected"?: boolean;
+        /**
+          * The size of the tree item.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
+        /**
+          * The text rendered beneath the label.
+         */
+        "subLabel"?: string;
+        /**
+          * The tooltip text to display when hovering over the tree item.
+         */
+        "tooltipContent"?: string;
+        /**
+          * The position of the tooltip relative to the tree item.
+          * @default 'auto'
+         */
+        "tooltipPosition"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * The unique identifying value of the tree item.
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+     * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+     */
+    interface ModusWcTreeMenu {
+        /**
+          * Indicates that the tree menu should have a border.
+         */
+        "bordered"?: boolean;
+        /**
+          * Custom CSS class to apply to the ul element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Indicates that this tree menu is a submenu (dropdown).
+         */
+        "isSubMenu"?: boolean;
+        /**
+          * Event emitted when the tree menu loses focus.
+         */
+        "onMenuFocusout"?: (event: ModusWcTreeMenuCustomEvent<FocusEvent>) => void;
+        /**
+          * Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements.
+         */
+        "onMenuSelectionChange"?: (event: ModusWcTreeMenuCustomEvent<{
+    selectedItems: HTMLElement[];
+  }>) => void;
+        /**
+          * The orientation of the tree menu.
+          * @default 'vertical'
+         */
+        "orientation"?: Orientation;
+        /**
+          * The selection mode of the tree menu.
+          * @default 'single'
+         */
+        "selectionMode"?: SelectionMode;
+        /**
+          * The size of the tree menu.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable typography component used to render text with different sizes, hierarchy, and weights.
@@ -6315,6 +7113,7 @@ declare namespace LocalJSX {
         "modus-wc-autocomplete": ModusWcAutocomplete;
         "modus-wc-avatar": ModusWcAvatar;
         "modus-wc-badge": ModusWcBadge;
+        "modus-wc-bottom-sheet": ModusWcBottomSheet;
         "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
         "modus-wc-button": ModusWcButton;
         "modus-wc-button-group": ModusWcButtonGroup;
@@ -6322,6 +7121,7 @@ declare namespace LocalJSX {
         "modus-wc-checkbox": ModusWcCheckbox;
         "modus-wc-chip": ModusWcChip;
         "modus-wc-collapse": ModusWcCollapse;
+        "modus-wc-content-tree": ModusWcContentTree;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
@@ -6360,6 +7160,8 @@ declare namespace LocalJSX {
         "modus-wc-toast": ModusWcToast;
         "modus-wc-toolbar": ModusWcToolbar;
         "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-item": ModusWcTreeItem;
+        "modus-wc-tree-menu": ModusWcTreeMenu;
         "modus-wc-typography": ModusWcTypography;
         "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
@@ -6395,6 +7197,7 @@ declare module "@stencil/core" {
              * The component supports a `<slot>` for injecting content within the badge.
              */
             "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
+            "modus-wc-bottom-sheet": LocalJSX.ModusWcBottomSheet & JSXBase.HTMLAttributes<HTMLModusWcBottomSheetElement>;
             /**
              * A customizable breadcrumbs component used to help users navigate through a website.
              */
@@ -6428,6 +7231,14 @@ declare module "@stencil/core" {
              * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
              */
             "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
+            /**
+             * A data-driven, stateless/controlled tree component. The consuming application
+             * owns the `nodes` data (the single source of truth) and the controlled
+             * `selectedNodeId` / `expandedNodeIds` state. The component renders the tree and
+             * emits `nodeSelect` / `nodeExpandChange`; the application decides whether to
+             * apply the change and passes the updated state back in.
+             */
+            "modus-wc-content-tree": LocalJSX.ModusWcContentTree & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
@@ -6590,8 +7401,20 @@ declare module "@stencil/core" {
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip can be dismissed by pressing the Escape key when hovering over it.
              * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+             * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
+             * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            /**
+             * A customizable tree item component used to display the item portion of a tree menu.
+             * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
+             */
+            "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
+            /**
+             * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
+             * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
+             */
+            "modus-wc-tree-menu": LocalJSX.ModusWcTreeMenu & JSXBase.HTMLAttributes<HTMLModusWcTreeMenuElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
              * Note:

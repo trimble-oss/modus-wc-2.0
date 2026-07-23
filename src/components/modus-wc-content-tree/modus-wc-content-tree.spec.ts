@@ -1892,8 +1892,8 @@ describe('modus-wc-content-tree', () => {
 
     component.componentDidRender();
 
-    // Drag-handle re-sync still schedules a frame; edit focus must not.
-    expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(1);
+    // Drag-handle re-sync is skipped when drag-drop is off; edit focus must not run.
+    expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     expect(querySpy).not.toHaveBeenCalledWith(
       '.modus-wc-content-tree-edit-input input'
     );
@@ -2060,8 +2060,8 @@ describe('modus-wc-content-tree', () => {
     ).mockClear();
     component.componentDidRender();
 
-    // Drag-handle re-sync still schedules a frame; cleared edit sessions do not.
-    expect(globalThis.requestAnimationFrame).toHaveBeenCalledTimes(1);
+    // Drag-handle re-sync is skipped when drag-drop is off; cleared edit sessions do not.
+    expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     expect(component.editFocusPending).toBe(false);
     expect(querySpy).not.toHaveBeenCalledWith(
       '.modus-wc-content-tree-edit-input input'
@@ -2132,6 +2132,23 @@ describe('modus-wc-content-tree', () => {
     expect(getExpandableNodeIds(sampleNodes)).toEqual(['root-1', 'parent-b']);
     expect(getExpandableNodeIds([{ id: 'leaf', label: 'Leaf' }])).toEqual([]);
     expect(getExpandableNodeIds([])).toEqual([]);
+  });
+
+  it('should include lazy expandable nodes in getExpandableNodeIds', () => {
+    const lazyNodes: ITreeNode[] = [
+      { id: 'lazy-parent', label: 'Lazy', hasChildren: true },
+      {
+        id: 'loaded-parent',
+        label: 'Loaded',
+        children: [{ id: 'child', label: 'Child' }],
+      },
+      { id: 'leaf', label: 'Leaf' },
+    ];
+
+    expect(getExpandableNodeIds(lazyNodes)).toEqual([
+      'lazy-parent',
+      'loaded-parent',
+    ]);
   });
 
   // --- Drag & drop: state-manager helpers ---
@@ -2241,6 +2258,24 @@ describe('modus-wc-content-tree', () => {
   });
 
   // --- Drag & drop: component handlers ---
+
+  it('should skip deferred drag-handle sync when drag-drop is turned off before the next frame', async () => {
+    const origRaf = globalThis.requestAnimationFrame;
+    const deferred: FrameRequestCallback[] = [];
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      deferred.push(cb);
+      return deferred.length;
+    });
+
+    try {
+      const { component } = await createTreePage({ allowDragDrop: true });
+      component.componentDidRender();
+      component.allowDragDrop = false;
+      deferred.forEach((cb) => cb(0));
+    } finally {
+      globalThis.requestAnimationFrame = origRaf;
+    }
+  });
 
   it('should set the dragging id and drag data on drag start', async () => {
     const { component } = await createTreePage({ allowDragDrop: true });
@@ -2980,6 +3015,27 @@ describe('modus-wc-content-tree', () => {
         '.modus-wc-content-tree-toggle-spacer'
       )
     ).not.toBeNull();
+  });
+
+  it('should keep layout spacer buttons out of the tab order', async () => {
+    const nodes: ITreeNode[] = [
+      { id: 'leaf', label: 'Leaf' },
+      { id: 'disabled-leaf', label: 'Disabled', disabled: true },
+    ];
+    const { page } = await createTreePage({ nodes });
+
+    const leafSpacerBtn = findTreeItem(page, 'leaf')?.querySelector(
+      '.modus-wc-content-tree-toggle-spacer button'
+    ) as HTMLButtonElement | null;
+    const disabledActionsSpacer = findTreeItem(
+      page,
+      'disabled-leaf'
+    )?.querySelector(
+      '.modus-wc-content-tree-actions-spacer button'
+    ) as HTMLButtonElement | null;
+
+    expect(leafSpacerBtn?.tabIndex).toBe(-1);
+    expect(disabledActionsSpacer?.tabIndex).toBe(-1);
   });
 
   it('should emit nodeLoadChildren, track loading, and show a spinner on first expand', async () => {

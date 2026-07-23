@@ -224,9 +224,16 @@ export const collectLeafIds = (node: ITreeNode): string[] =>
  */
 export const getExpandableNodeIds = (nodes: ITreeNode[]): string[] =>
   nodes.reduce<string[]>((acc, node) => {
-    if (node.children?.length) {
-      acc.push(node.id, ...getExpandableNodeIds(node.children));
+    const isLazyExpandable = !!node.hasChildren && node.children === undefined;
+    const hasLoadedChildren = !!node.children?.length;
+
+    if (hasLoadedChildren || isLazyExpandable) {
+      acc.push(node.id);
+      if (hasLoadedChildren) {
+        acc.push(...getExpandableNodeIds(node.children!));
+      }
     }
+
     return acc;
   }, []);
 
