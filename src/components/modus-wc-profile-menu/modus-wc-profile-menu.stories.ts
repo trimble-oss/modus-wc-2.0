@@ -232,7 +232,7 @@ export const WithCustomMainMenu: Story = {
     docs: {
       description: {
         story:
-          'Hides Admin settings via adminSettings: false and appends a custom Billing item after the remaining built-in items.',
+          'Hides all built-in menu items and displays custom Billing, Subscription, and Edit Profile options.',
       },
       source: {
         transform: (_src, { args }: { args: ProfileMenuArgs }) =>
@@ -241,14 +241,30 @@ export const WithCustomMainMenu: Story = {
     },
   },
   args: {
+    'show-sign-out': false,
     'main-menu': {
       adminSettings: false,
+      myProducts: false,
+      supportCenter: false,
+      myProfile: false,
       items: [
         {
           label: 'Billing',
           icon: 'invoice',
           iconVariant: 'solid',
           value: 'billing',
+        },
+        {
+          label: 'Subscription',
+          icon: 'add',
+          iconVariant: 'solid',
+          value: 'subscription',
+        },
+        {
+          label: 'Edit Profile',
+          icon: 'pen',
+          iconVariant: 'solid',
+          value: 'edit-profile',
         },
       ],
     },
