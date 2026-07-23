@@ -7,6 +7,17 @@ import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label'
 import { ModusWcSideNavigation } from '../modus-wc-side-navigation/modus-wc-side-navigation';
 import { ModusWcTreeMenu } from '../modus-wc-tree-menu/modus-wc-tree-menu';
 
+interface TreeItemKeydownHarness {
+  itemSelect: ModusWcTreeItem['itemSelect'];
+  isOwnKeydownTarget: (e: KeyboardEvent) => boolean;
+  handleKeyDown: (e: KeyboardEvent) => void;
+}
+
+interface TreeItemHandleKeydownHarness {
+  itemSelect: ModusWcTreeItem['itemSelect'];
+  handleKeyDown: (e: KeyboardEvent) => void;
+}
+
 describe('modus-wc-tree-item', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
@@ -311,7 +322,7 @@ describe('modus-wc-tree-item', () => {
     li?.dispatchEvent(enterEvent);
     await page.waitForChanges();
 
-    expect(stopPropagationSpy).not.toHaveBeenCalled();
+    expect(stopPropagationSpy).toHaveBeenCalled();
     expect(emitSpy).toHaveBeenCalledWith({
       value: 'test-value',
       selected: true,
@@ -355,7 +366,7 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(emittedValues).toEqual(['child']);
-    expect(stopPropagationSpy).not.toHaveBeenCalled();
+    expect(stopPropagationSpy).toHaveBeenCalled();
   });
 
   it('should not handle keydown when event target belongs to nested child item', async () => {
@@ -389,6 +400,89 @@ describe('modus-wc-tree-item', () => {
     await page.waitForChanges();
 
     expect(parentEmitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when owning tree-item is not this host', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+
+    const instance = page.rootInstance as unknown as TreeItemKeydownHarness;
+    const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
+    const otherItem = document.createElement('modus-wc-tree-item');
+    const mockTarget = document.createElement('div');
+
+    jest.spyOn(mockTarget, 'closest').mockReturnValue(otherItem);
+    jest.spyOn(instance, 'isOwnKeydownTarget').mockReturnValue(true);
+
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: mockTarget,
+      configurable: true,
+    });
+
+    instance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when closest tree-item is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+
+    const instance = page.rootInstance as unknown as TreeItemKeydownHarness;
+    const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
+    const mockTarget = document.createElement('div');
+
+    jest.spyOn(mockTarget, 'closest').mockReturnValue(null);
+    jest.spyOn(instance, 'isOwnKeydownTarget').mockReturnValue(true);
+
+    const keydownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+
+    Object.defineProperty(keydownEvent, 'target', {
+      value: mockTarget,
+      configurable: true,
+    });
+
+    instance.handleKeyDown(keydownEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not handle keydown when event target is null for owning item lookup', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem],
+      html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
+    });
+
+    const instance = page.rootInstance as unknown as TreeItemKeydownHarness;
+    const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
+
+    jest.spyOn(instance, 'isOwnKeydownTarget').mockReturnValue(true);
+
+    instance.handleKeyDown({
+      key: 'Enter',
+      target: null,
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    } as unknown as KeyboardEvent);
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 
   it('should not handle keydown when event target is null', async () => {
@@ -442,6 +536,49 @@ describe('modus-wc-tree-item', () => {
       html: '<modus-wc-tree-item label="Test label" value="Test value" checkbox="true"></modus-wc-tree-item>',
     });
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should render with multiple selection mode role and checkbox', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem, ModusWcCheckbox],
+      html: `<modus-wc-tree-menu selection-mode="multiple">
+        <modus-wc-tree-item label="Item" value="item"></modus-wc-tree-item>
+      </modus-wc-tree-menu>`,
+    });
+
+    const li = page.root?.querySelector(
+      'modus-wc-tree-item li'
+    ) as HTMLLIElement;
+
+    expect(li.getAttribute('role')).toBe('menuitemcheckbox');
+    expect(li.getAttribute('aria-checked')).toBe('false');
+    expect(page.root?.querySelector('modus-wc-checkbox')).not.toBeNull();
+  });
+
+  it('should toggle selected when clicked in multiple selection mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem, ModusWcCheckbox],
+      html: `<modus-wc-tree-menu selection-mode="multiple">
+        <modus-wc-tree-item label="Item" value="item"></modus-wc-tree-item>
+      </modus-wc-tree-menu>`,
+    });
+
+    const treeItem = page.root?.querySelector(
+      'modus-wc-tree-item'
+    ) as HTMLElement & { selected?: boolean };
+    const liElement = treeItem.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+
+    liElement.click();
+    await page.waitForChanges();
+
+    expect(treeItem.selected).toBe(true);
+
+    liElement.click();
+    await page.waitForChanges();
+
+    expect(treeItem.selected).toBe(false);
   });
 
   it('should toggle selected prop when checkbox item is clicked', async () => {
@@ -841,7 +978,7 @@ describe('modus-wc-tree-item', () => {
     li?.dispatchEvent(spaceEvent);
     await page.waitForChanges();
 
-    expect(stopPropagationSpy).not.toHaveBeenCalled();
+    expect(stopPropagationSpy).toHaveBeenCalled();
     expect(emitSpy).toHaveBeenCalledWith({
       value: 'test-value',
       selected: true,
@@ -895,9 +1032,7 @@ describe('modus-wc-tree-item', () => {
         </modus-wc-tree-item>
       `,
     });
-    const parent = page.rootInstance as ModusWcTreeItem & {
-      handleKeyDown: (e: KeyboardEvent) => void;
-    };
+    const parent = page.rootInstance as unknown as TreeItemHandleKeydownHarness;
     const emitSpy = jest.spyOn(parent.itemSelect, 'emit');
     const nestedLi = page.doc
       .querySelectorAll('modus-wc-tree-item')[1]
@@ -918,9 +1053,8 @@ describe('modus-wc-tree-item', () => {
       components: [ModusWcTreeItem],
       html: '<modus-wc-tree-item value="test-value"></modus-wc-tree-item>',
     });
-    const instance = page.rootInstance as ModusWcTreeItem & {
-      handleKeyDown: (e: KeyboardEvent) => void;
-    };
+    const instance =
+      page.rootInstance as unknown as TreeItemHandleKeydownHarness;
     const emitSpy = jest.spyOn(instance.itemSelect, 'emit');
 
     instance.handleKeyDown({
