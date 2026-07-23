@@ -2321,6 +2321,12 @@ describe('modus-wc-content-tree', () => {
     expect(findNode(sampleNodes, 'root-1')!.disabled).toBeFalsy();
   });
 
+  it('setNodeDisabled returns the input tree when the id is missing or already has the target state', () => {
+    expect(setNodeDisabled(sampleNodes, 'missing', true)).toBe(sampleNodes);
+    const locked = setNodeDisabled(sampleNodes, 'root-1', true);
+    expect(setNodeDisabled(locked, 'root-1', true)).toBe(locked);
+  });
+
   it('hasDisabledAncestor detects a locked ancestor and ignores the node itself', () => {
     const locked = setNodeDisabled(sampleNodes, 'root-1', true);
     // leaf-a has a locked ancestor (root-1).

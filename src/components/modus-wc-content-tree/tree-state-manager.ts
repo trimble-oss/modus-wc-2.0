@@ -312,16 +312,24 @@ export const setNodeDisabled = (
   nodes: ITreeNode[],
   id: string,
   disabled: boolean
-): ITreeNode[] =>
-  nodes.map((node) => {
-    if (node.id === id) return { ...node, disabled };
+): ITreeNode[] => {
+  let changed = false;
+  const next = nodes.map((node) => {
+    if (node.id === id) {
+      if (node.disabled === disabled) return node;
+      changed = true;
+      return { ...node, disabled };
+    }
     if (node.children?.length) {
       const nextChildren = setNodeDisabled(node.children, id, disabled);
       if (nextChildren === node.children) return node;
+      changed = true;
       return { ...node, children: nextChildren };
     }
     return node;
   });
+  return changed ? next : nodes;
+};
 
 /**
  * Whether any ANCESTOR of `id` is disabled (locked). The node itself is not
