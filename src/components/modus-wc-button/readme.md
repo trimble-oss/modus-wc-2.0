@@ -39,6 +39,7 @@ The component supports a `<slot>` for injecting content within the button, simil
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-handle](../modus-wc-handle)
@@ -52,6 +53,7 @@ graph TD;
   modus-wc-app-menu --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-bottom-sheet --> modus-wc-button
+  modus-wc-content-tree --> modus-wc-button
   modus-wc-date --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-handle --> modus-wc-button
