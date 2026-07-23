@@ -241,14 +241,30 @@ export const WithCustomMainMenu: Story = {
     },
   },
   args: {
+    'show-sign-out': false,
     'main-menu': {
       adminSettings: false,
+      myProducts: false,
+      supportCenter: false,
+      myProfile: false,
       items: [
         {
           label: 'Billing',
           icon: 'invoice',
           iconVariant: 'solid',
           value: 'billing',
+        },
+        {
+          label: 'Subscription',
+          icon: 'add',
+          iconVariant: 'solid',
+          value: 'subscription',
+        },
+        {
+          label: 'Edit Profile',
+          icon: 'pen',
+          iconVariant: 'solid',
+          value: 'edit-profile',
         },
       ],
     },
