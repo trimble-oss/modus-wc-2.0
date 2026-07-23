@@ -3332,7 +3332,7 @@ describe('modus-wc-autocomplete', () => {
     });
 
     // Call handleChange directly
-    autocomplete['handleChange'](event as CustomEvent<Event>);
+    autocomplete['handleChange'](event as unknown as CustomEvent<Event>);
 
     // Should return early without errors
     expect(autocomplete.value).toBe('');
