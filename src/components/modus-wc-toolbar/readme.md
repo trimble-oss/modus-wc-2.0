@@ -22,11 +22,13 @@ This component provides 'start', 'center', and 'end' `<slot>` elements for inser
 
 ### Used by
 
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-navbar](../modus-wc-navbar)
 
 ### Graph
 ```mermaid
 graph TD;
+  modus-wc-content-tree --> modus-wc-toolbar
   modus-wc-navbar --> modus-wc-toolbar
   style modus-wc-toolbar fill:#f9f,stroke:#333,stroke-width:4px
 ```
