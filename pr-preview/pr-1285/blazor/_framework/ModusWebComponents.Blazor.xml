@@ -1240,56 +1240,6 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
-        <member name="T:ModusWebComponents.Blazor.ModusWcDock">
-            <summary>
-            Dock navigation bar for navigating between primary screens.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.ActiveItemIndex">
-            <summary>
-            The currently active dock item index.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.CustomClass">
-            <summary>
-            Custom CSS class to apply to the inner nav element.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.Position">
-            <summary>
-            The edge the dock is anchored to. Controls layout and active indicator orientation.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.ShowLabels">
-            <summary>
-            If true, text labels are shown below icons.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.Size">
-            <summary>
-            The size of the dock items.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.Items">
-            <summary>
-            The dock items to display.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.ChildContent">
-            <summary>
-            Content to render inside the component (default slot).
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.AdditionalAttributes">
-            <summary>
-            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDock.OnItemSelect">
-            <summary>
-            Emitted when a dock item is selected.
-            </summary>
-        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcDropdownMenu">
             <summary>
             A customizable dropdown menu component used to render a button and toggleable menu.  The component supports a 'button' and 'menu' slot for injecting custom HTML content.
