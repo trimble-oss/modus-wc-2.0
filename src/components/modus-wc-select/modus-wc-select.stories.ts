@@ -110,7 +110,7 @@ export const Default: Story = {
     ></modus-wc-select>
     <script>
       const options = [
-        { label: 'Select an option', value: '', disabled: true, hidden: true },
+        { label: 'Select an option', value: '', hidden: true },
         { label: 'Option 1', value: '1' },
         { label: 'Option 2', value: '2' },
         { label: 'Option 3', value: '3' },
