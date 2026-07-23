@@ -35,26 +35,24 @@ const buildDockSourceCode = ({
   showLabels?: boolean;
   size?: ModusSize;
 }): string => {
-  const showLabelsAttr = `\n    show-labels="${showLabels}"`;
   const itemsJson = JSON.stringify(items, null, 2)
     .split('\n')
     .map((line, index) => (index === 0 ? line : `    ${line}`))
     .join('\n');
 
-  return `<modus-wc-dock
-    id="app-dock"
-    aria-label="Dock navigation"
-    active-item-index="${activeItemIndex}"
-    position="${position}"${showLabelsAttr}
-    size="${size}"
-  ></modus-wc-dock>
-
-<script>
-  const dock = document.getElementById('app-dock');
+  return `<script>
+  const dock = document.createElement('modus-wc-dock');
+  dock.id = 'app-dock';
+  dock.setAttribute('aria-label', 'Dock navigation');
+  dock.activeItemIndex = ${activeItemIndex};
+  dock.setAttribute('position', '${position}');
+  dock.showLabels = ${showLabels};
+  dock.setAttribute('size', '${size}');
   dock.items = ${itemsJson};
   dock.addEventListener('itemSelect', (event) => {
     dock.activeItemIndex = event.detail.index;
   });
+  document.body.appendChild(dock);
 </script>`;
 };
 
@@ -149,23 +147,23 @@ const buildContainerPlacementSourceCode =
   (): string => `<style>${containerPlacementStyles}
 </style>
 
-<div class="dock-container dock-container--bottom">
-  <modus-wc-dock
-    id="container-dock"
-    aria-label="Dock navigation"
-    active-item-index="2"
-    position="bottom"
-    show-labels="true"
-    size="md"
-  ></modus-wc-dock>
-</div>
+<div
+  class="dock-container dock-container--bottom"
+  id="dock-container"
+></div>
 
 <script>
-  const dock = document.getElementById('container-dock');
+  const dock = document.createElement('modus-wc-dock');
+  dock.setAttribute('aria-label', 'Dock navigation');
+  dock.activeItemIndex = 2;
+  dock.setAttribute('position', 'bottom');
+  dock.showLabels = true;
+  dock.setAttribute('size', 'md');
   dock.items = ${JSON.stringify(defaultItems, null, 2)};
   dock.addEventListener('itemSelect', (event) => {
     dock.activeItemIndex = event.detail.index;
   });
+  document.getElementById('dock-container').appendChild(dock);
 </script>`;
 
 const dockStoryParameters = (overrides?: {

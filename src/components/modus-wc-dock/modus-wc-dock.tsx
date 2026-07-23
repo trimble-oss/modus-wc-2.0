@@ -166,7 +166,7 @@ export class ModusWcDock {
 
   @Listen('keydown')
   handleKeyDown(event: KeyboardEvent) {
-    const activeElement = document.activeElement;
+    const activeElement = this.getRootActiveElement();
     if (!activeElement || !this.el.contains(activeElement)) {
       return;
     }
@@ -244,8 +244,25 @@ export class ModusWcDock {
     }, []);
   }
 
-  private getFocusedItemIndex(): number {
+  private getRootActiveElement(): HTMLElement | null {
+    const rootNode = this.el.getRootNode();
+
+    if (
+      rootNode instanceof ShadowRoot &&
+      document.activeElement === rootNode.host
+    ) {
+      const shadowActiveElement = rootNode.activeElement;
+      if (shadowActiveElement instanceof HTMLElement) {
+        return shadowActiveElement;
+      }
+    }
+
     const activeElement = document.activeElement;
+    return activeElement instanceof HTMLElement ? activeElement : null;
+  }
+
+  private getFocusedItemIndex(): number {
+    const activeElement = this.getRootActiveElement();
 
     for (let index = 0; index < this.items.length; index++) {
       const innerButton = this.buttonEls[index]?.querySelector('button');
