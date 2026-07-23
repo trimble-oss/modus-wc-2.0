@@ -124,7 +124,7 @@ export class ModusWcTreeItem {
       return false;
     }
 
-    return target.closest('modus-wc-tree-item') === this.el;
+    return (target as Element).closest('modus-wc-tree-item') === this.el;
   }
 
   @Listen('keydown')
