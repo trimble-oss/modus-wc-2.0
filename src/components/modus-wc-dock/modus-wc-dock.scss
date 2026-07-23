@@ -94,12 +94,12 @@ modus-wc-dock .modus-wc-dock.modus-wc-dock-top .modus-wc-dock-item-active {
 }
 
 modus-wc-dock .modus-wc-dock.modus-wc-dock-left .modus-wc-dock-item-active {
-  border-right: var(--modus-wc-dock-indicator-width) solid
+  border-inline-end: var(--modus-wc-dock-indicator-width) solid
     var(--modus-wc-color-primary);
 }
 
 modus-wc-dock .modus-wc-dock.modus-wc-dock-right .modus-wc-dock-item-active {
-  border-left: var(--modus-wc-dock-indicator-width) solid
+  border-inline-start: var(--modus-wc-dock-indicator-width) solid
     var(--modus-wc-color-primary);
 }
 
