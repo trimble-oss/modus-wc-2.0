@@ -1148,8 +1148,11 @@ export class ModusWcContentTree {
     ancestorDisabled = false
   ): VNode => {
     // `hasChildren` is truthy when the node has loaded children OR is a lazy
-    // node still awaiting them (so it still shows an expand chevron).
-    const hasChildren = !!node.children?.length || isLazyUnloaded(node);
+    // node still awaiting them (so it still shows an expand chevron). While
+    // filtering, lazy unloaded nodes are treated as leaves so we do not render
+    // an expanded loading row when `requestLazyLoadIfNeeded` is disabled.
+    const hasChildren =
+      !!node.children?.length || (!this.isFiltering() && isLazyUnloaded(node));
     const expanded = hasChildren && this.isExpanded(node.id);
     const editing = node.id === this.editingNodeId;
 

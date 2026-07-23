@@ -3331,6 +3331,29 @@ describe('modus-wc-content-tree', () => {
     expect(nodeLoadChildren).not.toHaveBeenCalled();
   });
 
+  it('should not show a loading spinner for lazy nodes while filtering', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page } = await createTreePage({
+      nodes,
+      filter: 'lazy',
+      expandedNodeIds: [],
+    });
+
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector('modus-wc-loader')
+    ).toBeNull();
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector(
+        '.modus-wc-content-tree-chevron'
+      )
+    ).toBeNull();
+    expect(
+      findTreeItem(page, 'lazy')?.querySelector(
+        '.modus-wc-content-tree-toggle-spacer'
+      )
+    ).not.toBeNull();
+  });
+
   it('should drop loading ids for nodes that leave the tree before loading', async () => {
     const nodes: ITreeNode[] = [lazyNode()];
     const { page, component } = await createTreePage({

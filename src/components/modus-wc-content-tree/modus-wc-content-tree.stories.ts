@@ -11,9 +11,9 @@ import {
   SelectionMode,
 } from '../types';
 import {
+  contentTreeBuildSourceCode,
   contentTreeDefaultSourceCode,
   contentTreeDragAndDropSourceCode,
-  contentTreeBuildSourceCode,
   contentTreeLazyLoadingSourceCode,
   contentTreeMultiSelectSourceCode,
   contentTreeSearchFilterSourceCode,
