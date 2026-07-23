@@ -22,50 +22,6 @@ interface DockArgs {
   size?: ModusSize;
 }
 
-const dockDemoStyles = html`
-  <style>
-    .dock-demo-frame {
-      border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
-      display: grid;
-      height: 520px;
-      overflow: hidden;
-      width: 100%;
-    }
-
-    .dock-demo-frame__content {
-      background-color: var(--modus-wc-color-base-100);
-    }
-
-    .dock-demo-frame modus-wc-dock {
-      display: block;
-      height: 100%;
-      min-height: 0;
-      min-width: 0;
-      width: 100%;
-    }
-
-    .dock-demo-frame modus-wc-dock .modus-wc-dock {
-      background-color: var(--modus-wc-color-base-page);
-    }
-
-    .dock-demo-frame--top {
-      grid-template-rows: auto 1fr;
-    }
-
-    .dock-demo-frame--bottom {
-      grid-template-rows: 1fr auto;
-    }
-
-    .dock-demo-frame--left {
-      grid-template-columns: auto 1fr;
-    }
-
-    .dock-demo-frame--right {
-      grid-template-columns: 1fr auto;
-    }
-  </style>
-`;
-
 const buildDockSourceCode = ({
   activeItemIndex = 2,
   items = defaultItems,
@@ -85,67 +41,13 @@ const buildDockSourceCode = ({
     .map((line, index) => (index === 0 ? line : `    ${line}`))
     .join('\n');
 
-  const dockMarkup = `<modus-wc-dock
+  return `<modus-wc-dock
     id="app-dock"
     aria-label="Dock navigation"
     active-item-index="${activeItemIndex}"
     position="${position}"${showLabelsAttr}
     size="${size}"
-  ></modus-wc-dock>`;
-
-  const contentMarkup =
-    '<div class="dock-demo-frame__content" aria-hidden="true"></div>';
-
-  const frameBody =
-    position === 'top' || position === 'left'
-      ? `${dockMarkup}\n  ${contentMarkup}`
-      : `${contentMarkup}\n  ${dockMarkup}`;
-
-  return `<style>
-  .dock-demo-frame {
-    border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
-    display: grid;
-    height: 520px;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .dock-demo-frame__content {
-    background-color: var(--modus-wc-color-base-100);
-  }
-
-  .dock-demo-frame modus-wc-dock {
-    display: block;
-    height: 100%;
-    min-height: 0;
-    min-width: 0;
-    width: 100%;
-  }
-
-  .dock-demo-frame modus-wc-dock .modus-wc-dock {
-    background-color: var(--modus-wc-color-base-page);
-  }
-
-  .dock-demo-frame--top {
-    grid-template-rows: auto 1fr;
-  }
-
-  .dock-demo-frame--bottom {
-    grid-template-rows: 1fr auto;
-  }
-
-  .dock-demo-frame--left {
-    grid-template-columns: auto 1fr;
-  }
-
-  .dock-demo-frame--right {
-    grid-template-columns: 1fr auto;
-  }
-</style>
-
-<div class="dock-demo-frame dock-demo-frame--${position}">
-  ${frameBody}
-</div>
+  ></modus-wc-dock>
 
 <script>
   const dock = document.getElementById('app-dock');
@@ -168,28 +70,103 @@ const renderDockElement = (args: DockArgs, position: DockPosition) => html`
   ></modus-wc-dock>
 `;
 
-const renderDockDemo = (args: DockArgs) => {
-  const position = args.position ?? 'bottom';
-  const items = args.items ?? defaultItems;
-  const dock = renderDockElement({ ...args, items }, position);
-  const content = html`<div
-    class="dock-demo-frame__content"
-    aria-hidden="true"
-  ></div>`;
+const containerPlacementStyles = `
+  /* Shared demo container — gives the dock a bounded layout area */
+  .dock-container {
+    background-color: var(--modus-wc-color-base-100);
+    border: 1px dashed var(--modus-wc-color-base-content-low-contrast);
+    height: 25rem;
+    position: relative;
+    width: 100%;
+  }
 
-  const frameChildren =
-    position === 'top' || position === 'left'
-      ? [dock, content]
-      : [content, dock];
+  /* All positions: take the dock out of normal flow so it can be pinned to an edge */
+  .dock-container modus-wc-dock {
+    display: block;
+    position: absolute;
+  }
 
-  // prettier-ignore
-  return html`
-${dockDemoStyles}
-<div class="dock-demo-frame dock-demo-frame--${position}">
-  ${frameChildren}
+  /* Top & bottom: stretch full container width */
+  .dock-container--bottom modus-wc-dock,
+  .dock-container--top modus-wc-dock {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .dock-container--bottom modus-wc-dock .modus-wc-dock,
+  .dock-container--top modus-wc-dock .modus-wc-dock {
+    width: 100%;
+  }
+
+  .dock-container--bottom modus-wc-dock .modus-wc-dock-item,
+  .dock-container--top modus-wc-dock .modus-wc-dock-item {
+    flex: 1 1 0;
+    width: auto;
+  }
+
+  /* Bottom position: pin to the bottom edge */
+  .dock-container--bottom modus-wc-dock {
+    bottom: 0;
+  }
+
+  /* Top position: pin to the top edge */
+  .dock-container--top modus-wc-dock {
+    top: 0;
+  }
+
+  /* Left & right: stretch full container height */
+  .dock-container--left modus-wc-dock,
+  .dock-container--right modus-wc-dock {
+    bottom: 0;
+    height: 100%;
+    top: 0;
+  }
+
+  .dock-container--left modus-wc-dock .modus-wc-dock,
+  .dock-container--right modus-wc-dock .modus-wc-dock {
+    height: 100%;
+  }
+
+  .dock-container--left modus-wc-dock .modus-wc-dock-item,
+  .dock-container--right modus-wc-dock .modus-wc-dock-item {
+    flex: 1 1 0;
+    height: auto;
+  }
+
+  /* Left position: pin to the left edge */
+  .dock-container--left modus-wc-dock {
+    left: 0;
+  }
+
+  /* Right position: pin to the right edge */
+  .dock-container--right modus-wc-dock {
+    right: 0;
+  }
+`;
+
+const buildContainerPlacementSourceCode =
+  (): string => `<style>${containerPlacementStyles}
+</style>
+
+<div class="dock-container dock-container--bottom">
+  <modus-wc-dock
+    id="container-dock"
+    aria-label="Dock navigation"
+    active-item-index="2"
+    position="bottom"
+    show-labels="true"
+    size="md"
+  ></modus-wc-dock>
 </div>
-  `;
-};
+
+<script>
+  const dock = document.getElementById('container-dock');
+  dock.items = ${JSON.stringify(defaultItems, null, 2)};
+  dock.addEventListener('itemSelect', (event) => {
+    dock.activeItemIndex = event.detail.index;
+  });
+</script>`;
 
 const dockStoryParameters = (overrides?: {
   activeItemIndex?: number;
@@ -254,31 +231,7 @@ const meta: Meta<DockArgs> = {
       control: { type: 'number', min: 0, max: 2, step: 1 },
     },
   },
-  decorators: [
-    withActions,
-    (story, context) => {
-      const rendered = story();
-
-      queueMicrotask(() => {
-        const frame = document.querySelector('.dock-demo-frame');
-        const dock = frame?.querySelector('modus-wc-dock') ?? null;
-
-        if (!dock) {
-          return;
-        }
-
-        const storyItems = context.args.items ?? defaultItems;
-
-        dock.items = storyItems;
-
-        if (context.args['active-item-index'] !== undefined) {
-          dock.activeItemIndex = context.args['active-item-index'];
-        }
-      });
-
-      return rendered;
-    },
-  ],
+  decorators: [withActions],
   parameters: {
     actions: {
       handles: ['itemSelect'],
@@ -287,7 +240,7 @@ const meta: Meta<DockArgs> = {
     docs: {
       description: {
         component:
-          'Dock navigation bar for navigating between primary screens. Position the host at an app edge in your layout; the stories below use a demo frame to pin the dock to each corner.',
+          'Dock navigation bar for navigating between primary screens. The dock sizes itself from its orientation, item count, and size.',
       },
       source: {
         code: buildDockSourceCode({}),
@@ -301,14 +254,14 @@ export default meta;
 type Story = StoryObj<DockArgs>;
 
 const Template: Story = {
-  render: (args) => renderDockDemo(args),
+  render: (args) => renderDockElement(args, args.position ?? 'bottom'),
 };
 
 export const Default: Story = {
   ...Template,
   parameters: dockStoryParameters({
     storyDescription:
-      'Bottom dock with labels. The demo frame positions the dock flush to the bottom edge of the content area.',
+      'Bottom dock with labels. The dock renders at its intrinsic size without requiring container styles.',
   }),
 };
 
@@ -346,6 +299,34 @@ export const ActiveAndDisabled: Story = {
     storyDescription:
       'Dock with an active item and a disabled item that cannot be selected.',
   }),
+};
+
+export const ContainerPlacement: Story = {
+  name: 'Container placement',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use container CSS to pin the dock to an edge and stretch it along that axis. Change `position` to see top, bottom, left, and right placement.',
+      },
+      source: {
+        code: buildContainerPlacementSourceCode(),
+      },
+    },
+  },
+  render: (args) => {
+    const position = args.position ?? 'bottom';
+
+    return html`
+      <style>
+        ${containerPlacementStyles}
+      </style>
+
+      <div class="dock-container dock-container--${position}">
+        ${renderDockElement(args, position)}
+      </div>
+    `;
+  },
 };
 
 export const ShadowDomParent: Story = {

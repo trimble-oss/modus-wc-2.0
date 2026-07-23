@@ -5,6 +5,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Listen,
   Prop,
   Watch,
 } from '@stencil/core';
@@ -163,6 +164,104 @@ export class ModusWcDock {
     this.activeItemIndex = index;
   }
 
+  @Listen('keydown')
+  handleKeyDown(event: KeyboardEvent) {
+    const activeElement = document.activeElement;
+    if (!activeElement || !this.el.contains(activeElement)) {
+      return;
+    }
+
+    const isHorizontal = this.position === 'bottom' || this.position === 'top';
+    const previousKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+    const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+
+    if (
+      isHorizontal &&
+      (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+    ) {
+      return;
+    }
+
+    if (
+      !isHorizontal &&
+      (event.key === 'ArrowLeft' || event.key === 'ArrowRight')
+    ) {
+      return;
+    }
+
+    if (
+      event.key !== previousKey &&
+      event.key !== nextKey &&
+      event.key !== 'Home' &&
+      event.key !== 'End'
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const focusableIndices = this.getFocusableItemIndices();
+    if (focusableIndices.length === 0) {
+      return;
+    }
+
+    const currentFocusedIndex = this.getFocusedItemIndex();
+    let currentFocusablePosition =
+      focusableIndices.indexOf(currentFocusedIndex);
+
+    if (currentFocusablePosition === -1) {
+      this.focusItemAt(focusableIndices[0]);
+      return;
+    }
+
+    let nextFocusablePosition: number;
+    if (event.key === nextKey) {
+      nextFocusablePosition =
+        currentFocusablePosition < focusableIndices.length - 1
+          ? currentFocusablePosition + 1
+          : 0;
+    } else if (event.key === previousKey) {
+      nextFocusablePosition =
+        currentFocusablePosition > 0
+          ? currentFocusablePosition - 1
+          : focusableIndices.length - 1;
+    } else if (event.key === 'Home') {
+      nextFocusablePosition = 0;
+    } else {
+      nextFocusablePosition = focusableIndices.length - 1;
+    }
+
+    this.focusItemAt(focusableIndices[nextFocusablePosition]);
+  }
+
+  private getFocusableItemIndices(): number[] {
+    return this.items.reduce<number[]>((indices, item, index) => {
+      if (!item.disabled) {
+        indices.push(index);
+      }
+
+      return indices;
+    }, []);
+  }
+
+  private getFocusedItemIndex(): number {
+    const activeElement = document.activeElement;
+
+    for (let index = 0; index < this.items.length; index++) {
+      const innerButton = this.buttonEls[index]?.querySelector('button');
+      if (innerButton === activeElement) {
+        return index;
+      }
+    }
+
+    return -1;
+  }
+
+  private focusItemAt(index: number): void {
+    const innerButton = this.buttonEls[index]?.querySelector('button');
+    innerButton?.focus();
+  }
+
   render() {
     return (
       <Host>
@@ -181,7 +280,7 @@ export class ModusWcDock {
                   customClass="modus-wc-dock-item-button"
                   disabled={item.disabled}
                   fullWidth={true}
-                  onClick={() => this.handleItemClick(index, item)}
+                  onButtonClick={() => this.handleItemClick(index, item)}
                   size={this.getChildSize()}
                   type="button"
                   variant="borderless"
