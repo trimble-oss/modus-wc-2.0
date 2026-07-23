@@ -74,12 +74,12 @@ export class ModusWcDock {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.hasAttribute('aria-label')) {
-      this.el.setAttribute('aria-label', 'Dock');
-    }
-
     this.validateItems();
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+
+    if (!this.inheritedAttributes['aria-label']) {
+      this.inheritedAttributes['aria-label'] = 'Dock';
+    }
   }
 
   @Watch('items')
