@@ -51,6 +51,7 @@ modus-wc-tabs .modus-wc-tabs {
     border-radius: var(--modus-wc-border-radius-tab);
 
     &.modus-wc-tabs {
+      align-items: stretch;
       height: inherit;
     }
 

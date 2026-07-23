@@ -69,7 +69,6 @@ export class ModusWcButton {
   componentWillLoad() {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 

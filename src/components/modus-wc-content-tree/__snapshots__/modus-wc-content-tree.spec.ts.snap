@@ -1,0 +1,1048 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-content-tree should render with custom props and sample nodes 1`] = `
+<modus-wc-content-tree class="my-tree">
+  <modus-wc-tree-menu selection-mode="single">
+    <!---->
+    <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+      <modus-wc-tree-item>
+        <!---->
+        <li aria-selected="false" class="modus-wc-content-tree-family-active modus-wc-content-tree-parent modus-wc-menu-item modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+          <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+            <div class="modus-wc-menu-item-content">
+              <div class="modus-wc-content-tree-node-start" slot="start">
+                <modus-wc-button class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control">
+                  <!---->
+                  <button aria-expanded="true" aria-label="Collapse Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        expand_more
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
+                <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                  <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                    folder_closed
+                  </i>
+                </modus-wc-icon>
+              </div>
+              <div class="modus-wc-menu-item-labels">
+                <div>
+                  Project Files
+                </div>
+              </div>
+              <div class="modus-wc-content-tree-actions" slot="end">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                  <!---->
+                  <button aria-label="Disable Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
+                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                  <!---->
+                  <modus-wc-button>
+                    <!---->
+                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                      <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                          more_vertical
+                        </i>
+                      </modus-wc-icon>
+                    </button>
+                  </modus-wc-button>
+                  <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                    <modus-wc-menu selection-mode="single">
+                      <!---->
+                      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                        <div slot="menu">
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Edit name
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Duplicate
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add New Above
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add New Below
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add Child Node
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Delete
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                        </div>
+                      </ul>
+                    </modus-wc-menu>
+                  </div>
+                </modus-wc-dropdown-menu>
+              </div>
+            </div>
+          </div>
+          <modus-wc-tree-menu class="modus-wc-menu-submenu" selection-mode="single">
+            <!---->
+            <ul aria-orientation="vertical" class="modus-wc-menu-dropdown modus-wc-menu-dropdown-show" role="menu">
+              <modus-wc-tree-item>
+                <!---->
+                <li aria-selected="false" class="modus-wc-menu-item modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+                  <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+                    <div class="modus-wc-menu-item-content">
+                      <div class="modus-wc-content-tree-node-start" slot="start">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                        <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                          <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                            info
+                          </i>
+                        </modus-wc-icon>
+                      </div>
+                      <div class="modus-wc-menu-item-labels">
+                        <div>
+                          Overview
+                        </div>
+                      </div>
+                      <div class="modus-wc-content-tree-actions" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Disable Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                        <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                          <!---->
+                          <modus-wc-button>
+                            <!---->
+                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                              <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                  more_vertical
+                                </i>
+                              </modus-wc-icon>
+                            </button>
+                          </modus-wc-button>
+                          <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                            <modus-wc-menu selection-mode="single">
+                              <!---->
+                              <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                                <div slot="menu">
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Edit name
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Duplicate
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add New Above
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add New Below
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add Child Node
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Delete
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                </div>
+                              </ul>
+                            </modus-wc-menu>
+                          </div>
+                        </modus-wc-dropdown-menu>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item>
+                <!---->
+                <li aria-disabled="" aria-selected="false" class="modus-wc-menu-item modus-wc-menu-item-disabled modus-wc-menu-item-lg" role="menuitemradio" tabindex="-1">
+                  <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+                    <div class="modus-wc-menu-item-content">
+                      <div class="modus-wc-content-tree-node-start" slot="start">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                      </div>
+                      <div class="modus-wc-menu-item-labels">
+                        <div>
+                          Disabled Leaf
+                        </div>
+                      </div>
+                      <div class="modus-wc-content-tree-actions modus-wc-content-tree-lock-owner" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Enable Disabled Leaf" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_off
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                        <modus-wc-button class="modus-wc-content-tree-actions-spacer modus-wc-content-tree-row-control">
+                          <!---->
+                          <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                more_vertical
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </modus-wc-tree-item>
+              <modus-wc-tree-item>
+                <!---->
+                <li aria-selected="false" class="modus-wc-content-tree-parent modus-wc-menu-item modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+                  <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+                    <div class="modus-wc-menu-item-content">
+                      <div class="modus-wc-content-tree-node-start" slot="start">
+                        <modus-wc-button class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control">
+                          <!---->
+                          <button aria-expanded="true" aria-label="Collapse Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                expand_more
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                      </div>
+                      <div class="modus-wc-menu-item-labels">
+                        <div>
+                          Resources
+                        </div>
+                      </div>
+                      <div class="modus-wc-content-tree-actions" slot="end">
+                        <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                          <!---->
+                          <button aria-label="Disable Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
+                            </modus-wc-icon>
+                          </button>
+                        </modus-wc-button>
+                        <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                          <!---->
+                          <modus-wc-button>
+                            <!---->
+                            <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                              <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                  more_vertical
+                                </i>
+                              </modus-wc-icon>
+                            </button>
+                          </modus-wc-button>
+                          <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                            <modus-wc-menu selection-mode="single">
+                              <!---->
+                              <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                                <div slot="menu">
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Edit name
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Duplicate
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add New Above
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add New Below
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Add Child Node
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                  <modus-wc-menu-item>
+                                    <!---->
+                                    <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                      <button tabindex="-1" type="button">
+                                        <div class="modus-wc-menu-item-content">
+                                          <div class="modus-wc-menu-item-labels">
+                                            <div>
+                                              Delete
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    </li>
+                                  </modus-wc-menu-item>
+                                </div>
+                              </ul>
+                            </modus-wc-menu>
+                          </div>
+                        </modus-wc-dropdown-menu>
+                      </div>
+                    </div>
+                  </div>
+                  <modus-wc-tree-menu class="modus-wc-menu-submenu" selection-mode="single">
+                    <!---->
+                    <ul aria-orientation="vertical" class="modus-wc-menu-dropdown modus-wc-menu-dropdown-show" role="menu">
+                      <modus-wc-tree-item>
+                        <!---->
+                        <li aria-selected="false" class="modus-wc-menu-item modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+                          <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+                            <div class="modus-wc-menu-item-content">
+                              <div class="modus-wc-content-tree-node-start" slot="start">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
+                                  <!---->
+                                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
+                              </div>
+                              <div class="modus-wc-menu-item-labels">
+                                <div>
+                                  Specifications
+                                </div>
+                              </div>
+                              <div class="modus-wc-content-tree-actions" slot="end">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                                  <!---->
+                                  <button aria-label="Disable Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
+                                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                                  <!---->
+                                  <modus-wc-button>
+                                    <!---->
+                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                      <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                          more_vertical
+                                        </i>
+                                      </modus-wc-icon>
+                                    </button>
+                                  </modus-wc-button>
+                                  <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                                    <modus-wc-menu selection-mode="single">
+                                      <!---->
+                                      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                                        <div slot="menu">
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Edit name
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Duplicate
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add New Above
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add New Below
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add Child Node
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Delete
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                        </div>
+                                      </ul>
+                                    </modus-wc-menu>
+                                  </div>
+                                </modus-wc-dropdown-menu>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </modus-wc-tree-item>
+                      <modus-wc-tree-item>
+                        <!---->
+                        <li aria-selected="true" class="modus-wc-menu-item modus-wc-menu-item-active modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+                          <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+                            <div class="modus-wc-menu-item-content">
+                              <div class="modus-wc-content-tree-node-start" slot="start">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
+                                  <!---->
+                                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
+                              </div>
+                              <div class="modus-wc-menu-item-labels">
+                                <div>
+                                  Search Index
+                                </div>
+                              </div>
+                              <div class="modus-wc-content-tree-actions" slot="end">
+                                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                                  <!---->
+                                  <button aria-label="Disable Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
+                                    </modus-wc-icon>
+                                  </button>
+                                </modus-wc-button>
+                                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                                  <!---->
+                                  <modus-wc-button>
+                                    <!---->
+                                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                                      <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                          more_vertical
+                                        </i>
+                                      </modus-wc-icon>
+                                    </button>
+                                  </modus-wc-button>
+                                  <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                                    <modus-wc-menu selection-mode="single">
+                                      <!---->
+                                      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                                        <div slot="menu">
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Edit name
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Duplicate
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add New Above
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add New Below
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Add Child Node
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                          <modus-wc-menu-item>
+                                            <!---->
+                                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                                              <button tabindex="-1" type="button">
+                                                <div class="modus-wc-menu-item-content">
+                                                  <div class="modus-wc-menu-item-labels">
+                                                    <div>
+                                                      Delete
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </button>
+                                            </li>
+                                          </modus-wc-menu-item>
+                                        </div>
+                                      </ul>
+                                    </modus-wc-menu>
+                                  </div>
+                                </modus-wc-dropdown-menu>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </modus-wc-tree-item>
+                    </ul>
+                  </modus-wc-tree-menu>
+                </li>
+              </modus-wc-tree-item>
+            </ul>
+          </modus-wc-tree-menu>
+        </li>
+      </modus-wc-tree-item>
+      <modus-wc-tree-item>
+        <!---->
+        <li aria-selected="false" class="modus-wc-menu-item modus-wc-menu-item-lg" role="menuitemradio" tabindex="0">
+          <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
+            <div class="modus-wc-menu-item-content">
+              <div class="modus-wc-content-tree-node-start" slot="start">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-toggle-spacer">
+                  <!---->
+                  <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        chevron_right
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
+              </div>
+              <div class="modus-wc-menu-item-labels">
+                <div>
+                  Settings
+                </div>
+              </div>
+              <div class="modus-wc-content-tree-actions" slot="end">
+                <modus-wc-button class="modus-wc-content-tree-row-control modus-wc-content-tree-visibility">
+                  <!---->
+                  <button aria-label="Disable Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                    <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
+                    </modus-wc-icon>
+                  </button>
+                </modus-wc-button>
+                <modus-wc-dropdown-menu class="modus-wc-content-tree-row-control modus-wc-dropdown-menu">
+                  <!---->
+                  <modus-wc-button>
+                    <!---->
+                    <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
+                      <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                          more_vertical
+                        </i>
+                      </modus-wc-icon>
+                    </button>
+                  </modus-wc-button>
+                  <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
+                    <modus-wc-menu selection-mode="single">
+                      <!---->
+                      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
+                        <div slot="menu">
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Edit name
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Duplicate
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add New Above
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add New Below
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Add Child Node
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                          <modus-wc-menu-item>
+                            <!---->
+                            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                              <button tabindex="-1" type="button">
+                                <div class="modus-wc-menu-item-content">
+                                  <div class="modus-wc-menu-item-labels">
+                                    <div>
+                                      Delete
+                                    </div>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          </modus-wc-menu-item>
+                        </div>
+                      </ul>
+                    </modus-wc-menu>
+                  </div>
+                </modus-wc-dropdown-menu>
+              </div>
+            </div>
+          </div>
+        </li>
+      </modus-wc-tree-item>
+    </ul>
+  </modus-wc-tree-menu>
+  <modus-wc-modal>
+    <!---->
+    <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-2">
+      <div class="modus-wc-modal-box">
+        <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+          <div class="modus-wc-modal-top-icon-buttons"></div>
+        </div>
+        <div class="modus-wc-modal-content modus-wc-py-4">
+          <div class="modus-wc-content-tree-modal-body" slot="content">
+            <div class="modus-wc-content-tree-modal-message">
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-semibold">
+                  <slot-fb>
+                    Confirm Deletion
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
+                  <slot-fb>
+                    Are you sure you want to delete this item?
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+            </div>
+          </div>
+        </div>
+        <div class="modus-wc-modal-action">
+          <div class="modus-wc-content-tree-modal-footer" slot="footer">
+            <modus-wc-button>
+              <!---->
+              <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-neutral modus-wc-btn-sm" tabindex="0" type="button">
+                Cancel
+              </button>
+            </modus-wc-button>
+            <modus-wc-button>
+              <!---->
+              <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-filled modus-wc-btn-sm" tabindex="0" type="button">
+                Delete
+              </button>
+            </modus-wc-button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  </modus-wc-modal>
+</modus-wc-content-tree>
+`;
+
+exports[`modus-wc-content-tree should render with default props 1`] = `
+<modus-wc-content-tree>
+  <modus-wc-tree-menu selection-mode="single">
+    <!---->
+    <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
+  </modus-wc-tree-menu>
+  <modus-wc-modal>
+    <!---->
+    <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-0">
+      <div class="modus-wc-modal-box">
+        <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+          <div class="modus-wc-modal-top-icon-buttons"></div>
+        </div>
+        <div class="modus-wc-modal-content modus-wc-py-4">
+          <div class="modus-wc-content-tree-modal-body" slot="content">
+            <div class="modus-wc-content-tree-modal-message">
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-md modus-wc-typography modus-wc-typography-weight-semibold">
+                  <slot-fb>
+                    Confirm Deletion
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+              <modus-wc-typography>
+                <!---->
+                <p class="modus-wc-text-sm modus-wc-typography modus-wc-typography-weight-normal">
+                  <slot-fb>
+                    Are you sure you want to delete this item?
+                  </slot-fb>
+                </p>
+              </modus-wc-typography>
+            </div>
+          </div>
+        </div>
+        <div class="modus-wc-modal-action">
+          <div class="modus-wc-content-tree-modal-footer" slot="footer">
+            <modus-wc-button>
+              <!---->
+              <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-neutral modus-wc-btn-sm" tabindex="0" type="button">
+                Cancel
+              </button>
+            </modus-wc-button>
+            <modus-wc-button>
+              <!---->
+              <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-filled modus-wc-btn-sm" tabindex="0" type="button">
+                Delete
+              </button>
+            </modus-wc-button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  </modus-wc-modal>
+</modus-wc-content-tree>
+`;

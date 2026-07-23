@@ -59,6 +59,7 @@ graph TD;
   modus-wc-select --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-pagination --> modus-wc-tooltip
   style modus-wc-table fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

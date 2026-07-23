@@ -132,8 +132,22 @@ export class ModusWcTreeItem {
     if (this.disabled) return;
     if (!this.isOwnKeydownTarget(e)) return;
 
+    // Nested submenu rows live inside an ancestor tree-item host. Without this
+    // guard, Space/Enter on a child bubbles up and activates the parent too.
+    const owningItem =
+      (e.target as Element | null)?.closest?.('modus-wc-tree-item') ?? null;
+    if (owningItem !== this.el) return;
+
     if (e.key === 'Enter' || e.key === ' ') {
+      if (
+        this.isInteractiveSlotTarget(e, 'start') ||
+        this.isInteractiveSlotTarget(e, 'end')
+      ) {
+        return;
+      }
+
       e.preventDefault();
+      e.stopPropagation();
       this.handleItemSelect();
     }
   }
@@ -160,10 +174,11 @@ export class ModusWcTreeItem {
   }
 
   private getRootTreeMenu(): HTMLElement | null {
-    let treeMenu = this.el.closest('modus-wc-tree-menu');
+    let treeMenu = this.el.closest<HTMLElement>('modus-wc-tree-menu');
     while (treeMenu) {
       const parent =
-        treeMenu.parentElement?.closest('modus-wc-tree-menu') ?? null;
+        treeMenu.parentElement?.closest<HTMLElement>('modus-wc-tree-menu') ??
+        null;
       if (!parent) break;
       treeMenu = parent;
     }
@@ -236,7 +251,7 @@ export class ModusWcTreeItem {
     return undefined;
   }
 
-  private isSlotClick(event: MouseEvent, slotName: 'start' | 'end'): boolean {
+  private isSlotTarget(event: UIEvent, slotName: 'start' | 'end'): boolean {
     const slotted = Array.from(
       this.el.querySelectorAll(`[slot="${slotName}"]`)
     );
@@ -250,11 +265,11 @@ export class ModusWcTreeItem {
     return slotted.some((el) => el === innerTarget || el.contains(innerTarget));
   }
 
-  private isInteractiveSlotClick(
-    event: MouseEvent,
+  private isInteractiveSlotTarget(
+    event: UIEvent,
     slotName: 'start' | 'end'
   ): boolean {
-    if (!this.isSlotClick(event, slotName)) return false;
+    if (!this.isSlotTarget(event, slotName)) return false;
 
     if (slotName === 'end') return true;
 
@@ -270,8 +285,8 @@ export class ModusWcTreeItem {
   }
 
   private handleItemClick = (event: MouseEvent) => {
-    if (this.isInteractiveSlotClick(event, 'end')) return;
-    if (this.isInteractiveSlotClick(event, 'start')) return;
+    if (this.isInteractiveSlotTarget(event, 'end')) return;
+    if (this.isInteractiveSlotTarget(event, 'start')) return;
 
     this.handleItemSelect();
 
