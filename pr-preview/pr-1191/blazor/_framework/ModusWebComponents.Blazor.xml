@@ -1035,7 +1035,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeVisibilityChange">
             <summary>
-            Event emitted when a node's visibility (eye) toggle is clicked. disabled is the new state. The app should apply it to the node and its descendants (e.g. via setNodeDisabled).
+            Event emitted when a node's visibility (eye) toggle is clicked. disabled is the new state. The app should update the node's own disabled state (e.g. via setNodeDisabled); descendants become effectively disabled via ancestor inheritance.
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcDate">
