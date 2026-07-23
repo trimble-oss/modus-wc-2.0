@@ -2199,6 +2199,16 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.ShowSignOut">
+            <summary>
+            Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MainMenu">
+            <summary>
+            Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and items appends custom entries.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MenuOne">
             <summary>
             Configuration for the first menu including title and items
