@@ -1206,7 +1206,7 @@ export class ModusWcContentTree {
         {showDragHandle ? (
           <modus-wc-button
             slot="start"
-            aria-label={`Reorder ${node.label}`}
+            aria-label={`Reorder ${node.label || 'item'}`}
             class="modus-wc-content-tree-drag-handle"
             color="tertiary"
             data-node-id={node.id}
@@ -1227,7 +1227,7 @@ export class ModusWcContentTree {
           {hasChildren ? (
             <modus-wc-button
               aria-expanded={String(expanded)}
-              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${node.label}`}
+              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${node.label || 'item'}`}
               class="modus-wc-content-tree-chevron modus-wc-content-tree-row-control"
               color="tertiary"
               disabled={effectiveDisabled}
@@ -1307,8 +1307,8 @@ export class ModusWcContentTree {
             <modus-wc-button
               aria-label={
                 effectiveDisabled
-                  ? `Enable ${node.label}`
-                  : `Disable ${node.label}`
+                  ? `Enable ${node.label || 'item'}`
+                  : `Disable ${node.label || 'item'}`
               }
               class="modus-wc-content-tree-visibility modus-wc-content-tree-row-control"
               color="tertiary"
@@ -1328,7 +1328,7 @@ export class ModusWcContentTree {
             </modus-wc-button>
             {!effectiveDisabled ? (
               <modus-wc-dropdown-menu
-                buttonAriaLabel={`Actions for ${node.label}`}
+                buttonAriaLabel={`Actions for ${node.label || 'item'}`}
                 buttonColor="tertiary"
                 buttonShape="square"
                 buttonSize={this.getControlButtonSize()}
