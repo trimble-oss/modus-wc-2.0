@@ -232,7 +232,7 @@ export const WithCustomMainMenu: Story = {
     docs: {
       description: {
         story:
-          'Hides Admin settings via adminSettings: false and appends a custom Billing item after the remaining built-in items.',
+          'Hides all built-in menu items and displays custom Billing, Subscription, and Edit Profile options.',
       },
       source: {
         transform: (_src, { args }: { args: ProfileMenuArgs }) =>
