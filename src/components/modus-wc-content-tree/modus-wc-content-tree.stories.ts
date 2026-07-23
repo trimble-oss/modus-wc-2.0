@@ -1,4 +1,4 @@
-import { withActions } from '@storybook/addon-actions/decorator';
+import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -39,6 +39,10 @@ interface ContentTreeArgs {
   'custom-class'?: string;
   'selection-mode'?: SelectionMode;
   size?: ModusSize;
+  searchable?: boolean;
+  filter?: string;
+  toolbar?: IContentTreeToolbar;
+  'allow-drag-drop'?: boolean;
 }
 
 // The controlled props are set imperatively (objects/arrays), so type the host loosely.
@@ -52,6 +56,44 @@ type ContentTreeElement = HTMLElement & {
   allowDragDrop?: boolean;
   toolbar?: IContentTreeToolbar;
   searchable?: boolean;
+};
+
+/** Log to the Actions panel without stacking duplicate decorator listeners. */
+const withStoryAction =
+  <T>(
+    name: string,
+    handler: (e: CustomEvent<T>) => void
+  ): ((e: CustomEvent<T>) => void) =>
+  (e) => {
+    action(name)(e);
+    handler(e);
+  };
+
+const sameIdList = (a: string[], b: string[]): boolean => {
+  if (a.length !== b.length) return false;
+  const setB = new Set(b);
+  return a.every((id) => setB.has(id));
+};
+
+const syncExpandedNodeIds = (
+  treeEl: ContentTreeElement,
+  ids: string[]
+): void => {
+  const current = treeEl.expandedNodeIds;
+  if (Array.isArray(current) && sameIdList(current, ids)) return;
+  treeEl.expandedNodeIds = [...ids];
+};
+
+const applyControlArgs = (
+  treeEl: ContentTreeElement,
+  args: ContentTreeArgs
+): void => {
+  if (args.searchable !== undefined) treeEl.searchable = args.searchable;
+  if (args.toolbar !== undefined) treeEl.toolbar = args.toolbar;
+  if (args.filter !== undefined) treeEl.filter = args.filter;
+  if (args['allow-drag-drop'] !== undefined) {
+    treeEl.allowDragDrop = args['allow-drag-drop'];
+  }
 };
 
 const treeIcon = (
@@ -98,27 +140,23 @@ const meta: Meta<ContentTreeArgs> = {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
     },
-  },
-  decorators: [withActions],
-  parameters: {
-    actions: {
-      handles: [
-        'nodeSelect',
-        'nodeExpandChange',
-        'nodeCheckChange',
-        'nodeEdit',
-        'nodeDuplicate',
-        'nodeAdd',
-        'nodeDelete',
-        'nodeRename',
-        'nodeEditCancel',
-        'nodeMove',
-        'nodeLoadChildren',
-        'expandAllChange',
-        'nodesDelete',
-        'nodeVisibilityChange',
-      ],
+    bordered: { control: 'boolean' },
+    searchable: { control: 'boolean' },
+    filter: { control: 'text' },
+    toolbar: {
+      description: 'Configures the optional toolbar rendered above the tree.',
+      table: {
+        type: {
+          detail: `
+            Interface: IContentTreeToolbar
+            Properties:
+            - expandCollapse (boolean, optional): Show the expand-all / collapse-all toggle button
+            - delete (boolean, optional): Show the delete button (enabled only when nodes are checked in multi-select)
+          `,
+        },
+      },
     },
+    'allow-drag-drop': { control: 'boolean' },
   },
 };
 
@@ -143,23 +181,27 @@ export const Default: Story = {
       if (!treeEl) return;
       treeEl.nodes = sampleNodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...expandedNodeIds, id]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...expandedNodeIds, id]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
     // prettier-ignore
     return html`
@@ -190,6 +232,10 @@ const buildTreeStoryState = {
 };
 
 export const BuildTree: Story = {
+  args: {
+    searchable: true,
+    toolbar: { expandCollapse: true },
+  },
   parameters: {
     docs: {
       source: {
@@ -211,10 +257,9 @@ export const BuildTree: Story = {
       if (!treeEl) return;
       treeEl.nodes = state.nodes;
       treeEl.selectedNodeId = state.selectedNodeId;
-      treeEl.expandedNodeIds = [...state.expandedNodeIds];
+      syncExpandedNodeIds(treeEl, state.expandedNodeIds);
       treeEl.editingNodeId = state.editingNodeId;
-      treeEl.searchable = true;
-      treeEl.toolbar = { expandCollapse: true };
+      applyControlArgs(treeEl, args);
     };
 
     const startEditing = (id: string, fresh: boolean) => {
@@ -236,100 +281,130 @@ export const BuildTree: Story = {
       startEditing(newId, true);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      state.selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        state.selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      state.expandedNodeIds = expanded
-        ? [...new Set([...state.expandedNodeIds, id])]
-        : state.expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        state.expandedNodeIds = expanded
+          ? [...new Set([...state.expandedNodeIds, id])]
+          : state.expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
-    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
-      state.expandedNodeIds = e.detail.expanded
-        ? getExpandableNodeIds(state.nodes)
-        : [];
-      sync();
-    };
+    const handleExpandAll = withStoryAction(
+      'expandAllChange',
+      (e: CustomEvent<{ expanded: boolean }>) => {
+        state.expandedNodeIds = e.detail.expanded
+          ? getExpandableNodeIds(state.nodes)
+          : [];
+        sync();
+      }
+    );
 
-    const handleEdit = (e: CustomEvent<{ id: string }>) => {
-      startEditing(e.detail.id, false);
-    };
+    const handleEdit = withStoryAction(
+      'nodeEdit',
+      (e: CustomEvent<{ id: string }>) => {
+        startEditing(e.detail.id, false);
+      }
+    );
 
-    const handleDuplicate = (e: CustomEvent<{ id: string }>) => {
-      const result = duplicateNode(state.nodes, e.detail.id, makeId);
-      state.nodes = result.nodes;
-      if (result.newId) startEditing(result.newId, false);
-      else sync();
-    };
+    const handleDuplicate = withStoryAction(
+      'nodeDuplicate',
+      (e: CustomEvent<{ id: string }>) => {
+        const result = duplicateNode(state.nodes, e.detail.id, makeId);
+        state.nodes = result.nodes;
+        if (result.newId) startEditing(result.newId, false);
+        else sync();
+      }
+    );
 
-    const handleAdd = (
-      e: CustomEvent<{
-        referenceId: string;
-        position: 'above' | 'below' | 'child';
-      }>
-    ) => {
-      const { referenceId, position } = e.detail;
-      const newId = makeId();
-      const newNode: ITreeNode = { id: newId, label: '' };
+    const handleAdd = withStoryAction(
+      'nodeAdd',
+      (
+        e: CustomEvent<{
+          referenceId: string;
+          position: 'above' | 'below' | 'child';
+        }>
+      ) => {
+        const { referenceId, position } = e.detail;
+        const newId = makeId();
+        const newNode: ITreeNode = { id: newId, label: '' };
 
-      if (position === 'child') {
-        state.nodes = addNode(state.nodes, newNode, { parentId: referenceId });
-        if (!state.expandedNodeIds.includes(referenceId)) {
-          state.expandedNodeIds = [...state.expandedNodeIds, referenceId];
+        if (position === 'child') {
+          state.nodes = addNode(state.nodes, newNode, {
+            parentId: referenceId,
+          });
+          if (!state.expandedNodeIds.includes(referenceId)) {
+            state.expandedNodeIds = [...state.expandedNodeIds, referenceId];
+          }
+        } else {
+          const loc = getNodeLocation(state.nodes, referenceId);
+          const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
+          state.nodes = addNode(state.nodes, newNode, {
+            parentId: loc?.parentId,
+            index,
+          });
         }
-      } else {
-        const loc = getNodeLocation(state.nodes, referenceId);
-        const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
-        state.nodes = addNode(state.nodes, newNode, {
-          parentId: loc?.parentId,
-          index,
+        startEditing(newId, true);
+      }
+    );
+
+    const handleDelete = withStoryAction(
+      'nodeDelete',
+      (e: CustomEvent<{ id: string }>) => {
+        state.nodes = deleteNode(state.nodes, e.detail.id);
+        state.freshIds.delete(e.detail.id);
+        if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
+          state.selectedNodeId = state.nodes[0]?.id;
+        }
+        sync();
+      }
+    );
+
+    const handleRename = withStoryAction(
+      'nodeRename',
+      (e: CustomEvent<{ id: string; label: string }>) => {
+        const { id, label } = e.detail;
+        state.nodes = updateNode(state.nodes, id, {
+          label: label || 'Untitled',
         });
+        state.freshIds.delete(id);
+        state.editingNodeId = undefined;
+        sync();
       }
-      startEditing(newId, true);
-    };
+    );
 
-    const handleDelete = (e: CustomEvent<{ id: string }>) => {
-      state.nodes = deleteNode(state.nodes, e.detail.id);
-      state.freshIds.delete(e.detail.id);
-      if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
-        state.selectedNodeId = state.nodes[0]?.id;
+    const handleEditCancel = withStoryAction(
+      'nodeEditCancel',
+      (e: CustomEvent<{ id: string }>) => {
+        const { id } = e.detail;
+        if (state.freshIds.has(id)) state.nodes = deleteNode(state.nodes, id);
+        state.freshIds.delete(id);
+        state.editingNodeId = undefined;
+        if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
+          state.selectedNodeId = state.nodes[0]?.id;
+        }
+        sync();
       }
-      sync();
-    };
+    );
 
-    const handleRename = (e: CustomEvent<{ id: string; label: string }>) => {
-      const { id, label } = e.detail;
-      state.nodes = updateNode(state.nodes, id, { label: label || 'Untitled' });
-      state.freshIds.delete(id);
-      state.editingNodeId = undefined;
-      sync();
-    };
-
-    const handleEditCancel = (e: CustomEvent<{ id: string }>) => {
-      const { id } = e.detail;
-      if (state.freshIds.has(id)) state.nodes = deleteNode(state.nodes, id);
-      state.freshIds.delete(id);
-      state.editingNodeId = undefined;
-      if (!findNode(state.nodes, state.selectedNodeId ?? '')) {
-        state.selectedNodeId = state.nodes[0]?.id;
+    const handleVisibilityChange = withStoryAction(
+      'nodeVisibilityChange',
+      (e: CustomEvent<{ id: string; disabled: boolean }>) => {
+        const { id, disabled } = e.detail;
+        state.nodes = setNodeDisabled(state.nodes, id, disabled);
+        sync();
       }
-      sync();
-    };
-
-    const handleVisibilityChange = (
-      e: CustomEvent<{ id: string; disabled: boolean }>
-    ) => {
-      const { id, disabled } = e.detail;
-      state.nodes = setNodeDisabled(state.nodes, id, disabled);
-      sync();
-    };
+    );
 
     // prettier-ignore
     return html`
@@ -459,32 +534,42 @@ export const MultiSelect: Story = {
       if (!treeEl) return;
       treeEl.nodes = sampleNodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
       treeEl.checkedNodeIds = [...checkedNodeIds];
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...expandedNodeIds, id]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...expandedNodeIds, id]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
-    const handleCheckChange = (
-      e: CustomEvent<{ id: string; checked: boolean }>
-    ) => {
-      const { id, checked } = e.detail;
-      checkedNodeIds = setNodeChecked(sampleNodes, checkedNodeIds, id, checked);
-      sync();
-    };
+    const handleCheckChange = withStoryAction(
+      'nodeCheckChange',
+      (e: CustomEvent<{ id: string; checked: boolean }>) => {
+        const { id, checked } = e.detail;
+        checkedNodeIds = setNodeChecked(
+          sampleNodes,
+          checkedNodeIds,
+          id,
+          checked
+        );
+        sync();
+      }
+    );
 
     // prettier-ignore
     return html`
@@ -508,6 +593,8 @@ export const MultiSelect: Story = {
 export const Toolbar: Story = {
   args: {
     'selection-mode': 'multiple',
+    searchable: true,
+    toolbar: { expandCollapse: true, delete: true },
   },
   parameters: {
     docs: {
@@ -528,49 +615,58 @@ export const Toolbar: Story = {
       if (!treeEl) return;
       treeEl.nodes = nodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
       treeEl.checkedNodeIds = [...checkedNodeIds];
-      treeEl.toolbar = { expandCollapse: true, delete: true };
-      // Built-in search filters the tree internally (self-managed).
-      treeEl.searchable = true;
+      applyControlArgs(treeEl, args);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...new Set([...expandedNodeIds, id])]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...new Set([...expandedNodeIds, id])]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
-    const handleCheckChange = (
-      e: CustomEvent<{ id: string; checked: boolean }>
-    ) => {
-      const { id, checked } = e.detail;
-      checkedNodeIds = setNodeChecked(nodes, checkedNodeIds, id, checked);
-      sync();
-    };
+    const handleCheckChange = withStoryAction(
+      'nodeCheckChange',
+      (e: CustomEvent<{ id: string; checked: boolean }>) => {
+        const { id, checked } = e.detail;
+        checkedNodeIds = setNodeChecked(nodes, checkedNodeIds, id, checked);
+        sync();
+      }
+    );
 
     // Expand-all / collapse-all: set every expandable id, or clear to collapse.
-    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
-      expandedNodeIds = e.detail.expanded ? getExpandableNodeIds(nodes) : [];
-      sync();
-    };
+    const handleExpandAll = withStoryAction(
+      'expandAllChange',
+      (e: CustomEvent<{ expanded: boolean }>) => {
+        expandedNodeIds = e.detail.expanded ? getExpandableNodeIds(nodes) : [];
+        sync();
+      }
+    );
 
     // Bulk delete: remove the checked branches, then drop any now-missing ids
     // from the checked set so the selection stays consistent.
-    const handleNodesDelete = (e: CustomEvent<{ ids: string[] }>) => {
-      nodes = deleteNodes(nodes, e.detail.ids);
-      checkedNodeIds = checkedNodeIds.filter((id) => !!findNode(nodes, id));
-      sync();
-    };
+    const handleNodesDelete = withStoryAction(
+      'nodesDelete',
+      (e: CustomEvent<{ ids: string[] }>) => {
+        nodes = deleteNodes(nodes, e.detail.ids);
+        checkedNodeIds = checkedNodeIds.filter((id) => !!findNode(nodes, id));
+        sync();
+      }
+    );
 
     // prettier-ignore
     return html`
@@ -594,6 +690,10 @@ export const Toolbar: Story = {
 };
 
 export const SearchFilter: Story = {
+  args: {
+    searchable: true,
+    toolbar: { expandCollapse: true },
+  },
   parameters: {
     docs: {
       source: {
@@ -613,34 +713,40 @@ export const SearchFilter: Story = {
       if (!treeEl) return;
       treeEl.nodes = sampleNodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
-      treeEl.searchable = true;
-      treeEl.toolbar = { expandCollapse: true };
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
+      applyControlArgs(treeEl, args);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...new Set([...expandedNodeIds, id])]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...new Set([...expandedNodeIds, id])]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
     // The toolbar's single expand/collapse-all toggle emits `expandAllChange`;
     // the app applies it to its own expansion state.
-    const handleExpandAll = (e: CustomEvent<{ expanded: boolean }>) => {
-      expandedNodeIds = e.detail.expanded
-        ? getExpandableNodeIds(sampleNodes)
-        : [];
-      sync();
-    };
+    const handleExpandAll = withStoryAction(
+      'expandAllChange',
+      (e: CustomEvent<{ expanded: boolean }>) => {
+        expandedNodeIds = e.detail.expanded
+          ? getExpandableNodeIds(sampleNodes)
+          : [];
+        sync();
+      }
+    );
 
     // prettier-ignore
     return html`
@@ -684,7 +790,7 @@ export const TransactionalMenu: Story = {
       if (!treeEl) return;
       treeEl.nodes = nodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
       treeEl.editingNodeId = editingNodeId;
     };
 
@@ -694,88 +800,111 @@ export const TransactionalMenu: Story = {
       sync();
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
-
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...expandedNodeIds, id]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
-
-    const handleEdit = (e: CustomEvent<{ id: string }>) => {
-      startEditing(e.detail.id, false);
-    };
-
-    const handleDuplicate = (e: CustomEvent<{ id: string }>) => {
-      const result = duplicateNode(nodes, e.detail.id, makeId);
-      nodes = result.nodes;
-      if (result.newId) startEditing(result.newId, false);
-      else sync();
-    };
-
-    const handleAdd = (
-      e: CustomEvent<{
-        referenceId: string;
-        position: 'above' | 'below' | 'child';
-      }>
-    ) => {
-      const { referenceId, position } = e.detail;
-      const newId = makeId();
-      const newNode: ITreeNode = { id: newId, label: '' };
-
-      if (position === 'child') {
-        nodes = addNode(nodes, newNode, { parentId: referenceId });
-        if (!expandedNodeIds.includes(referenceId)) {
-          expandedNodeIds = [...expandedNodeIds, referenceId];
-        }
-      } else {
-        const loc = getNodeLocation(nodes, referenceId);
-        const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
-        nodes = addNode(nodes, newNode, { parentId: loc?.parentId, index });
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
       }
-      startEditing(newId, true);
-    };
+    );
 
-    const handleDelete = (e: CustomEvent<{ id: string }>) => {
-      nodes = deleteNode(nodes, e.detail.id);
-      freshIds.delete(e.detail.id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...expandedNodeIds, id]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
-    const handleRename = (e: CustomEvent<{ id: string; label: string }>) => {
-      const { id, label } = e.detail;
-      nodes = updateNode(nodes, id, { label: label || 'Untitled' });
-      freshIds.delete(id);
-      editingNodeId = undefined;
-      sync();
-    };
+    const handleEdit = withStoryAction(
+      'nodeEdit',
+      (e: CustomEvent<{ id: string }>) => {
+        startEditing(e.detail.id, false);
+      }
+    );
 
-    const handleEditCancel = (e: CustomEvent<{ id: string }>) => {
-      const { id } = e.detail;
-      // Discard a freshly added node that was never named.
-      if (freshIds.has(id)) nodes = deleteNode(nodes, id);
-      freshIds.delete(id);
-      editingNodeId = undefined;
-      sync();
-    };
+    const handleDuplicate = withStoryAction(
+      'nodeDuplicate',
+      (e: CustomEvent<{ id: string }>) => {
+        const result = duplicateNode(nodes, e.detail.id, makeId);
+        nodes = result.nodes;
+        if (result.newId) startEditing(result.newId, false);
+        else sync();
+      }
+    );
+
+    const handleAdd = withStoryAction(
+      'nodeAdd',
+      (
+        e: CustomEvent<{
+          referenceId: string;
+          position: 'above' | 'below' | 'child';
+        }>
+      ) => {
+        const { referenceId, position } = e.detail;
+        const newId = makeId();
+        const newNode: ITreeNode = { id: newId, label: '' };
+
+        if (position === 'child') {
+          nodes = addNode(nodes, newNode, { parentId: referenceId });
+          if (!expandedNodeIds.includes(referenceId)) {
+            expandedNodeIds = [...expandedNodeIds, referenceId];
+          }
+        } else {
+          const loc = getNodeLocation(nodes, referenceId);
+          const index = (loc?.index ?? 0) + (position === 'below' ? 1 : 0);
+          nodes = addNode(nodes, newNode, { parentId: loc?.parentId, index });
+        }
+        startEditing(newId, true);
+      }
+    );
+
+    const handleDelete = withStoryAction(
+      'nodeDelete',
+      (e: CustomEvent<{ id: string }>) => {
+        nodes = deleteNode(nodes, e.detail.id);
+        freshIds.delete(e.detail.id);
+        sync();
+      }
+    );
+
+    const handleRename = withStoryAction(
+      'nodeRename',
+      (e: CustomEvent<{ id: string; label: string }>) => {
+        const { id, label } = e.detail;
+        nodes = updateNode(nodes, id, { label: label || 'Untitled' });
+        freshIds.delete(id);
+        editingNodeId = undefined;
+        sync();
+      }
+    );
+
+    const handleEditCancel = withStoryAction(
+      'nodeEditCancel',
+      (e: CustomEvent<{ id: string }>) => {
+        const { id } = e.detail;
+        // Discard a freshly added node that was never named.
+        if (freshIds.has(id)) nodes = deleteNode(nodes, id);
+        freshIds.delete(id);
+        editingNodeId = undefined;
+        sync();
+      }
+    );
 
     // The eye toggle flips the node's OWN lock state; a locked parent disables
     // its subtree via the component's effective-disabled inheritance, while each
     // node keeps its own state (so unlocking a parent restores the children).
-    const handleVisibilityChange = (
-      e: CustomEvent<{ id: string; disabled: boolean }>
-    ) => {
-      const { id, disabled } = e.detail;
-      nodes = setNodeDisabled(nodes, id, disabled);
-      sync();
-    };
+    const handleVisibilityChange = withStoryAction(
+      'nodeVisibilityChange',
+      (e: CustomEvent<{ id: string; disabled: boolean }>) => {
+        const { id, disabled } = e.detail;
+        nodes = setNodeDisabled(nodes, id, disabled);
+        sync();
+      }
+    );
 
     // prettier-ignore
     return html`
@@ -803,6 +932,9 @@ export const TransactionalMenu: Story = {
 };
 
 export const DragAndDrop: Story = {
+  args: {
+    'allow-drag-drop': true,
+  },
   parameters: {
     docs: {
       source: {
@@ -821,41 +953,48 @@ export const DragAndDrop: Story = {
       if (!treeEl) return;
       treeEl.nodes = nodes;
       treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
-      treeEl.allowDragDrop = true;
+      syncExpandedNodeIds(treeEl, expandedNodeIds);
+      applyControlArgs(treeEl, args);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...new Set([...expandedNodeIds, id])]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        expandedNodeIds = expanded
+          ? [...new Set([...expandedNodeIds, id])]
+          : expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
     // Apply the move to the app-owned data, then keep a reparented target open
     // so the moved node is visible inside it.
-    const handleMove = (
-      e: CustomEvent<{
-        id: string;
-        targetId: string;
-        position: 'before' | 'after' | 'inside';
-      }>
-    ) => {
-      const { id, targetId, position } = e.detail;
-      nodes = moveNodeRelative(nodes, id, targetId, position);
-      if (position === 'inside' && !expandedNodeIds.includes(targetId)) {
-        expandedNodeIds = [...expandedNodeIds, targetId];
+    const handleMove = withStoryAction(
+      'nodeMove',
+      (
+        e: CustomEvent<{
+          id: string;
+          targetId: string;
+          position: 'before' | 'after' | 'inside';
+        }>
+      ) => {
+        const { id, targetId, position } = e.detail;
+        nodes = moveNodeRelative(nodes, id, targetId, position);
+        if (position === 'inside' && !expandedNodeIds.includes(targetId)) {
+          expandedNodeIds = [...expandedNodeIds, targetId];
+        }
+        sync();
       }
-      sync();
-    };
+    );
 
     // prettier-ignore
     return html`
@@ -876,6 +1015,50 @@ export const DragAndDrop: Story = {
   },
 };
 
+/** Persists Lazy Loading story data across Storybook control updates (re-renders). */
+const lazyLoadingStoryNodes = (): ITreeNode[] => [
+  {
+    id: 'documents',
+    label: 'Documents',
+    icon: treeIcon('folder_closed'),
+    hasChildren: true,
+  },
+  {
+    id: 'media',
+    label: 'Media',
+    icon: treeIcon('folder_closed'),
+    hasChildren: true,
+  },
+  {
+    id: 'empty',
+    label: 'Empty Folder',
+    icon: treeIcon('folder_closed'),
+    hasChildren: true,
+  },
+  { id: 'readme', label: 'Read Me', icon: treeIcon('info') },
+];
+
+const lazyLoadingStoryState = {
+  nodes: lazyLoadingStoryNodes(),
+  selectedNodeId: 'readme',
+  expandedNodeIds: [] as string[],
+  pendingLoadIds: new Set<string>(),
+};
+
+const lazyLoadChildren = (id: string): ITreeNode[] =>
+  id === 'empty'
+    ? []
+    : [
+        { id: `${id}-1`, label: 'First item', icon: treeIcon('info') },
+        {
+          id: `${id}-2`,
+          label: 'Subfolder',
+          icon: treeIcon('folder_closed'),
+          hasChildren: true,
+        },
+        { id: `${id}-3`, label: 'Last item', icon: treeIcon('info') },
+      ];
+
 export const LazyLoading: Story = {
   parameters: {
     docs: {
@@ -886,87 +1069,65 @@ export const LazyLoading: Story = {
   },
   render: (args) => {
     let treeEl: ContentTreeElement | undefined;
-    // Lazy roots declare `hasChildren` but ship no `children` yet, so each shows
-    // an expand chevron and defers its content until the user opens it.
-    let nodes: ITreeNode[] = [
-      {
-        id: 'documents',
-        label: 'Documents',
-        icon: treeIcon('folder_closed'),
-        hasChildren: true,
-      },
-      {
-        id: 'media',
-        label: 'Media',
-        icon: treeIcon('folder_closed'),
-        hasChildren: true,
-      },
-      {
-        id: 'empty',
-        label: 'Empty Folder',
-        icon: treeIcon('folder_closed'),
-        hasChildren: true,
-      },
-      { id: 'readme', label: 'Read Me', icon: treeIcon('info') },
-    ];
-    let selectedNodeId = 'readme';
-    let expandedNodeIds: string[] = [];
-
-    // Children returned by the mock "server". The nested subfolder is itself
-    // lazy so the spinner can be seen again one level deeper. The "Empty Folder"
-    // resolves to an empty array — it becomes a plain leaf once loaded.
-    const loadChildren = (id: string): ITreeNode[] =>
-      id === 'empty'
-        ? []
-        : [
-            { id: `${id}-1`, label: 'First item', icon: treeIcon('info') },
-            {
-              id: `${id}-2`,
-              label: 'Subfolder',
-              icon: treeIcon('folder_closed'),
-              hasChildren: true,
-            },
-            { id: `${id}-3`, label: 'Last item', icon: treeIcon('info') },
-          ];
+    const state = lazyLoadingStoryState;
 
     const sync = () => {
       if (!treeEl) return;
-      treeEl.nodes = nodes;
-      treeEl.selectedNodeId = selectedNodeId;
-      treeEl.expandedNodeIds = [...expandedNodeIds];
+      treeEl.nodes = state.nodes;
+      treeEl.selectedNodeId = state.selectedNodeId;
+      syncExpandedNodeIds(treeEl, state.expandedNodeIds);
     };
 
-    const handleSelect = (e: CustomEvent<{ id: string }>) => {
-      selectedNodeId = e.detail.id;
-      sync();
-    };
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        state.selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
 
-    const handleExpandChange = (
-      e: CustomEvent<{ id: string; expanded: boolean }>
-    ) => {
-      const { id, expanded } = e.detail;
-      expandedNodeIds = expanded
-        ? [...new Set([...expandedNodeIds, id])]
-        : expandedNodeIds.filter((x) => x !== id);
-      sync();
-    };
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        state.expandedNodeIds = expanded
+          ? [...new Set([...state.expandedNodeIds, id])]
+          : state.expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
 
     // Fetch children on first expand, with a deliberate delay so the spinner is
     // visible. Assigning `children` (even `[]`) ends the loading state.
-    const handleLoadChildren = (e: CustomEvent<{ id: string }>) => {
-      const { id } = e.detail;
-      window.setTimeout(() => {
-        nodes = updateNode(nodes, id, { children: loadChildren(id) });
-        sync();
-      }, 1200);
-    };
+    const handleLoadChildren = withStoryAction(
+      'nodeLoadChildren',
+      (e: CustomEvent<{ id: string }>) => {
+        const { id } = e.detail;
+        if (state.pendingLoadIds.has(id)) return;
+        state.pendingLoadIds.add(id);
+        window.setTimeout(() => {
+          state.nodes = updateNode(state.nodes, id, {
+            children: lazyLoadChildren(id),
+          });
+          state.pendingLoadIds.delete(id);
+          sync();
+        }, 1200);
+      }
+    );
 
     // prettier-ignore
     return html`
     <modus-wc-content-tree
       ${ref((el) => {
-        treeEl = (el as ContentTreeElement) ?? undefined;
-        sync();
+        if (!el) {
+          treeEl = undefined;
+          return;
+        }
+        const next = el as ContentTreeElement;
+        if (treeEl !== next) {
+          treeEl = next;
+          sync();
+        }
       })}
       aria-label="Content tree"
       ?bordered=${args.bordered}

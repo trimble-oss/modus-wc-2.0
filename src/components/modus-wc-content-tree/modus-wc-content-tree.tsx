@@ -849,7 +849,7 @@ export class ModusWcContentTree {
         includeSearch
         placeholder="Search…"
         size={this.getSearchInputSize() as ModusSize}
-        type="search"
+        type="text"
         value={this.searchQuery}
         onInputChange={this.handleSearchInput}
         onClearClick={this.handleSearchClear}

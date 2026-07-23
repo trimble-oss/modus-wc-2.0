@@ -1189,6 +1189,13 @@ describe('modus-wc-content-tree', () => {
       expect(getSearch(page)).not.toBeNull();
     });
 
+    it('should use a text input for search so only the Modus clear control is shown', async () => {
+      const { page } = await createTreePage({ searchable: true });
+      expect(
+        getSearch(page)?.querySelector('input')?.getAttribute('type')
+      ).toBe('text');
+    });
+
     it('should render the controls container for search even without a toolbar', async () => {
       const { page } = await createTreePage({ searchable: true });
       expect(
