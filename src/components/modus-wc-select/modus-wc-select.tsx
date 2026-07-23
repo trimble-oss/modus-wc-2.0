@@ -19,6 +19,8 @@ import {
 export interface ISelectOption {
   /** Whether the option is disabled and cannot be selected. */
   disabled?: boolean;
+  /** Whether the option is hidden from the dropdown list. */
+  hidden?: boolean;
   /** The text to render in the option. */
   label: string;
   /** The value of the option. */
@@ -153,6 +155,7 @@ export class ModusWcSelect {
           {this.options.map((option) => (
             <option
               disabled={option.disabled}
+              hidden={option.hidden}
               selected={option.value === this.value}
               value={option.value}
             >

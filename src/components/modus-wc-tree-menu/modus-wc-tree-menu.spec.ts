@@ -54,6 +54,116 @@ describe('modus-wc-tree-menu', () => {
     expect(emitSpy).toHaveBeenCalledWith(focusoutEvent);
   });
 
+  it('should not emit menuFocusout when focus moves between items within the menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu aria-label="Test tree menu">
+          <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuFocusout, 'emit');
+
+    const treeItems = page.doc.querySelectorAll('modus-wc-tree-item');
+    const firstLi = treeItems[0].querySelector('li') as HTMLLIElement;
+    const secondLi = treeItems[1].querySelector('li') as HTMLLIElement;
+
+    firstLi.dispatchEvent(
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: secondLi,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit menuFocusout when focus moves from expanded parent item to sibling item', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu aria-label="Test tree menu">
+          <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
+              <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
+            </modus-wc-tree-menu>
+          </modus-wc-tree-item>
+          <modus-wc-tree-item label="Sibling" value="sibling"></modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const component = page.rootInstance;
+    const emitSpy = jest.spyOn(component.menuFocusout, 'emit');
+
+    const parentItem = page.doc.querySelector(
+      'modus-wc-tree-item[value="parent"]'
+    ) as HTMLElement;
+    const siblingItem = page.doc.querySelector(
+      'modus-wc-tree-item[value="sibling"]'
+    ) as HTMLElement;
+
+    (
+      parentItem.querySelector('.modus-wc-menu-item-interactive') as HTMLElement
+    )?.click();
+    await page.waitForChanges();
+
+    const parentLi = parentItem.querySelector('li') as HTMLLIElement;
+    const siblingLi = siblingItem.querySelector('li') as HTMLLIElement;
+
+    parentLi.dispatchEvent(
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: siblingLi,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit menuFocusout from submenu when focus leaves a child item to outside the submenu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu aria-label="Test tree menu">
+          <modus-wc-tree-item label="Parent" value="parent" has-submenu="true">
+            <modus-wc-tree-menu is-sub-menu="true">
+              <modus-wc-tree-item label="Child" value="child"></modus-wc-tree-item>
+            </modus-wc-tree-menu>
+          </modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const submenu = page.doc.querySelector(
+      'modus-wc-tree-menu[is-sub-menu]'
+    ) as HTMLElement;
+    const focusoutSpy = jest.fn();
+    submenu.addEventListener('menuFocusout', focusoutSpy);
+
+    const childLi = page.doc.querySelector(
+      'modus-wc-tree-item[value="child"] li'
+    ) as HTMLLIElement;
+    const outsideElement = document.createElement('div');
+    page.doc.body.appendChild(outsideElement);
+
+    childLi.dispatchEvent(
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: outsideElement,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(focusoutSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('should add customClass to classList in submenu mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeMenu],
