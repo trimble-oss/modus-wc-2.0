@@ -78,6 +78,7 @@ interface ContentTreeHarness {
   ) => void;
   handleExpandToggle: (e: CustomEvent, node: ITreeNode) => void;
   handleCheckboxChange: (e: CustomEvent, node: ITreeNode) => void;
+  requestLazyLoadIfNeeded: (id: string) => void;
   handleVisibilityToggle: (e: CustomEvent, node: ITreeNode) => void;
   onMenuAction: (
     e: CustomEvent<{ value: string }>,
@@ -1820,6 +1821,52 @@ describe('modus-wc-content-tree', () => {
     expect(checkbox?.getAttribute('aria-label')).toBe('Select node');
   });
 
+  it('should use fallback aria-labels when the node label is empty', async () => {
+    const nodes: ITreeNode[] = [
+      {
+        id: 'folder',
+        label: '',
+        icon: { name: 'folder_closed', variant: 'solid' },
+        children: [{ id: 'child', label: 'Child' }],
+      },
+      {
+        id: 'disabled-empty',
+        label: '',
+        icon: { name: 'info', variant: 'solid' },
+        disabled: true,
+      },
+    ];
+    const { page } = await createTreePage({
+      nodes,
+      allowDragDrop: true,
+      expandedNodeIds: ['folder'],
+    });
+    const folderItem = findTreeItem(page, 'folder')!;
+
+    const getButtonLabel = (selector: string) =>
+      folderItem
+        .querySelector(`${selector} button`)
+        ?.getAttribute('aria-label');
+
+    expect(
+      getButtonLabel('modus-wc-button.modus-wc-content-tree-drag-handle')
+    ).toBe('Reorder item');
+    expect(
+      getButtonLabel('modus-wc-button.modus-wc-content-tree-chevron')
+    ).toBe('Collapse item');
+    expect(
+      getButtonLabel('modus-wc-button.modus-wc-content-tree-visibility')
+    ).toBe('Disable item');
+
+    expect(
+      findTreeItem(page, 'disabled-empty')
+        ?.querySelector(
+          'modus-wc-button.modus-wc-content-tree-visibility button'
+        )
+        ?.getAttribute('aria-label')
+    ).toBe('Enable item');
+  });
+
   it('should render expanded child menus when a parent is open', async () => {
     const { page } = await createTreePage({ expandedNodeIds: ['root-1'] });
 
@@ -3116,6 +3163,21 @@ describe('modus-wc-content-tree', () => {
     expect(checkbox?.disabled).toBe(true);
   });
 
+  it('should ignore checkbox changes on lazy unloaded nodes in multi-select mode', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      selectionMode: 'multiple',
+      expandedNodeIds: [],
+    });
+    const nodeCheckChange = jest.fn();
+    page.root?.addEventListener('nodeCheckChange', nodeCheckChange);
+
+    component.handleCheckboxChange(new CustomEvent('inputChange'), nodes[0]);
+
+    expect(nodeCheckChange).not.toHaveBeenCalled();
+  });
+
   it('should emit nodeLoadChildren, track loading, and show a spinner on first expand', async () => {
     const nodes: ITreeNode[] = [lazyNode()];
     const { page, component } = await createTreePage({
@@ -3248,6 +3310,23 @@ describe('modus-wc-content-tree', () => {
     component.el.addEventListener('nodeLoadChildren', nodeLoadChildren);
 
     component.handleExpandToggle(new CustomEvent('buttonClick'), nodes[0]);
+
+    expect(nodeLoadChildren).not.toHaveBeenCalled();
+  });
+
+  it('should not request lazy loads while filtering via expandedNodeIds updates', async () => {
+    const nodes: ITreeNode[] = [lazyNode()];
+    const { page, component } = await createTreePage({
+      nodes,
+      filter: 'lazy',
+      expandedNodeIds: [],
+    });
+    const nodeLoadChildren = jest.fn();
+    page.root?.addEventListener('nodeLoadChildren', nodeLoadChildren);
+
+    component.requestLazyLoadIfNeeded('lazy');
+    component.expandedNodeIds = ['lazy'];
+    await page.waitForChanges();
 
     expect(nodeLoadChildren).not.toHaveBeenCalled();
   });
