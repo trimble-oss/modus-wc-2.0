@@ -682,6 +682,7 @@ describe('modus-wc-dock', () => {
 
     expect(component['getFocusedItemIndex']()).toBe(-1);
     expect(() => component['focusItemAt'](0)).not.toThrow();
+    expect(() => component['syncItemAria']()).not.toThrow();
   });
 
   it('should move focus to the first item on Home and the last item on End', async () => {
@@ -759,6 +760,51 @@ describe('modus-wc-dock', () => {
 
     expect(eventSpy).toHaveBeenCalled();
     expect(component.activeItemIndex).toBe(1);
+  });
+
+  it('should resolve focus from the shadow root when the dock is inside a ShadowRoot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+
+    const host = document.createElement('div');
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+
+    Object.defineProperty(shadowRoot, 'activeElement', {
+      configurable: true,
+      get: () => firstButton,
+    });
+    jest.spyOn(component.el, 'getRootNode').mockReturnValue(shadowRoot);
+
+    Object.defineProperty(document, 'activeElement', {
+      value: host,
+      writable: true,
+      configurable: true,
+    });
+
+    expect(component['getRootActiveElement']()).toBe(firstButton);
+
+    const focusSpy = jest.spyOn(secondButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+      })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
   });
 });
 

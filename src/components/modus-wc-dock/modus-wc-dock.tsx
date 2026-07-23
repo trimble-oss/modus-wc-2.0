@@ -87,11 +87,6 @@ export class ModusWcDock {
     this.validateItems();
   }
 
-  @Watch('activeItemIndex')
-  handleActiveItemIndexChange() {
-    this.syncItemAria();
-  }
-
   componentDidRender() {
     this.syncItemAria();
   }
@@ -244,7 +239,7 @@ export class ModusWcDock {
     }, []);
   }
 
-  private getRootActiveElement(): HTMLElement | null {
+  private getRootActiveElement(): Element | null {
     const rootNode = this.el.getRootNode();
 
     if (
@@ -252,13 +247,12 @@ export class ModusWcDock {
       document.activeElement === rootNode.host
     ) {
       const shadowActiveElement = rootNode.activeElement;
-      if (shadowActiveElement instanceof HTMLElement) {
+      if (shadowActiveElement) {
         return shadowActiveElement;
       }
     }
 
-    const activeElement = document.activeElement;
-    return activeElement instanceof HTMLElement ? activeElement : null;
+    return document.activeElement;
   }
 
   private getFocusedItemIndex(): number {
