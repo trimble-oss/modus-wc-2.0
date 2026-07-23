@@ -54,6 +54,7 @@ modus-wc-dock .modus-wc-dock {
 }
 
 modus-wc-dock .modus-wc-dock-item {
+  box-sizing: border-box;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
