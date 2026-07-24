@@ -263,12 +263,6 @@ modus-wc-switch .modus-wc-toggle {
       outline-offset: var(--modus-wc-border-width-sm);
     }
 
-    &:disabled:not(:checked) {
-      --fallback-b1: var(--modus-wc-color-base-300);
-
-      opacity: 0.5;
-    }
-
     // Sizes
     &.modus-wc-toggle-xs {
       --handleoffset: var(--modus-wc-spacing-sm);
@@ -320,6 +314,12 @@ modus-wc-switch .modus-wc-toggle {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-switch .modus-wc-toggle {
+  &:disabled:not(:checked) {
+    --fallback-b1: var(--modus-wc-color-base-300);
+  }
+}
+
 [data-theme='modus-modern-dark'] modus-wc-switch {
   modus-wc-input-label .modus-wc-input-label {
     color: var(--modus-wc-color-gray-light);
@@ -327,5 +327,11 @@ modus-wc-switch .modus-wc-toggle {
 
   .modus-wc-toggle {
     --fallback-b1: var(--modus-wc-color-gray-9);
+
+    &:disabled:not(:checked) {
+      --fallback-b1: var(--modus-wc-color-base-300);
+
+      opacity: 0.5;
+    }
   }
 }
