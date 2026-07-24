@@ -97,6 +97,8 @@ modus-wc-switch .modus-wc-toggle {
 
     &:not(:checked) {
       --fallback-b1: var(--modus-wc-color-base-300);
+
+      opacity: 0.5;
     }
   }
 }
@@ -197,6 +199,8 @@ modus-wc-switch .modus-wc-toggle {
 
     &:not(:checked) {
       --fallback-b1: var(--modus-wc-color-base-300);
+
+      opacity: 0.5;
     }
   }
 }
@@ -261,6 +265,8 @@ modus-wc-switch .modus-wc-toggle {
 
     &:disabled:not(:checked) {
       --fallback-b1: var(--modus-wc-color-base-300);
+
+      opacity: 0.5;
     }
 
     // Sizes

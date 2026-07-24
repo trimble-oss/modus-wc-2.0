@@ -31,6 +31,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 [data-theme='modus-modern-dark'] modus-wc-checkbox .modus-wc-checkbox {
   &:disabled:not(:checked) {
     background-color: var(--modus-wc-color-base-300);
+    opacity: 0.8;
   }
 }
 
