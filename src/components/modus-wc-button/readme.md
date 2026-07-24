@@ -11,17 +11,17 @@ The component supports a `<slot>` for injecting content within the button, simil
 
 ## Properties
 
-| Property      | Attribute      | Description                                                          | Type                                                                           | Default       |
-| ------------- | -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------- |
+| Property      | Attribute      | Description                                                          | Type                                                                                        | Default       |
+| ------------- | -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------- |
 | `color`       | `color`        | The color variant of the button.                                     | `"danger" \| "neutral" \| "primary" \| "secondary" \| "success" \| "tertiary" \| "warning"` | `'primary'`   |
-| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                                          | `''`          |
-| `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                                         | `false`       |
-| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                                         | `false`       |
-| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                                         | `false`       |
-| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                             | `'rectangle'` |
-| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                                         | `'md'`        |
-| `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                              | `'button'`    |
-| `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                                       | `'filled'`    |
+| `customClass` | `custom-class` | Custom CSS class to apply to the button element.                     | `string \| undefined`                                                                       | `''`          |
+| `disabled`    | `disabled`     | If true, the button will be disabled.                                | `boolean \| undefined`                                                                      | `false`       |
+| `fullWidth`   | `full-width`   | If true, the button will take the full width of its container.       | `boolean \| undefined`                                                                      | `false`       |
+| `pressed`     | `pressed`      | If true, the button will be in a pressed state (for toggle buttons). | `boolean \| undefined`                                                                      | `false`       |
+| `shape`       | `shape`        | The shape of the button.                                             | `"circle" \| "ellipse" \| "rectangle" \| "square"`                                          | `'rectangle'` |
+| `size`        | `size`         | The size of the button.                                              | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                                                      | `'md'`        |
+| `type`        | `type`         | The type of the button.                                              | `"button" \| "reset" \| "submit"`                                                           | `'button'`    |
+| `variant`     | `variant`      | The variant of the button.                                           | `"borderless" \| "filled" \| "outlined"`                                                    | `'filled'`    |
 
 
 ## Events
@@ -39,6 +39,7 @@ The component supports a `<slot>` for injecting content within the button, simil
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-date](../modus-wc-date)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-handle](../modus-wc-handle)
@@ -52,6 +53,7 @@ graph TD;
   modus-wc-app-menu --> modus-wc-button
   modus-wc-autocomplete --> modus-wc-button
   modus-wc-bottom-sheet --> modus-wc-button
+  modus-wc-content-tree --> modus-wc-button
   modus-wc-date --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-handle --> modus-wc-button

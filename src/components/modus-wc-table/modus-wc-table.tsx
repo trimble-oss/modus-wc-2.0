@@ -544,21 +544,35 @@ export class ModusWcTable {
     return value?.toString() ?? '';
   }
 
-  private getPaginationSize(): ModusSize {
+  private getPaginationSize(): ModusSize | 'xs' | 'xl' {
     switch (this.density) {
       case 'compact':
-        return 'sm';
+        return 'xs';
       case 'relaxed':
-        return 'lg';
+        return 'xl';
       default:
         return 'md';
     }
   }
 
+  private getSelectSize(): ModusSize {
+    const paginationSize = this.getPaginationSize();
+
+    if (paginationSize === 'xs') {
+      return 'sm';
+    }
+
+    if (paginationSize === 'xl') {
+      return 'lg';
+    }
+
+    return 'md';
+  }
+
   private renderPageSizeSelector() {
     if (!this.showPageSizeSelector) return null;
 
-    const paginationSize = this.getPaginationSize();
+    const selectSize = this.getSelectSize();
 
     const options = this.pageSizeOptions?.map((size) => ({
       value: size.toString(),
@@ -570,7 +584,7 @@ export class ModusWcTable {
         <modus-wc-select
           aria-label="Select page size"
           bordered
-          size={paginationSize}
+          size={selectSize}
           onInputChange={(e) => this.handlePageSizeOptionChange(e)}
           options={options}
         ></modus-wc-select>

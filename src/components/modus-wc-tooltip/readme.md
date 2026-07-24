@@ -40,6 +40,7 @@ For plain dynamic text, prefer the content prop instead. When contentElement is 
 
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-menu-item](../modus-wc-menu-item)
+ - [modus-wc-pagination](../modus-wc-pagination)
  - [modus-wc-tree-item](../modus-wc-tree-item)
 
 ### Graph
@@ -47,6 +48,7 @@ For plain dynamic text, prefer the content prop instead. When contentElement is 
 graph TD;
   modus-wc-app-menu --> modus-wc-tooltip
   modus-wc-menu-item --> modus-wc-tooltip
+  modus-wc-pagination --> modus-wc-tooltip
   modus-wc-tree-item --> modus-wc-tooltip
   style modus-wc-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```

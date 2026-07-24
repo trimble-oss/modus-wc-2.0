@@ -53,6 +53,10 @@ Type: `Promise<void>`
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-content-tree](../modus-wc-content-tree)
+
 ### Depends on
 
 - [modus-wc-checkbox](../modus-wc-checkbox)
@@ -64,6 +68,7 @@ graph TD;
   modus-wc-tree-item --> modus-wc-checkbox
   modus-wc-tree-item --> modus-wc-tooltip
   modus-wc-checkbox --> modus-wc-input-label
+  modus-wc-content-tree --> modus-wc-tree-item
   style modus-wc-tree-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

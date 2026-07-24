@@ -7,6 +7,7 @@ import {
   Listen,
   Prop,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
@@ -42,6 +43,26 @@ export interface ISubMenu {
   items: IMenuItem[];
 }
 
+export interface IMainMenu {
+  /** Controls visibility of the My Profile menu item. Defaults to true when omitted. */
+  myProfile?: boolean;
+  /** Controls visibility of the My Products menu item. Defaults to true when omitted. */
+  myProducts?: boolean;
+  /** Controls visibility of the Support center menu item. Defaults to true when omitted. */
+  supportCenter?: boolean;
+  /** Controls visibility of the Admin settings menu item. Defaults to true when omitted. */
+  adminSettings?: boolean;
+  /** Additional custom menu items appended after the visible built-in items. */
+  items?: IMenuItem[];
+}
+
+type BuiltInMainMenuKey = keyof Omit<IMainMenu, 'items'>;
+
+interface IBuiltInMainMenuEntry {
+  key: BuiltInMainMenuKey;
+  item: IMenuItem;
+}
+
 export interface IProfileMenuProps {
   /** The URL of the profile image. */
   profileImageUrl: string;
@@ -74,6 +95,16 @@ export class ModusWcProfileMenu {
   /** Configuration for the second menu including title and items */
   @Prop() menuTwo?: ISubMenu;
 
+  /**
+   * Configuration for the default main menu section.
+   * When omitted, all built-in items render in the default order.
+   * When provided, boolean flags control each built-in item and `items` appends custom entries.
+   */
+  @Prop() mainMenu?: IMainMenu;
+
+  /** Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted. */
+  @Prop() showSignOut?: boolean = true;
+
   /** Emitted when the Sign Out menu item is clicked */
   @StencilEvent() signOutClick!: EventEmitter<void>;
 
@@ -83,6 +114,12 @@ export class ModusWcProfileMenu {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.updateResolvedMainMenu();
+  }
+
+  @Watch('mainMenu')
+  handleMainMenuChange() {
+    this.updateResolvedMainMenu();
   }
 
   @Listen('itemSelect')
@@ -95,38 +132,83 @@ export class ModusWcProfileMenu {
   };
 
   private currentYear = new Date().getFullYear();
-  private mainMenu: ISubMenu = {
-    items: [
-      {
+
+  private static readonly DEFAULT_MAIN_MENU_ITEMS: IBuiltInMainMenuEntry[] = [
+    {
+      key: 'myProfile',
+      item: {
         label: 'My Profile',
         icon: 'info',
         iconVariant: 'solid',
         iconSize: 'sm',
         value: 'my-profile',
       },
-      {
+    },
+    {
+      key: 'myProducts',
+      item: {
         label: 'My Products',
         icon: 'home',
         iconVariant: 'solid',
         iconSize: 'sm',
         value: 'my-products',
       },
-      {
+    },
+    {
+      key: 'supportCenter',
+      item: {
         label: 'Support center',
         icon: 'bar_graph',
         iconVariant: 'solid',
         iconSize: 'sm',
         value: 'support-center',
       },
-      {
+    },
+    {
+      key: 'adminSettings',
+      item: {
         label: 'Admin settings',
         icon: 'download',
         iconVariant: 'solid',
         iconSize: 'sm',
         value: 'admin-settings',
       },
-    ],
-  };
+    },
+  ];
+
+  private resolvedMainMenu: ISubMenu = { items: [] };
+
+  private mainMenuSnapshot = '';
+
+  private buildResolvedMainMenu(config?: IMainMenu): ISubMenu {
+    const items = ModusWcProfileMenu.DEFAULT_MAIN_MENU_ITEMS.filter(
+      ({ key }) => config?.[key] !== false
+    ).map(({ item }) => item);
+
+    if (config?.items?.length) {
+      items.push(...config.items);
+    }
+
+    return { items };
+  }
+
+  private updateResolvedMainMenu() {
+    let snapshot: string;
+    try {
+      snapshot = JSON.stringify(this.mainMenu ?? null);
+    } catch {
+      this.mainMenuSnapshot = '';
+      this.resolvedMainMenu = this.buildResolvedMainMenu(this.mainMenu);
+      return;
+    }
+
+    if (snapshot === this.mainMenuSnapshot) {
+      return;
+    }
+
+    this.mainMenuSnapshot = snapshot;
+    this.resolvedMainMenu = this.buildResolvedMainMenu(this.mainMenu);
+  }
 
   render() {
     const manageTrimbleIdLink = sanitizeUrl(
@@ -197,25 +279,31 @@ export class ModusWcProfileMenu {
             </div>
           </div>
           <div slot="body">
-            {renderSubMenu(this.mainMenu, this.handleMenuItemClick, true)}
+            {renderSubMenu(
+              this.resolvedMainMenu,
+              this.handleMenuItemClick,
+              true
+            )}
             {this.menuOne &&
               renderSubMenu(this.menuOne, this.handleMenuItemClick)}
             {this.menuTwo &&
               renderSubMenu(this.menuTwo, this.handleMenuItemClick)}
-            <modus-wc-menu>
-              <modus-wc-menu-item
-                label="Sign Out"
-                size="md"
-                onItemSelect={() => this.signOutClick.emit()}
-              >
-                <modus-wc-icon
-                  slot="start-icon"
-                  name="sign_out"
-                  size="sm"
-                  variant="solid"
-                ></modus-wc-icon>
-              </modus-wc-menu-item>
-            </modus-wc-menu>
+            {this.showSignOut !== false && (
+              <modus-wc-menu>
+                <modus-wc-menu-item
+                  label="Sign Out"
+                  size="md"
+                  onItemSelect={() => this.signOutClick.emit()}
+                >
+                  <modus-wc-icon
+                    slot="start-icon"
+                    name="sign_out"
+                    size="sm"
+                    variant="solid"
+                  ></modus-wc-icon>
+                </modus-wc-menu-item>
+              </modus-wc-menu>
+            )}
           </div>
           <div slot="footer" class="profile-menu-footer">
             <modus-wc-typography

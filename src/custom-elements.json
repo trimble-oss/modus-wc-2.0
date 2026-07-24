@@ -5069,7 +5069,7 @@
               "default": "'md'",
               "description": "Size of the pagination buttons",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs' | 'xl'"
               }
             }
           ],

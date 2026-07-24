@@ -5,7 +5,9 @@
 
 modus-wc-button .modus-wc-btn {
   @include sizing-tokens;
+}
 
+[data-theme]:not([data-theme^='connect']) modus-wc-button .modus-wc-btn {
   &.modus-wc-btn-filled.modus-wc-btn-neutral:not(.modus-wc-btn-disabled) {
     background-color: var(--modus-wc-color-base-100);
     border-color: var(--modus-wc-color-base-100);

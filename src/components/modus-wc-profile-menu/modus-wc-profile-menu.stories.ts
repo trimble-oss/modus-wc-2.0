@@ -2,13 +2,19 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { IProfileMenuProps, ISubMenu } from './modus-wc-profile-menu';
+import {
+  IMainMenu,
+  IProfileMenuProps,
+  ISubMenu,
+} from './modus-wc-profile-menu';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface ProfileMenuArgs {
   'profile-props': IProfileMenuProps;
+  'main-menu'?: IMainMenu;
   'menu-one'?: ISubMenu;
   'menu-two'?: ISubMenu;
+  'show-sign-out'?: boolean;
 }
 
 const profileData: IProfileMenuProps = {
@@ -27,6 +33,7 @@ const meta: Meta<ProfileMenuArgs> = {
   component: 'modus-wc-profile-menu',
   args: {
     'profile-props': profileData,
+    'show-sign-out': true,
   },
   argTypes: {
     'profile-props': {
@@ -44,6 +51,28 @@ const meta: Meta<ProfileMenuArgs> = {
               - link (string): The URL for managing the user's Trimble ID
               - target ('_blank' | '_self' | '_parent' | '_top', optional): The target for the link
               - rel (string, optional): The rel attribute for the link. Defaults to 'noopener noreferrer' when target is '_blank'
+          `,
+        },
+      },
+    },
+    'main-menu': {
+      description: 'Configuration for the default main menu section',
+      table: {
+        type: {
+          detail: `
+            Interface: IMainMenu
+            Properties:
+            - myProfile (boolean, optional): Controls visibility of the My Profile menu item
+            - myProducts (boolean, optional): Controls visibility of the My Products menu item
+            - supportCenter (boolean, optional): Controls visibility of the Support center menu item
+            - adminSettings (boolean, optional): Controls visibility of the Admin settings menu item
+            - items (IMenuItem[], optional): Additional custom menu items appended after visible built-in items
+              - label (string): The display text for the menu item
+              - icon (string, optional): The name of the icon to display
+              - iconSize ('xs', 'sm', 'md', 'lg', optional): The size of the icon
+              - iconVariant ('solid' | 'outlined', optional): The variant of the icon
+              - value (string, optional): The value associated with the menu item, used for selection
+            When omitted, all built-in items render in the default order. Each boolean flag maps to its matching built-in item by key, not by array position.
           `,
         },
       },
@@ -84,6 +113,11 @@ const meta: Meta<ProfileMenuArgs> = {
         },
       },
     },
+    'show-sign-out': {
+      description:
+        'Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.',
+      control: 'boolean',
+    },
   },
   parameters: {
     docs: {
@@ -94,10 +128,10 @@ A customizable profile menu component that displays user information with option
 
 ### Features
 - **User Profile Display**: Shows profile image, header name, username, and email
-- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings)
+- **Default Menu Items**: Includes pre-configured menu items (My Profile, My Products, Support center, Admin settings). Use \`mainMenu\` boolean flags to show or hide each built-in item by key, and \`items\` to append custom entries.
 - **Custom Submenus**: Supports up to two additional custom submenus with titles and icons
 - **Manage Trimble ID Link**: Optional link for managing user's Trimble ID
-- **Sign Out**: Built-in sign out menu item in the footer
+- **Sign Out**: Built-in sign out menu item in the footer. Set \`showSignOut\` to false to hide it
 - **Icon Support**: Menu items can include icons with solid or outlined variants
 
 ### Events
@@ -105,7 +139,7 @@ A customizable profile menu component that displays user information with option
 - **signOutClick**: Emitted when the Sign Out menu item is clicked
 
 ### Usage
-The component requires a \`profileProps\` object with user information and optionally accepts \`menuOne\` and \`menuTwo\` for custom menus.
+The component requires a \`profileProps\` object with user information and optionally accepts \`mainMenu\`, \`menuOne\`, and \`menuTwo\`.
         `,
       },
     },
@@ -116,6 +150,10 @@ export default meta;
 type Story = StoryObj<ProfileMenuArgs>;
 const getSourceCode = (args: ProfileMenuArgs) => {
   const profilePropsCode = `const profileProps = ${JSON.stringify(args['profile-props'], null, 2)};`;
+
+  const mainMenuCode = args['main-menu']
+    ? `\nconst mainMenu = ${JSON.stringify(args['main-menu'], null, 2)};`
+    : '';
 
   const menuOneCode = args['menu-one']
     ? `\nconst menuOne = ${JSON.stringify(args['menu-one'], null, 2)};`
@@ -128,10 +166,10 @@ const getSourceCode = (args: ProfileMenuArgs) => {
   return `<modus-wc-profile-menu></modus-wc-profile-menu>
 
 <script>
-  ${profilePropsCode}${menuOneCode}${menuTwoCode}
+  ${profilePropsCode}${mainMenuCode}${menuOneCode}${menuTwoCode}
 
   const element = document.querySelector('modus-wc-profile-menu');
-  element.profileProps = profileProps;${args['menu-one'] ? '\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\n  element.menuTwo = menuTwo;' : ''}
+  element.profileProps = profileProps;${args['main-menu'] ? '\n  element.mainMenu = mainMenu;' : ''}${args['menu-one'] ? '\n  element.menuOne = menuOne;' : ''}${args['menu-two'] ? '\n  element.menuTwo = menuTwo;' : ''}${args['show-sign-out'] === false ? '\n  element.showSignOut = false;' : ''}
 
   // Event listeners
   element.addEventListener('menuItemClick', (event) => {
@@ -160,8 +198,10 @@ const Template: Story = {
 <div style="min-height: 600px;">
   <modus-wc-profile-menu
     .profileProps=${args['profile-props']}
+    .mainMenu=${ifDefined(args['main-menu'])}
     .menuOne=${ifDefined(args['menu-one'])}
     .menuTwo=${ifDefined(args['menu-two'])}
+    .showSignOut=${args['show-sign-out']}
     @signOutClick=${action('signOutClick')}
     @menuItemClick=${action('menuItemClick')}
   ></modus-wc-profile-menu>
@@ -182,6 +222,51 @@ export const Default: Story = {
         transform: (_src, { args }: { args: ProfileMenuArgs }) =>
           getSourceCode(args),
       },
+    },
+  },
+};
+
+export const WithCustomMainMenu: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hides all built-in menu items and displays custom Billing, Subscription, and Edit Profile options.',
+      },
+      source: {
+        transform: (_src, { args }: { args: ProfileMenuArgs }) =>
+          getSourceCode(args),
+      },
+    },
+  },
+  args: {
+    'show-sign-out': false,
+    'main-menu': {
+      adminSettings: false,
+      myProducts: false,
+      supportCenter: false,
+      myProfile: false,
+      items: [
+        {
+          label: 'Billing',
+          icon: 'invoice',
+          iconVariant: 'solid',
+          value: 'billing',
+        },
+        {
+          label: 'Subscription',
+          icon: 'add',
+          iconVariant: 'solid',
+          value: 'subscription',
+        },
+        {
+          label: 'Edit Profile',
+          icon: 'pen',
+          iconVariant: 'solid',
+          value: 'edit-profile',
+        },
+      ],
     },
   },
 };
@@ -285,13 +370,17 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-profile-menu',
         propsMapper: (v: ProfileMenuArgs, el: HTMLElement) => {
           const profileMenuEl = el as unknown as {
-            profileProps: IProfileMenuProps;
-            menuOne: ISubMenu | undefined;
-            menuTwo: ISubMenu | undefined;
+            profileProps: ProfileMenuArgs['profile-props'];
+            mainMenu?: ProfileMenuArgs['main-menu'];
+            menuOne?: ProfileMenuArgs['menu-one'];
+            menuTwo?: ProfileMenuArgs['menu-two'];
+            showSignOut?: ProfileMenuArgs['show-sign-out'];
           };
           profileMenuEl.profileProps = v['profile-props'];
+          profileMenuEl.mainMenu = v['main-menu'];
           profileMenuEl.menuOne = v['menu-one'];
           profileMenuEl.menuTwo = v['menu-two'];
+          profileMenuEl.showSignOut = v['show-sign-out'];
           // Wire events once after first prop assignment
           if (!el.dataset['eventsWired']) {
             el.addEventListener('signOutClick', action('signOutClick'));

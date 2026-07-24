@@ -35,6 +35,7 @@ providing your own custom values for the size or weight properties from the avai
 
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
+ - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
 ### Graph
@@ -42,6 +43,7 @@ providing your own custom values for the size or weight properties from the avai
 graph TD;
   modus-wc-app-menu --> modus-wc-typography
   modus-wc-bottom-sheet --> modus-wc-typography
+  modus-wc-content-tree --> modus-wc-typography
   modus-wc-profile-menu --> modus-wc-typography
   style modus-wc-typography fill:#f9f,stroke:#333,stroke-width:4px
 ```
