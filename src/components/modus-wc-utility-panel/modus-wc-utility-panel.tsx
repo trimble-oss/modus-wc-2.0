@@ -17,10 +17,9 @@ import { handleShadowDOMStyles } from '../base-component';
 })
 export class ModusWcUtilityPanel {
   /**
-   * When true, dims the page behind the panel while it is expanded
-   * using `--modus-wc-opacity-overlay`.
+   * When true, dims the page behind the panel while it is expanded.
    */
-  @Prop() backgroundOverlay?: boolean = false;
+  @Prop() backgroundOverlay = false;
 
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
