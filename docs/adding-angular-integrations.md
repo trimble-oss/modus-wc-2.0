@@ -57,15 +57,20 @@ Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json`
 }
 ```
 
-### Step 6: Remove unnecessary testing packages
+### Step 6: Remove unnecessary testing packages (optional)
 
-Angular CLI will install Jasmine as a dependency in the angular workspace. However, Stencil uses Jest as it's testing solution,
-so to avoid type definition collisions when building stencil remove `jasmine-core` and `@types/jasmine`.
+Angular CLI will install Jasmine as a dependency in the angular workspace. Stencil uses Jest as its testing solution, and Jasmine type definitions can collide when building Stencil from the repo root.
+
+Only follow this step if you are **not** running Angular unit tests in the wrapper workspace (for example, you skip `ng test` and do not maintain `*.spec.ts` files under the library). The ng20/ng21 workspaces configure Jasmine in `tsconfig.spec.json` (`"types": ["jasmine"]`) and depend on `jasmine-core` and `karma-jasmine`, so removing those packages will break `ng test`.
+
+If you do not need Angular unit tests in this workspace, remove the Jasmine packages:
 
 ```bash
 # from `integrations/angular/ng20`
 npm uninstall jasmine-core @types/jasmine
 ```
+
+If you keep Jasmine for Angular tests, leave these packages installed and skip this step.
 
 ### Step 7: Configure Stencil Output Target
 
