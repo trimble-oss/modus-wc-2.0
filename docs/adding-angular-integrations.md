@@ -8,7 +8,7 @@ For any updates or changes, please refer back to this document or the StencilJS 
 
 ## How to Scaffold a Specific Version of Angular Integration
 
-To scaffold a new Angular version integration (using version 18 as an example), follow these steps:
+To scaffold a new Angular version integration (using version 20 as an example; use the same steps for ng21 with `20` replaced by `21`), follow these steps:
 
 > [!NOTE]
 > replace `@angular/cli@<version number>` with target version you're creating the integration for in the following steps.
@@ -18,15 +18,15 @@ To scaffold a new Angular version integration (using version 18 as an example), 
 Run the following command to create a new Angular workspace without an application:
 
 ```bash
-npx -p @angular/cli@18 ng new ng18 --no-create-application
+npx -p @angular/cli@20 ng new ng20 --no-create-application
 ```
 
 ### Step 2: Generate a New Library
 
-From the angular workspace directory (`ng18/`) created in the previous step generate a new library for your Stencil web component integration:
+From the angular workspace directory (`ng20/`) created in the previous step generate a new library for your Stencil web component integration:
 
 ```bash
-npx -p @angular/cli@18 ng generate library @trimble-oss/moduswebcomponents-angular
+npx -p @angular/cli@20 ng generate library @trimble-oss/moduswebcomponents-angular
 ```
 
 ### Step 3: Delete generated files
@@ -40,14 +40,14 @@ Append `ng<target-version>` to the version field in the `package.json`:
 ```json
 {
   "name": "@trimble-oss/moduswebcomponents-angular",
-  "version": "0.0.1-ng18",
+  "version": "0.0.1-ng20",
   ...
 }
 ```
 
 ### Step 5: Update Peer Dependencies
 
-Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng18/projects/trimble-oss/moduswebcomponents-angular/package.json`:
+Add `@trimble-oss/moduswebcomponents` as a peer dependency in the `package.json` file of your library located at `ng20/projects/trimble-oss/moduswebcomponents-angular/package.json`:
 
 ```json
 {
@@ -63,7 +63,7 @@ Angular CLI will install Jasmine as a dependency in the angular workspace. Howev
 so to avoid type definition collisions when building stencil remove `jasmine-core` and `@types/jasmine`.
 
 ```bash
-# from `/packages/ng18`
+# from `integrations/angular/ng20`
 npm uninstall jasmine-core @types/jasmine
 ```
 
@@ -77,11 +77,10 @@ In the root `stencil.config.ts` file, add the Angular output target to ensure pr
 ```ts
 angularOutputTarget({
   componentCorePackage: '@trimble-oss/moduswebcomponents',
-  outputType: 'component',
+  customElementsDir: 'components',
+  outputType: 'standalone',
   directivesProxyFile:
-    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
-  directivesArrayFile:
-    './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
+    './integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
   valueAccessorConfigs: angularValueAccessorBindings,
 });
 ```
@@ -98,7 +97,7 @@ You should now be able to see the stencil generated angular component wrappers u
 
 ### Step 9: Add the following npmrc to your angular workspace
 
-Create this npmrc in the angular workspace and be sure to add your trimble artifactory token to your system's environment variables (i.e., NPM_TOKEN)
+Create this npmrc in the library project directory (`projects/trimble-oss/moduswebcomponents-angular/`) and be sure to add your trimble artifactory token to your system's environment variables (i.e., NPM_TOKEN)
 Refer to [creating an artifactory token](https://jfrog.com/help/r/how-to-generate-an-access-token-video) for more information.
 
 ```bash
@@ -109,47 +108,44 @@ Refer to [creating an artifactory token](https://jfrog.com/help/r/how-to-generat
 registry=https://registry.npmjs.org/
 ```
 
-### Step 10: Create Angular Module
+### Step 10: Create Angular Bootstrap Provider
 
-Create a new module at `projects/trimble-oss/moduswebcomponents-angular/src/lib/modus-wc-angular.module.ts` to import and export the generated component wrappers:
+Create a bootstrap provider at `projects/trimble-oss/moduswebcomponents-angular/src/lib/modus-wc-angular.bootstrap.ts` to configure Modus Web Components during app initialization:
 
 ```ts
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
-import { DIRECTIVES } from './stencil-generated';
+import {
+  EnvironmentProviders,
+  makeEnvironmentProviders,
+  provideAppInitializer,
+} from '@angular/core';
+import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
 
-@NgModule({
-  declarations: [...DIRECTIVES],
-  imports: [],
-  exports: [...DIRECTIVES],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => defineCustomElements,
-      multi: true,
-    },
-  ],
-})
-export class ModusAngularComponentsModule {}
+export function provideModusWebComponents(): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    provideAppInitializer(() => {
+      setAssetPath('/assets/');
+    }),
+  ]);
+}
 ```
 
-This module automatically defines/registers the custom elements during app initialization!
+Consumers call `provideModusWebComponents()` in `app.config.ts` and import standalone proxy components (for example `ModusWcButton`) from the generated `stencil-generated/components` entry point.
 
 ### Step 11: Update the Public API
 
 Update the `public-api.ts` file to export the components in the main entry point of your library:
 
 ```ts
-export * from './lib/modus-wc-angular.module';
-export { DIRECTIVES } from './lib/stencil-generated';
+export * from './lib/modus-wc-angular.bootstrap';
 export * from './lib/stencil-generated/components';
+export type * from '@trimble-oss/moduswebcomponents';
 ```
 
 Any components that are included in the exports array should additionally be exported in your main entry point (either public-api.ts or index.ts). Skipping this step will lead to Angular Ivy errors when building for production.
 
 ### Step 12: Install Dependencies and Build
 
-Ensure `modus-wc` dependency is installed in the `ng18/` angular workspace:
+Ensure `modus-wc` dependency is installed in the `ng20/` angular workspace:
 
 ```bash
 npm install @trimble-oss/moduswebcomponents
@@ -161,7 +157,7 @@ You will need to import our styling in your main JavaScript or CSS file:
 import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
 ```
 
-You may need to edit the build script in the angular workspace (`ng18/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.
+You may need to edit the build script in the angular workspace (`ng20/`) to specifically target the `projects/trimble-oss/moduswebcomponents-angular` component library.
 
 For example:
 
@@ -169,7 +165,7 @@ For example:
   "build": "ng run @trimble-oss/moduswebcomponents-angular:build:production",
 ```
 
-Now we can install dependencies and build a local distribution. From `ng18/` run:
+Now we can install dependencies and build a local distribution. From `ng20/` run:
 
 ```bash
 npm install
