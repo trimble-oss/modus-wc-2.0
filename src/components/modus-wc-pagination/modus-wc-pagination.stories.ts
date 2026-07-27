@@ -20,7 +20,7 @@ interface PaginationArgs {
   'next-button-text'?: string;
   page: number;
   'prev-button-text'?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 const meta: Meta<PaginationArgs> = {
@@ -52,7 +52,7 @@ const meta: Meta<PaginationArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -96,6 +96,44 @@ export const Default: Story = {
       prev-button-text="${ifDefined(args['prev-button-text'])}"
       size=${ifDefined(args.size)}
     ></modus-wc-pagination>
+  `,
+};
+
+export const LargePageNumbers: Story = {
+  args: {
+    count: 1000000,
+    page: 123456,
+  },
+  render: (args) => html`
+    <modus-wc-pagination
+      .ariaLabelValues=${args['aria-label-values']}
+      count=${args.count}
+      custom-class=${ifDefined(args['custom-class'])}
+      next-button-text="${ifDefined(args['next-button-text'])}"
+      page=${args.page}
+      prev-button-text="${ifDefined(args['prev-button-text'])}"
+      size=${ifDefined(args.size)}
+    ></modus-wc-pagination>
+  `,
+};
+
+export const AllSizes: Story = {
+  parameters: {
+    controls: { disable: true },
+  },
+  render: (args) => html`
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      ${['xs', 'sm', 'md', 'lg', 'xl'].map(
+        (size) => html`
+          <modus-wc-pagination
+            .ariaLabelValues=${args['aria-label-values']}
+            count=${args.count}
+            page=${args.page}
+            size=${size}
+          ></modus-wc-pagination>
+        `
+      )}
+    </div>
   `,
 };
 
@@ -144,7 +182,7 @@ export const Migration: Story = {
   - In 1.0 the \`active-page\` prop was used, while 2.0 uses \`page\` instead.
   - The \`pageChange\` event in 1.0 emitted just the page number value. In 2.0, it emits an object
   with \`newPage\` and \`prevPage\` properties.
-  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+  - Size values have changed from verbose names (\`small\`, \`medium\`, \`large\`) to abbreviations (\`xs\`, \`sm\`, \`md\`, \`lg\`, \`xl\`).
 
 #### Prop Mapping
 
@@ -156,7 +194,7 @@ export const Migration: Story = {
 | min-page              |                    | Not carried over, minimum page is always 1                  |
 | next-page-button-text | next-button-text   |                                                             |
 | prev-page-button-text | prev-button-text   |                                                             |
-| size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
+| size                  | size               | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\`. Supported values: \`xs\`, \`sm\`, \`md\`, \`lg\`, \`xl\` |
 
 #### Event Mapping
 

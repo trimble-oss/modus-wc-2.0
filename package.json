@@ -1,6 +1,6 @@
 {
   "name": "@trimble-oss/moduswebcomponents",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
   "keywords": [
     "trimble",
@@ -174,7 +174,11 @@
     },
     "socks": "^2.8.8",
     "postcss": "^8.5.14",
-    "shell-quote": "1.8.4"
+    "shell-quote": "^1.8.5",
+    "js-yaml@3": "3.15.0",
+    "js-yaml@4": "4.3.0",
+    "brace-expansion@1": "1.1.16",
+    "brace-expansion@2": "2.1.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.60.1",

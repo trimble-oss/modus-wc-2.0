@@ -121,7 +121,7 @@ export class ModusWcMenuItem {
       return false;
     }
 
-    return target.closest('modus-wc-menu-item') === this.el;
+    return (target as Element).closest('modus-wc-menu-item') === this.el;
   }
 
   @Listen('keydown')
