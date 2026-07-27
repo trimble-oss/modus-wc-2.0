@@ -311,9 +311,39 @@ describe('modus-wc-utility-panel', () => {
       html: '<modus-wc-utility-panel custom-class="my-custom-class"></modus-wc-utility-panel>',
     });
 
-    const outerDiv = root?.querySelector('div');
+    const outerDiv = root?.querySelector('.modus-wc-utility-panel');
     expect(outerDiv?.classList.contains('modus-wc-utility-panel')).toBe(true);
     expect(outerDiv?.classList.contains('my-custom-class')).toBe(true);
+  });
+
+  it('should render backdrop when backgroundOverlay and expanded are true', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>',
+    });
+
+    const backdrop = root?.querySelector('.modus-wc-utility-panel-backdrop');
+    expect(backdrop).toBeTruthy();
+    expect(backdrop?.getAttribute('aria-hidden')).toBe('true');
+    expect(root).toMatchSnapshot();
+  });
+
+  it('should not render backdrop when backgroundOverlay is false', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" background-overlay="false"></modus-wc-utility-panel>',
+    });
+
+    expect(root?.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should not render backdrop when collapsed even if backgroundOverlay is true', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel background-overlay="true"></modus-wc-utility-panel>',
+    });
+
+    expect(root?.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
   });
 
   it('should re-adjust content when targetElement changes while expanded', async () => {

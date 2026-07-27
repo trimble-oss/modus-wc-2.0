@@ -16,6 +16,12 @@ import { handleShadowDOMStyles } from '../base-component';
   shadow: false,
 })
 export class ModusWcUtilityPanel {
+  /**
+   * When true, dims the page behind the panel while it is expanded
+   * using `--modus-wc-opacity-overlay`.
+   */
+  @Prop() backgroundOverlay?: boolean = false;
+
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
 
@@ -116,37 +122,42 @@ export class ModusWcUtilityPanel {
     const hasHeader = this.hasSlotContent('header');
     const hasFooter = this.hasSlotContent('footer');
     return (
-      <div
-        class={{
-          'modus-wc-utility-panel': true,
-          open: this.expanded,
-          [this.customClass as string]: !!this.customClass,
-        }}
-      >
-        <div class="modus-wc-utility-panel-content">
-          {hasHeader && (
-            <Fragment>
-              <div class="modus-wc-utility-panel-header">
-                <slot name="header"></slot>
-              </div>
-              <hr />
-            </Fragment>
-          )}
+      <Fragment>
+        {this.backgroundOverlay && this.expanded && (
+          <div aria-hidden="true" class="modus-wc-utility-panel-backdrop"></div>
+        )}
+        <div
+          class={{
+            'modus-wc-utility-panel': true,
+            open: this.expanded,
+            [this.customClass as string]: !!this.customClass,
+          }}
+        >
+          <div class="modus-wc-utility-panel-content">
+            {hasHeader && (
+              <Fragment>
+                <div class="modus-wc-utility-panel-header">
+                  <slot name="header"></slot>
+                </div>
+                <hr />
+              </Fragment>
+            )}
 
-          <div class="modus-wc-utility-panel-body">
-            <slot name="body"></slot>
+            <div class="modus-wc-utility-panel-body">
+              <slot name="body"></slot>
+            </div>
+
+            {hasFooter && (
+              <Fragment>
+                <hr />
+                <div class="modus-wc-utility-panel-footer">
+                  <slot name="footer"></slot>
+                </div>
+              </Fragment>
+            )}
           </div>
-
-          {hasFooter && (
-            <Fragment>
-              <hr />
-              <div class="modus-wc-utility-panel-footer">
-                <slot name="footer"></slot>
-              </div>
-            </Fragment>
-          )}
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

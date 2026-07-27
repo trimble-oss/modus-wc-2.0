@@ -5,6 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
+  'background-overlay'?: boolean;
   'custom-class'?: string;
   expanded: boolean;
   'push-content': boolean;
@@ -14,10 +15,14 @@ const meta: Meta<UtilityPanelArgs> = {
   title: 'Components/Utility Panel',
   component: 'modus-wc-utility-panel',
   args: {
+    'background-overlay': false,
     expanded: false,
     'push-content': true,
   },
   argTypes: {
+    'background-overlay': {
+      control: { type: 'boolean' },
+    },
     'custom-class': {
       control: { type: 'text' },
     },
@@ -262,6 +267,7 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -404,6 +410,7 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-expanded"
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -426,6 +433,7 @@ ${scriptBlock}`,
 };
 export const OverlayMode: Story = {
   args: {
+    'background-overlay': true,
     expanded: true,
     'push-content': false,
   },
@@ -468,6 +476,7 @@ ${utilityPanelStyles}
 
     <modus-wc-utility-panel
       id="panel-overlay"
+      background-overlay
       expanded="true"
       push-content="false"
     >
@@ -528,6 +537,7 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-overlay"
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -582,6 +592,7 @@ export const WithoutHeaderFooter: Story = {
       <modus-wc-utility-panel
         id="panel-simple"
         custom-class=${ifDefined(args['custom-class'])}
+        ?background-overlay=${args['background-overlay']}
         ?expanded=${args.expanded}
         ?push-content=${args['push-content']}
       >
@@ -600,6 +611,8 @@ export const ShadowDomParent: Story = {
       const UtilityPanelShadowHost = createShadowHostClass<UtilityPanelArgs>({
         componentTag: 'modus-wc-utility-panel',
         propsMapper: (v: UtilityPanelArgs, el: HTMLElement) => {
+          (el as unknown as { backgroundOverlay: boolean }).backgroundOverlay =
+            Boolean(v['background-overlay']);
           (el as unknown as { expanded: boolean }).expanded = Boolean(
             v.expanded
           );
