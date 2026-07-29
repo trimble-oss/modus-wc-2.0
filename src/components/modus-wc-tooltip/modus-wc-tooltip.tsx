@@ -37,6 +37,8 @@ export class ModusWcTooltip {
   private describedByTarget: HTMLElement | null = null;
   private generatedTooltipId: string | null = null;
   private lastAppliedDescribedById: string | null = null;
+  /** Deferred accessibility sync for nested focusable hosts; cancelled on disconnect. */
+  private accessibilitySyncFrameId: number | null = null;
   private isHovered = false;
   private isFocused = false;
 
@@ -171,7 +173,11 @@ export class ModusWcTooltip {
     }
 
     // Nested hosts (e.g. modus-wc-button) may render their focusable control after this tick
-    requestAnimationFrame(() => this.syncTooltipAccessibility());
+    this.accessibilitySyncFrameId = requestAnimationFrame(() => {
+      this.accessibilitySyncFrameId = null;
+      if (!this.el.isConnected || !this.tooltipElement?.isConnected) return;
+      this.syncTooltipAccessibility();
+    });
 
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
@@ -179,6 +185,11 @@ export class ModusWcTooltip {
   }
 
   disconnectedCallback() {
+    if (this.accessibilitySyncFrameId !== null) {
+      cancelAnimationFrame(this.accessibilitySyncFrameId);
+      this.accessibilitySyncFrameId = null;
+    }
+
     this.clearTriggerAriaDescribedBy();
 
     if (this.popperInstance) {

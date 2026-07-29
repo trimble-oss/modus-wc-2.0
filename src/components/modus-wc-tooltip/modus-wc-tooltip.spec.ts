@@ -6,6 +6,8 @@ interface TooltipPrivateHarness {
   lastAppliedDescribedById: string | null;
   generatedTooltipId: string | null;
   triggerElement: HTMLElement | null;
+  tooltipElement: HTMLDivElement | null;
+  accessibilitySyncFrameId: number | null;
   removeDescribedById: (id: string, target?: HTMLElement | null) => void;
   clearTriggerAriaDescribedBy: () => void;
   resolveDescribedByTarget: () => HTMLElement | null;
@@ -545,6 +547,113 @@ describe('modus-wc-tooltip', () => {
     page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
     await page.waitForChanges();
     expect(page.rootInstance.isVisible).toBe(true);
+  });
+
+  it('should cancel deferred a11y sync on disconnect and ignore a late frame callback', async () => {
+    const deferred: FrameRequestCallback[] = [];
+    const origRaf = globalThis.requestAnimationFrame;
+    const origCancel = globalThis.cancelAnimationFrame;
+    const cancelSpy = jest.fn();
+
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      deferred.push(cb);
+      return 42;
+    }) as typeof requestAnimationFrame;
+    globalThis.cancelAnimationFrame = cancelSpy as typeof cancelAnimationFrame;
+
+    try {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<modus-wc-tooltip content="Tip" tooltip-id="raf-tip">
+          <button type="button">Save</button>
+        </modus-wc-tooltip>`,
+      });
+
+      const trigger = page.root?.querySelector('button') as HTMLButtonElement;
+      expect(trigger.getAttribute('aria-describedby')).toBe('raf-tip');
+      expect(deferred.length).toBeGreaterThan(0);
+
+      page.root?.remove();
+      await page.waitForChanges();
+
+      expect(cancelSpy).toHaveBeenCalledWith(42);
+      expect(trigger.getAttribute('aria-describedby')).toBeNull();
+
+      // Simulate a frame that still fires after cancel — guard must no-op
+      deferred.forEach((cb) => cb(0));
+      expect(trigger.getAttribute('aria-describedby')).toBeNull();
+    } finally {
+      globalThis.requestAnimationFrame = origRaf;
+      globalThis.cancelAnimationFrame = origCancel;
+    }
+  });
+
+  it('should run deferred a11y sync when host and tip stay connected', async () => {
+    const deferred: FrameRequestCallback[] = [];
+    const origRaf = globalThis.requestAnimationFrame;
+
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      deferred.push(cb);
+      return 1;
+    }) as typeof requestAnimationFrame;
+
+    try {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<modus-wc-tooltip content="Tip" tooltip-id="connected-raf-tip">
+          <span class="trigger-host"><button type="button">Save</button></span>
+        </modus-wc-tooltip>`,
+      });
+
+      expect(deferred.length).toBeGreaterThan(0);
+      deferred.forEach((cb) => cb(0));
+      await page.waitForChanges();
+
+      const host = page.root?.querySelector('.trigger-host');
+      const button = page.root?.querySelector('button');
+      expect(host?.getAttribute('aria-describedby')).toBeNull();
+      expect(button?.getAttribute('aria-describedby')).toBe(
+        'connected-raf-tip'
+      );
+    } finally {
+      globalThis.requestAnimationFrame = origRaf;
+    }
+  });
+
+  it('should skip deferred a11y sync when tip is detached but host remains connected', async () => {
+    const deferred: FrameRequestCallback[] = [];
+    const origRaf = globalThis.requestAnimationFrame;
+
+    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
+      deferred.push(cb);
+      return 1;
+    }) as typeof requestAnimationFrame;
+
+    try {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<modus-wc-tooltip content="Tip" tooltip-id="detached-tip">
+          <button type="button">Save</button>
+        </modus-wc-tooltip>`,
+      });
+
+      const harness = page.rootInstance as unknown as TooltipPrivateHarness;
+      const tip = harness.tooltipElement;
+      tip?.parentElement?.removeChild(tip);
+      harness.accessibilitySyncFrameId = null;
+
+      deferred.forEach((cb) => cb(0));
+      await page.waitForChanges();
+
+      expect(page.root?.isConnected).toBe(true);
+
+      // Also cover optional-chaining when tooltipElement is cleared
+      harness.tooltipElement = null;
+      deferred.forEach((cb) => cb(0));
+      expect(page.root?.isConnected).toBe(true);
+    } finally {
+      globalThis.requestAnimationFrame = origRaf;
+    }
   });
 
   it('should clean up resources in disconnectedCallback', async () => {
