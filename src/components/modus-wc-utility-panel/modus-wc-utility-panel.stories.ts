@@ -6,6 +6,7 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 
 interface UtilityPanelArgs {
   'background-overlay'?: boolean;
+  'collapse-on-click-outside'?: boolean;
   'custom-class'?: string;
   expanded: boolean;
   'push-content': boolean;
@@ -16,11 +17,15 @@ const meta: Meta<UtilityPanelArgs> = {
   component: 'modus-wc-utility-panel',
   args: {
     'background-overlay': false,
+    'collapse-on-click-outside': false,
     expanded: false,
     'push-content': true,
   },
   argTypes: {
     'background-overlay': {
+      control: { type: 'boolean' },
+    },
+    'collapse-on-click-outside': {
       control: { type: 'boolean' },
     },
     'custom-class': {
@@ -268,6 +273,7 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           custom-class=${ifDefined(args['custom-class'])}
           ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -411,6 +417,7 @@ ${scriptBlock}`,
           id="panel-expanded"
           custom-class=${ifDefined(args['custom-class'])}
           ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -434,6 +441,7 @@ ${scriptBlock}`,
 export const OverlayMode: Story = {
   args: {
     'background-overlay': true,
+    'collapse-on-click-outside': true,
     expanded: true,
     'push-content': false,
   },
@@ -477,6 +485,7 @@ ${utilityPanelStyles}
     <modus-wc-utility-panel
       id="panel-overlay"
       background-overlay
+      collapse-on-click-outside
       expanded="true"
       push-content="false"
     >
@@ -538,6 +547,7 @@ ${scriptBlock}`,
           id="panel-overlay"
           custom-class=${ifDefined(args['custom-class'])}
           ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -593,6 +603,7 @@ export const WithoutHeaderFooter: Story = {
         id="panel-simple"
         custom-class=${ifDefined(args['custom-class'])}
         ?background-overlay=${args['background-overlay']}
+        ?collapse-on-click-outside=${args['collapse-on-click-outside']}
         ?expanded=${args.expanded}
         ?push-content=${args['push-content']}
       >
@@ -613,6 +624,9 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: UtilityPanelArgs, el: HTMLElement) => {
           (el as unknown as { backgroundOverlay: boolean }).backgroundOverlay =
             Boolean(v['background-overlay']);
+          (
+            el as unknown as { collapseOnClickOutside: boolean }
+          ).collapseOnClickOutside = Boolean(v['collapse-on-click-outside']);
           (el as unknown as { expanded: boolean }).expanded = Boolean(
             v.expanded
           );

@@ -21,11 +21,14 @@ export class ModusWcUtilityPanel {
    */
   @Prop() backgroundOverlay = false;
 
+  /** Whether the panel should collapse when clicking outside of it. */
+  @Prop() collapseOnClickOutside = false;
+
   /** Custom CSS class to apply to the outer div. */
   @Prop() customClass?: string = '';
 
   /** The panel is expanded or closed */
-  @Prop() expanded = false;
+  @Prop({ mutable: true }) expanded = false;
 
   /** Determines if the panel pushes content or displays an overlay. */
   @Prop() pushContent = false;
@@ -42,6 +45,19 @@ export class ModusWcUtilityPanel {
   @Element() el!: HTMLElement;
 
   private isInitialLoad = true;
+  private panelRef?: HTMLElement;
+
+  connectedCallback() {
+    document.addEventListener('keydown', this.handleKeyDown);
+    if (this.collapseOnClickOutside) {
+      document.addEventListener('click', this.handleClickOutside, true);
+    }
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('click', this.handleClickOutside, true);
+  }
 
   componentWillLoad() {
     // Inject full CSS bundle (including per-component SCSS) for slotted children
@@ -69,6 +85,15 @@ export class ModusWcUtilityPanel {
       void this.openPanel();
     } else {
       void this.closePanel();
+    }
+  }
+
+  @Watch('collapseOnClickOutside')
+  handleCollapseOnClickOutsideChange(enabled: boolean) {
+    if (enabled) {
+      document.addEventListener('click', this.handleClickOutside, true);
+    } else {
+      document.removeEventListener('click', this.handleClickOutside, true);
     }
   }
 
@@ -108,8 +133,27 @@ export class ModusWcUtilityPanel {
     }
   }
 
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && this.expanded) {
+      event.preventDefault();
+      this.expanded = false;
+    }
+  };
+
+  private handleClickOutside = (event: MouseEvent) => {
+    if (!this.expanded || !this.collapseOnClickOutside || !this.panelRef) {
+      return;
+    }
+
+    const path = event.composedPath ? event.composedPath() : [event.target];
+    // Close when the click is outside the panel content (backdrop counts as outside)
+    if (!path.includes(this.panelRef)) {
+      this.expanded = false;
+    }
+  };
+
   handlePanelClose = () => {
-    void this.closePanel();
+    this.expanded = false;
   };
 
   hasSlotContent(slotName: string): boolean {
@@ -131,6 +175,7 @@ export class ModusWcUtilityPanel {
             open: this.expanded,
             [this.customClass as string]: !!this.customClass,
           }}
+          ref={(el) => (this.panelRef = el)}
         >
           <div class="modus-wc-utility-panel-content">
             {hasHeader && (

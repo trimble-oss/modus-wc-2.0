@@ -1,6 +1,12 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcUtilityPanel } from './modus-wc-utility-panel';
 
+interface UtilityPanelPrivateHarness {
+  expanded: boolean;
+  panelRef?: HTMLElement;
+  handleClickOutside: (event: MouseEvent) => void;
+}
+
 describe('modus-wc-utility-panel', () => {
   it('should render with default props', async () => {
     const { root } = await newSpecPage({
@@ -389,5 +395,209 @@ describe('modus-wc-utility-panel', () => {
     component.handleTargetChange();
 
     expect(adjustContentSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse when Escape is pressed while expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
+  });
+
+  it('should not collapse when Escape is pressed while collapsed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse when clicking outside if collapseOnClickOutside is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
+  });
+
+  it('should not collapse when clicking inside the panel with collapseOnClickOutside', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panel = page.root?.querySelector(
+      '.modus-wc-utility-panel'
+    ) as HTMLElement;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    panel.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not collapse on outside click when collapseOnClickOutside is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should remove document listeners on disconnect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.disconnectedCallback();
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+  });
+
+  it('should register click-outside listener when collapseOnClickOutside becomes true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.collapseOnClickOutside = true;
+    component.handleCollapseOnClickOutsideChange(true);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+  });
+
+  it('should remove click-outside listener when collapseOnClickOutside becomes false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.collapseOnClickOutside = false;
+    component.handleCollapseOnClickOutsideChange(false);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+  });
+
+  it('should not collapse on outside click when panel ref is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    component.panelRef = undefined;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    component.handleClickOutside(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse using event target when composedPath is unavailable', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    const outsideTarget = page.doc.createElement('div');
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    const event = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(event, 'target', {
+      value: outsideTarget,
+      configurable: true,
+    });
+    Object.defineProperty(event, 'composedPath', {
+      value: undefined,
+      configurable: true,
+    });
+
+    component.handleClickOutside(event);
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
   });
 });

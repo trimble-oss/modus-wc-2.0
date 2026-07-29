@@ -10,7 +10,7 @@ modus-wc-utility-panel {
 .modus-wc-utility-panel-backdrop {
   background-color: rgb(0 0 0 / 0.4);
   inset: 0;
-  pointer-events: none;
+  pointer-events: auto;
   position: fixed;
   z-index: 999;
 }
