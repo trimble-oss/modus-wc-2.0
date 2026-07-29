@@ -86,11 +86,6 @@ export class ModusWcDock {
     this.validateItems();
   }
 
-  @Watch('activeItemIndex')
-  handleActiveItemIndexChange() {
-    this.syncItemAria();
-  }
-
   componentDidRender() {
     this.syncItemAria();
   }
@@ -104,7 +99,7 @@ export class ModusWcDock {
   // Directly sets aria-current/aria-label on each item's inner <button>,
   // since modus-wc-button only inherits host attributes once on load.
   private syncItemAria(): void {
-    this.items.forEach((item, index) => {
+    (this.items ?? []).forEach((item, index) => {
       const innerButton = this.buttonEls[index]?.querySelector('button');
       if (!innerButton) {
         return;
@@ -167,7 +162,7 @@ export class ModusWcDock {
     return (
       <Host>
         <nav class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.items.map((item, index) => {
+          {(this.items ?? []).map((item, index) => {
             return (
               <div
                 class={this.getItemClasses(item, index)}

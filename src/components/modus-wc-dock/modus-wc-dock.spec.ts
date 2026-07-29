@@ -3,6 +3,11 @@ import { IDockItem, ModusWcDock } from './modus-wc-dock';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
+interface DockPrivateHarness {
+  buttonEls: (HTMLElement | undefined)[];
+  syncItemAria: () => void;
+}
+
 describe('modus-wc-dock', () => {
   const items: IDockItem[] = [
     { label: 'Home', icon: 'home' },
@@ -259,6 +264,81 @@ describe('modus-wc-dock', () => {
 
     expect(eventSpy).not.toHaveBeenCalled();
     expect(component.activeItemIndex).toBe(0);
+  });
+
+  it('should skip aria sync when a dock item inner button is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+    await page.waitForChanges();
+
+    const harness = component as unknown as DockPrivateHarness;
+    harness.buttonEls = [page.doc.createElement('div')];
+
+    expect(() => harness.syncItemAria()).not.toThrow();
+  });
+
+  it('should tolerate undefined items during aria sync', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = undefined as unknown as IDockItem[];
+
+    expect(() =>
+      (component as unknown as DockPrivateHarness).syncItemAria()
+    ).not.toThrow();
+  });
+
+  it('should remove aria-label from items when labels are visible', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" show-labels="true"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    expect(buttons?.[0]?.hasAttribute('aria-label')).toBe(false);
+    expect(buttons?.[1]?.hasAttribute('aria-label')).toBe(false);
+  });
+
+  it('should render no dock items when items is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = undefined as unknown as IDockItem[];
+
+    await page.waitForChanges();
+
+    expect(page.root?.querySelectorAll('modus-wc-button').length).toBe(0);
+  });
+
+  it('should render with top position classes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="top"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const nav = page.root?.querySelector('nav.modus-wc-dock');
+    expect(nav?.classList.contains('modus-wc-dock-top')).toBe(true);
   });
 });
 
