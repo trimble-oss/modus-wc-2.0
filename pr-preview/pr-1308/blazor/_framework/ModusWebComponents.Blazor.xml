@@ -3804,6 +3804,11 @@
             When true, dims the page behind the panel while it is expanded.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.CollapseOnClickOutside">
+            <summary>
+            Whether the panel should collapse when clicking outside of it.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.CustomClass">
             <summary>
             Custom CSS class to apply to the outer div.
