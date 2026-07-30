@@ -3,11 +3,6 @@ import { IDockItem, ModusWcDock } from './modus-wc-dock';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 
-interface DockPrivateHarness {
-  buttonEls: (HTMLElement | undefined)[];
-  syncItemAria: () => void;
-}
-
 describe('modus-wc-dock', () => {
   const items: IDockItem[] = [
     { label: 'Home', icon: 'home' },
@@ -266,40 +261,10 @@ describe('modus-wc-dock', () => {
     expect(component.activeItemIndex).toBe(0);
   });
 
-  it('should skip aria sync when a dock item inner button is missing', async () => {
+  it('should move focus to the next item on ArrowRight for bottom position', async () => {
     const page = await newSpecPage({
       components: [ModusWcDock, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
-    });
-
-    const component = page.rootInstance as ModusWcDock;
-    component.items = items;
-    await page.waitForChanges();
-
-    const harness = component as unknown as DockPrivateHarness;
-    harness.buttonEls = [page.doc.createElement('div')];
-
-    expect(() => harness.syncItemAria()).not.toThrow();
-  });
-
-  it('should tolerate undefined items during aria sync', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
-    });
-
-    const component = page.rootInstance as ModusWcDock;
-    component.items = undefined as unknown as IDockItem[];
-
-    expect(() =>
-      (component as unknown as DockPrivateHarness).syncItemAria()
-    ).not.toThrow();
-  });
-
-  it('should remove aria-label from items when labels are visible', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-dock aria-label="Dock navigation" show-labels="true"></modus-wc-dock>',
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
     });
 
     const component = page.rootInstance as ModusWcDock;
@@ -308,28 +273,33 @@ describe('modus-wc-dock', () => {
     await page.waitForChanges();
 
     const buttons = page.root?.querySelectorAll('modus-wc-button button');
-    expect(buttons?.[0]?.hasAttribute('aria-label')).toBe(false);
-    expect(buttons?.[1]?.hasAttribute('aria-label')).toBe(false);
-  });
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+    firstButton?.focus();
 
-  it('should render no dock items when items is undefined', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
     });
 
-    const component = page.rootInstance as ModusWcDock;
-    component.items = undefined as unknown as IDockItem[];
+    const focusSpy = jest.spyOn(secondButton, 'focus');
 
-    await page.waitForChanges();
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+      })
+    );
 
-    expect(page.root?.querySelectorAll('modus-wc-button').length).toBe(0);
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
   });
 
-  it('should render with top position classes', async () => {
+  it('should move focus to the previous item on ArrowLeft for bottom position', async () => {
     const page = await newSpecPage({
       components: [ModusWcDock, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-dock aria-label="Dock navigation" position="top"></modus-wc-dock>',
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
     });
 
     const component = page.rootInstance as ModusWcDock;
@@ -337,8 +307,504 @@ describe('modus-wc-dock', () => {
 
     await page.waitForChanges();
 
-    const nav = page.root?.querySelector('nav.modus-wc-dock');
-    expect(nav?.classList.contains('modus-wc-dock-top')).toBe(true);
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+    secondButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: secondButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowLeft',
+        bubbles: true,
+      })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should move focus to the next item on ArrowDown for left position', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="left"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(secondButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+      })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should skip disabled items when navigating with arrow keys', async () => {
+    const disabledItems: IDockItem[] = [
+      { label: 'Home', icon: 'home' },
+      { label: 'Inbox', icon: 'email', disabled: true },
+      { label: 'Settings', icon: 'settings' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = disabledItems;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const thirdButton = buttons?.[2] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(thirdButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+      })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should ignore vertical arrow keys when the dock is horizontal', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true })
+    );
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should ignore horizontal arrow keys when the dock is vertical', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="left"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+    );
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should ignore keys that are not part of the dock navigation contract', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'a', bubbles: true })
+    );
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should do nothing on arrow navigation when every item is disabled', async () => {
+    const disabledItems: IDockItem[] = [
+      { label: 'Home', icon: 'home', disabled: true },
+      { label: 'Inbox', icon: 'email', disabled: true },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = disabledItems;
+
+    await page.waitForChanges();
+
+    const nav = page.root?.querySelector('nav.modus-wc-dock') as HTMLElement;
+    Object.defineProperty(document, 'activeElement', {
+      value: nav,
+      writable: true,
+      configurable: true,
+    });
+
+    expect(() =>
+      page.root?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+      )
+    ).not.toThrow();
+  });
+
+  it('should focus the first focusable item when no dock button currently has focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    // The nav itself is inside the dock host, but is not any item's inner
+    // <button>, so it exercises the "no match found" branch of
+    // getFocusedItemIndex while still passing the top-level containment guard.
+    const nav = page.root?.querySelector('nav.modus-wc-dock') as HTMLElement;
+
+    Object.defineProperty(document, 'activeElement', {
+      value: nav,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should focus the first focusable item when a disabled item currently has focus', async () => {
+    const disabledItems: IDockItem[] = [
+      { label: 'Home', icon: 'home' },
+      { label: 'Inbox', icon: 'email', disabled: true },
+      { label: 'Settings', icon: 'settings' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = disabledItems;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const disabledButton = buttons?.[1] as HTMLButtonElement;
+
+    Object.defineProperty(document, 'activeElement', {
+      value: disabledButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should wrap focus from the last item to the first on ArrowRight', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const lastButton = buttons?.[items.length - 1] as HTMLButtonElement;
+    lastButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: lastButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should wrap focus from the first item to the last on ArrowLeft', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const lastButton = buttons?.[items.length - 1] as HTMLButtonElement;
+    firstButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: firstButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(lastButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should tolerate missing button references when resolving or moving focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    // Simulate refs that have not been attached yet (e.g. before the first
+    // render), which leaves `buttonEls` empty.
+    component['buttonEls'] = [];
+
+    expect(component['getFocusedItemIndex']()).toBe(-1);
+    expect(() => component['focusItemAt'](0)).not.toThrow();
+    expect(() => component['syncItemAria']()).not.toThrow();
+  });
+
+  it('should move focus to the first item on Home and the last item on End', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+    const lastButton = buttons?.[2] as HTMLButtonElement;
+    secondButton?.focus();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: secondButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const lastFocusSpy = jest.spyOn(lastButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'End', bubbles: true })
+    );
+
+    expect(lastFocusSpy).toHaveBeenCalled();
+    lastFocusSpy.mockRestore();
+
+    Object.defineProperty(document, 'activeElement', {
+      value: lastButton,
+      writable: true,
+      configurable: true,
+    });
+
+    const firstFocusSpy = jest.spyOn(firstButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Home', bubbles: true })
+    );
+
+    expect(firstFocusSpy).toHaveBeenCalled();
+    firstFocusSpy.mockRestore();
+  });
+
+  it('should emit itemSelect when an item is activated with Enter', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    const eventSpy = jest.fn();
+    page.root?.addEventListener('itemSelect', eventSpy);
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    (buttons?.[1] as HTMLButtonElement)?.focus();
+    buttons?.[1]?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      })
+    );
+
+    await page.waitForChanges();
+
+    expect(eventSpy).toHaveBeenCalled();
+    expect(component.activeItemIndex).toBe(1);
+  });
+
+  it('should resolve focus from the shadow root when the dock is inside a ShadowRoot', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDock, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-dock aria-label="Dock navigation" position="bottom"></modus-wc-dock>',
+    });
+
+    const component = page.rootInstance as ModusWcDock;
+    component.items = items;
+
+    await page.waitForChanges();
+
+    const buttons = page.root?.querySelectorAll('modus-wc-button button');
+    const firstButton = buttons?.[0] as HTMLButtonElement;
+    const secondButton = buttons?.[1] as HTMLButtonElement;
+
+    const host = document.createElement('div');
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+
+    Object.defineProperty(shadowRoot, 'activeElement', {
+      configurable: true,
+      get: () => firstButton,
+    });
+    jest.spyOn(component.el, 'getRootNode').mockReturnValue(shadowRoot);
+
+    Object.defineProperty(document, 'activeElement', {
+      value: host,
+      writable: true,
+      configurable: true,
+    });
+
+    expect(component['getRootActiveElement']()).toBe(firstButton);
+
+    const focusSpy = jest.spyOn(secondButton, 'focus');
+
+    page.root?.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+      })
+    );
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
   });
 });
 
