@@ -4,23 +4,34 @@ import { Meta } from '@storybook/blocks';
 
 # Angular Framework Integration
 
+> **Angular 17, 18, and 19 notice:** The `@trimble-oss/moduswebcomponents-angular`
+> wrapper packages for Angular 17, 18, and 19 are no longer maintained due to
+> unresolvable security vulnerabilities in those Angular versions.
+>
+> If you are on Angular 17, 18, or 19 you can use Modus Web Components **directly**
+> without the Angular wrapper package — Angular supports custom elements natively via
+> `CUSTOM_ELEMENTS_SCHEMA`. See the [Using Web Components Directly](#using-web-components-directly-in-angular) section below.
+>
+> We recommend upgrading to Angular 20 or later to continue using the full Angular wrapper.
+
 This guide will help you get started with consuming the Modus Angular Web Component library in your Angular project.
 
-We highly recommend using the Modus Angular Components library for Angular based projects.
+We highly recommend using the Modus Angular Components library for Angular based projects on **Angular 20+**.
 These components are automatically generated using the Stencil Angular Framework Integration.
 
 Follow the steps outlined below to integrate and use Modus Angular Web Components effectively.
 
 Please refer to the [official stencil documentation](https://stenciljs.com/docs/angular#consumer-usage) for more information on how to integrate with your Angular project.
 
-## Angular with modules
+## Angular 20+ with the wrapper package
 
 Modus Angular Components have a peer dependency with Modus Web Components and require the
-installation of both packages.
+installation of both packages. Angular 20 and 21 wrappers use standalone proxies and
+`provideModusWebComponents()` — there is no `ModusAngularComponentsModule`.
 
 ### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
 
-Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
+Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng20` for Angular 20).
 
 <b>
   Lock the installed package versions to avoid unintended breakages on future
@@ -67,84 +78,83 @@ Add this to your `angular.json` under `projects > your-app > architect > build >
 }
 ```
 
-### 4. Import Modus Angular Web Components library into your Angular app's module:
+### 4. Provide Modus Web Components at app bootstrap:
 
 ```ts
-// app.module.ts
-import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-angular';
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideModusWebComponents } from '@trimble-oss/moduswebcomponents-angular';
 
-@NgModule({
-  ...
-  imports: [ComponentLibraryModule],
-  ...
-})
-export class AppModule {}
+export const appConfig: ApplicationConfig = {
+  providers: [provideModusWebComponents()],
+};
 ```
 
-### 4. Use Modus Angular Web Components while leveraging Angular template binding syntax:
-
-```ts
-// app.component.html
-<modus-wc-button label="Click Me" />
-```
-
-## Angular with standalone components
-
-Modus Angular Components have a peer dependency with Modus Web Components and require the
-installation of both packages.
-
-### 1. Install both `modus-wc` and `modus-wc-angular` dependencies:
-
-Ensure that you specify the target version of Angular for the `modus-wc-angular` package (e.g., `ng18` for Angular 18).
-
-<b>
-  Lock the installed package versions to avoid unintended breakages on future
-  npm installs.
-</b>
-
-```bash
-npm install @trimble-oss/moduswebcomponents @trimble-oss/moduswebcomponents-angular@<latest-version>-ng<target-version>
-```
-
-### 2. Set up the styling:
-
-You will need to import our styling in your main JavaScript or CSS file:
-
-```js
-import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
-```
-
-### 3. Import your component library into your component.
-
-You must distribute your components through a primary `NgModule` to use your components in a standalone component.
+### 5. Import the standalone proxy components you need:
 
 ```ts
 // app.component.ts
 import { Component } from '@angular/core';
-import { ModusAngularComponentsModule } from '@trimble-oss/moduswebcomponents-angular';
+import { ModusWcButton } from '@trimble-oss/moduswebcomponents-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ModusAngularComponentsModule],
+  imports: [ModusWcButton],
   templateUrl: './app.component.html',
 })
 export class AppComponent {}
 ```
 
-### 4. Use Modus Angular Web Components while leveraging Angular template binding syntax:
+### 6. Use Modus Angular Web Components while leveraging Angular template binding syntax:
 
-```ts
-// app.component.html
+```html
+<!-- app.component.html -->
 <modus-wc-button label="Click Me" />
 ```
 
-### Custom Elements Schema
+## Using Web Components Directly in Angular
 
-In the `app.module.ts` file, you need to tell angular that you are using custom element schemas
-so that it does not throw errors when unknown element names are used in the markup.
+If you are on Angular 17, 18, or 19 (or prefer not to use the Angular wrapper), you can
+consume `@trimble-oss/moduswebcomponents` directly. No `@trimble-oss/moduswebcomponents-angular`
+package is required.
 
-Import `CUSTOM_ELEMENTS_SCHEMA` and add it to your `@NgModule`'s schemas:
+### 1. Install only the web components package:
+
+```bash
+npm install @trimble-oss/moduswebcomponents
+```
+
+### 2. Set up styling, assets, and register custom elements:
+
+Configure Angular to copy Modus static assets (needed for components like `modus-wc-logo`) in `angular.json` under `projects > your-app > architect > build > options`:
+
+```json
+{
+  "assets": [
+    {
+      "glob": "**/*",
+      "input": "node_modules/@trimble-oss/moduswebcomponents/assets",
+      "output": "/assets"
+    }
+  ]
+}
+```
+
+Then import styles and initialize Modus once during application startup (for example in `main.ts`):
+
+```ts
+import '@trimble-oss/moduswebcomponents/modus-wc-styles.css';
+import { setAssetPath } from '@trimble-oss/moduswebcomponents/components';
+import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
+
+setAssetPath('/assets/');
+defineCustomElements(window);
+```
+
+### 3. Tell Angular about custom elements:
+
+In an NgModule app, add `CUSTOM_ELEMENTS_SCHEMA` so Angular does not error on unknown element names:
 
 ```ts
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -154,6 +164,35 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
   ...
 })
+export class AppModule {}
+```
+
+In a standalone app, add the schema on the root component (or each component that uses Modus tags):
+
+```ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {}
+```
+
+### 4. Use Modus tags with Angular template bindings:
+
+Angular allows `[]` and `()` markup syntax for the web component's inputs and outputs:
+
+```html
+<modus-wc-button
+  [buttonStyle]="'fill'"
+  [color]="'primary'"
+  (buttonClick)="onClick()"
+>
+  Click Me
+</modus-wc-button>
 ```
 
 ### Wrapping Components
