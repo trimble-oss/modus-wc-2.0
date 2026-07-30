@@ -24,7 +24,7 @@ jobs:
       # prevents race conditions
       max-parallel: 1
       matrix:
-        angular-version: [17, 18, 19, 20, 21]
+        angular-version: [20, 21]
         include:
           # Angular 20+ requires Node.js >=20.19 or >=22.12
           - angular-version: 20
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        angular-version: [17, 18, 19, 20, 21]
+        angular-version: [20, 21]
 
     defaults:
       run:

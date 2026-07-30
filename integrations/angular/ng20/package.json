@@ -9,23 +9,23 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@angular/animations": "^20.3.25",
-    "@angular/common": "^20.3.25",
-    "@angular/compiler": "^20.3.25",
-    "@angular/core": "^20.3.25",
-    "@angular/forms": "^20.3.25",
-    "@angular/platform-browser": "^20.3.25",
-    "@angular/platform-browser-dynamic": "^20.3.25",
-    "@angular/router": "^20.3.25",
+    "@angular/animations": "^20.3.27",
+    "@angular/common": "^20.3.27",
+    "@angular/compiler": "^20.3.27",
+    "@angular/core": "^20.3.27",
+    "@angular/forms": "^20.3.27",
+    "@angular/platform-browser": "^20.3.27",
+    "@angular/platform-browser-dynamic": "^20.3.27",
+    "@angular/router": "^20.3.27",
     "@trimble-oss/moduswebcomponents": "file:../../../dist",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.3.26",
-    "@angular/cli": "^20.3.26",
-    "@angular/compiler-cli": "^20.3.25",
+    "@angular/build": "^20.3.27",
+    "@angular/cli": "^20.3.27",
+    "@angular/compiler-cli": "^20.3.27",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
@@ -42,7 +42,8 @@
     "@babel/core": "^7.29.6",
     "esbuild": "^0.28.1",
     "tar": "^7.5.16",
-    "vite": "^7.3.5"
+    "vite": "^7.3.5",
+    "@hono/node-server": "2.0.12"
   },
   "engines": {
     "node": ">=20.19"
