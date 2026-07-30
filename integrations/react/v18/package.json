@@ -6,7 +6,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "1.2.0",
-    "@trimble-oss/moduswebcomponents": "file:trimble-oss-moduswebcomponents-1.11.0.tgz"
+    "@trimble-oss/moduswebcomponents": "file:../../../dist"
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
