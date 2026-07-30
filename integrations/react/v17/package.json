@@ -6,7 +6,7 @@
   "author": "Trimble Inc.",
   "dependencies": {
     "@stencil/react-output-target": "^0.7.4",
-    "@trimble-oss/moduswebcomponents": "file:../../../dist"
+    "@trimble-oss/moduswebcomponents": "file:trimble-oss-moduswebcomponents-1.11.0.tgz"
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
@@ -43,7 +43,7 @@
   "overrides": {
     "ts-morph": {
       "@ts-morph/common": {
-        "minimatch": "^10.2.5"
+        "minimatch": "9.0.9"
       }
     },
     "brace-expansion": "5.0.8"
