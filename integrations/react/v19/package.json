@@ -50,8 +50,7 @@
       "@ts-morph/common": {
         "minimatch": "^10.2.5"
       }
-    },
-    "brace-expansion@5": "5.0.8"
+    }
   },
   "sideEffects": false,
   "publishConfig": {
