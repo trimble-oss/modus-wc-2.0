@@ -88,6 +88,15 @@ modus-wc-number-input .modus-wc-number-input {
   margin-inline-end: var(--modus-wc-utility-panel-width, 312px);
 }
 
+/* Scope background overlay to targetElement (absolute within the target) */
+.modus-wc-utility-panel-overlay-target {
+  position: relative;
+}
+
+.modus-wc-utility-panel-overlay-target > .modus-wc-utility-panel-backdrop {
+  position: absolute;
+}
+
 /* Modus Modern Themes */
 [data-theme='modus-modern-light']:root {
   color-scheme: light;

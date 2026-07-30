@@ -17,7 +17,9 @@ import { handleShadowDOMStyles } from '../base-component';
 })
 export class ModusWcUtilityPanel {
   /**
-   * When true, dims the page behind the panel while it is expanded.
+   * When true, dims the area behind the panel while it is expanded.
+   * If `targetElement` is set, the overlay is scoped to that element only;
+   * otherwise it covers the full viewport.
    */
   @Prop() backgroundOverlay = false;
 
@@ -46,6 +48,7 @@ export class ModusWcUtilityPanel {
 
   private isInitialLoad = true;
   private panelRef?: HTMLElement;
+  private overlayTarget?: HTMLElement;
 
   connectedCallback() {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -57,6 +60,7 @@ export class ModusWcUtilityPanel {
   disconnectedCallback() {
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('click', this.handleClickOutside, true);
+    this.clearTargetOverlay();
   }
 
   componentWillLoad() {
@@ -69,6 +73,7 @@ export class ModusWcUtilityPanel {
     if (this.pushContent && this.expanded && this.targetElement) {
       this.adjustContent();
     }
+    this.syncBackgroundOverlay();
 
     // Mark that initial load is complete after adjusting content
     this.isInitialLoad = false;
@@ -88,6 +93,11 @@ export class ModusWcUtilityPanel {
     }
   }
 
+  @Watch('backgroundOverlay')
+  handleBackgroundOverlayChange() {
+    this.syncBackgroundOverlay();
+  }
+
   @Watch('collapseOnClickOutside')
   handleCollapseOnClickOutsideChange(enabled: boolean) {
     if (enabled) {
@@ -103,6 +113,7 @@ export class ModusWcUtilityPanel {
     if (this.expanded && this.pushContent && this.targetElement) {
       this.adjustContent();
     }
+    this.syncBackgroundOverlay();
   }
 
   openPanel(): void {
@@ -110,6 +121,7 @@ export class ModusWcUtilityPanel {
     if (this.pushContent) {
       this.adjustContent();
     }
+    this.syncBackgroundOverlay();
   }
 
   closePanel(): void {
@@ -117,6 +129,7 @@ export class ModusWcUtilityPanel {
     if (this.pushContent) {
       this.adjustContent();
     }
+    this.syncBackgroundOverlay();
   }
 
   adjustContent() {
@@ -131,6 +144,59 @@ export class ModusWcUtilityPanel {
     } else {
       this.targetElement.classList.remove('modus-wc-utility-panel-pushed');
     }
+  }
+
+  /**
+   * When a targetElement is set, mount the backdrop inside that element so the
+   * dim only covers the target (e.g. main content, not a sibling navbar).
+   * Without a target, the host renders a fixed full-viewport backdrop.
+   */
+  syncBackgroundOverlay() {
+    const shouldShowOnTarget =
+      this.backgroundOverlay && this.expanded && !!this.targetElement;
+
+    if (!shouldShowOnTarget) {
+      this.clearTargetOverlay();
+      return;
+    }
+
+    if (this.overlayTarget && this.overlayTarget !== this.targetElement) {
+      this.clearTargetOverlay();
+    }
+
+    this.applyTargetOverlay(this.targetElement as HTMLElement);
+  }
+
+  private applyTargetOverlay(target: HTMLElement) {
+    target.classList.add('modus-wc-utility-panel-overlay-target');
+
+    const existing = Array.from(target.children).find((child) =>
+      child.classList.contains('modus-wc-utility-panel-backdrop')
+    ) as HTMLElement | undefined;
+
+    if (!existing) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modus-wc-utility-panel-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      target.appendChild(backdrop);
+    }
+
+    this.overlayTarget = target;
+  }
+
+  private clearTargetOverlay() {
+    if (!this.overlayTarget) return;
+
+    this.overlayTarget.classList.remove(
+      'modus-wc-utility-panel-overlay-target'
+    );
+
+    const backdrop = Array.from(this.overlayTarget.children).find((child) =>
+      child.classList.contains('modus-wc-utility-panel-backdrop')
+    );
+    backdrop?.remove();
+
+    this.overlayTarget = undefined;
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {
@@ -164,9 +230,12 @@ export class ModusWcUtilityPanel {
   render() {
     const hasHeader = this.hasSlotContent('header');
     const hasFooter = this.hasSlotContent('footer');
+    // Host-level backdrop only when there is no targetElement to scope to
+    const showHostBackdrop =
+      this.backgroundOverlay && this.expanded && !this.targetElement;
     return (
       <Fragment>
-        {this.backgroundOverlay && this.expanded && (
+        {showHostBackdrop && (
           <div aria-hidden="true" class="modus-wc-utility-panel-backdrop"></div>
         )}
         <div

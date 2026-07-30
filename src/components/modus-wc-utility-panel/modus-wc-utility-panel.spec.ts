@@ -4,7 +4,9 @@ import { ModusWcUtilityPanel } from './modus-wc-utility-panel';
 interface UtilityPanelPrivateHarness {
   expanded: boolean;
   panelRef?: HTMLElement;
+  overlayTarget?: HTMLElement;
   handleClickOutside: (event: MouseEvent) => void;
+  clearTargetOverlay: () => void;
 }
 
 describe('modus-wc-utility-panel', () => {
@@ -350,6 +352,171 @@ describe('modus-wc-utility-panel', () => {
     });
 
     expect(root?.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should mount backdrop on targetElement when backgroundOverlay is enabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+    // Host should not also render a full-viewport backdrop
+    expect(
+      page.root?.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeNull();
+  });
+
+  it('should remove target backdrop when panel collapses', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    component.expanded = false;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(target.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should sync background overlay when backgroundOverlay prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.backgroundOverlay = true;
+    component.handleBackgroundOverlayChange();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+
+    component.backgroundOverlay = false;
+    component.handleBackgroundOverlayChange();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(target.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should clear previous target overlay when targetElement changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target-1">Target 1</div>
+          <div id="overlay-target-2">Target 2</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target1 = page.doc.querySelector('#overlay-target-1') as HTMLElement;
+    const target2 = page.doc.querySelector('#overlay-target-2') as HTMLElement;
+
+    component.targetElement = target1;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target1.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+
+    component.targetElement = target2;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target1.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(
+      target1.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeNull();
+    expect(
+      target2.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target2.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+  });
+
+  it('should clear overlay target class when backdrop child is already missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    (page.rootInstance as ModusWcUtilityPanel).targetElement = target;
+    (page.rootInstance as ModusWcUtilityPanel).syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    target.querySelector('.modus-wc-utility-panel-backdrop')?.remove();
+    component.overlayTarget = target;
+
+    expect(() => component.clearTargetOverlay()).not.toThrow();
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(component.overlayTarget).toBeUndefined();
   });
 
   it('should re-adjust content when targetElement changes while expanded', async () => {
