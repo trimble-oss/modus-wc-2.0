@@ -29,11 +29,19 @@ const config: StorybookConfig = {
     // esbuild 0.28+ errors when downleveling destructuring for targets that
     // include Safari <14.1 (Storybook defaults include safari14). Tell esbuild
     // destructuring is supported — same workaround Vite/Angular adopted.
+    // Cover both Vite build transpile and optimizeDeps (dev server).
     // See https://github.com/evanw/esbuild/issues/4436
     const esbuildCompat = {
       esbuild: {
         supported: {
           destructuring: true,
+        },
+      },
+      optimizeDeps: {
+        esbuildOptions: {
+          supported: {
+            destructuring: true,
+          },
         },
       },
     };
