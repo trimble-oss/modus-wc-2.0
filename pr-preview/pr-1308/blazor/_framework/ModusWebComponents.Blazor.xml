@@ -3801,7 +3801,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.BackgroundOverlay">
             <summary>
-            When true, dims the page behind the panel while it is expanded.
+            When true, dims the area behind the panel while it is expanded. If targetElement is set, the overlay is scoped to that element only; otherwise it covers the full viewport.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.CollapseOnClickOutside">
