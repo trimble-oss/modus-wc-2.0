@@ -35,6 +35,9 @@
     "body-parser": "2.3.0",
     "esbuild": "^0.28.1"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "publishConfig": {
     "access": "public"
   },
