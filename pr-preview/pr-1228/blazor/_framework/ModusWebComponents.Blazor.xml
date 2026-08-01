@@ -387,6 +387,11 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcAvatar.OnImageLoadError">
+            <summary>
+            Event emitted when the avatar image fails to load.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcBadge">
             <summary>
             A customizable badge component used to create badges with different sizes, types, and colors.  The component supports a slot for injecting content within the badge.
@@ -521,7 +526,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.Color">
             <summary>
             The color variant of the button.
-            Allowed values: "primary", "secondary", "tertiary", "warning", "danger"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.CustomClass">
@@ -590,7 +594,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcButtonGroup.Color">
             <summary>
             Color to apply to all buttons within the button group
-            Allowed values: "primary", "secondary", "tertiary", "warning", "danger"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButtonGroup.Disabled">
@@ -885,6 +888,156 @@
             Event emitted when the expanded prop is internally changed.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcContentTree">
+            <summary>
+            A data-driven, stateless/controlled tree component. The consuming application owns the nodes data (the single source of truth) and the controlled selectedNodeId / expandedNodeIds state. The component renders the tree and emits nodeSelect / nodeExpandChange; the application decides whether to apply the change and passes the updated state back in.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.AllowDragDrop">
+            <summary>
+            Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits nodeMove on dragend; the application applies it (e.g. via moveNodeRelative) and passes updated nodes back in.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Bordered">
+            <summary>
+            Indicates that the content tree should have a border.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.CustomClass">
+            <summary>
+            Custom CSS class to apply to the host element.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.EditingNodeId">
+            <summary>
+            The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to nodeEdit, nodeAdd, or nodeDuplicate).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Filter">
+            <summary>
+            When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When searchable is enabled, this only seeds the built-in search box's initial value.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Searchable">
+            <summary>
+            Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the filter prop is used only to seed its initial value.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.SelectedNodeId">
+            <summary>
+            The id of the currently selected (active) node. Controlled by the consuming application.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.SelectionMode">
+            <summary>
+            The selection mode of the content tree.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Size">
+            <summary>
+            The size of the content tree items.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.CheckedNodeIds">
+            <summary>
+            The ids of the checked leaf nodes (multi-select). Controlled by the consuming application.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.ExpandedNodeIds">
+            <summary>
+            The ids of the currently expanded nodes. Controlled by the consuming application.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Nodes">
+            <summary>
+            The tree data. The single source of truth, owned by the consuming application.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.Toolbar">
+            <summary>
+            Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnExpandAllChange">
+            <summary>
+            Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set expandedNodeIds to every expandable id (e.g. via getExpandableNodeIds) when expanded is true, or to [] when false.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeAdd">
+            <summary>
+            Event emitted when &quot;Add New Above/Below&quot; or &quot;Add Child Node&quot; is chosen. The app should insert a node at the requested position and set editingNodeId to the new id.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeCheckChange">
+            <summary>
+            Event emitted when a checkbox is toggled (multi-select). The consuming application should update checkedNodeIds.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeDelete">
+            <summary>
+            Event emitted after the user confirms deletion. The app should remove the node from nodes.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeDuplicate">
+            <summary>
+            Event emitted when &quot;Duplicate&quot; is chosen. The app should clone the node below it and set editingNodeId to the new id.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeEdit">
+            <summary>
+            Event emitted when &quot;Edit name&quot; is chosen. The app should set editingNodeId to this id.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeEditCancel">
+            <summary>
+            Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear editingNodeId (and discard a freshly added node if its name is still empty).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeExpandChange">
+            <summary>
+            Event emitted when a node's expansion is toggled. The consuming application should update expandedNodeIds.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeLoadChildren">
+            <summary>
+            Event emitted the first time a lazy node (hasChildren: true with no children yet) is expanded. The app should fetch the node's children and assign them to nodes (use [] when there are none); the component shows a spinner until children is defined.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeMove">
+            <summary>
+            Event emitted after a successful drag-and-drop, once the gesture ends (dragend). Emitting on dragend (not drop) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via moveNodeRelative) cannot tear down the handle mid-drag. position is relative to targetId: before/after reorder among the target's siblings; inside nests the node as the target's first child.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeRename">
+            <summary>
+            Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear editingNodeId.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodesDelete">
+            <summary>
+            Event emitted when the toolbar's delete button is confirmed. ids are the top-most checked nodes; the app should remove them (e.g. via deleteNodes).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeSelect">
+            <summary>
+            Event emitted when a node is selected. The consuming application should update selectedNodeId.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcContentTree.OnNodeVisibilityChange">
+            <summary>
+            Event emitted when a node's visibility (eye) toggle is clicked. disabled is the new state. The app should update the node's own disabled state (e.g. via setNodeDisabled); descendants become effectively disabled via ancestor inheritance.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcDate">
             <summary>
             A customizable date picker component used to create date inputs.  Adheres to WCAG 2.2 standards.
@@ -905,14 +1058,24 @@
             Whether the form control is disabled.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.EndValue">
+            <summary>
+            The end date in range mode (type=&quot;range&quot;). Must match the format prop pattern (or the locale-derived format when unset) or ISO 8601 (YYYY-MM-DD). Empty string when unset. Ignored in single mode.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Format">
             <summary>
             The date format for display and input.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.HideOverflowDates">
+            <summary>
+            When omitted, defaults to true in range mode and false in single mode.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.InputId">
             <summary>
-            The ID of the input element.
+            The ID of the start input in single mode. In range mode, the end input id is {inputId}-end (or {generated-id}-end when omitted). There is no separate prop for the end input id.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.InputTabIndex">
@@ -937,7 +1100,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Name">
             <summary>
-            Name of the form control. Submitted with the form as part of a name/value pair.
+            Name of the form control. In range mode, the end input name is {name}-end. There is no separate prop for the end input name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.ReadOnly">
@@ -960,9 +1123,15 @@
             The size of the input.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.Type">
+            <summary>
+            Activates range mode. value is the start date; endValue is the end date.
+            Allowed values: "single", "range"
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.Value">
             <summary>
-            The value of the control.
+            The selected date in single mode. In range mode (type=&quot;range&quot;), the start date of the range. Must match the format prop pattern (or the locale-derived format when unset) or ISO 8601 (YYYY-MM-DD). Empty string when unset.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.WeekStartDay">
@@ -987,27 +1156,42 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnCalendarMonthChange">
             <summary>
-            Event emitted when the calendar month selection changes.
+            Event emitted when the start (or single-mode) calendar month selection changes.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnCalendarYearChange">
             <summary>
-            Event emitted when the calendar year selection changes.
+            Event emitted when the start (or single-mode) calendar year selection changes.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnEndCalendarMonthChange">
+            <summary>
+            Event emitted when the end calendar month selection changes in range mode.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnEndCalendarYearChange">
+            <summary>
+            Event emitted when the end calendar year selection changes in range mode.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputBlur">
             <summary>
-            Event emitted when the input loses focus.
+            Event emitted when the input loses focus. In range mode, detail.field is 'start' or 'end'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputChange">
             <summary>
-            Event emitted when the input value changes. target.value is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid.
+            Event emitted when the input value changes. target.value is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, detail.field is 'start' or 'end'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnInputFocus">
             <summary>
-            Event emitted when the input gains focus.
+            Event emitted when the input gains focus. In range mode, detail.field is 'start' or 'end'.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcDate.OnRangeChange">
+            <summary>
+            Event emitted when a complete date range is selected in range mode.
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcDivider">
@@ -1171,7 +1355,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.IncludeStateIcon">
             <summary>
-            Include state icon (upload, success, error)
+            Include state icon for default, validation, upload, and feedback states
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.Instructions">
@@ -1207,6 +1391,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.SuccessMessage">
             <summary>
             Success message displayed when files are uploaded successfully
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.Feedback">
+            <summary>
+            External feedback to display info, success, or error state with optional custom icon and message
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.ChildContent">
@@ -2108,6 +2297,16 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcPanel.AdditionalAttributes">
             <summary>
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.ShowSignOut">
+            <summary>
+            Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MainMenu">
+            <summary>
+            Configuration for the default main menu section. When omitted, all built-in items render in the default order. When provided, boolean flags control each built-in item and items appends custom entries.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcProfileMenu.MenuOne">
