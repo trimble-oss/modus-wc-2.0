@@ -130,7 +130,7 @@
     "@storybook/addon-themes": "^8.6.12",
     "@storybook/blocks": "^8.6.12",
     "@storybook/test": "^8.6.15",
-    "@storybook/web-components": "^8.6.12",
+    "@storybook/web-components": "^10.5.5",
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.20",
     "@trimble-oss/modus-stencil-razor-output-target": "^1.0.39",
