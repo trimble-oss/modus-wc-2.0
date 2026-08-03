@@ -3849,6 +3849,16 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.BackgroundOverlay">
+            <summary>
+            When true, dims the area behind the panel while it is expanded. If targetElement is set, the overlay is scoped to that element only; otherwise it covers the full viewport.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.CollapseOnClickOutside">
+            <summary>
+            Whether the panel should collapse when clicking outside of it.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcUtilityPanel.CustomClass">
             <summary>
             Custom CSS class to apply to the outer div.
