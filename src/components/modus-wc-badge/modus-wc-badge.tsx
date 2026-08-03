@@ -24,13 +24,14 @@ export class ModusWcBadge {
 
   /** The color variant of the badge. */
   @Prop() color:
+    | 'default'
     | 'primary'
     | 'secondary'
     | 'tertiary'
     | 'high-contrast'
     | 'success'
     | 'warning'
-    | 'danger' = 'primary';
+    | 'danger' = 'default';
 
   /** Custom CSS class to apply to the span element. */
   @Prop() customClass: string = '';

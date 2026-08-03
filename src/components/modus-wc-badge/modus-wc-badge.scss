@@ -20,6 +20,15 @@ modus-wc-badge .modus-wc-badge {
   }
 
   // Colors
+  &.modus-wc-badge-default {
+    align-items: center;
+    background-color: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-gray-02);
+    border-radius: var(--modus-wc-border-radius-badge);
+    color: var(--modus-wc-color-base-content);
+    gap: var(--modus-wc-spacing-xs);
+  }
+
   &.modus-wc-badge-high-contrast {
     background-color: var(--modus-wc-color-black);
     border-color: var(--modus-wc-color-base-content);
@@ -36,6 +45,10 @@ modus-wc-badge .modus-wc-badge {
     border: none;
 
     // Colors
+    &.modus-wc-badge-default {
+      color: var(--modus-wc-color-base-content);
+    }
+
     &.modus-wc-badge-primary {
       color: var(--modus-wc-color-trimble-blue);
     }
@@ -68,6 +81,11 @@ modus-wc-badge .modus-wc-badge {
   &.modus-wc-badge-outlined {
     background-color: transparent;
     border-radius: 1rem;
+
+    &.modus-wc-badge-default {
+      border-color: var(--modus-wc-color-gray-02);
+      color: var(--modus-wc-color-base-content);
+    }
 
     &.modus-wc-badge-primary {
       border-color: var(--modus-wc-color-primary);
@@ -111,6 +129,15 @@ modus-wc-badge .modus-wc-badge {
   border: unset;
   font-weight: var(--modus-wc-font-weight-bold);
 
+  &.modus-wc-badge-default:not(.modus-wc-badge-text):not(
+      .modus-wc-badge-outlined
+    ) {
+    background-color: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-gray-02);
+    border-radius: var(--modus-wc-border-radius-badge);
+    color: var(--modus-wc-color-base-content);
+  }
+
   &.modus-wc-badge-secondary {
     color: var(--modus-wc-color-gray-6);
   }
@@ -124,6 +151,12 @@ modus-wc-badge .modus-wc-badge {
 
   &:not(.modus-wc-badge-counter) {
     border-radius: var(--modus-wc-border-radius-md);
+  }
+
+  &.modus-wc-badge-default:not(.modus-wc-badge-counter):not(
+      .modus-wc-badge-outlined
+    ) {
+    border-radius: var(--modus-wc-border-radius-badge);
   }
 
   &.modus-wc-badge-success:not(.modus-wc-badge-text):not(
@@ -186,10 +219,22 @@ modus-wc-badge .modus-wc-badge {
     }
   }
 
+  &.modus-wc-badge-default:not(.modus-wc-badge-text):not(
+      .modus-wc-badge-outlined
+    ) {
+    background-color: var(--modus-wc-color-base-page);
+    border: 1px solid var(--modus-wc-color-gray-02);
+    color: var(--modus-wc-color-base-content);
+  }
+
   // Types
   &.modus-wc-badge-text {
     &.modus-wc-badge-primary {
       color: var(--modus-wc-color-highlight-blue);
+    }
+
+    &.modus-wc-badge-default {
+      color: var(--modus-wc-color-base-content);
     }
 
     &.modus-wc-badge-high-contrast {
