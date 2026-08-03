@@ -23,7 +23,7 @@ const meta: Meta<BadgeArgs> = {
   title: 'Components/Badge',
   component: 'modus-wc-badge',
   args: {
-    color: 'primary',
+    color: 'default',
     size: 'md',
     variant: 'filled',
   },

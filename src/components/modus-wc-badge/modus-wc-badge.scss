@@ -219,14 +219,6 @@ modus-wc-badge .modus-wc-badge {
     }
   }
 
-  &.modus-wc-badge-default:not(.modus-wc-badge-text):not(
-      .modus-wc-badge-outlined
-    ) {
-    background-color: var(--modus-wc-color-base-page);
-    border: 1px solid var(--modus-wc-color-gray-02);
-    color: var(--modus-wc-color-base-content);
-  }
-
   // Types
   &.modus-wc-badge-text {
     &.modus-wc-badge-primary {
