@@ -28,7 +28,7 @@ exports[`modus-wc-badge should render with default color 1`] = `
 exports[`modus-wc-badge should render with default props 1`] = `
 <modus-wc-badge>
   <!---->
-  <span class="modus-wc-badge modus-wc-badge-default modus-wc-badge-md" role="status"></span>
+  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary" role="status"></span>
 </modus-wc-badge>
 `;
 

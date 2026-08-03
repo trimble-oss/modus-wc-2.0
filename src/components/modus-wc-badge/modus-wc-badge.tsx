@@ -31,7 +31,7 @@ export class ModusWcBadge {
     | 'high-contrast'
     | 'success'
     | 'warning'
-    | 'danger' = 'default';
+    | 'danger' = 'primary';
 
   /** Custom CSS class to apply to the span element. */
   @Prop() customClass: string = '';
