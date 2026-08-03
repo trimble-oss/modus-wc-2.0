@@ -65,36 +65,6 @@ export const config: Config = {
     angularOutputTarget({
       componentCorePackage: '@trimble-oss/moduswebcomponents',
       customElementsDir: 'components',
-      outputType: 'component',
-      directivesProxyFile:
-        './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
-      directivesArrayFile:
-        './integrations/angular/ng17/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
-      valueAccessorConfigs: angularValueAccessorBindings,
-    }),
-    angularOutputTarget({
-      componentCorePackage: '@trimble-oss/moduswebcomponents',
-      customElementsDir: 'components',
-      outputType: 'component',
-      directivesProxyFile:
-        './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
-      directivesArrayFile:
-        './integrations/angular/ng18/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
-      valueAccessorConfigs: angularValueAccessorBindings,
-    }),
-    angularOutputTarget({
-      componentCorePackage: '@trimble-oss/moduswebcomponents',
-      customElementsDir: 'components',
-      outputType: 'component',
-      directivesProxyFile:
-        './integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',
-      directivesArrayFile:
-        './integrations/angular/ng19/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/index.ts',
-      valueAccessorConfigs: angularValueAccessorBindings,
-    }),
-    angularOutputTarget({
-      componentCorePackage: '@trimble-oss/moduswebcomponents',
-      customElementsDir: 'components',
       outputType: 'standalone',
       directivesProxyFile:
         './integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/components.ts',

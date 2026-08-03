@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        angular-version: [17, 18, 19, 20, 21]
+        angular-version: [20, 21]
         include:
           # Angular 20+ requires Node.js >=20.19 or >=22.12
           - angular-version: 20
