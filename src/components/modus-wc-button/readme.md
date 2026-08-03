@@ -41,6 +41,7 @@ The component supports a `<slot>` for injecting content within the button, simil
  - [modus-wc-bottom-sheet](../modus-wc-bottom-sheet)
  - [modus-wc-content-tree](../modus-wc-content-tree)
  - [modus-wc-date](../modus-wc-date)
+ - [modus-wc-dock](../modus-wc-dock)
  - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
  - [modus-wc-handle](../modus-wc-handle)
  - [modus-wc-modal](../modus-wc-modal)
@@ -55,6 +56,7 @@ graph TD;
   modus-wc-bottom-sheet --> modus-wc-button
   modus-wc-content-tree --> modus-wc-button
   modus-wc-date --> modus-wc-button
+  modus-wc-dock --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-handle --> modus-wc-button
   modus-wc-modal --> modus-wc-button
