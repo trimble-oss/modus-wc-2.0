@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-utility-panel should render backdrop when backgroundOverlay and expanded are true 1`] = `
+<modus-wc-utility-panel background-overlay="true" expanded="true">
+  <!---->
+  <div aria-hidden="true" class="modus-wc-utility-panel-backdrop"></div>
+  <div class="modus-wc-utility-panel open">
+    <div class="modus-wc-utility-panel-content">
+      <div class="modus-wc-utility-panel-body"></div>
+    </div>
+  </div>
+</modus-wc-utility-panel>
+`;
+
 exports[`modus-wc-utility-panel should render with default props 1`] = `
 <modus-wc-utility-panel>
   <!---->

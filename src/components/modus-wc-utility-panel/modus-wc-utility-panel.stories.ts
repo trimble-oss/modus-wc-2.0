@@ -5,6 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface UtilityPanelArgs {
+  'background-overlay'?: boolean;
+  'collapse-on-click-outside'?: boolean;
   'custom-class'?: string;
   expanded: boolean;
   'push-content': boolean;
@@ -14,10 +16,18 @@ const meta: Meta<UtilityPanelArgs> = {
   title: 'Components/Utility Panel',
   component: 'modus-wc-utility-panel',
   args: {
+    'background-overlay': false,
+    'collapse-on-click-outside': false,
     expanded: false,
     'push-content': true,
   },
   argTypes: {
+    'background-overlay': {
+      control: { type: 'boolean' },
+    },
+    'collapse-on-click-outside': {
+      control: { type: 'boolean' },
+    },
     'custom-class': {
       control: { type: 'text' },
     },
@@ -94,6 +104,20 @@ const utilityPanelStyles = `
   .main-content p,
   .modus-wc-utility-panel-body p {
     margin-bottom: var(--modus-wc-spacing-2xl);
+  }
+
+  .main-content--with-navbar {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .main-content--with-navbar .main-content-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 20px;
   }
 
   .modus-wc-utility-panel-header {
@@ -262,6 +286,8 @@ ${scriptBlock}`,
 
         <modus-wc-utility-panel
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -404,6 +430,8 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-expanded"
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -426,6 +454,8 @@ ${scriptBlock}`,
 };
 export const OverlayMode: Story = {
   args: {
+    'background-overlay': true,
+    'collapse-on-click-outside': false,
     expanded: true,
     'push-content': false,
   },
@@ -468,6 +498,7 @@ ${utilityPanelStyles}
 
     <modus-wc-utility-panel
       id="panel-overlay"
+      background-overlay
       expanded="true"
       push-content="false"
     >
@@ -528,6 +559,8 @@ ${scriptBlock}`,
         <modus-wc-utility-panel
           id="panel-overlay"
           custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
           ?expanded=${args.expanded}
           ?push-content=${args['push-content']}
         >
@@ -548,6 +581,153 @@ ${scriptBlock}`,
     </div>
   `,
 };
+
+export const OverlayWithNavbar: Story = {
+  args: {
+    'background-overlay': true,
+    'collapse-on-click-outside': true,
+    expanded: true,
+    'push-content': true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Navbar is placed inside `targetElement`, so the background overlay dims the navbar together with the main content. Compare with Overlay Mode, where the navbar sits outside the target and stays undimmed.',
+      },
+      source: {
+        transform: () => `
+<style>
+${utilityPanelStyles}
+</style>
+
+<div class="demo-container">
+  <div class="main-content-wrapper">
+    <div id="main-content-navbar-in-target" class="main-content main-content--with-navbar">
+      <modus-wc-navbar id="navbar-in-target">
+        <div slot="end">
+          <modus-wc-button
+            color="primary"
+            size="sm"
+            variant="outlined"
+            onclick="const panel = document.getElementById('panel-navbar-in-target'); panel.expanded = !panel.expanded"
+          >
+            <modus-wc-icon name="menu"></modus-wc-icon>
+          </modus-wc-button>
+        </div>
+      </modus-wc-navbar>
+
+      <div class="main-content-body">
+        <h1>Navbar Inside Target Element</h1>
+        <p>
+          The navbar is a child of the target element. When background-overlay
+          is enabled, the dim covers both the navbar and this content area.
+        </p>
+        <p>
+          Use this layout when the overlay should include chrome that lives
+          inside the pushed/overlaid region.
+        </p>
+      </div>
+    </div>
+
+    <modus-wc-utility-panel
+      id="panel-navbar-in-target"
+      background-overlay
+      collapse-on-click-outside
+      expanded="true"
+      push-content="true"
+    >
+      <div slot="header" class="modus-wc-utility-panel-header">
+        Overlay Panel Header
+      </div>
+
+      <div slot="body" class="modus-wc-utility-panel-body">
+        <p>
+          Background overlay is scoped to the target element, which includes
+          the navbar in this story.
+        </p>
+      </div>
+
+      <div slot="footer" class="modus-wc-utility-panel-footer">
+        <modus-wc-button color="tertiary" size="sm"
+          >Cancel</modus-wc-button
+        >
+        <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
+      </div>
+    </modus-wc-utility-panel>
+  </div>
+</div>
+${scriptBlock}`,
+      },
+    },
+  },
+  render: (args) => html`
+    <style>
+      ${utilityPanelStyles}
+    </style>
+
+    <div class="demo-container">
+      <div class="main-content-wrapper">
+        <div
+          id="main-content-navbar-in-target"
+          class="main-content main-content--with-navbar"
+        >
+          <modus-wc-navbar id="navbar-in-target" .visibility=${{ user: false }}>
+            <div slot="end">
+              <modus-wc-button
+                color="primary"
+                size="sm"
+                variant="outlined"
+                onclick="const panel = document.getElementById('panel-navbar-in-target'); panel.expanded = !panel.expanded"
+              >
+                <modus-wc-icon name="menu"></modus-wc-icon>
+              </modus-wc-button>
+            </div>
+          </modus-wc-navbar>
+
+          <div class="main-content-body">
+            <h1>Navbar Inside Target Element</h1>
+            <p>
+              The navbar is a child of the target element. When
+              background-overlay is enabled, the dim covers both the navbar and
+              this content area.
+            </p>
+            <p>
+              Use this layout when the overlay should include chrome that lives
+              inside the pushed/overlaid region.
+            </p>
+          </div>
+        </div>
+
+        <modus-wc-utility-panel
+          id="panel-navbar-in-target"
+          custom-class=${ifDefined(args['custom-class'])}
+          ?background-overlay=${args['background-overlay']}
+          ?collapse-on-click-outside=${args['collapse-on-click-outside']}
+          ?expanded=${args.expanded}
+          ?push-content=${args['push-content']}
+        >
+          <div slot="header" class="modus-wc-utility-panel-header">
+            Overlay Panel Header
+          </div>
+
+          <div slot="body" class="modus-wc-utility-panel-body">
+            <p>
+              Background overlay is scoped to the target element, which includes
+              the navbar in this story.
+            </p>
+          </div>
+
+          <div slot="footer" class="modus-wc-utility-panel-footer">
+            <modus-wc-button color="tertiary" size="sm">Cancel</modus-wc-button>
+            <modus-wc-button color="primary" size="sm">Save</modus-wc-button>
+          </div>
+        </modus-wc-utility-panel>
+      </div>
+    </div>
+  `,
+};
+
 export const WithoutHeaderFooter: Story = {
   args: {
     expanded: false,
@@ -582,6 +762,8 @@ export const WithoutHeaderFooter: Story = {
       <modus-wc-utility-panel
         id="panel-simple"
         custom-class=${ifDefined(args['custom-class'])}
+        ?background-overlay=${args['background-overlay']}
+        ?collapse-on-click-outside=${args['collapse-on-click-outside']}
         ?expanded=${args.expanded}
         ?push-content=${args['push-content']}
       >
@@ -600,6 +782,11 @@ export const ShadowDomParent: Story = {
       const UtilityPanelShadowHost = createShadowHostClass<UtilityPanelArgs>({
         componentTag: 'modus-wc-utility-panel',
         propsMapper: (v: UtilityPanelArgs, el: HTMLElement) => {
+          (el as unknown as { backgroundOverlay: boolean }).backgroundOverlay =
+            Boolean(v['background-overlay']);
+          (
+            el as unknown as { collapseOnClickOutside: boolean }
+          ).collapseOnClickOutside = Boolean(v['collapse-on-click-outside']);
           (el as unknown as { expanded: boolean }).expanded = Boolean(
             v.expanded
           );
