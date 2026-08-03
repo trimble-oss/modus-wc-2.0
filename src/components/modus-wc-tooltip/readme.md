@@ -15,6 +15,9 @@ the tooltip remains open and Escape does not dismiss it.
 Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
 For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
 
+For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+on the trigger (e.g. modus-wc-button).
+
 ## Properties
 
 | Property         | Attribute         | Description                                                                                                                                                                                                                       | Type                                                            | Default     |
@@ -25,7 +28,7 @@ For plain dynamic text, prefer the content prop instead. When contentElement is 
 | `disabled`       | `disabled`        | Disables displaying the tooltip on hover and focus                                                                                                                                                                                | `boolean \| undefined`                                          | `false`     |
 | `forceOpen`      | `force-open`      | Use this attribute to force the tooltip to remain open.                                                                                                                                                                           | `boolean \| undefined`                                          | `undefined` |
 | `position`       | `position`        | The position that the tooltip will render in relation to the element.                                                                                                                                                             | `"auto" \| "bottom" \| "left" \| "right" \| "top" \| undefined` | `'auto'`    |
-| `tooltipId`      | `tooltip-id`      | The ID of the tooltip element. Applied to the tip (`role="tooltip"`) and as `aria-describedby` on the slotted trigger so screen readers announce the tip with the control's name. When omitted, an id is generated automatically. | `string \| undefined`                                           | `undefined` |
+| `tooltipId`      | `tooltip-id`      | The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.                                                                                  | `string \| undefined`                                           | `undefined` |
 
 
 ## Events

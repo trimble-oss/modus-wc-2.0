@@ -12,7 +12,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable tooltip component used to create tooltips with different content.
@@ -22,6 +22,9 @@ import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
  * the tooltip remains open and Escape does not dismiss it.
  * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
  * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+ *
+ * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+ * on the trigger (e.g. modus-wc-button).
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -33,12 +36,6 @@ export class ModusWcTooltip {
   private popperInstance: PopperInstance | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
-  /** Element that receives aria-describedby (inner button when wrapping modus-wc-button). */
-  private describedByTarget: HTMLElement | null = null;
-  private generatedTooltipId: string | null = null;
-  private lastAppliedDescribedById: string | null = null;
-  /** Deferred accessibility sync for nested focusable hosts; cancelled on disconnect. */
-  private accessibilitySyncFrameId: number | null = null;
   private isHovered = false;
   private isFocused = false;
 
@@ -65,9 +62,8 @@ export class ModusWcTooltip {
   @Prop() forceOpen?: boolean;
 
   /**
-   * The ID of the tooltip element. Applied to the tip (`role="tooltip"`) and as
-   * `aria-describedby` on the slotted trigger so screen readers announce the tip with the control's name.
-   * When omitted, an id is generated automatically.
+   * The ID of the tooltip tip element (`role="tooltip"`).
+   * For screen reader support, add `aria-describedby` with this value to your trigger element.
    */
   @Prop() tooltipId?: string;
 
@@ -106,16 +102,13 @@ export class ModusWcTooltip {
 
   @Watch('tooltipId')
   handleTooltipIdChange() {
-    this.syncTooltipAccessibility();
+    this.applyTooltipId();
   }
 
   @Watch('disabled')
   handleDisabledChange(disabled: boolean) {
     if (disabled) {
       this.hideTooltip();
-      this.clearTriggerAriaDescribedBy();
-    } else {
-      this.syncTooltipAccessibility();
     }
   }
 
@@ -157,13 +150,13 @@ export class ModusWcTooltip {
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
     this.tooltipElement.setAttribute('role', 'tooltip');
     this.tooltipElement.setAttribute('popover', 'manual');
+    this.applyTooltipId();
 
     const arrow = document.createElement('div');
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
 
     this.applyContentToTooltip();
-    this.syncTooltipAccessibility();
 
     document.body.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
@@ -172,26 +165,12 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
-    // Nested hosts (e.g. modus-wc-button) may render their focusable control after this tick
-    this.accessibilitySyncFrameId = requestAnimationFrame(() => {
-      this.accessibilitySyncFrameId = null;
-      if (!this.el.isConnected || !this.tooltipElement?.isConnected) return;
-      this.syncTooltipAccessibility();
-    });
-
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
   }
 
   disconnectedCallback() {
-    if (this.accessibilitySyncFrameId !== null) {
-      cancelAnimationFrame(this.accessibilitySyncFrameId);
-      this.accessibilitySyncFrameId = null;
-    }
-
-    this.clearTriggerAriaDescribedBy();
-
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -213,85 +192,12 @@ export class ModusWcTooltip {
     window.removeEventListener('scroll', this.handleWindowScroll, true);
   }
 
-  private resolveTooltipId(): string {
+  private applyTooltipId() {
+    if (!this.tooltipElement) return;
     if (this.tooltipId) {
-      return this.tooltipId;
-    }
-    if (!this.generatedTooltipId) {
-      this.generatedTooltipId = `modus-wc-tooltip-${generateRandomId(8)}`;
-    }
-    return this.generatedTooltipId;
-  }
-
-  /**
-   * Prefer the nested focusable control (e.g. modus-wc-button > button) so
-   * aria-describedby is on the element that actually receives keyboard focus.
-   */
-  private resolveDescribedByTarget(): HTMLElement | null {
-    if (!this.triggerElement) return null;
-    const nested = this.triggerElement.querySelector(
-      'button, a[href], input, select, textarea'
-    );
-    return nested ? (nested as HTMLElement) : this.triggerElement;
-  }
-
-  /** Tip id + aria-describedby on the focusable trigger for name + description announcement. */
-  private syncTooltipAccessibility() {
-    if (!this.tooltipElement || this.disabled) return;
-
-    const id = this.resolveTooltipId();
-    this.tooltipElement.id = id;
-
-    const previousTarget = this.describedByTarget;
-    this.describedByTarget = this.resolveDescribedByTarget();
-    if (!this.describedByTarget) return;
-
-    if (this.lastAppliedDescribedById) {
-      if (this.lastAppliedDescribedById !== id) {
-        this.removeDescribedById(this.lastAppliedDescribedById, previousTarget);
-      } else if (previousTarget && previousTarget !== this.describedByTarget) {
-        this.removeDescribedById(id, previousTarget);
-      }
-    }
-
-    const existing = this.describedByTarget.getAttribute('aria-describedby');
-    const tokens = existing ? existing.split(/\s+/).filter(Boolean) : [];
-    if (!tokens.includes(id)) {
-      tokens.push(id);
-      this.describedByTarget.setAttribute('aria-describedby', tokens.join(' '));
-    }
-    this.lastAppliedDescribedById = id;
-  }
-
-  private removeDescribedById(id: string, target?: HTMLElement | null) {
-    const el =
-      target ?? this.describedByTarget ?? this.resolveDescribedByTarget();
-    if (!el) return;
-
-    const existing = el.getAttribute('aria-describedby');
-    if (!existing) return;
-
-    const next = existing
-      .split(/\s+/)
-      .filter((token) => token && token !== id)
-      .join(' ');
-
-    if (next) {
-      el.setAttribute('aria-describedby', next);
+      this.tooltipElement.id = this.tooltipId;
     } else {
-      el.removeAttribute('aria-describedby');
-    }
-  }
-
-  private clearTriggerAriaDescribedBy() {
-    if (this.lastAppliedDescribedById) {
-      this.removeDescribedById(this.lastAppliedDescribedById);
-      this.lastAppliedDescribedById = null;
-      return;
-    }
-    const id = this.tooltipId || this.generatedTooltipId;
-    if (id) {
-      this.removeDescribedById(id);
+      this.tooltipElement.removeAttribute('id');
     }
   }
 

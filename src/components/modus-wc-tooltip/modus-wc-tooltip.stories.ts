@@ -36,7 +36,7 @@ A customizable tooltip component used to create tooltips with different content.
 
 ### Keyboard Interaction
 - Wrap a focusable control (e.g. \`modus-wc-button\`) — Tab focus shows the tooltip; Tab away hides it
-- Screen readers announce the trigger's accessible name plus the tooltip content via \`aria-describedby\`
+- For screen readers, set \`tooltip-id\` on the tip and matching \`aria-describedby\` on the trigger
 - Press **Escape** to dismiss the tooltip without moving focus; it re-enables on the next hover or focus
         `,
       },
@@ -48,9 +48,14 @@ export default meta;
 type Story = StoryObj<TooltipArgs>;
 
 /** Focusable trigger — badges are not in the tab order and cannot demonstrate keyboard tooltip behavior. */
-const tooltipTrigger = () => html`
-  <modus-wc-button variant="outlined" color="tertiary" size="sm">
-    Hover
+const tooltipTrigger = (tooltipId?: string) => html`
+  <modus-wc-button
+    variant="outlined"
+    color="tertiary"
+    size="sm"
+    aria-describedby=${ifDefined(tooltipId || undefined)}
+  >
+    Hover me
   </modus-wc-button>
 `;
 
@@ -74,7 +79,7 @@ const Template: Story = {
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
-        ${tooltipTrigger()}
+        ${tooltipTrigger(args['tooltip-id'])}
       </modus-wc-tooltip>
     `;
   },
@@ -112,7 +117,12 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
   custom-class="tooltip-rich-html-demo"
   tooltip-id="storybook-tooltip-rich"
 >
-  <modus-wc-button variant="outlined" color="tertiary" size="sm">
+  <modus-wc-button
+    variant="outlined"
+    color="tertiary"
+    size="sm"
+    aria-describedby="storybook-tooltip-rich"
+  >
     Hover me
   </modus-wc-button>
 </modus-wc-tooltip>
@@ -143,7 +153,7 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
-        ${tooltipTrigger()}
+        ${tooltipTrigger(args['tooltip-id'])}
       </modus-wc-tooltip>
     `;
   },
@@ -216,6 +226,11 @@ export const ShadowDomParent: Story = {
           tooltip.forceOpen = v['force-open'] ?? false;
           tooltip.tooltipId = v['tooltip-id'] ?? 'storybook-tooltip-shadow';
           tooltip.position = v.position ?? 'auto';
+
+          const trigger = tooltip.querySelector('modus-wc-button');
+          if (trigger && tooltip.tooltipId) {
+            trigger.setAttribute('aria-describedby', tooltip.tooltipId);
+          }
         }
       }
       customElements.define('tooltip-shadow-host', TooltipShadowHost);

@@ -2,16 +2,6 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTooltip } from './modus-wc-tooltip';
 
 interface TooltipPrivateHarness {
-  describedByTarget: HTMLElement | null;
-  lastAppliedDescribedById: string | null;
-  generatedTooltipId: string | null;
-  triggerElement: HTMLElement | null;
-  tooltipElement: HTMLDivElement | null;
-  accessibilitySyncFrameId: number | null;
-  removeDescribedById: (id: string, target?: HTMLElement | null) => void;
-  clearTriggerAriaDescribedBy: () => void;
-  resolveDescribedByTarget: () => HTMLElement | null;
-  syncTooltipAccessibility: () => void;
   handleFocusOut: (event: FocusEvent) => void;
 }
 
@@ -292,174 +282,75 @@ describe('modus-wc-tooltip', () => {
     expect(page.rootInstance.escapeDismissed).toBe(true);
   });
 
-  it('should set aria-describedby on the trigger and role="tooltip" on the tip', async () => {
+  it('should apply tooltip-id and role="tooltip" on the tip element', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
       html: `<modus-wc-tooltip content="Described tip" tooltip-id="described-tip">
-        <button type="button">Save</button>
+        <button type="button" aria-describedby="described-tip">Save</button>
       </modus-wc-tooltip>`,
     });
-
-    const trigger = page.root?.querySelector('button');
-    expect(trigger?.getAttribute('aria-describedby')).toBe('described-tip');
 
     const tip = document.getElementById('described-tip');
     expect(tip?.getAttribute('role')).toBe('tooltip');
     expect(tip?.textContent).toContain('Described tip');
+    // Consumers own aria-describedby on the trigger — component does not auto-wire it
+    expect(
+      page.root?.querySelector('button')?.getAttribute('aria-describedby')
+    ).toBe('described-tip');
   });
 
-  it('should set aria-describedby on a nested focusable control inside the trigger host', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Nested tip" tooltip-id="nested-tip">
-        <span class="trigger-host"><button type="button">Save</button></span>
-      </modus-wc-tooltip>`,
-    });
-
-    await new Promise<void>((resolve) =>
-      requestAnimationFrame(() => resolve())
-    );
-    await page.waitForChanges();
-
-    const host = page.root?.querySelector('.trigger-host');
-    const button = page.root?.querySelector('button');
-    expect(host?.getAttribute('aria-describedby')).toBeNull();
-    expect(button?.getAttribute('aria-describedby')).toBe('nested-tip');
-  });
-
-  it('should migrate aria-describedby when the focusable target changes but tooltip id stays the same', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Nested tip" tooltip-id="nested-tip">
-        <span class="trigger-host"><button type="button">Save</button></span>
-      </modus-wc-tooltip>`,
-    });
-
-    const host = page.root?.querySelector('.trigger-host') as HTMLElement;
-    const button = page.root?.querySelector('button') as HTMLButtonElement;
-    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-
-    host.setAttribute('aria-describedby', 'nested-tip');
-    harness.describedByTarget = host;
-    harness.lastAppliedDescribedById = 'nested-tip';
-
-    harness.syncTooltipAccessibility();
-
-    expect(host.getAttribute('aria-describedby')).toBeNull();
-    expect(button.getAttribute('aria-describedby')).toBe('nested-tip');
-  });
-
-  it('should update aria-describedby when tooltipId changes', async () => {
+  it('should update the tip element id when tooltipId changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
       html: `<modus-wc-tooltip content="Described tip" tooltip-id="tip-a">
-        <button type="button">Save</button>
+        <button type="button" aria-describedby="tip-a">Save</button>
       </modus-wc-tooltip>`,
     });
 
-    const trigger = page.root?.querySelector('button');
-    expect(trigger?.getAttribute('aria-describedby')).toBe('tip-a');
+    expect(document.getElementById('tip-a')).not.toBeNull();
 
     if (page.root) {
       page.root.tooltipId = 'tip-b';
     }
-    page.rootInstance.handleTooltipIdChange();
     await page.waitForChanges();
 
-    expect(trigger?.getAttribute('aria-describedby')).toBe('tip-b');
+    expect(document.getElementById('tip-a')).toBeNull();
     expect(document.getElementById('tip-b')).not.toBeNull();
   });
 
-  it('should clear aria-describedby when disabled and restore when re-enabled', async () => {
+  it('should remove the tip element id when tooltipId is cleared', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Tip" tooltip-id="disabled-tip">
+      html: `<modus-wc-tooltip content="Described tip" tooltip-id="tip-clear">
         <button type="button">Save</button>
       </modus-wc-tooltip>`,
     });
 
-    const trigger = page.root?.querySelector('button');
-    expect(trigger?.getAttribute('aria-describedby')).toBe('disabled-tip');
+    expect(document.getElementById('tip-clear')).not.toBeNull();
 
-    const component = page.rootInstance as ModusWcTooltip;
-    component.disabled = true;
-    component.handleDisabledChange(true);
+    if (page.root) {
+      page.root.tooltipId = undefined;
+    }
+    page.rootInstance.handleTooltipIdChange();
     await page.waitForChanges();
 
-    expect(trigger?.getAttribute('aria-describedby')).toBeNull();
-
-    component.disabled = false;
-    component.handleDisabledChange(false);
-    await page.waitForChanges();
-
-    expect(trigger?.getAttribute('aria-describedby')).toBe('disabled-tip');
+    const tip = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tip?.hasAttribute('id')).toBe(false);
   });
 
-  it('should trim tooltip id from aria-describedby when other tokens remain', async () => {
+  it('should no-op applyTooltipId when tooltip element is missing', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Tip" tooltip-id="tip-id">
+      html: `<modus-wc-tooltip content="Tip" tooltip-id="missing-tip">
         <button type="button">Save</button>
       </modus-wc-tooltip>`,
     });
 
-    const trigger = page.root?.querySelector('button') as HTMLButtonElement;
-    trigger.setAttribute('aria-describedby', 'other-tip tip-id');
+    page.rootInstance.tooltipElement = null;
 
-    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-    harness.removeDescribedById('tip-id', trigger);
-
-    expect(trigger.getAttribute('aria-describedby')).toBe('other-tip');
-  });
-
-  it('should remove aria-describedby when tooltip id is the only token', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Tip" tooltip-id="solo-tip">
-        <button type="button">Save</button>
-      </modus-wc-tooltip>`,
-    });
-
-    const trigger = page.root?.querySelector('button') as HTMLButtonElement;
-    trigger.setAttribute('aria-describedby', 'solo-tip');
-
-    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-    harness.removeDescribedById('solo-tip', trigger);
-
-    expect(trigger.getAttribute('aria-describedby')).toBeNull();
-  });
-
-  it('should no-op removeDescribedById when target has no aria-describedby', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Tip"><button type="button">Save</button></modus-wc-tooltip>`,
-    });
-
-    const trigger = page.root?.querySelector('button') as HTMLButtonElement;
-    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-    trigger.removeAttribute('aria-describedby');
-
-    expect(() =>
-      harness.removeDescribedById('missing-tip', trigger)
-    ).not.toThrow();
-    expect(trigger.getAttribute('aria-describedby')).toBeNull();
-  });
-
-  it('should clear aria-describedby via lastAppliedDescribedById on disconnect', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Tip" tooltip-id="disconnect-tip">
-        <button type="button">Save</button>
-      </modus-wc-tooltip>`,
-    });
-
-    const trigger = page.root?.querySelector('button') as HTMLButtonElement;
-    expect(trigger.getAttribute('aria-describedby')).toBe('disconnect-tip');
-
-    page.root?.remove();
-    await page.waitForChanges();
-
-    expect(trigger.getAttribute('aria-describedby')).toBeNull();
+    expect(() => {
+      page.rootInstance.handleTooltipIdChange();
+    }).not.toThrow();
   });
 
   it('should keep tooltip visible when focus moves within the tooltip host', async () => {
@@ -485,48 +376,6 @@ describe('modus-wc-tooltip', () => {
     expect(page.rootInstance.isVisible).toBe(true);
   });
 
-  it('should return null from resolveDescribedByTarget when triggerElement is missing', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: '<modus-wc-tooltip content="Tip"></modus-wc-tooltip>',
-    });
-
-    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-    harness.triggerElement = null;
-
-    expect(harness.resolveDescribedByTarget()).toBeNull();
-  });
-
-  it('should use trigger host for aria-describedby when no nested focusable exists', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Host tip" tooltip-id="host-tip">
-        <span class="plain-host">Label only</span>
-      </modus-wc-tooltip>`,
-    });
-
-    const host = page.root?.querySelector('.plain-host');
-    expect(host?.getAttribute('aria-describedby')).toBe('host-tip');
-  });
-
-  it('should generate a tooltip id and wire aria-describedby when tooltipId is omitted', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTooltip],
-      html: `<modus-wc-tooltip content="Auto id tip">
-        <button type="button">Save</button>
-      </modus-wc-tooltip>`,
-    });
-
-    const trigger = page.root?.querySelector('button');
-    // generateRandomId returns a fixed value under Build.isTesting
-    expect(trigger?.getAttribute('aria-describedby')).toBe(
-      'modus-wc-tooltip-test-random-id'
-    );
-    expect(
-      document.getElementById('modus-wc-tooltip-test-random-id')
-    ).not.toBeNull();
-  });
-
   it('should reset escape dismissal on focusin so the tip can reopen', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
@@ -547,113 +396,6 @@ describe('modus-wc-tooltip', () => {
     page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
     await page.waitForChanges();
     expect(page.rootInstance.isVisible).toBe(true);
-  });
-
-  it('should cancel deferred a11y sync on disconnect and ignore a late frame callback', async () => {
-    const deferred: FrameRequestCallback[] = [];
-    const origRaf = globalThis.requestAnimationFrame;
-    const origCancel = globalThis.cancelAnimationFrame;
-    const cancelSpy = jest.fn();
-
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      deferred.push(cb);
-      return 42;
-    }) as typeof requestAnimationFrame;
-    globalThis.cancelAnimationFrame = cancelSpy as typeof cancelAnimationFrame;
-
-    try {
-      const page = await newSpecPage({
-        components: [ModusWcTooltip],
-        html: `<modus-wc-tooltip content="Tip" tooltip-id="raf-tip">
-          <button type="button">Save</button>
-        </modus-wc-tooltip>`,
-      });
-
-      const trigger = page.root?.querySelector('button') as HTMLButtonElement;
-      expect(trigger.getAttribute('aria-describedby')).toBe('raf-tip');
-      expect(deferred.length).toBeGreaterThan(0);
-
-      page.root?.remove();
-      await page.waitForChanges();
-
-      expect(cancelSpy).toHaveBeenCalledWith(42);
-      expect(trigger.getAttribute('aria-describedby')).toBeNull();
-
-      // Simulate a frame that still fires after cancel — guard must no-op
-      deferred.forEach((cb) => cb(0));
-      expect(trigger.getAttribute('aria-describedby')).toBeNull();
-    } finally {
-      globalThis.requestAnimationFrame = origRaf;
-      globalThis.cancelAnimationFrame = origCancel;
-    }
-  });
-
-  it('should run deferred a11y sync when host and tip stay connected', async () => {
-    const deferred: FrameRequestCallback[] = [];
-    const origRaf = globalThis.requestAnimationFrame;
-
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      deferred.push(cb);
-      return 1;
-    }) as typeof requestAnimationFrame;
-
-    try {
-      const page = await newSpecPage({
-        components: [ModusWcTooltip],
-        html: `<modus-wc-tooltip content="Tip" tooltip-id="connected-raf-tip">
-          <span class="trigger-host"><button type="button">Save</button></span>
-        </modus-wc-tooltip>`,
-      });
-
-      expect(deferred.length).toBeGreaterThan(0);
-      deferred.forEach((cb) => cb(0));
-      await page.waitForChanges();
-
-      const host = page.root?.querySelector('.trigger-host');
-      const button = page.root?.querySelector('button');
-      expect(host?.getAttribute('aria-describedby')).toBeNull();
-      expect(button?.getAttribute('aria-describedby')).toBe(
-        'connected-raf-tip'
-      );
-    } finally {
-      globalThis.requestAnimationFrame = origRaf;
-    }
-  });
-
-  it('should skip deferred a11y sync when tip is detached but host remains connected', async () => {
-    const deferred: FrameRequestCallback[] = [];
-    const origRaf = globalThis.requestAnimationFrame;
-
-    globalThis.requestAnimationFrame = jest.fn((cb: FrameRequestCallback) => {
-      deferred.push(cb);
-      return 1;
-    }) as typeof requestAnimationFrame;
-
-    try {
-      const page = await newSpecPage({
-        components: [ModusWcTooltip],
-        html: `<modus-wc-tooltip content="Tip" tooltip-id="detached-tip">
-          <button type="button">Save</button>
-        </modus-wc-tooltip>`,
-      });
-
-      const harness = page.rootInstance as unknown as TooltipPrivateHarness;
-      const tip = harness.tooltipElement;
-      tip?.parentElement?.removeChild(tip);
-      harness.accessibilitySyncFrameId = null;
-
-      deferred.forEach((cb) => cb(0));
-      await page.waitForChanges();
-
-      expect(page.root?.isConnected).toBe(true);
-
-      // Also cover optional-chaining when tooltipElement is cleared
-      harness.tooltipElement = null;
-      deferred.forEach((cb) => cb(0));
-      expect(page.root?.isConnected).toBe(true);
-    } finally {
-      globalThis.requestAnimationFrame = origRaf;
-    }
   });
 
   it('should clean up resources in disconnectedCallback', async () => {
@@ -849,6 +591,27 @@ describe('modus-wc-tooltip', () => {
 
     // Tooltip should remain hidden
     expect(mockTooltipElement.style.display).toBe('none');
+  });
+
+  it('should hide the tooltip when disabled changes to true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+    page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    const hideTooltipSpy = jest.spyOn(page.rootInstance, 'hideTooltip');
+    tooltipComponent.disabled = true;
+    tooltipComponent.handleDisabledChange(true);
+    await page.waitForChanges();
+
+    expect(hideTooltipSpy).toHaveBeenCalled();
+    expect(page.rootInstance.isVisible).toBe(false);
   });
 
   it('should update popper placement when position changes', async () => {
