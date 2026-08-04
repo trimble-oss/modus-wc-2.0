@@ -25,7 +25,7 @@ modus-wc-badge .modus-wc-badge {
     background-color: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--modus-wc-border-radius-badge);
-    color: var(--modus-wc-color-base-content);
+    color: var(--modus-wc-color-base-inverted);
     gap: var(--modus-wc-spacing-xs);
   }
 
@@ -132,7 +132,7 @@ modus-wc-badge .modus-wc-badge {
   &.modus-wc-badge-default:not(.modus-wc-badge-text):not(
       .modus-wc-badge-outlined
     ) {
-    background-color: var(--modus-wc-color-base-inverted);
+    background-color: var(--modus-wc-color-base-page);
     border: 1px solid var(--modus-wc-color-base-200);
     border-radius: var(--modus-wc-border-radius-badge);
     color: var(--modus-wc-color-base-inverted);
