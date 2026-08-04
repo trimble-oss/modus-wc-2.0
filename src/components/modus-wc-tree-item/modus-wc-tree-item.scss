@@ -17,16 +17,10 @@ modus-wc-tree-item .modus-wc-menu-item {
       background-color: transparent;
     }
 
-    // Override DaisyUI box-shadow caret only — keep size/rotate from DaisyUI.
+    // Color DaisyUI's box-shadow caret; leave size/origin/margin/rotate alone.
     &.modus-wc-menu-dropdown-toggle::after {
-      border-color: currentColor;
-      border-style: solid;
-      border-width: 0 var(--modus-wc-border-width-sm)
-        var(--modus-wc-border-width-sm) 0;
-      box-shadow: none;
+      box-shadow: 2px 2px currentColor;
       color: var(--modus-wc-color-base-content);
-      margin-top: 0;
-      transform-origin: center;
     }
 
     .modus-wc-menu-item-content {
