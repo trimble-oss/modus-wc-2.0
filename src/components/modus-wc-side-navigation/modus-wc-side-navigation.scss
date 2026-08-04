@@ -37,6 +37,12 @@ modus-wc-side-navigation {
     max-width: 100%;
   }
 
+  // Collapsed rail clips the submenu caret; hide it (submenu cannot open here).
+  .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
+    .modus-wc-menu-dropdown-toggle::after {
+    display: none;
+  }
+
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
     padding-inline-end: var(--modus-wc-spacing-xs);
