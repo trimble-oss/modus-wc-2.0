@@ -1,6 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcTooltip } from './modus-wc-tooltip';
 
+interface TooltipPrivateHarness {
+  handleFocusOut: (event: FocusEvent) => void;
+}
+
 describe('modus-wc-tooltip', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -219,6 +223,181 @@ describe('modus-wc-tooltip', () => {
     expect(page.root).toBeTruthy();
   });
 
+  it('should show tooltip on focusin and hide on focusout', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Focus tip" tooltip-id="focus-tip">
+        <button type="button">Trigger</button>
+      </modus-wc-tooltip>`,
+    });
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    page.root?.dispatchEvent(new Event('focusout', { bubbles: true }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(false);
+  });
+
+  it('should keep tooltip visible on mouseleave when trigger remains focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Focus tip">
+        <button type="button">Trigger</button>
+      </modus-wc-tooltip>`,
+    });
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    page.root?.dispatchEvent(new MouseEvent('mouseleave'));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+  });
+
+  it('should hide tooltip on Escape while focus remains on the trigger', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Escape tip">
+        <button type="button" id="tip-trigger">Trigger</button>
+      </modus-wc-tooltip>`,
+    });
+
+    const dismissEscapeSpy = jest.fn();
+    page.root?.addEventListener('dismissEscape', dismissEscapeSpy);
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+    await page.waitForChanges();
+
+    expect(page.rootInstance.isVisible).toBe(false);
+    expect(dismissEscapeSpy).toHaveBeenCalledTimes(1);
+    // Escape must not blur — tip stays dismissed via escapeDismissed until next hover/focus
+    expect(page.rootInstance.escapeDismissed).toBe(true);
+  });
+
+  it('should apply tooltip-id and role="tooltip" on the tip element', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Described tip" tooltip-id="described-tip">
+        <button type="button" aria-describedby="described-tip">Save</button>
+      </modus-wc-tooltip>`,
+    });
+
+    const tip = document.getElementById('described-tip');
+    expect(tip?.getAttribute('role')).toBe('tooltip');
+    expect(tip?.textContent).toContain('Described tip');
+    // Consumers own aria-describedby on the trigger — component does not auto-wire it
+    expect(
+      page.root?.querySelector('button')?.getAttribute('aria-describedby')
+    ).toBe('described-tip');
+  });
+
+  it('should update the tip element id when tooltipId changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Described tip" tooltip-id="tip-a">
+        <button type="button" aria-describedby="tip-a">Save</button>
+      </modus-wc-tooltip>`,
+    });
+
+    expect(document.getElementById('tip-a')).not.toBeNull();
+
+    if (page.root) {
+      page.root.tooltipId = 'tip-b';
+    }
+    await page.waitForChanges();
+
+    expect(document.getElementById('tip-a')).toBeNull();
+    expect(document.getElementById('tip-b')).not.toBeNull();
+  });
+
+  it('should remove the tip element id when tooltipId is cleared', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Described tip" tooltip-id="tip-clear">
+        <button type="button">Save</button>
+      </modus-wc-tooltip>`,
+    });
+
+    expect(document.getElementById('tip-clear')).not.toBeNull();
+
+    if (page.root) {
+      page.root.tooltipId = undefined;
+    }
+    page.rootInstance.handleTooltipIdChange();
+    await page.waitForChanges();
+
+    const tip = page.body.querySelector('.modus-wc-tooltip-content');
+    expect(tip?.hasAttribute('id')).toBe(false);
+  });
+
+  it('should no-op applyTooltipId when tooltip element is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Tip" tooltip-id="missing-tip">
+        <button type="button">Save</button>
+      </modus-wc-tooltip>`,
+    });
+
+    page.rootInstance.tooltipElement = null;
+
+    expect(() => {
+      page.rootInstance.handleTooltipIdChange();
+    }).not.toThrow();
+  });
+
+  it('should keep tooltip visible when focus moves within the tooltip host', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Focus tip">
+        <button type="button" id="outer-btn">Outer</button>
+        <button type="button" id="inner-btn">Inner</button>
+      </modus-wc-tooltip>`,
+    });
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    const inner = page.root?.querySelector('#inner-btn');
+    const harness = page.rootInstance as unknown as TooltipPrivateHarness;
+    harness.handleFocusOut(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: inner })
+    );
+    await page.waitForChanges();
+
+    expect(page.rootInstance.isVisible).toBe(true);
+  });
+
+  it('should reset escape dismissal on focusin so the tip can reopen', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: `<modus-wc-tooltip content="Test">
+        <button type="button">Trigger</button>
+      </modus-wc-tooltip>`,
+    });
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    await page.waitForChanges();
+    document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(false);
+
+    page.root?.dispatchEvent(new Event('focusout', { bubbles: true }));
+    await page.waitForChanges();
+
+    page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+  });
+
   it('should clean up resources in disconnectedCallback', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
@@ -412,6 +591,27 @@ describe('modus-wc-tooltip', () => {
 
     // Tooltip should remain hidden
     expect(mockTooltipElement.style.display).toBe('none');
+  });
+
+  it('should hide the tooltip when disabled changes to true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTooltip],
+      html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+    });
+
+    const tooltipComponent = page.rootInstance as ModusWcTooltip;
+
+    page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+    await page.waitForChanges();
+    expect(page.rootInstance.isVisible).toBe(true);
+
+    const hideTooltipSpy = jest.spyOn(page.rootInstance, 'hideTooltip');
+    tooltipComponent.disabled = true;
+    tooltipComponent.handleDisabledChange(true);
+    await page.waitForChanges();
+
+    expect(hideTooltipSpy).toHaveBeenCalled();
+    expect(page.rootInstance.isVisible).toBe(false);
   });
 
   it('should update popper placement when position changes', async () => {

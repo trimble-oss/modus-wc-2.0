@@ -35,8 +35,9 @@ A customizable tooltip component used to create tooltips with different content.
 - **Customizable**: Supports custom CSS classes and positioning
 
 ### Keyboard Interaction
-- Press **Escape** to dismiss the tooltip while it's visible
-- The tooltip will automatically re-enable on mouse enter
+- Wrap a focusable control (e.g. \`modus-wc-button\`) — Tab focus shows the tooltip; Tab away hides it
+- For screen readers, set \`tooltip-id\` on the tip and matching \`aria-describedby\` on the trigger
+- Press **Escape** to dismiss the tooltip without moving focus; it re-enables on the next hover or focus
         `,
       },
     },
@@ -46,11 +47,26 @@ export default meta;
 
 type Story = StoryObj<TooltipArgs>;
 
+/** Focusable trigger — badges are not in the tab order and cannot demonstrate keyboard tooltip behavior. */
+const tooltipTrigger = (tooltipId?: string) => html`
+  <modus-wc-button
+    variant="outlined"
+    color="tertiary"
+    size="sm"
+    aria-describedby=${ifDefined(tooltipId || undefined)}
+  >
+    Hover me
+  </modus-wc-button>
+`;
+
 const Template: Story = {
   parameters: {
     actions: {
       handles: ['dismissEscape'],
     },
+  },
+  args: {
+    'tooltip-id': 'storybook-tooltip',
   },
   render: (args) => {
     // prettier-ignore
@@ -63,7 +79,7 @@ const Template: Story = {
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
-        <modus-wc-badge>Hover</modus-wc-badge>
+        ${tooltipTrigger(args['tooltip-id'])}
       </modus-wc-tooltip>
     `;
   },
@@ -99,8 +115,16 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
         transform: (_src, { args }) => `<modus-wc-tooltip
   position="${args.position ?? 'auto'}"
   custom-class="tooltip-rich-html-demo"
+  tooltip-id="storybook-tooltip-rich"
 >
-  <modus-wc-badge>Hover</modus-wc-badge>
+  <modus-wc-button
+    variant="outlined"
+    color="tertiary"
+    size="sm"
+    aria-describedby="storybook-tooltip-rich"
+  >
+    Hover me
+  </modus-wc-button>
 </modus-wc-tooltip>
 
 <script>
@@ -114,6 +138,7 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
   args: {
     position: 'top',
     'custom-class': 'tooltip-rich-html-demo',
+    'tooltip-id': 'storybook-tooltip-rich',
   },
   render: (args) => {
     const contentElement = buildRichTooltipContent(defaultRichHtml);
@@ -128,13 +153,16 @@ To update the tooltip content, reassign \`contentElement\` with a new element.
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >
-        <modus-wc-badge>Hover</modus-wc-badge>
+        ${tooltipTrigger(args['tooltip-id'])}
       </modus-wc-tooltip>
     `;
   },
 };
 
 export const ShadowDomParent: Story = {
+  args: {
+    'tooltip-id': 'storybook-tooltip-shadow',
+  },
   render: (args) => {
     if (!customElements.get('tooltip-shadow-host')) {
       class TooltipShadowHost extends HTMLElement {
@@ -171,9 +199,18 @@ export const ShadowDomParent: Story = {
             'modus-wc-tooltip'
           ) as typeof this.tooltipEl;
 
-          const badge = document.createElement('modus-wc-badge');
-          badge.textContent = 'Hover';
-          this.tooltipEl!.appendChild(badge);
+          const button = document.createElement(
+            'modus-wc-button'
+          ) as HTMLElement & {
+            variant: string;
+            color: string;
+            size: string;
+          };
+          button.variant = 'outlined';
+          button.color = 'tertiary';
+          button.size = 'sm';
+          button.textContent = 'Hover';
+          this.tooltipEl!.appendChild(button);
           this.sr.appendChild(this.tooltipEl!);
 
           void Promise.resolve().then(() => this.applyProps());
@@ -187,8 +224,13 @@ export const ShadowDomParent: Story = {
           tooltip.customClass = v['custom-class'] ?? '';
           tooltip.disabled = Boolean(v.disabled);
           tooltip.forceOpen = v['force-open'] ?? false;
-          tooltip.tooltipId = v['tooltip-id'] ?? '';
+          tooltip.tooltipId = v['tooltip-id'] ?? 'storybook-tooltip-shadow';
           tooltip.position = v.position ?? 'auto';
+
+          const trigger = tooltip.querySelector('modus-wc-button');
+          if (trigger && tooltip.tooltipId) {
+            trigger.setAttribute('aria-describedby', tooltip.tooltipId);
+          }
         }
       }
       customElements.define('tooltip-shadow-host', TooltipShadowHost);
