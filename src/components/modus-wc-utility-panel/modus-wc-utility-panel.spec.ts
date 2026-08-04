@@ -1,6 +1,14 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcUtilityPanel } from './modus-wc-utility-panel';
 
+interface UtilityPanelPrivateHarness {
+  expanded: boolean;
+  panelRef?: HTMLElement;
+  overlayTarget?: HTMLElement;
+  handleClickOutside: (event: MouseEvent) => void;
+  clearTargetOverlay: () => void;
+}
+
 describe('modus-wc-utility-panel', () => {
   it('should render with default props', async () => {
     const { root } = await newSpecPage({
@@ -311,9 +319,204 @@ describe('modus-wc-utility-panel', () => {
       html: '<modus-wc-utility-panel custom-class="my-custom-class"></modus-wc-utility-panel>',
     });
 
-    const outerDiv = root?.querySelector('div');
+    const outerDiv = root?.querySelector('.modus-wc-utility-panel');
     expect(outerDiv?.classList.contains('modus-wc-utility-panel')).toBe(true);
     expect(outerDiv?.classList.contains('my-custom-class')).toBe(true);
+  });
+
+  it('should render backdrop when backgroundOverlay and expanded are true', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>',
+    });
+
+    const backdrop = root?.querySelector('.modus-wc-utility-panel-backdrop');
+    expect(backdrop).toBeTruthy();
+    expect(backdrop?.getAttribute('aria-hidden')).toBe('true');
+    expect(root).toMatchSnapshot();
+  });
+
+  it('should not render backdrop when backgroundOverlay is false', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" background-overlay="false"></modus-wc-utility-panel>',
+    });
+
+    expect(root?.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should not render backdrop when collapsed even if backgroundOverlay is true', async () => {
+    const { root } = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel background-overlay="true"></modus-wc-utility-panel>',
+    });
+
+    expect(root?.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should mount backdrop on targetElement when backgroundOverlay is enabled', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+    // Host should not also render a full-viewport backdrop
+    expect(
+      page.root?.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeNull();
+  });
+
+  it('should remove target backdrop when panel collapses', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    component.expanded = false;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(target.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should sync background overlay when backgroundOverlay prop changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    component.targetElement = target;
+    component.backgroundOverlay = true;
+    component.handleBackgroundOverlayChange();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+
+    component.backgroundOverlay = false;
+    component.handleBackgroundOverlayChange();
+    await page.waitForChanges();
+
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(target.querySelector('.modus-wc-utility-panel-backdrop')).toBeNull();
+  });
+
+  it('should clear previous target overlay when targetElement changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target-1">Target 1</div>
+          <div id="overlay-target-2">Target 2</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const target1 = page.doc.querySelector('#overlay-target-1') as HTMLElement;
+    const target2 = page.doc.querySelector('#overlay-target-2') as HTMLElement;
+
+    component.targetElement = target1;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target1.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+
+    component.targetElement = target2;
+    component.syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    expect(
+      target1.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(
+      target1.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeNull();
+    expect(
+      target2.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(true);
+    expect(
+      target2.querySelector('.modus-wc-utility-panel-backdrop')
+    ).toBeTruthy();
+  });
+
+  it('should clear overlay target class when backdrop child is already missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: `
+        <div>
+          <div id="overlay-target">Target content</div>
+          <modus-wc-utility-panel expanded="true" background-overlay="true"></modus-wc-utility-panel>
+        </div>
+      `,
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    const target = page.doc.querySelector('#overlay-target') as HTMLElement;
+
+    (page.rootInstance as ModusWcUtilityPanel).targetElement = target;
+    (page.rootInstance as ModusWcUtilityPanel).syncBackgroundOverlay();
+    await page.waitForChanges();
+
+    target.querySelector('.modus-wc-utility-panel-backdrop')?.remove();
+    component.overlayTarget = target;
+
+    expect(() => component.clearTargetOverlay()).not.toThrow();
+    expect(
+      target.classList.contains('modus-wc-utility-panel-overlay-target')
+    ).toBe(false);
+    expect(component.overlayTarget).toBeUndefined();
   });
 
   it('should re-adjust content when targetElement changes while expanded', async () => {
@@ -359,5 +562,209 @@ describe('modus-wc-utility-panel', () => {
     component.handleTargetChange();
 
     expect(adjustContentSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse when Escape is pressed while expanded', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
+  });
+
+  it('should not collapse when Escape is pressed while collapsed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse when clicking outside if collapseOnClickOutside is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
+  });
+
+  it('should not collapse when clicking inside the panel with collapseOnClickOutside', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panel = page.root?.querySelector(
+      '.modus-wc-utility-panel'
+    ) as HTMLElement;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    panel.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not collapse on outside click when collapseOnClickOutside is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should remove document listeners on disconnect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.disconnectedCallback();
+
+    page.doc.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+  });
+
+  it('should register click-outside listener when collapseOnClickOutside becomes true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.collapseOnClickOutside = true;
+    component.handleCollapseOnClickOutsideChange(true);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+  });
+
+  it('should remove click-outside listener when collapseOnClickOutside becomes false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component = page.rootInstance as ModusWcUtilityPanel;
+    component.collapseOnClickOutside = false;
+    component.handleCollapseOnClickOutsideChange(false);
+
+    page.doc.body.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+  });
+
+  it('should not collapse on outside click when panel ref is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    component.panelRef = undefined;
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    component.handleClickOutside(
+      new MouseEvent('click', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(true);
+    expect(panelClosedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should collapse using event target when composedPath is unavailable', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcUtilityPanel],
+      html: '<modus-wc-utility-panel expanded="true" collapse-on-click-outside="true"></modus-wc-utility-panel>',
+    });
+
+    const component =
+      page.rootInstance as unknown as UtilityPanelPrivateHarness;
+    const outsideTarget = page.doc.createElement('div');
+    const panelClosedSpy = jest.fn();
+    page.root?.addEventListener('panelClosed', panelClosedSpy);
+
+    const event = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(event, 'target', {
+      value: outsideTarget,
+      configurable: true,
+    });
+    Object.defineProperty(event, 'composedPath', {
+      value: undefined,
+      configurable: true,
+    });
+
+    component.handleClickOutside(event);
+    await page.waitForChanges();
+
+    expect(component.expanded).toBe(false);
+    expect(panelClosedSpy).toHaveBeenCalled();
   });
 });
