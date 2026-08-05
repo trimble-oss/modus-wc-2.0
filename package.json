@@ -111,19 +111,19 @@
     "pack:nuget": "dotnet build integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj -c Release && dotnet pack integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj -c Release --no-build -o nuget-output"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.7.6",
+    "@floating-ui/dom": "^1.8.0",
     "@popperjs/core": "^2.11.8",
     "@tanstack/table-core": "^8.21.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
-    "@stencil/angular-output-target": "^1.3.2",
+    "@stencil/angular-output-target": "^1.4.1",
     "@stencil/core": "^4.35.3",
-    "@stencil/react-output-target": "1.2.0",
-    "@stencil/sass": "^3.2.3",
-    "@stencil/ssr": "^0.3.1",
+    "@stencil/react-output-target": "1.6.1",
+    "@stencil/sass": "^3.3.2",
+    "@stencil/ssr": "^0.4.0",
     "@stencil/store": "^2.2.2",
-    "@stencil/vue-output-target": "^0.13.2",
+    "@stencil/vue-output-target": "^0.14.1",
     "@storybook/addon-a11y": "^8.6.12",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-links": "^8.6.12",
@@ -135,7 +135,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@trimble-oss/modus-stencil-razor-output-target": "^1.0.39",
     "@types/jest": "^29.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.61.1",
     "concurrently": "^9.2.1",
     "daisyui": "^4.12.13",
@@ -150,16 +150,16 @@
     "jest-cli": "^29.7.0",
     "lit": "^3.3.3",
     "marked": "^15.0.11",
-    "prettier": "3.8.4",
+    "prettier": "3.9.6",
     "puppeteer": "^23.5.3",
     "stencil-tailwind-plugin": "^1.8.0",
     "stylelint": "16.26.1",
     "stylelint-config-standard-scss": "16.0.0",
     "stylelint-order": "8.1.1",
     "tailwindcss": "^3.4.14",
-    "ts-loader": "^9.6.1",
+    "ts-loader": "^9.6.2",
     "typescript": "^5.6.2",
-    "vite": "^7.1.7",
+    "vite": "^7.3.6",
     "wireit": "^0.14.12",
     "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3"
   },
@@ -188,7 +188,7 @@
     "uuid": "11.1.1"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.60.1",
+    "@rollup/rollup-linux-x64-gnu": "4.62.4",
     "@trimble-oss/custom-elements-manifest-analyzer": "^0.0.4"
   },
   "wireit": {
