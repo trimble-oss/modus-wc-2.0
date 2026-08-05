@@ -41,7 +41,7 @@ jobs:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
-      - uses: google/wireit@setup-github-actions-caching/v2
+      - uses: google/wireit@9d7c2e5346f8ef1b1ab6014c4e96c74e234f7ed5 # setup-github-actions-caching/v2
 
       - name: Install dependencies
         run: npm ci
@@ -152,7 +152,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Angular Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.3
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-angular.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger React Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.3
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-react.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -172,7 +172,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Vue Publish Workflow
-        uses: benc-uk/workflow-dispatch@v1.3
+        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-vue.yml
           inputs: '{"version": "${{ github.event.inputs.version }}"}'
@@ -228,7 +228,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: moduswebcomponents-${{ github.event.inputs.version }}
