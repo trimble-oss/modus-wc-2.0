@@ -16,6 +16,15 @@ exports[`modus-wc-badge should render with custom props 1`] = `
 </modus-wc-badge>
 `;
 
+exports[`modus-wc-badge should render with default color 1`] = `
+<modus-wc-badge color="default">
+  <!---->
+  <span class="modus-wc-badge modus-wc-badge-default modus-wc-badge-md" role="status">
+    Badge
+  </span>
+</modus-wc-badge>
+`;
+
 exports[`modus-wc-badge should render with default props 1`] = `
 <modus-wc-badge>
   <!---->

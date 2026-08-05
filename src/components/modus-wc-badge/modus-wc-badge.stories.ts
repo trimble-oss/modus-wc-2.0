@@ -6,6 +6,7 @@ import { ModusSize } from '../types';
 
 interface BadgeArgs {
   color:
+    | 'default'
     | 'primary'
     | 'secondary'
     | 'tertiary'
@@ -30,6 +31,7 @@ const meta: Meta<BadgeArgs> = {
     color: {
       control: { type: 'select' },
       options: [
+        'default',
         'primary',
         'secondary',
         'tertiary',
