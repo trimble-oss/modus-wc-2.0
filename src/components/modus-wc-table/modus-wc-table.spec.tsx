@@ -4099,7 +4099,7 @@ describe('modus-wc-table', () => {
           }
 
           const label = document.createElement('span');
-          label.textContent = String(getValue() ?? '') ?? '';
+          label.textContent = String(getValue());
           container.appendChild(label);
 
           return container;
@@ -4305,7 +4305,7 @@ describe('modus-wc-table', () => {
           accessorKey: 'name',
           header: 'Name',
         },
-      ] as unknown as ColumnDef<Record<string, unknown>, unknown>[];
+      ];
       component.tableOptions = {
         enableRowSelection: true,
         getRowId: (row: SelectRow) => row.id,
@@ -4379,7 +4379,7 @@ describe('modus-wc-table', () => {
       component.columnDefs = [
         { id: 'id', accessorKey: 'id', header: 'ID' },
         { id: 'name', accessorKey: 'name', header: 'Name' },
-      ] as unknown as ColumnDef<Record<string, unknown>, unknown>[];
+      ];
       component.tableOptions = {
         getCoreRowModel: getCoreRowModel<PageRow>(),
         getPaginationRowModel: getPaginationRowModel<PageRow>(),
@@ -4387,7 +4387,7 @@ describe('modus-wc-table', () => {
         initialState: {
           pagination: { pageIndex: 0, pageSize: 5 },
         },
-      } as unknown as Partial<TableOptions<Record<string, unknown>>>;
+      };
 
       await page.waitForChanges();
 
