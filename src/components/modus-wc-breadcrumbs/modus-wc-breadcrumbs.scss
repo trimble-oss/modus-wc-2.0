@@ -81,8 +81,7 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
 [data-theme='connect-dark'] modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   a,
   .modus-wc-breadcrumb-button {
-    color: var(--modus-wc-color-base-content);
-    opacity: 0.5;
+    color: #8c8b96;
     text-decoration: none;
 
     &:active {
@@ -90,6 +89,8 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
     }
 
     &:hover {
+      background-color: #e2e2e7;
+      color: #116fbf;
       text-decoration: none;
     }
   }

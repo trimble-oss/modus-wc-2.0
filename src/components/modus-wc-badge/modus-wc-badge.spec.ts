@@ -18,6 +18,14 @@ describe('modus-wc-badge', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render with default color', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge color="default">Badge</modus-wc-badge>',
+    });
+    expect(page.root).toMatchSnapshot();
+  });
+
   it('should render with alert role for warning color', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],

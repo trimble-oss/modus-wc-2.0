@@ -17,10 +17,14 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 /**
  * A customizable tooltip component used to create tooltips with different content.
  *
- * The tooltip can be dismissed by pressing the Escape key when hovering over it.
- * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+ * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
+ * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
+ * the tooltip remains open and Escape does not dismiss it.
  * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
  * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+ *
+ * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+ * on the trigger (e.g. modus-wc-button).
  */
 @Component({
   tag: 'modus-wc-tooltip',
@@ -32,6 +36,8 @@ export class ModusWcTooltip {
   private popperInstance: PopperInstance | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
+  private isHovered = false;
+  private isFocused = false;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -49,13 +55,16 @@ export class ModusWcTooltip {
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
 
-  /** Disables displaying the tooltip on hover */
+  /** Disables displaying the tooltip on hover and focus */
   @Prop() disabled?: boolean = false;
 
   /** Use this attribute to force the tooltip to remain open. */
   @Prop() forceOpen?: boolean;
 
-  /** The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements. */
+  /**
+   * The ID of the tooltip tip element (`role="tooltip"`).
+   * For screen reader support, add `aria-describedby` with this value to your trigger element.
+   */
   @Prop() tooltipId?: string;
 
   /** The position that the tooltip will render in relation to the element. */
@@ -91,6 +100,18 @@ export class ModusWcTooltip {
     }
   }
 
+  @Watch('tooltipId')
+  handleTooltipIdChange() {
+    this.applyTooltipId();
+  }
+
+  @Watch('disabled')
+  handleDisabledChange(disabled: boolean) {
+    if (disabled) {
+      this.hideTooltip();
+    }
+  }
+
   /** Track if tooltip was dismissed with Escape key */
   @State() private escapeDismissed: boolean = false;
 
@@ -111,6 +132,7 @@ export class ModusWcTooltip {
       case 'Escape': {
         // Allow Escape to dismiss tooltip when it's visible
         // When forceOpen is true, Escape should NOT dismiss it
+        // Focus is intentionally left on the trigger
         if (this.isVisible && !this.forceOpen) {
           this.escapeDismissed = true;
           this.dismissEscape.emit();
@@ -127,14 +149,12 @@ export class ModusWcTooltip {
     this.tooltipElement = document.createElement('div');
     this.tooltipElement.className = `modus-wc-tooltip-content ${this.customClass || ''}`;
     this.tooltipElement.setAttribute('role', 'tooltip');
-    if (this.tooltipId) {
-      this.tooltipElement.id = this.tooltipId;
-    }
+    this.tooltipElement.setAttribute('popover', 'manual');
+    this.applyTooltipId();
 
     const arrow = document.createElement('div');
     arrow.className = 'modus-wc-tooltip-arrow';
     this.tooltipElement.appendChild(arrow);
-    this.tooltipElement.setAttribute('popover', 'manual');
 
     this.applyContentToTooltip();
 
@@ -170,6 +190,15 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
+  private applyTooltipId() {
+    if (!this.tooltipElement) return;
+    if (this.tooltipId) {
+      this.tooltipElement.id = this.tooltipId;
+    } else {
+      this.tooltipElement.removeAttribute('id');
+    }
   }
 
   /** Precedence: contentElement (rich HTML) → content (plain string). Arrow is always kept last. */
@@ -309,27 +338,46 @@ export class ModusWcTooltip {
     }
   }
 
+  private maybeHideTooltip() {
+    if (!this.forceOpen && !this.isHovered && !this.isFocused) {
+      this.hideTooltip();
+    }
+  }
+
   @Listen('mouseenter')
   handleMouseEnter() {
     this.escapeDismissed = false;
+    this.isHovered = true;
     this.showTooltip();
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
-    if (!this.forceOpen) {
-      this.hideTooltip();
+    this.isHovered = false;
+    this.maybeHideTooltip();
+  }
+
+  @Listen('focusin')
+  handleFocusIn() {
+    this.escapeDismissed = false;
+    this.isFocused = true;
+    this.showTooltip();
+  }
+
+  @Listen('focusout')
+  handleFocusOut(event: FocusEvent) {
+    const related = event.relatedTarget as Node | null;
+    if (related && this.el.contains(related)) {
+      return;
     }
+    this.isFocused = false;
+    this.maybeHideTooltip();
   }
 
   render() {
     return (
       <Host>
-        <div
-          aria-describedby={this.tooltipId}
-          id={this.tooltipId}
-          {...this.inheritedAttributes}
-        >
+        <div {...this.inheritedAttributes}>
           <slot />
         </div>
       </Host>

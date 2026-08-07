@@ -6,6 +6,7 @@ export const convertPropsToClasses = ({
   variant,
 }: {
   color?:
+    | 'default'
     | 'primary'
     | 'secondary'
     | 'tertiary'
@@ -20,6 +21,9 @@ export const convertPropsToClasses = ({
 
   if (color) {
     switch (color) {
+      case 'default':
+        classes = `${classes} modus-wc-badge-default`;
+        break;
       case 'primary':
         classes = `${classes} modus-wc-badge-primary`;
         break;
