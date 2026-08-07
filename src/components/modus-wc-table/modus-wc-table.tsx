@@ -5,6 +5,7 @@ import {
   EventEmitter,
   h,
   Host,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -16,6 +17,7 @@ import {
   Row,
   RowSelectionState,
   SortingState,
+  TableOptions,
   Updater,
 } from '@tanstack/table-core';
 import { convertTablePropsToClasses } from './modus-wc-table.tailwind';
@@ -23,7 +25,11 @@ import { handleShadowDOMStyles } from '../base-component';
 import { Density, ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes, sanitizeUrl } from '../utils';
 import {
+  createAdvancedModusTable,
   createModusTable,
+  createStateSyncCallbacks,
+  normalizeTableState,
+  renderColumnDefContent,
   Table,
   transformColumns,
 } from './modus-wc-table.core';
@@ -95,8 +101,17 @@ export class ModusWcTable {
   @Prop() editable?: boolean | ((row: Record<string, unknown>) => boolean) =
     false;
 
-  /** An array of column definitions. */
-  @Prop() columns!: ITableColumn[];
+  /** Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough. */
+  @Prop() mode: 'simple' | 'advanced' = 'simple';
+
+  /** An array of column definitions. Required in simple mode. */
+  @Prop() columns?: ITableColumn[];
+
+  /** TanStack column definitions. Required in advanced mode. */
+  @Prop() columnDefs?: ColumnDef<Record<string, unknown>, unknown>[];
+
+  /** Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.). */
+  @Prop() tableOptions?: Partial<TableOptions<Record<string, unknown>>>;
 
   /** Custom CSS class to apply to the inner div. */
   @Prop() customClass?: string = '';
@@ -169,6 +184,12 @@ export class ModusWcTable {
   /** Internal state for row selection. */
   @State() internalRowSelection: RowSelectionState = {};
 
+  /** Bumps on TanStack state changes in advanced mode to trigger re-renders only. */
+  @State() private tableRenderVersion = 0;
+
+  /** Tracks whether tableOptions.initialState has been merged into the table. */
+  private advancedInitialStateApplied = false;
+
   /** Emits when a row is clicked. */
   @StencilEvent() rowClick!: EventEmitter<{
     row: Record<string, unknown>;
@@ -188,7 +209,7 @@ export class ModusWcTable {
   }>;
   @Watch('currentPage')
   handleCurrentPageChange(newValue: number) {
-    if (!this.table) return;
+    if (this.isAdvancedMode() || !this.table) return;
 
     if (this.internalPagination.pageIndex !== newValue - 1) {
       this.internalPagination = {
@@ -205,16 +226,17 @@ export class ModusWcTable {
   handleDataChange(newData: Record<string, unknown>[]) {
     if (this.table) {
       this.table.setOptions((prev) => ({ ...prev, data: [...newData] }));
-      this.sanitizeRowSelection();
-    } else if (newData && this.columns) {
-      // If table doesn't exist yet but we have both data and columns, initialize
+      if (!this.isAdvancedMode()) {
+        this.sanitizeRowSelection();
+      }
+    } else if (newData && this.hasColumnConfig()) {
       this.initializeTable();
     }
   }
 
   @Watch('isRowSelectable')
   handleIsRowSelectableChange() {
-    if (!this.table) return;
+    if (this.isAdvancedMode() || !this.table) return;
 
     this.table.setOptions((prev) => ({
       ...prev,
@@ -225,6 +247,8 @@ export class ModusWcTable {
 
   @Watch('columns')
   handleColumnsChange(newColumns: ITableColumn[]) {
+    if (this.isAdvancedMode()) return;
+
     if (this.table) {
       this.tanStackColumns = transformColumns(newColumns, this.sortable);
       this.table.setOptions((prev) => ({
@@ -232,18 +256,57 @@ export class ModusWcTable {
         columns: this.tanStackColumns,
       }));
     } else if (newColumns && this.data) {
-      // If table doesn't exist yet but we have both columns and data, initialize
       this.initializeTable();
     }
   }
 
+  @Watch('columnDefs')
+  handleColumnDefsChange(
+    newColumnDefs: ColumnDef<Record<string, unknown>, unknown>[]
+  ) {
+    if (!this.isAdvancedMode()) return;
+
+    if (this.table) {
+      this.tanStackColumns = [...newColumnDefs];
+      this.table.setOptions((prev) => ({
+        ...prev,
+        columns: this.tanStackColumns,
+      }));
+    } else if (newColumnDefs && this.data) {
+      this.initializeTable();
+    }
+  }
+
+  @Watch('tableOptions')
+  handleTableOptionsChange() {
+    if (!this.isAdvancedMode()) return;
+
+    if (!this.table && this.data && this.hasColumnConfig()) {
+      this.initializeTable();
+      return;
+    }
+
+    if (!this.table) return;
+
+    this.applyAdvancedTableOptions();
+  }
+
+  @Watch('mode')
+  handleModeChange() {
+    this.table = null;
+    this.advancedInitialStateApplied = false;
+    this.initializeTable();
+  }
+
   @Watch('sortable')
   handleSortableChange(newSortable: boolean) {
+    if (this.isAdvancedMode() || !this.table || !this.columns) return;
+
     if (this.table) {
       this.table.setOptions((prev) => ({
         ...prev,
         enableSorting: newSortable,
-        columns: transformColumns(this.columns, newSortable),
+        columns: transformColumns(this.columns!, newSortable),
         state: { ...prev.state, sorting: [] },
       }));
     }
@@ -251,17 +314,17 @@ export class ModusWcTable {
 
   @Watch('paginated')
   handlePaginatedChange(newPaginated: boolean) {
-    if (this.table) {
-      this.table.setOptions((prev) => ({
-        ...prev,
-        manualPagination: !newPaginated,
-      }));
-    }
+    if (this.isAdvancedMode() || !this.table) return;
+
+    this.table.setOptions((prev) => ({
+      ...prev,
+      manualPagination: !newPaginated,
+    }));
   }
 
   @Watch('selectedRowIds')
   handleSelectedRowIdsChange(newIds: string[] | undefined) {
-    if (!this.table) return;
+    if (this.isAdvancedMode() || !this.table) return;
     if (Array.isArray(newIds)) {
       const selection = this.buildEligibleSelection(newIds);
       this.internalRowSelection = selection;
@@ -271,7 +334,12 @@ export class ModusWcTable {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-    if (!this.columns) {
+
+    if (this.isAdvancedMode()) {
+      if (!this.columnDefs) {
+        console.error('ModusWcTable: columnDefs is required in advanced mode.');
+      }
+    } else if (!this.columns) {
       console.error('ModusWcTable: columns is required.');
     }
 
@@ -283,13 +351,18 @@ export class ModusWcTable {
       pageIndex: this.currentPage - 1,
       pageSize: this.pageSizeOptions[0],
     };
-    // Initialize row selection from selectedRowIds prop (eligible rows only)
     const rowSelection = this.buildEligibleSelection(this.selectedRowIds);
     if (Object.keys(rowSelection).length > 0) {
       this.internalRowSelection = rowSelection;
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.initializeTable();
+  }
+
+  /** Returns the underlying TanStack table instance (advanced mode). */
+  @Method()
+  getTableInstance(): Promise<Table<Record<string, unknown>> | null> {
+    return Promise.resolve(this.table);
   }
 
   disconnectedCallback() {
@@ -389,35 +462,227 @@ export class ModusWcTable {
     this.rowSelectionChange.emit({ selectedRows, selectedRowIds });
   };
 
-  private initializeTable() {
-    if (!this.columns || !this.data) return;
+  private isAdvancedMode(): boolean {
+    return this.mode === 'advanced';
+  }
 
-    // First, make a copy of the data to avoid any reference issues
+  private isAdvancedSelectionColumn(columnId: string): boolean {
+    return columnId === 'select';
+  }
+
+  private isAdvancedRowSelectionEnabled(): boolean {
+    return Boolean(this.table?.options.enableRowSelection);
+  }
+
+  private getColumnClassName(
+    columnDef: { meta?: unknown } | undefined
+  ): string | undefined {
+    const meta = columnDef?.meta as { className?: string } | undefined;
+    return meta?.className;
+  }
+
+  private hasColumnConfig(): boolean {
+    return this.isAdvancedMode()
+      ? Boolean(this.columnDefs?.length)
+      : Boolean(this.columns?.length);
+  }
+
+  private requestAdvancedRender = (): void => {
+    this.tableRenderVersion++;
+  };
+
+  private applyAdvancedTableOptions(): void {
+    if (!this.table || !this.isAdvancedMode()) return;
+
+    const userInitialState = this.tableOptions?.initialState;
+    const patch = this.buildAdvancedTableOptionsPatch();
+
+    this.table.setOptions((prev) => ({
+      ...prev,
+      ...patch,
+      state: {
+        ...prev.state,
+        ...patch.state,
+      },
+    }));
+
+    if (userInitialState && !this.advancedInitialStateApplied) {
+      this.table.setState((old) =>
+        normalizeTableState({ ...old, ...userInitialState })
+      );
+      this.advancedInitialStateApplied = true;
+    }
+
+    this.requestAdvancedRender();
+  }
+
+  private buildAdvancedTableOptionsPatch(): Partial<
+    TableOptions<Record<string, unknown>>
+  > {
+    const userTableOptions = this.tableOptions ?? {};
+    const {
+      state: userState,
+      onStateChange: userOnStateChange,
+      onRowSelectionChange,
+      onSortingChange,
+      onPaginationChange,
+      ...restTableOptions
+    } = userTableOptions;
+    delete restTableOptions.initialState;
+
+    return {
+      ...restTableOptions,
+      ...(userState ? { state: userState } : {}),
+      ...createStateSyncCallbacks(() => this.table, {
+        onRowSelectionChange,
+        onSortingChange,
+        onPaginationChange,
+      }),
+      onStateChange: (updater) => {
+        if (this.table) {
+          this.table.setOptions((prev) => {
+            const currentState = prev.state as Record<string, unknown>;
+            const nextState =
+              typeof updater === 'function'
+                ? updater(currentState as never)
+                : updater;
+            return {
+              ...prev,
+              state: normalizeTableState(nextState),
+            };
+          });
+        }
+        userOnStateChange?.(updater);
+        this.requestAdvancedRender();
+      },
+    };
+  }
+
+  private initializeTable() {
+    if (!this.data || !this.hasColumnConfig()) return;
+
     const dataForTable = [...this.data];
 
-    // Transform columns (selection column rendered manually in DOM)
-    this.tanStackColumns = transformColumns(this.columns, this.sortable);
+    if (this.isAdvancedMode()) {
+      this.tanStackColumns = [...(this.columnDefs ?? [])];
+      this.table = createAdvancedModusTable({
+        data: dataForTable,
+        columns: this.tanStackColumns,
+        tableOptions: this.tableOptions,
+        onRenderRequest: this.requestAdvancedRender,
+        getRowId: (orig: Record<string, unknown>, idx: number) =>
+          this.getRowIdForData(orig, idx),
+      });
+      this.applyAdvancedTableOptions();
+      this.requestAdvancedRender();
+      return;
+    }
 
-    // Create the table with callbacks to handle state changes
+    this.tanStackColumns = transformColumns(this.columns!, this.sortable);
+
     this.table = createModusTable({
-      data: dataForTable, // Use the copied data
+      data: dataForTable,
       columns: this.tanStackColumns,
       rowSelection: this.internalRowSelection,
       enableRowSelection: this.getEnableRowSelection(),
       pagination: this.internalPagination,
       enableSorting: this.sortable,
       manualPagination: !this.paginated,
-      manualSorting: false, // Let TanStack handle sorting internally
+      manualSorting: false,
       onSortingChange: this.handleSortingChange,
       onPaginationChange: this.handlePaginationChange,
       onRowSelectionChange: this.handleRowSelectionChange,
       getRowId: (orig, idx) => this.getRowIdForData(orig, idx),
     });
 
-    // If we already have a sorting state, apply it immediately
     if (this.sorting.length > 0 && this.table) {
       this.table.setSorting([...this.sorting]);
     }
+  }
+
+  private getDisplayRows(): Row<Record<string, unknown>>[] {
+    if (!this.table) return [];
+
+    if (this.isAdvancedMode()) {
+      return this.table.getRowModel().rows;
+    }
+
+    if (this.paginated) {
+      return this.table.getPaginationRowModel().rows;
+    }
+
+    return this.table.getRowModel().rows;
+  }
+
+  private getColumnCount(): number {
+    if (this.isAdvancedMode()) {
+      return this.columnDefs?.length ?? 0;
+    }
+
+    return (this.columns?.length ?? 0) + (this.selectable !== 'none' ? 1 : 0);
+  }
+
+  private getSortHeaderProps(
+    canSort: boolean,
+    sortStatus: false | 'asc' | 'desc' | undefined
+  ) {
+    const isAsc = sortStatus === 'asc';
+    const isDesc = sortStatus === 'desc';
+
+    return {
+      classFlags: {
+        sortable: canSort,
+        sorted: !!sortStatus,
+        asc: !!isAsc,
+        desc: !!isDesc,
+      },
+      role: canSort ? ('button' as const) : undefined,
+      tabIndex: canSort ? 0 : undefined,
+      'aria-sort': isAsc
+        ? ('ascending' as const)
+        : isDesc
+          ? ('descending' as const)
+          : undefined,
+    };
+  }
+
+  private renderSortIcon(sortStatus: false | 'asc' | 'desc' | undefined) {
+    const isAsc = sortStatus === 'asc';
+    const isDesc = sortStatus === 'desc';
+
+    return (
+      <span class="sort-icon" aria-hidden="true">
+        {isAsc ? (
+          <modus-wc-icon name="sort_alpha_down" size="xs" />
+        ) : isDesc ? (
+          <modus-wc-icon name="sort_alpha_up" size="xs" />
+        ) : (
+          <modus-wc-icon
+            name="sort_alpha_down"
+            size="xs"
+            style={{ opacity: '0.5' }}
+          />
+        )}
+      </span>
+    );
+  }
+
+  private renderTableShell(content: unknown, footer: unknown = null) {
+    return (
+      <Host>
+        <div class="table-container">
+          <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
+            <table class={this.getClasses()}>
+              {this.caption && (
+                <caption class="modus-wc-sr-only">{this.caption}</caption>
+              )}
+              {content}
+            </table>
+          </div>
+          {footer}
+        </div>
+      </Host>
+    );
   }
 
   private getClasses(): string {
@@ -439,10 +704,12 @@ export class ModusWcTable {
     rowObj: Row<Record<string, unknown>>,
     index: number
   ) => {
-    const isSelectable = this.checkIsRowSelectable(rowObj.original);
+    if (!this.isAdvancedMode()) {
+      const isSelectable = this.checkIsRowSelectable(rowObj.original);
 
-    if (this.selectable !== 'none' && this.table && isSelectable) {
-      this.toggleRowSelection(rowObj);
+      if (this.selectable !== 'none' && this.table && isSelectable) {
+        this.toggleRowSelection(rowObj);
+      }
     }
 
     this.rowClick.emit({ row: rowObj.original, index });
@@ -465,7 +732,9 @@ export class ModusWcTable {
   }
 
   private handleHeaderClick = (columnId: string) => {
-    const column = this.columns.find((col) => col.id === columnId);
+    if (this.isAdvancedMode()) return;
+
+    const column = this.columns?.find((col) => col.id === columnId);
     if (!column?.sortable || !this.sortable || !this.table) return;
 
     // Get the current sorting state from the component
@@ -875,258 +1144,336 @@ export class ModusWcTable {
     return fallbackElement;
   }
 
+  private renderAdvancedHeader() {
+    if (!this.table) return null;
+
+    return this.table.getHeaderGroups().map((headerGroup) => (
+      <tr key={headerGroup.id}>
+        {headerGroup.headers.map((header) => {
+          const sortStatus = header.column.getIsSorted();
+          const canSort = header.column.getCanSort();
+          const sortProps = this.getSortHeaderProps(canSort, sortStatus);
+          const headerContent = renderColumnDefContent(
+            header.column.columnDef.header,
+            header.getContext()
+          );
+          const isHeaderElement =
+            typeof headerContent !== 'string' && 'tagName' in headerContent;
+          const columnClassName = this.getColumnClassName(
+            header.column.columnDef
+          );
+
+          return (
+            <th
+              key={header.id}
+              class={{
+                ...sortProps.classFlags,
+                'selection-column': this.isAdvancedSelectionColumn(
+                  header.column.id
+                ),
+                [columnClassName || '']: !!columnClassName,
+              }}
+              style={{
+                width: header.column.columnDef.size
+                  ? `${header.column.columnDef.size}px`
+                  : undefined,
+              }}
+              onClick={header.column.getToggleSortingHandler()}
+              role={sortProps.role}
+              tabIndex={sortProps.tabIndex}
+              aria-sort={sortProps['aria-sort']}
+              ref={(el) => {
+                if (!el || !isHeaderElement) return;
+                this.renderCellContent(el, headerContent);
+              }}
+            >
+              {!isHeaderElement ? headerContent : null}
+              {canSort && this.renderSortIcon(sortStatus)}
+            </th>
+          );
+        })}
+      </tr>
+    ));
+  }
+
+  private renderAdvancedBody(rows: Row<Record<string, unknown>>[]) {
+    if (rows.length === 0) {
+      return (
+        <tr>
+          <td colSpan={this.getColumnCount()} class="no-data-message">
+            No data available
+          </td>
+        </tr>
+      );
+    }
+
+    return rows.map((rowObj, index) => (
+      <tr
+        key={rowObj.id ?? `row-${index}`}
+        class={{
+          selected: rowObj.getIsSelected?.() ?? false,
+          selectable:
+            this.isAdvancedRowSelectionEnabled() &&
+            (rowObj.getCanSelect?.() ?? true),
+        }}
+        onClick={() => this.handleRowClick(rowObj, index)}
+      >
+        {rowObj.getVisibleCells().map((cell) => {
+          const cellContent: string | HTMLElement = renderColumnDefContent(
+            cell.column.columnDef.cell,
+            cell.getContext()
+          );
+          const columnClassName = this.getColumnClassName(
+            cell.column.columnDef
+          );
+
+          return (
+            <td
+              key={cell.id}
+              class={{
+                'selection-column': this.isAdvancedSelectionColumn(
+                  cell.column.id
+                ),
+                [columnClassName || '']: !!columnClassName,
+              }}
+              ref={(el) => {
+                if (!el) return;
+                this.renderCellContent(el, cellContent);
+              }}
+            ></td>
+          );
+        })}
+      </tr>
+    ));
+  }
+
+  private renderTableFooter(totalPages: number) {
+    if (!this.paginated || !this.data?.length) return null;
+
+    return (
+      <div class="pagination-container">
+        {this.renderPageSizeSelector()}
+        {this.renderPaginationInfo()}
+
+        <div class="pagination-controls">
+          <modus-wc-pagination
+            count={totalPages}
+            page={this.internalPagination.pageIndex + 1}
+            size={this.getPaginationSize()}
+            onPageChange={(e) =>
+              this.handlePageChange(Number(e.detail.newPage))
+            }
+          ></modus-wc-pagination>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    // Derive rows straight from TanStack's row model so that any sorting/pagination
-    // is reflected automatically
-    const rows = this.table
-      ? this.paginated
-        ? this.table.getPaginationRowModel().rows
-        : this.table.getRowModel().rows
-      : [];
+    if (this.isAdvancedMode()) {
+      return this.renderAdvancedTable();
+    }
+
+    return this.renderSimpleTable();
+  }
+
+  private renderAdvancedTable() {
+    void this.tableRenderVersion;
+
+    const rows = this.getDisplayRows();
+
+    return this.renderTableShell([
+      <thead>{this.renderAdvancedHeader()}</thead>,
+      <tbody>{this.renderAdvancedBody(rows)}</tbody>,
+    ]);
+  }
+
+  private renderSimpleTable() {
+    const rows = this.getDisplayRows();
 
     const displayData = rows.map((r) => r.original);
 
     const totalPages = this.getTotalPages();
 
-    return (
-      <Host>
-        <div class="table-container">
-          <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
-            <table class={this.getClasses()}>
-              {this.caption && (
-                <caption class="modus-wc-sr-only">{this.caption}</caption>
-              )}
-              <thead>
-                <tr>
+    return this.renderTableShell(
+      [
+        <thead>
+          <tr>
+            {this.selectable !== 'none' && (
+              <th class="selection-column" style={{ width: '48px' }}>
+                {this.selectable === 'multi' && this.table && (
+                  <modus-wc-checkbox
+                    aria-label="Select all rows"
+                    size="sm"
+                    value={this.table.getIsAllRowsSelected()}
+                    indeterminate={
+                      this.table.getIsSomeRowsSelected() &&
+                      !this.table.getIsAllRowsSelected()
+                    }
+                    onInputChange={() =>
+                      /* istanbul ignore next */
+                      this.table?.toggleAllRowsSelected()
+                    }
+                  ></modus-wc-checkbox>
+                )}
+              </th>
+            )}
+
+            {this.columns?.map((column) => {
+              const tanCol = this.table?.getColumn(column.id);
+              const sortStatus = tanCol?.getIsSorted();
+              const canSort = Boolean(column.sortable && this.sortable);
+              const sortProps = this.getSortHeaderProps(canSort, sortStatus);
+              const columnClassName =
+                this.getColumnClassName(tanCol?.columnDef) ?? column.className;
+
+              return (
+                <th
+                  class={{
+                    [columnClassName || '']: !!columnClassName,
+                    ...sortProps.classFlags,
+                  }}
+                  style={{ width: column.width }}
+                  onClick={() => this.handleHeaderClick(column.id)}
+                  role={sortProps.role}
+                  tabIndex={sortProps.tabIndex}
+                  aria-sort={sortProps['aria-sort']}
+                >
+                  {column.header}
+                  {canSort && this.renderSortIcon(sortStatus)}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>,
+        <tbody>
+          {displayData.length > 0 ? (
+            rows.map((rowObj, index) => {
+              const row = rowObj.original;
+              const isRowSelectable = this.checkIsRowSelectable(row);
+
+              return (
+                <tr
+                  key={rowObj.id ?? `row-${index}`}
+                  class={{
+                    selected:
+                      !!this.internalRowSelection[String(rowObj.id)] ||
+                      rowObj.getIsSelected?.(),
+                    selectable: this.selectable !== 'none' && isRowSelectable,
+                    editable: this.isRowEditable(row),
+                  }}
+                  onClick={() => this.handleRowClick(rowObj, index)}
+                >
                   {this.selectable !== 'none' && (
-                    <th class="selection-column" style={{ width: '48px' }}>
-                      {this.selectable === 'multi' && this.table && (
-                        <modus-wc-checkbox
-                          aria-label="Select all rows"
-                          size="sm"
-                          value={this.table.getIsAllRowsSelected()}
-                          indeterminate={
-                            this.table.getIsSomeRowsSelected() &&
-                            !this.table.getIsAllRowsSelected()
-                          }
-                          onInputChange={() =>
-                            /* istanbul ignore next */
-                            this.table?.toggleAllRowsSelected()
-                          }
-                        ></modus-wc-checkbox>
-                      )}
-                    </th>
+                    <td class="selection-column" style={{ width: '48px' }}>
+                      <modus-wc-checkbox
+                        aria-label="Select row"
+                        size="sm"
+                        value={rowObj.getIsSelected?.() ?? false}
+                        disabled={!isRowSelectable}
+                      ></modus-wc-checkbox>
+                    </td>
                   )}
 
-                  {this.columns?.map((column) => {
-                    const tanCol = this.table?.getColumn(column.id);
-                    const sortStatus = tanCol?.getIsSorted(); // 'asc' | 'desc' | false
-                    const isAsc = sortStatus === 'asc';
-                    const isDesc = sortStatus === 'desc';
+                  {/* istanbul ignore next */
+                  this.columns?.map((column) => {
+                    const editing =
+                      this.activeEditor?.rowIndex === index &&
+                      this.activeEditor.colId === column.id;
+
+                    const cellDisplay = this.renderCell(column, row);
+
+                    /* istanbul ignore next */
+                    const handleCommit = (newVal: unknown) =>
+                      this.commitEdit(index, column.id, newVal);
+
+                    let cellNode: HTMLElement | string;
+
+                    if (editing) {
+                      if (column.editorTemplate) {
+                        cellNode = this.buildEditorNodeFromTemplate(
+                          column.editorTemplate,
+                          /* istanbul ignore next */
+                          row[column.accessor]
+                        );
+
+                        // allow users to wire events / data
+                        column.editorSetup?.(cellNode, row, handleCommit);
+                      } else if (column.customEditorRenderer) {
+                        cellNode = column.customEditorRenderer(
+                          row[column.accessor],
+                          handleCommit,
+                          row
+                        );
+                      } else {
+                        cellNode = cellDisplay;
+                      }
+                    } else {
+                      cellNode = cellDisplay;
+                    }
+
+                    const columnClassName =
+                      this.getColumnClassName(
+                        this.table?.getColumn(column.id)?.columnDef
+                      ) ?? column.className;
 
                     return (
-                      <th
+                      <td
                         class={{
-                          [column.className || '']: !!column.className,
-                          sortable: Boolean(column.sortable && this.sortable),
-                          sorted: !!sortStatus,
-                          asc: !!isAsc,
-                          desc: !!isDesc,
+                          [columnClassName || '']: !!columnClassName,
+                          editing,
+                          'editable-cell':
+                            !!column.editor && this.isRowEditable(row),
                         }}
-                        style={{ width: column.width }}
-                        onClick={() => this.handleHeaderClick(column.id)}
-                        role={
-                          column.sortable && this.sortable
-                            ? 'button'
-                            : undefined
-                        }
-                        tabIndex={
-                          column.sortable && this.sortable ? 0 : undefined
-                        }
-                        aria-sort={
-                          isAsc
-                            ? 'ascending'
-                            : isDesc
-                              ? 'descending'
-                              : undefined
-                        }
-                      >
-                        {column.header}
-                        {column.sortable && this.sortable && (
-                          <span class="sort-icon" aria-hidden="true">
-                            {isAsc ? (
-                              <modus-wc-icon name="sort_alpha_down" size="xs" />
-                            ) : isDesc ? (
-                              <modus-wc-icon name="sort_alpha_up" size="xs" />
-                            ) : (
-                              <modus-wc-icon
-                                name="sort_alpha_down"
-                                size="xs"
-                                style={{ opacity: '0.5' }}
-                              />
-                            )}
-                          </span>
-                        )}
-                      </th>
+                        data-col={column.id}
+                        onDblClick={(e) => {
+                          // Don't enter edit mode if already editing this cell
+                          if (
+                            this.activeEditor?.rowIndex === index &&
+                            this.activeEditor?.colId === column.id
+                          ) {
+                            return;
+                          }
+                          // Don't enter edit mode if clicking inside an active editor
+                          if (
+                            this.activeEditorElement?.contains(e.target as Node)
+                          ) {
+                            return;
+                          }
+                          this.enterEdit(index, column.id);
+                        }}
+                        ref={(el) => {
+                          if (!el) return;
+                          // Only setup editor when cell is actually being edited
+                          if (editing) {
+                            this.setupEditorCell(
+                              el,
+                              cellNode,
+                              column,
+                              row,
+                              handleCommit
+                            );
+                          } else {
+                            // For non-editing cells, just set content directly
+                            this.renderCellContent(el, cellNode);
+                          }
+                        }}
+                      ></td>
                     );
                   })}
                 </tr>
-              </thead>
-              <tbody>
-                {displayData.length > 0 ? (
-                  rows.map((rowObj, index) => {
-                    const row = rowObj.original;
-                    const isRowSelectable = this.checkIsRowSelectable(row);
-
-                    return (
-                      <tr
-                        key={rowObj.id ?? `row-${index}`}
-                        class={{
-                          selected:
-                            !!this.internalRowSelection[String(rowObj.id)] ||
-                            rowObj.getIsSelected?.(),
-                          selectable:
-                            this.selectable !== 'none' && isRowSelectable,
-                          editable: this.isRowEditable(row),
-                        }}
-                        onClick={() => this.handleRowClick(rowObj, index)}
-                      >
-                        {this.selectable !== 'none' && (
-                          <td
-                            class="selection-column"
-                            style={{ width: '48px' }}
-                          >
-                            <modus-wc-checkbox
-                              aria-label="Select row"
-                              size="sm"
-                              value={rowObj.getIsSelected?.() ?? false}
-                              disabled={!isRowSelectable}
-                            ></modus-wc-checkbox>
-                          </td>
-                        )}
-
-                        {/* istanbul ignore next */
-                        this.columns?.map((column) => {
-                          const editing =
-                            this.activeEditor?.rowIndex === index &&
-                            this.activeEditor.colId === column.id;
-
-                          const cellDisplay = this.renderCell(column, row);
-
-                          /* istanbul ignore next */
-                          const handleCommit = (newVal: unknown) =>
-                            this.commitEdit(index, column.id, newVal);
-
-                          let cellNode: HTMLElement | string;
-
-                          if (editing) {
-                            if (column.editorTemplate) {
-                              cellNode = this.buildEditorNodeFromTemplate(
-                                column.editorTemplate,
-                                /* istanbul ignore next */
-                                row[column.accessor]
-                              );
-
-                              // allow users to wire events / data
-                              column.editorSetup?.(cellNode, row, handleCommit);
-                            } else if (column.customEditorRenderer) {
-                              cellNode = column.customEditorRenderer(
-                                row[column.accessor],
-                                handleCommit,
-                                row
-                              );
-                            } else {
-                              cellNode = cellDisplay;
-                            }
-                          } else {
-                            cellNode = cellDisplay;
-                          }
-
-                          return (
-                            <td
-                              class={{
-                                [column.className || '']: !!column.className,
-                                editing,
-                                'editable-cell':
-                                  !!column.editor && this.isRowEditable(row),
-                              }}
-                              data-col={column.id}
-                              onDblClick={(e) => {
-                                // Don't enter edit mode if already editing this cell
-                                if (
-                                  this.activeEditor?.rowIndex === index &&
-                                  this.activeEditor?.colId === column.id
-                                ) {
-                                  return;
-                                }
-                                // Don't enter edit mode if clicking inside an active editor
-                                if (
-                                  this.activeEditorElement?.contains(
-                                    e.target as Node
-                                  )
-                                ) {
-                                  return;
-                                }
-                                this.enterEdit(index, column.id);
-                              }}
-                              ref={(el) => {
-                                if (!el) return;
-                                // Only setup editor when cell is actually being edited
-                                if (editing) {
-                                  this.setupEditorCell(
-                                    el,
-                                    cellNode,
-                                    column,
-                                    row,
-                                    handleCommit
-                                  );
-                                } else {
-                                  // For non-editing cells, just set content directly
-                                  this.renderCellContent(el, cellNode);
-                                }
-                              }}
-                            ></td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={
-                        (this.columns?.length || 1) +
-                        (this.selectable !== 'none' ? 1 : 0)
-                      }
-                      class="no-data-message"
-                    >
-                      No data available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {this.paginated && this.data?.length > 0 && (
-            <div class="pagination-container">
-              {this.renderPageSizeSelector()}
-              {this.renderPaginationInfo()}
-
-              <div class="pagination-controls">
-                <modus-wc-pagination
-                  count={totalPages}
-                  page={this.internalPagination.pageIndex + 1}
-                  size={this.getPaginationSize()}
-                  onPageChange={(e) =>
-                    this.handlePageChange(Number(e.detail.newPage))
-                  }
-                ></modus-wc-pagination>
-              </div>
-            </div>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={this.getColumnCount() || 1} class="no-data-message">
+                No data available
+              </td>
+            </tr>
           )}
-        </div>
-      </Host>
+        </tbody>,
+      ],
+      this.renderTableFooter(totalPages)
     );
   }
 }
