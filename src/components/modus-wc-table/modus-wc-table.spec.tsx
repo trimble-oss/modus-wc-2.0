@@ -4,12 +4,9 @@ import {
   getCoreRowModel,
   getExpandedRowModel,
   getPaginationRowModel,
-  // ColumnDef,
-  // getExpandedRowModel,
   Row,
   SortingState,
   TableOptions,
-  // TableOptions,
 } from '@tanstack/table-core';
 import { ITableColumn, ModusWcTable } from './modus-wc-table';
 import { Table } from './modus-wc-table.core';
@@ -4418,6 +4415,673 @@ describe('modus-wc-table', () => {
       const tableInstance = await component.getTableInstance();
       expect(tableInstance).not.toBeNull();
       expect(typeof tableInstance?.getExpandedRowModel).toBe('function');
+    });
+
+    it('should not throw when columnDefs is cleared after initialization', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+      component.tableOptions = advancedTableOptions as unknown as Partial<
+        TableOptions<Record<string, unknown>>
+      >;
+
+      await page.waitForChanges();
+
+      expect(() => {
+        component.columnDefs = undefined;
+      }).not.toThrow();
+    });
+
+    it('should not add Modus-owned sort interaction attributes to advanced headers', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+          enableSorting: true,
+        },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<SubrowData>(),
+        enableSorting: true,
+      };
+
+      await page.waitForChanges();
+
+      const headers = page.root?.querySelectorAll('thead th');
+      expect(headers?.length).toBeGreaterThan(0);
+      headers?.forEach((header) => {
+        expect(header.getAttribute('role')).toBeNull();
+        expect(header.getAttribute('tabindex')).toBeNull();
+      });
+      expect(page.root?.querySelector('.sort-icon')).toBeNull();
+    });
+
+    it('should render grouped column headers with colSpan and placeholders', async () => {
+      interface GroupedRow extends Record<string, unknown> {
+        firstName: string;
+        lastName: string;
+        age: number;
+      }
+
+      const groupedData: GroupedRow[] = [
+        { firstName: 'Ada', lastName: 'Lovelace', age: 36 },
+      ];
+
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Grouped header table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = groupedData;
+      component.columnDefs = [
+        {
+          id: 'name',
+          header: 'Name',
+          columns: [
+            { accessorKey: 'firstName', header: 'First' },
+            { accessorKey: 'lastName', header: 'Last' },
+          ],
+        },
+        { accessorKey: 'age', header: 'Age' },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<GroupedRow>(),
+      };
+
+      await page.waitForChanges();
+
+      const headerRows = page.root?.querySelectorAll('thead tr');
+      expect(headerRows?.length).toBe(2);
+
+      const topHeaders = headerRows?.[0].querySelectorAll('th');
+      expect(topHeaders?.length).toBe(2);
+      expect(topHeaders?.[0].textContent).toContain('Name');
+      expect(topHeaders?.[0].getAttribute('colspan')).toBe('2');
+      expect(topHeaders?.[1].textContent?.trim()).toBe('');
+
+      const bottomHeaders = headerRows?.[1].querySelectorAll('th');
+      expect(bottomHeaders?.length).toBe(3);
+      expect(bottomHeaders?.[0].textContent).toContain('First');
+      expect(bottomHeaders?.[1].textContent).toContain('Last');
+      expect(bottomHeaders?.[2].textContent).toContain('Age');
+    });
+
+    it('should update columnDefs when the table is already initialized', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+      component.tableOptions = advancedTableOptions as unknown as Partial<
+        TableOptions<Record<string, unknown>>
+      >;
+
+      await page.waitForChanges();
+
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Updated Header',
+        },
+      ];
+
+      await page.waitForChanges();
+
+      expect(page.root?.textContent).toContain('Updated Header');
+    });
+
+    it('should apply updated tableOptions when the table already exists', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced table options table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<SubrowData>(),
+      };
+
+      await page.waitForChanges();
+
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<SubrowData>(),
+        enableSorting: true,
+      };
+
+      await page.waitForChanges();
+
+      expect(component['table']?.options.enableSorting).toBe(true);
+    });
+
+    it('should initialize advanced table when tableOptions changes while table is null', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+
+      await page.waitForChanges();
+
+      component['table'] = null;
+      component.tableOptions = advancedTableOptions as unknown as Partial<
+        TableOptions<Record<string, unknown>>
+      >;
+
+      await page.waitForChanges();
+
+      expect(component['table']).not.toBeNull();
+      expect(page.root?.querySelectorAll('tbody tr')?.length).toBe(2);
+    });
+
+    it('should reinitialize the table when mode changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table aria-label="Mode switch table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+      component.data = [{ name: 'Simple Row' }];
+
+      await page.waitForChanges();
+      expect(page.root?.textContent).toContain('Simple Row');
+
+      component.mode = 'advanced';
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Advanced Name',
+        },
+      ];
+      component.data = hierarchicalData;
+
+      await page.waitForChanges();
+
+      expect(page.root?.textContent).toContain('Advanced Name');
+      expect(page.root?.textContent).toContain('Parent');
+    });
+
+    it('should render HTMLElement headers in advanced mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced header element table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: () => {
+            const headerElement = document.createElement('strong');
+            headerElement.textContent = 'Strong Header';
+            return headerElement;
+          },
+        },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<SubrowData>(),
+      };
+
+      await page.waitForChanges();
+
+      const strongHeader = page.root?.querySelector('thead strong');
+      expect(strongHeader?.textContent).toBe('Strong Header');
+    });
+
+    it('should emit rowClick when an advanced mode row is clicked', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced row click table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      const rowClickSpy = jest.spyOn(component.rowClick, 'emit');
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+      component.tableOptions = advancedTableOptions as unknown as Partial<
+        TableOptions<Record<string, unknown>>
+      >;
+
+      await page.waitForChanges();
+
+      const firstRow = page.root?.querySelector('tbody tr') as HTMLElement;
+      firstRow.click();
+
+      expect(rowClickSpy).toHaveBeenCalledWith({
+        row: hierarchicalData[0],
+        index: 0,
+      });
+    });
+
+    it('should not throw when columns is cleared after initialization in simple mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table aria-label="Simple columns clear table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+      component.data = [{ name: 'Row' }];
+
+      await page.waitForChanges();
+
+      expect(() => {
+        component.columns = undefined;
+      }).not.toThrow();
+    });
+
+    it('should ignore simple-mode prop watchers in advanced mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Watcher guard table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = hierarchicalData;
+      component.columnDefs = createAdvancedColumnDefs() as unknown as ColumnDef<
+        Record<string, unknown>,
+        unknown
+      >[];
+      component.tableOptions = advancedTableOptions as unknown as Partial<
+        TableOptions<Record<string, unknown>>
+      >;
+
+      await page.waitForChanges();
+
+      const setOptionsSpy = jest.spyOn(component['table']!, 'setOptions');
+
+      component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+      component.sortable = false;
+      component.paginated = true;
+      component.selectedRowIds = ['parent-1'];
+
+      await page.waitForChanges();
+
+      expect(setOptionsSpy).not.toHaveBeenCalled();
+    });
+
+    it('should ignore advanced-mode prop watchers in simple mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table aria-label="Simple watcher guard table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+      component.data = [{ name: 'Row' }];
+
+      await page.waitForChanges();
+
+      expect(() => {
+        component.columnDefs = [
+          { id: 'name', accessorKey: 'name', header: 'Name' },
+        ];
+        component.tableOptions = {
+          getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+        };
+      }).not.toThrow();
+    });
+
+    it('should render advanced empty state and sized headers', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced empty table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = [];
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+          size: 180,
+        },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+      };
+
+      await page.waitForChanges();
+
+      expect(page.root?.textContent).toContain('No data available');
+      const header = page.root?.querySelector('thead th') as HTMLElement;
+      expect(header.style.width).toBe('180px');
+    });
+
+    it('should not mark advanced rows selectable when row selection is disabled', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced row guard table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = [{ name: 'No Id Row' }];
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+        },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+      };
+
+      await page.waitForChanges();
+
+      const bodyRow = page.root?.querySelector('tbody tr');
+      expect(bodyRow?.classList.contains('selectable')).toBe(false);
+    });
+
+    it('should cover advanced helper and render branches', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Advanced branch coverage table"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+
+      component['handleTableOptionsChange']();
+
+      component.data = [{ name: 'Row without id' }];
+      component.columnDefs = [
+        {
+          id: 'select',
+          header: () => {
+            const headerElement = document.createElement('span');
+            headerElement.textContent = 'Select';
+            return headerElement;
+          },
+          cell: ({ getValue }) => String(getValue() ?? ''),
+          meta: { className: 'meta-cell' },
+        },
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+          cell: () => {
+            const cellElement = document.createElement('span');
+            cellElement.textContent = 'Rendered cell';
+            return cellElement;
+          },
+        },
+      ];
+      component.tableOptions = {
+        enableRowSelection: true,
+        getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+        state: { rowSelection: {} },
+        onStateChange: jest.fn(),
+      };
+
+      await page.waitForChanges();
+
+      expect(component['isAdvancedRowSelectionEnabled']()).toBe(true);
+      component['handleHeaderClick']('name');
+
+      const patch = component['buildAdvancedTableOptionsPatch']();
+      patch.onStateChange?.({ rowSelection: { '0': true } });
+      patch.onStateChange?.((state) => ({
+        ...state,
+        rowSelection: {},
+      }));
+
+      component['table'] = null;
+      component['applyAdvancedTableOptions']();
+      component['handleColumnDefsChange'](component.columnDefs);
+      await page.waitForChanges();
+
+      expect(page.root?.querySelector('.meta-cell')).not.toBeNull();
+      expect(page.root?.querySelector('tbody tr')?.classList.contains('selectable')).toBe(
+        true
+      );
+    });
+
+    it('should initialize simple mode from columns watcher when table is missing', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table aria-label="Simple init from watcher"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = [{ name: 'Row' }];
+      component['table'] = null;
+      component.columns = [{ id: 'name', header: 'Name', accessor: 'name' }];
+
+      await page.waitForChanges();
+
+      expect(component['table']).not.toBeNull();
+      expect(page.root?.textContent).toContain('Row');
+    });
+
+    it('should cover remaining advanced and simple render branches', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Remaining branches"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = [{ name: 'Branch Row' }];
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+        },
+      ];
+      component.tableOptions = {
+        getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+      };
+
+      await page.waitForChanges();
+
+      component['table'] = null;
+      expect(component['isAdvancedRowSelectionEnabled']()).toBe(false);
+
+      const mockRow = {
+        getIsSelected: undefined,
+        getCanSelect: undefined,
+        getVisibleCells: () => [
+          {
+            id: 'cell-1',
+            column: {
+              id: 'name',
+              columnDef: {},
+            },
+            getContext: jest.fn(),
+          },
+        ],
+        original: { name: 'Branch Row' },
+      } as unknown as Row<Record<string, unknown>>;
+
+      expect(component['renderAdvancedBody']([mockRow])).toBeTruthy();
+
+      const simplePage = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table aria-label="Simple class fallback"></modus-wc-table>',
+      });
+      const simpleComponent = simplePage.rootInstance as ModusWcTable;
+      simpleComponent.columns = [
+        {
+          id: 'name',
+          header: 'Name',
+          accessor: 'name',
+          className: 'fallback-col',
+        },
+      ];
+      simpleComponent.data = [{ name: 'Simple' }];
+      await simplePage.waitForChanges();
+      simpleComponent['handleHeaderClick']('name');
+
+      expect(
+        simplePage.root?.querySelector('th.fallback-col')
+      ).not.toBeNull();
+    });
+
+    it('should cover final advanced init and header edge branches', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table mode="advanced" aria-label="Final branch coverage"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.data = [{ name: 'Selectable Row' }];
+      component.columnDefs = [
+        {
+          id: 'name',
+          accessorKey: 'name',
+          header: 'Name',
+          size: 0,
+          cell: () => {
+            const cellElement = document.createElement('em');
+            cellElement.textContent = 'Cell';
+            return cellElement;
+          },
+        },
+      ];
+      component.tableOptions = {
+        enableRowSelection: true,
+        getCoreRowModel: getCoreRowModel<Record<string, unknown>>(),
+      };
+
+      await page.waitForChanges();
+
+      const header = page.root?.querySelector('thead th') as HTMLElement;
+      expect(header.style.width).toBe('');
+
+      const bodyRow = page.root?.querySelector('tbody tr');
+      expect(bodyRow?.classList.contains('selectable')).toBe(true);
+
+      const nonSelectableRow = {
+        getIsSelected: () => false,
+        getCanSelect: () => false,
+        getVisibleCells: () => [
+          {
+            id: 'cell-2',
+            column: {
+              id: 'name',
+              columnDef: {},
+            },
+            getContext: jest.fn(),
+          },
+        ],
+        original: { name: 'Locked Row' },
+      } as unknown as Row<Record<string, unknown>>;
+
+      expect(component['renderAdvancedBody']([nonSelectableRow])).toBeTruthy();
+
+      const renderedRow = component['table']!.getRowModel().rows[0];
+      jest.spyOn(renderedRow, 'getCanSelect').mockReturnValue(false);
+      component['requestAdvancedRender']();
+      await page.waitForChanges();
+
+      expect(
+        page.root?.querySelector('tbody tr')?.classList.contains('selectable')
+      ).toBe(false);
+
+      component.data = [{ name: 'Updated Row' }];
+      await page.waitForChanges();
+      await page.setContent('');
+
+      jest
+        .spyOn(component as unknown as { hasColumnConfig: () => boolean }, 'hasColumnConfig')
+        .mockReturnValue(true);
+      component.columnDefs = undefined;
+      component['initializeTable']();
+      expect(component['tanStackColumns']).toEqual([]);
+
+      const selectableRow = {
+        getCanSelect: () => true,
+      } as unknown as Row<Record<string, unknown>>;
+      const lockedRow = {
+        getCanSelect: () => false,
+      } as unknown as Row<Record<string, unknown>>;
+
+      expect(component['isAdvancedRowSelectable'](selectableRow)).toBe(true);
+      expect(component['isAdvancedRowSelectable'](lockedRow)).toBe(false);
+      expect(
+        component['isAdvancedRowSelectable'](
+          {} as unknown as Row<Record<string, unknown>>
+        )
+      ).toBe(true);
+
+      component['table'] = null;
+      expect(component['isAdvancedRowSelectable'](selectableRow)).toBe(false);
+
+      component['mountAdvancedCellContent'](null, 'ignored');
+      const cell = document.createElement('td');
+      component['mountAdvancedCellContent'](cell, 'value');
+      expect(cell.textContent).toBe('value');
+    });
+
+    it('should no-op simple header clicks for invalid or non-sortable columns', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTable],
+        html: '<modus-wc-table sortable aria-label="Header click guards"></modus-wc-table>',
+      });
+
+      const component = page.rootInstance as ModusWcTable;
+      component.columns = [
+        { id: 'name', header: 'Name', accessor: 'name' },
+        { id: 'age', header: 'Age', accessor: 'age', sortable: true },
+      ];
+      component.data = [{ name: 'Ada', age: 36 }];
+
+      await page.waitForChanges();
+
+      const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+
+      component['handleHeaderClick']('missing-column');
+      component['handleHeaderClick']('name');
+      component.sortable = false;
+      component['handleHeaderClick']('age');
+      component.columns = undefined;
+      component['handleHeaderClick']('age');
+      component['table'] = null;
+      component['handleHeaderClick']('age');
+
+      expect(sortChangeSpy).not.toHaveBeenCalled();
     });
   });
 });

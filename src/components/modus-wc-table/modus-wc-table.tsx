@@ -246,10 +246,12 @@ export class ModusWcTable {
   }
 
   @Watch('columns')
-  handleColumnsChange(newColumns: ITableColumn[]) {
+  handleColumnsChange(newColumns?: ITableColumn[]) {
     if (this.isAdvancedMode()) return;
 
     if (this.table) {
+      if (!newColumns) return;
+
       this.tanStackColumns = transformColumns(newColumns, this.sortable);
       this.table.setOptions((prev) => ({
         ...prev,
@@ -262,11 +264,13 @@ export class ModusWcTable {
 
   @Watch('columnDefs')
   handleColumnDefsChange(
-    newColumnDefs: ColumnDef<Record<string, unknown>, unknown>[]
+    newColumnDefs?: ColumnDef<Record<string, unknown>, unknown>[]
   ) {
     if (!this.isAdvancedMode()) return;
 
     if (this.table) {
+      if (!newColumnDefs) return;
+
       this.tanStackColumns = [...newColumnDefs];
       this.table.setOptions((prev) => ({
         ...prev,
@@ -472,6 +476,24 @@ export class ModusWcTable {
 
   private isAdvancedRowSelectionEnabled(): boolean {
     return Boolean(this.table?.options.enableRowSelection);
+  }
+
+  private isAdvancedRowSelectable(
+    rowObj: Row<Record<string, unknown>>
+  ): boolean {
+    return (
+      this.isAdvancedRowSelectionEnabled() &&
+      (rowObj.getCanSelect?.() ?? true)
+    );
+  }
+
+  private mountAdvancedCellContent(
+    el: HTMLElement | null,
+    cellContent: string | HTMLElement
+  ): void {
+    if (!el) return;
+
+    this.renderCellContent(el, cellContent);
   }
 
   private getColumnClassName(
@@ -1150,9 +1172,22 @@ export class ModusWcTable {
     return this.table.getHeaderGroups().map((headerGroup) => (
       <tr key={headerGroup.id}>
         {headerGroup.headers.map((header) => {
+          if (header.isPlaceholder) {
+            return (
+              <th
+                key={header.id}
+                colSpan={header.colSpan}
+                rowSpan={header.rowSpan}
+              />
+            );
+          }
+
           const sortStatus = header.column.getIsSorted();
           const canSort = header.column.getCanSort();
-          const sortProps = this.getSortHeaderProps(canSort, sortStatus);
+          const sortClassFlags = this.getSortHeaderProps(
+            canSort,
+            sortStatus
+          ).classFlags;
           const headerContent = renderColumnDefContent(
             header.column.columnDef.header,
             header.getContext()
@@ -1166,8 +1201,10 @@ export class ModusWcTable {
           return (
             <th
               key={header.id}
+              colSpan={header.colSpan}
+              rowSpan={header.rowSpan}
               class={{
-                ...sortProps.classFlags,
+                ...sortClassFlags,
                 'selection-column': this.isAdvancedSelectionColumn(
                   header.column.id
                 ),
@@ -1178,17 +1215,12 @@ export class ModusWcTable {
                   ? `${header.column.columnDef.size}px`
                   : undefined,
               }}
-              onClick={header.column.getToggleSortingHandler()}
-              role={sortProps.role}
-              tabIndex={sortProps.tabIndex}
-              aria-sort={sortProps['aria-sort']}
               ref={(el) => {
                 if (!el || !isHeaderElement) return;
                 this.renderCellContent(el, headerContent);
               }}
             >
               {!isHeaderElement ? headerContent : null}
-              {canSort && this.renderSortIcon(sortStatus)}
             </th>
           );
         })}
@@ -1212,9 +1244,7 @@ export class ModusWcTable {
         key={rowObj.id ?? `row-${index}`}
         class={{
           selected: rowObj.getIsSelected?.() ?? false,
-          selectable:
-            this.isAdvancedRowSelectionEnabled() &&
-            (rowObj.getCanSelect?.() ?? true),
+          selectable: this.isAdvancedRowSelectable(rowObj),
         }}
         onClick={() => this.handleRowClick(rowObj, index)}
       >
@@ -1237,8 +1267,7 @@ export class ModusWcTable {
                 [columnClassName || '']: !!columnClassName,
               }}
               ref={(el) => {
-                if (!el) return;
-                this.renderCellContent(el, cellContent);
+                this.mountAdvancedCellContent(el, cellContent);
               }}
             ></td>
           );
