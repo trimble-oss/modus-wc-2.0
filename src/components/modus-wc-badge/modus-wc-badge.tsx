@@ -24,6 +24,7 @@ export class ModusWcBadge {
 
   /** The color variant of the badge. */
   @Prop() color:
+    | 'default'
     | 'primary'
     | 'secondary'
     | 'tertiary'
