@@ -629,3 +629,31 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     }
   }
 }
+
+/* DaisyUI --fallback-s/--fallback-sc map to Modus yellow/black; Connect filled
+   secondary uses gray + white (connect.ts). Override enabled text + disabled fill. */
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-filled {
+    &.modus-wc-btn-secondary {
+      color: var(--modus-wc-color-white);
+    }
+
+    &.modus-wc-btn-secondary:disabled,
+    &.modus-wc-btn-secondary.modus-wc-btn-disabled {
+      background-color: #6a6976;
+      border-color: #6a6976;
+      color: var(--modus-wc-color-white);
+    }
+  }
+}
+
+[data-theme='connect-dark'] modus-wc-button .modus-wc-btn {
+  &.modus-wc-btn-filled {
+    &.modus-wc-btn-secondary:disabled,
+    &.modus-wc-btn-secondary.modus-wc-btn-disabled {
+      background-color: var(--modus-wc-color-gray-light);
+      border-color: var(--modus-wc-color-gray-light);
+      color: var(--modus-wc-color-black);
+    }
+  }
+}
