@@ -3609,7 +3609,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTooltip">
             <summary>
-            A customizable tooltip component used to create tooltips with different content.  The tooltip can be dismissed by pressing the Escape key when hovering over it. When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.Content">
@@ -3624,7 +3624,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.Disabled">
             <summary>
-            Disables displaying the tooltip on hover
+            Disables displaying the tooltip on hover and focus
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.ForceOpen">
@@ -3640,7 +3640,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.TooltipId">
             <summary>
-            The ID of the tooltip element, useful for setting the &quot;aria-describedby&quot; attribute of related elements.
+            The ID of the tooltip tip element (role=&quot;tooltip&quot;). For screen reader support, add aria-describedby with this value to your trigger element.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.ContentElement">
