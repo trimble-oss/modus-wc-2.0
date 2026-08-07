@@ -1,4 +1,4 @@
-﻿@import 'global.css';
+@import 'global.css';
 @import 'variables.css';
 @import 'fonts.css';
 
@@ -747,9 +747,10 @@
   }
 }
 
-/* Disabled only — restore variant colors over DaisyUI gray wash, then fade.
-   Enabled hover/pressed stay on DaisyUI. Classic styles in modus-wc-button.scss
-   keep higher specificity and win on classic themes. */
+/* Disabled only — restore DaisyUI theme tokens over gray wash, then fade.
+   Uses --fallback-* / oklch(--*) so Connect/Modern/Classic theme colors match
+   enabled buttons (including content). Classic SCSS still wins where more specific.
+   base-inverted is custom (not a DaisyUI slot) and keeps Modus tokens. */
 
 modus-wc-button .modus-wc-btn:disabled,
 modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
@@ -769,42 +770,42 @@ modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-primary);
+  color: var(--fallback-p, oklch(var(--p) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-secondary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-secondary.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-secondary);
+  color: var(--fallback-s, oklch(var(--s) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-neutral:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-neutral.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-content);
+  color: var(--fallback-n, oklch(var(--n) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-warning:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-warning.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-warning);
+  color: var(--fallback-wa, oklch(var(--wa) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-error:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-error.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-error);
+  color: var(--fallback-er, oklch(var(--er) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-success:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-success.modus-wc-btn-disabled {
-  color: var(--modus-wc-color-success);
+  color: var(--fallback-su, oklch(var(--su) / 1));
 }
 
 modus-wc-button
@@ -817,50 +818,50 @@ modus-wc-button
 modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-primary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-primary.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-primary);
-  border-color: var(--modus-wc-color-primary);
-  color: var(--modus-wc-color-primary-content);
+  background-color: var(--fallback-p, oklch(var(--p) / 1));
+  border-color: var(--fallback-p, oklch(var(--p) / 1));
+  color: var(--fallback-pc, oklch(var(--pc) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-secondary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-secondary.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-secondary);
-  border-color: var(--modus-wc-color-secondary);
-  color: var(--modus-wc-color-secondary-content);
+  background-color: var(--fallback-s, oklch(var(--s) / 1));
+  border-color: var(--fallback-s, oklch(var(--s) / 1));
+  color: var(--fallback-sc, oklch(var(--sc) / 1));
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-neutral:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-neutral.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-base-100);
-  border-color: var(--modus-wc-color-base-100);
-  color: var(--modus-wc-color-base-content);
+  background-color: var(--fallback-n, oklch(var(--n) / 1));
+  border-color: var(--fallback-n, oklch(var(--n) / 1));
+  color: var(--fallback-nc, oklch(var(--nc) / 1));
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-warning:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-warning.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-warning);
-  border-color: var(--modus-wc-color-warning);
-  color: var(--modus-wc-color-warning-content);
+  background-color: var(--fallback-wa, oklch(var(--wa) / 1));
+  border-color: var(--fallback-wa, oklch(var(--wa) / 1));
+  color: var(--fallback-wac, oklch(var(--wac) / 1));
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-error:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-error.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-error);
-  border-color: var(--modus-wc-color-error);
-  color: var(--modus-wc-color-error-content);
+  background-color: var(--fallback-er, oklch(var(--er) / 1));
+  border-color: var(--fallback-er, oklch(var(--er) / 1));
+  color: var(--fallback-erc, oklch(var(--erc) / 1));
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-success:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-success.modus-wc-btn-disabled {
-  background-color: var(--modus-wc-color-success);
-  border-color: var(--modus-wc-color-success);
-  color: var(--modus-wc-color-success-content);
+  background-color: var(--fallback-su, oklch(var(--su) / 1));
+  border-color: var(--fallback-su, oklch(var(--su) / 1));
+  color: var(--fallback-suc, oklch(var(--suc) / 1));
 }
 
 modus-wc-button
@@ -876,47 +877,47 @@ modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-primary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-primary.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-primary);
-  color: var(--modus-wc-color-primary);
+  border-color: var(--fallback-p, oklch(var(--p) / 1));
+  color: var(--fallback-p, oklch(var(--p) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-secondary:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-secondary.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-secondary);
-  color: var(--modus-wc-color-secondary);
+  border-color: var(--fallback-s, oklch(var(--s) / 1));
+  color: var(--fallback-s, oklch(var(--s) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-neutral:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-neutral.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-base-content);
-  color: var(--modus-wc-color-base-content);
+  border-color: var(--fallback-n, oklch(var(--n) / 1));
+  color: var(--fallback-n, oklch(var(--n) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-warning:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-warning.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-warning);
-  color: var(--modus-wc-color-warning);
+  border-color: var(--fallback-wa, oklch(var(--wa) / 1));
+  color: var(--fallback-wa, oklch(var(--wa) / 1));
 }
 
 modus-wc-button .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-error:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-error.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-error);
-  color: var(--modus-wc-color-error);
+  border-color: var(--fallback-er, oklch(var(--er) / 1));
+  color: var(--fallback-er, oklch(var(--er) / 1));
 }
 
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-success:disabled,
 modus-wc-button
   .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-success.modus-wc-btn-disabled {
-  border-color: var(--modus-wc-color-success);
-  color: var(--modus-wc-color-success);
+  border-color: var(--fallback-su, oklch(var(--su) / 1));
+  color: var(--fallback-su, oklch(var(--su) / 1));
 }
 
 modus-wc-button

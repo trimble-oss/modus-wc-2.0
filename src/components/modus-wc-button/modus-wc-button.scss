@@ -2,8 +2,9 @@
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 *
-* Disabled variant colors + light/dark opacity live in src/styles/tailwind.css
-* (compiled to output.css). Classic theme styles in this file keep higher specificity.
+* Disabled variant colors + modern/connect light/dark opacity live in
+* src/styles/tailwind.css (compiled to output.css). Classic theme disabled
+* opacity is still defined in this file.
 */
 
 modus-wc-button .modus-wc-btn {
@@ -11,7 +12,7 @@ modus-wc-button .modus-wc-btn {
 }
 
 [data-theme]:not([data-theme^='connect']) modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-filled.modus-wc-btn-neutral {
+  &.modus-wc-btn-filled.modus-wc-btn-neutral:not(.modus-wc-btn-disabled) {
     background-color: var(--modus-wc-color-base-100);
     border-color: var(--modus-wc-color-base-100);
 
@@ -95,7 +96,7 @@ modus-wc-button .modus-wc-btn-square.modus-wc-btn-xl {
 // Filled hover/pressed are darkened from that same color; the outline and
 // borderless hover/pressed come from the shared btn-state-colors mixin.
 modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
-  &.modus-wc-btn-filled {
+  &.modus-wc-btn-filled:not(.modus-wc-btn-disabled) {
     background-color: var(--modus-wc-color-trimble-neutral);
     border-color: var(--modus-wc-color-trimble-neutral);
     color: var(--modus-wc-color-base-page);
@@ -128,7 +129,9 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     }
   }
 
-  &.modus-wc-btn-outline:not(:hover):not(:active):not([aria-pressed='true']) {
+  &.modus-wc-btn-outline:not(:hover):not(:active):not(
+      [aria-pressed='true']
+    ):not(.modus-wc-btn-disabled) {
     background-color: transparent;
     border-color: var(--modus-wc-color-trimble-neutral);
     color: var(--modus-wc-color-trimble-neutral);
