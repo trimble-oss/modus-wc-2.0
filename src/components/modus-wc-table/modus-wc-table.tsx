@@ -1266,6 +1266,7 @@ export class ModusWcTable {
                 [columnClassName || '']: !!columnClassName,
               }}
               ref={(el) => {
+                /* istanbul ignore next */
                 if (!el) return;
                 this.mountAdvancedCellContent(el, cellContent);
               }}
