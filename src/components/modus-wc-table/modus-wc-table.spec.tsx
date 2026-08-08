@@ -7,6 +7,8 @@ import {
   Row,
   SortingState,
   TableOptions,
+  TableState,
+  Updater,
 } from '@tanstack/table-core';
 import { ITableColumn, ModusWcTable } from './modus-wc-table';
 import { Table } from './modus-wc-table.core';
@@ -4834,7 +4836,7 @@ describe('modus-wc-table', () => {
             headerElement.textContent = 'Select';
             return headerElement;
           },
-          cell: ({ getValue }) => String(getValue() ?? ''),
+          cell: ({ getValue }) => String(getValue()),
           meta: { className: 'meta-cell' },
         },
         {
@@ -4861,7 +4863,9 @@ describe('modus-wc-table', () => {
       component['handleHeaderClick']('name');
 
       const patch = component['buildAdvancedTableOptionsPatch']();
-      patch.onStateChange?.({ rowSelection: { '0': true } });
+      patch.onStateChange?.({
+        rowSelection: { '0': true },
+      } as unknown as Updater<TableState>);
       patch.onStateChange?.((state) => ({
         ...state,
         rowSelection: {},
