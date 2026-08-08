@@ -4873,9 +4873,9 @@ describe('modus-wc-table', () => {
       await page.waitForChanges();
 
       expect(page.root?.querySelector('.meta-cell')).not.toBeNull();
-      expect(page.root?.querySelector('tbody tr')?.classList.contains('selectable')).toBe(
-        true
-      );
+      expect(
+        page.root?.querySelector('tbody tr')?.classList.contains('selectable')
+      ).toBe(true);
     });
 
     it('should initialize simple mode from columns watcher when table is missing', async () => {
@@ -4954,9 +4954,7 @@ describe('modus-wc-table', () => {
       await simplePage.waitForChanges();
       simpleComponent['handleHeaderClick']('name');
 
-      expect(
-        simplePage.root?.querySelector('th.fallback-col')
-      ).not.toBeNull();
+      expect(simplePage.root?.querySelector('th.fallback-col')).not.toBeNull();
     });
 
     it('should cover final advanced init and header edge branches', async () => {
@@ -5025,7 +5023,10 @@ describe('modus-wc-table', () => {
       await page.setContent('');
 
       jest
-        .spyOn(component as unknown as { hasColumnConfig: () => boolean }, 'hasColumnConfig')
+        .spyOn(
+          component as unknown as { hasColumnConfig: () => boolean },
+          'hasColumnConfig'
+        )
         .mockReturnValue(true);
       component.columnDefs = undefined;
       component['initializeTable']();

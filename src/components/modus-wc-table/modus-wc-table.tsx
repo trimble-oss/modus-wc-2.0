@@ -482,8 +482,7 @@ export class ModusWcTable {
     rowObj: Row<Record<string, unknown>>
   ): boolean {
     return (
-      this.isAdvancedRowSelectionEnabled() &&
-      (rowObj.getCanSelect?.() ?? true)
+      this.isAdvancedRowSelectionEnabled() && (rowObj.getCanSelect?.() ?? true)
     );
   }
 
@@ -1267,6 +1266,7 @@ export class ModusWcTable {
                 [columnClassName || '']: !!columnClassName,
               }}
               ref={(el) => {
+                if (!el) return;
                 this.mountAdvancedCellContent(el, cellContent);
               }}
             ></td>
