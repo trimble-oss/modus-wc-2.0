@@ -61,12 +61,14 @@ Type: `Promise<void>`
 
 - [modus-wc-checkbox](../modus-wc-checkbox)
 - [modus-wc-tooltip](../modus-wc-tooltip)
+- [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-tree-item --> modus-wc-checkbox
   modus-wc-tree-item --> modus-wc-tooltip
+  modus-wc-tree-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-content-tree --> modus-wc-tree-item
   style modus-wc-tree-item fill:#f9f,stroke:#333,stroke-width:4px

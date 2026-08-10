@@ -17,15 +17,27 @@ modus-wc-tree-item .modus-wc-menu-item {
       background-color: transparent;
     }
 
-    // Color DaisyUI's box-shadow caret; leave size/origin/margin/rotate alone.
-    &.modus-wc-menu-dropdown-toggle::after {
-      box-shadow: 2px 2px currentColor;
+    .modus-wc-menu-submenu-chevron {
+      align-items: center;
       color: var(--modus-wc-color-base-content);
+      display: inline-flex;
+      flex-shrink: 0;
+      height: 20px;
+      justify-content: center;
+      margin-inline-start: auto;
+      pointer-events: none;
+      transform: rotate(0deg);
+      transition-duration: 0.2s;
+      transition-property: transform;
+      transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+      width: 20px;
     }
 
     .modus-wc-menu-item-content {
       align-items: center;
       display: flex;
+      flex: 1;
+      min-width: 0;
       width: 100%;
 
       [slot='start'] {
@@ -86,6 +98,17 @@ modus-wc-tree-item .modus-wc-menu-item {
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-md);
       }
+    }
+  }
+
+  &.modus-wc-menu-item-expanded .modus-wc-menu-submenu-chevron,
+  &.modus-wc-menu-dropdown-show .modus-wc-menu-submenu-chevron {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modus-wc-menu-submenu-chevron {
+      transition: none;
     }
   }
 
@@ -238,7 +261,7 @@ modus-wc-tree-item .modus-wc-menu-item {
     }
 
     .modus-wc-menu-item-interactive {
-      &.modus-wc-menu-dropdown-toggle::after {
+      .modus-wc-menu-submenu-chevron {
         color: var(--modus-wc-color-gray-3);
       }
     }

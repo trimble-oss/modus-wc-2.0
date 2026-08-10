@@ -108,7 +108,7 @@ export class ModusWcCollapse {
   };
 
   private getOuterDivClasses(): string {
-    const classList: string[] = ['modus-wc-collapse modus-wc-collapse-arrow'];
+    const classList: string[] = ['modus-wc-collapse'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -118,11 +118,9 @@ export class ModusWcCollapse {
     // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     classList.push(`modus-wc-chevron-${this.chevronPosition}`);
-    if (!this.options?.startIcon && this.chevronPosition !== 'left') {
+    // In-flow chevron/start icons no longer need absolute-position padding exceptions.
+    if (!this.options?.startIcon) {
       classList.push('no-leading-icons');
-    }
-    if (this.options?.startIcon && this.chevronPosition === 'left') {
-      classList.push('has-start-icon');
     }
     if (this.customClass) classList.push(this.customClass);
 
@@ -172,10 +170,22 @@ export class ModusWcCollapse {
     return classList.join(' ');
   }
 
+  private renderChevron() {
+    return (
+      <modus-wc-icon
+        class="modus-wc-collapse-chevron"
+        decorative
+        name="expand_more"
+        size={this.options?.size ?? 'md'}
+      ></modus-wc-icon>
+    );
+  }
+
   render() {
     const baseId = this.collapseId;
     const titleId = `${baseId}-title`;
     const contentId = `${baseId}-content`;
+    const chevronLeft = this.chevronPosition === 'left';
 
     return (
       <Host>
@@ -198,6 +208,7 @@ export class ModusWcCollapse {
                     size={this.options.size}
                   ></modus-wc-icon>
                 )}
+                {chevronLeft && this.renderChevron()}
                 <div class="modus-wc-title-main-content">
                   <div class={this.getTitleChildDivClasses()}>
                     {this.options.icon && (
@@ -222,9 +233,16 @@ export class ModusWcCollapse {
                     ></modus-wc-icon>
                   </div>
                 )}
+                {!chevronLeft && this.renderChevron()}
               </div>
             ) : (
-              <slot name="header" />
+              <div class="modus-wc-summary-main-content">
+                {chevronLeft && this.renderChevron()}
+                <div class="modus-wc-title-main-content">
+                  <slot name="header" />
+                </div>
+                {!chevronLeft && this.renderChevron()}
+              </div>
             )}
           </summary>
           {this.expanded && this.options?.description && (

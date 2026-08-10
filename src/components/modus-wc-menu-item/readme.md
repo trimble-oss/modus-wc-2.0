@@ -64,12 +64,14 @@ Type: `Promise<void>`
 
 - [modus-wc-checkbox](../modus-wc-checkbox)
 - [modus-wc-tooltip](../modus-wc-tooltip)
+- [modus-wc-icon](../modus-wc-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
+  modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-app-menu --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-menu-item

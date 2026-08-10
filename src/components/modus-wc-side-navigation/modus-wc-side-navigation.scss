@@ -39,7 +39,7 @@ modus-wc-side-navigation {
 
   // Collapsed rail clips the submenu caret; hide it (submenu cannot open here).
   .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
-    .modus-wc-menu-dropdown-toggle::after {
+    .modus-wc-menu-submenu-chevron {
     display: none;
   }
 
