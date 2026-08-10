@@ -32,8 +32,8 @@ modus-wc-avatar .modus-wc-avatar {
     width: var(--modus-wc-size-xs);
 
     .initials {
-      font-size: var(--modus-wc-font-size-sm);
-      line-height: var(--modus-wc-font-size-2xl);
+      font-size: var(--modus-wc-font-size-xs);
+      line-height: var(--modus-wc-line-height-sm);
     }
 
     .modus-wc-icon {
@@ -47,8 +47,8 @@ modus-wc-avatar .modus-wc-avatar {
     width: var(--modus-wc-size-sm);
 
     .initials {
-      font-size: var(--modus-wc-font-size-lg);
-      line-height: var(--modus-wc-line-height-md);
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: 1.25rem;
     }
 
     .modus-wc-icon {
@@ -62,8 +62,8 @@ modus-wc-avatar .modus-wc-avatar {
     width: var(--modus-wc-size-md);
 
     .initials {
-      font-size: var(--modus-wc-font-size-xl);
-      line-height: var(--modus-wc-line-height-lg);
+      font-size: var(--modus-wc-font-size-md);
+      line-height: var(--modus-wc-line-height-md);
     }
 
     .modus-wc-icon {
