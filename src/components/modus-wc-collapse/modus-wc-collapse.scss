@@ -91,7 +91,7 @@ modus-wc-collapse .modus-wc-collapse {
     align-self: center;
     display: inline-flex;
     flex-shrink: 0;
-    height: var(--modus-wc-font-size-2xl);
+    height: 20px;
     pointer-events: none;
     transform: rotate(0deg);
     transition-duration: 0.2s;
@@ -112,7 +112,7 @@ modus-wc-collapse .modus-wc-collapse {
     justify-content: center;
     margin-inline-end: var(--modus-wc-spacing-xs);
     transform: translateY(1px);
-    width: var(--modus-wc-border-width-3xl);
+    width: 24px;
 
     i {
       font-size: var(--modus-wc-font-size-3xl);
