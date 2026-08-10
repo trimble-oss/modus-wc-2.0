@@ -937,3 +937,10 @@ modus-wc-button
 [data-theme$='-dark'] modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
   opacity: 0.4;
 }
+
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn.modus-wc-btn-disabled,
+[data-theme='connect-dark'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme='connect-dark'] modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
+  opacity: 0.5;
+}
