@@ -69,6 +69,7 @@
   --modus-wc-color-highlight-blue: #019aeb;
   --modus-wc-color-blue-light: #217cbb;
   --modus-wc-color-trimble-blue: #0063a3;
+  --modus-wc-color-connect-blue: #00437b;
   --modus-wc-color-blue-dark: #0e416c;
   --modus-wc-color-info-blue: #004f83;
   --modus-wc-color-highlight-blue-pale: rgba(1, 154, 235, 0.5);
@@ -201,6 +202,10 @@
   /* 32px */
   --modus-wc-spacing-3xl: 3rem;
   /* 48px */
+  --modus-wc-spacing-20: 5rem;
+  /* 80px */
+  --modus-wc-spacing-24: 6rem;
+  /* 96px */
 
   /* Inputs */
   --modus-wc-input-height-sm: 1.5rem;
@@ -229,11 +234,11 @@
     var(--modus-wc-color-trimble-gray)
   );
   --modus-wc-color-base-100: light-dark(
-    var(--modus-wc-color-gray-lighter),
+    var(--modus-wc-color-gray-01),
     var(--modus-wc-color-gray-8)
   );
   --modus-wc-color-base-200: light-dark(
-    var(--modus-wc-color-gray-light),
+    var(--modus-wc-color-gray-02),
     var(--modus-wc-color-gray-10)
   );
   --modus-wc-color-base-300: light-dark(
@@ -316,6 +321,14 @@
     var(--modus-wc-color-base-100),
     var(--modus-wc-color-base-100)
   );
+  --modus-wc-color-trimble-neutral: light-dark(
+    var(--modus-wc-color-trimble-gray),
+    var(--modus-wc-color-gray-light)
+  );
+  --modus-wc-color-trimble-neutral-content: light-dark(
+    var(--modus-wc-color-white),
+    var(--modus-wc-color-black)
+  );
 
   /* Info Colors */
   --modus-wc-color-info: light-dark(
@@ -333,7 +346,7 @@
 
   /* Success Colors */
   --modus-wc-color-success: light-dark(
-    var(--modus-wc-color-green),
+    var(--modus-wc-color-green-dark),
     var(--modus-wc-color-green-light)
   );
   --modus-wc-color-success-content: light-dark(
@@ -488,15 +501,15 @@
   --tw-purple-400: #c084fc;
   --tw-purple-500: #a855f7;
   --tw-purple-600: #9333ea;
-  --tw-purple-700: #7c3aed;
+  --tw-purple-700: #7e22ce;
   --tw-purple-800: #6b21a8;
   --tw-purple-900: #581c87;
   --tw-purple-950: #3b0764;
 
   /* Fuchsia */
   --tw-fuchsia-50: #fdf4ff;
-  --tw-fuchsia-100: #fce7f3;
-  --tw-fuchsia-200: #fad1e8;
+  --tw-fuchsia-100: #fae8ff;
+  --tw-fuchsia-200: #f5d0fe;
   --tw-fuchsia-300: #f0abfc;
   --tw-fuchsia-400: #e879f9;
   --tw-fuchsia-500: #d946ef;
@@ -509,9 +522,9 @@
   /* Pink */
   --tw-pink-50: #fdf2f8;
   --tw-pink-100: #fce7f3;
-  --tw-pink-200: #fad1e8;
-  --tw-pink-300: #f0abfc;
-  --tw-pink-400: #e879f9;
+  --tw-pink-200: #fbcfe8;
+  --tw-pink-300: #f9a8d4;
+  --tw-pink-400: #f47286;
   --tw-pink-500: #ec4899;
   --tw-pink-600: #db2777;
   --tw-pink-700: #be185d;
@@ -731,7 +744,7 @@
   --bc: 28.1705% 0.01025 242.054501;
   --in: 48.6221% 0.128075 247.073947;
   --inc: 100% 0 0;
-  --su: 55.824% 0.14148 150.027193;
+  --su: 44.8187% 0.110914 154.947561;
   --suc: 100% 0 0;
   --wa: 72.9405% 0.149372 67.994075;
   --wac: 28.1705% 0.01025 242.054501;

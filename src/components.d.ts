@@ -11,6 +11,8 @@ import { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-ava
 import { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+import { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
+import { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -20,7 +22,8 @@ import { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-ratin
 import { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 import { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 import { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
-import { SortingState } from "@tanstack/table-core";
+import { ColumnDef, SortingState, TableOptions } from "@tanstack/table-core";
+import { Table } from "./components/modus-wc-table/modus-wc-table.core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -30,6 +33,8 @@ export { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-ava
 export { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
+export { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
+export { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -39,7 +44,8 @@ export { IRatingChange, ModusWcRatingVariant } from "./components/modus-wc-ratin
 export { ISelectOption } from "./components/modus-wc-select/modus-wc-select";
 export { IStepperItem } from "./components/modus-wc-stepper/modus-wc-stepper";
 export { IPaginationChangeEventDetail, ITableColumn } from "./components/modus-wc-table/modus-wc-table";
-export { SortingState } from "@tanstack/table-core";
+export { ColumnDef, SortingState, TableOptions } from "@tanstack/table-core";
+export { Table } from "./components/modus-wc-table/modus-wc-table.core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
@@ -329,7 +335,8 @@ export namespace Components {
           * The color variant of the badge.
           * @default 'primary'
          */
-        "color": | 'primary'
+        "color": | 'default'
+    | 'primary'
     | 'secondary'
     | 'tertiary'
     | 'high-contrast'
@@ -872,6 +879,41 @@ export namespace Components {
           * @default true
          */
         "responsive"?: boolean;
+    }
+    /**
+     * Dock navigation bar for navigating between primary screens.
+     */
+    interface ModusWcDock {
+        /**
+          * The currently active dock item index.
+          * @default 0
+         */
+        "activeItemIndex": number;
+        /**
+          * Custom CSS class to apply to the inner nav element.
+          * @default ''
+         */
+        "customClass": string;
+        /**
+          * The dock items to display.
+          * @default []
+         */
+        "items": IDockItem[];
+        /**
+          * The edge the dock is anchored to. Controls layout and active indicator orientation.
+          * @default 'bottom'
+         */
+        "position": DockPosition;
+        /**
+          * If true, text labels are shown below icons.
+          * @default true
+         */
+        "showLabels": boolean;
+        /**
+          * The size of the dock items.
+          * @default 'md'
+         */
+        "size": ModusSize;
     }
     /**
      * A customizable dropdown menu component used to render a button and toggleable menu.
@@ -1586,7 +1628,7 @@ export namespace Components {
           * Size of the pagination buttons
           * @default 'md'
          */
-        "size": ModusSize;
+        "size": ModusSize | 'xs' | 'xl';
     }
     /**
      * A customizable panel component used to organize content in a structured layout.
@@ -2026,9 +2068,13 @@ export namespace Components {
          */
         "caption"?: string;
         /**
-          * An array of column definitions.
+          * TanStack column definitions. Required in advanced mode.
          */
-        "columns": ITableColumn[];
+        "columnDefs"?: ColumnDef<Record<string, unknown>, unknown>[];
+        /**
+          * An array of column definitions. Required in simple mode.
+         */
+        "columns"?: ITableColumn[];
         /**
           * The current page number in pagination (1-based index).
           * @default 1
@@ -2054,6 +2100,10 @@ export namespace Components {
          */
         "editable"?: boolean | ((row: Record<string, unknown>) => boolean);
         /**
+          * Returns the underlying TanStack table instance (advanced mode).
+         */
+        "getTableInstance": () => Promise<Table<Record<string, unknown>> | null>;
+        /**
           * Enable hover effect on table rows.
           * @default true
          */
@@ -2062,6 +2112,11 @@ export namespace Components {
           * Per-row predicate function controlling row selection eligibility.
          */
         "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
+        /**
+          * Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough.
+          * @default 'simple'
+         */
+        "mode": 'simple' | 'advanced';
         /**
           * Available options for the number of rows per page.
           * @default [5, 10, 15]
@@ -2091,6 +2146,10 @@ export namespace Components {
           * @default true
          */
         "sortable"?: boolean;
+        /**
+          * Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.).
+         */
+        "tableOptions"?: Partial<TableOptions<Record<string, unknown>>>;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
           * @default false
@@ -2481,10 +2540,13 @@ export namespace Components {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
+     * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
+     * the tooltip remains open and Escape does not dismiss it.
      * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
      * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+     * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+     * on the trigger (e.g. modus-wc-button).
      */
     interface ModusWcTooltip {
         /**
@@ -2502,7 +2564,7 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * Disables displaying the tooltip on hover
+          * Disables displaying the tooltip on hover and focus
           * @default false
          */
         "disabled"?: boolean;
@@ -2516,7 +2578,7 @@ export namespace Components {
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
-          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+          * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */
         "tooltipId"?: string;
     }
@@ -2659,6 +2721,16 @@ export namespace Components {
     }
     interface ModusWcUtilityPanel {
         /**
+          * When true, dims the area behind the panel while it is expanded. If `targetElement` is set, the overlay is scoped to that element only; otherwise it covers the full viewport.
+          * @default false
+         */
+        "backgroundOverlay": boolean;
+        /**
+          * Whether the panel should collapse when clicking outside of it.
+          * @default false
+         */
+        "collapseOnClickOutside": boolean;
+        /**
           * Custom CSS class to apply to the outer div.
           * @default ''
          */
@@ -2734,6 +2806,10 @@ export interface ModusWcContentTreeCustomEvent<T> extends CustomEvent<T> {
 export interface ModusWcDateCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDateElement;
+}
+export interface ModusWcDockCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcDockElement;
 }
 export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3215,6 +3291,26 @@ declare global {
     var HTMLModusWcDividerElement: {
         prototype: HTMLModusWcDividerElement;
         new (): HTMLModusWcDividerElement;
+    };
+    interface HTMLModusWcDockElementEventMap {
+        "itemSelect": { index: number; item: IDockItem };
+    }
+    /**
+     * Dock navigation bar for navigating between primary screens.
+     */
+    interface HTMLModusWcDockElement extends Components.ModusWcDock, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcDockElementEventMap>(type: K, listener: (this: HTMLModusWcDockElement, ev: ModusWcDockCustomEvent<HTMLModusWcDockElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcDockElementEventMap>(type: K, listener: (this: HTMLModusWcDockElement, ev: ModusWcDockCustomEvent<HTMLModusWcDockElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcDockElement: {
+        prototype: HTMLModusWcDockElement;
+        new (): HTMLModusWcDockElement;
     };
     interface HTMLModusWcDropdownMenuElementEventMap {
         "menuVisibilityChange": { isVisible: boolean };
@@ -3836,10 +3932,13 @@ declare global {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
+     * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
+     * the tooltip remains open and Escape does not dismiss it.
      * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
      * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+     * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+     * on the trigger (e.g. modus-wc-button).
      */
     interface HTMLModusWcTooltipElement extends Components.ModusWcTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTooltipElementEventMap>(type: K, listener: (this: HTMLModusWcTooltipElement, ev: ModusWcTooltipCustomEvent<HTMLModusWcTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3954,6 +4053,7 @@ declare global {
         "modus-wc-content-tree": HTMLModusWcContentTreeElement;
         "modus-wc-date": HTMLModusWcDateElement;
         "modus-wc-divider": HTMLModusWcDividerElement;
+        "modus-wc-dock": HTMLModusWcDockElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-handle": HTMLModusWcHandleElement;
@@ -4315,7 +4415,8 @@ declare namespace LocalJSX {
           * The color variant of the badge.
           * @default 'primary'
          */
-        "color"?: | 'primary'
+        "color"?: | 'default'
+    | 'primary'
     | 'secondary'
     | 'tertiary'
     | 'high-contrast'
@@ -5025,6 +5126,45 @@ declare namespace LocalJSX {
           * @default true
          */
         "responsive"?: boolean;
+    }
+    /**
+     * Dock navigation bar for navigating between primary screens.
+     */
+    interface ModusWcDock {
+        /**
+          * The currently active dock item index.
+          * @default 0
+         */
+        "activeItemIndex"?: number;
+        /**
+          * Custom CSS class to apply to the inner nav element.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The dock items to display.
+          * @default []
+         */
+        "items"?: IDockItem[];
+        /**
+          * Emitted when a dock item is selected.
+         */
+        "onItemSelect"?: (event: ModusWcDockCustomEvent<{ index: number; item: IDockItem }>) => void;
+        /**
+          * The edge the dock is anchored to. Controls layout and active indicator orientation.
+          * @default 'bottom'
+         */
+        "position"?: DockPosition;
+        /**
+          * If true, text labels are shown below icons.
+          * @default true
+         */
+        "showLabels"?: boolean;
+        /**
+          * The size of the dock items.
+          * @default 'md'
+         */
+        "size"?: ModusSize;
     }
     /**
      * A customizable dropdown menu component used to render a button and toggleable menu.
@@ -5832,7 +5972,7 @@ declare namespace LocalJSX {
           * Size of the pagination buttons
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
     }
     /**
      * A customizable panel component used to organize content in a structured layout.
@@ -6340,9 +6480,13 @@ declare namespace LocalJSX {
          */
         "caption"?: string;
         /**
-          * An array of column definitions.
+          * TanStack column definitions. Required in advanced mode.
          */
-        "columns": ITableColumn[];
+        "columnDefs"?: ColumnDef<Record<string, unknown>, unknown>[];
+        /**
+          * An array of column definitions. Required in simple mode.
+         */
+        "columns"?: ITableColumn[];
         /**
           * The current page number in pagination (1-based index).
           * @default 1
@@ -6376,6 +6520,11 @@ declare namespace LocalJSX {
           * Per-row predicate function controlling row selection eligibility.
          */
         "isRowSelectable"?: (row: Record<string, unknown>) => boolean;
+        /**
+          * Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough.
+          * @default 'simple'
+         */
+        "mode"?: 'simple' | 'advanced';
         /**
           * Emits when cell editing is committed with the new value.
          */
@@ -6443,6 +6592,10 @@ declare namespace LocalJSX {
           * @default true
          */
         "sortable"?: boolean;
+        /**
+          * Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.).
+         */
+        "tableOptions"?: Partial<TableOptions<Record<string, unknown>>>;
         /**
           * Zebra striped tables differentiate rows by styling them in an alternating fashion.
           * @default false
@@ -6884,10 +7037,13 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable tooltip component used to create tooltips with different content.
-     * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-     * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+     * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
+     * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
+     * the tooltip remains open and Escape does not dismiss it.
      * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
      * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+     * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+     * on the trigger (e.g. modus-wc-button).
      */
     interface ModusWcTooltip {
         /**
@@ -6905,7 +7061,7 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * Disables displaying the tooltip on hover
+          * Disables displaying the tooltip on hover and focus
           * @default false
          */
         "disabled"?: boolean;
@@ -6923,7 +7079,7 @@ declare namespace LocalJSX {
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
-          * The ID of the tooltip element, useful for setting the "aria-describedby" attribute of related elements.
+          * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */
         "tooltipId"?: string;
     }
@@ -7079,6 +7235,16 @@ declare namespace LocalJSX {
     }
     interface ModusWcUtilityPanel {
         /**
+          * When true, dims the area behind the panel while it is expanded. If `targetElement` is set, the overlay is scoped to that element only; otherwise it covers the full viewport.
+          * @default false
+         */
+        "backgroundOverlay"?: boolean;
+        /**
+          * Whether the panel should collapse when clicking outside of it.
+          * @default false
+         */
+        "collapseOnClickOutside"?: boolean;
+        /**
           * Custom CSS class to apply to the outer div.
           * @default ''
          */
@@ -7124,6 +7290,7 @@ declare namespace LocalJSX {
         "modus-wc-content-tree": ModusWcContentTree;
         "modus-wc-date": ModusWcDate;
         "modus-wc-divider": ModusWcDivider;
+        "modus-wc-dock": ModusWcDock;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
         "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-handle": ModusWcHandle;
@@ -7248,6 +7415,10 @@ declare module "@stencil/core" {
              * A customizable divider component used to separate content horizontally or vertically
              */
             "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
+            /**
+             * Dock navigation bar for navigating between primary screens.
+             */
+            "modus-wc-dock": LocalJSX.ModusWcDock & JSXBase.HTMLAttributes<HTMLModusWcDockElement>;
             /**
              * A customizable dropdown menu component used to render a button and toggleable menu.
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
@@ -7399,10 +7570,13 @@ declare module "@stencil/core" {
             "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
-             * The tooltip can be dismissed by pressing the Escape key when hovering over it.
-             * When forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.
+             * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
+             * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
+             * the tooltip remains open and Escape does not dismiss it.
              * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
              * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
+             * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
+             * on the trigger (e.g. modus-wc-button).
              */
             "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
