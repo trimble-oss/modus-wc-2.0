@@ -561,6 +561,7 @@ export class ModusWcAppMenu {
                   [
                     <modus-wc-button
                       size="sm"
+                      variant="filled"
                       color="tertiary"
                       onButtonClick={() => this.handleCancel()}
                     >
