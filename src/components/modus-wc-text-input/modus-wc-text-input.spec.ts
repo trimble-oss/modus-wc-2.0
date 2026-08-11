@@ -1,9 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcTextInput } from './modus-wc-text-input';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
-import { ModusWcTextInput } from './modus-wc-text-input';
 
 describe('modus-wc-text-input', () => {
   it('should render with default props', async () => {
@@ -374,5 +376,179 @@ describe('modus-wc-text-input', () => {
 
     expect(component.value).toBe('');
     expect(changeSpy).toHaveBeenCalled();
+  });
+
+  it('should render password visibility toggle only for password type', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" value="secret" aria-label="Password input"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle'
+    );
+    expect(toggleButton).not.toBeNull();
+
+    const input = page.root!.querySelector('input');
+    expect(input?.getAttribute('type')).toBe('password');
+  });
+
+  it('should render a key icon at the start for password type', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" aria-label="Password key icon"></modus-wc-text-input>',
+    });
+
+    const keyIcon = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-text-input-icon-password'
+    ) as HTMLElement & { name?: string };
+    expect(keyIcon).not.toBeNull();
+    expect(keyIcon?.name).toBe('key');
+  });
+
+  it('should prefer custom icon over password key icon', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: `<modus-wc-text-input type="password" aria-label="Custom over key">
+        <modus-wc-icon slot="custom-icon" name="home" size="sm"></modus-wc-icon>
+      </modus-wc-text-input>`,
+    });
+
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-icon-password')
+    ).toBeNull();
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-icon-custom')
+    ).not.toBeNull();
+  });
+
+  it('should not render password visibility toggle for non-password types', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="text" aria-label="Text input"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle'
+    );
+    expect(toggleButton).toBeNull();
+  });
+
+  it('should toggle password visibility when the button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" value="secret" aria-label="Password toggle test"></modus-wc-text-input>',
+    });
+
+    const input = page.root!.querySelector('input');
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    ) as HTMLButtonElement;
+
+    expect(input?.getAttribute('type')).toBe('password');
+    expect(toggleButton.getAttribute('aria-pressed')).toBeNull();
+
+    toggleButton.click();
+    await page.waitForChanges();
+
+    expect(input?.getAttribute('type')).toBe('text');
+    expect(toggleButton.getAttribute('aria-pressed')).toBe('true');
+
+    toggleButton.click();
+    await page.waitForChanges();
+
+    expect(input?.getAttribute('type')).toBe('password');
+  });
+
+  it('should hide password visibility toggle when disabled or readOnly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" disabled="true" aria-label="Disabled password"></modus-wc-text-input>',
+    });
+
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-password-toggle')
+    ).toBeNull();
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.disabled = false;
+    component.readOnly = true;
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-password-toggle')
+    ).toBeNull();
+  });
+
+  it('should reset password visibility when type changes away from password', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" value="secret" aria-label="Password type change"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    const input = page.root!.querySelector('input');
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    ) as HTMLButtonElement;
+
+    toggleButton.click();
+    await page.waitForChanges();
+    expect(input?.getAttribute('type')).toBe('text');
+
+    component.type = 'email';
+    await page.waitForChanges();
+
+    component.type = 'password';
+    await page.waitForChanges();
+    expect(input?.getAttribute('type')).toBe('password');
+  });
+
+  it('should use xs password toggle size when input size is sm', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="sm" aria-label="Small password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+    const toggleIcon = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle modus-wc-icon'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('xs');
+    expect(toggleIcon?.size).toBe('xs');
+  });
+
+  it('should use md password toggle size when input size is lg', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="lg" aria-label="Large password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+    const toggleIcon = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle modus-wc-icon'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('md');
+    expect(toggleIcon?.size).toBe('md');
+  });
+
+  it('should default effective input type to text when type is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input aria-label="Unset type"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.type = undefined;
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input');
+    expect(input?.getAttribute('type')).toBe('text');
   });
 });

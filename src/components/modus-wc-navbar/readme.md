@@ -77,6 +77,8 @@ graph TD;
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-icon
+  modus-wc-text-input --> modus-wc-button
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-avatar --> modus-wc-icon
