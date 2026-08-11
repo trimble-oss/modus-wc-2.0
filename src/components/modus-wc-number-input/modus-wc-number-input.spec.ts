@@ -73,6 +73,28 @@ describe('modus-wc-number-input', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should apply feedback classes only to the input when a currency symbol is displayed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNumberInput],
+      html: '<modus-wc-number-input currency-symbol="$" aria-label="Rate"></modus-wc-number-input>',
+    });
+
+    const component = page.rootInstance as ModusWcNumberInput;
+    component.feedback = {
+      level: 'info',
+      message: 'Hint',
+    };
+
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.modus-wc-input-currency')
+    ).not.toHaveClass('modus-wc-input--info');
+    expect(page.root!.querySelector('input')).toHaveClass(
+      'modus-wc-input--info'
+    );
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcNumberInput],
