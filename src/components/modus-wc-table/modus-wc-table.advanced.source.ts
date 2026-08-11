@@ -22,6 +22,8 @@ Advanced mode (\`mode="advanced"\`) uses \`columnDefs\` and \`tableOptions\` ins
 > 
 > [TanStack Table](${TANSTACK_TABLE_V8_DOCS}/api/core/table) is the headless table library behind advanced mode. It defines row models, column behavior, and table state; Modus renders that through the same table UI and styling.
 >
+> Advanced mode requires \`@tanstack/table-core\` in your application. Install it with \`npm install @tanstack/table-core@^8.21.3\` 
+>
 `.trim();
 
 export const EXPANDABLE_SUBROWS_STORY_DOCS = `
@@ -96,9 +98,11 @@ export const getExpandableSubrowsSourceCode = (): string =>
 
   const createCaretIcon = (expanded) => {
     const icon = document.createElement('modus-wc-icon');
-    icon.setAttribute('name', expanded ? 'caret_down' : 'caret_right');
+    icon.setAttribute('name', 'expand_more');
     icon.setAttribute('size', 'xs');
     icon.setAttribute('decorative', '');
+    icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(-90deg)';
+    icon.style.transition = 'transform 150ms ease';
     return icon;
   };
 

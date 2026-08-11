@@ -1289,9 +1289,11 @@ const createHierarchicalData = (): HierarchicalRow[] => [
 
 const createSubrowCaretIcon = (expanded: boolean): HTMLElement => {
   const icon = document.createElement('modus-wc-icon');
-  icon.setAttribute('name', expanded ? 'caret_down' : 'caret_right');
+  icon.setAttribute('name', 'expand_more');
   icon.setAttribute('size', 'xs');
   icon.setAttribute('decorative', '');
+  icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(-90deg)';
+  icon.style.transition = 'transform 150ms ease';
   return icon;
 };
 
