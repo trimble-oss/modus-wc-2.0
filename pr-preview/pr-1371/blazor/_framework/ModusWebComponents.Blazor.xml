@@ -2982,6 +2982,12 @@
             Enable hover effect on table rows.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTable.Mode">
+            <summary>
+            Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough.
+            Allowed values: "simple", "advanced"
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.Paginated">
             <summary>
             Enable pagination for the table.
@@ -3008,9 +3014,14 @@
             Zebra striped tables differentiate rows by styling them in an alternating fashion.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTable.ColumnDefs">
+            <summary>
+            TanStack column definitions. Required in advanced mode.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.Columns">
             <summary>
-            An array of column definitions.
+            An array of column definitions. Required in simple mode.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.Data">
@@ -3031,6 +3042,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.SelectedRowIds">
             <summary>
             Array of selected row IDs. Used for controlled selection state.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTable.TableOptions">
+            <summary>
+            Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.ChildContent">
@@ -3071,6 +3087,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTable.OnSortChange">
             <summary>
             Emits when sorting changes with the new sorting state.
+            </summary>
+        </member>
+        <member name="M:ModusWebComponents.Blazor.ModusWcTable.GetTableInstance">
+            <summary>
+            Returns the underlying TanStack table instance (advanced mode).
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTabs">
