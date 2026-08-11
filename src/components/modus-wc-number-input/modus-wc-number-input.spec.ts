@@ -91,7 +91,8 @@ describe('modus-wc-number-input', () => {
     const input = page.root!.querySelector('input');
     expect(currency).not.toBeNull();
     expect(input).not.toBeNull();
-    expect(currency!).not.toHaveClass('modus-wc-input--info'); expect(input!).toHaveClass('modus-wc-input--info');
+    expect(currency!).not.toHaveClass('modus-wc-input--info');
+    expect(input!).toHaveClass('modus-wc-input--info');
   });
 
   it('should emit blur event', async () => {
