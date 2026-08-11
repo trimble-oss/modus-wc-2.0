@@ -2,11 +2,17 @@
 
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/web-components';
+import { ColumnDef, getExpandedRowModel } from '@tanstack/table-core';
 import { html } from 'lit';
 import { ITableColumn } from './modus-wc-table';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IAutocompleteItem } from '../types';
 import { Density } from '../types';
+import {
+  EXPANDABLE_SUBROWS_STORY_DOCS,
+  getExpandableSubrowsSourceCode,
+  TABLE_MODE_DOCS_INTRO,
+} from './modus-wc-table.advanced.source';
 
 interface TableStoryArgs {
   'custom-class'?: string;
@@ -169,6 +175,13 @@ const meta: Meta<TableStoryArgs> = {
         'Per-row predicate function controlling row selection eligibility.',
       table: {
         type: { summary: '(row: Record<string, unknown>) => boolean' },
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: TABLE_MODE_DOCS_INTRO,
       },
     },
   },
@@ -1217,6 +1230,169 @@ export const InlineEditing: Story = {
     'current-page': 1,
     'page-size-options': [5, 10, 15],
     'selected-row-ids': [],
+  },
+};
+
+interface HierarchicalRow extends Record<string, unknown> {
+  id: string;
+  name: string;
+  budget: number;
+  subRows?: HierarchicalRow[];
+}
+
+const createHierarchicalData = (): HierarchicalRow[] => [
+  {
+    id: 'dept-1',
+    name: 'Engineering',
+    budget: 500000,
+    subRows: [
+      {
+        id: 'team-1',
+        name: 'Frontend',
+        budget: 200000,
+        subRows: [
+          { id: 'emp-1', name: 'Alice Chen', budget: 120000 },
+          { id: 'emp-2', name: 'Bob Martinez', budget: 80000 },
+        ],
+      },
+      {
+        id: 'team-2',
+        name: 'Backend',
+        budget: 300000,
+        subRows: [
+          { id: 'emp-3', name: 'Carol Davis', budget: 150000 },
+          { id: 'emp-4', name: 'Dan Wilson', budget: 150000 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'dept-2',
+    name: 'Marketing',
+    budget: 250000,
+    subRows: [
+      {
+        id: 'team-3',
+        name: 'Content',
+        budget: 100000,
+        subRows: [{ id: 'emp-5', name: 'Eve Thompson', budget: 100000 }],
+      },
+      {
+        id: 'team-4',
+        name: 'Growth',
+        budget: 150000,
+        subRows: [{ id: 'emp-6', name: 'Frank Lee', budget: 150000 }],
+      },
+    ],
+  },
+];
+
+const createSubrowCaretIcon = (expanded: boolean): HTMLElement => {
+  const icon = document.createElement('modus-wc-icon');
+  icon.setAttribute('name', 'expand_more');
+  icon.setAttribute('size', 'xs');
+  icon.setAttribute('decorative', '');
+  icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(-90deg)';
+  icon.style.transition = 'transform 150ms ease';
+  return icon;
+};
+
+const createSubrowColumnDefs = (): ColumnDef<HierarchicalRow, unknown>[] => [
+  {
+    id: 'name',
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row, getValue }) => {
+      const container = document.createElement('span');
+      container.style.display = 'inline-flex';
+      container.style.alignItems = 'center';
+      container.style.gap = '0.25rem';
+      container.style.paddingInlineStart = `${row.depth * 1.5}rem`;
+
+      if (row.getCanExpand()) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.setAttribute(
+          'aria-label',
+          row.getIsExpanded() ? 'Collapse row' : 'Expand row'
+        );
+        button.appendChild(createSubrowCaretIcon(row.getIsExpanded()));
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          row.toggleExpanded();
+        });
+        container.appendChild(button);
+      } else {
+        const spacer = createSubrowCaretIcon(false);
+        spacer.style.visibility = 'hidden';
+        container.appendChild(spacer);
+      }
+
+      const label = document.createElement('span');
+      const nameValue = getValue();
+      label.textContent =
+        typeof nameValue === 'string' || typeof nameValue === 'number'
+          ? String(nameValue)
+          : '';
+      container.appendChild(label);
+
+      return container;
+    },
+  },
+  {
+    id: 'budget',
+    accessorKey: 'budget',
+    header: 'Budget',
+    cell: ({ getValue }) => {
+      const value = Number(getValue() ?? 0);
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+      }).format(value);
+    },
+  },
+];
+
+const subrowTableOptions = {
+  getSubRows: (row: HierarchicalRow) => row.subRows ?? [],
+  getExpandedRowModel: getExpandedRowModel<HierarchicalRow>(),
+};
+
+export const ExpandableSubrows: Story = {
+  name: 'Expandable Subrows (Advanced)',
+  render: (args) => {
+    const data = createHierarchicalData();
+    const columnDefs = createSubrowColumnDefs();
+
+    return html`
+      <div style="max-height: 320px; overflow: auto;">
+        <modus-wc-table
+          mode="advanced"
+          aria-label="Organization budget table with subrows"
+          .data=${data}
+          .columnDefs=${columnDefs}
+          .tableOptions=${subrowTableOptions}
+          .density=${args.density}
+          .hover=${args.hover}
+          .zebra=${args.zebra}
+          @rowClick=${action('rowClick')}
+        ></modus-wc-table>
+      </div>
+    `;
+  },
+  args: {
+    density: 'comfortable',
+    hover: true,
+    zebra: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: EXPANDABLE_SUBROWS_STORY_DOCS,
+      },
+      source: { code: getExpandableSubrowsSourceCode() },
+    },
   },
 };
 
