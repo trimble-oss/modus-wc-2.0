@@ -19,6 +19,7 @@ interface TextInputArgs {
   'clear-aria-label'?: string;
   'custom-class'?: string;
   disabled?: boolean;
+  'hide-password-aria-label'?: string;
   enterkeyhint?:
     | 'enter'
     | 'done'
@@ -49,6 +50,7 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
+  'show-password-aria-label'?: string;
   size?: ModusSize;
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -149,6 +151,7 @@ const Template: Story = {
       ?disabled=${args.disabled}
       enterkeyhint=${ifDefined(args.enterkeyhint)}
       .feedback=${args.feedback}
+      hide-password-aria-label=${ifDefined(args['hide-password-aria-label'])}
       include-clear=${ifDefined(args['include-clear'])}
       include-search=${ifDefined(args['include-search'])}
       input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
@@ -163,6 +166,7 @@ const Template: Story = {
       placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
+      show-password-aria-label=${ifDefined(args['show-password-aria-label'])}
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
@@ -254,6 +258,7 @@ export const ShadowDomParent: Story = {
             disabled: boolean;
             enterkeyhint: string;
             feedback: IInputFeedbackProp;
+            hidePasswordAriaLabel: string;
             includeClear: boolean;
             includeSearch: boolean;
             inputId: string;
@@ -266,6 +271,7 @@ export const ShadowDomParent: Story = {
             placeholder: string;
             readOnly: boolean;
             required: boolean;
+            showPasswordAriaLabel: string;
             size: string;
             type: string;
             value: string;
@@ -279,6 +285,8 @@ export const ShadowDomParent: Story = {
           textInputEl.customClass = v['custom-class'] || '';
           textInputEl.disabled = Boolean(v.disabled);
           textInputEl.enterkeyhint = v.enterkeyhint || '';
+          textInputEl.hidePasswordAriaLabel =
+            v['hide-password-aria-label'] || 'Hide password';
           textInputEl.includeClear = Boolean(v['include-clear']);
           textInputEl.includeSearch = Boolean(v['include-search']);
           textInputEl.inputId = v['input-id'] || '';
@@ -291,6 +299,8 @@ export const ShadowDomParent: Story = {
           textInputEl.placeholder = v.placeholder || '';
           textInputEl.readOnly = Boolean(v['read-only']);
           textInputEl.required = Boolean(v.required);
+          textInputEl.showPasswordAriaLabel =
+            v['show-password-aria-label'] || 'Show password';
           textInputEl.size = v.size || '';
           textInputEl.type = v.type || '';
           textInputEl.value = v.value;
@@ -332,7 +342,7 @@ export const Migration: Story = {
 | helper-text                  |                     | Not carried over                                            |
 | include-error-icon           |                     | Not carried over                                            |
 | include-search-icon          | include-search      |                                                             |
-| include-password-text-toggle |                     | Not carried over                                            |
+| include-password-text-toggle | (built-in)          | Built-in when \`type="password"\`. Optional \`show-password-aria-label\` / \`hide-password-aria-label\` |
 | inputmode                    | inputmode          |                                                             |
 | label                        | label               |                                                             |
 | max-length                   | max-length          |                                                             |

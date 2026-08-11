@@ -444,20 +444,52 @@ describe('modus-wc-text-input', () => {
     const toggleButton = page.root!.querySelector(
       '.modus-wc-text-input-password-toggle button'
     ) as HTMLButtonElement;
+    const toggleIcon = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle modus-wc-icon'
+    ) as HTMLElement & { name?: string };
 
     expect(input?.getAttribute('type')).toBe('password');
     expect(toggleButton.getAttribute('aria-pressed')).toBeNull();
+    expect(toggleButton.getAttribute('aria-label')).toBe('Show password');
+    expect(toggleIcon?.name).toBe('visibility_on');
 
     toggleButton.click();
     await page.waitForChanges();
 
     expect(input?.getAttribute('type')).toBe('text');
     expect(toggleButton.getAttribute('aria-pressed')).toBe('true');
+    expect(toggleButton.getAttribute('aria-label')).toBe('Hide password');
+    expect(toggleIcon?.name).toBe('visibility_off');
 
     toggleButton.click();
     await page.waitForChanges();
 
     expect(input?.getAttribute('type')).toBe('password');
+    expect(toggleButton.getAttribute('aria-label')).toBe('Show password');
+    expect(toggleIcon?.name).toBe('visibility_on');
+  });
+
+  it('should use default password toggle aria labels when custom labels are unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" aria-label="Password aria fallback"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.showPasswordAriaLabel = undefined;
+    component.hidePasswordAriaLabel = undefined;
+    await page.waitForChanges();
+
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    ) as HTMLButtonElement;
+
+    expect(toggleButton.getAttribute('aria-label')).toBe('Show password');
+
+    toggleButton.click();
+    await page.waitForChanges();
+
+    expect(toggleButton.getAttribute('aria-label')).toBe('Hide password');
   });
 
   it('should hide password visibility toggle when disabled or readOnly', async () => {
@@ -478,6 +510,49 @@ describe('modus-wc-text-input', () => {
     expect(
       page.root!.querySelector('.modus-wc-text-input-password-toggle')
     ).toBeNull();
+  });
+
+  it('should remask password when becoming disabled or readOnly after reveal', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" value="secret" aria-label="Remask password"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    const input = page.root!.querySelector('input');
+    const toggleButton = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    ) as HTMLButtonElement;
+
+    toggleButton.click();
+    await page.waitForChanges();
+    expect(input?.getAttribute('type')).toBe('text');
+
+    component.readOnly = true;
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-password-toggle')
+    ).toBeNull();
+    expect(input?.getAttribute('type')).toBe('password');
+
+    component.readOnly = false;
+    await page.waitForChanges();
+
+    const toggleAgain = page.root!.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    ) as HTMLButtonElement;
+    toggleAgain.click();
+    await page.waitForChanges();
+    expect(input?.getAttribute('type')).toBe('text');
+
+    component.disabled = true;
+    await page.waitForChanges();
+
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-password-toggle')
+    ).toBeNull();
+    expect(input?.getAttribute('type')).toBe('password');
   });
 
   it('should reset password visibility when type changes away from password', async () => {

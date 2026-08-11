@@ -150,8 +150,11 @@ export class ModusWcTextInput {
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
 
   @Watch('type')
-  protected onTypeChange(newType: TextFieldTypes) {
-    if (newType !== 'password') {
+  @Watch('disabled')
+  @Watch('readOnly')
+  protected onPasswordToggleGuardsChange() {
+    // Remask when the toggle is unavailable so the value cannot stay exposed.
+    if (this.type !== 'password' || this.disabled || this.readOnly) {
       this.passwordVisible = false;
     }
   }
@@ -175,6 +178,12 @@ export class ModusWcTextInput {
     ) {
       this.el.setAttribute('inputmode', 'text');
     }
+  }
+
+  componentDidRender() {
+    // modus-wc-button only inherits host ARIA in componentWillLoad; keep the
+    // focused inner button label in sync when visibility / props change.
+    this.syncPasswordToggleAriaLabel();
   }
 
   private getClasses(): string {
@@ -233,6 +242,12 @@ export class ModusWcTextInput {
     return this.type ?? 'text';
   }
 
+  private getPasswordToggleAriaLabel(): string {
+    return this.passwordVisible
+      ? (this.hidePasswordAriaLabel ?? 'Hide password')
+      : (this.showPasswordAriaLabel ?? 'Show password');
+  }
+
   /** Maps input `size` to atom scale for the password-toggle button and its icon. */
   private getPasswordToggleSize(): DaisySize {
     switch (this.size) {
@@ -243,6 +258,17 @@ export class ModusWcTextInput {
       default:
         return 'sm';
     }
+  }
+
+  private syncPasswordToggleAriaLabel() {
+    const button = this.el.querySelector(
+      '.modus-wc-text-input-password-toggle button'
+    );
+    if (!button) {
+      return;
+    }
+
+    button.setAttribute('aria-label', this.getPasswordToggleAriaLabel());
   }
 
   private shouldIncludeClear(): boolean {
@@ -321,11 +347,7 @@ export class ModusWcTextInput {
           {showPasswordToggle && (
             <div class="modus-wc-password-toggle-container">
               <modus-wc-button
-                aria-label={
-                  this.passwordVisible
-                    ? this.hidePasswordAriaLabel
-                    : this.showPasswordAriaLabel
-                }
+                aria-label={this.getPasswordToggleAriaLabel()}
                 class="modus-wc-text-input-password-toggle"
                 color="tertiary"
                 pressed={this.passwordVisible}
