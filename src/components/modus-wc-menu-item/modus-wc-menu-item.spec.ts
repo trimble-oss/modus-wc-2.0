@@ -386,6 +386,19 @@ describe('modus-wc-menu-item', () => {
     expect(page.rootInstance.isExpanded).toBeFalsy();
   });
 
+  it('should render expand_more submenu chevron when hasSubmenu is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem, ModusWcIcon],
+      html: '<modus-wc-menu-item label="Parent Menu" value="parent" has-submenu="true"></modus-wc-menu-item>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { name?: string };
+    expect(chevron).not.toBeNull();
+    expect(chevron.name).toBe('expand_more');
+  });
+
   it('should handle collapseSubmenu when submenu element is missing', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenuItem],

@@ -225,9 +225,7 @@ export class ModusWcTreeItem {
   }
 
   private getInteractiveClasses(): string {
-    const classList: string[] = ['modus-wc-menu-item-interactive'];
-    if (this.hasSubmenu) classList.push('modus-wc-menu-dropdown-toggle');
-    return classList.join(' ');
+    return 'modus-wc-menu-item-interactive';
   }
 
   private getRole(mode?: SelectionMode): string {
@@ -390,6 +388,14 @@ export class ModusWcTreeItem {
               </div>
               <slot name="end"></slot>
             </div>
+            {this.hasSubmenu && (
+              <modus-wc-icon
+                class="modus-wc-menu-submenu-chevron"
+                decorative
+                name="expand_more"
+                size="md"
+              ></modus-wc-icon>
+            )}
           </div>
           <slot></slot>
         </li>

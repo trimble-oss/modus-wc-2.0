@@ -67,7 +67,7 @@ describe('modus-wc-collapse', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should add has-start-icon class when startIcon exists and chevron position is left', async () => {
+  it('should render expand_more chevron and open class for rotation state', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
       html: `<modus-wc-collapse
@@ -86,28 +86,35 @@ describe('modus-wc-collapse', () => {
     await page.waitForChanges();
 
     const details = page.root!.querySelector('details') as HTMLDetailsElement;
-    expect(details.classList.contains('has-start-icon')).toBe(true);
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-collapse-chevron'
+    ) as HTMLElement & { name?: string; size?: string };
+    expect(chevron).not.toBeNull();
+    expect(chevron.name).toBe('expand_more');
+    expect(details.classList.contains('modus-wc-collapse-open')).toBe(false);
+
+    component.expanded = true;
+    await page.waitForChanges();
+
+    expect(chevron.name).toBe('expand_more');
+    expect(details.classList.contains('modus-wc-collapse-open')).toBe(true);
   });
 
-  it('should render end icon container when endIcon is provided', async () => {
+  it('should use options size for the chevron when provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse, ModusWcIcon],
       html: '<modus-wc-collapse collapse-id="123"></modus-wc-collapse>',
     });
 
     const component = page.rootInstance as ModusWcCollapse;
-    component.options = {
-      ...options,
-      endIcon: 'add',
-      endIconAriaLabel: 'End icon',
-    };
+    component.options = { ...options, size: 'sm' };
 
     await page.waitForChanges();
 
-    const endIconContainer = page.root!.querySelector(
-      '.modus-wc-title-end-content'
-    );
-    expect(endIconContainer).not.toBeNull();
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-collapse-chevron'
+    ) as HTMLElement & { name?: string; size?: string };
+    expect(chevron.size).toBe('sm');
   });
 
   it('should render end icon container when endIcon is provided', async () => {
