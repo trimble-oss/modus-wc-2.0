@@ -144,6 +144,7 @@ export class ModusWcTabs {
         role="tab"
         aria-disabled={tab.disabled}
         aria-label={tab.label ?? tab.icon}
+        aria-selected={index === this.activeTabIndex ? 'true' : 'false'}
         class={this.getTabClasses(tab, index)}
         disabled={tab.disabled}
         id={`tab-${index}`}
