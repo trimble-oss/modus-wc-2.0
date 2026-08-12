@@ -469,29 +469,6 @@ describe('modus-wc-text-input', () => {
     expect(toggleIcon?.name).toBe('visibility_on');
   });
 
-  it('should use default password toggle aria labels when custom labels are unset', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
-      html: '<modus-wc-text-input type="password" aria-label="Password aria fallback"></modus-wc-text-input>',
-    });
-
-    const component = page.rootInstance as ModusWcTextInput;
-    component.showPasswordAriaLabel = undefined;
-    component.hidePasswordAriaLabel = undefined;
-    await page.waitForChanges();
-
-    const toggleButton = page.root!.querySelector(
-      '.modus-wc-text-input-password-toggle button'
-    ) as HTMLButtonElement;
-
-    expect(toggleButton.getAttribute('aria-label')).toBe('Show password');
-
-    toggleButton.click();
-    await page.waitForChanges();
-
-    expect(toggleButton.getAttribute('aria-label')).toBe('Hide password');
-  });
-
   it('should hide password visibility toggle when disabled or readOnly', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],

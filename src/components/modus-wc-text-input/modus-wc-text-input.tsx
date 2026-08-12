@@ -65,9 +65,6 @@ export class ModusWcTextInput {
   /** Aria label for the clear icon button. */
   @Prop() clearAriaLabel?: string = 'Clear text';
 
-  /** Aria label for the password visibility toggle when the password is visible. */
-  @Prop() hidePasswordAriaLabel?: string = 'Hide password';
-
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
@@ -92,9 +89,6 @@ export class ModusWcTextInput {
 
   /** Show the search icon within the input field. */
   @Prop() includeSearch?: boolean = false;
-
-  /** Aria label for the password visibility toggle when the password is hidden. */
-  @Prop() showPasswordAriaLabel?: string = 'Show password';
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -243,9 +237,7 @@ export class ModusWcTextInput {
   }
 
   private getPasswordToggleAriaLabel(): string {
-    return this.passwordVisible
-      ? (this.hidePasswordAriaLabel ?? 'Hide password')
-      : (this.showPasswordAriaLabel ?? 'Show password');
+    return this.passwordVisible ? 'Hide password' : 'Show password';
   }
 
   /** Maps input `size` to atom scale for the password-toggle button and its icon. */
@@ -281,14 +273,9 @@ export class ModusWcTextInput {
     return this.type === 'password' && !this.disabled && !this.readOnly;
   }
 
-  private shouldShowPasswordKeyIcon(): boolean {
-    return this.type === 'password';
-  }
-
   render() {
     const showClear = this.shouldIncludeClear();
     const showPasswordToggle = this.shouldShowPasswordToggle();
-    const showPasswordKeyIcon = this.shouldShowPasswordKeyIcon();
     const effectiveId = this.resolveEffectiveId(this.inputId);
     const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
 
@@ -307,7 +294,7 @@ export class ModusWcTextInput {
             <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
               <slot name="custom-icon" />
             </div>
-          ) : showPasswordKeyIcon ? (
+          ) : this.type === 'password' ? (
             <modus-wc-icon
               class="modus-wc-text-input-icon modus-wc-text-input-icon-password"
               decorative
