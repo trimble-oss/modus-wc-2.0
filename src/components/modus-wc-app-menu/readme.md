@@ -49,6 +49,7 @@ graph TD;
   modus-wc-app-menu --> modus-wc-button
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
+  modus-wc-menu-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   style modus-wc-app-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
