@@ -3302,11 +3302,6 @@
             A hint to the browser for which enter key to display.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.HidePasswordAriaLabel">
-            <summary>
-            Aria label for the password visibility toggle when the password is visible.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.IncludeClear">
             <summary>
             Show the clear button within the input field.
@@ -3365,11 +3360,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Required">
             <summary>
             A value is required for the form to be submittable.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ShowPasswordAriaLabel">
-            <summary>
-            Aria label for the password visibility toggle when the password is hidden.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Size">
