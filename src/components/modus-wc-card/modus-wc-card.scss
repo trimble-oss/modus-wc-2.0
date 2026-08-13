@@ -26,7 +26,7 @@ modus-wc-card .modus-wc-card {
     gap: unset;
   }
 
-  .modus-wc-card-actions {
+  .modus-wc-card-actions:not(:empty) {
     margin-bottom: var(--modus-wc-spacing-xs);
   }
 
