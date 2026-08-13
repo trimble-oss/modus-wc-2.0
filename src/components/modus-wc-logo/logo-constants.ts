@@ -471,7 +471,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     category: 'viewpoint',
   },
   viewpoint_hr_management: {
-    displayName: 'Viewpoint HR Management',
+    displayName: 'Spectrum HR Management',
     path: 'logos/viewpoint/viewpoint-hr-management.svg',
     emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
