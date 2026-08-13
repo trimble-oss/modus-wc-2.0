@@ -31,3 +31,21 @@ modus-wc-stepper .modus-wc-stepper-step-button {
 modus-wc-stepper .modus-wc-stepper-step-button:focus-visible {
   outline: none;
 }
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-2xs);
+}
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-label {
+  font-weight: var(--modus-wc-font-weight-bold);
+}
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-sublabel {
+  font-weight: var(--modus-wc-font-weight-normal);
+}
+
+modus-wc-stepper .modus-wc-steps-vertical .modus-wc-stepper-step-text {
+  text-align: start;
+}
