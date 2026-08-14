@@ -48,6 +48,27 @@ describe('modus-wc-tabs', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should expose the active tab with aria-selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    const tabs = page.root!.querySelectorAll('[role="tab"]');
+
+    expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+    expect(
+      Array.from(tabs)
+        .slice(1)
+        .every((tab) => tab.getAttribute('aria-selected') === 'false')
+    ).toBe(true);
+  });
+
   it('should render with default props (with tab panel)', async () => {
     const page = await newSpecPage({
       components: [ModusWcTabs],
@@ -139,6 +160,10 @@ describe('modus-wc-tabs', () => {
       previousTab: 0,
       newTab: 2,
     });
+    expect(thirdTab.getAttribute('aria-selected')).toBe('true');
+    expect(
+      page.root!.querySelector('[role="tab"]')?.getAttribute('aria-selected')
+    ).toBe('false');
   });
 
   it('should not emit tabChange event when a disabled tab is clicked', async () => {
