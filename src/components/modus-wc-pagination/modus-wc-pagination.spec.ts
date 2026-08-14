@@ -639,7 +639,9 @@ describe('modus-wc-pagination', () => {
       'page'
     );
     expect(
-      pageButtons.filter((button) => button.getAttribute('aria-current') === 'page')
+      pageButtons.filter(
+        (button) => button.getAttribute('aria-current') === 'page'
+      )
     ).toHaveLength(1);
   });
 
@@ -666,8 +668,9 @@ describe('modus-wc-pagination', () => {
     const pageButtons = Array.from(
       page.root!.querySelectorAll('button.modus-wc-pagination-page-btn')
     );
-    const visiblePageNumbers = pageButtons.map((button) =>
-      button.querySelector('.modus-wc-pagination-page-label')?.textContent
+    const visiblePageNumbers = pageButtons.map(
+      (button) =>
+        button.querySelector('.modus-wc-pagination-page-label')?.textContent
     );
 
     expect(visiblePageNumbers).toEqual(['8', '9', '10', '11', '12']);
@@ -675,7 +678,9 @@ describe('modus-wc-pagination', () => {
       'page'
     );
     expect(
-      pageButtons.filter((button) => button.getAttribute('aria-current') === 'page')
+      pageButtons.filter(
+        (button) => button.getAttribute('aria-current') === 'page'
+      )
     ).toHaveLength(1);
     expect(getPageButton(page.root!, 1)).toBeUndefined();
   });

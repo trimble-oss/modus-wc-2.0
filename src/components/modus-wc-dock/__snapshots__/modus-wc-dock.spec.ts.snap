@@ -4,7 +4,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
 <modus-wc-dock custom-class="test-class" position="left" show-labels="false" size="lg">
   <nav aria-label="Dock navigation" class="modus-wc-dock modus-wc-dock-icons-only modus-wc-dock-left modus-wc-dock-lg test-class">
     <div class="modus-wc-dock-item">
-      <modus-wc-button>
+      <modus-wc-button aria-label="Home">
         <!---->
         <button aria-label="Home" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -16,7 +16,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
       </modus-wc-button>
     </div>
     <div class="modus-wc-dock-item modus-wc-dock-item-active">
-      <modus-wc-button>
+      <modus-wc-button aria-current="page" aria-label="Inbox">
         <!---->
         <button aria-current="page" aria-label="Inbox" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -28,7 +28,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
       </modus-wc-button>
     </div>
     <div class="modus-wc-dock-item">
-      <modus-wc-button>
+      <modus-wc-button aria-label="Settings">
         <!---->
         <button aria-label="Settings" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
@@ -47,7 +47,7 @@ exports[`modus-wc-dock should render with default props 1`] = `
 <modus-wc-dock>
   <nav aria-label="Dock navigation" class="modus-wc-dock modus-wc-dock-bottom modus-wc-dock-md">
     <div class="modus-wc-dock-item modus-wc-dock-item-active">
-      <modus-wc-button>
+      <modus-wc-button aria-current="page">
         <!---->
         <button aria-current="page" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
