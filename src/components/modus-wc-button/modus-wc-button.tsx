@@ -26,6 +26,8 @@ import { convertPropsToClasses } from './modus-wc-button.tailwind';
 export class ModusWcButton {
   private inheritedAttributes: Attributes = {};
   private ariaAttributeObserver?: MutationObserver;
+  private originalSetAttribute?: HTMLElement['setAttribute'];
+  private originalRemoveAttribute?: HTMLElement['removeAttribute'];
 
   // These stay on the host so later set/remove is visible to the observer.
   // inheritAriaAttributes would otherwise strip them once in componentWillLoad.
@@ -81,11 +83,54 @@ export class ModusWcButton {
   }
 
   componentDidLoad() {
+    this.patchHostAttributeAccessors();
     this.observeHostAriaAttributes();
   }
 
   disconnectedCallback() {
     this.ariaAttributeObserver?.disconnect();
+    this.restoreHostAttributeAccessors();
+  }
+
+  // Stencil's test mock-doc does not implement MutationObserver. Patching the
+  // host accessors keeps aria-current / aria-label in sync there and in
+  // browsers when a parent updates the attribute without a button re-render.
+  private patchHostAttributeAccessors(): void {
+    this.originalSetAttribute = this.el.setAttribute.bind(this.el);
+    this.originalRemoveAttribute = this.el.removeAttribute.bind(this.el);
+
+    this.el.setAttribute = (name: string, value: string) => {
+      this.originalSetAttribute!(name, value);
+      this.syncObservedHostAria(name);
+    };
+
+    this.el.removeAttribute = (name: string) => {
+      this.originalRemoveAttribute!(name);
+      this.syncObservedHostAria(name);
+    };
+  }
+
+  private restoreHostAttributeAccessors(): void {
+    if (this.originalSetAttribute) {
+      this.el.setAttribute = this.originalSetAttribute;
+    }
+
+    if (this.originalRemoveAttribute) {
+      this.el.removeAttribute = this.originalRemoveAttribute;
+    }
+  }
+
+  private syncObservedHostAria(attributeName: string): void {
+    if (attributeName !== 'aria-current' && attributeName !== 'aria-label') {
+      return;
+    }
+
+    const innerButton = this.getInnerButton();
+    if (!innerButton) {
+      return;
+    }
+
+    this.syncHostAriaAttribute(innerButton, attributeName);
   }
 
   private observeHostAriaAttributes(): void {
@@ -94,18 +139,9 @@ export class ModusWcButton {
     }
 
     this.ariaAttributeObserver = new MutationObserver((mutations) => {
-      const innerButton = this.getInnerButton();
-      if (!innerButton) {
-        return;
-      }
-
       mutations.forEach((mutation) => {
-        const attributeName = mutation.attributeName;
-        if (
-          attributeName === 'aria-current' ||
-          attributeName === 'aria-label'
-        ) {
-          this.syncHostAriaAttribute(innerButton, attributeName);
+        if (mutation.attributeName) {
+          this.syncObservedHostAria(mutation.attributeName);
         }
       });
     });
@@ -117,7 +153,7 @@ export class ModusWcButton {
   }
 
   private getInnerButton(): HTMLButtonElement | null {
-    return this.el.querySelector(':scope > button');
+    return this.el.querySelector('button');
   }
 
   private syncHostAriaAttribute(
@@ -127,7 +163,7 @@ export class ModusWcButton {
     if (this.el.hasAttribute(attributeName)) {
       innerButton.setAttribute(
         attributeName,
-        this.el.getAttribute(attributeName) ?? ''
+        this.el.getAttribute(attributeName) as string
       );
     } else {
       innerButton.removeAttribute(attributeName);

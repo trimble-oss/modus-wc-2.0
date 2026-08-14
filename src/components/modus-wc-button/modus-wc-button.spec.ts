@@ -247,6 +247,8 @@ describe('modus-wc-button', () => {
 
     const component = page.rootInstance as ModusWcButton;
     const disconnectSpy = jest.fn();
+    const originalSetAttribute = component['originalSetAttribute'];
+    const originalRemoveAttribute = component['originalRemoveAttribute'];
     component['ariaAttributeObserver'] = {
       disconnect: disconnectSpy,
     } as unknown as MutationObserver;
@@ -254,6 +256,65 @@ describe('modus-wc-button', () => {
     component.disconnectedCallback();
 
     expect(disconnectSpy).toHaveBeenCalledTimes(1);
+    expect(page.root?.setAttribute).toBe(originalSetAttribute);
+    expect(page.root?.removeAttribute).toBe(originalRemoveAttribute);
+
+    component['originalSetAttribute'] = undefined;
+    component['originalRemoveAttribute'] = undefined;
+    expect(() => component.disconnectedCallback()).not.toThrow();
+  });
+
+  it('should ignore unrelated host attribute changes when syncing aria', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Home</modus-wc-button>',
+    });
+
+    const button = page.root?.querySelector('button');
+    page.root?.setAttribute('data-test', '1');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-current')).toBeNull();
+    expect(button?.hasAttribute('data-test')).toBe(false);
+  });
+
+  it('should apply MutationObserver host aria records to the inner button', async () => {
+    let mutationCallback: MutationCallback = () => undefined;
+    const originalMutationObserver = globalThis.MutationObserver;
+    globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+      mutationCallback = cb;
+      return {
+        observe: jest.fn(),
+        disconnect: jest.fn(),
+        takeRecords: jest.fn(),
+      };
+    }) as unknown as typeof MutationObserver;
+
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Home</modus-wc-button>',
+    });
+
+    const button = page.root?.querySelector('button');
+    page.root?.setAttribute('aria-current', 'location');
+    mutationCallback(
+      [
+        {
+          attributeName: 'aria-current',
+          type: 'attributes',
+          target: page.root as Node,
+        } as MutationRecord,
+        {
+          attributeName: null,
+          type: 'attributes',
+          target: page.root as Node,
+        } as MutationRecord,
+      ],
+      {} as MutationObserver
+    );
+
+    expect(button?.getAttribute('aria-current')).toBe('location');
+    globalThis.MutationObserver = originalMutationObserver;
   });
 
   it('should not set up a host aria observer when MutationObserver is unavailable', async () => {
