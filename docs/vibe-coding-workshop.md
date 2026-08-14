@@ -1,10 +1,12 @@
 # Vibe Coding Enablement — Filled Workshop & Hackathon
 
-Facilitator script for the five-phase curriculum: take product designers from **zero AI knowledge** to **production-ready in their circle** in about two days.
+Facilitator script for the five-phase curriculum: take product designers from **zero AI knowledge** to **better designers with AI** in about two days, by **vibe-coding on their own Macs**.
+
+**How it runs:** Every attendee has a Mac and Cursor. They prompt, run, and iterate **their own** prototype the whole time. You project and coach. An iPad is optional for *you* — a big Figma canvas to explain frames vs state — not a device for them.
 
 **What they ship:** live, state-driven prototypes for Product, and Modus-shaped repositories for Engineering.
 
-**What they do not become:** application engineers. They do not need backends, auth, or to write React by hand.
+**What they do not become:** application engineers. They do not need backends, auth, or to write React by hand. They become the designer who can **prove UX in a running Trimble UI**.
 
 Grounded in this library: `@trimble-oss/moduswebcomponents`, the React wrappers, Storybook docs, and the Modus Figma MCP guide.
 
@@ -23,19 +25,11 @@ After Day 2 a designer can:
 
 ---
 
-## Devices (not the spine)
+## Room setup
 
-Hands-on coding is a **laptop with Cursor**. iPad is optional.
+**Everyone:** Mac + Cursor. They vibe-code from Phase 1 through ship. No pairing required; sitting together is fine, but each person owns a folder and a GitHub repo.
 
-| Task | Laptop + Cursor | iPad |
-| --- | --- | --- |
-| Figma frames, variants, copy URL | Yes | Yes |
-| Chat / Cmd+K, `.cursorrules`, MCP JSON | Yes | No |
-| Modus starter, `npm`, Git commit/PR | Yes | No |
-| Open live preview URL | Yes | Yes |
-| Watch a demo | Yes | Yes |
-
-Someone on iPad-only can do Figma state exercises and review URLs. They are not production-ready until they sit at a laptop from Phase 1 onward.
+**Facilitator iPad (optional):** AirPlay or pass around Figma to *show* two frames vs variants vs one prototyped screen. Do not put Cursor on it. If you have no iPad, Figma on the Mac projector is enough.
 
 ---
 
@@ -68,14 +62,14 @@ Day 2 in one sentence: **brain first, then the company vehicle, then their GitHu
 
 Do not spend Day 1 on logins.
 
-**Attendee laptop**
+**Each attendee Mac**
 
 1. Cursor installed and signed in.
 2. GitHub account that can create a repo; they will connect it inside Cursor on Day 2.
 3. Figma access to the **golden workshop file** (Modus 2.0 library instances only — custom components break MCP mapping). See [src/stories/modus-figma-mcp-integration-guide.mdx](../src/stories/modus-figma-mcp-integration-guide.mdx).
 4. Node 20+ (`node -v`).
 
-**Facilitator laptop (already done)**
+**Facilitator Mac (already done)**
 
 1. A working Vite + React + Modus sandbox.
 2. Demo of Cursor signed into GitHub (attendees will use **their** account on Day 2).
@@ -90,7 +84,7 @@ Do not spend Day 1 on logins.
 - Page B: capstone — navbar, filter, table, confirm modal, empty/loading/error.
 - Only Modus 2.0 library components.
 
-**iPad:** confirm Figma access. Do not install Cursor here.
+**Facilitator iPad (optional):** open the golden Figma file for the Phase 2 “frames vs state” walkthrough. Attendees still follow on their Macs.
 
 ---
 
@@ -98,7 +92,7 @@ Do not spend Day 1 on logins.
 
 **Concept:** Zero constraints. English is the design tool.
 
-**Say (5 min):** You are not learning to code. You are learning to **brief an intern who types infinitely fast**. Chat is conversation. Inline (`Cmd+K` / `Ctrl+K`) is “change this bit.”
+**Say (5 min):** You are not becoming developers. You are becoming **better designers with AI** — you run the prototype, you judge the UX, you prompt the next change. Chat is conversation. Inline (`Cmd+K` / `Ctrl+K`) is “change this bit.” Everyone does this in their own Cursor window.
 
 ### Demo (15 min)
 
@@ -129,9 +123,9 @@ Add a "Forgot password?" text link under the button. Keep the same page.
 
 **Lesson:** Iterate. Do not open a new chat for every pixel.
 
-### Lab (50 min) — pairs, laptops
+### Lab (50 min) — everyone in their own Cursor
 
-Stay on **HTML/CSS only**. Each pair picks one:
+Stay on **HTML/CSS only**. Each person picks one:
 
 - Login (if they want to follow the demo)
 - Dashboard with three summary cards
@@ -144,7 +138,7 @@ Stay on **HTML/CSS only**. Each pair picks one:
 - A visible UI they did not hand-type.
 - They can point to Chat vs inline.
 
-**iPad:** watch only.
+**Facilitator iPad:** put it down. They should be looking at *their* browser preview.
 
 ---
 
@@ -161,11 +155,9 @@ Add a success experience as a second HTML page named success.html.
 After Sign in, go to that page.
 ```
 
-**Figma parallel (any device):** two frames vs one component with variants Default / Disabled / Error / ModalOpen.
+**Figma parallel (facilitator iPad or projector):** two frames vs one component with variants Default / Disabled / Error / ModalOpen. Then they immediately do the same idea in **their** HTML folder.
 
 **Ask:** Which one is the product? **One screen, several memories.** Extra HTML pages = extra Figma frames. Fine for a picture. Wrong for Product and Engineering.
-
-**iPad:** good for this Figma comparison.
 
 ### 2b. State in designer language (30 min)
 
@@ -252,13 +244,13 @@ Add a Show password control using state. Toggle the password field type between 
 Do not add a new page.
 ```
 
+They run this in their own folder. Coach by walking the room, not by coding for them.
+
 ### Exit (Day 1)
 
 They can point at AI output and say “that’s memory” vs “that’s a setting,” and they refuse two-page HTML as the handoff.
 
 **Homework (10 min):** Prompt **loading** (button busy after click) and **error** (inline message if password is empty after submit). Bring the folder tomorrow.
-
-**iPad:** cannot do 2d.
 
 ---
 
@@ -369,9 +361,9 @@ Green checkmarks in Cursor MCP settings before leaving this block.
 
 ### Exit
 
-Rules file in the repo, skill in `.cursor/skills`, Figma URL works in chat, MCP dots are green.
+**Exit:** Rules file in *their* repo, skill in `.cursor/skills`, Figma URL works in *their* chat, MCP dots green on *their* Mac.
 
-**iPad:** copy Figma URL only. Cannot install MCP or rules.
+**Facilitator iPad:** optional — pin the golden file so they can copy the node URL without hunting.
 
 ---
 
@@ -442,9 +434,9 @@ If `<style>` appears: “Delete custom CSS. Brain (rules) first.” Not a design
 
 ### Exit
 
-Looks like Trimble. State + `showModal`. MCP/rules visibly used (prompt log). No custom CSS.
+Looks like Trimble. State + `showModal`. They ran it on their Mac. No custom CSS.
 
-**iPad:** Figma beside the projector. Cannot run Vite.
+**Facilitator iPad:** optional — Figma beside the projector while they implement.
 
 ---
 
@@ -459,7 +451,7 @@ Looks like Trimble. State + `showModal`. MCP/rules visibly used (prompt log). No
 3. Grant repo create on that account (personal is fine; org only if they already have permission).
 4. Confirm the avatar in Source Control matches them.
 
-**Say:** Engineering will clone *your* repo. If it sits only on your laptop, you did not ship.
+**Say:** Engineering will clone *your* repo. If it sits only on your Mac, you did not ship.
 
 ### 5b. First repo from the UI (15 min)
 
@@ -488,7 +480,7 @@ Same GitHub login on the host:
 - **GitHub Pages** (Settings → Pages → GitHub Actions / branch), or
 - **Vercel** “Import Git repository” with GitHub OAuth — their account.
 
-Paste the **https** URL. Open it on a phone or iPad. Localhost and Figma prototypes score lower.
+Paste the **https** URL. Open it on their phone if they want. Localhost and Figma prototypes score lower.
 
 ### 5d. PR for Engineering (10 min)
 
@@ -503,8 +495,6 @@ Not wired to real auth. Please connect API.
 ```
 
 Engineers wire databases. Designers do not explain Redux.
-
-**iPad:** open github.com + live URL. Cannot publish from Cursor.
 
 ---
 
@@ -578,7 +568,7 @@ Roaming judges: one PM (can they validate UX in the URL?) and one engineer (coul
 - **Teaching React like a bootcamp** — they freeze. Four words only.
 - **Custom Figma components** — MCP looks “broken.” Fix the file, not the designer.
 - **Letting custom CSS slide** — hackathon Modus fidelity fails. Push back to rules.
-- **iPad as the coding device** — Cursor labs will fail. Borrow a laptop.
+- **Doing it for them** — they only get better by running their own Cursor. Coach prompts; do not hijack the keyboard.
 - **No live host** — everyone ends on localhost and fails Production Delivery.
 - **Shared GitHub bot** — they cannot ship after the workshop. Each person uses their account.
 - **Modus before brain** — the model invents CSS. Rules + MCP first.
