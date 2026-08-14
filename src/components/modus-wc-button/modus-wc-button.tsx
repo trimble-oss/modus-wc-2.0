@@ -25,6 +25,11 @@ import { convertPropsToClasses } from './modus-wc-button.tailwind';
 })
 export class ModusWcButton {
   private inheritedAttributes: Attributes = {};
+  private ariaAttributeObserver?: MutationObserver;
+
+  // These stay on the host so later set/remove is visible to the observer.
+  // inheritAriaAttributes would otherwise strip them once in componentWillLoad.
+  private readonly hostAriaAttributes = ['aria-current', 'aria-label'] as const;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -70,7 +75,63 @@ export class ModusWcButton {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.inheritedAttributes = inheritAriaAttributes(this.el, [
+      ...this.hostAriaAttributes,
+    ]);
+  }
+
+  componentDidLoad() {
+    this.observeHostAriaAttributes();
+  }
+
+  disconnectedCallback() {
+    this.ariaAttributeObserver?.disconnect();
+  }
+
+  private observeHostAriaAttributes(): void {
+    if (typeof MutationObserver === 'undefined') {
+      return;
+    }
+
+    this.ariaAttributeObserver = new MutationObserver((mutations) => {
+      const innerButton = this.getInnerButton();
+      if (!innerButton) {
+        return;
+      }
+
+      mutations.forEach((mutation) => {
+        const attributeName = mutation.attributeName;
+        if (
+          attributeName === 'aria-current' ||
+          attributeName === 'aria-label'
+        ) {
+          this.syncHostAriaAttribute(innerButton, attributeName);
+        }
+      });
+    });
+
+    this.ariaAttributeObserver.observe(this.el, {
+      attributes: true,
+      attributeFilter: [...this.hostAriaAttributes],
+    });
+  }
+
+  private getInnerButton(): HTMLButtonElement | null {
+    return this.el.querySelector(':scope > button');
+  }
+
+  private syncHostAriaAttribute(
+    innerButton: HTMLButtonElement,
+    attributeName: string
+  ): void {
+    if (this.el.hasAttribute(attributeName)) {
+      innerButton.setAttribute(
+        attributeName,
+        this.el.getAttribute(attributeName) ?? ''
+      );
+    } else {
+      innerButton.removeAttribute(attributeName);
+    }
   }
 
   private getClasses(): string {
@@ -124,6 +185,8 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
           {...this.inheritedAttributes}
+          aria-current={this.el.getAttribute('aria-current') ?? undefined}
+          aria-label={this.el.getAttribute('aria-label') ?? undefined}
         >
           <slot />
         </button>
