@@ -8,13 +8,23 @@
 />
 <script type="module" src="./modus-wc/modus-wc.esm.js"></script>
 <script>
-  // Load Modus styles in the manager context
-  const isLocal = window.location.hostname.includes('localhost');
-  const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = cssPath;
-  document.head.appendChild(link);
+  // Load Modus styles in the manager context. Prefer the Vite path, then
+  // the static-deploy copy. Hostname checks miss tunneled / forwarded hosts.
+  (function () {
+    const candidates = ['/src/styles/output.css', 'public/output.css'];
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    let index = 0;
+    const loadNext = function () {
+      if (index >= candidates.length) {
+        return;
+      }
+      link.href = candidates[index++];
+    };
+    link.addEventListener('error', loadNext);
+    document.head.appendChild(link);
+    loadNext();
+  })();
 </script>
 <style>
   html,

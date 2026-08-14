@@ -1,11 +1,22 @@
 <script>
-  // Determine if we're running locally or deployed
-  const isLocal = window.location.hostname.includes('localhost');
-  const cssPath = isLocal ? '../src/styles/output.css' : 'public/output.css';
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = cssPath;
-  document.head.appendChild(link);
+  // Vite dev serves compiled Tailwind at /src/styles/output.css.
+  // Static Storybook deploys copy it to public/output.css. Do not key this
+  // off hostname === localhost — forwarded/tunneled hosts need the same CSS.
+  (function () {
+    const candidates = ['/src/styles/output.css', 'public/output.css'];
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    let index = 0;
+    const loadNext = function () {
+      if (index >= candidates.length) {
+        return;
+      }
+      link.href = candidates[index++];
+    };
+    link.addEventListener('error', loadNext);
+    document.head.appendChild(link);
+    loadNext();
+  })();
 </script>
 <style>
   html,
