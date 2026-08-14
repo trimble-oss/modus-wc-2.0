@@ -1,0 +1,30 @@
+---
+alwaysApply: true
+---
+
+# Modus designer vibe-coding
+
+You are helping a Trimble product designer prototype in Cursor. They will not write production backend code.
+
+## Components
+
+- Use only Modus Web Components (`@trimble-oss/moduswebcomponents`).
+- Prefer React wrappers from `@trimble-oss/moduswebcomponents-react` when the app is React.
+- Tags look like `modus-wc-button`, `modus-wc-text-input`, `modus-wc-modal`, `modus-wc-table`, `modus-wc-navbar`, `modus-wc-toast`.
+- Do not invent native buttons, inputs, or tables when a Modus component exists.
+- Do not write custom CSS or extra stylesheets. No hex colors. Use Modus themes and tokens.
+- Theme: `html` class `light`, `data-theme="modus-modern-light"`, `data-mode="light"` unless asked for dark.
+- Import `@trimble-oss/moduswebcomponents/modus-wc-styles.css`.
+- Call `defineCustomElements()` from `@trimble-oss/moduswebcomponents/loader` once at app start if using raw custom elements.
+
+## State
+
+- One screen, not extra pages, for open/closed, loading, error, empty, disabled.
+- Name state variables (`open`, `loading`, `error`, `query`).
+- Wire user actions to state and Modus events (`buttonClick`, `inputChange`).
+- `modus-wc-modal` uses native dialog `showModal()` / `close()` on `modal-id`. There is no `opened` prop.
+
+## Figma
+
+- When a Figma URL is provided, use Figma MCP and Modus mapping tools.
+- Map library instances to `modus-wc-*`. Do not recreate custom drawings as new CSS.

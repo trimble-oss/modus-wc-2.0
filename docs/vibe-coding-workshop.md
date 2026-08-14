@@ -17,9 +17,9 @@ After Day 2 a designer can:
 1. Chat and inline-edit in Cursor using English.
 2. Reject static HTML “posters” and extra Figma frames as the handoff.
 3. Name **state**, **props**, and **events** well enough to correct the AI.
-4. Constrain generation to **Modus Web Components** (no custom CSS).
-5. Point Cursor at a Figma node (MCP) instead of writing a visual essay.
-6. Give Product a **live URL** and Engineering a **repo / PR**.
+4. **Wire Cursor’s brain** — rules, a skill, Figma MCP, Modus docs MCP — so the model stops guessing.
+5. Connect **production-grade Modus** (`@trimble-oss/moduswebcomponents`), not a generic UI kit.
+6. **Ship from their own GitHub account** — repo, commits, PR, live URL.
 
 ---
 
@@ -46,18 +46,21 @@ Someone on iPad-only can do Figma state exercises and review URLs. They are not 
 | Day 0 (45 min) | Preflight | Accounts and auth are green |
 | Day 1 morning | Phase 1 | First UI from English, HTML/CSS only |
 | Day 1 afternoon | Phase 2 | Frameworks + state + just enough React |
-| Day 2 morning | Phases 3–4 | Rules, Figma MCP, Modus starter |
-| Day 2 afternoon | Phase 5 + capstone | Git, live URL, scored mini-hack |
+| Day 2 morning | Phase 3 | Cursor **brain**: rules, skills, Figma MCP, Modus MCP |
+| Day 2 midday | Phase 4 | Production-grade Modus on that brain |
+| Day 2 afternoon | Phase 5 + capstone | Ship with **their GitHub account** |
 
 ```mermaid
 flowchart LR
   p1[Phase1_HTML_prompts]
   p2[Phase2_state_React]
-  p3[Phase3_rules_MCP]
-  p4[Phase4_Modus]
-  p5[Phase5_handoff]
+  p3[Phase3_Cursor_brain]
+  p4[Phase4_production_Modus]
+  p5[Phase5_ship_GitHub]
   p1 --> p2 --> p3 --> p4 --> p5
 ```
+
+Day 2 in one sentence: **brain first, then the company vehicle, then their GitHub.**
 
 ---
 
@@ -68,17 +71,18 @@ Do not spend Day 1 on logins.
 **Attendee laptop**
 
 1. Cursor installed and signed in.
-2. GitHub can create a private repo.
+2. GitHub account that can create a repo; they will connect it inside Cursor on Day 2.
 3. Figma access to the **golden workshop file** (Modus 2.0 library instances only — custom components break MCP mapping). See [src/stories/modus-figma-mcp-integration-guide.mdx](../src/stories/modus-figma-mcp-integration-guide.mdx).
 4. Node 20+ (`node -v`).
 
 **Facilitator laptop (already done)**
 
 1. A working Vite + React + Modus sandbox.
-2. Figma MCP authenticated (Trimble Cloud token in `mcp.json`).
-3. Sample `.cursorrules` (copy in Phase 3).
-4. One hosting path chosen: Vercel, Netlify, or GitHub Pages.
-5. Shared Slack/Teams thread titled “paste your preview URL.”
+2. Demo of Cursor signed into GitHub (attendees will use **their** account on Day 2).
+3. Figma MCP + Modus docs MCP authenticated where tokens are required.
+4. Sample rules + skill from [workshop-kit](workshop-kit/).
+5. One hosting path that logs in with GitHub: GitHub Pages or Vercel.
+6. Shared Slack/Teams thread titled “paste your preview URL.”
 
 **Golden Figma file (build once)**
 
@@ -258,43 +262,64 @@ They can point at AI output and say “that’s memory” vs “that’s a setti
 
 ---
 
-## Phase 3 — Wiring the AI brain (Day 2 morning, 50 min)
+## Phase 3 — Cursor’s brain (Day 2 morning, 70 min)
 
-**Concept:** The model is only as good as rules + Figma + Modus docs.
+**Concept:** A blank Cursor is a smart intern with amnesia. The **brain** is everything you attach so it remembers Trimble: rules, skills, MCPs (especially Figma), and @-context. Do this **before** production Modus, or the model will invent Bootstrap.
 
-### 3a. Project rules (20 min)
+**Say:** You do not memorize APIs. You **install a brain**, then you talk.
 
-At the project root, create `.cursorrules` (or `.cursor/rules/modus.mdc`). Designers paste; they do not invent policy.
+### What in Cursor actually helps a designer
+
+| Cursor thing | What it is | Designer job |
+| --- | --- | --- |
+| **Chat** | Conversation with the whole folder | “Build / change this screen” |
+| **Inline `Cmd+K` / `Ctrl+K`** | Edit the bit under the cursor | “Make this button disabled until…” |
+| **Agent vs Ask** | Agent edits files; Ask only answers | Use Agent to build; Ask to “what is state?” |
+| **@Files / @Folders** | Point at a screen or `App.tsx` | Prefer this over “look at my project” |
+| **@Web** | Fetch a public doc URL | Storybook page if MCP is down |
+| **Rules** | Always-on policy for this repo | Stop custom CSS and extra pages |
+| **Skills** | Playbook the agent reads for a job | “When I say implement Figma, do X” |
+| **MCP** | Live tools (Figma, Modus docs) | See the file; look up real props |
+| **Docs indexing** | Cursor reads the folder | Keep rules/skills **in this project** |
+| **Source Control** | Git UI | Phase 5 — their GitHub |
+
+Ignore for this workshop: terminal-first Git, CI, Bugbot, Stencil internals.
+
+Copy-paste kit: [docs/workshop-kit](workshop-kit/).
+
+### 3a. Rules — the always-on brain (20 min)
+
+Rules fire on every chat. If they are missing, Modus will leak.
+
+**Where:** project `.cursor/rules/modus-designer.mdc` (preferred) or `.cursorrules`. User-level Cursor Settings → Rules is optional extra; **project rules travel with the repo** so Engineering gets the same brain.
+
+Paste [workshop-kit/modus-designer.mdc](workshop-kit/modus-designer.mdc). Frontmatter `alwaysApply: true` matters.
+
+**Demo:** Ask for a button **without** rules (native `<button>` + CSS). Drop the rule file in. Same prompt → `modus-wc-button`, no hex.
+
+**If the AI still fights you:** the folder you opened is not the folder with the rules. File → Open Folder on the prototype.
+
+### 3b. Skills — the playbook (15 min)
+
+A **skill** is a `SKILL.md` the agent follows for a kind of task (implement from Figma, add a modal state). Rules say *always*. Skills say *when doing this job*.
+
+Drop [workshop-kit/modus-vibe/SKILL.md](workshop-kit/modus-vibe/SKILL.md) at `.cursor/skills/modus-vibe/SKILL.md`.
+
+**Designer line after that:**
 
 ```text
-You are helping a Trimble product designer vibe-code a prototype.
-
-Components:
-- Use only Modus Web Components (@trimble-oss/moduswebcomponents).
-- Prefer React wrappers from @trimble-oss/moduswebcomponents-react when the app is React.
-- Tags look like modus-wc-button, modus-wc-text-input, modus-wc-modal, modus-wc-table, modus-wc-navbar, modus-wc-toast.
-- Do not invent native buttons, inputs, or tables when a Modus component exists.
-- Do not write custom CSS or extra stylesheets. No hex colors. Use Modus themes and tokens.
-- Theme: html class "light" data-theme="modus-modern-light" data-mode="light" unless asked for dark.
-- Import '@trimble-oss/moduswebcomponents/modus-wc-styles.css'.
-- Call defineCustomElements() from '@trimble-oss/moduswebcomponents/loader' once at app start if using raw custom elements.
-
-State:
-- One screen, not extra pages, for open/closed, loading, error, empty, disabled.
-- Name state variables in the response (open, loading, error, query).
-- Wire user actions to setState / events (buttonClick, inputChange).
-
-Figma:
-- When a Figma URL is provided, map library instances to modus-wc-* . Do not recreate custom drawings as new CSS.
+Use the modus-vibe skill. Implement this Figma node with Modus only.
 ```
 
-**Lesson:** Rules stop the AI from hallucinating Bootstrap and custom CSS. If it still does, the rules were not in **this** folder or the prompt fought them.
+They do not write the skill. Facilitator ships it in the kit.
 
-### 3b. Figma MCP (25 min)
+### 3c. MCP — Figma plus Modus docs (30 min)
 
-From [src/stories/modus-figma-mcp-integration-guide.mdx](../src/stories/modus-figma-mcp-integration-guide.mdx):
+MCP = plugins that let Cursor **call tools** (see a file, look up a component). Designers paste URLs; they do not call tool names.
 
-Cursor `mcp.json` (AUTH_TOKEN from Trimble Cloud app — preflight):
+**1. Official Figma MCP** (Cursor Settings → MCP, Figma). Sign in with the same Figma account as the golden file. This is how the model *sees* layout instead of a 400-word description.
+
+**2. Modus Figma mapper** (Trimble) — from [src/stories/modus-figma-mcp-integration-guide.mdx](../src/stories/modus-figma-mcp-integration-guide.mdx). Maps library instances to `modus-wc-*`.
 
 ```json
 {
@@ -313,58 +338,63 @@ Cursor `mcp.json` (AUTH_TOKEN from Trimble Cloud app — preflight):
 }
 ```
 
-Also enable the official **Figma MCP** in Cursor so the model can see the file.
+`AUTH_TOKEN` is a Trimble Cloud app token (Day 0). Tools they may see in the log: `analyze_figma`, `get_modus_component_data`.
 
-**Accuracy rule (say this twice):** Use the **Modus 2.0 Figma library**. Custom components show up as undetected. Themes can still vary.
+**3. Modus docs MCP** — `@trimble-oss/moduswebcomponents-mcp` (`get_modus_component_data`, `get_modus_implementation_data`). This is production docs (props, events, React/Angular guides), not a screenshot guess.
 
-**Tools they will hear named (they do not call them by hand):**
-
-- `analyze_figma` — page or node → suggested `modus-wc-*` mapping
-- `get_modus_component_data` — props, events, slots for e.g. `modus-wc-table`
-
-**Designer prompt (good):**
-
-```text
-Here is the Figma node for the login:
-https://www.figma.com/design/<file>/<name>?node-id=<id>
-
-Use Modus 2.0 components only. Implement states: empty, filled, disabled, error, modal open.
-Do not write custom CSS.
+```json
+{
+  "modus-wc": {
+    "command": "npx",
+    "args": ["-y", "@trimble-oss/moduswebcomponents-mcp"]
+  }
+}
 ```
 
-**Designer prompt (bad):** “Make it look like this screenshot.”
+**Accuracy rule (say twice):** Figma file must use the **Modus 2.0 library**. Custom components show as undetected. Themes can still vary.
 
-Optional: attach the FIGMA_CODE_SPEC linked from the integration guide.
+**Good prompt:**
+
+```text
+Here is the Figma node:
+https://www.figma.com/design/<file>/<name>?node-id=<id>
+
+Use Figma MCP + Modus MCP. Map to modus-wc-*. States: empty, filled, disabled, error, modal open.
+No custom CSS. Follow project rules and the modus-vibe skill.
+```
+
+**Bad prompt:** “Make it look like this screenshot.”
+
+Green checkmarks in Cursor MCP settings before leaving this block.
 
 ### Exit
 
-Each laptop has `.cursorrules` and can paste a Figma URL into Chat.
+Rules file in the repo, skill in `.cursor/skills`, Figma URL works in chat, MCP dots are green.
 
-**iPad:** copy Figma URL. Cannot edit `mcp.json`.
+**iPad:** copy Figma URL only. Cannot install MCP or rules.
 
 ---
 
-## Phase 4 — Building the Trimble way (Day 2 morning–midday, 80 min)
+## Phase 4 — Production-grade Modus (Day 2 midday, 80 min)
 
-**Concept:** Company vehicle. Trust Modus for tokens, buttons, and modal behavior. Designers still own **which states exist**.
+**Concept:** The brain is on. Now the **company vehicle**: published `@trimble-oss/moduswebcomponents`, official theme, real events. Not a pretty HTML clone.
 
-### 4a. One-step starter (the PDF “CLI prompt”)
+### 4a. One-step starter
 
-This repo is the **library**, not an app generator. The designer-facing one-step is a **Cursor prompt** in an empty folder (facilitator can pre-run it):
+This repo is the library, not a create-app CLI. Designer action is one Agent prompt in a **new folder that already contains the workshop-kit rules + skill**:
 
 ```text
 Scaffold a Vite + React + TypeScript app.
 Install @trimble-oss/moduswebcomponents and the matching @trimble-oss/moduswebcomponents-react package for this React version.
 Import '@trimble-oss/moduswebcomponents/modus-wc-styles.css'.
-Set the document theme to modus-modern-light (html class light, data-theme, data-mode).
-Create a blank App that only renders a modus-wc-button label "Ready".
-Do not add extra CSS files.
-Follow .cursorrules.
+Set document theme to modus-modern-light (html.light, data-theme, data-mode).
+Render one modus-wc-button: "Ready".
+No extra CSS files. Follow .cursor/rules and the modus-vibe skill.
 ```
 
-Lock versions (from getting started): do not float on “latest” in a real product; for the workshop, pinning whatever `npm` resolves that morning is enough.
+Pin versions in real products; workshop can pin whatever npm resolved that morning.
 
-**Raw custom elements (if not using the React package):**
+**Raw custom elements:**
 
 ```js
 import { defineCustomElements } from '@trimble-oss/moduswebcomponents/loader';
@@ -375,7 +405,7 @@ defineCustomElements();
 <modus-wc-button color="primary" variant="filled">Click me</modus-wc-button>
 ```
 
-**React wrapper (preferred in this workshop):**
+**React wrapper (preferred):**
 
 ```tsx
 import { ModusWcButton } from '@trimble-oss/moduswebcomponents-react';
@@ -385,81 +415,98 @@ import { ModusWcButton } from '@trimble-oss/moduswebcomponents-react';
 </ModusWcButton>;
 ```
 
-### 4b. Rebuild yesterday’s login in Modus (45 min)
+### 4b. Rebuild yesterday’s login on Modus (45 min)
 
-**Prompt:**
+Paste the Figma node. Agent should hit MCP + rules.
 
 ```text
-Rebuild the login using only Modus components.
-- modus-wc-text-input for email (type email, label Email) and password (type password)
-- modus-wc-button for Sign in (disabled when fields are empty; color primary)
-- modus-wc-modal for success (modal-id login-success). Open with the dialog showModal() on the element with that id; close with close().
-- Keep useState for email, password, open.
-- Controlled inputs: value + onInputChange, reading e.detail.target.value
-- No custom CSS. No native <input> or <button>.
+Rebuild the login with production Modus only.
+- modus-wc-text-input email + password
+- modus-wc-button Sign in (disabled when empty; color primary)
+- modus-wc-modal success (modal-id login-success). Open with showModal() on that id; close with close().
+- useState for email, password, open
+- Controlled inputs: value + onInputChange, e.detail.target.value
+- No native input/button. No custom CSS.
 ```
 
-**Why this prompt is specific** (research from this repo — facilitators should know; designers only need the prompt):
+Facilitator facts (designers only need the prompt):
 
-- Button: `color` (`primary` …), `variant` (`filled` | `outlined` | `borderless`), `disabled`, `fullWidth`, event `buttonClick` (not only `onClick` on the host).
-- Text input: `label`, `type`, `value`, events `inputChange` / `inputBlur`. React controlled pattern is documented in [src/stories/frameworks/react.mdx](../src/stories/frameworks/react.mdx).
-- Modal: **not** an `opened` prop. Native `<dialog>`: `document.getElementById(modalId).showModal()` and `.close()`. Slots: `header`, `content`, `footer`. Required `modalId`.
-- Theme: `data-theme="modus-modern-light"` (default) or dark / classic / connect — [src/stories/getting-started.mdx](../src/stories/getting-started.mdx).
+- Button: `color`, `variant` (`filled` | `outlined` | `borderless`), `disabled`, `fullWidth`, event `buttonClick`.
+- Text input: `label`, `type`, `value`, `inputChange` — [src/stories/frameworks/react.mdx](../src/stories/frameworks/react.mdx).
+- Modal: **no `opened` prop**. Native dialog `showModal()` / `close()`. Slots `header`, `content`, `footer`. Required `modalId`.
+- Theme: `data-theme="modus-modern-light"` — [src/stories/getting-started.mdx](../src/stories/getting-started.mdx).
 
-If the AI writes a `<style>` block: “Delete custom CSS. Use Modus tokens and components only.” That is a rules miss, not a designer failure.
+If `<style>` appears: “Delete custom CSS. Brain (rules) first.” Not a designer talent issue.
 
-**Lab:** Error via input `feedback`, or `modus-wc-toast`. Loading: disable the button and change its label to “Signing in…”.
+**Lab:** `feedback` on the input or `modus-wc-toast`; loading label “Signing in…”.
 
 ### Exit
 
-Login looks like Trimble. Modal open/close is state + `showModal`. No custom CSS.
+Looks like Trimble. State + `showModal`. MCP/rules visibly used (prompt log). No custom CSS.
 
-**iPad:** hold Figma next to the projector. Cannot run Vite.
+**iPad:** Figma beside the projector. Cannot run Vite.
 
 ---
 
-## Phase 5 — Collaboration and delivery (Day 2 afternoon, 50 min)
+## Phase 5 — Ship with their GitHub account (Day 2 afternoon, 55 min)
 
-**Concept:** Git is a shared folder with history. They do not read backend files.
+**Concept:** The prototype is not done until it lives on **their** GitHub and a **browser URL**. Cursor’s Source Control tab is enough. No terminal Git. No shared class account.
 
-### Saving (20 min)
+### 5a. Connect GitHub in Cursor (10 min)
+
+1. Cursor Settings → **Account** → connect **GitHub**.
+2. Browser login: **their** user (`octocat`, not `trimble-workshop-bot`).
+3. Grant repo create on that account (personal is fine; org only if they already have permission).
+4. Confirm the avatar in Source Control matches them.
+
+**Say:** Engineering will clone *your* repo. If it sits only on your laptop, you did not ship.
+
+### 5b. First repo from the UI (15 min)
+
+Open Source Control (branch icon).
+
+1. **Initialize Repository** (if needed).
+2. Confirm `.gitignore` includes `node_modules` (ask Agent: “ensure node_modules is gitignored”).
+3. Message: `Add Modus login with modal state`.
+4. **Commit**.
+5. **Publish Branch** → GitHub → private or public on **their** account.
+6. Copy the `github.com/<them>/<repo>` URL into the shared thread.
 
 | Word | Meaning |
 | --- | --- |
-| Repository | The master folder on GitHub |
-| Commit | A named snapshot (“Add login modal state”) |
-| Branch | A side copy for one idea |
-| Pull request | “Please take this into the main folder” |
+| Repository | Master folder on GitHub under their user |
+| Commit | Named snapshot |
+| Branch | Side copy (`workshop/login-states`) |
+| Pull request | “Please take this into main” for an engineer |
 
-**In Cursor Source Control (the UI, not the terminal):**
+Second commit on a branch so history is not one lump.
 
-1. `Publish Branch` / create repo.
-2. Commit: `Add Modus login with modal state`.
-3. New branch: `workshop/login-states`.
-4. Commit again after a small change so history has more than one lump.
+### 5c. Live URL for Product (15 min)
 
-**Say:** You can ignore folders like `node_modules`. Engineers will ignore nothing important if your commits are small and named.
+Same GitHub login on the host:
 
-### For Product (15 min)
+- **GitHub Pages** (Settings → Pages → GitHub Actions / branch), or
+- **Vercel** “Import Git repository” with GitHub OAuth — their account.
 
-Deploy the interactive prototype (pre-chosen host). **Live URL in a real browser.** Localhost and Figma prototype links score lower in the hackathon.
+Paste the **https** URL. Open it on a phone or iPad. Localhost and Figma prototypes score lower.
 
-Paste the URL in the shared thread. Open it on a phone or iPad to prove it.
+### 5d. PR for Engineering (10 min)
 
-### For Engineering (10 min)
-
-Open a Pull Request. Description template they can paste:
+On github.com, **Compare & pull request**, or Cursor’s GitHub PR flow if shown.
 
 ```text
 Prototype: login + success modal.
 States: empty, disabled, error, open.
-Modus: text-input, button, modal.
+Modus: text-input, button, modal. Production package, no custom CSS.
+Figma: <link>
 Not wired to real auth. Please connect API.
 ```
 
-Engineers take Modus-compliant structure and attach databases. Designers do not explain Redux.
+Engineers wire databases. Designers do not explain Redux.
 
-**iPad:** open the live URL. Cannot commit or PR from Cursor.
+**iPad:** open github.com + live URL. Cannot publish from Cursor.
+
+---
 
 ---
 
@@ -469,7 +516,7 @@ Tests the **lifecycle**, not the prettiest mock.
 
 **Brief (read aloud):**
 
-> A PM reviews a list of items, filters them, and confirms an action in a modal. Include empty, loading, and error. Use only Modus Web Components. Deliver a live URL and a GitHub repo / PR.
+> A PM reviews a list of items, filters them, and confirms an action in a modal. Include empty, loading, and error. Production Modus only. Brain on (rules, skill, Figma MCP). Deliver a live URL and a GitHub repo under **your** account.
 
 **Suggested mapping (so the AI is not guessing):**
 
@@ -486,9 +533,9 @@ Tests the **lifecycle**, not the prettiest mock.
 
 | Criterion | Measures | Pass | Fail |
 | --- | --- | --- | --- |
-| AI orchestration and context | Phases 1 and 3 | Figma URL or MCP used; prompts name state (`query`, `open`, `loading`, `error`) | Screenshot-only prompting; two HTML pages |
-| Modus fidelity and framework | Phases 2 and 4 | Strictly `modus-wc-*`; theme tokens; `.cursorrules` blocked custom CSS | Native inputs, Bootstrap, hex CSS |
-| Repository management | Phase 5 engineering | GitHub repo, logical commits, engineer could pick up | Zip file, one giant “stuff” commit, no remote |
+| AI orchestration and context | Phases 1 and 3 | Rules + skill in repo; Figma MCP used; prompts name state | Screenshot-only; no brain files |
+| Modus fidelity and framework | Phases 2 and 4 | Production `@trimble-oss/moduswebcomponents`; no custom CSS | Native inputs, Bootstrap, hex CSS |
+| Repository management | Phase 5 engineering | Repo on **their** GitHub; logical commits; engineer could pick up | Zip, shared bot account, no remote |
 | Production delivery | Phase 5 product | Live clickable URL | Static screens, Figma-only, localhost-only |
 
 Roaming judges: one PM (can they validate UX in the URL?) and one engineer (could they wire data from this PR?).
@@ -497,9 +544,9 @@ Roaming judges: one PM (can they validate UX in the URL?) and one engineer (coul
 
 ## Pocket card (print)
 
-**You own:** problem, UX, states, accessibility, Modus fidelity, prompts, Figma context, prototype URL, clean PR.
+**You own:** problem, UX, states, accessibility, **Cursor brain** (rules, skill, Figma MCP), Modus fidelity, prompts, **your GitHub repo**, prototype URL, PR.
 
-**You escalate:** data, auth, performance, infra, “the AI keeps fighting the design system” (rules / MCP / library instances).
+**You escalate:** data, auth, performance, infra, “the AI keeps fighting the design system” (brain not loaded / custom Figma / MCP red).
 
 **Always name:** empty, filled, disabled, loading, error, success / open.
 
@@ -518,9 +565,10 @@ Roaming judges: one PM (can they validate UX in the URL?) and one engineer (coul
 | Chat vs `Cmd+K` | Hand-writing React |
 | HTML as a poster | CSS architecture, Tailwind internals |
 | `useState`, props, events | `useEffect`, context, Redux |
+| Rules, skills, Figma MCP, Modus MCP | Writing MCP JSON from memory |
 | `modus-wc-*` names via AI + Storybook | Stencil, Shadow DOM, this monorepo |
 | `showModal()` / `close()` on the modal id | Implementing focus traps |
-| Commit, branch, preview URL | CI, backends, tokens beyond pasting AUTH_TOKEN |
+| Publish repo from **their** GitHub in Cursor | Terminal Git, CI, shared class accounts |
 
 ---
 
@@ -532,6 +580,8 @@ Roaming judges: one PM (can they validate UX in the URL?) and one engineer (coul
 - **Letting custom CSS slide** — hackathon Modus fidelity fails. Push back to rules.
 - **iPad as the coding device** — Cursor labs will fail. Borrow a laptop.
 - **No live host** — everyone ends on localhost and fails Production Delivery.
+- **Shared GitHub bot** — they cannot ship after the workshop. Each person uses their account.
+- **Modus before brain** — the model invents CSS. Rules + MCP first.
 
 ---
 
@@ -541,5 +591,7 @@ Roaming judges: one PM (can they validate UX in the URL?) and one engineer (coul
 - React wrappers and controlled `ModusWcTextInput`: [src/stories/frameworks/react.mdx](../src/stories/frameworks/react.mdx)
 - Themes: [src/stories/styling.mdx](../src/stories/styling.mdx)
 - Figma MCP, `analyze_figma`, `get_modus_component_data`: [src/stories/modus-figma-mcp-integration-guide.mdx](../src/stories/modus-figma-mcp-integration-guide.mdx)
+- Modus docs MCP package: [`mcp/package.json`](../mcp/package.json) (`@trimble-oss/moduswebcomponents-mcp`)
+- Copy-paste brain: [workshop-kit/modus-designer.mdc](workshop-kit/modus-designer.mdc), [workshop-kit/modus-vibe/SKILL.md](workshop-kit/modus-vibe/SKILL.md)
 - Modal `showModal()` pattern: [src/components/modus-wc-modal/modus-wc-modal.stories.ts](../src/components/modus-wc-modal/modus-wc-modal.stories.ts)
 - Button / input / table / toast APIs: component `readme.md` files under `src/components/`
