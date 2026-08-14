@@ -407,13 +407,12 @@ modus-wc-chip .modus-wc-chip {
 [data-theme='connect-light'] modus-wc-chip .modus-wc-chip,
 [data-theme='connect-dark'] modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
-    overflow: hidden;
-
     --rounded-btn: var(--modus-wc-border-radius-rounded);
 
     border-radius: var(--modus-wc-border-radius-rounded);
 
     &:has(.modus-wc-chip-remove-icon) {
+      overflow: hidden;
       padding-block: 0;
       padding-inline-end: 0;
     }
@@ -442,7 +441,6 @@ modus-wc-chip .modus-wc-chip {
       border-radius: 50%;
       color: var(--modus-wc-color-base-100);
       display: inline-flex;
-      font-size: 0.75em;
       height: 50%;
       justify-content: center;
       line-height: 1;
