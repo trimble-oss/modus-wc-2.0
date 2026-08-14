@@ -184,10 +184,12 @@ export class ModusWcPagination {
     );
 
     return (
-      <button
+      <modus-wc-button
+        key={page}
         aria-current={isCurrentPage ? 'page' : undefined}
-        class={`${buttonClasses} ${isCurrentPage ? 'modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
-        onClick={() => this.handlePageClick(page)}
+        customClass={`${buttonClasses} ${isCurrentPage ? 'modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
+        onButtonClick={() => this.handlePageClick(page)}
+        type="button"
       >
         <span class="modus-wc-sr-only">{pageAriaLabel}</span>
         {isTruncated ? (
@@ -197,7 +199,7 @@ export class ModusWcPagination {
         ) : (
           pageLabel
         )}
-      </button>
+      </modus-wc-button>
     );
   }
 

@@ -20,6 +20,11 @@ modus-wc-pagination .modus-wc-pagination {
   background-color: var(--modus-wc-color-base-100);
   color: var(--modus-wc-color-base-content);
 
+  // Keep DaisyUI join layout: page numbers are wrapped in modus-wc-button.
+  modus-wc-button {
+    display: contents;
+  }
+
   .modus-wc-pagination-btn {
     background-color: var(--modus-wc-color-base-100);
     border-color: transparent;

@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcPagination } from './modus-wc-pagination';
 import { convertPropsToClasses } from './modus-wc-pagination.tailwind';
 import { ModusWcTooltip } from '../modus-wc-tooltip/modus-wc-tooltip';
@@ -15,7 +16,7 @@ const getPageButton = (root: HTMLElement, pageNumber: number) =>
 describe('modus-wc-pagination', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: '<modus-wc-pagination aria-label="default pagination"></modus-wc-pagination>',
     });
     expect(page.root).toMatchSnapshot();
@@ -23,7 +24,7 @@ describe('modus-wc-pagination', () => {
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="custom pagination"
         count="13"
@@ -37,7 +38,7 @@ describe('modus-wc-pagination', () => {
 
   it('should not render first and last page nav buttons when count is less than 5', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="5"
@@ -60,7 +61,7 @@ describe('modus-wc-pagination', () => {
 
   it('should render first and last page nav buttons when count is greater than 5', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="13"
@@ -83,7 +84,7 @@ describe('modus-wc-pagination', () => {
 
   it('should disable previous page button when on the first page', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="5"
@@ -102,7 +103,7 @@ describe('modus-wc-pagination', () => {
 
   it('should disable next page button when on the last page', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="5"
@@ -121,7 +122,7 @@ describe('modus-wc-pagination', () => {
 
   it('should disable both first and previous page buttons when on the first page and count greater than 5', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="15"
@@ -144,7 +145,7 @@ describe('modus-wc-pagination', () => {
 
   it('should disable both last and next page buttons when on the last page and count greater than 5', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="15"
@@ -167,7 +168,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking a page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="5"
@@ -193,7 +194,7 @@ describe('modus-wc-pagination', () => {
 
   it('should not emit pageChange event when clicking the current page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="5"
@@ -216,7 +217,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking the first page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="10"
@@ -244,7 +245,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking the previous page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="10"
@@ -274,7 +275,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking the next page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="10"
@@ -302,7 +303,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking the last page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="10"
@@ -331,7 +332,7 @@ describe('modus-wc-pagination', () => {
   it('should apply custom aria label values', async () => {
     // Create the component
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
     });
 
@@ -377,7 +378,7 @@ describe('modus-wc-pagination', () => {
 
   it('should use default aria label values when none are provided', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
     });
 
@@ -411,7 +412,7 @@ describe('modus-wc-pagination', () => {
 
   it('should apply custom text for the previous page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
     });
 
@@ -434,7 +435,7 @@ describe('modus-wc-pagination', () => {
 
   it('should apply custom text for the next page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination aria-label="pagination test" count="10" page="3"></modus-wc-pagination>`,
     });
 
@@ -457,7 +458,7 @@ describe('modus-wc-pagination', () => {
 
   it('should truncate non-current page numbers with more than 5 digits from the front', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="1000000"
@@ -475,7 +476,7 @@ describe('modus-wc-pagination', () => {
 
   it('should display the current page number in full without truncation', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="1000000"
@@ -497,7 +498,7 @@ describe('modus-wc-pagination', () => {
 
   it('should keep the full page number in the DOM for screen readers', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="1000000"
@@ -515,7 +516,7 @@ describe('modus-wc-pagination', () => {
 
   it('should not use ids on page button accessible labels', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination aria-label="pagination test" count="5" page="1"></modus-wc-pagination>`,
     });
 
@@ -532,7 +533,7 @@ describe('modus-wc-pagination', () => {
 
   it('should show a tooltip only for truncated page numbers', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="1000000"
@@ -551,7 +552,7 @@ describe('modus-wc-pagination', () => {
     expect(currentPageButton!.querySelector('modus-wc-tooltip')).toBeNull();
 
     const shortPageSpec = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="100"
@@ -565,7 +566,7 @@ describe('modus-wc-pagination', () => {
 
   it('should emit pageChange event when clicking a truncated page button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination, ModusWcTooltip],
+      components: [ModusWcPagination, ModusWcButton, ModusWcTooltip],
       html: `<modus-wc-pagination
         aria-label="pagination test"
         count="1000000"
@@ -597,7 +598,7 @@ describe('modus-wc-pagination', () => {
 
   it('should use square classes for icon buttons and padded classes for page buttons', async () => {
     const page = await newSpecPage({
-      components: [ModusWcPagination],
+      components: [ModusWcPagination, ModusWcButton],
       html: `<modus-wc-pagination count="5" page="3"></modus-wc-pagination>`,
     });
 
@@ -614,5 +615,68 @@ describe('modus-wc-pagination', () => {
     expect(pageButton!.classList.contains('modus-wc-pagination-page-btn')).toBe(
       true
     );
+  });
+
+  it('should move aria-current to the clicked page number button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcButton],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="5"
+        page="1"
+      ></modus-wc-pagination>`,
+    });
+
+    const pageThreeButton = getPageButton(page.root!, 3);
+    (pageThreeButton as HTMLButtonElement | undefined)?.click();
+    await page.waitForChanges();
+
+    const pageButtons = Array.from(
+      page.root!.querySelectorAll('button.modus-wc-pagination-page-btn')
+    );
+
+    expect(getPageButton(page.root!, 3)?.getAttribute('aria-current')).toBe(
+      'page'
+    );
+    expect(
+      pageButtons.filter((button) => button.getAttribute('aria-current') === 'page')
+    ).toHaveLength(1);
+  });
+
+  it('should keep aria-current on the current page when the visible numbers slide', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcPagination, ModusWcButton],
+      html: `<modus-wc-pagination
+        aria-label="pagination test"
+        count="20"
+        page="1"
+      ></modus-wc-pagination>`,
+    });
+
+    expect(getPageButton(page.root!, 1)?.getAttribute('aria-current')).toBe(
+      'page'
+    );
+    expect(getPageButton(page.root!, 10)).toBeUndefined();
+
+    // eslint-disable-next-line no-undef
+    const pagination = page.root as HTMLModusWcPaginationElement;
+    pagination.page = 10;
+    await page.waitForChanges();
+
+    const pageButtons = Array.from(
+      page.root!.querySelectorAll('button.modus-wc-pagination-page-btn')
+    );
+    const visiblePageNumbers = pageButtons.map((button) =>
+      button.querySelector('.modus-wc-pagination-page-label')?.textContent
+    );
+
+    expect(visiblePageNumbers).toEqual(['8', '9', '10', '11', '12']);
+    expect(getPageButton(page.root!, 10)?.getAttribute('aria-current')).toBe(
+      'page'
+    );
+    expect(
+      pageButtons.filter((button) => button.getAttribute('aria-current') === 'page')
+    ).toHaveLength(1);
+    expect(getPageButton(page.root!, 1)).toBeUndefined();
   });
 });
