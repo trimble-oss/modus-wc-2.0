@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+# Storybook on Cloud / iPad / VM
+
+Users often open this repo from **iPad** or **Cursor Cloud**. `localhost:6006` is not reachable on their device.
+
+When asked to open, start, or share Storybook:
+
+- Give a **public HTTPS URL** into the VM (port-forward / tunnel to Storybook on port 6006), not `http://localhost:6006`.
+- Confirm Modus CSS actually loads on that URL before sending it. `/src/styles/output.css` or `/public/output.css` must return 200, and the canvas must show themed Modus components (not unstyled native controls).
+- Do not treat `hostname === localhost` as the way to choose stylesheet paths. Tunneled and forwarded hosts are not localhost; they still need Vite `output.css` (or the static `public/output.css` fallback). See `.storybook/preview-head.html` and `.storybook/manager-head.html`.

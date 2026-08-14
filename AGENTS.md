@@ -48,6 +48,7 @@ Don't commit these incidental regenerations unless the change is intentional.
 
 - Node `>=20` (repo Volta-pins `20.19.2`); the toolchain also builds/tests fine on Node 22.
 - `npm start` → Stencil watch + Storybook on port **6006** + lint (via wireit).
+- **iPad / Cloud users cannot open `localhost`.** When sharing Storybook, expose port 6006 over a public HTTPS URL (tunnel/forward) and send that link. Verify Modus CSS loads on that host (`/src/styles/output.css` or `/public/output.css` returns 200). Do not gate Storybook stylesheets on `hostname` containing `localhost` (see `.cursor/rules/storybook-remote-access.mdc`).
 - `npm run build:ci` builds the Stencil library only (faster than full `npm run build`,
   which also builds Storybook).
 - `npm test` runs `stencil test --spec` (Jest + Puppeteer headless Chromium; coverage
