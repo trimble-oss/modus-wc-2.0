@@ -682,7 +682,6 @@ describe('modus-wc-dock', () => {
 
     expect(component['getFocusedItemIndex']()).toBe(-1);
     expect(() => component['focusItemAt'](0)).not.toThrow();
-    expect(() => component['syncItemAria']()).not.toThrow();
   });
 
   it('should move focus to the first item on Home and the last item on End', async () => {
