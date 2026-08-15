@@ -1,0 +1,15 @@
+{
+  "name": "modus-ai-designer-workshop-overview",
+  "version": "1.0.0",
+  "description": "10-slide participant-facing workshop overview",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node generate.mjs",
+    "test": "node generate.mjs"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

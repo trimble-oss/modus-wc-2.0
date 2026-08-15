@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From an Idea to a Working Prototype</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #003E63; font-family: Arial, sans-serif; }
+  .deck { height: 100%; overflow: hidden; }
+  .slide {
+    display: none;
+    height: 100%;
+    padding: 7vh 8vw 10vh;
+    background: #F8F9FA;
+    color: #1B242B;
+    position: relative;
+  }
+  .slide.active { display: flex; flex-direction: column; justify-content: center; animation: rise .35s ease; }
+  .slide.hero { background: #003E63; color: #fff; }
+  .slide.hero::after {
+    content: "";
+    position: absolute;
+    top: -8vh;
+    right: -4vw;
+    width: 38vw;
+    height: 38vw;
+    border-radius: 50%;
+    background: #F9C74F;
+    opacity: .18;
+  }
+  h1 { font-size: clamp(2.2rem, 4.4vw, 3.6rem); margin: 0 0 4vh; max-width: 16ch; line-height: 1.12; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.4vh; }
+  li {
+    background: #D9EBF7;
+    border-radius: 16px;
+    padding: 2.2vh 2vw;
+    font-size: clamp(1.15rem, 2.1vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  li:nth-child(even) { background: #DDEFE6; }
+  .hero li { background: transparent; padding: 0; font-weight: 500; }
+  .hero li:nth-child(even) { background: transparent; }
+  .number { position: absolute; right: 3vw; bottom: 3vh; font-size: .95rem; color: #77848D; }
+  .hero .number { color: #F9C74F; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="deck">
+<section class="slide hero" data-index="0"><h1>From an idea to a working prototype</h1><ul><li>A two-day workshop for product designers</li><li>You describe the experience. Cursor builds the first version.</li><li>You leave with a live prototype others can open and try.</li></ul><span class="number">1 / 10</span></section>
+<section class="slide " data-index="1"><h1>Why this matters for designers</h1><ul><li>Show a real flow, not only a static Figma file.</li><li>Try the design with people before engineering starts.</li><li>Use Modus so the prototype already looks like Trimble.</li><li>Stay in charge of the product decisions.</li></ul><span class="number">2 / 10</span></section>
+<section class="slide " data-index="2"><h1>Two days. One working prototype.</h1><ul><li><strong>Day 1</strong> Turn a simple idea into an interactive page.</li><li><strong>Day 1</strong> Connect Figma, Cursor, and Modus.</li><li><strong>Day 2</strong> Build the Trimble-looking version.</li><li><strong>Day 2</strong> Share a live link people can use.</li></ul><span class="number">3 / 10</span></section>
+<section class="slide " data-index="3"><h1>Start with a page people can see</h1><ul><li>Bring a real screen or a real user problem.</li><li>Describe who it is for and what they need to do.</li><li>Watch the first result in Preview.</li><li>Ask for one clear improvement at a time.</li></ul><span class="number">4 / 10</span></section>
+<section class="slide " data-index="4"><h1>Then make it feel like a product</h1><ul><li>A screenshot shows one moment. A product changes.</li><li>Add one useful interaction: open, select, filter, or confirm.</li><li>Show what happens before, during, if it fails, and after it works.</li><li>Let someone else try it without extra explanation.</li></ul><span class="number">5 / 10</span></section>
+<section class="slide " data-index="5"><h1>Bring Figma, Cursor, and Modus together</h1><ul><li>Paste a Figma selection into Cursor.</li><li>Give Cursor the Modus standards and component guidance.</li><li>Keep the conversation in Agent and Preview.</li><li>Compare the result with the design and adjust.</li></ul><span class="number">6 / 10</span></section>
+<section class="slide " data-index="6"><h1>Build the Modus version</h1><ul><li>Use existing Modus components, patterns, and templates.</li><li>Keep the look, spacing, and language consistent.</li><li>Check the flow on a phone-width and a wide screen.</li><li>Make sure people can complete the task with a keyboard.</li></ul><span class="number">7 / 10</span></section>
+<section class="slide " data-index="7"><h1>Practice, feedback, and questions</h1><ul><li>Most of the time is spent building, not watching slides.</li><li>You will try the work, get feedback, and improve it.</li><li>Bring questions as they come up.</li><li>The goal is a prototype you can explain and share.</li></ul><span class="number">8 / 10</span></section>
+<section class="slide " data-index="8"><h1>Share the working result</h1><ul><li>Save the prototype in your GitHub account.</li><li>Publish a live link another person can open.</li><li>Share the Figma, the repository, and the preview together.</li><li>Say clearly what is finished and what still needs work.</li></ul><span class="number">9 / 10</span></section>
+<section class="slide hero" data-index="9"><h1>You leave able to do this</h1><ul><li>Turn a design idea into a running page.</li><li>Direct Cursor until the experience feels right.</li><li>Build with Modus instead of a one-off visual.</li><li>Share a prototype Product and Engineering can try.</li></ul><span class="number">10 / 10</span></section>
+</div>
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+let index = 0;
+function show(next) {
+  index = Math.max(0, Math.min(slides.length - 1, next));
+  slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+  history.replaceState(null, '', '#slide-' + (index + 1));
+}
+function fromHash() {
+  const match = location.hash.match(/slide-(\d+)/);
+  show(match ? Number(match[1]) - 1 : 0);
+}
+document.addEventListener('keydown', (event) => {
+  if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) { event.preventDefault(); show(index + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+  if (event.key === 'Home') { event.preventDefault(); show(0); }
+  if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
+});
+window.addEventListener('hashchange', fromHash);
+fromHash();
+</script>
+</body>
+</html>
