@@ -1,5 +1,10 @@
 # Vibe Coding Enablement — Filled Workshop & Hackathon
 
+> **Current workshop materials:** The Agent-window-only curriculum now lives in
+> [`workshop-slides/RUN-OF-SHOW.md`](workshop-slides/RUN-OF-SHOW.md), with
+> Google Slides and animated HTML outputs under `workshop-slides/`. The content
+> below is retained as early planning history and is not the current run-of-show.
+
 Facilitator script for the five-phase curriculum: take product designers from **zero AI knowledge** to **better designers with AI** in about two days, by **vibe-coding on their own Macs**.
 
 **How it runs:** Every attendee has a Mac and Cursor. They prompt, run, and iterate **their own** prototype the whole time. You project and coach. An iPad is optional for *you* — a big Figma canvas to explain frames vs state — not a device for them.

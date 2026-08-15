@@ -1,0 +1,17 @@
+{
+  "name": "modus-ai-designer-workshop-slides",
+  "version": "1.0.0",
+  "description": "Local Google Slides-compatible and HTML workshop deck generator",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node generate.mjs",
+    "test": "npm run build"
+  },
+  "keywords": [],
+  "author": "Modus AI Design Workshop",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
