@@ -1,4 +1,4 @@
-# Zero to Production-Quality Vibe Coder
+# From an Idea to a Working Prototype
 
 Editable two-day facilitator run-of-show. This document tells you **what to do, where to do it, what participants do, and how to assess it**.
 
@@ -6,12 +6,12 @@ Editable two-day facilitator run-of-show. This document tells you **what to do, 
 
 - Participants use **Cursor Agent window + Browser preview only**.
 - Do not teach `Cmd+K`, file editing, terminal commands, or reading code.
-- They already know English and design; Agent performs implementation.
+- Participants describe what they want in everyday language, then judge the running result.
 - No target screen is provided for participants to copy.
 - Use a neutral abstract layout only to demonstrate the operating process.
 - Every phase ends with an assessment and Q&A.
 - Phase 3 is the first major independence assessment.
-- “Production quality” means a credible, tested frontend prototype—not independently certified production software.
+- The final result is a credible, tested frontend prototype. Engineering review is still required before real production use.
 
 ## Deliverables
 
@@ -89,13 +89,13 @@ Use this to identify the supported lane and stretch lane.
 
 ### Facilitator
 
-1. State the promise: English + design judgment are enough to begin.
+1. Start with the question: “Can Agent turn a clear description into a page we can use?”
 2. Define the boundary:
    - designers own user flow, states, Modus fidelity, context, verification and prototype handoff;
    - engineering owns real data, auth, security, performance and production review.
-3. Introduce the operating loop:
+3. Introduce the workshop loop:
 
-   **Frame → Constrain → Generate → Inspect → Test → Diagnose → Revise → Re-test → Document**
+   **Describe → Set limits → Build → Look → Try it → Spot the issue → Adjust → Check again → Share**
 
 4. Ask participants to predict each next step before advancing the slide.
 5. Explain assessment gates:
@@ -115,17 +115,17 @@ Everyone can explain their user and user goal without mentioning a feature list.
 
 ---
 
-## Phase 1 — AI, HTML, and CSS — 75 minutes
+## Phase 1 — Start with a simple page — 75 minutes
 
 ### Slides 6–15
 
 ### Explain — 12 minutes
 
-1. Agent is a collaborator that can build.
-2. HTML gives structure and meaning.
-3. CSS gives visual direction.
-4. Designers decide the user goal and hierarchy.
-5. Agent decides implementation detail.
+1. A clear description gives Agent a useful starting point.
+2. HTML organizes the page and gives each part a purpose.
+3. CSS controls how that structure looks and communicates.
+4. Participants decide the user goal and hierarchy.
+5. Agent handles the implementation details.
 
 Advance slowly through the progressive structure slides:
 
@@ -154,7 +154,7 @@ Do not use this page as their assignment.
 
 Participants use the Phase 1 prompt frame:
 
-> Build a small front-end page for [a user] who needs to [achieve a goal]. Include [the minimum things they need]. Create the HTML and CSS, run it, and open it in the browser preview.
+> Create a simple front-end page for [who it is for]. They need to [what they are trying to do]. Include only [the few things they need first]. Use HTML and CSS, run it, and show me the page in Preview.
 
 If someone freezes, ask:
 
@@ -180,26 +180,24 @@ Evidence:
 
 ### Q&A — 7 minutes
 
-Use categories. End every answer with:
-
-> What pattern generalizes?
+Use the question categories. When several people hit the same issue, show one short fix and explain where else the same approach could help.
 
 ---
 
-## Phase 2 — Frameworks and light state — 90 minutes
+## Phase 2 — Add interaction and state — 90 minutes
 
 ### Slides 16–25
 
 ### Explain frameworks — 15 minutes
 
-1. Static HTML/CSS is a visual moment.
-2. A product must respond and remember.
-3. A framework supplies reusable blocks and a living screen.
-4. React, Angular and Vue are different vehicles.
+1. Static HTML/CSS shows one visual moment.
+2. A working product changes when people use it.
+3. A framework helps Agent build reusable parts and an interface that can change.
+4. React, Angular, and Vue are different ways to do that.
 5. Use React in this workshop because:
    - Cursor commonly generates it;
    - Modus has production wrappers;
-   - one room needs one consistent vehicle.
+   - one room needs one consistent setup.
 
 Do not teach React syntax.
 
@@ -213,7 +211,7 @@ Advance the state slides:
 
 Use this sentence:
 
-> State is the screen’s memory right now.
+> State is what the interface needs to remember right now.
 
 Use the state checklist:
 
@@ -228,7 +226,7 @@ Use the state checklist:
 
 Participants add one behavior to their existing page:
 
-> Add one behavior to this interface. When the user [acts], the interface should [respond]. Include what happens before, during, if it fails, and after success. Run and verify it in Preview.
+> Add one interaction to this page. When the user [does something], the page should [respond]. Show what happens before the action, while it is happening, if it fails, and after it works. Run it and let me try it in Preview.
 
 They choose the interaction.
 
@@ -246,7 +244,7 @@ The peer does not receive an explanation. They try to:
 Evidence:
 
 - one interaction works;
-- participant explains its memory in English;
+- participant explains what the interface needs to remember;
 - at least two states are visible;
 - peer can trigger and recover.
 
@@ -260,17 +258,17 @@ Use this for people who need the supported lane.
 
 ---
 
-## Phase 3 — Cursor and Modus brain — 150 minutes
+## Phase 3 — Give Agent the right context and tools — 150 minutes
 
 ### Slides 26–35
 
-### Explain the brain — 15 minutes
+### Explain the context — 15 minutes
 
-Use the analogy:
+Explain what each part does:
 
-- Rules = permanent guardrails.
-- Skills = focused recipes.
-- MCP = connected tools and facts.
+- Rules = standards that apply to every request.
+- Skills = step-by-step guidance for common tasks.
+- MCP = connections to tools and current information.
 - Figma = live design context.
 - Browser = visible evidence.
 - Checkpoints = safe recovery.
@@ -313,7 +311,7 @@ Clarify terminology:
 6. Compare implementation against Figma.
 7. Make one bounded revision.
 
-### Independent brain build — 45 minutes
+### Independent connected build — 45 minutes
 
 Participants use their own Figma selection.
 
@@ -327,7 +325,7 @@ Required:
 - Browser inspection;
 - one Checkpoint recovery.
 
-### Phase 3 big assessment — 20 minutes
+### First full assessment — 20 minutes
 
 Evidence:
 
@@ -345,7 +343,7 @@ Reflection:
 
 > The most important change I made to my process was…
 
-At this point they are ready to direct AI with the correct context.
+At this point they can describe, build, inspect, and correct a prototype with the right Modus and Figma context.
 
 ---
 
@@ -358,14 +356,14 @@ Without slides, participants reconstruct:
 1. operating loop;
 2. definition of state;
 3. Rules vs Skills vs MCP;
-4. Figma-to-Agent flow;
+4. Figma-to-Agent workflow;
 5. designer/engineering boundary.
 
 Reveal the reference only after retrieval.
 
 ---
 
-## Phase 4 — Production-quality Modus — 210 minutes
+## Phase 4 — Build and check the Modus version — 210 minutes
 
 ### Slides 36–43
 
@@ -391,7 +389,7 @@ Teach where to look:
 
 Do not tour every component.
 
-### Frame the production-quality request — 15 minutes
+### Describe the Modus request — 15 minutes
 
 Participants ask Agent to rebuild or refine their flow using:
 
@@ -433,7 +431,7 @@ Rotate through:
 5. long content;
 6. truthful data assumptions.
 
-Participants record evidence—not “Agent says it works.”
+Participants record what they observed. “Agent says it works” is not enough.
 
 ### Seeded repair drill — 25 minutes
 
@@ -454,7 +452,7 @@ Required repair loop:
 4. verify;
 5. regression-test.
 
-### Phase 4 assessment — 20 minutes
+### Modus build check — 20 minutes
 
 Evidence:
 
@@ -471,16 +469,16 @@ Ground answers in Browser evidence or live Modus documentation.
 
 ---
 
-## Phase 5 — GitHub, access, and delivery — 120 minutes
+## Phase 5 — Share the work — 120 minutes
 
 ### Slides 44–47
 
 ### GitHub concepts — 10 minutes
 
-- Repository = shared master folder.
-- Commit = named snapshot.
-- Publish = place it on their GitHub.
-- Live URL = Product can open it.
+- Repository = the project folder on GitHub.
+- Commit = a named saved version.
+- Publish = put the repository on their GitHub account.
+- Live URL = a link another person can open and try.
 - Access = who can view or contribute.
 
 ### Create and publish — 30 minutes
@@ -522,7 +520,7 @@ Do not teach:
 - CI secrets;
 - production credentials.
 
-### Phase 5 assessment — 20 minutes
+### Delivery check — 20 minutes
 
 Another participant opens:
 
@@ -550,10 +548,10 @@ Each participant gets three minutes:
 
 1. user problem;
 2. interaction and states;
-3. brain inputs used;
+3. context and tools used;
 4. live URL and repo;
 5. one Agent failure and repair;
-6. one judgment AI could not make.
+6. one decision they had to make themselves.
 
 Facilitator feedback:
 

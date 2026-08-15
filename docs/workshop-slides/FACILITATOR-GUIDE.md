@@ -1,6 +1,6 @@
-# Zero to Production-Quality Vibe Coder
+# From an Idea to a Working Prototype
 
-A two-day, Agent-only workshop for product designers. This is the editable facilitator companion to the PowerPoint and HTML deck.
+A hands-on Cursor and Modus workshop for designers. This is the editable facilitator companion to the PowerPoint and HTML deck.
 
 ## Files
 
@@ -35,287 +35,287 @@ A two-day, Agent-only workshop for product designers. This is the editable facil
 
 ## OPEN
 
-### Slide 1 — Zero to production-quality vibe coder
+### Slide 1 — From an idea to a working prototype
 
-**On slide:** English + design → Agent → Modus → a live product prototype
+**On slide:** We’ll start with a simple page, improve it step by step, and finish with something others can open and try.
 
-**Say/do:** Welcome the room. Make the boundary explicit: nobody needs to read or write code. They will speak to Agent, inspect a running interface, and use design judgment to direct the next change.
+**Say/do:** Welcome everyone and explain the plan in plain terms. We are going to describe an interface, see what Agent makes, and improve it by looking at the result. Nobody needs to read or write code during the workshop.
 
-### Slide 2 — You already have the two prerequisites.
+### Slide 2 — Let’s start with a simple question.
 
-**On slide:** English. Design judgment.
+**On slide:** Can Agent turn a clear description into a page we can use?
 
-**Say/do:** Build confidence without overpromising. AI does not replace their judgment. It makes their decisions executable and testable.
+**Say/do:** Do not begin with theory. Set up the first experiment: describe something small, run it, and inspect it. The useful skill is learning how to notice the gap between what we meant and what Agent produced.
 
-### Slide 3 — Your circle—and the engineering boundary
+### Slide 3 — What we’ll do here—and what happens before production
 
-**Say/do:** Use this boundary throughout. “Production quality” here means a credible, testable frontend prototype—not independently certified production software.
+**Say/do:** Explain the boundary without making it sound like a handoff wall. Designers will produce a useful, testable frontend prototype. Engineering still reviews and connects the parts that involve real data, security, performance, and production architecture.
 
-### Slide 4 — The operating loop
+### Slide 4 — This is the loop we’ll use all the way through.
 
-**Say/do:** Ask participants to predict the next step before revealing it. This loop is the one reusable behavior across all phases.
+**Say/do:** Walk through the loop once, then ask the group what they would do after seeing an imperfect first result. Keep returning to this sequence during assessments.
 
-### Slide 5 — Two days, five phases
+### Slide 5 — Here’s where we’re going.
 
-**Say/do:** Every phase ends with an assessment and Q&A. The first two are small. Phase 3 is the first large independence gate.
+**Say/do:** Set expectations for the rhythm: short explanation, hands-on work, a quick check, and questions. The first full assessment comes after the setup and context phase.
 
 ## PHASE 1
 
 ### Slide 6 — Phase 1
 
-**On slide:** AI, HTML, and CSS—without becoming a coder
+**On slide:** Start with a simple page
 
-**Say/do:** Start from true zero. Avoid technical vocabulary until it solves a visible design problem.
+**Say/do:** Start with the result they can see. Introduce HTML and CSS only after the first page gives those terms a practical purpose.
 
-### Slide 7 — Agent is a design collaborator that can build.
+### Slide 7 — Describe what you want. Then look at what came back.
 
-**On slide:** You describe an outcome. Agent creates and runs it.
+**On slide:** Agent can build the first version. It still needs your direction.
 
-**Say/do:** Keep participants in the Agent window and browser preview. Do not use Cmd+K, the file explorer, or code as teaching surfaces.
+**Say/do:** Keep the group in Agent and Preview. The point is not to accept the first result. The point is to learn how to turn a visual observation into the next useful request.
 
-### Slide 8 — One workspace: Agent + Preview
+### Slide 8 — Keep two things open: Agent and Preview.
 
-**Say/do:** Show the two-pane layout: Agent and preview. If participants see code, tell them it is implementation detail—not their work surface.
+**Say/do:** Show the two-pane setup. Agent is where they describe the work. Preview is where they decide whether it works. If code appears, reassure them that they do not need to read it.
 
-### Slide 9 — HTML gives a page structure.
+### Slide 9 — First, Agent needs to organize the page.
 
-**Say/do:** This is progressive frame one. Show anonymous boxes only. Do not show code or a finished product example.
+**Say/do:** Use the anonymous boxes to explain that a page begins with organization. Do not introduce tags or show source code.
 
-### Slide 10 — HTML gives structure meaning.
+### Slide 10 — HTML gives each part a purpose.
 
-**Say/do:** Progressive frame two. Explain that HTML describes what things are. Designers do not need to author tags.
+**Say/do:** Explain HTML as the description of what each part is. Participants only need this mental model so they can ask Agent for a properly organized page.
 
-### Slide 11 — CSS gives the structure art direction.
+### Slide 11 — Then CSS controls how it looks.
 
-**Say/do:** Progressive frame three. This is the visual “animation” in PowerPoint/Google Slides. Advance between slides slowly.
+**Say/do:** Advance from the HTML structure slide to this one and point out what changed visually. The purpose stayed the same; the presentation became clearer.
 
-### Slide 12 — Structure and look solve different problems.
+### Slide 12 — HTML is structure. CSS is presentation.
 
-**Say/do:** The audience only needs this functional mental model. Avoid syntax, tags, selectors, and file anatomy.
+**Say/do:** Keep the explanation at this level. The group should understand what to ask for, not how to write HTML tags or CSS selectors.
 
-### Slide 13 — Creative lab: make a small interface you want to exist.
+### Slide 13 — Your turn: make one small page.
 
 **Participant prompt:**
 
-> Build a small front-end page for [a user] who needs to [achieve a goal]. Include [the minimum things they need]. Create the HTML and CSS, run it, and open it in the browser preview.
+> Create a simple front-end page for [who it is for]. They need to [what they are trying to do]. Include only [the few things they need first]. Use HTML and CSS, run it, and show me the page in Preview.
 
-**Say/do:** Give 25–30 minutes. If someone freezes, ask: “What should one person be able to do on the first screen?” Do not give them a login mock.
+**Say/do:** Give 25–30 minutes. If someone gets stuck, ask what one person should be able to do on the first screen. Help them narrow the goal instead of giving them a screen to copy.
 
-### Slide 14 — Phase 1 assessment
+### Slide 14 — Quick check before we move on
 
 **Assessment checks:**
-- A page is running in Preview
-- The participant can explain the user goal
-- They made one revision through Agent
-- They can restore a Checkpoint if needed
+- The page is open in Preview
+- You can explain who it is for and what they need to do
+- You asked Agent for one clear improvement
+- You know how to return to a Checkpoint
 
-**Say/do:** Use self-check, peer glance, facilitator gate, then Q&A. Score the running design and process—not code.
+**Say/do:** Keep this low pressure. Check whether each person can create, inspect, and revise a page. Do not discuss the generated code.
 
-### Slide 15 — Q&A clinic
+### Slide 15 — Questions before we add interaction?
 
-**Say/do:** Allow anonymous questions. Recurring questions become a 3-minute live micro-demo.
+**Say/do:** Take blocked and basic questions first. After each answer, briefly state how the same approach could help in another situation.
 
 ## PHASE 2
 
 ### Slide 16 — Phase 2
 
-**On slide:** Why frameworks exist—and just enough state
+**On slide:** From a page to something people can use
 
-**Say/do:** Apply everything to the interface each participant already created.
+**Say/do:** Keep working with the page each person already made. We are going to add behavior, not start a second exercise.
 
-### Slide 17 — A poster can look finished. A product must remember.
+### Slide 17 — A screenshot shows one moment. A product changes.
 
-**Say/do:** Connect this to Figma frames. Several frames may document states, but implementation is one product whose memory changes.
+**Say/do:** Connect this to Figma. Separate frames can document open, closed, empty, or error states. In the working interface, those moments belong to the same product.
 
-### Slide 18 — A framework is reusable blocks + a living screen.
+### Slide 18 — Why do we need a framework?
 
-**On slide:** It helps one interface respond, remember, and reuse.
+**On slide:** It helps Agent build parts we can reuse and an interface that can change.
 
-**Say/do:** Avoid teaching framework internals. They only need to understand why Agent needs a vehicle beyond static HTML/CSS.
+**Say/do:** Do not explain framework internals. Explain the practical reason: once the interface needs behavior and repeated parts, Agent needs a framework target.
 
-### Slide 19 — React, Angular, and Vue are different vehicles.
+### Slide 19 — Why we’ll use React in this workshop
 
-**Say/do:** The wording matters: we are not training React developers. We are giving Agent a consistent target.
+**Say/do:** Make it clear that participants are not learning React syntax. They only need to know why Agent is using it and that Angular or Vue may be the right choice in another product.
 
-### Slide 20 — State is the screen’s memory right now.
+### Slide 20 — What does the interface need to remember?
 
-**Say/do:** Progressive state frame one. Use the iPad/Figma only if it makes the open/closed concept easier.
+**Say/do:** Show the closed state first. Ask the group what information the interface must keep track of. Use Figma on the iPad only if the visual comparison helps.
 
-### Slide 21 — An event changes that memory.
+### Slide 21 — The user does something. The interface changes.
 
-**Say/do:** Progressive state frame two. There is no need to show useState or any code.
+**Say/do:** Advance to the open state. The group only needs to understand the behavior; do not show a hook or generated code.
 
-### Slide 22 — Prompt the full experience—not only the happy screenshot.
+### Slide 22 — A real flow includes the moments around success.
 
-**Say/do:** This state checklist becomes a persistent quality tool through the rest of the workshop.
+**Say/do:** Use these six moments as a checklist. Not every feature needs all six, but Agent should not build only the final happy state.
 
-### Slide 23 — Interaction lab: add one piece of memory.
+### Slide 23 — Your turn: add one interaction.
 
 **Participant prompt:**
 
-> Add one behavior to this interface. When the user [acts], the interface should [respond]. Include what happens before, during, if it fails, and after success. Run and verify it in Preview.
+> Add one interaction to this page. When the user [does something], the page should [respond]. Show what happens before the action, while it is happening, if it fails, and after it works. Run it and let me try it in Preview.
 
-**Say/do:** Give 25–30 minutes. Support is faded: they now fill in more of the prompt themselves.
+**Say/do:** Give 25–30 minutes. Participants should now decide more of the request themselves. Ask them to choose one useful behavior rather than adding several features.
 
-### Slide 24 — Phase 2 assessment
+### Slide 24 — Quick check: does the interaction make sense?
 
 **Assessment checks:**
-- The same UI has a working interaction
-- The participant can describe its memory in English
+- The interaction works in Preview
+- You can explain what the page needs to keep track of
 - At least two relevant states are visible
-- A peer can trigger and recover the flow
+- Someone else can use the flow and recover from it
 
-**Say/do:** Assessment is visual and behavioral. No one needs to identify a hook or read generated code.
+**Say/do:** Keep the check visual and behavioral. Nobody needs to identify React code or explain how Agent implemented it.
 
-### Slide 25 — Q&A clinic
+### Slide 25 — Questions before we give Agent more context?
 
-**Say/do:** Use retrieval: ask a participant to explain state without using technical terminology.
+**Say/do:** Ask one participant to explain state in everyday language. Resolve framework questions, then move into setup and context.
 
 ## PHASE 3
 
 ### Slide 26 — Phase 3
 
-**On slide:** Give Agent a Modus brain
+**On slide:** Give Agent the right context and tools
 
-**Say/do:** This is the major independence gate. Participants install context rather than relying on a generic model.
+**Say/do:** This is the first full assessment. Participants will connect Agent to Modus and Figma instead of relying on general knowledge.
 
-### Slide 27 — A blank Agent is capable—but it has amnesia.
+### Slide 27 — A general Agent does not know our product decisions yet.
 
-**Say/do:** Use an animated analogy: guardrails, recipes, connected tools. This is conceptual; the official one-step setup handles installation.
+**Say/do:** Explain each item through what it helps Agent do. The setup page will handle installation, so participants do not need to learn configuration files.
 
-### Slide 28 — Use the official Modus one-step setup.
+### Slide 28 — Start with the Modus setup page.
 
-**On slide:** One prompt installs the Docs MCP, user rules, and user skills.
+**On slide:** One setup prompt adds the Modus docs, rules, and skills to Cursor.
 
-**Say/do:** Open the live setup route. Participants paste the official setup prompt into Agent. Do not make novices hand-edit configuration files.
+**Say/do:** Open the live setup route and let participants paste the official prompt into Agent. Avoid showing or explaining the underlying configuration files.
 
-### Slide 29 — Rules are permanent guardrails.
+### Slide 29 — Rules keep the same standards across requests.
 
-**Say/do:** Show the live Modus Cursor Rules page. Explain the concept, not the .mdc syntax.
+**Say/do:** Show the live Rules page. Explain that rules keep Agent from changing direction every time. Do not discuss .mdc syntax.
 
-### Slide 30 — Skills are recipes for recurring work.
+### Slide 30 — Skills show Agent how to handle common tasks.
 
-**Say/do:** Show the live Modus Cursor Skills page. Agent chooses relevant skills; designers need not invoke every file by name.
+**Say/do:** Show the live Skills page. Point out a few practical examples. Designers do not need to remember file names or manually choose every skill.
 
-### Slide 31 — MCP connects Agent to live tools and facts.
+### Slide 31 — MCP lets Agent use information from other tools.
 
-**Say/do:** MCP is not “more intelligence.” It is access. Keep databases and secret managers out of this workshop.
+**Say/do:** Explain MCP as a connection, not a smarter model. It can bring in current Modus documentation or a Figma selection. Leave databases and secret management out of this workshop.
 
-### Slide 32 — Figma → Agent → Modus-aware implementation
+### Slide 32 — Bring a Figma selection into the same conversation.
 
-**Say/do:** Correct terminology: Figma provides the Cursor plugin; Modus provides synchronized Figma libraries and implementation tooling. There is no verified standalone Modus Figma plugin.
+**Say/do:** Clarify the setup: Figma provides the Cursor plugin. Modus provides the Figma libraries and implementation guidance. There is no separate Modus Figma plugin to install.
 
-### Slide 33 — Useful additions—only when they match the work
+### Slide 33 — Add other connections only when your team needs them.
 
-**Say/do:** This is awareness, not an installation race. Install only what the product team actually uses.
+**Say/do:** Treat this as a quick tour. The goal is not to install everything. Connect only the tools that hold information the team actually needs.
 
-### Slide 34 — Phase 3 big assessment
+### Slide 34 — First full assessment: use the connected workflow
 
 **Assessment checks:**
-- Official Modus setup completed
-- Figma plugin/MCP is connected
-- A Figma selection—not only a screenshot—was used
-- Agent verifies the app in Browser
-- Participant restores one Checkpoint
-- Interaction still works
+- The Modus setup is complete
+- Figma is connected
+- You used a link to a Figma selection
+- Agent checked the page in Preview
+- You can restore a Checkpoint
+- The interaction still works
 
-**Say/do:** Give 60–75 minutes. Use the participant’s Figma work; golden Modus file is the recovery option. Follow with Q&A and Day-1 reflection.
+**Say/do:** Give 60–75 minutes. Participants should use their own Figma work. Keep the golden Modus file available only as a recovery option.
 
-### Slide 35 — Day 1 reflection + Q&A
+### Slide 35 — What helped? What still needed your input?
 
-**Say/do:** Collect a one-sentence reflection: “The most important change I made to my process was…”
+**Say/do:** Collect one short reflection from each person: what changed in the way they described, checked, or corrected the work?
 
 ## PHASE 4
 
 ### Slide 36 — Phase 4
 
-**On slide:** Build the production-quality Modus version
+**On slide:** Build and check the Modus version
 
-**Say/do:** Start with spaced retrieval: participants reconstruct the operating loop and brain from memory before showing the reference.
+**Say/do:** Before showing the reference, ask participants to recall the workflow and the context they connected on Day 1.
 
-### Slide 37 — Modus already built the road.
+### Slide 37 — Use the Modus site as your reference.
 
-**Say/do:** Tour the live site map. Teach where to look—not the contents of every page.
+**Say/do:** Give a short tour of where to find foundations, components, patterns, templates, Figma libraries, and AI setup. Teach where to look instead of opening every page.
 
-### Slide 38 — Use progressively larger building blocks.
+### Slide 38 — Start with what already exists.
 
-**Say/do:** Reference the synchronized Atomic Design System, Palette, Icons, and Blueprint Figma files.
+**Say/do:** Reference the Atomic Design System, Palette, Icons, and Blueprint Figma files. Explain that this reduces rework and keeps the prototype close to what engineering can use.
 
-### Slide 39 — Production quality is more than visual fidelity.
+### Slide 39 — A good prototype needs more than the right look.
 
-**Say/do:** Phrase accessibility carefully: Modus is designed for accessibility, but every generated experience still needs verification.
+**Say/do:** Walk through the checks in practical terms. Modus is designed with accessibility in mind, but every generated experience still needs to be tested.
 
-### Slide 40 — Agent builds. Browser provides evidence.
+### Slide 40 — Check the result in the browser.
 
-**Say/do:** Never accept “tests pass” from Agent without observing the UI. Agent can silently regress previous behavior.
+**Say/do:** Do not rely on a message saying the tests passed. Ask participants to watch the behavior themselves and check earlier interactions after each meaningful change.
 
-### Slide 41 — Repair drill: evidence before instruction.
+### Slide 41 — When something is wrong, be specific.
 
-**Say/do:** Use the seeded flawed app: missing empty state, narrow-layout break, focus issue, long content overflow, or fabricated connected data.
+**Say/do:** Use the prepared flawed app: missing empty state, narrow-layout issue, focus problem, long-content overflow, fabricated connected data, or a regression.
 
-### Slide 42 — Phase 4 assessment
+### Slide 42 — Modus build check
 
 **Assessment checks:**
-- Looks and behaves like Modus
-- Relevant states work
-- Peer completes task without explanation
-- Narrow and wide layouts pass
-- Keyboard/focus/labels are checked
-- Known limits are stated
+- The interface uses Modus consistently
+- The important states work
+- Someone else can complete the task without help
+- Narrow and wide layouts work
+- Keyboard, focus, and labels were checked
+- You can explain what is not finished
 
-**Say/do:** Require at least “Ready” or “Ready with support” for functional states, accessibility, safety, and handoff.
+**Say/do:** Require a working result or a working result with a small amount of help. Pay special attention to states, accessibility, safe assumptions, and handoff.
 
-### Slide 43 — Q&A clinic
+### Slide 43 — Questions before we share it?
 
-**Say/do:** Keep answers tied to observable evidence in Browser and references in the Modus Blueprint.
+**Say/do:** Keep answers grounded in what participants can see in Preview or confirm in the Modus site.
 
 ## PHASE 5
 
 ### Slide 44 — Phase 5
 
-**On slide:** GitHub, access, and delivery
+**On slide:** Share the work
 
-**Say/do:** This is delivery literacy, not DevOps. Avoid secrets, environment variables, CI, and production infrastructure.
+**Say/do:** Keep this practical. Participants need to publish and share a prototype, not learn DevOps or production infrastructure.
 
-### Slide 45 — A prototype is not delivered while it lives only on your Mac.
+### Slide 45 — Move it from your Mac to links others can open.
 
-**Say/do:** Use Cursor Source Control or Agent to perform the steps. They do not need to read a diff or use terminal Git.
+**Say/do:** Use Cursor Source Control or Agent for these steps. Participants do not need terminal Git or a diff walkthrough.
 
-### Slide 46 — Teach access—not secrets.
+### Slide 46 — Share access, not credentials.
 
-**Say/do:** A teammate can view a shared Cursor Agent run only if they also have access to the repository.
+**Say/do:** Explain that sharing a Cursor Agent run does not automatically share the repository. The other person still needs the correct repository access.
 
-### Slide 47 — Phase 5 assessment
+### Slide 47 — Delivery check
 
 **Assessment checks:**
-- Repo is under their GitHub account
-- A named commit exists
-- Live URL opens for another person
-- Collaborator access is added or demonstrated
-- Figma + repo + preview links are recorded
-- Known limitations are documented
+- The repository is in your GitHub account
+- There is a clearly named saved version
+- Another person can open the live URL
+- You added or demonstrated collaborator access
+- The Figma, repository, and preview links are recorded
+- You wrote down what is not finished
 
-**Say/do:** Have a peer or facilitator open the links on a different account/device. Do not accept localhost.
+**Say/do:** Have someone else open the links from a different account or device. A localhost link does not count as shared.
 
 ## CLOSE
 
-### Slide 48 — Final quality rubric
+### Slide 48 — How we’ll review the final result
 
-**Say/do:** Do not average away a critical failure. Use the rubric for the workshop and the 45-day peer review.
+**Say/do:** Explain that a polished look cannot make up for a broken flow, unsafe assumption, inaccessible interaction, or missing handoff.
 
-### Slide 49 — Three-minute final showcase
+### Slide 49 — Three minutes to show the work
 
-**Say/do:** Facilitator responds with one “keep” and one “improve,” not a code review.
+**Say/do:** Respond with one thing to keep and one thing to improve. This is a product and workflow review, not a code review.
 
-### Slide 50 — The workshop is the start—not the finish.
+### Slide 50 — Keep using the workflow after the workshop.
 
-**Say/do:** Ask managers to assign a real, low-risk prototype within two weeks. Store Agent conversations, failures, and evidence—not only screenshots.
+**Say/do:** Ask managers to assign a real, low-risk prototype within two weeks. Keep useful Agent conversations and examples of what failed and improved—not only final screenshots.
 
-### Slide 51 — English starts the work. Design judgment makes it good.
+### Slide 51 — Start simple. Be specific. Check what changed.
 
-**On slide:** Frame. Generate. Inspect. Verify. Ship.
+**On slide:** Describe it. Try it. Fix it. Check it again. Share it.
 
-**Say/do:** End with Q&A. Re-state the boundary: Agent implements; designers direct and verify; engineering productionizes.
+**Say/do:** End with open questions. Remind the group that Agent can implement quickly, but people still need to describe the goal, check the behavior, and decide whether the result is good enough to share.
 
 ## Required live links
 

@@ -220,7 +220,7 @@ function addStructure(slide, stage) {
 function addState(slide, isOpen) {
   addRect(slide, 1.0, 1.95, 11.3, 4.4, C.white, 0.1, C.quiet);
   addRect(slide, 1.35, 2.35, 3.1, 3.55, C.blueSoft);
-  addText(slide, 'One living screen', 1.65, 2.75, 2.5, 0.4, { fontSize: 19, bold: true, align: 'center' });
+  addText(slide, 'What the page remembers', 1.55, 2.75, 2.7, 0.4, { fontSize: 17, bold: true, align: 'center' });
   addText(slide, `open: ${isOpen ? 'true' : 'false'}`, 1.65, 3.42, 2.5, 0.5, {
     fontSize: 21,
     bold: true,
@@ -228,7 +228,7 @@ function addState(slide, isOpen) {
     align: 'center',
   });
   addRect(slide, 1.82, 4.42, 2.15, 0.65, isOpen ? C.quiet : C.yellow);
-  addText(slide, isOpen ? 'Panel opened' : 'Person clicks', 1.93, 4.54, 1.93, 0.35, { fontSize: 14, bold: true, align: 'center' });
+  addText(slide, isOpen ? 'Panel opened' : 'User clicks', 1.93, 4.54, 1.93, 0.35, { fontSize: 14, bold: true, align: 'center' });
   addText(slide, '→', 4.72, 3.55, 0.6, 0.6, { fontSize: 30, bold: true, color: C.orange, align: 'center' });
   addRect(slide, 5.45, 2.35, 6.2, 3.55, C.paper, 0.1, C.quiet);
   addText(slide, 'Interface', 5.85, 2.68, 2.2, 0.36, { fontSize: 17, bold: true });
@@ -311,7 +311,7 @@ function renderSlide(data) {
       break;
     case 'prompt':
       addRect(slide, 0.9, 1.95, 11.55, 3.45, C.white, 0.1, C.blue);
-      addText(slide, 'PROMPT IN AGENT', 1.25, 2.28, 3.0, 0.3, { fontSize: 11, bold: true, color: accent, charSpacing: 1.5 });
+      addText(slide, 'TRY THIS IN AGENT', 1.25, 2.28, 3.0, 0.3, { fontSize: 11, bold: true, color: accent, charSpacing: 1.5 });
       addText(slide, data.prompt, 1.25, 2.9, 10.85, 1.8, { fontSize: 21, bold: true, color: C.ink, valign: 'mid' });
       addSupporting(slide, data.supporting);
       break;
@@ -411,7 +411,7 @@ function renderHtmlContent(data) {
       body = renderList(data.comparisons, 'cards');
       break;
     case 'prompt':
-      body = `<div class="prompt"><small>PROMPT IN AGENT</small><blockquote>${escapeHtml(data.prompt)}</blockquote></div>`;
+      body = `<div class="prompt"><small>TRY THIS IN AGENT</small><blockquote>${escapeHtml(data.prompt)}</blockquote></div>`;
       break;
     case 'assessment':
       body = `${renderList(data.checks, 'checks')}<div class="gate">${escapeHtml(data.footer)}</div>`;
@@ -421,7 +421,7 @@ function renderHtmlContent(data) {
       break;
     case 'state': {
       const open = data.state === 'true';
-      body = `<div class="state-demo"><div class="memory"><span>One living screen</span><strong>open: ${open}</strong><button>${open ? 'Panel opened' : 'Person clicks'}</button></div><div class="arrow">→</div><div class="ui"><span>Interface</span><i></i><div class="${open ? 'open' : ''}">${open ? 'Open panel / modal / selection' : 'Closed / default state'}</div></div></div>`;
+      body = `<div class="state-demo"><div class="memory"><span>What the page remembers</span><strong>open: ${open}</strong><button>${open ? 'Panel opened' : 'User clicks'}</button></div><div class="arrow">→</div><div class="ui"><span>Interface</span><i></i><div class="${open ? 'open' : ''}">${open ? 'Open panel / modal / selection' : 'Closed / default state'}</div></div></div>`;
       break;
     }
     case 'states':

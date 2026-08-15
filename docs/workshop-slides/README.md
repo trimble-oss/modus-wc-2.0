@@ -1,10 +1,10 @@
-# Modus AI Designer Workshop Slides
+# From an Idea to a Working Prototype
 
 Local workshop materials. No pull request or remote publication is required.
 
 ## Open the deck
 
-- Google Slides: upload `zero-to-production-vibe-coder.pptx` to Google Drive, open with Google Slides, then save as Google Slides.
+- Google Slides: upload `zero-to-production-vibe-coder.pptx` to Google Drive, open it with Google Slides, then save it as a Google Slides file.
 - Animated local version: open `index.html` through a local web server.
 
 HTML controls:
