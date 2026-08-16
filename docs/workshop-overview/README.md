@@ -14,6 +14,14 @@ npm run dev
 
 Open the URL shown in the terminal (default `http://localhost:5173`).
 
+To open the deck from another device on the same Wi‑Fi:
+
+```bash
+npm run dev:lan
+```
+
+Vite prints a **Network** URL like `http://192.168.x.x:5173`. Use that on phones or laptops on the same network.
+
 ## Presenter controls
 
 - Click the slide, press Space, or press → to reveal the next step
