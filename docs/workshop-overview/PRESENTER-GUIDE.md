@@ -1,143 +1,158 @@
 # Designing with Agent — presenter guide
 
-The slides carry the lesson visually. Use this guide for the explanation, live examples, transitions, and questions. Do not read the slide text aloud.
+The React deck carries the lesson visually. Use this guide for narration, live demos, questions, and assessments. Do not read slide text aloud.
 
-## Presenting the builds
+## Presenting the deck
 
-- The HTML deck has 10 slides with automatic fragment reveals.
-- The PowerPoint has 26 physical slides representing 10 logical lessons.
-- In PowerPoint or Google Slides, advance normally. Repeated titles are staged builds, not duplicate lessons.
-- The orange `BUILD 1/3`, `BUILD 2/3`, and `BUILD 3/3` labels show reveal progress.
+- Run locally with `npm install` and `npm run dev`.
+- Click the slide, press Space, or press → to reveal the next step.
+- Press ← or use **Back** to reverse one reveal at a time.
+- Use the slide jump control to move between the 11 slides.
+- Each slide has staged reveals. Finish all reveals on a slide before moving on.
 
-## 1. Natural language is a design brief
+## Slide 1 — Start in the Agents window
 
 **Explain**
 
-A short prompt can produce a page, but it cannot recover decisions that were never stated. Designers already know how to provide the missing context: who is involved, what they are trying to do, where the experience happens, how it should behave, and what success looks like.
-
-The example deliberately avoids visual styling. “Blue cards with a large heading” describes an appearance. “A field supervisor must find a delayed job before the stand-up” describes a product situation. Agent needs both eventually, but the situation comes first.
+Open the Agents window first. Participants do not need to learn the terminal on day one. They describe what they want, Agent builds it, and they ask Agent to open the result.
 
 **Demonstrate**
 
-Ask Agent for “a dashboard,” look at the result, then add the five brief fields shown on the slide. Compare the two outputs.
+Type a plain-language prompt like the one on screen. When Agent finishes, ask it to open the page in the browser. Do not open files manually.
 
 **Ask**
 
-Which of the five fields would change your design most?
+What would you ask Agent to open after the first build?
 
-**Source**
+**Sources**
+
+- [Cursor Agent overview](https://cursor.com/docs/agent/overview)
+- [Cursor Browser tool](https://cursor.com/docs/agent/tools/browser)
+
+## Slide 2 — A new layer on top of code
+
+**Explain**
+
+Walk through the timeline: machine code, languages, IDEs, then natural-language direction with Agent. The important shift is that participants direct outcomes instead of typing implementation details. Code still exists underneath.
+
+**Assessment 1**
+
+Create a basic web page in the workshop folder and ask Agent to open it.
+
+**Ask**
+
+What changed when we moved from writing code to describing outcomes?
+
+**Sources**
 
 - [Prompting Is a Design Act — Smashing Magazine](https://www.smashingmagazine.com/2025/08/prompting-design-act-brief-guide-iterate-ai/)
 
-## 2. The first prompt is the start, not the finish
+## Slide 3 — Guide the smart intern
 
 **Explain**
 
-Prompting is not a one-shot contest. The reusable skill is the loop: describe, build, preview, observe, revise. “Observe” is where design expertise enters. Name one visible issue, ask for one bounded change, and check again.
-
-The meme is the difference between novelty and usefulness. The first result proves that Agent can generate. Later results prove that the designer can direct.
+Agent is like a very smart intern: broad knowledge, fast execution, but it still needs a guide. People get what they ask for, not always what they want. Introduce the structured prompt fields.
 
 **Demonstrate**
 
-Show a first result. State one observation without prescribing code: “The primary action is hard to find because every element has the same emphasis.” Ask Agent to correct only that hierarchy.
+Take a vague request and rewrite it with goal, audience, context, requirements, and success.
 
 **Ask**
 
-What did you notice before you decided what to change?
+Which field was missing from your first prompt?
 
-**Source**
+**Sources**
 
 - [Cursor Agent overview](https://cursor.com/docs/agent/overview)
+- [OpenAI prompt engineering guide](https://platform.openai.com/docs/guides/prompt-engineering)
 
-## 3. HTML gives meaning. CSS gives direction.
-
-**Explain**
-
-HTML is the structure and meaning of the page: this is a heading, this is a group of filters, this is a list of results, this is the primary action. CSS controls how that meaning is communicated through hierarchy, spacing, color, and alignment.
-
-Participants do not need to write either language. They need enough vocabulary to diagnose the output: “The structure is wrong” and “The visual hierarchy is weak” are different requests.
-
-**Demonstrate**
-
-Advance through the HTML regions, then point to the CSS decisions. Ask Agent to preserve the structure while changing only hierarchy.
-
-**Ask**
-
-Is the current problem about what the page contains, or how it communicates?
-
-**Source**
-
-- [MDN: Structuring content with HTML](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content)
-- [MDN: CSS styling basics](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics)
-
-## 4. A screenshot is one moment
+## Slide 4 — Why frameworks appear
 
 **Explain**
 
-Figma often shows several frames because each frame documents a moment. The running product is one interface moving between those moments. State is simply what the interface needs to remember right now.
+Once the product must remember choices and reuse UI, plain pages are not enough. Introduce component, state, event, and data flow without teaching syntax. Standardize on React as the workshop vehicle.
 
-Use the five cards as a prompt checklist. Not every feature needs every state, but “success only” is rarely enough. Recovery matters: after an error, what can the person do next?
+**Assessment 2**
 
-**Demonstrate**
-
-Use one panel or list. Trigger loading, empty, error, and success in Preview. Do not open source code.
-
-**Ask**
-
-Which missing state would hurt the user most?
-
-## 5. Why does a framework appear?
-
-**Explain**
-
-Once a page must reuse parts and respond to people, Agent needs a framework. A component is a reusable part. State is remembered information. An event is something that happened. The response is the visible change.
-
-React, Angular, and Vue are implementation vehicles. The workshop uses React for one consistent workflow, not because designers need to become React developers.
-
-**Demonstrate**
-
-Point to one filter component. Change the selected risk. Show the same list responding without creating a second page.
+Create a richer React app with at least one interactive state change.
 
 **Ask**
 
 What does this screen need to remember after the user acts?
 
-## 6. A Figma link carries structured context
+**Sources**
+
+- [React docs — Describing the UI](https://react.dev/learn/describing-the-ui)
+
+## Slide 5 — Rules are persistent instructions
 
 **Explain**
 
-A screenshot gives Agent pixels. Figma MCP can provide structured design context such as components, variables, layout information, and assets. The link still does not explain the user goal or missing states; the designer supplies those.
-
-The preferred Cursor setup is the official Figma plugin with the remote MCP server. Paste a link to the selection, not only a screenshot.
+A prompt is one-time guidance. Rules are project memory that should apply repeatedly. Show where rules live in Cursor and give examples that match the workshop standards.
 
 **Demonstrate**
 
-In Figma, copy a link to one selected frame. Paste it into Agent with the user goal and required states. Ask Agent to build, open Preview, and compare.
+Open the project rules page or a sample rule file without reading code line by line.
 
 **Ask**
 
-What information exists in the design file, and what still exists only in your head?
+Which instruction should become a rule because it will matter on every build?
 
 **Sources**
 
-- [Figma: Set up the MCP server in Cursor](https://help.figma.com/hc/en-us/articles/39889260656407-Cursor-and-Figma-Set-up-the-MCP-server)
-- [Figma MCP server guide](https://github.com/figma/mcp-server-guide)
+- [Cursor Rules](https://cursor.com/docs/context/rules)
 
-## 7. Rules, skills, and MCP do different jobs
+## Slide 6 — Skills, MCP, and Figma context
 
 **Explain**
 
-Rules are standards that should apply repeatedly. Skills are playbooks for a kind of task. MCP is a connection to tools or current information. A rule can say “use Modus”; a skill can describe how to build a Modus form; MCP can retrieve the current component contract.
-
-These tools reduce guessing, but they do not decide the product goal. A well-connected Agent can still build the wrong thing from a weak brief.
+Skills are playbooks for a kind of task. MCP connects Agent to live tools and information. Figma MCP provides structured design context, not just a screenshot.
 
 **Demonstrate**
 
-Open the Modus one-step setup page. Show the Rules and Skills pages without opening their source files. Ask Agent a component question that requires Modus Docs MCP.
+Show one skill entry and one MCP connection. If available, paste a Figma selection link into Agent.
 
 **Ask**
 
-Is this missing information a standard, a workflow, or a fact we need to look up?
+Is this missing information a workflow, a standard, or a fact to look up?
+
+**Sources**
+
+- [Cursor Skills](https://cursor.com/docs/context/skills)
+- [Cursor MCP](https://cursor.com/docs/context/mcp)
+- [Figma MCP in Cursor](https://help.figma.com/hc/en-us/articles/39889260656407-Cursor-and-Figma-Set-up-the-MCP-server)
+
+## Slide 7 — The complete AI context stack
+
+**Explain**
+
+Combine prompt, rules, skills, and MCP/Figma into one build flow. This is the structure Agent needs in the same way a framework gives code structure.
+
+**Assessment 3**
+
+Connect the workshop context and create an app in the shared workspace folder.
+
+**Ask**
+
+Which layer was missing from your first attempt?
+
+**Sources**
+
+- [Modus AI](https://modus.trimble.com/modus-ai)
+
+## Slide 8 — What Modus provides
+
+**Explain**
+
+Modus is the shared product language: foundations, components, patterns, templates, plus AI rules, skills, and docs MCP.
+
+**Demonstrate**
+
+Open the Modus AI setup pages and show one component in Storybook or docs.
+
+**Ask**
+
+Which Modus building block is the best starting point for this product?
 
 **Sources**
 
@@ -145,70 +160,58 @@ Is this missing information a standard, a workflow, or a fact we need to look up
 - [Modus Cursor rules](https://modus.trimble.com/modus-ai/rules/cursor)
 - [Modus Cursor skills](https://modus.trimble.com/modus-ai/skills/cursor)
 
-## 8. Do not invent a second design system
+## Slide 9 — Build with Modus, not beside it
 
 **Explain**
 
-Generic Agent output often creates controls, spacing, colors, and interactions that look plausible but do not belong to the product. That creates a parallel design system for Engineering to remove later.
+Generic Agent output often invents a parallel design system. Start from Modus and verify behavior in the browser, not just appearance.
 
-Start with the largest useful Modus building block: template, pattern, component, then foundation. Change only what the product genuinely needs. The meme is intentionally gentle: Agent is not wrong to invent when it was never told what already exists.
+**Assessment 4**
 
-**Demonstrate**
-
-Show one generic button or modal, then the Modus equivalent. Compare behavior and states, not only appearance.
+Rebuild or extend the app using Modus components and Modus AI resources.
 
 **Ask**
 
-Are we solving a product gap or rebuilding an existing Modus decision?
-
-**Source**
-
-- [Modus AI](https://modus.trimble.com/modus-ai)
-
-## 9. “It works” is a claim. The browser is evidence.
-
-**Explain**
-
-Agent can report that the task is done, but the running interface is the evidence. Complete the task. Try relevant states. Resize. Use the keyboard. Add realistic content. Re-test the earlier flow after every meaningful repair.
-
-Accessibility is not a final polish pass. Keyboard, focus, labels, hierarchy, and error recovery are part of the interaction.
-
-**Demonstrate**
-
-Ask Agent to open the app in Browser and perform the checklist. Watch the interaction yourself. Record one failure and one repair.
-
-**Ask**
-
-What evidence would convince someone who did not watch us build it?
+Are we solving a product gap or rebuilding something Modus already provides?
 
 **Sources**
 
-- [Cursor Agent overview: Browser and checkpoints](https://cursor.com/docs/agent/overview)
 - [Modus accessibility overview](https://modus.trimble.com/foundations/accessibility/overview)
 
-## 10. From Figma to a prototype people can try
+## Slide 10 — From folder to repository
 
 **Explain**
 
-The end-to-end path is Figma context into Agent, Modus as the shared product language, Browser as evidence, GitHub as the saved project, and a live URL for review.
-
-The smaller loop continues at every stage: describe, build, look, try, adjust, check, share. The prototype is valuable because it turns a product opinion into behavior that people can experience.
+Everything so far lives in folders inside one workshop workspace. The next step is making the work shareable through GitHub. Product and Design need access and a way to run or review. Engineering needs repo access and deployment support when previews are required.
 
 **Demonstrate**
 
-Open the live URL on another device. Complete the primary task. Then show the Figma, repository, and preview links together.
+Show the local folder, then the GitHub repository, then collaborator permissions.
 
 **Ask**
 
-Which product decision became easier once people could try it?
+What does a product person need that is different from what engineering needs?
 
 **Sources**
 
-- [Modus AI PDLC Playbook](https://modus.trimble.com/modus-ai/ai-pdlc-playbook)
 - [GitHub: About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)
+- [GitHub: Managing access](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-permissions)
 
-## Visual and licensing notes
+## Slide 11 — From repository to preview URL
 
-- All diagrams and meme-style panels in this deck are original shapes and text generated by the local deck generator.
-- No third-party meme templates or stock images are embedded.
-- Product names are used for instruction; official documentation links are listed above.
+**Explain**
+
+Share the repository link, explain how to run locally, and introduce preview options. GitHub Pages works well for static sites on public repositories. Private GitHub Pages visibility requires GitHub Enterprise Cloud. If the org cannot publish a free preview, ask Engineering to set up Vercel, Netlify, or an internal preview pipeline.
+
+**Assessment 5**
+
+Publish the repository and provide repo link, local run steps, and preview URL if available.
+
+**Ask**
+
+Could a non-builder open this work and understand what to try?
+
+**Sources**
+
+- [GitHub Pages](https://docs.github.com/en/pages)
+- [GitHub Pages visibility](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)

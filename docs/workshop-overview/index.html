@@ -1,139 +1,18 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Designing with Agent</title>
-<style>
-  :root { color-scheme: light; --navy:#003e63; --blue:#0063a3; --orange:#f47f20; --green:#2d7a58; --red:#b83b3b; --ink:#1b242b; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: var(--navy); font-family: Arial, sans-serif; }
-  .deck { height: 100%; overflow: hidden; }
-  .slide {
-    display: none;
-    height: 100%;
-    padding: 5vh 5.5vw 9vh;
-    background: #F8F9FA;
-    color: var(--ink);
-    position: relative;
-  }
-  .slide.active { display: flex; flex-direction: column; animation: rise .35s ease; }
-  h1 { font-size: clamp(2rem, 3.7vw, 3.2rem); margin: 0 0 2.4vh; line-height: 1.08; }
-  .visual { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
-  small { display: block; color: var(--blue); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-  .takeaway { width: 92%; margin: 1.5vh auto 4vh; padding: 1.4vh 2vw; border-radius: 12px; background: var(--navy); color: #fff; text-align: center; font-size: clamp(1rem, 1.7vw, 1.35rem); font-weight: 700; }
-  article, .vague { border-radius: 15px; padding: 1.6vh 1.2vw; background: #d9ebf7; }
-  article strong, .vague strong { display: block; margin-top: .7vh; font-size: clamp(.95rem, 1.55vw, 1.3rem); line-height: 1.25; }
-  .arrow { color: var(--orange); font-size: 2rem; font-weight: 900; align-self: center; }
-  .brief { display: grid; grid-template-columns: 22% 5% 1fr; gap: 1vw; align-items: center; }
-  .vague { background: #f7e2e2; min-height: 18vh; display: flex; flex-direction: column; justify-content: center; }
-  .brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3vh 1vw; }
-  .brief-grid article:last-child { background: #ddefe6; grid-column: 1 / -1; }
-  .flow, .system-row { display: flex; gap: .65vw; align-items: stretch; }
-  .flow article, .system-row article { flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 12vh; }
-  .flow > span, .system-row > span { align-self: center; color: var(--orange); font-weight: 900; font-size: 1.3rem; }
-  .meme { display: grid; grid-template-columns: 1fr 7% 1fr; gap: 1vw; margin: 3vh auto 0; width: 82%; align-items: center; }
-  .meme article { min-height: 19vh; display: flex; flex-direction: column; justify-content: center; text-align: center; }
-  .meme .before { background: #f7e2e2; }
-  .meme .after { background: #ddefe6; }
-  .meme b { text-align: center; color: var(--orange); font-size: 2.3rem; }
-  .loop-content { display:grid; grid-template-columns:36% 1fr; gap:2vw; margin-top:1.5vh; align-items:center; }
-  .loop-content .meme { display:flex; flex-direction:column; gap:1vh; width:100%; margin:0; }
-  .loop-content .meme article { min-height:8vh; }
-  .loop-content .meme b { line-height:.8; }
-  .lesson-image { display:block; width:100%; max-height:25vh; object-fit:contain; border-radius:16px; }
-  .structure-lesson { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
-  .wireframe { background: #fff; border-radius: 15px; padding: 1.5vh 1.2vw; display: grid; grid-template-rows: .7fr .7fr 1.7fr .7fr auto; gap: 1vh; }
-  .region { background: #e8ecef; border-radius: 8px; padding: 1vh; text-align: center; font-weight: 800; }
-  .region.r0 { background: var(--navy); color: #fff; }
-  .wireframe > small, .style-grid > small { text-align: center; padding-top: .5vh; }
-  .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2vh 1vw; }
-  .style-grid article:nth-child(even) { background: #ddefe6; }
-  .style-grid article span { display: block; margin-top: .7vh; color: #53636f; }
-  .style-grid > small { grid-column: 1 / -1; }
-  .state-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1vw; }
-  .state { min-height: 31vh; }
-  .state i { display: block; height: 2.3vh; margin-top: 2vh; background: #fff; border-radius: 8px; }
-  .state i:last-child { width: 55%; }
-  .state.s1 { background:#d9ebf7; } .state.s2 { background:#ebe3f5; } .state.s3 { background:#f7e2e2; } .state.s4 { background:#ddefe6; }
-  .state-path { margin-top: 2.4vh; color: var(--orange); text-align: center; font-size: 1.2rem; font-weight: 900; letter-spacing: .08em; }
-  .system-row article { min-height: 15vh; }
-  .system-row article:nth-of-type(even) { background:#ddefe6; }
-  .vehicles { margin: 4vh auto 0; display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 1vw; align-items: center; width: 90%; }
-  .vehicles p { font-size: 1.15rem; font-weight: 800; }
-  .vehicles article { text-align: center; background: #e8ecef; }
-  .vehicles article.chosen { background: #f9c74f; }
-  .vehicles small { margin-top: .6vh; }
-  .contrast { display: grid; grid-template-columns: 1fr 7% 1fr; gap: 1vw; margin: 3vh auto 0; width: 80%; align-items: center; }
-  .contrast article { background:#e8ecef; min-height: 16vh; text-align:center; display:flex; flex-direction:column; justify-content:center; }
-  .contrast article.good { background:#ddefe6; }
-  .contrast b { text-align:center; color:#53636f; }
-  .labels { text-align:center; color:var(--blue); font-size:1.2rem; font-weight:900; letter-spacing:.05em; }
-  .context-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.2vw; }
-  .context-grid article { min-height:35vh; display:flex; flex-direction:column; justify-content:center; text-align:center; }
-  .context-grid article:nth-child(2) { background:#ebe3f5; }
-  .context-grid article:nth-child(3) { background:#ddefe6; }
-  .context-grid article span { margin-top:3vh; font-size:1.2rem; font-weight:800; }
-  .context-grid article em { margin-top:3vh; color:#53636f; }
-  .modus-compare { display:grid; grid-template-columns:1fr 1fr; gap:4vw; }
-  .modus-compare > div { border-radius:15px; padding:1.6vh 1.5vw; }
-  .modus-compare .bad { background:#f7e2e2; } .modus-compare .good { background:#ddefe6; }
-  .modus-compare h2 { margin:.4vh 0 1.5vh; }
-  .modus-compare span { display:block; padding:1.1vh; margin:.7vh 0; background:rgba(255,255,255,.7); border-radius:8px; font-weight:800; }
-  .meme-line { margin:2.2vh auto 0; padding:1.5vh 2vw; background:#f9c74f; border-radius:12px; font-size:1.1rem; }
-  .meme-line strong { margin-left:1vw; }
-  .modus-content { display:grid; grid-template-columns:58% 1fr; gap:2vw; align-items:center; }
-  .modus-content .modus-compare { gap:1.2vw; }
-  .modus-content .lesson-image { max-height:28vh; margin-bottom:2vh; }
-  .qa-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.1vw; }
-  .qa-grid article { min-height:14vh; }
-  .qa-grid article:nth-child(even) { background:#ddefe6; }
-  .evidence { display:flex; justify-content:space-around; margin-top:2.4vh; font-size:1.2rem; }
-  .evidence span { color:var(--red); font-weight:800; } .evidence strong { color:var(--green); }
-  .loop-label { margin:3.2vh auto 1vh; color:var(--orange); text-align:center; font-size:.9rem; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
-  .loop-row { display:grid; grid-template-columns:repeat(7, 1fr); gap:.7vw; width:88%; margin:0 auto; }
-  .loop-row article { background:#f9c74f; text-align:center; padding:1.2vh .5vw; }
-  .loop-row article:nth-child(even) { background:#ebe3f5; }
-  .delivery-line { text-align:center; color:var(--navy); font-size:1.25rem; font-weight:900; margin-top:3vh; }
-  .number { position: absolute; right: 3vw; bottom: 3vh; font-size: .95rem; color: #77848D; }
-  .fragment { animation: reveal .45s both; animation-delay: calc(var(--i) * .11s + .12s); }
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-  @keyframes reveal { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
-</style>
-</head>
-<body>
-<div class="deck">
-<section class="slide" data-index="0"><h1>Natural language is a design brief</h1><div class="visual"><div class="brief"><div class="vague"><small>VAGUE REQUEST</small><strong>Make me a dashboard.</strong></div><div class="arrow">→</div><div class="brief-grid"><article class="fragment" style="--i:0"><small>user</small><strong>Field supervisor</strong></article><article class="fragment" style="--i:1"><small>goal</small><strong>Find delayed jobs before the morning stand-up</strong></article><article class="fragment" style="--i:2"><small>context</small><strong>Laptop, weak connection, 40+ jobs</strong></article><article class="fragment" style="--i:3"><small>behavior</small><strong>Filter by risk; open job details</strong></article><article class="fragment" style="--i:4"><small>acceptance</small><strong>A supervisor finds one delayed job in under 20 seconds</strong></article></div></div></div><p class="takeaway">Useful prompts describe a situation—not a screen.</p><span class="number">1 / 10</span></section>
-<section class="slide" data-index="1"><h1>The first prompt is the start, not the finish</h1><div class="visual"><div class="flow"><article class="fragment" style="--i:0"><small>1</small><strong>Describe</strong></article><span>→</span><article class="fragment" style="--i:1"><small>2</small><strong>Build</strong></article><span>→</span><article class="fragment" style="--i:2"><small>3</small><strong>Preview</strong></article><span>→</span><article class="fragment" style="--i:3"><small>4</small><strong>Observe</strong></article><span>→</span><article class="fragment" style="--i:4"><small>5</small><strong>Revise</strong></article></div><div class="loop-content"><div class="meme"><article class="before"><small>FIRST PROMPT</small><strong>“It made a page!”</strong></article><b>↓</b><article class="after"><small>FIFTH PROMPT</small><strong>“It solves the task.”</strong></article></div><img class="lesson-image fragment" style="--i:5" src="assets/agent-iteration.png" alt="AI assistant showing a rough first interface while a designer reviews a refined result"></div></div><p class="takeaway">Design judgment lives in the loop.</p><span class="number">2 / 10</span></section>
-<section class="slide" data-index="2"><h1>HTML gives meaning. CSS gives direction.</h1><div class="visual"><div class="structure-lesson"><div class="wireframe"><div class="region r0 fragment" style="--i:0">Heading</div><div class="region r1 fragment" style="--i:1">Filters</div><div class="region r2 fragment" style="--i:2">Results</div><div class="region r3 fragment" style="--i:3">Primary action</div><small>HTML: what each region is</small></div><div class="style-grid"><article class="fragment" style="--i:0"><strong>Hierarchy</strong><span>What matters first</span></article><article class="fragment" style="--i:1"><strong>Spacing</strong><span>What belongs together</span></article><article class="fragment" style="--i:2"><strong>Color</strong><span>What needs attention</span></article><article class="fragment" style="--i:3"><strong>Alignment</strong><span>How the eye moves</span></article><small>CSS: how the structure communicates</small></div></div></div><p class="takeaway">Ask Agent for both: what each part is and how it should read.</p><span class="number">3 / 10</span></section>
-<section class="slide" data-index="3"><h1>A screenshot is one moment</h1><div class="visual"><div class="state-row"><article class="state s0 fragment" style="--i:0"><small>Closed</small><strong>Nothing selected</strong><i></i><i></i><i></i></article><article class="state s1 fragment" style="--i:1"><small>Loading</small><strong>Getting job details</strong><i></i><i></i><i></i></article><article class="state s2 fragment" style="--i:2"><small>Empty</small><strong>No delayed jobs</strong><i></i><i></i><i></i></article><article class="state s3 fragment" style="--i:3"><small>Error</small><strong>Could not load</strong><i></i><i></i><i></i></article><article class="state s4 fragment" style="--i:4"><small>Success</small><strong>Job ready to review</strong><i></i><i></i><i></i></article></div><div class="state-path">CLICK → REQUEST → RESPONSE → RECOVERY →</div></div><p class="takeaway">A product is the movement between these moments.</p><span class="number">4 / 10</span></section>
-<section class="slide" data-index="4"><h1>Why does a framework appear?</h1><div class="visual"><div class="system-row"><article class="fragment" style="--i:0"><small>Component</small><strong>A reusable filter panel</strong></article><span>→</span><article class="fragment" style="--i:1"><small>State</small><strong>risk = “high”</strong></article><span>→</span><article class="fragment" style="--i:2"><small>Event</small><strong>The user changes the filter</strong></article><span>→</span><article class="fragment" style="--i:3"><small>Response</small><strong>The same list updates</strong></article></div><div class="vehicles"><p>The same product idea can ride in different vehicles:</p><article class="chosen"><strong>React</strong><small>Workshop choice</small></article><article class=""><strong>Angular</strong><small>Also valid</small></article><article class=""><strong>Vue</strong><small>Also valid</small></article></div></div><p class="takeaway">The framework is the vehicle. The interaction is the design.</p><span class="number">5 / 10</span></section>
-<section class="slide" data-index="5"><h1>A Figma link carries structured context</h1><div class="visual"><div class="flow"><article class="fragment" style="--i:0"><small>1</small><strong>Selection link</strong></article><span>→</span><article class="fragment" style="--i:1"><small>2</small><strong>Components + variables + layout</strong></article><span>→</span><article class="fragment" style="--i:2"><small>3</small><strong>Agent builds</strong></article><span>→</span><article class="fragment" style="--i:3"><small>4</small><strong>Browser comparison</strong></article></div><div class="contrast"><article><small>SCREENSHOT</small><strong>pixels</strong></article><b>vs</b><article class="good"><small>FIGMA MCP</small><strong>design structure</strong></article></div><p class="labels">layout · components · variables · assets</p></div><p class="takeaway">Give Agent the selection and the user goal.</p><span class="number">6 / 10</span></section>
-<section class="slide" data-index="6"><h1>Rules, skills, and MCP do different jobs</h1><div class="visual"><div class="context-grid"><article class="fragment" style="--i:0"><small>RULES</small><strong>Standards wall</strong><span>Always follow these</span><em>“Use Modus.”</em></article><article class="fragment" style="--i:1"><small>SKILLS</small><strong>Task playbook</strong><span>Use this workflow</span><em>“Build a form this way.”</em></article><article class="fragment" style="--i:2"><small>MCP</small><strong>Connected library</strong><span>Look up current facts</span><em>“Which event is current?”</em></article></div></div><p class="takeaway">Together they reduce guessing. They do not replace your brief.</p><span class="number">7 / 10</span></section>
-<section class="slide" data-index="7"><h1>Do not invent a second design system</h1><div class="visual"><div class="modus-content"><div><div class="modus-compare"><div class="bad"><h2>Parallel system</h2><span>× Custom button</span><span>× Almost-right spacing</span><span>× New colors</span><span>× One-off modal</span></div><div class="good"><h2>Modus</h2><span>✓ Foundations</span><span>✓ Components</span><span>✓ Patterns</span><span>✓ Templates</span></div></div><div class="meme-line">Agent: “I made a design system!” <strong>Designer: “We already have one.”</strong></div></div><img class="lesson-image fragment" style="--i:5" src="assets/design-system-reuse.png" alt="AI assistant presenting random interface parts while a designer points to an organized design system"></div></div><p class="takeaway">Start with Modus. Change only what the product truly needs.</p><span class="number">8 / 10</span></section>
-<section class="slide" data-index="8"><h1>“It works” is a claim. The browser is evidence.</h1><div class="visual"><div class="qa-grid"><article class="fragment" style="--i:0"><small>□ Task</small><strong>Can someone finish it?</strong></article><article class="fragment" style="--i:1"><small>□ States</small><strong>Empty, loading, error, success?</strong></article><article class="fragment" style="--i:2"><small>□ Layout</small><strong>Narrow and wide?</strong></article><article class="fragment" style="--i:3"><small>□ Keyboard</small><strong>Focus visible and usable?</strong></article><article class="fragment" style="--i:4"><small>□ Content</small><strong>Long names and real volume?</strong></article><article class="fragment" style="--i:5"><small>□ Regression</small><strong>Did the earlier flow still work?</strong></article></div><div class="evidence"><span>Agent says: “Done.”</span><strong>Browser shows: evidence.</strong></div></div><p class="takeaway">Watch the behavior. Do not accept the status message.</p><span class="number">9 / 10</span></section>
-<section class="slide" data-index="9"><h1>From Figma to a prototype people can try</h1><div class="visual"><div class="flow"><article class="fragment" style="--i:0"><small>1</small><strong>Figma</strong></article><span>→</span><article class="fragment" style="--i:1"><small>2</small><strong>Agent</strong></article><span>→</span><article class="fragment" style="--i:2"><small>3</small><strong>Modus</strong></article><span>→</span><article class="fragment" style="--i:3"><small>4</small><strong>Browser</strong></article><span>→</span><article class="fragment" style="--i:4"><small>5</small><strong>GitHub</strong></article><span>→</span><article class="fragment" style="--i:5"><small>6</small><strong>Live URL</strong></article></div><div class="loop-label">Repeat at every step</div><div class="loop-row"><article class="fragment" style="--i:0"><small>1</small><strong>Describe</strong></article><article class="fragment" style="--i:1"><small>2</small><strong>Build</strong></article><article class="fragment" style="--i:2"><small>3</small><strong>Look</strong></article><article class="fragment" style="--i:3"><small>4</small><strong>Try</strong></article><article class="fragment" style="--i:4"><small>5</small><strong>Adjust</strong></article><article class="fragment" style="--i:5"><small>6</small><strong>Check</strong></article><article class="fragment" style="--i:6"><small>7</small><strong>Share</strong></article></div><p class="delivery-line">A shareable prototype turns opinion into something people can try.</p></div><p class="takeaway">The output is not code. It is evidence for a product decision.</p><span class="number">10 / 10</span></section>
-</div>
-<script>
-const slides = [...document.querySelectorAll('.slide')];
-let index = 0;
-function show(next) {
-  index = Math.max(0, Math.min(slides.length - 1, next));
-  slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-  history.replaceState(null, '', '#slide-' + (index + 1));
-}
-function fromHash() {
-  const match = location.hash.match(/slide-(\d+)/);
-  show(match ? Number(match[1]) - 1 : 0);
-}
-document.addEventListener('keydown', (event) => {
-  if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) { event.preventDefault(); show(index + 1); }
-  if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
-  if (event.key === 'Home') { event.preventDefault(); show(0); }
-  if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
-});
-window.addEventListener('hashchange', fromHash);
-fromHash();
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Designing with Agent — Workshop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

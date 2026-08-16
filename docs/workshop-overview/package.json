@@ -1,15 +1,30 @@
 {
   "name": "modus-ai-designer-workshop-overview",
-  "version": "1.0.0",
-  "description": "10-slide participant-facing workshop overview",
+  "version": "2.0.0",
+  "description": "11-slide interactive workshop presentation",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "node generate.mjs",
-    "test": "node generate.mjs"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "license": "UNLICENSED",
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
-    "pptxgenjs": "^4.0.1"
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.6.3",
+    "vite": "^6.4.3",
+    "vitest": "^3.0.5"
   }
 }
