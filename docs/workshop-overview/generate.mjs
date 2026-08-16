@@ -11,6 +11,7 @@ const outputHtml = path.join(__dirname, 'index.html');
 const C = {
   ink: '1B242B',
   muted: '53636F',
+  quiet: 'E8ECEF',
   paper: 'F8F9FA',
   white: 'FFFFFF',
   yellow: 'F9C74F',
