@@ -346,8 +346,15 @@ function renderSlide(data, index) {
         fill: { color: C.white, transparency: 100 },
         line: { color: C.orange, width: 2.5, beginArrowType: 'none', endArrowType: 'triangle' },
       });
+      addText(slide, data.loopLabel.toUpperCase(), 4.75, 3.28, 3.8, 0.3, {
+        fontSize: 11,
+        bold: true,
+        color: C.orange,
+        align: 'center',
+        charSpacing: 1.3,
+      });
       data.loop.forEach((step, i) => {
-        addCard(slide, 0.8 + i * 1.72, 3.72, 1.42, 0.9, `${i + 1}`, step, i % 2 ? C.purpleSoft : C.yellow);
+        addCard(slide, 1.32 + i * 1.48, 3.78, 1.25, 0.9, `${i + 1}`, step, i % 2 ? C.purpleSoft : C.yellow);
       });
       addText(slide, 'A shareable prototype turns opinion into something people can try.', 1.0, 5.35, 11.2, 0.55, {
         fontSize: 22,
@@ -408,7 +415,7 @@ function renderHtmlContent(data) {
       body = `<div class="qa-grid">${data.checks.map((item, i) => `<article class="fragment" style="--i:${i}"><small>□ ${escapeHtml(item[0])}</small><strong>${escapeHtml(item[1])}</strong></article>`).join('')}</div><div class="evidence"><span>Agent says: “Done.”</span><strong>Browser shows: evidence.</strong></div>`;
       break;
     case 'delivery':
-      body = `<div class="flow">${data.flow.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('<span>→</span>')}</div><div class="loop-row">${data.loop.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('')}</div><p class="delivery-line">A shareable prototype turns opinion into something people can try.</p>`;
+      body = `<div class="flow">${data.flow.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('<span>→</span>')}</div><div class="loop-label">${escapeHtml(data.loopLabel)}</div><div class="loop-row">${data.loop.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('')}</div><p class="delivery-line">A shareable prototype turns opinion into something people can try.</p>`;
       break;
     default: {
       const exhaustiveCheck = data;
@@ -508,7 +515,8 @@ const html = `<!doctype html>
   .qa-grid article:nth-child(even) { background:#ddefe6; }
   .evidence { display:flex; justify-content:space-around; margin-top:2.4vh; font-size:1.2rem; }
   .evidence span { color:var(--red); font-weight:800; } .evidence strong { color:var(--green); }
-  .loop-row { display:grid; grid-template-columns:repeat(7, 1fr); gap:.7vw; margin-top:4vh; }
+  .loop-label { margin:3.2vh auto 1vh; color:var(--orange); text-align:center; font-size:.9rem; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
+  .loop-row { display:grid; grid-template-columns:repeat(7, 1fr); gap:.7vw; width:88%; margin:0 auto; }
   .loop-row article { background:#f9c74f; text-align:center; padding:1.2vh .5vw; }
   .loop-row article:nth-child(even) { background:#ebe3f5; }
   .delivery-line { text-align:center; color:var(--navy); font-size:1.25rem; font-weight:900; margin-top:3vh; }

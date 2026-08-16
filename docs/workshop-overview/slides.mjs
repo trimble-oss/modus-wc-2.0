@@ -104,6 +104,7 @@ export const slides = [
     kind: 'delivery',
     title: 'From Figma to a prototype people can try',
     flow: ['Figma', 'Agent', 'Modus', 'Browser', 'GitHub', 'Live URL'],
+    loopLabel: 'Repeat at every step',
     loop: ['Describe', 'Build', 'Look', 'Try', 'Adjust', 'Check', 'Share'],
     takeaway: 'The output is not code. It is evidence for a product decision.',
   },
