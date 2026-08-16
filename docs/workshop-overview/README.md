@@ -1,8 +1,6 @@
 # Interactive workshop deck
 
-An 11-slide React presentation for the five-phase Modus AI designer workshop. Slides are visual only; narration lives in `PRESENTER-GUIDE.md`.
-
-The detailed 51-slide facilitator kit remains in `docs/workshop-slides/`.
+A 12-slide visual React presentation. Narration lives in `PRESENTER-GUIDE.md`.
 
 ## Run locally
 
@@ -12,46 +10,34 @@ npm install
 npm run dev
 ```
 
-Open the URL shown in the terminal (default `http://localhost:5173`).
-
-To open the deck from another device on the same Wi‑Fi:
+On the same Wi‑Fi:
 
 ```bash
 npm run dev:lan
 ```
 
-Vite prints a **Network** URL like `http://192.168.x.x:5173`. Use that on phones or laptops on the same network.
+Use the **Network** URL Vite prints.
 
 ## Presenter controls
 
-- Click the slide, press Space, or press → to reveal the next step
-- Press ← or use **Back** to reverse one reveal
-- Use the slide jump control to move between slides
+- Click, Space, or → to reveal the next object
+- ← or **Back** to reverse
+- **Assessment** opens a modal on phase-end slides
 - Animations respect `prefers-reduced-motion`
-
-## Build and test
-
-```bash
-npm run build
-npm test
-```
 
 ## Slide map
 
-| Slide | Phase | Topic |
+| Slide | Label | Topic |
 | --- | --- | --- |
-| 1 | 1 | Start in the Agents window |
-| 2 | 1 | A new layer on top of code + Assessment 1 |
-| 3 | 2 | Guide the smart intern |
-| 4 | 2 | Why frameworks appear + Assessment 2 |
-| 5 | 3 | Rules are persistent instructions |
-| 6 | 3 | Skills, MCP, and Figma context |
-| 7 | 3 | Complete AI context stack + Assessment 3 |
-| 8 | 4 | What Modus provides |
-| 9 | 4 | Build with Modus + Assessment 4 |
-| 10 | 5 | Folder to repository |
-| 11 | 5 | Repository to preview URL + Assessment 5 |
-
-## Edit content
-
-Update slide data in `src/slides/slides.ts` and the matching view in `src/components/slides/`.
+| 1 | Phase 1 | Agents window |
+| 2 | Phase 1 | Binary → Agent rings + Assessment 1 |
+| 3 | Phase 2 | Smart intern |
+| 4 | Phase 2 | Frameworks + Assessment 2 |
+| 5 | Phase 3 | Rules |
+| 6 | Phase 3 | Skills, MCP, Figma |
+| 7 | Phase 3 | Context stack + Assessment 3 |
+| 8 | Detour | Playwright MCP scrape demo |
+| 9 | Phase 4 | Modus stack |
+| 10 | Phase 4 | Build with Modus + Assessment 4 |
+| 11 | Phase 5 | Folder to repository |
+| 12 | Phase 5 | Preview URL + Assessment 5 |

@@ -1,5 +1,7 @@
 import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
+import { UrlChip } from '../visuals/UrlChip';
 import type { ModusOverviewSlide } from '../../types/slides';
 
 interface Props {
@@ -9,26 +11,22 @@ interface Props {
 
 export function ModusOverviewSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <div className="modus-stack">
-        {slide.layers.map((layer, index) => (
-          <Reveal key={layer.name} index={index} revealIndex={revealIndex} className="modus-layer">
-            <h3>{layer.name}</h3>
-            <p>{layer.detail}</p>
-          </Reveal>
-        ))}
-      </div>
-
-      <Reveal index={4} revealIndex={revealIndex}>
-        <div className="modus-layer modus-layer--inline">
-          <h3>Modus AI resources</h3>
-          <ul className="bullet-list">
-            {slide.aiResources.map((resource) => (
-              <li key={resource}>{resource}</li>
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="object-wrap modus-project">
+        <CloudBubble label="Modus" />
+        <div className="project-card project-card--wide">
+          <div className="modus-stack">
+            {slide.layers.map((layer, index) => (
+              <Reveal key={layer} index={index} revealIndex={revealIndex} className="modus-brick">
+                {layer}
+              </Reveal>
             ))}
-          </ul>
+          </div>
+          <Reveal index={4} revealIndex={revealIndex}>
+            <UrlChip link={slide.modus} />
+          </Reveal>
         </div>
-      </Reveal>
+      </div>
     </SlideShell>
   );
 }

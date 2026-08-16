@@ -1,5 +1,6 @@
-import { AssessmentPanel, Reveal } from '../Reveal';
+import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
 import type { IntentLayerSlide } from '../../types/slides';
 
 interface Props {
@@ -7,35 +8,26 @@ interface Props {
   revealIndex: number;
 }
 
+const SIZES = [88, 160, 232, 304];
+
 export function IntentLayerSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <div className="timeline">
-        {slide.timeline.map((item, index) => (
-          <Reveal key={item.label} index={index} revealIndex={revealIndex} className="timeline__item">
-            <div className="timeline__era">{item.era}</div>
-            <div>
-              <h3>{item.label}</h3>
-              <p>{item.detail}</p>
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="rings" aria-label="Layers from binary to Agent">
+        {slide.rings.map((label, index) => (
+          <Reveal
+            key={label}
+            index={index}
+            revealIndex={revealIndex}
+            className={`ring ring--${index}`}
+          >
+            <div className="ring__circle" style={{ width: SIZES[index], height: SIZES[index] }}>
+              {index === 0 ? <span className="ring__core">0101</span> : null}
             </div>
+            <CloudBubble label={label} />
           </Reveal>
         ))}
       </div>
-
-      <Reveal index={4} revealIndex={revealIndex}>
-        <p className="takeaway">{slide.insight}</p>
-        <p className="muted">{slide.clarification}</p>
-      </Reveal>
-
-      {slide.assessment ? (
-        <AssessmentPanel
-          index={5}
-          revealIndex={revealIndex}
-          title={slide.assessment.title}
-          task={slide.assessment.task}
-          success={slide.assessment.success}
-        />
-      ) : null}
     </SlideShell>
   );
 }

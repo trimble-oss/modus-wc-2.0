@@ -1,5 +1,7 @@
-import { AssessmentPanel, Reveal } from '../Reveal';
+import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
+import { UrlChip } from '../visuals/UrlChip';
 import type { ContextStackSlide } from '../../types/slides';
 
 interface Props {
@@ -7,41 +9,22 @@ interface Props {
   revealIndex: number;
 }
 
+const LAYERS = ['Prompt', 'Rules', 'Skills', 'MCP / Figma'];
+
 export function ContextStackSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <div className="stack-layers">
-        {slide.layers.map((layer, index) => (
-          <Reveal key={layer.name} index={index} revealIndex={revealIndex} className="stack-layer">
-            <div>
-              <h3>{layer.name}</h3>
-              <p className="stack-layer__role">{layer.role}</p>
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="tower">
+        {LAYERS.map((layer, index) => (
+          <Reveal key={layer} index={index} revealIndex={revealIndex} className="tower__layer">
+            <CloudBubble label={layer} />
+            <div className="tower__block">
+              {layer}
+              {layer === 'MCP / Figma' ? <UrlChip link={slide.figma} /> : null}
             </div>
-            <p>{layer.detail}</p>
           </Reveal>
         ))}
       </div>
-
-      <Reveal index={4} revealIndex={revealIndex}>
-        <ol className="flow-list">
-          {slide.flow.map((step) => (
-            <li key={step.label}>
-              <strong>{step.label}</strong>
-              {step.detail ? <span>{step.detail}</span> : null}
-            </li>
-          ))}
-        </ol>
-      </Reveal>
-
-      {slide.assessment ? (
-        <AssessmentPanel
-          index={5}
-          revealIndex={revealIndex}
-          title={slide.assessment.title}
-          task={slide.assessment.task}
-          success={slide.assessment.success}
-        />
-      ) : null}
     </SlideShell>
   );
 }

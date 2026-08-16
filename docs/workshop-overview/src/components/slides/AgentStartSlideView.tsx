@@ -1,5 +1,6 @@
 import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
 import type { AgentStartSlide } from '../../types/slides';
 
 interface Props {
@@ -9,10 +10,11 @@ interface Props {
 
 export function AgentStartSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <div className="grid-two">
-        <Reveal index={0} revealIndex={revealIndex}>
-          <div className="mock-window" aria-label="Cursor Agents window mockup">
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="scene scene--split">
+        <Reveal index={0} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Agents" />
+          <div className="mock-window" aria-label="Cursor Agents window">
             <div className="mock-window__chrome">
               <span />
               <span />
@@ -20,29 +22,27 @@ export function AgentStartSlideView({ slide, revealIndex }: Props) {
             </div>
             <div className="mock-window__title">Agents</div>
             <div className="mock-window__pane">
-              <p className="mock-window__label">Agent chat</p>
-              <div className="mock-window__bubble mock-window__bubble--user">Your prompt appears here.</div>
-              <div className="mock-window__bubble mock-window__bubble--agent">Agent plans, builds, and responds.</div>
+              <Reveal index={1} revealIndex={revealIndex}>
+                <div className="mock-window__bubble mock-window__bubble--user">{slide.prompt}</div>
+              </Reveal>
+              <Reveal index={2} revealIndex={revealIndex}>
+                <div className="mock-window__bubble mock-window__bubble--agent">{slide.reply}</div>
+              </Reveal>
             </div>
           </div>
         </Reveal>
 
-        <div className="stack">
-          <Reveal index={1} revealIndex={revealIndex}>
-            <div className="prompt-card">
-              <p className="prompt-card__label">Example prompt</p>
-              <p className="prompt-card__text">{slide.prompt}</p>
+        <Reveal index={3} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Preview" />
+          <div className="preview-pane">
+            <div className="preview-pane__bar">localhost:3000</div>
+            <div className="preview-pane__page">
+              <div className="preview-block preview-block--wide" />
+              <div className="preview-block" />
+              <div className="preview-block" />
             </div>
-          </Reveal>
-
-          <Reveal index={2} revealIndex={revealIndex}>
-            <div className="callout">{slide.followUp}</div>
-          </Reveal>
-
-          <Reveal index={3} revealIndex={revealIndex}>
-            <p className="takeaway">{slide.takeaway}</p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </SlideShell>
   );

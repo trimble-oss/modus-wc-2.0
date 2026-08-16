@@ -1,5 +1,7 @@
-import { AssessmentPanel, Reveal } from '../Reveal';
+import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
+import { UrlChip } from '../visuals/UrlChip';
 import type { ModusBuildSlide } from '../../types/slides';
 
 interface Props {
@@ -9,43 +11,30 @@ interface Props {
 
 export function ModusBuildSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <div className="compare-row">
-        <Reveal index={0} revealIndex={revealIndex} className="compare-card">
-          <h3>{slide.generic.title}</h3>
-          <ul>
-            {slide.generic.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="scene scene--compare">
+        <Reveal index={0} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Generic" />
+          <div className="ui-messy">
+            <button type="button" className="ui-messy__btn" tabIndex={-1}>
+              Go
+            </button>
+            <div className="ui-messy__box" />
+            <div className="ui-messy__box ui-messy__box--odd" />
+          </div>
         </Reveal>
-        <Reveal index={1} revealIndex={revealIndex} className="compare-card compare-card--accent">
-          <h3>{slide.modus.title}</h3>
-          <ul>
-            {slide.modus.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+        <Reveal index={1} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Modus" />
+          <div className="ui-modus">
+            <button type="button" className="ui-modus__btn" tabIndex={-1}>
+              Continue
+            </button>
+            <div className="ui-modus__box" />
+            <div className="ui-modus__box" />
+            <UrlChip link={slide.modus} />
+          </div>
         </Reveal>
       </div>
-
-      <Reveal index={2} revealIndex={revealIndex}>
-        <ul className="bullet-list">
-          {slide.verify.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </Reveal>
-
-      {slide.assessment ? (
-        <AssessmentPanel
-          index={3}
-          revealIndex={revealIndex}
-          title={slide.assessment.title}
-          task={slide.assessment.task}
-          success={slide.assessment.success}
-        />
-      ) : null}
     </SlideShell>
   );
 }

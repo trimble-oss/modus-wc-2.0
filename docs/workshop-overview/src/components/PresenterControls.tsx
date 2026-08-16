@@ -4,9 +4,11 @@ interface PresenterControlsProps {
   totalSlides: number;
   canAdvance: boolean;
   canRetreat: boolean;
+  hasAssessment: boolean;
   onAdvance: () => void;
   onRetreat: () => void;
   onGoToSlide: (index: number) => void;
+  onOpenAssessment: () => void;
 }
 
 export function PresenterControls({
@@ -15,9 +17,11 @@ export function PresenterControls({
   totalSlides,
   canAdvance,
   canRetreat,
+  hasAssessment,
   onAdvance,
   onRetreat,
   onGoToSlide,
+  onOpenAssessment,
 }: PresenterControlsProps) {
   return (
     <div className="controls" role="toolbar" aria-label="Presentation controls">
@@ -29,20 +33,26 @@ export function PresenterControls({
         <button type="button" onClick={onRetreat} disabled={!canRetreat} aria-label="Previous step">
           Back
         </button>
-        <label className="controls__jump">
+        <label className="controls__jump" htmlFor="slide-jump">
           Jump
-          <select
-            aria-label="Jump to slide"
-            value={slideIndex}
-            onChange={(event) => onGoToSlide(Number(event.target.value))}
-          >
+        </label>
+        <select
+          id="slide-jump"
+          aria-label="Jump to slide"
+          value={slideIndex}
+          onChange={(event) => onGoToSlide(Number(event.target.value))}
+        >
             {Array.from({ length: totalSlides }, (_, index) => (
               <option key={index} value={index}>
                 Slide {index + 1}
               </option>
             ))}
-          </select>
-        </label>
+        </select>
+        {hasAssessment ? (
+          <button type="button" className="controls__assessment" onClick={onOpenAssessment}>
+            Assessment
+          </button>
+        ) : null}
         <button type="button" onClick={onAdvance} disabled={!canAdvance} aria-label="Next step">
           Next
         </button>

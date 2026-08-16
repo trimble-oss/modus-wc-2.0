@@ -1,5 +1,6 @@
-import { AssessmentPanel, Reveal } from '../Reveal';
+import { Reveal } from '../Reveal';
 import { SlideShell } from '../SlideShell';
+import { CloudBubble } from '../visuals/CloudBubble';
 import type { GithubPreviewSlide } from '../../types/slides';
 
 interface Props {
@@ -9,36 +10,23 @@ interface Props {
 
 export function GithubPreviewSlideView({ slide, revealIndex }: Props) {
   return (
-    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle} sources={slide.sources}>
-      <Reveal index={0} revealIndex={revealIndex}>
-        <ul className="bullet-list">
-          {slide.localSteps.map((step) => (
-            <li key={step}>{step}</li>
-          ))}
-        </ul>
-      </Reveal>
-
-      <Reveal index={1} revealIndex={revealIndex}>
-        <div className="callout">{slide.pagesNote}</div>
-      </Reveal>
-
-      <Reveal index={2} revealIndex={revealIndex}>
-        <p className="muted">{slide.privateNote}</p>
-      </Reveal>
-
-      <Reveal index={3} revealIndex={revealIndex}>
-        <p className="takeaway">{slide.fallback}</p>
-      </Reveal>
-
-      {slide.assessment ? (
-        <AssessmentPanel
-          index={4}
-          revealIndex={revealIndex}
-          title={slide.assessment.title}
-          task={slide.assessment.task}
-          success={slide.assessment.success}
-        />
-      ) : null}
+    <SlideShell phase={slide.phase} title={slide.title} subtitle={slide.subtitle}>
+      <div className="scene scene--flow">
+        <Reveal index={0} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Repo link" />
+          <div className="url-pill">github.com/…</div>
+        </Reveal>
+        <Reveal index={1} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Run locally" />
+          <div className="laptop">
+            <span />
+          </div>
+        </Reveal>
+        <Reveal index={2} revealIndex={revealIndex} className="object-wrap">
+          <CloudBubble label="Preview URL" />
+          <div className="url-pill url-pill--live">username.github.io/app</div>
+        </Reveal>
+      </div>
     </SlideShell>
   );
 }

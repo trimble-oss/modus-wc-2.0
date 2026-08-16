@@ -8,6 +8,7 @@ import { IntentLayerSlideView } from './slides/IntentLayerSlideView';
 import { ModusBuildSlideView } from './slides/ModusBuildSlideView';
 import { ModusOverviewSlideView } from './slides/ModusOverviewSlideView';
 import { RulesSlideView } from './slides/RulesSlideView';
+import { ScrapeMcpSlideView } from './slides/ScrapeMcpSlideView';
 import { SkillsMcpSlideView } from './slides/SkillsMcpSlideView';
 import { SmartInternSlideView } from './slides/SmartInternSlideView';
 
@@ -32,6 +33,8 @@ export function SlideRenderer({ slide, revealIndex }: SlideRendererProps) {
       return <SkillsMcpSlideView slide={slide} revealIndex={revealIndex} />;
     case 'context-stack':
       return <ContextStackSlideView slide={slide} revealIndex={revealIndex} />;
+    case 'scrape-mcp':
+      return <ScrapeMcpSlideView slide={slide} revealIndex={revealIndex} />;
     case 'modus-overview':
       return <ModusOverviewSlideView slide={slide} revealIndex={revealIndex} />;
     case 'modus-build':

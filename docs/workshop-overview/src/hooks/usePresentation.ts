@@ -18,7 +18,7 @@ interface NavState {
   revealIndex: number;
 }
 
-export function usePresentation(): PresentationState & {
+export function usePresentation(paused = false): PresentationState & {
   advance: () => void;
   retreat: () => void;
   goToSlide: (index: number) => void;
@@ -72,6 +72,10 @@ export function usePresentation(): PresentationState & {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (paused) {
+        return;
+      }
+
       const target = event.target as HTMLElement | null;
       if (target?.closest('a, button, input, select, textarea')) {
         return;
@@ -90,7 +94,7 @@ export function usePresentation(): PresentationState & {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [advance, retreat]);
+  }, [advance, retreat, paused]);
 
   const progressLabel = useMemo(
     () => `Slide ${nav.slideIndex + 1}/${totalSlides} · Step ${nav.revealIndex + 1}/${maxRevealIndex + 1}`,
