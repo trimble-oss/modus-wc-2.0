@@ -53,9 +53,9 @@ export const slides: Slide[] = [
     id: 'phase-2-frameworks',
     kind: 'frameworks',
     phase: 2,
-    title: 'When the screen remembers and responds',
+    title: 'From full refresh to smart updates',
     subtitle: 'Phase 2 — No code needed',
-    revealCount: 5,
+    revealCount: 6,
     assessment: {
       title: 'Assessment 2',
       task: 'Ask Agent to build an app where one choice changes what you see on the same screen.',

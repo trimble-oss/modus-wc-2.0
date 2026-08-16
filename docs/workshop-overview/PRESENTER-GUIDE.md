@@ -23,15 +23,23 @@ Innermost ring is binary. Then language, IDE, Agent. Code still exists underneat
 
 Intern appears, knowledge orbits, intern drifts, guide/compass locks the path. Then five prompt chips: Goal, Audience, Context, Requirements, Success.
 
-## Slide 4 — When the screen remembers and responds
+## Slide 4 — From full refresh to smart updates
 
-Walk through one screen, not code words:
+Side-by-side story for designers:
 
-1. **Reusable part** — like a Figma component used in many places (the filter bar).
-2. **Screen remembers** — the app knows what is selected right now.
-3. **Someone taps** — a person does something.
-4. **Same screen updates** — the list changes without jumping to a new page.
-5. **React** — the workshop tool name only. Designers do not need syntax.
+**Before (HTML & CSS):**
+1. Job list appears.
+2. Someone taps **High risk**.
+3. The **whole page refreshes** — everything reloads.
+
+**With a framework:**
+1. Same job list appears.
+2. Same tap.
+3. The choice is **stored** (“High risk selected”).
+4. **Only the list updates** — same screen, smarter change.
+5. **React** is the workshop tool name. Designers do not need syntax.
+
+Say plainly: frameworks help us handle actions, remember choices, and update only what changed — instead of reloading the whole page every time.
 
 **Assessment 2:** one choice changes what you see on the same screen.
 
