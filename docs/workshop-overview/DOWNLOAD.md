@@ -1,6 +1,6 @@
-# 10-slide workshop overview — download
+# 10-slide visual teaching deck — download
 
-Participant-facing overview. The detailed 51-slide facilitator deck remains in `docs/workshop-slides/`.
+Content-first participant deck with diagrams, examples, animation, and original meme-style panels. The presenter narration and sources are separate.
 
 **Branch:** `cursor/vibe-coding-workshop-0ba8`
 
@@ -8,6 +8,7 @@ Participant-facing overview. The detailed 51-slide facilitator deck remains in `
 
 - [PowerPoint](https://github.com/trimble-oss/modus-wc-2.0/raw/cursor/vibe-coding-workshop-0ba8/docs/workshop-overview/workshop-overview.pptx)
 - [HTML deck](https://github.com/trimble-oss/modus-wc-2.0/raw/cursor/vibe-coding-workshop-0ba8/docs/workshop-overview/index.html)
+- [Presenter guide](https://github.com/trimble-oss/modus-wc-2.0/raw/cursor/vibe-coding-workshop-0ba8/docs/workshop-overview/PRESENTER-GUIDE.md)
 - [ZIP](https://github.com/trimble-oss/modus-wc-2.0/raw/cursor/vibe-coding-workshop-0ba8/docs/workshop-overview/workshop-overview.zip)
 - [Browse folder](https://github.com/trimble-oss/modus-wc-2.0/tree/cursor/vibe-coding-workshop-0ba8/docs/workshop-overview)
 
