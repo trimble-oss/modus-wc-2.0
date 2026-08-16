@@ -4,6 +4,8 @@ A 10-slide content-first teaching deck. The visible slides use diagrams, example
 
 The detailed 51-slide workshop kit remains in `docs/workshop-slides/`.
 
+The PowerPoint contains 26 staged build slides for 10 logical lessons. Advance normally during presentation: each click reveals the next part. This duplicate-slide technique survives Google Slides import more reliably than PowerPoint object animations.
+
 ## Open
 
 - Google Slides: upload `workshop-overview.pptx`, then open with Google Slides.
@@ -15,4 +17,4 @@ The detailed 51-slide workshop kit remains in `docs/workshop-slides/`.
 1. Change `slides.mjs`.
 2. Run `npm install` and `npm run build`.
 
-All visuals are generated from local shapes and text. No third-party meme or stock-image assets are embedded.
+All diagrams are generated from local shapes and text. Two original editorial illustrations are stored in `assets/`. No third-party meme or stock-image assets are embedded.

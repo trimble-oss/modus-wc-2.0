@@ -7,6 +7,23 @@ import { meta, slides } from './slides.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPptx = path.join(__dirname, 'workshop-overview.pptx');
 const outputHtml = path.join(__dirname, 'index.html');
+const illustrationPaths = {
+  loop: path.join(__dirname, 'assets', 'agent-iteration.png'),
+  modus: path.join(__dirname, 'assets', 'design-system-reuse.png'),
+};
+
+const stageCounts = {
+  brief: 2,
+  loop: 3,
+  structure: 2,
+  states: 3,
+  framework: 2,
+  figma: 2,
+  context: 3,
+  modus: 3,
+  qa: 3,
+  delivery: 3,
+};
 
 const C = {
   ink: '1B242B',
@@ -81,17 +98,23 @@ function addRect(slide, x, y, w, h, fill) {
   });
 }
 
-function addHeader(slide, data, index) {
+function addHeader(slide, data, index, stage, stageCount) {
   addText(slide, data.title, 0.7, 0.42, 11.4, 0.78, {
     fontSize: 29,
     bold: true,
     color: C.ink,
     valign: 'top',
   });
-  addText(slide, `${index + 1} / 10`, 11.8, 0.48, 0.8, 0.3, {
+  addText(slide, `${index + 1} / 10`, 11.05, 0.48, 0.75, 0.3, {
     fontSize: 11,
     bold: true,
     color: C.muted,
+    align: 'right',
+  });
+  addText(slide, `BUILD ${stage + 1}/${stageCount}`, 11.85, 0.48, 0.75, 0.3, {
+    fontSize: 9,
+    bold: true,
+    color: C.orange,
     align: 'right',
   });
 }
@@ -122,9 +145,9 @@ function addCard(slide, x, y, w, h, title, detail, fill = C.blueSoft) {
   }
 }
 
-function renderSlide(data, index) {
+function renderSlide(data, index, stage, stageCount) {
   const slide = pptx.addSlide('BASE');
-  addHeader(slide, data, index);
+  addHeader(slide, data, index, stage, stageCount);
 
   switch (data.kind) {
     case 'brief': {
@@ -136,17 +159,19 @@ function renderSlide(data, index) {
         align: 'center',
       });
       const entries = Object.entries(data.brief);
-      entries.forEach(([key, value], i) => {
+      entries.slice(0, stage === 0 ? 0 : entries.length).forEach(([key, value], i) => {
         const col = i % 2;
         const row = Math.floor(i / 2);
         addCard(slide, 4.65 + col * 3.92, 1.35 + row * 1.55, 3.65, 1.32, key.toUpperCase(), value, i === 4 ? C.greenSoft : C.blueSoft);
       });
-      addText(slide, 'A prompt is not decoration. It is the product decision written down.', 0.72, 4.9, 3.25, 1.05, {
-        fontSize: 20,
-        bold: true,
-        color: C.red,
-        align: 'center',
-      });
+      if (stage > 0) {
+        addText(slide, 'A prompt is not decoration. It is the product decision written down.', 0.72, 4.9, 3.25, 1.05, {
+          fontSize: 20,
+          bold: true,
+          color: C.red,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'loop': {
@@ -162,14 +187,25 @@ function renderSlide(data, index) {
           });
         }
       });
-      addCard(slide, 1.15, 3.05, 4.7, 2.35, 'FIRST PROMPT', data.meme.before.split('\n')[1], C.redSoft);
-      addText(slide, '≠', 6.05, 3.78, 1.1, 0.65, {
-        fontSize: 32,
-        bold: true,
-        color: C.orange,
-        align: 'center',
-      });
-      addCard(slide, 7.35, 3.05, 4.7, 2.35, 'FIFTH PROMPT', data.meme.after.split('\n')[1], C.greenSoft);
+      if (stage > 0) {
+        addCard(slide, 0.85, 3.05, 4.25, 1.05, 'FIRST PROMPT', data.meme.before.split('\n')[1], C.redSoft);
+        addText(slide, '↓', 2.72, 4.2, 0.5, 0.4, {
+          fontSize: 22,
+          bold: true,
+          color: C.orange,
+          align: 'center',
+        });
+        addCard(slide, 0.85, 4.72, 4.25, 1.05, 'FIFTH PROMPT', data.meme.after.split('\n')[1], C.greenSoft);
+      }
+      if (stage > 1) {
+        slide.addImage({
+          path: illustrationPaths.loop,
+          x: 5.55,
+          y: 2.75,
+          w: 6.25,
+          h: 3.52,
+        });
+      }
       break;
     }
     case 'structure': {
@@ -191,19 +227,22 @@ function renderSlide(data, index) {
         color: C.blue,
         align: 'center',
       });
-      data.css.forEach((item, i) => {
-        addCard(slide, 6.75 + (i % 2) * 2.75, 1.55 + Math.floor(i / 2) * 1.55, 2.5, 1.25, item.toUpperCase(), ['What matters first', 'What belongs together', 'What needs attention', 'How the eye moves'][i], i % 2 ? C.greenSoft : C.purpleSoft);
-      });
-      addText(slide, 'CSS: how the structure communicates', 7.05, 4.8, 5.0, 0.4, {
-        fontSize: 17,
-        bold: true,
-        color: C.purple,
-        align: 'center',
-      });
+      if (stage > 0) {
+        data.css.forEach((item, i) => {
+          addCard(slide, 6.75 + (i % 2) * 2.75, 1.55 + Math.floor(i / 2) * 1.55, 2.5, 1.25, item.toUpperCase(), ['What matters first', 'What belongs together', 'What needs attention', 'How the eye moves'][i], i % 2 ? C.greenSoft : C.purpleSoft);
+        });
+        addText(slide, 'CSS: how the structure communicates', 7.05, 4.8, 5.0, 0.4, {
+          fontSize: 17,
+          bold: true,
+          color: C.purple,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'states': {
-      data.states.forEach((state, i) => {
+      const visibleStateCount = [1, 3, data.states.length][stage];
+      data.states.slice(0, visibleStateCount).forEach((state, i) => {
         const x = 0.72 + i * 2.4;
         const fill = [C.quiet, C.blueSoft, C.purpleSoft, C.redSoft, C.greenSoft][i];
         addCard(slide, x, 1.55, 2.12, 3.85, state[0].toUpperCase(), state[1], fill);
@@ -211,13 +250,15 @@ function renderSlide(data, index) {
         addRect(slide, x + 0.28, 3.5, i === 1 ? 0.75 : 1.56, 0.3, C.white);
         addRect(slide, x + 0.28, 4.0, i === 2 ? 0.55 : 1.15, 0.3, C.white);
       });
-      addText(slide, 'CLICK', 0.98, 5.65, 0.8, 0.3, { fontSize: 11, bold: true, color: C.orange });
-      addText(slide, '→ REQUEST → RESPONSE → RECOVERY →', 1.75, 5.64, 9.55, 0.34, {
-        fontSize: 16,
-        bold: true,
-        color: C.orange,
-        align: 'center',
-      });
+      if (stage > 1) {
+        addText(slide, 'CLICK', 0.98, 5.65, 0.8, 0.3, { fontSize: 11, bold: true, color: C.orange });
+        addText(slide, '→ REQUEST → RESPONSE → RECOVERY →', 1.75, 5.64, 9.55, 0.34, {
+          fontSize: 16,
+          bold: true,
+          color: C.orange,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'framework': {
@@ -232,19 +273,21 @@ function renderSlide(data, index) {
           });
         }
       });
-      addText(slide, 'The design system above can ride in different vehicles:', 0.8, 3.55, 5.5, 0.42, {
-        fontSize: 18,
-        bold: true,
-      });
-      data.vehicles.forEach((vehicle, i) => {
-        addCard(slide, 6.3 + i * 2.05, 3.3, 1.8, 1.25, vehicle.toUpperCase(), i === 0 ? 'Workshop choice' : 'Also valid', i === 0 ? C.yellow : C.quiet);
-      });
-      addText(slide, 'Same product idea. Different implementation vehicle.', 1.0, 4.55, 11.1, 0.65, {
-        fontSize: 25,
-        bold: true,
-        color: C.purple,
-        align: 'center',
-      });
+      if (stage > 0) {
+        addText(slide, 'The design system above can ride in different vehicles:', 0.8, 3.55, 5.5, 0.42, {
+          fontSize: 18,
+          bold: true,
+        });
+        data.vehicles.forEach((vehicle, i) => {
+          addCard(slide, 6.3 + i * 2.05, 3.3, 1.8, 1.25, vehicle.toUpperCase(), i === 0 ? 'Workshop choice' : 'Also valid', i === 0 ? C.yellow : C.quiet);
+        });
+        addText(slide, 'Same product idea. Different implementation vehicle.', 1.0, 4.55, 11.1, 0.65, {
+          fontSize: 25,
+          bold: true,
+          color: C.purple,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'figma': {
@@ -259,19 +302,21 @@ function renderSlide(data, index) {
           });
         }
       });
-      addCard(slide, 1.4, 3.3, 4.4, 1.65, 'SCREENSHOT', data.contrast[0].split(': ')[1], C.quiet);
-      addText(slide, 'vs', 6.0, 3.75, 0.9, 0.5, { fontSize: 22, bold: true, color: C.muted, align: 'center' });
-      addCard(slide, 7.15, 3.3, 4.4, 1.65, 'FIGMA MCP', data.contrast[1].split(': ')[1], C.greenSoft);
-      addText(slide, 'layout · components · variables · assets', 1.05, 5.35, 11.1, 0.5, {
-        fontSize: 18,
-        bold: true,
-        color: C.blue,
-        align: 'center',
-      });
+      if (stage > 0) {
+        addCard(slide, 1.4, 3.3, 4.4, 1.65, 'SCREENSHOT', data.contrast[0].split(': ')[1], C.quiet);
+        addText(slide, 'vs', 6.0, 3.75, 0.9, 0.5, { fontSize: 22, bold: true, color: C.muted, align: 'center' });
+        addCard(slide, 7.15, 3.3, 4.4, 1.65, 'FIGMA MCP', data.contrast[1].split(': ')[1], C.greenSoft);
+        addText(slide, 'layout · components · variables · assets', 1.05, 5.35, 11.1, 0.5, {
+          fontSize: 18,
+          bold: true,
+          color: C.blue,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'context': {
-      data.items.forEach((item, i) => {
+      data.items.slice(0, stage + 1).forEach((item, i) => {
         addCard(slide, 0.75 + i * 4.05, 1.45, 3.7, 3.75, item[0], item[1], [C.blueSoft, C.purpleSoft, C.greenSoft][i]);
         addText(slide, item[2], 1.05 + i * 4.05, 3.35, 3.1, 0.65, {
           fontSize: 18,
@@ -288,46 +333,61 @@ function renderSlide(data, index) {
       break;
     }
     case 'modus': {
-      addCard(slide, 0.75, 1.38, 5.3, 0.8, 'PARALLEL SYSTEM', 'Agent invents familiar-looking substitutes', C.redSoft);
-      addCard(slide, 7.28, 1.38, 5.3, 0.8, 'MODUS', 'Agent starts from shared product language', C.greenSoft);
+      addCard(slide, 0.75, 1.38, 3.0, 0.8, 'PARALLEL SYSTEM', 'Agent invents substitutes', C.redSoft);
       data.left.forEach((item, i) => {
-        addCard(slide, 0.9, 2.45 + i * 0.72, 5.0, 0.58, `×  ${item}`, '', C.redSoft);
+        addCard(slide, 0.9, 2.45 + i * 0.72, 2.7, 0.58, `×  ${item}`, '', C.redSoft);
       });
-      data.right.forEach((item, i) => {
-        addCard(slide, 7.43, 2.45 + i * 0.72, 5.0, 0.58, `✓  ${item}`, '', C.greenSoft);
-      });
-      addRect(slide, 3.3, 5.45, 6.7, 0.75, C.yellow);
-      addText(slide, `${data.meme.setup}  ${data.meme.response}`, 3.55, 5.58, 6.2, 0.42, {
-        fontSize: 15,
-        bold: true,
-        align: 'center',
-      });
+      if (stage > 0) {
+        addCard(slide, 3.92, 1.38, 3.0, 0.8, 'MODUS', 'Shared product language', C.greenSoft);
+        data.right.forEach((item, i) => {
+          addCard(slide, 4.07, 2.45 + i * 0.72, 2.7, 0.58, `✓  ${item}`, '', C.greenSoft);
+        });
+      }
+      if (stage > 1) {
+        slide.addImage({
+          path: illustrationPaths.modus,
+          x: 7.2,
+          y: 1.55,
+          w: 5.1,
+          h: 3.83,
+        });
+        addRect(slide, 7.2, 5.52, 5.1, 0.68, C.yellow);
+        addText(slide, `${data.meme.setup}  ${data.meme.response}`, 7.42, 5.64, 4.66, 0.4, {
+          fontSize: 12.5,
+          bold: true,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'qa': {
-      data.checks.forEach((item, i) => {
+      const visibleCheckCount = [2, 4, data.checks.length][stage];
+      data.checks.slice(0, visibleCheckCount).forEach((item, i) => {
         const col = i % 3;
         const row = Math.floor(i / 3);
         addCard(slide, 0.75 + col * 4.05, 1.4 + row * 2.15, 3.7, 1.75, `□  ${item[0].toUpperCase()}`, item[1], i % 2 ? C.greenSoft : C.blueSoft);
       });
-      addText(slide, 'Agent says: “Done.”', 0.9, 5.72, 3.2, 0.4, {
-        fontSize: 17,
-        bold: true,
-        color: C.red,
-        align: 'center',
-      });
-      addText(slide, 'Browser shows: evidence.', 8.45, 5.72, 3.4, 0.4, {
-        fontSize: 17,
-        bold: true,
-        color: C.green,
-        align: 'center',
-      });
+      if (stage > 1) {
+        addText(slide, 'Agent says: “Done.”', 0.9, 5.72, 3.2, 0.4, {
+          fontSize: 17,
+          bold: true,
+          color: C.red,
+          align: 'center',
+        });
+        addText(slide, 'Browser shows: evidence.', 8.45, 5.72, 3.4, 0.4, {
+          fontSize: 17,
+          bold: true,
+          color: C.green,
+          align: 'center',
+        });
+      }
       break;
     }
     case 'delivery': {
-      data.flow.forEach((step, i) => {
+      const visibleFlowCount = stage === 0 ? 3 : data.flow.length;
+      data.flow.slice(0, visibleFlowCount).forEach((step, i) => {
         addCard(slide, 0.72 + i * 2.0, 1.4, 1.72, 1.0, `${i + 1}`, step, i % 2 ? C.greenSoft : C.blueSoft);
-        if (i < data.flow.length - 1) {
+        if (i < visibleFlowCount - 1) {
           addText(slide, '→', 2.45 + i * 2.0, 1.72, 0.25, 0.3, {
             fontSize: 17,
             bold: true,
@@ -336,32 +396,34 @@ function renderSlide(data, index) {
           });
         }
       });
-      slide.addShape(pptx.ShapeType.arc, {
-        x: 1.15,
-        y: 3.05,
-        w: 10.9,
-        h: 2.55,
-        adjustPoint: 0.2,
-        rotate: 0,
-        fill: { color: C.white, transparency: 100 },
-        line: { color: C.orange, width: 2.5, beginArrowType: 'none', endArrowType: 'triangle' },
-      });
-      addText(slide, data.loopLabel.toUpperCase(), 4.75, 3.28, 3.8, 0.3, {
-        fontSize: 11,
-        bold: true,
-        color: C.orange,
-        align: 'center',
-        charSpacing: 1.3,
-      });
-      data.loop.forEach((step, i) => {
-        addCard(slide, 1.32 + i * 1.48, 3.78, 1.25, 0.9, `${i + 1}`, step, i % 2 ? C.purpleSoft : C.yellow);
-      });
-      addText(slide, 'A shareable prototype turns opinion into something people can try.', 1.0, 5.35, 11.2, 0.55, {
-        fontSize: 22,
-        bold: true,
-        color: C.navy,
-        align: 'center',
-      });
+      if (stage > 1) {
+        slide.addShape(pptx.ShapeType.arc, {
+          x: 1.15,
+          y: 3.05,
+          w: 10.9,
+          h: 2.55,
+          adjustPoint: 0.2,
+          rotate: 0,
+          fill: { color: C.white, transparency: 100 },
+          line: { color: C.orange, width: 2.5, beginArrowType: 'none', endArrowType: 'triangle' },
+        });
+        addText(slide, data.loopLabel.toUpperCase(), 4.75, 3.28, 3.8, 0.3, {
+          fontSize: 11,
+          bold: true,
+          color: C.orange,
+          align: 'center',
+          charSpacing: 1.3,
+        });
+        data.loop.forEach((step, i) => {
+          addCard(slide, 1.32 + i * 1.48, 3.78, 1.25, 0.9, `${i + 1}`, step, i % 2 ? C.purpleSoft : C.yellow);
+        });
+        addText(slide, 'A shareable prototype turns opinion into something people can try.', 1.0, 5.35, 11.2, 0.55, {
+          fontSize: 22,
+          bold: true,
+          color: C.navy,
+          align: 'center',
+        });
+      }
       break;
     }
     default: {
@@ -370,10 +432,22 @@ function renderSlide(data, index) {
     }
   }
 
-  addTakeaway(slide, data.takeaway);
+  if (stage === stageCount - 1) {
+    addTakeaway(slide, data.takeaway);
+  }
 }
 
-slides.forEach(renderSlide);
+let physicalSlideCount = 0;
+slides.forEach((data, index) => {
+  const stageCount = stageCounts[data.kind];
+  if (!stageCount) {
+    throw new Error(`Missing stage count for slide kind: ${data.kind}`);
+  }
+  for (let stage = 0; stage < stageCount; stage += 1) {
+    renderSlide(data, index, stage, stageCount);
+    physicalSlideCount += 1;
+  }
+});
 await pptx.writeFile({ fileName: outputPptx });
 
 function escapeHtml(value = '') {
@@ -391,7 +465,7 @@ function renderHtmlContent(data) {
       body = `<div class="brief"><div class="vague"><small>VAGUE REQUEST</small><strong>${escapeHtml(data.vague)}</strong></div><div class="arrow">→</div><div class="brief-grid">${Object.entries(data.brief).map(([key, value], i) => `<article class="fragment" style="--i:${i}"><small>${escapeHtml(key)}</small><strong>${escapeHtml(value)}</strong></article>`).join('')}</div></div>`;
       break;
     case 'loop':
-      body = `<div class="flow">${data.steps.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('<span>→</span>')}</div><div class="meme"><article class="before"><small>FIRST PROMPT</small><strong>${escapeHtml(data.meme.before.split('\n')[1])}</strong></article><b>≠</b><article class="after"><small>FIFTH PROMPT</small><strong>${escapeHtml(data.meme.after.split('\n')[1])}</strong></article></div>`;
+      body = `<div class="flow">${data.steps.map((step, i) => `<article class="fragment" style="--i:${i}"><small>${i + 1}</small><strong>${escapeHtml(step)}</strong></article>`).join('<span>→</span>')}</div><div class="loop-content"><div class="meme"><article class="before"><small>FIRST PROMPT</small><strong>${escapeHtml(data.meme.before.split('\n')[1])}</strong></article><b>↓</b><article class="after"><small>FIFTH PROMPT</small><strong>${escapeHtml(data.meme.after.split('\n')[1])}</strong></article></div><img class="lesson-image fragment" style="--i:5" src="assets/agent-iteration.png" alt="AI assistant showing a rough first interface while a designer reviews a refined result"></div>`;
       break;
     case 'structure':
       body = `<div class="structure-lesson"><div class="wireframe">${data.regions.map((region, i) => `<div class="region r${i} fragment" style="--i:${i}">${escapeHtml(region)}</div>`).join('')}<small>HTML: what each region is</small></div><div class="style-grid">${data.css.map((item, i) => `<article class="fragment" style="--i:${i}"><strong>${escapeHtml(item)}</strong><span>${['What matters first', 'What belongs together', 'What needs attention', 'How the eye moves'][i]}</span></article>`).join('')}<small>CSS: how the structure communicates</small></div></div>`;
@@ -409,7 +483,7 @@ function renderHtmlContent(data) {
       body = `<div class="context-grid">${data.items.map((item, i) => `<article class="fragment" style="--i:${i}"><small>${escapeHtml(item[0])}</small><strong>${escapeHtml(item[1])}</strong><span>${escapeHtml(item[2])}</span><em>${escapeHtml(['“Use Modus.”', '“Build a form this way.”', '“Which event is current?”'][i])}</em></article>`).join('')}</div>`;
       break;
     case 'modus':
-      body = `<div class="modus-compare"><div class="bad"><h2>Parallel system</h2>${data.left.map((item) => `<span>× ${escapeHtml(item)}</span>`).join('')}</div><div class="good"><h2>Modus</h2>${data.right.map((item) => `<span>✓ ${escapeHtml(item)}</span>`).join('')}</div></div><div class="meme-line">${escapeHtml(data.meme.setup)} <strong>${escapeHtml(data.meme.response)}</strong></div>`;
+      body = `<div class="modus-content"><div><div class="modus-compare"><div class="bad"><h2>Parallel system</h2>${data.left.map((item) => `<span>× ${escapeHtml(item)}</span>`).join('')}</div><div class="good"><h2>Modus</h2>${data.right.map((item) => `<span>✓ ${escapeHtml(item)}</span>`).join('')}</div></div><div class="meme-line">${escapeHtml(data.meme.setup)} <strong>${escapeHtml(data.meme.response)}</strong></div></div><img class="lesson-image fragment" style="--i:5" src="assets/design-system-reuse.png" alt="AI assistant presenting random interface parts while a designer points to an organized design system"></div>`;
       break;
     case 'qa':
       body = `<div class="qa-grid">${data.checks.map((item, i) => `<article class="fragment" style="--i:${i}"><small>□ ${escapeHtml(item[0])}</small><strong>${escapeHtml(item[1])}</strong></article>`).join('')}</div><div class="evidence"><span>Agent says: “Done.”</span><strong>Browser shows: evidence.</strong></div>`;
@@ -470,6 +544,11 @@ const html = `<!doctype html>
   .meme .before { background: #f7e2e2; }
   .meme .after { background: #ddefe6; }
   .meme b { text-align: center; color: var(--orange); font-size: 2.3rem; }
+  .loop-content { display:grid; grid-template-columns:36% 1fr; gap:2vw; margin-top:2.5vh; align-items:center; }
+  .loop-content .meme { display:flex; flex-direction:column; gap:1vh; width:100%; margin:0; }
+  .loop-content .meme article { min-height:8vh; }
+  .loop-content .meme b { line-height:.8; }
+  .lesson-image { display:block; width:100%; max-height:32vh; object-fit:cover; border-radius:16px; }
   .structure-lesson { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
   .wireframe { background: #fff; border-radius: 15px; padding: 1.5vh 1.2vw; display: grid; grid-template-rows: .7fr .7fr 1.7fr .7fr auto; gap: 1vh; }
   .region { background: #e8ecef; border-radius: 8px; padding: 1vh; text-align: center; font-weight: 800; }
@@ -510,6 +589,9 @@ const html = `<!doctype html>
   .modus-compare span { display:block; padding:1.1vh; margin:.7vh 0; background:rgba(255,255,255,.7); border-radius:8px; font-weight:800; }
   .meme-line { margin:2.2vh auto 0; padding:1.5vh 2vw; background:#f9c74f; border-radius:12px; font-size:1.1rem; }
   .meme-line strong { margin-left:1vw; }
+  .modus-content { display:grid; grid-template-columns:58% 1fr; gap:2vw; align-items:center; }
+  .modus-content .modus-compare { gap:1.2vw; }
+  .modus-content .lesson-image { max-height:39vh; }
   .qa-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.1vw; }
   .qa-grid article { min-height:14vh; }
   .qa-grid article:nth-child(even) { background:#ddefe6; }
@@ -556,4 +638,4 @@ fromHash();
 `;
 
 fs.writeFileSync(outputHtml, html);
-console.log(`Generated ${slides.length} slides:\n${outputPptx}\n${outputHtml}`);
+console.log(`Generated ${slides.length} HTML lessons and ${physicalSlideCount} Google Slides-safe PPTX builds:\n${outputPptx}\n${outputHtml}`);

@@ -2,6 +2,8 @@
 
 Content-first participant deck with diagrams, examples, animation, and original meme-style panels. The presenter narration and sources are separate.
 
+The PowerPoint uses 26 staged build slides for 10 lessons, so click-to-reveal animation survives Google Slides import.
+
 **Branch:** `cursor/vibe-coding-workshop-0ba8`
 
 ## Download

@@ -2,6 +2,13 @@
 
 The slides carry the lesson visually. Use this guide for the explanation, live examples, transitions, and questions. Do not read the slide text aloud.
 
+## Presenting the builds
+
+- The HTML deck has 10 slides with automatic fragment reveals.
+- The PowerPoint has 26 physical slides representing 10 logical lessons.
+- In PowerPoint or Google Slides, advance normally. Repeated titles are staged builds, not duplicate lessons.
+- The orange `BUILD 1/3`, `BUILD 2/3`, and `BUILD 3/3` labels show reveal progress.
+
 ## 1. Natural language is a design brief
 
 **Explain**
