@@ -32,7 +32,7 @@ Use the **Network** URL Vite prints.
 | 1 | Phase 1 | Agents window |
 | 2 | Phase 1 | Binary → Agent rings + Assessment 1 |
 | 3 | Phase 2 | Smart intern |
-| 4 | Phase 2 | Frameworks + Assessment 2 |
+| 4 | Phase 2 | Screen remembers & responds + Assessment 2 |
 | 5 | Phase 3 | Rules |
 | 6 | Phase 3 | Skills, MCP, Figma |
 | 7 | Phase 3 | Context stack + Assessment 3 |

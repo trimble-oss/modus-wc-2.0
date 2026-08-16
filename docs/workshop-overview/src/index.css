@@ -161,6 +161,160 @@ a {
   white-space: nowrap;
 }
 
+.prototype-frame {
+  width: min(420px, 92vw);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.prototype-frame__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prototype-frame__chrome span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3d4b5f;
+}
+
+.prototype-frame__chrome p {
+  margin: 0 0 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.prototype-frame__body {
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+  position: relative;
+  min-height: 320px;
+}
+
+.prototype-piece {
+  position: relative;
+}
+
+.prototype-piece--wide {
+  width: 100%;
+}
+
+.prototype-piece--tap {
+  position: absolute;
+  top: 4.5rem;
+  left: 7.5rem;
+  z-index: 2;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-bar__chip {
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: #2d3848;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.filter-bar__chip--on {
+  background: var(--accent);
+  color: #171d25;
+}
+
+.memory-pill {
+  display: inline-block;
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(251, 173, 38, 0.35);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.tap-mark {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.tap-mark__ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: tapPulse 1.4s ease-out infinite;
+}
+
+.tap-mark__dot {
+  position: absolute;
+  inset: 14px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+@keyframes tapPulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.job-list__rows {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.job-row {
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  background: #2d3848;
+  font-weight: 600;
+  transition: opacity 280ms ease, background 280ms ease;
+}
+
+.job-row--highlight {
+  background: rgba(91, 211, 142, 0.2);
+  border: 1px solid rgba(91, 211, 142, 0.5);
+}
+
+.job-row--dim {
+  opacity: 0.45;
+}
+
+.workshop-tool {
+  margin-top: 0.5rem;
+}
+
+.workshop-tool__note {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 280px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tap-mark__ring {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
 .scene {
   display: flex;
   flex-wrap: wrap;

@@ -23,11 +23,17 @@ Innermost ring is binary. Then language, IDE, Agent. Code still exists underneat
 
 Intern appears, knowledge orbits, intern drifts, guide/compass locks the path. Then five prompt chips: Goal, Audience, Context, Requirements, Success.
 
-## Slide 4 — Frameworks
+## Slide 4 — When the screen remembers and responds
 
-Component, state, event, same list updating, then React as the workshop vehicle. They need the name, not the syntax.
+Walk through one screen, not code words:
 
-**Assessment 2:** richer React app with one state change.
+1. **Reusable part** — like a Figma component used in many places (the filter bar).
+2. **Screen remembers** — the app knows what is selected right now.
+3. **Someone taps** — a person does something.
+4. **Same screen updates** — the list changes without jumping to a new page.
+5. **React** — the workshop tool name only. Designers do not need syntax.
+
+**Assessment 2:** one choice changes what you see on the same screen.
 
 ## Slide 5 — Rules
 

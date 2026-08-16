@@ -53,13 +53,13 @@ export const slides: Slide[] = [
     id: 'phase-2-frameworks',
     kind: 'frameworks',
     phase: 2,
-    title: 'Why frameworks appear',
-    subtitle: 'Phase 2',
+    title: 'When the screen remembers and responds',
+    subtitle: 'Phase 2 — No code needed',
     revealCount: 5,
     assessment: {
       title: 'Assessment 2',
-      task: 'Create a richer React app with at least one interactive state change.',
-      success: 'Changing a control updates the same screen without rebuilding the whole page.',
+      task: 'Ask Agent to build an app where one choice changes what you see on the same screen.',
+      success: 'You make one choice and the screen updates — you do not start over on a new page.',
     },
   },
   {
