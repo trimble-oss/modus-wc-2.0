@@ -528,7 +528,7 @@ const html = `<!doctype html>
   h1 { font-size: clamp(2rem, 3.7vw, 3.2rem); margin: 0 0 2.4vh; line-height: 1.08; }
   .visual { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
   small { display: block; color: var(--blue); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-  .takeaway { margin: 2vh 0 0; padding: 1.4vh 2vw; border-radius: 12px; background: var(--navy); color: #fff; text-align: center; font-size: clamp(1rem, 1.7vw, 1.35rem); font-weight: 700; }
+  .takeaway { width: 92%; margin: 1.5vh auto 4vh; padding: 1.4vh 2vw; border-radius: 12px; background: var(--navy); color: #fff; text-align: center; font-size: clamp(1rem, 1.7vw, 1.35rem); font-weight: 700; }
   article, .vague { border-radius: 15px; padding: 1.6vh 1.2vw; background: #d9ebf7; }
   article strong, .vague strong { display: block; margin-top: .7vh; font-size: clamp(.95rem, 1.55vw, 1.3rem); line-height: 1.25; }
   .arrow { color: var(--orange); font-size: 2rem; font-weight: 900; align-self: center; }
@@ -544,11 +544,11 @@ const html = `<!doctype html>
   .meme .before { background: #f7e2e2; }
   .meme .after { background: #ddefe6; }
   .meme b { text-align: center; color: var(--orange); font-size: 2.3rem; }
-  .loop-content { display:grid; grid-template-columns:36% 1fr; gap:2vw; margin-top:2.5vh; align-items:center; }
+  .loop-content { display:grid; grid-template-columns:36% 1fr; gap:2vw; margin-top:1.5vh; align-items:center; }
   .loop-content .meme { display:flex; flex-direction:column; gap:1vh; width:100%; margin:0; }
   .loop-content .meme article { min-height:8vh; }
   .loop-content .meme b { line-height:.8; }
-  .lesson-image { display:block; width:100%; max-height:32vh; object-fit:cover; border-radius:16px; }
+  .lesson-image { display:block; width:100%; max-height:25vh; object-fit:contain; border-radius:16px; }
   .structure-lesson { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
   .wireframe { background: #fff; border-radius: 15px; padding: 1.5vh 1.2vw; display: grid; grid-template-rows: .7fr .7fr 1.7fr .7fr auto; gap: 1vh; }
   .region { background: #e8ecef; border-radius: 8px; padding: 1vh; text-align: center; font-weight: 800; }
@@ -591,7 +591,7 @@ const html = `<!doctype html>
   .meme-line strong { margin-left:1vw; }
   .modus-content { display:grid; grid-template-columns:58% 1fr; gap:2vw; align-items:center; }
   .modus-content .modus-compare { gap:1.2vw; }
-  .modus-content .lesson-image { max-height:39vh; }
+  .modus-content .lesson-image { max-height:28vh; margin-bottom:2vh; }
   .qa-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.1vw; }
   .qa-grid article { min-height:14vh; }
   .qa-grid article:nth-child(even) { background:#ddefe6; }
