@@ -1,0 +1,21 @@
+Designing with Agent — Google Form (separate from the deck)
+
+Create the live form (2 minutes):
+1. Open https://script.google.com
+2. New project
+3. Paste Code.gs from this folder
+4. Run createWorkshopForm
+5. Allow permissions
+6. Execution log shows Edit URL and Respond URL
+7. Share the Respond URL with participants
+
+What the form contains:
+- Name (required)
+- Assessments 1–5: each has Link + “What should we look at?”
+- Assessment 1 required — Google Drive link
+- Assessments 2–4 optional — Google Drive link
+- Assessment 5 required — GitHub repo URL preferred, Drive OK
+- Feedback: four 1–5 ratings (required)
+- Feedback: one textarea — “What will you try differently…?” (required)
+
+Do not edit the slide deck. This form is standalone.
