@@ -3,6 +3,9 @@
  *
  * Creates a Google Form. Does not change the slide deck.
  *
+ * Note: Google Apps Script cannot add File upload questions programmatically.
+ * Day 1 / Day 2 use Google Drive links instead (upload screenshot to Drive, paste link).
+ *
  * How to run:
  * 1. Go to https://script.google.com
  * 2. New project → paste this file
@@ -14,7 +17,7 @@ function createWorkshopForm() {
   const form = FormApp.create('Designing with Agent — Day 1 & Day 2 submissions');
 
   form.setDescription(
-    'Upload a Day 1 screenshot, a Day 2 screenshot, and one GitHub or hosting URL. ' +
+    'Paste Google Drive links to your Day 1 and Day 2 screenshots, plus one GitHub or hosting URL. ' +
       'Then rate four workshop statements and answer one open question. All fields are required.',
   );
   form.setCollectEmail(true);
@@ -22,7 +25,8 @@ function createWorkshopForm() {
   form.setProgressBar(true);
   form.setShowLinkToRespondAgain(false);
 
-  const urlPattern = '.*(github\\.com|github\\.io|vercel\\.app|netlify\\.app|https?://).*';
+  const drivePattern = '.*(drive\\.google\\.com|docs\\.google\\.com).*';
+  const hostingPattern = '.*(github\\.com|github\\.io|vercel\\.app|netlify\\.app|https?://).*';
 
   form.addSectionHeaderItem().setTitle('About you').setHelpText('So we can match your submission to the workshop session.');
   form.addTextItem().setTitle('Name').setRequired(true);
@@ -30,24 +34,26 @@ function createWorkshopForm() {
   form
     .addPageBreakItem()
     .setTitle('Workshop submissions')
-    .setHelpText('Three items: Day 1 screenshot, Day 2 screenshot, and one link for Git or hosting.');
-
-  form
-    .addFileUploadItem()
-    .setTitle('Day 1 screenshot')
     .setHelpText(
-      'Upload a screenshot of your running page from Day 1. ' +
+      'Upload each screenshot to Google Drive first, then paste the share link. ' +
+        'Also paste one GitHub repo or live preview URL.',
+    );
+
+  addDriveLink_(form, {
+    title: 'Day 1 screenshot — Google Drive link',
+    help:
+      'Upload a screenshot of your running page from Day 1 to Google Drive, then paste the link here. ' +
         'You asked Agent to build it and open it — no terminal required.',
-    )
-    .setRequired(true);
+    pattern: drivePattern,
+  });
 
-  form
-    .addFileUploadItem()
-    .setTitle('Day 2 screenshot')
-    .setHelpText(
-      'Upload a screenshot of your Day 2 build — for example an interactive screen, Modus UI, or connected context.',
-    )
-    .setRequired(true);
+  addDriveLink_(form, {
+    title: 'Day 2 screenshot — Google Drive link',
+    help:
+      'Upload a screenshot of your Day 2 build to Google Drive, then paste the link here — ' +
+        'for example an interactive screen, Modus UI, or connected context.',
+    pattern: drivePattern,
+  });
 
   const hostingLink = form
     .addTextItem()
@@ -57,7 +63,7 @@ function createWorkshopForm() {
 
   hostingLink.setValidation(
     FormApp.createTextValidation()
-      .requireTextMatchesPattern(urlPattern)
+      .requireTextMatchesPattern(hostingPattern)
       .setHelpText('Use a GitHub repo URL or a hosted preview URL starting with http:// or https://.')
       .build(),
   );
@@ -92,4 +98,15 @@ function createWorkshopForm() {
   Logger.log('Respond: ' + publishedUrl);
 
   return { editUrl: editUrl, publishedUrl: publishedUrl };
+}
+
+function addDriveLink_(form, spec) {
+  const item = form.addTextItem().setTitle(spec.title).setHelpText(spec.help).setRequired(true);
+
+  item.setValidation(
+    FormApp.createTextValidation()
+      .requireTextMatchesPattern(spec.pattern)
+      .setHelpText('Use a Google Drive or Google Docs share link (drive.google.com or docs.google.com).')
+      .build(),
+  );
 }

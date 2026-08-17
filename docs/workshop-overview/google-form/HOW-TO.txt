@@ -5,9 +5,15 @@ Create the live form (2 minutes):
 2. New project
 3. Paste Code.gs from this folder
 4. Run createWorkshopForm
-5. Allow permissions (file upload needs Google sign-in for respondents)
+5. Allow permissions
 6. Execution log shows Edit URL and Respond URL
 7. Share the Respond URL with participants
+
+Important: Apps Script cannot create File upload questions.
+Day 1 and Day 2 use Google Drive links instead:
+- Upload screenshot to Google Drive
+- Right-click → Share → Anyone with the link can view
+- Paste the link in the form
 
 What the form collects (all required):
 
@@ -15,8 +21,8 @@ About you
 - Name
 
 Workshop submissions
-- Day 1 screenshot (file upload) — running page from Day 1, Agent opened it
-- Day 2 screenshot (file upload) — later build (interactive screen, Modus, or connected context)
+- Day 1 screenshot — Google Drive link
+- Day 2 screenshot — Google Drive link
 - Git and hosting URL — GitHub repo OR live preview (Pages, Vercel, Netlify, etc.)
 
 Feedback
@@ -26,6 +32,9 @@ Feedback
   3. Rules, skills, MCP, or Modus
   4. Share repo or hosted URL for others to try
 - One textarea: what you will try on a real product, and what still feels hard
+
+Optional: add File upload questions manually in the Form editor after the script runs,
+then delete the Drive link fields if you prefer direct uploads.
 
 Notes:
 - Running the script creates a NEW form each time (does not update an old one).
