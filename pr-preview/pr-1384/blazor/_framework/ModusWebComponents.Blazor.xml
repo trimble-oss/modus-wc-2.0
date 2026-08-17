@@ -523,9 +523,19 @@
             A customizable button component used to create buttons with different sizes, variants, and types.  The component supports a slot for injecting content within the button, similar to a native HTML button.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.ButtonAriaLabel">
+            <summary>
+            Maps to the inner button's aria-label attribute.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.Color">
             <summary>
             The color variant of the button.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.CurrentAria">
+            <summary>
+            Maps to the inner button's aria-current attribute.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.CustomClass">
