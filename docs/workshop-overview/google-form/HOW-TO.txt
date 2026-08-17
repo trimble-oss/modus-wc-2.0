@@ -5,17 +5,28 @@ Create the live form (2 minutes):
 2. New project
 3. Paste Code.gs from this folder
 4. Run createWorkshopForm
-5. Allow permissions
+5. Allow permissions (file upload needs Google sign-in for respondents)
 6. Execution log shows Edit URL and Respond URL
 7. Share the Respond URL with participants
 
-What the form contains:
-- Name (required)
-- Assessments 1–5: each has Link + “What should we look at?”
-- Assessment 1 required — Google Drive link
-- Assessments 2–4 optional — Google Drive link
-- Assessment 5 required — GitHub repo URL preferred, Drive OK
-- Feedback: four 1–5 ratings (required)
-- Feedback: one textarea — “What will you try differently…?” (required)
+What the form collects (all required):
 
-Do not edit the slide deck. This form is standalone.
+About you
+- Name
+
+Workshop submissions
+- Day 1 screenshot (file upload) — running page from Day 1, Agent opened it
+- Day 2 screenshot (file upload) — later build (interactive screen, Modus, or connected context)
+- Git and hosting URL — GitHub repo OR live preview (Pages, Vercel, Netlify, etc.)
+
+Feedback
+- Four 1–5 ratings (phase-specific):
+  1. Agent + page open without terminal
+  2. Same-screen update vs full refresh
+  3. Rules, skills, MCP, or Modus
+  4. Share repo or hosted URL for others to try
+- One textarea: what you will try on a real product, and what still feels hard
+
+Notes:
+- Running the script creates a NEW form each time (does not update an old one).
+- Do not edit the slide deck. This form is standalone.

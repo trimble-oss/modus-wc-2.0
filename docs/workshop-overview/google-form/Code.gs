@@ -1,5 +1,5 @@
 /**
- * Designing with Agent — workshop assessments & feedback
+ * Designing with Agent — workshop submissions & feedback
  *
  * Creates a Google Form. Does not change the slide deck.
  *
@@ -11,87 +11,64 @@
  * 5. View → Logs for the Form URL (edit + respond)
  */
 function createWorkshopForm() {
-  const form = FormApp.create('Designing with Agent — assessments & feedback');
+  const form = FormApp.create('Designing with Agent — Day 1 & Day 2 submissions');
 
   form.setDescription(
-    'Submit each phase assessment (Google Drive link + a short note). ' +
-      'Assessment 1 and Assessment 5 are required. Assessments 2–4 are optional. ' +
-      'For Assessment 5 you may submit a GitHub repo URL instead of Drive. ' +
-      'Then rate four statements and answer one open question.',
+    'Upload a Day 1 screenshot, a Day 2 screenshot, and one GitHub or hosting URL. ' +
+      'Then rate four workshop statements and answer one open question. All fields are required.',
   );
   form.setCollectEmail(true);
   form.setAllowResponseEdits(true);
   form.setProgressBar(true);
   form.setShowLinkToRespondAgain(false);
 
-  const drivePattern = '.*(drive\\.google\\.com|docs\\.google\\.com).*';
-  const driveOrRepoPattern = '.*(drive\\.google\\.com|docs\\.google\\.com|github\\.com).*';
+  const urlPattern = '.*(github\\.com|github\\.io|vercel\\.app|netlify\\.app|https?://).*';
 
-  form.addSectionHeaderItem().setTitle('Your name').setHelpText('So we can match submissions to the workshop session.');
+  form.addSectionHeaderItem().setTitle('About you').setHelpText('So we can match your submission to the workshop session.');
   form.addTextItem().setTitle('Name').setRequired(true);
 
-  addAssessment_(form, {
-    number: 1,
-    title: 'Assessment 1 — Basic web page',
-    help:
-      'Create a basic web page in your workshop folder and ask Agent to open it. Success: you can see it running without opening the terminal yourself.',
-    required: true,
-    linkHelp: 'Paste a Google Drive link to your page, folder, or recording.',
-    urlPattern: drivePattern,
-    urlError: 'Use a Google Drive or Google Docs link.',
-  });
+  form
+    .addPageBreakItem()
+    .setTitle('Workshop submissions')
+    .setHelpText('Three items: Day 1 screenshot, Day 2 screenshot, and one link for Git or hosting.');
 
-  addAssessment_(form, {
-    number: 2,
-    title: 'Assessment 2 — Same screen, smarter update',
-    help:
-      'Ask Agent to build an app where one choice changes what you see on the same screen. Success: the screen updates without starting over on a new page.',
-    required: false,
-    linkHelp: 'Optional. Google Drive link to the app, folder, or recording.',
-    urlPattern: drivePattern,
-    urlError: 'Use a Google Drive or Google Docs link.',
-  });
+  form
+    .addFileUploadItem()
+    .setTitle('Day 1 screenshot')
+    .setHelpText(
+      'Upload a screenshot of your running page from Day 1. ' +
+        'You asked Agent to build it and open it — no terminal required.',
+    )
+    .setRequired(true);
 
-  addAssessment_(form, {
-    number: 3,
-    title: 'Assessment 3 — Connect context and build',
-    help:
-      'Connect workshop context (rules / skills / MCP) and create an app in your workspace folder. Success: it runs locally and is not a generic one-off UI.',
-    required: false,
-    linkHelp: 'Optional. Google Drive link to the app, folder, or recording.',
-    urlPattern: drivePattern,
-    urlError: 'Use a Google Drive or Google Docs link.',
-  });
+  form
+    .addFileUploadItem()
+    .setTitle('Day 2 screenshot')
+    .setHelpText(
+      'Upload a screenshot of your Day 2 build — for example an interactive screen, Modus UI, or connected context.',
+    )
+    .setRequired(true);
 
-  addAssessment_(form, {
-    number: 4,
-    title: 'Assessment 4 — Build with Modus',
-    help:
-      'Rebuild or extend your app using Modus components and Modus AI resources. Success: the UI uses Modus building blocks and works in the browser.',
-    required: false,
-    linkHelp: 'Optional. Google Drive link to the app, folder, or recording.',
-    urlPattern: drivePattern,
-    urlError: 'Use a Google Drive or Google Docs link.',
-  });
+  const hostingLink = form
+    .addTextItem()
+    .setTitle('Git and hosting URL')
+    .setHelpText('Paste your GitHub repo URL or a live preview URL (GitHub Pages, Vercel, Netlify, etc.). One link is enough.')
+    .setRequired(true);
 
-  addAssessment_(form, {
-    number: 5,
-    title: 'Assessment 5 — Shareable repo or preview',
-    help:
-      'Publish the repository and provide what others need to try it. Success: a non-builder can open the repo and try the app locally or via preview.',
-    required: true,
-    linkHelp: 'Required. GitHub repo URL preferred. Google Drive is OK if you do not have a repo yet.',
-    urlPattern: driveOrRepoPattern,
-    urlError: 'Use a GitHub repo URL or a Google Drive link.',
-  });
+  hostingLink.setValidation(
+    FormApp.createTextValidation()
+      .requireTextMatchesPattern(urlPattern)
+      .setHelpText('Use a GitHub repo URL or a hosted preview URL starting with http:// or https://.')
+      .build(),
+  );
 
   form.addPageBreakItem().setTitle('Feedback').setHelpText('Four ratings (1–5) and one written answer. All required.');
 
   const ratingLabels = [
-    'I could build a working prototype without writing code myself.',
-    'A structured prompt (goal, audience, context, requirements, success) improved my results.',
-    'I know when to start from Modus instead of accepting generic UI.',
-    'I can share this work so product and engineering can try it.',
+    'I can start in Agent and get a page open without using the terminal.',
+    'I can brief Agent so a choice updates the same screen instead of a full refresh.',
+    'I can use rules, skills, MCP, or Modus so Agent is not guessing.',
+    'I can share a GitHub repo or hosted URL so others can try the work.',
   ];
 
   ratingLabels.forEach(function (label, index) {
@@ -105,7 +82,7 @@ function createWorkshopForm() {
 
   form
     .addParagraphTextItem()
-    .setTitle('What will you try differently on your next real project, and what still feels hard?')
+    .setTitle('After this workshop, what will you try on a real product — and what still feels hard?')
     .setHelpText('This is the main written question. A few sentences is enough.')
     .setRequired(true);
 
@@ -115,27 +92,4 @@ function createWorkshopForm() {
   Logger.log('Respond: ' + publishedUrl);
 
   return { editUrl: editUrl, publishedUrl: publishedUrl };
-}
-
-function addAssessment_(form, spec) {
-  form.addPageBreakItem().setTitle(spec.title).setHelpText(spec.help + (spec.required ? ' Required.' : ' Optional.'));
-
-  const link = form
-    .addTextItem()
-    .setTitle('Assessment ' + spec.number + ' — Link')
-    .setHelpText(spec.linkHelp)
-    .setRequired(spec.required);
-
-  link.setValidation(
-    FormApp.createTextValidation()
-      .requireTextMatchesPattern(spec.urlPattern)
-      .setHelpText(spec.urlError)
-      .build(),
-  );
-
-  form
-    .addParagraphTextItem()
-    .setTitle('Assessment ' + spec.number + ' — What should we look at?')
-    .setHelpText('What you asked Agent to do, and what to open first.')
-    .setRequired(spec.required);
 }
