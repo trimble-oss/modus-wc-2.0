@@ -9,6 +9,15 @@ export const isLightMode = (): boolean => {
   return !theme || theme.includes('light');
 };
 
+/**
+ * Checks whether the current `data-theme` is a Connect theme.
+ * @returns { boolean } - Whether the app is using Connect light or dark.
+ */
+export const isConnectTheme = (): boolean => {
+  const theme = document.documentElement.getAttribute('data-theme');
+  return Boolean(theme?.startsWith('connect'));
+};
+
 /*
  * Generates a random string of the specified length.
  * @param length { number } - The length of the random string to generate.

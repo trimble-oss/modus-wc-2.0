@@ -1,7 +1,42 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcChip } from './modus-wc-chip';
 
+type ThemeObserverInstance = {
+  themeObserver: MutationObserver | null;
+};
+
+const mockMutationObserver = () => {
+  let callback: MutationCallback = () => undefined;
+
+  globalThis.MutationObserver = class {
+    disconnect = jest.fn();
+    observe = jest.fn();
+    takeRecords = jest.fn();
+
+    constructor(cb: MutationCallback) {
+      callback = cb;
+    }
+  } as unknown as typeof MutationObserver;
+
+  return {
+    trigger: () => callback([] as MutationRecord[], {} as MutationObserver),
+  };
+};
+
 describe('modus-wc-chip', () => {
+  const originalTheme = document.documentElement.getAttribute('data-theme');
+
+  afterEach(() => {
+    if (originalTheme === null) {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', originalTheme);
+    }
+
+    // Stencil's spec environment does not provide MutationObserver.
+    Reflect.deleteProperty(globalThis, 'MutationObserver');
+  });
+
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcChip],
@@ -265,6 +300,83 @@ describe('modus-wc-chip', () => {
     expect(label).toBeTruthy();
     expect(label!.textContent).toBe('Removable');
     expect(closeIcon).toBeTruthy();
+  });
+
+  it('should render filled cancel_circle remove icon when theme is connect', async () => {
+    const observer = mockMutationObserver();
+    document.documentElement.setAttribute('data-theme', 'connect-light');
+
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="Connect chip" show-remove="true"></modus-wc-chip>',
+    });
+
+    page.doc.documentElement.setAttribute('data-theme', 'connect-light');
+    observer.trigger();
+    await page.waitForChanges();
+
+    const removeIcon = page.root!.querySelector(
+      'modus-wc-icon[name="cancel_circle"]'
+    );
+    expect(removeIcon).toBeTruthy();
+    expect(removeIcon!.getAttribute('variant')).toBe('solid');
+    expect(page.root!.querySelector('modus-wc-icon[name="close"]')).toBeNull();
+  });
+
+  it('should switch remove icon to filled cancel_circle when theme changes to connect', async () => {
+    const observer = mockMutationObserver();
+    document.documentElement.setAttribute('data-theme', 'modus-modern-light');
+
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="Theme switch chip" show-remove="true"></modus-wc-chip>',
+    });
+
+    expect(
+      page.root!.querySelector('modus-wc-icon[name="close"]')
+    ).toBeTruthy();
+
+    document.documentElement.setAttribute('data-theme', 'connect-dark');
+    observer.trigger();
+    await page.waitForChanges();
+
+    const removeIcon = page.root!.querySelector(
+      'modus-wc-icon[name="cancel_circle"]'
+    );
+    expect(removeIcon).toBeTruthy();
+    expect(removeIcon!.getAttribute('variant')).toBe('solid');
+  });
+
+  it('should disconnect theme observer on disconnectedCallback', async () => {
+    mockMutationObserver();
+
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="Disconnect chip" show-remove="true"></modus-wc-chip>',
+    });
+
+    const themeObserver = (page.rootInstance as ThemeObserverInstance)
+      .themeObserver;
+    const disconnectSpy = jest.spyOn(
+      themeObserver as MutationObserver,
+      'disconnect'
+    );
+
+    page.rootInstance.disconnectedCallback();
+
+    expect(disconnectSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle disconnectedCallback when no theme observer was created', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcChip],
+      html: '<modus-wc-chip aria-label="No observer chip"></modus-wc-chip>',
+    });
+
+    (page.rootInstance as ThemeObserverInstance).themeObserver = null;
+    await page.waitForChanges();
+
+    expect(() => page.rootInstance.disconnectedCallback()).not.toThrow();
   });
 
   it('should transfer aria-label from host to button', async () => {

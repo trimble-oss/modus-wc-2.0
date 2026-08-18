@@ -6,11 +6,17 @@ import {
   h,
   Host,
   Prop,
+  State,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-chip.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes, KEY } from '../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  isConnectTheme,
+  KEY,
+} from '../utils';
 
 /**
  * A customizable chip component used to display information in a compact area
@@ -64,6 +70,10 @@ export class ModusWcChip {
   /** Event emitted when the close chip icon button is clicked. */
   @Event() chipRemove!: EventEmitter<MouseEvent | KeyboardEvent>;
 
+  @State() private isConnect = false;
+
+  private themeObserver: MutationObserver | null = null;
+
   componentWillLoad() {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
@@ -73,6 +83,24 @@ export class ModusWcChip {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.isConnect = isConnectTheme();
+
+    if (typeof MutationObserver === 'undefined') {
+      return;
+    }
+
+    this.themeObserver = new MutationObserver(() => {
+      this.isConnect = isConnectTheme();
+    });
+
+    this.themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
+
+  disconnectedCallback() {
+    this.themeObserver?.disconnect();
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {
@@ -143,8 +171,9 @@ export class ModusWcChip {
           {this.showRemove && (
             <modus-wc-icon
               custom-class="modus-wc-chip-remove-icon"
-              name="close"
+              name={this.isConnect ? 'cancel_circle' : 'close'}
               onClick={this.handleChipRemove}
+              variant={this.isConnect ? 'solid' : undefined}
             ></modus-wc-icon>
           )}
         </button>

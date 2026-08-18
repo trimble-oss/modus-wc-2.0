@@ -409,7 +409,21 @@ modus-wc-chip .modus-wc-chip {
   &.modus-wc-btn {
     --rounded-btn: var(--modus-wc-border-radius-rounded);
 
+    background-color: #eaeaef;
     border-radius: var(--modus-wc-border-radius-rounded);
+    color: #6a6976;
+    gap: 0;
+
+    &:active,
+    &:hover:not(.modus-wc-chip--active):not(.modus-wc-chip--error),
+    &:focus {
+      background-color: #eaeaef;
+      color: #6a6976;
+
+      .modus-wc-chip-label {
+        color: #6a6976;
+      }
+    }
 
     &:has(.modus-wc-chip-remove-icon) {
       overflow: hidden;
@@ -435,27 +449,20 @@ modus-wc-chip .modus-wc-chip {
     }
 
     .modus-wc-chip-remove-icon {
-      align-items: center;
-      aspect-ratio: 1 / 1;
-      background-color: #6a6976;
       border-radius: 50%;
-      color: var(--modus-wc-color-base-100);
-      display: inline-flex;
-      height: 50%;
-      justify-content: center;
-      line-height: 1;
-      width: 50%;
+      color: #6a6976;
     }
 
-    modus-wc-icon:has(.modus-wc-chip-remove-icon):hover
-      .modus-wc-chip-remove-icon {
-      color: #d0d0d7;
-    }
-  }
-
-  &.modus-wc-btn-sm {
-    .modus-wc-chip-remove-icon {
+    &.modus-wc-btn-sm .modus-wc-chip-remove-icon {
       font-size: var(--modus-wc-font-size-sm);
+    }
+
+    &.modus-wc-btn-md .modus-wc-chip-remove-icon {
+      font-size: var(--modus-wc-font-size-lg);
+    }
+
+    &.modus-wc-btn-lg .modus-wc-chip-remove-icon {
+      font-size: var(--modus-wc-font-size-3xl);
     }
   }
 }
