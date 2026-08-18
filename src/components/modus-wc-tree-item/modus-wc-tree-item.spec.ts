@@ -602,6 +602,19 @@ describe('modus-wc-tree-item', () => {
     expect(page.rootInstance.selected).toBe(false);
   });
 
+  it('should render expand_more submenu chevron when hasSubmenu is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon],
+      html: '<modus-wc-tree-item label="Parent" value="parent" has-submenu="true"></modus-wc-tree-item>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { name?: string };
+    expect(chevron).not.toBeNull();
+    expect(chevron.name).toBe('expand_more');
+  });
+
   it('should toggle submenu when hasSubmenu is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeMenu, ModusWcTreeItem],

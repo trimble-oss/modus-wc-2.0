@@ -142,8 +142,9 @@ export class ModusWcTabs {
     const tabs = this.tabs.map((tab, index) => (
       <button
         role="tab"
-        aria-disabled={tab.disabled}
+        aria-disabled={tab.disabled ? 'true' : undefined}
         aria-label={tab.label ?? tab.icon}
+        aria-selected={index === this.activeTabIndex ? 'true' : 'false'}
         class={this.getTabClasses(tab, index)}
         disabled={tab.disabled}
         id={`tab-${index}`}

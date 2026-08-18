@@ -292,7 +292,8 @@ export const sideNavConnectTreeItemStyles = wrapConnectSideNavStyles(`
 
   modus-wc-tree-item
     > li.modus-wc-menu-item
-    > .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
+    > .modus-wc-menu-item-interactive
+    .modus-wc-menu-submenu-chevron {
     color: var(--modus-wc-color-white);
   }
 
@@ -383,20 +384,14 @@ export const sideNavConnectCollapsedRailStyles = wrapConnectSideNavStyles(`
   .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)
     modus-wc-tree-item
     > li.modus-wc-menu-item
-    > .modus-wc-menu-item-interactive.modus-wc-menu-dropdown-toggle::after {
+    > .modus-wc-menu-item-interactive
+    > .modus-wc-menu-submenu-chevron {
     align-self: center;
     color: var(--modus-wc-color-white);
-    display: block;
+    display: inline-flex;
     grid-column: 3;
-    height: 0.5rem;
     justify-self: center;
-    line-height: 1;
     margin: 0;
-    margin-block: 0;
-    margin-top: 0;
-    position: static;
-    transform: rotate(45deg);
-    transform-origin: center;
   }
 
   .modus-wc-side-navigation:not(.modus-wc-side-navigation-expanded)

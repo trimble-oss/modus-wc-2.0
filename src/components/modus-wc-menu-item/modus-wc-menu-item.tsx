@@ -204,10 +204,6 @@ export class ModusWcMenuItem {
     return classList.join(' ');
   }
 
-  private getButtonClasses(): string {
-    return this.hasSubmenu ? 'modus-wc-menu-dropdown-toggle' : '';
-  }
-
   private getRole(mode?: SelectionMode): string {
     if (mode === 'multiple') return 'menuitemcheckbox';
     if (mode === 'single') return 'menuitemradio';
@@ -297,7 +293,6 @@ export class ModusWcMenuItem {
           {...this.inheritedAttributes}
         >
           <button
-            class={this.getButtonClasses()}
             disabled={this.disabled}
             onClick={this.handleItemSelect}
             tabIndex={-1}
@@ -330,6 +325,14 @@ export class ModusWcMenuItem {
                 )}
               </div>
             </div>
+            {this.hasSubmenu && (
+              <modus-wc-icon
+                class="modus-wc-menu-submenu-chevron"
+                decorative
+                name="expand_more"
+                size="md"
+              ></modus-wc-icon>
+            )}
           </button>
           <slot></slot>
         </li>
