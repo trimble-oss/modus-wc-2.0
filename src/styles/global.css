@@ -158,7 +158,8 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
-/* Connect Themes */
+/* Connect Themes — semantic roles from connect.ts so :root --fallback-*
+   (var(--modus-wc-color-*)) resolve correctly without theme-specific fallback hex. */
 [data-theme='connect-light']:root {
   color-scheme: light;
 
@@ -167,6 +168,18 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
+  --modus-wc-color-primary: #005f9e;
+  --modus-wc-color-primary-content: var(--modus-wc-color-white);
+  --modus-wc-color-secondary: #6a6976;
+  --modus-wc-color-secondary-content: var(--modus-wc-color-white);
+  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
+  --modus-wc-color-info-content: var(--modus-wc-color-white);
+  --modus-wc-color-success: #72a544;
+  --modus-wc-color-success-content: var(--modus-wc-color-white);
+  --modus-wc-color-warning: #ffbe00;
+  --modus-wc-color-warning-content: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-error: #d52a33;
+  --modus-wc-color-error-content: var(--modus-wc-color-white);
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
@@ -178,5 +191,17 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
+  --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
+  --modus-wc-color-primary-content: var(--modus-wc-color-black);
+  --modus-wc-color-secondary: var(--modus-wc-color-gray-light);
+  --modus-wc-color-secondary-content: var(--modus-wc-color-black);
+  --modus-wc-color-info: var(--modus-wc-color-blue-light);
+  --modus-wc-color-info-content: var(--modus-wc-color-white);
+  --modus-wc-color-success: var(--modus-wc-color-green-light);
+  --modus-wc-color-success-content: var(--modus-wc-color-black);
+  --modus-wc-color-warning: var(--modus-wc-color-yellow-light);
+  --modus-wc-color-warning-content: var(--modus-wc-color-trimble-gray);
+  --modus-wc-color-error: var(--modus-wc-color-red-light);
+  --modus-wc-color-error-content: var(--modus-wc-color-black);
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
