@@ -193,6 +193,47 @@ describe('modus-wc-button', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should sync aria-current to the inner button when the host attribute changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button aria-label="Nav item">Home</modus-wc-button>',
+    });
+
+    const button = page.root?.querySelector('button');
+    expect(button?.getAttribute('aria-current')).toBeNull();
+    expect(button?.getAttribute('aria-label')).toBe('Nav item');
+
+    page.root?.setAttribute('aria-current', 'page');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-current')).toBe('page');
+
+    page.root?.removeAttribute('aria-current');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-current')).toBeNull();
+  });
+
+  it('should sync aria-label to the inner button when the host attribute changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Home</modus-wc-button>',
+    });
+
+    const button = page.root?.querySelector('button');
+    expect(button?.getAttribute('aria-label')).toBeNull();
+
+    page.root?.setAttribute('aria-label', 'Home');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-label')).toBe('Home');
+
+    page.root?.removeAttribute('aria-label');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-label')).toBeNull();
+  });
+
   it('should not emit buttonClick event on key press when disabled', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],

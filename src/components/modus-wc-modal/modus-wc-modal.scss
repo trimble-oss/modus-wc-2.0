@@ -52,6 +52,12 @@ modus-wc-modal .modus-wc-modal {
   }
 }
 
+[data-theme^='modus-modern'] {
+  .modus-wc-modal-box {
+    background-color: var(--modus-wc-color-base-page);
+  }
+}
+
 [data-theme^='modus-modern'],
 [data-theme^='connect'] {
   .modus-wc-modal-content > span {

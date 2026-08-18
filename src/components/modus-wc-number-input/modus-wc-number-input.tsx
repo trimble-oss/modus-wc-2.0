@@ -119,11 +119,10 @@ export class ModusWcNumberInput {
     }
   }
 
-  private getSharedClasses(styleList): string {
+  private getSharedClasses(styleList: string[]): string {
     const classList = [...styleList];
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
-      feedback: this.feedback,
       readOnly: this.readOnly,
       size: this.size,
     });
@@ -143,6 +142,10 @@ export class ModusWcNumberInput {
 
     if (this.currencySymbol) {
       classList.push('modus-wc-join-item');
+    }
+
+    if (this.feedback) {
+      classList.push(`modus-wc-input--${this.feedback.level}`);
     }
 
     return this.getSharedClasses(classList);

@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
+                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -194,7 +194,7 @@
               "default": "'info'",
               "description": "The variant of the alert.",
               "type": {
-                "text": "'error' | 'info' | 'success' | 'warning'"
+                "text": "'error' | 'info' | 'neutral' | 'success' | 'warning'"
               }
             }
           ],
@@ -358,7 +358,7 @@
               "kind": "field",
               "name": "layoutChange",
               "type": {
-                "text": "EventEmitter<{\r\n    layout: 'list' | 'grid';\r\n  }>"
+                "text": "EventEmitter<{\n    layout: 'list' | 'grid';\n  }>"
               },
               "description": "Emit event when the layout changes"
             }
@@ -1477,12 +1477,21 @@
               "default": "'md'",
               "description": "The size of the avatar.",
               "type": {
-                "text": "DaisySize"
+                "text": "DaisySize | 'xl'"
               }
             }
           ],
           "tagName": "modus-wc-avatar",
-          "events": [],
+          "events": [
+            {
+              "kind": "field",
+              "name": "imageLoadError",
+              "type": {
+                "text": "EventEmitter<IAvatarImageLoadError>"
+              },
+              "description": "Event emitted when the avatar image fails to load."
+            }
+          ],
           "customElement": true
         }
       ],
@@ -1534,7 +1543,7 @@
               "default": "'primary'",
               "description": "The color variant of the badge.",
               "type": {
-                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
+                "text": "| 'default'\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'"
               }
             },
             {
@@ -1585,6 +1594,155 @@
           "declaration": {
             "name": "ModusWcBadge",
             "module": "src/components/modus-wc-badge/modus-wc-badge.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ModusWcBottomSheet",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleDisplayModeChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "type": {
+                    "text": "TBottomSheetDisplayMode"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleVisibleChange",
+              "parameters": [
+                {
+                  "name": "isVisible",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the outer div.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "display-mode",
+              "fieldName": "displayMode",
+              "default": "'default'",
+              "description": "Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.",
+              "type": {
+                "text": "TBottomSheetDisplayMode"
+              }
+            },
+            {
+              "name": "drag-step-threshold",
+              "fieldName": "dragStepThreshold",
+              "default": "0.4",
+              "description": "Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "header",
+              "fieldName": "header",
+              "description": "Configuration for the built-in header layout.\nDo not set this prop if you intend to use the 'header' slot.",
+              "type": {
+                "text": "IBottomSheetHeader"
+              }
+            },
+            {
+              "name": "visible",
+              "fieldName": "visible",
+              "default": "false",
+              "description": "Controls whether the bottom sheet is visible.",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "modus-wc-bottom-sheet",
+          "events": [
+            {
+              "kind": "field",
+              "name": "displayModeChange",
+              "type": {
+                "text": "EventEmitter<{\n    displayMode: TBottomSheetDisplayMode;\n  }>"
+              },
+              "description": "Event emitted when the display mode changes, whether from a drag/keyboard\ninteraction or from setting the `displayMode` prop. The new mode is in\n`detail.displayMode`."
+            },
+            {
+              "kind": "field",
+              "name": "headerBackClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the header back button is clicked. Does not change sheet state."
+            },
+            {
+              "kind": "field",
+              "name": "headerCloseClick",
+              "type": {
+                "text": "EventEmitter<void>"
+              },
+              "description": "Event emitted when the header dismiss button is clicked.\nThe sheet is also closed automatically (`visible` is set to `false`)."
+            },
+            {
+              "kind": "field",
+              "name": "sheetVisibilityChange",
+              "type": {
+                "text": "EventEmitter<{ visible: boolean }>"
+              },
+              "description": "Event emitted when the visibility of the bottom sheet changes."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcBottomSheet",
+          "declaration": {
+            "name": "ModusWcBottomSheet",
+            "module": "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-bottom-sheet",
+          "declaration": {
+            "name": "ModusWcBottomSheet",
+            "module": "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
           }
         }
       ]
@@ -1734,7 +1892,7 @@
               "fieldName": "color",
               "description": "Color to apply to all buttons within the button group",
               "type": {
-                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'\n    | 'neutral'\n    | 'success'"
               }
             },
             {
@@ -1842,7 +2000,7 @@
               "default": "'primary'",
               "description": "The color variant of the button.",
               "type": {
-                "text": "'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'\n    | 'neutral'\n    | 'success'"
               }
             },
             {
@@ -2479,6 +2637,332 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A data-driven, stateless/controlled tree component. The consuming application\nowns the `nodes` data (the single source of truth) and the controlled\n`selectedNodeId` / `expandedNodeIds` state. The component renders the tree and\nemits `nodeSelect` / `nodeExpandChange`; the application decides whether to\napply the change and passes the updated state back in.",
+          "name": "ModusWcContentTree",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onEditingNodeIdChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newId",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onExpandedNodeIdsChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onFilterChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onNodesChange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "allow-drag-drop",
+              "fieldName": "allowDragDrop",
+              "description": "Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "description": "Indicates that the content tree should have a border.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "checked-node-ids",
+              "fieldName": "checkedNodeIds",
+              "description": "The ids of the checked leaf nodes (multi-select). Controlled by the consuming application.",
+              "type": {
+                "text": "string[]"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the host element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "editing-node-id",
+              "fieldName": "editingNodeId",
+              "description": "The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to `nodeEdit`, `nodeAdd`, or `nodeDuplicate`).",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "expanded-node-ids",
+              "fieldName": "expandedNodeIds",
+              "description": "The ids of the currently expanded nodes. Controlled by the consuming application.",
+              "type": {
+                "text": "string[]"
+              }
+            },
+            {
+              "name": "filter",
+              "fieldName": "filter",
+              "default": "''",
+              "description": "When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When `searchable` is enabled, this only seeds the built-in search box's initial value.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "nodes",
+              "fieldName": "nodes",
+              "description": "The tree data. The single source of truth, owned by the consuming application.",
+              "type": {
+                "text": "ITreeNode[]"
+              }
+            },
+            {
+              "name": "searchable",
+              "fieldName": "searchable",
+              "description": "Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the `filter` prop is used only to seed its initial value.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "selected-node-id",
+              "fieldName": "selectedNodeId",
+              "description": "The id of the currently selected (active) node. Controlled by the consuming application.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "selection-mode",
+              "fieldName": "selectionMode",
+              "default": "'single'",
+              "description": "The selection mode of the content tree.",
+              "type": {
+                "text": "SelectionMode"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the content tree items.",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "toolbar",
+              "fieldName": "toolbar",
+              "description": "Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select).",
+              "type": {
+                "text": "IContentTreeToolbar"
+              }
+            }
+          ],
+          "tagName": "modus-wc-content-tree",
+          "events": [
+            {
+              "kind": "field",
+              "name": "expandAllChange",
+              "type": {
+                "text": "EventEmitter<{ expanded: boolean }>"
+              },
+              "description": "Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set `expandedNodeIds` to every expandable id (e.g. via `getExpandableNodeIds`) when `expanded` is `true`, or to `[]` when `false`."
+            },
+            {
+              "kind": "field",
+              "name": "nodeAdd",
+              "type": {
+                "text": "EventEmitter<{\n    referenceId: string;\n    position: 'above' | 'below' | 'child';\n  }>"
+              },
+              "description": "Event emitted when \"Add New Above/Below\" or \"Add Child Node\" is chosen. The app should insert a node at the requested position and set `editingNodeId` to the new id."
+            },
+            {
+              "kind": "field",
+              "name": "nodeCheckChange",
+              "type": {
+                "text": "EventEmitter<{\n    id: string;\n    checked: boolean;\n  }>"
+              },
+              "description": "Event emitted when a checkbox is toggled (multi-select). The consuming application should update `checkedNodeIds`."
+            },
+            {
+              "kind": "field",
+              "name": "nodeDelete",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted after the user confirms deletion. The app should remove the node from `nodes`."
+            },
+            {
+              "kind": "field",
+              "name": "nodeDuplicate",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted when \"Duplicate\" is chosen. The app should clone the node below it and set `editingNodeId` to the new id."
+            },
+            {
+              "kind": "field",
+              "name": "nodeEdit",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted when \"Edit name\" is chosen. The app should set `editingNodeId` to this id."
+            },
+            {
+              "kind": "field",
+              "name": "nodeEditCancel",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty)."
+            },
+            {
+              "kind": "field",
+              "name": "nodeExpandChange",
+              "type": {
+                "text": "EventEmitter<{\n    id: string;\n    expanded: boolean;\n  }>"
+              },
+              "description": "Event emitted when a node's expansion is toggled. The consuming application should update `expandedNodeIds`."
+            },
+            {
+              "kind": "field",
+              "name": "nodeLoadChildren",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted the first time a lazy node (`hasChildren: true` with no `children` yet) is expanded. The app should fetch the node's children and assign them to `nodes` (use `[]` when there are none); the component shows a spinner until `children` is defined."
+            },
+            {
+              "kind": "field",
+              "name": "nodeMove",
+              "type": {
+                "text": "EventEmitter<{\n    id: string;\n    targetId: string;\n    position: 'before' | 'after' | 'inside';\n  }>"
+              },
+              "description": "Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child."
+            },
+            {
+              "kind": "field",
+              "name": "nodeRename",
+              "type": {
+                "text": "EventEmitter<{ id: string; label: string }>"
+              },
+              "description": "Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear `editingNodeId`."
+            },
+            {
+              "kind": "field",
+              "name": "nodesDelete",
+              "type": {
+                "text": "EventEmitter<{ ids: string[] }>"
+              },
+              "description": "Event emitted when the toolbar's delete button is confirmed. `ids` are the top-most checked nodes; the app should remove them (e.g. via `deleteNodes`)."
+            },
+            {
+              "kind": "field",
+              "name": "nodeSelect",
+              "type": {
+                "text": "EventEmitter<{ id: string }>"
+              },
+              "description": "Event emitted when a node is selected. The consuming application should update `selectedNodeId`."
+            },
+            {
+              "kind": "field",
+              "name": "nodeVisibilityChange",
+              "type": {
+                "text": "EventEmitter<{\n    id: string;\n    disabled: boolean;\n  }>"
+              },
+              "description": "Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should update the node's own `disabled` state (e.g. via `setNodeDisabled`); descendants become effectively disabled via ancestor inheritance."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcContentTree",
+          "declaration": {
+            "name": "ModusWcContentTree",
+            "module": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-content-tree",
+          "declaration": {
+            "name": "ModusWcContentTree",
+            "module": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-date/modus-wc-date.tsx",
       "declarations": [
         {
@@ -2508,12 +2992,37 @@
             },
             {
               "kind": "method",
+              "name": "handleCalendarFocusIn",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "FocusEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleClickOutside",
               "parameters": [
                 {
                   "name": "event",
                   "type": {
                     "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEndValueChange",
+              "parameters": [
+                {
+                  "name": "newValue",
+                  "optional": true,
+                  "type": {
+                    "text": "string"
                   }
                 }
               ]
@@ -2612,6 +3121,15 @@
               }
             },
             {
+              "name": "end-value",
+              "fieldName": "endValue",
+              "default": "''",
+              "description": "The end date in range mode (`type=\"range\"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "feedback",
               "fieldName": "feedback",
               "description": "Feedback to render below the input.",
@@ -2628,9 +3146,17 @@
               }
             },
             {
+              "name": "hide-overflow-dates",
+              "fieldName": "hideOverflowDates",
+              "description": "When omitted, defaults to `true` in range mode and `false` in single mode.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
-              "description": "The ID of the input element.",
+              "description": "The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id.",
               "type": {
                 "text": "string"
               }
@@ -2654,7 +3180,7 @@
             {
               "name": "max",
               "fieldName": "max",
-              "description": "Maximum date value.",
+              "description": "Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).",
               "type": {
                 "text": "string"
               }
@@ -2662,7 +3188,7 @@
             {
               "name": "min",
               "fieldName": "min",
-              "description": "Minimum date value.",
+              "description": "Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).",
               "type": {
                 "text": "string"
               }
@@ -2670,7 +3196,7 @@
             {
               "name": "name",
               "fieldName": "name",
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+              "description": "Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name.",
               "type": {
                 "text": "string"
               }
@@ -2712,10 +3238,19 @@
               }
             },
             {
+              "name": "type",
+              "fieldName": "type",
+              "default": "'single'",
+              "description": "Activates range mode. `value` is the start date; `endValue` is the end date.",
+              "type": {
+                "text": "'single' | 'range'"
+              }
+            },
+            {
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the control.",
+              "description": "The selected date in single mode. In range mode (`type=\"range\"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset.",
               "type": {
                 "text": "string"
               }
@@ -2738,7 +3273,7 @@
               "type": {
                 "text": "EventEmitter<number>"
               },
-              "description": "Event emitted when the calendar month selection changes."
+              "description": "Event emitted when the start (or single-mode) calendar month selection changes."
             },
             {
               "kind": "field",
@@ -2746,7 +3281,23 @@
               "type": {
                 "text": "EventEmitter<number>"
               },
-              "description": "Event emitted when the calendar year selection changes."
+              "description": "Event emitted when the start (or single-mode) calendar year selection changes."
+            },
+            {
+              "kind": "field",
+              "name": "endCalendarMonthChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the end calendar month selection changes in range mode."
+            },
+            {
+              "kind": "field",
+              "name": "endCalendarYearChange",
+              "type": {
+                "text": "EventEmitter<number>"
+              },
+              "description": "Event emitted when the end calendar year selection changes in range mode."
             },
             {
               "kind": "field",
@@ -2754,7 +3305,7 @@
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Event emitted when the input loses focus."
+              "description": "Event emitted when the input loses focus. In range mode, `detail.field` is `'start'` or `'end'`."
             },
             {
               "kind": "field",
@@ -2762,7 +3313,7 @@
               "type": {
                 "text": "EventEmitter<InputEvent>"
               },
-              "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid."
+              "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, `detail.field` is `'start'` or `'end'`."
             },
             {
               "kind": "field",
@@ -2770,7 +3321,15 @@
               "type": {
                 "text": "EventEmitter<FocusEvent>"
               },
-              "description": "Event emitted when the input gains focus."
+              "description": "Event emitted when the input gains focus. In range mode, `detail.field` is `'start'` or `'end'`."
+            },
+            {
+              "kind": "field",
+              "name": "rangeChange",
+              "type": {
+                "text": "EventEmitter<IDateRange>"
+              },
+              "description": "Event emitted when a complete date range is selected in range mode."
             }
           ],
           "customElement": true
@@ -2893,6 +3452,123 @@
           "declaration": {
             "name": "ModusWcDivider",
             "module": "src/components/modus-wc-divider/modus-wc-divider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-dock/modus-wc-dock.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Dock navigation bar for navigating between primary screens.",
+          "name": "ModusWcDock",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleItemsChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-item-index",
+              "fieldName": "activeItemIndex",
+              "default": "0",
+              "description": "The currently active dock item index."
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner nav element."
+            },
+            {
+              "name": "items",
+              "fieldName": "items",
+              "default": "[]",
+              "description": "The dock items to display.",
+              "type": {
+                "text": "IDockItem[]"
+              }
+            },
+            {
+              "name": "position",
+              "fieldName": "position",
+              "default": "'bottom'",
+              "description": "The edge the dock is anchored to. Controls layout and active indicator orientation.",
+              "type": {
+                "text": "DockPosition"
+              }
+            },
+            {
+              "name": "show-labels",
+              "fieldName": "showLabels",
+              "default": "true",
+              "description": "If true, text labels are shown below icons."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the dock items.",
+              "type": {
+                "text": "ModusSize"
+              }
+            }
+          ],
+          "tagName": "modus-wc-dock",
+          "events": [
+            {
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<{ index: number; item: IDockItem }>"
+              },
+              "description": "Emitted when a dock item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcDock",
+          "declaration": {
+            "name": "ModusWcDock",
+            "module": "src/components/modus-wc-dock/modus-wc-dock.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-dock",
+          "declaration": {
+            "name": "ModusWcDock",
+            "module": "src/components/modus-wc-dock/modus-wc-dock.tsx"
           }
         }
       ]
@@ -3085,6 +3761,15 @@
               }
             },
             {
+              "name": "menu-strategy",
+              "fieldName": "menuStrategy",
+              "default": "'absolute'",
+              "description": "The positioning strategy for the menu. Use 'fixed' when the dropdown is\ninside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to\nthe viewport coordinate space.",
+              "type": {
+                "text": "'absolute' | 'fixed'"
+              }
+            },
+            {
               "name": "menu-visible",
               "fieldName": "menuVisible",
               "default": "false",
@@ -3193,6 +3878,14 @@
               }
             },
             {
+              "name": "feedback",
+              "fieldName": "feedback",
+              "description": "External feedback to display info, success, or error state with optional custom icon and message",
+              "type": {
+                "text": "IFileDropzoneFeedback"
+              }
+            },
+            {
               "name": "file-dragged-over-instructions",
               "fieldName": "fileDraggedOverInstructions",
               "description": "Custom instructions shown when files are dragged over the dropzone",
@@ -3204,7 +3897,7 @@
               "name": "include-state-icon",
               "fieldName": "includeStateIcon",
               "default": "true",
-              "description": "Include state icon (upload, success, error)",
+              "description": "Include state icon for default, validation, upload, and feedback states",
               "type": {
                 "text": "boolean"
               }
@@ -3450,7 +4143,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -3633,7 +4326,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -3755,7 +4448,7 @@
               "default": "'primary'",
               "description": "The color of the link.",
               "type": {
-                "text": "| 'primary'\r\n    | 'secondary'\r\n    | 'tertiary'\r\n    | 'inherit'\r\n    | 'success'\r\n    | 'warning'\r\n    | 'danger'"
+                "text": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'inherit'\n    | 'success'\n    | 'info'\n    | 'warning'\n    | 'danger'"
               }
             },
             {
@@ -5219,10 +5912,22 @@
             },
             {
               "kind": "method",
+              "name": "handleMainMenuChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
           "attributes": [
+            {
+              "name": "main-menu",
+              "fieldName": "mainMenu",
+              "description": "Configuration for the default main menu section.\nWhen omitted, all built-in items render in the default order.\nWhen provided, boolean flags control each built-in item and `items` appends custom entries.",
+              "type": {
+                "text": "IMainMenu"
+              }
+            },
             {
               "name": "menu-one",
               "fieldName": "menuOne",
@@ -5245,6 +5950,15 @@
               "description": "Profile menu properties containing user information",
               "type": {
                 "text": "IProfileMenuProps"
+              }
+            },
+            {
+              "name": "show-sign-out",
+              "fieldName": "showSignOut",
+              "default": "true",
+              "description": "Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted.",
+              "type": {
+                "text": "boolean"
               }
             }
           ],
@@ -6563,10 +7277,34 @@
             },
             {
               "kind": "method",
+              "name": "getTableInstance",
+              "return": {
+                "type": {
+                  "text": "Promise<Table<Record<string, unknown>> | null>"
+                }
+              },
+              "description": "Returns the underlying TanStack table instance (advanced mode)."
+            },
+            {
+              "kind": "method",
+              "name": "handleColumnDefsChange",
+              "parameters": [
+                {
+                  "name": "newColumnDefs",
+                  "optional": true,
+                  "type": {
+                    "text": "ColumnDef<Record<string, unknown>, unknown>[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleColumnsChange",
               "parameters": [
                 {
                   "name": "newColumns",
+                  "optional": true,
                   "type": {
                     "text": "ITableColumn[]"
                   }
@@ -6596,6 +7334,14 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "handleIsRowSelectableChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleModeChange"
             },
             {
               "kind": "method",
@@ -6632,6 +7378,10 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "handleTableOptionsChange"
             },
             {
               "kind": "field",
@@ -6675,9 +7425,17 @@
               }
             },
             {
+              "name": "column-defs",
+              "fieldName": "columnDefs",
+              "description": "TanStack column definitions. Required in advanced mode.",
+              "type": {
+                "text": "ColumnDef<Record<string, unknown>, unknown>[]"
+              }
+            },
+            {
               "name": "columns",
               "fieldName": "columns",
-              "description": "An array of column definitions.",
+              "description": "An array of column definitions. Required in simple mode.",
               "type": {
                 "text": "ITableColumn[]"
               }
@@ -6736,6 +7494,23 @@
               }
             },
             {
+              "name": "is-row-selectable",
+              "fieldName": "isRowSelectable",
+              "description": "Per-row predicate function controlling row selection eligibility.",
+              "type": {
+                "text": "(row: Record<string, unknown>) => boolean"
+              }
+            },
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "default": "'simple'",
+              "description": "Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough.",
+              "type": {
+                "text": "'simple' | 'advanced'"
+              }
+            },
+            {
               "name": "page-size-options",
               "fieldName": "pageSizeOptions",
               "default": "[5, 10, 15]",
@@ -6786,6 +7561,14 @@
               "description": "Enable sorting functionality for sortable columns.",
               "type": {
                 "text": "boolean"
+              }
+            },
+            {
+              "name": "table-options",
+              "fieldName": "tableOptions",
+              "description": "Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.).",
+              "type": {
+                "text": "Partial<TableOptions<Record<string, unknown>>>"
               }
             },
             {
@@ -7941,7 +8724,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip can be dismissed by pressing the Escape key when hovering over it.\nWhen forceOpen is enabled, the tooltip will remain open and can only be closed by setting forceOpen to false.",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on\npointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,\nthe tooltip remains open and Escape does not dismiss it.\nUse the contentElement prop to supply rich HTML content to the tooltip such as multiline text.\nFor plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.\n\nFor screen reader support, set `tooltip-id` on this component and matching `aria-describedby`\non the trigger (e.g. modus-wc-button).",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -7971,12 +8754,36 @@
             },
             {
               "kind": "method",
-              "name": "handleContentChange",
+              "name": "handleContentChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleContentElementChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleDisabledChange",
               "parameters": [
                 {
-                  "name": "newContent",
+                  "name": "disabled",
                   "type": {
-                    "text": "string"
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFocusIn"
+            },
+            {
+              "kind": "method",
+              "name": "handleFocusOut",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "FocusEvent"
                   }
                 }
               ]
@@ -8007,6 +8814,10 @@
             },
             {
               "kind": "method",
+              "name": "handleTooltipIdChange"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -8015,9 +8826,17 @@
               "name": "content",
               "fieldName": "content",
               "default": "''",
-              "description": "The text content of the tooltip.",
+              "description": "The text content of the tooltip. When contentElement is also set, contentElement takes precedence.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "content-element",
+              "fieldName": "contentElement",
+              "description": "An optional rich HTML element to render as the tooltip body.\nWhen set, this takes precedence over the `content` string prop.\nThe element is deep-cloned into the tooltip container.",
+              "type": {
+                "text": "HTMLElement"
               }
             },
             {
@@ -8033,7 +8852,7 @@
               "name": "disabled",
               "fieldName": "disabled",
               "default": "false",
-              "description": "Disables displaying the tooltip on hover",
+              "description": "Disables displaying the tooltip on hover and focus",
               "type": {
                 "text": "boolean"
               }
@@ -8058,7 +8877,7 @@
             {
               "name": "tooltip-id",
               "fieldName": "tooltipId",
-              "description": "The ID of the tooltip element, useful for setting the \"aria-describedby\" attribute of related elements.",
+              "description": "The ID of the tooltip tip element (`role=\"tooltip\"`).\nFor screen reader support, add `aria-describedby` with this value to your trigger element.",
               "type": {
                 "text": "string"
               }
@@ -8092,6 +8911,367 @@
           "declaration": {
             "name": "ModusWcTooltip",
             "module": "src/components/modus-wc-tooltip/modus-wc-tooltip.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable tree item component used to display the item portion of a tree menu.\n\nThis component supports `start` and `end` slots for custom content at the beginning and end of the item.",
+          "name": "ModusWcTreeItem",
+          "members": [
+            {
+              "kind": "method",
+              "name": "collapseSubmenu",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Public method to collapse the submenu if it's expanded"
+            },
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isExpanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal state to track if submenu is expanded"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "block-expand",
+              "fieldName": "blockExpand",
+              "description": "When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "checkbox",
+              "fieldName": "checkbox",
+              "description": "If true, renders a checkbox at the start of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the li element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "description": "The disabled state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "focused",
+              "fieldName": "focused",
+              "description": "The focused state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "has-submenu",
+              "fieldName": "hasSubmenu",
+              "description": "Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "default": "''",
+              "description": "The text rendered in the tree item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "selected",
+              "fieldName": "selected",
+              "description": "The selected state of the tree item.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the tree item.",
+              "type": {
+                "text": "ModusSize"
+              }
+            },
+            {
+              "name": "sub-label",
+              "fieldName": "subLabel",
+              "description": "The text rendered beneath the label.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "tooltip-content",
+              "fieldName": "tooltipContent",
+              "description": "The tooltip text to display when hovering over the tree item.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "tooltip-position",
+              "fieldName": "tooltipPosition",
+              "default": "'auto'",
+              "description": "The position of the tooltip relative to the tree item.",
+              "type": {
+                "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
+              }
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "default": "''",
+              "description": "The unique identifying value of the tree item.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-item",
+          "events": [
+            {
+              "kind": "field",
+              "name": "itemSelect",
+              "type": {
+                "text": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>"
+              },
+              "description": "Event emitted when a tree item is selected."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeItem",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-item",
+          "declaration": {
+            "name": "ModusWcTreeItem",
+            "module": "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.",
+          "name": "ModusWcTreeMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleFocusout",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "FocusEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ value: string; selected?: boolean }>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSelectionModeChange"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "bordered",
+              "fieldName": "bordered",
+              "description": "Indicates that the tree menu should have a border.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the ul element.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "is-sub-menu",
+              "fieldName": "isSubMenu",
+              "description": "Indicates that this tree menu is a submenu (dropdown).",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "default": "'vertical'",
+              "description": "The orientation of the tree menu.",
+              "type": {
+                "text": "Orientation"
+              }
+            },
+            {
+              "name": "selection-mode",
+              "fieldName": "selectionMode",
+              "default": "'single'",
+              "description": "The selection mode of the tree menu.",
+              "type": {
+                "text": "SelectionMode"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "The size of the tree menu.",
+              "type": {
+                "text": "ModusSize"
+              }
+            }
+          ],
+          "tagName": "modus-wc-tree-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "menuFocusout",
+              "type": {
+                "text": "EventEmitter<FocusEvent>"
+              },
+              "description": "Event emitted when the tree menu loses focus."
+            },
+            {
+              "kind": "field",
+              "name": "menuSelectionChange",
+              "type": {
+                "text": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>"
+              },
+              "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcTreeMenu",
+          "declaration": {
+            "name": "ModusWcTreeMenu",
+            "module": "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-tree-menu",
+          "declaration": {
+            "name": "ModusWcTreeMenu",
+            "module": "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
           }
         }
       ]
@@ -8219,6 +9399,22 @@
             },
             {
               "kind": "method",
+              "name": "handleBackgroundOverlayChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleCollapseOnClickOutsideChange",
+              "parameters": [
+                {
+                  "name": "enabled",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "handleExpandedChange",
               "parameters": [
                 {
@@ -8266,9 +9462,26 @@
             {
               "kind": "method",
               "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "syncBackgroundOverlay",
+              "description": "When a targetElement is set, mount the backdrop inside that element so the\ndim only covers the target (e.g. main content, not a sibling navbar).\nWithout a target, the host renders a fixed full-viewport backdrop."
             }
           ],
           "attributes": [
+            {
+              "name": "background-overlay",
+              "fieldName": "backgroundOverlay",
+              "default": "false",
+              "description": "When true, dims the area behind the panel while it is expanded.\nIf `targetElement` is set, the overlay is scoped to that element only;\notherwise it covers the full viewport."
+            },
+            {
+              "name": "collapse-on-click-outside",
+              "fieldName": "collapseOnClickOutside",
+              "default": "false",
+              "description": "Whether the panel should collapse when clicking outside of it."
+            },
             {
               "name": "custom-class",
               "fieldName": "customClass",
