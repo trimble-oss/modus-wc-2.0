@@ -16,7 +16,7 @@ const mockMutationObserver = () => {
     constructor(cb: MutationCallback) {
       callback = cb;
     }
-  } as unknown as typeof MutationObserver;
+  };
 
   return {
     trigger: () => callback([] as MutationRecord[], {} as MutationObserver),
