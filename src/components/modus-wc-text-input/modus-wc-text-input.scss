@@ -76,6 +76,13 @@ modus-wc-text-input {
         }
       }
 
+      // Match input:disabled opacity — sibling icons don't inherit it.
+      &.modus-wc-input-disabled {
+        .modus-wc-text-input-icon-password {
+          opacity: 0.5;
+        }
+      }
+
       .modus-wc-clear-icon-container {
         align-items: center;
         display: flex;

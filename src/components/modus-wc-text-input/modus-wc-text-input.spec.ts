@@ -406,6 +406,33 @@ describe('modus-wc-text-input', () => {
     expect(keyIcon?.name).toBe('key');
   });
 
+  it('should not render clear icon for password type', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" include-clear="true" value="secret" aria-label="Password no clear"></modus-wc-text-input>',
+    });
+
+    expect(
+      page.root!.querySelector('.modus-wc-clear-icon-container')
+    ).toBeNull();
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-icon-clear')
+    ).toBeNull();
+  });
+
+  it('should apply disabled class so password key icon can dim', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" disabled="true" aria-label="Disabled password key"></modus-wc-text-input>',
+    });
+
+    const field = page.root!.querySelector('.modus-wc-text-input');
+    expect(field).toHaveClass('modus-wc-input-disabled');
+    expect(
+      page.root!.querySelector('.modus-wc-text-input-icon-password')
+    ).not.toBeNull();
+  });
+
   it('should prefer custom icon over password key icon', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],

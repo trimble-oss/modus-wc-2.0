@@ -263,9 +263,16 @@ export class ModusWcTextInput {
     button.setAttribute('aria-label', this.getPasswordToggleAriaLabel());
   }
 
+  private shouldRenderClear(): boolean {
+    return !!this.includeClear && this.type !== 'password';
+  }
+
   private shouldIncludeClear(): boolean {
     return (
-      !!this.includeClear && !this.disabled && !this.readOnly && !!this.value
+      this.shouldRenderClear() &&
+      !this.disabled &&
+      !this.readOnly &&
+      !!this.value
     );
   }
 
@@ -353,7 +360,7 @@ export class ModusWcTextInput {
               </modus-wc-button>
             </div>
           )}
-          {this.includeClear && (
+          {this.shouldRenderClear() && (
             <div
               class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
             >
