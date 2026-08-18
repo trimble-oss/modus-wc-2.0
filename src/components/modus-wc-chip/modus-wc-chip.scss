@@ -427,8 +427,11 @@ modus-wc-chip .modus-wc-chip {
 
     &:has(.modus-wc-chip-remove-icon) {
       overflow: hidden;
-      padding-block: 0;
       padding-inline-end: 0;
+    }
+
+    &:has(.modus-wc-chip-remove-icon):not(.modus-wc-chip-multiline) {
+      padding-block: 0;
     }
 
     modus-wc-icon:has(.modus-wc-chip-remove-icon) {
@@ -445,6 +448,30 @@ modus-wc-chip .modus-wc-chip {
 
       &:hover {
         background-color: #d0d0d7;
+      }
+    }
+
+    &.modus-wc-chip-multiline {
+      &.modus-wc-btn-sm modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+        height: var(--modus-wc-spacing-xl);
+        min-width: var(--modus-wc-spacing-xl);
+        width: var(--modus-wc-spacing-xl);
+      }
+
+      &.modus-wc-btn-md modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+        height: var(--modus-wc-spacing-2xl);
+        min-width: var(--modus-wc-spacing-2xl);
+        width: var(--modus-wc-spacing-2xl);
+      }
+
+      &.modus-wc-btn-lg modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+        height: var(--modus-wc-spacing-3xl);
+        min-width: var(--modus-wc-spacing-3xl);
+        width: var(--modus-wc-spacing-3xl);
+      }
+
+      modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+        align-self: center;
       }
     }
 
