@@ -20,6 +20,52 @@
     --fallback-er: var(--modus-wc-color-error);
     --fallback-erc: var(--modus-wc-color-error-content);
   }
+
+  /* Connect — hex from connect.ts. Overrides modern :root fallbacks so disabled
+     restore (var(--fallback-*)) does not keep yellow secondary / dark-green success. */
+  [data-theme='connect-light'] {
+    --fallback-p: #005f9e;
+    --fallback-pc: #fff;
+    --fallback-s: #6a6976;
+    --fallback-sc: #fff;
+    --fallback-a: #6a6e79;
+    --fallback-ac: #fff;
+    --fallback-n: #cbcdd6;
+    --fallback-nc: #252a2e;
+    --fallback-b1: #fff;
+    --fallback-b2: #cbcdd6;
+    --fallback-b3: #b7b9c3;
+    --fallback-in: #0063a3;
+    --fallback-inc: #fff;
+    --fallback-su: #72a544;
+    --fallback-suc: #fff;
+    --fallback-wa: #ffbe00;
+    --fallback-wac: #252a2e;
+    --fallback-er: #d52a33;
+    --fallback-erc: #fff;
+  }
+
+  [data-theme='connect-dark'] {
+    --fallback-p: #019aeb;
+    --fallback-pc: #000;
+    --fallback-s: #f1f1f6;
+    --fallback-sc: #000;
+    --fallback-a: #6a6e79;
+    --fallback-ac: #fff;
+    --fallback-n: #353a40;
+    --fallback-nc: #fff;
+    --fallback-b1: #171c1e;
+    --fallback-b2: #353a40;
+    --fallback-b3: #464b52;
+    --fallback-in: #217cbb;
+    --fallback-inc: #fff;
+    --fallback-su: #4ea646;
+    --fallback-suc: #000;
+    --fallback-wa: #fec157;
+    --fallback-wac: #252a2e;
+    --fallback-er: #e86363;
+    --fallback-erc: #000;
+  }
 }
 
 /* Universal resets */
@@ -158,8 +204,7 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
 
-/* Connect Themes — semantic roles from connect.ts so :root --fallback-*
-   (var(--modus-wc-color-*)) resolve correctly without theme-specific fallback hex. */
+/* Connect Themes */
 [data-theme='connect-light']:root {
   color-scheme: light;
 
@@ -168,18 +213,6 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-1);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-2);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-10);
-  --modus-wc-color-primary: #005f9e;
-  --modus-wc-color-primary-content: var(--modus-wc-color-white);
-  --modus-wc-color-secondary: #6a6976;
-  --modus-wc-color-secondary-content: var(--modus-wc-color-white);
-  --modus-wc-color-info: var(--modus-wc-color-trimble-blue);
-  --modus-wc-color-info-content: var(--modus-wc-color-white);
-  --modus-wc-color-success: #72a544;
-  --modus-wc-color-success-content: var(--modus-wc-color-white);
-  --modus-wc-color-warning: #ffbe00;
-  --modus-wc-color-warning-content: var(--modus-wc-color-trimble-gray);
-  --modus-wc-color-error: #d52a33;
-  --modus-wc-color-error-content: var(--modus-wc-color-white);
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-info-blue);
 }
 
@@ -191,17 +224,5 @@ modus-wc-number-input .modus-wc-number-input {
   --modus-wc-color-base-200: var(--modus-wc-color-gray-8);
   --modus-wc-color-base-300: var(--modus-wc-color-gray-9);
   --modus-wc-color-base-content: var(--modus-wc-color-gray-1);
-  --modus-wc-color-primary: var(--modus-wc-color-highlight-blue);
-  --modus-wc-color-primary-content: var(--modus-wc-color-black);
-  --modus-wc-color-secondary: var(--modus-wc-color-gray-light);
-  --modus-wc-color-secondary-content: var(--modus-wc-color-black);
-  --modus-wc-color-info: var(--modus-wc-color-blue-light);
-  --modus-wc-color-info-content: var(--modus-wc-color-white);
-  --modus-wc-color-success: var(--modus-wc-color-green-light);
-  --modus-wc-color-success-content: var(--modus-wc-color-black);
-  --modus-wc-color-warning: var(--modus-wc-color-yellow-light);
-  --modus-wc-color-warning-content: var(--modus-wc-color-trimble-gray);
-  --modus-wc-color-error: var(--modus-wc-color-red-light);
-  --modus-wc-color-error-content: var(--modus-wc-color-black);
   --modus-wc-color-info-blue-on-dark: var(--modus-wc-color-white);
 }
