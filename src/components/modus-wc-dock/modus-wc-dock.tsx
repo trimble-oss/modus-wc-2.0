@@ -41,10 +41,7 @@ export class ModusWcDock {
   private inheritedAttributes: Attributes = {};
 
   // Direct references to each rendered `modus-wc-button` host, keyed by item
-  // index. `modus-wc-button` only inherits aria-current/aria-label from its
-  // host attributes once, in its own componentWillLoad, so changes made after
-  // that (e.g. clicking a different dock item) would otherwise never reach
-  // the inner <button>. We patch the inner <button> directly instead.
+  // index, used for keyboard focus management.
   private buttonEls: (HTMLElement | undefined)[] = [];
 
   /** Reference to the host element */
@@ -87,37 +84,10 @@ export class ModusWcDock {
     this.validateItems();
   }
 
-  componentDidRender() {
-    this.syncItemAria();
-  }
-
   private validateItems(): void {
     if (!this.items?.length) {
       console.error('ModusWcDock: dock items data is required.');
     }
-  }
-
-  // Directly sets aria-current/aria-label on each item's inner <button>,
-  // since modus-wc-button only inherits host attributes once on load.
-  private syncItemAria(): void {
-    this.items.forEach((item, index) => {
-      const innerButton = this.buttonEls[index]?.querySelector('button');
-      if (!innerButton) {
-        return;
-      }
-
-      if (index === this.activeItemIndex) {
-        innerButton.setAttribute('aria-current', 'page');
-      } else {
-        innerButton.removeAttribute('aria-current');
-      }
-
-      if (!this.showLabels) {
-        innerButton.setAttribute('aria-label', item.label);
-      } else {
-        innerButton.removeAttribute('aria-label');
-      }
-    });
   }
 
   private getClasses(): string {
@@ -287,6 +257,10 @@ export class ModusWcDock {
                   ref={(el) => {
                     this.buttonEls[index] = el;
                   }}
+                  aria-current={
+                    index === this.activeItemIndex ? 'page' : undefined
+                  }
+                  aria-label={!this.showLabels ? item.label : undefined}
                   color="neutral"
                   customClass="modus-wc-dock-item-button"
                   disabled={item.disabled}
