@@ -192,11 +192,15 @@ modus-wc-alert .modus-wc-alert {
   modus-wc-alert
   .modus-wc-alert.modus-wc-alert-warning {
   background-color: #fff2cc;
-  color: var(--modus-wc-color-gray-10);
+  color: #6a6976;
   padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
 
+  .title {
+    color: var(--modus-wc-color-gray-10);
+    font-weight: var(--modus-wc-font-weight-semibold);
+  }
+
   .description {
-    color: #6a6976;
     font-size: var(--modus-wc-font-size-sm);
     font-weight: var(--modus-wc-font-weight-semibold);
   }
