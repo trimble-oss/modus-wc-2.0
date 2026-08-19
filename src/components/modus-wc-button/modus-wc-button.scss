@@ -19,6 +19,12 @@ modus-wc-button .modus-wc-btn {
       border-color: var(--modus-wc-color-base-200);
     }
   }
+
+  &.modus-wc-btn-outline.modus-wc-btn-neutral:not(:hover):not(:active):not(
+      [aria-pressed='true']
+    ):not(.modus-wc-btn-disabled) {
+    border-color: var(--modus-wc-color-base-200);
+  }
 }
 
 modus-wc-button .modus-wc-btn-outline {
@@ -389,7 +395,7 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
 
     // tertiary
     &.modus-wc-btn-neutral {
-      border-color: var(--modus-wc-color-trimble-gray);
+      border-color: var(--modus-wc-color-base-200);
       color: var(--modus-wc-color-trimble-gray);
 
       &:hover {
@@ -579,7 +585,7 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
 
     // tertiary
     &.modus-wc-btn-neutral {
-      border-color: var(--modus-wc-color-gray-2);
+      border-color: var(--modus-wc-color-base-200);
       color: var(--modus-wc-color-gray-2);
 
       &:hover {
