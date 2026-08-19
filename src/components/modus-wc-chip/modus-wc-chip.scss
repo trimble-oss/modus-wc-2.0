@@ -155,6 +155,10 @@ modus-wc-chip .modus-wc-chip {
       filter: grayscale(100%);
     }
   }
+
+  modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
+    display: none;
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-chip .modus-wc-chip,
@@ -434,7 +438,7 @@ modus-wc-chip .modus-wc-chip {
       padding-block: 0;
     }
 
-    modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+    modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
       align-items: center;
       align-self: stretch;
       aspect-ratio: 1 / 1;
@@ -451,26 +455,32 @@ modus-wc-chip .modus-wc-chip {
       }
     }
 
+    modus-wc-icon:has(.modus-wc-chip-remove-icon):not(
+        :has(.modus-wc-chip-remove-icon--connect)
+      ) {
+      display: none;
+    }
+
     &.modus-wc-chip-multiline {
-      &.modus-wc-btn-sm modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+      &.modus-wc-btn-sm modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
         height: var(--modus-wc-spacing-xl);
         min-width: var(--modus-wc-spacing-xl);
         width: var(--modus-wc-spacing-xl);
       }
 
-      &.modus-wc-btn-md modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+      &.modus-wc-btn-md modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
         height: var(--modus-wc-spacing-2xl);
         min-width: var(--modus-wc-spacing-2xl);
         width: var(--modus-wc-spacing-2xl);
       }
 
-      &.modus-wc-btn-lg modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+      &.modus-wc-btn-lg modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
         height: var(--modus-wc-spacing-3xl);
         min-width: var(--modus-wc-spacing-3xl);
         width: var(--modus-wc-spacing-3xl);
       }
 
-      modus-wc-icon:has(.modus-wc-chip-remove-icon) {
+      modus-wc-icon:has(.modus-wc-chip-remove-icon--connect) {
         align-self: center;
       }
     }
