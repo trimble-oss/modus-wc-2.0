@@ -89,6 +89,8 @@ graph TD;
   modus-wc-tree-item --> modus-wc-icon
   modus-wc-checkbox --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-icon
+  modus-wc-text-input --> modus-wc-button
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-dropdown-menu --> modus-wc-button
