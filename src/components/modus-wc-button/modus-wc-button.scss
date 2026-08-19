@@ -632,12 +632,25 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
 }
 
 /* Connect: filled secondary stays theme gray (connect.ts --s / --fallback-s).
+   Text must stay white in every state — do not use --modus-wc-color-secondary-
+   content or --fallback-sc (those track Modern yellow secondary = black).
    Outlined + borderless secondary use yellow via local --fallback-s so DaisyUI
    outline/borderless color paths and disabled --_btn-* tokens follow yellow. */
 [data-theme='connect-light']
   modus-wc-button
   .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-secondary {
-  color: var(--modus-wc-color-secondary-content);
+  /* stylelint-disable-next-line custom-property-pattern -- private token from tailwind.css */
+  --_btn-fg: var(--modus-wc-color-white);
+
+  color: var(--modus-wc-color-white);
+
+  &:hover,
+  &:active,
+  &[aria-pressed='true'],
+  &:disabled,
+  &.modus-wc-btn-disabled {
+    color: var(--modus-wc-color-white);
+  }
 }
 
 [data-theme='connect-light']
