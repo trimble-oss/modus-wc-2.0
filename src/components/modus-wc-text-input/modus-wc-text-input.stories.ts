@@ -332,7 +332,7 @@ export const Migration: Story = {
 | helper-text                  |                     | Not carried over                                            |
 | include-error-icon           |                     | Not carried over                                            |
 | include-search-icon          | include-search      |                                                             |
-| include-password-text-toggle |                     | Not carried over                                            |
+| include-password-text-toggle | (built-in)          | Built-in when \`type="password"\` (key icon + visibility toggle)              |
 | inputmode                    | inputmode          |                                                             |
 | label                        | label               |                                                             |
 | max-length                   | max-length          |                                                             |

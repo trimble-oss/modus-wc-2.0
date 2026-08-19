@@ -184,3 +184,24 @@ modus-wc-alert .modus-wc-alert {
     }
   }
 }
+
+[data-theme='connect-light']
+  modus-wc-alert
+  .modus-wc-alert.modus-wc-alert-warning,
+[data-theme='connect-dark']
+  modus-wc-alert
+  .modus-wc-alert.modus-wc-alert-warning {
+  background-color: #fff2cc;
+  color: #6a6976;
+  padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
+
+  .title {
+    color: var(--modus-wc-color-gray-10);
+    font-weight: var(--modus-wc-font-weight-semibold);
+  }
+
+  .description {
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-semibold);
+  }
+}
