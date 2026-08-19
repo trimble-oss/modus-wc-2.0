@@ -64,11 +64,22 @@ modus-wc-text-input {
           cursor: pointer;
         }
 
-        &.modus-wc-text-input-icon-custom {
+        &.modus-wc-text-input-icon-custom,
+        &.modus-wc-text-input-icon-password {
           align-items: center;
-          display: flex;
+          align-self: center;
+          color: var(--modus-wc-color-base-content);
+          display: inline-flex;
           flex-shrink: 0;
           justify-content: center;
+          line-height: 0;
+        }
+      }
+
+      // Match input:disabled opacity — sibling icons don't inherit it.
+      &.modus-wc-input-disabled {
+        .modus-wc-text-input-icon-password {
+          opacity: 0.5;
         }
       }
 
@@ -86,6 +97,72 @@ modus-wc-text-input {
         &.modus-wc-clear-icon-visible {
           visibility: visible;
         }
+      }
+
+      .modus-wc-password-toggle-container {
+        align-items: center;
+        align-self: center;
+        display: flex;
+        flex-shrink: 0;
+        justify-content: center;
+        line-height: 0;
+        max-height: 100%;
+
+        modus-wc-button {
+          display: inline-flex;
+          line-height: 0;
+        }
+
+        // Button component only sets square width for md+; lock xs/sm here so
+        // the toggle stays a true centered square inside the field.
+        .modus-wc-btn {
+          box-sizing: border-box;
+          min-height: 0;
+          padding: 0;
+
+          &.modus-wc-btn-xs {
+            height: var(--modus-wc-size-xs);
+            max-height: var(--modus-wc-size-xs);
+            width: var(--modus-wc-size-xs);
+          }
+
+          &.modus-wc-btn-sm {
+            height: var(--modus-wc-size-sm);
+            max-height: var(--modus-wc-size-sm);
+            width: var(--modus-wc-size-sm);
+          }
+
+          &:hover,
+          &:active,
+          &:focus,
+          &[aria-pressed='true'],
+          &.modus-wc-btn-active {
+            background-color: transparent;
+          }
+
+          // Single keyboard focus ring — clear Daisy/browser outline + shadow
+          // so only this border shows (parent :focus-within is suppressed below).
+          &:focus-visible {
+            background-color: transparent;
+            border: 2px solid var(--modus-wc-color-base-content);
+            box-shadow: none;
+            outline: none;
+          }
+        }
+
+        modus-wc-icon,
+        modus-wc-icon i {
+          color: var(--modus-wc-color-base-content);
+          display: inline-flex;
+          line-height: 0;
+        }
+      }
+
+      // Focusing the toggle is still :focus-within on the field; don't draw
+      // a second field-level focus border on top of the button ring.
+      &:has(.modus-wc-password-toggle-container .modus-wc-btn:focus-visible) {
+        box-shadow: none;
+        outline: none;
       }
 
       &.modus-wc-input-sm .modus-wc-clear-icon-container {
