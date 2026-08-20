@@ -21,6 +21,34 @@ modus-wc-switch .modus-wc-toggle {
   &:focus {
     border-color: var(--modus-wc-color-base-200);
   }
+
+  &.modus-wc-toggle-xs {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: var(--modus-wc-font-size-2xl);
+    }
+  }
+
+  &.modus-wc-toggle-sm {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-md);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-toggle-md {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-toggle-lg {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-switch .modus-wc-toggle,
@@ -39,11 +67,6 @@ modus-wc-switch .modus-wc-toggle {
 
     height: var(--modus-wc-spacing-lg);
     width: var(--modus-wc-spacing-xl);
-
-    & ~ modus-wc-input-label .modus-wc-input-label {
-      font-size: var(--modus-wc-font-size-sm);
-      line-height: var(--modus-wc-font-size-2xl);
-    }
   }
 
   &.modus-wc-toggle-sm {
@@ -141,11 +164,6 @@ modus-wc-switch .modus-wc-toggle {
 
     height: var(--modus-wc-spacing-lg);
     width: var(--modus-wc-spacing-xl);
-
-    & ~ modus-wc-input-label .modus-wc-input-label {
-      font-size: var(--modus-wc-font-size-sm);
-      line-height: var(--modus-wc-font-size-2xl);
-    }
   }
 
   &.modus-wc-toggle-sm {
@@ -269,11 +287,6 @@ modus-wc-switch .modus-wc-toggle {
 
       height: var(--modus-wc-spacing-lg);
       width: var(--modus-wc-spacing-xl);
-
-      & ~ modus-wc-input-label .modus-wc-input-label {
-        font-size: var(--modus-wc-font-size-sm);
-        line-height: var(--modus-wc-font-size-2xl);
-      }
     }
 
     &.modus-wc-toggle-sm {
@@ -281,11 +294,6 @@ modus-wc-switch .modus-wc-toggle {
 
       height: var(--modus-wc-font-size-2xl);
       width: var(--modus-wc-spacing-2xl);
-
-      & ~ modus-wc-input-label .modus-wc-input-label {
-        font-size: var(--modus-wc-font-size-md);
-        line-height: var(--modus-wc-line-height-md);
-      }
     }
 
     &.modus-wc-toggle-md {
@@ -293,11 +301,6 @@ modus-wc-switch .modus-wc-toggle {
 
       height: var(--modus-wc-spacing-xl);
       width: var(--modus-wc-size-md);
-
-      & ~ modus-wc-input-label .modus-wc-input-label {
-        font-size: var(--modus-wc-font-size-lg);
-        line-height: var(--modus-wc-line-height-md);
-      }
     }
 
     &.modus-wc-toggle-lg {
@@ -305,11 +308,6 @@ modus-wc-switch .modus-wc-toggle {
 
       height: var(--modus-wc-spacing-2xl);
       width: var(--modus-wc-size-xl);
-
-      & ~ modus-wc-input-label .modus-wc-input-label {
-        font-size: var(--modus-wc-font-size-xl);
-        line-height: var(--modus-wc-line-height-lg);
-      }
     }
   }
 }
