@@ -676,4 +676,22 @@ describe('modus-wc-text-input', () => {
     const input = page.root!.querySelector('input');
     expect(input?.getAttribute('type')).toBe('text');
   });
+
+  it('should use md label size when size is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputLabel],
+      html: '<modus-wc-text-input label="Email" aria-label="Email"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.size = undefined;
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & {
+      size?: string;
+    };
+    expect(label?.size).toBe('md');
+  });
 });

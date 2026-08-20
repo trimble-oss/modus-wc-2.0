@@ -235,4 +235,22 @@ describe('modus-wc-select', () => {
     const select = page.root!.querySelector('select');
     expect(select).toHaveClass('modus-wc-select-xl');
   });
+
+  it('should use md label size when size is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcInputLabel],
+      html: '<modus-wc-select label="Country" aria-label="Country"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.size = undefined;
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & {
+      size?: string;
+    };
+    expect(label?.size).toBe('md');
+  });
 });
