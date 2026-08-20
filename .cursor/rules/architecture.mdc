@@ -1,0 +1,37 @@
+# Modus Web Components 2.0 Architecture
+
+## Framework
+
+- **Stencil JS** web components (`modus-wc-*` tags)
+- **Storybook** for docs and playground (port 6006)
+- **Tailwind CSS + DaisyUI** for utility classes and theme tokens
+- **SCSS** for component-specific overrides not covered by Tailwind/DaisyUI
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `npm ci` | Install dependencies |
+| `npm start` | Stencil watch + Storybook + lint |
+| `npm run build:ci` | Stencil library build |
+| `npm test` | Jest spec tests (100% coverage threshold) |
+| `npm run lint` | ESLint + Prettier + Stylelint |
+| `npm run tailwind:build` | Compile Tailwind output |
+| `npm run embed:css` / `embed:component-css` | Embed CSS into components |
+
+## Structure
+
+```
+src/
+├── components/          # One directory per component (tsx, scss, spec, stories)
+├── styles/              # Global CSS, themes, mixins, Tailwind config inputs
+├── providers/           # Theme provider and shadow DOM helpers
+└── icons/               # Inline SVG icon components
+integrations/            # Optional React, Angular, Vue, Blazor, MAUI wrappers
+```
+
+## Theming
+
+- Themes: `modus-modern-light/dark`, `modus-classic-light/dark`, `connect-light/dark`
+- CSS variables in `src/styles/variables.css` and `modus-wc-variables.css`
+- DaisyUI theme objects in `src/styles/themes/`
