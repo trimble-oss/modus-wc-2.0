@@ -1,11 +1,12 @@
 import { createRequire } from 'node:module';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import type { Config } from '@stencil/core';
 import { config as baseConfig } from './stencil.config';
 
-const razorPackageJson = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
+// Stencil compiles this config as CJS, so import.meta.url is invalid.
+// Builds always run from the repo root.
+const razorPackageJson = join(
+  process.cwd(),
   'integrations/blazor/razor-output/package.json'
 );
 
