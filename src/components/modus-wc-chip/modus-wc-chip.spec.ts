@@ -44,7 +44,12 @@ describe('modus-wc-chip', () => {
     });
     expect(page.root).toMatchSnapshot();
     const closeIcon = page.root!.querySelector('modus-wc-icon[name="close"]');
+    const connectIcon = page.root!.querySelector(
+      'modus-wc-icon[name="cancel_circle"]'
+    );
     expect(closeIcon).toBeTruthy();
+    expect(connectIcon).toBeTruthy();
+    expect(connectIcon!.getAttribute('variant')).toBe('solid');
   });
 
   it('should render with disabled attribute', async () => {
