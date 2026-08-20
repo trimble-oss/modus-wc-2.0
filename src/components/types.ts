@@ -97,9 +97,6 @@ export type Density = 'comfortable' | 'compact' | 'relaxed';
 
 export type ModusSize = Extract<DaisySize, 'sm' | 'md' | 'lg'>;
 
-/** Form control sizes including extra-small and extra-large (modern theme). */
-export type ModusInputSize = ModusSize | 'xs' | 'xl';
-
 export type AppName = LogoName;
 
 export type Orientation = 'horizontal' | 'vertical';

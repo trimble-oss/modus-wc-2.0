@@ -1,4 +1,4 @@
-import { DaisySize, ModusInputSize, ModusSize } from './types';
+import { DaisySize, ModusSize } from './types';
 
 // Used by inputs with labels rendered horizontally (checkbox, radio, toggle) to get label sizes.
 export const DAISY_TO_MODUS_LABEL_SIZE: Record<DaisySize, ModusSize> = {
@@ -9,7 +9,10 @@ export const DAISY_TO_MODUS_LABEL_SIZE: Record<DaisySize, ModusSize> = {
 };
 
 /** Maps text/select input sizes to supported label and feedback sizes. */
-export const INPUT_SIZE_TO_LABEL_SIZE: Record<ModusInputSize, ModusSize> = {
+export const INPUT_SIZE_TO_LABEL_SIZE: Record<
+  ModusSize | 'xs' | 'xl',
+  ModusSize
+> = {
   xs: 'sm',
   sm: 'sm',
   md: 'md',

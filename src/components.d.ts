@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
-import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusInputSize, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+import { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 import { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-avatar";
 import { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -28,7 +28,7 @@ import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
-export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusInputSize, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
+export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
 export { IAvatarImageLoadError } from "./components/modus-wc-avatar/modus-wc-avatar";
 export { IBottomSheetHeader, TBottomSheetDisplayMode } from "./components/modus-wc-bottom-sheet/modus-wc-bottom-sheet";
 export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcrumbs";
@@ -1867,7 +1867,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusInputSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -2308,7 +2308,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusInputSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'
@@ -6255,7 +6255,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusInputSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -6785,7 +6785,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusInputSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'
