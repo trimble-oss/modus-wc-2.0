@@ -20,7 +20,7 @@
 
 - Node (>= v16)
 - npm CLI (>= v7)
-- Access to private npm registries — see [NPM auth setup](./docs/npm-auth-setup.md)
+- For **Blazor RCL generation only**: GitHub Packages access — see [NPM auth setup](./docs/npm-auth-setup.md)
 
 ## Getting Started
 
@@ -42,11 +42,25 @@ Refer to our [README](./README.md) on running the app and [build scripts](./docs
 
 To get this application up and running locally:
 
-1. Run `npm run setup:auth` (one-time; configures `~/.npmrc` for GitHub Packages and Artifactory)
-2. Run `npm install` or `npm ci`
-3. Run `npm start`
+1. Run `npm ci` (or `npm install`) — public npm only; no registry tokens
+2. Run `npm start`
 
-See [NPM auth setup](./docs/npm-auth-setup.md) if install fails with `401 Unauthorized`.
+For local setup problems (install, Storybook, tokens, Blazor), contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com).
+
+### Blazor (optional)
+
+Default `npm ci` / `npm start` / `npm run build:ci` do **not** install the private Razor Stencil plugin or generate the Blazor RCL.
+
+If you need Blazor wrappers, NuGet packing, or BlazingStory:
+
+1. Confirm **trimble-oss** GitHub org membership and authorize SSO on a token with `read:packages`
+2. `export GITHUB_AUTH_TOKEN="$(gh auth token)"` then `npm run setup:auth` (see [NPM auth setup](./docs/npm-auth-setup.md))
+3. `npm run install:blazor-tools`
+4. `npm run stencil:build:blazor`
+
+Then use `npm run start:blazor` / `npm run build:blazor` as documented in [integrations/blazor/README.md](./integrations/blazor/README.md).
+
+For help running Blazor locally, GitHub Packages access, or any other local setup issue, contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com).
 
 ### Implementation
 

@@ -7,11 +7,10 @@ NPMRC="${HOME}/.npmrc"
 
 GITHUB_REGISTRY='@trimble-oss:registry=https://npm.pkg.github.com'
 GITHUB_AUTH_LINE='//npm.pkg.github.com/:_authToken='
-ARTIFACTORY_SCOPE='@trimble-agentic-external-npm-local:registry=https://artifactory.trimble.tools/artifactory/api/npm/trimble-agentic-external-npm-local/'
-ARTIFACTORY_AUTH_LINE='//artifactory.trimble.tools/artifactory/api/npm/trimble-agentic-external-npm-local/:_authToken='
 
-echo 'Modus WC — NPM auth setup'
-echo 'Writes tokens to ~/.npmrc (never committed to git).'
+echo 'Modus WC — Blazor tools NPM auth setup'
+echo 'Writes a GitHub Packages token to ~/.npmrc (never committed to git).'
+echo 'Required only for npm run install:blazor-tools, not for the default npm ci.'
 echo ''
 
 resolve_github_token() {
@@ -36,17 +35,8 @@ resolve_github_token() {
   printf '%s' "$github_token"
 }
 
-resolve_artifactory_token() {
-  echo '' >&2
-  echo 'Trimble Artifactory token for @trimble-agentic-external-npm-local (optional; press Enter to skip):' >&2
-  read -r -s artifactory_token
-  echo '' >&2
-  printf '%s' "$artifactory_token"
-}
-
 write_npmrc_block() {
   local github_token="$1"
-  local artifactory_token="$2"
   local block_file tmp
 
   block_file="$(mktemp)"
@@ -56,10 +46,6 @@ write_npmrc_block() {
     echo "$MARKER_START"
     echo "$GITHUB_REGISTRY"
     echo "${GITHUB_AUTH_LINE}${github_token}"
-    if [[ -n "$artifactory_token" ]]; then
-      echo "$ARTIFACTORY_SCOPE"
-      echo "${ARTIFACTORY_AUTH_LINE}${artifactory_token}"
-    fi
     echo "$MARKER_END"
   } >"$block_file"
 
@@ -81,7 +67,6 @@ write_npmrc_block() {
 verify_github_auth() {
   local github_token="$1"
 
-  # Repo .npmrc reads GITHUB_AUTH_TOKEN; pass it explicitly for verification.
   if GITHUB_AUTH_TOKEN="$github_token" npm view @trimble-oss/modus-stencil-razor-output-target version --registry=https://npm.pkg.github.com >/dev/null 2>&1; then
     echo 'GitHub Packages auth: OK'
     return 0
@@ -92,14 +77,13 @@ verify_github_auth() {
 
 main() {
   github_token="$(resolve_github_token)"
-  artifactory_token="$(resolve_artifactory_token)"
-  write_npmrc_block "$github_token" "$artifactory_token"
+  write_npmrc_block "$github_token"
   echo ''
   echo "Updated ${NPMRC}"
   echo ''
   verify_github_auth "$github_token" || true
   echo ''
-  echo 'Next: npm ci'
+  echo 'Next: export GITHUB_AUTH_TOKEN (or rely on ~/.npmrc) and run npm run install:blazor-tools'
   echo 'Docs: docs/npm-auth-setup.md'
 }
 

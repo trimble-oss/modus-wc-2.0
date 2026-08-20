@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: read
-  packages: read
 
 jobs:
   run:
@@ -38,9 +37,6 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
-        env:
-          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: npm run lint:stylelint

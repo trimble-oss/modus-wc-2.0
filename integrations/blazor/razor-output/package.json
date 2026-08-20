@@ -1,0 +1,8 @@
+{
+  "name": "modus-wc-blazor-razor-output",
+  "private": true,
+  "description": "Isolated install of the private Blazor Stencil Razor output target. Not an npm workspace — install with npm run install:blazor-tools from the repo root.",
+  "devDependencies": {
+    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.39"
+  }
+}

@@ -101,10 +101,12 @@
     "test:watch": "stencil test --spec --watchAll",
     "test:vue": "npm -C integrations/vue/v-latest run dev",
     "setup:auth": "bash scripts/setup-npm-auth.sh",
+    "install:blazor-tools": "npm ci --prefix integrations/blazor/razor-output",
     "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
-    "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run build first to generate the Blazor RCL.');process.exit(1)}\"",
+    "stencil:build:blazor": "wireit",
+    "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run install:blazor-tools && npm run stencil:build:blazor first to generate the Blazor RCL.');process.exit(1)}\"",
     "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",
-    "prestart:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run build first to generate the Blazor RCL.');process.exit(1)}\"",
+    "prestart:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run install:blazor-tools && npm run stencil:build:blazor first to generate the Blazor RCL.');process.exit(1)}\"",
     "start:blazor": "dotnet run --project integrations/blazor/blazing-story/BlazingStoryApp.csproj",
     "build:maui-android": "dotnet build integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android",
     "publish:maui-android": "dotnet publish integrations/blazor/maui-app/MauiBlazorApp.csproj -c Release -f net10.0-android",
@@ -133,7 +135,6 @@
     "@storybook/web-components": "^8.6.12",
     "@storybook/web-components-vite": "^8.6.12",
     "@tailwindcss/typography": "^0.5.20",
-    "@trimble-oss/modus-stencil-razor-output-target": "^1.0.39",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "@typescript-eslint/parser": "^8.61.1",
@@ -160,8 +161,7 @@
     "ts-loader": "^9.6.1",
     "typescript": "^5.6.2",
     "vite": "^7.1.7",
-    "wireit": "^0.14.12",
-    "@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript": "^1.0.1-rc.3"
+    "wireit": "^0.14.12"
   },
   "overrides": {
     "ts-morph": {
@@ -291,6 +291,32 @@
         "src/custom-elements.json",
         "!src/components.d.ts",
         "stencil.config.ts",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "output": [
+        "src/components.d.ts",
+        "dist/**",
+        "integrations/react/stencil-generated/**",
+        "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
+        "integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
+      ]
+    },
+    "stencil:build:blazor": {
+      "command": "stencil build --config stencil.blazor.config.ts --docs --prod",
+      "dependencies": [
+        "build:cem-json",
+        "tailwind:build",
+        "embed:css",
+        "embed:component-css",
+        "generate:logo-data"
+      ],
+      "files": [
+        "src/**/*.{css,scss,ts,tsx}",
+        "src/custom-elements.json",
+        "!src/components.d.ts",
+        "stencil.config.ts",
+        "stencil.blazor.config.ts",
         "tsconfig.json",
         "package.json"
       ],

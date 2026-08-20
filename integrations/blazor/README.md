@@ -16,7 +16,19 @@ for all 51 Modus web components.
 
 ## Quick Start (Web)
 
-> **Prerequisite**: run `npm run build` at the repository root first to produce `dist/`.
+> **Prerequisite**: the private Razor output target is **not** part of the root `npm ci`.
+> From the repo root:
+>
+> ```bash
+> export GITHUB_AUTH_TOKEN="$(gh auth token)"   # trimble-oss package read + SSO
+> npm run install:blazor-tools
+> npm run stencil:build:blazor
+> ```
+>
+> See [docs/npm-auth-setup.md](../../docs/npm-auth-setup.md). Default `npm run build` /
+> `npm run build:ci` do **not** generate the Blazor RCL.
+>
+> For Blazor or local setup help, contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com).
 
 ```bash
 # (Optional) Regenerate all story files after a Stencil build

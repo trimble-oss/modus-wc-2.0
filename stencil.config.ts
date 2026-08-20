@@ -8,7 +8,6 @@ import tailwind, {
 } from 'stencil-tailwind-plugin';
 import tailwindConfig from './tailwind.config';
 import { vueOutputTarget } from '@stencil/vue-output-target';
-import { blazorOutputTarget } from '@trimble-oss/modus-stencil-razor-output-target';
 
 const tailwindOpts = {
   // enableDebug: true,
@@ -88,13 +87,6 @@ export const config: Config = {
       componentCorePackage: '@trimble-oss/moduswebcomponents',
       proxiesFile: './integrations/vue/stencil-generated/components.ts',
       customElementsDir: 'components',
-    }),
-    blazorOutputTarget({
-      outDir:
-        './integrations/blazor/stencil-generated/ModusWebComponents.Blazor',
-      packageName: 'ModusWebComponents.Blazor',
-      namespace: 'ModusWebComponents.Blazor',
-      packageReadmePath: '../../nuget-README.md',
     }),
   ],
   plugins: [

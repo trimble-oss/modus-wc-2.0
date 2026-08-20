@@ -7,29 +7,29 @@ The primary dev experience is **Storybook** (component playground/docs). There i
 runtime backend or database. Standard commands are documented in `README.md` and the
 root `package.json` `scripts`; the notes below only cover non-obvious caveats.
 
-### Private registry auth is required to install (most important)
+### Default install is public npm (no tokens)
 
-`npm ci` / `npm install` pull three private packages and will fail without tokens:
+Root `npm ci` / `npm install` do **not** need GitHub Packages or Artifactory.
+`@trimble-oss/custom-elements-manifest-analyzer` is on the public registry
+(optionalDependency, but `build:cem-json` needs the `custom-elements-manifest` CLI).
 
-- `@trimble-oss/modus-stencil-razor-output-target` — GitHub Packages (`trimble-oss` org);
-  imported by `stencil.config.ts` (Blazor output target).
-- `@trimble-oss/custom-elements-manifest-analyzer` — GitHub Packages; listed under
-  `optionalDependencies` but is **effectively required**: it provides the
-  `custom-elements-manifest` CLI used by the `build:cem-json` wireit step, so
-  `npm run build` fails without it even though npm treats it as optional.
-- `@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript` — Trimble
-  Artifactory; imported by the Storybook AI-chat addon (`.storybook/addons/ai-chat`).
+### Blazor tools need GitHub Packages (optional)
 
-`.npmrc` reads two tokens from the environment, so set them as secrets (no local
-`~/.npmrc` needed here):
+Generating the Blazor RCL uses `@trimble-oss/modus-stencil-razor-output-target` from
+GitHub Packages. It is **not** a root dependency. Install it with:
 
-- `GITHUB_AUTH_TOKEN` — needs `read:packages` **and** `trimble-oss` org access with SSO
-  authorized. The default Cursor `gh` installation token does NOT have package read on
-  `trimble-oss` (installs 403 with "Permission installation not allowed to Read
-  organization package").
-- `TRIMBLE_AGENTIC_NPM_TOKEN` — Trimble Artifactory token.
+```bash
+export GITHUB_AUTH_TOKEN="$(gh auth token)"   # read:packages + trimble-oss SSO
+npm run install:blazor-tools
+npm run stencil:build:blazor
+```
 
-Once both secrets are set, `npm ci` (the startup update script) installs cleanly.
+`GITHUB_AUTH_TOKEN` is read by `integrations/blazor/razor-output/.npmrc`. The default
+Cursor `gh` installation token does NOT have package read on `trimble-oss` (installs
+403 with "Permission installation not allowed to Read organization package").
+
+Blazor CI jobs set `GITHUB_AUTH_TOKEN` from `secrets.GITHUB_TOKEN` only for
+`install:blazor-tools`. Do not inject that token into root `npm ci`.
 
 ### Wireit deletes build outputs before running (gotcha)
 
@@ -54,4 +54,5 @@ Don't commit these incidental regenerations unless the change is intentional.
   threshold is 100%). `npm run lint` runs eslint + prettier + stylelint.
 - Framework integrations (React/Angular/Vue/Blazor/MAUI) and the `mcp/` package are
   optional and each have their own install; they depend on the root `dist/` being built
-  first (`npm run build`). Blazor/MAUI additionally require the .NET SDK.
+  first. JS frameworks: `npm run build` / `npm run build:ci`. Blazor/MAUI additionally
+  require `npm run install:blazor-tools`, `npm run stencil:build:blazor`, and the .NET SDK.

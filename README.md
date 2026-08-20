@@ -56,9 +56,10 @@ import '@trimble-oss/moduswebcomponents';
 ### Getting Started
 
 1. Clone the repository
-2. `npm run setup:auth` — one-time npm registry auth ([details](./docs/npm-auth-setup.md))
-3. `npm install`
-4. `npm start` to start a development version of Stencil and Storybook
+2. `npm ci` (or `npm install`) — no private registry tokens
+3. `npm start` to start a development version of Stencil and Storybook
+
+Blazor RCL generation is a separate step (`npm run install:blazor-tools` then `npm run stencil:build:blazor`). See [CONTRIBUTING.md](./CONTRIBUTING.md) and [NPM auth setup](./docs/npm-auth-setup.md). For Blazor or local setup help, contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com).
 
 ### Building
 
