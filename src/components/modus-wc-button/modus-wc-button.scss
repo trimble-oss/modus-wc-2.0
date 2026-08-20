@@ -1,6 +1,11 @@
 /**
 * This component uses Tailwind CSS and DaisyUI.
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*
+* Disabled colors use --_btn-bg / --_btn-fg on color classes in
+* src/styles/tailwind.css (compiled to output.css); shared variant restore +
+* modern/connect opacity live there too. Classic theme disabled opacity is
+* still defined in this file.
 */
 
 modus-wc-button .modus-wc-btn {
@@ -48,7 +53,7 @@ modus-wc-button .modus-wc-btn-borderless {
   }
 
   &.modus-wc-btn-neutral {
-    color: var(--modus-wc-color-content);
+    color: var(--modus-wc-color-base-content);
   }
 
   &.modus-wc-btn-warning {
@@ -626,10 +631,94 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
   }
 }
 
-[data-theme='connect-light'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-filled {
-    &.modus-wc-btn-secondary {
-      color: var(--modus-wc-color-white);
-    }
+/* Connect: filled secondary stays theme gray (connect.ts --s / --fallback-s).
+   Text must stay white in every state — do not use --modus-wc-color-secondary-
+   content or --fallback-sc (those track Modern yellow secondary = black).
+   Outlined + borderless secondary use yellow via local --fallback-s so DaisyUI
+   outline/borderless color paths and disabled --_btn-* tokens follow yellow. */
+[data-theme='connect-light']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-secondary {
+  /* stylelint-disable-next-line custom-property-pattern -- private token from tailwind.css */
+  --_btn-fg: var(--modus-wc-color-white);
+
+  color: var(--modus-wc-color-white);
+
+  &:hover,
+  &:active,
+  &[aria-pressed='true'],
+  &:disabled,
+  &.modus-wc-btn-disabled {
+    color: var(--modus-wc-color-white);
+  }
+}
+
+[data-theme='connect-light']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-secondary:is(
+    .modus-wc-btn-outline,
+    .modus-wc-btn-borderless
+  ) {
+  --fallback-s: var(--modus-wc-color-yellow);
+  --fallback-sc: var(--modus-wc-color-black);
+  --btn-color: var(--modus-wc-color-yellow);
+  /* stylelint-disable custom-property-pattern -- private tokens from tailwind.css */
+  --_btn-bg: var(--modus-wc-color-yellow);
+  --_btn-fg: var(--modus-wc-color-black);
+  --_btn-ink: var(--modus-wc-color-yellow);
+  /* stylelint-enable custom-property-pattern */
+
+  color: var(--modus-wc-color-yellow);
+
+  &.modus-wc-btn-outline {
+    border-color: var(--modus-wc-color-yellow);
+  }
+
+  &:hover {
+    background-color: var(--modus-wc-color-yellow-pale);
+    border-color: var(--modus-wc-color-yellow-light);
+    color: var(--modus-wc-color-yellow);
+  }
+
+  &:active,
+  &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
+    background-color: var(--modus-wc-color-yellow);
+    border-color: transparent;
+    color: var(--modus-wc-color-black);
+  }
+}
+
+[data-theme='connect-dark']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-secondary:is(
+    .modus-wc-btn-outline,
+    .modus-wc-btn-borderless
+  ) {
+  --fallback-s: var(--modus-wc-color-yellow-light);
+  --fallback-sc: var(--modus-wc-color-black);
+  --btn-color: var(--modus-wc-color-yellow-light);
+  /* stylelint-disable custom-property-pattern -- private tokens from tailwind.css */
+  --_btn-bg: var(--modus-wc-color-yellow-light);
+  --_btn-fg: var(--modus-wc-color-black);
+  --_btn-ink: var(--modus-wc-color-yellow-light);
+  /* stylelint-enable custom-property-pattern */
+
+  color: var(--modus-wc-color-yellow-light);
+
+  &.modus-wc-btn-outline {
+    border-color: var(--modus-wc-color-yellow-light);
+  }
+
+  &:hover {
+    background-color: var(--modus-wc-color-yellow-pale);
+    border-color: var(--modus-wc-color-yellow);
+    color: var(--modus-wc-color-yellow-light);
+  }
+
+  &:active,
+  &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
+    background-color: var(--modus-wc-color-yellow-light);
+    border-color: transparent;
+    color: var(--modus-wc-color-black);
   }
 }
