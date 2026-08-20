@@ -617,6 +617,52 @@ describe('modus-wc-text-input', () => {
     expect(toggleIcon?.size).toBe('md');
   });
 
+  it('should apply xs size class when size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input size="xs" aria-label="Extra small input"></modus-wc-text-input>',
+    });
+
+    const field = page.root!.querySelector('label.modus-wc-text-input');
+    expect(field).toHaveClass('modus-wc-input-xs');
+  });
+
+  it('should apply xl size class when size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input size="xl" aria-label="Extra large input"></modus-wc-text-input>',
+    });
+
+    const field = page.root!.querySelector('label.modus-wc-text-input');
+    expect(field).toHaveClass('modus-wc-input-xl');
+  });
+
+  it('should use xs password toggle size when input size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="xs" aria-label="Extra small password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('xs');
+  });
+
+  it('should use lg password toggle size when input size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="xl" aria-label="Extra large password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('lg');
+  });
+
   it('should default effective input type to text when type is unset', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput],

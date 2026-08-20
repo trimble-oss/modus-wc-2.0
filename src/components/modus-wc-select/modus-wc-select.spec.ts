@@ -215,4 +215,24 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.[0]).not.toHaveAttribute('selected');
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
   });
+
+  it('should apply xs size class when size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select size="xs" aria-label="Extra small select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select');
+    expect(select).toHaveClass('modus-wc-select-xs');
+  });
+
+  it('should apply xl size class when size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select size="xl" aria-label="Extra large select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select');
+    expect(select).toHaveClass('modus-wc-select-xl');
+  });
 });

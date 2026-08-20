@@ -9,7 +9,8 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
+import { IInputFeedbackProp, ModusInputSize, ModusSize } from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
@@ -73,7 +74,7 @@ export class ModusWcSelect {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusInputSize = 'md';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
@@ -127,6 +128,10 @@ export class ModusWcSelect {
     this.inputChange.emit(event);
   };
 
+  private getLabelSize(): ModusSize {
+    return INPUT_SIZE_TO_LABEL_SIZE[this.size ?? 'md'];
+  }
+
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -137,7 +142,7 @@ export class ModusWcSelect {
             forId={effectiveId}
             labelText={this.label}
             required={this.required}
-            size={this.size}
+            size={this.getLabelSize()}
           />
         )}
         <select
@@ -167,7 +172,7 @@ export class ModusWcSelect {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
-            size={this.size}
+            size={this.getLabelSize()}
           />
         )}
       </Host>

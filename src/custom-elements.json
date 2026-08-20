@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
+                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -1994,6 +1994,22 @@
             }
           ],
           "attributes": [
+            {
+              "name": "aria-current",
+              "fieldName": "currentAria",
+              "description": "Maps to the inner button's aria-current attribute.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "Maps to the inner button's aria-label attribute.",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "color",
               "fieldName": "color",
@@ -4143,7 +4159,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -4326,7 +4342,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -6547,7 +6563,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusInputSize"
               }
             },
             {
@@ -7772,6 +7788,11 @@
             },
             {
               "kind": "method",
+              "name": "onPasswordToggleGuardsChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -7959,7 +7980,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusInputSize"
               }
             },
             {

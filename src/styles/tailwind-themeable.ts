@@ -50,6 +50,7 @@ const themeable = [
   'modus-wc-input-sm',
   'modus-wc-input-md',
   'modus-wc-input-lg',
+  'modus-wc-input-xl',
   // Menu
   'modus-wc-menu-xs',
   'modus-wc-menu-sm',
@@ -65,6 +66,7 @@ const themeable = [
   'modus-wc-select-sm',
   'modus-wc-select-md',
   'modus-wc-select-lg',
+  'modus-wc-select-xl',
   // Slider
   'modus-wc-range-xs',
   'modus-wc-range-sm',

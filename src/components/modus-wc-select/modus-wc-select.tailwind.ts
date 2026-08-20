@@ -1,4 +1,4 @@
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { IInputFeedbackProp, ModusInputSize } from '../types';
 
 export const convertPropsToClasses = ({
   bordered,
@@ -7,7 +7,7 @@ export const convertPropsToClasses = ({
 }: {
   bordered?: boolean;
   feedback?: IInputFeedbackProp;
-  size?: ModusSize;
+  size?: ModusInputSize;
 }): string => {
   let classes = '';
 

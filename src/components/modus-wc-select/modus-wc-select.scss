@@ -18,6 +18,19 @@ modus-wc-select .modus-wc-select {
   padding-bottom: var(--modus-wc-spacing-sm);
 }
 
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
+  &.modus-wc-select-xs {
+    font-size: var(--modus-wc-font-size-xs);
+    line-height: var(--modus-wc-size-xs);
+  }
+
+  &.modus-wc-select-xl {
+    font-size: var(--modus-wc-font-size-xl);
+    line-height: var(--modus-wc-size-xl);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
   // TODO - add support for xs and xl once added to Modus Figma
