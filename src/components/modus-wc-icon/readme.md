@@ -43,6 +43,7 @@ A customizable icon component used to render Modus icons.
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
  - [modus-wc-table](../modus-wc-table)
  - [modus-wc-tabs](../modus-wc-tabs)
+ - [modus-wc-text-input](../modus-wc-text-input)
  - [modus-wc-tree-item](../modus-wc-tree-item)
 
 ### Graph
@@ -65,6 +66,7 @@ graph TD;
   modus-wc-profile-menu --> modus-wc-icon
   modus-wc-table --> modus-wc-icon
   modus-wc-tabs --> modus-wc-icon
+  modus-wc-text-input --> modus-wc-icon
   modus-wc-tree-item --> modus-wc-icon
   style modus-wc-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```

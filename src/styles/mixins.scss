@@ -131,7 +131,7 @@
 
 @mixin btn-state-colors {
   &.modus-wc-btn-primary {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-primary);
       border: 1px solid transparent;
       color: var(--modus-wc-color-primary-content);
@@ -144,7 +144,7 @@
   }
 
   &.modus-wc-btn-secondary {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-secondary);
       border: 1px solid transparent;
       color: var(--modus-wc-color-secondary-content);
@@ -157,7 +157,7 @@
   }
 
   &.modus-wc-btn-accent {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-accent);
       border: 1px solid transparent;
       color: var(--modus-wc-color-accent-content);
@@ -170,7 +170,7 @@
   }
 
   &.modus-wc-btn-neutral {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-neutral);
       border: 1px solid transparent;
       color: var(--modus-wc-color-base-content);
@@ -183,7 +183,7 @@
   }
 
   &.modus-wc-btn-warning {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-warning);
       border: 1px solid transparent;
       color: var(--modus-wc-color-warning-content);
@@ -196,7 +196,7 @@
   }
 
   &.modus-wc-btn-error {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-error);
       border: 1px solid transparent;
       color: var(--modus-wc-color-error-content);
@@ -209,7 +209,7 @@
   }
 
   &.modus-wc-btn-success {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-success);
       border: 1px solid transparent;
       color: var(--modus-wc-color-success-content);
@@ -225,7 +225,7 @@
   // --modus-wc-color-trimble-neutral (no DaisyUI slot / -pale token). Hover tint
   // and pressed styles are derived from that variable.
   &.modus-wc-btn-base-inverted {
-    &[aria-pressed='true'] {
+    &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {
       background-color: var(--modus-wc-color-trimble-neutral);
       border: 1px solid transparent;
       color: var(--modus-wc-color-trimble-neutral-content);

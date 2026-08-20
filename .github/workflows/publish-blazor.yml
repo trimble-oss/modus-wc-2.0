@@ -45,8 +45,10 @@ jobs:
 
       - name: Install Web Component dependencies
         run: npm ci
+
+      - name: Install Blazor Razor output target
+        run: npm run install:blazor-tools
         env:
-          TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate version follows SemVer
@@ -57,7 +59,7 @@ jobs:
           fi
 
       - name: Build Base Web Components (generates Blazor RCL)
-        run: npm run build:ci
+        run: npm run stencil:build:blazor
 
       - name: Build Blazor RCL
         run: |

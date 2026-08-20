@@ -1,21 +1,22 @@
-# NPM authentication setup
+# NPM authentication setup (Blazor tools only)
 
 ## Purpose
 
-Configure local npm auth so `npm ci` and `npm install` succeed in `modus-wc-2.0`.
+The default repo install (`npm ci` at the root) uses the **public npm registry** only. You do not need GitHub Packages or Artifactory to run Storybook, tests, or the JavaScript Stencil build.
 
-This repo pulls private packages from:
+This doc is for people who generate the **Blazor Razor Class Library**. That path installs a private package from GitHub Packages:
 
-- **GitHub Packages** — `@trimble-oss/modus-stencil-razor-output-target` (required)
-- **Trimble Artifactory** — `@trimble-agentic-external-npm-local/agentic-platform-sdk-iframe-typescript` (optional dependency; skip unless you need agentic SDK work)
+- `@trimble-oss/modus-stencil-razor-output-target` (in `integrations/blazor/razor-output/`)
 
-CI already works. This doc is for **local developer machines only**.
+CI Blazor jobs already pass `GITHUB_TOKEN`. This file is for **local machines** only.
+
+For help with Blazor, GitHub Packages, or any local setup, contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com).
 
 ## Prerequisites
 
 - Node.js >= 16 and npm >= 7
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed
-- GitHub account with access to the **trimble-oss** organization
+- GitHub account with access to the **trimble-oss** organization (package read + SSO authorized on the token)
 - Clone of this repository
 
 ## Setup steps
@@ -25,31 +26,31 @@ Run from the repository root:
 ```bash
 gh auth login
 gh auth refresh -s read:packages
+export GITHUB_AUTH_TOKEN="$(gh auth token)"
 npm run setup:auth
-npm ci
+npm run install:blazor-tools
 ```
 
 ### What each step does
 
 1. **`gh auth login`** — Authenticate `gh` with your Trimble GitHub account.
 2. **`gh auth refresh -s read:packages`** — Ensure the token can read GitHub Packages.
-3. **`npm run setup:auth`** — Writes a managed auth block to `~/.npmrc`. Uses `gh auth token` automatically. Prompts for a Trimble Artifactory token only if you need the optional agentic SDK; press Enter to skip.
-4. **`npm ci`** — Installs dependencies. Success means auth is configured correctly.
+3. **`export GITHUB_AUTH_TOKEN=...`** — `integrations/blazor/razor-output/.npmrc` reads this env var.
+4. **`npm run setup:auth`** — Writes a managed GitHub Packages auth block to `~/.npmrc`.
+5. **`npm run install:blazor-tools`** — `npm ci` in `integrations/blazor/razor-output` (not an npm workspace).
 
-Tokens are stored in `~/.npmrc` only. Never commit tokens to this repository.
+Tokens are stored in `~/.npmrc` and/or the environment. Never commit tokens to this repository.
+
+Then generate the RCL:
+
+```bash
+npm run stencil:build:blazor
+```
 
 ## Verify success
 
 ```bash
-npm ci
-```
-
-Expected: install completes with no `401 Unauthorized` errors.
-
-Optional check:
-
-```bash
-GITHUB_AUTH_TOKEN="$(gh auth token)" npm view @trimble-oss/modus-stencil-razor-output-target version
+GITHUB_AUTH_TOKEN="$(gh auth token)" npm view @trimble-oss/modus-stencil-razor-output-target version --registry=https://npm.pkg.github.com
 ```
 
 Expected output: `1.0.39` (or the current published version).
@@ -61,57 +62,37 @@ Expected output: `1.0.39` (or the current published version).
 ```bash
 gh auth status
 gh auth refresh -s read:packages
+export GITHUB_AUTH_TOKEN="$(gh auth token)"
 npm run setup:auth
-npm ci
+npm run install:blazor-tools
 ```
 
-If it still fails, the GitHub user likely lacks package access. Ask a [modus-maintainers](https://github.com/orgs/trimble-oss/teams/modus-maintainers) admin to confirm **trimble-oss** org membership and authorize SSO for the token.
+If it still fails, the GitHub user likely lacks package access. Contact [elisha_sampeterprabhu@trimble.com](mailto:elisha_sampeterprabhu@trimble.com) for setup help, or ask a [modus-maintainers](https://github.com/orgs/trimble-oss/teams/modus-maintainers) admin to confirm **trimble-oss** org membership and authorize SSO for the token.
 
 ### `gh` not found
 
 Install GitHub CLI from https://cli.github.com/ and rerun the setup steps.
 
-### Artifactory `401` (optional package only)
-
-Only required for agentic SDK work. Generate a token at https://artifactory.trimble.tools/ and rerun:
-
-```bash
-npm run setup:auth
-```
-
-Paste the Artifactory token when prompted.
-
 ### Stale npm cache
 
 ```bash
 npm cache clean --force
-npm ci
+npm run install:blazor-tools
 ```
 
 ## CI reference
 
-GitHub Actions does not use `~/.npmrc`. Workflows inject:
+GitHub Actions does not use `~/.npmrc` for the default install. Blazor workflows run root `npm ci` with no tokens, then:
 
 ```yaml
-env:
-  GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  TRIMBLE_AGENTIC_NPM_TOKEN: ${{ secrets.TRIMBLE_AGENTIC_NPM_TOKEN }}
+- run: npm run install:blazor-tools
+  env:
+    GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+- run: npm run stencil:build:blazor
 ```
-
-No local setup is needed in CI.
 
 ## Security
 
-- Keep tokens in `~/.npmrc` only.
+- Keep tokens in `~/.npmrc` / the environment only.
 - Use minimum scope: `read:packages` for GitHub.
 - Revoke tokens when offboarding.
-
-## Agent instructions
-
-When a developer cannot run `npm ci` in this repo:
-
-1. Confirm they are in the repo root.
-2. Run the **Setup steps** block exactly as written.
-3. Run **Verify success**.
-4. On failure, apply the matching section under **If setup fails**.
-5. Do not commit tokens or modify the repo `.npmrc` to include literal secrets.

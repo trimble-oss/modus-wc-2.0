@@ -62,12 +62,16 @@ The component supports a `<slot>` for injecting additional custom content inside
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-button](../modus-wc-button)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-text-input --> modus-wc-input-label
+  modus-wc-text-input --> modus-wc-icon
+  modus-wc-text-input --> modus-wc-button
   modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-text-input
