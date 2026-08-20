@@ -9,6 +9,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-switch.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
 import {
   Attributes,
@@ -116,7 +117,7 @@ export class ModusWcSwitch {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
-    const labelSize = this.size === 'xs' ? 'sm' : this.size;
+    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
 
     return (
       <Host class="modus-wc-switch-host">
