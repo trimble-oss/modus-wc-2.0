@@ -422,10 +422,7 @@ modus-wc-chip .modus-wc-chip {
     }
 
     &.modus-wc-chip--circle:not(.modus-wc-chip--outline) {
-      --rounded-btn: var(--modus-wc-border-radius-rounded);
-
       background-color: #eaeaef;
-      border-radius: var(--modus-wc-border-radius-rounded);
       color: #6a6976;
       gap: 0;
 
