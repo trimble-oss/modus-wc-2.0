@@ -45,7 +45,6 @@ const Template: Story = {
         custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${args.decorative}"
         .name="${args.name}"
-        name="${args.name}"
         size="${args.size}"
         variant="${ifDefined(args.variant)}"
       >
@@ -69,7 +68,6 @@ export const CustomColor: Story = {
   aria-label="Red alert icon"
   custom-class="red-icon"
   .name="${args.name}"
-  name="${args.name}"
   size="${args.size}"
 >
 </modus-wc-icon>
@@ -131,7 +129,6 @@ export const CustomIcons: Story = {
         custom-class="${ifDefined(args['custom-class'])}"
         ?decorative="${args.decorative}"
         .name="${args.name}"
-        name="${args.name}"
         size="${args.size}"
       >
       </modus-wc-icon>

@@ -4,9 +4,7 @@ exports[`modus-wc-input-feedback should render with a custom modus icon 1`] = `
 <modus-wc-input-feedback icon="alert">
   <div class="modus-wc-input-feedback modus-wc-input-feedback--md">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-        alert
-      </i>
+      <i aria-hidden="true" class="modus-icon-warning modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-warning); webkit-mask-image: var(--modus-icon-warning);"></i>
     </modus-wc-icon>
     <span></span>
   </div>

@@ -491,9 +491,7 @@ exports[`modus-wc-autocomplete should render with custom icon slot 1`] = `
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
       <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
         <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="heart" size="sm" slot="custom-icon">
-          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
-            heart
-          </i>
+          <i aria-hidden="true" class="modus-icon-heart modus-wc-icon modus-wc-icon--sm" tabindex="-1" style="mask-image: var(--modus-icon-heart); webkit-mask-image: var(--modus-icon-heart);"></i>
         </modus-wc-icon>
       </div>
       <input aria-label="Custom icon test" class="modus-wc-grow" id="mwc_id_3" placeholder="" type="text" value="">

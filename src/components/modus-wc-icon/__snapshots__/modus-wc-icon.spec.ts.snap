@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-icon should keep the 1.0 ligature fallback for unmapped names 1`] = `
+<modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="address" variant="outlined">
+  <i aria-hidden="true" class="modus-icons-outlined modus-wc-icon modus-wc-icon--md" tabindex="-1">
+    address
+  </i>
+</modus-wc-icon>
+`;
+
+exports[`modus-wc-icon should render a 2.0 mask class for an aliased name 1`] = `
+<modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="add">
+  <i aria-hidden="true" aria-label="Add icon" class="modus-icon-plus modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-plus); webkit-mask-image: var(--modus-icon-plus);"></i>
+</modus-wc-icon>
+`;
+
 exports[`modus-wc-icon should render with custom props 1`] = `
 <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="test-class" decorative="false" size="sm">
   <i aria-label="Custom icon" class="modus-icons modus-wc-icon modus-wc-icon--sm test-class" role="img" tabindex="-1"></i>

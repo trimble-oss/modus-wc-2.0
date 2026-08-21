@@ -8,9 +8,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
         <!---->
         <button aria-label="Home" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-              home
-            </i>
+            <i aria-hidden="true" class="modus-icon-house modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-house); webkit-mask-image: var(--modus-icon-house);"></i>
           </modus-wc-icon>
         </button>
       </modus-wc-button>
@@ -20,9 +18,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
         <!---->
         <button aria-current="page" aria-label="Inbox" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-              email
-            </i>
+            <i aria-hidden="true" class="modus-icon-envelope modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-envelope); webkit-mask-image: var(--modus-icon-envelope);"></i>
           </modus-wc-icon>
         </button>
       </modus-wc-button>
@@ -32,9 +28,7 @@ exports[`modus-wc-dock should render with custom props 1`] = `
         <!---->
         <button aria-label="Settings" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
-              settings
-            </i>
+            <i aria-hidden="true" class="modus-icon-gear modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-gear); webkit-mask-image: var(--modus-icon-gear);"></i>
           </modus-wc-icon>
         </button>
       </modus-wc-button>
@@ -51,9 +45,7 @@ exports[`modus-wc-dock should render with default props 1`] = `
         <!---->
         <button aria-current="page" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
-              home
-            </i>
+            <i aria-hidden="true" class="modus-icon-house modus-wc-icon modus-wc-icon--sm" tabindex="-1" style="mask-image: var(--modus-icon-house); webkit-mask-image: var(--modus-icon-house);"></i>
           </modus-wc-icon>
           <span class="modus-wc-dock-item-label">
             Home
@@ -66,9 +58,7 @@ exports[`modus-wc-dock should render with default props 1`] = `
         <!---->
         <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
-              email
-            </i>
+            <i aria-hidden="true" class="modus-icon-envelope modus-wc-icon modus-wc-icon--sm" tabindex="-1" style="mask-image: var(--modus-icon-envelope); webkit-mask-image: var(--modus-icon-envelope);"></i>
           </modus-wc-icon>
           <span class="modus-wc-dock-item-label">
             Inbox
@@ -81,9 +71,7 @@ exports[`modus-wc-dock should render with default props 1`] = `
         <!---->
         <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
           <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-            <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
-              settings
-            </i>
+            <i aria-hidden="true" class="modus-icon-gear modus-wc-icon modus-wc-icon--sm" tabindex="-1" style="mask-image: var(--modus-icon-gear); webkit-mask-image: var(--modus-icon-gear);"></i>
           </modus-wc-icon>
           <span class="modus-wc-dock-item-label">
             Settings
