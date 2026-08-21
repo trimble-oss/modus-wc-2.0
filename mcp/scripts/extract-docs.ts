@@ -457,22 +457,34 @@ async function resolveNpmLatestVersion(pkg: string): Promise<string | undefined>
   }
 }
 
+function parseModusIconSlugs(css: string): string[] {
+  return [...css.matchAll(/^\s*--modus-icon-([a-z0-9-]+):/gm)]
+    .map((match) => match[1])
+    .sort();
+}
+
 async function fetchIconNames(): Promise<string[]> {
   try {
-    console.log('  Resolving latest @trimble-oss/modus-icons version...');
-    const version = await resolveNpmLatestVersion('@trimble-oss/modus-icons');
+    const localCss = join(
+      __dirname,
+      '../../node_modules/@trimble-oss/modus-icons-css/css/modus-icons-regular.css',
+    );
+    if (existsSync(localCss)) {
+      console.log('  Reading 2.0 icon slugs from @trimble-oss/modus-icons-css...');
+      const names = parseModusIconSlugs(readFileSync(localCss, 'utf-8'));
+      console.log(`  Found ${names.length} icons`);
+      return names;
+    }
+
+    console.log('  Resolving latest @trimble-oss/modus-icons-css version...');
+    const version = await resolveNpmLatestVersion('@trimble-oss/modus-icons-css');
     if (!version) {
-      console.error('  Could not resolve latest modus-icons version');
+      console.error('  Could not resolve latest modus-icons-css version');
       return [];
     }
-    const url = `https://data.jsdelivr.com/v1/package/npm/@trimble-oss/modus-icons@${version}/flat`;
-    console.log(`  Fetching icon list (v${version}) from jsDelivr...`);
-    const json = await fetchUrl(url);
-    const data = JSON.parse(json) as { files?: Array<{ name: string }> };
-    const names = (data.files ?? [])
-      .filter((f) => f.name.startsWith('/dist/modus-solid/svg/') && f.name.endsWith('.svg'))
-      .map((f) => f.name.replace('/dist/modus-solid/svg/', '').replace('.svg', '').replace(/-/g, '_'))
-      .sort();
+    const url = `https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@${version}/css/modus-icons-regular.css`;
+    console.log(`  Fetching 2.0 icon list (v${version}) from jsDelivr...`);
+    const names = parseModusIconSlugs(await fetchUrl(url));
     console.log(`  Found ${names.length} icons`);
     return names;
   } catch (err) {
@@ -496,7 +508,7 @@ function updateIconDocs(outputDir: string, iconNames: string[]): void {
   data.availableIcons = {
     total: iconNames.length,
     variants: ['solid', 'outlined'],
-    note: 'All icons are available in both solid and outlined variants.',
+    note: 'Native 2.0 kebab slugs from @trimble-oss/modus-icons-css. Legacy 1.0 names are also accepted when they have an alias.',
     source: 'https://modus-icons.trimble.com/',
     iconNames,
   };

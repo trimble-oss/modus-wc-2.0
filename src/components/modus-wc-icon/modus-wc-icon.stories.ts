@@ -39,17 +39,17 @@ type Story = StoryObj<IconArgs>;
 
 const Template: Story = {
   render: (args) => {
-    // prettier-ignore
     return html`
-<modus-wc-icon
-  aria-label="Alert icon"
-  custom-class="${ifDefined(args['custom-class'])}"
-  ?decorative="${args.decorative}"
-  name="${args.name}"
-  size="${args.size}"
-  variant="${ifDefined(args.variant)}"
->
-</modus-wc-icon>
+      <modus-wc-icon
+        aria-label="Alert icon"
+        custom-class="${ifDefined(args['custom-class'])}"
+        ?decorative="${args.decorative}"
+        .name="${args.name}"
+        name="${args.name}"
+        size="${args.size}"
+        variant="${ifDefined(args.variant)}"
+      >
+      </modus-wc-icon>
     `;
   },
 };
@@ -68,12 +68,44 @@ export const CustomColor: Story = {
 <modus-wc-icon
   aria-label="Red alert icon"
   custom-class="red-icon"
-  name="alert"
+  .name="${args.name}"
+  name="${args.name}"
   size="${args.size}"
 >
 </modus-wc-icon>
     `;
   },
+};
+
+export const NameResolution: Story = {
+  render: () => html`
+    <div style="display: flex; gap: 2rem; align-items: center;">
+      <div style="text-align: center;">
+        <modus-wc-icon
+          aria-label="Aliased add icon"
+          name="add"
+          size="lg"
+        ></modus-wc-icon>
+        <div>1.0 alias: add → plus</div>
+      </div>
+      <div style="text-align: center;">
+        <modus-wc-icon
+          aria-label="Native ship icon"
+          name="ship"
+          size="lg"
+        ></modus-wc-icon>
+        <div>Native 2.0: ship</div>
+      </div>
+      <div style="text-align: center;">
+        <modus-wc-icon
+          aria-label="Unmapped address icon"
+          name="address"
+          size="lg"
+        ></modus-wc-icon>
+        <div>Unmapped 1.0: address</div>
+      </div>
+    </div>
+  `,
 };
 
 export const CustomIcons: Story = {
@@ -93,16 +125,16 @@ export const CustomIcons: Story = {
     `,
   ],
   render: (args) => {
-    // prettier-ignore
     return html`
-<modus-wc-icon
-  aria-label="Cloud Queue icon"
-  custom-class="${ifDefined(args['custom-class'])}"
-  ?decorative="${args.decorative}"
-  name="${args.name}"
-  size="${args.size}"
->
-</modus-wc-icon>
+      <modus-wc-icon
+        aria-label="Cloud Queue icon"
+        custom-class="${ifDefined(args['custom-class'])}"
+        ?decorative="${args.decorative}"
+        .name="${args.name}"
+        name="${args.name}"
+        size="${args.size}"
+      >
+      </modus-wc-icon>
     `;
   },
 };
@@ -147,12 +179,18 @@ export const Migration: Story = {
   - In 1.0 the \`size\` prop accepted any numeric string (e.g., \`'16'\`, \`'24'\`, \`'32'\`) to set the icon's
   width and height. 2.0 uses preset sizes: \`sm\`, \`md\`, \`lg\`, and can use CSS for custom sizes.
 
+#### Icon names
+
+  - Legacy 1.0 names that have an approved mapping now paint the matching 2.0 glyph (for example \`name="add"\` renders \`plus\`).
+  - Native 2.0 kebab slugs work as-is (\`name="ship"\`, \`name="api"\`).
+  - Unmapped 1.0 names keep the previous 1.0 ligature fallback until they are added to the alias table.
+
 #### Prop Mapping
 
 | 1.0 Prop | 2.0 Prop | Notes                                                |
 |----------|----------|------------------------------------------------------|
 | color    |          | Not carried over, use CSS instead                    |
-| name     | name     |                                                      |
+| name     | name     | 1.0 names resolve to 2.0 glyphs when aliased         |
 | size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`, use CSS for custom sizes |
 
 #### Event Mapping

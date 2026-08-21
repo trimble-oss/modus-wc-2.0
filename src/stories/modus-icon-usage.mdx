@@ -4,13 +4,134 @@ import { Meta } from '@storybook/blocks';
 
 # Modus Icon Usage
 
-Modus Web Components require Modus Icons.
+`modus-wc-icon` renders **Modus Icons 2.0** glyphs from `@trimble-oss/modus-icons-css` when the `name` prop resolves to a 2.0 slug. Unmapped 1.0 names still use the 1.0 ligature font.
 
-Starting from v0.0.0-beta.5, the Web Components package supports both outlined and solid icon variants through a single CSS file.
+The component emits the same markup for both 2.0 delivery modes. Choose **one** stylesheet: CSS mask (recommended) or icon font (legacy engines without CSS mask). Do not load both 2.0 modes on the same page — they share `.modus-icon-*` class names but paint differently.
 
-## 1. Installation
+## Name resolution
 
-### Option A: Online Usage (CDN)
+<table>
+  <thead>
+    <tr>
+      <th>
+        <code>name</code> value
+      </th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Legacy 1.0 name in the alias table (<code>add</code>,{' '}
+        <code>arrow_left</code>)
+      </td>
+      <td>
+        Maps to a 2.0 kebab slug (<code>plus</code>, <code>arrow-left</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Native 2.0 kebab slug (<code>ship</code>, <code>api</code>,{' '}
+        <code>circle-truck</code>)
+      </td>
+      <td>Used as-is</td>
+    </tr>
+    <tr>
+      <td>
+        Unmapped 1.0 name (<code>address</code>, <code>satellite</code>)
+      </td>
+      <td>Stays on the 1.0 ligature fallback</td>
+    </tr>
+  </tbody>
+</table>
+
+Hyphen or underscore is accepted for aliased 1.0 names (`add_bold` and `add-bold` both map to `plus`).
+
+Load the 2.0 sheet for aliased and native names. Also load the 1.0 sheet if you still use unmapped 1.0 names.
+
+## 1. Modern browsers (CSS mask, recommended)
+
+Mask sheets tint with `color` / `currentColor`. Import regular for outlined icons and fill if you use `variant="solid"`.
+
+### From the Web Components package
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-icons-2.css';
+```
+
+Or load only the sets you need:
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-icons-regular.css';
+import '@trimble-oss/moduswebcomponents/modus-icons-fill.css';
+```
+
+### From `@trimble-oss/modus-icons-css` directly
+
+```bash
+npm install @trimble-oss/modus-icons-css@0.10.0
+```
+
+```js
+import '@trimble-oss/modus-icons-css/css/modus-icons-regular.min.css';
+import '@trimble-oss/modus-icons-css/css/modus-icons-fill.min.css';
+```
+
+### CDN
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@0.10.0/css/modus-icons-regular.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@0.10.0/css/modus-icons-fill.min.css"
+/>
+```
+
+Regular is about 109 KB gzipped; fill is about 182 KB gzipped. Skip fill if you never use `variant="solid"`.
+
+## 2. Legacy browsers without CSS mask (icon font)
+
+Use this **instead of** the mask sheets, not in addition to them. Markup and class names are unchanged — only the `<link>` differs.
+
+Font glyphs are single-color and stroke-traced. True duotone requires the mask path.
+
+```js
+import '@trimble-oss/moduswebcomponents/modus-icons-2-font/css/modus-icons-font-regular.css';
+import '@trimble-oss/moduswebcomponents/modus-icons-2-font/css/modus-icons-font-fill.css';
+```
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@0.10.0/css/modus-icons-font-regular.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@0.10.0/css/modus-icons-font-fill.css"
+/>
+```
+
+If you copy files into `public/`, keep the package layout so the font CSS `url("../fonts/{regular,fill}/...")` paths still resolve:
+
+```
+public/
+  └── modus-icons-2-font/
+      ├── css/
+      │   ├── modus-icons-font-regular.css
+      │   └── modus-icons-font-fill.css
+      └── fonts/
+          ├── regular/
+          └── fill/
+```
+
+## 3. Unmapped 1.0 names (ligature fallback)
+
+Required only for the 163 unmapped 1.0 names. Mapped 1.0 names and native 2.0 slugs do not use this sheet.
+
+### Option A: Online usage (CDN)
 
 Create a file at:
 
@@ -75,11 +196,11 @@ Then include it in your app:
 </head>
 ```
 
-### Option B: Offline Usage
+The Web Components package also exports this sheet as `@trimble-oss/moduswebcomponents/modus-icons.css`.
 
-For applications requiring offline capability, follow these steps:
+### Option B: Offline usage
 
-1. Install the Modus Icons package:
+1. Install the 1.0 Modus Icons package:
 
 ```bash
 npm install @trimble-oss/modus-icons
@@ -157,18 +278,21 @@ public/
 </head>
 ```
 
-## 2. Usage in Components
+## 4. Usage in components
 
 Once the stylesheet is loaded, you can use icons in any framework:
 
 ### Web Components
 
 ```html
-<!-- Outlined icon (default) -->
+<!-- Outlined 2.0 icon from a 1.0 alias -->
 <modus-wc-icon name="alert" variant="outlined"></modus-wc-icon>
 
-<!-- Solid icon -->
+<!-- Solid 2.0 icon -->
 <modus-wc-icon name="alert" variant="solid"></modus-wc-icon>
+
+<!-- Native 2.0 slug -->
+<modus-wc-icon name="ship"></modus-wc-icon>
 ```
 
 ### React
@@ -207,4 +331,4 @@ export function IconExamples() {
 
 ### Angular, Vue, etc.
 
-Follow the same approach — just make sure to include the global CSS file once in your application.
+Follow the same approach — include the 2.0 stylesheet once, plus the 1.0 sheet if you still render unmapped 1.0 names.

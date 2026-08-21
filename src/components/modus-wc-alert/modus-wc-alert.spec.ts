@@ -53,7 +53,8 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-neutral');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
-    expect(icon?.textContent?.trim()).toBe('info');
+    expect(icon?.classList.contains('modus-icon-info')).toBe(true);
+    expect(icon?.textContent?.trim()).toBe('');
 
     expect(page.root).toMatchSnapshot();
   });
@@ -68,7 +69,8 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
-    expect(icon?.textContent?.trim()).toBe('info');
+    expect(icon?.classList.contains('modus-icon-info')).toBe(true);
+    expect(icon?.textContent?.trim()).toBe('');
   });
 
   it('should apply info variant class when variant attribute is omitted', async () => {
@@ -81,7 +83,8 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-info');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
-    expect(icon?.textContent?.trim()).toBe('info');
+    expect(icon?.classList.contains('modus-icon-info')).toBe(true);
+    expect(icon?.textContent?.trim()).toBe('');
   });
 
   it('should render success variant with check_circle icon', async () => {
@@ -408,7 +411,8 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
-    expect(icon?.textContent?.trim()).toBe('info');
+    expect(icon?.classList.contains('modus-icon-info')).toBe(true);
+    expect(icon?.textContent?.trim()).toBe('');
   });
 
   describe('convertPropsToClasses', () => {
