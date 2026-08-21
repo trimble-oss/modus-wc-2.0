@@ -2,7 +2,11 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import { getModusIconClassName, resolveIconSlug } from './resolve-icon';
+import {
+  getModusIconClassName,
+  getModusIconPaintStyle,
+  resolveIconSlug,
+} from './resolve-icon';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -97,9 +101,7 @@ export class ModusWcIcon {
           aria-label={this.decorative ? null : this.el.ariaLabel}
           class={this.getClasses(resolvedSlug)}
           role={role}
-          style={
-            maskImage ? { maskImage, webkitMaskImage: maskImage } : undefined
-          }
+          style={getModusIconPaintStyle(maskImage)}
           tabindex={-1}
           {...this.inheritedAttributes}
         >

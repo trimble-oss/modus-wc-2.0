@@ -11,6 +11,7 @@ storybook-static/
 .wireit/
 src/styles/output.css
 src/styles/modus-icons-2.css
+src/styles/modus-icons-2-base.css
 src/styles/modus-icons-regular.css
 src/styles/modus-icons-fill.css
 src/styles/modus-icons-2-font/

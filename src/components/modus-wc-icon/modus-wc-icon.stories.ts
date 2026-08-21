@@ -96,6 +96,14 @@ export const NameResolution: Story = {
       </div>
       <div style="text-align: center;">
         <modus-wc-icon
+          aria-label="Native satellite icon"
+          name="satellite"
+          size="lg"
+        ></modus-wc-icon>
+        <div>Native 2.0: satellite</div>
+      </div>
+      <div style="text-align: center;">
+        <modus-wc-icon
           aria-label="Unmapped address icon"
           name="address"
           size="lg"

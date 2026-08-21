@@ -49,6 +49,16 @@ function parseCssSlugs(css) {
   return slugs;
 }
 
+function extractModusIconBaseCss(css, version) {
+  const match = css.match(/\[class\^="modus-icon-"\]\s*\{[^}]*\}/);
+  if (!match) {
+    fail(
+      'Could not extract [class^="modus-icon-"] paint rule from modus-icons-regular.css'
+    );
+  }
+  return `/* Generated from @trimble-oss/modus-icons-css@${version} — paint only. */\n${match[0]}\n`;
+}
+
 function quote(value) {
   return `'${String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 }
@@ -85,7 +95,8 @@ if (!aliases || typeof aliases !== 'object' || !Array.isArray(unmapped)) {
   fail('Alias JSON must contain an aliases object and an unmapped array.');
 }
 
-const slugs = parseCssSlugs(readFileSync(regularCssPath, 'utf8'));
+const regularCss = readFileSync(regularCssPath, 'utf8');
+const slugs = parseCssSlugs(regularCss);
 const unmappedSet = new Set(unmapped);
 const aliasKeys = Object.keys(aliases);
 
@@ -159,6 +170,10 @@ const lines = [
 writeFileSync(OUTPUT_PATH, lines.join('\n'), 'utf8');
 
 mkdirSync(STYLES_DIR, { recursive: true });
+writeFileSync(
+  join(STYLES_DIR, 'modus-icons-2-base.css'),
+  extractModusIconBaseCss(regularCss, iconsCssPkg.version)
+);
 copyFileSync(
   join(ICONS_CSS_DIR, 'css/modus-icons-regular.min.css'),
   join(STYLES_DIR, 'modus-icons-regular.css')

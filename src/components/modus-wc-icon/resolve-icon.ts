@@ -18,7 +18,7 @@ export function resolveIconSlug(name?: string): string | undefined {
     return alias;
   }
 
-  // Unmapped wins over the kebab lookup so `satellite` stays on 1.0.
+  // Unmapped 1.0 names have no approved 2.0 slug.
   if (UNMAPPED_LEGACY_ICONS.has(snake)) {
     return undefined;
   }
@@ -32,4 +32,18 @@ export function getModusIconClassName(
   variant?: 'outlined' | 'solid'
 ): string {
   return variant === 'solid' ? `modus-icon-${slug}-fill` : `modus-icon-${slug}`;
+}
+
+/** Per-glyph mask only. Size lives in `modus-wc-icon.scss`; paint is in the embedded icon CSS. */
+export function getModusIconPaintStyle(
+  maskImage: string | undefined
+): Record<string, string> | undefined {
+  if (!maskImage) {
+    return undefined;
+  }
+
+  return {
+    maskImage,
+    webkitMaskImage: maskImage,
+  };
 }

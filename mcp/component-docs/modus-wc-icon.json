@@ -20,7 +20,7 @@
     {
       "name": "name",
       "type": "string",
-      "description": "The icon name, should match the CSS class in the icon font.",
+      "description": "The icon name. Accepts legacy 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.",
       "default": null,
       "mutable": false,
       "end_line": 29

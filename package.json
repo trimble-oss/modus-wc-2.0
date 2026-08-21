@@ -403,13 +403,15 @@
     "embed:css": {
       "command": "node scripts/embed-css.js && node scripts/generate-variables-css.js",
       "dependencies": [
-        "tailwind:build"
+        "tailwind:build",
+        "generate:icon-data"
       ],
       "files": [
         "src/styles/output.css",
         "src/styles/global.css",
         "src/styles/variables.css",
         "src/styles/fonts.css",
+        "src/styles/modus-icons-2-base.css",
         "scripts/embed-css.js",
         "scripts/generate-variables-css.js"
       ],
@@ -454,6 +456,7 @@
       "output": [
         "src/components/modus-wc-icon/icon-data.ts",
         "src/styles/modus-icons-2.css",
+        "src/styles/modus-icons-2-base.css",
         "src/styles/modus-icons-regular.css",
         "src/styles/modus-icons-fill.css",
         "src/styles/modus-icons-2-font/**"

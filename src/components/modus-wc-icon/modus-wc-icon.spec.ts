@@ -1,7 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MODUS_ICON_NAMES, MODUS_ICONS_CSS_VERSION } from './icon-data';
 import { ModusWcIcon } from './modus-wc-icon';
-import { getModusIconClassName, resolveIconSlug } from './resolve-icon';
+import {
+  getModusIconClassName,
+  getModusIconPaintStyle,
+  resolveIconSlug,
+} from './resolve-icon';
 
 describe('resolveIconSlug', () => {
   it('should resolve an aliased 1.0 name', () => {
@@ -25,17 +29,30 @@ describe('resolveIconSlug', () => {
     expect(resolveIconSlug('ship')).toBe('ship');
     expect(resolveIconSlug('api')).toBe('api');
     expect(resolveIconSlug('circle-truck')).toBe('circle-truck');
+    expect(resolveIconSlug('satellite')).toBe('satellite');
   });
 
   it('should not map unmapped 1.0 names', () => {
     expect(resolveIconSlug('address')).toBeUndefined();
-    expect(resolveIconSlug('satellite')).toBeUndefined();
   });
 
   it('should return undefined for empty or unknown names', () => {
     expect(resolveIconSlug('')).toBeUndefined();
     expect(resolveIconSlug(undefined)).toBeUndefined();
     expect(resolveIconSlug('not-a-real-icon')).toBeUndefined();
+  });
+});
+
+describe('getModusIconPaintStyle', () => {
+  it('should return undefined without a mask image', () => {
+    expect(getModusIconPaintStyle(undefined)).toBeUndefined();
+  });
+
+  it('should set only the per-glyph mask image', () => {
+    expect(getModusIconPaintStyle('var(--modus-icon-plus)')).toEqual({
+      maskImage: 'var(--modus-icon-plus)',
+      webkitMaskImage: 'var(--modus-icon-plus)',
+    });
   });
 });
 
