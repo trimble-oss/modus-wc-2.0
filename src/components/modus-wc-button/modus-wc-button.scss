@@ -27,9 +27,9 @@ modus-wc-button .modus-wc-btn {
 }
 
 [data-theme^='modus-modern'] modus-wc-button .modus-wc-btn {
-  &.modus-wc-btn-outline.modus-wc-btn-neutral:not(:hover):not(:active):not(
-      [aria-pressed='true']
-    ):not(.modus-wc-btn-disabled) {
+  &.modus-wc-btn-outline.modus-wc-btn-neutral:not([aria-pressed='true']):not(
+      .modus-wc-btn-disabled
+    ):not(:disabled) {
     border-color: var(--modus-wc-color-base-200);
   }
 }
