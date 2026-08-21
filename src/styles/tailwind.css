@@ -746,3 +746,284 @@
     color: #252a2e; /* trimble-gray */
   }
 }
+
+/*
+ * Button disabled colors — one token table on color classes, shared restore by
+ * variant, then theme opacity. Avoids a second color × variant matrix.
+ *
+ * oklch browsers: Daisy theme slots (--p/--s/…) so Connect/Modern/Classic match
+ * enabled buttons. Hex --fallback-* is only for @supports not (below); do not
+ * prefer var(--fallback-*, oklch(…)) here — :root already defines fallbacks as
+ * Modern --modus-wc-color-* and would hide Connect Daisy --s.
+ *
+ * --_btn-bg / --_btn-fg: filled surface + content.
+ * --_btn-ink: outline/borderless text (and outline border). Usually the brand
+ * color (--_btn-bg); tertiary uses base-content so disabled ink stays visible
+ * (neutral fill #CBCDD6 is too pale at disabled opacity).
+ */
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-primary {
+  --_btn-bg: oklch(var(--p) / 1);
+  --_btn-fg: oklch(var(--pc) / 1);
+  --_btn-ink: var(--_btn-bg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-secondary {
+  --_btn-bg: oklch(var(--s) / 1);
+  --_btn-fg: oklch(var(--sc) / 1);
+  --_btn-ink: var(--_btn-bg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-neutral {
+  --_btn-bg: oklch(var(--n) / 1);
+  --_btn-fg: oklch(var(--nc) / 1);
+  --_btn-ink: var(--modus-wc-color-base-content);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-warning {
+  --_btn-bg: oklch(var(--wa) / 1);
+  --_btn-fg: oklch(var(--wac) / 1);
+  --_btn-ink: var(--_btn-bg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-error {
+  --_btn-bg: oklch(var(--er) / 1);
+  --_btn-fg: oklch(var(--erc) / 1);
+  --_btn-ink: var(--_btn-bg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-success {
+  --_btn-bg: oklch(var(--su) / 1);
+  --_btn-fg: oklch(var(--suc) / 1);
+  --_btn-ink: var(--_btn-bg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
+  --_btn-bg: var(--modus-wc-color-trimble-neutral);
+  --_btn-fg: var(--modus-wc-color-base-page);
+  --_btn-ink: var(--_btn-bg);
+}
+
+/* Chrome <111: per-theme hex --fallback-* from the @supports not table above. */
+@supports not (color: oklch(0% 0 0)) {
+  modus-wc-button .modus-wc-btn.modus-wc-btn-primary {
+    --_btn-bg: var(--fallback-p);
+    --_btn-fg: var(--fallback-pc);
+    --_btn-ink: var(--_btn-bg);
+  }
+
+  modus-wc-button .modus-wc-btn.modus-wc-btn-secondary {
+    --_btn-bg: var(--fallback-s);
+    --_btn-fg: var(--fallback-sc);
+    --_btn-ink: var(--_btn-bg);
+  }
+
+  modus-wc-button .modus-wc-btn.modus-wc-btn-neutral {
+    --_btn-bg: var(--fallback-n);
+    --_btn-fg: var(--fallback-nc);
+    --_btn-ink: var(--modus-wc-color-base-content);
+  }
+
+  modus-wc-button .modus-wc-btn.modus-wc-btn-warning {
+    --_btn-bg: var(--fallback-wa);
+    --_btn-fg: var(--fallback-wac);
+    --_btn-ink: var(--_btn-bg);
+  }
+
+  modus-wc-button .modus-wc-btn.modus-wc-btn-error {
+    --_btn-bg: var(--fallback-er);
+    --_btn-fg: var(--fallback-erc);
+    --_btn-ink: var(--_btn-bg);
+  }
+
+  modus-wc-button .modus-wc-btn.modus-wc-btn-success {
+    --_btn-bg: var(--fallback-su);
+    --_btn-fg: var(--fallback-suc);
+    --_btn-ink: var(--_btn-bg);
+  }
+}
+
+/* Restore theme colors over DaisyUI gray wash; variants map tokens differently. */
+modus-wc-button .modus-wc-btn:disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  --tw-border-opacity: 1;
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-filled:disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-disabled {
+  background-color: var(--_btn-bg);
+  border-color: var(--_btn-bg);
+  color: var(--_btn-fg);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-outline:disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-borderless:disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-disabled {
+  background-color: transparent;
+  color: var(--_btn-ink);
+}
+
+modus-wc-button .modus-wc-btn.modus-wc-btn-outline:disabled,
+modus-wc-button .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled {
+  border-color: var(--_btn-ink);
+}
+
+/* Classic: strip outline/borderless pressed chrome when disabled (existing behavior). */
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline:disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active:disabled,
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active.modus-wc-btn-disabled,
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless:disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active:disabled,
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active.modus-wc-btn-disabled {
+  background-color: transparent;
+  color: var(--_btn-ink);
+}
+
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline:disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active:disabled,
+[data-theme^='modus-classic']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active.modus-wc-btn-disabled {
+  border-color: var(--_btn-ink);
+}
+
+/* Modern + Connect: pressed+disabled keeps pressed surface; opacity is theme-level. */
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline:disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active:disabled,
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active.modus-wc-btn-disabled,
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless:disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active:disabled,
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active.modus-wc-btn-disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline:disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active:disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-outline.modus-wc-btn-active.modus-wc-btn-disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless:disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active:disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-active.modus-wc-btn-disabled {
+  background-color: var(--_btn-bg);
+  border-color: transparent;
+  color: var(--_btn-fg);
+}
+
+/* Modern + Connect filled: pressed+disabled keeps pressed (darkened) surface + opacity. */
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled:disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-active:disabled,
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-active.modus-wc-btn-disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled:disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-disabled[aria-pressed='true'],
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-active:disabled,
+[data-theme^='connect']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-filled.modus-wc-btn-active.modus-wc-btn-disabled {
+  background-color: color-mix(
+    in oklab,
+    var(--_btn-bg) 80%,
+    var(--modus-wc-color-black)
+  );
+  border-color: color-mix(
+    in oklab,
+    var(--_btn-bg) 80%,
+    var(--modus-wc-color-black)
+  );
+  color: var(--_btn-fg);
+}
+
+[data-theme$='-light'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme$='-light'] modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
+  opacity: 0.3;
+}
+
+[data-theme$='-dark'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme$='-dark'] modus-wc-button .modus-wc-btn.modus-wc-btn-disabled {
+  opacity: 0.4;
+}
+
+[data-theme='connect-light'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme='connect-light']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-disabled,
+[data-theme='connect-dark'] modus-wc-button .modus-wc-btn:disabled,
+[data-theme='connect-dark']
+  modus-wc-button
+  .modus-wc-btn.modus-wc-btn-disabled {
+  opacity: 0.5;
+}

@@ -147,6 +147,14 @@ export class ModusWcChip {
               onClick={this.handleChipRemove}
             ></modus-wc-icon>
           )}
+          {this.showRemove && (
+            <modus-wc-icon
+              custom-class="modus-wc-chip-remove-icon modus-wc-chip-remove-icon--connect"
+              name="cancel_circle"
+              onClick={this.handleChipRemove}
+              variant="solid"
+            ></modus-wc-icon>
+          )}
         </button>
       </Host>
     );

@@ -277,6 +277,7 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
             Chip 1
           </span>
           <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
+          <modus-wc-icon custom-class="modus-wc-chip-remove-icon modus-wc-chip-remove-icon--connect" name="cancel_circle" variant="solid"></modus-wc-icon>
         </button>
       </modus-wc-chip>
       <modus-wc-chip show-remove="">
@@ -286,6 +287,7 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
             Chip 3
           </span>
           <modus-wc-icon custom-class="modus-wc-chip-remove-icon" name="close"></modus-wc-icon>
+          <modus-wc-icon custom-class="modus-wc-chip-remove-icon modus-wc-chip-remove-icon--connect" name="cancel_circle" variant="solid"></modus-wc-icon>
         </button>
       </modus-wc-chip>
       <modus-wc-text-input inputmode="text" value="">
