@@ -1,9 +1,12 @@
 ---
-description: Route QA labels via PR comments; GitHub Action attaches them. Never GitHub MCP or gh label create.
 alwaysApply: true
 ---
 
-# QA label routing (official repo)
+# Cursor automations
+
+Follow this file on every Dev / QA / Fix / `/ask` / `/refine` run. Do not skip it.
+
+## QA labels
 
 GitHub MCP **cannot** add, remove, or create labels on `trimble-oss/modus-wc-2.0` (403). Do not run `gh label create`. These labels already exist: `qa-skip`, `qa-full`, `qa-rerun`, `qa-failed`, `needs-human`.
 
@@ -20,3 +23,11 @@ Workflow [`.github/workflows/automation-label-router.yml`](../../.github/workflo
 Do **not** claim you attached the label. If it is missing after about one minute, ask the human once to add the existing name. Do not retry GitHub MCP.
 
 QA/Fix still wake on **label added**, not on the comment itself.
+
+## Reply surface
+
+(Fill later.)
+
+## Slash commands
+
+(Fill later.)
