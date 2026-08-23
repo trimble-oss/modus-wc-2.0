@@ -43,19 +43,19 @@ jobs:
 
           matched=0
 
-          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])Routing:[[:space:]]*qa-full([^[:alnum:]_-]|$)'; then
+          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])Routing:[[:space:]]*qa-full([[:space:]]|$)'; then
             remove_label qa-skip
             add_label qa-full
             matched=1
           fi
 
-          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])Routing:[[:space:]]*qa-skip([^[:alnum:]_-]|$)'; then
+          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])Routing:[[:space:]]*qa-skip([[:space:]]|$)'; then
             remove_label qa-full
             add_label qa-skip
             matched=1
           fi
 
-          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])(QA-rerun:[[:space:]]*add|Routing:[[:space:]]*qa-rerun)([^[:alnum:]_-]|$)'; then
+          if printf '%s\n' "${COMMENT_BODY}" | grep -qE '(^|[[:space:]])(QA-rerun:[[:space:]]*add|Routing:[[:space:]]*qa-rerun)([[:space:]]|$)'; then
             remove_label qa-rerun
             add_label qa-rerun
             matched=1
