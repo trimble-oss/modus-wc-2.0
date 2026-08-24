@@ -24,6 +24,35 @@ Do **not** claim you attached the label. If it is missing after about one minute
 
 QA/Fix still wake on **label added**, not on the comment itself.
 
+## API stability
+
+Guidelines for preserving the public TypeScript and component API surface. Additional project-specific rules may be appended to this file over time.
+
+### Do not add new exported types
+
+Adding a new named export to `src/components/types.ts` (or re-exporting it from `components.d.ts`) is a **breaking change** for TypeScript consumers who import from `@trimble-oss/modus-wc`.
+
+When a component prop needs values beyond an existing shared type, **extend inline on the prop** instead of introducing a new exported alias.
+
+#### Preferred pattern
+
+Use inline unions on `@Prop()` and local interfaces, matching existing components:
+
+```typescript
+// Good — inline union (see modus-wc-pagination, modus-wc-switch)
+@Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
+
+// Bad — new exported type
+export type ModusInputSize = ModusSize | 'xs' | 'xl';
+@Prop() size?: ModusInputSize = 'md';
+```
+
+#### When widening size props
+
+- Keep `ModusSize` unchanged (`'sm' | 'md' | 'lg'`).
+- Add `'xs'` and/or `'xl'` as literal union members on the component prop only.
+- Map extended sizes to supported child sizes via constants (e.g. `INPUT_SIZE_TO_LABEL_SIZE`) keyed by `ModusSize | 'xs' | 'xl'`.
+
 ## Reply surface
 
 (Fill later.)
