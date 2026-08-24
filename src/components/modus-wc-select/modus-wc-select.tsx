@@ -10,7 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
-import { DaisySize, IInputFeedbackProp, ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
@@ -74,7 +74,7 @@ export class ModusWcSelect {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: DaisySize | 'xl' = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** The value of the control. */
   @Prop({ mutable: true, reflect: true }) value: string = '';
