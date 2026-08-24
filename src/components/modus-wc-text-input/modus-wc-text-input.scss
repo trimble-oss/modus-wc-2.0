@@ -221,14 +221,6 @@ modus-wc-text-input {
 
     // TODO - add support for xs and xl once added to Modus Figma
 
-    &.modus-wc-input-xs {
-      font-size: var(--modus-wc-font-size-sm);
-      height: var(--modus-wc-input-height-sm);
-      line-height: var(--modus-wc-line-height-sm);
-      min-height: var(--modus-wc-input-height-sm);
-      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
-    }
-
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-input-height-sm);
@@ -247,14 +239,6 @@ modus-wc-text-input {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
       line-height: var(--modus-wc-line-height-lg);
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
-    }
-
-    &.modus-wc-input-xl {
-      font-size: var(--modus-wc-font-size-lg);
-      height: var(--modus-wc-input-height-lg);
-      line-height: var(--modus-wc-line-height-lg);
-      min-height: var(--modus-wc-input-height-lg);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
@@ -321,15 +305,5 @@ modus-wc-text-input {
 
   .modus-wc-text-input {
     @include connect-input-styles;
-
-    &.modus-wc-input-xs {
-      height: var(--modus-wc-size-sm);
-      min-height: var(--modus-wc-size-sm);
-    }
-
-    &.modus-wc-input-xl {
-      height: var(--modus-wc-size-lg);
-      min-height: var(--modus-wc-size-lg);
-    }
   }
 }

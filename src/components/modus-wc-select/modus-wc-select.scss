@@ -35,13 +35,6 @@ modus-wc-select .modus-wc-select {
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
   // TODO - add support for xs and xl once added to Modus Figma
 
-  &.modus-wc-select-xs {
-    font-size: var(--modus-wc-font-size-sm);
-    height: var(--modus-wc-input-height-sm);
-    line-height: var(--modus-wc-input-height-sm);
-    min-height: var(--modus-wc-input-height-sm);
-  }
-
   &.modus-wc-select-sm {
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-input-height-sm);
@@ -57,13 +50,6 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-lg {
-    font-size: var(--modus-wc-font-size-lg);
-    height: var(--modus-wc-input-height-lg);
-    line-height: var(--modus-wc-font-size-lg);
-    min-height: var(--modus-wc-font-size-lg);
-  }
-
-  &.modus-wc-select-xl {
     font-size: var(--modus-wc-font-size-lg);
     height: var(--modus-wc-input-height-lg);
     line-height: var(--modus-wc-font-size-lg);
@@ -96,14 +82,4 @@ modus-wc-select .modus-wc-select {
 [data-theme='connect-light'] modus-wc-select .modus-wc-select,
 [data-theme='connect-dark'] modus-wc-select .modus-wc-select {
   @include connect-input-styles;
-
-  &.modus-wc-select-xs {
-    height: var(--modus-wc-size-sm);
-    min-height: var(--modus-wc-size-sm);
-  }
-
-  &.modus-wc-select-xl {
-    height: var(--modus-wc-size-lg);
-    min-height: var(--modus-wc-size-lg);
-  }
 }
