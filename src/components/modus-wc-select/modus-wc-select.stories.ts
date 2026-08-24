@@ -4,7 +4,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { ISelectOption } from './modus-wc-select';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { DaisySize, IInputFeedbackProp } from '../types';
 
 const options: ISelectOption[] = [
   { label: 'Select an option', value: '', hidden: true },
@@ -25,7 +25,7 @@ interface SelectArgs {
   name?: string;
   options: ISelectOption[];
   required?: boolean;
-  size?: ModusSize | 'xs' | 'xl';
+  size?: DaisySize | 'xl';
   value: string;
 }
 

@@ -122,7 +122,7 @@ export class ModusWcTextInput {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
+  @Prop() size?: DaisySize | 'xl' = 'md';
 
   /** Type of form control. */
   @Prop() type?: TextFieldTypes = 'text';

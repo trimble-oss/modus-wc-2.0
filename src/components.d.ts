@@ -1867,7 +1867,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize | 'xs' | 'xl';
+        "size"?: DaisySize | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -2308,7 +2308,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize | 'xs' | 'xl';
+        "size"?: DaisySize | 'xl';
         /**
           * Type of form control.
           * @default 'text'
@@ -6255,7 +6255,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize | 'xs' | 'xl';
+        "size"?: DaisySize | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -6785,7 +6785,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize | 'xs' | 'xl';
+        "size"?: DaisySize | 'xl';
         /**
           * Type of form control.
           * @default 'text'

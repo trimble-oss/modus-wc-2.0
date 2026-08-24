@@ -6563,7 +6563,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize | 'xs' | 'xl'"
+                "text": "DaisySize | 'xl'"
               }
             },
             {
@@ -7980,7 +7980,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize | 'xs' | 'xl'"
+                "text": "DaisySize | 'xl'"
               }
             },
             {

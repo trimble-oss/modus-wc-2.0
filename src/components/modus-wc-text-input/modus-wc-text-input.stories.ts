@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
-import { AutocompleteTypes, IInputFeedbackProp, ModusSize } from '../types';
+import { AutocompleteTypes, DaisySize, IInputFeedbackProp } from '../types';
 
 interface TextInputArgs {
   'auto-capitalize'?:
@@ -49,7 +49,7 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  size?: ModusSize | 'xs' | 'xl';
+  size?: DaisySize | 'xl';
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
