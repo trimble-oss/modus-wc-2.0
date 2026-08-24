@@ -153,7 +153,7 @@
     "lit": "^3.3.3",
     "marked": "^15.0.11",
     "prettier": "3.8.4",
-    "puppeteer": "^23.5.3",
+    "puppeteer": "^25.8.0",
     "stencil-tailwind-plugin": "^1.8.0",
     "stylelint": "16.26.1",
     "stylelint-config-standard-scss": "16.0.0",
