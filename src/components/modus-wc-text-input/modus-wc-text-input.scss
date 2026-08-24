@@ -28,20 +28,6 @@ modus-wc-text-input {
     &.modus-wc-input {
       background-color: var(--modus-wc-color-base-page);
 
-      &.modus-wc-input-xs {
-        font-size: var(--modus-wc-font-size-xs);
-        padding: 0 var(--modus-wc-spacing-xs);
-
-        input {
-          max-height: var(--modus-wc-size-xxs);
-        }
-
-        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-          height: var(--modus-wc-line-height-xs);
-          width: var(--modus-wc-line-height-xs);
-        }
-      }
-
       &.modus-wc-input-sm {
         padding: 0 var(--modus-wc-spacing-sm);
 
@@ -70,16 +56,6 @@ modus-wc-text-input {
         .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-lg);
           width: var(--modus-wc-line-height-lg);
-        }
-      }
-
-      &.modus-wc-input-xl {
-        font-size: var(--modus-wc-font-size-xl);
-        padding: 0 var(--modus-wc-spacing-md);
-
-        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-          height: var(--modus-wc-line-height-xl);
-          width: var(--modus-wc-line-height-xl);
         }
       }
 
@@ -189,20 +165,12 @@ modus-wc-text-input {
         outline: none;
       }
 
-      &.modus-wc-input-xs .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-xs);
-      }
-
       &.modus-wc-input-sm .modus-wc-clear-icon-container {
         min-width: var(--modus-wc-line-height-sm);
       }
 
       &.modus-wc-input-lg .modus-wc-clear-icon-container {
         min-width: var(--modus-wc-line-height-lg);
-      }
-
-      &.modus-wc-input-xl .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-xl);
       }
     }
   }
@@ -214,11 +182,33 @@ modus-wc-text-input {
     &.modus-wc-input-xs {
       font-size: var(--modus-wc-font-size-xs);
       padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
+
+      input {
+        max-height: var(--modus-wc-size-xxs);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-xs);
+        width: var(--modus-wc-line-height-xs);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-xs);
+      }
     }
 
     &.modus-wc-input-xl {
       font-size: var(--modus-wc-font-size-xl);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-xl);
+        width: var(--modus-wc-line-height-xl);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-xl);
+      }
     }
   }
 }
@@ -230,6 +220,14 @@ modus-wc-text-input {
     border-radius: var(--modus-wc-border-radius-md);
 
     // TODO - add support for xs and xl once added to Modus Figma
+
+    &.modus-wc-input-xs {
+      font-size: var(--modus-wc-font-size-sm);
+      height: var(--modus-wc-input-height-sm);
+      line-height: var(--modus-wc-line-height-sm);
+      min-height: var(--modus-wc-input-height-sm);
+      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
+    }
 
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
@@ -249,6 +247,14 @@ modus-wc-text-input {
       font-size: var(--modus-wc-font-size-lg);
       height: var(--modus-wc-input-height-lg);
       line-height: var(--modus-wc-line-height-lg);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+    }
+
+    &.modus-wc-input-xl {
+      font-size: var(--modus-wc-font-size-lg);
+      height: var(--modus-wc-input-height-lg);
+      line-height: var(--modus-wc-line-height-lg);
+      min-height: var(--modus-wc-input-height-lg);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
@@ -315,5 +321,15 @@ modus-wc-text-input {
 
   .modus-wc-text-input {
     @include connect-input-styles;
+
+    &.modus-wc-input-xs {
+      height: var(--modus-wc-size-sm);
+      min-height: var(--modus-wc-size-sm);
+    }
+
+    &.modus-wc-input-xl {
+      height: var(--modus-wc-size-lg);
+      min-height: var(--modus-wc-size-lg);
+    }
   }
 }
