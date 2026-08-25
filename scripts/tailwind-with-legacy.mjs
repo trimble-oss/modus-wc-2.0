@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
 import { watch } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { appendLegacyToOutput } from './generate-theme-css.mjs';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const tailwindBin = join(root, 'node_modules/.bin/tailwindcss');
 
 const watchMode = process.argv.includes('--watch');
 const args = [
@@ -32,7 +37,11 @@ async function appendSafe() {
   }
 }
 
-const child = spawn('tailwindcss', args, { stdio: 'inherit' });
+const child = spawn(tailwindBin, args, { stdio: 'inherit', cwd: root });
+child.on('error', (error) => {
+  console.error(error.message);
+  process.exit(1);
+});
 
 if (watchMode) {
   let timer;
