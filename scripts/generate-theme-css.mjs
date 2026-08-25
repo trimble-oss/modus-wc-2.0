@@ -88,7 +88,10 @@ export function appendLegacyToOutput({
 }
 
 const args = process.argv.slice(2);
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+const isMain =
+  Boolean(process.argv[1]) &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
   const variablesCss = readFileSync(paths.variables, 'utf8');
   const globalCss = readFileSync(paths.global, 'utf8');
 
