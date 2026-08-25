@@ -11,6 +11,7 @@
     --fallback-b1: var(--modus-wc-color-base-100);
     --fallback-b2: var(--modus-wc-color-base-200);
     --fallback-b3: var(--modus-wc-color-base-300);
+    --fallback-bc: var(--modus-wc-color-base-content);
     --fallback-in: var(--modus-wc-color-info);
     --fallback-inc: var(--modus-wc-color-info-content);
     --fallback-su: var(--modus-wc-color-success);

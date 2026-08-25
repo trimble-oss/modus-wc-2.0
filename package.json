@@ -40,7 +40,9 @@
   "esnext": "esm/index.js",
   "collection": "collection/collection-manifest.json",
   "collection:main": "collection/index.js",
-  "unpkg": "modus-wc/modus-wc.esm.js",
+  "bin": {
+    "modus-theme": "./theme-cli/cli.js"
+  },
   "jsdelivr": "modus-wc/modus-wc.js",
   "types": "types/components.d.ts",
   "exports": {
@@ -96,6 +98,7 @@
     "prettier": "prettier --write \"src/**/*.*\"",
     "start": "wireit",
     "test": "stencil test --spec",
+    "test:theme-parity": "node --test src/theme-cli/*.test.js",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
@@ -375,7 +378,7 @@
       ]
     },
     "tailwind:build": {
-      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify",
+      "command": "node scripts/tailwind-with-legacy.mjs",
       "files": [
         "src/**/*.scss",
         "src/styles/fonts.css",
@@ -383,7 +386,10 @@
         "src/styles/tailwind.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**",
-        "tailwind.config.js"
+        "src/theme-cli/**",
+        "scripts/tailwind-with-legacy.mjs",
+        "scripts/generate-theme-css.mjs",
+        "tailwind.config.ts"
       ],
       "output": [
         "src/styles/output.css"
@@ -400,7 +406,8 @@
         "src/styles/variables.css",
         "src/styles/fonts.css",
         "scripts/embed-css.js",
-        "scripts/generate-variables-css.js"
+        "scripts/generate-variables-css.js",
+        "src/theme-cli/**"
       ],
       "output": [
         "src/providers/theme/css-content.ts",
@@ -432,7 +439,7 @@
       ]
     },
     "tailwind:watch": {
-      "command": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify --watch",
+      "command": "node scripts/tailwind-with-legacy.mjs --watch",
       "service": true,
       "files": [
         "src/**/*.scss",
@@ -441,7 +448,10 @@
         "src/styles/tailwind.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**",
-        "tailwind.config.js"
+        "src/theme-cli/**",
+        "scripts/tailwind-with-legacy.mjs",
+        "scripts/generate-theme-css.mjs",
+        "tailwind.config.ts"
       ]
     }
   },

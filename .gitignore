@@ -10,6 +10,7 @@ www/
 storybook-static/
 .wireit/
 src/styles/output.css
+src/styles/generated-legacy-fallbacks.css
 src/providers/theme/css-content.ts
 src/providers/theme/component-css-content.ts
 # built npm packages

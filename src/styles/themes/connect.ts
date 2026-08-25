@@ -19,22 +19,18 @@ export const connect = {
 
     // Primary Colors (Primary Palette)
     primary: '#005F9E', // Trimble Blue
-    'primary-focus': '#00437B', // Trimble Blue Dark
     'primary-content': '#FFFFFF', // White
 
     // Secondary Colors (Yellow Progression)
     secondary: '#6A6976', // Neutral Gray 10
-    'secondary-focus': '#474655', // Neutral Gray 8
     'secondary-content': '#FFFFFF', // Trimble Gray
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
-    'accent-focus': '#464B52', // Gray 8
     'accent-content': '#FFFFFF', // White
 
     // Neutral Colors
     neutral: '#CBCDD6', // Gray 1
-    'neutral-focus': '#A3A6B1', // Gray 3
     'neutral-content': '#252A2E', // Trimble Gray
 
     // Base Colors
@@ -69,22 +65,18 @@ export const connect = {
 
     // Primary Colors (Primary Palette)
     primary: '#019aeb', // Trimble Blue
-    'primary-focus': '#004F83', // Trimble Blue Dark
     'primary-content': '#000000', // White
 
     // Secondary Colors (Gray Progression)
     secondary: '#f1f1f6', // Neutral Gray Light
-    'secondary-focus': '#E49325', // Yellow Dark
     'secondary-content': '#000', // Trimble Black
 
     // Tertiary/Accent Colors (Neutral Progression)
     accent: '#6A6E79', // Gray 6
-    'accent-focus': '#464B52', // Gray 8
     'accent-content': '#FFFFFF', // White
 
     // Neutral Colors
     neutral: '#353A40', // Gray 9
-    'neutral-focus': '#171C1E', // Gray 10
     'neutral-content': '#FFFFFF', // White
 
     // Base Colors

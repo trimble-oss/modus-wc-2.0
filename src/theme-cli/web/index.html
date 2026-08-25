@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modus theme generator</title>
+    <style>
+      :root {
+        font-family: 'Open Sans', system-ui, sans-serif;
+        color: #171c1e;
+        background: #f5f5f8;
+      }
+      body {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+      }
+      aside,
+      main {
+        padding: 1.5rem;
+      }
+      textarea {
+        width: 100%;
+        min-height: 22rem;
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+      }
+      .swatch-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+      .swatch {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #cbcdd6;
+        display: grid;
+        place-items: end center;
+        font-size: 10px;
+        padding: 0.25rem;
+        box-sizing: border-box;
+      }
+      .preview-btn {
+        border: 0;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        color: var(--pc);
+        background: var(--p);
+        font: inherit;
+      }
+      .error {
+        color: #da212c;
+      }
+      button {
+        font: inherit;
+        margin-inline-end: 0.5rem;
+      }
+      @media (max-width: 800px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>Theme generator</h1>
+      <p>
+        Import or export JSON only. Generated CSS is produced by
+        <code>npx modus-theme build</code> in your app — it is not copied from
+        here.
+      </p>
+      <p>
+        <button type="button" id="import">Import JSON</button>
+        <button type="button" id="export">Export JSON</button>
+        <input id="file" type="file" accept="application/json" hidden />
+      </p>
+      <label for="config">modus-theme.config.json</label>
+      <textarea id="config" spellcheck="false"></textarea>
+      <p id="status"></p>
+    </aside>
+    <main>
+      <h2>Live preview</h2>
+      <p>
+        <label
+          ><input type="radio" name="mode" value="light" checked /> light</label
+        >
+        <label><input type="radio" name="mode" value="dark" /> dark</label>
+      </p>
+      <div class="swatch-row" id="swatches"></div>
+      <button class="preview-btn" type="button">Primary button</button>
+      <p class="hint">
+        Tailwind opacity modifiers such as <code>bg-primary/50</code> still drop
+        on the DaisyUI fallback path; prefer semantic
+        <code>--modus-wc-*</code> tokens.
+      </p>
+    </main>
+    <script type="module">
+      import { emitConsumerCss, validateConfig } from '../consumer.js';
+      import { DAISY_SLOTS, SLOT_NAMES } from '../slots.js';
+
+      const textarea = document.getElementById('config');
+      const status = document.getElementById('status');
+      const swatches = document.getElementById('swatches');
+      const previewBtn = document.querySelector('.preview-btn');
+
+      const sample = {
+        name: 'my-theme',
+        extends: 'modus-modern',
+        tokens: {
+          light: { '--modus-wc-color-primary': '#0063a3' },
+          dark: { '--modus-wc-color-primary': '#019aeb' },
+        },
+      };
+      textarea.value = JSON.stringify(sample, null, 2);
+
+      function currentMode() {
+        return document.querySelector('input[name="mode"]:checked').value;
+      }
+
+      function paint() {
+        status.textContent = '';
+        status.className = '';
+        let config;
+        try {
+          config = JSON.parse(textarea.value);
+        } catch (error) {
+          status.textContent = error.message;
+          status.className = 'error';
+          return;
+        }
+        const errors = validateConfig(config, null);
+        if (errors.length) {
+          status.textContent = errors.join('\n');
+          status.className = 'error';
+          return;
+        }
+        const css = emitConsumerCss(config);
+        const host = document.querySelector('main');
+        const theme = `${config.name}-${currentMode()}`;
+        host.setAttribute('data-theme', theme);
+        const fake = document.createElement('style');
+        fake.textContent = css;
+        document.getElementById('live-css')?.remove();
+        fake.id = 'live-css';
+        document.head.appendChild(fake);
+
+        swatches.replaceChildren();
+        for (const slot of SLOT_NAMES) {
+          const el = document.createElement('div');
+          el.className = 'swatch';
+          el.style.background = `var(--${slot})`;
+          el.textContent = slot;
+          swatches.appendChild(el);
+        }
+        previewBtn.style.background = 'var(--p)';
+        previewBtn.style.color = 'var(--pc)';
+        void DAISY_SLOTS;
+      }
+
+      textarea.addEventListener('input', paint);
+      for (const radio of document.querySelectorAll('input[name="mode"]')) {
+        radio.addEventListener('change', paint);
+      }
+
+      document.getElementById('export').addEventListener('click', () => {
+        const blob = new Blob([textarea.value], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'modus-theme.config.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('import').addEventListener('click', () => {
+        document.getElementById('file').click();
+      });
+      document
+        .getElementById('file')
+        .addEventListener('change', async (event) => {
+          const file = event.target.files?.[0];
+          if (!file) return;
+          textarea.value = await file.text();
+          paint();
+        });
+
+      paint();
+    </script>
+  </body>
+</html>

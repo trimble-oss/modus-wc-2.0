@@ -163,166 +163,17 @@
 }
 
 /*
- * Chrome <111 DaisyUI Color Fallbacks
+ * Chrome <111 DaisyUI color fallbacks (slot hex)
  *
  * DaisyUI v4 stores theme colors as oklch() which Chrome 111+ is required to parse.
- * On older browsers, DaisyUI falls back to its own default purple (#491eff).
- * This block overrides those defaults with the correct Modus hex colors.
+ * Hex --fallback-* / --p…--erc for each theme are generated from
+ * src/styles/variables.css + src/styles/global.css and appended to output.css
+ * AFTER @tailwind utilities (see scripts/tailwind-with-legacy.mjs).
+ * Do not hand-edit slot hex here — hover/active fallbacks below stay authored.
  *
- * These values must come AFTER @tailwind utilities to win the cascade over DaisyUI's
- * own @supports not block.
- *
- * MAINTENANCE: If a theme color changes in src/styles/themes/*.ts, update the
- * corresponding hex value below. Each --fallback-* maps to a DaisyUI semantic token:
- *   p  = primary       s  = secondary    a  = accent       n  = neutral
- *   b1 = base-100      b2 = base-200     b3 = base-300
- *   in = info          su = success      wa = warning       er = error
- *   (suffix 'c' = content/text color on that background)
- *
- * Source values taken from src/styles/themes/modus-modern.ts (light theme).
- * Per-theme overrides (dark, classic, connect) follow in the blocks below.
+ * Set MODUS_LEGACY_THEME=1 to invert the generated @supports query and simulate
+ * Chrome <111 colors on a modern browser.
  */
-@supports not (color: oklch(0% 0 0)) {
-  /* modus-modern-light (default) — source: src/styles/themes/modus-modern.ts */
-  :root,
-  [data-theme='modus-modern-light'] {
-    --fallback-p: #0063a3; /* primary: Trimble Blue */
-    --fallback-pc: #ffffff; /* primary-content: White */
-    --fallback-s: #fbad26; /* secondary: Yellow */
-    --fallback-sc: #000000; /* secondary-content: Black */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff;
-    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
-    --fallback-nc: #252a2e;
-    --fallback-b1: #ffffff; /* base-100: White */
-    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
-    --fallback-in: #0063a3; /* info: Trimble Blue */
-    --fallback-inc: #ffffff;
-    --fallback-su: #006638; /* success: Green Dark */
-    --fallback-suc: #ffffff;
-    --fallback-wa: #e49325; /* warning: Yellow Dark */
-    --fallback-wac: #252a2e;
-    --fallback-er: #da212c; /* error: Red */
-    --fallback-erc: #ffffff;
-  }
-
-  /* modus-modern-dark — source: src/styles/themes/modus-modern.ts */
-  [data-theme='modus-modern-dark'] {
-    --fallback-p: #019aeb; /* primary: Highlight Blue */
-    --fallback-pc: #000000; /* primary-content: Black */
-    --fallback-s: #fec157; /* secondary: Yellow Light */
-    --fallback-sc: #000000; /* secondary-content: Black */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff; /* accent-content: White */
-    --fallback-n: #353a40; /* neutral: Gray 9 */
-    --fallback-nc: #ffffff; /* neutral-content: White */
-    --fallback-b1: #171c1e; /* base-100: Gray 10 */
-    --fallback-b2: #353a40; /* base-200: Gray 9 */
-    --fallback-b3: #464b52; /* base-300: Gray 8 */
-    --fallback-in: #217cbb; /* info: Blue Light */
-    --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #4ea646; /* success: Green Light */
-    --fallback-suc: #000000; /* success-content: Black */
-    --fallback-wa: #fec157; /* warning: Yellow Light */
-    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #e86363; /* error: Red Light */
-    --fallback-erc: #000000; /* error-content: Black */
-  }
-
-  /* modus-classic-light — source: src/styles/themes/modus-classic.ts */
-  [data-theme='modus-classic-light'] {
-    --fallback-p: #0063a3; /* primary: Trimble Blue */
-    --fallback-pc: #ffffff; /* primary-content: White */
-    --fallback-s: #6a6e79; /* secondary: Gray 6 */
-    --fallback-sc: #ffffff; /* secondary-content: White */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff; /* accent-content: White */
-    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
-    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
-    --fallback-b1: #ffffff; /* base-100: White */
-    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
-    --fallback-in: #0063a3; /* info: Trimble Blue */
-    --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #1e8a44; /* success: Green */
-    --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #fbad26; /* warning: Yellow */
-    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #da212c; /* error: Red */
-    --fallback-erc: #ffffff; /* error-content: White */
-  }
-
-  /* modus-classic-dark — source: src/styles/themes/modus-classic.ts */
-  [data-theme='modus-classic-dark'] {
-    --fallback-p: #0063a3; /* primary: Trimble Blue */
-    --fallback-pc: #ffffff; /* primary-content: White */
-    --fallback-s: #fbad26; /* secondary: Yellow */
-    --fallback-sc: #252a2e; /* secondary-content: Trimble Gray */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff; /* accent-content: White */
-    --fallback-n: #353a40; /* neutral: Gray 9 */
-    --fallback-nc: #ffffff; /* neutral-content: White */
-    --fallback-b1: #171c1e; /* base-100: Gray 10 */
-    --fallback-b2: #353a40; /* base-200: Gray 9 */
-    --fallback-b3: #464b52; /* base-300: Gray 8 */
-    --fallback-in: #0063a3; /* info: Trimble Blue */
-    --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #1e8a44; /* success: Green */
-    --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #fbad26; /* warning: Yellow */
-    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #da212c; /* error: Red */
-    --fallback-erc: #ffffff; /* error-content: White */
-  }
-
-  /* connect-light — source: src/styles/themes/connect.ts */
-  [data-theme='connect-light'] {
-    --fallback-p: #005f9e; /* primary: Trimble Blue */
-    --fallback-pc: #ffffff; /* primary-content: White */
-    --fallback-s: #6a6976; /* secondary: Neutral Gray 10 */
-    --fallback-sc: #ffffff; /* secondary-content: White */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff; /* accent-content: White */
-    --fallback-n: #cbcdd6; /* neutral: Gray 1 */
-    --fallback-nc: #252a2e; /* neutral-content: Trimble Gray */
-    --fallback-b1: #ffffff; /* base-100: White */
-    --fallback-b2: #cbcdd6; /* base-200: Gray 1 */
-    --fallback-b3: #b7b9c3; /* base-300: Gray 2 */
-    --fallback-in: #0063a3; /* info: Trimble Blue */
-    --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #72a544; /* success: Green */
-    --fallback-suc: #ffffff; /* success-content: White */
-    --fallback-wa: #ffbe00; /* warning: Yellow */
-    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #d52a33; /* error: Red */
-    --fallback-erc: #ffffff; /* error-content: White */
-  }
-
-  /* connect-dark — source: src/styles/themes/connect.ts */
-  [data-theme='connect-dark'] {
-    --fallback-p: #019aeb; /* primary: Highlight Blue */
-    --fallback-pc: #000000; /* primary-content: Black */
-    --fallback-s: #f1f1f6; /* secondary: Gray Light */
-    --fallback-sc: #000000; /* secondary-content: Black */
-    --fallback-a: #6a6e79; /* accent: Gray 6 */
-    --fallback-ac: #ffffff; /* accent-content: White */
-    --fallback-n: #353a40; /* neutral: Gray 9 */
-    --fallback-nc: #ffffff; /* neutral-content: White */
-    --fallback-b1: #171c1e; /* base-100: Gray 10 */
-    --fallback-b2: #353a40; /* base-200: Gray 9 */
-    --fallback-b3: #464b52; /* base-300: Gray 8 */
-    --fallback-in: #217cbb; /* info: Blue Light */
-    --fallback-inc: #ffffff; /* info-content: White */
-    --fallback-su: #4ea646; /* success: Green Light */
-    --fallback-suc: #000000; /* success-content: Black */
-    --fallback-wa: #fec157; /* warning: Yellow Light */
-    --fallback-wac: #252a2e; /* warning-content: Trimble Gray */
-    --fallback-er: #e86363; /* error: Red Light */
-    --fallback-erc: #000000; /* error-content: Black */
-  }
-}
-
 /*
  * Button hover/active state fallbacks for Chrome <111 — modern themes only.
  *

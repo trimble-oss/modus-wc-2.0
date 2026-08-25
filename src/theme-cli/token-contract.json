@@ -1,0 +1,4265 @@
+{
+  "version": 1,
+  "daisySlots": {
+    "p": "--modus-wc-color-primary",
+    "pc": "--modus-wc-color-primary-content",
+    "s": "--modus-wc-color-secondary",
+    "sc": "--modus-wc-color-secondary-content",
+    "a": "--modus-wc-color-accent",
+    "ac": "--modus-wc-color-accent-content",
+    "n": "--modus-wc-color-neutral",
+    "nc": "--modus-wc-color-neutral-content",
+    "b1": "--modus-wc-color-base-100",
+    "b2": "--modus-wc-color-base-200",
+    "b3": "--modus-wc-color-base-300",
+    "bc": "--modus-wc-color-base-content",
+    "in": "--modus-wc-color-info",
+    "inc": "--modus-wc-color-info-content",
+    "su": "--modus-wc-color-success",
+    "suc": "--modus-wc-color-success-content",
+    "wa": "--modus-wc-color-warning",
+    "wac": "--modus-wc-color-warning-content",
+    "er": "--modus-wc-color-error",
+    "erc": "--modus-wc-color-error-content"
+  },
+  "tokens": {
+    "--modus-tw-color-amber-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d97706",
+        "modus-modern-dark": "#fef3c7",
+        "modus-classic-light": "#d97706",
+        "modus-classic-dark": "#fef3c7",
+        "connect-light": "#d97706",
+        "connect-dark": "#fef3c7"
+      }
+    },
+    "--modus-tw-color-amber-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#b45309",
+        "modus-modern-dark": "#fde68a",
+        "modus-classic-light": "#b45309",
+        "modus-classic-dark": "#fde68a",
+        "connect-light": "#b45309",
+        "connect-dark": "#fde68a"
+      }
+    },
+    "--modus-tw-color-amber-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#92400e",
+        "modus-modern-dark": "#fcd34d",
+        "modus-classic-light": "#92400e",
+        "modus-classic-dark": "#fcd34d",
+        "connect-light": "#92400e",
+        "connect-dark": "#fcd34d"
+      }
+    },
+    "--modus-tw-color-amber-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#78350f",
+        "modus-modern-dark": "#fbbf24",
+        "modus-classic-light": "#78350f",
+        "modus-classic-dark": "#fbbf24",
+        "connect-light": "#78350f",
+        "connect-dark": "#fbbf24"
+      }
+    },
+    "--modus-tw-color-cyan-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0891b2",
+        "modus-modern-dark": "#cffafe",
+        "modus-classic-light": "#0891b2",
+        "modus-classic-dark": "#cffafe",
+        "connect-light": "#0891b2",
+        "connect-dark": "#cffafe"
+      }
+    },
+    "--modus-tw-color-cyan-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0e7490",
+        "modus-modern-dark": "#a5f3fc",
+        "modus-classic-light": "#0e7490",
+        "modus-classic-dark": "#a5f3fc",
+        "connect-light": "#0e7490",
+        "connect-dark": "#a5f3fc"
+      }
+    },
+    "--modus-tw-color-cyan-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#155e75",
+        "modus-modern-dark": "#67e8f9",
+        "modus-classic-light": "#155e75",
+        "modus-classic-dark": "#67e8f9",
+        "connect-light": "#155e75",
+        "connect-dark": "#67e8f9"
+      }
+    },
+    "--modus-tw-color-cyan-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#164e63",
+        "modus-modern-dark": "#22d3ee",
+        "modus-classic-light": "#164e63",
+        "modus-classic-dark": "#22d3ee",
+        "connect-light": "#164e63",
+        "connect-dark": "#22d3ee"
+      }
+    },
+    "--modus-tw-color-emerald-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#059669",
+        "modus-modern-dark": "#d1fae5",
+        "modus-classic-light": "#059669",
+        "modus-classic-dark": "#d1fae5",
+        "connect-light": "#059669",
+        "connect-dark": "#d1fae5"
+      }
+    },
+    "--modus-tw-color-emerald-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#047857",
+        "modus-modern-dark": "#a7f3d0",
+        "modus-classic-light": "#047857",
+        "modus-classic-dark": "#a7f3d0",
+        "connect-light": "#047857",
+        "connect-dark": "#a7f3d0"
+      }
+    },
+    "--modus-tw-color-emerald-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#065f46",
+        "modus-modern-dark": "#6ee7b7",
+        "modus-classic-light": "#065f46",
+        "modus-classic-dark": "#6ee7b7",
+        "connect-light": "#065f46",
+        "connect-dark": "#6ee7b7"
+      }
+    },
+    "--modus-tw-color-emerald-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#064e3b",
+        "modus-modern-dark": "#34d399",
+        "modus-classic-light": "#064e3b",
+        "modus-classic-dark": "#34d399",
+        "connect-light": "#064e3b",
+        "connect-dark": "#34d399"
+      }
+    },
+    "--modus-tw-color-fuchsia-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c026d3",
+        "modus-modern-dark": "#fae8ff",
+        "modus-classic-light": "#c026d3",
+        "modus-classic-dark": "#fae8ff",
+        "connect-light": "#c026d3",
+        "connect-dark": "#fae8ff"
+      }
+    },
+    "--modus-tw-color-fuchsia-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a21caf",
+        "modus-modern-dark": "#f5d0fe",
+        "modus-classic-light": "#a21caf",
+        "modus-classic-dark": "#f5d0fe",
+        "connect-light": "#a21caf",
+        "connect-dark": "#f5d0fe"
+      }
+    },
+    "--modus-tw-color-fuchsia-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#86198f",
+        "modus-modern-dark": "#f0abfc",
+        "modus-classic-light": "#86198f",
+        "modus-classic-dark": "#f0abfc",
+        "connect-light": "#86198f",
+        "connect-dark": "#f0abfc"
+      }
+    },
+    "--modus-tw-color-fuchsia-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#701a75",
+        "modus-modern-dark": "#e879f9",
+        "modus-classic-light": "#701a75",
+        "modus-classic-dark": "#e879f9",
+        "connect-light": "#701a75",
+        "connect-dark": "#e879f9"
+      }
+    },
+    "--modus-tw-color-indigo-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4f46e5",
+        "modus-modern-dark": "#e0e7ff",
+        "modus-classic-light": "#4f46e5",
+        "modus-classic-dark": "#e0e7ff",
+        "connect-light": "#4f46e5",
+        "connect-dark": "#e0e7ff"
+      }
+    },
+    "--modus-tw-color-indigo-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4338ca",
+        "modus-modern-dark": "#c7d2fe",
+        "modus-classic-light": "#4338ca",
+        "modus-classic-dark": "#c7d2fe",
+        "connect-light": "#4338ca",
+        "connect-dark": "#c7d2fe"
+      }
+    },
+    "--modus-tw-color-indigo-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#3730a3",
+        "modus-modern-dark": "#a5b4fc",
+        "modus-classic-light": "#3730a3",
+        "modus-classic-dark": "#a5b4fc",
+        "connect-light": "#3730a3",
+        "connect-dark": "#a5b4fc"
+      }
+    },
+    "--modus-tw-color-indigo-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#312e81",
+        "modus-modern-dark": "#818cf8",
+        "modus-classic-light": "#312e81",
+        "modus-classic-dark": "#818cf8",
+        "connect-light": "#312e81",
+        "connect-dark": "#818cf8"
+      }
+    },
+    "--modus-tw-color-lime-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#65a30d",
+        "modus-modern-dark": "#ecfccb",
+        "modus-classic-light": "#65a30d",
+        "modus-classic-dark": "#ecfccb",
+        "connect-light": "#65a30d",
+        "connect-dark": "#ecfccb"
+      }
+    },
+    "--modus-tw-color-lime-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4d7c0f",
+        "modus-modern-dark": "#d9f99d",
+        "modus-classic-light": "#4d7c0f",
+        "modus-classic-dark": "#d9f99d",
+        "connect-light": "#4d7c0f",
+        "connect-dark": "#d9f99d"
+      }
+    },
+    "--modus-tw-color-lime-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#3f6212",
+        "modus-modern-dark": "#bef264",
+        "modus-classic-light": "#3f6212",
+        "modus-classic-dark": "#bef264",
+        "connect-light": "#3f6212",
+        "connect-dark": "#bef264"
+      }
+    },
+    "--modus-tw-color-lime-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#365314",
+        "modus-modern-dark": "#a3e635",
+        "modus-classic-light": "#365314",
+        "modus-classic-dark": "#a3e635",
+        "connect-light": "#365314",
+        "connect-dark": "#a3e635"
+      }
+    },
+    "--modus-tw-color-orange-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ea580c",
+        "modus-modern-dark": "#ffedd5",
+        "modus-classic-light": "#ea580c",
+        "modus-classic-dark": "#ffedd5",
+        "connect-light": "#ea580c",
+        "connect-dark": "#ffedd5"
+      }
+    },
+    "--modus-tw-color-orange-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c2410c",
+        "modus-modern-dark": "#fed7aa",
+        "modus-classic-light": "#c2410c",
+        "modus-classic-dark": "#fed7aa",
+        "connect-light": "#c2410c",
+        "connect-dark": "#fed7aa"
+      }
+    },
+    "--modus-tw-color-orange-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9a3412",
+        "modus-modern-dark": "#fdba74",
+        "modus-classic-light": "#9a3412",
+        "modus-classic-dark": "#fdba74",
+        "connect-light": "#9a3412",
+        "connect-dark": "#fdba74"
+      }
+    },
+    "--modus-tw-color-orange-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7c2d12",
+        "modus-modern-dark": "#fb923c",
+        "modus-classic-light": "#7c2d12",
+        "modus-classic-dark": "#fb923c",
+        "connect-light": "#7c2d12",
+        "connect-dark": "#fb923c"
+      }
+    },
+    "--modus-tw-color-pink-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#db2777",
+        "modus-modern-dark": "#fce7f3",
+        "modus-classic-light": "#db2777",
+        "modus-classic-dark": "#fce7f3",
+        "connect-light": "#db2777",
+        "connect-dark": "#fce7f3"
+      }
+    },
+    "--modus-tw-color-pink-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#be185d",
+        "modus-modern-dark": "#fbcfe8",
+        "modus-classic-light": "#be185d",
+        "modus-classic-dark": "#fbcfe8",
+        "connect-light": "#be185d",
+        "connect-dark": "#fbcfe8"
+      }
+    },
+    "--modus-tw-color-pink-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9d174d",
+        "modus-modern-dark": "#f9a8d4",
+        "modus-classic-light": "#9d174d",
+        "modus-classic-dark": "#f9a8d4",
+        "connect-light": "#9d174d",
+        "connect-dark": "#f9a8d4"
+      }
+    },
+    "--modus-tw-color-pink-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#831843",
+        "modus-modern-dark": "#f47286",
+        "modus-classic-light": "#831843",
+        "modus-classic-dark": "#f47286",
+        "connect-light": "#831843",
+        "connect-dark": "#f47286"
+      }
+    },
+    "--modus-tw-color-purple-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9333ea",
+        "modus-modern-dark": "#f3e8ff",
+        "modus-classic-light": "#9333ea",
+        "modus-classic-dark": "#f3e8ff",
+        "connect-light": "#9333ea",
+        "connect-dark": "#f3e8ff"
+      }
+    },
+    "--modus-tw-color-purple-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7e22ce",
+        "modus-modern-dark": "#e9d5ff",
+        "modus-classic-light": "#7e22ce",
+        "modus-classic-dark": "#e9d5ff",
+        "connect-light": "#7e22ce",
+        "connect-dark": "#e9d5ff"
+      }
+    },
+    "--modus-tw-color-purple-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6b21a8",
+        "modus-modern-dark": "#d8b4fe",
+        "modus-classic-light": "#6b21a8",
+        "modus-classic-dark": "#d8b4fe",
+        "connect-light": "#6b21a8",
+        "connect-dark": "#d8b4fe"
+      }
+    },
+    "--modus-tw-color-purple-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#581c87",
+        "modus-modern-dark": "#c084fc",
+        "modus-classic-light": "#581c87",
+        "modus-classic-dark": "#c084fc",
+        "connect-light": "#581c87",
+        "connect-dark": "#c084fc"
+      }
+    },
+    "--modus-tw-color-rose-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e11d48",
+        "modus-modern-dark": "#ffe4e6",
+        "modus-classic-light": "#e11d48",
+        "modus-classic-dark": "#ffe4e6",
+        "connect-light": "#e11d48",
+        "connect-dark": "#ffe4e6"
+      }
+    },
+    "--modus-tw-color-rose-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#be123c",
+        "modus-modern-dark": "#fecdd3",
+        "modus-classic-light": "#be123c",
+        "modus-classic-dark": "#fecdd3",
+        "connect-light": "#be123c",
+        "connect-dark": "#fecdd3"
+      }
+    },
+    "--modus-tw-color-rose-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9f1239",
+        "modus-modern-dark": "#fda4af",
+        "modus-classic-light": "#9f1239",
+        "modus-classic-dark": "#fda4af",
+        "connect-light": "#9f1239",
+        "connect-dark": "#fda4af"
+      }
+    },
+    "--modus-tw-color-rose-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#881337",
+        "modus-modern-dark": "#fb7185",
+        "modus-classic-light": "#881337",
+        "modus-classic-dark": "#fb7185",
+        "connect-light": "#881337",
+        "connect-dark": "#fb7185"
+      }
+    },
+    "--modus-tw-color-teal-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0d9488",
+        "modus-modern-dark": "#ccfbf1",
+        "modus-classic-light": "#0d9488",
+        "modus-classic-dark": "#ccfbf1",
+        "connect-light": "#0d9488",
+        "connect-dark": "#ccfbf1"
+      }
+    },
+    "--modus-tw-color-teal-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0f766e",
+        "modus-modern-dark": "#99f6e4",
+        "modus-classic-light": "#0f766e",
+        "modus-classic-dark": "#99f6e4",
+        "connect-light": "#0f766e",
+        "connect-dark": "#99f6e4"
+      }
+    },
+    "--modus-tw-color-teal-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#115e59",
+        "modus-modern-dark": "#5eead4",
+        "modus-classic-light": "#115e59",
+        "modus-classic-dark": "#5eead4",
+        "connect-light": "#115e59",
+        "connect-dark": "#5eead4"
+      }
+    },
+    "--modus-tw-color-teal-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#134e4a",
+        "modus-modern-dark": "#2dd4bf",
+        "modus-classic-light": "#134e4a",
+        "modus-classic-dark": "#2dd4bf",
+        "connect-light": "#134e4a",
+        "connect-dark": "#2dd4bf"
+      }
+    },
+    "--modus-tw-color-violet-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7c3aed",
+        "modus-modern-dark": "#ede9fe",
+        "modus-classic-light": "#7c3aed",
+        "modus-classic-dark": "#ede9fe",
+        "connect-light": "#7c3aed",
+        "connect-dark": "#ede9fe"
+      }
+    },
+    "--modus-tw-color-violet-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6d28d9",
+        "modus-modern-dark": "#ddd6fe",
+        "modus-classic-light": "#6d28d9",
+        "modus-classic-dark": "#ddd6fe",
+        "connect-light": "#6d28d9",
+        "connect-dark": "#ddd6fe"
+      }
+    },
+    "--modus-tw-color-violet-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#5b21b6",
+        "modus-modern-dark": "#c4b5fd",
+        "modus-classic-light": "#5b21b6",
+        "modus-classic-dark": "#c4b5fd",
+        "connect-light": "#5b21b6",
+        "connect-dark": "#c4b5fd"
+      }
+    },
+    "--modus-tw-color-violet-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4c1d95",
+        "modus-modern-dark": "#a78bfa",
+        "modus-classic-light": "#4c1d95",
+        "modus-classic-dark": "#a78bfa",
+        "connect-light": "#4c1d95",
+        "connect-dark": "#a78bfa"
+      }
+    },
+    "--modus-wc-border-radius-2xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "16px",
+        "modus-modern-dark": "16px",
+        "modus-classic-light": "16px",
+        "modus-classic-dark": "16px",
+        "connect-light": "16px",
+        "connect-dark": "16px"
+      }
+    },
+    "--modus-wc-border-radius-3xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "24px",
+        "modus-modern-dark": "24px",
+        "modus-classic-light": "24px",
+        "modus-classic-dark": "24px",
+        "connect-light": "24px",
+        "connect-dark": "24px"
+      }
+    },
+    "--modus-wc-border-radius-alert": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "4px",
+        "modus-modern-dark": "4px",
+        "modus-classic-light": "4px",
+        "modus-classic-dark": "4px",
+        "connect-light": "4px",
+        "connect-dark": "4px"
+      }
+    },
+    "--modus-wc-border-radius-badge": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "4px",
+        "modus-modern-dark": "4px",
+        "modus-classic-light": "4px",
+        "modus-classic-dark": "4px",
+        "connect-light": "4px",
+        "connect-dark": "4px"
+      }
+    },
+    "--modus-wc-border-radius-box": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "16px",
+        "modus-modern-dark": "16px",
+        "modus-classic-light": "16px",
+        "modus-classic-dark": "16px",
+        "connect-light": "16px",
+        "connect-dark": "16px"
+      }
+    },
+    "--modus-wc-border-radius-btn": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-radius-chip": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-radius-input": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-radius-lg": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-radius-md": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "4px",
+        "modus-modern-dark": "4px",
+        "modus-classic-light": "4px",
+        "modus-classic-dark": "4px",
+        "connect-light": "4px",
+        "connect-dark": "4px"
+      }
+    },
+    "--modus-wc-border-radius-rounded": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1000px",
+        "modus-modern-dark": "1000px",
+        "modus-classic-light": "1000px",
+        "modus-classic-dark": "1000px",
+        "connect-light": "1000px",
+        "connect-dark": "1000px"
+      }
+    },
+    "--modus-wc-border-radius-sm": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2px",
+        "modus-modern-dark": "2px",
+        "modus-classic-light": "2px",
+        "modus-classic-dark": "2px",
+        "connect-light": "2px",
+        "connect-dark": "2px"
+      }
+    },
+    "--modus-wc-border-radius-tab": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-radius-table": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "16px",
+        "modus-modern-dark": "16px",
+        "modus-classic-light": "16px",
+        "modus-classic-dark": "16px",
+        "connect-light": "16px",
+        "connect-dark": "16px"
+      }
+    },
+    "--modus-wc-border-radius-xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "12px",
+        "modus-modern-dark": "12px",
+        "modus-classic-light": "12px",
+        "modus-classic-dark": "12px",
+        "connect-light": "12px",
+        "connect-dark": "12px"
+      }
+    },
+    "--modus-wc-border-width-2xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "12px",
+        "modus-modern-dark": "12px",
+        "modus-classic-light": "12px",
+        "modus-classic-dark": "12px",
+        "connect-light": "12px",
+        "connect-dark": "12px"
+      }
+    },
+    "--modus-wc-border-width-3xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "24px",
+        "modus-modern-dark": "24px",
+        "modus-classic-light": "24px",
+        "modus-classic-dark": "24px",
+        "connect-light": "24px",
+        "connect-dark": "24px"
+      }
+    },
+    "--modus-wc-border-width-lg": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "4px",
+        "modus-modern-dark": "4px",
+        "modus-classic-light": "4px",
+        "modus-classic-dark": "4px",
+        "connect-light": "4px",
+        "connect-dark": "4px"
+      }
+    },
+    "--modus-wc-border-width-md": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3px",
+        "modus-modern-dark": "3px",
+        "modus-classic-light": "3px",
+        "modus-classic-dark": "3px",
+        "connect-light": "3px",
+        "connect-dark": "3px"
+      }
+    },
+    "--modus-wc-border-width-sm": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2px",
+        "modus-modern-dark": "2px",
+        "modus-classic-light": "2px",
+        "modus-classic-dark": "2px",
+        "connect-light": "2px",
+        "connect-dark": "2px"
+      }
+    },
+    "--modus-wc-border-width-xl": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "8px",
+        "modus-modern-dark": "8px",
+        "modus-classic-light": "8px",
+        "modus-classic-dark": "8px",
+        "connect-light": "8px",
+        "connect-dark": "8px"
+      }
+    },
+    "--modus-wc-border-width-xs": {
+      "tier": "public",
+      "category": "border",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1px",
+        "modus-modern-dark": "1px",
+        "modus-classic-light": "1px",
+        "modus-classic-dark": "1px",
+        "connect-light": "1px",
+        "connect-dark": "1px"
+      }
+    },
+    "--modus-wc-color-accent": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6a6e79",
+        "modus-modern-dark": "#90939f",
+        "modus-classic-light": "#6a6e79",
+        "modus-classic-dark": "#90939f",
+        "connect-light": "#6a6e79",
+        "connect-dark": "#90939f"
+      }
+    },
+    "--modus-wc-color-accent-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-accent-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6a6e79",
+        "modus-modern-dark": "#90939f",
+        "modus-classic-light": "#6a6e79",
+        "modus-classic-dark": "#90939f",
+        "connect-light": "#6a6e79",
+        "connect-dark": "#90939f"
+      }
+    },
+    "--modus-wc-color-base-100": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5f5f8",
+        "modus-modern-dark": "#353a40",
+        "modus-classic-light": "#f1f1f6",
+        "modus-classic-dark": "#252a2e",
+        "connect-light": "#f1f1f6",
+        "connect-dark": "#252a2e"
+      }
+    },
+    "--modus-wc-color-base-200": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e9eaf0",
+        "modus-modern-dark": "#464b52",
+        "modus-classic-light": "#cbcdd6",
+        "modus-classic-dark": "#464b52",
+        "connect-light": "#cbcdd6",
+        "connect-dark": "#464b52"
+      }
+    },
+    "--modus-wc-color-base-300": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#cbcdd6",
+        "modus-modern-dark": "#252a2e",
+        "modus-classic-light": "#b7b9c3",
+        "modus-classic-dark": "#353a40",
+        "connect-light": "#b7b9c3",
+        "connect-dark": "#353a40"
+      }
+    },
+    "--modus-wc-color-base-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#171c1e",
+        "modus-modern-dark": "#cbcdd6",
+        "modus-classic-light": "#171c1e",
+        "modus-classic-dark": "#cbcdd6",
+        "connect-light": "#171c1e",
+        "connect-dark": "#cbcdd6"
+      }
+    },
+    "--modus-wc-color-base-content-high-contrast": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#000000",
+        "modus-modern-dark": "#ffffff",
+        "modus-classic-light": "#000000",
+        "modus-classic-dark": "#ffffff",
+        "connect-light": "#000000",
+        "connect-dark": "#ffffff"
+      }
+    },
+    "--modus-wc-color-base-content-low-contrast": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#464b52",
+        "modus-modern-dark": "#a3a6b1",
+        "modus-classic-light": "#464b52",
+        "modus-classic-dark": "#a3a6b1",
+        "connect-light": "#464b52",
+        "connect-dark": "#a3a6b1"
+      }
+    },
+    "--modus-wc-color-base-inverted": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#171c1e",
+        "modus-modern-dark": "#f1f1f6",
+        "modus-classic-light": "#171c1e",
+        "modus-classic-dark": "#f1f1f6",
+        "connect-light": "#171c1e",
+        "connect-dark": "#f1f1f6"
+      }
+    },
+    "--modus-wc-color-base-page": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#171c1e",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-black": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#000000",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#000000",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#000000",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-blue-dark": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0e416c",
+        "modus-modern-dark": "#0e416c",
+        "modus-classic-light": "#0e416c",
+        "modus-classic-dark": "#0e416c",
+        "connect-light": "#0e416c",
+        "connect-dark": "#0e416c"
+      }
+    },
+    "--modus-wc-color-blue-light": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#217cbb",
+        "modus-modern-dark": "#217cbb",
+        "modus-classic-light": "#217cbb",
+        "modus-classic-dark": "#217cbb",
+        "connect-light": "#217cbb",
+        "connect-dark": "#217cbb"
+      }
+    },
+    "--modus-wc-color-blue-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#dcedf9",
+        "modus-modern-dark": "#dcedf9",
+        "modus-classic-light": "#dcedf9",
+        "modus-classic-dark": "#dcedf9",
+        "connect-light": "#dcedf9",
+        "connect-dark": "#dcedf9"
+      }
+    },
+    "--modus-wc-color-connect-blue": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#00437b",
+        "modus-modern-dark": "#00437b",
+        "modus-classic-light": "#00437b",
+        "modus-classic-dark": "#00437b",
+        "connect-light": "#00437b",
+        "connect-dark": "#00437b"
+      }
+    },
+    "--modus-wc-color-error": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#da212c",
+        "modus-modern-dark": "#e86363",
+        "modus-classic-light": "#da212c",
+        "modus-classic-dark": "#da212c",
+        "connect-light": "#da212c",
+        "connect-dark": "#e86363"
+      }
+    },
+    "--modus-wc-color-error-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-error-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbd4d7",
+        "modus-modern-dark": "#fbd4d7",
+        "modus-classic-light": "#fbd4d7",
+        "modus-classic-dark": "#fbd4d7",
+        "connect-light": "#fbd4d7",
+        "connect-dark": "#fbd4d7"
+      }
+    },
+    "--modus-wc-color-gray-0": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e0e1e9",
+        "modus-modern-dark": "#e0e1e9",
+        "modus-classic-light": "#e0e1e9",
+        "modus-classic-dark": "#e0e1e9",
+        "connect-light": "#e0e1e9",
+        "connect-dark": "#e0e1e9"
+      }
+    },
+    "--modus-wc-color-gray-01": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5f5f8",
+        "modus-modern-dark": "#f5f5f8",
+        "modus-classic-light": "#f5f5f8",
+        "modus-classic-dark": "#f5f5f8",
+        "connect-light": "#f5f5f8",
+        "connect-dark": "#f5f5f8"
+      }
+    },
+    "--modus-wc-color-gray-02": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e9eaf0",
+        "modus-modern-dark": "#e9eaf0",
+        "modus-classic-light": "#e9eaf0",
+        "modus-classic-dark": "#e9eaf0",
+        "connect-light": "#e9eaf0",
+        "connect-dark": "#e9eaf0"
+      }
+    },
+    "--modus-wc-color-gray-1": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#cbcdd6",
+        "modus-modern-dark": "#cbcdd6",
+        "modus-classic-light": "#cbcdd6",
+        "modus-classic-dark": "#cbcdd6",
+        "connect-light": "#cbcdd6",
+        "connect-dark": "#cbcdd6"
+      }
+    },
+    "--modus-wc-color-gray-10": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#171c1e",
+        "modus-modern-dark": "#171c1e",
+        "modus-classic-light": "#171c1e",
+        "modus-classic-dark": "#171c1e",
+        "connect-light": "#171c1e",
+        "connect-dark": "#171c1e"
+      }
+    },
+    "--modus-wc-color-gray-2": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#b7b9c3",
+        "modus-modern-dark": "#b7b9c3",
+        "modus-classic-light": "#b7b9c3",
+        "modus-classic-dark": "#b7b9c3",
+        "connect-light": "#b7b9c3",
+        "connect-dark": "#b7b9c3"
+      }
+    },
+    "--modus-wc-color-gray-3": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a3a6b1",
+        "modus-modern-dark": "#a3a6b1",
+        "modus-classic-light": "#a3a6b1",
+        "modus-classic-dark": "#a3a6b1",
+        "connect-light": "#a3a6b1",
+        "connect-dark": "#a3a6b1"
+      }
+    },
+    "--modus-wc-color-gray-4": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#90939f",
+        "modus-modern-dark": "#90939f",
+        "modus-classic-light": "#90939f",
+        "modus-classic-dark": "#90939f",
+        "connect-light": "#90939f",
+        "connect-dark": "#90939f"
+      }
+    },
+    "--modus-wc-color-gray-5": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7d808d",
+        "modus-modern-dark": "#7d808d",
+        "modus-classic-light": "#7d808d",
+        "modus-classic-dark": "#7d808d",
+        "connect-light": "#7d808d",
+        "connect-dark": "#7d808d"
+      }
+    },
+    "--modus-wc-color-gray-6": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6a6e79",
+        "modus-modern-dark": "#6a6e79",
+        "modus-classic-light": "#6a6e79",
+        "modus-classic-dark": "#6a6e79",
+        "connect-light": "#6a6e79",
+        "connect-dark": "#6a6e79"
+      }
+    },
+    "--modus-wc-color-gray-7": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#585c65",
+        "modus-modern-dark": "#585c65",
+        "modus-classic-light": "#585c65",
+        "modus-classic-dark": "#585c65",
+        "connect-light": "#585c65",
+        "connect-dark": "#585c65"
+      }
+    },
+    "--modus-wc-color-gray-8": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#464b52",
+        "modus-modern-dark": "#464b52",
+        "modus-classic-light": "#464b52",
+        "modus-classic-dark": "#464b52",
+        "connect-light": "#464b52",
+        "connect-dark": "#464b52"
+      }
+    },
+    "--modus-wc-color-gray-9": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#353a40",
+        "modus-modern-dark": "#353a40",
+        "modus-classic-light": "#353a40",
+        "modus-classic-dark": "#353a40",
+        "connect-light": "#353a40",
+        "connect-dark": "#353a40"
+      }
+    },
+    "--modus-wc-color-gray-light": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f1f1f6",
+        "modus-modern-dark": "#f1f1f6",
+        "modus-classic-light": "#f1f1f6",
+        "modus-classic-dark": "#f1f1f6",
+        "connect-light": "#f1f1f6",
+        "connect-dark": "#f1f1f6"
+      }
+    },
+    "--modus-wc-color-green": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#1e8a44",
+        "modus-modern-dark": "#1e8a44",
+        "modus-classic-light": "#1e8a44",
+        "modus-classic-dark": "#1e8a44",
+        "connect-light": "#1e8a44",
+        "connect-dark": "#1e8a44"
+      }
+    },
+    "--modus-wc-color-green-dark": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#006638",
+        "modus-modern-dark": "#006638",
+        "modus-classic-light": "#006638",
+        "modus-classic-dark": "#006638",
+        "connect-light": "#006638",
+        "connect-dark": "#006638"
+      }
+    },
+    "--modus-wc-color-green-light": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4ea646",
+        "modus-modern-dark": "#4ea646",
+        "modus-classic-light": "#4ea646",
+        "modus-classic-dark": "#4ea646",
+        "connect-light": "#4ea646",
+        "connect-dark": "#4ea646"
+      }
+    },
+    "--modus-wc-color-green-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e0eccf",
+        "modus-modern-dark": "#e0eccf",
+        "modus-classic-light": "#e0eccf",
+        "modus-classic-dark": "#e0eccf",
+        "connect-light": "#e0eccf",
+        "connect-dark": "#e0eccf"
+      }
+    },
+    "--modus-wc-color-highlight-blue": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#019aeb",
+        "modus-modern-dark": "#019aeb",
+        "modus-classic-light": "#019aeb",
+        "modus-classic-dark": "#019aeb",
+        "connect-light": "#019aeb",
+        "connect-dark": "#019aeb"
+      }
+    },
+    "--modus-wc-color-highlight-blue-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "rgba(1, 154, 235, 0.5)",
+        "modus-modern-dark": "rgba(1, 154, 235, 0.5)",
+        "modus-classic-light": "rgba(1, 154, 235, 0.5)",
+        "modus-classic-dark": "rgba(1, 154, 235, 0.5)",
+        "connect-light": "rgba(1, 154, 235, 0.5)",
+        "connect-dark": "rgba(1, 154, 235, 0.5)"
+      }
+    },
+    "--modus-wc-color-info": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0e416c",
+        "modus-modern-dark": "#217cbb",
+        "modus-classic-light": "#0063a3",
+        "modus-classic-dark": "#0063a3",
+        "connect-light": "#0e416c",
+        "connect-dark": "#217cbb"
+      }
+    },
+    "--modus-wc-color-info-blue": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#004f83",
+        "modus-modern-dark": "#004f83",
+        "modus-classic-light": "#004f83",
+        "modus-classic-dark": "#004f83",
+        "connect-light": "#004f83",
+        "connect-dark": "#004f83"
+      }
+    },
+    "--modus-wc-color-info-blue-on-dark": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#004f83",
+        "modus-modern-dark": "#ffffff",
+        "modus-classic-light": "#004f83",
+        "modus-classic-dark": "#ffffff",
+        "connect-light": "#004f83",
+        "connect-dark": "#ffffff"
+      }
+    },
+    "--modus-wc-color-info-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#ffffff",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#ffffff",
+        "connect-light": "#ffffff",
+        "connect-dark": "#ffffff"
+      }
+    },
+    "--modus-wc-color-info-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#dcedf9",
+        "modus-modern-dark": "#dcedf9",
+        "modus-classic-light": "#dcedf9",
+        "modus-classic-dark": "#dcedf9",
+        "connect-light": "#dcedf9",
+        "connect-dark": "#dcedf9"
+      }
+    },
+    "--modus-wc-color-neutral": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5f5f8",
+        "modus-modern-dark": "#353a40",
+        "modus-classic-light": "#f1f1f6",
+        "modus-classic-dark": "#252a2e",
+        "connect-light": "#f1f1f6",
+        "connect-dark": "#252a2e"
+      }
+    },
+    "--modus-wc-color-neutral-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#171c1e",
+        "modus-modern-dark": "#cbcdd6",
+        "modus-classic-light": "#171c1e",
+        "modus-classic-dark": "#cbcdd6",
+        "connect-light": "#171c1e",
+        "connect-dark": "#cbcdd6"
+      }
+    },
+    "--modus-wc-color-neutral-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5f5f8",
+        "modus-modern-dark": "#353a40",
+        "modus-classic-light": "#f1f1f6",
+        "modus-classic-dark": "#252a2e",
+        "connect-light": "#f1f1f6",
+        "connect-dark": "#252a2e"
+      }
+    },
+    "--modus-wc-color-primary": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0063a3",
+        "modus-modern-dark": "#019aeb",
+        "modus-classic-light": "#0063a3",
+        "modus-classic-dark": "#019aeb",
+        "connect-light": "#0063a3",
+        "connect-dark": "#019aeb"
+      }
+    },
+    "--modus-wc-color-primary-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-primary-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#dcedf9",
+        "modus-modern-dark": "rgba(1, 154, 235, 0.5)",
+        "modus-classic-light": "#dcedf9",
+        "modus-classic-dark": "rgba(1, 154, 235, 0.5)",
+        "connect-light": "#dcedf9",
+        "connect-dark": "rgba(1, 154, 235, 0.5)"
+      }
+    },
+    "--modus-wc-color-red": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#da212c",
+        "modus-modern-dark": "#da212c",
+        "modus-classic-light": "#da212c",
+        "modus-classic-dark": "#da212c",
+        "connect-light": "#da212c",
+        "connect-dark": "#da212c"
+      }
+    },
+    "--modus-wc-color-red-dark": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ab1f26",
+        "modus-modern-dark": "#ab1f26",
+        "modus-classic-light": "#ab1f26",
+        "modus-classic-dark": "#ab1f26",
+        "connect-light": "#ab1f26",
+        "connect-dark": "#ab1f26"
+      }
+    },
+    "--modus-wc-color-red-light": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e86363",
+        "modus-modern-dark": "#e86363",
+        "modus-classic-light": "#e86363",
+        "modus-classic-dark": "#e86363",
+        "connect-light": "#e86363",
+        "connect-dark": "#e86363"
+      }
+    },
+    "--modus-wc-color-red-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbd4d7",
+        "modus-modern-dark": "#fbd4d7",
+        "modus-classic-light": "#fbd4d7",
+        "modus-classic-dark": "#fbd4d7",
+        "connect-light": "#fbd4d7",
+        "connect-dark": "#fbd4d7"
+      }
+    },
+    "--modus-wc-color-secondary": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbad26",
+        "modus-modern-dark": "#fec157",
+        "modus-classic-light": "#fbad26",
+        "modus-classic-dark": "#fec157",
+        "connect-light": "#fbad26",
+        "connect-dark": "#fec157"
+      }
+    },
+    "--modus-wc-color-secondary-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#000000",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#000000",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#000000",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-secondary-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fff5e4",
+        "modus-modern-dark": "#fff5e4",
+        "modus-classic-light": "#fff5e4",
+        "modus-classic-dark": "#fff5e4",
+        "connect-light": "#fff5e4",
+        "connect-dark": "#fff5e4"
+      }
+    },
+    "--modus-wc-color-success": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#006638",
+        "modus-modern-dark": "#4ea646",
+        "modus-classic-light": "#1e8a44",
+        "modus-classic-dark": "#1e8a44",
+        "connect-light": "#006638",
+        "connect-dark": "#4ea646"
+      }
+    },
+    "--modus-wc-color-success-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-success-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e0eccf",
+        "modus-modern-dark": "#e0eccf",
+        "modus-classic-light": "#e0eccf",
+        "modus-classic-dark": "#e0eccf",
+        "connect-light": "#e0eccf",
+        "connect-dark": "#e0eccf"
+      }
+    },
+    "--modus-wc-color-trimble-blue": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0063a3",
+        "modus-modern-dark": "#0063a3",
+        "modus-classic-light": "#0063a3",
+        "modus-classic-dark": "#0063a3",
+        "connect-light": "#0063a3",
+        "connect-dark": "#0063a3"
+      }
+    },
+    "--modus-wc-color-trimble-gray": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#252a2e",
+        "modus-modern-dark": "#252a2e",
+        "modus-classic-light": "#252a2e",
+        "modus-classic-dark": "#252a2e",
+        "connect-light": "#252a2e",
+        "connect-dark": "#252a2e"
+      }
+    },
+    "--modus-wc-color-trimble-neutral": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#252a2e",
+        "modus-modern-dark": "#f1f1f6",
+        "modus-classic-light": "#252a2e",
+        "modus-classic-dark": "#f1f1f6",
+        "connect-light": "#252a2e",
+        "connect-dark": "#f1f1f6"
+      }
+    },
+    "--modus-wc-color-trimble-neutral-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#ffffff",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-warning": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e49325",
+        "modus-modern-dark": "#fec157",
+        "modus-classic-light": "#fbad26",
+        "modus-classic-dark": "#fbad26",
+        "connect-light": "#e49325",
+        "connect-dark": "#fec157"
+      }
+    },
+    "--modus-wc-color-warning-content": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#000000",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#000000",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#000000",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-color-warning-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fff5e4",
+        "modus-modern-dark": "#fff5e4",
+        "modus-classic-light": "#fff5e4",
+        "modus-classic-dark": "#fff5e4",
+        "connect-light": "#fff5e4",
+        "connect-dark": "#fff5e4"
+      }
+    },
+    "--modus-wc-color-white": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffffff",
+        "modus-modern-dark": "#ffffff",
+        "modus-classic-light": "#ffffff",
+        "modus-classic-dark": "#ffffff",
+        "connect-light": "#ffffff",
+        "connect-dark": "#ffffff"
+      }
+    },
+    "--modus-wc-color-yellow": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbad26",
+        "modus-modern-dark": "#fbad26",
+        "modus-classic-light": "#fbad26",
+        "modus-classic-dark": "#fbad26",
+        "connect-light": "#fbad26",
+        "connect-dark": "#fbad26"
+      }
+    },
+    "--modus-wc-color-yellow-dark": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e49325",
+        "modus-modern-dark": "#e49325",
+        "modus-classic-light": "#e49325",
+        "modus-classic-dark": "#e49325",
+        "connect-light": "#e49325",
+        "connect-dark": "#e49325"
+      }
+    },
+    "--modus-wc-color-yellow-light": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fec157",
+        "modus-modern-dark": "#fec157",
+        "modus-classic-light": "#fec157",
+        "modus-classic-dark": "#fec157",
+        "connect-light": "#fec157",
+        "connect-dark": "#fec157"
+      }
+    },
+    "--modus-wc-color-yellow-pale": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fff5e4",
+        "modus-modern-dark": "#fff5e4",
+        "modus-classic-light": "#fff5e4",
+        "modus-classic-dark": "#fff5e4",
+        "connect-light": "#fff5e4",
+        "connect-dark": "#fff5e4"
+      }
+    },
+    "--modus-wc-font-family": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif",
+        "modus-modern-dark": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif",
+        "modus-classic-light": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif",
+        "modus-classic-dark": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif",
+        "connect-light": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif",
+        "connect-dark": "'Open Sans', 'Segoe UI', 'Noto Sans', 'San Francisco', 'Helvetica', 'Arial', sans-serif"
+      }
+    },
+    "--modus-wc-font-size-2xl": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.25rem",
+        "modus-modern-dark": "1.25rem",
+        "modus-classic-light": "1.25rem",
+        "modus-classic-dark": "1.25rem",
+        "connect-light": "1.25rem",
+        "connect-dark": "1.25rem"
+      }
+    },
+    "--modus-wc-font-size-2xs": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.5rem",
+        "modus-modern-dark": "0.5rem",
+        "modus-classic-light": "0.5rem",
+        "modus-classic-dark": "0.5rem",
+        "connect-light": "0.5rem",
+        "connect-dark": "0.5rem"
+      }
+    },
+    "--modus-wc-font-size-3xl": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.5rem",
+        "modus-modern-dark": "1.5rem",
+        "modus-classic-light": "1.5rem",
+        "modus-classic-dark": "1.5rem",
+        "connect-light": "1.5rem",
+        "connect-dark": "1.5rem"
+      }
+    },
+    "--modus-wc-font-size-4xl": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.875rem",
+        "modus-modern-dark": "1.875rem",
+        "modus-classic-light": "1.875rem",
+        "modus-classic-dark": "1.875rem",
+        "connect-light": "1.875rem",
+        "connect-dark": "1.875rem"
+      }
+    },
+    "--modus-wc-font-size-lg": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1rem",
+        "modus-modern-dark": "1rem",
+        "modus-classic-light": "1rem",
+        "modus-classic-dark": "1rem",
+        "connect-light": "1rem",
+        "connect-dark": "1rem"
+      }
+    },
+    "--modus-wc-font-size-md": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.875rem",
+        "modus-modern-dark": "0.875rem",
+        "modus-classic-light": "0.875rem",
+        "modus-classic-dark": "0.875rem",
+        "connect-light": "0.875rem",
+        "connect-dark": "0.875rem"
+      }
+    },
+    "--modus-wc-font-size-sm": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.75rem",
+        "modus-modern-dark": "0.75rem",
+        "modus-classic-light": "0.75rem",
+        "modus-classic-dark": "0.75rem",
+        "connect-light": "0.75rem",
+        "connect-dark": "0.75rem"
+      }
+    },
+    "--modus-wc-font-size-xl": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.125rem",
+        "modus-modern-dark": "1.125rem",
+        "modus-classic-light": "1.125rem",
+        "modus-classic-dark": "1.125rem",
+        "connect-light": "1.125rem",
+        "connect-dark": "1.125rem"
+      }
+    },
+    "--modus-wc-font-size-xs": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.625rem",
+        "modus-modern-dark": "0.625rem",
+        "modus-classic-light": "0.625rem",
+        "modus-classic-dark": "0.625rem",
+        "connect-light": "0.625rem",
+        "connect-dark": "0.625rem"
+      }
+    },
+    "--modus-wc-font-weight-bold": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "700",
+        "modus-modern-dark": "700",
+        "modus-classic-light": "700",
+        "modus-classic-dark": "700",
+        "connect-light": "700",
+        "connect-dark": "700"
+      }
+    },
+    "--modus-wc-font-weight-light": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "300",
+        "modus-modern-dark": "300",
+        "modus-classic-light": "300",
+        "modus-classic-dark": "300",
+        "connect-light": "300",
+        "connect-dark": "300"
+      }
+    },
+    "--modus-wc-font-weight-normal": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "400",
+        "modus-modern-dark": "400",
+        "modus-classic-light": "400",
+        "modus-classic-dark": "400",
+        "connect-light": "400",
+        "connect-dark": "400"
+      }
+    },
+    "--modus-wc-font-weight-semibold": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "600",
+        "modus-modern-dark": "600",
+        "modus-classic-light": "600",
+        "modus-classic-dark": "600",
+        "connect-light": "600",
+        "connect-dark": "600"
+      }
+    },
+    "--modus-wc-in-field-avoidance": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#df4eb2",
+        "modus-modern-dark": "#df4eb2",
+        "modus-classic-light": "#df4eb2",
+        "modus-classic-dark": "#df4eb2",
+        "connect-light": "#df4eb2",
+        "connect-dark": "#df4eb2"
+      }
+    },
+    "--modus-wc-in-field-black": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#000000",
+        "modus-modern-dark": "#000000",
+        "modus-classic-light": "#000000",
+        "modus-classic-dark": "#000000",
+        "connect-light": "#000000",
+        "connect-dark": "#000000"
+      }
+    },
+    "--modus-wc-in-field-error": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#da212c",
+        "modus-modern-dark": "#da212c",
+        "modus-classic-light": "#da212c",
+        "modus-classic-dark": "#da212c",
+        "connect-light": "#da212c",
+        "connect-dark": "#da212c"
+      }
+    },
+    "--modus-wc-in-field-info": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#019aeb",
+        "modus-modern-dark": "#019aeb",
+        "modus-classic-light": "#019aeb",
+        "modus-classic-dark": "#019aeb",
+        "connect-light": "#019aeb",
+        "connect-dark": "#019aeb"
+      }
+    },
+    "--modus-wc-in-field-success-dark-bg": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#00fe00",
+        "modus-modern-dark": "#00fe00",
+        "modus-classic-light": "#00fe00",
+        "modus-classic-dark": "#00fe00",
+        "connect-light": "#00fe00",
+        "connect-dark": "#00fe00"
+      }
+    },
+    "--modus-wc-in-field-success-light-bg": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#00d22f",
+        "modus-modern-dark": "#00d22f",
+        "modus-classic-light": "#00d22f",
+        "modus-classic-dark": "#00d22f",
+        "connect-light": "#00d22f",
+        "connect-dark": "#00d22f"
+      }
+    },
+    "--modus-wc-in-field-warning": {
+      "tier": "public",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ff8b00",
+        "modus-modern-dark": "#ff8b00",
+        "modus-classic-light": "#ff8b00",
+        "modus-classic-dark": "#ff8b00",
+        "connect-light": "#ff8b00",
+        "connect-dark": "#ff8b00"
+      }
+    },
+    "--modus-wc-input-height-lg": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3rem",
+        "modus-modern-dark": "3rem",
+        "modus-classic-light": "3rem",
+        "modus-classic-dark": "3rem",
+        "connect-light": "3rem",
+        "connect-dark": "3rem"
+      }
+    },
+    "--modus-wc-input-height-md": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2rem",
+        "modus-modern-dark": "2rem",
+        "modus-classic-light": "2rem",
+        "modus-classic-dark": "2rem",
+        "connect-light": "2rem",
+        "connect-dark": "2rem"
+      }
+    },
+    "--modus-wc-input-height-sm": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.5rem",
+        "modus-modern-dark": "1.5rem",
+        "modus-classic-light": "1.5rem",
+        "modus-classic-dark": "1.5rem",
+        "connect-light": "1.5rem",
+        "connect-dark": "1.5rem"
+      }
+    },
+    "--modus-wc-line-height-h0": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2.75rem",
+        "modus-modern-dark": "2.75rem",
+        "modus-classic-light": "2.75rem",
+        "modus-classic-dark": "2.75rem",
+        "connect-light": "2.75rem",
+        "connect-dark": "2.75rem"
+      }
+    },
+    "--modus-wc-line-height-h1": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2.25rem",
+        "modus-modern-dark": "2.25rem",
+        "modus-classic-light": "2.25rem",
+        "modus-classic-dark": "2.25rem",
+        "connect-light": "2.25rem",
+        "connect-dark": "2.25rem"
+      }
+    },
+    "--modus-wc-line-height-h2": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.875rem",
+        "modus-modern-dark": "1.875rem",
+        "modus-classic-light": "1.875rem",
+        "modus-classic-dark": "1.875rem",
+        "connect-light": "1.875rem",
+        "connect-dark": "1.875rem"
+      }
+    },
+    "--modus-wc-line-height-h3": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.6875rem",
+        "modus-modern-dark": "1.6875rem",
+        "modus-classic-light": "1.6875rem",
+        "modus-classic-dark": "1.6875rem",
+        "connect-light": "1.6875rem",
+        "connect-dark": "1.6875rem"
+      }
+    },
+    "--modus-wc-line-height-h6": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.125rem",
+        "modus-modern-dark": "1.125rem",
+        "modus-classic-light": "1.125rem",
+        "modus-classic-dark": "1.125rem",
+        "connect-light": "1.125rem",
+        "connect-dark": "1.125rem"
+      }
+    },
+    "--modus-wc-line-height-lg": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2rem",
+        "modus-modern-dark": "2rem",
+        "modus-classic-light": "2rem",
+        "modus-classic-dark": "2rem",
+        "connect-light": "2rem",
+        "connect-dark": "2rem"
+      }
+    },
+    "--modus-wc-line-height-md": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.5rem",
+        "modus-modern-dark": "1.5rem",
+        "modus-classic-light": "1.5rem",
+        "modus-classic-dark": "1.5rem",
+        "connect-light": "1.5rem",
+        "connect-dark": "1.5rem"
+      }
+    },
+    "--modus-wc-line-height-sm": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1rem",
+        "modus-modern-dark": "1rem",
+        "modus-classic-light": "1rem",
+        "modus-classic-dark": "1rem",
+        "connect-light": "1rem",
+        "connect-dark": "1rem"
+      }
+    },
+    "--modus-wc-line-height-xl": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3rem",
+        "modus-modern-dark": "3rem",
+        "modus-classic-light": "3rem",
+        "modus-classic-dark": "3rem",
+        "connect-light": "3rem",
+        "connect-dark": "3rem"
+      }
+    },
+    "--modus-wc-line-height-xs": {
+      "tier": "public",
+      "category": "typography",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.5rem",
+        "modus-modern-dark": "0.5rem",
+        "modus-classic-light": "0.5rem",
+        "modus-classic-dark": "0.5rem",
+        "connect-light": "0.5rem",
+        "connect-dark": "0.5rem"
+      }
+    },
+    "--modus-wc-opacity-overlay": {
+      "tier": "public",
+      "category": "effect",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.6",
+        "modus-modern-dark": "0.6",
+        "modus-classic-light": "0.6",
+        "modus-classic-dark": "0.6",
+        "connect-light": "0.6",
+        "connect-dark": "0.6"
+      }
+    },
+    "--modus-wc-size-lg": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3rem",
+        "modus-modern-dark": "3rem",
+        "modus-classic-light": "3rem",
+        "modus-classic-dark": "3rem",
+        "connect-light": "3rem",
+        "connect-dark": "3rem"
+      }
+    },
+    "--modus-wc-size-md": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2.5rem",
+        "modus-modern-dark": "2.5rem",
+        "modus-classic-light": "2.5rem",
+        "modus-classic-dark": "2.5rem",
+        "connect-light": "2.5rem",
+        "connect-dark": "2.5rem"
+      }
+    },
+    "--modus-wc-size-sm": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2rem",
+        "modus-modern-dark": "2rem",
+        "modus-classic-light": "2rem",
+        "modus-classic-dark": "2rem",
+        "connect-light": "2rem",
+        "connect-dark": "2rem"
+      }
+    },
+    "--modus-wc-size-xl": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3.5rem",
+        "modus-modern-dark": "3.5rem",
+        "modus-classic-light": "3.5rem",
+        "modus-classic-dark": "3.5rem",
+        "connect-light": "3.5rem",
+        "connect-dark": "3.5rem"
+      }
+    },
+    "--modus-wc-size-xs": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.5rem",
+        "modus-modern-dark": "1.5rem",
+        "modus-classic-light": "1.5rem",
+        "modus-classic-dark": "1.5rem",
+        "connect-light": "1.5rem",
+        "connect-dark": "1.5rem"
+      }
+    },
+    "--modus-wc-size-xxl": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "4.5rem",
+        "modus-modern-dark": "4.5rem",
+        "modus-classic-light": "4.5rem",
+        "modus-classic-dark": "4.5rem",
+        "connect-light": "4.5rem",
+        "connect-dark": "4.5rem"
+      }
+    },
+    "--modus-wc-size-xxs": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.75rem",
+        "modus-modern-dark": "0.75rem",
+        "modus-classic-light": "0.75rem",
+        "modus-classic-dark": "0.75rem",
+        "connect-light": "0.75rem",
+        "connect-dark": "0.75rem"
+      }
+    },
+    "--modus-wc-spacing-20": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "5rem",
+        "modus-modern-dark": "5rem",
+        "modus-classic-light": "5rem",
+        "modus-classic-dark": "5rem",
+        "connect-light": "5rem",
+        "connect-dark": "5rem"
+      }
+    },
+    "--modus-wc-spacing-24": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "6rem",
+        "modus-modern-dark": "6rem",
+        "modus-classic-light": "6rem",
+        "modus-classic-dark": "6rem",
+        "connect-light": "6rem",
+        "connect-dark": "6rem"
+      }
+    },
+    "--modus-wc-spacing-2xl": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "2rem",
+        "modus-modern-dark": "2rem",
+        "modus-classic-light": "2rem",
+        "modus-classic-dark": "2rem",
+        "connect-light": "2rem",
+        "connect-dark": "2rem"
+      }
+    },
+    "--modus-wc-spacing-2xs": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.125rem",
+        "modus-modern-dark": "0.125rem",
+        "modus-classic-light": "0.125rem",
+        "modus-classic-dark": "0.125rem",
+        "connect-light": "0.125rem",
+        "connect-dark": "0.125rem"
+      }
+    },
+    "--modus-wc-spacing-3xl": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "3rem",
+        "modus-modern-dark": "3rem",
+        "modus-classic-light": "3rem",
+        "modus-classic-dark": "3rem",
+        "connect-light": "3rem",
+        "connect-dark": "3rem"
+      }
+    },
+    "--modus-wc-spacing-lg": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1rem",
+        "modus-modern-dark": "1rem",
+        "modus-classic-light": "1rem",
+        "modus-classic-dark": "1rem",
+        "connect-light": "1rem",
+        "connect-dark": "1rem"
+      }
+    },
+    "--modus-wc-spacing-md": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.75rem",
+        "modus-modern-dark": "0.75rem",
+        "modus-classic-light": "0.75rem",
+        "modus-classic-dark": "0.75rem",
+        "connect-light": "0.75rem",
+        "connect-dark": "0.75rem"
+      }
+    },
+    "--modus-wc-spacing-sm": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.5rem",
+        "modus-modern-dark": "0.5rem",
+        "modus-classic-light": "0.5rem",
+        "modus-classic-dark": "0.5rem",
+        "connect-light": "0.5rem",
+        "connect-dark": "0.5rem"
+      }
+    },
+    "--modus-wc-spacing-xl": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "1.5rem",
+        "modus-modern-dark": "1.5rem",
+        "modus-classic-light": "1.5rem",
+        "modus-classic-dark": "1.5rem",
+        "connect-light": "1.5rem",
+        "connect-dark": "1.5rem"
+      }
+    },
+    "--modus-wc-spacing-xs": {
+      "tier": "public",
+      "category": "spacing",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "0.25rem",
+        "modus-modern-dark": "0.25rem",
+        "modus-classic-light": "0.25rem",
+        "modus-classic-dark": "0.25rem",
+        "connect-light": "0.25rem",
+        "connect-dark": "0.25rem"
+      }
+    },
+    "--tw-amber-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fef3c7",
+        "modus-modern-dark": "#fef3c7",
+        "modus-classic-light": "#fef3c7",
+        "modus-classic-dark": "#fef3c7",
+        "connect-light": "#fef3c7",
+        "connect-dark": "#fef3c7"
+      }
+    },
+    "--tw-amber-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fde68a",
+        "modus-modern-dark": "#fde68a",
+        "modus-classic-light": "#fde68a",
+        "modus-classic-dark": "#fde68a",
+        "connect-light": "#fde68a",
+        "connect-dark": "#fde68a"
+      }
+    },
+    "--tw-amber-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fcd34d",
+        "modus-modern-dark": "#fcd34d",
+        "modus-classic-light": "#fcd34d",
+        "modus-classic-dark": "#fcd34d",
+        "connect-light": "#fcd34d",
+        "connect-dark": "#fcd34d"
+      }
+    },
+    "--tw-amber-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbbf24",
+        "modus-modern-dark": "#fbbf24",
+        "modus-classic-light": "#fbbf24",
+        "modus-classic-dark": "#fbbf24",
+        "connect-light": "#fbbf24",
+        "connect-dark": "#fbbf24"
+      }
+    },
+    "--tw-amber-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fffbeb",
+        "modus-modern-dark": "#fffbeb",
+        "modus-classic-light": "#fffbeb",
+        "modus-classic-dark": "#fffbeb",
+        "connect-light": "#fffbeb",
+        "connect-dark": "#fffbeb"
+      }
+    },
+    "--tw-amber-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f59e0b",
+        "modus-modern-dark": "#f59e0b",
+        "modus-classic-light": "#f59e0b",
+        "modus-classic-dark": "#f59e0b",
+        "connect-light": "#f59e0b",
+        "connect-dark": "#f59e0b"
+      }
+    },
+    "--tw-amber-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d97706",
+        "modus-modern-dark": "#d97706",
+        "modus-classic-light": "#d97706",
+        "modus-classic-dark": "#d97706",
+        "connect-light": "#d97706",
+        "connect-dark": "#d97706"
+      }
+    },
+    "--tw-amber-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#b45309",
+        "modus-modern-dark": "#b45309",
+        "modus-classic-light": "#b45309",
+        "modus-classic-dark": "#b45309",
+        "connect-light": "#b45309",
+        "connect-dark": "#b45309"
+      }
+    },
+    "--tw-amber-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#92400e",
+        "modus-modern-dark": "#92400e",
+        "modus-classic-light": "#92400e",
+        "modus-classic-dark": "#92400e",
+        "connect-light": "#92400e",
+        "connect-dark": "#92400e"
+      }
+    },
+    "--tw-amber-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#78350f",
+        "modus-modern-dark": "#78350f",
+        "modus-classic-light": "#78350f",
+        "modus-classic-dark": "#78350f",
+        "connect-light": "#78350f",
+        "connect-dark": "#78350f"
+      }
+    },
+    "--tw-amber-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#451a03",
+        "modus-modern-dark": "#451a03",
+        "modus-classic-light": "#451a03",
+        "modus-classic-dark": "#451a03",
+        "connect-light": "#451a03",
+        "connect-dark": "#451a03"
+      }
+    },
+    "--tw-cyan-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#cffafe",
+        "modus-modern-dark": "#cffafe",
+        "modus-classic-light": "#cffafe",
+        "modus-classic-dark": "#cffafe",
+        "connect-light": "#cffafe",
+        "connect-dark": "#cffafe"
+      }
+    },
+    "--tw-cyan-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a5f3fc",
+        "modus-modern-dark": "#a5f3fc",
+        "modus-classic-light": "#a5f3fc",
+        "modus-classic-dark": "#a5f3fc",
+        "connect-light": "#a5f3fc",
+        "connect-dark": "#a5f3fc"
+      }
+    },
+    "--tw-cyan-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#67e8f9",
+        "modus-modern-dark": "#67e8f9",
+        "modus-classic-light": "#67e8f9",
+        "modus-classic-dark": "#67e8f9",
+        "connect-light": "#67e8f9",
+        "connect-dark": "#67e8f9"
+      }
+    },
+    "--tw-cyan-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#22d3ee",
+        "modus-modern-dark": "#22d3ee",
+        "modus-classic-light": "#22d3ee",
+        "modus-classic-dark": "#22d3ee",
+        "connect-light": "#22d3ee",
+        "connect-dark": "#22d3ee"
+      }
+    },
+    "--tw-cyan-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ecfeff",
+        "modus-modern-dark": "#ecfeff",
+        "modus-classic-light": "#ecfeff",
+        "modus-classic-dark": "#ecfeff",
+        "connect-light": "#ecfeff",
+        "connect-dark": "#ecfeff"
+      }
+    },
+    "--tw-cyan-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#06b6d4",
+        "modus-modern-dark": "#06b6d4",
+        "modus-classic-light": "#06b6d4",
+        "modus-classic-dark": "#06b6d4",
+        "connect-light": "#06b6d4",
+        "connect-dark": "#06b6d4"
+      }
+    },
+    "--tw-cyan-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0891b2",
+        "modus-modern-dark": "#0891b2",
+        "modus-classic-light": "#0891b2",
+        "modus-classic-dark": "#0891b2",
+        "connect-light": "#0891b2",
+        "connect-dark": "#0891b2"
+      }
+    },
+    "--tw-cyan-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0e7490",
+        "modus-modern-dark": "#0e7490",
+        "modus-classic-light": "#0e7490",
+        "modus-classic-dark": "#0e7490",
+        "connect-light": "#0e7490",
+        "connect-dark": "#0e7490"
+      }
+    },
+    "--tw-cyan-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#155e75",
+        "modus-modern-dark": "#155e75",
+        "modus-classic-light": "#155e75",
+        "modus-classic-dark": "#155e75",
+        "connect-light": "#155e75",
+        "connect-dark": "#155e75"
+      }
+    },
+    "--tw-cyan-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#164e63",
+        "modus-modern-dark": "#164e63",
+        "modus-classic-light": "#164e63",
+        "modus-classic-dark": "#164e63",
+        "connect-light": "#164e63",
+        "connect-dark": "#164e63"
+      }
+    },
+    "--tw-cyan-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#083344",
+        "modus-modern-dark": "#083344",
+        "modus-classic-light": "#083344",
+        "modus-classic-dark": "#083344",
+        "connect-light": "#083344",
+        "connect-dark": "#083344"
+      }
+    },
+    "--tw-emerald-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d1fae5",
+        "modus-modern-dark": "#d1fae5",
+        "modus-classic-light": "#d1fae5",
+        "modus-classic-dark": "#d1fae5",
+        "connect-light": "#d1fae5",
+        "connect-dark": "#d1fae5"
+      }
+    },
+    "--tw-emerald-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a7f3d0",
+        "modus-modern-dark": "#a7f3d0",
+        "modus-classic-light": "#a7f3d0",
+        "modus-classic-dark": "#a7f3d0",
+        "connect-light": "#a7f3d0",
+        "connect-dark": "#a7f3d0"
+      }
+    },
+    "--tw-emerald-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6ee7b7",
+        "modus-modern-dark": "#6ee7b7",
+        "modus-classic-light": "#6ee7b7",
+        "modus-classic-dark": "#6ee7b7",
+        "connect-light": "#6ee7b7",
+        "connect-dark": "#6ee7b7"
+      }
+    },
+    "--tw-emerald-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#34d399",
+        "modus-modern-dark": "#34d399",
+        "modus-classic-light": "#34d399",
+        "modus-classic-dark": "#34d399",
+        "connect-light": "#34d399",
+        "connect-dark": "#34d399"
+      }
+    },
+    "--tw-emerald-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ecfdf5",
+        "modus-modern-dark": "#ecfdf5",
+        "modus-classic-light": "#ecfdf5",
+        "modus-classic-dark": "#ecfdf5",
+        "connect-light": "#ecfdf5",
+        "connect-dark": "#ecfdf5"
+      }
+    },
+    "--tw-emerald-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#10b981",
+        "modus-modern-dark": "#10b981",
+        "modus-classic-light": "#10b981",
+        "modus-classic-dark": "#10b981",
+        "connect-light": "#10b981",
+        "connect-dark": "#10b981"
+      }
+    },
+    "--tw-emerald-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#059669",
+        "modus-modern-dark": "#059669",
+        "modus-classic-light": "#059669",
+        "modus-classic-dark": "#059669",
+        "connect-light": "#059669",
+        "connect-dark": "#059669"
+      }
+    },
+    "--tw-emerald-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#047857",
+        "modus-modern-dark": "#047857",
+        "modus-classic-light": "#047857",
+        "modus-classic-dark": "#047857",
+        "connect-light": "#047857",
+        "connect-dark": "#047857"
+      }
+    },
+    "--tw-emerald-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#065f46",
+        "modus-modern-dark": "#065f46",
+        "modus-classic-light": "#065f46",
+        "modus-classic-dark": "#065f46",
+        "connect-light": "#065f46",
+        "connect-dark": "#065f46"
+      }
+    },
+    "--tw-emerald-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#064e3b",
+        "modus-modern-dark": "#064e3b",
+        "modus-classic-light": "#064e3b",
+        "modus-classic-dark": "#064e3b",
+        "connect-light": "#064e3b",
+        "connect-dark": "#064e3b"
+      }
+    },
+    "--tw-emerald-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#022c22",
+        "modus-modern-dark": "#022c22",
+        "modus-classic-light": "#022c22",
+        "modus-classic-dark": "#022c22",
+        "connect-light": "#022c22",
+        "connect-dark": "#022c22"
+      }
+    },
+    "--tw-fuchsia-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fae8ff",
+        "modus-modern-dark": "#fae8ff",
+        "modus-classic-light": "#fae8ff",
+        "modus-classic-dark": "#fae8ff",
+        "connect-light": "#fae8ff",
+        "connect-dark": "#fae8ff"
+      }
+    },
+    "--tw-fuchsia-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5d0fe",
+        "modus-modern-dark": "#f5d0fe",
+        "modus-classic-light": "#f5d0fe",
+        "modus-classic-dark": "#f5d0fe",
+        "connect-light": "#f5d0fe",
+        "connect-dark": "#f5d0fe"
+      }
+    },
+    "--tw-fuchsia-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f0abfc",
+        "modus-modern-dark": "#f0abfc",
+        "modus-classic-light": "#f0abfc",
+        "modus-classic-dark": "#f0abfc",
+        "connect-light": "#f0abfc",
+        "connect-dark": "#f0abfc"
+      }
+    },
+    "--tw-fuchsia-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e879f9",
+        "modus-modern-dark": "#e879f9",
+        "modus-classic-light": "#e879f9",
+        "modus-classic-dark": "#e879f9",
+        "connect-light": "#e879f9",
+        "connect-dark": "#e879f9"
+      }
+    },
+    "--tw-fuchsia-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fdf4ff",
+        "modus-modern-dark": "#fdf4ff",
+        "modus-classic-light": "#fdf4ff",
+        "modus-classic-dark": "#fdf4ff",
+        "connect-light": "#fdf4ff",
+        "connect-dark": "#fdf4ff"
+      }
+    },
+    "--tw-fuchsia-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d946ef",
+        "modus-modern-dark": "#d946ef",
+        "modus-classic-light": "#d946ef",
+        "modus-classic-dark": "#d946ef",
+        "connect-light": "#d946ef",
+        "connect-dark": "#d946ef"
+      }
+    },
+    "--tw-fuchsia-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c026d3",
+        "modus-modern-dark": "#c026d3",
+        "modus-classic-light": "#c026d3",
+        "modus-classic-dark": "#c026d3",
+        "connect-light": "#c026d3",
+        "connect-dark": "#c026d3"
+      }
+    },
+    "--tw-fuchsia-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a21caf",
+        "modus-modern-dark": "#a21caf",
+        "modus-classic-light": "#a21caf",
+        "modus-classic-dark": "#a21caf",
+        "connect-light": "#a21caf",
+        "connect-dark": "#a21caf"
+      }
+    },
+    "--tw-fuchsia-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#86198f",
+        "modus-modern-dark": "#86198f",
+        "modus-classic-light": "#86198f",
+        "modus-classic-dark": "#86198f",
+        "connect-light": "#86198f",
+        "connect-dark": "#86198f"
+      }
+    },
+    "--tw-fuchsia-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#701a75",
+        "modus-modern-dark": "#701a75",
+        "modus-classic-light": "#701a75",
+        "modus-classic-dark": "#701a75",
+        "connect-light": "#701a75",
+        "connect-dark": "#701a75"
+      }
+    },
+    "--tw-fuchsia-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4a044e",
+        "modus-modern-dark": "#4a044e",
+        "modus-classic-light": "#4a044e",
+        "modus-classic-dark": "#4a044e",
+        "connect-light": "#4a044e",
+        "connect-dark": "#4a044e"
+      }
+    },
+    "--tw-indigo-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e0e7ff",
+        "modus-modern-dark": "#e0e7ff",
+        "modus-classic-light": "#e0e7ff",
+        "modus-classic-dark": "#e0e7ff",
+        "connect-light": "#e0e7ff",
+        "connect-dark": "#e0e7ff"
+      }
+    },
+    "--tw-indigo-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c7d2fe",
+        "modus-modern-dark": "#c7d2fe",
+        "modus-classic-light": "#c7d2fe",
+        "modus-classic-dark": "#c7d2fe",
+        "connect-light": "#c7d2fe",
+        "connect-dark": "#c7d2fe"
+      }
+    },
+    "--tw-indigo-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a5b4fc",
+        "modus-modern-dark": "#a5b4fc",
+        "modus-classic-light": "#a5b4fc",
+        "modus-classic-dark": "#a5b4fc",
+        "connect-light": "#a5b4fc",
+        "connect-dark": "#a5b4fc"
+      }
+    },
+    "--tw-indigo-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#818cf8",
+        "modus-modern-dark": "#818cf8",
+        "modus-classic-light": "#818cf8",
+        "modus-classic-dark": "#818cf8",
+        "connect-light": "#818cf8",
+        "connect-dark": "#818cf8"
+      }
+    },
+    "--tw-indigo-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#eef2ff",
+        "modus-modern-dark": "#eef2ff",
+        "modus-classic-light": "#eef2ff",
+        "modus-classic-dark": "#eef2ff",
+        "connect-light": "#eef2ff",
+        "connect-dark": "#eef2ff"
+      }
+    },
+    "--tw-indigo-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6366f1",
+        "modus-modern-dark": "#6366f1",
+        "modus-classic-light": "#6366f1",
+        "modus-classic-dark": "#6366f1",
+        "connect-light": "#6366f1",
+        "connect-dark": "#6366f1"
+      }
+    },
+    "--tw-indigo-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4f46e5",
+        "modus-modern-dark": "#4f46e5",
+        "modus-classic-light": "#4f46e5",
+        "modus-classic-dark": "#4f46e5",
+        "connect-light": "#4f46e5",
+        "connect-dark": "#4f46e5"
+      }
+    },
+    "--tw-indigo-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4338ca",
+        "modus-modern-dark": "#4338ca",
+        "modus-classic-light": "#4338ca",
+        "modus-classic-dark": "#4338ca",
+        "connect-light": "#4338ca",
+        "connect-dark": "#4338ca"
+      }
+    },
+    "--tw-indigo-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#3730a3",
+        "modus-modern-dark": "#3730a3",
+        "modus-classic-light": "#3730a3",
+        "modus-classic-dark": "#3730a3",
+        "connect-light": "#3730a3",
+        "connect-dark": "#3730a3"
+      }
+    },
+    "--tw-indigo-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#312e81",
+        "modus-modern-dark": "#312e81",
+        "modus-classic-light": "#312e81",
+        "modus-classic-dark": "#312e81",
+        "connect-light": "#312e81",
+        "connect-dark": "#312e81"
+      }
+    },
+    "--tw-indigo-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#1e1b4b",
+        "modus-modern-dark": "#1e1b4b",
+        "modus-classic-light": "#1e1b4b",
+        "modus-classic-dark": "#1e1b4b",
+        "connect-light": "#1e1b4b",
+        "connect-dark": "#1e1b4b"
+      }
+    },
+    "--tw-lime-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ecfccb",
+        "modus-modern-dark": "#ecfccb",
+        "modus-classic-light": "#ecfccb",
+        "modus-classic-dark": "#ecfccb",
+        "connect-light": "#ecfccb",
+        "connect-dark": "#ecfccb"
+      }
+    },
+    "--tw-lime-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d9f99d",
+        "modus-modern-dark": "#d9f99d",
+        "modus-classic-light": "#d9f99d",
+        "modus-classic-dark": "#d9f99d",
+        "connect-light": "#d9f99d",
+        "connect-dark": "#d9f99d"
+      }
+    },
+    "--tw-lime-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#bef264",
+        "modus-modern-dark": "#bef264",
+        "modus-classic-light": "#bef264",
+        "modus-classic-dark": "#bef264",
+        "connect-light": "#bef264",
+        "connect-dark": "#bef264"
+      }
+    },
+    "--tw-lime-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a3e635",
+        "modus-modern-dark": "#a3e635",
+        "modus-classic-light": "#a3e635",
+        "modus-classic-dark": "#a3e635",
+        "connect-light": "#a3e635",
+        "connect-dark": "#a3e635"
+      }
+    },
+    "--tw-lime-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f7fee7",
+        "modus-modern-dark": "#f7fee7",
+        "modus-classic-light": "#f7fee7",
+        "modus-classic-dark": "#f7fee7",
+        "connect-light": "#f7fee7",
+        "connect-dark": "#f7fee7"
+      }
+    },
+    "--tw-lime-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#84cc16",
+        "modus-modern-dark": "#84cc16",
+        "modus-classic-light": "#84cc16",
+        "modus-classic-dark": "#84cc16",
+        "connect-light": "#84cc16",
+        "connect-dark": "#84cc16"
+      }
+    },
+    "--tw-lime-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#65a30d",
+        "modus-modern-dark": "#65a30d",
+        "modus-classic-light": "#65a30d",
+        "modus-classic-dark": "#65a30d",
+        "connect-light": "#65a30d",
+        "connect-dark": "#65a30d"
+      }
+    },
+    "--tw-lime-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4d7c0f",
+        "modus-modern-dark": "#4d7c0f",
+        "modus-classic-light": "#4d7c0f",
+        "modus-classic-dark": "#4d7c0f",
+        "connect-light": "#4d7c0f",
+        "connect-dark": "#4d7c0f"
+      }
+    },
+    "--tw-lime-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#3f6212",
+        "modus-modern-dark": "#3f6212",
+        "modus-classic-light": "#3f6212",
+        "modus-classic-dark": "#3f6212",
+        "connect-light": "#3f6212",
+        "connect-dark": "#3f6212"
+      }
+    },
+    "--tw-lime-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#365314",
+        "modus-modern-dark": "#365314",
+        "modus-classic-light": "#365314",
+        "modus-classic-dark": "#365314",
+        "connect-light": "#365314",
+        "connect-dark": "#365314"
+      }
+    },
+    "--tw-lime-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#1a2e05",
+        "modus-modern-dark": "#1a2e05",
+        "modus-classic-light": "#1a2e05",
+        "modus-classic-dark": "#1a2e05",
+        "connect-light": "#1a2e05",
+        "connect-dark": "#1a2e05"
+      }
+    },
+    "--tw-orange-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffedd5",
+        "modus-modern-dark": "#ffedd5",
+        "modus-classic-light": "#ffedd5",
+        "modus-classic-dark": "#ffedd5",
+        "connect-light": "#ffedd5",
+        "connect-dark": "#ffedd5"
+      }
+    },
+    "--tw-orange-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fed7aa",
+        "modus-modern-dark": "#fed7aa",
+        "modus-classic-light": "#fed7aa",
+        "modus-classic-dark": "#fed7aa",
+        "connect-light": "#fed7aa",
+        "connect-dark": "#fed7aa"
+      }
+    },
+    "--tw-orange-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fdba74",
+        "modus-modern-dark": "#fdba74",
+        "modus-classic-light": "#fdba74",
+        "modus-classic-dark": "#fdba74",
+        "connect-light": "#fdba74",
+        "connect-dark": "#fdba74"
+      }
+    },
+    "--tw-orange-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fb923c",
+        "modus-modern-dark": "#fb923c",
+        "modus-classic-light": "#fb923c",
+        "modus-classic-dark": "#fb923c",
+        "connect-light": "#fb923c",
+        "connect-dark": "#fb923c"
+      }
+    },
+    "--tw-orange-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fff7ed",
+        "modus-modern-dark": "#fff7ed",
+        "modus-classic-light": "#fff7ed",
+        "modus-classic-dark": "#fff7ed",
+        "connect-light": "#fff7ed",
+        "connect-dark": "#fff7ed"
+      }
+    },
+    "--tw-orange-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f97316",
+        "modus-modern-dark": "#f97316",
+        "modus-classic-light": "#f97316",
+        "modus-classic-dark": "#f97316",
+        "connect-light": "#f97316",
+        "connect-dark": "#f97316"
+      }
+    },
+    "--tw-orange-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ea580c",
+        "modus-modern-dark": "#ea580c",
+        "modus-classic-light": "#ea580c",
+        "modus-classic-dark": "#ea580c",
+        "connect-light": "#ea580c",
+        "connect-dark": "#ea580c"
+      }
+    },
+    "--tw-orange-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c2410c",
+        "modus-modern-dark": "#c2410c",
+        "modus-classic-light": "#c2410c",
+        "modus-classic-dark": "#c2410c",
+        "connect-light": "#c2410c",
+        "connect-dark": "#c2410c"
+      }
+    },
+    "--tw-orange-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9a3412",
+        "modus-modern-dark": "#9a3412",
+        "modus-classic-light": "#9a3412",
+        "modus-classic-dark": "#9a3412",
+        "connect-light": "#9a3412",
+        "connect-dark": "#9a3412"
+      }
+    },
+    "--tw-orange-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7c2d12",
+        "modus-modern-dark": "#7c2d12",
+        "modus-classic-light": "#7c2d12",
+        "modus-classic-dark": "#7c2d12",
+        "connect-light": "#7c2d12",
+        "connect-dark": "#7c2d12"
+      }
+    },
+    "--tw-orange-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#431407",
+        "modus-modern-dark": "#431407",
+        "modus-classic-light": "#431407",
+        "modus-classic-dark": "#431407",
+        "connect-light": "#431407",
+        "connect-dark": "#431407"
+      }
+    },
+    "--tw-pink-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fce7f3",
+        "modus-modern-dark": "#fce7f3",
+        "modus-classic-light": "#fce7f3",
+        "modus-classic-dark": "#fce7f3",
+        "connect-light": "#fce7f3",
+        "connect-dark": "#fce7f3"
+      }
+    },
+    "--tw-pink-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fbcfe8",
+        "modus-modern-dark": "#fbcfe8",
+        "modus-classic-light": "#fbcfe8",
+        "modus-classic-dark": "#fbcfe8",
+        "connect-light": "#fbcfe8",
+        "connect-dark": "#fbcfe8"
+      }
+    },
+    "--tw-pink-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f9a8d4",
+        "modus-modern-dark": "#f9a8d4",
+        "modus-classic-light": "#f9a8d4",
+        "modus-classic-dark": "#f9a8d4",
+        "connect-light": "#f9a8d4",
+        "connect-dark": "#f9a8d4"
+      }
+    },
+    "--tw-pink-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f47286",
+        "modus-modern-dark": "#f47286",
+        "modus-classic-light": "#f47286",
+        "modus-classic-dark": "#f47286",
+        "connect-light": "#f47286",
+        "connect-dark": "#f47286"
+      }
+    },
+    "--tw-pink-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fdf2f8",
+        "modus-modern-dark": "#fdf2f8",
+        "modus-classic-light": "#fdf2f8",
+        "modus-classic-dark": "#fdf2f8",
+        "connect-light": "#fdf2f8",
+        "connect-dark": "#fdf2f8"
+      }
+    },
+    "--tw-pink-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ec4899",
+        "modus-modern-dark": "#ec4899",
+        "modus-classic-light": "#ec4899",
+        "modus-classic-dark": "#ec4899",
+        "connect-light": "#ec4899",
+        "connect-dark": "#ec4899"
+      }
+    },
+    "--tw-pink-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#db2777",
+        "modus-modern-dark": "#db2777",
+        "modus-classic-light": "#db2777",
+        "modus-classic-dark": "#db2777",
+        "connect-light": "#db2777",
+        "connect-dark": "#db2777"
+      }
+    },
+    "--tw-pink-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#be185d",
+        "modus-modern-dark": "#be185d",
+        "modus-classic-light": "#be185d",
+        "modus-classic-dark": "#be185d",
+        "connect-light": "#be185d",
+        "connect-dark": "#be185d"
+      }
+    },
+    "--tw-pink-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9d174d",
+        "modus-modern-dark": "#9d174d",
+        "modus-classic-light": "#9d174d",
+        "modus-classic-dark": "#9d174d",
+        "connect-light": "#9d174d",
+        "connect-dark": "#9d174d"
+      }
+    },
+    "--tw-pink-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#831843",
+        "modus-modern-dark": "#831843",
+        "modus-classic-light": "#831843",
+        "modus-classic-dark": "#831843",
+        "connect-light": "#831843",
+        "connect-dark": "#831843"
+      }
+    },
+    "--tw-pink-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#500724",
+        "modus-modern-dark": "#500724",
+        "modus-classic-light": "#500724",
+        "modus-classic-dark": "#500724",
+        "connect-light": "#500724",
+        "connect-dark": "#500724"
+      }
+    },
+    "--tw-purple-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f3e8ff",
+        "modus-modern-dark": "#f3e8ff",
+        "modus-classic-light": "#f3e8ff",
+        "modus-classic-dark": "#f3e8ff",
+        "connect-light": "#f3e8ff",
+        "connect-dark": "#f3e8ff"
+      }
+    },
+    "--tw-purple-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e9d5ff",
+        "modus-modern-dark": "#e9d5ff",
+        "modus-classic-light": "#e9d5ff",
+        "modus-classic-dark": "#e9d5ff",
+        "connect-light": "#e9d5ff",
+        "connect-dark": "#e9d5ff"
+      }
+    },
+    "--tw-purple-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#d8b4fe",
+        "modus-modern-dark": "#d8b4fe",
+        "modus-classic-light": "#d8b4fe",
+        "modus-classic-dark": "#d8b4fe",
+        "connect-light": "#d8b4fe",
+        "connect-dark": "#d8b4fe"
+      }
+    },
+    "--tw-purple-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c084fc",
+        "modus-modern-dark": "#c084fc",
+        "modus-classic-light": "#c084fc",
+        "modus-classic-dark": "#c084fc",
+        "connect-light": "#c084fc",
+        "connect-dark": "#c084fc"
+      }
+    },
+    "--tw-purple-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#faf5ff",
+        "modus-modern-dark": "#faf5ff",
+        "modus-classic-light": "#faf5ff",
+        "modus-classic-dark": "#faf5ff",
+        "connect-light": "#faf5ff",
+        "connect-dark": "#faf5ff"
+      }
+    },
+    "--tw-purple-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a855f7",
+        "modus-modern-dark": "#a855f7",
+        "modus-classic-light": "#a855f7",
+        "modus-classic-dark": "#a855f7",
+        "connect-light": "#a855f7",
+        "connect-dark": "#a855f7"
+      }
+    },
+    "--tw-purple-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9333ea",
+        "modus-modern-dark": "#9333ea",
+        "modus-classic-light": "#9333ea",
+        "modus-classic-dark": "#9333ea",
+        "connect-light": "#9333ea",
+        "connect-dark": "#9333ea"
+      }
+    },
+    "--tw-purple-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7e22ce",
+        "modus-modern-dark": "#7e22ce",
+        "modus-classic-light": "#7e22ce",
+        "modus-classic-dark": "#7e22ce",
+        "connect-light": "#7e22ce",
+        "connect-dark": "#7e22ce"
+      }
+    },
+    "--tw-purple-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6b21a8",
+        "modus-modern-dark": "#6b21a8",
+        "modus-classic-light": "#6b21a8",
+        "modus-classic-dark": "#6b21a8",
+        "connect-light": "#6b21a8",
+        "connect-dark": "#6b21a8"
+      }
+    },
+    "--tw-purple-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#581c87",
+        "modus-modern-dark": "#581c87",
+        "modus-classic-light": "#581c87",
+        "modus-classic-dark": "#581c87",
+        "connect-light": "#581c87",
+        "connect-dark": "#581c87"
+      }
+    },
+    "--tw-purple-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#3b0764",
+        "modus-modern-dark": "#3b0764",
+        "modus-classic-light": "#3b0764",
+        "modus-classic-dark": "#3b0764",
+        "connect-light": "#3b0764",
+        "connect-dark": "#3b0764"
+      }
+    },
+    "--tw-rose-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ffe4e6",
+        "modus-modern-dark": "#ffe4e6",
+        "modus-classic-light": "#ffe4e6",
+        "modus-classic-dark": "#ffe4e6",
+        "connect-light": "#ffe4e6",
+        "connect-dark": "#ffe4e6"
+      }
+    },
+    "--tw-rose-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fecdd3",
+        "modus-modern-dark": "#fecdd3",
+        "modus-classic-light": "#fecdd3",
+        "modus-classic-dark": "#fecdd3",
+        "connect-light": "#fecdd3",
+        "connect-dark": "#fecdd3"
+      }
+    },
+    "--tw-rose-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fda4af",
+        "modus-modern-dark": "#fda4af",
+        "modus-classic-light": "#fda4af",
+        "modus-classic-dark": "#fda4af",
+        "connect-light": "#fda4af",
+        "connect-dark": "#fda4af"
+      }
+    },
+    "--tw-rose-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fb7185",
+        "modus-modern-dark": "#fb7185",
+        "modus-classic-light": "#fb7185",
+        "modus-classic-dark": "#fb7185",
+        "connect-light": "#fb7185",
+        "connect-dark": "#fb7185"
+      }
+    },
+    "--tw-rose-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#fff1f2",
+        "modus-modern-dark": "#fff1f2",
+        "modus-classic-light": "#fff1f2",
+        "modus-classic-dark": "#fff1f2",
+        "connect-light": "#fff1f2",
+        "connect-dark": "#fff1f2"
+      }
+    },
+    "--tw-rose-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f43f5e",
+        "modus-modern-dark": "#f43f5e",
+        "modus-classic-light": "#f43f5e",
+        "modus-classic-dark": "#f43f5e",
+        "connect-light": "#f43f5e",
+        "connect-dark": "#f43f5e"
+      }
+    },
+    "--tw-rose-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#e11d48",
+        "modus-modern-dark": "#e11d48",
+        "modus-classic-light": "#e11d48",
+        "modus-classic-dark": "#e11d48",
+        "connect-light": "#e11d48",
+        "connect-dark": "#e11d48"
+      }
+    },
+    "--tw-rose-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#be123c",
+        "modus-modern-dark": "#be123c",
+        "modus-classic-light": "#be123c",
+        "modus-classic-dark": "#be123c",
+        "connect-light": "#be123c",
+        "connect-dark": "#be123c"
+      }
+    },
+    "--tw-rose-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#9f1239",
+        "modus-modern-dark": "#9f1239",
+        "modus-classic-light": "#9f1239",
+        "modus-classic-dark": "#9f1239",
+        "connect-light": "#9f1239",
+        "connect-dark": "#9f1239"
+      }
+    },
+    "--tw-rose-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#881337",
+        "modus-modern-dark": "#881337",
+        "modus-classic-light": "#881337",
+        "modus-classic-dark": "#881337",
+        "connect-light": "#881337",
+        "connect-dark": "#881337"
+      }
+    },
+    "--tw-rose-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4c0519",
+        "modus-modern-dark": "#4c0519",
+        "modus-classic-light": "#4c0519",
+        "modus-classic-dark": "#4c0519",
+        "connect-light": "#4c0519",
+        "connect-dark": "#4c0519"
+      }
+    },
+    "--tw-teal-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ccfbf1",
+        "modus-modern-dark": "#ccfbf1",
+        "modus-classic-light": "#ccfbf1",
+        "modus-classic-dark": "#ccfbf1",
+        "connect-light": "#ccfbf1",
+        "connect-dark": "#ccfbf1"
+      }
+    },
+    "--tw-teal-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#99f6e4",
+        "modus-modern-dark": "#99f6e4",
+        "modus-classic-light": "#99f6e4",
+        "modus-classic-dark": "#99f6e4",
+        "connect-light": "#99f6e4",
+        "connect-dark": "#99f6e4"
+      }
+    },
+    "--tw-teal-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#5eead4",
+        "modus-modern-dark": "#5eead4",
+        "modus-classic-light": "#5eead4",
+        "modus-classic-dark": "#5eead4",
+        "connect-light": "#5eead4",
+        "connect-dark": "#5eead4"
+      }
+    },
+    "--tw-teal-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#2dd4bf",
+        "modus-modern-dark": "#2dd4bf",
+        "modus-classic-light": "#2dd4bf",
+        "modus-classic-dark": "#2dd4bf",
+        "connect-light": "#2dd4bf",
+        "connect-dark": "#2dd4bf"
+      }
+    },
+    "--tw-teal-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f0fdfa",
+        "modus-modern-dark": "#f0fdfa",
+        "modus-classic-light": "#f0fdfa",
+        "modus-classic-dark": "#f0fdfa",
+        "connect-light": "#f0fdfa",
+        "connect-dark": "#f0fdfa"
+      }
+    },
+    "--tw-teal-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#14b8a6",
+        "modus-modern-dark": "#14b8a6",
+        "modus-classic-light": "#14b8a6",
+        "modus-classic-dark": "#14b8a6",
+        "connect-light": "#14b8a6",
+        "connect-dark": "#14b8a6"
+      }
+    },
+    "--tw-teal-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0d9488",
+        "modus-modern-dark": "#0d9488",
+        "modus-classic-light": "#0d9488",
+        "modus-classic-dark": "#0d9488",
+        "connect-light": "#0d9488",
+        "connect-dark": "#0d9488"
+      }
+    },
+    "--tw-teal-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#0f766e",
+        "modus-modern-dark": "#0f766e",
+        "modus-classic-light": "#0f766e",
+        "modus-classic-dark": "#0f766e",
+        "connect-light": "#0f766e",
+        "connect-dark": "#0f766e"
+      }
+    },
+    "--tw-teal-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#115e59",
+        "modus-modern-dark": "#115e59",
+        "modus-classic-light": "#115e59",
+        "modus-classic-dark": "#115e59",
+        "connect-light": "#115e59",
+        "connect-dark": "#115e59"
+      }
+    },
+    "--tw-teal-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#134e4a",
+        "modus-modern-dark": "#134e4a",
+        "modus-classic-light": "#134e4a",
+        "modus-classic-dark": "#134e4a",
+        "connect-light": "#134e4a",
+        "connect-dark": "#134e4a"
+      }
+    },
+    "--tw-teal-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#042f2e",
+        "modus-modern-dark": "#042f2e",
+        "modus-classic-light": "#042f2e",
+        "modus-classic-dark": "#042f2e",
+        "connect-light": "#042f2e",
+        "connect-dark": "#042f2e"
+      }
+    },
+    "--tw-violet-100": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ede9fe",
+        "modus-modern-dark": "#ede9fe",
+        "modus-classic-light": "#ede9fe",
+        "modus-classic-dark": "#ede9fe",
+        "connect-light": "#ede9fe",
+        "connect-dark": "#ede9fe"
+      }
+    },
+    "--tw-violet-200": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#ddd6fe",
+        "modus-modern-dark": "#ddd6fe",
+        "modus-classic-light": "#ddd6fe",
+        "modus-classic-dark": "#ddd6fe",
+        "connect-light": "#ddd6fe",
+        "connect-dark": "#ddd6fe"
+      }
+    },
+    "--tw-violet-300": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#c4b5fd",
+        "modus-modern-dark": "#c4b5fd",
+        "modus-classic-light": "#c4b5fd",
+        "modus-classic-dark": "#c4b5fd",
+        "connect-light": "#c4b5fd",
+        "connect-dark": "#c4b5fd"
+      }
+    },
+    "--tw-violet-400": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#a78bfa",
+        "modus-modern-dark": "#a78bfa",
+        "modus-classic-light": "#a78bfa",
+        "modus-classic-dark": "#a78bfa",
+        "connect-light": "#a78bfa",
+        "connect-dark": "#a78bfa"
+      }
+    },
+    "--tw-violet-50": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#f5f3ff",
+        "modus-modern-dark": "#f5f3ff",
+        "modus-classic-light": "#f5f3ff",
+        "modus-classic-dark": "#f5f3ff",
+        "connect-light": "#f5f3ff",
+        "connect-dark": "#f5f3ff"
+      }
+    },
+    "--tw-violet-500": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#8b5cf6",
+        "modus-modern-dark": "#8b5cf6",
+        "modus-classic-light": "#8b5cf6",
+        "modus-classic-dark": "#8b5cf6",
+        "connect-light": "#8b5cf6",
+        "connect-dark": "#8b5cf6"
+      }
+    },
+    "--tw-violet-600": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#7c3aed",
+        "modus-modern-dark": "#7c3aed",
+        "modus-classic-light": "#7c3aed",
+        "modus-classic-dark": "#7c3aed",
+        "connect-light": "#7c3aed",
+        "connect-dark": "#7c3aed"
+      }
+    },
+    "--tw-violet-700": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#6d28d9",
+        "modus-modern-dark": "#6d28d9",
+        "modus-classic-light": "#6d28d9",
+        "modus-classic-dark": "#6d28d9",
+        "connect-light": "#6d28d9",
+        "connect-dark": "#6d28d9"
+      }
+    },
+    "--tw-violet-800": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#5b21b6",
+        "modus-modern-dark": "#5b21b6",
+        "modus-classic-light": "#5b21b6",
+        "modus-classic-dark": "#5b21b6",
+        "connect-light": "#5b21b6",
+        "connect-dark": "#5b21b6"
+      }
+    },
+    "--tw-violet-900": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#4c1d95",
+        "modus-modern-dark": "#4c1d95",
+        "modus-classic-light": "#4c1d95",
+        "modus-classic-dark": "#4c1d95",
+        "connect-light": "#4c1d95",
+        "connect-dark": "#4c1d95"
+      }
+    },
+    "--tw-violet-950": {
+      "tier": "internal",
+      "category": "color",
+      "autoDerived": false,
+      "defaults": {
+        "modus-modern-light": "#2e1065",
+        "modus-modern-dark": "#2e1065",
+        "modus-classic-light": "#2e1065",
+        "modus-classic-dark": "#2e1065",
+        "connect-light": "#2e1065",
+        "connect-dark": "#2e1065"
+      }
+    }
+  }
+}

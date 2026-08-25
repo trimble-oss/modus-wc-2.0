@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trimble.com/modus-wc/modus-theme.config.schema.json",
+  "title": "Modus theme config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "tokens"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "data-theme prefix; modes become {name}-light and {name}-dark"
+    },
+    "extends": {
+      "type": "string",
+      "description": "Built-in theme to inherit unset tokens from (documentation only; routing uses library CSS)"
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "dark": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -21,6 +21,7 @@ const config: StorybookConfig = {
     { from: '../dist/modus-wc', to: 'modus-wc' },
     { from: '../dist/styles', to: 'dist/styles' },
     { from: '../dist/styles/assets/fonts', to: 'public/assets/fonts' },
+    { from: '../src/theme-cli/web', to: 'theme-generator' },
   ],
   async viteFinal(config, { configType }) {
     const { mergeConfig } = await import('vite');

@@ -52,6 +52,7 @@ export const config: Config = {
         { src: '../README.md', dest: 'dist/README.md' },
         { src: '../LICENSE', dest: 'dist/LICENSE' },
         { src: '../package.json', dest: 'dist/package.json' },
+        { src: 'theme-cli', dest: 'dist/theme-cli' },
       ],
     },
     {

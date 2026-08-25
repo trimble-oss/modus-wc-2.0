@@ -10,7 +10,7 @@ import importPlugin from 'eslint-plugin-import';
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.js'],
+    files: ['**/*.js', '**/*.mjs'],
     ...js.configs.recommended,
     languageOptions: {
       globals: {
