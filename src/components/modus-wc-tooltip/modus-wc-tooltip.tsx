@@ -15,11 +15,19 @@ import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
+ * Warm state shared by all tooltip instances. For `WARM_WINDOW_MS` after any
+ * tooltip closes, other tooltips skip their showDelay on hover.
+ */
+const WARM_WINDOW_MS = 300;
+let lastTooltipCloseTime = -Infinity;
+
+/**
  * A customizable tooltip component used to create tooltips with different content.
  *
  * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
  * pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,
  * the tooltip remains open and Escape does not dismiss it.
+ *
  * Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text.
  * For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.
  *
@@ -38,6 +46,8 @@ export class ModusWcTooltip {
   private triggerElement: HTMLElement | null = null;
   private isHovered = false;
   private isFocused = false;
+  private showDelayTimer?: ReturnType<typeof setTimeout>;
+  private lastPointerType = '';
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -69,6 +79,14 @@ export class ModusWcTooltip {
 
   /** The position that the tooltip will render in relation to the element. */
   @Prop() position?: 'auto' | 'top' | 'right' | 'bottom' | 'left' = 'auto';
+
+  /**
+   * Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.
+   *
+   * 200ms is recommended if you're adding a delay. The delay is skipped
+   * if a tooltip closed within the last 300ms, on focus, and for touch input.
+   */
+  @Prop() showDelay?: number = 0;
 
   @Watch('position')
   handlePositionChange() {
@@ -108,6 +126,7 @@ export class ModusWcTooltip {
   @Watch('disabled')
   handleDisabledChange(disabled: boolean) {
     if (disabled) {
+      clearTimeout(this.showDelayTimer);
       this.hideTooltip();
     }
   }
@@ -130,6 +149,8 @@ export class ModusWcTooltip {
   elementKeyupHandler(event: KeyboardEvent): void {
     switch (event.code) {
       case 'Escape': {
+        // Escape during a pending show delay cancels the open outright
+        clearTimeout(this.showDelayTimer);
         // Allow Escape to dismiss tooltip when it's visible
         // When forceOpen is true, Escape should NOT dismiss it
         // Focus is intentionally left on the trigger
@@ -171,6 +192,7 @@ export class ModusWcTooltip {
   }
 
   disconnectedCallback() {
+    clearTimeout(this.showDelayTimer);
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -301,6 +323,22 @@ export class ModusWcTooltip {
     }
   };
 
+  /**
+   * Shows after showDelay on a cold page. Shows immediately when already
+   * visible, when showDelay is 0, while the page is warm, or when the
+   * mouseenter is a tap's emulated hover (a tap is already intentional).
+   */
+  private scheduleShowTooltip() {
+    clearTimeout(this.showDelayTimer);
+    const isWarm = Date.now() - lastTooltipCloseTime < WARM_WINDOW_MS;
+    const isTouch = this.lastPointerType === 'touch';
+    if (this.isVisible || !this.showDelay || isWarm || isTouch) {
+      this.showTooltip();
+      return;
+    }
+    this.showDelayTimer = setTimeout(() => this.showTooltip(), this.showDelay);
+  }
+
   private showTooltip() {
     if (this.disabled || this.escapeDismissed || !this.tooltipElement) return;
     this.tooltipElement.style.display = 'block';
@@ -333,6 +371,10 @@ export class ModusWcTooltip {
           // Already hidden or element not connected
         }
       }
+      // Only an actual close warms the page; a hover that never opened must not
+      if (this.isVisible) {
+        lastTooltipCloseTime = Date.now();
+      }
       this.tooltipElement.style.display = 'none';
       this.isVisible = false;
     }
@@ -344,16 +386,23 @@ export class ModusWcTooltip {
     }
   }
 
+  /** Fires before the emulated mouseenter on touch, so mouseenter knows its source. */
+  @Listen('pointerenter')
+  handlePointerEnter(event: PointerEvent) {
+    this.lastPointerType = event.pointerType;
+  }
+
   @Listen('mouseenter')
   handleMouseEnter() {
     this.escapeDismissed = false;
     this.isHovered = true;
-    this.showTooltip();
+    this.scheduleShowTooltip();
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
     this.isHovered = false;
+    clearTimeout(this.showDelayTimer);
     this.maybeHideTooltip();
   }
 

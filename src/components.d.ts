@@ -411,6 +411,10 @@ export namespace Components {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -421,6 +425,10 @@ export namespace Components {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -2578,6 +2586,11 @@ export namespace Components {
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
         /**
+          * Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
+          * @default 0
+         */
+        "showDelay"?: number;
+        /**
           * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */
         "tooltipId"?: string;
@@ -4513,6 +4526,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -4523,6 +4540,10 @@ declare namespace LocalJSX {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -7078,6 +7099,11 @@ declare namespace LocalJSX {
           * @default 'auto'
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
+          * @default 0
+         */
+        "showDelay"?: number;
         /**
           * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */
