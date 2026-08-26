@@ -243,6 +243,32 @@
       </div>
     </div>
 
+    <div class="panel" id="input-label-panel">
+      <h2>Input Label (broken oklch on connect-light)</h2>
+      <p>
+        <code>connect-light</code> sets
+        <code>color: oklch(var(--s))</code> with no hex fallback. Switch the
+        theme dropdown to <code>connect-light</code>. Chrome 90 drops that
+        color; modern Chrome shows secondary.
+      </p>
+      <div class="row">
+        <modus-wc-input-label
+          label-text="Live input label"
+          required="true"
+          sub-label-text="Sublabel"
+        ></modus-wc-input-label>
+      </div>
+      <div class="row">
+        <modus-wc-input-label class="modus-wc-input-label-host">
+          <label
+            id="css-input-label"
+            class="modus-wc-input-label modus-wc-input-label-size-md"
+            >CSS-class input label</label
+          >
+        </modus-wc-input-label>
+      </div>
+    </div>
+
     <pre id="results">measuring…</pre>
     <script>
       function toRgb(cssColor) {
@@ -307,6 +333,12 @@
             document.getElementById('css-skeleton-circle'),
             'backgroundColor'
           ),
+          cssInputLabel: used(
+            document.getElementById('css-input-label'),
+            'color'
+          ),
+          slotS: root.getPropertyValue('--s').trim(),
+          fallbackS: root.getPropertyValue('--fallback-s').trim(),
         };
         document.getElementById('results').textContent = JSON.stringify(
           out,
