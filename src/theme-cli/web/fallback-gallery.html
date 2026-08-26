@@ -261,6 +261,8 @@
         disabled
         instructions="Disabled dropzone"
       ></modus-wc-file-dropzone>
+      <p>Click log (picker is intercepted so the native dialog does not block)</p>
+      <pre id="dropzone-log">no clicks yet</pre>
     </div>
 
     <div class="panel" id="input-label-panel">
@@ -390,6 +392,58 @@
         measure();
       };
       measure();
+      (function hookDropzones() {
+        var logEl = document.getElementById('dropzone-log');
+        var lines = [];
+        function log(msg) {
+          lines.push(new Date().toISOString().slice(11, 23) + ' ' + msg);
+          if (logEl) logEl.textContent = lines.join('\n');
+        }
+        function hook(id, label) {
+          var host = document.getElementById(id);
+          if (!host) return false;
+          var input = host.querySelector('input[type="file"]');
+          if (!input || input.getAttribute('data-probe') === '1') {
+            return !!input;
+          }
+          input.setAttribute('data-probe', '1');
+          input.click = function () {
+            log(
+              label +
+                ': input.click() (picker would open), disabled=' +
+                input.disabled
+            );
+          };
+          host.addEventListener(
+            'click',
+            function () {
+              log(
+                label +
+                  ': click, host.disabled=' +
+                  host.hasAttribute('disabled') +
+                  ', input.disabled=' +
+                  input.disabled
+              );
+            },
+            true
+          );
+          host.addEventListener('fileSelect', function () {
+            log(label + ': fileSelect event');
+          });
+          return true;
+        }
+        var tries = 0;
+        function wait() {
+          var ok =
+            hook('live-dropzone-enabled', 'enabled') &&
+            hook('live-dropzone-disabled', 'disabled');
+          measure();
+          if (ok || tries > 40) return;
+          tries += 1;
+          setTimeout(wait, 250);
+        }
+        wait();
+      })();
     </script>
   </body>
 </html>
