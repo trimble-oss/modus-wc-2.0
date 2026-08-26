@@ -261,7 +261,7 @@
         disabled
         instructions="Disabled dropzone"
       ></modus-wc-file-dropzone>
-      <p>Click log (picker is intercepted so the native dialog does not block)</p>
+      <p>Click log (native file picker is allowed to open)</p>
       <pre id="dropzone-log">no clicks yet</pre>
     </div>
 
@@ -407,13 +407,6 @@
             return !!input;
           }
           input.setAttribute('data-probe', '1');
-          input.click = function () {
-            log(
-              label +
-                ': input.click() (picker would open), disabled=' +
-                input.disabled
-            );
-          };
           host.addEventListener(
             'click',
             function () {
