@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en" class="light" data-mode="light" data-theme="modus-modern-light">
+  <head>
+    <meta charset="utf-8" />
+    <title>Modus theme fallback gallery</title>
+    <link rel="stylesheet" href="/modus-wc-styles.css" />
+    <script type="module" src="/modus-wc/modus-wc.esm.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: var(--modus-wc-font-family, sans-serif);
+        background: var(--modus-wc-color-base-page);
+        color: var(--modus-wc-color-base-content);
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+      h2 {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin: 8px 0 16px;
+      }
+      .panel {
+        border: 1px solid var(--modus-wc-color-base-200);
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+      label {
+        margin-inline-end: 8px;
+      }
+      pre {
+        white-space: pre-wrap;
+        background: var(--modus-wc-color-base-100);
+        padding: 12px;
+        font-size: 12px;
+      }
+      .css-alert {
+        padding: 8px 12px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Theme fallback gallery</h1>
+    <p>
+      Live Stencil tags need a current browser. CSS-class twins work in Chrome
+      90 (no oklch). Switch <code>data-theme</code> on <code>&lt;html&gt;</code>.
+    </p>
+    <p>
+      <label for="theme">Theme</label>
+      <select id="theme">
+        <option value="modus-modern-light">modus-modern-light</option>
+        <option value="modus-modern-dark">modus-modern-dark</option>
+        <option value="modus-classic-light">modus-classic-light</option>
+        <option value="modus-classic-dark">modus-classic-dark</option>
+        <option value="connect-light">connect-light</option>
+        <option value="connect-dark">connect-dark</option>
+      </select>
+    </p>
+
+    <div class="panel">
+      <h2>Live Stencil</h2>
+      <div class="row">
+        <modus-wc-button>Primary</modus-wc-button>
+        <modus-wc-button color="secondary">Secondary</modus-wc-button>
+        <modus-wc-button color="danger">Danger</modus-wc-button>
+        <modus-wc-button variant="outlined">Outlined</modus-wc-button>
+      </div>
+      <div class="row">
+        <modus-wc-badge>Badge</modus-wc-badge>
+        <modus-wc-badge color="success">Success</modus-wc-badge>
+        <modus-wc-badge color="danger">Danger</modus-wc-badge>
+        <modus-wc-chip label="Chip"></modus-wc-chip>
+        <modus-wc-link href="#">Primary link</modus-wc-link>
+      </div>
+      <modus-wc-alert
+        alert-title="Info"
+        alert-description="Live alert"
+        variant="info"
+      ></modus-wc-alert>
+      <div class="row">
+        <modus-wc-checkbox label="Checkbox"></modus-wc-checkbox>
+        <modus-wc-progress value="60" max="100" label="60%"></modus-wc-progress>
+      </div>
+      <modus-wc-text-input
+        label="Text input"
+        placeholder="Type here"
+      ></modus-wc-text-input>
+    </div>
+
+    <div class="panel">
+      <h2>CSS-class twins (Chrome 90)</h2>
+      <div class="row">
+        <button
+          id="css-btn-primary"
+          class="modus-wc-btn modus-wc-btn-primary modus-wc-btn-md modus-wc-btn-filled"
+          type="button"
+        >
+          Primary
+        </button>
+        <button
+          id="css-btn-secondary"
+          class="modus-wc-btn modus-wc-btn-secondary modus-wc-btn-md modus-wc-btn-filled"
+          type="button"
+        >
+          Secondary
+        </button>
+        <button
+          id="css-btn-danger"
+          class="modus-wc-btn modus-wc-btn-danger modus-wc-btn-md modus-wc-btn-filled"
+          type="button"
+        >
+          Danger
+        </button>
+        <button
+          class="modus-wc-btn modus-wc-btn-primary modus-wc-btn-md modus-wc-btn-outlined"
+          type="button"
+        >
+          Outlined
+        </button>
+      </div>
+      <div class="row">
+        <span
+          id="css-badge-primary"
+          class="modus-wc-badge modus-wc-badge-primary modus-wc-badge-md"
+          >Badge</span
+        >
+        <span class="modus-wc-badge modus-wc-badge-success modus-wc-badge-md"
+          >Success</span
+        >
+        <span class="modus-wc-badge modus-wc-badge-error modus-wc-badge-md"
+          >Danger</span
+        >
+        <button class="modus-wc-chip" type="button">Chip</button>
+        <a class="modus-wc-link modus-wc-link-color-primary" href="#">Link</a>
+      </div>
+      <div
+        id="css-alert-info"
+        class="modus-wc-alert modus-wc-alert-info css-alert"
+      >
+        CSS alert
+      </div>
+    </div>
+
+    <pre id="results">measuring…</pre>
+    <script>
+      function toRgb(cssColor) {
+        var c = document.createElement('canvas');
+        c.width = 1;
+        c.height = 1;
+        var ctx = c.getContext('2d');
+        ctx.fillStyle = cssColor;
+        ctx.fillRect(0, 0, 1, 1);
+        var d = ctx.getImageData(0, 0, 1, 1).data;
+        var hex =
+          '#' +
+          [d[0], d[1], d[2]]
+            .map(function (n) {
+              return ('0' + n.toString(16)).slice(-2);
+            })
+            .join('');
+        return { hex: hex, cssColor: String(cssColor) };
+      }
+      function used(el, prop) {
+        if (!el) return null;
+        return toRgb(getComputedStyle(el)[prop]);
+      }
+      function measure() {
+        var root = getComputedStyle(document.documentElement);
+        var out = {
+          theme: document.documentElement.getAttribute('data-theme'),
+          ua: navigator.userAgent,
+          supportsOklch: CSS.supports
+            ? CSS.supports('color', 'oklch(0% 0 0)')
+            : false,
+          fallbackP: root.getPropertyValue('--fallback-p').trim(),
+          fallbackBc: root.getPropertyValue('--fallback-bc').trim(),
+          bodyFg: used(document.body, 'color'),
+          cssBtnPrimary: used(
+            document.getElementById('css-btn-primary'),
+            'backgroundColor'
+          ),
+          cssBtnSecondary: used(
+            document.getElementById('css-btn-secondary'),
+            'backgroundColor'
+          ),
+          cssBtnDanger: used(
+            document.getElementById('css-btn-danger'),
+            'backgroundColor'
+          ),
+          cssBadgePrimary: used(
+            document.getElementById('css-badge-primary'),
+            'backgroundColor'
+          ),
+          cssAlertInfo: used(
+            document.getElementById('css-alert-info'),
+            'backgroundColor'
+          ),
+        };
+        document.getElementById('results').textContent = JSON.stringify(
+          out,
+          null,
+          2
+        );
+        document.title = 'PROBE_DONE';
+        return out;
+      }
+      document.getElementById('theme').onchange = function (e) {
+        var t = e.target.value;
+        var mode = t.indexOf('-dark') !== -1 ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.className = mode;
+        measure();
+      };
+      measure();
+    </script>
+  </body>
+</html>
