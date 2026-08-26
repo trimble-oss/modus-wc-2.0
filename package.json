@@ -99,6 +99,7 @@
     "start": "wireit",
     "test": "stencil test --spec",
     "test:theme-parity": "node --test src/theme-cli/*.test.js",
+    "theme:diff-published": "node src/theme-cli/diff-published-slots.js",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
