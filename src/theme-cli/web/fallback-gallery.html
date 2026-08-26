@@ -243,6 +243,26 @@
       </div>
     </div>
 
+    <div class="panel" id="file-dropzone-panel">
+      <h2>File Dropzone (disabled uses :has — fails Chrome 90)</h2>
+      <p>
+        Disabled styles are <code>:has(input:disabled)</code>. Chrome 90 has no
+        <code>:has()</code>, so the disabled zone still looks enabled. This is
+        not a Daisy fallback issue (Skeleton already works on v2).
+      </p>
+      <p>Enabled</p>
+      <modus-wc-file-dropzone
+        id="live-dropzone-enabled"
+        instructions="Enabled dropzone"
+      ></modus-wc-file-dropzone>
+      <p>Disabled</p>
+      <modus-wc-file-dropzone
+        id="live-dropzone-disabled"
+        disabled
+        instructions="Disabled dropzone"
+      ></modus-wc-file-dropzone>
+    </div>
+
     <div class="panel" id="input-label-panel">
       <h2>Input Label (broken oklch on connect-light)</h2>
       <p>
@@ -300,6 +320,7 @@
           supportsOklch: CSS.supports
             ? CSS.supports('color', 'oklch(0% 0 0)')
             : false,
+          supportsHas: CSS.supports ? CSS.supports('selector(:has(*))') : false,
           fallbackP: root.getPropertyValue('--fallback-p').trim(),
           fallbackB3: root.getPropertyValue('--fallback-b3').trim(),
           fallbackBc: root.getPropertyValue('--fallback-bc').trim(),
@@ -336,6 +357,18 @@
           cssInputLabel: used(
             document.getElementById('css-input-label'),
             'color'
+          ),
+          dropzoneEnabledBg: used(
+            document.querySelector(
+              '#live-dropzone-enabled .dropzone-content'
+            ),
+            'backgroundColor'
+          ),
+          dropzoneDisabledBg: used(
+            document.querySelector(
+              '#live-dropzone-disabled .dropzone-content'
+            ),
+            'backgroundColor'
           ),
           slotS: root.getPropertyValue('--s').trim(),
           fallbackS: root.getPropertyValue('--fallback-s').trim(),
