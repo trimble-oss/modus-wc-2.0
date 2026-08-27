@@ -71,7 +71,8 @@
       <p>
         Import or export JSON only. Generated CSS is produced by
         <code>npx modus-theme build</code> in your app — it is not copied from
-        here.
+        here. Brand colors cannot be overridden; use public radius/spacing/type
+        tokens.
       </p>
       <p>
         <button type="button" id="import">Import JSON</button>
@@ -111,8 +112,8 @@
         name: 'my-theme',
         extends: 'modus-modern',
         tokens: {
-          light: { '--modus-wc-color-primary': '#0063a3' },
-          dark: { '--modus-wc-color-primary': '#019aeb' },
+          light: { '--modus-wc-border-radius-btn': '8px' },
+          dark: { '--modus-wc-border-radius-btn': '8px' },
         },
       };
       textarea.value = JSON.stringify(sample, null, 2);
@@ -155,8 +156,7 @@
           el.textContent = slot;
           swatches.appendChild(el);
         }
-        previewBtn.style.background = 'var(--p)';
-        previewBtn.style.color = 'var(--pc)';
+        previewBtn.style.borderRadius = 'var(--modus-wc-border-radius-btn)';
         void DAISY_SLOTS;
       }
 

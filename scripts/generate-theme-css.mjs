@@ -11,6 +11,7 @@ import {
   resolveValue,
 } from '../src/theme-cli/css-parse.js';
 import { DAISY_SLOTS, THEME_NAMES } from '../src/theme-cli/slots.js';
+import { tokenTier } from '../src/theme-cli/token-policy.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -50,7 +51,7 @@ export function writeTokenContract(variablesCss, globalCss) {
       defaults[themeName] = resolveValue(`var(${name})`, map, isDark);
     }
     tokens[name] = {
-      tier: name.startsWith('--modus-wc-') ? 'public' : 'internal',
+      tier: tokenTier(name),
       category: tokenCategory(name),
       autoDerived: false,
       defaults,

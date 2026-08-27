@@ -1,14 +1,11 @@
 import { resolveValue } from './css-parse.js';
 import { hexToOklchChannels } from './oklch.js';
 import { DAISY_SLOTS, SLOT_NAMES } from './slots.js';
-
-const HEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
-const RGB = /^rgba?\(/i;
-
-export function isColorValue(value) {
-  const v = value.trim();
-  return HEX.test(v) || RGB.test(v);
-}
+import {
+  isBrandColorToken,
+  isCssOverrideValue,
+  lockedColorMessage,
+} from './token-policy.js';
 
 export function validateConfig(config, publicTokens) {
   const errors = [];
@@ -38,16 +35,22 @@ export function validateConfig(config, publicTokens) {
     }
     const map = modes[mode];
     if (!map || typeof map !== 'object') {
-      errors.push(`tokens.${mode} must be an object of token → color`);
+      errors.push(`tokens.${mode} must be an object of token → value`);
       continue;
     }
     for (const [token, value] of Object.entries(map)) {
-      if (publicTokens && !publicTokens.has(token)) {
-        errors.push(`Unknown token "${token}" in tokens.${mode}`);
+      if (isBrandColorToken(token)) {
+        errors.push(lockedColorMessage(token, mode));
+        continue;
       }
-      if (typeof value !== 'string' || !isColorValue(value)) {
+      if (publicTokens && !publicTokens.has(token)) {
         errors.push(
-          `Token "${token}" in tokens.${mode} must be a hex or rgb() color, got ${JSON.stringify(value)}`
+          `Token "${token}" in tokens.${mode} is not in the public allowlist (non-color --modus-wc-* only)`
+        );
+      }
+      if (!isCssOverrideValue(value)) {
+        errors.push(
+          `Token "${token}" in tokens.${mode} must be a CSS value without { } or ;, got ${JSON.stringify(value)}`
         );
       }
     }
@@ -95,6 +98,9 @@ export function emitPreviewOverlayCss(config, mode) {
   const decls = [];
   for (const [token, value] of Object.entries(tokens)) {
     decls.push(`  ${token}: ${value};`);
+    if (token === '--modus-wc-border-radius-btn') {
+      decls.push(`  --rounded-btn: ${value};`);
+    }
     const slot = TOKEN_TO_SLOT[token];
     if (!slot) continue;
     const channels = hexToOklchChannels(value);

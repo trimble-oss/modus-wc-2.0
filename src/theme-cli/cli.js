@@ -60,10 +60,10 @@ function defaultConfig() {
     extends: 'modus-modern',
     tokens: {
       light: {
-        '--modus-wc-color-primary': '#0063a3',
+        '--modus-wc-border-radius-btn': '8px',
       },
       dark: {
-        '--modus-wc-color-primary': '#019aeb',
+        '--modus-wc-border-radius-btn': '8px',
       },
     },
   };
@@ -137,7 +137,7 @@ alwaysApply: false
 
 - Edit \`modus-theme.config.json\` only. Run \`npx modus-theme build\`.
 - Do not copy or commit \`modus-theme.generated.css\`.
-- Override public \`--modus-wc-*\` tokens listed in the package token contract.
+- Override public non-color \`--modus-wc-*\` tokens (spacing, type, radius). Do not override \`--modus-wc-color-*\` brand colors.
 - Set \`<html data-theme="{name}-light|dark">\` (or ThemeProvider \`theme="{name}"\`).
 `
     );

@@ -14,7 +14,7 @@
     },
     "extends": {
       "type": "string",
-      "description": "Built-in theme to inherit unset tokens from (documentation only; routing uses library CSS)"
+      "description": "Built-in theme to inherit (documentation). Colors still come from the library; only public non-color tokens may be overridden."
     },
     "tokens": {
       "type": "object",

@@ -10,7 +10,9 @@ are routed onto `--modus-wc-color-*` tokens.
 1. Install `@trimble-oss/moduswebcomponents`.
 2. Run `npx modus-theme init` (writes `modus-theme.config.json`, gitignores
    `modus-theme.generated.css`, adds `postinstall` / `prebuild` hooks).
-3. Override public `--modus-wc-*` tokens in the JSON config.
+3. Override **allowed** public tokens only (spacing, type, radius, size).
+   `--modus-wc-color-*` and `--modus-wc-in-field-*` are locked Trimble/Modus
+   brand colors — `modus-theme check` rejects them.
 4. Run `npx modus-theme build` (or rely on the lifecycle hooks).
 5. Import library CSS, then the generated file:
 
@@ -28,9 +30,13 @@ Validate with `npx modus-theme check`. There is a live JSON preview at
 
 ## Token contract
 
-Public tokens are listed in `src/theme-cli/token-contract.json` (every
-`--modus-wc-*` custom property from `variables.css`). `--tw-*` keys are
-internal. Semantic color slots:
+Public (overridable) tokens are `--modus-wc-*` entries in
+`src/theme-cli/token-contract.json` whose `tier` is `"public"`: typography,
+spacing, sizes, and border radius. Color tokens (`--modus-wc-color-*`,
+`--modus-wc-in-field-*`) are `"internal"` so apps cannot recolor Trimble blue,
+grays, or status hues. `--tw-*` keys are also internal.
+
+DaisyUI still routes these **library** slots (not consumer overrides):
 
 | DaisyUI slot      | Token                                                                  |
 | ----------------- | ---------------------------------------------------------------------- |

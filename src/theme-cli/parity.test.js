@@ -102,22 +102,43 @@ test('spliceLegacyBlock is idempotent', () => {
 });
 
 test('consumer config validation and CSS emit', () => {
-  const publicTokens = new Set(['--modus-wc-color-primary']);
+  const publicTokens = new Set(['--modus-wc-border-radius-btn']);
   const errors = validateConfig(
     {
       name: 'acme',
-      tokens: { light: { '--modus-wc-color-primary': '#123456' } },
+      tokens: { light: { '--modus-wc-border-radius-btn': '12px' } },
     },
     publicTokens
   );
   assert.deepEqual(errors, []);
   const css = emitConsumerCss({
     name: 'acme',
-    tokens: { light: { '--modus-wc-color-primary': '#123456' } },
+    tokens: { light: { '--modus-wc-border-radius-btn': '12px' } },
   });
   assert.match(css, /\[data-theme='acme-light'\]:root/);
-  assert.match(css, /--modus-wc-color-primary: #123456/);
+  assert.match(css, /--modus-wc-border-radius-btn: 12px/);
   assert.match(css, /--fallback-bc: var\(--modus-wc-color-base-content\)/);
+});
+
+test('consumer rejects locked Trimble brand colors', () => {
+  const publicTokens = new Set(['--modus-wc-border-radius-btn']);
+  const colorErrors = validateConfig(
+    {
+      name: 'acme',
+      tokens: { light: { '--modus-wc-color-primary': '#ff00aa' } },
+    },
+    publicTokens
+  );
+  assert.equal(colorErrors.length, 1);
+  assert.match(colorErrors[0], /locked Trimble\/Modus brand color/);
+  const primitiveErrors = validateConfig(
+    {
+      name: 'acme',
+      tokens: { light: { '--modus-wc-color-trimble-blue': '#000000' } },
+    },
+    publicTokens
+  );
+  assert.match(primitiveErrors[0], /locked Trimble\/Modus brand color/);
 });
 
 test('built-in theme files no longer emit DaisyUI *-focus keys', () => {
@@ -145,21 +166,32 @@ test('output.css contains generated legacy block after Tailwind (if present)', (
   assert.match(css, /--fallback-bc:/);
 });
 
-test('preview overlay maps hex tokens to Daisy oklch channels', () => {
+test('preview overlay maps allowed tokens onto the extended theme', () => {
   const overlay = emitPreviewOverlayCss(
     {
       name: 'acme',
       extends: 'modus-modern',
-      tokens: { light: { '--modus-wc-color-primary': '#ff00aa' } },
+      tokens: { light: { '--modus-wc-border-radius-btn': '12px' } },
     },
     'light'
   );
   assert.match(overlay, /\[data-theme='modus-modern-light'\]:root/);
-  assert.match(overlay, /--modus-wc-color-primary: #ff00aa/);
-  assert.match(overlay, /--fallback-p: #ff00aa/);
-  assert.match(overlay, /--p: \d+\.\d+% \d+\.\d+ \d+\.\d+/);
+  assert.match(overlay, /--modus-wc-border-radius-btn: 12px/);
+  assert.match(overlay, /--rounded-btn: 12px/);
   assert.equal(
     extendedThemeName({ extends: 'modus-modern' }, 'dark'),
     'modus-modern-dark'
   );
+});
+
+test('token contract locks brand colors and keeps radius public', () => {
+  const contract = JSON.parse(
+    readFileSync(join(root, 'src/theme-cli/token-contract.json'), 'utf8')
+  );
+  assert.equal(
+    contract.tokens['--modus-wc-color-trimble-blue'].tier,
+    'internal'
+  );
+  assert.equal(contract.tokens['--modus-wc-color-primary'].tier, 'internal');
+  assert.equal(contract.tokens['--modus-wc-border-radius-btn'].tier, 'public');
 });

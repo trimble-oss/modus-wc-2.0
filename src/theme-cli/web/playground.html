@@ -85,17 +85,16 @@
     <aside>
       <h1>Phase 2 playground</h1>
       <p>
-        Edit JSON or pick a color, then <strong>Rebuild preview</strong>.
-        Preview sits on the built-in <code>extends</code> theme so Daisy
-        <code>oklch</code> buttons pick up your hex tokens.
+        Edit JSON or the radius slider, then <strong>Rebuild preview</strong>.
+        Trimble/Modus colors are locked. Only public non-color tokens (here,
+        button radius) can change.
       </p>
       <p>
         <label class="pick"
-          >Primary <input id="pick-primary" type="color" value="#0063a3"
-        /></label>
-        <label class="pick"
-          >Secondary <input id="pick-secondary" type="color" value="#fbad26"
-        /></label>
+          >Button radius
+          <input id="pick-radius" type="range" min="0" max="24" value="8" />
+          <span id="radius-label">8px</span>
+        </label>
       </p>
       <p>
         <label
@@ -114,10 +113,6 @@
     </aside>
     <main>
       <h2>Live components</h2>
-      <div class="swatches">
-        <div class="swatch" id="swatch-p">primary</div>
-        <div class="swatch" id="swatch-s">secondary</div>
-      </div>
       <div class="row">
         <modus-wc-button>Primary</modus-wc-button>
         <modus-wc-button color="secondary">Secondary</modus-wc-button>
@@ -143,25 +138,23 @@
         emitPreviewOverlayCss,
         extendedThemeName,
         validateConfig,
-      } from '../consumer.js?v=overlay2';
+      } from '../consumer.js?v=allowlist';
 
       const textarea = document.getElementById('config');
       const status = document.getElementById('status');
       const generated = document.getElementById('generated');
-      const pickPrimary = document.getElementById('pick-primary');
-      const pickSecondary = document.getElementById('pick-secondary');
+      const pickRadius = document.getElementById('pick-radius');
+      const radiusLabel = document.getElementById('radius-label');
 
       const sample = {
         name: 'my-theme',
         extends: 'modus-modern',
         tokens: {
           light: {
-            '--modus-wc-color-primary': '#0063a3',
-            '--modus-wc-color-secondary': '#fbad26',
+            '--modus-wc-border-radius-btn': '8px',
           },
           dark: {
-            '--modus-wc-color-primary': '#019aeb',
-            '--modus-wc-color-secondary': '#fec157',
+            '--modus-wc-border-radius-btn': '8px',
           },
         },
       };
@@ -175,16 +168,20 @@
         return JSON.parse(textarea.value);
       }
 
+      function radiusCss() {
+        return `${pickRadius.value}px`;
+      }
+
       function syncPickersFromJson() {
         try {
           const config = parseConfig();
           const mode = currentMode();
           const tokens = (config.tokens && config.tokens[mode]) || {};
-          if (tokens['--modus-wc-color-primary']) {
-            pickPrimary.value = tokens['--modus-wc-color-primary'];
-          }
-          if (tokens['--modus-wc-color-secondary']) {
-            pickSecondary.value = tokens['--modus-wc-color-secondary'];
+          const raw = tokens['--modus-wc-border-radius-btn'];
+          const px = raw && /^(\d+)px$/.exec(raw);
+          if (px) {
+            pickRadius.value = px[1];
+            radiusLabel.textContent = raw;
           }
         } catch {
           /* keep pickers */
@@ -196,8 +193,8 @@
         const mode = currentMode();
         config.tokens = config.tokens || {};
         config.tokens[mode] = config.tokens[mode] || {};
-        config.tokens[mode]['--modus-wc-color-primary'] = pickPrimary.value;
-        config.tokens[mode]['--modus-wc-color-secondary'] = pickSecondary.value;
+        config.tokens[mode]['--modus-wc-border-radius-btn'] = radiusCss();
+        radiusLabel.textContent = radiusCss();
         textarea.value = JSON.stringify(config, null, 2);
       }
 
@@ -234,22 +231,11 @@
         document.getElementById('live-css')?.remove();
         fake.id = 'live-css';
         document.head.appendChild(fake);
-        const swatchP = document.getElementById('swatch-p');
-        const swatchS = document.getElementById('swatch-s');
-        swatchP.style.background = 'var(--modus-wc-color-primary)';
-        swatchS.style.background = 'var(--modus-wc-color-secondary)';
         status.textContent = `Rebuilt ${config.name}-${mode} on ${hostTheme}`;
       }
 
       document.getElementById('rebuild').addEventListener('click', rebuild);
-      pickPrimary.addEventListener('input', () => {
-        try {
-          writePickerIntoJson();
-        } catch {
-          /* ignore until JSON is valid */
-        }
-      });
-      pickSecondary.addEventListener('input', () => {
+      pickRadius.addEventListener('input', () => {
         try {
           writePickerIntoJson();
         } catch {
