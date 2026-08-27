@@ -154,6 +154,7 @@ test('preview overlay maps hex tokens to Daisy oklch channels', () => {
     },
     'light'
   );
+  assert.match(overlay, /\[data-theme='modus-modern-light'\]:root/);
   assert.match(overlay, /--modus-wc-color-primary: #ff00aa/);
   assert.match(overlay, /--fallback-p: #ff00aa/);
   assert.match(overlay, /--p: \d+\.\d+% \d+\.\d+ \d+\.\d+/);

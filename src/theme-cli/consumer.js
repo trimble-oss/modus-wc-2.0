@@ -91,6 +91,7 @@ const TOKEN_TO_SLOT = Object.fromEntries(
 /** Overlay hex tokens onto a built-in Daisy theme so `oklch(var(--p)/1)` stays valid. */
 export function emitPreviewOverlayCss(config, mode) {
   const tokens = (config.tokens && config.tokens[mode]) || {};
+  const theme = extendedThemeName(config, mode);
   const decls = [];
   for (const [token, value] of Object.entries(tokens)) {
     decls.push(`  ${token}: ${value};`);
@@ -101,7 +102,7 @@ export function emitPreviewOverlayCss(config, mode) {
     decls.push(`  --${slot}: ${channels};`);
     decls.push(`  --fallback-${slot}: ${value};`);
   }
-  return `:root {\n${decls.join('\n')}\n}\n`;
+  return `[data-theme='${theme}']:root {\n${decls.join('\n')}\n}\n`;
 }
 
 export function previewHostCss(config, baseMap, isDark) {
