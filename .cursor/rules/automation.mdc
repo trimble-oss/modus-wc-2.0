@@ -24,6 +24,14 @@ Do **not** claim you attached the label. If it is missing after about one minute
 
 QA/Fix still wake on **label added**, not on the comment itself.
 
+## PR evidence images
+
+When posting screenshots or other visual evidence on a PR (for `/ask`, `/refine`, or QA notes):
+
+- Capture evidence as walkthrough artifacts (`/opt/cursor/artifacts/`). Reference them in the PR comment or automation review body.
+- Do **not** commit image files to the repository (for example `.github/pr-assets/`). Evidence is for PR discussion only and must not be part of the merge diff.
+- When GitHub must render images inline, use GitHub-hosted comment attachments (`user-images.githubusercontent.com`), not `raw.githubusercontent.com` paths that require committing files on the branch.
+
 ## Reply surface
 
 (Fill later.)
