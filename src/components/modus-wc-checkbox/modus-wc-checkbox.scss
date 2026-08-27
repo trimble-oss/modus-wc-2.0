@@ -127,7 +127,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
 [data-theme='connect-light'] modus-wc-checkbox,
 [data-theme='connect-dark'] modus-wc-checkbox {
-  .modus-wc-input-label {
+  modus-wc-input-label .modus-wc-input-label {
     min-height: unset;
   }
 
