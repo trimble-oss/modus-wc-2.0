@@ -425,13 +425,13 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_analytics: {
     displayName: 'Viewpoint Analytics',
     path: 'logos/viewpoint/viewpoint-analytics.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-analytics-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_epayments: {
     displayName: 'Viewpoint ePayments',
     path: 'logos/viewpoint/viewpoint-epayments.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-epayments-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_estimating: {
@@ -455,7 +455,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_field_view: {
     displayName: 'Viewpoint Field View',
     path: 'logos/viewpoint/viewpoint-field-view.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-field-view-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_financial_controls: {
@@ -479,19 +479,25 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_jobpac_connect: {
     displayName: 'Viewpoint Jobpac Connect',
     path: 'logos/viewpoint/viewpoint-jobpac-connect.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-jobpac-emblem.svg',
+    category: 'viewpoint',
+  },
+  viewpoint_jobpac_mobile_individual_time_entry: {
+    displayName: 'Viewpoint Jobpac Mobile Individual Time Entry',
+    path: 'logos/viewpoint/viewpoint-jobpac-mobile-individual-time-entry.svg',
+    emblemPath: 'logos/emblems/viewpoint-jobpac-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_procontractor: {
     displayName: 'Viewpoint ProContractor',
     path: 'logos/viewpoint/viewpoint-procontractor.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-procontractor-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_spectrum: {
     displayName: 'Viewpoint Spectrum',
     path: 'logos/viewpoint/viewpoint-spectrum.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-spectrum-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_spectrum_service_tech: {
@@ -509,7 +515,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_vista: {
     displayName: 'Viewpoint Vista',
     path: 'logos/viewpoint/viewpoint-vista.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-vista-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_vista_field_service: {
