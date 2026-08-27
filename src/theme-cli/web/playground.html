@@ -47,8 +47,13 @@
       label.pick {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 6px;
         margin: 6px 0;
+      }
+      label.pick input[type='range'] {
+        flex: 1;
+        min-width: 8rem;
       }
       pre {
         white-space: pre-wrap;
@@ -85,15 +90,51 @@
     <aside>
       <h1>Phase 2 playground</h1>
       <p>
-        Edit JSON or the radius slider, then <strong>Rebuild preview</strong>.
-        Trimble/Modus colors are locked. Only public non-color tokens (here,
-        button radius) can change.
+        Edit JSON or the sliders, then <strong>Rebuild preview</strong>.
+        Trimble/Modus colors are locked. Public tokens shown here: button radius
+        and <code>--modus-wc-size-sm|md|lg</code>.
       </p>
       <p>
         <label class="pick"
           >Button radius
           <input id="pick-radius" type="range" min="0" max="24" value="8" />
           <span id="radius-label">8px</span>
+        </label>
+        <label class="pick"
+          >Size sm
+          <input
+            id="pick-size-sm"
+            type="range"
+            min="1"
+            max="4.5"
+            step="0.25"
+            value="2"
+          />
+          <span id="size-sm-label">2rem</span>
+        </label>
+        <label class="pick"
+          >Size md
+          <input
+            id="pick-size-md"
+            type="range"
+            min="1"
+            max="4.5"
+            step="0.25"
+            value="2.5"
+          />
+          <span id="size-md-label">2.5rem</span>
+        </label>
+        <label class="pick"
+          >Size lg
+          <input
+            id="pick-size-lg"
+            type="range"
+            min="1"
+            max="4.5"
+            step="0.25"
+            value="3"
+          />
+          <span id="size-lg-label">3rem</span>
         </label>
       </p>
       <p>
@@ -119,6 +160,11 @@
         <modus-wc-button color="danger">Danger</modus-wc-button>
         <modus-wc-badge>Badge</modus-wc-badge>
       </div>
+      <div class="row">
+        <modus-wc-button size="sm">SM</modus-wc-button>
+        <modus-wc-button size="md">MD</modus-wc-button>
+        <modus-wc-button size="lg">LG</modus-wc-button>
+      </div>
       <modus-wc-alert
         alert-title="Info"
         alert-description="Preview after Rebuild"
@@ -138,13 +184,30 @@
         emitPreviewOverlayCss,
         extendedThemeName,
         validateConfig,
-      } from '../consumer.js?v=allowlist';
+      } from '../consumer.js?v=sizes';
 
       const textarea = document.getElementById('config');
       const status = document.getElementById('status');
       const generated = document.getElementById('generated');
       const pickRadius = document.getElementById('pick-radius');
       const radiusLabel = document.getElementById('radius-label');
+      const sizePickers = {
+        sm: {
+          input: document.getElementById('pick-size-sm'),
+          label: document.getElementById('size-sm-label'),
+          token: '--modus-wc-size-sm',
+        },
+        md: {
+          input: document.getElementById('pick-size-md'),
+          label: document.getElementById('size-md-label'),
+          token: '--modus-wc-size-md',
+        },
+        lg: {
+          input: document.getElementById('pick-size-lg'),
+          label: document.getElementById('size-lg-label'),
+          token: '--modus-wc-size-lg',
+        },
+      };
 
       const sample = {
         name: 'my-theme',
@@ -152,9 +215,15 @@
         tokens: {
           light: {
             '--modus-wc-border-radius-btn': '8px',
+            '--modus-wc-size-sm': '2rem',
+            '--modus-wc-size-md': '2.5rem',
+            '--modus-wc-size-lg': '3rem',
           },
           dark: {
             '--modus-wc-border-radius-btn': '8px',
+            '--modus-wc-size-sm': '2rem',
+            '--modus-wc-size-md': '2.5rem',
+            '--modus-wc-size-lg': '3rem',
           },
         },
       };
@@ -172,6 +241,10 @@
         return `${pickRadius.value}px`;
       }
 
+      function sizeCss(key) {
+        return `${sizePickers[key].input.value}rem`;
+      }
+
       function syncPickersFromJson() {
         try {
           const config = parseConfig();
@@ -182,6 +255,14 @@
           if (px) {
             pickRadius.value = px[1];
             radiusLabel.textContent = raw;
+          }
+          for (const key of Object.keys(sizePickers)) {
+            const value = tokens[sizePickers[key].token];
+            const rem = value && /^(\d+(?:\.\d+)?)rem$/.exec(value);
+            if (rem) {
+              sizePickers[key].input.value = rem[1];
+              sizePickers[key].label.textContent = value;
+            }
           }
         } catch {
           /* keep pickers */
@@ -195,6 +276,11 @@
         config.tokens[mode] = config.tokens[mode] || {};
         config.tokens[mode]['--modus-wc-border-radius-btn'] = radiusCss();
         radiusLabel.textContent = radiusCss();
+        for (const key of Object.keys(sizePickers)) {
+          const css = sizeCss(key);
+          config.tokens[mode][sizePickers[key].token] = css;
+          sizePickers[key].label.textContent = css;
+        }
         textarea.value = JSON.stringify(config, null, 2);
       }
 
@@ -242,6 +328,15 @@
           /* ignore until JSON is valid */
         }
       });
+      for (const key of Object.keys(sizePickers)) {
+        sizePickers[key].input.addEventListener('input', () => {
+          try {
+            writePickerIntoJson();
+          } catch {
+            /* ignore until JSON is valid */
+          }
+        });
+      }
       for (const radio of document.querySelectorAll('input[name="mode"]')) {
         radio.addEventListener('change', () => {
           syncPickersFromJson();

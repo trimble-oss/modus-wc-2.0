@@ -171,13 +171,19 @@ test('preview overlay maps allowed tokens onto the extended theme', () => {
     {
       name: 'acme',
       extends: 'modus-modern',
-      tokens: { light: { '--modus-wc-border-radius-btn': '12px' } },
+      tokens: {
+        light: {
+          '--modus-wc-border-radius-btn': '12px',
+          '--modus-wc-size-md': '3.5rem',
+        },
+      },
     },
     'light'
   );
   assert.match(overlay, /\[data-theme='modus-modern-light'\]:root/);
   assert.match(overlay, /--modus-wc-border-radius-btn: 12px/);
   assert.match(overlay, /--rounded-btn: 12px/);
+  assert.match(overlay, /--modus-wc-size-md: 3.5rem/);
   assert.equal(
     extendedThemeName({ extends: 'modus-modern' }, 'dark'),
     'modus-modern-dark'
