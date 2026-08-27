@@ -5,7 +5,9 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
   <!---->
   <div class="modus-wc-alert modus-wc-alert-error" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-warning modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-warning); webkit-mask-image: var(--modus-icon-warning);"></i>
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        alert
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title">
@@ -21,7 +23,9 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-info modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-info); webkit-mask-image: var(--modus-icon-info);"></i>
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title">
@@ -37,7 +41,9 @@ exports[`modus-wc-alert should render neutral variant with neutral styling and i
   <!---->
   <div class="modus-wc-alert modus-wc-alert-neutral" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-info modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-info); webkit-mask-image: var(--modus-icon-info);"></i>
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title">
@@ -53,7 +59,9 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
   <!---->
   <div class="modus-wc-alert modus-wc-alert-success" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-check-circle modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-check-circle); webkit-mask-image: var(--modus-icon-check-circle);"></i>
+      <i aria-hidden="true" class="modus-icons modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        check_circle
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title">
@@ -69,7 +77,9 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
   <!---->
   <div class="modus-wc-alert modus-wc-alert-warning" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-warning modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-warning); webkit-mask-image: var(--modus-icon-warning);"></i>
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        warning
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title">
@@ -102,7 +112,9 @@ exports[`modus-wc-alert should render with default props 1`] = `
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icon-info modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-info); webkit-mask-image: var(--modus-icon-info);"></i>
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
     </modus-wc-icon>
     <div class="modus-wc-alert-content">
       <div class="title"></div>

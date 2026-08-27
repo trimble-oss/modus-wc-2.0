@@ -10,6 +10,7 @@ interface IconArgs {
   name: string;
   size: DaisySize;
   variant?: 'outlined' | 'solid';
+  version?: '1.0' | '2.0';
 }
 
 const meta: Meta<IconArgs> = {
@@ -20,6 +21,7 @@ const meta: Meta<IconArgs> = {
     decorative: false,
     name: 'alert',
     size: 'md',
+    version: '1.0',
   },
   argTypes: {
     size: {
@@ -29,6 +31,10 @@ const meta: Meta<IconArgs> = {
     variant: {
       control: { type: 'select' },
       options: ['outlined', 'solid'],
+    },
+    version: {
+      control: { type: 'select' },
+      options: ['1.0', '2.0'],
     },
   },
 };
@@ -47,6 +53,7 @@ const Template: Story = {
         .name="${args.name}"
         size="${args.size}"
         variant="${ifDefined(args.variant)}"
+        version="${ifDefined(args.version)}"
       >
       </modus-wc-icon>
     `;
@@ -77,38 +84,64 @@ export const CustomColor: Story = {
 
 export const NameResolution: Story = {
   render: () => html`
-    <div style="display: flex; gap: 2rem; align-items: center;">
-      <div style="text-align: center;">
-        <modus-wc-icon
-          aria-label="Aliased add icon"
-          name="add"
-          size="lg"
-        ></modus-wc-icon>
-        <div>1.0 alias: add → plus</div>
+    <div style="display: grid; gap: 1.5rem;">
+      <div style="display: flex; gap: 2rem; align-items: center;">
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Mapped add icon version 1.0"
+            name="add"
+            size="lg"
+            version="1.0"
+          ></modus-wc-icon>
+          <div>Mapped 1.0: add @ 1.0</div>
+        </div>
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Mapped add icon version 2.0"
+            name="add"
+            size="lg"
+            version="2.0"
+          ></modus-wc-icon>
+          <div>Mapped 1.0: add @ 2.0 (plus)</div>
+        </div>
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Unmapped address icon version 1.0"
+            name="address"
+            size="lg"
+            version="1.0"
+          ></modus-wc-icon>
+          <div>Unmapped: address @ 1.0</div>
+        </div>
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Unmapped address icon version 2.0"
+            name="address"
+            size="lg"
+            version="2.0"
+          ></modus-wc-icon>
+          <div>Unmapped: address @ 2.0 (same glyph)</div>
+        </div>
       </div>
-      <div style="text-align: center;">
-        <modus-wc-icon
-          aria-label="Native ship icon"
-          name="ship"
-          size="lg"
-        ></modus-wc-icon>
-        <div>Native 2.0: ship</div>
-      </div>
-      <div style="text-align: center;">
-        <modus-wc-icon
-          aria-label="Native satellite icon"
-          name="satellite"
-          size="lg"
-        ></modus-wc-icon>
-        <div>Native 2.0: satellite</div>
-      </div>
-      <div style="text-align: center;">
-        <modus-wc-icon
-          aria-label="Unmapped address icon"
-          name="address"
-          size="lg"
-        ></modus-wc-icon>
-        <div>Unmapped 1.0: address</div>
+      <div style="display: flex; gap: 2rem; align-items: center;">
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Native ship icon version 1.0"
+            name="ship"
+            size="lg"
+            version="1.0"
+          ></modus-wc-icon>
+          <div>2.0-only: ship @ 1.0 (same glyph)</div>
+        </div>
+        <div style="text-align: center;">
+          <modus-wc-icon
+            aria-label="Native ship icon version 2.0"
+            name="ship"
+            size="lg"
+            version="2.0"
+          ></modus-wc-icon>
+          <div>2.0-only: ship @ 2.0</div>
+        </div>
       </div>
     </div>
   `,
@@ -157,12 +190,14 @@ export const ShadowDomParent: Story = {
             name: string;
             size: string;
             variant: string;
+            version: string;
           };
           iconEl.customClass = v['custom-class'] || '';
           iconEl.decorative = Boolean(v.decorative);
           iconEl.name = v.name;
           iconEl.size = v.size;
           iconEl.variant = v.variant ?? 'outlined';
+          iconEl.version = v.version ?? '1.0';
         },
       });
       customElements.define('icon-shadow-host', IconShadowHost);
@@ -186,17 +221,19 @@ export const Migration: Story = {
 
 #### Icon names
 
-  - Legacy 1.0 names that have an approved mapping now paint the matching 2.0 glyph (for example \`name="add"\` renders \`plus\`).
-  - Native 2.0 kebab slugs work as-is (\`name="ship"\`, \`name="api"\`).
-  - Unmapped 1.0 names keep the previous 1.0 ligature fallback until they are added to the alias table.
+  - The \`version\` property selects the Modus Icons set. Default is \`1.0\`.
+  - Legacy 1.0 names render the 1.0 ligature when \`version="1.0"\` and the mapped 2.0 glyph when \`version="2.0"\`.
+  - Unmapped 1.0 names keep the 1.0 ligature in both versions.
+  - Native 2.0-only slugs keep the 2.0 glyph in both versions.
 
 #### Prop Mapping
 
 | 1.0 Prop | 2.0 Prop | Notes                                                |
 |----------|----------|------------------------------------------------------|
 | color    |          | Not carried over, use CSS instead                    |
-| name     | name     | 1.0 names resolve to 2.0 glyphs when aliased         |
+| name     | name     | 1.0 names and 2.0 slugs are both accepted            |
 | size     | size     | Numeric values changed to \`sm\`, \`md\`, \`lg\`, use CSS for custom sizes |
+|          | version  | \`'1.0'\` (default) or \`'2.0'\`                     |
 
 #### Event Mapping
 

@@ -13,13 +13,14 @@ A customizable icon component used to render Modus icons.
 
 ## Properties
 
-| Property            | Attribute      | Description                                                                                                                             | Type                                        | Default     |
-| ------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ----------- |
-| `customClass`       | `custom-class` | Custom CSS class to apply to the i element.                                                                                             | `string \| undefined`                       | `''`        |
-| `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                                | `boolean \| undefined`                      | `true`      |
-| `name` _(required)_ | `name`         | The icon name. Accepts legacy 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`. | `string`                                    | `undefined` |
-| `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.                | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
-| `variant`           | `variant`      | The icon variant, can be "outlined" or "solid".                                                                                         | `"outlined" \| "solid" \| undefined`        | `undefined` |
+| Property            | Attribute      | Description                                                                                                                      | Type                                        | Default     |
+| ------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ----------- |
+| `customClass`       | `custom-class` | Custom CSS class to apply to the i element.                                                                                      | `string \| undefined`                       | `''`        |
+| `decorative`        | `decorative`   | Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.                         | `boolean \| undefined`                      | `true`      |
+| `name` _(required)_ | `name`         | The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`. | `string`                                    | `undefined` |
+| `size`              | `size`         | The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon.         | `"lg" \| "md" \| "sm" \| "xs" \| undefined` | `'md'`      |
+| `variant`           | `variant`      | The icon variant, can be "outlined" or "solid".                                                                                  | `"outlined" \| "solid" \| undefined`        | `undefined` |
+| `version`           | `version`      | The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.            | `"1.0" \| "2.0" \| undefined`               | `'1.0'`     |
 
 
 ## Dependencies

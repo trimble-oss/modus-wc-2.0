@@ -24,7 +24,9 @@ exports[`modus-wc-tree-item should render with a start slot 1`] = `
     <div class="modus-wc-menu-item-interactive" role="presentation" tabindex="-1">
       <div class="modus-wc-menu-item-content">
         <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="check" slot="start">
-          <i aria-hidden="true" class="modus-icon-check modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-check); webkit-mask-image: var(--modus-icon-check);"></i>
+          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+            check
+          </i>
         </modus-wc-icon>
         <div class="modus-wc-menu-item-labels">
           <div>

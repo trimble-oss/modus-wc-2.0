@@ -4,50 +4,61 @@ import { Meta } from '@storybook/blocks';
 
 # Modus Icon Usage
 
-`modus-wc-icon` renders **Modus Icons 2.0** glyphs from `@trimble-oss/modus-icons-css` when the `name` prop resolves to a 2.0 slug. Unmapped 1.0 names still use the 1.0 ligature font.
+`modus-wc-icon` can render **Modus Icons 1.0** ligatures or **Modus Icons 2.0** glyphs from `@trimble-oss/modus-icons-css`. The `version` prop selects the set (`'1.0'` by default). Names that exist in only one set fall back to that set in both versions.
 
-The component emits the same markup for both 2.0 delivery modes. Choose **one** stylesheet: CSS mask (recommended) or icon font (legacy engines without CSS mask). Do not load both 2.0 modes on the same page — they share `.modus-icon-*` class names but paint differently.
+Because fallback can emit either markup, load **both** the 1.0 font sheet and a 2.0 sheet in the general case. For 2.0, choose **one** delivery mode: CSS mask (recommended) or icon font. Do not load both 2.0 modes on the same page — they share `.modus-icon-*` class names but paint differently.
 
 ## Name resolution
+
+The `version` prop is `'1.0'` or `'2.0'`. Hyphen or underscore is accepted for 1.0 names (`add_bold` and `add-bold` both resolve).
 
 <table>
   <thead>
     <tr>
       <th>
-        <code>name</code> value
+        <code>name</code>
       </th>
-      <th>Result</th>
+      <th>
+        <code>version="1.0"</code> (default)
+      </th>
+      <th>
+        <code>version="2.0"</code>
+      </th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        Legacy 1.0 name in the alias table (<code>add</code>,{' '}
-        <code>arrow_left</code>)
+        Mapped 1.0 name (<code>add</code>, <code>arrow_left</code>)
       </td>
+      <td>1.0 ligature</td>
       <td>
-        Maps to a 2.0 kebab slug (<code>plus</code>, <code>arrow-left</code>)
+        Mapped 2.0 slug (<code>plus</code>, <code>arrow-left</code>)
       </td>
-    </tr>
-    <tr>
-      <td>
-        Native 2.0 kebab slug (<code>ship</code>, <code>satellite</code>,{' '}
-        <code>circle-truck</code>)
-      </td>
-      <td>Used as-is</td>
     </tr>
     <tr>
       <td>
         Unmapped 1.0 name (<code>address</code>)
       </td>
-      <td>Stays on the 1.0 ligature fallback</td>
+      <td>1.0 ligature</td>
+      <td>1.0 ligature (same glyph)</td>
+    </tr>
+    <tr>
+      <td>
+        2.0-only slug (<code>ship</code>, <code>circle-truck</code>)
+      </td>
+      <td>2.0 mask (same glyph)</td>
+      <td>2.0 mask</td>
+    </tr>
+    <tr>
+      <td>
+        Identity-mapped name in both sets (<code>satellite</code>)
+      </td>
+      <td>1.0 ligature</td>
+      <td>2.0 mask</td>
     </tr>
   </tbody>
 </table>
-
-Hyphen or underscore is accepted for aliased 1.0 names (`add_bold` and `add-bold` both map to `plus`).
-
-Load the 2.0 sheet for aliased and native names. Also load the 1.0 sheet if you still use unmapped 1.0 names.
 
 ## 1. Modern browsers (CSS mask, recommended)
 
@@ -127,9 +138,9 @@ public/
           └── fill/
 ```
 
-## 3. Unmapped 1.0 names (ligature fallback)
+## 3. 1.0 ligature font
 
-Required only for the 163 unmapped 1.0 names. Mapped 1.0 names and native 2.0 slugs do not use this sheet.
+Required for 1.0 ligatures, including unmapped names and the default `version="1.0"` path. There are 162 unmapped 1.0 names with no 2.0 slug.
 
 ### Option A: Online usage (CDN)
 

@@ -15,7 +15,9 @@ exports[`modus-wc-avatar should render with default props 1`] = `
   <div aria-label="Default avatar" class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Default avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Default avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -63,7 +65,9 @@ exports[`modus-wc-avatar should render with no props 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="User avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="User avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -75,7 +79,9 @@ exports[`modus-wc-avatar should render with size lg 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-20 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -87,7 +93,9 @@ exports[`modus-wc-avatar should render with size md 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-16 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -99,7 +107,9 @@ exports[`modus-wc-avatar should render with size sm 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-12 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -111,7 +121,9 @@ exports[`modus-wc-avatar should render with size xl 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-24 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>
@@ -123,7 +135,9 @@ exports[`modus-wc-avatar should render with size xs 1`] = `
   <div class="modus-wc-avatar">
     <div class="modus-wc-rounded-full modus-wc-w-8 no-image">
       <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-        <i aria-hidden="true" aria-label="Avatar" class="modus-icon-person-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-person-fill); webkit-mask-image: var(--modus-icon-person-fill);"></i>
+        <i aria-hidden="true" aria-label="Avatar" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+          person
+        </i>
       </modus-wc-icon>
     </div>
   </div>

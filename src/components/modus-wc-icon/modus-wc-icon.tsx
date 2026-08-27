@@ -2,11 +2,9 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
-import {
-  getModusIconClassName,
-  getModusIconPaintStyle,
-  resolveIconSlug,
-} from './resolve-icon';
+import { convertPropsToClasses } from './modus-wc-icon.tailwind';
+import { getIconKey, getIconMaskStyle, resolveIcon } from './resolve-icon';
+import type { IconVersion, ResolvedIcon } from './resolve-icon';
 
 /**
  * A customizable icon component used to render Modus icons.
@@ -31,13 +29,19 @@ export class ModusWcIcon {
   @Prop() decorative?: boolean = true;
 
   /**
-   * The icon name. Accepts legacy 1.0 snake_case names, kebab-case aliases,
+   * The icon name. Accepts 1.0 snake_case names, kebab-case aliases,
    * and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.
    */
   @Prop() name!: string;
 
   /** The icon size, can be "sm", "md", "lg" (a custom size can be specified in CSS). This adjusts the font size for the icon. */
   @Prop() size?: DaisySize = 'md';
+
+  /**
+   * The Modus Icons version to render. Names with no counterpart in the
+   * requested version fall back to the other version.
+   */
+  @Prop() version?: IconVersion = '1.0';
 
   /** The icon variant, can be "outlined" or "solid". */
   @Prop() variant?: 'outlined' | 'solid';
@@ -53,59 +57,42 @@ export class ModusWcIcon {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private getResolvedSlug(): string | undefined {
-    return resolveIconSlug(this.name);
+  private getResolvedIcon(): ResolvedIcon {
+    return resolveIcon(this.name, this.version);
   }
 
-  private getClasses(resolvedSlug?: string): string {
-    const classList: string[] = [];
+  private getClasses(resolved: ResolvedIcon): string {
+    const classList: string[] = [
+      convertPropsToClasses({
+        resolved,
+        size: this.size,
+        variant: this.variant,
+      }),
+    ];
 
-    if (resolvedSlug) {
-      classList.push(getModusIconClassName(resolvedSlug, this.variant));
-      classList.push('modus-wc-icon');
-    } else {
-      classList.push('modus-wc-icon');
-
-      if (this.variant === 'outlined') {
-        classList.push('modus-icons-outlined');
-      } else if (this.variant === 'solid') {
-        classList.push('modus-icons-solid');
-      } else {
-        classList.push('modus-icons');
-      }
-    }
-
-    classList.push(`modus-wc-icon--${this.size}`);
-
-    if (this.customClass) {
-      classList.push(this.customClass);
-    }
+    if (this.customClass) classList.push(this.customClass);
 
     return classList.join(' ');
   }
 
   render() {
-    const resolvedSlug = this.getResolvedSlug();
-    const iconClass = resolvedSlug
-      ? getModusIconClassName(resolvedSlug, this.variant)
-      : undefined;
-    const maskImage = iconClass ? `var(--${iconClass})` : undefined;
+    const resolved = this.getResolvedIcon();
     const ariaHidden = this.decorative ? 'true' : null;
     const role = this.decorative ? undefined : 'img';
 
     return (
       <Host class="modus-wc-flex modus-wc-items-center">
         <i
-          key={`${resolvedSlug ?? this.name ?? ''}-${this.variant ?? 'outlined'}`}
+          key={getIconKey(resolved, this.variant)}
           aria-hidden={ariaHidden}
           aria-label={this.decorative ? null : this.el.ariaLabel}
-          class={this.getClasses(resolvedSlug)}
+          class={this.getClasses(resolved)}
           role={role}
-          style={getModusIconPaintStyle(maskImage)}
+          style={getIconMaskStyle(resolved, this.variant)}
           tabindex={-1}
           {...this.inheritedAttributes}
         >
-          {resolvedSlug ? null : this.name}
+          {resolved.version === '2.0' ? null : resolved.ligature}
         </i>
       </Host>
     );

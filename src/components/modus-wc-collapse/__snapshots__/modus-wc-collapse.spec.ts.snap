@@ -59,13 +59,17 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
         <div class="modus-wc-title-main-content">
           <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-title-main-row">
             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-              <i aria-label="Alert" class="modus-icon-warning modus-wc-icon modus-wc-icon--md" role="img" tabindex="-1" style="mask-image: var(--modus-icon-warning); webkit-mask-image: var(--modus-icon-warning);"></i>
+              <i aria-label="Alert" class="modus-icons modus-wc-icon modus-wc-icon--md" role="img" tabindex="-1">
+                alert
+              </i>
             </modus-wc-icon>
             Collapse Title
           </div>
         </div>
         <modus-wc-icon class="modus-wc-collapse-chevron modus-wc-flex modus-wc-items-center">
-          <i aria-hidden="true" class="modus-icon-caret-down modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-down); webkit-mask-image: var(--modus-icon-caret-down);"></i>
+          <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+            expand_more
+          </i>
         </modus-wc-icon>
       </div>
     </summary>

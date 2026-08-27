@@ -100,7 +100,10 @@ interface ComponentDoc {
     variants: string[];
     note: string;
     source: string;
+    defaultVersion: string;
     iconNames: string[];
+    v1Names: string[];
+    v2Names: string[];
   };
 }
 
@@ -463,38 +466,59 @@ function parseModusIconSlugs(css: string): string[] {
     .sort();
 }
 
-async function fetchIconNames(): Promise<string[]> {
+async function fetchIconCatalogs(): Promise<{ v1Names: string[]; v2Names: string[] }> {
+  const empty = { v1Names: [] as string[], v2Names: [] as string[] };
   try {
+    const localV1Dir = join(
+      __dirname,
+      '../../node_modules/@trimble-oss/modus-icons/dist/modus-outlined/svg',
+    );
+    const v1Names = existsSync(localV1Dir)
+      ? readdirSync(localV1Dir)
+          .filter((file) => file.endsWith('.svg'))
+          .map((file) => file.replace(/\.svg$/, '').replace(/-/g, '_'))
+          .sort()
+      : [];
+    if (v1Names.length) {
+      console.log(`  Found ${v1Names.length} 1.0 icon names`);
+    }
+
     const localCss = join(
       __dirname,
       '../../node_modules/@trimble-oss/modus-icons-css/css/modus-icons-regular.css',
     );
+    let v2Names: string[] = [];
     if (existsSync(localCss)) {
       console.log('  Reading 2.0 icon slugs from @trimble-oss/modus-icons-css...');
-      const names = parseModusIconSlugs(readFileSync(localCss, 'utf-8'));
-      console.log(`  Found ${names.length} icons`);
-      return names;
+      v2Names = parseModusIconSlugs(readFileSync(localCss, 'utf-8'));
+    } else {
+      console.log('  Resolving latest @trimble-oss/modus-icons-css version...');
+      const version = await resolveNpmLatestVersion('@trimble-oss/modus-icons-css');
+      if (!version) {
+        console.error('  Could not resolve latest modus-icons-css version');
+      } else {
+        const url = `https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@${version}/css/modus-icons-regular.css`;
+        console.log(`  Fetching 2.0 icon list (v${version}) from jsDelivr...`);
+        v2Names = parseModusIconSlugs(await fetchUrl(url));
+      }
+    }
+    if (v2Names.length) {
+      console.log(`  Found ${v2Names.length} 2.0 icons`);
     }
 
-    console.log('  Resolving latest @trimble-oss/modus-icons-css version...');
-    const version = await resolveNpmLatestVersion('@trimble-oss/modus-icons-css');
-    if (!version) {
-      console.error('  Could not resolve latest modus-icons-css version');
-      return [];
-    }
-    const url = `https://cdn.jsdelivr.net/npm/@trimble-oss/modus-icons-css@${version}/css/modus-icons-regular.css`;
-    console.log(`  Fetching 2.0 icon list (v${version}) from jsDelivr...`);
-    const names = parseModusIconSlugs(await fetchUrl(url));
-    console.log(`  Found ${names.length} icons`);
-    return names;
+    return { v1Names, v2Names };
   } catch (err) {
     console.error(`  Error fetching icons: ${err}`);
-    return [];
+    return empty;
   }
 }
 
-function updateIconDocs(outputDir: string, iconNames: string[]): void {
-  if (!iconNames.length) return;
+function updateIconDocs(
+  outputDir: string,
+  catalogs: { v1Names: string[]; v2Names: string[] },
+): void {
+  const { v1Names, v2Names } = catalogs;
+  if (!v1Names.length && !v2Names.length) return;
   const iconPath = join(outputDir, 'modus-wc-icon.json');
 
   let data: ComponentDoc;
@@ -506,14 +530,19 @@ function updateIconDocs(outputDir: string, iconNames: string[]): void {
   }
 
   data.availableIcons = {
-    total: iconNames.length,
+    total: v1Names.length + v2Names.length,
     variants: ['solid', 'outlined'],
-    note: 'Native 2.0 kebab slugs from @trimble-oss/modus-icons-css. Legacy 1.0 names are also accepted when they have an alias.',
+    note: 'Use the version prop (default 1.0). Mapped 1.0 names become 2.0 slugs when version is 2.0. Unmapped 1.0 names and 2.0-only slugs keep the same glyph in both versions.',
     source: 'https://modus-icons.trimble.com/',
-    iconNames,
+    defaultVersion: '1.0',
+    iconNames: v2Names,
+    v1Names,
+    v2Names,
   };
   writeFileSync(iconPath, JSON.stringify(data, null, 2));
-  console.log(`  Updated modus-wc-icon.json with ${iconNames.length} icons`);
+  console.log(
+    `  Updated modus-wc-icon.json with ${v1Names.length} 1.0 names and ${v2Names.length} 2.0 slugs`,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -569,8 +598,8 @@ async function main() {
   console.log(`\nWrote _all_components.json (${allComponents.length} components)`);
 
   // Fetch and inject icon names
-  const iconNames = await fetchIconNames();
-  if (iconNames.length) updateIconDocs(outputDir, iconNames);
+  const catalogs = await fetchIconCatalogs();
+  updateIconDocs(outputDir, catalogs);
 
   console.log('\nDone.');
 }

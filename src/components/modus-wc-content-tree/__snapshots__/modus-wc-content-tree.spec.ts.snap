@@ -15,12 +15,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <!---->
                   <button aria-expanded="true" aria-label="Collapse Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                      <i aria-hidden="true" class="modus-icon-caret-down modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-down); webkit-mask-image: var(--modus-icon-caret-down);"></i>
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        expand_more
+                      </i>
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
                 <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                  <i aria-hidden="true" class="modus-icon-folder-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-folder-fill); webkit-mask-image: var(--modus-icon-folder-fill);"></i>
+                  <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                    folder_closed
+                  </i>
                 </modus-wc-icon>
               </div>
               <div class="modus-wc-menu-item-labels">
@@ -33,7 +37,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <!---->
                   <button aria-label="Disable Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                      <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
@@ -43,7 +49,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                     <!---->
                     <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Project Files" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                        <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                          more_vertical
+                        </i>
                       </modus-wc-icon>
                     </button>
                   </modus-wc-button>
@@ -157,12 +165,16 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-caret-right modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-right); webkit-mask-image: var(--modus-icon-caret-right);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
                         <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                          <i aria-hidden="true" class="modus-icon-info-fill modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-info-fill); webkit-mask-image: var(--modus-icon-info-fill);"></i>
+                          <i aria-hidden="true" class="modus-icons-solid modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                            info
+                          </i>
                         </modus-wc-icon>
                       </div>
                       <div class="modus-wc-menu-item-labels">
@@ -175,7 +187,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-label="Disable Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -185,7 +199,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                             <!---->
                             <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Overview" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                               <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                  more_vertical
+                                </i>
                               </modus-wc-icon>
                             </button>
                           </modus-wc-button>
@@ -298,7 +314,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-caret-right modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-right); webkit-mask-image: var(--modus-icon-caret-right);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                chevron_right
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -313,7 +331,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-label="Enable Disabled Leaf" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-eye-slash modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye-slash); webkit-mask-image: var(--modus-icon-eye-slash);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_off
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -321,7 +341,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                more_vertical
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -340,7 +362,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-expanded="true" aria-label="Collapse Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-caret-down modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-down); webkit-mask-image: var(--modus-icon-caret-down);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                expand_more
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -355,7 +379,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                           <!---->
                           <button aria-label="Disable Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                             <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                              <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                              <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                visibility_on
+                              </i>
                             </modus-wc-icon>
                           </button>
                         </modus-wc-button>
@@ -365,7 +391,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                             <!---->
                             <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Resources" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                               <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                                <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                  more_vertical
+                                </i>
                               </modus-wc-icon>
                             </button>
                           </modus-wc-button>
@@ -479,7 +507,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                   <!---->
                                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                                      <i aria-hidden="true" class="modus-icon-caret-right modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-right); webkit-mask-image: var(--modus-icon-caret-right);"></i>
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
@@ -494,7 +524,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                   <!---->
                                   <button aria-label="Disable Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                                      <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
@@ -504,7 +536,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                     <!---->
                                     <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Specifications" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                        <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                          more_vertical
+                                        </i>
                                       </modus-wc-icon>
                                     </button>
                                   </modus-wc-button>
@@ -617,7 +651,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                   <!---->
                                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                                      <i aria-hidden="true" class="modus-icon-caret-right modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-right); webkit-mask-image: var(--modus-icon-caret-right);"></i>
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        chevron_right
+                                      </i>
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
@@ -632,7 +668,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                   <!---->
                                   <button aria-label="Disable Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                                      <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                        visibility_on
+                                      </i>
                                     </modus-wc-icon>
                                   </button>
                                 </modus-wc-button>
@@ -642,7 +680,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                                     <!---->
                                     <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Search Index" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                                        <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                                          more_vertical
+                                        </i>
                                       </modus-wc-icon>
                                     </button>
                                   </modus-wc-button>
@@ -763,7 +803,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <!---->
                   <button aria-hidden="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                      <i aria-hidden="true" class="modus-icon-caret-right modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-caret-right); webkit-mask-image: var(--modus-icon-caret-right);"></i>
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        chevron_right
+                      </i>
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
@@ -778,7 +820,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                   <!---->
                   <button aria-label="Disable Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                     <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
-                      <i aria-hidden="true" class="modus-icon-eye modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-eye); webkit-mask-image: var(--modus-icon-eye);"></i>
+                      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                        visibility_on
+                      </i>
                     </modus-wc-icon>
                   </button>
                 </modus-wc-button>
@@ -788,7 +832,9 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
                     <!---->
                     <button aria-expanded="false" aria-haspopup="true" aria-label="Actions for Settings" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" tabindex="0" type="button">
                       <modus-wc-icon class="modus-wc-flex modus-wc-items-center" slot="button">
-                        <i aria-hidden="true" class="modus-icon-dots-three-vertical modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-dots-three-vertical); webkit-mask-image: var(--modus-icon-dots-three-vertical);"></i>
+                        <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+                          more_vertical
+                        </i>
                       </modus-wc-icon>
                     </button>
                   </modus-wc-button>

@@ -20,10 +20,10 @@
     {
       "name": "name",
       "type": "string",
-      "description": "The icon name. Accepts legacy 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.",
+      "description": "The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.",
       "default": null,
       "mutable": false,
-      "end_line": 29
+      "end_line": 39
     },
     {
       "name": "size",
@@ -31,7 +31,7 @@
       "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon.",
       "default": "'md'",
       "mutable": false,
-      "end_line": 32
+      "end_line": 42
     },
     {
       "name": "variant",
@@ -39,7 +39,15 @@
       "description": "The icon variant, can be \"outlined\" or \"solid\".",
       "default": null,
       "mutable": false,
-      "end_line": 35
+      "end_line": 51
+    },
+    {
+      "name": "version",
+      "type": "IconVersion",
+      "description": "The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.",
+      "default": "'1.0'",
+      "mutable": false,
+      "end_line": 48
     }
   ],
   "events": [],
@@ -83,7 +91,7 @@
       "solid",
       "outlined"
     ],
-    "note": "All icons are available in both solid and outlined variants.",
+    "note": "Use the version prop (default 1.0). Mapped 1.0 names become 2.0 slugs when version is 2.0. Unmapped 1.0 names and 2.0-only slugs keep the same glyph in both versions.",
     "source": "https://modus-icons.trimble.com/",
     "iconNames": [
       "3d_terrain",
