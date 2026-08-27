@@ -408,6 +408,8 @@ export class ModusWcTooltip {
 
   @Listen('focusin')
   handleFocusIn() {
+    // Focus shows immediately; drop any pending hover show so it can't re-fire
+    clearTimeout(this.showDelayTimer);
     this.escapeDismissed = false;
     this.isFocused = true;
     this.showTooltip();
