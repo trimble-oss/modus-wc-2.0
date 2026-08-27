@@ -10,19 +10,31 @@ Follow this file on every Dev / QA / Fix / `/ask` / `/refine` run. Do not skip i
 
 GitHub MCP **cannot** add, remove, or create labels on `trimble-oss/modus-wc-2.0` (403). Do not run `gh label create`. These labels already exist: `qa-skip`, `qa-full`, `qa-rerun`, `qa-failed`, `needs-human`.
 
-Workflow [`.github/workflows/automation-label-router.yml`](../../.github/workflows/automation-label-router.yml) attaches them when **you** (`ElishaSamPeterPrabhu`) or `cursor[bot]` comment one of these **on the PR** (exact lines):
+Workflow [`.github/workflows/automation-label-router.yml`](../../.github/workflows/automation-label-router.yml) attaches them when **you** (`ElishaSamPeterPrabhu`) or `cursor[bot]` post one of these **exact lines** on the PR (conversation comment **or** review body):
 
 | Comment | Label |
 |---------|--------|
-| `Routing: qa-full` | `qa-full` (removes `qa-skip`) |
-| `Routing: qa-skip` | `qa-skip` (removes `qa-full`) |
-| `QA-rerun: add` or `Routing: qa-rerun` | `qa-rerun` (delete then add) |
-| `## QA FAILED` | `qa-failed` |
-| `## NEED CLARIFICATION` or `## NOT FEASIBLE` | `needs-human` |
+| `Routing: qa-full` | `qa-full` (removes `qa-skip`, then delete+add `qa-full`) |
+| `Routing: qa-skip` | `qa-skip` (removes `qa-full`, then delete+add `qa-skip`) |
+| `QA-rerun: add` or `Routing: qa-rerun` | `qa-rerun` (delete then add even if already present) |
+| `## QA FAILED` | `qa-failed` (delete then add) |
+| `## NEED CLARIFICATION` or `## NOT FEASIBLE` | `needs-human` (delete then add) |
+
+The Action **always removes then re-adds** the target label. Cursor Automations only wake on a new `labeled` event; adding a label that is already on the PR is a no-op.
+
+Prefer a **PR conversation comment** for routing lines. Review bodies also work after the Action listens to `pull_request_review`.
 
 Do **not** claim you attached the label. If it is missing after about one minute, ask the human once to add the existing name. Do not retry GitHub MCP.
 
-QA/Fix still wake on **label added**, not on the comment itself.
+QA/Dev still wake on **label added**, not on the comment itself.
+
+## PR evidence images
+
+When posting screenshots or other visual evidence on a PR (for `/ask`, `/refine`, or QA notes):
+
+- Capture evidence as walkthrough artifacts (`/opt/cursor/artifacts/`). Reference them in the PR comment or automation review body.
+- Do **not** commit image files to the repository (for example `.github/pr-assets/`). Evidence is for PR discussion only and must not be part of the merge diff.
+- When GitHub must render images inline, use GitHub-hosted comment attachments (`user-images.githubusercontent.com`), not `raw.githubusercontent.com` paths that require committing files on the branch.
 
 ## Reply surface
 
