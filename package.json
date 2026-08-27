@@ -100,6 +100,7 @@
     "test": "stencil test --spec",
     "test:theme-parity": "node --test src/theme-cli/*.test.js",
     "theme:diff-published": "node src/theme-cli/diff-published-slots.js",
+    "theme:playground": "python3 -m http.server 8771 --bind 0.0.0.0",
     "test:coverage": "stencil test --spec --coverage",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",

@@ -139,9 +139,8 @@
           return;
         }
         const css = emitConsumerCss(config);
-        const host = document.querySelector('main');
         const theme = `${config.name}-${currentMode()}`;
-        host.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
         const fake = document.createElement('style');
         fake.textContent = css;
         document.getElementById('live-css')?.remove();

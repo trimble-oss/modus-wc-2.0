@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" data-theme="my-theme-light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phase 2 theme playground</title>
+    <link rel="stylesheet" href="/dist/modus-wc-styles.css" />
+    <script type="module" src="/dist/modus-wc/modus-wc.esm.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: var(--modus-wc-font-family, sans-serif);
+        background: var(--modus-wc-color-base-page, #f5f5f8);
+        color: var(--modus-wc-color-base-content, #171c1e);
+        display: grid;
+        grid-template-columns: minmax(280px, 22rem) 1fr;
+        min-height: 100vh;
+      }
+      aside,
+      main {
+        padding: 1.25rem;
+      }
+      aside {
+        border-inline-end: 1px solid var(--modus-wc-color-base-200, #e9eaf0);
+      }
+      textarea {
+        width: 100%;
+        min-height: 16rem;
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        box-sizing: border-box;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin: 12px 0;
+      }
+      .error {
+        color: #da212c;
+      }
+      button.ui {
+        font: inherit;
+        margin-inline-end: 0.5rem;
+      }
+      label.pick {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 6px 0;
+      }
+      pre {
+        white-space: pre-wrap;
+        font-size: 11px;
+        background: var(--modus-wc-color-base-100, #fff);
+        padding: 8px;
+        max-height: 10rem;
+        overflow: auto;
+      }
+      @media (max-width: 800px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>Phase 2 playground</h1>
+      <p>
+        Edit JSON or pick a color, then <strong>Rebuild preview</strong>. This
+        runs the same emit as <code>npx modus-theme build</code> in the browser.
+      </p>
+      <p>
+        <label class="pick"
+          >Primary
+          <input id="pick-primary" type="color" value="#0063a3"
+        /></label>
+        <label class="pick"
+          >Secondary
+          <input id="pick-secondary" type="color" value="#fbad26"
+        /></label>
+      </p>
+      <p>
+        <label
+          ><input type="radio" name="mode" value="light" checked /> light</label
+        >
+        <label><input type="radio" name="mode" value="dark" /> dark</label>
+      </p>
+      <p>
+        <button class="ui" type="button" id="rebuild">Rebuild preview</button>
+      </p>
+      <label for="config">modus-theme.config.json</label>
+      <textarea id="config" spellcheck="false"></textarea>
+      <p id="status"></p>
+      <h2>Generated CSS</h2>
+      <pre id="generated"></pre>
+    </aside>
+    <main>
+      <h2>Live components</h2>
+      <div class="row">
+        <modus-wc-button>Primary</modus-wc-button>
+        <modus-wc-button color="secondary">Secondary</modus-wc-button>
+        <modus-wc-button color="danger">Danger</modus-wc-button>
+        <modus-wc-badge>Badge</modus-wc-badge>
+      </div>
+      <modus-wc-alert
+        alert-title="Info"
+        alert-description="Preview after Rebuild"
+        variant="info"
+      ></modus-wc-alert>
+      <div class="row" style="max-width: 16rem">
+        <modus-wc-skeleton height="1.5rem" width="100%"></modus-wc-skeleton>
+      </div>
+      <modus-wc-text-input
+        label="Text input"
+        placeholder="Type here"
+      ></modus-wc-text-input>
+    </main>
+    <script type="module">
+      import { emitConsumerCss, validateConfig } from '../consumer.js';
+
+      const textarea = document.getElementById('config');
+      const status = document.getElementById('status');
+      const generated = document.getElementById('generated');
+      const pickPrimary = document.getElementById('pick-primary');
+      const pickSecondary = document.getElementById('pick-secondary');
+
+      const sample = {
+        name: 'my-theme',
+        extends: 'modus-modern',
+        tokens: {
+          light: {
+            '--modus-wc-color-primary': '#0063a3',
+            '--modus-wc-color-secondary': '#fbad26',
+          },
+          dark: {
+            '--modus-wc-color-primary': '#019aeb',
+            '--modus-wc-color-secondary': '#fec157',
+          },
+        },
+      };
+      textarea.value = JSON.stringify(sample, null, 2);
+
+      function currentMode() {
+        return document.querySelector('input[name="mode"]:checked').value;
+      }
+
+      function parseConfig() {
+        return JSON.parse(textarea.value);
+      }
+
+      function syncPickersFromJson() {
+        try {
+          const config = parseConfig();
+          const mode = currentMode();
+          const tokens = (config.tokens && config.tokens[mode]) || {};
+          if (tokens['--modus-wc-color-primary']) {
+            pickPrimary.value = tokens['--modus-wc-color-primary'];
+          }
+          if (tokens['--modus-wc-color-secondary']) {
+            pickSecondary.value = tokens['--modus-wc-color-secondary'];
+          }
+        } catch {
+          /* keep pickers */
+        }
+      }
+
+      function writePickerIntoJson() {
+        const config = parseConfig();
+        const mode = currentMode();
+        config.tokens = config.tokens || {};
+        config.tokens[mode] = config.tokens[mode] || {};
+        config.tokens[mode]['--modus-wc-color-primary'] = pickPrimary.value;
+        config.tokens[mode]['--modus-wc-color-secondary'] = pickSecondary.value;
+        textarea.value = JSON.stringify(config, null, 2);
+      }
+
+      function rebuild() {
+        status.textContent = '';
+        status.className = '';
+        let config;
+        try {
+          writePickerIntoJson();
+          config = parseConfig();
+        } catch (error) {
+          status.textContent = error.message;
+          status.className = 'error';
+          return;
+        }
+        const errors = validateConfig(config, null);
+        if (errors.length) {
+          status.textContent = errors.join('\n');
+          status.className = 'error';
+          return;
+        }
+        const css = emitConsumerCss(config);
+        generated.textContent = css;
+        const theme = `${config.name}-${currentMode()}`;
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute(
+          'data-mode',
+          currentMode() === 'dark' ? 'dark' : 'light'
+        );
+        const fake = document.createElement('style');
+        fake.textContent = css;
+        document.getElementById('live-css')?.remove();
+        fake.id = 'live-css';
+        document.head.appendChild(fake);
+        status.textContent = 'Rebuilt ' + theme;
+      }
+
+      document.getElementById('rebuild').addEventListener('click', rebuild);
+      pickPrimary.addEventListener('input', () => {
+        try {
+          writePickerIntoJson();
+        } catch {
+          /* ignore until JSON is valid */
+        }
+      });
+      pickSecondary.addEventListener('input', () => {
+        try {
+          writePickerIntoJson();
+        } catch {
+          /* ignore until JSON is valid */
+        }
+      });
+      for (const radio of document.querySelectorAll('input[name="mode"]')) {
+        radio.addEventListener('change', () => {
+          syncPickersFromJson();
+        });
+      }
+
+      rebuild();
+    </script>
+  </body>
+</html>
