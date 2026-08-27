@@ -144,7 +144,6 @@ modus-wc-content-tree {
       > .modus-wc-menu-item-interactive
       .modus-wc-menu-item-labels {
       font-size: var(--modus-wc-font-size-sm);
-      line-height: 1;
       padding-block: 0;
     }
 
@@ -152,7 +151,6 @@ modus-wc-content-tree {
       > .modus-wc-menu-item-interactive
       .modus-wc-menu-item-labels {
       font-size: var(--modus-wc-font-size-md);
-      line-height: 1;
       padding-block: 0;
     }
 
@@ -160,7 +158,6 @@ modus-wc-content-tree {
       > .modus-wc-menu-item-interactive
       .modus-wc-menu-item-labels {
       font-size: var(--modus-wc-font-size-lg);
-      line-height: 1;
       padding-block: 0;
     }
 
@@ -185,6 +182,13 @@ modus-wc-content-tree {
     modus-wc-button {
       flex: 0 0 auto;
       margin-inline-end: 0;
+    }
+
+    /* Reset line-height for all direct children so glyphs render centred.
+       tree-item.scss sets line-height:0 on [slot='start'] (this div) which
+       propagates down and causes icons to shift upward. */
+    > * {
+      line-height: normal;
     }
   }
 
@@ -217,7 +221,7 @@ modus-wc-content-tree {
 
       modus-wc-icon {
         display: inline-flex;
-        line-height: 0;
+        line-height: 1;
       }
 
       &:focus-visible {

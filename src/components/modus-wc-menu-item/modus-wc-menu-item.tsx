@@ -330,7 +330,9 @@ export class ModusWcMenuItem {
                 class="modus-wc-menu-submenu-chevron"
                 decorative
                 name="expand_more"
-                size={this.size === 'sm' ? 'xs' : 'sm'}
+                size={
+                  this.size === 'sm' ? 'xs' : this.size === 'lg' ? 'md' : 'sm'
+                }
               ></modus-wc-icon>
             )}
           </button>
