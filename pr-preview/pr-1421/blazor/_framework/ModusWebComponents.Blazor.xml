@@ -1569,7 +1569,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Name">
             <summary>
-            The icon name. Accepts legacy 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from @trimble-oss/modus-icons-css.
+            The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from @trimble-oss/modus-icons-css.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Size">
@@ -1581,6 +1581,11 @@
             <summary>
             The icon variant, can be &quot;outlined&quot; or &quot;solid&quot;.
             Allowed values: "outlined", "solid"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Version">
+            <summary>
+            The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.ChildContent">
