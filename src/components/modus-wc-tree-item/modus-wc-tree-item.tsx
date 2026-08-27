@@ -393,7 +393,7 @@ export class ModusWcTreeItem {
                 class="modus-wc-menu-submenu-chevron"
                 decorative
                 name="expand_more"
-                size="md"
+                size={this.size === 'sm' ? 'xs' : 'sm'}
               ></modus-wc-icon>
             )}
           </div>

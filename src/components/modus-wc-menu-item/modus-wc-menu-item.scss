@@ -7,6 +7,7 @@ modus-wc-menu-item .modus-wc-menu-item {
   button {
     align-items: center;
     border-radius: inherit;
+    box-sizing: border-box;
     display: flex;
     width: 100%;
 
@@ -23,16 +24,18 @@ modus-wc-menu-item .modus-wc-menu-item {
       color: var(--modus-wc-color-base-content);
       display: inline-flex;
       flex-shrink: 0;
-      height: 20px;
+      height: var(--modus-wc-font-size-2xl);
       justify-content: center;
+      line-height: 1;
       margin-inline-end: calc(-1 * var(--modus-wc-spacing-sm));
       margin-inline-start: auto;
+      overflow: hidden;
       pointer-events: none;
       transform: rotate(0deg);
       transition-duration: 0.2s;
       transition-property: transform;
       transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      width: 20px;
+      width: var(--modus-wc-font-size-2xl);
     }
 
     &.modus-wc-menu-dropdown-show .modus-wc-menu-submenu-chevron {
@@ -43,21 +46,33 @@ modus-wc-menu-item .modus-wc-menu-item {
       align-items: center;
       display: flex;
       flex: 1;
+      gap: var(--modus-wc-spacing-md);
       min-width: 0;
       width: 100%;
 
       [slot='start-icon'] {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        align-items: center;
+        display: inline-flex;
+        flex-shrink: 0;
+        line-height: 0;
       }
 
       modus-wc-checkbox {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        padding-inline-end: 0;
       }
 
       .modus-wc-menu-item-labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-md);
         white-space: nowrap;
+      }
+
+      &:has([slot='start-icon']) .modus-wc-menu-item-labels,
+      &:has(modus-wc-checkbox) .modus-wc-menu-item-labels {
+        padding-inline-start: 0;
       }
 
       .modus-wc-menu-item-sublabel {
@@ -71,9 +86,28 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
+  // Figma Menu / Item: sm 32, md 40, lg 48.
+  // Icon+Text padding-block + label line-height (text is flex-centered in
+  // that strut). Type/icon sizes map to Figma, not the WC size name.
+  // Consumers (side nav, content tree, custom height) can still override.
+  // Sublabel rows grow with content.
   &.modus-wc-menu-item-sm {
     button {
-      font-size: var(--modus-wc-font-size-sm);
+      font-size: var(--modus-wc-font-size-md);
+      padding-block: var(--modus-wc-spacing-xs);
+
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-spacing-lg);
+      }
+
+      .modus-wc-menu-item-labels {
+        line-height: var(--modus-wc-line-height-md);
+      }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-spacing-lg);
+        width: var(--modus-wc-spacing-lg);
+      }
 
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-xs);
@@ -83,7 +117,21 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-md {
     button {
-      font-size: var(--modus-wc-font-size-md);
+      font-size: var(--modus-wc-font-size-lg);
+      padding-block: var(--modus-wc-spacing-sm);
+
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-xl);
+      }
+
+      .modus-wc-menu-item-labels {
+        line-height: var(--modus-wc-line-height-md);
+      }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-font-size-xl);
+        width: var(--modus-wc-font-size-xl);
+      }
 
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-sm);
@@ -93,7 +141,21 @@ modus-wc-menu-item .modus-wc-menu-item {
 
   &.modus-wc-menu-item-lg {
     button {
-      font-size: var(--modus-wc-font-size-lg);
+      font-size: var(--modus-wc-font-size-xl);
+      padding-block: var(--modus-wc-spacing-sm);
+
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-2xl);
+      }
+
+      .modus-wc-menu-item-labels {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-font-size-2xl);
+        width: var(--modus-wc-font-size-2xl);
+      }
 
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-md);

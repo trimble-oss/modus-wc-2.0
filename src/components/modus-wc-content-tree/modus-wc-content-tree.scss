@@ -79,7 +79,13 @@ modus-wc-content-tree {
     display: block;
     width: 100%;
 
-    .modus-wc-menu-item-interactive {
+    // Size-class selectors beat tree-item's padding-block so this tree
+    // keeps dense rows; label font-size still comes from the atom.
+    .modus-wc-menu-item.modus-wc-menu-item-sm > .modus-wc-menu-item-interactive,
+    .modus-wc-menu-item.modus-wc-menu-item-md > .modus-wc-menu-item-interactive,
+    .modus-wc-menu-item.modus-wc-menu-item-lg
+      > .modus-wc-menu-item-interactive {
+      line-height: 1;
       padding-block: var(--modus-wc-content-tree-row-padding-block);
       padding-inline: var(--modus-wc-content-tree-row-padding-inline);
       position: relative;
@@ -98,10 +104,16 @@ modus-wc-content-tree {
     .modus-wc-menu-item
       .modus-wc-menu-item-interactive
       .modus-wc-menu-item-content {
-      /* Zero start-slot trailing padding (beats tree-item default). */
-      [slot='start'],
-      .modus-wc-content-tree-node-start[slot='start'] {
+      gap: 0;
+
+      /* Drag handle is also slot=start; keep it flush. Node-start owns
+         the icon-to-label gap so content gap can stay 0 (label vs actions). */
+      [slot='start'] {
         padding-inline-end: 0;
+      }
+
+      .modus-wc-content-tree-node-start[slot='start'] {
+        padding-inline-end: var(--modus-wc-content-tree-row-gap);
       }
 
       modus-wc-button.modus-wc-content-tree-drag-handle[slot='start'] {
@@ -124,7 +136,32 @@ modus-wc-content-tree {
     .modus-wc-menu-item-labels {
       flex: 1 1 auto;
       min-width: 0;
+      padding-block: 0;
       padding-inline: 0;
+    }
+
+    .modus-wc-menu-item.modus-wc-menu-item-sm
+      > .modus-wc-menu-item-interactive
+      .modus-wc-menu-item-labels {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: 1;
+      padding-block: 0;
+    }
+
+    .modus-wc-menu-item.modus-wc-menu-item-md
+      > .modus-wc-menu-item-interactive
+      .modus-wc-menu-item-labels {
+      font-size: var(--modus-wc-font-size-md);
+      line-height: 1;
+      padding-block: 0;
+    }
+
+    .modus-wc-menu-item.modus-wc-menu-item-lg
+      > .modus-wc-menu-item-interactive
+      .modus-wc-menu-item-labels {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: 1;
+      padding-block: 0;
     }
 
     .modus-wc-menu-item.modus-wc-content-tree-parent.modus-wc-menu-item-active
@@ -143,6 +180,7 @@ modus-wc-content-tree {
     align-items: center;
     display: flex;
     gap: var(--modus-wc-content-tree-row-gap);
+    padding-inline-end: var(--modus-wc-content-tree-row-gap);
 
     modus-wc-button {
       flex: 0 0 auto;
@@ -530,7 +568,7 @@ modus-wc-content-tree {
     display: flex;
     flex: 1 1 auto;
     flex-direction: row;
-    gap: var(--modus-wc-spacing-md);
+    gap: 0;
     min-width: 0;
     width: 100%;
   }
@@ -541,7 +579,7 @@ modus-wc-content-tree {
     flex: 0 0 auto;
     flex-direction: row;
     gap: var(--modus-wc-spacing-md);
-    padding-inline-end: 0;
+    padding-inline-end: var(--modus-wc-spacing-md);
   }
 
   .modus-wc-content-tree-node-start
@@ -551,8 +589,10 @@ modus-wc-content-tree {
 
   .modus-wc-menu-item-labels {
     flex: 1 1 auto;
+    line-height: 1;
     min-width: 0;
     overflow: visible;
+    padding-block: 0;
     padding-inline: 0;
     text-overflow: clip;
     white-space: nowrap;

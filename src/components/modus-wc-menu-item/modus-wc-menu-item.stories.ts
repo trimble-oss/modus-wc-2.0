@@ -99,7 +99,7 @@ export const WithIcon: Story = {
     <modus-wc-icon
       slot="start-icon"
       name="alert"
-      size="sm"
+      size="xs"
     ></modus-wc-icon>
   </modus-wc-menu-item>
 </modus-wc-menu>

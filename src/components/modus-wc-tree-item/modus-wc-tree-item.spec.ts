@@ -610,9 +610,22 @@ describe('modus-wc-tree-item', () => {
 
     const chevron = page.root!.querySelector(
       'modus-wc-icon.modus-wc-menu-submenu-chevron'
-    ) as HTMLElement & { name?: string };
+    ) as HTMLElement & { name?: string; size?: string };
     expect(chevron).not.toBeNull();
     expect(chevron.name).toBe('expand_more');
+    expect(chevron.size).toBe('sm');
+  });
+
+  it('should size the submenu chevron smaller when the tree item is sm', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon],
+      html: '<modus-wc-tree-item label="Parent" size="sm" value="parent" has-submenu="true"></modus-wc-tree-item>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    expect(chevron.size).toBe('xs');
   });
 
   it('should toggle submenu when hasSubmenu is true', async () => {
