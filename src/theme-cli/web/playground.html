@@ -58,6 +58,22 @@
         max-height: 10rem;
         overflow: auto;
       }
+      .swatches {
+        display: flex;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .swatch {
+        width: 4.5rem;
+        height: 2.5rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #fff;
+        text-shadow: 0 0 2px #000;
+      }
       @media (max-width: 800px) {
         body {
           grid-template-columns: 1fr;
@@ -69,17 +85,16 @@
     <aside>
       <h1>Phase 2 playground</h1>
       <p>
-        Edit JSON or pick a color, then <strong>Rebuild preview</strong>. This
-        runs the same emit as <code>npx modus-theme build</code> in the browser.
+        Edit JSON or pick a color, then <strong>Rebuild preview</strong>.
+        Preview sits on the built-in <code>extends</code> theme so Daisy
+        <code>oklch</code> buttons pick up your hex tokens.
       </p>
       <p>
         <label class="pick"
-          >Primary
-          <input id="pick-primary" type="color" value="#0063a3"
+          >Primary <input id="pick-primary" type="color" value="#0063a3"
         /></label>
         <label class="pick"
-          >Secondary
-          <input id="pick-secondary" type="color" value="#fbad26"
+          >Secondary <input id="pick-secondary" type="color" value="#fbad26"
         /></label>
       </p>
       <p>
@@ -99,6 +114,10 @@
     </aside>
     <main>
       <h2>Live components</h2>
+      <div class="swatches">
+        <div class="swatch" id="swatch-p">primary</div>
+        <div class="swatch" id="swatch-s">secondary</div>
+      </div>
       <div class="row">
         <modus-wc-button>Primary</modus-wc-button>
         <modus-wc-button color="secondary">Secondary</modus-wc-button>
@@ -119,7 +138,12 @@
       ></modus-wc-text-input>
     </main>
     <script type="module">
-      import { emitConsumerCss, validateConfig } from '../consumer.js';
+      import {
+        emitConsumerCss,
+        emitPreviewOverlayCss,
+        extendedThemeName,
+        validateConfig,
+      } from '../consumer.js';
 
       const textarea = document.getElementById('config');
       const status = document.getElementById('status');
@@ -195,20 +219,26 @@
           status.className = 'error';
           return;
         }
+        const mode = currentMode();
         const css = emitConsumerCss(config);
-        generated.textContent = css;
-        const theme = `${config.name}-${currentMode()}`;
-        document.documentElement.setAttribute('data-theme', theme);
+        const overlay = emitPreviewOverlayCss(config, mode);
+        const hostTheme = extendedThemeName(config, mode);
+        generated.textContent = `${css}\n/* preview overlay on ${hostTheme} */\n${overlay}`;
+        document.documentElement.setAttribute('data-theme', hostTheme);
         document.documentElement.setAttribute(
           'data-mode',
-          currentMode() === 'dark' ? 'dark' : 'light'
+          mode === 'dark' ? 'dark' : 'light'
         );
         const fake = document.createElement('style');
-        fake.textContent = css;
+        fake.textContent = overlay;
         document.getElementById('live-css')?.remove();
         fake.id = 'live-css';
         document.head.appendChild(fake);
-        status.textContent = 'Rebuilt ' + theme;
+        const swatchP = document.getElementById('swatch-p');
+        const swatchS = document.getElementById('swatch-s');
+        swatchP.style.background = 'var(--modus-wc-color-primary)';
+        swatchS.style.background = 'var(--modus-wc-color-secondary)';
+        status.textContent = `Rebuilt ${config.name}-${mode} on ${hostTheme}`;
       }
 
       document.getElementById('rebuild').addEventListener('click', rebuild);

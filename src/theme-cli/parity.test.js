@@ -3,7 +3,12 @@ import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { emitConsumerCss, validateConfig } from './consumer.js';
+import {
+  emitConsumerCss,
+  emitPreviewOverlayCss,
+  extendedThemeName,
+  validateConfig,
+} from './consumer.js';
 import {
   emitLegacyFallbackCss,
   emitVariablesThemeBlocks,
@@ -138,4 +143,22 @@ test('output.css contains generated legacy block after Tailwind (if present)', (
   const fallback = hexFromBlock(css, 'modus-modern-light', '--fallback-p');
   assert.equal(fallback, slots.p);
   assert.match(css, /--fallback-bc:/);
+});
+
+test('preview overlay maps hex tokens to Daisy oklch channels', () => {
+  const overlay = emitPreviewOverlayCss(
+    {
+      name: 'acme',
+      extends: 'modus-modern',
+      tokens: { light: { '--modus-wc-color-primary': '#ff00aa' } },
+    },
+    'light'
+  );
+  assert.match(overlay, /--modus-wc-color-primary: #ff00aa/);
+  assert.match(overlay, /--fallback-p: #ff00aa/);
+  assert.match(overlay, /--p: \d+\.\d+% \d+\.\d+ \d+\.\d+/);
+  assert.equal(
+    extendedThemeName({ extends: 'modus-modern' }, 'dark'),
+    'modus-modern-dark'
+  );
 });
