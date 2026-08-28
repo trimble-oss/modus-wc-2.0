@@ -18,16 +18,46 @@ modus-wc-select .modus-wc-select {
   padding-bottom: var(--modus-wc-spacing-sm);
 }
 
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-xs);
+
+  .modus-wc-input-label {
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 1.25rem;
+  }
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-xs);
+
+  .modus-wc-input-label {
+    font-size: var(--modus-wc-font-size-xl);
+    line-height: var(--modus-wc-line-height-lg);
+  }
+}
+
 [data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
   &.modus-wc-select-xs {
-    font-size: var(--modus-wc-font-size-xs);
-    line-height: var(--modus-wc-size-xs);
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 1.25rem;
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-select-xl {
     font-size: var(--modus-wc-font-size-xl);
-    line-height: var(--modus-wc-size-xl);
+    line-height: var(--modus-wc-line-height-lg);
+    padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
   }
 }
 
