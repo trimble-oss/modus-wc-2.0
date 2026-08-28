@@ -8,7 +8,7 @@ interface ImageArgs {
   alt?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   shape?: 'square' | 'rounded';
-  fit?: 'cover' | 'contain' | 'scale-down' | 'none';
+  fit?: 'default' | 'contain' | 'scale-down' | 'none';
   'custom-class'?: string;
 }
 
@@ -20,15 +20,15 @@ const meta: Meta<ImageArgs> = {
   component: 'modus-wc-image',
   args: {
     src: SAMPLE_IMAGE,
-    alt: 'A scenic mountain landscape',
-    fit: 'cover',
+    alt: 'A zebra drinks from a pond',
+    fit: 'default',
     shape: 'square',
     size: 'md',
   },
   argTypes: {
     fit: {
       control: { type: 'select' },
-      options: ['cover', 'contain', 'scale-down', 'none'],
+      options: ['default', 'contain', 'scale-down', 'none'],
     },
     shape: {
       control: { type: 'select' },
@@ -43,6 +43,13 @@ const meta: Meta<ImageArgs> = {
   parameters: {
     actions: {
       handles: ['imageLoad', 'imageError'],
+    },
+    docs: {
+      description: {
+        component: `
+A resilient atomic image component wrapping the native \`<img>\` tag with consistent sizing tokens,
+aspect-ratio control, an accessible error fallback, and WCAG 2.1 AA compliance.`,
+      },
     },
   },
 };
@@ -64,11 +71,127 @@ const Template: Story = {
   `,
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Default rendering with `fit="default"` and `size="md"` (288×192 px). The image fills the fixed box completely — non-matching aspect ratios are **cropped** equally from the center edges with no distortion.',
+      },
+    },
+  },
+};
+
+export const FitContain: Story = {
+  ...Template,
+  args: { fit: 'contain' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`fit="contain"` — the image scales down to fit **entirely** inside the hard-locked box while preserving its original aspect ratio. Areas not covered by the image show the background (letterbox/pillarbox effect).',
+      },
+    },
+  },
+};
+
+export const FitScaleDown: Story = {
+  ...Template,
+  args: { fit: 'scale-down' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`fit="scale-down"` — the container uses `max-width / max-height` from the `size` token instead of hard-locked dimensions. If the image is larger than the target it is scaled down proportionally; if smaller it renders at its intrinsic size. The box shrinks to fit the image.',
+      },
+    },
+  },
+};
+
+export const FitNone: Story = {
+  ...Template,
+  args: { fit: 'none' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`fit="none"` — the image renders at its **intrinsic pixel size** with no scaling applied. The container is still hard-locked to the `size` token dimensions, so any part of the image that exceeds the box is clipped by `overflow: hidden`.',
+      },
+    },
+  },
+};
 
 export const Rounded: Story = {
   ...Template,
   args: { shape: 'rounded' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Applies a `16 px` border-radius to the image container via `shape="rounded"`. All size variants use the same radius value.',
+      },
+    },
+  },
+};
+
+export const AllSizes: Story = {
+  render: () => html`
+    <div
+      style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;"
+    >
+      <div>
+        <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600;">
+          sm — 128×128 px
+        </p>
+        <modus-wc-image
+          src=${SAMPLE_IMAGE}
+          alt="Small"
+          size="sm"
+          fit="default"
+        ></modus-wc-image>
+      </div>
+      <div>
+        <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600;">
+          md — 288×192 px (default)
+        </p>
+        <modus-wc-image
+          src=${SAMPLE_IMAGE}
+          alt="Medium"
+          size="md"
+          fit="default"
+        ></modus-wc-image>
+      </div>
+      <div>
+        <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600;">
+          lg — 384×256 px
+        </p>
+        <modus-wc-image
+          src=${SAMPLE_IMAGE}
+          alt="Large"
+          size="lg"
+          fit="default"
+        ></modus-wc-image>
+      </div>
+    </div>
+  `,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+All available size tokens side by side (xl omitted for layout reasons — it is 1486×384 px).
+For \`fit="scale-down"\` these values act as \`max-width / max-height\` constraints rather than fixed dimensions.
+
+| \`size\` | Width | Height |
+|---------|-------|--------|
+| \`sm\` | 128 px | 128 px |
+| \`md\` *(default)* | 288 px | 192 px |
+| \`lg\` | 384 px | 256 px |
+| \`xl\` | 1486 px | 384 px |
+        `,
+      },
+    },
+  },
 };
 
 export const DecorativeImage: Story = {

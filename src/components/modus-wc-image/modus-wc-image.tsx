@@ -6,8 +6,8 @@ import {
   Host,
   Prop,
   State,
-  Watch,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import {
   convertPropsToClasses,
@@ -43,7 +43,7 @@ export class ModusWcImage {
   @Prop({ reflect: true }) shape?: ImageShape = 'square';
 
   /** Controls containment, cropping, and aspect ratio preservation. */
-  @Prop({ reflect: true }) fit?: ImageFit = 'cover';
+  @Prop({ reflect: true }) fit?: ImageFit = 'default';
 
   /** Custom CSS class to apply to the component. */
   @Prop() customClass?: string = '';

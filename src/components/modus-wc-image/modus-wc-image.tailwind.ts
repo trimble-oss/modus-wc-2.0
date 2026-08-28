@@ -1,6 +1,6 @@
 export type ImageSize = 'sm' | 'md' | 'lg' | 'xl';
 export type ImageShape = 'square' | 'rounded';
-export type ImageFit = 'cover' | 'contain' | 'scale-down' | 'none';
+export type ImageFit = 'default' | 'contain' | 'scale-down' | 'none';
 
 export const convertPropsToClasses = ({
   fit,
