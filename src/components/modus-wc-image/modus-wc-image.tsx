@@ -19,7 +19,7 @@ import { handleShadowDOMStyles } from '../base-component';
 
 /**
  * A resilient atomic image component that wraps native <img> tags with consistent sizing,
- * aspect-ratio control, fallback error state, and full WCAG 2.1 AA accessibility support.
+ * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
  */
 @Component({
   tag: 'modus-wc-image',

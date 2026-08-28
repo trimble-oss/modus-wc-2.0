@@ -48,7 +48,7 @@ const meta: Meta<ImageArgs> = {
       description: {
         component: `
 A resilient atomic image component wrapping the native \`<img>\` tag with consistent sizing tokens,
-aspect-ratio control, an accessible error fallback, and WCAG 2.1 AA compliance.`,
+aspect-ratio control, an accessible error fallback, and WCAG 2.2 compliance.`,
       },
     },
   },

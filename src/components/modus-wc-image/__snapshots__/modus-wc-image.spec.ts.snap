@@ -8,9 +8,9 @@ exports[`modus-wc-image should apply fit class for fit="contain" 1`] = `
 </modus-wc-image>
 `;
 
-exports[`modus-wc-image should apply fit class for fit="cover" 1`] = `
-<modus-wc-image alt="Test" fit="cover" shape="square" size="md" src="https://example.com/image.jpg">
-  <div class="modus-wc-image--cover modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+exports[`modus-wc-image should apply fit class for fit="default" 1`] = `
+<modus-wc-image alt="Test" fit="default" shape="square" size="md" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
     <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
   </div>
 </modus-wc-image>

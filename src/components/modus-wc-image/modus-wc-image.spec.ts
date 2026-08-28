@@ -142,7 +142,7 @@ describe('modus-wc-image', () => {
   );
 
   it.each([
-    ['cover', 'modus-wc-image--cover'],
+    ['default', 'modus-wc-image--default'],
     ['contain', 'modus-wc-image--contain'],
     ['scale-down', 'modus-wc-image--scale-down'],
     ['none', 'modus-wc-image--none'],

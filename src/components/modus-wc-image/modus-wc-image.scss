@@ -25,7 +25,7 @@ modus-wc-image {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // Strict Box Mode: fit="cover" | fit="contain" | fit="none"
+    // Strict Box Mode: fit="default" | fit="contain" | fit="none"
     // Hard-locked width × height per size token; image is clipped to the box.
     // ─────────────────────────────────────────────────────────────────────────
     &.modus-wc-image--default,
