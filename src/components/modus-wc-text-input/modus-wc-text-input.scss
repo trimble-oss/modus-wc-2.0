@@ -182,12 +182,9 @@ modus-wc-text-input {
 [data-theme='modus-modern-dark']
   modus-wc-text-input:has(.modus-wc-input-xs)
   .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
   padding-bottom: var(--modus-wc-spacing-xs);
-
-  .modus-wc-input-label {
-    font-size: var(--modus-wc-font-size-sm);
-    line-height: 1.25rem;
-  }
 }
 
 [data-theme='modus-modern-light']
@@ -196,12 +193,9 @@ modus-wc-text-input {
 [data-theme='modus-modern-dark']
   modus-wc-text-input:has(.modus-wc-input-xl)
   .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: 2rem;
   padding-bottom: var(--modus-wc-spacing-xs);
-
-  .modus-wc-input-label {
-    font-size: var(--modus-wc-font-size-xl);
-    line-height: var(--modus-wc-line-height-lg);
-  }
 }
 
 [data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,

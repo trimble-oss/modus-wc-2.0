@@ -24,12 +24,9 @@ modus-wc-select .modus-wc-select {
 [data-theme='modus-modern-dark']
   modus-wc-select:has(.modus-wc-select-xs)
   .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
   padding-bottom: var(--modus-wc-spacing-xs);
-
-  .modus-wc-input-label {
-    font-size: var(--modus-wc-font-size-sm);
-    line-height: 1.25rem;
-  }
 }
 
 [data-theme='modus-modern-light']
@@ -38,26 +35,35 @@ modus-wc-select .modus-wc-select {
 [data-theme='modus-modern-dark']
   modus-wc-select:has(.modus-wc-select-xl)
   .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: 2rem;
   padding-bottom: var(--modus-wc-spacing-xs);
-
-  .modus-wc-input-label {
-    font-size: var(--modus-wc-font-size-xl);
-    line-height: var(--modus-wc-line-height-lg);
-  }
 }
 
 [data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
   &.modus-wc-select-xs {
     font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-size-xs);
     line-height: 1.25rem;
-    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+    min-height: var(--modus-wc-size-xs);
+    padding-block: 0;
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+    );
+    padding-inline-start: var(--modus-wc-spacing-sm);
   }
 
   &.modus-wc-select-xl {
     font-size: var(--modus-wc-font-size-xl);
-    line-height: var(--modus-wc-line-height-lg);
-    padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+    height: var(--modus-wc-size-xl);
+    line-height: 2rem;
+    min-height: var(--modus-wc-size-xl);
+    padding-block: 0;
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-size-sm)
+    );
+    padding-inline-start: var(--modus-wc-spacing-xl);
   }
 }
 
