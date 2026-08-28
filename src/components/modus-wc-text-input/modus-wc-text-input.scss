@@ -194,7 +194,7 @@ modus-wc-text-input {
   modus-wc-text-input:has(.modus-wc-input-xl)
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-xl);
-  line-height: 2rem;
+  line-height: var(--modus-wc-line-height-lg);
   padding-bottom: var(--modus-wc-spacing-xs);
 }
 

@@ -36,7 +36,7 @@ modus-wc-select .modus-wc-select {
   modus-wc-select:has(.modus-wc-select-xl)
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-xl);
-  line-height: 2rem;
+  line-height: var(--modus-wc-line-height-lg);
   padding-bottom: var(--modus-wc-spacing-xs);
 }
 
@@ -57,7 +57,7 @@ modus-wc-select .modus-wc-select {
   &.modus-wc-select-xl {
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-xl);
-    line-height: 2rem;
+    line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-xl);
     padding-block: 0;
     padding-inline-end: calc(
