@@ -59,7 +59,7 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test"></modus-wc-image>',
     });
     const instance = page.rootInstance as ModusWcImage;
-    instance.isLoaded = true;
+    (instance as any).isLoaded = true;
     await page.waitForChanges();
     const container = page.root?.querySelector('.modus-wc-image-container');
     expect(container?.classList.contains('modus-wc-image--loading')).toBe(
@@ -73,7 +73,7 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/bad.jpg" alt="Missing image"></modus-wc-image>',
     });
     const instance = page.rootInstance as ModusWcImage;
-    instance.hasError = true;
+    (instance as any).hasError = true;
     await page.waitForChanges();
     const fallback = page.root?.querySelector('.modus-wc-image-fallback');
     const img = page.root?.querySelector('img');
@@ -88,7 +88,7 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/bad.jpg" alt="Missing image"></modus-wc-image>',
     });
     const instance = page.rootInstance as ModusWcImage;
-    instance.hasError = true;
+    (instance as any).hasError = true;
     await page.waitForChanges();
     const container = page.root?.querySelector('.modus-wc-image-container');
     expect(container?.getAttribute('role')).toBe('img');
@@ -101,7 +101,7 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/bad.jpg"></modus-wc-image>',
     });
     const instance = page.rootInstance as ModusWcImage;
-    instance.hasError = true;
+    (instance as any).hasError = true;
     await page.waitForChanges();
     const container = page.root?.querySelector('.modus-wc-image-container');
     expect(container?.getAttribute('aria-label')).toBe('Image unavailable');
@@ -173,13 +173,13 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test"></modus-wc-image>',
     });
     const instance = page.rootInstance as ModusWcImage;
-    instance.hasError = true;
-    instance.isLoaded = true;
+    (instance as any).hasError = true;
+    (instance as any).isLoaded = true;
     await page.waitForChanges();
     instance.src = 'https://example.com/new-image.jpg';
     await page.waitForChanges();
-    expect(instance.hasError).toBe(false);
-    expect(instance.isLoaded).toBe(false);
+    expect((instance as any).hasError).toBe(false);
+    expect((instance as any).isLoaded).toBe(false);
   });
 
   it('should emit imageLoad event when image loads', async () => {

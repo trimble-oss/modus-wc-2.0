@@ -48,8 +48,8 @@ export class ModusWcImage {
   /** Custom CSS class to apply to the component. */
   @Prop() customClass?: string = '';
 
-  @State() hasError: boolean = false;
-  @State() isLoaded: boolean = false;
+  @State() private hasError: boolean = false;
+  @State() private isLoaded: boolean = false;
 
   /** Event emitted when the image loads successfully. */
   @StencilEvent() imageLoad!: EventEmitter<Event>;
@@ -83,12 +83,12 @@ export class ModusWcImage {
     return classList.join(' ');
   }
 
-  handleError = (event: Event) => {
+  private handleError = (event: Event) => {
     this.hasError = true;
     this.imageError.emit(event);
   };
 
-  handleLoad = (event: Event) => {
+  private handleLoad = (event: Event) => {
     this.isLoaded = true;
     this.imageLoad.emit(event);
   };
