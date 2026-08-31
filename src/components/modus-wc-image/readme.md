@@ -30,6 +30,19 @@ aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility supp
 | `imageLoad`  | Event emitted when the image loads successfully. | `CustomEvent<Event>` |
 
 
+## Dependencies
+
+### Depends on
+
+- [modus-wc-icon](../modus-wc-icon)
+
+### Graph
+```mermaid
+graph TD;
+  modus-wc-image --> modus-wc-icon
+  style modus-wc-image fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

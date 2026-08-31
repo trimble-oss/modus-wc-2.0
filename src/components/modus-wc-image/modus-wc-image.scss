@@ -146,12 +146,14 @@ modus-wc-image {
     display: flex;
     height: 100%;
     justify-content: center;
-    opacity: 0.4;
+    pointer-events: none;
     width: 100%;
 
     .modus-wc-image-fallback-icon {
-      height: 48px;
-      width: 48px;
+      color: var(--modus-wc-color-accent);
+      display: flex;
+      font-size: 48px;
+      pointer-events: none;
     }
   }
 }

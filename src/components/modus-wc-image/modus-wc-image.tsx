@@ -16,6 +16,7 @@ import {
   ImageSize,
 } from './modus-wc-image.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A resilient atomic image component that wraps native <img> tags with consistent sizing,
@@ -27,6 +28,8 @@ import { handleShadowDOMStyles } from '../base-component';
   shadow: false,
 })
 export class ModusWcImage {
+  private inheritedAttributes: Attributes = {};
+
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
@@ -37,13 +40,13 @@ export class ModusWcImage {
   @Prop() alt?: string;
 
   /** Determines dimensional size tokens. */
-  @Prop({ reflect: true }) size?: ImageSize = 'md';
+  @Prop() size?: ImageSize = 'md';
 
   /** Sets corner radius styling. */
-  @Prop({ reflect: true }) shape?: ImageShape = 'square';
+  @Prop() shape?: ImageShape = 'square';
 
   /** Controls containment, cropping, and aspect ratio preservation. */
-  @Prop({ reflect: true }) fit?: ImageFit = 'default';
+  @Prop() fit?: ImageFit = 'default';
 
   /** Custom CSS class to apply to the component. */
   @Prop() customClass?: string = '';
@@ -65,6 +68,7 @@ export class ModusWcImage {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
+    this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
   private getContainerClasses(isErrorContainer = false): string {
@@ -99,30 +103,27 @@ export class ModusWcImage {
     return (
       <div class={this.getContainerClasses(true)} role="img" aria-label={label}>
         <div class="modus-wc-image-fallback">
-          {/* Material Design "broken_image" icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
+          <modus-wc-icon
+            name="image_disabled"
+            decorative
             class="modus-wc-image-fallback-icon"
-          >
-            <path d="M21 5v6.59l-3-3.01-4 4.01-4-4-4 4-3-3.01V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2zm-3 6.42 3 3.01V19c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6.58l3 2.99 4-4 4 4 4-3.99z" />
-          </svg>
+          />
         </div>
       </div>
     );
   }
 
   render() {
+    const hostClass = this.customClass || undefined;
+
     if (this.hasError) {
-      return <Host class={this.customClass}>{this.renderFallback()}</Host>;
+      return <Host class={hostClass}>{this.renderFallback()}</Host>;
     }
 
-    const isDecorative = !this.alt || this.alt.trim() === '';
+    const isDecorative = !this.alt || this.alt === '';
 
     return (
-      <Host class={this.customClass}>
+      <Host class={hostClass}>
         <div class={this.getContainerClasses()}>
           <img
             src={this.src}
@@ -132,6 +133,7 @@ export class ModusWcImage {
             class="modus-wc-image-img"
             onError={this.handleError}
             onLoad={this.handleLoad}
+            {...this.inheritedAttributes}
           />
         </div>
       </Host>
