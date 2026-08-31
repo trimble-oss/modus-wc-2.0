@@ -95,7 +95,8 @@ export class ModusWcLogo {
       !this.emblem &&
       logoInfo &&
       logoInfo.emblemPath &&
-      logoInfo.category !== 'trimble_brand'
+      logoInfo.category !== 'trimble_brand' &&
+      !logoInfo.selfContained
     ) {
       return LOGO_SVGS[logoInfo.emblemPath] || '';
     }

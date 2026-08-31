@@ -71,6 +71,26 @@ describe('modus-wc-logo', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render combined emblem for viewpoint_field_management', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="viewpoint_field_management"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(true);
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
+  });
+
+  it('should render emblem for viewpoint_field_time when emblem prop is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="viewpoint_field_time" emblem></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-emblem')).toBe(true);
+    expect(logoSpan?.querySelector('svg')).not.toBeNull();
+  });
+
   it('should render with custom alt text', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],

@@ -11,6 +11,8 @@ export interface ILogoInfo {
   emblemPath?: string;
   /** Category of the logo */
   category: 'trimble' | 'trimble_brand' | 'viewpoint';
+  /** The full logo SVG already includes the emblem; do not apply combined split */
+  selfContained?: boolean;
 }
 
 /**
@@ -443,12 +445,14 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_field_management: {
     displayName: 'Viewpoint Field Management',
     path: 'logos/viewpoint/viewpoint-field-management.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-vista-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_field_time: {
     displayName: 'Viewpoint Field Time',
     path: 'logos/viewpoint/viewpoint-field-time.svg',
+    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    selfContained: true,
     category: 'viewpoint',
   },
   viewpoint_field_view: {
