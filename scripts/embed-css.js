@@ -9,6 +9,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const outputCSSPath = join(__dirname, '../src/styles/output.css');
 const globalCSSPath = join(__dirname, '../src/styles/global.css');
 const iconsCSSPath = join(__dirname, '../src/styles/modus-icons.css');
+const icons2BaseCSSPath = join(
+  __dirname,
+  '../src/styles/modus-icons-2-base.css'
+);
 const targetPath = join(__dirname, '../src/providers/theme/css-content.ts');
 
 let outputCSS = '';
@@ -39,6 +43,18 @@ try {
   }
 } catch (error) {
   globalThis.console.warn('Could not read modus-icons.css:', error.message);
+}
+
+try {
+  if (existsSync(icons2BaseCSSPath)) {
+    const icons2BaseCSS = readFileSync(icons2BaseCSSPath, 'utf8');
+    iconsCSS = iconsCSS ? `${iconsCSS}\n${icons2BaseCSS}` : icons2BaseCSS;
+  }
+} catch (error) {
+  globalThis.console.warn(
+    'Could not read modus-icons-2-base.css:',
+    error.message
+  );
 }
 
 // Generate the TypeScript file

@@ -53,6 +53,7 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-neutral');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
     expect(icon?.textContent?.trim()).toBe('info');
 
     expect(page.root).toMatchSnapshot();
@@ -68,6 +69,7 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
     expect(icon?.textContent?.trim()).toBe('info');
   });
 
@@ -81,6 +83,7 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-info');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
     expect(icon?.textContent?.trim()).toBe('info');
   });
 
@@ -408,6 +411,7 @@ describe('modus-wc-alert', () => {
     expect(alertDiv?.className).toBe('modus-wc-alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
+    expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
     expect(icon?.textContent?.trim()).toBe('info');
   });
 

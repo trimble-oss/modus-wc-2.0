@@ -84,6 +84,7 @@ export default [
       'mcp/**',
       'node_modules/**',
       'src/components.d.ts',
+      'src/components/modus-wc-icon/icon-data.ts',
       'src/providers/theme/css-content.ts',
       'src/providers/theme/component-css-content.ts',
       'storybook-static/**',

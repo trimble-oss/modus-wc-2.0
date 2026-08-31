@@ -82,7 +82,13 @@
     },
     "./modus-wc-styles.css": "./modus-wc-styles.css",
     "./modus-wc-variables.css": "./modus-wc-variables.css",
-    "./modus-icons.css": "./modus-icons.css"
+    "./modus-icons.css": "./modus-icons.css",
+    "./modus-icons-2.css": "./modus-icons-2.css",
+    "./modus-icons-regular.css": "./modus-icons-regular.css",
+    "./modus-icons-fill.css": "./modus-icons-fill.css",
+    "./modus-icons-2-font/css/modus-icons-font-regular.css": "./modus-icons-2-font/css/modus-icons-font-regular.css",
+    "./modus-icons-2-font/css/modus-icons-font-fill.css": "./modus-icons-2-font/css/modus-icons-font-fill.css",
+    "./modus-icons-2-font/fonts/*": "./modus-icons-2-font/fonts/*"
   },
   "scripts": {
     "build": "wireit",
@@ -103,6 +109,7 @@
     "setup:auth": "bash scripts/setup-npm-auth.sh",
     "install:blazor-tools": "npm ci --prefix integrations/blazor/razor-output",
     "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
+    "generate:icon-data": "wireit",
     "stencil:build:blazor": "wireit",
     "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run install:blazor-tools && npm run stencil:build:blazor first to generate the Blazor RCL.');process.exit(1)}\"",
     "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",
@@ -115,7 +122,8 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
     "@popperjs/core": "^2.11.8",
-    "@tanstack/table-core": "^8.21.3"
+    "@tanstack/table-core": "^8.21.3",
+    "@trimble-oss/modus-icons-css": "0.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
@@ -285,7 +293,8 @@
         "tailwind:build",
         "embed:css",
         "embed:component-css",
-        "generate:logo-data"
+        "generate:logo-data",
+        "generate:icon-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -310,7 +319,8 @@
         "tailwind:build",
         "embed:css",
         "embed:component-css",
-        "generate:logo-data"
+        "generate:logo-data",
+        "generate:icon-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -340,7 +350,8 @@
       "dependencies": [
         "build:cem-json",
         "tailwind:watch",
-        "generate:logo-data"
+        "generate:logo-data",
+        "generate:icon-data"
       ],
       "files": [
         "src/**/*.{css,scss,ts,tsx}",
@@ -392,13 +403,15 @@
     "embed:css": {
       "command": "node scripts/embed-css.js && node scripts/generate-variables-css.js",
       "dependencies": [
-        "tailwind:build"
+        "tailwind:build",
+        "generate:icon-data"
       ],
       "files": [
         "src/styles/output.css",
         "src/styles/global.css",
         "src/styles/variables.css",
         "src/styles/fonts.css",
+        "src/styles/modus-icons-2-base.css",
         "scripts/embed-css.js",
         "scripts/generate-variables-css.js"
       ],
@@ -429,6 +442,24 @@
       ],
       "output": [
         "src/components/modus-wc-logo/logo-svg-data.ts"
+      ]
+    },
+    "generate:icon-data": {
+      "command": "node scripts/generate-icon-data.js",
+      "files": [
+        "src/components/modus-wc-icon/modus-icon-aliases.json",
+        "scripts/generate-icon-data.js",
+        "node_modules/@trimble-oss/modus-icons-css/package.json",
+        "node_modules/@trimble-oss/modus-icons-css/css/modus-icons-regular.css",
+        "node_modules/@trimble-oss/modus-icons/dist/modus-outlined/svg/**"
+      ],
+      "output": [
+        "src/components/modus-wc-icon/icon-data.ts",
+        "src/styles/modus-icons-2.css",
+        "src/styles/modus-icons-2-base.css",
+        "src/styles/modus-icons-regular.css",
+        "src/styles/modus-icons-fill.css",
+        "src/styles/modus-icons-2-font/**"
       ]
     },
     "tailwind:watch": {

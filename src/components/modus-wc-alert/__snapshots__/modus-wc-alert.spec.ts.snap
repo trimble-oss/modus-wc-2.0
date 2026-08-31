@@ -1,23 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-alert should render neutral variant with neutral styling and info icon 1`] = `
-<modus-wc-alert alert-title="Custom title" variant="neutral">
-  <!---->
-  <div class="modus-wc-alert modus-wc-alert-neutral" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
-      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
-        info
-      </i>
-    </modus-wc-icon>
-    <div class="modus-wc-alert-content">
-      <div class="title">
-        Custom title
-      </div>
-    </div>
-  </div>
-</modus-wc-alert>
-`;
-
 exports[`modus-wc-alert should render error variant with alert icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="error">
   <!---->
@@ -40,6 +22,24 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="status">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+      <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        info
+      </i>
+    </modus-wc-icon>
+    <div class="modus-wc-alert-content">
+      <div class="title">
+        Custom title
+      </div>
+    </div>
+  </div>
+</modus-wc-alert>
+`;
+
+exports[`modus-wc-alert should render neutral variant with neutral styling and info icon 1`] = `
+<modus-wc-alert alert-title="Custom title" variant="neutral">
+  <!---->
+  <div class="modus-wc-alert modus-wc-alert-neutral" role="status">
     <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
