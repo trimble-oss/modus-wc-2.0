@@ -31,3 +31,36 @@ modus-wc-stepper .modus-wc-stepper-step-button {
 modus-wc-stepper .modus-wc-stepper-step-button:focus-visible {
   outline: none;
 }
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-text {
+  color: var(--modus-wc-color-base-inverted);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-label {
+  font-weight: var(--modus-wc-font-weight-bold);
+  line-height: var(--modus-wc-line-height-md);
+}
+
+modus-wc-stepper .modus-wc-steps .modus-wc-stepper-step-sublabel {
+  font-weight: var(--modus-wc-font-weight-normal);
+  line-height: var(--modus-wc-line-height-md);
+}
+
+modus-wc-stepper .modus-wc-steps-vertical .modus-wc-step {
+  align-items: start;
+}
+
+modus-wc-stepper .modus-wc-steps-vertical .modus-wc-step::after,
+modus-wc-stepper .modus-wc-steps-vertical .modus-wc-stepper-step-button {
+  align-self: start;
+  justify-self: center;
+}
+
+modus-wc-stepper .modus-wc-steps-vertical .modus-wc-stepper-step-text {
+  // Offset the 24px title so it shares a midline with the 32px step number.
+  padding-block-start: 5px;
+  text-align: start;
+}
