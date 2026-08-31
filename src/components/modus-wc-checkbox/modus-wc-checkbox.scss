@@ -3,6 +3,29 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-checkbox .modus-wc-checkbox {
+  &.modus-wc-checkbox-sm {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-md);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-checkbox-md {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-checkbox-lg {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+  }
+}
+
 modus-wc-checkbox.modus-wc-checkbox-host {
   align-items: center;
   display: flex;

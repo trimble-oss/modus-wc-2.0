@@ -3,6 +3,36 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-radio .modus-wc-radio {
+  &.modus-wc-radio-xs {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: var(--modus-wc-font-size-2xl);
+    }
+  }
+
+  &.modus-wc-radio-sm {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-md);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-radio-md {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-lg);
+      line-height: var(--modus-wc-line-height-md);
+    }
+  }
+
+  &.modus-wc-radio-lg {
+    & ~ modus-wc-input-label .modus-wc-input-label {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+    }
+  }
+}
+
 modus-wc-radio.modus-wc-radio-host {
   align-items: center;
   display: flex;
