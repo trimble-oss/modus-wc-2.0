@@ -336,6 +336,13 @@
         });
       }
 
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
       function renderList(title, items, mapper, clickable) {
         if (!items.length) return '';
         const rows = items
@@ -377,7 +384,7 @@
           node.tag +
           '</h2>' +
           (node.description
-            ? '<p class="hint">' + node.description + '</p>'
+            ? '<p class="hint">' + escapeHtml(node.description) + '</p>'
             : '') +
           renderList('Renders', renders, (t) => t, true) +
           renderList('Used by', usedBy, (t) => t, true) +
@@ -385,12 +392,12 @@
           renderList(
             'Props',
             node.props,
-            (p) => '<code>' + p.name + '</code> ' + p.type
+            (p) => '<code>' + p.name + '</code> ' + escapeHtml(p.type)
           ) +
           renderList(
             'Events',
             node.events,
-            (e) => '<code>' + e.name + '</code> ' + e.type
+            (e) => '<code>' + e.name + '</code> ' + escapeHtml(e.type)
           ) +
           renderList('Methods', node.methods, (m) => '<code>' + m + '</code>');
 

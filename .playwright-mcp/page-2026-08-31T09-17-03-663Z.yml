@@ -1,0 +1,9 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - heading "Modus WC Component Dependency Graph" [level=1] [ref=e3]
+    - generic [ref=e4]: 57 components, 99 edges
+    - searchbox "Search components…" [ref=e5]
+  - generic [ref=e6]: "Solid edge: JSX composition • Dashed edge: slot composition • Click a node for details, drag to pan, scroll to zoom"
+  - complementary [ref=e9]:
+    - heading "Component details" [level=2] [ref=e10]
+    - paragraph [ref=e11]: Click a node to inspect its props, events, and impact.
