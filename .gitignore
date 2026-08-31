@@ -34,4 +34,7 @@ coverage/
 # Logs
 *.log
 
+# PR evidence screenshots (post on PR only; do not commit)
+.github/pr-assets/
+
 nuget-output/
