@@ -66,9 +66,9 @@ test('should ignore self references and unknown tags', () => {
 
 test('should strip block and line comments but keep code', () => {
   const stripped = stripComments(
-    'const url = "https://example.com"; /* gone */ // gone too\nconst x = 1;'
+    'const keep = "KEEP_ME"; /* gone */ // gone too\nconst x = 1;'
   );
-  assert.ok(stripped.includes('https://example.com'));
+  assert.ok(stripped.includes('KEEP_ME'));
   assert.ok(stripped.includes('const x = 1;'));
   assert.ok(!stripped.includes('gone'));
 });
