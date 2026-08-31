@@ -65,6 +65,21 @@ export type ModusInputSize = ModusSize | 'xs' | 'xl';
 - Add `'xs'` and/or `'xl'` as literal union members on the component prop only.
 - Map extended sizes to supported child sizes via constants (e.g. `INPUT_SIZE_TO_LABEL_SIZE`) keyed by `ModusSize | 'xs' | 'xl'`.
 
+## `/refine` manual verification
+
+When `/refine` changes visual styling (SCSS, Tailwind, theme tokens, padding, sizing), **manually verify in Storybook** before pushing — do not rely on unit tests or lint alone.
+
+1. Start Storybook (`npm start` or ensure port 6006 is up after `tailwind` + `embed` steps).
+2. Open the affected component story and exercise the changed props (e.g. `size="xs"` / `size="xl"`).
+3. Compare against the **previous size** (e.g. `md`) and the **target theme** from the refine request (modern / classic / connect).
+4. Capture walkthrough artifacts under `/opt/cursor/artifacts/` (screenshots or a short recording).
+5. In the PR comment, report:
+   - What was changed and why.
+   - What visual defects were found (clipping, chevron overlap, label misalignment, etc.) or confirmation that the fix looks correct.
+   - Computed-style notes when relevant (e.g. fixed `height` + `padding-block` + `line-height` on native `<select>`).
+
+If the fix breaks the UI, explain the root cause in the PR comment. Do not claim QA passed. Comment `QA-rerun: add` only when code is pushed for re-test.
+
 ## Reply surface
 
 (Fill later.)
