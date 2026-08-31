@@ -53,14 +53,14 @@ describe('modus-wc-logo', () => {
     expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
   });
 
-  it('should not render combined for viewpoint logos', async () => {
+  it('should render combined for viewpoint logos that have an emblem', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
       html: '<modus-wc-logo name="viewpoint_analytics"></modus-wc-logo>',
     });
     const logoSpan = page.root?.querySelector('.modus-wc-logo');
-    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
-    expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(true);
+    expect(page.root?.querySelector('.logo-combined-emblem')).not.toBeNull();
   });
 
   it('should render viewpoint logo', async () => {

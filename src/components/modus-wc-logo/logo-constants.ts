@@ -437,7 +437,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_estimating: {
     displayName: 'Viewpoint Estimating',
     path: 'logos/viewpoint/viewpoint-estimating.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-procontractor-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_field_management: {
@@ -449,7 +449,6 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_field_time: {
     displayName: 'Viewpoint Field Time',
     path: 'logos/viewpoint/viewpoint-field-time.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_field_view: {
@@ -461,7 +460,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_financial_controls: {
     displayName: 'Viewpoint Financial Controls',
     path: 'logos/viewpoint/viewpoint-financial-controls.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-vista-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_for_projects: {
@@ -473,7 +472,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_hr_management: {
     displayName: 'Viewpoint HR Management',
     path: 'logos/viewpoint/viewpoint-hr-management.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-spectrum-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_jobpac_connect: {
@@ -503,7 +502,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_spectrum_service_tech: {
     displayName: 'Viewpoint Spectrum Service Tech',
     path: 'logos/viewpoint/viewpoint-spectrum-service-tech.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-spectrum-emblem.svg',
     category: 'viewpoint',
   },
   viewpoint_team: {
@@ -521,7 +520,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   viewpoint_vista_field_service: {
     displayName: 'Viewpoint Vista Field Service',
     path: 'logos/viewpoint/viewpoint-vista-field-service.svg',
-    emblemPath: 'logos/emblems/viewpoint-emblem.svg',
+    emblemPath: 'logos/emblems/viewpoint-vista-emblem.svg',
     category: 'viewpoint',
   },
 };
