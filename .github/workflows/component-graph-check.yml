@@ -46,9 +46,10 @@ jobs:
       - name: Run graph generator unit tests
         run: node --test scripts/generate-component-graph.spec.mjs
 
-  # Main is protected, so this never pushes to main. It force-pushes generated
-  # JSON/Mermaid to the unprotected `component-graph` branch. QA should read
-  # that branch (or the workflow artifact). Feature PRs do nothing.
+  # Main is protected, so this never pushes to main. It publishes generated
+  # JSON/Mermaid to the unprotected `component-graph` branch with
+  # --force-with-lease. QA should read that branch (or the workflow artifact).
+  # Feature PRs do nothing.
   publish:
     name: Publish component graph
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
@@ -96,9 +97,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd
-          git checkout -B component-graph
           if ! git diff --cached --quiet; then
             git commit -m "chore: Refresh component dependency graph"
           fi
+          git fetch origin component-graph:refs/remotes/origin/component-graph || true
+          git branch -f component-graph HEAD
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          git push origin component-graph --force
+          git push origin component-graph --force-with-lease
