@@ -5,9 +5,11 @@ export const treeMenuDefaultSourceCode = `
   selection-mode="single"
   size="md"
 >
+  <modus-wc-tree-item label="Extra Small" value="xs" size="xs"></modus-wc-tree-item>
   <modus-wc-tree-item label="Small" value="1" size="sm"></modus-wc-tree-item>
   <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
   <modus-wc-tree-item label="Large" value="3" size="lg"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Extra Large" value="xl" size="xl"></modus-wc-tree-item>
   <modus-wc-tree-item label="Bordered" value="4" bordered="true"></modus-wc-tree-item>
   <modus-wc-tree-item label="With Sub-label" value="5" sub-label="Sub-label"></modus-wc-tree-item>
   <modus-wc-tree-item label="Selected" value="6" selected="true"></modus-wc-tree-item>
@@ -32,10 +34,15 @@ export const treeMenuDefaultSourceCode = `
 `;
 
 export const treeMenuMultiSelectSourceCode = `
-<modus-wc-tree-menu aria-label="Tree menu" selection-mode="multiple">
-  <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+<modus-wc-tree-menu
+  aria-label="Tree menu"
+  orientation="vertical"
+  selection-mode="multiple"
+  size="md"
+>
+  <modus-wc-tree-item label="Item 1" value="1" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Item 2" value="2" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Item 3" value="3" size="md"></modus-wc-tree-item>
 </modus-wc-tree-menu>
 <p id="tree-menu-selection-output">Selected: none</p>
 <script>
@@ -53,14 +60,25 @@ export const treeMenuMultiSelectSourceCode = `
 `;
 
 export const treeMenuCollapsibleMenuSourceCode = `
-<modus-wc-tree-menu aria-label="Tree menu">
-  <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true">
+<style>
+  .tree-menu-width {
+    width: 400px;
+  }
+</style>
+<modus-wc-tree-menu
+  aria-label="Tree menu"
+  custom-class="tree-menu-width"
+  orientation="vertical"
+  selection-mode="single"
+  size="md"
+>
+  <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true" size="md">
     <modus-wc-tree-menu is-sub-menu="true">
-      <modus-wc-tree-item label="Child 1" value="child-1"></modus-wc-tree-item>
-      <modus-wc-tree-item label="Child 2" value="child-2"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Child 1" value="child-1" size="md"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Child 2" value="child-2" size="md"></modus-wc-tree-item>
     </modus-wc-tree-menu>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="Sibling Item" value="sibling"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Sibling Item" value="sibling" size="md"></modus-wc-tree-item>
 </modus-wc-tree-menu>
 `;
 
