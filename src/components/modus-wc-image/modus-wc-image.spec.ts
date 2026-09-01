@@ -16,9 +16,9 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/image.jpg"></modus-wc-image>',
     });
     const img = page.root?.querySelector('img');
-    expect(img?.getAttribute('role')).toBe('presentation');
-    expect(img?.getAttribute('aria-hidden')).toBe('true');
     expect(img?.getAttribute('alt')).toBe('');
+    expect(img?.hasAttribute('role')).toBe(false);
+    expect(img?.hasAttribute('aria-hidden')).toBe(false);
     expect(page.root).toMatchSnapshot();
   });
 
@@ -28,9 +28,33 @@ describe('modus-wc-image', () => {
       html: '<modus-wc-image src="https://example.com/image.jpg" alt=""></modus-wc-image>',
     });
     const img = page.root?.querySelector('img');
-    expect(img?.getAttribute('role')).toBe('presentation');
-    expect(img?.getAttribute('aria-hidden')).toBe('true');
+    expect(img?.getAttribute('alt')).toBe('');
+    expect(img?.hasAttribute('role')).toBe(false);
+    expect(img?.hasAttribute('aria-hidden')).toBe(false);
     expect(page.root).toMatchSnapshot();
+  });
+
+  it('should treat whitespace-only alt as decorative', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/image.jpg" alt=" "></modus-wc-image>',
+    });
+    const img = page.root?.querySelector('img');
+    expect(img?.getAttribute('alt')).toBe('');
+    expect(img?.hasAttribute('role')).toBe(false);
+    expect(img?.hasAttribute('aria-hidden')).toBe(false);
+  });
+
+  it('should use "Image unavailable" for fallback when alt is whitespace-only', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/bad.jpg" alt=" "></modus-wc-image>',
+    });
+    const instance = page.rootInstance as ModusWcImage;
+    instance['hasError'] = true;
+    await page.waitForChanges();
+    const container = page.root?.querySelector('.modus-wc-image-container');
+    expect(container?.getAttribute('aria-label')).toBe('Image unavailable');
   });
 
   it('should pass alt text to the img element when provided', async () => {
@@ -159,12 +183,26 @@ describe('modus-wc-image', () => {
     }
   );
 
-  it('should apply the custom class to the host', async () => {
+  it('should apply the custom class to the inner container', async () => {
     const page = await newSpecPage({
       components: [ModusWcImage],
       html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test" custom-class="my-custom-class"></modus-wc-image>',
     });
-    expect(page.root?.classList.contains('my-custom-class')).toBe(true);
+    const container = page.root?.querySelector('.modus-wc-image-container');
+    expect(container?.classList.contains('my-custom-class')).toBe(true);
+  });
+
+  it('should inherit host aria attributes on the fallback container', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/bad.jpg" alt="Missing image" aria-label="Custom label"></modus-wc-image>',
+    });
+    const instance = page.rootInstance as ModusWcImage;
+    instance['hasError'] = true;
+    await page.waitForChanges();
+    const container = page.root?.querySelector('.modus-wc-image-container');
+    expect(page.root?.hasAttribute('aria-label')).toBe(false);
+    expect(container?.getAttribute('aria-label')).toBe('Missing image');
   });
 
   it('should reset hasError and isLoaded when src changes', async () => {

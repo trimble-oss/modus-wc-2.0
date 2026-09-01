@@ -48,7 +48,7 @@ export class ModusWcImage {
   /** Controls containment, cropping, and aspect ratio preservation. */
   @Prop() fit?: ImageFit = 'default';
 
-  /** Custom CSS class to apply to the component. */
+  /** Custom CSS class to apply to the inner container. */
   @Prop() customClass?: string = '';
 
   @State() private hasError: boolean = false;
@@ -71,6 +71,10 @@ export class ModusWcImage {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  private getTrimmedAlt(): string {
+    return this.alt?.trim() ?? '';
+  }
+
   private getContainerClasses(isErrorContainer = false): string {
     const classList = ['modus-wc-image-container'];
 
@@ -81,6 +85,7 @@ export class ModusWcImage {
     });
 
     if (propClasses) classList.push(propClasses);
+    if (this.customClass) classList.push(this.customClass);
     if (isErrorContainer) classList.push('modus-wc-image--error');
     else if (!this.isLoaded) classList.push('modus-wc-image--loading');
 
@@ -97,11 +102,16 @@ export class ModusWcImage {
     this.imageLoad.emit(event);
   };
 
-  private renderFallback() {
-    const label = this.alt || 'Image unavailable';
+  private renderFallback(altText: string) {
+    const label = altText || 'Image unavailable';
 
     return (
-      <div class={this.getContainerClasses(true)} role="img" aria-label={label}>
+      <div
+        class={this.getContainerClasses(true)}
+        {...this.inheritedAttributes}
+        role="img"
+        aria-label={label}
+      >
         <div class="modus-wc-image-fallback">
           <modus-wc-icon
             name="image_disabled"
@@ -114,26 +124,23 @@ export class ModusWcImage {
   }
 
   render() {
-    const hostClass = this.customClass || undefined;
+    const altText = this.getTrimmedAlt();
+    const isDecorative = altText === '';
 
     if (this.hasError) {
-      return <Host class={hostClass}>{this.renderFallback()}</Host>;
+      return <Host>{this.renderFallback(altText)}</Host>;
     }
 
-    const isDecorative = !this.alt || this.alt === '';
-
     return (
-      <Host class={hostClass}>
+      <Host>
         <div class={this.getContainerClasses()}>
           <img
+            {...this.inheritedAttributes}
             src={this.src}
-            alt={isDecorative ? '' : this.alt}
-            role={isDecorative ? 'presentation' : undefined}
-            aria-hidden={isDecorative ? 'true' : undefined}
+            alt={isDecorative ? '' : altText}
             class="modus-wc-image-img"
             onError={this.handleError}
             onLoad={this.handleLoad}
-            {...this.inheritedAttributes}
           />
         </div>
       </Host>

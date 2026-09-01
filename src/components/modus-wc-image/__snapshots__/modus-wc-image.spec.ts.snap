@@ -91,7 +91,7 @@ exports[`modus-wc-image should render with default props 1`] = `
 exports[`modus-wc-image should render with empty alt as a decorative image 1`] = `
 <modus-wc-image alt="" src="https://example.com/image.jpg">
   <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
-    <img alt="" aria-hidden="true" class="modus-wc-image-img" role="presentation" src="https://example.com/image.jpg">
+    <img alt="" class="modus-wc-image-img" src="https://example.com/image.jpg">
   </div>
 </modus-wc-image>
 `;
@@ -99,7 +99,7 @@ exports[`modus-wc-image should render with empty alt as a decorative image 1`] =
 exports[`modus-wc-image should render with no alt as a decorative image 1`] = `
 <modus-wc-image src="https://example.com/image.jpg">
   <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
-    <img alt="" aria-hidden="true" class="modus-wc-image-img" role="presentation" src="https://example.com/image.jpg">
+    <img alt="" class="modus-wc-image-img" src="https://example.com/image.jpg">
   </div>
 </modus-wc-image>
 `;

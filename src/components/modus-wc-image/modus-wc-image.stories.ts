@@ -201,7 +201,7 @@ export const DecorativeImage: Story = {
     docs: {
       description: {
         story:
-          'When `alt` is empty the image is treated as decorative: `role="presentation"` and `aria-hidden="true"` are applied so screen readers skip it.',
+          'When `alt` is empty or whitespace-only the image is treated as decorative: an empty `alt` attribute is set so screen readers skip it.',
       },
     },
   },

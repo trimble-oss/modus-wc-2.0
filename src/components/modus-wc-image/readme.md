@@ -15,7 +15,7 @@ aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility supp
 | Property           | Attribute      | Description                                                             | Type                                                            | Default     |
 | ------------------ | -------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- | ----------- |
 | `alt`              | `alt`          | Accessible text description. Omit or leave empty for decorative images. | `string \| undefined`                                           | `undefined` |
-| `customClass`      | `custom-class` | Custom CSS class to apply to the component.                             | `string \| undefined`                                           | `''`        |
+| `customClass`      | `custom-class` | Custom CSS class to apply to the inner container.                       | `string \| undefined`                                           | `''`        |
 | `fit`              | `fit`          | Controls containment, cropping, and aspect ratio preservation.          | `"contain" \| "default" \| "none" \| "scale-down" \| undefined` | `'default'` |
 | `shape`            | `shape`        | Sets corner radius styling.                                             | `"rounded" \| "square" \| undefined`                            | `'square'`  |
 | `size`             | `size`         | Determines dimensional size tokens.                                     | `"lg" \| "md" \| "sm" \| "xl" \| undefined`                     | `'md'`      |
