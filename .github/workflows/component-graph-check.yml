@@ -9,6 +9,15 @@ on:
       - 'src/custom-elements.json'
       - 'scripts/generate-component-graph.mjs'
       - 'docs/component-graph/**'
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'src/components/**'
+      - 'src/custom-elements.json'
+      - 'scripts/generate-component-graph.mjs'
+      - 'scripts/generate-component-graph.spec.mjs'
+      - '.github/workflows/component-graph-check.yml'
   workflow_dispatch:
 
 permissions:
@@ -17,6 +26,7 @@ permissions:
 jobs:
   check:
     name: Verify component graph is up to date
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -47,3 +57,49 @@ jobs:
             echo 'Run `npm run build:graph` locally and commit the regenerated files.'
             exit 1
           fi
+
+  # Runs after a merge (push to main) or a manual Actions run on main.
+  # Commits JSON/Mermaid only; those files are omitted from `on.push.paths`
+  # so the bot commit does not retrigger this job.
+  # If branch protection blocks github-actions[bot] on main, allow Actions
+  # to push or add the bot to the bypass list.
+  update:
+    name: Refresh component graph on main
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: component-graph-main
+      cancel-in-progress: false
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          # Needed so github-actions[bot] can push the regenerated graph.
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+
+      - name: Run graph generator unit tests
+        run: node --test scripts/generate-component-graph.spec.mjs
+
+      - name: Regenerate component graph
+        run: node scripts/generate-component-graph.mjs
+
+      - name: Commit graph if main is stale
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd
+          if git diff --cached --quiet; then
+            echo 'Component graph already matches main.'
+            exit 0
+          fi
+          git commit -m "chore: Refresh component dependency graph"
+          git push
