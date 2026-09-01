@@ -4,25 +4,21 @@
  * Sources:
  * - src/custom-elements.json (CEM) → node metadata (props, events, methods).
  * - src/components/modus-wc-* JSX (.tsx) → typed "composes" edges (parent renders child).
- * - A curated map below → "slot" edges (documented light-DOM composition that
- *   is not visible in the parent's JSX).
+ * - JSDoc/comments that mention a slot together with a modus-wc-* tag → "slot" edges
+ *   (documented light-DOM composition that is not visible in the parent's JSX).
  *
- * Outputs (all under docs/component-graph/, committed and validated by CI):
+ * Outputs (under docs/component-graph/, committed and validated by CI):
  * - component-graph.json  machine-readable graph + precomputed reverse-impact map
  * - component-graph.mmd   Mermaid flowchart of composes/slot edges
- * - index.html            self-contained interactive viewer (no external deps)
+ *
+ * The interactive viewer is docs/component-graph/index.html (not generated). It
+ * fetches component-graph.json at runtime.
  *
  * Usage: node scripts/generate-component-graph.mjs
  * The output is deterministic (sorted keys, no timestamps) so CI can diff it.
  */
 
-import {
-  copyFileSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  writeFileSync,
-} from 'fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -31,15 +27,6 @@ const ROOT = join(__dirname, '..');
 const COMPONENTS_DIR = join(ROOT, 'src', 'components');
 const CEM_PATH = join(ROOT, 'src', 'custom-elements.json');
 const OUT_DIR = join(ROOT, 'docs', 'component-graph');
-
-/**
- * Documented light-DOM (slot) composition that never appears in the parent's
- * own JSX. Keep this map in sync with component JSDoc/slot documentation.
- */
-const SLOT_EDGES = [
-  { source: 'modus-wc-accordion', target: 'modus-wc-collapse' },
-  { source: 'modus-wc-tree-menu', target: 'modus-wc-tree-item' },
-];
 
 // Stencil lifecycle/internal methods that are not part of a component's public API.
 const INTERNAL_METHODS = new Set([
@@ -135,9 +122,28 @@ export function extractChildTags(source, parentTag, knownTags) {
   return children;
 }
 
-function scanComposesEdges(knownTags) {
-  const edgeFiles = new Map();
+export function extractSlotTags(source, parentTag, knownTags) {
+  const comments = [
+    ...source.matchAll(/\/\*[\s\S]*?\*\//g),
+    ...source.matchAll(/(?:^|\s)\/\/([^\n]*)/g),
+  ].map((match) => match[0]);
 
+  const children = new Set();
+  for (const comment of comments) {
+    if (!/\bslot\b/i.test(comment)) {
+      continue;
+    }
+    for (const match of comment.matchAll(/modus-wc-[a-z0-9-]+/g)) {
+      const childTag = match[0];
+      if (childTag !== parentTag && knownTags.has(childTag)) {
+        children.add(childTag);
+      }
+    }
+  }
+  return children;
+}
+
+function eachComponentTsx(callback) {
   const componentDirs = readdirSync(COMPONENTS_DIR, { withFileTypes: true })
     .filter(
       (entry) => entry.isDirectory() && entry.name.startsWith('modus-wc-')
@@ -146,7 +152,6 @@ function scanComposesEdges(knownTags) {
     .sort();
 
   for (const dir of componentDirs) {
-    const parentTag = dir;
     const dirPath = join(COMPONENTS_DIR, dir);
     const tsxFiles = readdirSync(dirPath)
       .filter((file) => file.endsWith('.tsx'))
@@ -154,28 +159,56 @@ function scanComposesEdges(knownTags) {
 
     for (const file of tsxFiles) {
       const filePath = join(dirPath, file);
-      const source = readFileSync(filePath, 'utf-8');
-      const childTags = extractChildTags(source, parentTag, knownTags);
-
-      for (const childTag of childTags) {
-        const key = `${parentTag}→${childTag}`;
-        if (!edgeFiles.has(key)) {
-          edgeFiles.set(key, new Set());
-        }
-        edgeFiles.get(key).add(relative(ROOT, filePath).replace(/\\/g, '/'));
-      }
+      callback({
+        parentTag: dir,
+        filePath,
+        source: readFileSync(filePath, 'utf-8'),
+      });
     }
   }
+}
 
+function toEdgeList(edgeFiles, type) {
   return [...edgeFiles.entries()]
     .map(([key, files]) => {
       const [source, target] = key.split('→');
-      return { source, target, type: 'composes', files: [...files].sort() };
+      return { source, target, type, files: [...files].sort() };
     })
     .sort(
       (a, b) =>
         a.source.localeCompare(b.source) || a.target.localeCompare(b.target)
     );
+}
+
+function scanComposesEdges(knownTags) {
+  const edgeFiles = new Map();
+  eachComponentTsx(({ parentTag, filePath, source }) => {
+    for (const childTag of extractChildTags(source, parentTag, knownTags)) {
+      const key = `${parentTag}→${childTag}`;
+      if (!edgeFiles.has(key)) {
+        edgeFiles.set(key, new Set());
+      }
+      edgeFiles.get(key).add(relative(ROOT, filePath).replace(/\\/g, '/'));
+    }
+  });
+  return toEdgeList(edgeFiles, 'composes');
+}
+
+function scanSlotEdges(knownTags, composeKeys) {
+  const edgeFiles = new Map();
+  eachComponentTsx(({ parentTag, filePath, source }) => {
+    for (const childTag of extractSlotTags(source, parentTag, knownTags)) {
+      const key = `${parentTag}→${childTag}`;
+      if (composeKeys.has(key)) {
+        continue;
+      }
+      if (!edgeFiles.has(key)) {
+        edgeFiles.set(key, new Set());
+      }
+      edgeFiles.get(key).add(relative(ROOT, filePath).replace(/\\/g, '/'));
+    }
+  });
+  return toEdgeList(edgeFiles, 'slot');
 }
 
 /**
@@ -231,9 +264,10 @@ function main() {
   const knownTags = new Set(nodes.keys());
 
   const composesEdges = scanComposesEdges(knownTags);
-  const slotEdges = SLOT_EDGES.filter(
-    (edge) => knownTags.has(edge.source) && knownTags.has(edge.target)
-  ).map((edge) => ({ ...edge, type: 'slot' }));
+  const composeKeys = new Set(
+    composesEdges.map((edge) => `${edge.source}→${edge.target}`)
+  );
+  const slotEdges = scanSlotEdges(knownTags, composeKeys);
 
   const edges = [...composesEdges, ...slotEdges].sort(
     (a, b) =>
@@ -257,10 +291,6 @@ function main() {
     JSON.stringify(graph, null, 2) + '\n'
   );
   writeFileSync(join(OUT_DIR, 'component-graph.mmd'), toMermaid(edges));
-  copyFileSync(
-    join(__dirname, 'component-graph-viewer.template.html'),
-    join(OUT_DIR, 'index.html')
-  );
 
   console.log(
     `component-graph: ${graph.nodes.length} nodes, ${edges.length} edges ` +

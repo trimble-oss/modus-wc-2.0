@@ -4505,7 +4505,10 @@
     {
       "source": "modus-wc-accordion",
       "target": "modus-wc-collapse",
-      "type": "slot"
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-accordion/modus-wc-accordion.tsx"
+      ]
     },
     {
       "source": "modus-wc-alert",
@@ -5286,7 +5289,10 @@
     {
       "source": "modus-wc-tree-menu",
       "target": "modus-wc-tree-item",
-      "type": "slot"
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
     }
   ],
   "reverseImpact": {

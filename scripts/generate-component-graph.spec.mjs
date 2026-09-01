@@ -9,6 +9,7 @@ import assert from 'node:assert/strict';
 import {
   stripComments,
   extractChildTags,
+  extractSlotTags,
   buildReverseImpact,
 } from './generate-component-graph.mjs';
 
@@ -47,6 +48,29 @@ test('should ignore tags that only appear in comments', () => {
   `;
   const children = extractChildTags(source, 'modus-wc-accordion', KNOWN);
   assert.equal(children.size, 0);
+});
+
+test('should extract slot tags from JSDoc that mentions a slot', () => {
+  const source = `
+    /**
+     * The component supports a \`<slot>\` for injecting <modus-wc-collapse> elements.
+     */
+    render() {
+      return <slot />;
+    }
+  `;
+  const slots = extractSlotTags(source, 'modus-wc-accordion', KNOWN);
+  assert.deepEqual([...slots], ['modus-wc-collapse']);
+});
+
+test('should ignore documented tags that are not slot composition', () => {
+  const source = `
+    /**
+     * Pair this with modus-wc-button as the trigger.
+     */
+  `;
+  const slots = extractSlotTags(source, 'modus-wc-tooltip', KNOWN);
+  assert.equal(slots.size, 0);
 });
 
 test('should ignore self references and unknown tags', () => {

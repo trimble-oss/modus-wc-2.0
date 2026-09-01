@@ -8,7 +8,6 @@ on:
       - 'src/components/**'
       - 'src/custom-elements.json'
       - 'scripts/generate-component-graph.mjs'
-      - 'scripts/component-graph-viewer.template.html'
       - 'docs/component-graph/**'
   workflow_dispatch:
 
@@ -42,9 +41,9 @@ jobs:
 
       - name: Fail if the committed graph is stale
         run: |
-          if ! git diff --exit-code -- docs/component-graph/; then
+          if ! git diff --exit-code -- docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd; then
             echo ''
-            echo '::error::docs/component-graph/ is out of date with the components on this branch.'
+            echo '::error::docs/component-graph JSON/Mermaid is out of date with the components on this branch.'
             echo 'Run `npm run build:graph` locally and commit the regenerated files.'
             exit 1
           fi
