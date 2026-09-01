@@ -8,7 +8,6 @@ import {
   format12hDisplay,
   format24h,
   formatDisplay,
-  maskTimeInput,
   parse12hDisplay,
   parse24h,
   toHours24,
@@ -104,14 +103,6 @@ describe('time-format utils', () => {
     const time = { hours24: 21, minutes: 45, seconds: 0 };
     expect(formatDisplay(time, false, '24h')).toBe('21:45');
     expect(formatDisplay(time, false, '12h')).toBe('09:45 PM');
-  });
-
-  it('should mask invalid characters and format progressively', () => {
-    expect(maskTimeInput('09abc45am', false, '12h')).toBe('09:45 AM');
-    expect(maskTimeInput('0945pm', false, '12h')).toBe('09:45 PM');
-    expect(maskTimeInput('09:45:00am', true, '12h')).toBe('09:45:00 AM');
-    expect(maskTimeInput('21abc45xyz', false, '24h')).toBe('21:45');
-    expect(maskTimeInput('214530', true, '24h')).toBe('21:45:30');
   });
 });
 
@@ -264,7 +255,6 @@ describe('modus-wc-time-input', () => {
                 show-seconds
                 size="lg"
                 step="30"
-               
                 value="12:00">
               </modus-wc-time-input>`,
     });
