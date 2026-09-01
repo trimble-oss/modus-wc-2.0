@@ -87,6 +87,7 @@
   "scripts": {
     "build": "wireit",
     "build:ci": "wireit",
+    "build:graph": "node scripts/generate-component-graph.mjs",
     "clean": "npx rimraf .wireit .stencil .storybook-static dist",
     "lint": "wireit",
     "lint:eslint": "wireit",

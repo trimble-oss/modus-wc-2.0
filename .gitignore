@@ -34,4 +34,10 @@ coverage/
 # Logs
 *.log
 
+# PR evidence screenshots (post on PR only; do not commit)
+.github/pr-assets/
+
+# Playwright MCP local session artifacts (screenshots, snapshots)
+.playwright-mcp/
+
 nuget-output/
