@@ -1,14 +1,16 @@
 name: Component Graph Check
 
 on:
+  # Feature PRs do not need to commit graph files. Only re-test the generator
+  # when the generator itself (or this workflow) changes.
   pull_request:
     branches:
       - 'main'
     paths:
-      - 'src/components/**'
-      - 'src/custom-elements.json'
       - 'scripts/generate-component-graph.mjs'
-      - 'docs/component-graph/**'
+      - 'scripts/generate-component-graph.spec.mjs'
+      - '.github/workflows/component-graph-check.yml'
+  # After a merge to main, refresh JSON/Mermaid via one standing PR.
   push:
     branches:
       - 'main'
@@ -25,7 +27,7 @@ permissions:
 
 jobs:
   check:
-    name: Verify component graph is up to date
+    name: Test graph generator
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
@@ -41,28 +43,13 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
           cache: npm
 
-      # The generator only needs Node built-ins, but the graph must reflect
-      # the CEM committed on this branch, so no install/build steps run here.
       - name: Run graph generator unit tests
         run: node --test scripts/generate-component-graph.spec.mjs
 
-      - name: Regenerate component graph
-        run: node scripts/generate-component-graph.mjs
-
-      - name: Fail if the committed graph is stale
-        run: |
-          if ! git diff --exit-code -- docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd; then
-            echo ''
-            echo '::error::docs/component-graph JSON/Mermaid is out of date with the components on this branch.'
-            echo 'Run `npm run build:graph` locally and commit the regenerated files.'
-            exit 1
-          fi
-
-  # Runs after a merge (push to main) or a manual Actions run on main.
-  # Main is protected (PR required + qa-approval), so this job never pushes
-  # to main. It opens or updates a PR with JSON/Mermaid only. Those files are
-  # omitted from `on.push.paths` so merging the refresh PR does not retrigger
-  # this job.
+  # Main is protected (PR required + qa-approval), so this never pushes to main.
+  # It force-updates one branch/PR. Merging that PR is optional batching — not
+  # something every component PR has to do. Graph files are omitted from
+  # on.push.paths so merging the refresh PR does not retrigger this job.
   update:
     name: Open PR if component graph is stale
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
@@ -92,7 +79,7 @@ jobs:
       - name: Regenerate component graph
         run: node scripts/generate-component-graph.mjs
 
-      - name: Open pull request if the graph is stale
+      - name: Open or update standing refresh PR
         env:
           GH_TOKEN: ${{ secrets.BOT_PAT }}
         run: |
@@ -119,6 +106,6 @@ jobs:
           fi
           gh pr create \
             --title "chore: Refresh component dependency graph" \
-            --body "Automated refresh after a merge to \`main\`. Updates \`docs/component-graph/component-graph.json\` and \`component-graph.mmd\` only. Regenerated with \`npm run build:graph\`." \
+            --body "Automated refresh after merges to \`main\`. JSON/Mermaid only. Feature PRs do not need to run \`npm run build:graph\` — this standing PR is updated in place after each merge." \
             --base main \
             --head "${BRANCH}"
