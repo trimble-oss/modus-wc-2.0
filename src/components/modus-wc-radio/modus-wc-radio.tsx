@@ -9,7 +9,6 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-radio.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { DAISY_TO_MODUS_LABEL_SIZE } from '../constants';
 import { ModusSize } from '../types';
 import {
   Attributes,
@@ -103,7 +102,6 @@ export class ModusWcRadio {
   };
 
   render() {
-    const labelSize = this.size && DAISY_TO_MODUS_LABEL_SIZE[this.size];
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
     return (
@@ -129,7 +127,6 @@ export class ModusWcRadio {
             forId={effectiveId}
             labelText={this.label}
             required={this.required}
-            size={labelSize}
           />
         )}
       </Host>
