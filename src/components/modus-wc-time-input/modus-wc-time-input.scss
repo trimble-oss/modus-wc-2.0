@@ -15,9 +15,121 @@ modus-wc-time-input {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 
+  .modus-wc-input {
+    font-variant-numeric: tabular-nums;
+
+    // Native time fields separate each segment; a single text input cannot, so
+    // approximate the breathing room around the colons with light tracking.
+    letter-spacing: 0.04em;
+
+    // Reserve room for the clock button: 1rem icon + 0.25rem gap + 0.5rem inset.
+    padding-inline-end: 1.75rem;
+  }
+
+  // A text input defaults to ~20 characters wide and ignores min-width below
+  // that, so each format carries an explicit width. The values are the rendered
+  // Open Sans string (digit, colon, space and AM/PM all differ in advance
+  // width) plus the leading padding, the clock-button gutter and the borders,
+  // rounded up to a whole pixel. sm and md share DaisyUI's 0.875rem font, so
+  // they share these widths; lg is overridden below. Retune if the font changes.
+  .time-input-container {
+    display: inline-flex;
+    position: relative;
+    width: auto;
+
+    // 24h HH:mm — narrowest
+    .modus-wc-time-input {
+      box-sizing: border-box;
+      min-width: 0;
+      width: 5.375rem; // 86px
+    }
+
+    // 24h HH:mm:ss — seconds column
+    &:has(.modus-wc-time-input--with-seconds) .modus-wc-time-input {
+      width: 6.8125rem; // 109px
+    }
+
+    // 12h HH:mm AM/PM — period suffix is wider than a seconds column
+    &:has(.modus-wc-time-input--12h) .modus-wc-time-input {
+      width: 7.25rem; // 116px
+    }
+
+    // 12h HH:mm:ss AM/PM — widest
+    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12h)
+      .modus-wc-time-input {
+      width: 8.625rem; // 138px
+    }
+  }
+
+  // lg renders at 1.125rem with 1.5rem side padding, so the text, the icon
+  // (stepped up to sm, 1.25rem) and the gutter all grow: 1.25rem icon +
+  // 0.375rem gap + 0.75rem inset.
+  .time-input-container--lg {
+    .modus-wc-input {
+      padding-inline-end: 2.375rem;
+    }
+
+    .clock-icon-trigger {
+      inset-inline-end: var(--modus-wc-spacing-md);
+    }
+
+    .modus-wc-time-input {
+      width: 6.333rem; // 101px
+    }
+
+    &:has(.modus-wc-time-input--with-seconds) .modus-wc-time-input {
+      width: 8rem; // 128px
+    }
+
+    &:has(.modus-wc-time-input--12h) .modus-wc-time-input {
+      width: 8.5rem; // 136px
+    }
+
+    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12h)
+      .modus-wc-time-input {
+      width: 10.125rem; // 162px
+    }
+  }
+
+  .time-input-aria-live {
+    border: 0;
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .clock-icon-trigger {
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: var(--modus-wc-color-base-content);
+    cursor: pointer;
+    display: inline-flex;
+    inset-block-start: 50%;
+
+    // Chrome's native picker indicator sits ~4px after the digits with the
+    // remaining gutter to its right; the reserve on the field minus the icon
+    // leaves that split at this inset.
+    inset-inline-end: var(--modus-wc-spacing-sm);
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    transform: translateY(-50%);
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
   .time-dropdown {
     background: var(--modus-wc-color-base-page);
-    border: 1px solid var(--modus-wc-color-base-200);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow:
       0 4px 6px -1px rgb(0, 0, 0, 0.1),
@@ -78,9 +190,9 @@ modus-wc-time-input {
     display: flex;
     flex-shrink: 0;
     font-size: var(--modus-wc-font-size-sm);
-    height: 2.5rem;
+    height: var(--modus-wc-size-md);
     line-height: 1.5rem;
-    min-height: 2.5rem;
+    min-height: var(--modus-wc-size-md);
     padding-inline: var(--modus-wc-spacing-lg);
     white-space: nowrap;
 
@@ -133,7 +245,8 @@ modus-wc-time-input {
   }
 
   .time-datalist-divider {
-    border-block-start: 1px solid var(--modus-wc-color-base-200);
+    border-block-start: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200);
     height: 0;
     list-style: none;
     margin: var(--modus-wc-spacing-2xs) 0;
@@ -188,8 +301,6 @@ modus-wc-time-input {
 
 [data-theme='modus-classic-dark'] modus-wc-time-input .modus-wc-time-input {
   &.modus-wc-input {
-    color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
-
     &:focus {
       border-color: var(--modus-wc-color-highlight-blue);
     }

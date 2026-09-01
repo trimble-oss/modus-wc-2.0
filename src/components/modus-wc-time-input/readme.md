@@ -7,14 +7,14 @@
 
 ## Overview
 
-A customizable time input with a native time field plus a Modus dropdown
+A customizable time input with a Modus text field and dropdown
 (scrollable picker wheels or a datalist of interval options).
 
 `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
-The field uses the browser’s native `<input type="time">` (built-in clock icon
-and sizing). `hourFormat` controls the Modus picker (12h wheels + AM/PM vs 24h)
-and sets `lang` to bias the native field toward 12h (`en-US`) or 24h (`en-GB`)
-where the browser supports it.
+The field uses a segmented `--:--` skeleton (native time-input style) with
+keyboard segment editing. `hourFormat` controls display and the Modus picker
+(12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+Alt+ArrowDown.
 
 Adheres to WCAG 2.2 standards.
 
@@ -29,7 +29,7 @@ Adheres to WCAG 2.2 standards.
 | `datalistOptions` | `datalist-options` | Pre-defined time options for the suggestion list. Values must be in `HH:mm` or `HH:mm:ss` (24-hour) format. When provided (non-empty), the clock menu shows this list instead of picker wheels. When empty, options can still be generated from `interval-minutes` if that attribute is set. | `string[]`                          | `[]`        |
 | `disabled`        | `disabled`         | Whether the form control is disabled.                                                                                                                                                                                                                                                        | `boolean \| undefined`              | `false`     |
 | `feedback`        | `feedback`         | Feedback to render below the input.                                                                                                                                                                                                                                                          | `IInputFeedbackProp \| undefined`   | `undefined` |
-| `hourFormat`      | `hour-format`      | Hour clock for the Modus picker wheels / datalist labels. - `24h` (default): hours wheel 00–23 - `12h`: hours wheel 01–12 with AM/PM  Also sets `lang` on the native field (`en-GB` / `en-US`) to bias browser 24h vs 12h presentation where supported. `value` / `inputChange` stay 24h.    | `"12h" \| "24h" \| undefined`       | `'24h'`     |
+| `hourFormat`      | `hour-format`      | Hour clock for the Modus picker wheels / datalist labels and the field display. - `24h` (default): hours wheel 00–23 - `12h`: hours wheel 01–12 with AM/PM  `value` / `inputChange` always stay in 24h format.                                                                               | `"12h" \| "24h" \| undefined`       | `'24h'`     |
 | `inputId`         | `input-id`         | The ID of the input element.                                                                                                                                                                                                                                                                 | `string \| undefined`               | `undefined` |
 | `inputTabIndex`   | `input-tab-index`  | Determine the control's relative ordering for sequential focus navigation.                                                                                                                                                                                                                   | `number \| undefined`               | `undefined` |
 | `intervalMinutes` | `interval-minutes` | Interval in minutes used to generate suggestion-list options when `datalistOptions` is empty. Set the `interval-minutes` attribute to opt into the list (instead of picker wheels). Default: 15.                                                                                             | `number \| undefined`               | `15`        |
@@ -59,12 +59,14 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-time-input --> modus-wc-input-label
+  modus-wc-time-input --> modus-wc-icon
   modus-wc-time-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   style modus-wc-time-input fill:#f9f,stroke:#333,stroke-width:4px

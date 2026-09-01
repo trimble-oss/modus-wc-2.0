@@ -240,13 +240,11 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
-  - The field is a native \`<input type="time">\` (browser clock icon and sizing).
-  - Custom Modus dropdown (picker wheels or suggestion list) opens on field click /
-    ArrowDown (native time popup is suppressed in favor of the Modus menu).
+  - The field is a custom segmented text input (native \`--:--\` skeleton) instead of the browser's \`<input type="time">\`.
+  - Open the picker with the clock button or **Alt+ArrowDown** (plain Arrow keys edit segments).
   - \`value\` remains **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
   - New \`hourFormat\` prop (\`hour-format\` attribute): \`24h\` (default) or \`12h\`.
-    Controls Modus picker wheels / datalist labels, and sets \`lang\` (\`en-GB\` / \`en-US\`)
-    to bias the native field presentation where the browser supports it.
+    Controls display, Modus picker wheels / datalist labels.
   - Dropdown mode is inferred: picker wheels by default; suggestion list when
     \`datalistOptions\` (or deprecated \`datalistId\`) is set, or when \`interval-minutes\`
     is present for generated intervals.
@@ -255,8 +253,10 @@ export const Migration: Story = {
 
 #### New Behaviors
 
-  - Field click / ArrowDown opens the Modus dropdown; Escape / click-outside closes and keeps the last value.
+  - Native-style keyboard editing: Arrow Up/Down step segments, Arrow Left/Right move between segments, digits auto-advance, A/P sets AM/PM in 12h mode.
+  - Clock button toggles the Modus dropdown; Escape / click-outside closes it.
   - Picker wheel clicks update the field immediately; datalist selection closes the menu.
+  - Form submission uses a hidden input carrying the canonical 24h \`value\` when \`name\` is set.
         `,
       },
     },

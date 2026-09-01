@@ -23,8 +23,10 @@ import { createPopperOptions } from './utils/popper-utils';
 import {
   clampTime,
   format24h,
+  formatDisplay,
   is12HourFormat,
   parse24h,
+  parseDisplay,
   TimeHourFormat,
 } from './utils/time-format';
 import {
@@ -37,16 +39,33 @@ import {
   TIME_WHEEL_LOOP_COPIES,
   valueFromWheelState,
 } from './utils/time-options';
+import {
+  applyStepToSegment,
+  clearSegmentInDisplay,
+  displayFromValue,
+  getAriaLiveLabel,
+  getNextSegment,
+  getPrevSegment,
+  getSegmentAtCaret,
+  getSegments,
+  getSkeleton,
+  isSkeletonDisplayComplete,
+  ITimeSegment,
+  parseSkeletonDisplay,
+  SegmentKind,
+  setSegmentToBound,
+  typeDigitInSegment,
+} from './utils/time-segments';
 
 /**
- * A customizable time input with a native time field plus a Modus dropdown
+ * A customizable time input with a Modus text field and dropdown
  * (scrollable picker wheels or a datalist of interval options).
  *
  * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
- * The field uses the browser’s native `<input type="time">` (built-in clock icon
- * and sizing). `hourFormat` controls the Modus picker (12h wheels + AM/PM vs 24h)
- * and sets `lang` to bias the native field toward 12h (`en-US`) or 24h (`en-GB`)
- * where the browser supports it.
+ * The field uses a segmented `--:--` skeleton (native time-input style) with
+ * keyboard segment editing. `hourFormat` controls display and the Modus picker
+ * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+ * Alt+ArrowDown.
  *
  * Adheres to WCAG 2.2 standards.
  */
@@ -68,6 +87,10 @@ export class ModusWcTimeInput {
   /** Scroll selected rows into view only when the dropdown first opens */
   private pendingScrollToSelection = false;
   private wheelScrollPositions = new Map<string, number>();
+  private pendingSegmentSelect: SegmentKind | null = null;
+  private segmentDigitBuffer = '';
+  private activeSegmentKind: SegmentKind = 'hour';
+  private readonly dropdownIdSuffix = Math.random().toString(36).slice(2, 9);
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -75,8 +98,14 @@ export class ModusWcTimeInput {
   /** Whether the picker / datalist dropdown is open */
   @State() private showDropdown = false;
 
-  /** Internal invalid flag set when the native value cannot be parsed */
+  /** Internal invalid flag set when the field value cannot be parsed */
   @State() private isInvalid = false;
+
+  /** Segmented display string shown in the text field */
+  @State() private displayValue: string = '';
+
+  /** Announced to screen readers when the time changes */
+  @State() private ariaLiveText = '';
 
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: 'on' | 'off';
@@ -108,12 +137,11 @@ export class ModusWcTimeInput {
   @Prop() feedback?: IInputFeedbackProp;
 
   /**
-   * Hour clock for the Modus picker wheels / datalist labels.
+   * Hour clock for the Modus picker wheels / datalist labels and the field display.
    * - `24h` (default): hours wheel 00–23
    * - `12h`: hours wheel 01–12 with AM/PM
    *
-   * Also sets `lang` on the native field (`en-GB` / `en-US`) to bias browser
-   * 24h vs 12h presentation where supported. `value` / `inputChange` stay 24h.
+   * `value` / `inputChange` always stay in 24h format.
    */
   @Prop() hourFormat?: TimeHourFormat = '24h';
 
@@ -183,6 +211,15 @@ export class ModusWcTimeInput {
   handleValueChange() {
     if (!this.hasFocus) {
       this.isInvalid = false;
+      this.syncDisplayValue();
+    }
+  }
+
+  @Watch('hourFormat')
+  @Watch('showSeconds')
+  handleFormatChange() {
+    if (!this.hasFocus) {
+      this.syncDisplayValue();
     }
   }
 
@@ -202,6 +239,19 @@ export class ModusWcTimeInput {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.syncDisplayValue();
+  }
+
+  componentDidRender() {
+    if (this.pendingSegmentSelect && this.hasFocus && this.inputRef) {
+      const seg = this.getSegments().find(
+        (s) => s.kind === this.pendingSegmentSelect
+      );
+      if (seg) {
+        this.selectSegment(seg);
+      }
+      this.pendingSegmentSelect = null;
+    }
   }
 
   componentDidUpdate() {
@@ -216,7 +266,6 @@ export class ModusWcTimeInput {
           this.scrollWheelsToSelection();
           this.pendingScrollToSelection = false;
         } else {
-          // Keep the user’s scroll place while clicking options
           this.restoreWheelScrollPositions();
         }
         if (this.wheelScrollCleanups.length === 0) {
@@ -242,7 +291,6 @@ export class ModusWcTimeInput {
     }
   }
 
-  // Capture phase so outside-dismiss still runs if a bubble listener stops propagation
   @Listen('pointerdown', { target: 'document', capture: true })
   handleClickOutside(event: PointerEvent) {
     if (!this.showDropdown) {
@@ -257,7 +305,6 @@ export class ModusWcTimeInput {
     }
   }
 
-  // Storybook / iframe: clicks outside the preview do not hit this document
   @Listen('blur', { target: 'window' })
   handleWindowBlur() {
     if (this.showDropdown) {
@@ -277,10 +324,10 @@ export class ModusWcTimeInput {
     return is12HourFormat(this.hourFormat ?? '24h') ? '12h' : '24h';
   }
 
-  /**
-   * Suggestion list when consumers supply options, a deprecated datalist id,
-   * or an `interval-minutes` attribute (generated intervals). Otherwise wheels.
-   */
+  private get dropdownId(): string {
+    return `time-dropdown-${this.dropdownIdSuffix}`;
+  }
+
   private get useDatalist(): boolean {
     if ((this.datalistOptions?.length ?? 0) > 0) {
       return true;
@@ -312,9 +359,36 @@ export class ModusWcTimeInput {
     return 1;
   }
 
-  /** Bias native time presentation: Chromium often uses locale for 12h vs 24h. */
-  private get fieldLang(): string {
-    return this.resolvedHourFormat === '12h' ? 'en-US' : 'en-GB';
+  private getSegments(): ITimeSegment[] {
+    return getSegments(this.effectiveShowSeconds, this.resolvedHourFormat);
+  }
+
+  private getActiveSegment(): ITimeSegment {
+    const segments = this.getSegments();
+    const caret = this.inputRef?.selectionStart;
+    if (typeof caret === 'number' && !Number.isNaN(caret)) {
+      const seg = getSegmentAtCaret(
+        caret,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      this.activeSegmentKind = seg.kind;
+      return seg;
+    }
+    return (
+      segments.find((s) => s.kind === this.activeSegmentKind) ?? segments[0]
+    );
+  }
+
+  private selectSegment(segment: ITimeSegment) {
+    if (!this.inputRef) {
+      return;
+    }
+    this.activeSegmentKind = segment.kind;
+    if (typeof this.inputRef.setSelectionRange === 'function') {
+      this.inputRef.setSelectionRange(segment.start, segment.end);
+    }
+    this.segmentDigitBuffer = '';
   }
 
   private setupPopper(anchor: HTMLElement, dropdown: HTMLElement) {
@@ -347,11 +421,21 @@ export class ModusWcTimeInput {
     this.showDropdown = true;
   }
 
+  // The size modifier lives on the input, but the field width is set on the
+  // container, so mirror the size there too.
+  private getContainerClasses(): string {
+    return `time-input-container time-input-container--${this.size}`;
+  }
+
   private getClasses(): string {
     const classList = ['modus-wc-time-input', 'modus-wc-input'];
 
     if (this.effectiveShowSeconds) {
       classList.push('modus-wc-time-input--with-seconds');
+    }
+
+    if (this.resolvedHourFormat === '12h') {
+      classList.push('modus-wc-time-input--12h');
     }
 
     const propClasses = convertPropsToClasses({
@@ -370,8 +454,22 @@ export class ModusWcTimeInput {
     return classList.join(' ');
   }
 
+  private updateAriaLive() {
+    this.ariaLiveText = getAriaLiveLabel(
+      this.displayValue,
+      this.effectiveShowSeconds,
+      this.resolvedHourFormat
+    );
+  }
+
   private emitChange(next24h: string) {
     this.value = next24h;
+    this.displayValue = displayFromValue(
+      next24h,
+      this.effectiveShowSeconds,
+      this.resolvedHourFormat
+    );
+    this.updateAriaLive();
     const synthetic = {
       target: { value: next24h },
       bubbles: true,
@@ -380,48 +478,294 @@ export class ModusWcTimeInput {
     this.inputChange.emit(synthetic);
   }
 
+  private commitDisplay(nextDisplay: string, activeKind: SegmentKind) {
+    this.displayValue = nextDisplay;
+    this.updateAriaLive();
+
+    if (
+      isSkeletonDisplayComplete(
+        nextDisplay,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      )
+    ) {
+      const parsed = parseSkeletonDisplay(
+        nextDisplay,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      if (parsed) {
+        const clamped = clampTime(parsed, this.min, this.max);
+        const next24h = format24h(clamped, this.effectiveShowSeconds);
+        this.isInvalid = false;
+        this.pendingSegmentSelect = activeKind;
+        if (next24h !== this.value) {
+          this.emitChange(next24h);
+        } else {
+          this.displayValue = formatDisplay(
+            clamped,
+            this.effectiveShowSeconds,
+            this.resolvedHourFormat
+          );
+        }
+        return;
+      }
+    }
+
+    this.isInvalid = false;
+    this.pendingSegmentSelect = activeKind;
+    if (this.value !== '') {
+      this.emitChange('');
+    }
+  }
+
   private handleBlur = (event: FocusEvent) => {
     if (this.suppressBlurCommit) {
       this.suppressBlurCommit = false;
       this.hasFocus = false;
+      this.syncDisplayValue();
       this.inputBlur.emit(event);
       return;
     }
+
+    if (
+      isSkeletonDisplayComplete(
+        this.displayValue,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      )
+    ) {
+      const parsed = parseSkeletonDisplay(
+        this.displayValue,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      if (parsed) {
+        const clamped = clampTime(parsed, this.min, this.max);
+        const next24h = format24h(clamped, this.effectiveShowSeconds);
+        this.isInvalid = false;
+        if (next24h !== this.value) {
+          this.emitChange(next24h);
+        } else {
+          this.displayValue = formatDisplay(
+            clamped,
+            this.effectiveShowSeconds,
+            this.resolvedHourFormat
+          );
+        }
+      } else {
+        this.isInvalid = true;
+      }
+    } else if (
+      this.displayValue !==
+      getSkeleton(this.effectiveShowSeconds, this.resolvedHourFormat)
+    ) {
+      this.isInvalid = true;
+    } else {
+      this.isInvalid = false;
+    }
+
     this.hasFocus = false;
+    this.segmentDigitBuffer = '';
     this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
     this.hasFocus = true;
+    const segments = this.getSegments();
+    requestAnimationFrame(() => {
+      this.selectSegment(segments[0]);
+    });
     this.inputFocus.emit(event);
   };
 
   private handleInputClick = (event?: MouseEvent) => {
+    if (this.disabled || this.readOnly || !this.inputRef) {
+      return;
+    }
+    event?.preventDefault?.();
+    const input = this.inputRef;
+    requestAnimationFrame(() => {
+      const caret = input.selectionStart ?? 0;
+      const seg = getSegmentAtCaret(
+        caret,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      this.selectSegment(seg);
+    });
+  };
+
+  private handlePaste = (event: ClipboardEvent) => {
     if (this.disabled || this.readOnly) {
       return;
     }
-    // Prefer the Modus dropdown over the browser’s native time popup
-    event?.preventDefault?.();
-    this.toggleDropdown();
-  };
-
-  private handleInput = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const next = target.value ?? '';
-    this.isInvalid = false;
-    if (next !== this.value) {
-      this.emitChange(next);
+    const pasted = event.clipboardData?.getData('text')?.trim();
+    if (!pasted) {
+      return;
     }
+    event.preventDefault();
+
+    const parsed =
+      parse24h(pasted) ??
+      parseDisplay(pasted, this.effectiveShowSeconds, this.resolvedHourFormat);
+    if (!parsed) {
+      return;
+    }
+    const clamped = clampTime(parsed, this.min, this.max);
+    const next24h = format24h(clamped, this.effectiveShowSeconds);
+    this.isInvalid = false;
+    this.emitChange(next24h);
+    this.pendingSegmentSelect = 'hour';
   };
 
   private handleKeyDown = (event: KeyboardEvent) => {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
+
+    const seg = this.getActiveSegment();
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const next = applyStepToSegment(
+        this.displayValue,
+        seg,
+        1,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat,
+        this.minuteStep,
+        this.secondStep
+      );
+      this.commitDisplay(next, seg.kind);
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      if (event.altKey) {
+        event.preventDefault();
+        this.openDropdown();
+        return;
+      }
+      event.preventDefault();
+      const next = applyStepToSegment(
+        this.displayValue,
+        seg,
+        -1,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat,
+        this.minuteStep,
+        this.secondStep
+      );
+      this.commitDisplay(next, seg.kind);
+      return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.selectSegment(
+        getPrevSegment(seg, this.effectiveShowSeconds, this.resolvedHourFormat)
+      );
+      return;
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.selectSegment(
+        getNextSegment(seg, this.effectiveShowSeconds, this.resolvedHourFormat)
+      );
+      return;
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      const next = setSegmentToBound(
+        this.displayValue,
+        seg,
+        'min',
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      this.commitDisplay(next, seg.kind);
+      return;
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      const next = setSegmentToBound(
+        this.displayValue,
+        seg,
+        'max',
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      this.commitDisplay(next, seg.kind);
+      return;
+    }
+
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      event.preventDefault();
+      const next = clearSegmentInDisplay(
+        this.displayValue,
+        seg,
+        this.effectiveShowSeconds,
+        this.resolvedHourFormat
+      );
+      this.segmentDigitBuffer = '';
+      this.commitDisplay(next, seg.kind);
+      return;
+    }
+
     if (event.key === 'Enter') {
       event.preventDefault();
       this.closeDropdown();
+      return;
     }
-    if (event.key === 'ArrowDown' && !this.showDropdown) {
+
+    if (/^\d$/.test(event.key)) {
       event.preventDefault();
-      this.openDropdown();
+      const result = typeDigitInSegment(
+        this.displayValue,
+        seg,
+        event.key,
+        this.segmentDigitBuffer,
+        this.resolvedHourFormat
+      );
+      this.segmentDigitBuffer = result.buffer;
+      const nextKind = result.advance
+        ? getNextSegment(
+            seg,
+            this.effectiveShowSeconds,
+            this.resolvedHourFormat
+          ).kind
+        : seg.kind;
+      this.activeSegmentKind = nextKind;
+      this.commitDisplay(result.display, nextKind);
+      if (result.advance) {
+        const nextSeg = getNextSegment(
+          seg,
+          this.effectiveShowSeconds,
+          this.resolvedHourFormat
+        );
+        this.pendingSegmentSelect = nextSeg.kind;
+      }
+      return;
+    }
+
+    if (
+      this.resolvedHourFormat === '12h' &&
+      seg.kind === 'period' &&
+      /^[apAP]$/.test(event.key)
+    ) {
+      event.preventDefault();
+      const result = typeDigitInSegment(
+        this.displayValue,
+        seg,
+        event.key,
+        '',
+        this.resolvedHourFormat
+      );
+      this.commitDisplay(result.display, seg.kind);
     }
   };
 
@@ -483,6 +827,15 @@ export class ModusWcTimeInput {
     });
   };
 
+  private syncDisplayValue() {
+    this.displayValue = displayFromValue(
+      this.value,
+      this.effectiveShowSeconds,
+      this.resolvedHourFormat
+    );
+    this.updateAriaLive();
+  }
+
   private getWheelViewportKind(viewport: HTMLElement): string {
     return (
       Array.from(viewport.classList)
@@ -536,7 +889,6 @@ export class ModusWcTimeInput {
       if (!selected) {
         return;
       }
-      // Align selected row to the top of the fixed viewport (exact N-row height)
       viewportEl.scrollTop +=
         selected.getBoundingClientRect().top -
         viewportEl.getBoundingClientRect().top;
@@ -544,7 +896,6 @@ export class ModusWcTimeInput {
     this.circularScrollLock = false;
   }
 
-  /** Prefer the middle loop copy so wrapping stays seamless after open / select. */
   private getPreferredSelectedOption(
     viewportEl: HTMLElement
   ): HTMLElement | null {
@@ -642,6 +993,7 @@ export class ModusWcTimeInput {
     return (
       <div
         class="time-dropdown time-dropdown--picker"
+        id={this.dropdownId}
         ref={(el) => (this.dropdownRef = el)}
         role="dialog"
         aria-label="Time picker"
@@ -722,7 +1074,6 @@ export class ModusWcTimeInput {
                 }
                 tabIndex={isA11yCopy ? 0 : -1}
                 onMouseDown={(e: MouseEvent) => {
-                  // Avoid focus-driven scrollIntoView jumping the wheel
                   e.preventDefault();
                 }}
                 onClick={() => onSelect(opt.value)}
@@ -758,6 +1109,7 @@ export class ModusWcTimeInput {
     return (
       <div
         class="time-dropdown time-dropdown--datalist"
+        id={this.dropdownId}
         ref={(el) => (this.dropdownRef = el)}
         role="listbox"
         aria-label="Time options"
@@ -809,6 +1161,7 @@ export class ModusWcTimeInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const popupRole = this.useDatalist ? 'listbox' : 'dialog';
 
     return (
       <Host>
@@ -820,31 +1173,60 @@ export class ModusWcTimeInput {
             size={this.size}
           />
         )}
-        <input
-          ref={(el) => (this.inputRef = el)}
-          aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
-          aria-required={this.required}
-          autocomplete={this.autoComplete}
-          class={this.getClasses()}
-          disabled={this.disabled}
-          id={effectiveId}
-          lang={this.fieldLang}
-          max={this.max}
-          min={this.min}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onClick={this.handleInputClick}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          onKeyDown={this.handleKeyDown}
-          readonly={this.readOnly}
-          required={this.required}
-          step={this.step ?? (this.showSeconds ? 1 : 60)}
-          tabIndex={this.inputTabIndex}
-          type="time"
-          value={this.value}
-          {...this.inheritedAttributes}
-        />
+        <div class={this.getContainerClasses()}>
+          <input
+            ref={(el) => (this.inputRef = el)}
+            aria-controls={this.showDropdown ? this.dropdownId : undefined}
+            aria-expanded={this.showDropdown ? 'true' : 'false'}
+            aria-haspopup={popupRole}
+            aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
+            aria-required={this.required}
+            autocomplete={this.autoComplete}
+            class={this.getClasses()}
+            disabled={this.disabled}
+            id={effectiveId}
+            inputmode="numeric"
+            onBlur={this.handleBlur}
+            onClick={this.handleInputClick}
+            onFocus={this.handleFocus}
+            onKeyDown={this.handleKeyDown}
+            onPaste={this.handlePaste}
+            readonly={this.readOnly}
+            required={this.required}
+            role="combobox"
+            tabIndex={this.inputTabIndex}
+            type="text"
+            value={this.displayValue}
+            {...this.inheritedAttributes}
+          />
+          {this.name && (
+            <input type="hidden" name={this.name} value={this.value} />
+          )}
+          <button
+            type="button"
+            class="clock-icon-trigger"
+            tabindex="-1"
+            aria-label="Toggle time picker"
+            aria-expanded={String(this.showDropdown)}
+            aria-haspopup={popupRole}
+            aria-controls={this.showDropdown ? this.dropdownId : undefined}
+            disabled={this.disabled || this.readOnly}
+            onClick={this.toggleDropdown}
+          >
+            <modus-wc-icon
+              name="clock"
+              size={this.size === 'lg' ? 'sm' : 'xs'}
+            />
+          </button>
+        </div>
+
+        <span
+          class="time-input-aria-live"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {this.ariaLiveText}
+        </span>
 
         {this.showDropdown &&
           !this.disabled &&
