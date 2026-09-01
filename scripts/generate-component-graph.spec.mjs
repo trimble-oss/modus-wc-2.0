@@ -99,7 +99,7 @@ test('should strip block and line comments but keep code', () => {
   assert.ok(!stripped.includes('gone'));
 });
 
-test('should extract nested story tags as slot children', () => {
+test('should extract nested story tags as storybook children', () => {
   const source = `
     html\`
       <modus-wc-toast position="top-end">

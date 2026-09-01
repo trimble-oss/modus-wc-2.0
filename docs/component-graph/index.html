@@ -125,7 +125,7 @@
         <modus-wc-typography
           hierarchy="p"
           size="sm"
-          label="Solid edge: JSX composition • Dashed edge: slot or hosted children • Click a node for details, drag to pan, scroll to zoom"
+          label="Solid: JSX • Dashed: slot/hosts • Dotted blue: Storybook examples • Click a node, drag to pan, scroll to zoom"
         ></modus-wc-typography>
       </modus-wc-card>
     </div>
@@ -310,8 +310,27 @@
                 !(highlightSet.has(e.s.tag) && highlightSet.has(e.t.tag));
             const s = toScreen(e.s);
             const t = toScreen(e.t);
-            ctx.strokeStyle = dim ? 'rgba(203,205,214,0.35)' : '#9fa4b1';
-            ctx.setLineDash(e.type === 'composes' ? [] : [4, 4]);
+            let stroke = '#9fa4b1';
+            let dash = [];
+            switch (e.type) {
+              case 'composes':
+                dash = [];
+                break;
+              case 'slot':
+                dash = [4, 4];
+                break;
+              case 'hosts':
+                dash = [8, 3];
+                break;
+              case 'storybook':
+                stroke = '#5b8def';
+                dash = [2, 3];
+                break;
+              default:
+                break;
+            }
+            ctx.strokeStyle = dim ? 'rgba(203,205,214,0.35)' : stroke;
+            ctx.setLineDash(dash);
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(s.x, s.y);
@@ -324,7 +343,7 @@
               const r = nodeRadius(e.t) * scale + 4;
               const ax = t.x - Math.cos(angle) * r;
               const ay = t.y - Math.sin(angle) * r;
-              ctx.fillStyle = '#9fa4b1';
+              ctx.fillStyle = stroke;
               ctx.beginPath();
               ctx.moveTo(ax, ay);
               ctx.lineTo(

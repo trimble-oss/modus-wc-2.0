@@ -4507,8 +4507,15 @@
       "target": "modus-wc-collapse",
       "type": "slot",
       "files": [
-        "src/components/modus-wc-accordion/modus-wc-accordion.stories.ts",
         "src/components/modus-wc-accordion/modus-wc-accordion.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-accordion",
+      "target": "modus-wc-collapse",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-accordion/modus-wc-accordion.stories.ts"
       ]
     },
     {
@@ -4594,7 +4601,7 @@
     {
       "source": "modus-wc-autocomplete",
       "target": "modus-wc-avatar",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-autocomplete/modus-wc-autocomplete.stories.ts"
       ]
@@ -4682,7 +4689,7 @@
     {
       "source": "modus-wc-badge",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-badge/modus-wc-badge.stories.ts"
       ]
@@ -4730,7 +4737,7 @@
     {
       "source": "modus-wc-button",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-button/modus-wc-button.stories.ts"
       ]
@@ -4738,7 +4745,15 @@
     {
       "source": "modus-wc-button-group",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-button",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
       ]
@@ -4746,7 +4761,7 @@
     {
       "source": "modus-wc-button-group",
       "target": "modus-wc-dropdown-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
       ]
@@ -4754,7 +4769,7 @@
     {
       "source": "modus-wc-button-group",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
       ]
@@ -4762,7 +4777,7 @@
     {
       "source": "modus-wc-button-group",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
       ]
@@ -4770,7 +4785,7 @@
     {
       "source": "modus-wc-card",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-card/modus-wc-card.stories.ts"
       ]
@@ -4786,7 +4801,7 @@
     {
       "source": "modus-wc-chip",
       "target": "modus-wc-avatar",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-chip/modus-wc-chip.stories.ts"
       ]
@@ -4802,7 +4817,7 @@
     {
       "source": "modus-wc-collapse",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-collapse/modus-wc-collapse.stories.ts"
       ]
@@ -4978,7 +4993,7 @@
     {
       "source": "modus-wc-dropdown-menu",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
       ]
@@ -4994,7 +5009,7 @@
     {
       "source": "modus-wc-dropdown-menu",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
       ]
@@ -5002,7 +5017,7 @@
     {
       "source": "modus-wc-dropdown-menu",
       "target": "modus-wc-tree-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
       ]
@@ -5010,7 +5025,7 @@
     {
       "source": "modus-wc-dropdown-menu",
       "target": "modus-wc-tree-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
       ]
@@ -5026,7 +5041,7 @@
     {
       "source": "modus-wc-file-dropzone",
       "target": "modus-wc-progress",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.stories.ts"
       ]
@@ -5058,7 +5073,7 @@
     {
       "source": "modus-wc-menu",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
       ]
@@ -5066,7 +5081,7 @@
     {
       "source": "modus-wc-menu",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
       ]
@@ -5074,7 +5089,15 @@
     {
       "source": "modus-wc-menu",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
       ]
@@ -5138,7 +5161,7 @@
     {
       "source": "modus-wc-navbar",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-navbar/modus-wc-navbar.stories.ts"
       ]
@@ -5210,7 +5233,7 @@
     {
       "source": "modus-wc-panel",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
       ]
@@ -5218,7 +5241,7 @@
     {
       "source": "modus-wc-panel",
       "target": "modus-wc-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
       ]
@@ -5226,7 +5249,7 @@
     {
       "source": "modus-wc-panel",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
       ]
@@ -5282,7 +5305,7 @@
     {
       "source": "modus-wc-progress",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-progress/modus-wc-progress.stories.ts"
       ]
@@ -5322,7 +5345,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5330,7 +5353,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-dropdown-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5338,7 +5361,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5346,7 +5369,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5354,7 +5377,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5362,7 +5385,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-tree-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5370,7 +5393,7 @@
     {
       "source": "modus-wc-side-navigation",
       "target": "modus-wc-tree-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
@@ -5426,7 +5449,7 @@
     {
       "source": "modus-wc-tabs",
       "target": "modus-wc-badge",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tabs/modus-wc-tabs.stories.ts"
       ]
@@ -5506,7 +5529,7 @@
     {
       "source": "modus-wc-toast",
       "target": "modus-wc-alert",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-toast/modus-wc-toast.stories.ts"
       ]
@@ -5514,7 +5537,7 @@
     {
       "source": "modus-wc-tooltip",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tooltip/modus-wc-tooltip.stories.ts"
       ]
@@ -5522,7 +5545,7 @@
     {
       "source": "modus-wc-tree-item",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
       ]
@@ -5538,7 +5561,7 @@
     {
       "source": "modus-wc-tree-item",
       "target": "modus-wc-dropdown-menu",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
       ]
@@ -5554,7 +5577,7 @@
     {
       "source": "modus-wc-tree-item",
       "target": "modus-wc-menu-item",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
       ]
@@ -5570,7 +5593,7 @@
     {
       "source": "modus-wc-tree-menu",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
       ]
@@ -5578,7 +5601,7 @@
     {
       "source": "modus-wc-tree-menu",
       "target": "modus-wc-icon",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
       ]
@@ -5586,16 +5609,31 @@
     {
       "source": "modus-wc-tree-menu",
       "target": "modus-wc-tree-item",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-tree-item",
       "type": "slot",
       "files": [
-        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts",
         "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-tree-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
       ]
     },
     {
       "source": "modus-wc-utility-panel",
       "target": "modus-wc-button",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
       ]
@@ -5603,7 +5641,7 @@
     {
       "source": "modus-wc-utility-panel",
       "target": "modus-wc-text-input",
-      "type": "slot",
+      "type": "storybook",
       "files": [
         "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
       ]
