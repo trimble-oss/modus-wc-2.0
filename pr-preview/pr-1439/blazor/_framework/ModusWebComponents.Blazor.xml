@@ -1605,7 +1605,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
             <summary>
-            Custom CSS class to apply to the component.
+            Custom CSS class to apply to the inner container.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.Fit">
