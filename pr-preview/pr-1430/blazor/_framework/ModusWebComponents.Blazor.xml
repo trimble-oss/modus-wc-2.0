@@ -3464,7 +3464,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTimeInput">
             <summary>
-            A customizable time input with a native time field plus a Modus dropdown (scrollable picker wheels or a datalist of interval options).  value is always stored and emitted in 24-hour format (HH:mm or HH:mm:ss). The field uses the browser’s native input type=&quot;time&quot; (built-in clock icon and sizing). hourFormat controls the Modus picker (12h wheels + AM/PM vs 24h) and sets lang to bias the native field toward 12h (en-US) or 24h (en-GB) where the browser supports it.  Adheres to WCAG 2.2 standards.
+            A customizable time input with a Modus text field and dropdown (scrollable picker wheels or a datalist of interval options).  value is always stored and emitted in 24-hour format (HH:mm or HH:mm:ss). The field uses a segmented --:-- skeleton (native time-input style) with keyboard segment editing. hourFormat controls display and the Modus picker (12h wheels + AM/PM vs 24h). Open the picker with the clock button or Alt+ArrowDown.  Adheres to WCAG 2.2 standards.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.AutoComplete">
@@ -3490,7 +3490,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.HourFormat">
             <summary>
-            Hour clock for the Modus picker wheels / datalist labels. - 24h (default): hours wheel 00–23 - 12h: hours wheel 01–12 with AM/PM  Also sets lang on the native field (en-GB / en-US) to bias browser 24h vs 12h presentation where supported. value / inputChange stay 24h.
+            Hour clock for the Modus picker wheels / datalist labels and the field display. - 24h (default): hours wheel 00–23 - 12h: hours wheel 01–12 with AM/PM  value / inputChange always stay in 24h format.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.InputId">
