@@ -5649,51 +5649,30 @@
   ],
   "reverseImpact": {
     "modus-wc-accordion": [],
-    "modus-wc-alert": [
-      "modus-wc-toast"
-    ],
+    "modus-wc-alert": [],
     "modus-wc-app-menu": [],
     "modus-wc-autocomplete": [],
     "modus-wc-avatar": [
-      "modus-wc-autocomplete",
-      "modus-wc-chip",
       "modus-wc-navbar",
       "modus-wc-profile-menu"
     ],
-    "modus-wc-badge": [
-      "modus-wc-tabs"
-    ],
+    "modus-wc-badge": [],
     "modus-wc-bottom-sheet": [],
     "modus-wc-breadcrumbs": [],
     "modus-wc-button": [
-      "modus-wc-accordion",
       "modus-wc-alert",
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
       "modus-wc-bottom-sheet",
       "modus-wc-button-group",
-      "modus-wc-card",
-      "modus-wc-collapse",
       "modus-wc-content-tree",
       "modus-wc-date",
       "modus-wc-dock",
       "modus-wc-dropdown-menu",
       "modus-wc-handle",
-      "modus-wc-menu",
-      "modus-wc-menu-item",
       "modus-wc-modal",
       "modus-wc-navbar",
-      "modus-wc-pagination",
-      "modus-wc-panel",
-      "modus-wc-profile-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-table",
-      "modus-wc-text-input",
-      "modus-wc-toast",
-      "modus-wc-tooltip",
-      "modus-wc-tree-item",
-      "modus-wc-tree-menu",
-      "modus-wc-utility-panel"
+      "modus-wc-text-input"
     ],
     "modus-wc-button-group": [],
     "modus-wc-card": [
@@ -5702,16 +5681,12 @@
     "modus-wc-checkbox": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
-      "modus-wc-bottom-sheet",
-      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
-      "modus-wc-panel",
       "modus-wc-profile-menu",
-      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tree-item",
       "modus-wc-tree-menu"
@@ -5727,12 +5702,7 @@
     "modus-wc-divider": [],
     "modus-wc-dock": [],
     "modus-wc-dropdown-menu": [
-      "modus-wc-button-group",
-      "modus-wc-content-tree",
-      "modus-wc-dropdown-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-content-tree"
     ],
     "modus-wc-file-dropzone": [],
     "modus-wc-handle": [
@@ -5744,11 +5714,7 @@
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
       "modus-wc-avatar",
-      "modus-wc-badge",
       "modus-wc-bottom-sheet",
-      "modus-wc-button",
-      "modus-wc-button-group",
-      "modus-wc-card",
       "modus-wc-chip",
       "modus-wc-collapse",
       "modus-wc-content-tree",
@@ -5760,25 +5726,17 @@
       "modus-wc-input-feedback",
       "modus-wc-menu",
       "modus-wc-menu-item",
-      "modus-wc-modal",
       "modus-wc-navbar",
       "modus-wc-number-input",
-      "modus-wc-pagination",
-      "modus-wc-panel",
       "modus-wc-profile-menu",
-      "modus-wc-progress",
       "modus-wc-select",
-      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tabs",
       "modus-wc-text-input",
       "modus-wc-textarea",
       "modus-wc-time-input",
-      "modus-wc-toast",
-      "modus-wc-tooltip",
       "modus-wc-tree-item",
-      "modus-wc-tree-menu",
-      "modus-wc-utility-panel"
+      "modus-wc-tree-menu"
     ],
     "modus-wc-input-feedback": [
       "modus-wc-autocomplete",
@@ -5790,29 +5748,23 @@
       "modus-wc-table",
       "modus-wc-text-input",
       "modus-wc-textarea",
-      "modus-wc-time-input",
-      "modus-wc-utility-panel"
+      "modus-wc-time-input"
     ],
     "modus-wc-input-label": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
-      "modus-wc-bottom-sheet",
-      "modus-wc-button-group",
       "modus-wc-checkbox",
       "modus-wc-content-tree",
       "modus-wc-date",
       "modus-wc-dropdown-menu",
-      "modus-wc-file-dropzone",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
       "modus-wc-number-input",
-      "modus-wc-panel",
       "modus-wc-profile-menu",
       "modus-wc-progress",
       "modus-wc-radio",
       "modus-wc-select",
-      "modus-wc-side-navigation",
       "modus-wc-slider",
       "modus-wc-switch",
       "modus-wc-table",
@@ -5820,8 +5772,7 @@
       "modus-wc-textarea",
       "modus-wc-time-input",
       "modus-wc-tree-item",
-      "modus-wc-tree-menu",
-      "modus-wc-utility-panel"
+      "modus-wc-tree-menu"
     ],
     "modus-wc-link": [],
     "modus-wc-loader": [
@@ -5835,31 +5786,19 @@
     "modus-wc-menu": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
-      "modus-wc-bottom-sheet",
-      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-navbar",
-      "modus-wc-panel",
-      "modus-wc-profile-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-profile-menu"
     ],
     "modus-wc-menu-item": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
-      "modus-wc-bottom-sheet",
-      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-navbar",
-      "modus-wc-panel",
-      "modus-wc-profile-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-profile-menu"
     ],
     "modus-wc-modal": [
       "modus-wc-content-tree"
@@ -5875,9 +5814,7 @@
       "modus-wc-profile-menu"
     ],
     "modus-wc-profile-menu": [],
-    "modus-wc-progress": [
-      "modus-wc-file-dropzone"
-    ],
+    "modus-wc-progress": [],
     "modus-wc-radio": [],
     "modus-wc-rating": [],
     "modus-wc-select": [
@@ -5894,8 +5831,7 @@
     "modus-wc-text-input": [
       "modus-wc-autocomplete",
       "modus-wc-content-tree",
-      "modus-wc-navbar",
-      "modus-wc-utility-panel"
+      "modus-wc-navbar"
     ],
     "modus-wc-textarea": [],
     "modus-wc-theme-switcher": [],
@@ -5908,36 +5844,23 @@
     "modus-wc-tooltip": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
-      "modus-wc-bottom-sheet",
-      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
       "modus-wc-pagination",
-      "modus-wc-panel",
       "modus-wc-profile-menu",
-      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tree-item",
       "modus-wc-tree-menu"
     ],
     "modus-wc-tree-item": [
-      "modus-wc-button-group",
       "modus-wc-content-tree",
-      "modus-wc-dropdown-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-tree-item",
       "modus-wc-tree-menu"
     ],
     "modus-wc-tree-menu": [
-      "modus-wc-button-group",
-      "modus-wc-content-tree",
-      "modus-wc-dropdown-menu",
-      "modus-wc-side-navigation",
-      "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-content-tree"
     ],
     "modus-wc-typography": [
       "modus-wc-app-menu",

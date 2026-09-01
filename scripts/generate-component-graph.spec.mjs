@@ -151,6 +151,20 @@ test('should compute transitive parents in reverse impact map', () => {
   assert.deepEqual(impact.a, []);
 });
 
+test('should ignore storybook edges when computing reverse impact', () => {
+  const nodes = new Map(
+    ['toast', 'alert', 'button'].map((tag) => [tag, { tag }])
+  );
+  const edges = [
+    { source: 'toast', target: 'alert', type: 'storybook' },
+    { source: 'alert', target: 'button', type: 'composes' },
+  ];
+  const impact = buildReverseImpact(nodes, edges);
+  assert.deepEqual(impact.alert, []);
+  assert.deepEqual(impact.button, ['alert']);
+  assert.deepEqual(impact.toast, []);
+});
+
 test('should not loop forever when the graph has cycles', () => {
   const nodes = new Map(['a', 'b'].map((tag) => [tag, { tag }]));
   const edges = [

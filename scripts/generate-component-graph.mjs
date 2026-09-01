@@ -12,7 +12,8 @@
  *
  * Outputs (under docs/component-graph/, committed and validated by CI):
  * - component-graph.json  machine-readable graph + precomputed reverse-impact map
- * - component-graph.mmd   Mermaid flowchart of composes/slot edges
+ *   (QA impact uses composes/slot/hosts only; storybook edges are demo-only)
+ * - component-graph.mmd   Mermaid flowchart of all edge types
  *
  * The interactive viewer is docs/component-graph/index.html (not generated). It
  * fetches component-graph.json at runtime.
@@ -315,10 +316,25 @@ function scanHostedEdges(knownTags, skipKeys) {
   return toEdgeList(edgeFiles, 'hosts');
 }
 
+/** Runtime composition used for QA re-test scope. Storybook edges are demos only. */
+export function isQaImpactEdgeType(type) {
+  switch (type) {
+    case 'composes':
+    case 'slot':
+    case 'hosts':
+      return true;
+    case 'storybook':
+      return false;
+    default:
+      throw new Error(`Unknown edge type: ${type}`);
+  }
+}
+
 /**
  * Precompute, for every component, the set of all transitive parents so QA
  * automations can answer "component X changed, what needs re-testing?" with a
- * single lookup.
+ * single lookup. Storybook edges are omitted so demo nesting does not expand
+ * re-test scope (or create demo-only cycles).
  */
 export function buildReverseImpact(nodes, edges) {
   const directParents = new Map();
@@ -326,6 +342,9 @@ export function buildReverseImpact(nodes, edges) {
     directParents.set(tag, new Set());
   }
   for (const edge of edges) {
+    if (!isQaImpactEdgeType(edge.type)) {
+      continue;
+    }
     directParents.get(edge.target)?.add(edge.source);
   }
 

@@ -203,24 +203,7 @@
           e.t.degree++;
         });
 
-        const reverseImpact = {};
-        const directParents = new Map(nodes.map((n) => [n.tag, new Set()]));
-        for (const e of edges) {
-          directParents.get(e.t.tag)?.add(e.s.tag);
-        }
-        for (const n of nodes) {
-          const impacted = new Set();
-          const queue = [...(directParents.get(n.tag) ?? [])];
-          while (queue.length > 0) {
-            const parent = queue.pop();
-            if (impacted.has(parent)) {
-              continue;
-            }
-            impacted.add(parent);
-            queue.push(...(directParents.get(parent) ?? []));
-          }
-          reverseImpact[n.tag] = [...impacted].sort();
-        }
+        const reverseImpact = GRAPH.reverseImpact || {};
 
         let selected = null;
         let highlightSet = null;
