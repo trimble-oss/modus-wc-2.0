@@ -217,7 +217,7 @@ export const ErrorFallback: Story = {
     docs: {
       description: {
         story:
-          'When the image URL fails to load the broken image icon is hidden and an accessible SVG placeholder is rendered.',
+          'When the image URL fails to load the broken image icon is hidden and a `modus-wc-icon` fallback (`image_disabled`) is rendered; the container keeps the accessible name from `alt`.',
       },
     },
   },
