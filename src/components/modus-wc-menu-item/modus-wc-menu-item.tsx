@@ -53,7 +53,7 @@ export class ModusWcMenuItem {
   @Prop() focused?: boolean;
 
   /** The size of the menu item. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
@@ -303,7 +303,13 @@ export class ModusWcMenuItem {
                 <modus-wc-checkbox
                   aria-label="Checkbox"
                   disabled={this.disabled}
-                  size={this.size}
+                  size={
+                    this.size === 'xs'
+                      ? 'sm'
+                      : this.size === 'xl'
+                        ? 'lg'
+                        : this.size
+                  }
                   value={!!this.selected}
                 />
               )}
@@ -331,7 +337,15 @@ export class ModusWcMenuItem {
                 decorative
                 name="expand_more"
                 size={
-                  this.size === 'sm' ? 'xs' : this.size === 'lg' ? 'md' : 'sm'
+                  this.size === 'xs'
+                    ? 'xs'
+                    : this.size === 'sm'
+                      ? 'xs'
+                      : this.size === 'lg'
+                        ? 'md'
+                        : this.size === 'xl'
+                          ? 'lg'
+                          : 'sm'
                 }
               ></modus-wc-icon>
             )}

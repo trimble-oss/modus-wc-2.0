@@ -86,10 +86,46 @@ modus-wc-tree-item .modus-wc-menu-item {
     }
   }
 
+  &.modus-wc-menu-item-xs {
+    .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-sm);
+      height: var(--modus-wc-size-xs);
+      padding-block: var(--modus-wc-spacing-2xs);
+      padding-inline: var(--modus-wc-spacing-xs);
+
+      .modus-wc-menu-item-labels {
+        line-height: 20px;
+
+        div {
+          font-size: var(--modus-wc-font-size-sm);
+          line-height: 20px;
+        }
+      }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-spacing-lg);
+        width: var(--modus-wc-spacing-lg);
+      }
+
+      [slot='start'],
+      [slot='start-icon'] {
+        height: var(--modus-wc-font-size-md);
+        width: var(--modus-wc-font-size-md);
+
+        modus-wc-icon {
+          font-size: var(--modus-wc-font-size-md);
+          height: var(--modus-wc-font-size-md);
+          width: var(--modus-wc-font-size-md);
+        }
+      }
+    }
+  }
+
   &.modus-wc-menu-item-sm {
     .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-md);
-      padding-block: var(--modus-wc-spacing-xs);
+      padding-block: var(--modus-wc-spacing-2xs);
+      padding-inline: var(--modus-wc-spacing-xs);
 
       .modus-wc-menu-item-labels {
         line-height: var(--modus-wc-line-height-md);
@@ -109,7 +145,7 @@ modus-wc-tree-item .modus-wc-menu-item {
   &.modus-wc-menu-item-md {
     .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-lg);
-      padding-block: var(--modus-wc-spacing-sm);
+      padding: var(--modus-wc-spacing-sm);
 
       .modus-wc-menu-item-labels {
         line-height: var(--modus-wc-line-height-md);
@@ -129,7 +165,7 @@ modus-wc-tree-item .modus-wc-menu-item {
   &.modus-wc-menu-item-lg {
     .modus-wc-menu-item-interactive {
       font-size: var(--modus-wc-font-size-xl);
-      padding-block: var(--modus-wc-spacing-sm);
+      padding: var(--modus-wc-spacing-sm);
 
       .modus-wc-menu-item-labels {
         line-height: var(--modus-wc-line-height-lg);
@@ -142,6 +178,29 @@ modus-wc-tree-item .modus-wc-menu-item {
 
       .modus-wc-menu-item-sublabel {
         font-size: var(--modus-wc-font-size-md);
+      }
+    }
+  }
+
+  &.modus-wc-menu-item-xl {
+    .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-2xl);
+      height: var(--modus-wc-size-xl);
+      padding-block: var(--modus-wc-spacing-md);
+      padding-inline: var(--modus-wc-spacing-sm);
+
+      .modus-wc-menu-item-labels {
+        line-height: var(--modus-wc-line-height-lg);
+
+        div {
+          font-size: var(--modus-wc-font-size-2xl);
+          line-height: var(--modus-wc-line-height-lg);
+        }
+      }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-spacing-xl);
+        width: var(--modus-wc-spacing-xl);
       }
     }
   }

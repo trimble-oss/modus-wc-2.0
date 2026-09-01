@@ -33,7 +33,7 @@ const meta: Meta<MenuArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -61,6 +61,11 @@ export const Default: Story = {
   size=${ifDefined(args.size)}
 >
   <modus-wc-menu-item
+    label="Extra Small"
+    value="xs"
+    size="xs"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
     label="Small"
     value="1"
     size="sm"
@@ -70,6 +75,11 @@ export const Default: Story = {
     label="Large"
     value="3"
     size="lg"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Extra Large"
+    value="xl"
+    size="xl"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Bordered"
@@ -357,6 +367,11 @@ export const ShadowDomParent: Story = {
           if (!el.querySelector('modus-wc-menu-item')) {
             el.innerHTML = `
               <modus-wc-menu-item
+    label="Extra Small"
+    value="xs"
+    size="xs"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
     label="Small"
     value="1"
     size="sm"
@@ -366,6 +381,11 @@ export const ShadowDomParent: Story = {
     label="Large"
     value="3"
     size="lg"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Extra Large"
+    value="xl"
+    size="xl"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Bordered"
