@@ -1,14 +1,16 @@
 name: Component Graph Check
 
 on:
+  # Feature PRs never update graph files. Only re-test the generator when it
+  # (or this workflow) changes.
   pull_request:
     branches:
       - 'main'
     paths:
-      - 'src/components/**'
-      - 'src/custom-elements.json'
       - 'scripts/generate-component-graph.mjs'
-      - 'docs/component-graph/**'
+      - 'scripts/generate-component-graph.spec.mjs'
+      - '.github/workflows/component-graph-check.yml'
+  # After a merge to main, publish a fresh graph. No PR and no author steps.
   push:
     branches:
       - 'main'
@@ -25,7 +27,7 @@ permissions:
 
 jobs:
   check:
-    name: Verify component graph is up to date
+    name: Test graph generator
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
@@ -41,44 +43,27 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
           cache: npm
 
-      # The generator only needs Node built-ins, but the graph must reflect
-      # the CEM committed on this branch, so no install/build steps run here.
       - name: Run graph generator unit tests
         run: node --test scripts/generate-component-graph.spec.mjs
 
-      - name: Regenerate component graph
-        run: node scripts/generate-component-graph.mjs
-
-      - name: Fail if the committed graph is stale
-        run: |
-          if ! git diff --exit-code -- docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd; then
-            echo ''
-            echo '::error::docs/component-graph JSON/Mermaid is out of date with the components on this branch.'
-            echo 'Run `npm run build:graph` locally and commit the regenerated files.'
-            exit 1
-          fi
-
-  # Runs after a merge (push to main) or a manual Actions run on main.
-  # Commits JSON/Mermaid only; those files are omitted from `on.push.paths`
-  # so the bot commit does not retrigger this job.
-  # If branch protection blocks github-actions[bot] on main, allow Actions
-  # to push or add the bot to the bypass list.
-  update:
-    name: Refresh component graph on main
+  # Main is protected, so this never pushes to main. It force-pushes generated
+  # JSON/Mermaid to the unprotected `component-graph` branch. QA should read
+  # that branch (or the workflow artifact). Feature PRs do nothing.
+  publish:
+    name: Publish component graph
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
-      group: component-graph-main
+      group: component-graph-publish
       cancel-in-progress: false
 
     steps:
       - name: Clone repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          # Needed so github-actions[bot] can push the regenerated graph.
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -92,14 +77,28 @@ jobs:
       - name: Regenerate component graph
         run: node scripts/generate-component-graph.mjs
 
-      - name: Commit graph if main is stale
+      - name: Upload graph artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: component-graph
+          path: |
+            docs/component-graph/component-graph.json
+            docs/component-graph/component-graph.mmd
+
+      - name: Publish graph to component-graph branch
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
         run: |
+          if [ -z "${GH_TOKEN}" ]; then
+            echo '::error::BOT_PAT is required to publish the graph branch (main is protected).'
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/component-graph/component-graph.json docs/component-graph/component-graph.mmd
-          if git diff --cached --quiet; then
-            echo 'Component graph already matches main.'
-            exit 0
+          git checkout -B component-graph
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: Refresh component dependency graph"
           fi
-          git commit -m "chore: Refresh component dependency graph"
-          git push
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git push origin component-graph --force
