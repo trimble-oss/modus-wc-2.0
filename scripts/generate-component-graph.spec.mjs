@@ -10,6 +10,7 @@ import {
   stripComments,
   extractChildTags,
   extractSlotTags,
+  extractStoryChildTags,
   extractHostedTags,
   buildReverseImpact,
 } from './generate-component-graph.mjs';
@@ -96,6 +97,23 @@ test('should strip block and line comments but keep code', () => {
   assert.ok(stripped.includes('KEEP_ME'));
   assert.ok(stripped.includes('const x = 1;'));
   assert.ok(!stripped.includes('gone'));
+});
+
+test('should extract nested story tags as slot children', () => {
+  const source = `
+    html\`
+      <modus-wc-toast position="top-end">
+        <modus-wc-alert alert-title="Sent" variant="success"></modus-wc-alert>
+      </modus-wc-toast>
+    \`;
+  `;
+  const known = new Set([
+    'modus-wc-toast',
+    'modus-wc-alert',
+    'modus-wc-button',
+  ]);
+  const children = extractStoryChildTags(source, 'modus-wc-toast', known);
+  assert.deepEqual([...children], ['modus-wc-alert']);
 });
 
 test('should extract hosted tags from querySelectorAll', () => {

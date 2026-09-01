@@ -5,6 +5,8 @@
  * - src/custom-elements.json (CEM) → node metadata (props, events, methods).
  * - src/components/modus-wc-* JSX (.tsx) → typed "composes" edges (parent renders child).
  * - JSDoc/comments that mention a slot together with a modus-wc-* tag → "slot" edges.
+ * - Storybook examples that nest <child> inside <parent> → additional "slot" edges
+ *   (e.g. toast stories slot modus-wc-alert).
  * - querySelector / querySelectorAll('modus-wc-*') in component source → "hosts" edges
  *   (light-DOM children the parent manages, e.g. button-group → button).
  *
@@ -159,7 +161,45 @@ export function extractHostedTags(source, parentTag, knownTags) {
   return children;
 }
 
-function eachComponentTsx(callback) {
+/**
+ * Tags nested inside <parentTag>...</parentTag> in Storybook examples.
+ * Toast does not render alert in JSX; stories slot modus-wc-alert into it.
+ */
+export function extractStoryChildTags(source, parentTag, knownTags) {
+  const children = new Set();
+  const open = `<${parentTag}`;
+  const close = `</${parentTag}>`;
+  let searchFrom = 0;
+
+  while (searchFrom < source.length) {
+    const start = source.indexOf(open, searchFrom);
+    if (start === -1) {
+      break;
+    }
+    const afterOpen = start + open.length;
+    const nextChar = source[afterOpen];
+    if (nextChar && !/[\s>/]/.test(nextChar)) {
+      searchFrom = afterOpen;
+      continue;
+    }
+    const end = source.indexOf(close, afterOpen);
+    if (end === -1) {
+      break;
+    }
+    const inner = source.slice(afterOpen, end);
+    for (const match of inner.matchAll(/<(modus-wc-[a-z0-9-]+)/g)) {
+      const childTag = match[1];
+      if (childTag !== parentTag && knownTags.has(childTag)) {
+        children.add(childTag);
+      }
+    }
+    searchFrom = end + close.length;
+  }
+
+  return children;
+}
+
+function eachComponentFiles(fileFilter, callback) {
   const componentDirs = readdirSync(COMPONENTS_DIR, { withFileTypes: true })
     .filter(
       (entry) => entry.isDirectory() && entry.name.startsWith('modus-wc-')
@@ -169,16 +209,8 @@ function eachComponentTsx(callback) {
 
   for (const dir of componentDirs) {
     const dirPath = join(COMPONENTS_DIR, dir);
-    const tsxFiles = readdirSync(dirPath)
-      .filter(
-        (file) =>
-          file.endsWith('.tsx') &&
-          !file.endsWith('.spec.tsx') &&
-          !file.endsWith('.stories.tsx')
-      )
-      .sort();
-
-    for (const file of tsxFiles) {
+    const files = readdirSync(dirPath).filter(fileFilter).sort();
+    for (const file of files) {
       const filePath = join(dirPath, file);
       callback({
         parentTag: dir,
@@ -187,6 +219,22 @@ function eachComponentTsx(callback) {
       });
     }
   }
+}
+
+function isComponentSource(file) {
+  return (
+    file.endsWith('.tsx') &&
+    !file.endsWith('.spec.tsx') &&
+    !file.endsWith('.stories.tsx')
+  );
+}
+
+function isStorySource(file) {
+  return file.endsWith('.stories.ts') || file.endsWith('.stories.tsx');
+}
+
+function eachComponentTsx(callback) {
+  eachComponentFiles(isComponentSource, callback);
 }
 
 function toEdgeList(edgeFiles, type) {
@@ -215,18 +263,31 @@ function scanComposesEdges(knownTags) {
   return toEdgeList(edgeFiles, 'composes');
 }
 
+function addSlotEdge(edgeFiles, composeKeys, parentTag, childTag, filePath) {
+  const key = `${parentTag}→${childTag}`;
+  if (composeKeys.has(key)) {
+    return;
+  }
+  if (!edgeFiles.has(key)) {
+    edgeFiles.set(key, new Set());
+  }
+  edgeFiles.get(key).add(relative(ROOT, filePath).replace(/\\/g, '/'));
+}
+
 function scanSlotEdges(knownTags, composeKeys) {
   const edgeFiles = new Map();
   eachComponentTsx(({ parentTag, filePath, source }) => {
     for (const childTag of extractSlotTags(source, parentTag, knownTags)) {
-      const key = `${parentTag}→${childTag}`;
-      if (composeKeys.has(key)) {
-        continue;
-      }
-      if (!edgeFiles.has(key)) {
-        edgeFiles.set(key, new Set());
-      }
-      edgeFiles.get(key).add(relative(ROOT, filePath).replace(/\\/g, '/'));
+      addSlotEdge(edgeFiles, composeKeys, parentTag, childTag, filePath);
+    }
+  });
+  eachComponentFiles(isStorySource, ({ parentTag, filePath, source }) => {
+    for (const childTag of extractStoryChildTags(
+      source,
+      parentTag,
+      knownTags
+    )) {
+      addSlotEdge(edgeFiles, composeKeys, parentTag, childTag, filePath);
     }
   });
   return toEdgeList(edgeFiles, 'slot');

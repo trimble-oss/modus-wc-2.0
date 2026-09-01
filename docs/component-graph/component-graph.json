@@ -4507,6 +4507,7 @@
       "target": "modus-wc-collapse",
       "type": "slot",
       "files": [
+        "src/components/modus-wc-accordion/modus-wc-accordion.stories.ts",
         "src/components/modus-wc-accordion/modus-wc-accordion.tsx"
       ]
     },
@@ -4592,6 +4593,14 @@
     },
     {
       "source": "modus-wc-autocomplete",
+      "target": "modus-wc-avatar",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
       "target": "modus-wc-button",
       "type": "composes",
       "files": [
@@ -4671,6 +4680,14 @@
       ]
     },
     {
+      "source": "modus-wc-badge",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-badge/modus-wc-badge.stories.ts"
+      ]
+    },
+    {
       "source": "modus-wc-bottom-sheet",
       "target": "modus-wc-button",
       "type": "composes",
@@ -4711,11 +4728,51 @@
       ]
     },
     {
+      "source": "modus-wc-button",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-button/modus-wc-button.stories.ts"
+      ]
+    },
+    {
       "source": "modus-wc-button-group",
       "target": "modus-wc-button",
-      "type": "hosts",
+      "type": "slot",
       "files": [
-        "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-dropdown-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-card",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-card/modus-wc-card.stories.ts"
       ]
     },
     {
@@ -4728,10 +4785,26 @@
     },
     {
       "source": "modus-wc-chip",
+      "target": "modus-wc-avatar",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-chip/modus-wc-chip.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-chip",
       "target": "modus-wc-icon",
       "type": "composes",
       "files": [
         "src/components/modus-wc-chip/modus-wc-chip.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-collapse",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-collapse/modus-wc-collapse.stories.ts"
       ]
     },
     {
@@ -4904,10 +4977,42 @@
     },
     {
       "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
       "target": "modus-wc-menu",
       "type": "composes",
       "files": [
         "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-tree-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-tree-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
       ]
     },
     {
@@ -4916,6 +5021,14 @@
       "type": "composes",
       "files": [
         "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-file-dropzone",
+      "target": "modus-wc-progress",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.stories.ts"
       ]
     },
     {
@@ -4944,10 +5057,26 @@
     },
     {
       "source": "modus-wc-menu",
-      "target": "modus-wc-menu-item",
-      "type": "hosts",
+      "target": "modus-wc-button",
+      "type": "slot",
       "files": [
-        "src/components/modus-wc-menu/modus-wc-menu.tsx"
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
       ]
     },
     {
@@ -5004,6 +5133,14 @@
       "type": "composes",
       "files": [
         "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.stories.ts"
       ]
     },
     {
@@ -5071,6 +5208,30 @@
       ]
     },
     {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
       "source": "modus-wc-profile-menu",
       "target": "modus-wc-avatar",
       "type": "composes",
@@ -5120,6 +5281,14 @@
     },
     {
       "source": "modus-wc-progress",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-progress/modus-wc-progress.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-progress",
       "target": "modus-wc-input-label",
       "type": "composes",
       "files": [
@@ -5148,6 +5317,62 @@
       "type": "composes",
       "files": [
         "src/components/modus-wc-select/modus-wc-select.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-dropdown-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-tree-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-tree-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
       ]
     },
     {
@@ -5196,6 +5421,14 @@
       "type": "composes",
       "files": [
         "src/components/modus-wc-table/modus-wc-table.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tabs",
+      "target": "modus-wc-badge",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tabs/modus-wc-tabs.stories.ts"
       ]
     },
     {
@@ -5271,11 +5504,43 @@
       ]
     },
     {
+      "source": "modus-wc-toast",
+      "target": "modus-wc-alert",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-toast/modus-wc-toast.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tooltip",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tooltip/modus-wc-tooltip.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
+      ]
+    },
+    {
       "source": "modus-wc-tree-item",
       "target": "modus-wc-checkbox",
       "type": "composes",
       "files": [
         "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-dropdown-menu",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
       ]
     },
     {
@@ -5288,6 +5553,14 @@
     },
     {
       "source": "modus-wc-tree-item",
+      "target": "modus-wc-menu-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
       "target": "modus-wc-tooltip",
       "type": "composes",
       "files": [
@@ -5296,39 +5569,93 @@
     },
     {
       "source": "modus-wc-tree-menu",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-icon",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
       "target": "modus-wc-tree-item",
       "type": "slot",
       "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts",
         "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-utility-panel",
+      "target": "modus-wc-button",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-utility-panel",
+      "target": "modus-wc-text-input",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
       ]
     }
   ],
   "reverseImpact": {
     "modus-wc-accordion": [],
-    "modus-wc-alert": [],
+    "modus-wc-alert": [
+      "modus-wc-toast"
+    ],
     "modus-wc-app-menu": [],
     "modus-wc-autocomplete": [],
     "modus-wc-avatar": [
+      "modus-wc-autocomplete",
+      "modus-wc-chip",
       "modus-wc-navbar",
       "modus-wc-profile-menu"
     ],
-    "modus-wc-badge": [],
+    "modus-wc-badge": [
+      "modus-wc-tabs"
+    ],
     "modus-wc-bottom-sheet": [],
     "modus-wc-breadcrumbs": [],
     "modus-wc-button": [
+      "modus-wc-accordion",
       "modus-wc-alert",
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
       "modus-wc-bottom-sheet",
       "modus-wc-button-group",
+      "modus-wc-card",
+      "modus-wc-collapse",
       "modus-wc-content-tree",
       "modus-wc-date",
       "modus-wc-dock",
       "modus-wc-dropdown-menu",
       "modus-wc-handle",
+      "modus-wc-menu",
+      "modus-wc-menu-item",
       "modus-wc-modal",
       "modus-wc-navbar",
-      "modus-wc-text-input"
+      "modus-wc-pagination",
+      "modus-wc-panel",
+      "modus-wc-profile-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-table",
+      "modus-wc-text-input",
+      "modus-wc-toast",
+      "modus-wc-tooltip",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu",
+      "modus-wc-utility-panel"
     ],
     "modus-wc-button-group": [],
     "modus-wc-card": [
@@ -5337,12 +5664,16 @@
     "modus-wc-checkbox": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
+      "modus-wc-panel",
       "modus-wc-profile-menu",
+      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tree-item",
       "modus-wc-tree-menu"
@@ -5358,7 +5689,12 @@
     "modus-wc-divider": [],
     "modus-wc-dock": [],
     "modus-wc-dropdown-menu": [
-      "modus-wc-content-tree"
+      "modus-wc-button-group",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
     ],
     "modus-wc-file-dropzone": [],
     "modus-wc-handle": [
@@ -5370,7 +5706,11 @@
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
       "modus-wc-avatar",
+      "modus-wc-badge",
       "modus-wc-bottom-sheet",
+      "modus-wc-button",
+      "modus-wc-button-group",
+      "modus-wc-card",
       "modus-wc-chip",
       "modus-wc-collapse",
       "modus-wc-content-tree",
@@ -5382,17 +5722,25 @@
       "modus-wc-input-feedback",
       "modus-wc-menu",
       "modus-wc-menu-item",
+      "modus-wc-modal",
       "modus-wc-navbar",
       "modus-wc-number-input",
+      "modus-wc-pagination",
+      "modus-wc-panel",
       "modus-wc-profile-menu",
+      "modus-wc-progress",
       "modus-wc-select",
+      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tabs",
       "modus-wc-text-input",
       "modus-wc-textarea",
       "modus-wc-time-input",
+      "modus-wc-toast",
+      "modus-wc-tooltip",
       "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-tree-menu",
+      "modus-wc-utility-panel"
     ],
     "modus-wc-input-feedback": [
       "modus-wc-autocomplete",
@@ -5404,23 +5752,29 @@
       "modus-wc-table",
       "modus-wc-text-input",
       "modus-wc-textarea",
-      "modus-wc-time-input"
+      "modus-wc-time-input",
+      "modus-wc-utility-panel"
     ],
     "modus-wc-input-label": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
       "modus-wc-checkbox",
       "modus-wc-content-tree",
       "modus-wc-date",
       "modus-wc-dropdown-menu",
+      "modus-wc-file-dropzone",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
       "modus-wc-number-input",
+      "modus-wc-panel",
       "modus-wc-profile-menu",
       "modus-wc-progress",
       "modus-wc-radio",
       "modus-wc-select",
+      "modus-wc-side-navigation",
       "modus-wc-slider",
       "modus-wc-switch",
       "modus-wc-table",
@@ -5428,7 +5782,8 @@
       "modus-wc-textarea",
       "modus-wc-time-input",
       "modus-wc-tree-item",
-      "modus-wc-tree-menu"
+      "modus-wc-tree-menu",
+      "modus-wc-utility-panel"
     ],
     "modus-wc-link": [],
     "modus-wc-loader": [
@@ -5442,19 +5797,31 @@
     "modus-wc-menu": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-navbar",
-      "modus-wc-profile-menu"
+      "modus-wc-panel",
+      "modus-wc-profile-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
     ],
     "modus-wc-menu-item": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-navbar",
-      "modus-wc-profile-menu"
+      "modus-wc-panel",
+      "modus-wc-profile-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
     ],
     "modus-wc-modal": [
       "modus-wc-content-tree"
@@ -5470,7 +5837,9 @@
       "modus-wc-profile-menu"
     ],
     "modus-wc-profile-menu": [],
-    "modus-wc-progress": [],
+    "modus-wc-progress": [
+      "modus-wc-file-dropzone"
+    ],
     "modus-wc-radio": [],
     "modus-wc-rating": [],
     "modus-wc-select": [
@@ -5487,7 +5856,8 @@
     "modus-wc-text-input": [
       "modus-wc-autocomplete",
       "modus-wc-content-tree",
-      "modus-wc-navbar"
+      "modus-wc-navbar",
+      "modus-wc-utility-panel"
     ],
     "modus-wc-textarea": [],
     "modus-wc-theme-switcher": [],
@@ -5500,23 +5870,36 @@
     "modus-wc-tooltip": [
       "modus-wc-app-menu",
       "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
       "modus-wc-content-tree",
       "modus-wc-dropdown-menu",
       "modus-wc-menu",
       "modus-wc-menu-item",
       "modus-wc-navbar",
       "modus-wc-pagination",
+      "modus-wc-panel",
       "modus-wc-profile-menu",
+      "modus-wc-side-navigation",
       "modus-wc-table",
       "modus-wc-tree-item",
       "modus-wc-tree-menu"
     ],
     "modus-wc-tree-item": [
+      "modus-wc-button-group",
       "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-tree-item",
       "modus-wc-tree-menu"
     ],
     "modus-wc-tree-menu": [
-      "modus-wc-content-tree"
+      "modus-wc-button-group",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-side-navigation",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
     ],
     "modus-wc-typography": [
       "modus-wc-app-menu",
