@@ -16,7 +16,13 @@
  * The output is deterministic (sorted keys, no timestamps) so CI can diff it.
  */
 
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'fs';
+import {
+  copyFileSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -220,17 +226,6 @@ function toMermaid(edges) {
   return lines.join('\n') + '\n';
 }
 
-function toViewerHtml(graph) {
-  const template = readFileSync(
-    join(__dirname, 'component-graph-viewer.template.html'),
-    'utf-8'
-  );
-  return template.replace(
-    '/*__GRAPH_DATA__*/',
-    `const GRAPH = ${JSON.stringify(graph)};`
-  );
-}
-
 function main() {
   const nodes = readNodesFromCem();
   const knownTags = new Set(nodes.keys());
@@ -262,7 +257,10 @@ function main() {
     JSON.stringify(graph, null, 2) + '\n'
   );
   writeFileSync(join(OUT_DIR, 'component-graph.mmd'), toMermaid(edges));
-  writeFileSync(join(OUT_DIR, 'index.html'), toViewerHtml(graph));
+  copyFileSync(
+    join(__dirname, 'component-graph-viewer.template.html'),
+    join(OUT_DIR, 'index.html')
+  );
 
   console.log(
     `component-graph: ${graph.nodes.length} nodes, ${edges.length} edges ` +
