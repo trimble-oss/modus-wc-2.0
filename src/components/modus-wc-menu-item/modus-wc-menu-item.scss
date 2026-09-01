@@ -96,7 +96,7 @@ modus-wc-menu-item .modus-wc-menu-item {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-size-xs);
       padding-block: var(--modus-wc-spacing-2xs);
-      padding-inline: var(--modus-wc-spacing-xs);
+      padding-inline: var(--modus-wc-spacing-sm);
 
       .modus-wc-menu-item-labels {
         line-height: 20px;
@@ -124,8 +124,8 @@ modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-sm {
     button {
       font-size: var(--modus-wc-font-size-md);
-      padding-block: var(--modus-wc-spacing-2xs);
-      padding-inline: var(--modus-wc-spacing-xs);
+      padding-block: var(--modus-wc-spacing-xs);
+      padding-inline: var(--modus-wc-spacing-sm);
 
       [slot='start-icon'] i {
         font-size: var(--modus-wc-spacing-lg);
