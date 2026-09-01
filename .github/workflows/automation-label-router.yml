@@ -85,7 +85,7 @@ jobs:
             matched=1
           fi
 
-          if grep -qE '^##[[:space:]]*(NEED CLARIFICATION|NOT FEASIBLE)' <<<"${COMMENT_BODY}"; then
+          if grep -qE '^##[[:space:]]*(QA PASSED WITH CONCERNS|QA BLOCKED|NEED CLARIFICATION|NOT FEASIBLE)' <<<"${COMMENT_BODY}"; then
             pulse_label needs-human
             matched=1
           fi
