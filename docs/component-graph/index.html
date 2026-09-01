@@ -303,8 +303,8 @@
           return energy > 0.04 && simTicks < MAX_TICKS;
         }
 
-        function nodeRadius(n, persp) {
-          return (5 + Math.min(10, n.degree * 0.7)) * (persp ?? 1);
+        function nodeRadius(n, perspective) {
+          return (5 + Math.min(10, n.degree * 0.7)) * (perspective ?? 1);
         }
 
         function toScreen(n) {
@@ -316,15 +316,15 @@
           const z1 = n.x * sinY + n.z * cosY;
           const y1 = n.y * cosP - z1 * sinP;
           const z2 = n.y * sinP + z1 * cosP;
-          const persp = 980 / (980 + z2);
+          const perspective = 980 / (980 + z2);
           return {
             x:
               canvas.width / 2 / devicePixelRatio +
-              (x1 + offsetX) * scale * persp,
+              (x1 + offsetX) * scale * perspective,
             y:
               canvas.height / 2 / devicePixelRatio +
-              (y1 + offsetY) * scale * persp,
-            persp,
+              (y1 + offsetY) * scale * perspective,
+            perspective,
             z: z2,
           };
         }
@@ -377,13 +377,13 @@
 
             if (!dim) {
               const angle = Math.atan2(t.y - s.y, t.x - s.x);
-              const r = nodeRadius(e.t, t.persp) + 4;
+              const r = nodeRadius(e.t, t.perspective) + 4;
               const ax = t.x - Math.cos(angle) * r;
               const ay = t.y - Math.sin(angle) * r;
               ctx.fillStyle = stroke;
               ctx.beginPath();
               ctx.moveTo(ax, ay);
-              const head = 7 * t.persp;
+              const head = 7 * t.perspective;
               ctx.lineTo(
                 ax - head * Math.cos(angle - 0.4),
                 ay - head * Math.sin(angle - 0.4)
@@ -401,7 +401,7 @@
             .map((n) => ({ n, p: toScreen(n) }))
             .sort((a, b) => a.p.z - b.p.z);
           for (const { n, p } of drawOrder) {
-            const r = nodeRadius(n, p.persp);
+            const r = nodeRadius(n, p.perspective);
             const matchesQuery = searching && n.tag.includes(query);
             const dimmed = searching
               ? !matchesQuery
@@ -455,7 +455,9 @@
             .map((n) => ({ n, p: toScreen(n) }))
             .sort((a, b) => b.p.z - a.p.z)
             .find(({ n, p }) => {
-              return Math.hypot(p.x - x, p.y - y) <= nodeRadius(n, p.persp) + 4;
+              return (
+                Math.hypot(p.x - x, p.y - y) <= nodeRadius(n, p.perspective) + 4
+              );
             });
           return hit ? hit.n : undefined;
         }
