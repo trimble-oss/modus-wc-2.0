@@ -1593,6 +1593,61 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcImage">
+            <summary>
+            A resilient atomic image component that wraps native &lt;img&gt; tags with consistent sizing, aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Alt">
+            <summary>
+            Accessible text description. Omit or leave empty for decorative images.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
+            <summary>
+            Custom CSS class to apply to the inner container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Fit">
+            <summary>
+            Controls containment, cropping, and aspect ratio preservation.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Shape">
+            <summary>
+            Sets corner radius styling.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Size">
+            <summary>
+            Determines dimensional size tokens.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Src">
+            <summary>
+            The source URL of the image asset.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageError">
+            <summary>
+            Event emitted when the image fails to load.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageLoad">
+            <summary>
+            Event emitted when the image loads successfully.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
             <summary>
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
