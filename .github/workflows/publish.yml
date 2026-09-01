@@ -29,6 +29,12 @@ permissions:
 jobs:
   build-and-publish-wc:
     runs-on: ubuntu-latest
+    # setup-node v7 with registry-url writes
+    # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} and no longer exports a
+    # dummy NODE_AUTH_TOKEN. Without this env, npm publish sends an empty token
+    # and npmjs.org returns a misleading 404 on PUT for scoped packages.
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -92,7 +98,12 @@ jobs:
         run: npm run build:ci
 
       - name: Set npm Registry Auth Token
-        run: npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "NPM_TOKEN secret is empty; cannot publish to npmjs.org." >&2
+            exit 1
+          fi
+          npm config set //registry.npmjs.org/:_authToken "$NODE_AUTH_TOKEN"
 
       - name: Pack the package
         working-directory: dist
@@ -109,7 +120,7 @@ jobs:
 
       - name: Publish npm Package Publicly
         working-directory: dist
-        run: npm publish --registry=https://registry.npmjs.org
+        run: npm publish --access public --registry=https://registry.npmjs.org
 
       - name: Set GitHub Registry Auth Token
         working-directory: dist
