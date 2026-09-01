@@ -1,0 +1,159 @@
+/**
+ * This component uses Tailwind CSS and DaisyUI.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+modus-wc-image {
+  display: inline-flex;
+
+  .modus-wc-image-container {
+    overflow: hidden;
+    position: relative;
+
+    // Loading placeholder — prevents layout flash before the image resolves
+    &.modus-wc-image--loading {
+      background-color: var(--modus-wc-color-base-200);
+    }
+
+    // Shape modifiers
+    &.modus-wc-image--square {
+      border-radius: 0;
+    }
+
+    &.modus-wc-image--rounded {
+      border-radius: 16px;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Strict Box Mode: fit="default" | fit="contain" | fit="none"
+    // Hard-locked width × height per size token; image is clipped to the box.
+    // ─────────────────────────────────────────────────────────────────────────
+    &.modus-wc-image--default,
+    &.modus-wc-image--contain,
+    &.modus-wc-image--none {
+      &.modus-wc-image--sm {
+        height: 128px;
+        width: 128px;
+      }
+
+      &.modus-wc-image--md {
+        height: 192px;
+        width: 288px;
+      }
+
+      &.modus-wc-image--lg {
+        height: 256px;
+        width: 384px;
+      }
+
+      &.modus-wc-image--xl {
+        height: 384px;
+        width: 1486px;
+      }
+
+      .modus-wc-image-img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    &.modus-wc-image--default .modus-wc-image-img {
+      object-fit: cover;
+      object-position: center;
+    }
+
+    &.modus-wc-image--contain .modus-wc-image-img {
+      object-fit: contain;
+      object-position: center;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Fluid Natural Aspect Ratio Mode: fit="scale-down"
+    // Container uses max constraints; image retains intrinsic dimensions.
+    // ─────────────────────────────────────────────────────────────────────────
+    &.modus-wc-image--scale-down {
+      &.modus-wc-image--sm {
+        max-height: 128px;
+        max-width: 128px;
+      }
+
+      &.modus-wc-image--md {
+        max-height: 192px;
+        max-width: 288px;
+      }
+
+      &.modus-wc-image--lg {
+        max-height: 256px;
+        max-width: 384px;
+      }
+
+      &.modus-wc-image--xl {
+        max-height: 384px;
+        max-width: 1486px;
+      }
+    }
+
+    &.modus-wc-image--scale-down .modus-wc-image-img {
+      display: block;
+      height: auto;
+      max-height: inherit;
+      max-width: inherit;
+      object-fit: scale-down;
+      width: 100%;
+    }
+
+    // fit="none": fixed box dimensions (same as cover/contain), image renders
+    // at its intrinsic size and is clipped by overflow: hidden on the container.
+    &.modus-wc-image--none .modus-wc-image-img {
+      display: block;
+      object-fit: none;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Error / Fallback State
+    // Forces fixed dimensions for all fit modes so the fallback placeholder
+    // has a defined bounding box regardless of natural image size.
+    // ─────────────────────────────────────────────────────────────────────────
+    &.modus-wc-image--error {
+      background-color: var(--modus-wc-color-base-200);
+
+      &.modus-wc-image--sm {
+        height: 128px;
+        width: 128px;
+      }
+
+      &.modus-wc-image--md {
+        height: 192px;
+        width: 288px;
+      }
+
+      &.modus-wc-image--lg {
+        height: 256px;
+        width: 384px;
+      }
+
+      &.modus-wc-image--xl {
+        height: 384px;
+        width: 1486px;
+      }
+    }
+  }
+
+  // Fallback icon centered inside the error container
+  .modus-wc-image-fallback {
+    align-items: center;
+    color: var(--modus-wc-color-base-content);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    pointer-events: none;
+    width: 100%;
+
+    .modus-wc-image-fallback-icon {
+      color: var(--modus-wc-color-accent);
+      display: flex;
+      font-size: 48px;
+      pointer-events: none;
+    }
+  }
+}
