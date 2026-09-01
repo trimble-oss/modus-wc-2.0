@@ -617,6 +617,94 @@ describe('modus-wc-text-input', () => {
     expect(toggleIcon?.size).toBe('md');
   });
 
+  it('should apply xs size class when size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input size="xs" aria-label="Extra small input"></modus-wc-text-input>',
+    });
+
+    const field = page.root!.querySelector('label.modus-wc-text-input');
+    expect(field).toHaveClass('modus-wc-input-xs');
+  });
+
+  it('should apply xl size class when size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input size="xl" aria-label="Extra large input"></modus-wc-text-input>',
+    });
+
+    const field = page.root!.querySelector('label.modus-wc-text-input');
+    expect(field).toHaveClass('modus-wc-input-xl');
+  });
+
+  it('should use xs password toggle size when input size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="xs" aria-label="Extra small password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('xs');
+  });
+
+  it('should use lg password toggle size when input size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcButton, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" size="xl" aria-label="Extra large password"></modus-wc-text-input>',
+    });
+
+    const toggleButton = page.root!.querySelector(
+      'modus-wc-button.modus-wc-text-input-password-toggle'
+    ) as HTMLElement & { size?: string };
+
+    expect(toggleButton?.size).toBe('lg');
+  });
+
+  it('should map xs input size to sm label and feedback sizes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-text-input size="xs" label="Email" aria-label="Extra small input"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.feedback = { level: 'error', message: 'Required' };
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & { size?: string };
+    const feedback = page.root!.querySelector(
+      'modus-wc-input-feedback'
+    ) as HTMLElement & { size?: string };
+
+    expect(label?.size).toBe('sm');
+    expect(feedback?.size).toBe('sm');
+  });
+
+  it('should map xl input size to lg label and feedback sizes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-text-input size="xl" label="Email" aria-label="Extra large input"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.feedback = { level: 'error', message: 'Required' };
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & { size?: string };
+    const feedback = page.root!.querySelector(
+      'modus-wc-input-feedback'
+    ) as HTMLElement & { size?: string };
+
+    expect(label?.size).toBe('lg');
+    expect(feedback?.size).toBe('lg');
+  });
+
   it('should default effective input type to text when type is unset', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput],
@@ -629,5 +717,23 @@ describe('modus-wc-text-input', () => {
 
     const input = page.root!.querySelector('input');
     expect(input?.getAttribute('type')).toBe('text');
+  });
+
+  it('should use md label size when size is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputLabel],
+      html: '<modus-wc-text-input label="Email" aria-label="Email"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.size = undefined;
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & {
+      size?: string;
+    };
+    expect(label?.size).toBe('md');
   });
 });

@@ -49,7 +49,7 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   value: string;
@@ -110,7 +110,7 @@ const meta: Meta<TextInputArgs> = {
       ],
     },
     size: {
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     spellcheck: {
       description:

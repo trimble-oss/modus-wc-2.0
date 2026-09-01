@@ -411,6 +411,10 @@ export namespace Components {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -421,6 +425,10 @@ export namespace Components {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -1859,7 +1867,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -2300,7 +2308,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'
@@ -4513,6 +4521,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -4523,6 +4535,10 @@ declare namespace LocalJSX {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -6239,7 +6255,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -6769,7 +6785,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'

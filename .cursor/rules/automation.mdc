@@ -84,6 +84,50 @@ When posting screenshots or other visual evidence on a PR (for `/ask`, `/refine`
 - Do **not** commit image files to the repository (for example `.github/pr-assets/`). Evidence is for PR discussion only and must not be part of the merge diff.
 - When GitHub must render images inline, use GitHub-hosted comment attachments (`user-images.githubusercontent.com`), not `raw.githubusercontent.com` paths that require committing files on the branch.
 
+## API stability
+
+Guidelines for preserving the public TypeScript and component API surface. Additional project-specific rules may be appended to this file over time.
+
+### Do not add new exported types
+
+Adding a new named export to `src/components/types.ts` (or re-exporting it from `components.d.ts`) is a **breaking change** for TypeScript consumers who import from `@trimble-oss/modus-wc`.
+
+When a component prop needs values beyond an existing shared type, **extend inline on the prop** instead of introducing a new exported alias.
+
+#### Preferred pattern
+
+Use inline unions on `@Prop()` and local interfaces, matching existing components:
+
+```typescript
+// Good — inline union (see modus-wc-pagination, modus-wc-switch)
+@Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
+
+// Bad — new exported type
+export type ModusInputSize = ModusSize | 'xs' | 'xl';
+@Prop() size?: ModusInputSize = 'md';
+```
+
+#### When widening size props
+
+- Keep `ModusSize` unchanged (`'sm' | 'md' | 'lg'`).
+- Add `'xs'` and/or `'xl'` as literal union members on the component prop only.
+- Map extended sizes to supported child sizes via constants (e.g. `INPUT_SIZE_TO_LABEL_SIZE`) keyed by `ModusSize | 'xs' | 'xl'`.
+
+## `/refine` manual verification
+
+When `/refine` changes visual styling (SCSS, Tailwind, theme tokens, padding, sizing), **manually verify in Storybook** before pushing — do not rely on unit tests or lint alone.
+
+1. Start Storybook (`npm start` or ensure port 6006 is up after `tailwind` + `embed` steps).
+2. Open the affected component story and exercise the changed props (e.g. `size="xs"` / `size="xl"`).
+3. Compare against the **previous size** (e.g. `md`) and the **target theme** from the refine request (modern / classic / connect).
+4. Capture walkthrough artifacts under `/opt/cursor/artifacts/` (screenshots or a short recording).
+5. In the PR comment, report:
+   - What was changed and why.
+   - What visual defects were found (clipping, chevron overlap, label misalignment, etc.) or confirmation that the fix looks correct.
+   - Computed-style notes when relevant (e.g. fixed `height` + `padding-block` + `line-height` on native `<select>`).
+
+If the fix breaks the UI, explain the root cause in the PR comment. Do not claim QA passed. Comment `QA-rerun: add` only when code is pushed for re-test.
+
 ## Reply surface
 
 - `/approve` on an issue → implement, open PR, subscribe to that PR's comments/reviews from the human.
