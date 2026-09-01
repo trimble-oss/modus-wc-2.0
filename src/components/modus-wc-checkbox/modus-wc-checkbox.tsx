@@ -139,7 +139,6 @@ export class ModusWcCheckbox {
             forId={effectiveId}
             labelText={this.label}
             required={this.required}
-            size={this.size}
           />
         )}
       </Host>

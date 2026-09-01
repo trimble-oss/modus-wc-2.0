@@ -12,6 +12,12 @@ modus-wc-card .modus-wc-card {
     margin-bottom: 0;
   }
 
+  .modus-wc-card-title:empty,
+  .modus-wc-card-subtitle:empty,
+  .modus-wc-card-actions:empty {
+    display: none;
+  }
+
   &.modus-wc-card-bordered {
     background-color: var(--modus-wc-color-base-page);
   }
@@ -23,7 +29,7 @@ modus-wc-card .modus-wc-card {
   }
 
   .modus-wc-card-body {
-    gap: unset;
+    gap: var(--modus-wc-spacing-sm);
   }
 
   .modus-wc-card-actions:not(:empty) {
