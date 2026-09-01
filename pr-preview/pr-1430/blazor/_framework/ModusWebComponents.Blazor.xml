@@ -3550,7 +3550,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Step">
             <summary>
-            Granularity in seconds. When set, minute/second wheels and generated datalist options respect this step. Overrides the default implied by showSeconds for option generation.
+            Granularity in seconds. Sets the increment used by the minute and second picker wheels and by arrow-key stepping. A step under 60 also reveals the seconds segment. Suggestion-list options are generated from intervalMinutes, not from this value.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Value">
