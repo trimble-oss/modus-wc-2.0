@@ -125,7 +125,7 @@
         <modus-wc-typography
           hierarchy="p"
           size="sm"
-          label="Solid edge: JSX composition • Dashed edge: slot composition • Click a node for details, drag to pan, scroll to zoom"
+          label="Solid edge: JSX composition • Dashed edge: slot or hosted children • Click a node for details, drag to pan, scroll to zoom"
         ></modus-wc-typography>
       </modus-wc-card>
     </div>
@@ -311,7 +311,7 @@
             const s = toScreen(e.s);
             const t = toScreen(e.t);
             ctx.strokeStyle = dim ? 'rgba(203,205,214,0.35)' : '#9fa4b1';
-            ctx.setLineDash(e.type === 'slot' ? [4, 4] : []);
+            ctx.setLineDash(e.type === 'composes' ? [] : [4, 4]);
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(s.x, s.y);

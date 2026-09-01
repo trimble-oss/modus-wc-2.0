@@ -10,6 +10,7 @@ import {
   stripComments,
   extractChildTags,
   extractSlotTags,
+  extractHostedTags,
   buildReverseImpact,
 } from './generate-component-graph.mjs';
 
@@ -95,6 +96,28 @@ test('should strip block and line comments but keep code', () => {
   assert.ok(stripped.includes('KEEP_ME'));
   assert.ok(stripped.includes('const x = 1;'));
   assert.ok(!stripped.includes('gone'));
+});
+
+test('should extract hosted tags from querySelectorAll', () => {
+  const source = `
+    componentDidLoad() {
+      this.buttonElements = this.el.querySelectorAll('modus-wc-button');
+    }
+  `;
+  const hosted = extractHostedTags(source, 'modus-wc-button-group', KNOWN);
+  assert.deepEqual([...hosted], ['modus-wc-button']);
+});
+
+test('should ignore self querySelectorAll tags', () => {
+  const source = `
+    const allItems = rootMenu.querySelectorAll('modus-wc-menu-item');
+  `;
+  const hosted = extractHostedTags(
+    source,
+    'modus-wc-menu-item',
+    new Set(['modus-wc-menu-item', 'modus-wc-button'])
+  );
+  assert.equal(hosted.size, 0);
 });
 
 test('should compute transitive parents in reverse impact map', () => {
