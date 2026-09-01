@@ -354,25 +354,16 @@ function toMermaid(edges) {
     'flowchart LR',
   ];
   const id = (tag) => tag.replace(/^modus-wc-/, '').replace(/-/g, '_');
+  const arrows = {
+    composes: '-->',
+    slot: '-.->|slot|',
+    hosts: '-.->|hosts|',
+    storybook: '==>|storybook|',
+  };
   for (const edge of edges) {
-    let arrow = '-->';
-    switch (edge.type) {
-      case 'composes':
-        arrow = '-->';
-        break;
-      case 'slot':
-        arrow = '-.->|slot|';
-        break;
-      case 'hosts':
-        arrow = '-.->|hosts|';
-        break;
-      case 'storybook':
-        arrow = '==>|storybook|';
-        break;
-      default: {
-        const unexpected = edge.type;
-        throw new Error(`Unknown edge type: ${unexpected}`);
-      }
+    const arrow = arrows[edge.type];
+    if (!arrow) {
+      throw new Error(`Unknown edge type: ${edge.type}`);
     }
     lines.push(
       `  ${id(edge.source)}["${edge.source}"] ${arrow} ${id(edge.target)}["${edge.target}"]`
