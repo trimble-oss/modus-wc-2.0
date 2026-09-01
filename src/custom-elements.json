@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+          "description": "A customizable accordion component used for showing and hiding related groups of content.\n\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
           "name": "ModusWcAccordion",
           "members": [
             {
@@ -41,7 +41,7 @@
               "kind": "field",
               "name": "expandedChange",
               "type": {
-                "text": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>"
+                "text": "EventEmitter<{\n    expanded: boolean;\n    index: number;\n  }>"
               },
               "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
             }
@@ -1994,6 +1994,22 @@
             }
           ],
           "attributes": [
+            {
+              "name": "aria-current",
+              "fieldName": "currentAria",
+              "description": "Maps to the inner button's aria-current attribute.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "aria-label",
+              "fieldName": "buttonAriaLabel",
+              "description": "Maps to the inner button's aria-label attribute.",
+              "type": {
+                "text": "string"
+              }
+            },
             {
               "name": "color",
               "fieldName": "color",
@@ -4143,7 +4159,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+          "description": "A customizable icon component used to render Modus icons.\n\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
           "name": "ModusWcIcon",
           "members": [
             {
@@ -4326,7 +4342,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+          "description": "A customizable input label component.\n\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
           "name": "ModusWcInputLabel",
           "members": [
             {
@@ -7772,6 +7788,11 @@
             },
             {
               "kind": "method",
+              "name": "onPasswordToggleGuardsChange",
+              "privacy": "protected"
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -8338,7 +8359,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable input component used to create time inputs.",
+          "description": "A customizable time input with a Modus text field and dropdown\n(scrollable picker wheels or a datalist of interval options).\n\n`value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).\nThe field uses a segmented `--:--` skeleton (native time-input style) with\nkeyboard segment editing. `hourFormat` controls display and the Modus picker\n(12h wheels + AM/PM vs 24h). Open the picker with the clock button or\nAlt+ArrowDown.\n\nAdheres to WCAG 2.2 standards.",
           "name": "ModusWcTimeInput",
           "members": [
             {
@@ -8348,6 +8369,46 @@
                 "text": "HTMLElement"
               },
               "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleClickOutside",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleEscapeKey",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFormatChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleInteractiveLockChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleValueChange"
+            },
+            {
+              "kind": "method",
+              "name": "handleWindowBlur"
             },
             {
               "kind": "method",
@@ -8384,7 +8445,6 @@
             {
               "name": "datalist-id",
               "fieldName": "datalistId",
-              "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document.",
               "type": {
                 "text": "string"
               }
@@ -8393,7 +8453,7 @@
               "name": "datalist-options",
               "fieldName": "datalistOptions",
               "default": "[]",
-              "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.",
+              "description": "Pre-defined time options for the suggestion list.\nValues must be in `HH:mm` or `HH:mm:ss` (24-hour) format.\nWhen provided (non-empty), the clock menu shows this list instead of picker wheels.\nWhen empty, options can still be generated from `interval-minutes` if that attribute is set.",
               "type": {
                 "text": "string[]"
               }
@@ -8416,6 +8476,15 @@
               }
             },
             {
+              "name": "hour-format",
+              "fieldName": "hourFormat",
+              "default": "'24h'",
+              "description": "Hour clock for the Modus picker wheels / datalist labels and the field display.\n- `24h` (default): hours wheel 00–23\n- `12h`: hours wheel 01–12 with AM/PM\n\n`value` / `inputChange` always stay in 24h format.",
+              "type": {
+                "text": "TimeHourFormat"
+              }
+            },
+            {
               "name": "input-id",
               "fieldName": "inputId",
               "description": "The ID of the input element.",
@@ -8426,7 +8495,16 @@
             {
               "name": "input-tab-index",
               "fieldName": "inputTabIndex",
-              "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
+              "description": "Determine the control's relative ordering for sequential focus navigation.",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "interval-minutes",
+              "fieldName": "intervalMinutes",
+              "default": "15",
+              "description": "Interval in minutes used to generate suggestion-list options when\n`datalistOptions` is empty. Set the `interval-minutes` attribute to opt into\nthe list (instead of picker wheels). Default: 15.",
               "type": {
                 "text": "number"
               }
@@ -8450,7 +8528,7 @@
             {
               "name": "min",
               "fieldName": "min",
-              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`",
+              "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
@@ -8458,7 +8536,7 @@
             {
               "name": "name",
               "fieldName": "name",
-              "description": "Name of the form control. Submitted with the form as part of a name/value pair.",
+              "description": "Name of the form control.",
               "type": {
                 "text": "string"
               }
@@ -8485,7 +8563,7 @@
               "name": "show-seconds",
               "fieldName": "showSeconds",
               "default": "false",
-              "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute.",
+              "description": "Displays seconds in the field and picker.\nInternally treats step as 1 second when no explicit `step` is set.",
               "type": {
                 "text": "boolean"
               }
@@ -8502,7 +8580,7 @@
             {
               "name": "step",
               "fieldName": "step",
-              "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided.",
+              "description": "Granularity in seconds. When set, minute/second wheels and generated\ndatalist options respect this step. Overrides the default implied by\n`showSeconds` for option generation.",
               "type": {
                 "text": "number"
               }
@@ -8511,7 +8589,7 @@
               "name": "value",
               "fieldName": "value",
               "default": "''",
-              "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`.",
+              "description": "The value of the time input in 24-hour format with leading zeros:\n`HH:mm` or `HH:mm:ss`.",
               "type": {
                 "text": "string"
               }
@@ -8533,7 +8611,7 @@
               "type": {
                 "text": "EventEmitter<Event>"
               },
-              "description": "Event emitted when the input value changes."
+              "description": "Event emitted when the input value changes. `detail` is an InputEvent; read `detail.target.value` (24h)."
             },
             {
               "kind": "field",

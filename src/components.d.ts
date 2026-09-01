@@ -26,6 +26,7 @@ import { ColumnDef, SortingState, TableOptions } from "@tanstack/table-core";
 import { Table } from "./components/modus-wc-table/modus-wc-table.core";
 import { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 import { IThemeConfig } from "./providers/theme/theme.types";
+import { TimeHourFormat } from "./components/modus-wc-time-input/utils/time-format";
 import { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export { IAppMenuItem } from "./components/modus-wc-app-menu/modus-wc-app-menu";
 export { AppName, AutocompleteTypes, DaisySize, Density, IAutocompleteItem, IAutocompleteNoResults, IContentTreeToolbar, IDateRange, IFileDropzoneFeedback, IInputFeedbackProp, ITreeNode, LogoName, ModusSize, Orientation, PopoverPlacement, SelectionMode, TextFieldTypes, TypographyHierarchy, TypographySize, TypographyWeight, WeekStartDay } from "./components/types";
@@ -48,6 +49,7 @@ export { ColumnDef, SortingState, TableOptions } from "@tanstack/table-core";
 export { Table } from "./components/modus-wc-table/modus-wc-table.core";
 export { ITab } from "./components/modus-wc-tabs/modus-wc-tabs";
 export { IThemeConfig } from "./providers/theme/theme.types";
+export { TimeHourFormat } from "./components/modus-wc-time-input/utils/time-format";
 export { ToastPosition } from "./components/modus-wc-toast/modus-wc-toast";
 export namespace Components {
     /**
@@ -411,6 +413,10 @@ export namespace Components {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -421,6 +427,10 @@ export namespace Components {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -2418,7 +2428,14 @@ export namespace Components {
         "customClass"?: string;
     }
     /**
-     * A customizable input component used to create time inputs.
+     * A customizable time input with a Modus text field and dropdown
+     * (scrollable picker wheels or a datalist of interval options).
+     * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
+     * The field uses a segmented `--:--` skeleton (native time-input style) with
+     * keyboard segment editing. `hourFormat` controls display and the Modus picker
+     * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+     * Alt+ArrowDown.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
         /**
@@ -2436,11 +2453,11 @@ export namespace Components {
          */
         "customClass"?: string;
         /**
-          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+          * @deprecated Native HTML datalist is no longer used. Prefer `datalistOptions`. Kept for backward compatibility; when set, the suggestion list is shown.
          */
         "datalistId"?: string;
         /**
-          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+          * Pre-defined time options for the suggestion list. Values must be in `HH:mm` or `HH:mm:ss` (24-hour) format. When provided (non-empty), the clock menu shows this list instead of picker wheels. When empty, options can still be generated from `interval-minutes` if that attribute is set.
           * @default []
          */
         "datalistOptions": string[];
@@ -2454,13 +2471,23 @@ export namespace Components {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * Hour clock for the Modus picker wheels / datalist labels and the field display. - `24h` (default): hours wheel 00–23 - `12h`: hours wheel 01–12 with AM/PM  `value` / `inputChange` always stay in 24h format.
+          * @default '24h'
+         */
+        "hourFormat"?: TimeHourFormat;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
         /**
-          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+          * Determine the control's relative ordering for sequential focus navigation.
          */
         "inputTabIndex"?: number;
+        /**
+          * Interval in minutes used to generate suggestion-list options when `datalistOptions` is empty. Set the `interval-minutes` attribute to opt into the list (instead of picker wheels). Default: 15.
+          * @default 15
+         */
+        "intervalMinutes"?: number;
         /**
           * The text to display within the label.
          */
@@ -2470,11 +2497,11 @@ export namespace Components {
          */
         "max"?: string;
         /**
-          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss`.
          */
         "min"?: string;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
+          * Name of the form control.
          */
         "name"?: string;
         /**
@@ -2488,7 +2515,7 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
-          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+          * Displays seconds in the field and picker. Internally treats step as 1 second when no explicit `step` is set.
           * @default false
          */
         "showSeconds"?: boolean;
@@ -2498,11 +2525,11 @@ export namespace Components {
          */
         "size"?: ModusSize;
         /**
-          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+          * Granularity in seconds. Sets the increment used by the minute and second picker wheels and by arrow-key stepping. A step under 60 also reveals the seconds segment. Suggestion-list options are generated from `intervalMinutes`, not from this value.
          */
         "step"?: number;
         /**
-          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+          * The value of the time input in 24-hour format with leading zeros: `HH:mm` or `HH:mm:ss`.
           * @default ''
          */
         "value": string;
@@ -3891,7 +3918,14 @@ declare global {
         "inputFocus": FocusEvent;
     }
     /**
-     * A customizable input component used to create time inputs.
+     * A customizable time input with a Modus text field and dropdown
+     * (scrollable picker wheels or a datalist of interval options).
+     * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
+     * The field uses a segmented `--:--` skeleton (native time-input style) with
+     * keyboard segment editing. `hourFormat` controls display and the Modus picker
+     * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+     * Alt+ArrowDown.
+     * Adheres to WCAG 2.2 standards.
      */
     interface HTMLModusWcTimeInputElement extends Components.ModusWcTimeInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusWcTimeInputElementEventMap>(type: K, listener: (this: HTMLModusWcTimeInputElement, ev: ModusWcTimeInputCustomEvent<HTMLModusWcTimeInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4513,6 +4547,10 @@ declare namespace LocalJSX {
      */
     interface ModusWcButton {
         /**
+          * Maps to the inner button's aria-label attribute.
+         */
+        "buttonAriaLabel"?: string;
+        /**
           * The color variant of the button.
           * @default 'primary'
          */
@@ -4523,6 +4561,10 @@ declare namespace LocalJSX {
     | 'danger'
     | 'neutral'
     | 'success';
+        /**
+          * Maps to the inner button's aria-current attribute.
+         */
+        "currentAria"?: string;
         /**
           * Custom CSS class to apply to the button element.
           * @default ''
@@ -6903,7 +6945,14 @@ declare namespace LocalJSX {
         "onThemeChange"?: (event: ModusWcThemeSwitcherCustomEvent<IThemeConfig>) => void;
     }
     /**
-     * A customizable input component used to create time inputs.
+     * A customizable time input with a Modus text field and dropdown
+     * (scrollable picker wheels or a datalist of interval options).
+     * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
+     * The field uses a segmented `--:--` skeleton (native time-input style) with
+     * keyboard segment editing. `hourFormat` controls display and the Modus picker
+     * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+     * Alt+ArrowDown.
+     * Adheres to WCAG 2.2 standards.
      */
     interface ModusWcTimeInput {
         /**
@@ -6921,11 +6970,11 @@ declare namespace LocalJSX {
          */
         "customClass"?: string;
         /**
-          * ID of a `<datalist>` element that contains pre-defined time options. The value must be the ID of a `<datalist>` element in the same document.
+          * @deprecated Native HTML datalist is no longer used. Prefer `datalistOptions`. Kept for backward compatibility; when set, the suggestion list is shown.
          */
         "datalistId"?: string;
         /**
-          * The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format.
+          * Pre-defined time options for the suggestion list. Values must be in `HH:mm` or `HH:mm:ss` (24-hour) format. When provided (non-empty), the clock menu shows this list instead of picker wheels. When empty, options can still be generated from `interval-minutes` if that attribute is set.
           * @default []
          */
         "datalistOptions"?: string[];
@@ -6939,13 +6988,23 @@ declare namespace LocalJSX {
          */
         "feedback"?: IInputFeedbackProp;
         /**
+          * Hour clock for the Modus picker wheels / datalist labels and the field display. - `24h` (default): hours wheel 00–23 - `12h`: hours wheel 01–12 with AM/PM  `value` / `inputChange` always stay in 24h format.
+          * @default '24h'
+         */
+        "hourFormat"?: TimeHourFormat;
+        /**
           * The ID of the input element.
          */
         "inputId"?: string;
         /**
-          * Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).
+          * Determine the control's relative ordering for sequential focus navigation.
          */
         "inputTabIndex"?: number;
+        /**
+          * Interval in minutes used to generate suggestion-list options when `datalistOptions` is empty. Set the `interval-minutes` attribute to opt into the list (instead of picker wheels). Default: 15.
+          * @default 15
+         */
+        "intervalMinutes"?: number;
         /**
           * The text to display within the label.
          */
@@ -6955,11 +7014,11 @@ declare namespace LocalJSX {
          */
         "max"?: string;
         /**
-          * Minimum value. Format: `HH:mm`, `HH:mm:ss.`
+          * Minimum value. Format: `HH:mm`, `HH:mm:ss`.
          */
         "min"?: string;
         /**
-          * Name of the form control. Submitted with the form as part of a name/value pair.
+          * Name of the form control.
          */
         "name"?: string;
         /**
@@ -6967,7 +7026,7 @@ declare namespace LocalJSX {
          */
         "onInputBlur"?: (event: ModusWcTimeInputCustomEvent<FocusEvent>) => void;
         /**
-          * Event emitted when the input value changes.
+          * Event emitted when the input value changes. `detail` is an InputEvent; read `detail.target.value` (24h).
          */
         "onInputChange"?: (event: ModusWcTimeInputCustomEvent<Event>) => void;
         /**
@@ -6985,7 +7044,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Displays the time input format as `HH:mm:ss` if `true`. Internally sets the `step` to 1 second. If a `step` value is provided, it will override this attribute.
+          * Displays seconds in the field and picker. Internally treats step as 1 second when no explicit `step` is set.
           * @default false
          */
         "showSeconds"?: boolean;
@@ -6995,11 +7054,11 @@ declare namespace LocalJSX {
          */
         "size"?: ModusSize;
         /**
-          * Specifies the granularity that the `value` must adhere to. Value of step given in seconds. Default value is 60 seconds. Overrides the `seconds` attribute if both are provided.
+          * Granularity in seconds. Sets the increment used by the minute and second picker wheels and by arrow-key stepping. A step under 60 also reveals the seconds segment. Suggestion-list options are generated from `intervalMinutes`, not from this value.
          */
         "step"?: number;
         /**
-          * The value of the time input. Always in 24-hour format that includes leading zeros: `HH:mm` or `HH:mm:ss`, regardless of input format which is likely to be selected based on user's locale (or by the user agent). If time includes seconds the format is always `HH:mm:ss`.
+          * The value of the time input in 24-hour format with leading zeros: `HH:mm` or `HH:mm:ss`.
           * @default ''
          */
         "value"?: string;
@@ -7555,7 +7614,14 @@ declare module "@stencil/core" {
              */
             "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
-             * A customizable input component used to create time inputs.
+             * A customizable time input with a Modus text field and dropdown
+             * (scrollable picker wheels or a datalist of interval options).
+             * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
+             * The field uses a segmented `--:--` skeleton (native time-input style) with
+             * keyboard segment editing. `hourFormat` controls display and the Modus picker
+             * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+             * Alt+ArrowDown.
+             * Adheres to WCAG 2.2 standards.
              */
             "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
             /**
