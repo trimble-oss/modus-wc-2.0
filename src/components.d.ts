@@ -13,6 +13,7 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 import { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
+import { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -35,6 +36,7 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 export { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
+export { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -1153,6 +1155,40 @@ export namespace Components {
         "variant"?: 'outlined' | 'solid';
     }
     /**
+     * A resilient atomic image component that wraps native <img> tags with consistent sizing,
+     * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+     */
+    interface ModusWcImage {
+        /**
+          * Accessible text description. Omit or leave empty for decorative images.
+         */
+        "alt"?: string;
+        /**
+          * Custom CSS class to apply to the inner container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Controls containment, cropping, and aspect ratio preservation.
+          * @default 'default'
+         */
+        "fit"?: ImageFit;
+        /**
+          * Sets corner radius styling.
+          * @default 'square'
+         */
+        "shape"?: ImageShape;
+        /**
+          * Determines dimensional size tokens.
+          * @default 'md'
+         */
+        "size"?: ImageSize;
+        /**
+          * The source URL of the image asset.
+         */
+        "src": string;
+    }
+    /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -1995,6 +2031,31 @@ export namespace Components {
         "value": number;
     }
     /**
+     * A status indicator with a pulsing dot and semantic label for conveying system state.
+     */
+    interface ModusWcStatus {
+        /**
+          * Custom CSS class to apply to the status container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The visible status label. Defaults to the variant name when omitted.
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Whether the dot displays a pulsing halo animation.
+          * @default true
+         */
+        "pulse"?: boolean;
+        /**
+          * The semantic status variant.
+          * @default 'active'
+         */
+        "variant": 'active' | 'warning' | 'danger';
+    }
+    /**
      * Used to show a list of steps in a process.
      */
     interface ModusWcStepper {
@@ -2827,6 +2888,10 @@ export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcFileDropzoneElement;
 }
+export interface ModusWcImageCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcImageElement;
+}
 export interface ModusWcMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcMenuElement;
@@ -3381,6 +3446,28 @@ declare global {
         prototype: HTMLModusWcIconElement;
         new (): HTMLModusWcIconElement;
     };
+    interface HTMLModusWcImageElementEventMap {
+        "imageLoad": Event;
+        "imageError": Event;
+    }
+    /**
+     * A resilient atomic image component that wraps native <img> tags with consistent sizing,
+     * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+     */
+    interface HTMLModusWcImageElement extends Components.ModusWcImage, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcImageElementEventMap>(type: K, listener: (this: HTMLModusWcImageElement, ev: ModusWcImageCustomEvent<HTMLModusWcImageElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcImageElementEventMap>(type: K, listener: (this: HTMLModusWcImageElement, ev: ModusWcImageCustomEvent<HTMLModusWcImageElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcImageElement: {
+        prototype: HTMLModusWcImageElement;
+        new (): HTMLModusWcImageElement;
+    };
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
@@ -3717,6 +3804,15 @@ declare global {
     var HTMLModusWcSliderElement: {
         prototype: HTMLModusWcSliderElement;
         new (): HTMLModusWcSliderElement;
+    };
+    /**
+     * A status indicator with a pulsing dot and semantic label for conveying system state.
+     */
+    interface HTMLModusWcStatusElement extends Components.ModusWcStatus, HTMLStencilElement {
+    }
+    var HTMLModusWcStatusElement: {
+        prototype: HTMLModusWcStatusElement;
+        new (): HTMLModusWcStatusElement;
     };
     interface HTMLModusWcStepperElementEventMap {
         "stepClick": { index: number };
@@ -4066,6 +4162,7 @@ declare global {
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-handle": HTMLModusWcHandleElement;
         "modus-wc-icon": HTMLModusWcIconElement;
+        "modus-wc-image": HTMLModusWcImageElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-link": HTMLModusWcLinkElement;
@@ -4086,6 +4183,7 @@ declare global {
         "modus-wc-side-navigation": HTMLModusWcSideNavigationElement;
         "modus-wc-skeleton": HTMLModusWcSkeletonElement;
         "modus-wc-slider": HTMLModusWcSliderElement;
+        "modus-wc-status": HTMLModusWcStatusElement;
         "modus-wc-stepper": HTMLModusWcStepperElement;
         "modus-wc-switch": HTMLModusWcSwitchElement;
         "modus-wc-table": HTMLModusWcTableElement;
@@ -5416,6 +5514,48 @@ declare namespace LocalJSX {
         "variant"?: 'outlined' | 'solid';
     }
     /**
+     * A resilient atomic image component that wraps native <img> tags with consistent sizing,
+     * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+     */
+    interface ModusWcImage {
+        /**
+          * Accessible text description. Omit or leave empty for decorative images.
+         */
+        "alt"?: string;
+        /**
+          * Custom CSS class to apply to the inner container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Controls containment, cropping, and aspect ratio preservation.
+          * @default 'default'
+         */
+        "fit"?: ImageFit;
+        /**
+          * Event emitted when the image fails to load.
+         */
+        "onImageError"?: (event: ModusWcImageCustomEvent<Event>) => void;
+        /**
+          * Event emitted when the image loads successfully.
+         */
+        "onImageLoad"?: (event: ModusWcImageCustomEvent<Event>) => void;
+        /**
+          * Sets corner radius styling.
+          * @default 'square'
+         */
+        "shape"?: ImageShape;
+        /**
+          * Determines dimensional size tokens.
+          * @default 'md'
+         */
+        "size"?: ImageSize;
+        /**
+          * The source URL of the image asset.
+         */
+        "src": string;
+    }
+    /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -6399,6 +6539,31 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     /**
+     * A status indicator with a pulsing dot and semantic label for conveying system state.
+     */
+    interface ModusWcStatus {
+        /**
+          * Custom CSS class to apply to the status container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * The visible status label. Defaults to the variant name when omitted.
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Whether the dot displays a pulsing halo animation.
+          * @default true
+         */
+        "pulse"?: boolean;
+        /**
+          * The semantic status variant.
+          * @default 'active'
+         */
+        "variant"?: 'active' | 'warning' | 'danger';
+    }
+    /**
      * Used to show a list of steps in a process.
      */
     interface ModusWcStepper {
@@ -7311,6 +7476,7 @@ declare namespace LocalJSX {
         "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-handle": ModusWcHandle;
         "modus-wc-icon": ModusWcIcon;
+        "modus-wc-image": ModusWcImage;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-link": ModusWcLink;
@@ -7331,6 +7497,7 @@ declare namespace LocalJSX {
         "modus-wc-side-navigation": ModusWcSideNavigation;
         "modus-wc-skeleton": ModusWcSkeleton;
         "modus-wc-slider": ModusWcSlider;
+        "modus-wc-status": ModusWcStatus;
         "modus-wc-stepper": ModusWcStepper;
         "modus-wc-switch": ModusWcSwitch;
         "modus-wc-table": ModusWcTable;
@@ -7455,6 +7622,11 @@ declare module "@stencil/core" {
              */
             "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
             /**
+             * A resilient atomic image component that wraps native <img> tags with consistent sizing,
+             * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+             */
+            "modus-wc-image": LocalJSX.ModusWcImage & JSXBase.HTMLAttributes<HTMLModusWcImageElement>;
+            /**
              * A customizable feedback component used to provide additional context related to form input interactions.
              * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
              */
@@ -7541,6 +7713,10 @@ declare module "@stencil/core" {
              * A customizable slider component
              */
             "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
+            /**
+             * A status indicator with a pulsing dot and semantic label for conveying system state.
+             */
+            "modus-wc-status": LocalJSX.ModusWcStatus & JSXBase.HTMLAttributes<HTMLModusWcStatusElement>;
             /**
              * Used to show a list of steps in a process.
              */
