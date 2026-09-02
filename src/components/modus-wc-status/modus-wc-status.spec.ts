@@ -68,6 +68,30 @@ describe('modus-wc-status', () => {
     ).toBe('Danger');
   });
 
+  it('should hide pulse indicator when pulse is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status pulse="false"></modus-wc-status>',
+    });
+
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+    expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
+      'modus-wc-status--no-pulse'
+    );
+  });
+
+  it('should hide pulse indicator when pulse property is set to false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status></modus-wc-status>',
+    });
+
+    page.root!.pulse = false;
+    await page.waitForChanges();
+
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+  });
+
   it('should apply author-supplied aria-label via inherited attributes', async () => {
     const page = await newSpecPage({
       components: [ModusWcStatus],

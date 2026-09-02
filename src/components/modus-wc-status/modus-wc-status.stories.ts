@@ -45,7 +45,7 @@ const Template: Story = {
     <modus-wc-status
       custom-class="${ifDefined(args['custom-class'])}"
       label="${ifDefined(args.label)}"
-      pulse="${args.pulse}"
+      .pulse=${args.pulse}
       variant="${args.variant}"
     ></modus-wc-status>
   `,
@@ -53,16 +53,6 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
-};
-
-export const AllVariants: Story = {
-  render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 16px;">
-      <modus-wc-status variant="active"></modus-wc-status>
-      <modus-wc-status variant="warning"></modus-wc-status>
-      <modus-wc-status variant="danger"></modus-wc-status>
-    </div>
-  `,
 };
 
 export const ShadowDomParent: Story = {
@@ -79,7 +69,7 @@ export const ShadowDomParent: Story = {
           };
           statusEl.customClass = v['custom-class'] || '';
           statusEl.label = v.label || '';
-          statusEl.pulse = Boolean(v.pulse);
+          statusEl.pulse = v.pulse;
           statusEl.variant = v.variant;
         },
       });

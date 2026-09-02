@@ -30,7 +30,7 @@ export class ModusWcStatus {
   @Prop() label?: string = '';
 
   /** Whether the dot displays a pulsing halo animation. */
-  @Prop() pulse?: boolean = true;
+  @Prop() pulse: boolean = true;
 
   /** The semantic status variant. */
   @Prop() variant: 'active' | 'warning' | 'danger' = 'active';
@@ -38,6 +38,10 @@ export class ModusWcStatus {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  private isPulseEnabled(): boolean {
+    return this.pulse !== false;
   }
 
   private getDisplayLabel(): string {
@@ -51,7 +55,7 @@ export class ModusWcStatus {
   private getClasses(): string {
     const classList = ['modus-wc-status'];
     const propClasses = convertPropsToClasses({
-      pulse: this.pulse,
+      pulse: this.isPulseEnabled(),
       variant: this.variant,
     });
 
@@ -71,7 +75,7 @@ export class ModusWcStatus {
         >
           <div class="modus-wc-status-dot-wrapper" role="presentation">
             <div class="modus-wc-status-dot"></div>
-            {this.pulse && <div class="modus-wc-status-pulse"></div>}
+            {this.isPulseEnabled() && <div class="modus-wc-status-pulse"></div>}
           </div>
           <span class="modus-wc-status-label">{this.getDisplayLabel()}</span>
         </div>
