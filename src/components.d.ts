@@ -1869,7 +1869,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -2310,7 +2310,7 @@ export namespace Components {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'
@@ -2604,6 +2604,11 @@ export namespace Components {
           * @default 'auto'
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
+          * @default 0
+         */
+        "showDelay"?: number;
         /**
           * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */
@@ -6281,7 +6286,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The value of the control.
           * @default ''
@@ -6811,7 +6816,7 @@ declare namespace LocalJSX {
           * The size of the input.
           * @default 'md'
          */
-        "size"?: ModusSize;
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * Type of form control.
           * @default 'text'
@@ -7137,6 +7142,11 @@ declare namespace LocalJSX {
           * @default 'auto'
          */
         "position"?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
+        /**
+          * Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
+          * @default 0
+         */
+        "showDelay"?: number;
         /**
           * The ID of the tooltip tip element (`role="tooltip"`). For screen reader support, add `aria-describedby` with this value to your trigger element.
          */

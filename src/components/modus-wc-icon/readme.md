@@ -38,6 +38,7 @@ A customizable icon component used to render Modus icons.
  - [modus-wc-dock](../modus-wc-dock)
  - [modus-wc-file-dropzone](../modus-wc-file-dropzone)
  - [modus-wc-handle](../modus-wc-handle)
+ - [modus-wc-image](../modus-wc-image)
  - [modus-wc-input-feedback](../modus-wc-input-feedback)
  - [modus-wc-menu-item](../modus-wc-menu-item)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
@@ -62,6 +63,7 @@ graph TD;
   modus-wc-dock --> modus-wc-icon
   modus-wc-file-dropzone --> modus-wc-icon
   modus-wc-handle --> modus-wc-icon
+  modus-wc-image --> modus-wc-icon
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-menu-item --> modus-wc-icon
   modus-wc-profile-menu --> modus-wc-icon

@@ -59,6 +59,26 @@ modus-wc-text-input {
         }
       }
 
+      &.modus-wc-input-xs {
+        padding: 0 var(--modus-wc-spacing-sm);
+
+        input {
+          max-height: var(--modus-wc-size-xs);
+        }
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+          height: var(--modus-wc-line-height-sm);
+          width: var(--modus-wc-line-height-sm);
+        }
+      }
+
+      &.modus-wc-input-xl {
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+          height: var(--modus-wc-line-height-lg);
+          width: var(--modus-wc-line-height-lg);
+        }
+      }
+
       .modus-wc-text-input-icon {
         &.modus-wc-text-input-icon-clear {
           cursor: pointer;
@@ -165,11 +185,86 @@ modus-wc-text-input {
         outline: none;
       }
 
+      &.modus-wc-input-xs .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+
       &.modus-wc-input-sm .modus-wc-clear-icon-container {
         min-width: var(--modus-wc-line-height-sm);
       }
 
       &.modus-wc-input-lg .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-lg);
+      }
+
+      &.modus-wc-input-xl .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-lg);
+      }
+    }
+  }
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-xs)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-xs)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-xl)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-xl)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: var(--modus-wc-line-height-lg);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,
+[data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-text-input {
+  &.modus-wc-input {
+    &.modus-wc-input-xs {
+      font-size: var(--modus-wc-font-size-sm);
+      line-height: 1.25rem;
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+
+      input,
+      input::placeholder {
+        line-height: 1.25rem;
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+    }
+
+    &.modus-wc-input-xl {
+      font-size: var(--modus-wc-font-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-clear-icon-container {
         min-width: var(--modus-wc-line-height-lg);
       }
     }
@@ -182,7 +277,26 @@ modus-wc-text-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
 
-    // TODO - add support for xs and xl once added to Modus Figma
+    &.modus-wc-input-xs {
+      font-size: var(--modus-wc-font-size-sm);
+      height: var(--modus-wc-size-xs);
+      line-height: 1.25rem;
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+
+      input,
+      input::placeholder {
+        line-height: 1.25rem;
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+    }
 
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
@@ -203,6 +317,27 @@ modus-wc-text-input {
       height: var(--modus-wc-input-height-lg);
       line-height: var(--modus-wc-line-height-lg);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+    }
+
+    &.modus-wc-input-xl {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-lg);
+      }
     }
 
     &:focus-within {

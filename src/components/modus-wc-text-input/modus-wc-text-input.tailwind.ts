@@ -11,7 +11,7 @@ export const convertPropsToClasses = ({
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
   readOnly?: boolean;
-  size?: DaisySize;
+  size?: DaisySize | 'xl';
 }): string => {
   let classes = '';
 

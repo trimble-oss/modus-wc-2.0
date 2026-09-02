@@ -6563,7 +6563,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs' | 'xl'"
               }
             },
             {
@@ -7980,7 +7980,7 @@
               "default": "'md'",
               "description": "The size of the input.",
               "type": {
-                "text": "ModusSize"
+                "text": "ModusSize | 'xs' | 'xl'"
               }
             },
             {
@@ -8802,7 +8802,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on\npointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,\nthe tooltip remains open and Escape does not dismiss it.\nUse the contentElement prop to supply rich HTML content to the tooltip such as multiline text.\nFor plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.\n\nFor screen reader support, set `tooltip-id` on this component and matching `aria-describedby`\non the trigger (e.g. modus-wc-button).",
+          "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on\npointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,\nthe tooltip remains open and Escape does not dismiss it.\n\nUse the contentElement prop to supply rich HTML content to the tooltip such as multiline text.\nFor plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.\n\nFor screen reader support, set `tooltip-id` on this component and matching `aria-describedby`\non the trigger (e.g. modus-wc-button).",
           "name": "ModusWcTooltip",
           "members": [
             {
@@ -8888,6 +8888,19 @@
             },
             {
               "kind": "method",
+              "name": "handlePointerEnter",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ],
+              "description": "Fires before the emulated mouseenter on touch, so mouseenter knows its source."
+            },
+            {
+              "kind": "method",
               "name": "handlePositionChange"
             },
             {
@@ -8950,6 +8963,15 @@
               "description": "The position that the tooltip will render in relation to the element.",
               "type": {
                 "text": "'auto' | 'top' | 'right' | 'bottom' | 'left'"
+              }
+            },
+            {
+              "name": "show-delay",
+              "fieldName": "showDelay",
+              "default": "0",
+              "description": "Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.\n\n200ms is recommended if you're adding a delay. The delay is skipped\nif a tooltip closed within the last 300ms, on focus, and for touch input.",
+              "type": {
+                "text": "number"
               }
             },
             {

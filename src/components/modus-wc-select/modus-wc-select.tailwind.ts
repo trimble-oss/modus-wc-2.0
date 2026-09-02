@@ -7,7 +7,7 @@ export const convertPropsToClasses = ({
 }: {
   bordered?: boolean;
   feedback?: IInputFeedbackProp;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }): string => {
   let classes = '';
 
