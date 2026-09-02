@@ -157,6 +157,10 @@ If the fix breaks the UI, explain the root cause in the PR comment. Do not claim
 - `/refine` → patch the same branch; conversation-comment routing + `QA-rerun: add`.
 - QA → label-added only (`qa-full`, `qa-rerun`, `qa-skip`). No PR-opened trigger.
 
+## PR Work Item
+
+When opening a PR from `/approve`, fill `.github/pull_request_template.md` Work Item as `Closes #<issue-number>` (GitHub closing keyword). Do not write `Issue #<n>` — that does not close the issue on merge.
+
 ## Slash commands
 
 | Command | Surface | Effect |
