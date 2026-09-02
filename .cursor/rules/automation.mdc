@@ -38,26 +38,48 @@ QA-depth: none | visual-slice | functional | composition
 QA-scope: <component tags>
 QA-themes: modern-only | classic-only | both | n/a
 QA-assert: <what must hold>
-QA-source: <Figma or issue-screenshot URL> | none
+QA-source: <url> | none
+QA-source-kind: figma | blueprint | issue-screenshot | none
+QA-source-path: public/modus-llm/components/<slug>/ | none
 QA-verify: 1) <state × size × theme> 2) …
 QA-graph: none | tag → dependents
 ```
 
 - `QA-source`: new feature or new variant **must** be a URL, not `none`. Existing component with `none` → QA compares Storybook to **main**.
+- `QA-source-kind` / `QA-source-path`: Dev fills these. See **QA-source resolution** below.
 - `QA-verify`: numbered scenarios QA must execute. Include hover/disabled/pressed when those states exist.
 - `QA-graph`: fill from [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (runtime edges only, depth 1). Empty array → `none`. Do not invent neighbors from memory.
 
 After `/refine` or a `qa-failed` repair, conversation-comment `QA-rerun: add` plus an updated routing block.
 
+## QA-source resolution (Dev and QA)
+
+Design sources are **Figma** or **Modus Blueprint** (`https://modus.trimble.com`). Both agents use this table. **Never** browser-scrape modus.trimble.com (login, scrolling, flaky DOM). **Never** `git clone` or `npm install` [trimble-oss/modus-blueprint](https://github.com/trimble-oss/modus-blueprint). Fetch **only** the mapped files with GitHub MCP `get_file_contents` (`owner=trimble-oss`, `repo=modus-blueprint`, `ref=main`).
+
+| `QA-source` host | Kind | What to read |
+|------------------|------|----------------|
+| `figma.com` / `embed.figma.com` | `figma` | Figma MCP (`get_design_context` / screenshot). `QA-source-path: none`. |
+| `modus.trimble.com` | `blueprint` | GitHub files in modus-blueprint (see map). Do not open the live site. |
+| Issue image attachments | `issue-screenshot` | Those PNGs. `QA-source-path: none`. |
+| `none` | `none` | Existing component: Storybook on **main** vs PR branch. |
+
+Blueprint URL map (kebab-case the last path segment; try `select` then `Select` on 404):
+
+| Live URL | Files in `trimble-oss/modus-blueprint` |
+|----------|----------------------------------------|
+| `/components/:name` | `public/modus-llm/components/<slug>/` — `overview.md`, `styling.md`, `playground.md`, `use-cases.md`, `accessibility.md` as needed |
+| `/patterns/:id` | `public/modus-llm/patterns/<slug>/` and `patterns/<slug>/` |
+| Optional Figma for that name | `src/components/FigmaEmbedMapping.ts` then Figma MCP if a figma URL is listed |
+
+**Dev:** On `/approve` and `/refine`, classify issue/PR links, fetch those files so the patch matches tokens/anatomy (not a remembered Storybook default), and set `QA-source`, `QA-source-kind`, `QA-source-path`. Do not tell QA to open the website.
+
+**QA:** Prefer Dev's `QA-source-path`. If missing, map the URL with the same table. Compare Storybook pixels to Figma MCP screenshots **or** expected states in those markdown files. Screenshot Storybook, not the Blueprint site. Path 404 or GitHub 403 → `## QA BLOCKED` (cannot resolve source). Never scrape as fallback.
+
 ## QA evidence and verdicts
 
 QA is a senior design-system reviewer. npm/lint/test is a **gate**, never a **verdict**. `## QA PASSED` requires visual evidence whenever the diff touches `.scss`, `.tailwind.ts`, component source, or stories.
 
-Source of truth:
-
-- New feature / new variant → compare Storybook to `QA-source`. Missing source → `## QA BLOCKED`.
-- Existing + source given → compare to source.
-- Existing + `QA-source: none` → screenshot the same states on **main**, then on the PR branch.
+Source of truth: follow **QA-source resolution**. New feature / new variant with missing source → `## QA BLOCKED`. Existing + `none` → main vs PR Storybook. Do not scrape modus.trimble.com.
 
 Impact: trust `reverseImpact` over Dev's `QA-graph` if they disagree; note the mismatch. Cap: QA-scope ∪ dependents, max 3 browser targets unless human AC names more.
 
