@@ -3695,7 +3695,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTooltip">
             <summary>
-            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
+            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it.  Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.Content">
@@ -3722,6 +3722,11 @@
             <summary>
             The position that the tooltip will render in relation to the element.
             Allowed values: "auto", "top", "right", "bottom", "left"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.ShowDelay">
+            <summary>
+            Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.TooltipId">
