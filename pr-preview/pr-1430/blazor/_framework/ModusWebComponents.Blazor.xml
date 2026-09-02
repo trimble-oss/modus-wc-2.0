@@ -1593,6 +1593,61 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcImage">
+            <summary>
+            A resilient atomic image component that wraps native &lt;img&gt; tags with consistent sizing, aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Alt">
+            <summary>
+            Accessible text description. Omit or leave empty for decorative images.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
+            <summary>
+            Custom CSS class to apply to the inner container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Fit">
+            <summary>
+            Controls containment, cropping, and aspect ratio preservation.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Shape">
+            <summary>
+            Sets corner radius styling.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Size">
+            <summary>
+            Determines dimensional size tokens.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Src">
+            <summary>
+            The source URL of the image asset.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageError">
+            <summary>
+            Event emitted when the image fails to load.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageLoad">
+            <summary>
+            Event emitted when the image loads successfully.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
             <summary>
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
@@ -3464,7 +3519,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTimeInput">
             <summary>
-            A customizable time input with a Modus text field and dropdown (scrollable picker wheels or a datalist of interval options).  value is always stored and emitted in 24-hour format (HH:mm or HH:mm:ss). The field uses a segmented --:-- skeleton (native time-input style) with keyboard segment editing. hourFormat controls display and the Modus picker (12h wheels + AM/PM vs 24h). Open the picker with the clock button or Alt+ArrowDown.  Adheres to WCAG 2.2 standards.
+            A customizable time input with a Modus text field and dropdown (scrollable picker wheels or a datalist of interval options).  value is always stored and emitted in 24-hour format (HH:mm or HH:mm:ss). The field uses a segmented --:-- skeleton (native time-input style) with keyboard segment editing. format controls display and the Modus picker (12hrs wheels + AM/PM vs 24hrs). Open the picker with the clock button or Alt+ArrowDown.  Adheres to WCAG 2.2 standards.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.AutoComplete">
@@ -3488,9 +3543,9 @@
             Whether the form control is disabled.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.HourFormat">
+        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Format">
             <summary>
-            Hour clock for the Modus picker wheels / datalist labels and the field display. - 24h (default): hours wheel 00–23 - 12h: hours wheel 01–12 with AM/PM  value / inputChange always stay in 24h format.
+            Hour clock for the Modus picker wheels / datalist labels and the field display. - 24hrs (default): hours wheel 00–23 - 12hrs: hours wheel 01–12 with AM/PM  value / inputChange always stay in 24-hour storage format (HH:mm / HH:mm:ss).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.InputId">
@@ -3505,7 +3560,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.IntervalMinutes">
             <summary>
-            Interval in minutes used to generate suggestion-list options when datalistOptions is empty. Set the interval-minutes attribute to opt into the list (instead of picker wheels). Default: 15.
+            Interval in minutes used to generate suggestion-list options when variant is datalist and datalistOptions is empty. Default: 15.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Label">
@@ -3558,9 +3613,15 @@
             The value of the time input in 24-hour format with leading zeros: HH:mm or HH:mm:ss.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Variant">
+            <summary>
+            Dropdown mode for the clock menu. - picker (default): scrollable hour / minute / (optional) second wheels - datalist: interval or explicit option list  Non-empty datalistOptions or deprecated datalistId also force datalist mode.
+            Allowed values: "datalist", "picker"
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.DatalistOptions">
             <summary>
-            Pre-defined time options for the suggestion list. Values must be in HH:mm or HH:mm:ss (24-hour) format. When provided (non-empty), the clock menu shows this list instead of picker wheels. When empty, options can still be generated from interval-minutes if that attribute is set.
+            Pre-defined time options for the suggestion list. Values must be in HH:mm or HH:mm:ss (24-hour) format. When provided (non-empty), the clock menu shows this list instead of picker wheels.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Feedback">
@@ -3585,7 +3646,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.OnInputChange">
             <summary>
-            Event emitted when the input value changes. detail is an InputEvent; read detail.target.value (24h).
+            Event emitted when the input value changes. target.value is always 24h (HH:mm / HH:mm:ss).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.OnInputFocus">
@@ -3645,7 +3706,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTooltip">
             <summary>
-            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
+            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it.  Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.Content">
@@ -3672,6 +3733,11 @@
             <summary>
             The position that the tooltip will render in relation to the element.
             Allowed values: "auto", "top", "right", "bottom", "left"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.ShowDelay">
+            <summary>
+            Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.TooltipId">
