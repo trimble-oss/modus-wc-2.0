@@ -1397,4 +1397,150 @@ describe('modus-wc-tooltip', () => {
       globalThis.setTimeout = originalSetTimeout;
     }
   }, 30000);
+
+  describe('show delay and warm window', () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    // Earlier tests close tooltips at the real clock time; jumping Date.now far
+    // forward guarantees the page reads as cold regardless of test order.
+    const coldPage = () =>
+      jest.spyOn(Date, 'now').mockReturnValue(Number.MAX_SAFE_INTEGER);
+
+    const captureTimers = () => {
+      const scheduled: Array<{ fn: () => void; ms?: number }> = [];
+      jest.spyOn(globalThis, 'setTimeout').mockImplementation(((
+        fn: () => void,
+        ms?: number
+      ) => {
+        scheduled.push({ fn, ms });
+        return 0;
+      }) as unknown as typeof setTimeout);
+      return scheduled;
+    };
+
+    it('should show immediately on hover by default (show-delay 0)', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should wait showDelay before showing on hover when the page is cold', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="200"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+      const scheduled = captureTimers();
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+
+      // Not visible yet; a 200ms show timer is pending
+      expect(page.rootInstance.isVisible).toBe(false);
+      expect(scheduled[0]?.ms).toBe(200);
+
+      scheduled[0].fn();
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should cancel a pending show on mouseleave without warming the page', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="200"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+      const scheduled = captureTimers();
+      const clearTimeoutSpy = jest.spyOn(globalThis, 'clearTimeout');
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      page.root?.dispatchEvent(new MouseEvent('mouseleave'));
+
+      expect(clearTimeoutSpy).toHaveBeenCalled();
+      expect(page.rootInstance.isVisible).toBe(false);
+
+      // A sweep that never opened a tooltip must not warm the page:
+      // the next hover is delayed again rather than instant
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      expect(page.rootInstance.isVisible).toBe(false);
+      expect(scheduled[1]?.ms).toBe(200);
+    });
+
+    it('should show instantly on hover while the page is warm', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div>
+          <modus-wc-tooltip content="A" tooltip-id="warm-a"><button>A</button></modus-wc-tooltip>
+          <modus-wc-tooltip content="B" show-delay="200" tooltip-id="warm-b"><button>B</button></modus-wc-tooltip>
+        </div>`,
+      });
+
+      const [tooltipA, tooltipB] = Array.from(
+        page.body.querySelectorAll('modus-wc-tooltip')
+      );
+
+      // Open and close A to warm the page
+      tooltipA.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+      expect(document.getElementById('warm-a')?.style.display).toBe('block');
+      tooltipA.dispatchEvent(new MouseEvent('mouseleave'));
+      await page.waitForChanges();
+      expect(document.getElementById('warm-a')?.style.display).toBe('none');
+
+      // B has a 200ms delay but opens instantly because the page is warm
+      tooltipB.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+      expect(document.getElementById('warm-b')?.style.display).toBe('block');
+    });
+
+    it('should show immediately on keyboard focus even when the page is cold', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="200"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+      page.root?.dispatchEvent(new Event('focusin', { bubbles: true }));
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should show immediately on touch even when a show delay is set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="200"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+
+      // A tap fires pointerenter (pointerType: touch) before the emulated mouseenter
+      const pointerEnter = new MouseEvent('pointerenter');
+      Object.defineProperty(pointerEnter, 'pointerType', { value: 'touch' });
+      page.root?.dispatchEvent(pointerEnter);
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should cancel a pending show when Escape is pressed during the delay', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="20"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+
+      // Give the cancelled 20ms timer time to have fired if it survived
+      await new Promise((resolve) => globalThis.setTimeout(resolve, 50));
+      expect(page.rootInstance.isVisible).toBe(false);
+    });
+  });
 });
