@@ -50,4 +50,30 @@ describe('modus-wc-status', () => {
     const status = page.root?.querySelector('.modus-wc-status');
     expect(status?.getAttribute('role')).toBe('status');
   });
+
+  it('should keep accessible name in sync when variant changes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status variant="active"></modus-wc-status>',
+    });
+
+    expect(page.root?.getAttribute('aria-label')).toBeNull();
+
+    page.root!.variant = 'danger';
+    await page.waitForChanges();
+
+    expect(page.root?.getAttribute('aria-label')).toBeNull();
+    expect(
+      page.root?.querySelector('.modus-wc-status-label')?.textContent?.trim()
+    ).toBe('Danger');
+  });
+
+  it('should apply author-supplied aria-label via inherited attributes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status aria-label="System health" variant="warning"></modus-wc-status>',
+    });
+    const status = page.root?.querySelector('.modus-wc-status');
+    expect(status?.getAttribute('aria-label')).toBe('System health');
+  });
 });

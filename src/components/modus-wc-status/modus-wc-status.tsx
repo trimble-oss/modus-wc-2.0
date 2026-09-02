@@ -37,11 +37,6 @@ export class ModusWcStatus {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = this.getDisplayLabel();
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
