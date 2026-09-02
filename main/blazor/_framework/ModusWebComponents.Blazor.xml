@@ -2902,6 +2902,42 @@
             Emitted when the input gains focus.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcStatus">
+            <summary>
+            A status indicator with a pulsing dot and semantic label for conveying system state.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.CustomClass">
+            <summary>
+            Custom CSS class to apply to the status container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Label">
+            <summary>
+            The visible status label. Defaults to the variant name when omitted.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Pulse">
+            <summary>
+            Whether the dot displays a pulsing halo animation.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Variant">
+            <summary>
+            The semantic status variant.
+            Allowed values: "active", "warning", "danger"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcStepper">
             <summary>
             Used to show a list of steps in a process.
