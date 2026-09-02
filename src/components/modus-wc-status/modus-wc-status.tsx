@@ -40,16 +40,18 @@ export class ModusWcStatus {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
-  private isPulseEnabled(): boolean {
-    return this.pulse !== false;
-  }
-
   private getDisplayLabel(): string {
     if (this.label) {
       return this.label;
     }
 
     return VARIANT_LABELS[this.variant];
+  }
+
+  private isPulseEnabled(): boolean {
+    const pulse = this.pulse as boolean | string | undefined;
+
+    return pulse !== false && pulse !== 'false';
   }
 
   private getClasses(): string {

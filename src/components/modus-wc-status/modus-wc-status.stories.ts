@@ -40,7 +40,7 @@ export default meta;
 
 type Story = StoryObj<StatusArgs>;
 
-const Template: Story = {
+export const Default: Story = {
   render: (args) => html`
     <modus-wc-status
       custom-class="${ifDefined(args['custom-class'])}"
@@ -49,10 +49,6 @@ const Template: Story = {
       variant="${args.variant}"
     ></modus-wc-status>
   `,
-};
-
-export const Default: Story = {
-  ...Template,
 };
 
 export const ShadowDomParent: Story = {
