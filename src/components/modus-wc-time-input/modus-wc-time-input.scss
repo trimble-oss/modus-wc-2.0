@@ -50,12 +50,12 @@ modus-wc-time-input {
     }
 
     // 12h HH:mm AM/PM — period suffix is wider than a seconds column
-    &:has(.modus-wc-time-input--12h) .modus-wc-time-input {
+    &:has(.modus-wc-time-input--12hrs) .modus-wc-time-input {
       width: 7.25rem; // 116px
     }
 
     // 12h HH:mm:ss AM/PM — widest
-    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12h)
+    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12hrs)
       .modus-wc-time-input {
       width: 8.625rem; // 138px
     }
@@ -81,11 +81,11 @@ modus-wc-time-input {
       width: 8rem; // 128px
     }
 
-    &:has(.modus-wc-time-input--12h) .modus-wc-time-input {
+    &:has(.modus-wc-time-input--12hrs) .modus-wc-time-input {
       width: 8.5rem; // 136px
     }
 
-    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12h)
+    &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12hrs)
       .modus-wc-time-input {
       width: 10.125rem; // 162px
     }
@@ -107,6 +107,7 @@ modus-wc-time-input {
     align-items: center;
     background: transparent;
     border: none;
+    border-radius: var(--radius-button);
     color: var(--modus-wc-color-base-content);
     cursor: pointer;
     display: inline-flex;
@@ -120,6 +121,15 @@ modus-wc-time-input {
     padding: 0;
     position: absolute;
     transform: translateY(-50%);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
+    }
 
     &:disabled {
       cursor: not-allowed;
@@ -204,6 +214,15 @@ modus-wc-time-input {
       background-color: var(--modus-wc-color-primary-pale);
       color: var(--modus-wc-color-base-content);
     }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
+    }
   }
 
   .time-dropdown--datalist {
@@ -241,6 +260,15 @@ modus-wc-time-input {
 
     &.is-selected {
       background-color: var(--modus-wc-color-primary-pale);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
     }
   }
 

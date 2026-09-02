@@ -24,10 +24,10 @@ import {
   clampTime,
   format24h,
   formatDisplay,
-  is12HourFormat,
+  is12hrsFormat,
   parse24h,
   parseDisplay,
-  TimeHourFormat,
+  TimeFormat,
 } from './utils/time-format';
 import {
   buildCircularWheelOptions,
@@ -63,8 +63,8 @@ import {
  *
  * `value` is always stored and emitted in 24-hour format (`HH:mm` or `HH:mm:ss`).
  * The field uses a segmented `--:--` skeleton (native time-input style) with
- * keyboard segment editing. `hourFormat` controls display and the Modus picker
- * (12h wheels + AM/PM vs 24h). Open the picker with the clock button or
+ * keyboard segment editing. `format` controls display and the Modus picker
+ * (`12hrs` wheels + AM/PM vs `24hrs`). Open the picker with the clock button or
  * Alt+ArrowDown.
  *
  * Adheres to WCAG 2.2 standards.
@@ -117,10 +117,18 @@ export class ModusWcTimeInput {
   @Prop() customClass?: string = '';
 
   /**
+   * Dropdown mode for the clock menu.
+   * - `picker` (default): scrollable hour / minute / (optional) second wheels
+   * - `datalist`: interval or explicit option list
+   *
+   * Non-empty `datalistOptions` or deprecated `datalistId` also force datalist mode.
+   */
+  @Prop() variant?: 'datalist' | 'picker' = 'picker';
+
+  /**
    * Pre-defined time options for the suggestion list.
    * Values must be in `HH:mm` or `HH:mm:ss` (24-hour) format.
    * When provided (non-empty), the clock menu shows this list instead of picker wheels.
-   * When empty, options can still be generated from `interval-minutes` if that attribute is set.
    */
   @Prop({ mutable: true }) datalistOptions: string[] = [];
 
@@ -138,12 +146,12 @@ export class ModusWcTimeInput {
 
   /**
    * Hour clock for the Modus picker wheels / datalist labels and the field display.
-   * - `24h` (default): hours wheel 00–23
-   * - `12h`: hours wheel 01–12 with AM/PM
+   * - `24hrs` (default): hours wheel 00–23
+   * - `12hrs`: hours wheel 01–12 with AM/PM
    *
-   * `value` / `inputChange` always stay in 24h format.
+   * `value` / `inputChange` always stay in 24-hour storage format (`HH:mm` / `HH:mm:ss`).
    */
-  @Prop() hourFormat?: TimeHourFormat = '24h';
+  @Prop() format?: TimeFormat = '24hrs';
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -153,8 +161,7 @@ export class ModusWcTimeInput {
 
   /**
    * Interval in minutes used to generate suggestion-list options when
-   * `datalistOptions` is empty. Set the `interval-minutes` attribute to opt into
-   * the list (instead of picker wheels). Default: 15.
+   * `variant` is `datalist` and `datalistOptions` is empty. Default: 15.
    */
   @Prop() intervalMinutes?: number = 15;
 
@@ -202,8 +209,8 @@ export class ModusWcTimeInput {
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /** Event emitted when the input value changes. `detail` is an InputEvent; read `detail.target.value` (24h). */
-  @StencilEvent() inputChange!: EventEmitter<Event>;
+  /** Event emitted when the input value changes. `target.value` is always 24h (`HH:mm` / `HH:mm:ss`). */
+  @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
   /** Event emitted when the input gains focus. */
   @StencilEvent() inputFocus!: EventEmitter<FocusEvent>;
@@ -216,7 +223,7 @@ export class ModusWcTimeInput {
     }
   }
 
-  @Watch('hourFormat')
+  @Watch('format')
   @Watch('showSeconds')
   handleFormatChange() {
     if (!this.hasFocus) {
@@ -272,6 +279,12 @@ export class ModusWcTimeInput {
         if (this.wheelScrollCleanups.length === 0) {
           this.bindCircularWheelListeners();
         }
+        if (!this.useDatalist) {
+          const focusTarget = this.dropdownRef?.querySelector<HTMLElement>(
+            '.time-wheel-option[tabindex="0"]'
+          );
+          focusTarget?.focus();
+        }
       });
     } else {
       this.unbindCircularWheelListeners();
@@ -286,6 +299,9 @@ export class ModusWcTimeInput {
 
   disconnectedCallback() {
     this.unbindCircularWheelListeners();
+    if (this.inputRef) {
+      this.inputRef.removeEventListener('beforeinput', this.handleBeforeInput);
+    }
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -321,8 +337,8 @@ export class ModusWcTimeInput {
     }
   }
 
-  private get resolvedHourFormat(): TimeHourFormat {
-    return is12HourFormat(this.hourFormat ?? '24h') ? '12h' : '24h';
+  private get resolvedFormat(): TimeFormat {
+    return is12hrsFormat(this.format ?? '24hrs') ? '12hrs' : '24hrs';
   }
 
   private get dropdownId(): string {
@@ -330,12 +346,16 @@ export class ModusWcTimeInput {
   }
 
   private get useDatalist(): boolean {
+    if (this.variant === 'datalist') {
+      return true;
+    }
     if ((this.datalistOptions?.length ?? 0) > 0) {
       return true;
     }
     if (this.datalistId) {
       return true;
     }
+    // Deprecated: markup opt-in without variant. Property-only assignment does not switch modes.
     return this.el.hasAttribute('interval-minutes');
   }
 
@@ -361,7 +381,7 @@ export class ModusWcTimeInput {
   }
 
   private getSegments(): ITimeSegment[] {
-    return getSegments(this.effectiveShowSeconds, this.resolvedHourFormat);
+    return getSegments(this.effectiveShowSeconds, this.resolvedFormat);
   }
 
   private getActiveSegment(): ITimeSegment {
@@ -371,7 +391,7 @@ export class ModusWcTimeInput {
       const seg = getSegmentAtCaret(
         caret,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.activeSegmentKind = seg.kind;
       return seg;
@@ -401,7 +421,14 @@ export class ModusWcTimeInput {
   }
 
   private closeDropdown() {
+    const focusInDropdown =
+      this.dropdownRef != null &&
+      document.activeElement != null &&
+      this.dropdownRef.contains(document.activeElement);
     this.showDropdown = false;
+    if (focusInDropdown) {
+      requestAnimationFrame(() => this.inputRef?.focus());
+    }
   }
 
   private toggleDropdown = () => {
@@ -435,8 +462,8 @@ export class ModusWcTimeInput {
       classList.push('modus-wc-time-input--with-seconds');
     }
 
-    if (this.resolvedHourFormat === '12h') {
-      classList.push('modus-wc-time-input--12h');
+    if (this.resolvedFormat === '12hrs') {
+      classList.push('modus-wc-time-input--12hrs');
     }
 
     const propClasses = convertPropsToClasses({
@@ -459,7 +486,7 @@ export class ModusWcTimeInput {
     this.ariaLiveText = getAriaLiveLabel(
       this.displayValue,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
   }
 
@@ -468,15 +495,12 @@ export class ModusWcTimeInput {
     this.displayValue = displayFromValue(
       next24h,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
     this.updateAriaLive();
-    const synthetic = {
+    this.inputChange.emit({
       target: { value: next24h },
-      bubbles: true,
-      cancelable: true,
-    } as unknown as Event;
-    this.inputChange.emit(synthetic);
+    } as unknown as InputEvent);
   }
 
   private commitDisplay(nextDisplay: string, activeKind: SegmentKind) {
@@ -487,13 +511,13 @@ export class ModusWcTimeInput {
       isSkeletonDisplayComplete(
         nextDisplay,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       )
     ) {
       const parsed = parseSkeletonDisplay(
         nextDisplay,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       if (parsed) {
         const clamped = clampTime(parsed, this.min, this.max);
@@ -506,7 +530,7 @@ export class ModusWcTimeInput {
           this.displayValue = formatDisplay(
             clamped,
             this.effectiveShowSeconds,
-            this.resolvedHourFormat
+            this.resolvedFormat
           );
         }
         return;
@@ -533,13 +557,13 @@ export class ModusWcTimeInput {
       isSkeletonDisplayComplete(
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       )
     ) {
       const parsed = parseSkeletonDisplay(
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       if (parsed) {
         const clamped = clampTime(parsed, this.min, this.max);
@@ -551,7 +575,7 @@ export class ModusWcTimeInput {
           this.displayValue = formatDisplay(
             clamped,
             this.effectiveShowSeconds,
-            this.resolvedHourFormat
+            this.resolvedFormat
           );
         }
       } else {
@@ -559,7 +583,7 @@ export class ModusWcTimeInput {
       }
     } else if (
       this.displayValue !==
-      getSkeleton(this.effectiveShowSeconds, this.resolvedHourFormat)
+      getSkeleton(this.effectiveShowSeconds, this.resolvedFormat)
     ) {
       this.isInvalid = true;
     } else {
@@ -591,7 +615,7 @@ export class ModusWcTimeInput {
       const seg = getSegmentAtCaret(
         caret,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.selectSegment(seg);
     });
@@ -609,7 +633,7 @@ export class ModusWcTimeInput {
 
     const parsed =
       parse24h(pasted) ??
-      parseDisplay(pasted, this.effectiveShowSeconds, this.resolvedHourFormat);
+      parseDisplay(pasted, this.effectiveShowSeconds, this.resolvedFormat);
     if (!parsed) {
       return;
     }
@@ -634,7 +658,7 @@ export class ModusWcTimeInput {
         seg,
         1,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat,
+        this.resolvedFormat,
         this.minuteStep,
         this.secondStep
       );
@@ -654,7 +678,7 @@ export class ModusWcTimeInput {
         seg,
         -1,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat,
+        this.resolvedFormat,
         this.minuteStep,
         this.secondStep
       );
@@ -665,7 +689,7 @@ export class ModusWcTimeInput {
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
       this.selectSegment(
-        getPrevSegment(seg, this.effectiveShowSeconds, this.resolvedHourFormat)
+        getPrevSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
       );
       return;
     }
@@ -673,7 +697,7 @@ export class ModusWcTimeInput {
     if (event.key === 'ArrowRight') {
       event.preventDefault();
       this.selectSegment(
-        getNextSegment(seg, this.effectiveShowSeconds, this.resolvedHourFormat)
+        getNextSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
       );
       return;
     }
@@ -685,7 +709,7 @@ export class ModusWcTimeInput {
         seg,
         'min',
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.commitDisplay(next, seg.kind);
       return;
@@ -698,7 +722,7 @@ export class ModusWcTimeInput {
         seg,
         'max',
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.commitDisplay(next, seg.kind);
       return;
@@ -710,7 +734,7 @@ export class ModusWcTimeInput {
         this.displayValue,
         seg,
         this.effectiveShowSeconds,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.segmentDigitBuffer = '';
       this.commitDisplay(next, seg.kind);
@@ -730,15 +754,12 @@ export class ModusWcTimeInput {
         seg,
         event.key,
         this.segmentDigitBuffer,
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.segmentDigitBuffer = result.buffer;
       const nextKind = result.advance
-        ? getNextSegment(
-            seg,
-            this.effectiveShowSeconds,
-            this.resolvedHourFormat
-          ).kind
+        ? getNextSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
+            .kind
         : seg.kind;
       this.activeSegmentKind = nextKind;
       this.commitDisplay(result.display, nextKind);
@@ -746,7 +767,7 @@ export class ModusWcTimeInput {
         const nextSeg = getNextSegment(
           seg,
           this.effectiveShowSeconds,
-          this.resolvedHourFormat
+          this.resolvedFormat
         );
         this.pendingSegmentSelect = nextSeg.kind;
       }
@@ -754,7 +775,7 @@ export class ModusWcTimeInput {
     }
 
     if (
-      this.resolvedHourFormat === '12h' &&
+      this.resolvedFormat === '12hrs' &&
       seg.kind === 'period' &&
       /^[apAP]$/.test(event.key)
     ) {
@@ -764,9 +785,36 @@ export class ModusWcTimeInput {
         seg,
         event.key,
         '',
-        this.resolvedHourFormat
+        this.resolvedFormat
       );
       this.commitDisplay(result.display, seg.kind);
+      return;
+    }
+
+    if (
+      event.key.length === 1 &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.altKey
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  private handleBeforeInput = (event: InputEvent) => {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
+    event.preventDefault();
+  };
+
+  private setInputRef = (el: HTMLInputElement | undefined) => {
+    if (this.inputRef) {
+      this.inputRef.removeEventListener('beforeinput', this.handleBeforeInput);
+    }
+    this.inputRef = el;
+    if (el) {
+      el.addEventListener('beforeinput', this.handleBeforeInput);
     }
   };
 
@@ -783,13 +831,13 @@ export class ModusWcTimeInput {
     const current = resolveWheelState(
       this.value,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
     const nextState = { ...current, ...partial };
     const next24h = valueFromWheelState(
       nextState,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
     const parsed = parse24h(next24h);
     if (!parsed) {
@@ -828,11 +876,113 @@ export class ModusWcTimeInput {
     });
   };
 
+  private moveListboxFocus(
+    current: HTMLElement,
+    direction: 1 | -1,
+    itemSelector: string
+  ) {
+    const listbox = current.closest('[role="listbox"]');
+    if (!listbox) {
+      return;
+    }
+    const items = Array.from(
+      listbox.querySelectorAll<HTMLElement>(itemSelector)
+    ).filter((el) => el.getAttribute('aria-hidden') !== 'true');
+    const index = items.indexOf(current);
+    if (index < 0 || items.length === 0) {
+      return;
+    }
+    let nextIndex = index + direction;
+    if (nextIndex < 0) {
+      nextIndex = items.length - 1;
+    } else if (nextIndex >= items.length) {
+      nextIndex = 0;
+    }
+    current.tabIndex = -1;
+    const target = items[nextIndex];
+    target.tabIndex = 0;
+    target.focus();
+  }
+
+  private handleWheelOptionKeyDown = (
+    event: KeyboardEvent,
+    isA11yCopy: boolean,
+    onSelect: (value: string) => void,
+    value: string
+  ) => {
+    if (!isA11yCopy) {
+      return;
+    }
+    const target = event.currentTarget as HTMLElement;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onSelect(value);
+      return;
+    }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.moveListboxFocus(target, 1, '.time-wheel-option');
+      return;
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.moveListboxFocus(target, -1, '.time-wheel-option');
+      return;
+    }
+    if (event.key === 'Home') {
+      event.preventDefault();
+      const listbox = target.closest('[role="listbox"]');
+      const first = listbox?.querySelector<HTMLElement>(
+        '.time-wheel-option:not([aria-hidden="true"])'
+      );
+      if (first && first !== target) {
+        target.tabIndex = -1;
+        first.tabIndex = 0;
+        first.focus();
+      }
+      return;
+    }
+    if (event.key === 'End') {
+      event.preventDefault();
+      const listbox = target.closest('[role="listbox"]');
+      const items = listbox?.querySelectorAll<HTMLElement>(
+        '.time-wheel-option:not([aria-hidden="true"])'
+      );
+      const last = items?.[items.length - 1];
+      if (last && last !== target) {
+        target.tabIndex = -1;
+        last.tabIndex = 0;
+        last.focus();
+      }
+    }
+  };
+
+  private handleDatalistOptionKeyDown = (
+    event: KeyboardEvent,
+    onSelect: () => void
+  ) => {
+    const target = event.currentTarget as HTMLElement;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onSelect();
+      return;
+    }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.moveListboxFocus(target, 1, '.time-datalist-option');
+      return;
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.moveListboxFocus(target, -1, '.time-datalist-option');
+    }
+  };
+
   private syncDisplayValue() {
     this.displayValue = displayFromValue(
       this.value,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
     this.updateAriaLive();
   }
@@ -982,9 +1132,9 @@ export class ModusWcTimeInput {
     const state = resolveWheelState(
       this.value,
       this.effectiveShowSeconds,
-      this.resolvedHourFormat
+      this.resolvedFormat
     );
-    const hours = getHourOptions(this.resolvedHourFormat);
+    const hours = getHourOptions(this.resolvedFormat);
     const minutes = getUnitOptions(this.minuteStep);
     const seconds = this.effectiveShowSeconds
       ? getUnitOptions(this.secondStep)
@@ -1010,7 +1160,7 @@ export class ModusWcTimeInput {
             this.renderWheel('seconds', seconds, String(state.seconds), (v) =>
               this.applyWheelSelection({ seconds: Number(v) })
             )}
-          {is12HourFormat(this.resolvedHourFormat) &&
+          {is12hrsFormat(this.resolvedFormat) &&
             this.renderWheel(
               'period',
               periods,
@@ -1038,6 +1188,18 @@ export class ModusWcTimeInput {
           key: `0-${index}-${opt.value}`,
         }));
     const middleCopy = Math.floor(TIME_WHEEL_LOOP_COPIES / 2);
+    const focusableKey = (() => {
+      const selectedA11y = looped.find(
+        (opt) =>
+          (!circular || opt.copy === middleCopy) &&
+          (opt.value === selectedValue ||
+            Number(opt.value) === Number(selectedValue))
+      );
+      if (selectedA11y) {
+        return selectedA11y.key;
+      }
+      return looped.find((opt) => !circular || opt.copy === middleCopy)?.key;
+    })();
 
     return (
       <div
@@ -1073,20 +1235,19 @@ export class ModusWcTimeInput {
                 aria-selected={
                   isA11yCopy ? (selected ? 'true' : 'false') : undefined
                 }
-                tabIndex={isA11yCopy ? 0 : -1}
+                tabIndex={isA11yCopy && opt.key === focusableKey ? 0 : -1}
                 onMouseDown={(e: MouseEvent) => {
                   e.preventDefault();
                 }}
                 onClick={() => onSelect(opt.value)}
-                onKeyDown={(e: KeyboardEvent) => {
-                  if (!isA11yCopy) {
-                    return;
-                  }
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    onSelect(opt.value);
-                  }
-                }}
+                onKeyDown={(e: KeyboardEvent) =>
+                  this.handleWheelOptionKeyDown(
+                    e,
+                    isA11yCopy,
+                    onSelect,
+                    opt.value
+                  )
+                }
               >
                 {opt.label}
               </li>
@@ -1104,8 +1265,12 @@ export class ModusWcTimeInput {
       showSeconds: this.effectiveShowSeconds,
       min: this.min,
       max: this.max,
-      hourFormat: this.resolvedHourFormat,
+      format: this.resolvedFormat,
     });
+
+    const focusableValue =
+      options.find((opt) => opt.value === this.value)?.value ??
+      options[0]?.value;
 
     return (
       <div
@@ -1126,14 +1291,13 @@ export class ModusWcTimeInput {
                 }}
                 role="option"
                 aria-selected={selected ? 'true' : 'false'}
-                tabIndex={0}
+                tabIndex={opt.value === focusableValue ? 0 : -1}
                 onClick={() => this.handleDatalistSelect(opt.value)}
-                onKeyDown={(e: KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.handleDatalistSelect(opt.value);
-                  }
-                }}
+                onKeyDown={(e: KeyboardEvent) =>
+                  this.handleDatalistOptionKeyDown(e, () =>
+                    this.handleDatalistSelect(opt.value)
+                  )
+                }
               >
                 {opt.label}
               </li>
@@ -1144,14 +1308,11 @@ export class ModusWcTimeInput {
             class="time-datalist-option time-datalist-option--other"
             role="option"
             aria-selected="false"
-            tabIndex={0}
+            tabIndex={focusableValue == null ? 0 : -1}
             onClick={this.handleOtherSelect}
-            onKeyDown={(e: KeyboardEvent) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.handleOtherSelect();
-              }
-            }}
+            onKeyDown={(e: KeyboardEvent) =>
+              this.handleDatalistOptionKeyDown(e, this.handleOtherSelect)
+            }
           >
             Other
           </li>
@@ -1176,11 +1337,12 @@ export class ModusWcTimeInput {
         )}
         <div class={this.getContainerClasses()}>
           <input
-            ref={(el) => (this.inputRef = el)}
+            ref={this.setInputRef}
             aria-controls={this.showDropdown ? this.dropdownId : undefined}
             aria-expanded={this.showDropdown ? 'true' : 'false'}
             aria-haspopup={popupRole}
             aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
+            aria-keyshortcuts="Alt+ArrowDown"
             aria-required={this.required}
             autocomplete={this.autoComplete}
             class={this.getClasses()}
@@ -1194,7 +1356,7 @@ export class ModusWcTimeInput {
             onPaste={this.handlePaste}
             readonly={this.readOnly}
             required={this.required}
-            role="combobox"
+            role={this.useDatalist ? 'combobox' : undefined}
             tabIndex={this.inputTabIndex}
             type="text"
             value={this.displayValue}
@@ -1206,7 +1368,6 @@ export class ModusWcTimeInput {
           <button
             type="button"
             class="clock-icon-trigger"
-            tabindex="-1"
             aria-label="Toggle time picker"
             aria-expanded={String(this.showDropdown)}
             aria-haspopup={popupRole}
@@ -1217,6 +1378,7 @@ export class ModusWcTimeInput {
             <modus-wc-icon
               name="clock"
               size={this.size === 'lg' ? 'sm' : 'xs'}
+              decorative
             />
           </button>
         </div>

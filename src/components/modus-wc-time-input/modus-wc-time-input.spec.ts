@@ -58,6 +58,20 @@ function patchMockClassListIterator(el: HTMLElement) {
   };
 }
 
+function captureRaf() {
+  const callbacks: FrameRequestCallback[] = [];
+  const spy = jest
+    .spyOn(globalThis, 'requestAnimationFrame')
+    .mockImplementation((cb: FrameRequestCallback) => {
+      callbacks.push(cb);
+      return callbacks.length;
+    });
+  return {
+    run: () => callbacks.forEach((cb) => cb(0)),
+    restore: () => spy.mockRestore(),
+  };
+}
+
 describe('time-format utils', () => {
   it('should convert 12h to 24h hours', () => {
     expect(toHours24(12, 'AM')).toBe(0);
@@ -101,14 +115,14 @@ describe('time-format utils', () => {
 
   it('should format display based on hour format', () => {
     const time = { hours24: 21, minutes: 45, seconds: 0 };
-    expect(formatDisplay(time, false, '24h')).toBe('21:45');
-    expect(formatDisplay(time, false, '12h')).toBe('09:45 PM');
+    expect(formatDisplay(time, false, '24hrs')).toBe('21:45');
+    expect(formatDisplay(time, false, '12hrs')).toBe('09:45 PM');
   });
 });
 
 describe('time-options utils', () => {
   it('should build circular wheel options for looping', () => {
-    const hours = getHourOptions('12h');
+    const hours = getHourOptions('12hrs');
     const looped = buildCircularWheelOptions(hours);
     expect(hours.length).toBe(12);
     expect(looped.length).toBe(12 * TIME_WHEEL_LOOP_COPIES);
@@ -121,7 +135,7 @@ describe('time-options utils', () => {
     const opts = buildDatalistOptions({
       options: ['09:15', '09:30'],
       showSeconds: false,
-      hourFormat: '12h',
+      format: '12hrs',
     });
     expect(opts).toEqual([
       { value: '09:15', label: '09:15 AM' },
@@ -155,21 +169,21 @@ describe('time-options utils', () => {
       valueFromWheelState(
         { hour: 9, minutes: 45, seconds: 0, period: 'AM' },
         false,
-        '12h'
+        '12hrs'
       )
     ).toBe('09:45');
     expect(
       valueFromWheelState(
         { hour: 12, minutes: 0, seconds: 0, period: 'AM' },
         false,
-        '12h'
+        '12hrs'
       )
     ).toBe('00:00');
     expect(
       valueFromWheelState(
         { hour: 21, minutes: 45, seconds: 0, period: 'PM' },
         false,
-        '24h'
+        '24hrs'
       )
     ).toBe('21:45');
   });
@@ -177,40 +191,46 @@ describe('time-options utils', () => {
 
 describe('time-segments utils', () => {
   it('should expose native skeleton templates', () => {
-    expect(getSkeleton(false, '24h')).toBe('--:--');
-    expect(getSkeleton(true, '24h')).toBe('--:--:--');
-    expect(getSkeleton(false, '12h')).toBe('--:-- --');
-    expect(getSkeleton(true, '12h')).toBe('--:--:-- --');
+    expect(getSkeleton(false, '24hrs')).toBe('--:--');
+    expect(getSkeleton(true, '24hrs')).toBe('--:--:--');
+    expect(getSkeleton(false, '12hrs')).toBe('--:-- --');
+    expect(getSkeleton(true, '12hrs')).toBe('--:--:-- --');
   });
 
   it('should parse and validate complete skeleton displays', () => {
-    expect(isSkeletonDisplayComplete('09:45', false, '24h')).toBe(true);
-    expect(parseSkeletonDisplay('09:45', false, '24h')).toEqual({
+    expect(isSkeletonDisplayComplete('09:45', false, '24hrs')).toBe(true);
+    expect(parseSkeletonDisplay('09:45', false, '24hrs')).toEqual({
       hours24: 9,
       minutes: 45,
       seconds: 0,
     });
-    expect(displayFromValue('21:30', false, '12h')).toBe('09:30 PM');
+    expect(displayFromValue('21:30', false, '12hrs')).toBe('09:30 PM');
   });
 
   it('should type digits into segments with auto-advance', () => {
-    let display = getSkeleton(false, '24h');
+    let display = getSkeleton(false, '24hrs');
     const hourSeg = { kind: 'hour' as const, start: 0, end: 2 };
     const minuteSeg = { kind: 'minute' as const, start: 3, end: 5 };
 
-    let result = typeDigitInSegment(display, hourSeg, '0', '', '24h');
+    let result = typeDigitInSegment(display, hourSeg, '0', '', '24hrs');
     display = result.display;
-    result = typeDigitInSegment(display, hourSeg, '9', result.buffer, '24h');
+    result = typeDigitInSegment(display, hourSeg, '9', result.buffer, '24hrs');
     display = result.display;
     expect(result.advance).toBe(true);
 
-    result = typeDigitInSegment(display, minuteSeg, '4', '', '24h');
+    result = typeDigitInSegment(display, minuteSeg, '4', '', '24hrs');
     display = result.display;
-    result = typeDigitInSegment(display, minuteSeg, '5', result.buffer, '24h');
+    result = typeDigitInSegment(
+      display,
+      minuteSeg,
+      '5',
+      result.buffer,
+      '24hrs'
+    );
     display = result.display;
 
-    expect(isSkeletonDisplayComplete(display, false, '24h')).toBe(true);
-    expect(parseSkeletonDisplay(display, false, '24h')).toEqual({
+    expect(isSkeletonDisplayComplete(display, false, '24hrs')).toBe(true);
+    expect(parseSkeletonDisplay(display, false, '24hrs')).toEqual({
       hours24: 9,
       minutes: 45,
       seconds: 0,
@@ -220,7 +240,7 @@ describe('time-segments utils', () => {
   it('should step segments in place', () => {
     const display = '09:00';
     const hourSeg = { kind: 'hour' as const, start: 0, end: 2 };
-    const stepped = applyStepToSegment(display, hourSeg, -1, false, '24h');
+    const stepped = applyStepToSegment(display, hourSeg, -1, false, '24hrs');
     expect(stepped).toBe('08:00');
   });
 });
@@ -310,7 +330,7 @@ describe('modus-wc-time-input', () => {
       html: '<modus-wc-time-input aria-label="Change test"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector(
-      'input[role="combobox"]'
+      'input[type="text"]'
     ) as HTMLInputElement;
     expect(input).not.toBeNull();
     const changeSpy = jest.fn();
@@ -339,7 +359,7 @@ describe('modus-wc-time-input', () => {
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector(
-      'input[role="combobox"]'
+      'input[type="text"]'
     ) as HTMLInputElement;
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
@@ -385,7 +405,7 @@ describe('modus-wc-time-input', () => {
   it('should display formatted 12h value while keeping 24h internal value', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Value test" hour-format="12h" value="21:30"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Value test" format="12hrs" value="21:30"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const component = page.rootInstance as ModusWcTimeInput;
@@ -394,7 +414,7 @@ describe('modus-wc-time-input', () => {
     expect(component.value).toBe('21:30');
   });
 
-  it('should display value in 24h format when hourFormat is 24h', async () => {
+  it('should display value in 24hrs format when format is 24hrs', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Value test" value="21:30"></modus-wc-time-input>',
@@ -409,11 +429,27 @@ describe('modus-wc-time-input', () => {
       html: '<modus-wc-time-input aria-label="Picker" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
+
+    const raf = captureRaf();
+
     (component as unknown as { showDropdown: boolean }).showDropdown = true;
     await page.waitForChanges();
 
+    const focusableOption = page.root!.querySelector<HTMLElement>(
+      '.time-wheel-option[tabindex="0"]'
+    );
+    const optionFocusSpy = focusableOption
+      ? jest.spyOn(focusableOption, 'focus')
+      : null;
+
+    raf.run();
+    raf.restore();
+
     const wheels = page.root!.querySelectorAll('.time-wheel-viewport');
     expect(wheels.length).toBe(2);
+    if (optionFocusSpy) {
+      expect(optionFocusSpy).toHaveBeenCalled();
+    }
     const hours = page.root!.querySelector(
       '.time-wheel-viewport--hours'
     ) as HTMLElement;
@@ -426,7 +462,7 @@ describe('modus-wc-time-input', () => {
   it('should open picker dropdown with 3 wheels in 12h mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Picker 12" hour-format="12h" value="09:45"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Picker 12" format="12hrs" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     (component as unknown as { showDropdown: boolean }).showDropdown = true;
@@ -452,7 +488,7 @@ describe('modus-wc-time-input', () => {
   it('should open picker dropdown with 4 wheels when showSeconds in 12h', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Picker seconds 12" hour-format="12h" show-seconds value="09:45:00"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Picker seconds 12" format="12hrs" show-seconds value="09:45:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     (component as unknown as { showDropdown: boolean }).showDropdown = true;
@@ -719,7 +755,7 @@ describe('modus-wc-time-input', () => {
       html: '<modus-wc-time-input aria-label="Skeleton"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector(
-      'input[role="combobox"]'
+      'input[type="text"]'
     ) as HTMLInputElement;
     expect(input.value).toBe('--:--');
   });
@@ -855,7 +891,7 @@ describe('modus-wc-time-input', () => {
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector(
-      'input[role="combobox"]'
+      'input[type="text"]'
     ) as HTMLInputElement;
 
     input.dispatchEvent(
@@ -880,7 +916,7 @@ describe('modus-wc-time-input', () => {
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector(
-      'input[role="combobox"]'
+      'input[type="text"]'
     ) as HTMLInputElement;
 
     input.dispatchEvent(
@@ -920,6 +956,51 @@ describe('modus-wc-time-input', () => {
     expect(
       (component as unknown as { showDropdown: boolean }).showDropdown
     ).toBe(true);
+  });
+
+  it('should navigate datalist options with keyboard (ArrowDown, ArrowUp)', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Datalist keyboard nav"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    component.datalistOptions = ['09:15', '09:30'];
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    const options = Array.from(
+      page.root!.querySelectorAll<HTMLElement>('.time-datalist-option')
+    );
+    expect(options.length).toBeGreaterThan(1);
+
+    const first = options[0];
+    const second = options[1];
+    const last = options[options.length - 1]; // "Other" option
+
+    first.focus();
+
+    // Trigger ArrowDown on first
+    first.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(second.tabIndex).toBe(0);
+
+    // Trigger ArrowUp on first (loop to last)
+    first.focus();
+    first.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(last.tabIndex).toBe(0);
+
+    // Trigger ArrowDown on last (loop to first)
+    last.focus();
+    last.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(first.tabIndex).toBe(0);
   });
 
   it('should close the dropdown when Enter is pressed on the input', async () => {
@@ -971,6 +1052,67 @@ describe('modus-wc-time-input', () => {
     expect(page.root!.querySelector('.time-dropdown--datalist')).not.toBeNull();
   });
 
+  it('should use the datalist dropdown when variant is datalist', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Variant datalist" variant="datalist"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    expect(page.root!.querySelector('.time-dropdown--datalist')).not.toBeNull();
+  });
+
+  it('should keep picker wheels when intervalMinutes is set only as a property', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Interval prop only"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    component.intervalMinutes = 30;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    expect(page.root!.querySelector('.time-dropdown--datalist')).toBeNull();
+    expect(page.root!.querySelector('.time-wheel')).not.toBeNull();
+  });
+
+  it('should ignore printable letter keys in the text field', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Letter guard" value="09:45"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    const event = new KeyboardEvent('keydown', {
+      key: 'x',
+      bubbles: true,
+      cancelable: true,
+    });
+    input.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('should emit inputChange with target.value in 24h format', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Emit shape"></modus-wc-time-input>',
+    });
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { emitChange: (v: string) => void }).emitChange(
+      '09:45'
+    );
+    await page.waitForChanges();
+
+    expect(changeSpy).toHaveBeenCalled();
+    expect(changeSpy.mock.calls[0][0].detail.target.value).toBe('09:45');
+  });
+
   it('should use wheels when datalistOptions is nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
@@ -1001,13 +1143,13 @@ describe('modus-wc-time-input', () => {
     expect(page.root!.querySelector('.time-wheel')).not.toBeNull();
   });
 
-  it('should fall back to 24h display when hourFormat is explicitly nullish', async () => {
+  it('should fall back to 24hrs display when format is explicitly nullish', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Nullish hour format" value="21:30"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
-    component.hourFormat = undefined;
+    component.format = undefined;
     await page.waitForChanges();
 
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -1047,7 +1189,7 @@ describe('modus-wc-time-input', () => {
   it('should update value when minutes, seconds, and period wheel options are selected', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Wheel selectors" hour-format="12h" show-seconds value="09:05:10"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Wheel selectors" format="12hrs" show-seconds value="09:05:10"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     (component as unknown as { showDropdown: boolean }).showDropdown = true;
@@ -1180,6 +1322,379 @@ describe('modus-wc-time-input', () => {
     expect(
       (component as unknown as { showDropdown: boolean }).showDropdown
     ).toBe(false);
+  });
+
+  it('should navigate wheel options with keyboard (ArrowDown, ArrowUp, Home, End)', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Wheel keyboard" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    const options = Array.from(
+      page.root!.querySelectorAll<HTMLElement>(
+        '.time-wheel--hours .time-wheel-option[data-wheel-copy="1"]'
+      )
+    );
+    expect(options.length).toBeGreaterThan(2);
+
+    const first = options[0];
+    const second = options[1];
+    const last = options[options.length - 1];
+
+    // Select the first option
+    first.focus();
+
+    // Trigger ArrowDown on first
+    first.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(second.tabIndex).toBe(0);
+
+    // Trigger ArrowUp on first (loop to last)
+    first.focus();
+    first.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(last.tabIndex).toBe(0);
+
+    // Trigger ArrowDown on last (loop to first)
+    last.focus();
+    last.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(first.tabIndex).toBe(0);
+
+    // Trigger End on first
+    first.focus();
+    first.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'End', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(last.tabIndex).toBe(0);
+
+    // Trigger Home on last
+    last.focus();
+    last.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Home', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(first.tabIndex).toBe(0);
+  });
+
+  it('should ignore events on non-a11y copy', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Wheel keyboard" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    const a0Copy = page.root!.querySelector(
+      '.time-wheel--hours .time-wheel-option[data-wheel-copy="0"]'
+    ) as HTMLElement;
+    if (a0Copy) {
+      a0Copy.focus();
+      a0Copy.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+      );
+      await page.waitForChanges();
+      // Should not throw or do anything
+    }
+  });
+
+  it('should handle early returns in moveListboxFocus gracefully', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Listbox guards"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const moveListboxFocus = (
+      component as unknown as {
+        moveListboxFocus: (
+          current: HTMLElement,
+          direction: 1 | -1,
+          itemSelector: string
+        ) => void;
+      }
+    ).moveListboxFocus;
+
+    const noListboxEl = page.doc.createElement('div');
+    // Line 886: no closest('[role="listbox"]')
+    expect(() => moveListboxFocus(noListboxEl, 1, '.item')).not.toThrow();
+
+    const listboxEl = page.doc.createElement('div');
+    listboxEl.setAttribute('role', 'listbox');
+    const childEl = page.doc.createElement('div');
+    listboxEl.appendChild(childEl);
+    // Line 893: index < 0 (current not in items matching selector)
+    expect(() => moveListboxFocus(childEl, 1, '.non-existent')).not.toThrow();
+  });
+
+  it('should manage beforeinput event listeners correctly when setting input ref', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Input ref"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input1 = page.doc.createElement('input');
+    const input2 = page.doc.createElement('input');
+
+    const removeSpy1 = jest.spyOn(input1, 'removeEventListener');
+    const addSpy2 = jest.spyOn(input2, 'addEventListener');
+
+    const setInputRef = (
+      component as unknown as {
+        setInputRef: (el: HTMLInputElement | undefined) => void;
+      }
+    ).setInputRef;
+
+    // Set first ref
+    setInputRef(input1);
+    // Set second ref, should remove from first
+    setInputRef(input2);
+
+    expect(removeSpy1).toHaveBeenCalledWith(
+      'beforeinput',
+      expect.any(Function)
+    );
+    expect(addSpy2).toHaveBeenCalledWith('beforeinput', expect.any(Function));
+  });
+
+  it('should prevent default on beforeinput event when not disabled or readonly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Before input"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const event = new Event('beforeinput') as InputEvent;
+    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+
+    const handleBeforeInput = (
+      component as unknown as { handleBeforeInput: (e: InputEvent) => void }
+    ).handleBeforeInput;
+
+    component.disabled = true;
+    handleBeforeInput(event);
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+
+    component.disabled = false;
+    handleBeforeInput(event);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  it('should handle early returns in keyboard option handlers when listbox is null', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const dummyTarget = page.doc.createElement('div');
+    // No listbox parent
+
+    const handleWheelKeyDown = (
+      component as unknown as {
+        handleWheelOptionKeyDown: (
+          e: KeyboardEvent,
+          isA11y: boolean,
+          onSelect: () => void,
+          val: string
+        ) => void;
+      }
+    ).handleWheelOptionKeyDown;
+
+    // Home
+    let event = new KeyboardEvent('keydown', { key: 'Home' });
+    Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
+    expect(() => handleWheelKeyDown(event, true, jest.fn(), '0')).not.toThrow();
+
+    // End
+    event = new KeyboardEvent('keydown', { key: 'End' });
+    Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
+    expect(() => handleWheelKeyDown(event, true, jest.fn(), '0')).not.toThrow();
+
+    // Datalist ArrowDown without listbox (using moveListboxFocus)
+    const handleDatalistKeyDown = (
+      component as unknown as {
+        handleDatalistOptionKeyDown: (
+          e: KeyboardEvent,
+          onSelect: () => void
+        ) => void;
+      }
+    ).handleDatalistOptionKeyDown;
+
+    event = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
+    expect(() => handleDatalistKeyDown(event, jest.fn())).not.toThrow();
+  });
+
+  it('should handle unmatched values when rendering wheels and datalists', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input value="12:34"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    // Unmatched value in datalist
+    component.variant = 'datalist';
+    component.datalistOptions = ['09:00', '10:00'];
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    let options = page.root!.querySelectorAll(
+      '.time-datalist-option:not(.time-datalist-option--other)'
+    );
+    expect(options[0].getAttribute('tabindex')).toBe('0'); // Fallback to first
+
+    // Unmatched value with empty datalist options (should focus Other)
+    component.datalistOptions = [];
+    component.min = 'invalid'; // Forces options array to be empty
+    await page.waitForChanges();
+    const other = page.root!.querySelector(
+      '.time-datalist-option--other'
+    ) as HTMLElement;
+    expect(other.getAttribute('tabindex')).toBe('0');
+
+    // Restore min
+    component.min = undefined;
+
+    // Unmatched value in wheels (12:34 where 34 is not a multiple of 15)
+    component.variant = 'picker';
+    component.step = 900; // 15 minutes in seconds
+    await page.waitForChanges();
+    const minOptions = page.root!.querySelectorAll(
+      '.time-wheel--minutes .time-wheel-option[data-wheel-copy="1"]'
+    );
+    // Middle copy fallback
+    expect(minOptions[0].getAttribute('tabindex')).toBe('0');
+  });
+
+  it('should restore focus to the input if the dropdown is closed while focus is inside it', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Focus restore" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const focusSpy = jest.spyOn(input, 'focus');
+
+    const dropdown = (component as unknown as { dropdownRef: HTMLElement })
+      .dropdownRef;
+    const activeEl = page.doc.createElement('div');
+    dropdown.appendChild(activeEl);
+
+    const activeElementDesc = Object.getOwnPropertyDescriptor(
+      document,
+      'activeElement'
+    );
+    Object.defineProperty(document, 'activeElement', {
+      get: () => activeEl,
+      configurable: true,
+    });
+
+    const raf = captureRaf();
+    (component as unknown as { closeDropdown: () => void }).closeDropdown();
+    raf.run();
+    raf.restore();
+
+    if (activeElementDesc) {
+      Object.defineProperty(document, 'activeElement', activeElementDesc);
+    }
+
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should not throw when closing dropdown without an input ref', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Close no input ref" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    const dropdown = (component as unknown as { dropdownRef: HTMLElement })
+      .dropdownRef;
+    const activeEl = page.doc.createElement('div');
+    dropdown.appendChild(activeEl);
+
+    const activeElementDesc = Object.getOwnPropertyDescriptor(
+      document,
+      'activeElement'
+    );
+    Object.defineProperty(document, 'activeElement', {
+      get: () => activeEl,
+      configurable: true,
+    });
+
+    (component as unknown as { inputRef?: HTMLInputElement }).inputRef =
+      undefined;
+
+    const raf = captureRaf();
+    expect(() =>
+      (component as unknown as { closeDropdown: () => void }).closeDropdown()
+    ).not.toThrow();
+    raf.run();
+    raf.restore();
+
+    if (activeElementDesc) {
+      Object.defineProperty(document, 'activeElement', activeElementDesc);
+    }
+  });
+
+  it('should handle picker focus RAF when dropdown ref or focus target is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Picker RAF guards" value="09:45"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const raf = captureRaf();
+    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    await page.waitForChanges();
+
+    page.root!.querySelectorAll('.time-wheel-option').forEach((option) => {
+      option.setAttribute('tabindex', '-1');
+    });
+    (component as unknown as { dropdownRef?: HTMLElement }).dropdownRef =
+      undefined;
+
+    expect(() => raf.run()).not.toThrow();
+    raf.restore();
+  });
+
+  it('should handle empty wheel options when resolving focusable key', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    expect(() =>
+      (
+        component as unknown as {
+          renderWheel: (
+            kind: string,
+            options: { label: string; value: string }[],
+            selectedValue: string,
+            onSelect: (value: string) => void,
+            circular?: boolean
+          ) => unknown;
+        }
+      ).renderWheel('test', [], '0', () => {}, false)
+    ).not.toThrow();
   });
 
   it('should not throw from handleOtherSelect when the input ref is unset', async () => {
@@ -2095,7 +2610,7 @@ describe('modus-wc-time-input', () => {
   it('should type AM/PM in the period segment for 12h format', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Period key" hour-format="12h" value="09:45"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Period key" format="12hrs" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector('input') as HTMLInputElement;

@@ -3,10 +3,10 @@ import {
   formatDisplay,
   fromTotalSeconds,
   IParsedTime,
-  is12HourFormat,
+  is12hrsFormat,
   pad2Time,
   parse24h,
-  TimeHourFormat,
+  TimeFormat,
   toHours12,
   toTotalSeconds,
 } from './time-format';
@@ -51,9 +51,9 @@ export function buildCircularWheelOptions(
 
 /** Hour options: 01–12 (12h) or 00–23 (24h). */
 export function getHourOptions(
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): ITimeWheelOption[] {
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     return Array.from({ length: 12 }, (_, i) => {
       const hour12 = i + 1;
       return { label: pad2Time(hour12), value: String(hour12) };
@@ -99,7 +99,7 @@ export function buildDatalistOptions(params: {
   showSeconds?: boolean;
   min?: string;
   max?: string;
-  hourFormat?: TimeHourFormat;
+  format?: TimeFormat;
 }): IDatalistOption[] {
   const {
     options = [],
@@ -107,12 +107,12 @@ export function buildDatalistOptions(params: {
     showSeconds = false,
     min,
     max,
-    hourFormat = '24h',
+    format = '24hrs',
   } = params;
 
   const toOption = (parsed: IParsedTime): IDatalistOption => ({
     value: format24h(parsed, showSeconds),
-    label: formatDisplay(parsed, showSeconds, hourFormat),
+    label: formatDisplay(parsed, showSeconds, format),
   });
 
   if (options.length > 0) {
@@ -161,14 +161,14 @@ export interface IWheelState {
 export function resolveWheelState(
   value: string,
   showSeconds: boolean,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): IWheelState {
   const parsed = parse24h(value) ?? {
     hours24: 9,
     minutes: 0,
     seconds: 0,
   };
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     const { hour12, period } = toHours12(parsed.hours24);
     return {
       hour: hour12,
@@ -189,10 +189,10 @@ export function resolveWheelState(
 export function valueFromWheelState(
   state: IWheelState,
   showSeconds: boolean,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
   let hours24: number;
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     hours24 =
       state.period === 'AM'
         ? state.hour === 12

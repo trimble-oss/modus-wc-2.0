@@ -2,9 +2,9 @@ import {
   format24h,
   formatDisplay,
   IParsedTime,
-  is12HourFormat,
+  is12hrsFormat,
   parse24h,
-  TimeHourFormat,
+  TimeFormat,
   toHours12,
   toHours24,
 } from './time-format';
@@ -20,9 +20,9 @@ export interface ITimeSegment {
 /** Empty native-style skeleton for the active display format. */
 export function getSkeleton(
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     return showSeconds ? '--:--:-- --' : '--:-- --';
   }
   return showSeconds ? '--:--:--' : '--:--';
@@ -31,9 +31,9 @@ export function getSkeleton(
 /** Segment ranges for the fixed-width display string. */
 export function getSegments(
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): ITimeSegment[] {
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     if (showSeconds) {
       return [
         { kind: 'hour', start: 0, end: 2 },
@@ -74,7 +74,7 @@ export function isSegmentEmpty(segmentText: string): boolean {
 export function isSkeletonDisplayComplete(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): boolean {
   const skeleton = getSkeleton(showSeconds, hourFormat);
   if (display.length !== skeleton.length) {
@@ -93,7 +93,7 @@ export function isSkeletonDisplayComplete(
 export function parseSkeletonDisplay(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): IParsedTime | null {
   if (!isSkeletonDisplayComplete(display, showSeconds, hourFormat)) {
     return null;
@@ -113,7 +113,7 @@ export function parseSkeletonDisplay(
   }
 
   let hours24: number;
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     const hour12 = Number(hourText);
     const period = read('period').toUpperCase() as 'AM' | 'PM';
     if (hour12 < 1 || hour12 > 12) {
@@ -134,7 +134,7 @@ export function parseSkeletonDisplay(
 export function displayFromValue(
   value: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
   if (!value) {
     return getSkeleton(showSeconds, hourFormat);
@@ -150,7 +150,7 @@ export function displayFromValue(
 export function getSegmentAtCaret(
   caret: number,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): ITimeSegment {
   const segments = getSegments(showSeconds, hourFormat);
   const match =
@@ -162,7 +162,7 @@ export function getSegmentAtCaret(
 export function getPrevSegment(
   segment: ITimeSegment,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): ITimeSegment {
   const segments = getSegments(showSeconds, hourFormat);
   const index = segments.findIndex((s) => s.kind === segment.kind);
@@ -172,7 +172,7 @@ export function getPrevSegment(
 export function getNextSegment(
   segment: ITimeSegment,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): ITimeSegment {
   const segments = getSegments(showSeconds, hourFormat);
   const index = segments.findIndex((s) => s.kind === segment.kind);
@@ -187,7 +187,7 @@ function padSegment(n: number): string {
 export function getEffectiveTime(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): IParsedTime {
   const complete = parseSkeletonDisplay(display, showSeconds, hourFormat);
   if (complete) {
@@ -207,7 +207,7 @@ export function getEffectiveTime(
   const periodSeg = segments.find((s) => s.kind === 'period');
 
   let hours24 = 0;
-  if (is12HourFormat(hourFormat)) {
+  if (is12hrsFormat(hourFormat)) {
     const hour12 = isSegmentEmpty(hourText) ? 12 : Number(hourText);
     const period =
       periodSeg && !isSegmentEmpty(getSegmentText(display, periodSeg))
@@ -242,14 +242,14 @@ export function applyStepToSegment(
   segment: ITimeSegment,
   delta: number,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h',
+  hourFormat: TimeFormat = '24hrs',
   minuteStep = 1,
   secondStep = 1
 ): string {
   const time = getEffectiveTime(display, showSeconds, hourFormat);
 
   if (segment.kind === 'hour') {
-    if (is12HourFormat(hourFormat)) {
+    if (is12hrsFormat(hourFormat)) {
       const { hour12, period } = toHours12(time.hours24);
       let next = hour12 + delta;
       if (next < 1) next = 12;
@@ -274,12 +274,12 @@ export function setSegmentToBound(
   segment: ITimeSegment,
   bound: 'min' | 'max',
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
   const time = getEffectiveTime(display, showSeconds, hourFormat);
 
   if (segment.kind === 'hour') {
-    if (is12HourFormat(hourFormat)) {
+    if (is12hrsFormat(hourFormat)) {
       const period = bound === 'min' ? ('AM' as const) : ('PM' as const);
       time.hours24 = toHours24(bound === 'min' ? 1 : 12, period);
     } else {
@@ -307,7 +307,7 @@ export function clearSegmentInDisplay(
   display: string,
   segment: ITimeSegment,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
   const skeleton = getSkeleton(showSeconds, hourFormat);
   const replacement =
@@ -333,7 +333,7 @@ export function typeDigitInSegment(
   segment: ITimeSegment,
   digit: string,
   existingBuffer: string,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): { display: string; buffer: string; advance: boolean } {
   const current = getSegmentText(display, segment);
   const isEmpty = isSegmentEmpty(current);
@@ -366,7 +366,7 @@ export function typeDigitInSegment(
   const nextBuffer = (isEmpty ? '' : buffer) + digit;
   const width = segment.end - segment.start;
 
-  if (segment.kind === 'hour' && is12HourFormat(hourFormat)) {
+  if (segment.kind === 'hour' && is12hrsFormat(hourFormat)) {
     const n = Number(nextBuffer);
     if (nextBuffer.length >= 2 || n > 1) {
       const clamped = Math.min(12, Math.max(1, n || 1));
@@ -437,7 +437,7 @@ export function typeDigitInSegment(
 export function getAriaLiveLabel(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
   if (!isSkeletonDisplayComplete(display, showSeconds, hourFormat)) {
     return 'Time incomplete';
@@ -453,7 +453,7 @@ export function getAriaLiveLabel(
 export function displayTo24h(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string | null {
   const parsed = parseSkeletonDisplay(display, showSeconds, hourFormat);
   if (!parsed) {

@@ -6,11 +6,19 @@ export interface IParsedTime {
 }
 
 /** Display / picker hour clock: 12-hour with AM/PM, or 24-hour. */
-export type TimeHourFormat = '12h' | '24h';
+export type TimeFormat = '12hrs' | '24hrs';
+
+/** @deprecated Use `TimeFormat`. */
+export type TimeHourFormat = TimeFormat;
 
 /** Whether the hour clock is 12-hour (AM/PM). */
-export function is12HourFormat(hourFormat: TimeHourFormat = '24h'): boolean {
-  return hourFormat === '12h';
+export function is12hrsFormat(format: TimeFormat = '24hrs'): boolean {
+  return format === '12hrs';
+}
+
+/** @deprecated Use `is12hrsFormat`. */
+export function is12HourFormat(format: TimeFormat = '24hrs'): boolean {
+  return is12hrsFormat(format);
 }
 const COMPLETE_12H = /^(\d{1,2}):(\d{2})(?:\s|:)?(?:(\d{2})\s+)?(AM|PM)$/i;
 const COMPLETE_12H_NO_SECONDS = /^(\d{1,2}):(\d{2})\s+(AM|PM)$/i;
@@ -95,9 +103,9 @@ export function format12hDisplay(
 export function formatDisplay(
   time: IParsedTime,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): string {
-  return is12HourFormat(hourFormat)
+  return is12hrsFormat(hourFormat)
     ? format12hDisplay(time, showSeconds)
     : format24h(time, showSeconds);
 }
@@ -189,9 +197,9 @@ export function parse24hDisplay(
 export function parseDisplay(
   display: string,
   showSeconds = false,
-  hourFormat: TimeHourFormat = '24h'
+  hourFormat: TimeFormat = '24hrs'
 ): IParsedTime | null {
-  return is12HourFormat(hourFormat)
+  return is12hrsFormat(hourFormat)
     ? parse12hDisplay(display, showSeconds)
     : parse24hDisplay(display, showSeconds);
 }
