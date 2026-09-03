@@ -252,7 +252,20 @@
   border-bottom-width: var(--input-bottom-border-width);
   outline-width: 0 !important;
 
-  &:not(.modus-wc-select, .modus-wc-number-input) {
+  &:not(
+    .modus-wc-select,
+    .modus-wc-number-input,
+    .modus-wc-input-xs,
+    .modus-wc-input-sm,
+    .modus-wc-input-md,
+    .modus-wc-input-lg,
+    .modus-wc-input-xl,
+    .modus-wc-select-xs,
+    .modus-wc-select-sm,
+    .modus-wc-select-md,
+    .modus-wc-select-lg,
+    .modus-wc-select-xl
+  ) {
     padding: 0 var(--modus-wc-spacing-sm);
   }
 

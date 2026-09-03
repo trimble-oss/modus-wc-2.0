@@ -20,7 +20,7 @@ modus-wc-text-input .modus-wc-input {
 
 modus-wc-text-input {
   .modus-wc-input-label {
-    padding-bottom: var(--modus-wc-spacing-sm);
+    padding-bottom: var(--modus-wc-spacing-xs);
   }
 
   // Icon sizes
@@ -28,54 +28,113 @@ modus-wc-text-input {
     &.modus-wc-input {
       background-color: var(--modus-wc-color-base-page);
 
-      &.modus-wc-input-sm {
-        padding: 0 var(--modus-wc-spacing-sm);
+      &.modus-wc-input-xs {
+        font-size: var(--modus-wc-font-size-sm);
+        height: var(--modus-wc-size-xs);
+        line-height: 1.25rem;
+        min-height: var(--modus-wc-size-xs);
+        padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
 
-        input {
-          max-height: var(--modus-wc-size-xs);
+        input,
+        input::placeholder {
+          line-height: 1.25rem;
         }
 
         .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-sm);
           width: var(--modus-wc-line-height-sm);
         }
+
+        .modus-wc-clear-icon-container {
+          min-width: var(--modus-wc-line-height-sm);
+        }
+      }
+
+      &.modus-wc-input-sm {
+        font-size: var(--modus-wc-font-size-md);
+        height: var(--modus-wc-size-sm);
+        line-height: var(--modus-wc-line-height-md);
+        min-height: var(--modus-wc-size-sm);
+        padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
+
+        input,
+        input::placeholder {
+          line-height: var(--modus-wc-line-height-md);
+        }
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+          height: var(--modus-wc-line-height-sm);
+          width: var(--modus-wc-line-height-sm);
+        }
+
+        .modus-wc-clear-icon-container {
+          min-width: var(--modus-wc-line-height-sm);
+        }
       }
 
       &.modus-wc-input-md {
-        font-size: var(--modus-wc-font-size-md);
+        font-size: var(--modus-wc-font-size-lg);
+        height: var(--modus-wc-size-md);
+        line-height: var(--modus-wc-line-height-md);
+        min-height: var(--modus-wc-size-md);
+        padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+
+        input,
+        input::placeholder {
+          line-height: var(--modus-wc-line-height-md);
+        }
 
         .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-md);
           width: var(--modus-wc-line-height-md);
         }
+
+        .modus-wc-clear-icon-container {
+          min-width: var(--modus-wc-line-height-md);
+        }
       }
 
       &.modus-wc-input-lg {
-        font-size: var(--modus-wc-font-size-lg);
+        font-size: var(--modus-wc-font-size-xl);
+        height: var(--modus-wc-size-lg);
+        line-height: var(--modus-wc-line-height-lg);
+        min-height: var(--modus-wc-size-lg);
+        padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+        input,
+        input::placeholder {
+          line-height: var(--modus-wc-line-height-lg);
+        }
 
         .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-lg);
           width: var(--modus-wc-line-height-lg);
         }
-      }
 
-      &.modus-wc-input-xs {
-        padding: 0 var(--modus-wc-spacing-sm);
-
-        input {
-          max-height: var(--modus-wc-size-xs);
-        }
-
-        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-          height: var(--modus-wc-line-height-sm);
-          width: var(--modus-wc-line-height-sm);
+        .modus-wc-clear-icon-container {
+          min-width: var(--modus-wc-line-height-lg);
         }
       }
 
       &.modus-wc-input-xl {
+        font-size: var(--modus-wc-font-size-xl);
+        height: var(--modus-wc-size-xl);
+        line-height: var(--modus-wc-line-height-lg);
+        min-height: var(--modus-wc-size-xl);
+        padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+        input,
+        input::placeholder {
+          line-height: var(--modus-wc-line-height-lg);
+        }
+
         .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
           height: var(--modus-wc-line-height-lg);
           width: var(--modus-wc-line-height-lg);
+        }
+
+        .modus-wc-clear-icon-container {
+          min-width: var(--modus-wc-line-height-lg);
         }
       }
 
@@ -184,189 +243,29 @@ modus-wc-text-input {
         box-shadow: none;
         outline: none;
       }
-
-      &.modus-wc-input-xs .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
-      }
-
-      &.modus-wc-input-sm .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
-      }
-
-      &.modus-wc-input-lg .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-lg);
-      }
-
-      &.modus-wc-input-xl .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-lg);
-      }
     }
   }
 }
 
-[data-theme='modus-modern-light']
-  modus-wc-text-input:has(.modus-wc-input-xs)
-  .modus-wc-input-label,
-[data-theme='modus-modern-dark']
-  modus-wc-text-input:has(.modus-wc-input-xs)
-  .modus-wc-input-label {
+modus-wc-text-input:has(.modus-wc-input-xs) .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-sm);
   line-height: 1.25rem;
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
-[data-theme='modus-modern-light']
-  modus-wc-text-input:has(.modus-wc-input-sm)
-  .modus-wc-input-label,
-[data-theme='modus-modern-dark']
-  modus-wc-text-input:has(.modus-wc-input-sm)
-  .modus-wc-input-label {
+modus-wc-text-input:has(.modus-wc-input-sm) .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-md);
   line-height: var(--modus-wc-line-height-md);
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
-[data-theme='modus-modern-light']
-  modus-wc-text-input:has(.modus-wc-input-md)
-  .modus-wc-input-label,
-[data-theme='modus-modern-dark']
-  modus-wc-text-input:has(.modus-wc-input-md)
-  .modus-wc-input-label {
+modus-wc-text-input:has(.modus-wc-input-md) .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-lg);
   line-height: var(--modus-wc-line-height-md);
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
-[data-theme='modus-modern-light']
-  modus-wc-text-input:has(.modus-wc-input-lg)
-  .modus-wc-input-label,
-[data-theme='modus-modern-dark']
-  modus-wc-text-input:has(.modus-wc-input-lg)
-  .modus-wc-input-label,
-[data-theme='modus-modern-light']
-  modus-wc-text-input:has(.modus-wc-input-xl)
-  .modus-wc-input-label,
-[data-theme='modus-modern-dark']
-  modus-wc-text-input:has(.modus-wc-input-xl)
-  .modus-wc-input-label {
+modus-wc-text-input:has(.modus-wc-input-lg) .modus-wc-input-label,
+modus-wc-text-input:has(.modus-wc-input-xl) .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-xl);
   line-height: var(--modus-wc-line-height-lg);
-  padding-bottom: var(--modus-wc-spacing-xs);
-}
-
-[data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,
-[data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-text-input {
-  &.modus-wc-input {
-    &.modus-wc-input-xs {
-      font-size: var(--modus-wc-font-size-sm);
-      height: var(--modus-wc-size-xs);
-      line-height: 1.25rem;
-      min-height: var(--modus-wc-size-xs);
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-
-      input,
-      input::placeholder {
-        line-height: 1.25rem;
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-sm);
-        width: var(--modus-wc-line-height-sm);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
-      }
-    }
-
-    &.modus-wc-input-sm {
-      font-size: var(--modus-wc-font-size-md);
-      height: var(--modus-wc-size-sm);
-      line-height: var(--modus-wc-line-height-md);
-      min-height: var(--modus-wc-size-sm);
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
-
-      input,
-      input::placeholder {
-        line-height: var(--modus-wc-line-height-md);
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-sm);
-        width: var(--modus-wc-line-height-sm);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
-      }
-    }
-
-    &.modus-wc-input-md {
-      font-size: var(--modus-wc-font-size-lg);
-      height: var(--modus-wc-size-md);
-      line-height: var(--modus-wc-line-height-md);
-      min-height: var(--modus-wc-size-md);
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
-
-      input,
-      input::placeholder {
-        line-height: var(--modus-wc-line-height-md);
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-md);
-        width: var(--modus-wc-line-height-md);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-md);
-      }
-    }
-
-    &.modus-wc-input-lg {
-      font-size: var(--modus-wc-font-size-xl);
-      height: var(--modus-wc-size-lg);
-      line-height: var(--modus-wc-line-height-lg);
-      min-height: var(--modus-wc-size-lg);
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
-
-      input,
-      input::placeholder {
-        line-height: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-lg);
-        width: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-lg);
-      }
-    }
-
-    &.modus-wc-input-xl {
-      font-size: var(--modus-wc-font-size-xl);
-      height: var(--modus-wc-size-xl);
-      line-height: var(--modus-wc-line-height-lg);
-      min-height: var(--modus-wc-size-xl);
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
-
-      input,
-      input::placeholder {
-        line-height: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-lg);
-        width: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-lg);
-      }
-    }
-  }
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
@@ -374,69 +273,6 @@ modus-wc-text-input {
 [data-theme='modus-classic-dark'] modus-wc-text-input .modus-wc-text-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
-
-    &.modus-wc-input-xs {
-      font-size: var(--modus-wc-font-size-sm);
-      height: var(--modus-wc-size-xs);
-      line-height: 1.25rem;
-      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
-
-      input,
-      input::placeholder {
-        line-height: 1.25rem;
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-sm);
-        width: var(--modus-wc-line-height-sm);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
-      }
-    }
-
-    &.modus-wc-input-sm {
-      font-size: var(--modus-wc-font-size-sm);
-      height: var(--modus-wc-input-height-sm);
-      line-height: var(--modus-wc-line-height-sm);
-      padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-xs);
-    }
-
-    &.modus-wc-input-md {
-      font-size: var(--modus-wc-font-size-md);
-      height: var(--modus-wc-input-height-md);
-      line-height: var(--modus-wc-line-height-md);
-      padding: var(--modus-wc-spacing-sm);
-    }
-
-    &.modus-wc-input-lg {
-      font-size: var(--modus-wc-font-size-lg);
-      height: var(--modus-wc-input-height-lg);
-      line-height: var(--modus-wc-line-height-lg);
-      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
-    }
-
-    &.modus-wc-input-xl {
-      font-size: var(--modus-wc-font-size-xl);
-      height: var(--modus-wc-size-xl);
-      line-height: var(--modus-wc-line-height-lg);
-      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
-
-      input,
-      input::placeholder {
-        line-height: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
-        height: var(--modus-wc-line-height-lg);
-        width: var(--modus-wc-line-height-lg);
-      }
-
-      .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-lg);
-      }
-    }
 
     &:focus-within {
       border-width: var(--modus-wc-border-width-sm);
