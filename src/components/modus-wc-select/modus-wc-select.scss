@@ -60,11 +60,15 @@ modus-wc-select .modus-wc-select {
   &.modus-wc-select-md {
     font-size: var(--modus-wc-font-size-lg);
     height: var(--modus-wc-size-md);
-    line-height: calc(
-      var(--modus-wc-size-md) - var(--modus-wc-border-width-sm)
-    );
+    line-height: var(--modus-wc-line-height-md);
     min-height: var(--modus-wc-size-md);
-    padding-block: 0;
+    padding-block: calc(
+      (
+          var(--modus-wc-size-md) - var(--modus-wc-border-width-sm) - var(
+              --modus-wc-border-width-sm
+            ) - var(--modus-wc-line-height-md)
+        ) / 2
+    );
     padding-inline-end: calc(
       var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
     );
@@ -74,11 +78,15 @@ modus-wc-select .modus-wc-select {
   &.modus-wc-select-lg {
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-lg);
-    line-height: calc(
-      var(--modus-wc-size-lg) - var(--modus-wc-border-width-sm)
-    );
+    line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-lg);
-    padding-block: 0;
+    padding-block: calc(
+      (
+          var(--modus-wc-size-lg) - var(--modus-wc-border-width-sm) - var(
+              --modus-wc-border-width-sm
+            ) - var(--modus-wc-line-height-lg)
+        ) / 2
+    );
     padding-inline-end: calc(
       var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
     );
@@ -88,11 +96,15 @@ modus-wc-select .modus-wc-select {
   &.modus-wc-select-xl {
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-xl);
-    line-height: calc(
-      var(--modus-wc-size-xl) - var(--modus-wc-border-width-sm)
-    );
+    line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-xl);
-    padding-block: 0;
+    padding-block: calc(
+      (
+          var(--modus-wc-size-xl) - var(--modus-wc-border-width-sm) - var(
+              --modus-wc-border-width-sm
+            ) - var(--modus-wc-line-height-lg)
+        ) / 2
+    );
     padding-inline-end: calc(
       var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
     );
