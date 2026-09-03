@@ -11,9 +11,8 @@ modus-wc-select .modus-wc-select-wrapper {
 
 modus-wc-select .modus-wc-select {
   appearance: none;
-  background-image: none; // Hide DaisyUI gradient chevron; custom icon is used
   background-color: var(--modus-wc-color-base-page);
-  background-image: none;
+  background-image: none; // Hide DaisyUI gradient chevron; custom icon is used
   background-position: unset;
   background-size: unset;
   color: var(--modus-wc-color-base-content);
