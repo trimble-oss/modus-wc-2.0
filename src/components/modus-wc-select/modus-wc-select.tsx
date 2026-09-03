@@ -70,6 +70,9 @@ export class ModusWcSelect {
   /** The options to display in the select dropdown. */
   @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
+  /** Whether the select is read only. */
+  @Prop() readOnly?: boolean = false;
+
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
@@ -105,6 +108,7 @@ export class ModusWcSelect {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 
@@ -124,8 +128,40 @@ export class ModusWcSelect {
   };
 
   private handleInput = (event: InputEvent) => {
+    if (this.readOnly) {
+      (event.target as HTMLSelectElement).value = this.value;
+      return;
+    }
+
     this.value = (event.target as HTMLSelectElement).value;
     this.inputChange.emit(event);
+  };
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    if (
+      event.key === 'ArrowDown' ||
+      event.key === 'ArrowUp' ||
+      event.key === ' ' ||
+      event.key === 'Enter'
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  private handleMouseDown = (event: MouseEvent) => {
+    if (this.readOnly) {
+      event.preventDefault();
+    }
+  };
+
+  private handleClick = (event: MouseEvent) => {
+    if (this.readOnly) {
+      event.preventDefault();
+    }
   };
 
   private getLabelSize(): ModusSize {
@@ -146,13 +182,17 @@ export class ModusWcSelect {
           />
         )}
         <select
+          aria-readonly={this.readOnly ? 'true' : undefined}
           class={this.getClasses()}
           disabled={this.disabled}
           id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
+          onClick={this.handleClick}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
+          onKeyDown={this.handleKeyDown}
+          onMouseDown={this.handleMouseDown}
           required={this.required}
           tabindex={this.inputTabIndex}
           {...this.inheritedAttributes}

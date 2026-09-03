@@ -295,4 +295,38 @@ describe('modus-wc-select', () => {
     };
     expect(label?.size).toBe('md');
   });
+
+  it('should apply readonly class and aria-readonly when readOnly is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select read-only="true" aria-label="Readonly select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select');
+    expect(select).toHaveClass('modus-wc-select--readonly');
+    expect(select?.getAttribute('aria-readonly')).toBe('true');
+  });
+
+  it('should not emit inputChange when readOnly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select read-only="true" value="1" aria-label="Readonly select"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.options = defaultOptions;
+    await page.waitForChanges();
+
+    const select = page.root!.querySelector('select') as HTMLSelectElement;
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    select.value = '2';
+    select.dispatchEvent(new Event('input', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(changeSpy).not.toHaveBeenCalled();
+    expect(component.value).toBe('1');
+    expect(select.value).toBe('1');
+  });
 });

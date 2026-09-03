@@ -11,6 +11,7 @@ modus-wc-text-input .modus-wc-input {
 
   & input {
     background-color: var(--modus-wc-color-base-page);
+    color: var(--modus-wc-color-base-inverted);
   }
 
   &:has(> input[disabled]) > input[disabled] {
@@ -100,6 +101,14 @@ modus-wc-text-input {
       &.modus-wc-input-disabled {
         .modus-wc-text-input-icon-password {
           opacity: 0.5;
+        }
+      }
+
+      &.modus-wc-text-input--readonly {
+        background-color: var(--modus-wc-color-base-100);
+
+        input {
+          background-color: transparent;
         }
       }
 
@@ -268,6 +277,36 @@ modus-wc-text-input {
         min-width: var(--modus-wc-line-height-lg);
       }
     }
+  }
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-10 (#171c1e) at 20% opacity
+  border-color: rgb(23 28 30 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-10) 20%,
+      transparent
+    );
+  }
+}
+
+[data-theme='modus-modern-dark']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-light (#f1f1f6) at 20% opacity
+  border-color: rgb(241 241 246 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-light) 20%,
+      transparent
+    );
   }
 }
 

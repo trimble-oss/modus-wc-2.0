@@ -22,6 +22,7 @@ A customizable select component used to pick a value from a list of options
 | `label`         | `label`           | The text to display within the label.                                                                   | `string \| undefined`                               | `undefined` |
 | `name`          | `name`            | Name of the form control. Submitted with the form as part of a name/value pair.                         | `string \| undefined`                               | `undefined` |
 | `options`       | `options`         | The options to display in the select dropdown.                                                          | `ISelectOption[]`                                   | `[]`        |
+| `readOnly`      | `read-only`       | Whether the select is read only.                                                                        | `boolean \| undefined`                              | `false`     |
 | `required`      | `required`        | A value is required for the form to be submittable.                                                     | `boolean \| undefined`                              | `false`     |
 | `size`          | `size`            | The size of the input.                                                                                  | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined` | `'md'`      |
 | `value`         | `value`           | The value of the control.                                                                               | `string`                                            | `''`        |
