@@ -252,20 +252,9 @@
   border-bottom-width: var(--input-bottom-border-width);
   outline-width: 0 !important;
 
-  &:not(
-    .modus-wc-select,
-    .modus-wc-number-input,
-    .modus-wc-input-xs,
-    .modus-wc-input-sm,
-    .modus-wc-input-md,
-    .modus-wc-input-lg,
-    .modus-wc-input-xl,
-    .modus-wc-select-xs,
-    .modus-wc-select-sm,
-    .modus-wc-select-md,
-    .modus-wc-select-lg,
-    .modus-wc-select-xl
-  ) {
+  // Skip default connect padding when the element defines its own (text-input
+  // per-size padding in component SCSS; select/number-input via base class).
+  &:not(.modus-wc-select, .modus-wc-number-input, .modus-wc-text-input) {
     padding: 0 var(--modus-wc-spacing-sm);
   }
 
