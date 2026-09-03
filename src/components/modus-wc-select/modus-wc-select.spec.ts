@@ -217,7 +217,7 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
   });
 
-  it('should render a decorative expand_more chevron instead of the native indicator', async () => {
+  it('should render a decorative caret_down icon instead of the native indicator', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcIcon],
       html: '<modus-wc-select aria-label="Chevron test"></modus-wc-select>',
@@ -228,7 +228,7 @@ describe('modus-wc-select', () => {
     ) as HTMLElement & { name?: string; decorative?: boolean; size?: string };
 
     expect(chevron).not.toBeNull();
-    expect(chevron.name).toBe('expand_more');
+    expect(chevron.name).toBe('caret_down');
     expect(chevron.decorative).toBe(true);
     expect(chevron.size).toBe('md');
     expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();

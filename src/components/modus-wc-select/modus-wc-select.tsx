@@ -186,7 +186,7 @@ export class ModusWcSelect {
           <modus-wc-icon
             class="modus-wc-select-chevron"
             decorative
-            name="expand_more"
+            name="caret_down"
             size={this.getChevronSize()}
           />
         </div>
