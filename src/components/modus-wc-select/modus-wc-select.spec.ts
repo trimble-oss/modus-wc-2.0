@@ -225,12 +225,35 @@ describe('modus-wc-select', () => {
 
     const chevron = page.root!.querySelector(
       'modus-wc-icon.modus-wc-select-chevron'
-    ) as HTMLElement & { name?: string; decorative?: boolean };
+    ) as HTMLElement & { name?: string; decorative?: boolean; size?: string };
 
     expect(chevron).not.toBeNull();
     expect(chevron.name).toBe('expand_more');
     expect(chevron.decorative).toBe(true);
+    expect(chevron.size).toBe('md');
     expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();
+  });
+
+  it('should map select size to chevron icon size', async () => {
+    const cases: Array<{ selectSize: string; chevronSize: string }> = [
+      { selectSize: 'xs', chevronSize: 'sm' },
+      { selectSize: 'sm', chevronSize: 'sm' },
+      { selectSize: 'lg', chevronSize: 'md' },
+      { selectSize: 'xl', chevronSize: 'md' },
+    ];
+
+    for (const { selectSize, chevronSize } of cases) {
+      const page = await newSpecPage({
+        components: [ModusWcSelect, ModusWcIcon],
+        html: `<modus-wc-select size="${selectSize}" aria-label="${selectSize} chevron"></modus-wc-select>`,
+      });
+
+      const chevron = page.root!.querySelector(
+        'modus-wc-icon.modus-wc-select-chevron'
+      ) as HTMLElement & { size?: string };
+
+      expect(chevron?.size).toBe(chevronSize);
+    }
   });
 
   it('should apply xs size class when size is xs', async () => {
