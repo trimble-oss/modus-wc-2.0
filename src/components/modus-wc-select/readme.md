@@ -46,12 +46,14 @@ A customizable select component used to pick a value from a list of options
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-select --> modus-wc-input-label
+  modus-wc-select --> modus-wc-icon
   modus-wc-select --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-date --> modus-wc-select

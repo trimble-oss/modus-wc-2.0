@@ -10,7 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
-import { IInputFeedbackProp, ModusSize } from '../types';
+import { DaisySize, IInputFeedbackProp, ModusSize } from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
@@ -132,6 +132,20 @@ export class ModusWcSelect {
     return INPUT_SIZE_TO_LABEL_SIZE[this.size ?? 'md'];
   }
 
+  private getChevronSize(): DaisySize {
+    switch (this.size) {
+      case 'xs':
+        return 'sm';
+      case 'sm':
+        return 'sm';
+      case 'lg':
+      case 'xl':
+        return 'md';
+      default:
+        return 'md';
+    }
+  }
+
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -145,29 +159,37 @@ export class ModusWcSelect {
             size={this.getLabelSize()}
           />
         )}
-        <select
-          class={this.getClasses()}
-          disabled={this.disabled}
-          id={effectiveId}
-          name={this.name}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus}
-          onInput={this.handleInput}
-          required={this.required}
-          tabindex={this.inputTabIndex}
-          {...this.inheritedAttributes}
-        >
-          {this.options.map((option) => (
-            <option
-              disabled={option.disabled}
-              hidden={option.hidden}
-              selected={option.value === this.value}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div class="modus-wc-select-wrapper">
+          <select
+            class={this.getClasses()}
+            disabled={this.disabled}
+            id={effectiveId}
+            name={this.name}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            required={this.required}
+            tabindex={this.inputTabIndex}
+            {...this.inheritedAttributes}
+          >
+            {this.options.map((option) => (
+              <option
+                disabled={option.disabled}
+                hidden={option.hidden}
+                selected={option.value === this.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <modus-wc-icon
+            class="modus-wc-select-chevron"
+            decorative
+            name="expand_more"
+            size={this.getChevronSize()}
+          />
+        </div>
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}

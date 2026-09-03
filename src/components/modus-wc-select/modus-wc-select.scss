@@ -3,12 +3,24 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-select .modus-wc-select-wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
 modus-wc-select .modus-wc-select {
+  appearance: none;
   background-color: var(--modus-wc-color-base-page);
   color: var(--modus-wc-color-base-content);
+  width: 100%;
 
   @include sizing-tokens;
   @include feedback-levels;
+
+  &::-ms-expand {
+    display: none;
+  }
 
   &.modus-wc-select-xs {
     font-size: var(--modus-wc-font-size-sm);
@@ -20,7 +32,9 @@ modus-wc-select .modus-wc-select {
     );
     min-height: var(--modus-wc-size-xs);
     padding-block: var(--modus-wc-spacing-xs);
-    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+    );
     padding-inline-start: var(--modus-wc-spacing-sm);
   }
 
@@ -34,7 +48,9 @@ modus-wc-select .modus-wc-select {
     );
     min-height: var(--modus-wc-size-sm);
     padding-block: var(--modus-wc-spacing-xs);
-    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+    );
     padding-inline-start: var(--modus-wc-spacing-md);
   }
 
@@ -48,7 +64,9 @@ modus-wc-select .modus-wc-select {
     );
     min-height: var(--modus-wc-size-md);
     padding-block: var(--modus-wc-spacing-md);
-    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+    );
     padding-inline-start: var(--modus-wc-spacing-lg);
   }
 
@@ -62,7 +80,9 @@ modus-wc-select .modus-wc-select {
     );
     min-height: var(--modus-wc-size-lg);
     padding-block: var(--modus-wc-spacing-lg);
-    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+    );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
 
@@ -76,9 +96,27 @@ modus-wc-select .modus-wc-select {
     );
     min-height: var(--modus-wc-size-xl);
     padding-block: var(--modus-wc-spacing-lg);
-    padding-inline-end: var(--modus-wc-spacing-lg);
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+    );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
+}
+
+modus-wc-select .modus-wc-select-chevron {
+  align-items: center;
+  color: var(--modus-wc-color-base-content);
+  display: inline-flex;
+  inset-block-start: 50%;
+  inset-inline-end: var(--modus-wc-spacing-lg);
+  line-height: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+modus-wc-select:has(.modus-wc-select:disabled) .modus-wc-select-chevron {
+  opacity: 0.5;
 }
 
 modus-wc-select .modus-wc-input-label {

@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
@@ -214,6 +215,22 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.length).toBe(2);
     expect(renderedOptions?.[0]).not.toHaveAttribute('selected');
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
+  });
+
+  it('should render a decorative expand_more chevron instead of the native indicator', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcIcon],
+      html: '<modus-wc-select aria-label="Chevron test"></modus-wc-select>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-select-chevron'
+    ) as HTMLElement & { name?: string; decorative?: boolean };
+
+    expect(chevron).not.toBeNull();
+    expect(chevron.name).toBe('expand_more');
+    expect(chevron.decorative).toBe(true);
+    expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();
   });
 
   it('should apply xs size class when size is xs', async () => {
