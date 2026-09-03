@@ -220,7 +220,7 @@ describe('modus-wc-select', () => {
   it('should render a decorative caret_down icon instead of the native indicator', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcIcon],
-      html: '<modus-wc-select aria-label="Chevron test"></modus-wc-select>',
+      html: '<modus-wc-select aria-label="Caret test"></modus-wc-select>',
     });
 
     const chevron = page.root!.querySelector(
@@ -234,7 +234,7 @@ describe('modus-wc-select', () => {
     expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();
   });
 
-  it('should map select size to chevron icon size', async () => {
+  it('should map select size to caret icon size', async () => {
     const cases: Array<{ selectSize: string; chevronSize: string }> = [
       { selectSize: 'xs', chevronSize: 'sm' },
       { selectSize: 'sm', chevronSize: 'sm' },
