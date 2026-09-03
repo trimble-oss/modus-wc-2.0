@@ -26,26 +26,25 @@ import {
   formatDisplay,
   is12hrsFormat,
   parse24h,
-  parseDisplay,
   TimeFormat,
 } from './utils/time-format';
 import {
-  buildCircularWheelOptions,
-  buildDatalistOptions,
-  getHourOptions,
-  getPeriodOptions,
-  getUnitOptions,
-  resolveWheelState,
-  TIME_WHEEL_LOOP_COPIES,
-  valueFromWheelState,
-} from './utils/time-options';
+  bindBeforeInputListener,
+  handleTimeInputBeforeInput,
+  handleTimeInputKeyDown,
+  handleTimeInputPaste,
+  ITimeInputKeyboardContext,
+  unbindBeforeInputListener,
+} from './utils/time-input-keyboard';
+import { resolveWheelState, valueFromWheelState } from './utils/time-options';
 import {
-  applyStepToSegment,
-  clearSegmentInDisplay,
+  IWheelSelectionPartial,
+  TimeDatalistDropdown,
+  TimePickerDropdown,
+} from './utils/time-picker-dropdown';
+import {
   displayFromValue,
   getAriaLiveLabel,
-  getNextSegment,
-  getPrevSegment,
   getSegmentAtCaret,
   getSegments,
   getSkeleton,
@@ -53,9 +52,15 @@ import {
   ITimeSegment,
   parseSkeletonDisplay,
   SegmentKind,
-  setSegmentToBound,
-  typeDigitInSegment,
 } from './utils/time-segments';
+import {
+  bindCircularWheelListeners,
+  ICircularScrollLock,
+  restoreWheelScrollPositions,
+  saveWheelScrollPositions,
+  scrollWheelsToSelection,
+  unbindCircularWheelListeners,
+} from './utils/time-wheel-scroll';
 
 /**
  * A customizable time input with a Modus text field and dropdown
@@ -82,7 +87,7 @@ export class ModusWcTimeInput {
   private dropdownRef?: HTMLElement;
   private hasFocus = false;
   private suppressBlurCommit = false;
-  private circularScrollLock = false;
+  private readonly circularScrollLock: ICircularScrollLock = { current: false };
   private wheelScrollCleanups: Array<() => void> = [];
   /** Scroll selected rows into view only when the dropdown first opens */
   private pendingScrollToSelection = false;
@@ -270,16 +275,24 @@ export class ModusWcTimeInput {
         void this.popperInstance.update();
       }
       requestAnimationFrame(() => {
+        const focusPickerOnOpen = this.pendingScrollToSelection;
         if (this.pendingScrollToSelection) {
-          this.scrollWheelsToSelection();
+          scrollWheelsToSelection(this.dropdownRef);
           this.pendingScrollToSelection = false;
         } else {
-          this.restoreWheelScrollPositions();
+          restoreWheelScrollPositions(
+            this.dropdownRef,
+            this.wheelScrollPositions,
+            this.circularScrollLock
+          );
         }
         if (this.wheelScrollCleanups.length === 0) {
-          this.bindCircularWheelListeners();
+          this.wheelScrollCleanups = bindCircularWheelListeners(
+            this.dropdownRef,
+            this.circularScrollLock
+          );
         }
-        if (!this.useDatalist) {
+        if (!this.useDatalist && focusPickerOnOpen) {
           const focusTarget = this.dropdownRef?.querySelector<HTMLElement>(
             '.time-wheel-option[tabindex="0"]'
           );
@@ -287,7 +300,8 @@ export class ModusWcTimeInput {
         }
       });
     } else {
-      this.unbindCircularWheelListeners();
+      unbindCircularWheelListeners(this.wheelScrollCleanups);
+      this.wheelScrollCleanups = [];
       this.pendingScrollToSelection = false;
       this.wheelScrollPositions.clear();
       if (this.popperInstance) {
@@ -298,10 +312,9 @@ export class ModusWcTimeInput {
   }
 
   disconnectedCallback() {
-    this.unbindCircularWheelListeners();
-    if (this.inputRef) {
-      this.inputRef.removeEventListener('beforeinput', this.handleBeforeInput);
-    }
+    unbindCircularWheelListeners(this.wheelScrollCleanups);
+    this.wheelScrollCleanups = [];
+    unbindBeforeInputListener(this.inputRef, this.handleBeforeInput);
     if (this.popperInstance) {
       this.popperInstance.destroy();
       this.popperInstance = null;
@@ -355,7 +368,6 @@ export class ModusWcTimeInput {
     if (this.datalistId) {
       return true;
     }
-    // Deprecated: markup opt-in without variant. Property-only assignment does not switch modes.
     return this.el.hasAttribute('interval-minutes');
   }
 
@@ -449,8 +461,6 @@ export class ModusWcTimeInput {
     this.showDropdown = true;
   }
 
-  // The size modifier lives on the input, but the field width is set on the
-  // container, so mirror the size there too.
   private getContainerClasses(): string {
     return `time-input-container time-input-container--${this.size}`;
   }
@@ -544,6 +554,39 @@ export class ModusWcTimeInput {
     }
   }
 
+  private getKeyboardContext(): ITimeInputKeyboardContext {
+    return {
+      disabled: Boolean(this.disabled),
+      readOnly: Boolean(this.readOnly),
+      displayValue: this.displayValue,
+      effectiveShowSeconds: this.effectiveShowSeconds,
+      resolvedFormat: this.resolvedFormat,
+      minuteStep: this.minuteStep,
+      secondStep: this.secondStep,
+      min: this.min,
+      max: this.max,
+      getActiveSegment: () => this.getActiveSegment(),
+      selectSegment: (segment) => this.selectSegment(segment),
+      commitDisplay: (display, kind) => this.commitDisplay(display, kind),
+      openDropdown: () => this.openDropdown(),
+      closeDropdown: () => this.closeDropdown(),
+      getSegmentDigitBuffer: () => this.segmentDigitBuffer,
+      setSegmentDigitBuffer: (buffer) => {
+        this.segmentDigitBuffer = buffer;
+      },
+      setActiveSegmentKind: (kind) => {
+        this.activeSegmentKind = kind;
+      },
+      setPendingSegmentSelect: (kind) => {
+        this.pendingSegmentSelect = kind;
+      },
+      emitParsedTime: (next24h) => {
+        this.isInvalid = false;
+        this.emitChange(next24h);
+      },
+    };
+  }
+
   private handleBlur = (event: FocusEvent) => {
     if (this.suppressBlurCommit) {
       this.suppressBlurCommit = false;
@@ -622,212 +665,31 @@ export class ModusWcTimeInput {
   };
 
   private handlePaste = (event: ClipboardEvent) => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-    const pasted = event.clipboardData?.getData('text')?.trim();
-    if (!pasted) {
-      return;
-    }
-    event.preventDefault();
-
-    const parsed =
-      parse24h(pasted) ??
-      parseDisplay(pasted, this.effectiveShowSeconds, this.resolvedFormat);
-    if (!parsed) {
-      return;
-    }
-    const clamped = clampTime(parsed, this.min, this.max);
-    const next24h = format24h(clamped, this.effectiveShowSeconds);
-    this.isInvalid = false;
-    this.emitChange(next24h);
-    this.pendingSegmentSelect = 'hour';
+    handleTimeInputPaste(event, this.getKeyboardContext());
   };
 
   private handleKeyDown = (event: KeyboardEvent) => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-
-    const seg = this.getActiveSegment();
-
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const next = applyStepToSegment(
-        this.displayValue,
-        seg,
-        1,
-        this.effectiveShowSeconds,
-        this.resolvedFormat,
-        this.minuteStep,
-        this.secondStep
-      );
-      this.commitDisplay(next, seg.kind);
-      return;
-    }
-
-    if (event.key === 'ArrowDown') {
-      if (event.altKey) {
-        event.preventDefault();
-        this.openDropdown();
-        return;
-      }
-      event.preventDefault();
-      const next = applyStepToSegment(
-        this.displayValue,
-        seg,
-        -1,
-        this.effectiveShowSeconds,
-        this.resolvedFormat,
-        this.minuteStep,
-        this.secondStep
-      );
-      this.commitDisplay(next, seg.kind);
-      return;
-    }
-
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      this.selectSegment(
-        getPrevSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
-      );
-      return;
-    }
-
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      this.selectSegment(
-        getNextSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
-      );
-      return;
-    }
-
-    if (event.key === 'Home') {
-      event.preventDefault();
-      const next = setSegmentToBound(
-        this.displayValue,
-        seg,
-        'min',
-        this.effectiveShowSeconds,
-        this.resolvedFormat
-      );
-      this.commitDisplay(next, seg.kind);
-      return;
-    }
-
-    if (event.key === 'End') {
-      event.preventDefault();
-      const next = setSegmentToBound(
-        this.displayValue,
-        seg,
-        'max',
-        this.effectiveShowSeconds,
-        this.resolvedFormat
-      );
-      this.commitDisplay(next, seg.kind);
-      return;
-    }
-
-    if (event.key === 'Backspace' || event.key === 'Delete') {
-      event.preventDefault();
-      const next = clearSegmentInDisplay(
-        this.displayValue,
-        seg,
-        this.effectiveShowSeconds,
-        this.resolvedFormat
-      );
-      this.segmentDigitBuffer = '';
-      this.commitDisplay(next, seg.kind);
-      return;
-    }
-
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.closeDropdown();
-      return;
-    }
-
-    if (/^\d$/.test(event.key)) {
-      event.preventDefault();
-      const result = typeDigitInSegment(
-        this.displayValue,
-        seg,
-        event.key,
-        this.segmentDigitBuffer,
-        this.resolvedFormat
-      );
-      this.segmentDigitBuffer = result.buffer;
-      const nextKind = result.advance
-        ? getNextSegment(seg, this.effectiveShowSeconds, this.resolvedFormat)
-            .kind
-        : seg.kind;
-      this.activeSegmentKind = nextKind;
-      this.commitDisplay(result.display, nextKind);
-      if (result.advance) {
-        const nextSeg = getNextSegment(
-          seg,
-          this.effectiveShowSeconds,
-          this.resolvedFormat
-        );
-        this.pendingSegmentSelect = nextSeg.kind;
-      }
-      return;
-    }
-
-    if (
-      this.resolvedFormat === '12hrs' &&
-      seg.kind === 'period' &&
-      /^[apAP]$/.test(event.key)
-    ) {
-      event.preventDefault();
-      const result = typeDigitInSegment(
-        this.displayValue,
-        seg,
-        event.key,
-        '',
-        this.resolvedFormat
-      );
-      this.commitDisplay(result.display, seg.kind);
-      return;
-    }
-
-    if (
-      event.key.length === 1 &&
-      !event.ctrlKey &&
-      !event.metaKey &&
-      !event.altKey
-    ) {
-      event.preventDefault();
-    }
+    handleTimeInputKeyDown(event, this.getKeyboardContext());
   };
 
   private handleBeforeInput = (event: InputEvent) => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-    event.preventDefault();
+    handleTimeInputBeforeInput(event, this.getKeyboardContext());
   };
 
   private setInputRef = (el: HTMLInputElement | undefined) => {
-    if (this.inputRef) {
-      this.inputRef.removeEventListener('beforeinput', this.handleBeforeInput);
-    }
+    bindBeforeInputListener(this.inputRef, el, this.handleBeforeInput);
     this.inputRef = el;
-    if (el) {
-      el.addEventListener('beforeinput', this.handleBeforeInput);
-    }
   };
 
-  private applyWheelSelection(partial: {
-    hour?: number;
-    minutes?: number;
-    seconds?: number;
-    period?: 'AM' | 'PM';
-  }) {
+  private setDropdownRef = (el: HTMLElement | undefined) => {
+    this.dropdownRef = el;
+  };
+
+  private applyWheelSelection(partial: IWheelSelectionPartial) {
     if (this.disabled || this.readOnly) {
       return;
     }
-    this.saveWheelScrollPositions();
+    saveWheelScrollPositions(this.dropdownRef, this.wheelScrollPositions);
     const current = resolveWheelState(
       this.value,
       this.effectiveShowSeconds,
@@ -876,108 +738,6 @@ export class ModusWcTimeInput {
     });
   };
 
-  private moveListboxFocus(
-    current: HTMLElement,
-    direction: 1 | -1,
-    itemSelector: string
-  ) {
-    const listbox = current.closest('[role="listbox"]');
-    if (!listbox) {
-      return;
-    }
-    const items = Array.from(
-      listbox.querySelectorAll<HTMLElement>(itemSelector)
-    ).filter((el) => el.getAttribute('aria-hidden') !== 'true');
-    const index = items.indexOf(current);
-    if (index < 0 || items.length === 0) {
-      return;
-    }
-    let nextIndex = index + direction;
-    if (nextIndex < 0) {
-      nextIndex = items.length - 1;
-    } else if (nextIndex >= items.length) {
-      nextIndex = 0;
-    }
-    current.tabIndex = -1;
-    const target = items[nextIndex];
-    target.tabIndex = 0;
-    target.focus();
-  }
-
-  private handleWheelOptionKeyDown = (
-    event: KeyboardEvent,
-    isA11yCopy: boolean,
-    onSelect: (value: string) => void,
-    value: string
-  ) => {
-    if (!isA11yCopy) {
-      return;
-    }
-    const target = event.currentTarget as HTMLElement;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onSelect(value);
-      return;
-    }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      this.moveListboxFocus(target, 1, '.time-wheel-option');
-      return;
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      this.moveListboxFocus(target, -1, '.time-wheel-option');
-      return;
-    }
-    if (event.key === 'Home') {
-      event.preventDefault();
-      const listbox = target.closest('[role="listbox"]');
-      const first = listbox?.querySelector<HTMLElement>(
-        '.time-wheel-option:not([aria-hidden="true"])'
-      );
-      if (first && first !== target) {
-        target.tabIndex = -1;
-        first.tabIndex = 0;
-        first.focus();
-      }
-      return;
-    }
-    if (event.key === 'End') {
-      event.preventDefault();
-      const listbox = target.closest('[role="listbox"]');
-      const items = listbox?.querySelectorAll<HTMLElement>(
-        '.time-wheel-option:not([aria-hidden="true"])'
-      );
-      const last = items?.[items.length - 1];
-      if (last && last !== target) {
-        target.tabIndex = -1;
-        last.tabIndex = 0;
-        last.focus();
-      }
-    }
-  };
-
-  private handleDatalistOptionKeyDown = (
-    event: KeyboardEvent,
-    onSelect: () => void
-  ) => {
-    const target = event.currentTarget as HTMLElement;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onSelect();
-      return;
-    }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      this.moveListboxFocus(target, 1, '.time-datalist-option');
-      return;
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      this.moveListboxFocus(target, -1, '.time-datalist-option');
-    }
-  };
-
   private syncDisplayValue() {
     this.displayValue = displayFromValue(
       this.value,
@@ -987,343 +747,27 @@ export class ModusWcTimeInput {
     this.updateAriaLive();
   }
 
-  private getWheelViewportKind(viewport: HTMLElement): string {
-    return (
-      Array.from(viewport.classList)
-        .find(
-          (c) => typeof c === 'string' && c.startsWith('time-wheel-viewport--')
-        )
-        ?.replace('time-wheel-viewport--', '') ?? ''
-    );
-  }
-
-  private saveWheelScrollPositions() {
-    if (!this.dropdownRef) {
-      return;
-    }
-    this.dropdownRef
-      .querySelectorAll<HTMLElement>('.time-wheel-viewport')
-      .forEach((viewport) => {
-        const kind = this.getWheelViewportKind(viewport);
-        if (kind) {
-          this.wheelScrollPositions.set(kind, viewport.scrollTop);
-        }
-      });
-  }
-
-  private restoreWheelScrollPositions() {
-    if (!this.dropdownRef || this.wheelScrollPositions.size === 0) {
-      return;
-    }
-    this.circularScrollLock = true;
-    this.dropdownRef
-      .querySelectorAll<HTMLElement>('.time-wheel-viewport')
-      .forEach((viewport) => {
-        const kind = this.getWheelViewportKind(viewport);
-        const top = kind ? this.wheelScrollPositions.get(kind) : undefined;
-        if (top != null) {
-          viewport.scrollTop = top;
-        }
-      });
-    this.circularScrollLock = false;
-  }
-
-  private scrollWheelsToSelection() {
-    if (this.useDatalist || !this.dropdownRef) {
-      return;
-    }
-    const viewports = this.dropdownRef.querySelectorAll('.time-wheel-viewport');
-    this.circularScrollLock = true;
-    viewports.forEach((viewport) => {
-      const viewportEl = viewport as HTMLElement;
-      const selected = this.getPreferredSelectedOption(viewportEl);
-      if (!selected) {
-        return;
-      }
-      viewportEl.scrollTop +=
-        selected.getBoundingClientRect().top -
-        viewportEl.getBoundingClientRect().top;
-    });
-    this.circularScrollLock = false;
-  }
-
-  private getPreferredSelectedOption(
-    viewportEl: HTMLElement
-  ): HTMLElement | null {
-    const selected = Array.from(
-      viewportEl.querySelectorAll<HTMLElement>('.time-wheel-option.is-selected')
-    );
-    if (selected.length === 0) {
-      return null;
-    }
-    if (viewportEl.dataset.circular !== 'true') {
-      return selected[0];
-    }
-    const middle = selected.find(
-      (el) =>
-        el.dataset.wheelCopy === String(Math.floor(TIME_WHEEL_LOOP_COPIES / 2))
-    );
-    return middle ?? selected[0];
-  }
-
-  private getCircularSetHeight(
-    viewportEl: HTMLElement,
-    optionCount: number
-  ): number {
-    const items = viewportEl.querySelectorAll('.time-wheel-option');
-    if (items.length < optionCount * 2) {
-      const first = items[0] as HTMLElement | undefined;
-      return optionCount * (first?.offsetHeight || 0);
-    }
-    const first = items[0] as HTMLElement;
-    const nextCopyFirst = items[optionCount] as HTMLElement;
-    return nextCopyFirst.offsetTop - first.offsetTop;
-  }
-
-  private maintainCircularScroll(viewportEl: HTMLElement, optionCount: number) {
-    if (this.circularScrollLock || optionCount < 2) {
-      return;
-    }
-    const setHeight = this.getCircularSetHeight(viewportEl, optionCount);
-    if (setHeight <= 0) {
-      return;
-    }
-    const { scrollTop } = viewportEl;
-    if (scrollTop < setHeight) {
-      this.circularScrollLock = true;
-      viewportEl.scrollTop = scrollTop + setHeight;
-      this.circularScrollLock = false;
-    } else if (scrollTop >= setHeight * 2) {
-      this.circularScrollLock = true;
-      viewportEl.scrollTop = scrollTop - setHeight;
-      this.circularScrollLock = false;
-    }
-  }
-
-  private unbindCircularWheelListeners() {
-    this.wheelScrollCleanups.forEach((cleanup) => cleanup());
-    this.wheelScrollCleanups = [];
-  }
-
-  private bindCircularWheelListeners() {
-    this.unbindCircularWheelListeners();
-    if (!this.dropdownRef) {
-      return;
-    }
-    const viewports = this.dropdownRef.querySelectorAll(
-      '.time-wheel-viewport[data-circular="true"]'
-    );
-    viewports.forEach((viewport) => {
-      const viewportEl = viewport as HTMLElement;
-      const optionCount = Number(viewportEl.dataset.optionCount);
-      if (!optionCount || optionCount < 2) {
-        return;
-      }
-      const onScroll = () =>
-        this.maintainCircularScroll(viewportEl, optionCount);
-      viewportEl.addEventListener('scroll', onScroll, { passive: true });
-      this.wheelScrollCleanups.push(() =>
-        viewportEl.removeEventListener('scroll', onScroll)
-      );
-    });
-  }
-
-  private renderPickerDropdown() {
-    const state = resolveWheelState(
-      this.value,
-      this.effectiveShowSeconds,
-      this.resolvedFormat
-    );
-    const hours = getHourOptions(this.resolvedFormat);
-    const minutes = getUnitOptions(this.minuteStep);
-    const seconds = this.effectiveShowSeconds
-      ? getUnitOptions(this.secondStep)
-      : [];
-    const periods = getPeriodOptions();
-
-    return (
-      <div
-        class="time-dropdown time-dropdown--picker"
-        id={this.dropdownId}
-        ref={(el) => (this.dropdownRef = el)}
-        role="dialog"
-        aria-label="Time picker"
-      >
-        <div class="time-wheels">
-          {this.renderWheel('hours', hours, String(state.hour), (v) =>
-            this.applyWheelSelection({ hour: Number(v) })
-          )}
-          {this.renderWheel('minutes', minutes, String(state.minutes), (v) =>
-            this.applyWheelSelection({ minutes: Number(v) })
-          )}
-          {this.effectiveShowSeconds &&
-            this.renderWheel('seconds', seconds, String(state.seconds), (v) =>
-              this.applyWheelSelection({ seconds: Number(v) })
-            )}
-          {is12hrsFormat(this.resolvedFormat) &&
-            this.renderWheel(
-              'period',
-              periods,
-              state.period,
-              (v) => this.applyWheelSelection({ period: v as 'AM' | 'PM' }),
-              false
-            )}
-        </div>
-      </div>
-    );
-  }
-
-  private renderWheel(
-    kind: string,
-    options: { label: string; value: string }[],
-    selectedValue: string,
-    onSelect: (value: string) => void,
-    circular = options.length >= 2
-  ) {
-    const looped = circular
-      ? buildCircularWheelOptions(options)
-      : options.map((opt, index) => ({
-          ...opt,
-          copy: 0,
-          key: `0-${index}-${opt.value}`,
-        }));
-    const middleCopy = Math.floor(TIME_WHEEL_LOOP_COPIES / 2);
-    const focusableKey = (() => {
-      const selectedA11y = looped.find(
-        (opt) =>
-          (!circular || opt.copy === middleCopy) &&
-          (opt.value === selectedValue ||
-            Number(opt.value) === Number(selectedValue))
-      );
-      if (selectedA11y) {
-        return selectedA11y.key;
-      }
-      return looped.find((opt) => !circular || opt.copy === middleCopy)?.key;
-    })();
-
-    return (
-      <div
-        class={{
-          'time-wheel-viewport': true,
-          [`time-wheel-viewport--${kind}`]: true,
-          'time-wheel-viewport--compact': !circular,
-        }}
-        data-circular={circular ? 'true' : 'false'}
-        data-option-count={options.length}
-      >
-        <ul
-          class={`time-wheel time-wheel--${kind}`}
-          role="listbox"
-          aria-label={kind}
-        >
-          {looped.map((opt) => {
-            const selected =
-              opt.value === selectedValue ||
-              Number(opt.value) === Number(selectedValue);
-            const isA11yCopy = !circular || opt.copy === middleCopy;
-            return (
-              <li
-                key={opt.key}
-                class={{
-                  'time-wheel-option': true,
-                  'is-selected': selected,
-                }}
-                data-wheel-copy={opt.copy}
-                data-value={opt.value}
-                role="option"
-                aria-hidden={isA11yCopy ? undefined : 'true'}
-                aria-selected={
-                  isA11yCopy ? (selected ? 'true' : 'false') : undefined
-                }
-                tabIndex={isA11yCopy && opt.key === focusableKey ? 0 : -1}
-                onMouseDown={(e: MouseEvent) => {
-                  e.preventDefault();
-                }}
-                onClick={() => onSelect(opt.value)}
-                onKeyDown={(e: KeyboardEvent) =>
-                  this.handleWheelOptionKeyDown(
-                    e,
-                    isA11yCopy,
-                    onSelect,
-                    opt.value
-                  )
-                }
-              >
-                {opt.label}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
-
-  private renderDatalistDropdown() {
-    const options = buildDatalistOptions({
-      options: this.datalistOptions,
-      intervalMinutes: this.intervalMinutes,
-      showSeconds: this.effectiveShowSeconds,
-      min: this.min,
-      max: this.max,
-      format: this.resolvedFormat,
-    });
-
-    const focusableValue =
-      options.find((opt) => opt.value === this.value)?.value ??
-      options[0]?.value;
-
-    return (
-      <div
-        class="time-dropdown time-dropdown--datalist"
-        id={this.dropdownId}
-        ref={(el) => (this.dropdownRef = el)}
-        role="listbox"
-        aria-label="Time options"
-      >
-        <ul class="time-datalist">
-          {options.map((opt) => {
-            const selected = opt.value === this.value;
-            return (
-              <li
-                class={{
-                  'time-datalist-option': true,
-                  'is-selected': selected,
-                }}
-                role="option"
-                aria-selected={selected ? 'true' : 'false'}
-                tabIndex={opt.value === focusableValue ? 0 : -1}
-                onClick={() => this.handleDatalistSelect(opt.value)}
-                onKeyDown={(e: KeyboardEvent) =>
-                  this.handleDatalistOptionKeyDown(e, () =>
-                    this.handleDatalistSelect(opt.value)
-                  )
-                }
-              >
-                {opt.label}
-              </li>
-            );
-          })}
-          <li class="time-datalist-divider" role="separator" />
-          <li
-            class="time-datalist-option time-datalist-option--other"
-            role="option"
-            aria-selected="false"
-            tabIndex={focusableValue == null ? 0 : -1}
-            onClick={this.handleOtherSelect}
-            onKeyDown={(e: KeyboardEvent) =>
-              this.handleDatalistOptionKeyDown(e, this.handleOtherSelect)
-            }
-          >
-            Other
-          </li>
-        </ul>
-      </div>
-    );
-  }
-
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
     const popupRole = this.useDatalist ? 'listbox' : 'dialog';
+    const dropdownProps = {
+      dropdownId: this.dropdownId,
+      setDropdownRef: this.setDropdownRef,
+      value: this.value,
+      effectiveShowSeconds: this.effectiveShowSeconds,
+      resolvedFormat: this.resolvedFormat,
+      minuteStep: this.minuteStep,
+      secondStep: this.secondStep,
+      datalistOptions: this.datalistOptions,
+      intervalMinutes: this.intervalMinutes,
+      min: this.min,
+      max: this.max,
+      onWheelSelect: (partial: IWheelSelectionPartial) =>
+        this.applyWheelSelection(partial),
+      onDatalistSelect: (value24h: string) =>
+        this.handleDatalistSelect(value24h),
+      onOtherSelect: this.handleOtherSelect,
+    };
 
     return (
       <Host>
@@ -1394,9 +838,11 @@ export class ModusWcTimeInput {
         {this.showDropdown &&
           !this.disabled &&
           !this.readOnly &&
-          (this.useDatalist
-            ? this.renderDatalistDropdown()
-            : this.renderPickerDropdown())}
+          (this.useDatalist ? (
+            <TimeDatalistDropdown {...dropdownProps} />
+          ) : (
+            <TimePickerDropdown {...dropdownProps} />
+          ))}
 
         {this.feedback && (
           <modus-wc-input-feedback

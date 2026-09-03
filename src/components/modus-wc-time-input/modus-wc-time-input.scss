@@ -70,7 +70,7 @@ modus-wc-time-input {
     }
 
     .clock-icon-trigger {
-      inset-inline-end: var(--modus-wc-spacing-md);
+      inset-inline-end: 0.875rem; // spacing-md + 2px nudge
     }
 
     .modus-wc-time-input {
@@ -116,7 +116,7 @@ modus-wc-time-input {
     // Chrome's native picker indicator sits ~4px after the digits with the
     // remaining gutter to its right; the reserve on the field minus the icon
     // leaves that split at this inset.
-    inset-inline-end: var(--modus-wc-spacing-sm);
+    inset-inline-end: 0.625rem; // spacing-sm + 2px nudge
     justify-content: center;
     padding: 0;
     position: absolute;

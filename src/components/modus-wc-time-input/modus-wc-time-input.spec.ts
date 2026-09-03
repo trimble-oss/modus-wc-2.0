@@ -13,12 +13,18 @@ import {
   toHours24,
 } from './utils/time-format';
 import {
+  handleDatalistOptionKeyDown,
+  handleWheelOptionKeyDown,
+  moveListboxFocus,
+} from './utils/time-listbox-keyboard';
+import {
   buildCircularWheelOptions,
   buildDatalistOptions,
   getHourOptions,
   TIME_WHEEL_LOOP_COPIES,
   valueFromWheelState,
 } from './utils/time-options';
+import { resolveFocusableWheelKey } from './utils/time-picker-dropdown';
 import {
   applyStepToSegment,
   displayFromValue,
@@ -27,6 +33,15 @@ import {
   parseSkeletonDisplay,
   typeDigitInSegment,
 } from './utils/time-segments';
+import {
+  bindCircularWheelListeners,
+  getCircularSetHeight,
+  getPreferredSelectedOption,
+  getWheelViewportKind,
+  maintainCircularScroll,
+  restoreWheelScrollPositions,
+  saveWheelScrollPositions,
+} from './utils/time-wheel-scroll';
 
 /**
  * mock-doc's `classList` getter returns a fresh `MockClassList` wrapper
@@ -432,7 +447,7 @@ describe('modus-wc-time-input', () => {
 
     const raf = captureRaf();
 
-    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    (component as unknown as { openDropdown: () => void }).openDropdown();
     await page.waitForChanges();
 
     const focusableOption = page.root!.querySelector<HTMLElement>(
@@ -1414,27 +1429,14 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Listbox guards"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
-
-    const moveListboxFocus = (
-      component as unknown as {
-        moveListboxFocus: (
-          current: HTMLElement,
-          direction: 1 | -1,
-          itemSelector: string
-        ) => void;
-      }
-    ).moveListboxFocus;
 
     const noListboxEl = page.doc.createElement('div');
-    // Line 886: no closest('[role="listbox"]')
     expect(() => moveListboxFocus(noListboxEl, 1, '.item')).not.toThrow();
 
     const listboxEl = page.doc.createElement('div');
     listboxEl.setAttribute('role', 'listbox');
     const childEl = page.doc.createElement('div');
     listboxEl.appendChild(childEl);
-    // Line 893: index < 0 (current not in items matching selector)
     expect(() => moveListboxFocus(childEl, 1, '.non-existent')).not.toThrow();
   });
 
@@ -1475,20 +1477,68 @@ describe('modus-wc-time-input', () => {
     });
     const component = page.rootInstance as ModusWcTimeInput;
 
-    const event = new Event('beforeinput') as InputEvent;
-    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
-
     const handleBeforeInput = (
       component as unknown as { handleBeforeInput: (e: InputEvent) => void }
     ).handleBeforeInput;
 
+    const createInputEvent = (inputType: string, data?: string): InputEvent => {
+      const event = new Event('beforeinput', {
+        cancelable: true,
+      }) as InputEvent;
+      Object.defineProperty(event, 'inputType', { value: inputType });
+      if (data !== undefined) {
+        Object.defineProperty(event, 'data', { value: data });
+      }
+      return event;
+    };
+
+    const letterEvent = createInputEvent('insertText', 'x');
+    const letterPreventSpy = jest.spyOn(letterEvent, 'preventDefault');
     component.disabled = true;
-    handleBeforeInput(event);
-    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    handleBeforeInput(letterEvent);
+    expect(letterPreventSpy).not.toHaveBeenCalled();
 
     component.disabled = false;
-    handleBeforeInput(event);
-    expect(preventDefaultSpy).toHaveBeenCalled();
+    handleBeforeInput(letterEvent);
+    expect(letterPreventSpy).toHaveBeenCalled();
+
+    const digitEvent = createInputEvent('insertText', '5');
+    const digitPreventSpy = jest.spyOn(digitEvent, 'preventDefault');
+    handleBeforeInput(digitEvent);
+    expect(digitPreventSpy).not.toHaveBeenCalled();
+
+    const deleteEvent = createInputEvent('deleteContentBackward');
+    const deletePreventSpy = jest.spyOn(deleteEvent, 'preventDefault');
+    handleBeforeInput(deleteEvent);
+    expect(deletePreventSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not refocus the hours wheel when the picker re-renders after open', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Picker refocus" value="09:45"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const raf = captureRaf();
+
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+    raf.run();
+
+    const minutesOption = page.root!.querySelector<HTMLElement>(
+      '.time-wheel-viewport--minutes .time-wheel-option[tabindex="0"]'
+    );
+    expect(minutesOption).not.toBeNull();
+    const minutesFocusSpy = jest.spyOn(minutesOption!, 'focus');
+    minutesOption!.focus();
+    minutesFocusSpy.mockClear();
+
+    component.value = '10:00';
+    await page.waitForChanges();
+    raf.run();
+    raf.restore();
+
+    expect(minutesFocusSpy).not.toHaveBeenCalled();
   });
 
   it('should handle early returns in keyboard option handlers when listbox is null', async () => {
@@ -1496,45 +1546,24 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
 
     const dummyTarget = page.doc.createElement('div');
-    // No listbox parent
 
-    const handleWheelKeyDown = (
-      component as unknown as {
-        handleWheelOptionKeyDown: (
-          e: KeyboardEvent,
-          isA11y: boolean,
-          onSelect: () => void,
-          val: string
-        ) => void;
-      }
-    ).handleWheelOptionKeyDown;
-
-    // Home
     let event = new KeyboardEvent('keydown', { key: 'Home' });
     Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
-    expect(() => handleWheelKeyDown(event, true, jest.fn(), '0')).not.toThrow();
+    expect(() =>
+      handleWheelOptionKeyDown(event, true, jest.fn(), '0')
+    ).not.toThrow();
 
-    // End
     event = new KeyboardEvent('keydown', { key: 'End' });
     Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
-    expect(() => handleWheelKeyDown(event, true, jest.fn(), '0')).not.toThrow();
-
-    // Datalist ArrowDown without listbox (using moveListboxFocus)
-    const handleDatalistKeyDown = (
-      component as unknown as {
-        handleDatalistOptionKeyDown: (
-          e: KeyboardEvent,
-          onSelect: () => void
-        ) => void;
-      }
-    ).handleDatalistOptionKeyDown;
+    expect(() =>
+      handleWheelOptionKeyDown(event, true, jest.fn(), '0')
+    ).not.toThrow();
 
     event = new KeyboardEvent('keydown', { key: 'ArrowDown' });
     Object.defineProperty(event, 'currentTarget', { value: dummyTarget });
-    expect(() => handleDatalistKeyDown(event, jest.fn())).not.toThrow();
+    expect(() => handleDatalistOptionKeyDown(event, jest.fn())).not.toThrow();
   });
 
   it('should handle unmatched values when rendering wheels and datalists', async () => {
@@ -1654,7 +1683,47 @@ describe('modus-wc-time-input', () => {
     }
   });
 
-  it('should handle picker focus RAF when dropdown ref or focus target is missing', async () => {
+  it('should skip picker focus when opening the datalist dropdown', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Datalist focus skip" variant="datalist"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const raf = captureRaf();
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+
+    expect(() => raf.run()).not.toThrow();
+    raf.restore();
+
+    expect(page.root!.querySelector('.time-datalist')).not.toBeNull();
+  });
+
+  it('should skip picker focus when dropdown opens without pending scroll', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Picker no focus" value="09:45"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const raf = captureRaf();
+    (
+      component as unknown as {
+        showDropdown: boolean;
+        pendingScrollToSelection: boolean;
+      }
+    ).showDropdown = true;
+    (
+      component as unknown as { pendingScrollToSelection: boolean }
+    ).pendingScrollToSelection = false;
+    await page.waitForChanges();
+
+    expect(() => raf.run()).not.toThrow();
+    raf.restore();
+  });
+
+  it('should handle picker focus RAF when focus target is missing', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Picker RAF guards" value="09:45"></modus-wc-time-input>',
@@ -1662,12 +1731,27 @@ describe('modus-wc-time-input', () => {
     const component = page.rootInstance as ModusWcTimeInput;
 
     const raf = captureRaf();
-    (component as unknown as { showDropdown: boolean }).showDropdown = true;
+    (component as unknown as { openDropdown: () => void }).openDropdown();
     await page.waitForChanges();
 
     page.root!.querySelectorAll('.time-wheel-option').forEach((option) => {
       option.setAttribute('tabindex', '-1');
     });
+
+    expect(() => raf.run()).not.toThrow();
+    raf.restore();
+  });
+
+  it('should handle picker focus RAF when dropdown ref is cleared before callback', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Picker RAF no dropdown ref" value="09:45"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    const raf = captureRaf();
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
     (component as unknown as { dropdownRef?: HTMLElement }).dropdownRef =
       undefined;
 
@@ -1675,26 +1759,8 @@ describe('modus-wc-time-input', () => {
     raf.restore();
   });
 
-  it('should handle empty wheel options when resolving focusable key', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input></modus-wc-time-input>',
-    });
-    const component = page.rootInstance as ModusWcTimeInput;
-
-    expect(() =>
-      (
-        component as unknown as {
-          renderWheel: (
-            kind: string,
-            options: { label: string; value: string }[],
-            selectedValue: string,
-            onSelect: (value: string) => void,
-            circular?: boolean
-          ) => unknown;
-        }
-      ).renderWheel('test', [], '0', () => {}, false)
-    ).not.toThrow();
+  it('should handle empty wheel options when resolving focusable key', () => {
+    expect(resolveFocusableWheelKey([], '0', false)).toBeUndefined();
   });
 
   it('should not throw from handleOtherSelect when the input ref is unset', async () => {
@@ -1838,18 +1904,8 @@ describe('modus-wc-time-input', () => {
     expect(component.value).toBe(initialValue);
   });
 
-  it('should no-op saveWheelScrollPositions without a dropdown reference', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Save guard"></modus-wc-time-input>',
-    });
-    const component = page.rootInstance as ModusWcTimeInput;
-
-    expect(() =>
-      (
-        component as unknown as { saveWheelScrollPositions: () => void }
-      ).saveWheelScrollPositions()
-    ).not.toThrow();
+  it('should no-op saveWheelScrollPositions without a dropdown reference', () => {
+    expect(() => saveWheelScrollPositions(undefined, new Map())).not.toThrow();
   });
 
   it('should no-op restoreWheelScrollPositions without a dropdown reference or saved positions', async () => {
@@ -1858,11 +1914,15 @@ describe('modus-wc-time-input', () => {
       html: '<modus-wc-time-input aria-label="Restore guard"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
+    const positions = (
+      component as unknown as { wheelScrollPositions: Map<string, number> }
+    ).wheelScrollPositions;
+    const lock = (
+      component as unknown as { circularScrollLock: { current: boolean } }
+    ).circularScrollLock;
 
     expect(() =>
-      (
-        component as unknown as { restoreWheelScrollPositions: () => void }
-      ).restoreWheelScrollPositions()
+      restoreWheelScrollPositions(undefined, positions, lock)
     ).not.toThrow();
 
     const button = page.root!.querySelector(
@@ -1872,9 +1932,11 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     expect(() =>
-      (
-        component as unknown as { restoreWheelScrollPositions: () => void }
-      ).restoreWheelScrollPositions()
+      restoreWheelScrollPositions(
+        (component as unknown as { dropdownRef?: HTMLElement }).dropdownRef,
+        positions,
+        lock
+      )
     ).not.toThrow();
   });
 
@@ -1883,17 +1945,10 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Viewport kind"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
     const viewport = page.doc.createElement('div');
     viewport.classList.add('time-wheel-viewport');
 
-    const kind = (
-      component as unknown as {
-        getWheelViewportKind: (v: HTMLElement) => string;
-      }
-    ).getWheelViewportKind(viewport);
-
-    expect(kind).toBe('');
+    expect(getWheelViewportKind(viewport)).toBe('');
   });
 
   it('should return the middle copy for circular wheels and the sole match otherwise', async () => {
@@ -1901,12 +1956,7 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Preferred option"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
-    const getPreferred = (
-      component as unknown as {
-        getPreferredSelectedOption: (v: HTMLElement) => HTMLElement | null;
-      }
-    ).getPreferredSelectedOption.bind(component);
+    const getPreferred = getPreferredSelectedOption;
 
     const makeOption = (copy: number) => {
       const li = page.doc.createElement('li');
@@ -1944,7 +1994,6 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Set height"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
     const viewport = page.doc.createElement('div');
     const items = Array.from({ length: 6 }, () => {
       const li = page.doc.createElement('li');
@@ -1959,13 +2008,7 @@ describe('modus-wc-time-input', () => {
       viewport.appendChild(item);
     });
 
-    const height = (
-      component as unknown as {
-        getCircularSetHeight: (v: HTMLElement, c: number) => number;
-      }
-    ).getCircularSetHeight(viewport, 2);
-
-    expect(height).toBe(20);
+    expect(getCircularSetHeight(viewport, 2)).toBe(20);
   });
 
   it('should fall back to option height times count when there are not enough copies', async () => {
@@ -1973,7 +2016,6 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Set height fallback"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
     const viewport = page.doc.createElement('div');
     const item = page.doc.createElement('li');
     item.classList.add('time-wheel-option');
@@ -1983,13 +2025,7 @@ describe('modus-wc-time-input', () => {
     });
     viewport.appendChild(item);
 
-    const height = (
-      component as unknown as {
-        getCircularSetHeight: (v: HTMLElement, c: number) => number;
-      }
-    ).getCircularSetHeight(viewport, 5);
-
-    expect(height).toBe(75);
+    expect(getCircularSetHeight(viewport, 5)).toBe(75);
   });
 
   it('should treat a missing first item as zero height in the fallback branch', async () => {
@@ -1997,16 +2033,9 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Set height empty"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
     const viewport = page.doc.createElement('div');
 
-    const height = (
-      component as unknown as {
-        getCircularSetHeight: (v: HTMLElement, c: number) => number;
-      }
-    ).getCircularSetHeight(viewport, 5);
-
-    expect(height).toBe(0);
+    expect(getCircularSetHeight(viewport, 5)).toBe(0);
   });
 
   it('should wrap scroll position forward and backward to stay within the circular set', async () => {
@@ -2014,7 +2043,7 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Maintain scroll"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
+    const lock = { current: false };
     const viewport = page.doc.createElement('div');
     const items = Array.from({ length: 6 }, () => {
       const li = page.doc.createElement('li');
@@ -2034,17 +2063,11 @@ describe('modus-wc-time-input', () => {
       configurable: true,
     });
 
-    const maintain = (
-      component as unknown as {
-        maintainCircularScroll: (v: HTMLElement, c: number) => void;
-      }
-    ).maintainCircularScroll.bind(component);
-
-    maintain(viewport, 2);
+    maintainCircularScroll(viewport, 2, lock);
     expect(viewport.scrollTop).toBe(25);
 
     (viewport as unknown as { scrollTop: number }).scrollTop = 45;
-    maintain(viewport, 2);
+    maintainCircularScroll(viewport, 2, lock);
     expect(viewport.scrollTop).toBe(25);
   });
 
@@ -2053,24 +2076,15 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input aria-label="Maintain guard"></modus-wc-time-input>',
     });
-    const component = page.rootInstance as ModusWcTimeInput;
     const viewport = page.doc.createElement('div');
-    const maintain = (
-      component as unknown as {
-        maintainCircularScroll: (v: HTMLElement, c: number) => void;
-      }
-    ).maintainCircularScroll.bind(component);
+    const lock = { current: false };
 
-    (
-      component as unknown as { circularScrollLock: boolean }
-    ).circularScrollLock = true;
-    expect(() => maintain(viewport, 5)).not.toThrow();
+    lock.current = true;
+    expect(() => maintainCircularScroll(viewport, 5, lock)).not.toThrow();
 
-    (
-      component as unknown as { circularScrollLock: boolean }
-    ).circularScrollLock = false;
-    expect(() => maintain(viewport, 1)).not.toThrow();
-    expect(() => maintain(viewport, 5)).not.toThrow();
+    lock.current = false;
+    expect(() => maintainCircularScroll(viewport, 1, lock)).not.toThrow();
+    expect(() => maintainCircularScroll(viewport, 5, lock)).not.toThrow();
   });
 
   it('should bind circular scroll listeners and preserve scroll position across wheel selection', async () => {
@@ -2164,16 +2178,18 @@ describe('modus-wc-time-input', () => {
     (component as unknown as { dropdownRef?: HTMLElement }).dropdownRef =
       dropdown;
 
-    (
-      component as unknown as { saveWheelScrollPositions: () => void }
-    ).saveWheelScrollPositions();
+    const positions = new Map<string, number>();
+    saveWheelScrollPositions(dropdown, positions);
 
     hoursViewport.scrollTop = 0;
     unknownViewport.scrollTop = 0;
 
-    (
-      component as unknown as { restoreWheelScrollPositions: () => void }
-    ).restoreWheelScrollPositions();
+    restoreWheelScrollPositions(
+      dropdown,
+      positions,
+      (component as unknown as { circularScrollLock: { current: boolean } })
+        .circularScrollLock
+    );
 
     expect(hoursViewport.scrollTop).toBe(42);
     expect(unknownViewport.scrollTop).toBe(0);
@@ -2216,9 +2232,7 @@ describe('modus-wc-time-input', () => {
     dropdown.appendChild(fakeViewport);
 
     expect(() =>
-      (
-        component as unknown as { bindCircularWheelListeners: () => void }
-      ).bindCircularWheelListeners()
+      bindCircularWheelListeners(dropdown, { current: false })
     ).not.toThrow();
   });
 
