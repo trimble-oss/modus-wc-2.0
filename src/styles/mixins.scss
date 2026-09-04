@@ -258,7 +258,7 @@
 
   // Skip default connect padding when the element defines its own (text-input
   // per-size padding in component SCSS; select/number-input via base class).
-  &:not(.modus-wc-select, .modus-wc-number-input, .modus-wc-text-input) {
+  &:not(.modus-wc-select, .modus-wc-number-input) {
     padding: 0 var(--modus-wc-spacing-sm);
   }
 

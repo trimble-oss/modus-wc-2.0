@@ -10,16 +10,77 @@ modus-wc-select .modus-wc-select-wrapper {
 }
 
 modus-wc-select .modus-wc-select {
-  appearance: none;
   background-color: var(--modus-wc-color-base-page);
-  background-image: none; // Hide DaisyUI gradient chevron; custom icon is used
-  background-position: unset;
-  background-size: unset;
   color: var(--modus-wc-color-base-content);
   width: 100%;
 
   @include sizing-tokens;
   @include feedback-levels;
+}
+
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-input-label,
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-input-label,
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-input-label {
+  padding-bottom: var(--modus-wc-spacing-sm);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-md);
+  line-height: var(--modus-wc-line-height-md);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-lg);
+  line-height: var(--modus-wc-line-height-md);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: var(--modus-wc-line-height-lg);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
+  appearance: none;
+  background-image: none; // Hide DaisyUI gradient chevron; custom icon is used
+  background-position: unset;
+  background-size: unset;
 
   &::-ms-expand {
     display: none;
@@ -116,7 +177,8 @@ modus-wc-select .modus-wc-select {
   }
 }
 
-modus-wc-select .modus-wc-select-chevron {
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select-chevron {
   align-items: center;
   color: var(--modus-wc-color-base-content);
   display: inline-flex;
@@ -128,37 +190,59 @@ modus-wc-select .modus-wc-select-chevron {
   transform: translateY(-50%);
 }
 
-modus-wc-select:has(.modus-wc-select:disabled) .modus-wc-select-chevron {
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select:disabled)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select:disabled)
+  .modus-wc-select-chevron {
   opacity: 0.5;
 }
 
-modus-wc-select .modus-wc-input-label {
-  padding-bottom: var(--modus-wc-spacing-xs);
-}
-
-modus-wc-select:has(.modus-wc-select-xs) .modus-wc-input-label {
-  font-size: var(--modus-wc-font-size-sm);
-  line-height: 1.25rem;
-}
-
-modus-wc-select:has(.modus-wc-select-sm) .modus-wc-input-label {
-  font-size: var(--modus-wc-font-size-md);
-  line-height: var(--modus-wc-line-height-md);
-}
-
-modus-wc-select:has(.modus-wc-select-md) .modus-wc-input-label {
-  font-size: var(--modus-wc-font-size-lg);
-  line-height: var(--modus-wc-line-height-md);
-}
-
-modus-wc-select:has(.modus-wc-select-lg) .modus-wc-input-label,
-modus-wc-select:has(.modus-wc-select-xl) .modus-wc-input-label {
-  font-size: var(--modus-wc-font-size-xl);
-  line-height: var(--modus-wc-line-height-lg);
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='connect-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='connect-dark'] modus-wc-select .modus-wc-select-chevron {
+  display: none;
 }
 
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
+  &.modus-wc-select-xs {
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-size-xs);
+    line-height: 1.25rem;
+    min-height: var(--modus-wc-size-xs);
+  }
+
+  &.modus-wc-select-sm {
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-input-height-sm);
+    line-height: var(--modus-wc-input-height-sm);
+    min-height: var(--modus-wc-input-height-sm);
+  }
+
+  &.modus-wc-select-md {
+    font-size: var(--modus-wc-font-size-md);
+    height: var(--modus-wc-input-height-md);
+    line-height: var(--modus-wc-input-height-md);
+    min-height: var(--modus-wc-input-height-md);
+  }
+
+  &.modus-wc-select-lg {
+    font-size: var(--modus-wc-font-size-lg);
+    height: var(--modus-wc-input-height-lg);
+    line-height: var(--modus-wc-font-size-lg);
+    min-height: var(--modus-wc-font-size-lg);
+  }
+
+  &.modus-wc-select-xl {
+    font-size: var(--modus-wc-font-size-xl);
+    height: var(--modus-wc-size-xl);
+    line-height: var(--modus-wc-line-height-lg);
+    min-height: var(--modus-wc-size-xl);
+  }
+
   &:focus {
     border-color: var(--modus-wc-color-blue-light);
     border-width: var(--modus-wc-border-width-sm);
