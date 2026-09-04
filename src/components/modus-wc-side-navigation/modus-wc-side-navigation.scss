@@ -49,6 +49,24 @@ modus-wc-side-navigation {
     padding-inline-start: var(--modus-wc-spacing-xs);
   }
 
+  modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-sm
+    button
+    [slot='start-icon']
+    i,
+  modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-md
+    button
+    [slot='start-icon']
+    i,
+  modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-lg
+    button
+    [slot='start-icon']
+    i {
+    font-size: var(--modus-wc-font-size-3xl);
+  }
+
   .side-navigation-content
     > modus-wc-menu
     modus-wc-menu-item
@@ -66,7 +84,9 @@ modus-wc-side-navigation {
       > button
       .modus-wc-menu-item-content
       .modus-wc-menu-item-labels {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       padding-inline-end: 0;
       padding-inline-start: var(--modus-wc-spacing-md);
     }

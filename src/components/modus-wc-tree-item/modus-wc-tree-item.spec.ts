@@ -610,9 +610,34 @@ describe('modus-wc-tree-item', () => {
 
     const chevron = page.root!.querySelector(
       'modus-wc-icon.modus-wc-menu-submenu-chevron'
-    ) as HTMLElement & { name?: string };
+    ) as HTMLElement & { name?: string; size?: string };
     expect(chevron).not.toBeNull();
     expect(chevron.name).toBe('expand_more');
+    expect(chevron.size).toBe('sm');
+  });
+
+  it('should size the submenu chevron smaller when the tree item is sm', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon],
+      html: '<modus-wc-tree-item label="Parent" size="sm" value="parent" has-submenu="true"></modus-wc-tree-item>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    expect(chevron.size).toBe('xs');
+  });
+
+  it('should size the submenu chevron as md when the tree item is lg', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon],
+      html: '<modus-wc-tree-item label="Parent" size="lg" value="parent" has-submenu="true"></modus-wc-tree-item>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    expect(chevron.size).toBe('md');
   });
 
   it('should toggle submenu when hasSubmenu is true', async () => {
@@ -1228,5 +1253,36 @@ describe('modus-wc-tree-item', () => {
     } finally {
       getRootTreeMenuSpy.mockRestore();
     }
+  });
+  it('should size the submenu chevron and checkbox correctly when size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon, ModusWcCheckbox],
+      html: '<modus-wc-tree-item label="Parent" size="xs" value="parent" has-submenu="true" checkbox="true"></modus-wc-tree-item>',
+    });
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    const checkbox = page.root!.querySelector(
+      'modus-wc-checkbox'
+    ) as unknown as ModusWcCheckbox;
+
+    expect(chevron.size).toBe('xs');
+    expect(checkbox.size).toBe('sm');
+  });
+
+  it('should size the submenu chevron and checkbox correctly when size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon, ModusWcCheckbox],
+      html: '<modus-wc-tree-item label="Parent" size="xl" value="parent" has-submenu="true" checkbox="true"></modus-wc-tree-item>',
+    });
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    const checkbox = page.root!.querySelector(
+      'modus-wc-checkbox'
+    ) as unknown as ModusWcCheckbox;
+
+    expect(chevron.size).toBe('lg');
+    expect(checkbox.size).toBe('lg');
   });
 });
