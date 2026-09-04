@@ -523,30 +523,27 @@ describe('modus-wc-select', () => {
       ['Control', 'a'],
       ['Meta', 'a'],
       ['Alt', 'a'],
-    ])(
-      'should allow %s+%s keyDown when readOnly',
-      async (modifier, key) => {
-        const page = await newSpecPage({
-          components: [ModusWcSelect],
-          html: '<modus-wc-select read-only="true" value="1" aria-label="Readonly select"></modus-wc-select>',
-        });
+    ])('should allow %s+%s keyDown when readOnly', async (modifier, key) => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select read-only="true" value="1" aria-label="Readonly select"></modus-wc-select>',
+      });
 
-        const select = page.root!.querySelector('select') as HTMLSelectElement;
-        const event = new KeyboardEvent('keydown', {
-          key,
-          bubbles: true,
-          cancelable: true,
-          ctrlKey: modifier === 'Control',
-          metaKey: modifier === 'Meta',
-          altKey: modifier === 'Alt',
-        });
-        const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      const event = new KeyboardEvent('keydown', {
+        key,
+        bubbles: true,
+        cancelable: true,
+        ctrlKey: modifier === 'Control',
+        metaKey: modifier === 'Meta',
+        altKey: modifier === 'Alt',
+      });
+      const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
 
-        select.dispatchEvent(event);
-        await page.waitForChanges();
+      select.dispatchEvent(event);
+      await page.waitForChanges();
 
-        expect(preventDefaultSpy).not.toHaveBeenCalled();
-      }
-    );
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
   });
 });
