@@ -70,7 +70,7 @@ export class ModusWcSelect {
   /** The options to display in the select dropdown. */
   @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
-  /** Whether the select is read only. */
+  /** Whether the value is editable. */
   @Prop() readOnly?: boolean = false;
 
   /** A value is required for the form to be submittable. */
@@ -149,21 +149,24 @@ export class ModusWcSelect {
     select.value = this.value;
   }
 
+  private shouldPreventReadOnlyKey(event: KeyboardEvent): boolean {
+    if (event.key === 'Tab') {
+      return false;
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return false;
+    }
+
+    return true;
+  }
+
   private handleKeyDown = (event: KeyboardEvent) => {
     if (!this.readOnly) {
       return;
     }
 
-    if (
-      event.key === 'ArrowDown' ||
-      event.key === 'ArrowUp' ||
-      event.key === ' ' ||
-      event.key === 'Enter' ||
-      (event.key.length === 1 &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey)
-    ) {
+    if (this.shouldPreventReadOnlyKey(event)) {
       event.preventDefault();
     }
   };

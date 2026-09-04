@@ -450,6 +450,27 @@ describe('modus-wc-select', () => {
       expect(focusSpy).toHaveBeenCalled();
     });
 
+    it('should not open selection on focus when readOnly', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select read-only="true" value="1" aria-label="Readonly select"></modus-wc-select>',
+      });
+
+      const component = page.rootInstance as ModusWcSelect;
+      component.options = defaultOptions;
+      await page.waitForChanges();
+
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      const focusSpy = jest.fn();
+      page.root!.addEventListener('inputFocus', focusSpy);
+
+      select.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
+      await page.waitForChanges();
+
+      expect(focusSpy).toHaveBeenCalled();
+      expect(component.value).toBe('1');
+    });
+
     it('should focus readOnly select on mouseDown without default action', async () => {
       const page = await newSpecPage({
         components: [ModusWcSelect],
@@ -472,7 +493,7 @@ describe('modus-wc-select', () => {
       expect(focusSpy).toHaveBeenCalled();
     });
 
-    it.each([['ArrowDown'], ['ArrowUp'], [' '], ['Enter'], ['2']])(
+    it.each([['ArrowDown'], ['ArrowUp'], [' '], ['Enter'], ['2'], ['Home']])(
       'should prevent default for %s keyDown when readOnly',
       async (key) => {
         const page = await newSpecPage({
