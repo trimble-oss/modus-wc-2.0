@@ -5,7 +5,12 @@
 
 modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-base-page);
-  color: var(--modus-wc-color-base-content);
+  color: var(--modus-wc-color-base-inverted);
+
+  &.modus-wc-select--readonly {
+    background-color: var(--modus-wc-color-base-100);
+    cursor: default;
+  }
 
   @include sizing-tokens;
   @include feedback-levels;
@@ -67,6 +72,36 @@ modus-wc-select .modus-wc-select {
   }
 }
 
+[data-theme='modus-modern-light']
+  modus-wc-select
+  .modus-wc-select.modus-wc-select-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-10 (#171c1e) at 20% opacity
+  border-color: rgb(23 28 30 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-10) 20%,
+      transparent
+    );
+  }
+}
+
+[data-theme='modus-modern-dark']
+  modus-wc-select
+  .modus-wc-select.modus-wc-select-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-light (#f1f1f6) at 20% opacity
+  border-color: rgb(241 241 246 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-light) 20%,
+      transparent
+    );
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
   &.modus-wc-select-xs {
@@ -110,6 +145,10 @@ modus-wc-select .modus-wc-select {
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
   }
+
+  &.modus-wc-select--readonly {
+    background-color: var(--modus-wc-color-base-100);
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select {
@@ -125,6 +164,10 @@ modus-wc-select .modus-wc-select {
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select,
 [data-theme='connect-dark'] modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-gray-10);
+
+  &.modus-wc-select--readonly {
+    background-color: var(--modus-wc-color-base-100);
+  }
 }
 
 [data-theme='connect-light'] modus-wc-select .modus-wc-select,

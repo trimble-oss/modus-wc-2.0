@@ -70,6 +70,9 @@ export class ModusWcSelect {
   /** The options to display in the select dropdown. */
   @Prop({ mutable: true, reflect: true }) options: ISelectOption[] = [];
 
+  /** Whether the value is editable. */
+  @Prop() readOnly?: boolean = false;
+
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
@@ -105,6 +108,7 @@ export class ModusWcSelect {
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
       feedback: this.feedback,
+      readOnly: this.readOnly,
       size: this.size,
     });
 
@@ -124,8 +128,57 @@ export class ModusWcSelect {
   };
 
   private handleInput = (event: InputEvent) => {
+    if (this.readOnly) {
+      this.revertSelectValue(event.target as HTMLSelectElement);
+      return;
+    }
+
     this.value = (event.target as HTMLSelectElement).value;
     this.inputChange.emit(event);
+  };
+
+  private handleChange = (event: Event) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    this.revertSelectValue(event.target as HTMLSelectElement);
+  };
+
+  private revertSelectValue(select: HTMLSelectElement): void {
+    select.value = this.value;
+  }
+
+  private shouldPreventReadOnlyKey(event: KeyboardEvent): boolean {
+    if (event.key === 'Tab') {
+      return false;
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    if (this.shouldPreventReadOnlyKey(event)) {
+      event.preventDefault();
+    }
+  };
+
+  private handleMouseDown = (event: MouseEvent) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    // Prevent opening the native dropdown while still allowing focus on click.
+    event.preventDefault();
+    (event.currentTarget as HTMLSelectElement).focus();
   };
 
   private getLabelSize(): ModusSize {
@@ -146,13 +199,17 @@ export class ModusWcSelect {
           />
         )}
         <select
+          aria-readonly={this.readOnly ? 'true' : undefined}
           class={this.getClasses()}
           disabled={this.disabled}
           id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
+          onChange={this.handleChange}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
+          onKeyDown={this.handleKeyDown}
+          onMouseDown={this.handleMouseDown}
           required={this.required}
           tabindex={this.inputTabIndex}
           {...this.inheritedAttributes}

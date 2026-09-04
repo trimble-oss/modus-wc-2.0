@@ -11,6 +11,44 @@ modus-wc-textarea {
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
+
+  .modus-wc-textarea {
+    color: var(--modus-wc-color-base-inverted);
+
+    &:read-only {
+      background-color: var(--modus-wc-color-base-100);
+    }
+  }
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-textarea
+  .modus-wc-textarea.modus-wc-textarea-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-10 (#171c1e) at 20% opacity
+  border-color: rgb(23 28 30 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-10) 20%,
+      transparent
+    );
+  }
+}
+
+[data-theme='modus-modern-dark']
+  modus-wc-textarea
+  .modus-wc-textarea.modus-wc-textarea-bordered:not(:disabled) {
+  // Fallback for Chrome <111: --modus-wc-color-gray-light (#f1f1f6) at 20% opacity
+  border-color: rgb(241 241 246 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-light) 20%,
+      transparent
+    );
+  }
 }
 
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
@@ -41,10 +79,6 @@ modus-wc-textarea {
     border-width: var(--modus-wc-border-width-sm);
     box-shadow: none; // Removes the Tailwind ring effect
     outline: none; // Ensures there's no outline on focus
-  }
-
-  &:read-only {
-    background-color: var(--modus-wc-color-base-100);
   }
 }
 

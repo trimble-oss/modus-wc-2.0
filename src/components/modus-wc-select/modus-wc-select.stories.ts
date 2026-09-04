@@ -24,6 +24,7 @@ interface SelectArgs {
   label?: string;
   name?: string;
   options: ISelectOption[];
+  'read-only'?: boolean;
   required?: boolean;
   size?: ModusSize | 'xs' | 'xl';
   value: string;
@@ -37,6 +38,7 @@ const meta: Meta<SelectArgs> = {
     disabled: false,
     label: 'Label',
     options,
+    'read-only': false,
     size: 'md',
     value: '',
   },
@@ -104,6 +106,7 @@ export const Default: Story = {
       label=${ifDefined(args.label)}
       name=${ifDefined(args.name)}
       .options=${args.options}
+      ?read-only=${args['read-only']}
       ?required=${args.required}
       size=${ifDefined(args.size)}
       .value=${args.value}
@@ -163,6 +166,7 @@ export const ShadowDomParent: Story = {
             label: string;
             name: string;
             options: ISelectOption[];
+            readOnly: boolean;
             required: boolean;
             size: string;
             value: string;
@@ -175,6 +179,7 @@ export const ShadowDomParent: Story = {
           selectEl.label = v.label || '';
           selectEl.name = v.name || '';
           selectEl.options = v.options;
+          selectEl.readOnly = Boolean(v['read-only']);
           selectEl.required = Boolean(v.required);
           selectEl.size = v.size || 'md';
           selectEl.value = v.value;
@@ -207,6 +212,7 @@ export const Migration: Story = {
 |-----------------------|---------------------|------------------------------------------------------|
 | aria-label            | aria-label          |                                                      |
 | disabled              | disabled            |                                                      |
+| read-only             | read-only           |                                                      |
 | error-text            | feedback.message    | Use \`feedback\` level                               |
 | helper-text           |                     | Not carried over                                     |
 | label                 | label               |                                                      |
