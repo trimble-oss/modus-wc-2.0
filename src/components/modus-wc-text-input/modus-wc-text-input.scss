@@ -11,6 +11,10 @@ modus-wc-text-input .modus-wc-input {
 
   & input {
     background-color: var(--modus-wc-color-base-page);
+
+    &[type='search']::-webkit-search-cancel-button {
+      display: none;
+    }
   }
 
   &:has(> input[disabled]) > input[disabled] {
