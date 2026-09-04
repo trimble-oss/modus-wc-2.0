@@ -2677,7 +2677,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcSelect.ReadOnly">
             <summary>
-            Whether the select is read only.
+            Whether the value is editable.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcSelect.Required">
