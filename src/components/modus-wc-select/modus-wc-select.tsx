@@ -145,7 +145,7 @@ export class ModusWcSelect {
     this.revertSelectValue(event.target as HTMLSelectElement);
   };
 
-  private revertSelectValue(select: HTMLSelectElement) {
+  private revertSelectValue(select: HTMLSelectElement): void {
     select.value = this.value;
   }
 
