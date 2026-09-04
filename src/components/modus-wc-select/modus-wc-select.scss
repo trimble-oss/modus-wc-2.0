@@ -10,7 +10,6 @@ modus-wc-select .modus-wc-select {
   &.modus-wc-select--readonly {
     background-color: var(--modus-wc-color-base-100);
     cursor: default;
-    pointer-events: none;
   }
 
   @include sizing-tokens;

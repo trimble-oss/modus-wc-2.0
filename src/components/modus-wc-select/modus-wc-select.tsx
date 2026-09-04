@@ -129,13 +129,25 @@ export class ModusWcSelect {
 
   private handleInput = (event: InputEvent) => {
     if (this.readOnly) {
-      (event.target as HTMLSelectElement).value = this.value;
+      this.revertSelectValue(event.target as HTMLSelectElement);
       return;
     }
 
     this.value = (event.target as HTMLSelectElement).value;
     this.inputChange.emit(event);
   };
+
+  private handleChange = (event: Event) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    this.revertSelectValue(event.target as HTMLSelectElement);
+  };
+
+  private revertSelectValue(select: HTMLSelectElement) {
+    select.value = this.value;
+  }
 
   private handleKeyDown = (event: KeyboardEvent) => {
     if (!this.readOnly) {
@@ -146,22 +158,24 @@ export class ModusWcSelect {
       event.key === 'ArrowDown' ||
       event.key === 'ArrowUp' ||
       event.key === ' ' ||
-      event.key === 'Enter'
+      event.key === 'Enter' ||
+      (event.key.length === 1 &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey)
     ) {
       event.preventDefault();
     }
   };
 
   private handleMouseDown = (event: MouseEvent) => {
-    if (this.readOnly) {
-      event.preventDefault();
+    if (!this.readOnly) {
+      return;
     }
-  };
 
-  private handleClick = (event: MouseEvent) => {
-    if (this.readOnly) {
-      event.preventDefault();
-    }
+    // Prevent opening the native dropdown while still allowing focus on click.
+    event.preventDefault();
+    (event.currentTarget as HTMLSelectElement).focus();
   };
 
   private getLabelSize(): ModusSize {
@@ -188,7 +202,7 @@ export class ModusWcSelect {
           id={effectiveId}
           name={this.name}
           onBlur={this.handleBlur}
-          onClick={this.handleClick}
+          onChange={this.handleChange}
           onFocus={this.handleFocus}
           onInput={this.handleInput}
           onKeyDown={this.handleKeyDown}

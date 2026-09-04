@@ -17,6 +17,10 @@ modus-wc-text-input .modus-wc-input {
   &:has(> input[disabled]) > input[disabled] {
     background-color: var(--modus-wc-color-base-200);
   }
+
+  &:has(> input[readonly]) > input[readonly] {
+    background-color: var(--modus-wc-color-base-100);
+  }
 }
 
 modus-wc-text-input {
@@ -106,10 +110,6 @@ modus-wc-text-input {
 
       &.modus-wc-text-input--readonly {
         background-color: var(--modus-wc-color-base-100);
-
-        input {
-          background-color: transparent;
-        }
       }
 
       .modus-wc-clear-icon-container {
@@ -282,7 +282,7 @@ modus-wc-text-input {
 
 [data-theme='modus-modern-light']
   modus-wc-text-input
-  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered:not(:disabled) {
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered {
   // Fallback for Chrome <111: --modus-wc-color-gray-10 (#171c1e) at 20% opacity
   border-color: rgb(23 28 30 / 0.2);
 
@@ -297,7 +297,7 @@ modus-wc-text-input {
 
 [data-theme='modus-modern-dark']
   modus-wc-text-input
-  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered:not(:disabled) {
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered {
   // Fallback for Chrome <111: --modus-wc-color-gray-light (#f1f1f6) at 20% opacity
   border-color: rgb(241 241 246 / 0.2);
 
