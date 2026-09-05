@@ -99,7 +99,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-xs);
     padding-block: select-padding-block(1.25rem);
     padding-inline-end: calc(
-      var(--modus-wc-spacing-sm) + var(--modus-wc-line-height-sm)
+      var(--modus-wc-spacing-sm) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-sm);
   }
@@ -117,7 +117,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-sm);
     padding-block: select-padding-block(var(--modus-wc-line-height-md));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-md) + var(--modus-wc-line-height-sm)
+      var(--modus-wc-spacing-md) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-md);
   }
@@ -153,7 +153,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-lg);
     padding-block: select-padding-block(var(--modus-wc-line-height-lg));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-lg)
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
@@ -171,7 +171,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-xl);
     padding-block: select-padding-block(var(--modus-wc-line-height-lg));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-lg)
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }

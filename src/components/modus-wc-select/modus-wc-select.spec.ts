@@ -234,15 +234,10 @@ describe('modus-wc-select', () => {
     expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();
   });
 
-  it('should map select size to caret icon size', async () => {
-    const cases: Array<{ selectSize: string; chevronSize: string }> = [
-      { selectSize: 'xs', chevronSize: 'xs' },
-      { selectSize: 'sm', chevronSize: 'xs' },
-      { selectSize: 'lg', chevronSize: 'lg' },
-      { selectSize: 'xl', chevronSize: 'lg' },
-    ];
+  it('should use md caret_down icon size for all select sizes', async () => {
+    const sizes = ['xs', 'sm', 'lg', 'xl'];
 
-    for (const { selectSize, chevronSize } of cases) {
+    for (const selectSize of sizes) {
       const page = await newSpecPage({
         components: [ModusWcSelect, ModusWcIcon],
         html: `<modus-wc-select size="${selectSize}" aria-label="${selectSize} chevron"></modus-wc-select>`,
@@ -252,7 +247,7 @@ describe('modus-wc-select', () => {
         'modus-wc-icon.modus-wc-select-chevron'
       ) as HTMLElement & { size?: string };
 
-      expect(chevron?.size).toBe(chevronSize);
+      expect(chevron?.size).toBe('md');
     }
   });
 

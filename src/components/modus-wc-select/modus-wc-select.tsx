@@ -10,7 +10,7 @@ import {
 import { convertPropsToClasses } from './modus-wc-select.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
-import { DaisySize, IInputFeedbackProp, ModusSize } from '../types';
+import { IInputFeedbackProp, ModusSize } from '../types';
 import {
   Attributes,
   createEffectiveIdResolver,
@@ -132,19 +132,6 @@ export class ModusWcSelect {
     return INPUT_SIZE_TO_LABEL_SIZE[this.size ?? 'md'];
   }
 
-  private getChevronSize(): DaisySize {
-    switch (this.size) {
-      case 'xs':
-      case 'sm':
-        return 'xs';
-      case 'lg':
-      case 'xl':
-        return 'lg';
-      default:
-        return 'md';
-    }
-  }
-
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
 
@@ -186,7 +173,7 @@ export class ModusWcSelect {
             class="modus-wc-select-chevron"
             decorative
             name="caret_down"
-            size={this.getChevronSize()}
+            size="md"
           />
         </div>
         {this.feedback && (
