@@ -135,12 +135,11 @@ export class ModusWcSelect {
   private getChevronSize(): DaisySize {
     switch (this.size) {
       case 'xs':
-        return 'sm';
       case 'sm':
-        return 'sm';
+        return 'xs';
       case 'lg':
       case 'xl':
-        return 'md';
+        return 'lg';
       default:
         return 'md';
     }

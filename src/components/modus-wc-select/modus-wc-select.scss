@@ -99,7 +99,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-xs);
     padding-block: select-padding-block(1.25rem);
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+      var(--modus-wc-spacing-sm) + var(--modus-wc-line-height-sm)
     );
     padding-inline-start: var(--modus-wc-spacing-sm);
   }
@@ -117,7 +117,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-sm);
     padding-block: select-padding-block(var(--modus-wc-line-height-md));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+      var(--modus-wc-spacing-md) + var(--modus-wc-line-height-sm)
     );
     padding-inline-start: var(--modus-wc-spacing-md);
   }
@@ -153,7 +153,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-lg);
     padding-block: select-padding-block(var(--modus-wc-line-height-lg));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-lg)
     );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
@@ -171,7 +171,7 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-xl);
     padding-block: select-padding-block(var(--modus-wc-line-height-lg));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-lg)
     );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
@@ -183,11 +183,52 @@ modus-wc-select .modus-wc-select {
   color: var(--modus-wc-color-base-content);
   display: inline-flex;
   inset-block-start: 50%;
-  inset-inline-end: var(--modus-wc-spacing-lg);
   line-height: 0;
   pointer-events: none;
   position: absolute;
   transform: translateY(-50%);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-sm);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-md);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-lg);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-xl);
 }
 
 [data-theme='modus-modern-light']

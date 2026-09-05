@@ -236,10 +236,10 @@ describe('modus-wc-select', () => {
 
   it('should map select size to caret icon size', async () => {
     const cases: Array<{ selectSize: string; chevronSize: string }> = [
-      { selectSize: 'xs', chevronSize: 'sm' },
-      { selectSize: 'sm', chevronSize: 'sm' },
-      { selectSize: 'lg', chevronSize: 'md' },
-      { selectSize: 'xl', chevronSize: 'md' },
+      { selectSize: 'xs', chevronSize: 'xs' },
+      { selectSize: 'sm', chevronSize: 'xs' },
+      { selectSize: 'lg', chevronSize: 'lg' },
+      { selectSize: 'xl', chevronSize: 'lg' },
     ];
 
     for (const { selectSize, chevronSize } of cases) {
