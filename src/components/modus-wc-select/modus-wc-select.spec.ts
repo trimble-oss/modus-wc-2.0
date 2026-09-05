@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
@@ -214,6 +215,40 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.length).toBe(2);
     expect(renderedOptions?.[0]).not.toHaveAttribute('selected');
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
+  });
+
+  it('should render a decorative caret_down icon instead of the native indicator', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcIcon],
+      html: '<modus-wc-select aria-label="Caret test"></modus-wc-select>',
+    });
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-select-chevron'
+    ) as HTMLElement & { name?: string; decorative?: boolean; size?: string };
+
+    expect(chevron).not.toBeNull();
+    expect(chevron.name).toBe('caret_down');
+    expect(chevron.decorative).toBe(true);
+    expect(chevron.size).toBe('md');
+    expect(page.root!.querySelector('.modus-wc-select-wrapper')).not.toBeNull();
+  });
+
+  it('should use md caret_down icon size for all select sizes', async () => {
+    const sizes = ['xs', 'sm', 'lg', 'xl'];
+
+    for (const selectSize of sizes) {
+      const page = await newSpecPage({
+        components: [ModusWcSelect, ModusWcIcon],
+        html: `<modus-wc-select size="${selectSize}" aria-label="${selectSize} chevron"></modus-wc-select>`,
+      });
+
+      const chevron = page.root!.querySelector(
+        'modus-wc-icon.modus-wc-select-chevron'
+      ) as HTMLElement & { size?: string };
+
+      expect(chevron?.size).toBe('md');
+    }
   });
 
   it('should apply xs size class when size is xs', async () => {

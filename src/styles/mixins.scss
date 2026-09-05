@@ -1,3 +1,7 @@
+@function select-padding-block($line-height) {
+  @return calc((var(--modus-wc-select-inner-height) - #{$line-height}) * 0.5);
+}
+
 @mixin feedback-levels {
   &--error {
     border-color: var(--modus-wc-color-error) !important;
@@ -252,6 +256,8 @@
   border-bottom-width: var(--input-bottom-border-width);
   outline-width: 0 !important;
 
+  // Skip default connect padding when the element defines its own (text-input
+  // per-size padding in component SCSS; select/number-input via base class).
   &:not(.modus-wc-select, .modus-wc-number-input) {
     padding: 0 var(--modus-wc-spacing-sm);
   }

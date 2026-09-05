@@ -3,9 +3,16 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+modus-wc-select .modus-wc-select-wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
 modus-wc-select .modus-wc-select {
   background-color: var(--modus-wc-color-base-page);
   color: var(--modus-wc-color-base-content);
+  width: 100%;
 
   @include sizing-tokens;
   @include feedback-levels;
@@ -30,6 +37,34 @@ modus-wc-select .modus-wc-select {
 }
 
 [data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-md);
+  line-height: var(--modus-wc-line-height-md);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-lg);
+  line-height: var(--modus-wc-line-height-md);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-light']
   modus-wc-select:has(.modus-wc-select-xl)
   .modus-wc-input-label,
 [data-theme='modus-modern-dark']
@@ -42,29 +77,174 @@ modus-wc-select .modus-wc-select {
 
 [data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
+  appearance: none;
+  background-image: none; // Hide DaisyUI gradient chevron; custom icon is used
+  background-position: unset;
+  background-size: unset;
+
+  &::-ms-expand {
+    display: none;
+  }
+
   &.modus-wc-select-xs {
+    --modus-wc-select-inner-height: calc(
+      var(--modus-wc-size-xs) - var(--modus-wc-border-width-sm) - var(
+          --modus-wc-border-width-sm
+        )
+    );
+
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-size-xs);
     line-height: 1.25rem;
     min-height: var(--modus-wc-size-xs);
-    padding-block: 0;
+    padding-block: select-padding-block(1.25rem);
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+      var(--modus-wc-spacing-sm) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-sm);
   }
 
+  &.modus-wc-select-sm {
+    --modus-wc-select-inner-height: calc(
+      var(--modus-wc-size-sm) - var(--modus-wc-border-width-sm) - var(
+          --modus-wc-border-width-sm
+        )
+    );
+
+    font-size: var(--modus-wc-font-size-md);
+    height: var(--modus-wc-size-sm);
+    line-height: var(--modus-wc-line-height-md);
+    min-height: var(--modus-wc-size-sm);
+    padding-block: select-padding-block(var(--modus-wc-line-height-md));
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-md) + var(--modus-wc-line-height-md)
+    );
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+
+  &.modus-wc-select-md {
+    --modus-wc-select-inner-height: calc(
+      var(--modus-wc-size-md) - var(--modus-wc-border-width-sm) - var(
+          --modus-wc-border-width-sm
+        )
+    );
+
+    font-size: var(--modus-wc-font-size-lg);
+    height: var(--modus-wc-size-md);
+    line-height: var(--modus-wc-line-height-md);
+    min-height: var(--modus-wc-size-md);
+    padding-block: select-padding-block(var(--modus-wc-line-height-md));
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
+    );
+    padding-inline-start: var(--modus-wc-spacing-lg);
+  }
+
+  &.modus-wc-select-lg {
+    --modus-wc-select-inner-height: calc(
+      var(--modus-wc-size-lg) - var(--modus-wc-border-width-sm) - var(
+          --modus-wc-border-width-sm
+        )
+    );
+
+    font-size: var(--modus-wc-font-size-xl);
+    height: var(--modus-wc-size-lg);
+    line-height: var(--modus-wc-line-height-lg);
+    min-height: var(--modus-wc-size-lg);
+    padding-block: select-padding-block(var(--modus-wc-line-height-lg));
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
+    );
+    padding-inline-start: var(--modus-wc-spacing-xl);
+  }
+
   &.modus-wc-select-xl {
+    --modus-wc-select-inner-height: calc(
+      var(--modus-wc-size-xl) - var(--modus-wc-border-width-sm) - var(
+          --modus-wc-border-width-sm
+        )
+    );
+
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-xl);
     line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-xl);
-    padding-block: 0;
+    padding-block: select-padding-block(var(--modus-wc-line-height-lg));
     padding-inline-end: calc(
-      var(--modus-wc-spacing-lg) + var(--modus-wc-size-sm)
+      var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
     );
     padding-inline-start: var(--modus-wc-spacing-xl);
   }
+}
+
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select-chevron {
+  align-items: center;
+  color: var(--modus-wc-color-base-content);
+  display: inline-flex;
+  inset-block-start: 50%;
+  line-height: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-sm);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-sm)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-md);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-md)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-lg);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-lg)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-select-chevron {
+  inset-inline-end: var(--modus-wc-spacing-xl);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select:disabled)
+  .modus-wc-select-chevron,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select:disabled)
+  .modus-wc-select-chevron {
+  opacity: 0.5;
+}
+
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='connect-light'] modus-wc-select .modus-wc-select-chevron,
+[data-theme='connect-dark'] modus-wc-select .modus-wc-select-chevron {
+  display: none;
 }
 
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
