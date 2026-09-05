@@ -77,7 +77,7 @@ exports[`modus-wc-select should render with custom props 1`] = `
   <modus-wc-input-label forid="custom-id" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <div class="modus-wc-select-wrapper">
     <select aria-describedby="description" aria-label="Test select" class="modus-wc-select modus-wc-select-lg modus-wc-w-full test-class" disabled="" id="custom-id" name="test-name" required="" tabindex="1"></select>
-    <modus-wc-icon class="modus-wc-select-chevron" decorative="" name="caret_down" size="lg"></modus-wc-icon>
+    <modus-wc-icon class="modus-wc-select-chevron" decorative="" name="caret_down" size="md"></modus-wc-icon>
   </div>
 </modus-wc-select>
 `;
