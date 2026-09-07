@@ -19,7 +19,11 @@ modus-wc-select .modus-wc-select {
 }
 
 [data-theme='modus-modern-light'] modus-wc-select .modus-wc-input-label,
-[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-6);
+  padding-bottom: var(--modus-wc-spacing-sm);
+}
+
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-input-label,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-input-label {
   padding-bottom: var(--modus-wc-spacing-sm);
@@ -253,7 +257,7 @@ modus-wc-select .modus-wc-select {
 
   &.modus-wc-select-md {
     font-size: var(--modus-wc-font-size-lg);
-    line-height: var(--modus-wc-line-height-md);
+    line-height: 1.75rem; // Figma _ModusUI/sans/text-base/normal lineHeight 28 (no token)
   }
 
   &.modus-wc-select-lg {
