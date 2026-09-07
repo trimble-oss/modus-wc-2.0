@@ -42,5 +42,6 @@ coverage/
 
 # Figma MCP staging captures (upload to Drive; do not commit)
 scripts/figma-handoff/staging/
+scripts/figma-handoff/.captures/
 
 nuget-output/

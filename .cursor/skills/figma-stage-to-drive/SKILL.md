@@ -1,10 +1,9 @@
 ---
 name: figma-stage-to-drive
 description: >-
-  Captures official Figma MCP data per variant (get_metadata, get_design_context,
-  get_variable_defs, get_screenshot), packages modus-figma-staging-v2, validates,
-  uploads to Google Drive for cloud automations. Use when staging Figma for Modus
-  components, figma-staged QA-source, or "stage Figma to Drive". NOT for
+  Stage Figma design data to Google Drive for cloud automations. Preferred:
+  run run-staging-handoff.mjs (Figma REST API, no MCP payloads in chat). Fallback:
+  official Figma MCP piped to disk. Packages modus-figma-staging-v2. NOT for
   implementing code — use figma-design-to-code for that.
 disable-model-invocation: true
 ---
@@ -18,26 +17,35 @@ disable-model-invocation: true
 ## Architecture
 
 ```
-IDE (once per component/issue)
-  get_metadata(variant set) → list every symbol
-  For each variant leaf:
-    get_design_context(nodeId)  → variants/{id}/design-context.md  (verbatim)
-    get_variable_defs(nodeId)   → variants/{id}/variable-defs.json (verbatim)
-    get_screenshot(nodeId)      → variants/{id}/screenshot.png
-  get_code_connect_map(set)     → code-connect.json (optional, once)
-  package-staged-handoff.mjs    → manifest.json
-  validate-staged-handoff.mjs   → must pass
-  Google Drive MCP              → upload folder tree
+Preferred (agent runs ONE shell command — no capture data in chat):
+  FIGMA_API_TOKEN=... node run-staging-handoff.mjs
+    → capture-staging.mjs (Figma REST: variables + screenshots)
+    → package-staged-handoff.mjs
+    → validate-staged-handoff.mjs
+  Agent reads stdout only → Drive MCP upload from disk paths
+
+Fallback (MCP piped to disk — never summarize in chat):
+  get_metadata → per symbol: get_variable_defs + get_screenshot (+ optional design-context)
+  → write-staged-variant.mjs / store-capture.mjs
+  → package + validate → Drive upload
 
 Automations (every run)
-  Drive MCP: manifest.json → only matching variants/{id}/
+  Drive MCP: manifest.json → only matching variants/{id}/variable-defs.json + screenshot
 ```
+
+## Agent token rule
+
+| Do | Don't |
+|---|---|
+| Run `run-staging-handoff.mjs` | Call `get_design_context` × N in chat |
+| Read script **stdout** (progress lines) | Paste MCP JSON into messages |
+| Upload from **file paths** on disk | Load all variant files into chat |
 
 ## Prerequisites
 
-- Official Figma MCP connected (`user-figma_dev`)
-- Google Drive MCP connected (`plugin-google-drive-google-drive`)
-- Target Drive folder ID (e.g. `1rq3OiIfQR-BveyMSHQ45jouEd8xaChLT`)
+- `FIGMA_API_TOKEN` for script capture (Figma personal access token)
+- Google Drive MCP connected (`plugin-google-drive-google-drive`) for upload
+- Official Figma MCP (`user-figma_dev`) — **fallback only** for design-context
 
 ## Inputs (ask if missing)
 
@@ -48,7 +56,7 @@ Automations (every run)
 | Figma URL | page or variant-set URL with `node-id` |
 | Variant set node | from metadata, e.g. `10806:13469` |
 | Drive folder ID | `1rq3OiIfQR-BveyMSHQ45jouEd8xaChLT` |
-| Capture tier | `full` (default), `standard`, or `sizes` |
+| Capture tier | `sizes` (default), `standard`, or `full` |
 
 ## Capture tiers
 
@@ -58,9 +66,27 @@ Automations (every run)
 | `standard` | 25 — default + focused + disabled + active + readonly × 5 sizes | Interaction states |
 | `full` | 40 — all states + valid/invalid/out-of-range | Complete QA source |
 
-Default to **`full`** unless the user explicitly asks for a smaller tier.
+Default to **`sizes`** unless the user asks for more states.
 
-## Step 1 — Resolve nodes
+## Step 0 — Script capture (preferred)
+
+```bash
+FIGMA_API_TOKEN=... node scripts/figma-handoff/run-staging-handoff.mjs \
+  --staging-dir scripts/figma-handoff/staging/issue-{N}-{component} \
+  --issue {N} --component {component} \
+  --file-key {fileKey} \
+  --variant-set-id {variantSetId} \
+  --figma-url '{figma url}' \
+  --drive-folder-id {driveFolderId} \
+  --capture-tier sizes \
+  [--variants md-default,sm-default]
+```
+
+Writes: `meta.json`, `variable-defs.json`, `screenshot.png` per variant. Skips `design-context.md`.
+
+Use `--package-only` to re-run manifest/validate without re-fetching Figma.
+
+## Step 1 — Resolve nodes (MCP fallback only)
 
 1. Parse `fileKey` and `node-id` from the Figma URL.
 2. Call **`get_metadata`** on the **variant set** frame (not the page root).

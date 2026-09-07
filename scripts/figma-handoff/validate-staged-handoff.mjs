@@ -19,10 +19,16 @@ import {
 const MIN_DESIGN_CONTEXT_BYTES = 800;
 
 function parseArgs(argv) {
-  const flags = { dir: null, captureTier: 'full', strict: false };
+  const flags = {
+    dir: null,
+    captureTier: 'sizes',
+    captureSource: 'mcp',
+    strict: false,
+  };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--dir') flags.dir = argv[++i];
     if (argv[i] === '--capture-tier') flags.captureTier = argv[++i];
+    if (argv[i] === '--capture-source') flags.captureSource = argv[++i];
     if (argv[i] === '--strict') flags.strict = true;
   }
   return flags;
@@ -64,14 +70,15 @@ for (const variantId of variantIds) {
   if (!fs.existsSync(vd)) {
     errors.push(`${variantId}: missing variable-defs.json (required — get_variable_defs)`);
   }
-  if (!fs.existsSync(dc)) {
+  const requireDesignContext = flags.captureSource !== 'rest';
+  if (requireDesignContext && !fs.existsSync(dc)) {
     errors.push(`${variantId}: missing design-context.md (required — get_design_context)`);
   }
   if (!fs.existsSync(ss)) {
     errors.push(`${variantId}: missing screenshot.png (required — get_screenshot)`);
   }
 
-  if (fs.existsSync(dc)) {
+  if (requireDesignContext && fs.existsSync(dc)) {
     const size = fs.statSync(dc).size;
     if (size < MIN_DESIGN_CONTEXT_BYTES) {
       errors.push(
