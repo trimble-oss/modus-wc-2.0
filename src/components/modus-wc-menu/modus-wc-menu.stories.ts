@@ -11,7 +11,7 @@ interface MenuArgs {
   'custom-class'?: string;
   orientation?: Orientation;
   'selection-mode'?: SelectionMode;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }
 
 const meta: Meta<MenuArgs> = {
@@ -144,21 +144,29 @@ export const MultiSelect: Story = {
   <modus-wc-menu-item
     label="Menu Item 1"
     value="1"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
-  <modus-wc-menu-item label="Menu Item 2" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Menu Item 2"
+    value="2"
+    size=${ifDefined(args.size)}
+  ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 3"
     value="3"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 4"
     value="4"
     bordered="true"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 5"
     value="5"
     sub-label="Menu Item 5 Sub-label"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
 </modus-wc-menu>
 <p ${ref((el) => { outputEl = el; })} style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--modus-wc-color-gray-6);">Selected: none</p>
@@ -393,7 +401,6 @@ export const ShadowDomParent: Story = {
           menuEl.orientation = v.orientation || 'vertical';
           menuEl.size = v.size || 'md';
 
-          // Only set innerHTML once on initial creation
           if (!el.querySelector('modus-wc-menu-item')) {
             el.innerHTML = `
               <modus-wc-menu-item

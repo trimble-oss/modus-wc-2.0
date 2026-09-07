@@ -55,11 +55,6 @@ modus-wc-side-navigation {
     [slot='start-icon']
     i,
   modus-wc-menu-item
-    .modus-wc-menu-item.modus-wc-menu-item-md
-    button
-    [slot='start-icon']
-    i,
-  modus-wc-menu-item
     .modus-wc-menu-item.modus-wc-menu-item-lg
     button
     [slot='start-icon']
@@ -67,12 +62,221 @@ modus-wc-side-navigation {
     font-size: var(--modus-wc-font-size-3xl);
   }
 
+  // Side nav md menu items: label 14px / 20px line-height, 24×20 icon, 4px inset.
+  modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-md {
+    button {
+      padding-inline-start: var(--modus-wc-spacing-xs);
+
+      .modus-wc-menu-item-content {
+        gap: var(--modus-wc-spacing-sm);
+
+        [slot='start-icon'] {
+          align-items: center;
+          display: inline-flex;
+          flex-shrink: 0;
+          height: var(--modus-wc-font-size-2xl);
+          justify-content: center;
+          line-height: 0;
+          width: var(--modus-wc-font-size-3xl);
+
+          modus-wc-icon {
+            align-items: center;
+            display: inline-flex;
+            flex-shrink: 0;
+            justify-content: center;
+            line-height: 0;
+          }
+
+          i {
+            display: block;
+            font-size: var(--modus-wc-font-size-3xl);
+            height: auto;
+            line-height: 1;
+            width: auto;
+          }
+        }
+
+        .modus-wc-menu-item-labels {
+          font-size: var(--modus-wc-font-size-md);
+          line-height: var(--modus-wc-font-size-2xl);
+        }
+      }
+    }
+  }
+
+  .modus-wc-side-navigation-expanded
+    modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-md
+    button
+    .modus-wc-menu-submenu-chevron {
+    align-items: center;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: var(--modus-wc-font-size-3xl);
+    justify-content: center;
+    line-height: 0;
+    width: var(--modus-wc-font-size-xl);
+
+    i {
+      display: block;
+      font-size: var(--modus-wc-font-size-3xl);
+      line-height: 1;
+    }
+  }
+
   .side-navigation-content
     > modus-wc-menu
     modus-wc-menu-item
-    .modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-sm
     button {
     max-height: 32px;
+  }
+
+  .side-navigation-content
+    > modus-wc-menu
+    modus-wc-menu-item
+    .modus-wc-menu-item.modus-wc-menu-item-md
+    button {
+    max-height: 32px;
+  }
+
+  // Tree menu: keep legacy row scale (pre menu/tree size standardization).
+  modus-wc-tree-item .modus-wc-menu-item {
+    .modus-wc-menu-item-interactive {
+      padding-block: var(--modus-wc-spacing-xs);
+      padding-inline: var(--modus-wc-spacing-sm);
+
+      .modus-wc-menu-submenu-chevron {
+        align-items: center;
+        display: inline-flex;
+        height: var(--modus-wc-font-size-2xl);
+        justify-content: center;
+        line-height: 0;
+        width: var(--modus-wc-font-size-2xl);
+
+        i {
+          display: block;
+          font-size: var(--modus-wc-font-size-2xl);
+          line-height: 1;
+        }
+      }
+
+      .modus-wc-menu-item-content {
+        gap: 0;
+
+        [slot='start'] {
+          align-items: center;
+          display: inline-flex;
+          flex-shrink: 0;
+          line-height: 0;
+          padding-inline-end: var(--modus-wc-spacing-sm);
+
+          modus-wc-icon,
+          i {
+            display: block;
+            line-height: 1;
+          }
+        }
+
+        .modus-wc-menu-item-labels {
+          display: block;
+          justify-content: unset;
+          line-height: inherit;
+          padding-inline-end: var(--modus-wc-spacing-xs);
+          padding-inline-start: var(--modus-wc-spacing-md);
+          white-space: nowrap;
+        }
+      }
+    }
+
+    &.modus-wc-menu-item-sm .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-sm);
+      height: auto;
+      padding-block: var(--modus-wc-spacing-2xs);
+      padding-inline: var(--modus-wc-spacing-xs);
+
+      .modus-wc-menu-item-labels {
+        line-height: inherit;
+
+        div {
+          font-size: inherit;
+          line-height: inherit;
+        }
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-xs);
+      }
+    }
+
+    &.modus-wc-menu-item-md .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-md);
+      height: auto;
+      padding: var(--modus-wc-spacing-sm);
+
+      .modus-wc-menu-item-labels {
+        line-height: inherit;
+
+        div {
+          font-size: inherit;
+          line-height: inherit;
+        }
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-sm);
+      }
+    }
+
+    &.modus-wc-menu-item-lg .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-lg);
+      height: auto;
+      padding: var(--modus-wc-spacing-sm);
+
+      .modus-wc-menu-item-labels {
+        line-height: inherit;
+
+        div {
+          font-size: inherit;
+          line-height: inherit;
+        }
+      }
+
+      .modus-wc-menu-item-sublabel {
+        font-size: var(--modus-wc-font-size-md);
+      }
+    }
+
+    &.modus-wc-menu-item-xs .modus-wc-menu-item-interactive {
+      font-size: var(--modus-wc-font-size-sm);
+      height: auto;
+      padding-block: var(--modus-wc-spacing-2xs);
+      padding-inline: var(--modus-wc-spacing-xs);
+
+      .modus-wc-menu-item-labels div {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+
+    &.modus-wc-menu-item-xl .modus-wc-menu-item-interactive {
+      height: auto;
+      padding-block: var(--modus-wc-spacing-md);
+      padding-inline: var(--modus-wc-spacing-sm);
+
+      .modus-wc-menu-item-labels div {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+  }
+
+  // With Tree Menu story uses size="lg" on modus-wc-tree-menu (DaisyUI menu-lg row scale).
+  modus-wc-tree-menu .modus-wc-menu.modus-wc-menu-lg {
+    modus-wc-tree-item .modus-wc-menu-item > .modus-wc-menu-item-interactive {
+      line-height: 1.75rem;
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
+    }
   }
 }
 
