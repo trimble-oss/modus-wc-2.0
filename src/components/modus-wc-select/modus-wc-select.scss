@@ -87,17 +87,11 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-xs {
-    --modus-wc-select-inner-height: calc(
-      var(--modus-wc-size-xs) - var(--modus-wc-border-width-sm) - var(
-          --modus-wc-border-width-sm
-        )
-    );
-
     font-size: var(--modus-wc-font-size-sm);
     height: var(--modus-wc-size-xs);
     line-height: 1.25rem;
     min-height: var(--modus-wc-size-xs);
-    padding-block: select-padding-block(1.25rem);
+    padding-block: var(--modus-wc-spacing-xs);
     padding-inline-end: calc(
       var(--modus-wc-spacing-sm) + var(--modus-wc-line-height-md)
     );
@@ -105,17 +99,11 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-sm {
-    --modus-wc-select-inner-height: calc(
-      var(--modus-wc-size-sm) - var(--modus-wc-border-width-sm) - var(
-          --modus-wc-border-width-sm
-        )
-    );
-
     font-size: var(--modus-wc-font-size-md);
     height: var(--modus-wc-size-sm);
     line-height: var(--modus-wc-line-height-md);
     min-height: var(--modus-wc-size-sm);
-    padding-block: select-padding-block(var(--modus-wc-line-height-md));
+    padding-block: var(--modus-wc-spacing-xs);
     padding-inline-end: calc(
       var(--modus-wc-spacing-md) + var(--modus-wc-line-height-md)
     );
@@ -123,17 +111,11 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-md {
-    --modus-wc-select-inner-height: calc(
-      var(--modus-wc-size-md) - var(--modus-wc-border-width-sm) - var(
-          --modus-wc-border-width-sm
-        )
-    );
-
     font-size: var(--modus-wc-font-size-lg);
     height: var(--modus-wc-size-md);
     line-height: var(--modus-wc-line-height-md);
     min-height: var(--modus-wc-size-md);
-    padding-block: select-padding-block(var(--modus-wc-line-height-md));
+    padding-block: var(--modus-wc-spacing-md);
     padding-inline-end: calc(
       var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-md)
     );
@@ -141,17 +123,11 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-lg {
-    --modus-wc-select-inner-height: calc(
-      var(--modus-wc-size-lg) - var(--modus-wc-border-width-sm) - var(
-          --modus-wc-border-width-sm
-        )
-    );
-
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-lg);
     line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-lg);
-    padding-block: select-padding-block(var(--modus-wc-line-height-lg));
+    padding-block: var(--modus-wc-spacing-lg);
     padding-inline-end: calc(
       var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
     );
@@ -159,17 +135,11 @@ modus-wc-select .modus-wc-select {
   }
 
   &.modus-wc-select-xl {
-    --modus-wc-select-inner-height: calc(
-      var(--modus-wc-size-xl) - var(--modus-wc-border-width-sm) - var(
-          --modus-wc-border-width-sm
-        )
-    );
-
     font-size: var(--modus-wc-font-size-xl);
     height: var(--modus-wc-size-xl);
     line-height: var(--modus-wc-line-height-lg);
     min-height: var(--modus-wc-size-xl);
-    padding-block: select-padding-block(var(--modus-wc-line-height-lg));
+    padding-block: var(--modus-wc-spacing-lg);
     padding-inline-end: calc(
       var(--modus-wc-spacing-xl) + var(--modus-wc-line-height-md)
     );

@@ -1,7 +1,3 @@
-@function select-padding-block($line-height) {
-  @return calc((var(--modus-wc-select-inner-height) - #{$line-height}) * 0.5);
-}
-
 @mixin feedback-levels {
   &--error {
     border-color: var(--modus-wc-color-error) !important;
