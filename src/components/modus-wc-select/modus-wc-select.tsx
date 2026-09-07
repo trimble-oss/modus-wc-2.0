@@ -99,6 +99,16 @@ export class ModusWcSelect {
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
+  private getWrapperClasses(): string {
+    const classes = ['modus-wc-select-wrapper'];
+
+    if (this.bordered) {
+      classes.push('modus-wc-select-wrapper-bordered');
+    }
+
+    return classes.join(' ');
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-select', 'modus-wc-w-full'];
 
@@ -145,7 +155,7 @@ export class ModusWcSelect {
             size={this.getLabelSize()}
           />
         )}
-        <div class="modus-wc-select-wrapper">
+        <div class={this.getWrapperClasses()}>
           <select
             class={this.getClasses()}
             disabled={this.disabled}
