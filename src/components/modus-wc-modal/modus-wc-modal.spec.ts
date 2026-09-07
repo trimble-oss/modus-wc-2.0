@@ -118,4 +118,27 @@ describe('modus-wc-modal', () => {
     const backdrop = page.root!.querySelector('.modus-wc-modal-backdrop');
     expect(backdrop).toBeNull();
   });
+
+  it('should hide closed dialog from layout and focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="test-focus" show-close="true">
+        <modus-wc-button slot="footer">Close</modus-wc-button>
+      </modus-wc-modal>`,
+    });
+
+    const dialog = page.root!.querySelector('dialog') as HTMLDialogElement;
+    const closeButton = page.root!.querySelector(
+      'button[aria-label="Close modal"]'
+    ) as HTMLButtonElement;
+
+    expect(dialog.hasAttribute('open')).toBe(false);
+
+    closeButton.focus();
+    expect(
+      (page.win.document.activeElement as HTMLElement | null)?.getAttribute(
+        'aria-label'
+      )
+    ).not.toBe('Close modal');
+  });
 });
