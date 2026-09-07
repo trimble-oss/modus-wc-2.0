@@ -6,6 +6,7 @@ import {
   h,
   Host,
   Listen,
+  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -29,6 +30,7 @@ export class ModusWcDropdownMenu {
   private buttonRef?: HTMLElement;
   private inheritedAttributes: Attributes = {};
   private menuRef?: HTMLElement;
+  private menuSlotObserver?: MutationObserver;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -85,6 +87,18 @@ export class ModusWcDropdownMenu {
   /** Event emitted when the menuVisible prop changes. */
   @StencilEvent() menuVisibilityChange!: EventEmitter<{ isVisible: boolean }>;
 
+  /** Event emitted the first time the menu opens while `slot="menu"` has no menu items yet. Populate the menu slot; the component shows a spinner until items are present. */
+  @StencilEvent() menuLoad!: EventEmitter<{ reason: 'open' }>;
+
+  /** Tracks whether `menuLoad` was already emitted for the current unloaded cycle. */
+  private loadRequested = false;
+
+  /** Tracks whether menu items were loaded at least once (for reload after removal). */
+  private menuWasLoaded = false;
+
+  /** Bumped when slotted menu content changes so Stencil re-renders loading UI. */
+  @State() private menuSlotRevision = 0;
+
   @State() private menuPosition = { x: 0, y: 0 };
 
   @Listen('click', { target: 'document' })
@@ -109,12 +123,22 @@ export class ModusWcDropdownMenu {
   @Watch('menuVisible')
   async onMenuVisibilityChange(newValue: boolean) {
     if (newValue) {
+      this.requestMenuLoadIfNeeded();
       await this.updateMenuPosition();
     }
   }
 
   componentDidLoad() {
     this.buttonRef = this.el.querySelector('modus-wc-button') as HTMLElement;
+    this.setupMenuSlotObserver();
+    this.syncMenuLoadState();
+    if (this.menuVisible) {
+      this.requestMenuLoadIfNeeded();
+    }
+  }
+
+  disconnectedCallback() {
+    this.menuSlotObserver?.disconnect();
   }
 
   componentWillLoad() {
@@ -138,6 +162,89 @@ export class ModusWcDropdownMenu {
     this.menuVisible = newVisibility;
     this.menuVisibilityChange.emit({ isVisible: newVisibility });
   };
+
+  /** Whether `slot="menu"` has slotted content (menu items or other menu UI). */
+  private hasMenuContent(): boolean {
+    const menuSlotRoots = Array.from(
+      this.el.querySelectorAll('[slot="menu"]')
+    ).filter((node) => node.closest('modus-wc-dropdown-menu') === this.el);
+
+    if (
+      menuSlotRoots.some(
+        (slotRoot) =>
+          slotRoot.childElementCount > 0 || !!slotRoot.textContent?.trim()
+      )
+    ) {
+      return true;
+    }
+
+    return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).some(
+      (item) =>
+        item.getAttribute('slot') === 'menu' &&
+        item.closest('modus-wc-dropdown-menu') === this.el
+    );
+  }
+
+  private setupMenuSlotObserver(): void {
+    if (typeof MutationObserver === 'undefined') return;
+
+    this.menuSlotObserver?.disconnect();
+    this.menuSlotObserver = new MutationObserver(() => {
+      this.handleMenuSlotChange();
+    });
+    this.menuSlotObserver.observe(this.el, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  private syncMenuLoadState(): void {
+    if (this.hasMenuContent()) {
+      this.menuWasLoaded = true;
+      this.loadRequested = false;
+      return;
+    }
+
+    if (this.menuWasLoaded) {
+      this.menuWasLoaded = false;
+      this.loadRequested = false;
+    }
+  }
+
+  private handleMenuSlotChange(): void {
+    this.syncMenuLoadState();
+    this.menuSlotRevision++;
+  }
+
+  /** Re-sync lazy-loading UI after imperatively updating `slot="menu"`. */
+  @Method()
+  refreshLazyMenu(): Promise<void> {
+    this.handleMenuSlotChange();
+    return Promise.resolve();
+  }
+
+  private requestMenuLoadIfNeeded(): void {
+    if (this.hasMenuContent() || this.loadRequested) {
+      return;
+    }
+
+    this.loadRequested = true;
+    this.menuLoad.emit({ reason: 'open' });
+  }
+
+  private shouldShowLoading(): boolean {
+    void this.menuSlotRevision;
+    return this.menuVisible && !this.hasMenuContent();
+  }
+
+  private shouldShowMenu(): boolean {
+    void this.menuSlotRevision;
+    return this.hasMenuContent();
+  }
+
+  private getLoaderSize(): ModusSize {
+    return this.menuSize ?? 'md';
+  }
 
   private updateMenuPosition = async () => {
     // istanbul ignore next
@@ -186,7 +293,29 @@ export class ModusWcDropdownMenu {
           }}
         >
           <modus-wc-menu bordered={this.menuBordered} size={this.menuSize}>
-            <slot name="menu" />
+            {this.shouldShowLoading() ? (
+              <div
+                aria-busy="true"
+                aria-live="polite"
+                class="modus-wc-dropdown-menu-loading"
+              >
+                <slot name="loading">
+                  <modus-wc-loader
+                    size={this.getLoaderSize()}
+                    variant="spinner"
+                  />
+                </slot>
+              </div>
+            ) : null}
+            <div
+              class={{
+                'modus-wc-dropdown-menu-menu-content': true,
+                'modus-wc-dropdown-menu-menu-content--hidden':
+                  !this.shouldShowMenu(),
+              }}
+            >
+              <slot name="menu" />
+            </div>
           </modus-wc-menu>
         </div>
       </Host>

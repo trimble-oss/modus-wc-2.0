@@ -2,6 +2,7 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { ref } from 'lit/directives/ref.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { DaisySize, ModusSize, PopoverPlacement } from '../types';
 
@@ -84,7 +85,7 @@ const meta: Meta<DropdownMenuArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['menuVisibilityChange'],
+      handles: ['menuVisibilityChange', 'menuLoad'],
     },
   },
 };
@@ -347,6 +348,155 @@ export const WithTreeMenu: Story = {
   Selected Value:
   <span id="tree-dropdown-selected-value"></span>
 </div>
+    `;
+  },
+};
+
+type DropdownMenuElement = HTMLElement & {
+  menuVisible: boolean;
+  refreshLazyMenu: () => Promise<void>;
+};
+
+/** Persists Lazy Loading story data across Storybook control updates (re-renders). */
+const lazyLoadMenuItems = (): Array<{ label: string; value: string }> => [
+  { label: 'Fetched One', value: '1' },
+  { label: 'Fetched Two', value: '2' },
+  { label: 'Fetched Three', value: '3' },
+];
+
+const lazyLoadingStoryState = {
+  menuItems: [] as Array<{ label: string; value: string }>,
+  pendingLoad: false,
+};
+
+export const LazyLoading: Story = {
+  parameters: {
+    actions: {
+      handles: ['menuLoad', 'menuVisibilityChange', 'itemSelect'],
+    },
+    docs: {
+      source: {
+        code: `
+<modus-wc-dropdown-menu
+  id="lazy-dropdown"
+  button-aria-label="Open lazy menu"
+  button-variant="filled"
+  button-color="primary"
+  button-size="sm"
+>
+  <div slot="button">
+    Load on open
+    <modus-wc-icon decorative name="expand_more" size="xs"></modus-wc-icon>
+  </div>
+</modus-wc-dropdown-menu>
+
+<script>
+  const dropdown = document.getElementById('lazy-dropdown');
+
+  // Fetch menu items on first open, with a deliberate delay so the spinner is
+  // visible. Adding menu items to slot="menu" ends the loading state.
+  dropdown.addEventListener('menuLoad', () => {
+    window.setTimeout(() => {
+      const menuSlot = document.createElement('div');
+      menuSlot.setAttribute('slot', 'menu');
+      menuSlot.innerHTML = \`
+        <modus-wc-menu-item label="Fetched One" value="1"></modus-wc-menu-item>
+        <modus-wc-menu-item label="Fetched Two" value="2"></modus-wc-menu-item>
+      \`;
+      dropdown.appendChild(menuSlot);
+      dropdown.refreshLazyMenu();
+    }, 1200);
+  });
+</script>
+`,
+      },
+    },
+  },
+  render: () => {
+    let dropdownEl: DropdownMenuElement | undefined;
+    const state = lazyLoadingStoryState;
+
+    const renderMenuItems = () => {
+      if (!dropdownEl) return;
+      dropdownEl.querySelector('[slot="menu"]')?.remove();
+
+      if (!state.menuItems.length) return;
+
+      const menuSlot = document.createElement('div');
+      menuSlot.setAttribute('slot', 'menu');
+
+      state.menuItems.forEach(({ label, value }) => {
+        const item = document.createElement('modus-wc-menu-item');
+        item.setAttribute('label', label);
+        item.setAttribute('value', value);
+        item.addEventListener('itemSelect', () => {
+          if (dropdownEl) dropdownEl.menuVisible = false;
+        });
+        menuSlot.appendChild(item);
+      });
+
+      dropdownEl.appendChild(menuSlot);
+    };
+
+    const sync = async () => {
+      if (!dropdownEl) return;
+      renderMenuItems();
+      if (state.menuItems.length) {
+        await dropdownEl.refreshLazyMenu();
+      }
+    };
+
+    // Fetch items on first open, with a deliberate delay so the spinner is
+    // visible. Populating slot="menu" ends the loading state.
+    const handleMenuLoad = () => {
+      if (state.pendingLoad) return;
+      state.pendingLoad = true;
+      window.setTimeout(() => {
+        state.menuItems = lazyLoadMenuItems();
+        state.pendingLoad = false;
+        void sync();
+      }, 1200);
+    };
+
+    // prettier-ignore
+    return html`
+<style>
+  div[id^='story--components-dropdown-menu--lazy-loading'] {
+    display: flex;
+    align-items: center;
+    height: 240px;
+  }
+
+  [slot='button'] {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+</style>
+
+<modus-wc-dropdown-menu
+  button-aria-label="Open lazy menu"
+  button-color="primary"
+  button-size="sm"
+  button-variant="filled"
+  @menuLoad=${handleMenuLoad}
+  ${ref((el) => {
+    if (!el) {
+      dropdownEl = undefined;
+      return;
+    }
+    const next = el as DropdownMenuElement;
+    if (dropdownEl !== next) {
+      dropdownEl = next;
+      void sync();
+    }
+  })}
+>
+  <div slot="button">
+    Load on open
+    <modus-wc-icon decorative name="expand_more" size="xs"></modus-wc-icon>
+  </div>
+</modus-wc-dropdown-menu>
     `;
   },
 };

@@ -32,9 +32,23 @@ The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML 
 
 ## Events
 
-| Event                  | Description                                      | Type                                   |
-| ---------------------- | ------------------------------------------------ | -------------------------------------- |
-| `menuVisibilityChange` | Event emitted when the menuVisible prop changes. | `CustomEvent<{ isVisible: boolean; }>` |
+| Event                  | Description                                                                                                                                                           | Type                                   |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `menuLoad`             | Event emitted the first time the menu opens while `slot="menu"` has no menu items yet. Populate the menu slot; the component shows a spinner until items are present. | `CustomEvent<{ reason: "open"; }>`     |
+| `menuVisibilityChange` | Event emitted when the menuVisible prop changes.                                                                                                                      | `CustomEvent<{ isVisible: boolean; }>` |
+
+
+## Methods
+
+### `refreshLazyMenu() => Promise<void>`
+
+Re-sync lazy-loading UI after imperatively updating `slot="menu"`.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies
@@ -47,12 +61,14 @@ The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML 
 
 - [modus-wc-button](../modus-wc-button)
 - [modus-wc-menu](../modus-wc-menu)
+- [modus-wc-loader](../modus-wc-loader)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-menu
+  modus-wc-dropdown-menu --> modus-wc-loader
   modus-wc-content-tree --> modus-wc-dropdown-menu
   style modus-wc-dropdown-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
