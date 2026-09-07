@@ -185,13 +185,62 @@ export class ModusWcDropdownMenu {
     );
   }
 
+  private isMenuSlotNode(node: Node): boolean {
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return false;
+    }
+
+    const element = node as HTMLElement;
+
+    if (
+      element.getAttribute('slot') === 'menu' &&
+      element.closest('modus-wc-dropdown-menu') === this.el
+    ) {
+      return true;
+    }
+
+    const menuSlotRoot = element.closest('[slot="menu"]');
+    return (
+      !!menuSlotRoot &&
+      menuSlotRoot.closest('modus-wc-dropdown-menu') === this.el
+    );
+  }
+
+  private isMenuSlotMutation(mutations: MutationRecord[]): boolean {
+    return mutations.some((mutation) => {
+      if (mutation.type !== 'childList') {
+        return false;
+      }
+
+      if (
+        mutation.target.nodeType === Node.ELEMENT_NODE &&
+        this.isMenuSlotNode(mutation.target)
+      ) {
+        return true;
+      }
+
+      const changedNodes: Node[] = [
+        ...Array.from(mutation.addedNodes),
+        ...Array.from(mutation.removedNodes),
+      ];
+
+      return changedNodes.some((node) => this.isMenuSlotNode(node));
+    });
+  }
+
   private setupMenuSlotObserver(): void {
     if (typeof MutationObserver === 'undefined') return;
 
     this.menuSlotObserver?.disconnect();
-    this.menuSlotObserver = new MutationObserver(() => {
+    this.menuSlotObserver = new MutationObserver((mutations) => {
+      if (!this.isMenuSlotMutation(mutations)) {
+        return;
+      }
+
       this.handleMenuSlotChange();
     });
+    // Observe the host, not menuRef: with shadow:false, slot="menu" nodes stay in
+    // light DOM on the host; filtering limits updates to menu-slot mutations only.
     this.menuSlotObserver.observe(this.el, {
       childList: true,
       subtree: true,
@@ -307,6 +356,8 @@ export class ModusWcDropdownMenu {
                 </slot>
               </div>
             ) : null}
+            {/* Keep slot target mounted (hidden when empty) so light-DOM slot="menu"
+                nodes always project correctly after lazy fetch. */}
             <div
               class={{
                 'modus-wc-dropdown-menu-menu-content': true,

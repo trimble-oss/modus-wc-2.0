@@ -19,10 +19,42 @@ type DropdownMenuInternals = {
   menuSize?: ModusWcDropdownMenu['menuSize'];
 };
 
+function createChildListMutation(
+  target: Node,
+  addedNodes: Node[] = [],
+  removedNodes: Node[] = []
+): MutationRecord {
+  return {
+    type: 'childList',
+    target,
+    addedNodes: addedNodes as unknown as NodeList,
+    removedNodes: removedNodes as unknown as NodeList,
+    attributeName: null,
+    attributeNamespace: null,
+    nextSibling: null,
+    oldValue: null,
+    previousSibling: null,
+  };
+}
+
+function createAttributesMutation(target: Node): MutationRecord {
+  return {
+    type: 'attributes',
+    target,
+    addedNodes: [] as unknown as NodeList,
+    removedNodes: [] as unknown as NodeList,
+    attributeName: 'class',
+    attributeNamespace: null,
+    nextSibling: null,
+    oldValue: null,
+    previousSibling: null,
+  };
+}
+
 function installMutationObserverMock(): {
   disconnectMock: jest.Mock;
   observeMock: jest.Mock;
-  trigger: () => void;
+  trigger: (mutations?: MutationRecord[]) => void;
   restore: () => void;
 } {
   const original = globalThis.MutationObserver;
@@ -47,9 +79,9 @@ function installMutationObserverMock(): {
   return {
     disconnectMock,
     observeMock,
-    trigger: () => {
+    trigger: (mutations: MutationRecord[] = []) => {
       if (callback && observerRef.current) {
-        callback([], observerRef.current);
+        callback(mutations, observerRef.current);
       }
     },
     restore: () => {
@@ -506,6 +538,24 @@ describe('modus-wc-dropdown-menu', () => {
 
       observer.trigger();
       await page.waitForChanges();
+      expect(
+        page.root?.querySelector('.modus-wc-dropdown-menu-loading')
+      ).not.toBeNull();
+
+      const menuSlot = document.createElement('div');
+      menuSlot.setAttribute('slot', 'menu');
+      const item = document.createElement('modus-wc-menu-item');
+      item.setAttribute('label', 'Item One');
+      item.setAttribute('value', '1');
+      menuSlot.appendChild(item);
+      page.root?.appendChild(menuSlot);
+
+      observer.trigger([createChildListMutation(page.root!, [menuSlot])]);
+      await page.waitForChanges();
+
+      expect(
+        page.root?.querySelector('.modus-wc-dropdown-menu-loading')
+      ).toBeNull();
 
       page.root?.remove();
       await page.waitForChanges();
@@ -618,5 +668,99 @@ describe('modus-wc-dropdown-menu', () => {
         '.modus-wc-dropdown-menu-loading modus-wc-loader'
       )
     ).not.toBeNull();
+  });
+
+  it('should only react to childList mutations on menu slot nodes', async () => {
+    const observer = installMutationObserverMock();
+
+    try {
+      const page = await newSpecPage({
+        components: [
+          ModusWcDropdownMenu,
+          ModusWcButton,
+          ModusWcMenu,
+          ModusWcMenuItem,
+          ModusWcLoader,
+        ],
+        html: `<modus-wc-dropdown-menu menu-visible="true">
+                  <div slot="button">Button</div>
+                  <div slot="menu" id="menu-slot-root"></div>
+                  <modus-wc-menu-item slot="menu" label="Direct" value="direct"></modus-wc-menu-item>
+               </modus-wc-dropdown-menu>`,
+      });
+
+      await page.waitForChanges();
+
+      const component = page.rootInstance as unknown as {
+        isMenuSlotNode: (node: Node) => boolean;
+        isMenuSlotMutation: (mutations: MutationRecord[]) => boolean;
+      };
+
+      expect(component.isMenuSlotNode(document.createTextNode('x'))).toBe(
+        false
+      );
+
+      const directMenuItem = page.root?.querySelector(
+        'modus-wc-menu-item[slot="menu"]'
+      ) as HTMLElement;
+      expect(component.isMenuSlotNode(directMenuItem)).toBe(true);
+
+      const menuSlot = page.root?.querySelector(
+        '#menu-slot-root'
+      ) as HTMLElement;
+      expect(component.isMenuSlotNode(menuSlot)).toBe(true);
+      expect(
+        component.isMenuSlotMutation([createChildListMutation(menuSlot)])
+      ).toBe(true);
+      expect(
+        component.isMenuSlotMutation([createAttributesMutation(page.root!)])
+      ).toBe(false);
+
+      const nestedItem = document.createElement('modus-wc-menu-item');
+      nestedItem.setAttribute('label', 'Nested');
+      nestedItem.setAttribute('value', 'nested');
+      expect(component.isMenuSlotNode(nestedItem)).toBe(false);
+      menuSlot.appendChild(nestedItem);
+      expect(component.isMenuSlotNode(nestedItem)).toBe(true);
+      expect(
+        component.isMenuSlotMutation([
+          createChildListMutation(menuSlot, [nestedItem]),
+        ])
+      ).toBe(true);
+
+      const emptyPage = await newSpecPage({
+        components: [
+          ModusWcDropdownMenu,
+          ModusWcButton,
+          ModusWcMenu,
+          ModusWcLoader,
+        ],
+        html: `<modus-wc-dropdown-menu menu-visible="true">
+                  <div slot="button">Button</div>
+               </modus-wc-dropdown-menu>`,
+      });
+      await emptyPage.waitForChanges();
+
+      observer.trigger([createAttributesMutation(emptyPage.root!)]);
+      await emptyPage.waitForChanges();
+      expect(
+        emptyPage.root?.querySelector(
+          '.modus-wc-dropdown-menu-loading modus-wc-loader'
+        )
+      ).not.toBeNull();
+
+      const lazyMenuItem = document.createElement('modus-wc-menu-item');
+      lazyMenuItem.setAttribute('slot', 'menu');
+      lazyMenuItem.setAttribute('label', 'Lazy');
+      lazyMenuItem.setAttribute('value', 'lazy');
+      emptyPage.root?.appendChild(lazyMenuItem);
+      observer.trigger([createChildListMutation(lazyMenuItem)]);
+      await emptyPage.waitForChanges();
+      expect(
+        emptyPage.root?.querySelector('.modus-wc-dropdown-menu-loading')
+      ).toBeNull();
+    } finally {
+      observer.restore();
+    }
   });
 });
