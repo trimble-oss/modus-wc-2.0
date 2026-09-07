@@ -1593,6 +1593,61 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcImage">
+            <summary>
+            A resilient atomic image component that wraps native &lt;img&gt; tags with consistent sizing, aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Alt">
+            <summary>
+            Accessible text description. Omit or leave empty for decorative images.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
+            <summary>
+            Custom CSS class to apply to the inner container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Fit">
+            <summary>
+            Controls containment, cropping, and aspect ratio preservation.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Shape">
+            <summary>
+            Sets corner radius styling.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Size">
+            <summary>
+            Determines dimensional size tokens.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.Src">
+            <summary>
+            The source URL of the image asset.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageError">
+            <summary>
+            Event emitted when the image fails to load.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageLoad">
+            <summary>
+            Event emitted when the image loads successfully.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
             <summary>
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
@@ -2847,6 +2902,42 @@
             Emitted when the input gains focus.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcStatus">
+            <summary>
+            A status indicator with a pulsing dot and semantic label for conveying system state.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.CustomClass">
+            <summary>
+            Custom CSS class to apply to the status container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Label">
+            <summary>
+            The visible status label. Defaults to the variant name when omitted.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Pulse">
+            <summary>
+            Whether the dot displays a pulsing halo animation.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Variant">
+            <summary>
+            The semantic status variant.
+            Allowed values: "active", "warning", "danger"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcStepper">
             <summary>
             Used to show a list of steps in a process.
@@ -3640,7 +3731,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcTooltip">
             <summary>
-            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it. Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
+            A customizable tooltip component used to create tooltips with different content.  The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on pointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled, the tooltip remains open and Escape does not dismiss it.  Use the contentElement prop to supply rich HTML content to the tooltip such as multiline text. For plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.  For screen reader support, set tooltip-id on this component and matching aria-describedby on the trigger (e.g. modus-wc-button).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.Content">
@@ -3667,6 +3758,11 @@
             <summary>
             The position that the tooltip will render in relation to the element.
             Allowed values: "auto", "top", "right", "bottom", "left"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.ShowDelay">
+            <summary>
+            Delay in milliseconds before the tooltip shows on hover - the default of 0 shows immediately.  200ms is recommended if you're adding a delay. The delay is skipped if a tooltip closed within the last 300ms, on focus, and for touch input.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTooltip.TooltipId">
