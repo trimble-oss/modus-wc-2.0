@@ -40,7 +40,7 @@ QA-themes: modern-only | classic-only | both | n/a
 QA-assert: <what must hold>
 QA-source: <url> | none
 QA-source-kind: figma | blueprint | issue-screenshot | none
-QA-source-path: public/modus-llm/components/<slug>/ | none
+QA-source-path: public/modus-llm/components/<slug>/ | variants/{id}/ | none
 QA-verify: 1) <state × size × theme> 2) …
 QA-graph: none | tag → dependents
 ```
@@ -58,7 +58,8 @@ Design sources are **Figma** or **Modus Blueprint** (`https://modus.trimble.com`
 
 | `QA-source` host | Kind | What to read |
 |------------------|------|----------------|
-| `figma.com` / `embed.figma.com` | `figma` | Figma MCP (`get_design_context` / screenshot). `QA-source-path: none`. |
+| `figma.com` / `embed.figma.com` | `figma` | Figma MCP in IDE only (`get_design_context` / screenshot). `QA-source-path: none`. |
+| `drive.google.com` (staging folder) | `figma-staged` | Google Drive MCP: **`manifest.json` first**. v2: pick variants from `manifest.variants` (match issue / `QA-verify` / size → `md-default`). Load **only** those `files.designContext` / `variableDefs` / `screenshot`. If unspecified, try `md-default` then `xs-default`. Optional `QA-source-path: variants/md-default/`. **Do not** load the whole folder. Token numbers come from `variable-defs.json`, not design-context summaries. |
 | `modus.trimble.com` | `blueprint` | GitHub files in modus-blueprint (see map). Do not open the live site. |
 | Issue image attachments | `issue-screenshot` | Those PNGs. `QA-source-path: none`. |
 | `none` | `none` | Existing component: Storybook on **main** vs PR branch. |
@@ -152,7 +153,7 @@ If the fix breaks the UI, explain the root cause in the PR comment. Do not claim
 
 ## Reply surface
 
-- `/approve` on an issue → implement, open PR, subscribe to that PR's comments/reviews from the human.
+- `/approve` on an issue → implement, open PR, STOP. Do not subscribe. Later `/refine` / `/ask` are new GitHub-triggered runs.
 - `/ask` / `/clarify` → reply on the same surface (PR if a PR exists). No patch.
 - `/refine` → patch the same branch; conversation-comment routing + `QA-rerun: add`.
 - QA → label-added only (`qa-full`, `qa-rerun`, `qa-skip`). No PR-opened trigger.

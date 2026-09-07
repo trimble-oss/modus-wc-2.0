@@ -40,4 +40,7 @@ coverage/
 # Playwright MCP local session artifacts (screenshots, snapshots)
 .playwright-mcp/
 
+# Figma MCP staging captures (upload to Drive; do not commit)
+scripts/figma-handoff/staging/
+
 nuget-output/
