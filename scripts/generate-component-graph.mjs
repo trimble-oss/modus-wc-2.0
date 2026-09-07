@@ -10,7 +10,8 @@
  * - querySelector / querySelectorAll('modus-wc-*') in component source → "hosts" edges
  *   (light-DOM children the parent manages, e.g. button-group → button).
  *
- * Outputs (under docs/component-graph/, committed and validated by CI):
+ * Outputs (under docs/component-graph/; CI publishes JSON/Mermaid to the
+ * `component-graph` branch after merges to main):
  * - component-graph.json  machine-readable graph + precomputed reverse-impact map
  *   (QA impact uses composes/slot/hosts only; storybook edges are demo-only)
  * - component-graph.mmd   Mermaid flowchart of all edge types

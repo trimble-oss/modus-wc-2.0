@@ -25,7 +25,7 @@ interface SelectArgs {
   name?: string;
   options: ISelectOption[];
   required?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
   value: string;
 }
 
@@ -75,7 +75,7 @@ const meta: Meta<SelectArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],

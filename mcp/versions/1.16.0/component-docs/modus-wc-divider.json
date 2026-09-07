@@ -1,0 +1,85 @@
+{
+  "description": "A customizable divider component used to separate content horizontally or vertically",
+  "properties": [
+    {
+      "name": "color",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'high-contrast'     | 'success'     | 'warning'     | 'danger'",
+      "description": "The color of the divider line.",
+      "default": "'tertiary'",
+      "mutable": false,
+      "end_line": 28
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "description": "The content to display in the divider.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 31
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the divider element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider.",
+      "default": "'vertical'",
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "position",
+      "type": "'center' | 'end' | 'start'",
+      "description": "The position of the divider.",
+      "default": "'center'",
+      "mutable": false,
+      "end_line": 40
+    },
+    {
+      "name": "responsive",
+      "type": "boolean",
+      "description": "Whether the divider is responsive or not.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 43
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<divider-shadow-host\n      .props=${{ ...args }}\n    ></divider-shadow-host>",
+    "variations": [],
+    "args": {
+      "color": "'tertiary'",
+      "content": "''",
+      "custom-class": "''",
+      "orientation": "'vertical'",
+      "position": "'center'",
+      "responsive": "true"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-divider",
+  "storyExample": {
+    "template": "<divider-shadow-host\n      .props=${{ ...args }}\n    ></divider-shadow-host>",
+    "args": {
+      "color": "'tertiary'",
+      "content": "''",
+      "custom-class": "''",
+      "orientation": "'vertical'",
+      "position": "'center'",
+      "responsive": "true"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { Orientation } from '../types';\n\ninterface DividerArgs {\n  color:\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger';\n  content: string;\n  'custom-class'?: string;\n  orientation: Orientation;\n  position: 'center' | 'end' | 'start';\n  responsive: boolean;\n}\n\nconst meta: Meta<DividerArgs> = {\n  title: 'Components/Divider',\n  component: 'modus-wc-divider',\n  args: {\n    color: 'tertiary',\n    content: '',\n    'custom-class': '',\n    orientation: 'vertical',\n    position: 'center',\n    responsive: true,\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: [\n        'primary',\n        'secondary',\n        'tertiary',\n        'high-contrast',\n        'success',\n        'warning',\n        'danger',\n      ],\n    },\n    content: {\n      control: 'text',\n    },\n    'custom-class': {\n      control: 'text',\n    },\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    position: {\n      control: { type: 'select' },\n      options: ['start', 'center', 'end'],\n    },\n    responsive: {\n      control: { type: 'boolean' },\n    },\n  },\n  parameters: {\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<DividerArgs>;\n\nconst Template: Story = {\n  render: (args) => html`\n    <modus-wc-divider\n      color=\"${args.color}\"\n      content=\"${args.content}\"\n      custom-class=\"${ifDefined(args['custom-class'])}\"\n      orientation=\"${args.orientation}\"\n      position=\"${args.position}\"\n      responsive=\"${args.responsive}\"\n      style=\"${args.orientation === 'horizontal'\n        ? 'display: flex; height: 100px'\n        : ''}\"\n    ></modus-wc-divider>\n  `,\n};\n\nexport const Default: Story = { ...Template };\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    if (!customElements.get('divider-shadow-host')) {\n      const DividerShadowHost = createShadowHostClass<DividerArgs>({\n        componentTag: 'modus-wc-divider',\n        propsMapper: (v: DividerArgs, el: HTMLElement) => {\n          const dividerEl = el as unknown as {\n            color: string;\n            content: string;\n            customClass: string;\n            orientation: string;\n            position: string;\n            responsive: boolean;\n          };\n          dividerEl.color = v.color;\n          dividerEl.content = v.content;\n          dividerEl.customClass = v['custom-class'] || '';\n          dividerEl.orientation = v.orientation;\n          dividerEl.position = v.position;\n          dividerEl.responsive = Boolean(v.responsive);\n          // Mirror the Default story: apply display:flex + height on the\n          // modus-wc-divider element itself so the inner div gets its height\n          if (v.orientation === 'horizontal') {\n            el.style.display = 'flex';\n            el.style.height = '100px';\n          } else {\n            el.style.display = '';\n            el.style.height = '';\n          }\n        },\n      });\n      customElements.define('divider-shadow-host', DividerShadowHost);\n    }\n\n    return html`<divider-shadow-host\n      .props=${{ ...args }}\n    ></divider-shadow-host>`;\n  },\n};\n"
+  }
+}

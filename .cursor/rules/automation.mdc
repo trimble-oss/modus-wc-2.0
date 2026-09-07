@@ -38,26 +38,48 @@ QA-depth: none | visual-slice | functional | composition
 QA-scope: <component tags>
 QA-themes: modern-only | classic-only | both | n/a
 QA-assert: <what must hold>
-QA-source: <Figma or issue-screenshot URL> | none
+QA-source: <url> | none
+QA-source-kind: figma | blueprint | issue-screenshot | none
+QA-source-path: public/modus-llm/components/<slug>/ | none
 QA-verify: 1) <state × size × theme> 2) …
 QA-graph: none | tag → dependents
 ```
 
 - `QA-source`: new feature or new variant **must** be a URL, not `none`. Existing component with `none` → QA compares Storybook to **main**.
+- `QA-source-kind` / `QA-source-path`: Dev fills these. See **QA-source resolution** below.
 - `QA-verify`: numbered scenarios QA must execute. Include hover/disabled/pressed when those states exist.
 - `QA-graph`: fill from [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (runtime edges only, depth 1). Empty array → `none`. Do not invent neighbors from memory.
 
 After `/refine` or a `qa-failed` repair, conversation-comment `QA-rerun: add` plus an updated routing block.
 
+## QA-source resolution (Dev and QA)
+
+Design sources are **Figma** or **Modus Blueprint** (`https://modus.trimble.com`). Both agents use this table. **Never** browser-scrape modus.trimble.com (login, scrolling, flaky DOM). **Never** `git clone` or `npm install` [trimble-oss/modus-blueprint](https://github.com/trimble-oss/modus-blueprint). Fetch **only** the mapped files with GitHub MCP `get_file_contents` (`owner=trimble-oss`, `repo=modus-blueprint`, `ref=main`).
+
+| `QA-source` host | Kind | What to read |
+|------------------|------|----------------|
+| `figma.com` / `embed.figma.com` | `figma` | Figma MCP (`get_design_context` / screenshot). `QA-source-path: none`. |
+| `modus.trimble.com` | `blueprint` | GitHub files in modus-blueprint (see map). Do not open the live site. |
+| Issue image attachments | `issue-screenshot` | Those PNGs. `QA-source-path: none`. |
+| `none` | `none` | Existing component: Storybook on **main** vs PR branch. |
+
+Blueprint URL map (kebab-case the last path segment; try `select` then `Select` on 404):
+
+| Live URL | Files in `trimble-oss/modus-blueprint` |
+|----------|----------------------------------------|
+| `/components/:name` | `public/modus-llm/components/<slug>/` — `overview.md`, `styling.md`, `playground.md`, `use-cases.md`, `accessibility.md` as needed |
+| `/patterns/:id` | `public/modus-llm/patterns/<slug>/` and `patterns/<slug>/` |
+| Optional Figma for that name | `src/components/FigmaEmbedMapping.ts` then Figma MCP if a figma URL is listed |
+
+**Dev:** On `/approve` and `/refine`, classify issue/PR links, fetch those files so the patch matches tokens/anatomy (not a remembered Storybook default), and set `QA-source`, `QA-source-kind`, `QA-source-path`. Do not tell QA to open the website.
+
+**QA:** Prefer Dev's `QA-source-path`. If missing, map the URL with the same table. Compare Storybook pixels to Figma MCP screenshots **or** expected states in those markdown files. Screenshot Storybook, not the Blueprint site. Path 404 or GitHub 403 → `## QA BLOCKED` (cannot resolve source). Never scrape as fallback.
+
 ## QA evidence and verdicts
 
 QA is a senior design-system reviewer. npm/lint/test is a **gate**, never a **verdict**. `## QA PASSED` requires visual evidence whenever the diff touches `.scss`, `.tailwind.ts`, component source, or stories.
 
-Source of truth:
-
-- New feature / new variant → compare Storybook to `QA-source`. Missing source → `## QA BLOCKED`.
-- Existing + source given → compare to source.
-- Existing + `QA-source: none` → screenshot the same states on **main**, then on the PR branch.
+Source of truth: follow **QA-source resolution**. New feature / new variant with missing source → `## QA BLOCKED`. Existing + `none` → main vs PR Storybook. Do not scrape modus.trimble.com.
 
 Impact: trust `reverseImpact` over Dev's `QA-graph` if they disagree; note the mismatch. Cap: QA-scope ∪ dependents, max 3 browser targets unless human AC names more.
 
@@ -84,12 +106,60 @@ When posting screenshots or other visual evidence on a PR (for `/ask`, `/refine`
 - Do **not** commit image files to the repository (for example `.github/pr-assets/`). Evidence is for PR discussion only and must not be part of the merge diff.
 - When GitHub must render images inline, use GitHub-hosted comment attachments (`user-images.githubusercontent.com`), not `raw.githubusercontent.com` paths that require committing files on the branch.
 
+## API stability
+
+Guidelines for preserving the public TypeScript and component API surface. Additional project-specific rules may be appended to this file over time.
+
+### Do not add new exported types
+
+Adding a new named export to `src/components/types.ts` (or re-exporting it from `components.d.ts`) is a **breaking change** for TypeScript consumers who import from `@trimble-oss/modus-wc`.
+
+When a component prop needs values beyond an existing shared type, **extend inline on the prop** instead of introducing a new exported alias.
+
+#### Preferred pattern
+
+Use inline unions on `@Prop()` and local interfaces, matching existing components:
+
+```typescript
+// Good — inline union (see modus-wc-pagination, modus-wc-switch)
+@Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
+
+// Bad — new exported type
+export type ModusInputSize = ModusSize | 'xs' | 'xl';
+@Prop() size?: ModusInputSize = 'md';
+```
+
+#### When widening size props
+
+- Keep `ModusSize` unchanged (`'sm' | 'md' | 'lg'`).
+- Add `'xs'` and/or `'xl'` as literal union members on the component prop only.
+- Map extended sizes to supported child sizes via constants (e.g. `INPUT_SIZE_TO_LABEL_SIZE`) keyed by `ModusSize | 'xs' | 'xl'`.
+
+## `/refine` manual verification
+
+When `/refine` changes visual styling (SCSS, Tailwind, theme tokens, padding, sizing), **manually verify in Storybook** before pushing — do not rely on unit tests or lint alone.
+
+1. Start Storybook (`npm start` or ensure port 6006 is up after `tailwind` + `embed` steps).
+2. Open the affected component story and exercise the changed props (e.g. `size="xs"` / `size="xl"`).
+3. Compare against the **previous size** (e.g. `md`) and the **target theme** from the refine request (modern / classic / connect).
+4. Capture walkthrough artifacts under `/opt/cursor/artifacts/` (screenshots or a short recording).
+5. In the PR comment, report:
+   - What was changed and why.
+   - What visual defects were found (clipping, chevron overlap, label misalignment, etc.) or confirmation that the fix looks correct.
+   - Computed-style notes when relevant (e.g. fixed `height` + `padding-block` + `line-height` on native `<select>`).
+
+If the fix breaks the UI, explain the root cause in the PR comment. Do not claim QA passed. Comment `QA-rerun: add` only when code is pushed for re-test.
+
 ## Reply surface
 
 - `/approve` on an issue → implement, open PR, subscribe to that PR's comments/reviews from the human.
 - `/ask` / `/clarify` → reply on the same surface (PR if a PR exists). No patch.
 - `/refine` → patch the same branch; conversation-comment routing + `QA-rerun: add`.
 - QA → label-added only (`qa-full`, `qa-rerun`, `qa-skip`). No PR-opened trigger.
+
+## PR Work Item
+
+When opening a PR from `/approve`, fill `.github/pull_request_template.md` Work Item as `Closes #<issue-number>` (GitHub closing keyword). Do not write `Issue #<n>` — that does not close the issue on merge.
 
 ## Slash commands
 

@@ -86,6 +86,7 @@ export type LogoName =
   | 'viewpoint_for_projects'
   | 'viewpoint_hr_management'
   | 'viewpoint_jobpac_connect'
+  | 'viewpoint_jobpac_mobile_individual_time_entry'
   | 'viewpoint_procontractor'
   | 'viewpoint_spectrum'
   | 'viewpoint_spectrum_service_tech'

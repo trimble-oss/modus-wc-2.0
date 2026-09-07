@@ -1,0 +1,95 @@
+{
+  "description": "Dock navigation bar for navigating between primary screens.",
+  "properties": [
+    {
+      "name": "activeItemIndex",
+      "type": "number",
+      "description": "The currently active dock item index.",
+      "default": "0",
+      "mutable": true,
+      "end_line": 50
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner nav element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 53
+    },
+    {
+      "name": "items",
+      "type": "IDockItem[]",
+      "description": "The dock items to display.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 56
+    },
+    {
+      "name": "position",
+      "type": "DockPosition",
+      "description": "The edge the dock is anchored to. Controls layout and active indicator orientation.",
+      "default": "'bottom'",
+      "mutable": false,
+      "end_line": 59
+    },
+    {
+      "name": "showLabels",
+      "type": "boolean",
+      "description": "If true, text labels are shown below icons.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 62
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the dock items.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 65
+    }
+  ],
+  "events": [
+    {
+      "name": "itemSelect",
+      "detail": "{ index: number; item: IDockItem }",
+      "description": "Emitted when a dock item is selected.",
+      "end_line": 68
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<style>\n        ${containerPlacementStyles}\n      </style>\n\n      <div class=\"dock-container dock-container--${position}\">\n        ${renderDockElement(args, position)}\n      </div>",
+    "variations": [],
+    "args": {
+      "items": "defaultItems",
+      "position": "'bottom'",
+      "show-labels": "true",
+      "size": "'md'",
+      "active-item-index": "2"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "itemSelect"
+    ]
+  },
+  "tag": "modus-wc-dock",
+  "storyExample": {
+    "template": "<style>\n        ${containerPlacementStyles}\n      </style>\n\n      <div class=\"dock-container dock-container--${position}\">\n        ${renderDockElement(args, position)}\n      </div>",
+    "args": {
+      "items": "defaultItems",
+      "position": "'bottom'",
+      "show-labels": "true",
+      "size": "'md'",
+      "active-item-index": "2"
+    },
+    "argTypes": {},
+    "events": [
+      "itemSelect"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IDockItem } from './modus-wc-dock';\nimport { DockPosition } from './modus-wc-dock.tailwind';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize } from '../types';\n\nconst defaultItems: IDockItem[] = [\n  { label: 'Home', icon: 'home' },\n  { label: 'Inbox', icon: 'email' },\n  { label: 'Settings', icon: 'settings' },\n];\n\ninterface DockArgs {\n  'active-item-index'?: number;\n  'custom-class'?: string;\n  items: IDockItem[];\n  position?: DockPosition;\n  'show-labels'?: boolean;\n  size?: ModusSize;\n}\n\nconst getDockItemsScript = (args: DockArgs): string => {\n  const itemsJson = JSON.stringify(args.items ?? defaultItems, null, 2);\n\n  return `\n<script>\n  const dock = document.querySelector('modus-wc-dock');\n  dock.items = ${itemsJson};\n  dock.addEventListener('itemSelect', (event) => {\n    dock.activeItemIndex = event.detail.index;\n  });\n</script>`;\n};\n\nconst formatDockTagAttributes = (args: DockArgs): string => {\n  const lines = [\n    '  aria-label=\"Dock navigation\"',\n    args['custom-class'] ? `  custom-class=\"${args['custom-class']}\"` : null,\n    `  position=\"${args.position ?? 'bottom'}\"`,\n    args['show-labels'] === false ? '  show-labels=\"false\"' : null,\n    `  size=\"${args.size ?? 'md'}\"`,\n    args['active-item-index'] !== undefined\n      ? `  active-item-index=\"${args['active-item-index']}\"`\n      : null,\n  ].filter((line): line is string => Boolean(line));\n\n  return lines.join('\\n');\n};\n\nconst formatDockSourceCode = (args: DockArgs): string =>\n  `<modus-wc-dock\n${formatDockTagAttributes(args)}\n></modus-wc-dock>${getDockItemsScript(args)}`;\n\nconst renderDockElement = (args: DockArgs, position: DockPosition) => html`\n  <modus-wc-dock\n    aria-label=\"Dock navigation\"\n    active-item-index=${ifDefined(args['active-item-index'])}\n    custom-class=${ifDefined(args['custom-class'])}\n    .items=${args.items ?? defaultItems}\n    position=${position}\n    .showLabels=${args['show-labels'] ?? true}\n    size=${ifDefined(args.size ?? 'md')}\n  ></modus-wc-dock>\n`;\n\nconst containerPlacementStyles = `\n  /* Shared demo container — gives the dock a bounded layout area */\n  .dock-container {\n    background-color: var(--modus-wc-color-base-100);\n    border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n    height: 25rem;\n    position: relative;\n    width: 100%;\n  }\n\n  /* All positions: take the dock out of normal flow so it can be pinned to an edge */\n  .dock-container modus-wc-dock {\n    display: block;\n    position: absolute;\n  }\n\n  /* Top & bottom: stretch full container width */\n  .dock-container--bottom modus-wc-dock,\n  .dock-container--top modus-wc-dock {\n    left: 0;\n    right: 0;\n    width: 100%;\n  }\n\n  .dock-container--bottom modus-wc-dock .modus-wc-dock.modus-wc-dock-bottom,\n  .dock-container--top modus-wc-dock .modus-wc-dock.modus-wc-dock-top {\n    width: 100%;\n  }\n\n  .dock-container--bottom modus-wc-dock .modus-wc-dock.modus-wc-dock-bottom .modus-wc-dock-item,\n  .dock-container--top modus-wc-dock .modus-wc-dock.modus-wc-dock-top .modus-wc-dock-item {\n    flex: 1 1 0;\n    width: auto;\n  }\n\n  /* Bottom position: pin to the bottom edge */\n  .dock-container--bottom modus-wc-dock {\n    bottom: 0;\n  }\n\n  /* Top position: pin to the top edge */\n  .dock-container--top modus-wc-dock {\n    top: 0;\n  }\n\n  /* Left & right: stretch full container height */\n  .dock-container--left modus-wc-dock,\n  .dock-container--right modus-wc-dock {\n    bottom: 0;\n    height: 100%;\n    top: 0;\n    width: auto;\n  }\n\n  .dock-container--left modus-wc-dock .modus-wc-dock.modus-wc-dock-left,\n  .dock-container--right modus-wc-dock .modus-wc-dock.modus-wc-dock-right {\n    height: 100%;\n    min-height: 100%;\n  }\n\n  .dock-container--left modus-wc-dock .modus-wc-dock.modus-wc-dock-left .modus-wc-dock-item,\n  .dock-container--right modus-wc-dock .modus-wc-dock.modus-wc-dock-right .modus-wc-dock-item {\n    flex: 1 1 0;\n    height: auto;\n    min-height: 0;\n  }\n\n  /* Left position: pin to the left edge */\n  .dock-container--left modus-wc-dock {\n    left: 0;\n  }\n\n  /* Right position: pin to the right edge */\n  .dock-container--right modus-wc-dock {\n    right: 0;\n  }\n`;\n\nconst formatContainerPlacementSourceCode = (args: DockArgs): string => {\n  const position = args.position ?? 'bottom';\n\n  return `<style>${containerPlacementStyles}\n</style>\n\n<div class=\"dock-container dock-container--${position}\">\n  <modus-wc-dock\n${formatDockTagAttributes({ ...args, position })}\n  ></modus-wc-dock>\n</div>\n<script>\n  const dock = document.querySelector('.dock-container modus-wc-dock');\n  dock.items = ${JSON.stringify(args.items ?? defaultItems, null, 2)};\n  dock.addEventListener('itemSelect', (event) => {\n    dock.activeItemIndex = event.detail.index;\n  });\n</script>`;\n};\n\nconst dockStoryDescription = (storyDescription?: string) => ({\n  docs: {\n    description: {\n      story: storyDescription,\n    },\n  },\n});\n\nconst meta: Meta<DockArgs> = {\n  title: 'Components/Dock',\n  component: 'modus-wc-dock',\n  args: {\n    items: defaultItems,\n    position: 'bottom',\n    'show-labels': true,\n    size: 'md',\n    'active-item-index': 2,\n  },\n  argTypes: {\n    items: {\n      table: {\n        type: {\n          detail: `\n            Interface: IDockItem\n            Properties:\n            - icon (string): Modus icon name\n            - label (string): Text label for the dock item\n            - disabled (boolean, optional): If true, the dock item cannot be selected\n          `,\n        },\n      },\n    },\n    position: {\n      control: { type: 'select' },\n      options: ['top', 'bottom', 'left', 'right'],\n    },\n    'show-labels': {\n      control: 'boolean',\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    'active-item-index': {\n      control: { type: 'number', min: 0, max: 2, step: 1 },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['itemSelect'],\n    },\n    layout: 'padded',\n    docs: {\n      description: {\n        component:\n          'Dock navigation bar for navigating between primary screens. The dock sizes itself from its orientation, item count, and size.',\n      },\n      source: {\n        transform: (_src, { args }) => formatDockSourceCode(args as DockArgs),\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<DockArgs>;\n\nconst Template: Story = {\n  render: (args) => renderDockElement(args, args.position ?? 'bottom'),\n};\n\nexport const Default: Story = {\n  ...Template,\n  parameters: dockStoryDescription(\n    'Bottom dock with labels. The dock renders at its intrinsic size without requiring container styles.'\n  ),\n};\n\nexport const IconsOnly: Story = {\n  ...Template,\n  args: {\n    items: defaultItems,\n    'show-labels': false,\n  },\n  parameters: dockStoryDescription(\n    'Icon-only dock. Labels are hidden visually but remain available to assistive technologies via `aria-label` on each item button.'\n  ),\n};\n\nexport const ActiveAndDisabled: Story = {\n  ...Template,\n  name: 'Active and disabled',\n  args: {\n    items: [\n      { label: 'Home', icon: 'home' },\n      { label: 'Inbox', icon: 'email', disabled: true },\n      { label: 'Settings', icon: 'settings' },\n    ],\n    'active-item-index': 0,\n  },\n  parameters: dockStoryDescription(\n    'Dock with an active item and a disabled item that cannot be selected.'\n  ),\n};\n\nexport const ContainerPlacement: Story = {\n  ...Template,\n  name: 'Container placement',\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Use container CSS to pin the dock to an edge and stretch it along that axis. Wrap the dock in `dock-container dock-container--{position}` where `{position}` matches the dock `position` prop (for example, `dock-container--left` with `position=\"left\"`). In this story, that wrapper class updates automatically when you change `position`.',\n      },\n      source: {\n        transform: (_src, { args }) =>\n          formatContainerPlacementSourceCode(args as DockArgs),\n      },\n    },\n  },\n  render: (args) => {\n    const position = args.position ?? 'bottom';\n\n    return html`\n      <style>\n        ${containerPlacementStyles}\n      </style>\n\n      <div class=\"dock-container dock-container--${position}\">\n        ${renderDockElement(args, position)}\n      </div>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  parameters: {\n    docs: {\n      source: {\n        code: `<dock-shadow-host></dock-shadow-host>\n\n<script>\n  customElements.whenDefined('dock-shadow-host').then(() => {\n    const host = document.querySelector('dock-shadow-host');\n    host.props = {\n      items: [\n        { label: 'Home', icon: 'home' },\n        { label: 'Inbox', icon: 'email' },\n        { label: 'Settings', icon: 'settings' },\n      ],\n      position: 'bottom',\n      showLabels: true,\n      size: 'md',\n      activeItemIndex: 2,\n    };\n  });\n</script>`,\n      },\n    },\n  },\n  render: (args) => {\n    if (!customElements.get('dock-shadow-host')) {\n      const DockShadowHost = createShadowHostClass<DockArgs>({\n        componentTag: 'modus-wc-dock',\n        propsMapper: (value: DockArgs, el: HTMLElement) => {\n          const dockEl = el as unknown as {\n            activeItemIndex: number;\n            customClass: string;\n            items: IDockItem[];\n            position: DockPosition;\n            showLabels: boolean;\n            size: ModusSize;\n          };\n\n          dockEl.activeItemIndex = value['active-item-index'] ?? 0;\n          dockEl.customClass = value['custom-class'] || '';\n          dockEl.items = value.items ?? defaultItems;\n          dockEl.position = value.position ?? 'bottom';\n          dockEl.showLabels = value['show-labels'] ?? true;\n          dockEl.size = value.size ?? 'md';\n        },\n      });\n\n      customElements.define('dock-shadow-host', DockShadowHost);\n    }\n\n    return html`<dock-shadow-host .props=${{ ...args }}></dock-shadow-host>`;\n  },\n};\n"
+  }
+}

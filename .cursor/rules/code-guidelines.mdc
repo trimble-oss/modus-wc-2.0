@@ -78,6 +78,7 @@ modus-wc-2.0/
 4. **CSS Styling**:
 
    - Use CSS variables for styling (e.g., `--modus-wc-color-green-dark`). If a CSS value is being repeated, consider creating a new CSS variable or set of them(e.g., `--modus-wc-font-size-xs`).
+   - For `line-height`, prefer existing `--modus-wc-line-height-*` tokens when the value matches exactly (e.g. `2rem` → `var(--modus-wc-line-height-lg)`). If no token exists, use a literal value.
    - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input-label`).
    - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
    - Use `&:hover {}` in the theme block instead of `:hover` pseudo-class where applicable.
@@ -301,6 +302,7 @@ modus-wc-2.0/
 4. **CSS Styling**:
 
    - Use CSS variables for styling (e.g., `--modus-wc-color-green-dark`). If a CSS value is being repeated, consider creating a new CSS variable or set of them(e.g., `--modus-wc-font-size-xs`).
+   - For `line-height`, prefer existing `--modus-wc-line-height-*` tokens when the value matches exactly (e.g. `2rem` → `var(--modus-wc-line-height-lg)`). If no token exists, use a literal value.
    - Follow a consistent naming convention for CSS classes (e.g., `modus-wc-text-input-label`).
    - Dynamically added DaisyUI and Tailwind classes are added in their own files (e.g, `modus-wc-avatar.tailwind.ts`)
    - Use `&:hover {}` in the theme block instead of `:hover` pseudo-class where applicable.

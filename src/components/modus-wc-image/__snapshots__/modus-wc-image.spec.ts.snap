@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-image should apply fit class for fit="contain" 1`] = `
+<modus-wc-image alt="Test" fit="contain" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--contain modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply fit class for fit="default" 1`] = `
+<modus-wc-image alt="Test" fit="default" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply fit class for fit="none" 1`] = `
+<modus-wc-image alt="Test" fit="none" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--loading modus-wc-image--md modus-wc-image--none modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply fit class for fit="scale-down" 1`] = `
+<modus-wc-image alt="Test" fit="scale-down" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--loading modus-wc-image--md modus-wc-image--scale-down modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply shape class for shape="rounded" 1`] = `
+<modus-wc-image alt="Test" shape="rounded" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply shape class for shape="square" 1`] = `
+<modus-wc-image alt="Test" shape="square" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply size class modus-wc-image--lg 1`] = `
+<modus-wc-image alt="Test" size="lg" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--lg modus-wc-image--loading modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply size class modus-wc-image--md 1`] = `
+<modus-wc-image alt="Test" size="md" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply size class modus-wc-image--sm 1`] = `
+<modus-wc-image alt="Test" size="sm" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--sm modus-wc-image--square modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should apply size class modus-wc-image--xl 1`] = `
+<modus-wc-image alt="Test" size="xl" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--square modus-wc-image--xl modus-wc-image-container">
+    <img alt="Test" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should render with default props 1`] = `
+<modus-wc-image alt="Test image" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="Test image" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should render with empty alt as a decorative image 1`] = `
+<modus-wc-image alt="" src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should render with no alt as a decorative image 1`] = `
+<modus-wc-image src="https://example.com/image.jpg">
+  <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--square modus-wc-image-container">
+    <img alt="" class="modus-wc-image-img" src="https://example.com/image.jpg">
+  </div>
+</modus-wc-image>
+`;
+
+exports[`modus-wc-image should show fallback when image fails to load 1`] = `
+<modus-wc-image alt="Missing image" src="https://example.com/bad.jpg">
+  <div aria-label="Missing image" class="modus-wc-image--default modus-wc-image--error modus-wc-image--md modus-wc-image--square modus-wc-image-container" role="img">
+    <div class="modus-wc-image-fallback">
+      <modus-wc-icon class="modus-wc-image-fallback-icon" decorative="" name="image_disabled"></modus-wc-icon>
+    </div>
+  </div>
+</modus-wc-image>
+`;

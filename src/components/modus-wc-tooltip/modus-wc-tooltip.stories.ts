@@ -6,6 +6,7 @@ interface TooltipArgs {
   'custom-class'?: string;
   disabled?: boolean;
   'force-open'?: boolean;
+  'show-delay'?: number;
   'tooltip-id'?: string;
   position: 'auto' | 'top' | 'right' | 'bottom' | 'left';
 }
@@ -21,6 +22,11 @@ const meta: Meta<TooltipArgs> = {
     position: {
       control: { type: 'select' },
       options: ['auto', 'top', 'right', 'bottom', 'left'],
+    },
+    'show-delay': {
+      control: { type: 'number' },
+      description:
+        'Delay in ms before the tooltip shows on hover; 0 (default) shows immediately, 200ms is recommended so a passing cursor does not open it. Skipped if a tooltip closed within the last 300ms, on keyboard focus, and for touch',
     },
   },
   parameters: {
@@ -76,6 +82,7 @@ const Template: Story = {
         custom-class="${ifDefined(args['custom-class'])}"
         ?disabled="${args.disabled}"
         ?force-open="${args['force-open']}"
+        show-delay=${ifDefined(args['show-delay'])}
         tooltip-id="${ifDefined(args['tooltip-id'])}"
         position=${ifDefined(args.position)}
       >

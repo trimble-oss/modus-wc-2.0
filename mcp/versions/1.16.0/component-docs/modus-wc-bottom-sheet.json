@@ -1,0 +1,126 @@
+{
+  "description": "",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the outer div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 80
+    },
+    {
+      "name": "visible",
+      "type": "boolean",
+      "description": "Controls whether the bottom sheet is visible.",
+      "default": "false",
+      "mutable": true,
+      "end_line": 83
+    },
+    {
+      "name": "displayMode",
+      "type": "TBottomSheetDisplayMode",
+      "description": "Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop.",
+      "default": "'default'",
+      "mutable": true,
+      "end_line": 86
+    },
+    {
+      "name": "dragStepThreshold",
+      "type": "number",
+      "description": "Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.",
+      "default": "0.4",
+      "mutable": false,
+      "end_line": 89
+    },
+    {
+      "name": "header",
+      "type": "IBottomSheetHeader",
+      "description": "Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.",
+      "default": null,
+      "mutable": false,
+      "end_line": 95
+    }
+  ],
+  "events": [
+    {
+      "name": "sheetVisibilityChange",
+      "detail": "{ visible: boolean }",
+      "description": "Event emitted when the visibility of the bottom sheet changes.",
+      "end_line": 98
+    },
+    {
+      "name": "displayModeChange",
+      "detail": "{ displayMode: TBottomSheetDisplayMode; }",
+      "description": "Event emitted when the display mode changes, whether from a drag/keyboard interaction or from setting the `displayMode` prop. The new mode is in `detail.displayMode`.",
+      "end_line": 107
+    },
+    {
+      "name": "headerBackClick",
+      "detail": "void",
+      "description": "Event emitted when the header back button is clicked. Does not change sheet state.",
+      "end_line": 110
+    },
+    {
+      "name": "headerCloseClick",
+      "detail": "void",
+      "description": "Event emitted when the header dismiss button is clicked. The sheet is also closed automatically (`visible` is set to `false`).",
+      "end_line": 116
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "header",
+      "description": "Slot for header content"
+    },
+    {
+      "name": "content",
+      "description": "Slot for content content"
+    },
+    {
+      "name": "footer",
+      "description": "Slot for footer content"
+    }
+  ],
+  "examples": {
+    "basic": "<style>\n        .bottom-sheet-demo {\n          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n          contain: layout paint;\n          height: 520px;\n          width: 100%;\n        }\n\n        .bottom-sheet-demo .modus-wc-panel {\n          max-height: 480px;\n        }\n\n        .modus-wc-bottom-sheet-footer-actions {\n          align-items: center;\n          display: flex;\n          gap: var(--modus-wc-spacing-sm);\n          justify-content: flex-end;\n          width: 100%;\n        }\n\n      </style>\n      <div class=\"bottom-sheet-demo\">\n        <modus-wc-bottom-sheet\n          ?visible=\"${args.visible}\"\n          display-mode=\"${ifDefined(args['display-mode'])}\"\n          drag-step-threshold=\"${ifDefined(args['drag-step-threshold'])}\"\n          custom-class=\"${ifDefined(args['custom-class'])}\"\n          style=\"width: 600px\"\n          .header=\"${args.header}\"\n        >\n          <div slot=\"content\">\n            <modus-wc-typography\n              hierarchy=\"p\"\n              size=\"md\"\n              label=\"Main content area for forms, lists, or other components.\"\n            ></modus-wc-typography>\n          </div>\n\n          <div slot=\"footer\">\n            <div class=\"modus-wc-bottom-sheet-footer-actions\">\n              <modus-wc-button color=\"tertiary\" size=\"sm\" variant=\"outlined\">\n                Cancel\n              </modus-wc-button>\n              <modus-wc-button color=\"primary\" size=\"sm\" variant=\"filled\">\n                Save\n              </modus-wc-button>\n            </div>\n          </div>\n        </modus-wc-bottom-sheet>\n      </div>",
+    "variations": [],
+    "args": {
+      "custom-class": "''",
+      "visible": "true",
+      "display-mode": "'default'",
+      "drag-step-threshold": "0.4",
+      "header": "defaultHeader"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "headerBackClick",
+      "headerCloseClick",
+      "displayModeChange",
+      "sheetVisibilityChange",
+      ""
+    ]
+  },
+  "tag": "modus-wc-bottom-sheet",
+  "storyExample": {
+    "template": "<style>\n        .bottom-sheet-demo {\n          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n          contain: layout paint;\n          height: 520px;\n          width: 100%;\n        }\n\n        .bottom-sheet-demo .modus-wc-panel {\n          max-height: 480px;\n        }\n\n        .modus-wc-bottom-sheet-footer-actions {\n          align-items: center;\n          display: flex;\n          gap: var(--modus-wc-spacing-sm);\n          justify-content: flex-end;\n          width: 100%;\n        }\n\n      </style>\n      <div class=\"bottom-sheet-demo\">\n        <modus-wc-bottom-sheet\n          ?visible=\"${args.visible}\"\n          display-mode=\"${ifDefined(args['display-mode'])}\"\n          drag-step-threshold=\"${ifDefined(args['drag-step-threshold'])}\"\n          custom-class=\"${ifDefined(args['custom-class'])}\"\n          style=\"width: 600px\"\n          .header=\"${args.header}\"\n        >\n          <div slot=\"content\">\n            <modus-wc-typography\n              hierarchy=\"p\"\n              size=\"md\"\n              label=\"Main content area for forms, lists, or other components.\"\n            ></modus-wc-typography>\n          </div>\n\n          <div slot=\"footer\">\n            <div class=\"modus-wc-bottom-sheet-footer-actions\">\n              <modus-wc-button color=\"tertiary\" size=\"sm\" variant=\"outlined\">\n                Cancel\n              </modus-wc-button>\n              <modus-wc-button color=\"primary\" size=\"sm\" variant=\"filled\">\n                Save\n              </modus-wc-button>\n            </div>\n          </div>\n        </modus-wc-bottom-sheet>\n      </div>",
+    "args": {
+      "custom-class": "''",
+      "visible": "true",
+      "display-mode": "'default'",
+      "drag-step-threshold": "0.4",
+      "header": "defaultHeader"
+    },
+    "argTypes": {},
+    "events": [
+      "headerBackClick",
+      "headerCloseClick",
+      "displayModeChange",
+      "sheetVisibilityChange",
+      ""
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport {\n  IBottomSheetHeader,\n  TBottomSheetDisplayMode,\n} from './modus-wc-bottom-sheet';\n\ninterface BottomSheetArgs {\n  'custom-class'?: string;\n  visible?: boolean;\n  'display-mode'?: TBottomSheetDisplayMode;\n  'drag-step-threshold'?: number;\n  header?: IBottomSheetHeader;\n}\n\nconst defaultHeader: IBottomSheetHeader = {\n  showBackButton: true,\n  title: 'Title',\n  subtitle: 'Subtitle',\n  showCloseButton: true,\n};\n\nconst meta: Meta<BottomSheetArgs> = {\n  title: 'Components/Bottom Sheet',\n  component: 'modus-wc-bottom-sheet',\n  args: {\n    'custom-class': '',\n    visible: true,\n    'display-mode': 'default',\n    'drag-step-threshold': 0.4,\n    header: defaultHeader,\n  },\n  argTypes: {\n    visible: {\n      control: 'boolean',\n      table: { defaultValue: { summary: 'false' } },\n    },\n    'display-mode': {\n      control: 'select',\n      options: ['default', 'expanded', 'minimized'],\n      table: { defaultValue: { summary: 'default' } },\n    },\n    'drag-step-threshold': {\n      control: { type: 'number', min: 0, max: 1, step: 0.05 },\n      table: { defaultValue: { summary: '0.4' } },\n    },\n    header: {\n      description:\n        'Configuration for the built-in header layout. Do not set if you use the header slot.',\n      table: {\n        type: {\n          detail: `\n            Interface: IBottomSheetHeader\n            Properties:\n            - showBackButton (boolean, optional): Whether to show the back button\n            - title (string, optional): The title of the header\n            - subtitle (string, optional): The subtitle of the header\n            - showCloseButton (boolean, optional): Whether to show the dismiss button. Clicking it closes the bottom sheet\n          `,\n        },\n      },\n      control: {\n        type: 'object',\n      },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    layout: 'padded',\n    actions: {\n      handles: [\n        'headerBackClick',\n        'headerCloseClick',\n        'displayModeChange',\n        'sheetVisibilityChange',\n      ],\n    },\n    docs: {\n      description: {\n        component: `\nA bottom sheet that slides up from the bottom of the viewport. It supports three resting display modes — minimized, default, and expanded — controlled by the \\`displayMode\\` property or the drag handle.\n\nThe component supports \\`header\\`, \\`content\\`, and \\`footer\\` slots. Alternatively, set the \\`header\\` prop for the built-in header layout (do not set \\`header\\` if you use the \\`header\\` slot).\n        `,\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<BottomSheetArgs>;\n\nexport const Default: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Default sheet with the built-in header, content, and footer slots. Toggle the `visible` control to open and close it. In a real app, attach the sheet to `<body>` and drive `visible` from a button in your page (see **Triggered By Button**).',\n      },\n      source: {\n        code: `<style>\n  /* Demo-only frame: the component is position: fixed, which would escape\n     to the page (and overlap other stories) on the docs canvas. 'contain'\n     makes this frame a containing block for the sheet's position: fixed\n     and clips it, so the sheet stays bounded WITHOUT changing its position\n     value (overriding position to absolute caused a render jump). */\n  .bottom-sheet-demo {\n    border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n    contain: layout paint;\n    height: 520px;\n    width: 100%;\n  }\n\n  .bottom-sheet-demo .modus-wc-panel {\n    max-height: 480px;\n  }\n\n  .modus-wc-bottom-sheet-footer-actions {\n    align-items: center;\n    display: flex;\n    gap: var(--modus-wc-spacing-sm);\n    justify-content: flex-end;\n    width: 100%;\n  }\n</style>\n\n<div class=\"bottom-sheet-demo\">\n  <modus-wc-bottom-sheet id=\"app-bottom-sheet\" visible style=\"width: 600px\">\n    <div slot=\"content\">Main content area for forms, lists, or other components.</div>\n    <div slot=\"footer\">\n      <div class=\"modus-wc-bottom-sheet-footer-actions\">\n        <modus-wc-button color=\"tertiary\" size=\"sm\" variant=\"outlined\">Cancel</modus-wc-button>\n        <modus-wc-button color=\"primary\" size=\"sm\" variant=\"filled\">Save</modus-wc-button>\n      </div>\n    </div>\n  </modus-wc-bottom-sheet>\n</div>\n\n<script>\n  document.getElementById('app-bottom-sheet').header = {\n    showBackButton: true,\n    title: 'Title',\n    subtitle: 'Subtitle',\n    showCloseButton: true,\n  };\n</script>`,\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n      <style>\n        .bottom-sheet-demo {\n          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n          contain: layout paint;\n          height: 520px;\n          width: 100%;\n        }\n\n        .bottom-sheet-demo .modus-wc-panel {\n          max-height: 480px;\n        }\n\n        .modus-wc-bottom-sheet-footer-actions {\n          align-items: center;\n          display: flex;\n          gap: var(--modus-wc-spacing-sm);\n          justify-content: flex-end;\n          width: 100%;\n        }\n\n      </style>\n      <div class=\"bottom-sheet-demo\">\n        <modus-wc-bottom-sheet\n          ?visible=\"${args.visible}\"\n          display-mode=\"${ifDefined(args['display-mode'])}\"\n          drag-step-threshold=\"${ifDefined(args['drag-step-threshold'])}\"\n          custom-class=\"${ifDefined(args['custom-class'])}\"\n          style=\"width: 600px\"\n          .header=\"${args.header}\"\n        >\n          <div slot=\"content\">\n            <modus-wc-typography\n              hierarchy=\"p\"\n              size=\"md\"\n              label=\"Main content area for forms, lists, or other components.\"\n            ></modus-wc-typography>\n          </div>\n\n          <div slot=\"footer\">\n            <div class=\"modus-wc-bottom-sheet-footer-actions\">\n              <modus-wc-button color=\"tertiary\" size=\"sm\" variant=\"outlined\">\n                Cancel\n              </modus-wc-button>\n              <modus-wc-button color=\"primary\" size=\"sm\" variant=\"filled\">\n                Save\n              </modus-wc-button>\n            </div>\n          </div>\n        </modus-wc-bottom-sheet>\n      </div>\n    `;\n  },\n};\n\nexport const TriggeredByButton: Story = {\n  args: {\n    header: {\n      showBackButton: false,\n      title: 'Bottom Sheet Title',\n      subtitle: 'Drag the handle down to minimize or up to expand.',\n      showCloseButton: false,\n    },\n  },\n  parameters: {\n    docs: {\n      description: {\n        story: [\n          'Open the sheet from a control in your own page.',\n          '',\n          '- Put the **trigger button (and its click handler) in your page markup**.',\n          '- Render `<modus-wc-bottom-sheet>` as a **direct child of `<body>`** so its `position: fixed` anchors it to the window.',\n          '- Open with `sheet.visible = true` (optionally set `sheet.displayMode`); close with `sheet.visible = false`.',\n          '',\n          'The dashed frame below is demo-only so the sheet stays bounded within this story.',\n        ].join('\\n'),\n      },\n      source: {\n        code: `<!-- 1) Trigger button + handler live in YOUR page -->\n<modus-wc-button id=\"open-bottom-sheet\" color=\"primary\" variant=\"filled\">\n  Open bottom sheet\n</modus-wc-button>\n<modus-wc-button id=\"minimize-bottom-sheet\" color=\"tertiary\" variant=\"outlined\">\n  Minimize\n</modus-wc-button>\n\n<!-- 2) Attach the sheet as a direct child of <body> so position: fixed\n        pins it to the bottom of the window -->\n<modus-wc-bottom-sheet id=\"app-bottom-sheet\">\n  <div slot=\"content\">Main content area for forms, lists, or other components.</div>\n  <div slot=\"footer\">\n    <modus-wc-button id=\"cancel-bottom-sheet\" color=\"tertiary\" variant=\"outlined\">Cancel</modus-wc-button>\n    <modus-wc-button id=\"save-bottom-sheet\" color=\"primary\" variant=\"filled\">Save</modus-wc-button>\n  </div>\n</modus-wc-bottom-sheet>\n\n<script>\n  const sheet = document.getElementById('app-bottom-sheet');\n\n  sheet.header = {\n    showBackButton: false,\n    title: 'Bottom Sheet Title',\n    subtitle: 'Drag the handle down to minimize or up to expand.',\n    showCloseButton: false,\n  };\n\n  // Open from the page button\n  document\n    .getElementById('open-bottom-sheet')\n    .addEventListener('buttonClick', () => {\n      sheet.visible = true;\n      sheet.displayMode = 'default';\n    });\n\n  // Minimize from the page button\n  document\n    .getElementById('minimize-bottom-sheet')\n    .addEventListener('buttonClick', () => {\n      sheet.displayMode = 'minimized';\n    });\n\n  // Close from buttons inside the sheet\n  ['cancel-bottom-sheet', 'save-bottom-sheet'].forEach((id) =>\n    document\n      .getElementById(id)\n      .addEventListener('buttonClick', () => (sheet.visible = false))\n  );\n\n  // (Optional) react to state changes\n  sheet.addEventListener('sheetVisibilityChange', (e) =>\n    console.log('visible:', e.detail.visible)\n  );\n  sheet.addEventListener('displayModeChange', (e) =>\n    console.log('display mode:', e.detail.displayMode)\n  );\n</script>`,\n      },\n    },\n  },\n  render: (args) => {\n    const sheetId = 'demo-triggered-bottom-sheet';\n\n    const closeSheet = () => {\n      const sheet = document.getElementById(sheetId);\n      if (sheet) (sheet as HTMLElement & { visible: boolean }).visible = false;\n    };\n\n    const minimizeSheet = () => {\n      const sheet = document.getElementById(sheetId);\n      if (sheet)\n        (\n          sheet as HTMLElement & { displayMode: TBottomSheetDisplayMode }\n        ).displayMode = 'minimized';\n    };\n\n    const restoreSheet = () => {\n      const sheet = document.getElementById(sheetId);\n      if (sheet) {\n        const typed = sheet as HTMLElement & {\n          visible: boolean;\n          displayMode: TBottomSheetDisplayMode;\n        };\n        typed.visible = true;\n        typed.displayMode = 'default';\n      }\n    };\n\n    // prettier-ignore\n    return html`\n      <style>\n        /* Demo-only frame: the component is position: fixed, which would escape\n           to the page (and overlap other stories) on the docs canvas. 'contain'\n           makes this frame a containing block for the sheet's position: fixed\n           and clips it, so the sheet stays bounded WITHOUT changing its position\n           value (overriding position to absolute caused a render jump). */\n        .bottom-sheet-demo {\n          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n          contain: layout paint;\n          height: 520px;\n          width: 100%;\n        }\n\n        .bottom-sheet-demo .modus-wc-panel {\n          max-height: 480px;\n        }\n\n        .modus-wc-bottom-sheet-footer-actions {\n          align-items: center;\n          display: flex;\n          gap: var(--modus-wc-spacing-sm);\n          justify-content: flex-end;\n          width: 100%;\n        }\n\n        .modus-wc-bottom-sheet-trigger-actions {\n          display: flex;\n          gap: var(--modus-wc-spacing-sm);\n          padding: var(--modus-wc-spacing-lg);\n        }\n\n      </style>\n      <div class=\"bottom-sheet-demo\">\n      <div class=\"modus-wc-bottom-sheet-trigger-actions\">\n        <modus-wc-button\n          color=\"primary\"\n          size=\"md\"\n          variant=\"filled\"\n          @buttonClick=\"${restoreSheet}\"\n        >\n          <modus-wc-icon name=\"expand_more\" size=\"sm\" decorative></modus-wc-icon>\n          Open bottom sheet\n        </modus-wc-button>\n        <modus-wc-button\n          color=\"tertiary\"\n          size=\"md\"\n          variant=\"outlined\"\n          @buttonClick=\"${minimizeSheet}\"\n        >\n          Minimize\n        </modus-wc-button>\n      </div>\n\n      <modus-wc-bottom-sheet\n        id=\"${sheetId}\"\n        drag-step-threshold=\"${ifDefined(args['drag-step-threshold'])}\"\n        style=\"width: 600px\"\n        .header=\"${ifDefined(args.header)}\"\n      >\n        <div slot=\"content\">\n          <modus-wc-typography\n            hierarchy=\"p\"\n            size=\"md\"\n            label=\"Main content area for forms, lists, or other components.\"\n          ></modus-wc-typography>\n        </div>\n\n        <div slot=\"footer\">\n          <div class=\"modus-wc-bottom-sheet-footer-actions\">\n            <modus-wc-button\n              color=\"tertiary\"\n              size=\"sm\"\n              variant=\"outlined\"\n              @buttonClick=\"${closeSheet}\"\n            >\n              Cancel\n            </modus-wc-button>\n            <modus-wc-button\n              color=\"primary\"\n              size=\"sm\"\n              variant=\"filled\"\n              @buttonClick=\"${closeSheet}\"\n            >\n              Save\n            </modus-wc-button>\n          </div>\n        </div>\n      </modus-wc-bottom-sheet>\n      </div>\n    `;\n  },\n};\n\nexport const ContentOnly: Story = {\n  args: {\n    header: undefined,\n  },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Sheet with only the `content` slot — no header or footer. The drag handle still lets users minimize/expand. As with the other stories, attach the sheet to `<body>` in production and toggle `visible` from your own page control.',\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n      <style>\n        /* Demo-only frame: the component is position: fixed, which would escape\n           to the page (and overlap other stories) on the docs canvas. 'contain'\n           makes this frame a containing block for the sheet's position: fixed\n           and clips it, so the sheet stays bounded WITHOUT changing its position\n           value (overriding position to absolute caused a render jump). */\n        .bottom-sheet-demo {\n          border: 1px dashed var(--modus-wc-color-base-content-low-contrast);\n          contain: layout paint;\n          height: 520px;\n          width: 100%;\n        }\n\n        .bottom-sheet-demo .modus-wc-panel {\n          max-height: 480px;\n        }\n\n      </style>\n      <div class=\"bottom-sheet-demo\">\n        <modus-wc-bottom-sheet\n          ?visible=\"${args.visible}\"\n          style=\"width: 600px\"\n          .header=\"${args.header}\"\n        >\n          <div slot=\"content\">\n            <modus-wc-typography\n              hierarchy=\"p\"\n              size=\"md\"\n              label=\"Bottom sheet with content slot only.\"\n            ></modus-wc-typography>\n          </div>\n        </modus-wc-bottom-sheet>\n      </div>\n    `;\n  },\n};\n"
+  }
+}
