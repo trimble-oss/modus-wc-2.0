@@ -95,7 +95,6 @@ graph TD;
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-dropdown-menu --> modus-wc-button
   modus-wc-dropdown-menu --> modus-wc-menu
-  modus-wc-dropdown-menu --> modus-wc-loader
   modus-wc-menu-item --> modus-wc-checkbox
   modus-wc-menu-item --> modus-wc-tooltip
   modus-wc-menu-item --> modus-wc-icon

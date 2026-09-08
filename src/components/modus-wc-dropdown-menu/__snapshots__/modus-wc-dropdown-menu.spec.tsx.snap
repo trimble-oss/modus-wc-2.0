@@ -11,16 +11,10 @@ exports[`modus-wc-dropdown-menu should render with custom props 1`] = `
       </div>
     </button>
   </modus-wc-button>
-  <div class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
+  <div class="menu-wrapper" style="position: absolute; top: NaNpx; left: NaNpx; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
     <modus-wc-menu selection-mode="single">
       <!---->
       <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-sm modus-wc-w-full" role="menu">
-        <div aria-busy="true" aria-live="polite" class="modus-wc-dropdown-menu-loading">
-          <slot-fb name="loading">
-            <modus-wc-loader size="sm" variant="spinner"></modus-wc-loader>
-          </slot-fb>
-        </div>
-        <div class="modus-wc-dropdown-menu-menu-content modus-wc-dropdown-menu-menu-content--hidden"></div>
       </ul>
     </modus-wc-menu>
   </div>
@@ -42,7 +36,6 @@ exports[`modus-wc-dropdown-menu should render with default props 1`] = `
     <modus-wc-menu selection-mode="single">
       <!---->
       <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-        <div class="modus-wc-dropdown-menu-menu-content modus-wc-dropdown-menu-menu-content--hidden"></div>
       </ul>
     </modus-wc-menu>
   </div>
@@ -60,41 +53,39 @@ exports[`modus-wc-dropdown-menu should render with menu items 1`] = `
       </div>
     </button>
   </modus-wc-button>
-  <div class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
+  <div class="menu-wrapper" style="position: absolute; top: 10px; left: NaNpx; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
     <modus-wc-menu selection-mode="single">
       <!---->
       <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-        <div class="modus-wc-dropdown-menu-menu-content">
-          <div slot="menu">
-            <modus-wc-menu-item label="Item One" value="1">
-              <!---->
-              <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
-                <button tabindex="-1" type="button">
-                  <div class="modus-wc-menu-item-content">
-                    <div class="modus-wc-menu-item-labels">
-                      <div>
-                        Item One
-                      </div>
+        <div slot="menu">
+          <modus-wc-menu-item label="Item One" value="1">
+            <!---->
+            <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+              <button tabindex="-1" type="button">
+                <div class="modus-wc-menu-item-content">
+                  <div class="modus-wc-menu-item-labels">
+                    <div>
+                      Item One
                     </div>
                   </div>
-                </button>
-                <modus-wc-menu-item label="Item Two" value="2">
-                  <!---->
-                  <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
-                    <button tabindex="-1" type="button">
-                      <div class="modus-wc-menu-item-content">
-                        <div class="modus-wc-menu-item-labels">
-                          <div>
-                            Item Two
-                          </div>
+                </div>
+              </button>
+              <modus-wc-menu-item label="Item Two" value="2">
+                <!---->
+                <li class="modus-wc-menu-item modus-wc-menu-item-md" role="menuitem" tabindex="0">
+                  <button tabindex="-1" type="button">
+                    <div class="modus-wc-menu-item-content">
+                      <div class="modus-wc-menu-item-labels">
+                        <div>
+                          Item Two
                         </div>
                       </div>
-                    </button>
-                  </li>
-                </modus-wc-menu-item>
-              </li>
-            </modus-wc-menu-item>
-          </div>
+                    </div>
+                  </button>
+                </li>
+              </modus-wc-menu-item>
+            </li>
+          </modus-wc-menu-item>
         </div>
       </ul>
     </modus-wc-menu>

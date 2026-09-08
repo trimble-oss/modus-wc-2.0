@@ -85,7 +85,7 @@ const meta: Meta<DropdownMenuArgs> = {
   decorators: [withActions],
   parameters: {
     actions: {
-      handles: ['menuVisibilityChange', 'menuLoad'],
+      handles: ['menuVisibilityChange'],
     },
   },
 };
@@ -354,8 +354,9 @@ export const WithTreeMenu: Story = {
 
 type DropdownMenuElement = HTMLElement & {
   menuVisible: boolean;
-  refreshLazyMenu: () => Promise<void>;
 };
+
+type LazyLoadStatus = 'idle' | 'loading' | 'ready';
 
 /** Persists Lazy Loading story data across Storybook control updates (re-renders). */
 const lazyLoadMenuItems = (): Array<{ label: string; value: string }> => [
@@ -365,18 +366,77 @@ const lazyLoadMenuItems = (): Array<{ label: string; value: string }> => [
 ];
 
 const lazyLoadingStoryState = {
-  menuItems: [] as Array<{ label: string; value: string }>,
+  status: 'idle' as LazyLoadStatus,
   pendingLoad: false,
+};
+
+const getMenuSlot = (dropdown: DropdownMenuElement): HTMLDivElement => {
+  const slot = dropdown.querySelector('[slot="menu"]');
+  if (!(slot instanceof HTMLDivElement)) {
+    throw new Error(
+      'Expected a stable div[slot="menu"] in the lazy loading story.'
+    );
+  }
+  return slot;
+};
+
+const resetMenuSlot = (slot: HTMLDivElement) => {
+  slot.replaceChildren();
+  slot.removeAttribute('aria-busy');
+  slot.removeAttribute('aria-live');
+  slot.className = '';
+};
+
+const showLoader = (dropdown: DropdownMenuElement) => {
+  const slot = getMenuSlot(dropdown);
+  resetMenuSlot(slot);
+  slot.className = 'lazy-menu-loading';
+  slot.setAttribute('aria-busy', 'true');
+  slot.setAttribute('aria-live', 'polite');
+  const loader = document.createElement('modus-wc-loader');
+  loader.setAttribute('variant', 'spinner');
+  loader.setAttribute('size', 'sm');
+  slot.appendChild(loader);
+};
+
+const showMenuItems = (
+  dropdown: DropdownMenuElement,
+  items: Array<{ label: string; value: string }>
+) => {
+  const slot = getMenuSlot(dropdown);
+  resetMenuSlot(slot);
+
+  items.forEach(({ label, value }) => {
+    const item = document.createElement('modus-wc-menu-item');
+    item.setAttribute('label', label);
+    item.setAttribute('value', value);
+    item.addEventListener('itemSelect', () => {
+      dropdown.menuVisible = false;
+    });
+    slot.appendChild(item);
+  });
 };
 
 export const LazyLoading: Story = {
   parameters: {
     actions: {
-      handles: ['menuLoad', 'menuVisibilityChange', 'itemSelect'],
+      handles: ['menuVisibilityChange', 'itemSelect'],
     },
     docs: {
       source: {
         code: `
+<style>
+  .lazy-menu-loading {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-block-size: 2.5rem;
+    min-inline-size: 6rem;
+    padding-block: var(--modus-wc-spacing-sm);
+    padding-inline: var(--modus-wc-spacing-md);
+  }
+</style>
+
 <modus-wc-dropdown-menu
   id="lazy-dropdown"
   button-aria-label="Open lazy menu"
@@ -388,23 +448,64 @@ export const LazyLoading: Story = {
     Load on open
     <modus-wc-icon decorative name="expand_more" size="xs"></modus-wc-icon>
   </div>
+  <div slot="menu"></div>
 </modus-wc-dropdown-menu>
 
 <script>
   const dropdown = document.getElementById('lazy-dropdown');
+  let status = 'idle';
+  let pendingLoad = false;
 
-  // Fetch menu items on first open, with a deliberate delay so the spinner is
-  // visible. Adding menu items to slot="menu" ends the loading state.
-  dropdown.addEventListener('menuLoad', () => {
+  const getMenuSlot = () => {
+    const slot = dropdown.querySelector('[slot="menu"]');
+    if (!(slot instanceof HTMLDivElement)) {
+      throw new Error('Expected a stable div[slot="menu"].');
+    }
+    return slot;
+  };
+
+  const resetMenuSlot = (slot) => {
+    slot.replaceChildren();
+    slot.removeAttribute('aria-busy');
+    slot.removeAttribute('aria-live');
+    slot.className = '';
+  };
+
+  const showLoader = () => {
+    const slot = getMenuSlot();
+    resetMenuSlot(slot);
+    slot.className = 'lazy-menu-loading';
+    slot.setAttribute('aria-busy', 'true');
+    slot.setAttribute('aria-live', 'polite');
+    slot.innerHTML = '<modus-wc-loader variant="spinner" size="sm"></modus-wc-loader>';
+  };
+
+  const showMenuItems = (items) => {
+    const slot = getMenuSlot();
+    resetMenuSlot(slot);
+    slot.innerHTML = items
+      .map(({ label, value }) =>
+        \`<modus-wc-menu-item label="\${label}" value="\${value}"></modus-wc-menu-item>\`
+      )
+      .join('');
+  };
+
+  // Fetch on first open. Keep div[slot="menu"] mounted; swap its contents only.
+  dropdown.addEventListener('menuVisibilityChange', (e) => {
+    if (!e.detail.isVisible || status !== 'idle' || pendingLoad) return;
+
+    pendingLoad = true;
+    status = 'loading';
+    showLoader();
+
     window.setTimeout(() => {
-      const menuSlot = document.createElement('div');
-      menuSlot.setAttribute('slot', 'menu');
-      menuSlot.innerHTML = \`
-        <modus-wc-menu-item label="Fetched One" value="1"></modus-wc-menu-item>
-        <modus-wc-menu-item label="Fetched Two" value="2"></modus-wc-menu-item>
-      \`;
-      dropdown.appendChild(menuSlot);
-      dropdown.refreshLazyMenu();
+      showMenuItems([
+        { label: 'Fetched One', value: '1' },
+        { label: 'Fetched Two', value: '2' },
+        { label: 'Fetched Three', value: '3' },
+      ]);
+      status = 'ready';
+      pendingLoad = false;
     }, 1200);
   });
 </script>
@@ -416,45 +517,27 @@ export const LazyLoading: Story = {
     let dropdownEl: DropdownMenuElement | undefined;
     const state = lazyLoadingStoryState;
 
-    const renderMenuItems = () => {
-      if (!dropdownEl) return;
-      dropdownEl.querySelector('[slot="menu"]')?.remove();
-
-      if (!state.menuItems.length) return;
-
-      const menuSlot = document.createElement('div');
-      menuSlot.setAttribute('slot', 'menu');
-
-      state.menuItems.forEach(({ label, value }) => {
-        const item = document.createElement('modus-wc-menu-item');
-        item.setAttribute('label', label);
-        item.setAttribute('value', value);
-        item.addEventListener('itemSelect', () => {
-          if (dropdownEl) dropdownEl.menuVisible = false;
-        });
-        menuSlot.appendChild(item);
-      });
-
-      dropdownEl.appendChild(menuSlot);
-    };
-
-    const sync = async () => {
-      if (!dropdownEl) return;
-      renderMenuItems();
-      if (state.menuItems.length) {
-        await dropdownEl.refreshLazyMenu();
+    const handleVisibilityChange = (
+      event: CustomEvent<{ isVisible: boolean }>
+    ) => {
+      if (
+        !event.detail.isVisible ||
+        state.status !== 'idle' ||
+        state.pendingLoad ||
+        !dropdownEl
+      ) {
+        return;
       }
-    };
 
-    // Fetch items on first open, with a deliberate delay so the spinner is
-    // visible. Populating slot="menu" ends the loading state.
-    const handleMenuLoad = () => {
-      if (state.pendingLoad) return;
       state.pendingLoad = true;
+      state.status = 'loading';
+      showLoader(dropdownEl);
+
       window.setTimeout(() => {
-        state.menuItems = lazyLoadMenuItems();
+        if (!dropdownEl) return;
+        showMenuItems(dropdownEl, lazyLoadMenuItems());
+        state.status = 'ready';
         state.pendingLoad = false;
-        void sync();
       }, 1200);
     };
 
@@ -472,6 +555,16 @@ export const LazyLoading: Story = {
     align-items: center;
     gap: 4px;
   }
+
+  .lazy-menu-loading {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-block-size: 2.5rem;
+    min-inline-size: 6rem;
+    padding-block: var(--modus-wc-spacing-sm);
+    padding-inline: var(--modus-wc-spacing-md);
+  }
 </style>
 
 <modus-wc-dropdown-menu
@@ -479,23 +572,16 @@ export const LazyLoading: Story = {
   button-color="primary"
   button-size="sm"
   button-variant="filled"
-  @menuLoad=${handleMenuLoad}
+  @menuVisibilityChange=${handleVisibilityChange}
   ${ref((el) => {
-    if (!el) {
-      dropdownEl = undefined;
-      return;
-    }
-    const next = el as DropdownMenuElement;
-    if (dropdownEl !== next) {
-      dropdownEl = next;
-      void sync();
-    }
+    dropdownEl = el ? (el as DropdownMenuElement) : undefined;
   })}
 >
   <div slot="button">
     Load on open
     <modus-wc-icon decorative name="expand_more" size="xs"></modus-wc-icon>
   </div>
+  <div slot="menu"></div>
 </modus-wc-dropdown-menu>
     `;
   },

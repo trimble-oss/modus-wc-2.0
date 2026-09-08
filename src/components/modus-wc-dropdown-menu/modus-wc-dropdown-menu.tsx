@@ -1,4 +1,10 @@
-import { computePosition, flip, offset, shift } from '@floating-ui/dom';
+import {
+  autoUpdate,
+  computePosition,
+  flip,
+  offset,
+  shift,
+} from '@floating-ui/dom';
 import {
   Component,
   Element,
@@ -6,7 +12,6 @@ import {
   h,
   Host,
   Listen,
-  Method,
   Prop,
   State,
   Event as StencilEvent,
@@ -28,9 +33,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcDropdownMenu {
   private buttonRef?: HTMLElement;
+  private cleanupAutoUpdate?: () => void;
   private inheritedAttributes: Attributes = {};
   private menuRef?: HTMLElement;
-  private menuSlotObserver?: MutationObserver;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -87,19 +92,10 @@ export class ModusWcDropdownMenu {
   /** Event emitted when the menuVisible prop changes. */
   @StencilEvent() menuVisibilityChange!: EventEmitter<{ isVisible: boolean }>;
 
-  /** Event emitted the first time the menu opens while `slot="menu"` has no menu items yet. Populate the menu slot; the component shows a spinner until items are present. */
-  @StencilEvent() menuLoad!: EventEmitter<{ reason: 'open' }>;
-
-  /** Tracks whether `menuLoad` was already emitted for the current unloaded cycle. */
-  private loadRequested = false;
-
-  /** Tracks whether menu items were loaded at least once (for reload after removal). */
-  private menuWasLoaded = false;
-
-  /** Bumped when slotted menu content changes so Stencil re-renders loading UI. */
-  @State() private menuSlotRevision = 0;
-
   @State() private menuPosition = { x: 0, y: 0 };
+
+  /** Avoids a visible flash at (0, 0) before the first position pass completes. */
+  @State() private menuPositionReady = false;
 
   @Listen('click', { target: 'document' })
   handleDocumentClick(event: Event) {
@@ -123,22 +119,31 @@ export class ModusWcDropdownMenu {
   @Watch('menuVisible')
   async onMenuVisibilityChange(newValue: boolean) {
     if (newValue) {
-      this.requestMenuLoadIfNeeded();
+      this.menuPositionReady = false;
+      this.startAutoUpdate();
       await this.updateMenuPosition();
+      this.menuPositionReady = true;
+      return;
     }
+
+    this.stopAutoUpdate();
+    this.menuPositionReady = false;
   }
 
   componentDidLoad() {
     this.buttonRef = this.el.querySelector('modus-wc-button') as HTMLElement;
-    this.setupMenuSlotObserver();
-    this.syncMenuLoadState();
+
     if (this.menuVisible) {
-      this.requestMenuLoadIfNeeded();
+      this.menuPositionReady = false;
+      this.startAutoUpdate();
+      void this.updateMenuPosition().then(() => {
+        this.menuPositionReady = true;
+      });
     }
   }
 
   disconnectedCallback() {
-    this.menuSlotObserver?.disconnect();
+    this.stopAutoUpdate();
   }
 
   componentWillLoad() {
@@ -159,140 +164,31 @@ export class ModusWcDropdownMenu {
 
   private handleButtonClick = () => {
     const newVisibility = !this.menuVisible;
-    this.menuVisible = newVisibility;
-    this.menuVisibilityChange.emit({ isVisible: newVisibility });
+
+    if (newVisibility) {
+      // Emit before opening so consumers can populate `slot="menu"` (e.g. lazy
+      // loading) before the first positioning pass runs.
+      this.menuVisibilityChange.emit({ isVisible: true });
+      this.menuVisible = true;
+      return;
+    }
+
+    this.menuVisible = false;
+    this.menuVisibilityChange.emit({ isVisible: false });
   };
 
-  /** Whether `slot="menu"` has slotted content (menu items or other menu UI). */
-  private hasMenuContent(): boolean {
-    const menuSlotRoots = Array.from(
-      this.el.querySelectorAll('[slot="menu"]')
-    ).filter((node) => node.closest('modus-wc-dropdown-menu') === this.el);
+  private startAutoUpdate(): void {
+    this.stopAutoUpdate();
+    if (!this.buttonRef || !this.menuRef) return;
 
-    if (
-      menuSlotRoots.some(
-        (slotRoot) =>
-          slotRoot.childElementCount > 0 || !!slotRoot.textContent?.trim()
-      )
-    ) {
-      return true;
-    }
-
-    return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).some(
-      (item) =>
-        item.getAttribute('slot') === 'menu' &&
-        item.closest('modus-wc-dropdown-menu') === this.el
-    );
-  }
-
-  private isMenuSlotNode(node: Node): boolean {
-    if (node.nodeType !== Node.ELEMENT_NODE) {
-      return false;
-    }
-
-    const element = node as HTMLElement;
-
-    if (
-      element.getAttribute('slot') === 'menu' &&
-      element.closest('modus-wc-dropdown-menu') === this.el
-    ) {
-      return true;
-    }
-
-    const menuSlotRoot = element.closest('[slot="menu"]');
-    return (
-      !!menuSlotRoot &&
-      menuSlotRoot.closest('modus-wc-dropdown-menu') === this.el
-    );
-  }
-
-  private isMenuSlotMutation(mutations: MutationRecord[]): boolean {
-    return mutations.some((mutation) => {
-      if (mutation.type !== 'childList') {
-        return false;
-      }
-
-      if (
-        mutation.target.nodeType === Node.ELEMENT_NODE &&
-        this.isMenuSlotNode(mutation.target)
-      ) {
-        return true;
-      }
-
-      const changedNodes: Node[] = [
-        ...Array.from(mutation.addedNodes),
-        ...Array.from(mutation.removedNodes),
-      ];
-
-      return changedNodes.some((node) => this.isMenuSlotNode(node));
+    this.cleanupAutoUpdate = autoUpdate(this.buttonRef, this.menuRef, () => {
+      void this.updateMenuPosition();
     });
   }
 
-  private setupMenuSlotObserver(): void {
-    if (typeof MutationObserver === 'undefined') return;
-
-    this.menuSlotObserver?.disconnect();
-    this.menuSlotObserver = new MutationObserver((mutations) => {
-      if (!this.isMenuSlotMutation(mutations)) {
-        return;
-      }
-
-      this.handleMenuSlotChange();
-    });
-    // Observe the host, not menuRef: with shadow:false, slot="menu" nodes stay in
-    // light DOM on the host; filtering limits updates to menu-slot mutations only.
-    this.menuSlotObserver.observe(this.el, {
-      childList: true,
-      subtree: true,
-    });
-  }
-
-  private syncMenuLoadState(): void {
-    if (this.hasMenuContent()) {
-      this.menuWasLoaded = true;
-      this.loadRequested = false;
-      return;
-    }
-
-    if (this.menuWasLoaded) {
-      this.menuWasLoaded = false;
-      this.loadRequested = false;
-    }
-  }
-
-  private handleMenuSlotChange(): void {
-    this.syncMenuLoadState();
-    this.menuSlotRevision++;
-  }
-
-  /** Re-sync lazy-loading UI after imperatively updating `slot="menu"`. */
-  @Method()
-  refreshLazyMenu(): Promise<void> {
-    this.handleMenuSlotChange();
-    return Promise.resolve();
-  }
-
-  private requestMenuLoadIfNeeded(): void {
-    if (this.hasMenuContent() || this.loadRequested) {
-      return;
-    }
-
-    this.loadRequested = true;
-    this.menuLoad.emit({ reason: 'open' });
-  }
-
-  private shouldShowLoading(): boolean {
-    void this.menuSlotRevision;
-    return this.menuVisible && !this.hasMenuContent();
-  }
-
-  private shouldShowMenu(): boolean {
-    void this.menuSlotRevision;
-    return this.hasMenuContent();
-  }
-
-  private getLoaderSize(): ModusSize {
-    return this.menuSize ?? 'md';
+  private stopAutoUpdate(): void {
+    this.cleanupAutoUpdate?.();
+    this.cleanupAutoUpdate = undefined;
   }
 
   private updateMenuPosition = async () => {
@@ -309,6 +205,8 @@ export class ModusWcDropdownMenu {
   };
 
   render() {
+    const menuShown = this.menuVisible && this.menuPositionReady;
+
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-button
@@ -336,37 +234,13 @@ export class ModusWcDropdownMenu {
             left: `${this.menuPosition.x}px`,
             zIndex: '1000',
             // Visibility
-            visibility: this.menuVisible ? 'visible' : 'hidden',
-            opacity: this.menuVisible ? '1' : '0',
-            pointerEvents: this.menuVisible ? 'auto' : 'none',
+            visibility: menuShown ? 'visible' : 'hidden',
+            opacity: menuShown ? '1' : '0',
+            pointerEvents: menuShown ? 'auto' : 'none',
           }}
         >
           <modus-wc-menu bordered={this.menuBordered} size={this.menuSize}>
-            {this.shouldShowLoading() ? (
-              <div
-                aria-busy="true"
-                aria-live="polite"
-                class="modus-wc-dropdown-menu-loading"
-              >
-                <slot name="loading">
-                  <modus-wc-loader
-                    size={this.getLoaderSize()}
-                    variant="spinner"
-                  />
-                </slot>
-              </div>
-            ) : null}
-            {/* Keep slot target mounted (hidden when empty) so light-DOM slot="menu"
-                nodes always project correctly after lazy fetch. */}
-            <div
-              class={{
-                'modus-wc-dropdown-menu-menu-content': true,
-                'modus-wc-dropdown-menu-menu-content--hidden':
-                  !this.shouldShowMenu(),
-              }}
-            >
-              <slot name="menu" />
-            </div>
+            <slot name="menu" />
           </modus-wc-menu>
         </div>
       </Host>

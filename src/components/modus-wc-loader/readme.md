@@ -25,14 +25,12 @@ A customizable loader component used to indicate the loading of content
 
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-content-tree](../modus-wc-content-tree)
- - [modus-wc-dropdown-menu](../modus-wc-dropdown-menu)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-autocomplete --> modus-wc-loader
   modus-wc-content-tree --> modus-wc-loader
-  modus-wc-dropdown-menu --> modus-wc-loader
   style modus-wc-loader fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
