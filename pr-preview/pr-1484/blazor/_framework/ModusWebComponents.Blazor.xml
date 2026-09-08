@@ -1383,19 +1383,9 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcDropdownMenu.OnMenuLoad">
-            <summary>
-            Event emitted the first time the menu opens while slot=&quot;menu&quot; has no menu items yet. Populate the menu slot; the component shows a spinner until items are present.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcDropdownMenu.OnMenuVisibilityChange">
             <summary>
             Event emitted when the menuVisible prop changes.
-            </summary>
-        </member>
-        <member name="M:ModusWebComponents.Blazor.ModusWcDropdownMenu.RefreshLazyMenu">
-            <summary>
-            Re-sync lazy-loading UI after imperatively updating slot=&quot;menu&quot;.
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcFileDropzone">
