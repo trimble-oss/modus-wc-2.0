@@ -3560,7 +3560,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.AutoComplete">
             <summary>
-            Hint for form autofill feature.
+            Hint for form autofill feature. Defaults to off because browser autofill values are not segmented-field safe.
             Allowed values: "on", "off"
             </summary>
         </member>
