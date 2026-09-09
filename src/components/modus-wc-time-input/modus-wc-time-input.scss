@@ -70,7 +70,9 @@ modus-wc-time-input {
     }
 
     .clock-icon-trigger {
+      height: var(--modus-wc-size-sm);
       inset-inline-end: 0.875rem; // spacing-md + 2px nudge
+      width: var(--modus-wc-size-sm);
     }
 
     .modus-wc-time-input {
@@ -107,20 +109,18 @@ modus-wc-time-input {
     align-items: center;
     background: transparent;
     border: none;
-    border-radius: var(--radius-button);
     color: var(--modus-wc-color-base-content);
     cursor: pointer;
     display: inline-flex;
+    height: var(--modus-wc-size-xs);
     inset-block-start: 50%;
-
-    // Chrome's native picker indicator sits ~4px after the digits with the
-    // remaining gutter to its right; the reserve on the field minus the icon
-    // leaves that split at this inset.
     inset-inline-end: 0.625rem; // spacing-sm + 2px nudge
     justify-content: center;
+    line-height: 0;
     padding: 0;
     position: absolute;
     transform: translateY(-50%);
+    width: var(--modus-wc-size-xs);
 
     &:focus {
       outline: none;
@@ -140,7 +140,7 @@ modus-wc-time-input {
   .time-dropdown {
     background: var(--modus-wc-color-base-page);
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
-    border-radius: var(--rounded-box);
+    border-radius: var(--modus-wc-border-radius-lg);
     box-shadow:
       0 4px 6px -1px rgb(0, 0, 0, 0.1),
       0 2px 4px -2px rgb(0, 0, 0, 0.1);
@@ -193,7 +193,7 @@ modus-wc-time-input {
 
   .time-wheel-option {
     align-items: center;
-    border-radius: var(--radius-button);
+    border-radius: var(--modus-wc-border-radius-lg);
     box-sizing: border-box;
     color: var(--modus-wc-color-base-content);
     cursor: pointer;
@@ -226,7 +226,6 @@ modus-wc-time-input {
   }
 
   .time-dropdown--datalist {
-    border-radius: var(--radius-button);
     min-width: 11.25rem;
   }
 
@@ -245,7 +244,7 @@ modus-wc-time-input {
   }
 
   .time-datalist-option {
-    border-radius: 0;
+    border-radius: var(--modus-wc-border-radius-lg);
     color: var(--modus-wc-color-base-content);
     cursor: pointer;
     font-size: var(--modus-wc-font-size-sm);

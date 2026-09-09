@@ -1,8 +1,7 @@
 import {
   clampTime,
   format24h,
-  parse24h,
-  parseDisplay,
+  parseExternalTimeValue,
   TimeFormat,
 } from './time-format';
 import {
@@ -10,6 +9,7 @@ import {
   clearSegmentInDisplay,
   getNextSegment,
   getPrevSegment,
+  getSegments,
   ITimeSegment,
   SegmentKind,
   setSegmentToBound,
@@ -54,23 +54,75 @@ export interface ITimeInputKeyboardContext {
   emitParsedTime: (next24h: string) => void;
 }
 
+type IExternalTimeContext = Pick<
+  ITimeInputKeyboardContext,
+  | 'effectiveShowSeconds'
+  | 'resolvedFormat'
+  | 'min'
+  | 'max'
+  | 'emitParsedTime'
+  | 'setPendingSegmentSelect'
+>;
+
+function applyExternalTimeValue(
+  raw: string,
+  ctx: IExternalTimeContext
+): boolean {
+  const parsed = parseExternalTimeValue(
+    raw,
+    ctx.effectiveShowSeconds,
+    ctx.resolvedFormat
+  );
+  if (!parsed) {
+    return false;
+  }
+  const clamped = clampTime(parsed, ctx.min, ctx.max);
+  const next24h = format24h(clamped, ctx.effectiveShowSeconds);
+  ctx.emitParsedTime(next24h);
+  ctx.setPendingSegmentSelect('hour');
+  return true;
+}
+
+function isBrowserAutofillInsert(inputType: string, data: string): boolean {
+  return (
+    inputType === 'insertReplacementText' ||
+    inputType === 'insertFromAutocomplete' ||
+    (inputType === 'insertText' && data.length > 1)
+  );
+}
+
 export function handleTimeInputBeforeInput(
   event: InputEvent,
   ctx: Pick<
     ITimeInputKeyboardContext,
-    'disabled' | 'readOnly' | 'getActiveSegment'
+    | 'disabled'
+    | 'readOnly'
+    | 'getActiveSegment'
+    | 'effectiveShowSeconds'
+    | 'resolvedFormat'
+    | 'min'
+    | 'max'
+    | 'emitParsedTime'
+    | 'setPendingSegmentSelect'
   >
 ): void {
   if (ctx.disabled || ctx.readOnly) {
     return;
   }
+
+  const data = event.data ?? '';
+  if (isBrowserAutofillInsert(event.inputType, data)) {
+    event.preventDefault();
+    applyExternalTimeValue(data, ctx);
+    return;
+  }
+
   if (
     event.inputType !== 'insertText' &&
     event.inputType !== 'insertCompositionText'
   ) {
     return;
   }
-  const data = event.data ?? '';
   if (!data) {
     return;
   }
@@ -101,17 +153,38 @@ export function handleTimeInputPaste(
     return;
   }
   event.preventDefault();
+  applyExternalTimeValue(pasted, ctx);
+}
 
-  const parsed =
-    parse24h(pasted) ??
-    parseDisplay(pasted, ctx.effectiveShowSeconds, ctx.resolvedFormat);
-  if (!parsed) {
+export function handleTimeInputInput(
+  event: InputEvent,
+  ctx: Pick<
+    ITimeInputKeyboardContext,
+    | 'disabled'
+    | 'readOnly'
+    | 'displayValue'
+    | 'effectiveShowSeconds'
+    | 'resolvedFormat'
+    | 'min'
+    | 'max'
+    | 'emitParsedTime'
+    | 'setPendingSegmentSelect'
+  > & {
+    revertDisplay: () => void;
+  }
+): void {
+  if (ctx.disabled || ctx.readOnly) {
     return;
   }
-  const clamped = clampTime(parsed, ctx.min, ctx.max);
-  const next24h = format24h(clamped, ctx.effectiveShowSeconds);
-  ctx.emitParsedTime(next24h);
-  ctx.setPendingSegmentSelect('hour');
+
+  const raw = (event.target as HTMLInputElement | null)?.value ?? '';
+  if (raw === ctx.displayValue) {
+    return;
+  }
+
+  if (!applyExternalTimeValue(raw, ctx)) {
+    ctx.revertDisplay();
+  }
 }
 
 export function handleTimeInputKeyDown(
@@ -172,6 +245,25 @@ export function handleTimeInputKeyDown(
     ctx.selectSegment(
       getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
     );
+    return;
+  }
+
+  if (event.key === 'Tab') {
+    const segments = getSegments(ctx.effectiveShowSeconds, ctx.resolvedFormat);
+    const segmentIndex = segments.findIndex((s) => s.kind === seg.kind);
+    if (event.shiftKey) {
+      if (segmentIndex > 0) {
+        event.preventDefault();
+        ctx.selectSegment(
+          getPrevSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+        );
+      }
+    } else if (segmentIndex < segments.length - 1) {
+      event.preventDefault();
+      ctx.selectSegment(
+        getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+      );
+    }
     return;
   }
 

@@ -131,6 +131,32 @@ export const Datalist: Story = {
     value: '09:45',
     'datalist-options': ['09:15', '09:30', '09:45', '10:00', '10:15'],
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-time-input
+  aria-label="Time input"
+  label="Time"
+  variant="datalist"
+  value="09:45"
+  bordered
+></modus-wc-time-input>
+
+<script>
+  const timeInputElement = document.querySelector('modus-wc-time-input');
+  timeInputElement.datalistOptions = [
+    '09:15',
+    '09:30',
+    '09:45',
+    '10:00',
+    '10:15',
+  ];
+</script>
+        `,
+      },
+    },
+  },
 };
 
 export const WithGeneratedIntervals: Story = {

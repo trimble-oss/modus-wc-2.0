@@ -31,6 +31,7 @@ import {
 import {
   bindBeforeInputListener,
   handleTimeInputBeforeInput,
+  handleTimeInputInput,
   handleTimeInputKeyDown,
   handleTimeInputPaste,
   ITimeInputKeyboardContext,
@@ -86,11 +87,17 @@ export class ModusWcTimeInput {
   private inputRef?: HTMLInputElement;
   private dropdownRef?: HTMLElement;
   private hasFocus = false;
+  /** True when focus is from a pointer down on the field (click/tap). */
+  private focusFromPointer = false;
+  /** True after Tab moves focus from the input to the clock button. */
+  private returnedFromClock = false;
   private suppressBlurCommit = false;
   private readonly circularScrollLock: ICircularScrollLock = { current: false };
   private wheelScrollCleanups: Array<() => void> = [];
   /** Scroll selected rows into view only when the dropdown first opens */
   private pendingScrollToSelection = false;
+  /** Move focus onto the selected hour when the picker first opens */
+  private pendingFocusPickerOnOpen = false;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
   private segmentDigitBuffer = '';
@@ -112,7 +119,10 @@ export class ModusWcTimeInput {
   /** Announced to screen readers when the time changes */
   @State() private ariaLiveText = '';
 
-  /** Hint for form autofill feature. */
+  /**
+   * Hint for form autofill feature.
+   * Defaults to `off` because browser autofill values are not segmented-field safe.
+   */
   @Prop() autoComplete?: 'on' | 'off';
 
   /** Indicates that the input should have a border. */
@@ -265,6 +275,10 @@ export class ModusWcTimeInput {
       }
       this.pendingSegmentSelect = null;
     }
+
+    if (this.inputRef && this.inputRef.value !== this.displayValue) {
+      this.inputRef.value = this.displayValue;
+    }
   }
 
   componentDidUpdate() {
@@ -275,7 +289,8 @@ export class ModusWcTimeInput {
         void this.popperInstance.update();
       }
       requestAnimationFrame(() => {
-        const focusPickerOnOpen = this.pendingScrollToSelection;
+        const focusPickerOnOpen = this.pendingFocusPickerOnOpen;
+        this.pendingFocusPickerOnOpen = false;
         if (this.pendingScrollToSelection) {
           scrollWheelsToSelection(this.dropdownRef);
           this.pendingScrollToSelection = false;
@@ -293,16 +308,19 @@ export class ModusWcTimeInput {
           );
         }
         if (!this.useDatalist && focusPickerOnOpen) {
+          // The hours wheel renders first, so its focusable row is the selected
+          // hour already pinned to the top by scrollWheelsToSelection.
           const focusTarget = this.dropdownRef?.querySelector<HTMLElement>(
-            '.time-wheel-option[tabindex="0"]'
+            '.time-wheel-viewport--hours .time-wheel-option[tabindex="0"]'
           );
-          focusTarget?.focus();
+          focusTarget?.focus({ preventScroll: true });
         }
       });
     } else {
       unbindCircularWheelListeners(this.wheelScrollCleanups);
       this.wheelScrollCleanups = [];
       this.pendingScrollToSelection = false;
+      this.pendingFocusPickerOnOpen = false;
       this.wheelScrollPositions.clear();
       if (this.popperInstance) {
         this.popperInstance.destroy();
@@ -321,8 +339,8 @@ export class ModusWcTimeInput {
     }
   }
 
-  @Listen('pointerdown', { target: 'document', capture: true })
-  handleClickOutside(event: PointerEvent) {
+  @Listen('click', { target: 'document' })
+  handleClickOutside(event: MouseEvent) {
     if (!this.showDropdown) {
       return;
     }
@@ -331,13 +349,6 @@ export class ModusWcTimeInput {
       path.includes(this.el) ||
       (this.dropdownRef != null && path.includes(this.dropdownRef));
     if (!clickedInside) {
-      this.closeDropdown();
-    }
-  }
-
-  @Listen('blur', { target: 'window' })
-  handleWindowBlur() {
-    if (this.showDropdown) {
       this.closeDropdown();
     }
   }
@@ -449,8 +460,21 @@ export class ModusWcTimeInput {
     }
     if (!this.showDropdown) {
       this.pendingScrollToSelection = true;
+      this.pendingFocusPickerOnOpen = true;
     }
     this.showDropdown = !this.showDropdown;
+  };
+
+  private handleClockMouseDown = (event: MouseEvent) => {
+    // Keep focus on the text field; the clock control is chrome inside the input.
+    event.preventDefault();
+  };
+
+  private handleClockBlur = (event: FocusEvent) => {
+    const relatedTarget = event.relatedTarget as Node | null;
+    if (relatedTarget !== this.inputRef) {
+      this.returnedFromClock = false;
+    }
   };
 
   private openDropdown() {
@@ -458,6 +482,7 @@ export class ModusWcTimeInput {
       return;
     }
     this.pendingScrollToSelection = true;
+    this.pendingFocusPickerOnOpen = true;
     this.showDropdown = true;
   }
 
@@ -549,9 +574,6 @@ export class ModusWcTimeInput {
 
     this.isInvalid = false;
     this.pendingSegmentSelect = activeKind;
-    if (this.value !== '') {
-      this.emitChange('');
-    }
   }
 
   private getKeyboardContext(): ITimeInputKeyboardContext {
@@ -587,7 +609,25 @@ export class ModusWcTimeInput {
     };
   }
 
+  private isClockTrigger(element: Node | null): boolean {
+    if (!element || !('classList' in element)) {
+      return false;
+    }
+    return (element as Element).classList.contains('clock-icon-trigger');
+  }
+
   private handleBlur = (event: FocusEvent) => {
+    const relatedTarget = event.relatedTarget as Node | null;
+    if (relatedTarget && this.el.contains(relatedTarget)) {
+      if (this.isClockTrigger(relatedTarget)) {
+        this.returnedFromClock = true;
+        this.hasFocus = false;
+        this.focusFromPointer = false;
+        this.segmentDigitBuffer = '';
+      }
+      return;
+    }
+
     if (this.suppressBlurCommit) {
       this.suppressBlurCommit = false;
       this.hasFocus = false;
@@ -634,38 +674,91 @@ export class ModusWcTimeInput {
     }
 
     this.hasFocus = false;
+    this.focusFromPointer = false;
     this.segmentDigitBuffer = '';
     this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
+    const wasFocused = this.hasFocus;
+    const fromClock =
+      this.returnedFromClock ||
+      this.isClockTrigger(event.relatedTarget as Node | null);
+    this.returnedFromClock = false;
     this.hasFocus = true;
-    const segments = this.getSegments();
-    requestAnimationFrame(() => {
-      this.selectSegment(segments[0]);
-    });
+    if (wasFocused && !fromClock) {
+      return;
+    }
+    if (!this.focusFromPointer) {
+      const segments = this.getSegments();
+      const segment = fromClock ? segments[segments.length - 1] : segments[0];
+      const applySelection = () => {
+        this.selectSegment(segment);
+      };
+      if (fromClock) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(applySelection);
+        });
+      } else {
+        requestAnimationFrame(applySelection);
+      }
+    }
     this.inputFocus.emit(event);
   };
+
+  private handleInputMouseDown = () => {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
+    this.focusFromPointer = true;
+  };
+
+  private selectSegmentAtCaret() {
+    if (!this.inputRef) {
+      return;
+    }
+    const caret = this.inputRef.selectionStart ?? 0;
+    const seg = getSegmentAtCaret(
+      caret,
+      this.effectiveShowSeconds,
+      this.resolvedFormat
+    );
+    this.selectSegment(seg);
+  }
 
   private handleInputClick = (event?: MouseEvent) => {
     if (this.disabled || this.readOnly || !this.inputRef) {
       return;
     }
     event?.preventDefault?.();
-    const input = this.inputRef;
-    requestAnimationFrame(() => {
-      const caret = input.selectionStart ?? 0;
-      const seg = getSegmentAtCaret(
-        caret,
-        this.effectiveShowSeconds,
-        this.resolvedFormat
-      );
-      this.selectSegment(seg);
-    });
+    const fromPointer = this.focusFromPointer;
+    this.focusFromPointer = false;
+    const applySelection = () => {
+      this.selectSegmentAtCaret();
+    };
+    if (fromPointer) {
+      // Caret is not always at the click position until after focus + click paint.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(applySelection);
+      });
+      return;
+    }
+    requestAnimationFrame(applySelection);
   };
 
   private handlePaste = (event: ClipboardEvent) => {
     handleTimeInputPaste(event, this.getKeyboardContext());
+  };
+
+  private handleInput = (event: InputEvent) => {
+    handleTimeInputInput(event, {
+      ...this.getKeyboardContext(),
+      revertDisplay: () => {
+        if (this.inputRef) {
+          this.inputRef.value = this.displayValue;
+        }
+      },
+    });
   };
 
   private handleKeyDown = (event: KeyboardEvent) => {
@@ -708,7 +801,19 @@ export class ModusWcTimeInput {
     const clamped = clampTime(parsed, this.min, this.max);
     const final24h = format24h(clamped, this.effectiveShowSeconds);
     this.isInvalid = false;
+    if (this.isCurrentValue(final24h)) {
+      return;
+    }
     this.emitChange(final24h);
+  }
+
+  /** Re-picking the row that is already selected must not emit `inputChange`. */
+  private isCurrentValue(next24h: string): boolean {
+    const parsedCurrent = parse24h(this.value);
+    if (!parsedCurrent) {
+      return false;
+    }
+    return format24h(parsedCurrent, this.effectiveShowSeconds) === next24h;
   }
 
   private handleDatalistSelect(value24h: string) {
@@ -722,7 +827,9 @@ export class ModusWcTimeInput {
     const clamped = clampTime(parsed, this.min, this.max);
     const next = format24h(clamped, this.effectiveShowSeconds);
     this.isInvalid = false;
-    this.emitChange(next);
+    if (!this.isCurrentValue(next)) {
+      this.emitChange(next);
+    }
     this.closeDropdown();
   }
 
@@ -764,6 +871,7 @@ export class ModusWcTimeInput {
       max: this.max,
       onWheelSelect: (partial: IWheelSelectionPartial) =>
         this.applyWheelSelection(partial),
+      onWheelCommit: () => this.closeDropdown(),
       onDatalistSelect: (value24h: string) =>
         this.handleDatalistSelect(value24h),
       onOtherSelect: this.handleOtherSelect,
@@ -786,9 +894,10 @@ export class ModusWcTimeInput {
             aria-expanded={this.showDropdown ? 'true' : 'false'}
             aria-haspopup={popupRole}
             aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
+            aria-autocomplete="none"
             aria-keyshortcuts="Alt+ArrowDown"
             aria-required={this.required}
-            autocomplete={this.autoComplete}
+            autocomplete={this.autoComplete ?? 'off'}
             class={this.getClasses()}
             disabled={this.disabled}
             id={effectiveId}
@@ -796,6 +905,8 @@ export class ModusWcTimeInput {
             onBlur={this.handleBlur}
             onClick={this.handleInputClick}
             onFocus={this.handleFocus}
+            onMouseDown={this.handleInputMouseDown}
+            onInput={this.handleInput}
             onKeyDown={this.handleKeyDown}
             onPaste={this.handlePaste}
             readonly={this.readOnly}
@@ -817,6 +928,8 @@ export class ModusWcTimeInput {
             aria-haspopup={popupRole}
             aria-controls={this.showDropdown ? this.dropdownId : undefined}
             disabled={this.disabled || this.readOnly}
+            onBlur={this.handleClockBlur}
+            onMouseDown={this.handleClockMouseDown}
             onClick={this.toggleDropdown}
           >
             <modus-wc-icon

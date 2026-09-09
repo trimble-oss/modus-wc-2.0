@@ -3,6 +3,7 @@ import { is12hrsFormat, TimeFormat } from './time-format';
 import {
   handleDatalistOptionKeyDown,
   handleWheelOptionKeyDown,
+  scheduleWheelSelectionFocus,
 } from './time-listbox-keyboard';
 import {
   buildCircularWheelOptions,
@@ -34,6 +35,7 @@ export interface ITimePickerDropdownProps {
   min?: string;
   max?: string;
   onWheelSelect: (partial: IWheelSelectionPartial) => void;
+  onWheelCommit: () => void;
   onDatalistSelect: (value24h: string) => void;
   onOtherSelect: () => void;
 }
@@ -61,12 +63,14 @@ const TimeWheel: FunctionalComponent<{
   options: { label: string; value: string }[];
   selectedValue: string;
   onSelect: (value: string) => void;
+  onCommit: () => void;
   circular?: boolean;
 }> = ({
   kind,
   options,
   selectedValue,
   onSelect,
+  onCommit,
   circular = options.length >= 2,
 }) => {
   const looped = circular
@@ -121,9 +125,21 @@ const TimeWheel: FunctionalComponent<{
               onMouseDown={(e: MouseEvent) => {
                 e.preventDefault();
               }}
-              onClick={() => onSelect(opt.value)}
+              onClick={(e: MouseEvent) => {
+                onSelect(opt.value);
+                // Keep the roving tabindex on the row the pointer just picked.
+                scheduleWheelSelectionFocus(
+                  (e.currentTarget as HTMLElement).closest('[role="listbox"]')
+                );
+              }}
               onKeyDown={(e: KeyboardEvent) =>
-                handleWheelOptionKeyDown(e, isA11yCopy, onSelect, opt.value)
+                handleWheelOptionKeyDown(
+                  e,
+                  isA11yCopy,
+                  onSelect,
+                  opt.value,
+                  onCommit
+                )
               }
             >
               {opt.label}
@@ -146,6 +162,7 @@ export const TimePickerDropdown: FunctionalComponent<
     | 'minuteStep'
     | 'secondStep'
     | 'onWheelSelect'
+    | 'onWheelCommit'
   >
 > = (props) => {
   const state = resolveWheelState(
@@ -174,12 +191,14 @@ export const TimePickerDropdown: FunctionalComponent<
           options={hours}
           selectedValue={String(state.hour)}
           onSelect={(v) => props.onWheelSelect({ hour: Number(v) })}
+          onCommit={props.onWheelCommit}
         />
         <TimeWheel
           kind="minutes"
           options={minutes}
           selectedValue={String(state.minutes)}
           onSelect={(v) => props.onWheelSelect({ minutes: Number(v) })}
+          onCommit={props.onWheelCommit}
         />
         {props.effectiveShowSeconds && (
           <TimeWheel
@@ -187,6 +206,7 @@ export const TimePickerDropdown: FunctionalComponent<
             options={seconds}
             selectedValue={String(state.seconds)}
             onSelect={(v) => props.onWheelSelect({ seconds: Number(v) })}
+            onCommit={props.onWheelCommit}
           />
         )}
         {is12hrsFormat(props.resolvedFormat) && (
@@ -195,6 +215,7 @@ export const TimePickerDropdown: FunctionalComponent<
             options={periods}
             selectedValue={state.period}
             onSelect={(v) => props.onWheelSelect({ period: v as 'AM' | 'PM' })}
+            onCommit={props.onWheelCommit}
             circular={false}
           />
         )}

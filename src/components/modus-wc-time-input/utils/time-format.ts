@@ -205,6 +205,39 @@ export function parseDisplay(
 }
 
 /**
+ * Parse a value from browser autofill, paste, or other external entry.
+ * Tries the active format first, then common alternate shapes (e.g. 12h with seconds).
+ */
+export function parseExternalTimeValue(
+  raw: string,
+  showSeconds = false,
+  hourFormat: TimeFormat = '24hrs'
+): IParsedTime | null {
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const alternateFormat: TimeFormat =
+    hourFormat === '12hrs' ? '24hrs' : '12hrs';
+  const attempts = [
+    parse24h(trimmed),
+    parseDisplay(trimmed, showSeconds, hourFormat),
+    parseDisplay(trimmed, showSeconds, alternateFormat),
+    parseDisplay(trimmed, true, '12hrs'),
+    parseDisplay(trimmed, true, '24hrs'),
+  ];
+
+  for (const parsed of attempts) {
+    if (parsed) {
+      return showSeconds ? parsed : { ...parsed, seconds: 0 };
+    }
+  }
+
+  return null;
+}
+
+/**
  * Compare two 24h time strings (or parsed times) as minutes from midnight.
  * Returns negative if a < b, 0 if equal, positive if a > b.
  */

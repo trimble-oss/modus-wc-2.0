@@ -111,6 +111,21 @@ export function restoreWheelScrollPositions(
   lock.current = false;
 }
 
+/** Scroll the minimum amount needed to keep an option visible (edge-aligned). */
+export function scrollWheelOptionIntoView(
+  viewport: HTMLElement,
+  option: HTMLElement
+): void {
+  const viewportRect = viewport.getBoundingClientRect();
+  const optionRect = option.getBoundingClientRect();
+
+  if (optionRect.top < viewportRect.top) {
+    viewport.scrollTop -= viewportRect.top - optionRect.top;
+  } else if (optionRect.bottom > viewportRect.bottom) {
+    viewport.scrollTop += optionRect.bottom - viewportRect.bottom;
+  }
+}
+
 export function scrollWheelsToSelection(
   dropdownRef: HTMLElement | undefined
 ): void {

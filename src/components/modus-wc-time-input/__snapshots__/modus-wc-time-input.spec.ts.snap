@@ -4,7 +4,7 @@ exports[`modus-wc-time-input should render with custom props 1`] = `
 <modus-wc-time-input auto-complete="on" bordered="" custom-class="custom" disabled="" input-id="time-input" input-tab-index="1" label="Test label" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
   <modus-wc-input-label forid="time-input" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <div class="time-input-container time-input-container--lg">
-    <input aria-describedby="desc" aria-expanded="false" aria-haspopup="dialog" aria-keyshortcuts="Alt+ArrowDown" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-time-input modus-wc-time-input--readonly modus-wc-time-input--with-seconds" disabled="" id="time-input" inputmode="numeric" readonly="" required="" tabindex="1" type="text" value="12:00:00">
+    <input aria-autocomplete="none" aria-describedby="desc" aria-expanded="false" aria-haspopup="dialog" aria-keyshortcuts="Alt+ArrowDown" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-time-input modus-wc-time-input--readonly modus-wc-time-input--with-seconds" disabled="" id="time-input" inputmode="numeric" readonly="" required="" tabindex="1" type="text" value="12:00:00">
     <input name="time" type="hidden" value="12:00">
     <button aria-expanded="false" aria-haspopup="dialog" aria-label="Toggle time picker" class="clock-icon-trigger" disabled="" type="button">
       <modus-wc-icon decorative="" name="clock" size="sm"></modus-wc-icon>
@@ -19,7 +19,7 @@ exports[`modus-wc-time-input should render with custom props 1`] = `
 exports[`modus-wc-time-input should render with default props 1`] = `
 <modus-wc-time-input value="">
   <div class="time-input-container time-input-container--md">
-    <input aria-expanded="false" aria-haspopup="dialog" aria-keyshortcuts="Alt+ArrowDown" aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_0" inputmode="numeric" type="text" value="--:--">
+    <input aria-autocomplete="none" aria-expanded="false" aria-haspopup="dialog" aria-keyshortcuts="Alt+ArrowDown" aria-label="Default input" autocomplete="off" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_0" inputmode="numeric" type="text" value="--:--">
     <button aria-expanded="false" aria-haspopup="dialog" aria-label="Toggle time picker" class="clock-icon-trigger" type="button">
       <modus-wc-icon decorative="" name="clock" size="xs"></modus-wc-icon>
     </button>
@@ -33,7 +33,7 @@ exports[`modus-wc-time-input should render with default props 1`] = `
 exports[`modus-wc-time-input should render with error feedback 1`] = `
 <modus-wc-time-input value="">
   <div class="time-input-container time-input-container--md">
-    <input aria-expanded="false" aria-haspopup="dialog" aria-invalid="" aria-keyshortcuts="Alt+ArrowDown" aria-label="Error input" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_2" inputmode="numeric" type="text" value="--:--">
+    <input aria-autocomplete="none" aria-expanded="false" aria-haspopup="dialog" aria-invalid="" aria-keyshortcuts="Alt+ArrowDown" aria-label="Error input" autocomplete="off" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_2" inputmode="numeric" type="text" value="--:--">
     <button aria-expanded="false" aria-haspopup="dialog" aria-label="Toggle time picker" class="clock-icon-trigger" type="button">
       <modus-wc-icon decorative="" name="clock" size="xs"></modus-wc-icon>
     </button>
