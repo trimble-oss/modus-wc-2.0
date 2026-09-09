@@ -188,6 +188,12 @@ modus-wc-text-input {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-6); // Figma label color (#6a6e79)
+  padding-bottom: var(--modus-wc-spacing-xs); // Figma t-spacing/1 (4px)
+}
+
 [data-theme='modus-modern-light']
   modus-wc-text-input:has(.modus-wc-input-xs)
   .modus-wc-input-label,
@@ -196,7 +202,6 @@ modus-wc-text-input {
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-sm);
   line-height: 1.25rem;
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
 [data-theme='modus-modern-light']
@@ -207,7 +212,6 @@ modus-wc-text-input {
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-md);
   line-height: var(--modus-wc-line-height-md);
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
 [data-theme='modus-modern-light']
@@ -218,7 +222,6 @@ modus-wc-text-input {
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-lg);
   line-height: var(--modus-wc-line-height-md);
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
 [data-theme='modus-modern-light']
@@ -235,7 +238,6 @@ modus-wc-text-input {
   .modus-wc-input-label {
   font-size: var(--modus-wc-font-size-xl);
   line-height: var(--modus-wc-line-height-lg);
-  padding-bottom: var(--modus-wc-spacing-xs);
 }
 
 [data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,

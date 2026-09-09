@@ -145,37 +145,29 @@ export class ModusWcSelect {
             size={this.getLabelSize()}
           />
         )}
-        <div class="modus-wc-select-wrapper">
-          <select
-            class={this.getClasses()}
-            disabled={this.disabled}
-            id={effectiveId}
-            name={this.name}
-            onBlur={this.handleBlur}
-            onFocus={this.handleFocus}
-            onInput={this.handleInput}
-            required={this.required}
-            tabindex={this.inputTabIndex}
-            {...this.inheritedAttributes}
-          >
-            {this.options.map((option) => (
-              <option
-                disabled={option.disabled}
-                hidden={option.hidden}
-                selected={option.value === this.value}
-                value={option.value}
-              >
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <modus-wc-icon
-            class="modus-wc-select-chevron"
-            decorative
-            name="caret_down"
-            size="md"
-          />
-        </div>
+        <select
+          class={this.getClasses()}
+          disabled={this.disabled}
+          id={effectiveId}
+          name={this.name}
+          onBlur={this.handleBlur}
+          onFocus={this.handleFocus}
+          onInput={this.handleInput}
+          required={this.required}
+          tabindex={this.inputTabIndex}
+          {...this.inheritedAttributes}
+        >
+          {this.options.map((option) => (
+            <option
+              disabled={option.disabled}
+              hidden={option.hidden}
+              selected={option.value === this.value}
+              value={option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}
