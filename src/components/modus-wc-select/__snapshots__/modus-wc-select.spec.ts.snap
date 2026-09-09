@@ -2,7 +2,7 @@
 
 exports[`modus-wc-select readOnly should apply readonly class and aria-readonly when readOnly is true 1`] = `
 <modus-wc-select read-only="true" value="">
-  <select aria-label="Readonly select" aria-readonly="true" class="modus-wc-select modus-wc-select--readonly modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_17"></select>
+  <select aria-label="Readonly select" aria-readonly="true" class="modus-wc-select modus-wc-select--readonly modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_18"></select>
 </modus-wc-select>
 `;
 
@@ -35,11 +35,11 @@ exports[`modus-wc-select should not select the first real option when value is e
 <modus-wc-select label="Select an account" value="">
   <modus-wc-input-label class="modus-wc-input-label-host">
     <!---->
-    <label class="modus-wc-input-label modus-wc-input-label-size-md" htmlfor="mwc_id_10">
+    <label class="modus-wc-input-label modus-wc-input-label-size-md" htmlfor="mwc_id_11">
       Select an account
     </label>
   </modus-wc-input-label>
-  <select aria-label="Select an account" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_10">
+  <select aria-label="Select an account" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_11">
     <option disabled="" hidden="" selected="" value="">
       Select an account
     </option>
@@ -55,7 +55,7 @@ exports[`modus-wc-select should not select the first real option when value is e
 
 exports[`modus-wc-select should render options with various states 1`] = `
 <modus-wc-select value="2">
-  <select aria-label="Options test" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_9">
+  <select aria-label="Options test" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_10">
     <option value="1">
       Option 1
     </option>

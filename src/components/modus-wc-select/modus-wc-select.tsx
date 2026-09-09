@@ -181,6 +181,16 @@ export class ModusWcSelect {
     (event.currentTarget as HTMLSelectElement).focus();
   };
 
+  private handleTouchStart = (event: TouchEvent) => {
+    if (!this.readOnly) {
+      return;
+    }
+
+    // Prevent opening the native picker on mobile while still allowing focus.
+    event.preventDefault();
+    (event.currentTarget as HTMLSelectElement).focus();
+  };
+
   private getLabelSize(): ModusSize {
     return INPUT_SIZE_TO_LABEL_SIZE[this.size ?? 'md'];
   }
@@ -210,6 +220,7 @@ export class ModusWcSelect {
           onInput={this.handleInput}
           onKeyDown={this.handleKeyDown}
           onMouseDown={this.handleMouseDown}
+          onTouchStart={this.handleTouchStart}
           required={this.required}
           tabindex={this.inputTabIndex}
           {...this.inheritedAttributes}

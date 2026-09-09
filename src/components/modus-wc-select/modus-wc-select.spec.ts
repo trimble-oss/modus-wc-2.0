@@ -5,6 +5,13 @@ import { IInputFeedbackProp } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcSelect } from './modus-wc-select';
 
+interface SelectPrivateMethods {
+  handleTouchStart: (event: {
+    preventDefault: () => void;
+    currentTarget: HTMLSelectElement;
+  }) => void;
+}
+
 describe('modus-wc-select', () => {
   const defaultOptions = [
     { label: 'Select an option', value: '', disabled: true, hidden: true },
@@ -181,6 +188,27 @@ describe('modus-wc-select', () => {
     await page.waitForChanges();
 
     expect(preventDefaultSpy).not.toHaveBeenCalled();
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not prevent default for touchStart when not readOnly', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select aria-label="Editable select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select') as HTMLSelectElement;
+    const focusSpy = jest.spyOn(select, 'focus');
+    const preventDefaultMock = jest.fn();
+    const instance = page.rootInstance as ModusWcSelect;
+
+    (instance as unknown as SelectPrivateMethods).handleTouchStart({
+      preventDefault: preventDefaultMock,
+      currentTarget: select,
+    });
+    await page.waitForChanges();
+
+    expect(preventDefaultMock).not.toHaveBeenCalled();
     expect(focusSpy).not.toHaveBeenCalled();
   });
 
@@ -490,6 +518,27 @@ describe('modus-wc-select', () => {
       await page.waitForChanges();
 
       expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalled();
+    });
+
+    it('should focus readOnly select on touchStart without default action', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select read-only="true" aria-label="Readonly select"></modus-wc-select>',
+      });
+
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      const focusSpy = jest.spyOn(select, 'focus');
+      const preventDefaultMock = jest.fn();
+      const instance = page.rootInstance as ModusWcSelect;
+
+      (instance as unknown as SelectPrivateMethods).handleTouchStart({
+        preventDefault: preventDefaultMock,
+        currentTarget: select,
+      });
+      await page.waitForChanges();
+
+      expect(preventDefaultMock).toHaveBeenCalled();
       expect(focusSpy).toHaveBeenCalled();
     });
 
