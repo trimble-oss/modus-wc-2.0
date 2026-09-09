@@ -19,6 +19,8 @@ type DropdownMenuInternals = {
   buttonRef?: HTMLElement;
   menuRef?: HTMLElement;
   menuPositionReady: boolean;
+  menuPosition: { x: number; y: number };
+  updateMenuPosition: () => Promise<void>;
 };
 
 describe('modus-wc-dropdown-menu', () => {
@@ -281,11 +283,11 @@ describe('modus-wc-dropdown-menu', () => {
 
     const component = page.rootInstance as ModusWcDropdownMenu;
     const emitOrder: boolean[] = [];
-    const visibilitySpy = jest.fn(
-      (event: CustomEvent<{ isVisible: boolean }>) => {
-        emitOrder.push(event.detail.isVisible);
-      }
-    );
+    const visibilitySpy = jest.fn((event: Event) => {
+      emitOrder.push(
+        (event as CustomEvent<{ isVisible: boolean }>).detail.isVisible
+      );
+    });
     page.root?.addEventListener('menuVisibilityChange', visibilitySpy);
 
     page.root?.querySelector('button')?.click();
@@ -363,5 +365,27 @@ describe('modus-wc-dropdown-menu', () => {
     component.startAutoUpdate();
 
     expect(component.cleanupAutoUpdate).toBeUndefined();
+  });
+
+  it('should not update menu position when button or menu refs are missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    const component = page.rootInstance as unknown as DropdownMenuInternals;
+    component.menuPosition = { x: 1, y: 2 };
+    component.buttonRef = undefined;
+    await component.updateMenuPosition();
+    expect(component.menuPosition).toEqual({ x: 1, y: 2 });
+
+    component.buttonRef = page.root!.querySelector(
+      'modus-wc-button'
+    ) as HTMLElement;
+    component.menuRef = undefined;
+    await component.updateMenuPosition();
+    expect(component.menuPosition).toEqual({ x: 1, y: 2 });
   });
 });

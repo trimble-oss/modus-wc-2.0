@@ -206,6 +206,12 @@ export class ModusWcDropdownMenu {
 
   render() {
     const menuShown = this.menuVisible && this.menuPositionReady;
+    const menuTop = Number.isFinite(this.menuPosition.y)
+      ? this.menuPosition.y
+      : 0;
+    const menuLeft = Number.isFinite(this.menuPosition.x)
+      ? this.menuPosition.x
+      : 0;
 
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
@@ -230,8 +236,8 @@ export class ModusWcDropdownMenu {
           style={{
             // Positioning
             position: this.menuStrategy,
-            top: `${this.menuPosition.y}px`,
-            left: `${this.menuPosition.x}px`,
+            top: `${menuTop}px`,
+            left: `${menuLeft}px`,
             zIndex: '1000',
             // Visibility
             visibility: menuShown ? 'visible' : 'hidden',
