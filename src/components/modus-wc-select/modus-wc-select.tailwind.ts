@@ -3,12 +3,10 @@ import { IInputFeedbackProp, ModusSize } from '../types';
 export const convertPropsToClasses = ({
   bordered,
   feedback,
-  readOnly,
   size,
 }: {
   bordered?: boolean;
   feedback?: IInputFeedbackProp;
-  readOnly?: boolean;
   size?: ModusSize | 'xs' | 'xl';
 }): string => {
   let classes = '';
@@ -19,10 +17,6 @@ export const convertPropsToClasses = ({
 
   if (feedback) {
     classes = `${classes} modus-wc-select--${feedback.level}`;
-  }
-
-  if (readOnly) {
-    classes = `${classes} modus-wc-select--readonly`;
   }
 
   if (size) {
