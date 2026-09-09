@@ -1,3 +1,14 @@
+// DaisyUI applies `display: grid` to `.modus-wc-modal` even when the native
+// `<dialog>` is closed, which overrides the UA `dialog:not([open]) { display: none }`
+// rule. That leaves hidden modal controls in the tab order and accessibility tree.
+modus-wc-modal dialog.modus-wc-modal:not([open]) {
+  display: none;
+}
+
+modus-wc-modal dialog.modus-wc-modal[open] {
+  display: grid;
+}
+
 modus-wc-modal .modus-wc-modal {
   box-sizing: border-box;
   color: var(--modus-wc-color-base-content);

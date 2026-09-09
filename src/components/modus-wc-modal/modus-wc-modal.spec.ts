@@ -1,6 +1,14 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { ModusWcModal } from './modus-wc-modal';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+
+const modalScssPath = join(
+  // eslint-disable-next-line no-undef -- Jest runs in Node; spec eslint env is browser+jest
+  process.cwd(),
+  'src/components/modus-wc-modal/modus-wc-modal.scss'
+);
 
 describe('modus-wc-modal', () => {
   it('console error if modalId is not passed', async () => {
@@ -117,5 +125,25 @@ describe('modus-wc-modal', () => {
     expect(page.root).toMatchSnapshot();
     const backdrop = page.root!.querySelector('.modus-wc-modal-backdrop');
     expect(backdrop).toBeNull();
+  });
+
+  it('should hide closed dialog with display none', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: '<modus-wc-modal modal-id="test-focus" show-close="true"></modus-wc-modal>',
+    });
+
+    const dialog = page.root!.querySelector('dialog') as HTMLDialogElement;
+    expect(dialog.hasAttribute('open')).toBe(false);
+
+    // Stencil spec (JSDOM) does not apply component CSS or model focus/tab order
+    // reliably. Assert the stylesheet contract that restores native closed-dialog
+    // inertness (display: none) over DaisyUI's always-on display: grid.
+    const scss = readFileSync(modalScssPath, 'utf8');
+
+    expect(scss).toContain('modus-wc-modal dialog.modus-wc-modal:not([open])');
+    expect(scss).toContain('display: none');
+    expect(scss).toContain('modus-wc-modal dialog.modus-wc-modal[open]');
+    expect(scss).toContain('display: grid');
   });
 });
