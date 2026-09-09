@@ -1,0 +1,92 @@
+// Shared Figma Menu / Item row scale for modus-wc-menu-item and modus-wc-tree-item.
+// Icon+Text padding-block + label line-height (text is flex-centered in that strut).
+// Type/icon sizes map to Figma, not the WC size name.
+// Consumers (side nav, content tree, custom height) can still override.
+// Sublabel rows grow with content.
+
+@mixin menu-item-row-size-xs-content {
+  font-size: var(--modus-wc-font-size-sm);
+  height: var(--modus-wc-size-xs);
+  padding-block: var(--modus-wc-spacing-2xs);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  .modus-wc-menu-item-labels {
+    line-height: 20px;
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-lg);
+  }
+}
+
+@mixin menu-item-row-size-sm-content {
+  font-size: var(--modus-wc-font-size-md);
+  padding-block: var(--modus-wc-spacing-xs);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-lg);
+  }
+
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-xs);
+  }
+}
+
+@mixin menu-item-row-size-md-content {
+  font-size: var(--modus-wc-font-size-lg);
+  padding: var(--modus-wc-spacing-sm);
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-font-size-xl);
+    width: var(--modus-wc-font-size-xl);
+  }
+
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-sm);
+  }
+}
+
+@mixin menu-item-row-size-lg-content {
+  font-size: var(--modus-wc-font-size-xl);
+  padding: var(--modus-wc-spacing-sm);
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-lg);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-font-size-2xl);
+    width: var(--modus-wc-font-size-2xl);
+  }
+
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-md);
+  }
+}
+
+@mixin menu-item-row-size-xl-content {
+  font-size: var(--modus-wc-font-size-2xl);
+  height: var(--modus-wc-size-xl);
+  padding-block: var(--modus-wc-spacing-md);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-lg);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-xl);
+    width: var(--modus-wc-spacing-xl);
+  }
+}

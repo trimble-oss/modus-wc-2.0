@@ -12,6 +12,10 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-menu-item.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import {
+  MENU_ITEM_SIZE_TO_CHECKBOX_SIZE,
+  MENU_ITEM_SIZE_TO_CHEVRON_SIZE,
+} from '../constants';
 import { ModusSize, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -303,13 +307,7 @@ export class ModusWcMenuItem {
                 <modus-wc-checkbox
                   aria-label="Checkbox"
                   disabled={this.disabled}
-                  size={
-                    this.size === 'xs'
-                      ? 'sm'
-                      : this.size === 'xl'
-                        ? 'lg'
-                        : this.size
-                  }
+                  size={MENU_ITEM_SIZE_TO_CHECKBOX_SIZE[this.size ?? 'md']}
                   value={!!this.selected}
                 />
               )}
@@ -336,17 +334,7 @@ export class ModusWcMenuItem {
                 class="modus-wc-menu-submenu-chevron"
                 decorative
                 name="expand_more"
-                size={
-                  this.size === 'xs'
-                    ? 'xs'
-                    : this.size === 'sm'
-                      ? 'xs'
-                      : this.size === 'lg'
-                        ? 'md'
-                        : this.size === 'xl'
-                          ? 'lg'
-                          : 'sm'
-                }
+                size={MENU_ITEM_SIZE_TO_CHEVRON_SIZE[this.size ?? 'md']}
               ></modus-wc-icon>
             )}
           </button>

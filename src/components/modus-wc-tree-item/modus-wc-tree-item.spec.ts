@@ -1285,4 +1285,24 @@ describe('modus-wc-tree-item', () => {
     expect(chevron.size).toBe('lg');
     expect(checkbox.size).toBe('lg');
   });
+
+  it('should default checkbox and chevron sizes when size is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeItem, ModusWcIcon, ModusWcCheckbox],
+      html: '<modus-wc-tree-item label="Parent" size="sm" value="parent" has-submenu="true" checkbox="true"></modus-wc-tree-item>',
+    });
+
+    page.rootInstance.size = undefined;
+    await page.waitForChanges();
+
+    const chevron = page.root!.querySelector(
+      'modus-wc-icon.modus-wc-menu-submenu-chevron'
+    ) as HTMLElement & { size?: string };
+    const checkbox = page.root!.querySelector(
+      'modus-wc-checkbox'
+    ) as unknown as ModusWcCheckbox;
+
+    expect(chevron.size).toBe('sm');
+    expect(checkbox.size).toBe('md');
+  });
 });
