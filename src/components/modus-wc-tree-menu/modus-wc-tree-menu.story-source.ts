@@ -70,15 +70,14 @@ export const treeMenuCollapsibleMenuSourceCode = `
   custom-class="tree-menu-width"
   orientation="vertical"
   selection-mode="single"
-  size="md"
 >
-  <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true" size="md">
+  <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true">
     <modus-wc-tree-menu is-sub-menu="true">
-      <modus-wc-tree-item label="Child 1" value="child-1" size="md"></modus-wc-tree-item>
-      <modus-wc-tree-item label="Child 2" value="child-2" size="md"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Child 1" value="child-1"></modus-wc-tree-item>
+      <modus-wc-tree-item label="Child 2" value="child-2"></modus-wc-tree-item>
     </modus-wc-tree-menu>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="Sibling Item" value="sibling" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Sibling Item" value="sibling"></modus-wc-tree-item>
 </modus-wc-tree-menu>
 `;
 
