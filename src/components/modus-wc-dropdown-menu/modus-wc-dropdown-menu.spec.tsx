@@ -13,14 +13,11 @@ class TestHostComponent {
 }
 
 type DropdownMenuInternals = {
-  startAutoUpdate: () => void;
-  stopAutoUpdate: () => void;
-  cleanupAutoUpdate?: () => void;
-  buttonRef?: HTMLElement;
-  menuRef?: HTMLElement;
   menuPositionReady: boolean;
   menuPosition: { x: number; y: number };
   updateMenuPosition: () => Promise<void>;
+  buttonRef?: HTMLElement;
+  menuRef?: HTMLElement;
 };
 
 describe('modus-wc-dropdown-menu', () => {
@@ -273,30 +270,6 @@ describe('modus-wc-dropdown-menu', () => {
     );
   });
 
-  it('should emit menuVisibilityChange before opening the menu', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as ModusWcDropdownMenu;
-    const emitOrder: boolean[] = [];
-    const visibilitySpy = jest.fn((event: Event) => {
-      emitOrder.push(
-        (event as CustomEvent<{ isVisible: boolean }>).detail.isVisible
-      );
-    });
-    page.root?.addEventListener('menuVisibilityChange', visibilitySpy);
-
-    page.root?.querySelector('button')?.click();
-    await page.waitForChanges();
-
-    expect(emitOrder).toEqual([true]);
-    expect(component.menuVisible).toBe(true);
-  });
-
   it('should reset menuPositionReady when the menu closes', async () => {
     const page = await newSpecPage({
       components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
@@ -314,57 +287,6 @@ describe('modus-wc-dropdown-menu', () => {
     page.root!.menuVisible = false;
     await page.waitForChanges();
     expect(component.menuPositionReady).toBe(false);
-  });
-
-  it('should clear autoUpdate cleanup when the menu closes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as unknown as DropdownMenuInternals;
-    const cleanup = jest.fn();
-    component.cleanupAutoUpdate = cleanup;
-
-    component.stopAutoUpdate();
-
-    expect(cleanup).toHaveBeenCalled();
-    expect(component.cleanupAutoUpdate).toBeUndefined();
-  });
-
-  it('should stop autoUpdate when the component disconnects', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu menu-visible="true">
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as unknown as DropdownMenuInternals;
-    const cleanup = jest.fn();
-    component.cleanupAutoUpdate = cleanup;
-
-    page.root?.remove();
-    await page.waitForChanges();
-
-    expect(cleanup).toHaveBeenCalled();
-  });
-
-  it('should not start autoUpdate when button or menu refs are missing', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as unknown as DropdownMenuInternals;
-    component.buttonRef = undefined;
-    component.startAutoUpdate();
-
-    expect(component.cleanupAutoUpdate).toBeUndefined();
   });
 
   it('should not update menu position when button or menu refs are missing', async () => {

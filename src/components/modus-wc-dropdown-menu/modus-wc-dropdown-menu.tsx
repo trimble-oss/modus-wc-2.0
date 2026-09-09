@@ -1,10 +1,4 @@
-import {
-  autoUpdate,
-  computePosition,
-  flip,
-  offset,
-  shift,
-} from '@floating-ui/dom';
+import { computePosition, flip, offset, shift } from '@floating-ui/dom';
 import {
   Component,
   Element,
@@ -33,7 +27,6 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcDropdownMenu {
   private buttonRef?: HTMLElement;
-  private cleanupAutoUpdate?: () => void;
   private inheritedAttributes: Attributes = {};
   private menuRef?: HTMLElement;
 
@@ -120,13 +113,11 @@ export class ModusWcDropdownMenu {
   async onMenuVisibilityChange(newValue: boolean) {
     if (newValue) {
       this.menuPositionReady = false;
-      this.startAutoUpdate();
       await this.updateMenuPosition();
       this.menuPositionReady = true;
       return;
     }
 
-    this.stopAutoUpdate();
     this.menuPositionReady = false;
   }
 
@@ -135,15 +126,10 @@ export class ModusWcDropdownMenu {
 
     if (this.menuVisible) {
       this.menuPositionReady = false;
-      this.startAutoUpdate();
       void this.updateMenuPosition().then(() => {
         this.menuPositionReady = true;
       });
     }
-  }
-
-  disconnectedCallback() {
-    this.stopAutoUpdate();
   }
 
   componentWillLoad() {
@@ -164,32 +150,9 @@ export class ModusWcDropdownMenu {
 
   private handleButtonClick = () => {
     const newVisibility = !this.menuVisible;
-
-    if (newVisibility) {
-      // Emit before opening so consumers can populate `slot="menu"` (e.g. lazy
-      // loading) before the first positioning pass runs.
-      this.menuVisibilityChange.emit({ isVisible: true });
-      this.menuVisible = true;
-      return;
-    }
-
-    this.menuVisible = false;
-    this.menuVisibilityChange.emit({ isVisible: false });
+    this.menuVisible = newVisibility;
+    this.menuVisibilityChange.emit({ isVisible: newVisibility });
   };
-
-  private startAutoUpdate(): void {
-    this.stopAutoUpdate();
-    if (!this.buttonRef || !this.menuRef) return;
-
-    this.cleanupAutoUpdate = autoUpdate(this.buttonRef, this.menuRef, () => {
-      void this.updateMenuPosition();
-    });
-  }
-
-  private stopAutoUpdate(): void {
-    this.cleanupAutoUpdate?.();
-    this.cleanupAutoUpdate = undefined;
-  }
 
   private updateMenuPosition = async () => {
     // istanbul ignore next
