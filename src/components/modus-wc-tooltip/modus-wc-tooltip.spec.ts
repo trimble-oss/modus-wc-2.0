@@ -1583,7 +1583,9 @@ describe('modus-wc-tooltip', () => {
       const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
       Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
       trigger?.dispatchEvent(pointerDown);
-      trigger?.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
+      trigger?.dispatchEvent(
+        new MouseEvent('pointercancel', { bubbles: true })
+      );
       trigger?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
 
       expect(page.rootInstance.isVisible).toBe(true);
