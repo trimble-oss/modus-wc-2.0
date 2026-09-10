@@ -50,7 +50,9 @@ describe('modus-wc-textarea', () => {
 
     expectLabelLinkedToControl(page.root!, 'textarea');
 
-    const textarea = page.root!.querySelector('textarea') as HTMLTextAreaElement;
+    const textarea = page.root!.querySelector(
+      'textarea'
+    ) as HTMLTextAreaElement;
     expect(textarea.hasAttribute('aria-label')).toBe(false);
   });
 
