@@ -1526,6 +1526,22 @@ describe('modus-wc-tooltip', () => {
       expect(page.rootInstance.isVisible).toBe(true);
     });
 
+    it('should use pointerenter touch type to skip hover show delay', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test" show-delay="200"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      coldPage();
+
+      const pointerEnter = new MouseEvent('pointerenter', { bubbles: true });
+      Object.defineProperty(pointerEnter, 'pointerType', { value: 'touch' });
+      page.root?.dispatchEvent(pointerEnter);
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
     it('should not show when a mouse click focuses the trigger', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
@@ -1539,6 +1555,38 @@ describe('modus-wc-tooltip', () => {
       trigger?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
 
       expect(page.rootInstance.isVisible).toBe(false);
+    });
+
+    it('should show on focus after mouse pointerup clears suppression', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+      const trigger = page.root?.querySelector('button');
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      trigger?.dispatchEvent(pointerDown);
+      trigger?.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+      trigger?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should show on focus after pointercancel clears suppression', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+      const trigger = page.root?.querySelector('button');
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      trigger?.dispatchEvent(pointerDown);
+      trigger?.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
+      trigger?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+      expect(page.rootInstance.isVisible).toBe(true);
     });
 
     it('should reopen on touch after Escape dismisses the tooltip', async () => {
