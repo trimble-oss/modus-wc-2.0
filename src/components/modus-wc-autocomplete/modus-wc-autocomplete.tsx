@@ -47,6 +47,7 @@ import {
   renderMenuItems,
   renderMoreChipsIndicator,
   syncFilteredItems,
+  syncMenuItemSelection,
   updateItemFocus,
 } from './modus-wc-autocomplete-core';
 
@@ -306,7 +307,6 @@ export class ModusWcAutocomplete {
     this.filteredItems = syncFilteredItems(
       this.items,
       this.searchText,
-      this.leaveMenuOpen,
       this.customInputChange
     );
   }
@@ -832,6 +832,10 @@ export class ModusWcAutocomplete {
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
+    if (this.multiSelect && this.menuVisible) {
+      syncMenuItemSelection(this.el, this.items);
+    }
+
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
@@ -857,6 +861,10 @@ export class ModusWcAutocomplete {
       this.selectionOrder = result.updatedSelectionOrder;
       // When removing chips, show all items instead of applying text filtering
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+
+      if (this.menuVisible) {
+        syncMenuItemSelection(this.el, this.items);
+      }
     }
 
     // Emit event for external handlers who want to know about the removal

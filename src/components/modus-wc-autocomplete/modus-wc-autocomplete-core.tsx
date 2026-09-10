@@ -54,19 +54,45 @@ export function getVisibleItems(
   return filteredItems?.filter((item) => !item.disabled) || [];
 }
 
+/**
+ * Reconcile menu-item `selected` props from autocomplete `items` state.
+ * Required when the menu stays open (`leaveMenuOpen`): `modus-wc-menu` defaults
+ * to single selection, so each click deselects siblings before items[] updates,
+ * and Stencil may not re-push unchanged `selected={true}` props to siblings.
+ */
+export function syncMenuItemSelection(
+  hostElement: HTMLElement,
+  items: IAutocompleteItem[] | undefined
+): void {
+  if (!items) {
+    return;
+  }
+
+  const menu = hostElement.querySelector('modus-wc-menu');
+  if (!menu) {
+    return;
+  }
+
+  menu.querySelectorAll('modus-wc-menu-item').forEach((element) => {
+    const menuItem = element as HTMLElement & {
+      selected?: boolean;
+      value?: string;
+    };
+    const sourceItem = items.find((item) => item.value === menuItem.value);
+
+    if (sourceItem) {
+      menuItem.selected = !!sourceItem.selected;
+    }
+  });
+}
+
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
   value: string,
-  leaveMenuOpen?: boolean,
   customInputChange?: (value: string) => void
 ): IAutocompleteItem[] {
   if (!items) {
     return [];
-  }
-
-  // When leaveMenuOpen is true and an item is selected, show all items
-  if (leaveMenuOpen && items.some((item) => item.selected)) {
-    return [...items];
   }
 
   // if customInputChange is defined, return items that are visibleInMenu
