@@ -311,6 +311,13 @@ export class ModusWcAutocomplete {
     );
   }
 
+  /** Multi-select + open menu: menu uses single-select clicks; sync from `items[]`. */
+  private reconcileMenuItemSelection(): void {
+    if (this.multiSelect && this.menuVisible) {
+      syncMenuItemSelection(this.el, this.items);
+    }
+  }
+
   private updateItemFocus(targetValue: string): void {
     this.isNavigating = true; // Prevent items watcher from re-filtering
     const updated = updateItemFocus(this.items, targetValue);
@@ -832,9 +839,7 @@ export class ModusWcAutocomplete {
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
-    if (this.multiSelect && this.menuVisible) {
-      syncMenuItemSelection(this.el, this.items);
-    }
+    this.reconcileMenuItemSelection();
 
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
@@ -863,7 +868,7 @@ export class ModusWcAutocomplete {
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
 
       if (this.menuVisible) {
-        syncMenuItemSelection(this.el, this.items);
+        this.reconcileMenuItemSelection();
       }
     }
 

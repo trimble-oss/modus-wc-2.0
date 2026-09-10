@@ -56,9 +56,11 @@ export function getVisibleItems(
 
 /**
  * Reconcile menu-item `selected` props from autocomplete `items` state.
- * Required when the menu stays open (`leaveMenuOpen`): `modus-wc-menu` defaults
- * to single selection, so each click deselects siblings before items[] updates,
+ * Used for multi-select while the menu stays open: `modus-wc-menu` defaults to
+ * single selection, so each click deselects siblings before `items[]` updates,
  * and Stencil may not re-push unchanged `selected={true}` props to siblings.
+ * Single-select filter churn is handled by stable `key={item.value}` on menu
+ * items so list changes do not reuse the wrong host and inherit stale `selected`.
  */
 export function syncMenuItemSelection(
   hostElement: HTMLElement,
@@ -813,6 +815,7 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              key={item.value}
               checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}

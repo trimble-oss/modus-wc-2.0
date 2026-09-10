@@ -9,6 +9,7 @@ import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
+import * as autocompleteCore from './modus-wc-autocomplete-core';
 import {
   renderNoResults,
   syncFilteredItems,
@@ -5488,6 +5489,158 @@ describe('modus-wc-autocomplete', () => {
     syncMenuItemSelection(host, [
       { label: 'Apple', value: 'apple', visibleInMenu: true, selected: true },
     ]);
+  });
+
+  it('should not call syncMenuItemSelection when syncFilteredItems runs in single-select mode', async () => {
+    const syncSpy = jest.spyOn(autocompleteCore, 'syncMenuItemSelection');
+
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Single-select filter sync test" leave-menu-open="true" min-chars="0"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+    ];
+    autocomplete['menuVisible'] = true;
+    autocomplete['searchText'] = 'ap';
+    await page.waitForChanges();
+
+    autocomplete['syncFilteredItems']();
+    await page.waitForChanges();
+
+    expect(syncSpy).not.toHaveBeenCalled();
+    syncSpy.mockRestore();
+  });
+
+  it('should call syncMenuItemSelection after multi-select selection when menu is open', async () => {
+    const syncSpy = jest.spyOn(autocompleteCore, 'syncMenuItemSelection');
+
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcChip,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Multi-select reconcile test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+    ];
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    autocomplete['handleItemSelect'](autocomplete.items[0]);
+    await page.waitForChanges();
+
+    expect(syncSpy).toHaveBeenCalled();
+    syncSpy.mockRestore();
+  });
+
+  it('should not show stale selected styling when filter expands the menu list with leaveMenuOpen using stable menu item keys', async () => {
+    const syncSpy = jest.spyOn(autocompleteCore, 'syncMenuItemSelection');
+
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Filter reuse test" leave-menu-open="true" min-chars="0"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+      { label: 'Pineapple', value: 'pineapple', visibleInMenu: true },
+    ];
+    autocomplete.leaveMenuOpen = true;
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const emitInputChange = (value: string) => {
+      input.value = value;
+      const changeEvent = new Event('input', { bubbles: true });
+      Object.defineProperty(changeEvent, 'target', {
+        value: input,
+        writable: false,
+        configurable: true,
+      });
+      autocomplete['handleChange'](
+        new CustomEvent('inputChange', { detail: changeEvent })
+      );
+    };
+
+    const clickMenuItem = async (value: string) => {
+      const menuItem = Array.from(
+        page.root!.querySelectorAll('modus-wc-menu-item')
+      ).find(
+        (element) =>
+          (element as HTMLElement & { value?: string }).value === value
+      );
+      menuItem?.querySelector('button')?.click();
+      await page.waitForChanges();
+    };
+
+    emitInputChange('apple');
+    await page.waitForChanges();
+    await clickMenuItem('apple');
+
+    emitInputChange('appl');
+    await page.waitForChanges();
+    await clickMenuItem('pineapple');
+
+    const getMenuItem = (value: string) =>
+      Array.from(page.root!.querySelectorAll('modus-wc-menu-item')).find(
+        (element) =>
+          (element as HTMLElement & { value?: string }).value === value
+      ) as (HTMLElement & { selected?: boolean }) | undefined;
+
+    expect(getMenuItem('apple')?.selected).toBe(false);
+    expect(getMenuItem('banana')?.selected).toBe(false);
+    expect(getMenuItem('pineapple')?.selected).toBe(true);
+    expect(syncSpy).not.toHaveBeenCalled();
+    syncSpy.mockRestore();
+  });
+
+  it('should reconcile multi-select menu selection after chip removal when menu is open', async () => {
+    const syncSpy = jest.spyOn(autocompleteCore, 'syncMenuItemSelection');
+
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcTextInput,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcChip,
+      ],
+      html: `<modus-wc-autocomplete aria-label="Chip remove reconcile test" multi-select="true" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Apple', value: 'apple', selected: true, visibleInMenu: true },
+      { label: 'Banana', value: 'banana', selected: true, visibleInMenu: true },
+    ];
+    autocomplete['selectionOrder'] = ['apple', 'banana'];
+    autocomplete['menuVisible'] = true;
+    await page.waitForChanges();
+
+    autocomplete['handleChipRemove'](autocomplete.items[0]);
+    await page.waitForChanges();
+
+    expect(syncSpy).toHaveBeenCalled();
+    syncSpy.mockRestore();
   });
 
   // Selecting an item must never leave it with focused=true, regardless of
