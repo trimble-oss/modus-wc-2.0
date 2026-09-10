@@ -439,7 +439,6 @@ const Template: Story = {
   }
 </style>
 <modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
   auto-complete=${ifDefined(args['auto-complete'])}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}

@@ -39,9 +39,6 @@ export class ModusWcProgress {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Progress';
-    }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }

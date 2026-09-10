@@ -24,7 +24,7 @@ describe('modus-wc-autocomplete', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcAutocomplete, ModusWcMenu, ModusWcTextInput],
-      html: '<modus-wc-autocomplete aria-label="Default autocomplete"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete></modus-wc-autocomplete>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -37,10 +37,15 @@ describe('modus-wc-autocomplete', () => {
         ModusWcTextInput,
         ModusWcInputLabel,
       ],
-      html: '<modus-wc-autocomplete label="Search" aria-label="Search"></modus-wc-autocomplete>',
+      html: '<modus-wc-autocomplete label="Search"></modus-wc-autocomplete>',
     });
 
     expectLabelLinkedToControl(page.root!, 'modus-wc-text-input input');
+
+    const input = page.root!.querySelector(
+      'modus-wc-text-input input'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with custom props', async () => {

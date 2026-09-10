@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-textarea renders with default props 1`] = `
-<modus-wc-textarea value=""><textarea aria-label="Default textarea" aria-placeholder="" class="modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="mwc_id_0" placeholder="" value=""></textarea>
+<modus-wc-textarea value=""><textarea aria-placeholder="" class="modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="mwc_id_0" placeholder="" value=""></textarea>
 </modus-wc-textarea>
 `;
 

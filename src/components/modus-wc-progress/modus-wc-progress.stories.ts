@@ -40,7 +40,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-progress
-        aria-label="Progress bar"
         custom-class="${ifDefined(args['custom-class'])}"
         ?indeterminate=${args.indeterminate}
         label=${ifDefined(args.label)}

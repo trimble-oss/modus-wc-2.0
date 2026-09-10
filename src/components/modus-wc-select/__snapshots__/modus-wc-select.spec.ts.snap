@@ -8,7 +8,7 @@ exports[`modus-wc-select renders with default props 1`] = `
       Label
     </label>
   </modus-wc-input-label>
-  <select aria-label="Default select" class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_0">
+  <select class="modus-wc-select modus-wc-select-bordered modus-wc-select-md modus-wc-w-full" id="mwc_id_0">
     <option disabled="" hidden="" selected="" value="">
       Select an option
     </option>

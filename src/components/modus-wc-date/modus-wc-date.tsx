@@ -342,9 +342,6 @@ export class ModusWcDate {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Date input';
-    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     try {

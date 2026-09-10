@@ -5,7 +5,7 @@ describe('modus-wc-progress', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcProgress],
-      html: '<modus-wc-progress aria-label="Default Progress Bar"></modus-wc-progress>',
+      html: '<modus-wc-progress></modus-wc-progress>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -29,7 +29,7 @@ describe('modus-wc-progress', () => {
   it('should render label', async () => {
     const page = await newSpecPage({
       components: [ModusWcProgress],
-      html: '<modus-wc-progress aria-label="Custom Progress Bar" label="Loading..."></modus-wc-progress>',
+      html: '<modus-wc-progress label="Loading..."></modus-wc-progress>',
     });
     expect(page.root).toMatchSnapshot();
   });

@@ -44,7 +44,7 @@ describe('modus-wc-date', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Default date" format="dd/mm/yyyy"></modus-wc-date>',
+      html: '<modus-wc-date format="dd/mm/yyyy"></modus-wc-date>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -79,10 +79,15 @@ describe('modus-wc-date', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate, ModusWcInputLabel],
-      html: '<modus-wc-date label="Birth date" aria-label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
+      html: '<modus-wc-date label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input[type="text"]');
+
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {

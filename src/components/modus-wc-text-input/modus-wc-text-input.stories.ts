@@ -139,7 +139,6 @@ type Story = StoryObj<TextInputArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-text-input
-      aria-label="Text input"
       auto-capitalize=${ifDefined(args['auto-capitalize'])}
       auto-complete=${ifDefined(args['auto-complete'])}
       auto-correct=${ifDefined(args['auto-correct'])}
@@ -182,7 +181,6 @@ export const WithErrorFeedback: Story = {
   // prettier-ignore
   render: (args) => html`
     <modus-wc-text-input
-      aria-label="Text input with error feedback"
       .feedback=${errorFeedback}
       id="error-input"
       label=${ifDefined(args.label)}

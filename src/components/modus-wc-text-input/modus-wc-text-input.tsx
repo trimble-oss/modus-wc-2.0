@@ -158,10 +158,6 @@ export class ModusWcTextInput {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = this.placeholder || 'Text input';
-    }
-
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
       ...inheritAttributes(this.el, ['spellcheck', 'inputmode']),

@@ -119,10 +119,6 @@ export class ModusWcTimeInput {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Time input';
-    }
-
     // if no datalistId value provided, use internal datalist id to enable time options
     if (!this.datalistId) {
       this.datalistId = this.internalDatalistId;
