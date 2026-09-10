@@ -249,4 +249,44 @@ describe('modus-wc-button', () => {
 
     expect(clickSpy).not.toHaveBeenCalled();
   });
+
+  it('should keep button chrome when host textContent is replaced', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="primary">Add to Cart</modus-wc-button>',
+    });
+
+    page.root!.textContent = 'Added to Cart';
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector('button.modus-wc-btn');
+    expect(button).not.toBeNull();
+    expect(button?.textContent).toBe('Added to Cart');
+    expect(button?.classList.contains('modus-wc-btn-filled')).toBe(true);
+  });
+
+  it('should keep button chrome when host innerHTML is replaced', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    page.root!.innerHTML = 'Added to Cart';
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector('button.modus-wc-btn');
+    expect(button).not.toBeNull();
+    expect(button?.textContent).toBe('Added to Cart');
+  });
+
+  it('should release slot protection on disconnect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    page.rootInstance.disconnectedCallback();
+    page.rootInstance.disconnectedCallback();
+    expect(page.rootInstance).toBeTruthy();
+  });
 });

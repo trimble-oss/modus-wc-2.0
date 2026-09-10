@@ -2,7 +2,11 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  protectLightDomSlotContent,
+} from '../utils';
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 
@@ -18,6 +22,7 @@ const ALERT_COLORS = ['success', 'warning', 'danger'];
 })
 export class ModusWcBadge {
   private inheritedAttributes: Attributes = {};
+  private releaseSlotProtection?: () => void;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -45,6 +50,18 @@ export class ModusWcBadge {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    this.releaseSlotProtection = protectLightDomSlotContent({
+      host: this.el,
+      getInner: () => this.el.querySelector('span.modus-wc-badge'),
+    });
+  }
+
+  disconnectedCallback() {
+    this.releaseSlotProtection?.();
+    this.releaseSlotProtection = undefined;
   }
 
   private getClasses(): string {
