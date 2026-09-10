@@ -1519,12 +1519,41 @@ describe('modus-wc-tooltip', () => {
 
       coldPage();
 
-      // A tap fires pointerenter (pointerType: touch) before the emulated mouseenter
-      const pointerEnter = new MouseEvent('pointerenter');
-      Object.defineProperty(pointerEnter, 'pointerType', { value: 'touch' });
-      page.root?.dispatchEvent(pointerEnter);
-      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'touch' });
+      page.root?.dispatchEvent(pointerDown);
 
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should not show when a mouse click focuses the trigger', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+      const trigger = page.root?.querySelector('button');
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      trigger?.dispatchEvent(pointerDown);
+      trigger?.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+      expect(page.rootInstance.isVisible).toBe(false);
+    });
+
+    it('should reopen on touch after Escape dismisses the tooltip', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const pointerDown = new MouseEvent('pointerdown');
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'touch' });
+      page.root?.dispatchEvent(pointerDown);
+      document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+      expect(page.rootInstance.isVisible).toBe(false);
+
+      page.root?.dispatchEvent(pointerDown);
       expect(page.rootInstance.isVisible).toBe(true);
     });
 

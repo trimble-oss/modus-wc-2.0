@@ -48,6 +48,7 @@ export class ModusWcTooltip {
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
   private lastPointerType = '';
+  private suppressNextFocus = false;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -390,11 +391,23 @@ export class ModusWcTooltip {
   @Listen('pointerdown')
   handlePointerDown(event: PointerEvent) {
     this.lastPointerType = event.pointerType;
+    this.suppressNextFocus = event.pointerType === 'mouse';
 
     if (event.pointerType === 'touch') {
+      this.escapeDismissed = false;
       this.isHovered = true;
       this.showTooltip();
     }
+  }
+
+  @Listen('pointerup')
+  handlePointerUp() {
+    this.suppressNextFocus = false;
+  }
+
+  @Listen('pointercancel')
+  handlePointerCancel() {
+    this.suppressNextFocus = false;
   }
 
   @Listen('pointerenter')
@@ -417,14 +430,9 @@ export class ModusWcTooltip {
   }
 
   @Listen('focusin')
-  handleFocusIn(event: FocusEvent) {
-    const target = event.target as HTMLElement | null;
-    const isFocusVisible =
-      target === this.el || target?.matches?.(':focus-visible');
-
-    // A mouse click may focus the trigger, but should not open the tooltip.
-    // Keyboard focus still opens it through :focus-visible.
-    if (this.lastPointerType === 'mouse' && !isFocusVisible) {
+  handleFocusIn() {
+    if (this.suppressNextFocus) {
+      this.suppressNextFocus = false;
       return;
     }
 
