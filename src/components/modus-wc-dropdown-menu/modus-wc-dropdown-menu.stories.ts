@@ -477,17 +477,29 @@ export const LazyLoading: Story = {
     slot.className = 'lazy-menu-loading';
     slot.setAttribute('aria-busy', 'true');
     slot.setAttribute('aria-live', 'polite');
-    slot.innerHTML = '<modus-wc-loader variant="spinner" size="sm"></modus-wc-loader>';
+    const loader = document.createElement('modus-wc-loader');
+    loader.setAttribute('variant', 'spinner');
+    loader.setAttribute('size', 'sm');
+    slot.appendChild(loader);
   };
 
   const showMenuItems = (items) => {
     const slot = getMenuSlot();
     resetMenuSlot(slot);
-    slot.innerHTML = items
-      .map(({ label, value }) =>
-        \`<modus-wc-menu-item label="\${label}" value="\${value}"></modus-wc-menu-item>\`
-      )
-      .join('');
+    items.forEach(({ label, value }) => {
+      const item = document.createElement('modus-wc-menu-item');
+      item.setAttribute('label', label);
+      item.setAttribute('value', value);
+      slot.appendChild(item);
+    });
+  };
+
+  let loadTimeoutId;
+
+  const clearLoadTimeout = () => {
+    if (loadTimeoutId === undefined) return;
+    window.clearTimeout(loadTimeoutId);
+    loadTimeoutId = undefined;
   };
 
   // Fetch on first open. Keep div[slot="menu"] mounted; swap its contents only.
@@ -498,7 +510,9 @@ export const LazyLoading: Story = {
     status = 'loading';
     showLoader();
 
-    window.setTimeout(() => {
+    clearLoadTimeout();
+    loadTimeoutId = window.setTimeout(() => {
+      loadTimeoutId = undefined;
       showMenuItems([
         { label: 'Fetched One', value: '1' },
         { label: 'Fetched Two', value: '2' },
@@ -515,7 +529,14 @@ export const LazyLoading: Story = {
   },
   render: () => {
     let dropdownEl: DropdownMenuElement | undefined;
+    let loadTimeoutId: number | undefined;
     const state = lazyLoadingStoryState;
+
+    const clearLoadTimeout = () => {
+      if (loadTimeoutId === undefined) return;
+      window.clearTimeout(loadTimeoutId);
+      loadTimeoutId = undefined;
+    };
 
     const handleVisibilityChange = (
       event: CustomEvent<{ isVisible: boolean }>
@@ -533,7 +554,9 @@ export const LazyLoading: Story = {
       state.status = 'loading';
       showLoader(dropdownEl);
 
-      window.setTimeout(() => {
+      clearLoadTimeout();
+      loadTimeoutId = window.setTimeout(() => {
+        loadTimeoutId = undefined;
         if (!dropdownEl) return;
         showMenuItems(dropdownEl, lazyLoadMenuItems());
         state.status = 'ready';
@@ -574,7 +597,16 @@ export const LazyLoading: Story = {
   button-variant="filled"
   @menuVisibilityChange=${handleVisibilityChange}
   ${ref((el) => {
-    dropdownEl = el ? (el as DropdownMenuElement) : undefined;
+    if (!el) {
+      clearLoadTimeout();
+      dropdownEl = undefined;
+      if (state.pendingLoad || state.status === 'loading') {
+        state.pendingLoad = false;
+        state.status = 'idle';
+      }
+      return;
+    }
+    dropdownEl = el as DropdownMenuElement;
   })}
 >
   <div slot="button">

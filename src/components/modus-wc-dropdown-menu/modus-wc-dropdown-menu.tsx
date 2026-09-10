@@ -87,9 +87,6 @@ export class ModusWcDropdownMenu {
 
   @State() private menuPosition = { x: 0, y: 0 };
 
-  /** Avoids a visible flash at (0, 0) before the first position pass completes. */
-  @State() private menuPositionReady = false;
-
   @Listen('click', { target: 'document' })
   handleDocumentClick(event: Event) {
     const path = event.composedPath();
@@ -112,24 +109,12 @@ export class ModusWcDropdownMenu {
   @Watch('menuVisible')
   async onMenuVisibilityChange(newValue: boolean) {
     if (newValue) {
-      this.menuPositionReady = false;
       await this.updateMenuPosition();
-      this.menuPositionReady = true;
-      return;
     }
-
-    this.menuPositionReady = false;
   }
 
   componentDidLoad() {
     this.buttonRef = this.el.querySelector('modus-wc-button') as HTMLElement;
-
-    if (this.menuVisible) {
-      this.menuPositionReady = false;
-      void this.updateMenuPosition().then(() => {
-        this.menuPositionReady = true;
-      });
-    }
   }
 
   componentWillLoad() {
@@ -168,14 +153,6 @@ export class ModusWcDropdownMenu {
   };
 
   render() {
-    const menuShown = this.menuVisible && this.menuPositionReady;
-    const menuTop = Number.isFinite(this.menuPosition.y)
-      ? this.menuPosition.y
-      : 0;
-    const menuLeft = Number.isFinite(this.menuPosition.x)
-      ? this.menuPosition.x
-      : 0;
-
     return (
       <Host class={this.getClasses()} {...this.inheritedAttributes}>
         <modus-wc-button
@@ -199,13 +176,13 @@ export class ModusWcDropdownMenu {
           style={{
             // Positioning
             position: this.menuStrategy,
-            top: `${menuTop}px`,
-            left: `${menuLeft}px`,
+            top: `${this.menuPosition.y}px`,
+            left: `${this.menuPosition.x}px`,
             zIndex: '1000',
             // Visibility
-            visibility: menuShown ? 'visible' : 'hidden',
-            opacity: menuShown ? '1' : '0',
-            pointerEvents: menuShown ? 'auto' : 'none',
+            visibility: this.menuVisible ? 'visible' : 'hidden',
+            opacity: this.menuVisible ? '1' : '0',
+            pointerEvents: this.menuVisible ? 'auto' : 'none',
           }}
         >
           <modus-wc-menu bordered={this.menuBordered} size={this.menuSize}>

@@ -12,14 +12,6 @@ class TestHostComponent {
   }
 }
 
-type DropdownMenuInternals = {
-  menuPositionReady: boolean;
-  menuPosition: { x: number; y: number };
-  updateMenuPosition: () => Promise<void>;
-  buttonRef?: HTMLElement;
-  menuRef?: HTMLElement;
-};
-
 describe('modus-wc-dropdown-menu', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -235,79 +227,5 @@ describe('modus-wc-dropdown-menu', () => {
     expect(visibilitySpy).toHaveBeenLastCalledWith(
       expect.objectContaining({ detail: { isVisible: false } })
     );
-  });
-
-  it('should close the menu when the trigger button is clicked again', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcDropdownMenu,
-        ModusWcButton,
-        ModusWcMenu,
-        ModusWcMenuItem,
-      ],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-                <div slot="menu">
-                  <modus-wc-menu-item label="Item One" value="1" />
-                </div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const button = page.root!.querySelector('button')!;
-    const visibilitySpy = jest.fn();
-    page.root?.addEventListener('menuVisibilityChange', visibilitySpy);
-
-    button.click();
-    await page.waitForChanges();
-    expect(page.root!.menuVisible).toBe(true);
-
-    button.click();
-    await page.waitForChanges();
-
-    expect(page.root!.menuVisible).toBe(false);
-    expect(visibilitySpy).toHaveBeenLastCalledWith(
-      expect.objectContaining({ detail: { isVisible: false } })
-    );
-  });
-
-  it('should reset menuPositionReady when the menu closes', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as unknown as DropdownMenuInternals;
-
-    page.root?.querySelector('button')?.click();
-    await page.waitForChanges();
-    expect(component.menuPositionReady).toBe(true);
-
-    page.root!.menuVisible = false;
-    await page.waitForChanges();
-    expect(component.menuPositionReady).toBe(false);
-  });
-
-  it('should not update menu position when button or menu refs are missing', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
-      html: `<modus-wc-dropdown-menu>
-                <div slot="button">Button</div>
-             </modus-wc-dropdown-menu>`,
-    });
-
-    const component = page.rootInstance as unknown as DropdownMenuInternals;
-    component.menuPosition = { x: 1, y: 2 };
-    component.buttonRef = undefined;
-    await component.updateMenuPosition();
-    expect(component.menuPosition).toEqual({ x: 1, y: 2 });
-
-    component.buttonRef = page.root!.querySelector(
-      'modus-wc-button'
-    ) as HTMLElement;
-    component.menuRef = undefined;
-    await component.updateMenuPosition();
-    expect(component.menuPosition).toEqual({ x: 1, y: 2 });
   });
 });

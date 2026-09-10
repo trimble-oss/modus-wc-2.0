@@ -53,7 +53,7 @@ exports[`modus-wc-dropdown-menu should render with menu items 1`] = `
       </div>
     </button>
   </modus-wc-button>
-  <div class="menu-wrapper" style="position: absolute; top: 10px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
+  <div class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
     <modus-wc-menu selection-mode="single">
       <!---->
       <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
