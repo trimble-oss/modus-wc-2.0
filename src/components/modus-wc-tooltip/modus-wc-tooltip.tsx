@@ -387,6 +387,16 @@ export class ModusWcTooltip {
   }
 
   /** Fires before the emulated mouseenter on touch, so mouseenter knows its source. */
+  @Listen('pointerdown')
+  handlePointerDown(event: PointerEvent) {
+    this.lastPointerType = event.pointerType;
+
+    if (event.pointerType === 'touch') {
+      this.isHovered = true;
+      this.showTooltip();
+    }
+  }
+
   @Listen('pointerenter')
   handlePointerEnter(event: PointerEvent) {
     this.lastPointerType = event.pointerType;
@@ -407,7 +417,17 @@ export class ModusWcTooltip {
   }
 
   @Listen('focusin')
-  handleFocusIn() {
+  handleFocusIn(event: FocusEvent) {
+    const target = event.target as HTMLElement | null;
+    const isFocusVisible =
+      target === this.el || target?.matches?.(':focus-visible');
+
+    // A mouse click may focus the trigger, but should not open the tooltip.
+    // Keyboard focus still opens it through :focus-visible.
+    if (this.lastPointerType === 'mouse' && !isFocusVisible) {
+      return;
+    }
+
     // Focus shows immediately; drop any pending hover show so it can't re-fire
     clearTimeout(this.showDelayTimer);
     this.escapeDismissed = false;
