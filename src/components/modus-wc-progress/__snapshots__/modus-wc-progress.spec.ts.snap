@@ -10,8 +10,13 @@ exports[`modus-wc-progress should render indeterminate state 1`] = `
 exports[`modus-wc-progress should render label 1`] = `
 <modus-wc-progress class="modus-wc-progress-container" label="Loading..." value="0">
   <!---->
-  <progress aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="modus-wc-progress modus-wc-w-full" max="100" value="0"></progress>
-  <modus-wc-input-label labeltext="Loading..."></modus-wc-input-label>
+  <modus-wc-input-label class="modus-wc-input-label-host">
+    <!---->
+    <label class="modus-wc-input-label modus-wc-input-label-size-md" htmlfor="mwc_id_0">
+      Loading...
+    </label>
+  </modus-wc-input-label>
+  <progress aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="modus-wc-progress modus-wc-w-full" id="mwc_id_0" max="100" value="0"></progress>
 </modus-wc-progress>
 `;
 

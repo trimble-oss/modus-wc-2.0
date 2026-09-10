@@ -1,7 +1,11 @@
 import { Component, Element, Fragment, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -15,6 +19,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcProgress {
   private inheritedAttributes: Attributes = {};
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -64,6 +69,13 @@ export class ModusWcProgress {
   }
 
   render() {
+    const progressId = this.label
+      ? this.resolveEffectiveId(undefined)
+      : undefined;
+    const hasAuthorAccessibleName =
+      Boolean(this.inheritedAttributes['aria-label']) ||
+      Boolean(this.inheritedAttributes['aria-labelledby']);
+
     const progressAriaAttributes = this.indeterminate
       ? { 'aria-hidden': 'true' }
       : {
@@ -76,17 +88,25 @@ export class ModusWcProgress {
       ? {}
       : { max: this.max, value: this.value };
 
+    const radialLabelledBy =
+      this.label && !hasAuthorAccessibleName && progressId
+        ? { 'aria-labelledby': progressId }
+        : {};
+
     return (
       <Host class="modus-wc-progress-container">
         {this.variant === 'default' ? (
           <Fragment>
+            {this.label && (
+              <modus-wc-input-label forId={progressId} labelText={this.label} />
+            )}
             <progress
               class={this.getClasses()}
+              id={progressId}
               {...valueAttributes}
               {...progressAriaAttributes}
               {...this.inheritedAttributes}
             />
-            {this.label && <modus-wc-input-label labelText={this.label} />}
           </Fragment>
         ) : (
           <div
@@ -94,9 +114,12 @@ export class ModusWcProgress {
             style={{ '--value': `${this.getPercentageValue()}` }}
             role="progressbar"
             {...progressAriaAttributes}
+            {...radialLabelledBy}
             {...this.inheritedAttributes}
           >
-            <span class="modus-wc-radial-progress-label">{this.label}</span>
+            <span class="modus-wc-radial-progress-label" id={progressId}>
+              {this.label}
+            </span>
             <slot />
           </div>
         )}

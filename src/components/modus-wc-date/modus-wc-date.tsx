@@ -2168,11 +2168,22 @@ export class ModusWcDate {
     const attrs = { ...this.inheritedAttributes };
     const ariaLabel = attrs['aria-label'];
     delete attrs['aria-labelledby'];
+    delete attrs['aria-label'];
 
-    return {
-      ...attrs,
-      'aria-label': ariaLabel ? `${ariaLabel} end` : 'End date',
-    };
+    const endAccessibleName = ariaLabel
+      ? `${ariaLabel} end`
+      : this.label
+        ? `${this.label} end`
+        : undefined;
+
+    if (endAccessibleName) {
+      return {
+        ...attrs,
+        'aria-label': endAccessibleName,
+      };
+    }
+
+    return attrs;
   }
 
   render() {

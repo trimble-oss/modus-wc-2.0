@@ -17,6 +17,7 @@ const meta: Meta<ProgressArgs> = {
   component: 'modus-wc-progress',
   args: {
     indeterminate: false,
+    label: 'Progress',
     max: 100,
     value: 70,
     variant: 'default',
@@ -53,7 +54,12 @@ export const Default: Story = {
 
 export const Indeterminate: Story = {
   render: () => {
-    return html` <modus-wc-progress indeterminate="true"></modus-wc-progress> `;
+    return html`
+      <modus-wc-progress
+        aria-label="Loading progress"
+        indeterminate="true"
+      ></modus-wc-progress>
+    `;
   },
 };
 

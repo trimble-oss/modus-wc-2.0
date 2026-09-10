@@ -4775,11 +4775,32 @@ describe('modus-wc-date', () => {
         expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
       });
 
-      it('should default the end input accessible name when aria-label is absent', async () => {
+      it('should not inject a default end input accessible name when aria-label is absent', async () => {
         const { component } = await createRangePage();
         component['inheritedAttributes'] = { 'aria-describedby': 'desc' };
 
-        expect(component['endInputAttributes']['aria-label']).toBe('End date');
+        expect(component['endInputAttributes']['aria-label']).toBeUndefined();
+      });
+
+      it('should derive the end input accessible name from the label prop', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate, ModusWcInputLabel],
+          html: '<modus-wc-date type="range" label="Trip dates"></modus-wc-date>',
+        });
+        const inputs = page.root!.querySelectorAll('input');
+
+        expect(inputs[0].hasAttribute('aria-label')).toBe(false);
+        expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
+      });
+
+      it('should leave the end input without an accessible name when neither aria-label nor label is provided', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date type="range"></modus-wc-date>',
+        });
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        expect(endInput.hasAttribute('aria-label')).toBe(false);
       });
 
       it('should emit inputChange with field end on end input', async () => {

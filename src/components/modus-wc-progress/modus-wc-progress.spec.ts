@@ -1,4 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
+import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcProgress } from './modus-wc-progress';
 
 describe('modus-wc-progress', () => {
@@ -28,9 +30,10 @@ describe('modus-wc-progress', () => {
 
   it('should render label', async () => {
     const page = await newSpecPage({
-      components: [ModusWcProgress],
+      components: [ModusWcProgress, ModusWcInputLabel],
       html: '<modus-wc-progress label="Loading..."></modus-wc-progress>',
     });
+    expectLabelLinkedToControl(page.root!, 'progress');
     expect(page.root).toMatchSnapshot();
   });
 });
