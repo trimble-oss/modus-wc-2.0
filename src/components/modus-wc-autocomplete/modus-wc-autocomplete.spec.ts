@@ -5596,7 +5596,8 @@ describe('modus-wc-autocomplete', () => {
     await page.waitForChanges();
     await clickMenuItem('apple');
 
-    emitInputChange('appl');
+    // Partial query (apple without last letter) widens filter to include Banana.
+    emitInputChange('apple'.slice(0, -1));
     await page.waitForChanges();
     await clickMenuItem('pineapple');
 
