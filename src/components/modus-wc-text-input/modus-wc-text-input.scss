@@ -190,7 +190,7 @@ modus-wc-text-input {
 
 [data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-input-label,
 [data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-input-label {
-  color: var(--modus-wc-color-gray-6); // Figma label color (#6a6e79)
+  color: var(--modus-wc-color-accent); // Figma label color (#6a6e79)
   padding-bottom: var(--modus-wc-spacing-xs); // Figma t-spacing/1 (4px)
 }
 
@@ -243,6 +243,8 @@ modus-wc-text-input {
 [data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,
 [data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-text-input {
   &.modus-wc-input {
+    gap: var(--modus-wc-spacing-sm);
+
     &.modus-wc-input-xs {
       font-size: var(--modus-wc-font-size-sm);
       height: var(--modus-wc-size-xs);
