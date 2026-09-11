@@ -7,11 +7,13 @@ import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-he
 interface AlertArgs {
   'alert-description'?: string;
   'alert-title': string;
+  'content-display-mode'?: 'default' | 'expandable';
   'custom-class'?: string;
   delay?: number;
   'disable-icon'?: boolean;
   dismissible?: boolean;
   dismissClick?: () => void;
+  contentExpandedChange?: () => void;
   icon?: string;
   variant: 'error' | 'info' | 'neutral' | 'success' | 'warning';
   role: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
@@ -23,6 +25,7 @@ const meta: Meta<AlertArgs> = {
   args: {
     'alert-description': 'You have 3 new messages.',
     'alert-title': 'New message!',
+    'content-display-mode': 'default',
     'disable-icon': false,
     dismissible: false,
     role: 'status',
@@ -37,12 +40,28 @@ const meta: Meta<AlertArgs> = {
       control: { type: 'select' },
       options: ['neutral', 'error', 'info', 'success', 'warning'],
     },
+    'content-display-mode': {
+      control: { type: 'select' },
+      options: ['default', 'expandable'],
+      table: {
+        category: 'attributes',
+        defaultValue: { summary: 'default' },
+        type: { summary: "'default' | 'expandable'" },
+      },
+    },
+    contentExpandedChange: {
+      action: 'contentExpandedChange',
+      table: {
+        category: 'events',
+        type: { summary: 'CustomEvent<{ expanded: boolean }>' },
+      },
+    },
   },
   decorators: [withActions],
   parameters: {
     layout: 'padded',
     actions: {
-      handles: ['dismissClick'],
+      handles: ['dismissClick', 'contentExpandedChange'],
     },
   },
 };
@@ -58,6 +77,7 @@ const Template: Story = {
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -73,6 +93,18 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
+export const Expandable: Story = {
+  ...Template,
+  args: {
+    'alert-title': 'System notification',
+    'alert-description':
+      'Your project export finished successfully. Open the downloads folder to review the package, share it with your team, or archive a copy for compliance. The archive includes metadata, checksums, and a manifest so auditors can verify what was exported and when. If anything looks wrong, re-run the export from project settings or contact support with the job ID shown in the activity log. This message is intentionally long so the body clamps to two lines with an ellipsis and the Show more control appears below the preview.',
+    'content-display-mode': 'expandable',
+    dismissible: true,
+    variant: 'info',
+  },
+};
+
 export const CustomButton: Story = {
   render: (args) => {
     // prettier-ignore
@@ -80,6 +112,7 @@ export const CustomButton: Story = {
 <modus-wc-alert
   alert-description=${ifDefined(args['alert-description'])}
   alert-title=${args['alert-title']}
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -105,6 +138,7 @@ export const WithCustomContent: Story = {
     return html`
 <modus-wc-alert
   id="alert-123"
+  content-display-mode=${ifDefined(args['content-display-mode'])}
   custom-class=${ifDefined(args['custom-class'])}
   delay=${ifDefined(args.delay)}
   disable-icon=${ifDefined(args['disable-icon'])}
@@ -128,6 +162,7 @@ export const ShadowDomParent: Story = {
           const alertEl = el as unknown as {
             alertDescription: string;
             alertTitle: string;
+            contentDisplayMode: string;
             customClass: string;
             delay: number;
             disableIcon: boolean;
@@ -137,6 +172,7 @@ export const ShadowDomParent: Story = {
           };
           alertEl.alertDescription = v['alert-description'] ?? '';
           alertEl.alertTitle = v['alert-title'];
+          alertEl.contentDisplayMode = v['content-display-mode'] ?? 'default';
           alertEl.customClass = v['custom-class'] || '';
           alertEl.delay = v.delay ?? 0;
           alertEl.disableIcon = Boolean(v['disable-icon']);
@@ -163,14 +199,15 @@ export const Migration: Story = {
 
 #### Prop Mapping
 
-| 1.0 Prop          | 2.0 Prop    | Notes                                 |
-|-------------------|-------------|---------------------------------------|
-| aria-label        | aria-label  |                                       |
-| button-aria-label |             | Not carried over, use \`button\` slot |
-| button-text       |             | Not carried over, use \`button\` slot |
-| dismissible       | dismissible |                                       |
-| message           | alert-title |                                       |
-| type              | variant     |                                       |
+| 1.0 Prop          | 2.0 Prop               | Notes                                                                 |
+|-------------------|------------------------|-----------------------------------------------------------------------|
+| aria-label        | aria-label             |                                                                       |
+| button-aria-label |                        | Not carried over, use \`button\` slot                               |
+| button-text       |                        | Not carried over, use \`button\` slot                               |
+| dismissible       | dismissible            |                                                                       |
+| message           | alert-title            |                                                                       |
+| type              | variant                |                                                                       |
+|                   | content-display-mode   | New in 2.0. \`default\` (default) or \`expandable\` (two-line preview + Show more / Show less) |
 
 #### Event Mapping
 
@@ -178,6 +215,7 @@ export const Migration: Story = {
 |--------------|--------------|---------------------------------------|
 | actionClick  |              | Not carried over, use \`button\` slot |
 | dismissClick | dismissClick |                                       |
+|              | contentExpandedChange | Expandable body expanded/collapsed |
         `,
       },
     },

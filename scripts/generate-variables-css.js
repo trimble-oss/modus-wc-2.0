@@ -18,8 +18,8 @@ const targetPath = join(root, 'src/styles/modus-wc-variables.css');
 
 const read = (path, label) => {
   if (!existsSync(path)) {
-    console.error(`Missing required file: ${label} (${path})`); // eslint-disable-line no-undef
-    process.exit(1); // eslint-disable-line no-undef
+    console.error(`Missing required file: ${label} (${path})`);  
+    process.exit(1);  
   }
   return readFileSync(path, 'utf8');
 };
@@ -159,4 +159,4 @@ ${themeBlocks}
 
 writeFileSync(targetPath, output, 'utf8');
 
-console.log(`Generated: ${targetPath}`); // eslint-disable-line no-undef
+console.log(`Generated: ${targetPath}`);  
