@@ -181,6 +181,24 @@ export class ModusWcAlert {
     }
   }
 
+  // modus-wc-button inherits host ARIA attributes only on load, so the
+  // expanded state is written straight to its inner button after each render.
+  private syncExpandToggleAria(): void {
+    const toggle = this.el.querySelector<HTMLButtonElement>(
+      'button.modus-wc-alert-expand-toggle'
+    );
+
+    if (!toggle) {
+      return;
+    }
+
+    toggle.setAttribute('aria-controls', this.bodyContentId);
+    toggle.setAttribute(
+      'aria-expanded',
+      this.isContentExpanded ? 'true' : 'false'
+    );
+  }
+
   private shouldShowExpandToggle(): boolean {
     return (
       this.isExpandableMode() &&
@@ -197,8 +215,6 @@ export class ModusWcAlert {
 
     return (
       <modus-wc-button
-        aria-controls={this.bodyContentId}
-        aria-expanded={expanded ? 'true' : 'false'}
         color="tertiary"
         customClass="modus-wc-alert-expand-toggle"
         size="xs"
@@ -319,6 +335,7 @@ export class ModusWcAlert {
   }
 
   componentDidRender(): void {
+    this.syncExpandToggleAria();
     this.scheduleOverflowCheck();
   }
 

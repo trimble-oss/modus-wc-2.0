@@ -653,6 +653,8 @@ describe('modus-wc-alert', () => {
       ).toBe(false);
       expect(expandSpy).toHaveBeenCalled();
       expect(expandSpy.mock.calls[0][0].detail).toEqual({ expanded: true });
+      expect(toggleButton.getAttribute('aria-expanded')).toBe('true');
+      expect(toggleButton.getAttribute('aria-controls')).toBe(bodyElement.id);
 
       toggleButton?.click();
       await page.waitForChanges();
@@ -661,6 +663,7 @@ describe('modus-wc-alert', () => {
         bodyElement.classList.contains('modus-wc-alert-body-text--collapsed')
       ).toBe(true);
       expect(expandSpy.mock.calls[1][0].detail).toEqual({ expanded: false });
+      expect(toggleButton.getAttribute('aria-expanded')).toBe('false');
     });
 
     it('should render slot content without a wrapper in default mode', async () => {
