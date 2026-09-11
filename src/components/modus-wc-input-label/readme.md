@@ -13,14 +13,15 @@ The component supports a `<slot>` for injecting additional custom content inside
 
 ## Properties
 
-| Property       | Attribute        | Description                                                                  | Type                                | Default     |
-| -------------- | ---------------- | ---------------------------------------------------------------------------- | ----------------------------------- | ----------- |
-| `customClass`  | `custom-class`   | Additional classes for custom styling.                                       | `string \| undefined`               | `''`        |
-| `forId`        | `for-id`         | The `for` attribute of the label, matching the `id` of the associated input. | `string \| undefined`               | `undefined` |
-| `labelText`    | `label-text`     | The text to display within the label.                                        | `string \| undefined`               | `undefined` |
-| `required`     | `required`       | Whether the label indicates a required field.                                | `boolean \| undefined`              | `false`     |
-| `size`         | `size`           | The size of the label.                                                       | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
-| `subLabelText` | `sub-label-text` | The text rendered beneath the label.                                         | `string \| undefined`               | `undefined` |
+| Property       | Attribute        | Description                                                                      | Type                                | Default     |
+| -------------- | ---------------- | -------------------------------------------------------------------------------- | ----------------------------------- | ----------- |
+| `customClass`  | `custom-class`   | Additional classes for custom styling.                                           | `string \| undefined`               | `''`        |
+| `forId`        | `for-id`         | The `for` attribute of the label, matching the `id` of the associated input.     | `string \| undefined`               | `undefined` |
+| `labelId`      | `label-id`       | The `id` of the label element (for `aria-labelledby` on non-labelable controls). | `string \| undefined`               | `undefined` |
+| `labelText`    | `label-text`     | The text to display within the label.                                            | `string \| undefined`               | `undefined` |
+| `required`     | `required`       | Whether the label indicates a required field.                                    | `boolean \| undefined`              | `false`     |
+| `size`         | `size`           | The size of the label.                                                           | `"lg" \| "md" \| "sm" \| undefined` | `'md'`      |
+| `subLabelText` | `sub-label-text` | The text rendered beneath the label.                                             | `string \| undefined`               | `undefined` |
 
 
 ## Dependencies

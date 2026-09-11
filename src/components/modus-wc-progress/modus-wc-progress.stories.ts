@@ -78,11 +78,15 @@ export const SizeVariations: Story = {
 <div>
   <div>
     Default size
-    <modus-wc-progress value=${args.value}></modus-wc-progress>
+    <modus-wc-progress
+      aria-label="Progress"
+      value=${args.value}
+    ></modus-wc-progress>
   </div>
   <div>
     Small size
     <modus-wc-progress
+      aria-label="Progress"
       value=${args.value}
       custom-class="size-small"
     ></modus-wc-progress>
@@ -90,6 +94,7 @@ export const SizeVariations: Story = {
   <div>
     Compact size
     <modus-wc-progress
+      aria-label="Progress"
       value=${args.value}
       custom-class="size-compact"
     ></modus-wc-progress>
@@ -134,6 +139,7 @@ export const CustomBarColor: Story = {
   }
 </style>
 <modus-wc-progress
+  aria-label="Progress"
   value=${args.value}
   custom-class="custom-bar-color"
 ></modus-wc-progress>
@@ -151,6 +157,7 @@ export const CustomBackgroundColor: Story = {
   }
 </style>
 <modus-wc-progress
+  aria-label="Progress"
   value=${args.value}
   custom-class="custom-bg-color"
 ></modus-wc-progress>

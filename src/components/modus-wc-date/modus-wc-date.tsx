@@ -41,6 +41,7 @@ import {
   getRangeDayCellClasses,
   isInHighlightRun,
 } from './utils/range-utils';
+import { resolveReferencedAriaText } from './utils/resolve-referenced-aria-text';
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -2167,14 +2168,19 @@ export class ModusWcDate {
   private get endInputAttributes(): Attributes {
     const attrs = { ...this.inheritedAttributes };
     const ariaLabel = attrs['aria-label'];
+    const labelledBy = attrs['aria-labelledby'];
     delete attrs['aria-labelledby'];
     delete attrs['aria-label'];
 
-    const endAccessibleName = ariaLabel
-      ? `${ariaLabel} end`
-      : this.label
-        ? `${this.label} end`
-        : undefined;
+    let endAccessibleName: string | undefined;
+    if (ariaLabel) {
+      endAccessibleName = `${ariaLabel} end`;
+    } else if (labelledBy) {
+      const referencedName = resolveReferencedAriaText(this.el, labelledBy);
+      endAccessibleName = referencedName ? `${referencedName} end` : undefined;
+    } else if (this.label) {
+      endAccessibleName = `${this.label} end`;
+    }
 
     if (endAccessibleName) {
       return {

@@ -68,16 +68,22 @@ export class ModusWcProgress {
     return (safeValue / this.max!) * 100;
   }
 
-  render() {
-    const progressId = this.label
-      ? this.resolveEffectiveId(undefined)
-      : undefined;
-    const hasAuthorAccessibleName =
+  private hasAuthorAccessibleName(): boolean {
+    return (
       Boolean(this.inheritedAttributes['aria-label']) ||
-      Boolean(this.inheritedAttributes['aria-labelledby']);
+      Boolean(this.inheritedAttributes['aria-labelledby'])
+    );
+  }
+
+  render() {
+    const labelId = this.label ? this.resolveEffectiveId(undefined) : undefined;
+    const hasAccessibleName =
+      this.hasAuthorAccessibleName() || Boolean(this.label);
 
     const progressAriaAttributes = this.indeterminate
-      ? { 'aria-hidden': 'true' }
+      ? hasAccessibleName
+        ? { 'aria-busy': 'true' }
+        : { 'aria-hidden': 'true' }
       : {
           'aria-valuenow': this.value,
           'aria-valuemin': 0,
@@ -88,25 +94,25 @@ export class ModusWcProgress {
       ? {}
       : { max: this.max, value: this.value };
 
-    const radialLabelledBy =
-      this.label && !hasAuthorAccessibleName && progressId
-        ? { 'aria-labelledby': progressId }
+    const labelAssociation =
+      this.label && !this.hasAuthorAccessibleName() && labelId
+        ? { 'aria-labelledby': labelId }
         : {};
 
     return (
       <Host class="modus-wc-progress-container">
         {this.variant === 'default' ? (
           <Fragment>
-            {this.label && (
-              <modus-wc-input-label forId={progressId} labelText={this.label} />
-            )}
             <progress
               class={this.getClasses()}
-              id={progressId}
               {...valueAttributes}
               {...progressAriaAttributes}
+              {...labelAssociation}
               {...this.inheritedAttributes}
             />
+            {this.label && (
+              <modus-wc-input-label labelId={labelId} labelText={this.label} />
+            )}
           </Fragment>
         ) : (
           <div
@@ -114,10 +120,10 @@ export class ModusWcProgress {
             style={{ '--value': `${this.getPercentageValue()}` }}
             role="progressbar"
             {...progressAriaAttributes}
-            {...radialLabelledBy}
+            {...labelAssociation}
             {...this.inheritedAttributes}
           >
-            <span class="modus-wc-radial-progress-label" id={progressId}>
+            <span class="modus-wc-radial-progress-label" id={labelId}>
               {this.label}
             </span>
             <slot />

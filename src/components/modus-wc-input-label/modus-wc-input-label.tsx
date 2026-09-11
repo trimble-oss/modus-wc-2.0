@@ -22,6 +22,9 @@ export class ModusWcInputLabel {
   /** The `for` attribute of the label, matching the `id` of the associated input. */
   @Prop() forId?: string;
 
+  /** The `id` of the label element (for `aria-labelledby` on non-labelable controls). */
+  @Prop() labelId?: string;
+
   /** Additional classes for custom styling. */
   @Prop() customClass?: string = '';
 
@@ -60,6 +63,7 @@ export class ModusWcInputLabel {
         <label
           class={this.getClasses()}
           htmlFor={this.forId}
+          id={this.labelId}
           {...this.inheritedAttributes}
         >
           {this.labelText}
