@@ -54,19 +54,47 @@ export function getVisibleItems(
   return filteredItems?.filter((item) => !item.disabled) || [];
 }
 
+/**
+ * Reconcile menu-item `selected` props from autocomplete `items` state.
+ * Used for multi-select while the menu stays open: `modus-wc-menu` defaults to
+ * single selection, so each click deselects siblings before `items[]` updates,
+ * and Stencil may not re-push unchanged `selected={true}` props to siblings.
+ * Single-select filter churn is handled by stable `key={item.value}` on menu
+ * items so list changes do not reuse the wrong host and inherit stale `selected`.
+ */
+export function syncMenuItemSelection(
+  hostElement: HTMLElement,
+  items: IAutocompleteItem[] | undefined
+): void {
+  if (!items) {
+    return;
+  }
+
+  const menu = hostElement.querySelector('modus-wc-menu');
+  if (!menu) {
+    return;
+  }
+
+  menu.querySelectorAll('modus-wc-menu-item').forEach((element) => {
+    const menuItem = element as HTMLElement & {
+      selected?: boolean;
+      value?: string;
+    };
+    const sourceItem = items.find((item) => item.value === menuItem.value);
+
+    if (sourceItem) {
+      menuItem.selected = !!sourceItem.selected;
+    }
+  });
+}
+
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
   value: string,
-  leaveMenuOpen?: boolean,
   customInputChange?: (value: string) => void
 ): IAutocompleteItem[] {
   if (!items) {
     return [];
-  }
-
-  // When leaveMenuOpen is true and an item is selected, show all items
-  if (leaveMenuOpen && items.some((item) => item.selected)) {
-    return [...items];
   }
 
   // if customInputChange is defined, return items that are visibleInMenu
@@ -787,6 +815,7 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
       {menuItems.length > 0 || !noResults || params.hasSlottedContent
         ? menuItems.map((item) => (
             <modus-wc-menu-item
+              key={item.value}
               checkbox={item.checkbox}
               disabled={item.disabled}
               focused={item.focused}
