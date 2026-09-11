@@ -1703,6 +1703,11 @@
             The for attribute of the label, matching the id of the associated input.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputLabel.LabelId">
+            <summary>
+            The id of the label element (for aria-labelledby on non-labelable controls).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputLabel.LabelText">
             <summary>
             The text to display within the label.
