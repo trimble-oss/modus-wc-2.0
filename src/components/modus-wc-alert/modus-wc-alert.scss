@@ -6,6 +6,11 @@
 modus-wc-alert .modus-wc-alert {
   align-content: center;
   align-items: center;
+
+  &.modus-wc-alert--expandable {
+    align-items: flex-start;
+  }
+
   backdrop-filter: blur(var(--modus-wc-spacing-lg));
   background-color: var(--modus-wc-color-base-page);
   border-color: var(--modus-wc-color-base-200);
@@ -18,6 +23,87 @@ modus-wc-alert .modus-wc-alert {
 
   .modus-wc-alert-content {
     flex: auto;
+    min-width: 0;
+  }
+
+  .modus-wc-alert-content--expandable {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-2xs);
+  }
+
+  .modus-wc-alert-expandable-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-2xs);
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  // Expandable collapsed body: fixed two-line preview (see contentDisplayMode).
+  .modus-wc-alert-body-text--collapsed {
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .modus-wc-alert-expand-toggle {
+    align-self: flex-start;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--modus-wc-color-base-content);
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-normal);
+    gap: var(--modus-wc-spacing-2xs);
+    line-height: 1.25rem;
+    margin-block-start: 0;
+    min-block-size: 1.25rem;
+    min-inline-size: 0;
+    padding-block: 0;
+    padding-inline: 0;
+
+    &:active,
+    &:hover {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &:focus:not(:focus-visible) {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      background-color: transparent;
+      border: var(--modus-wc-border-width-xs) solid
+        var(--modus-wc-color-base-content);
+      box-shadow: none;
+      color: var(--modus-wc-color-base-content);
+      outline: none;
+    }
+  }
+
+  .modus-wc-alert-expand-toggle-label {
+    text-decoration: underline;
+    text-underline-offset: 0.125rem;
+  }
+
+  .modus-wc-alert-expand-toggle-icon {
+    block-size: 0.75rem;
+    font-size: var(--modus-wc-font-size-sm);
+    inline-size: 0.75rem;
+    line-height: 0.75rem;
   }
 
   .title {

@@ -3,7 +3,6 @@ import { ModusWcAlert } from './modus-wc-alert';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
-
 describe('modus-wc-alert', () => {
   afterEach(() => {
     jest.runOnlyPendingTimers();
@@ -299,6 +298,71 @@ describe('modus-wc-alert', () => {
     expect(page.root?.querySelector('.description')).toBeNull();
   });
 
+  describe('content slot', () => {
+    it('should render rich HTML in the content slot when contentDisplayMode is default', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon],
+        html: '<modus-wc-alert content-display-mode="default"><div slot="content"><p><strong>Update available.</strong></p><p>See the <a href="#">release notes</a>.</p></div></modus-wc-alert>',
+      });
+
+      const slotWrapper = page.root?.querySelector('[slot="content"]');
+      expect(slotWrapper?.querySelector('strong')?.textContent).toBe(
+        'Update available.'
+      );
+      expect(slotWrapper?.querySelector('a')?.getAttribute('href')).toBe('#');
+      expect(slotWrapper?.querySelectorAll('p').length).toBe(2);
+      expect(
+        page.root?.querySelector('.modus-wc-alert-expand-toggle')
+      ).toBeNull();
+    });
+
+    it('should not project content slot when alert-title is provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon],
+        html: '<modus-wc-alert alert-title="Title"><div slot="content">Slot content</div></modus-wc-alert>',
+      });
+
+      expect(
+        page.root?.querySelector('.modus-wc-alert-slot-content')
+      ).toBeNull();
+      expect(
+        page.root?.querySelector('.modus-wc-alert-content [slot="content"]')
+      ).toBeNull();
+      expect(page.root?.querySelector('.title')?.textContent).toBe('Title');
+    });
+
+    it('should not project content slot when alert-description is provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon],
+        html: '<modus-wc-alert alert-description="Description"><div slot="content">Slot content</div></modus-wc-alert>',
+      });
+
+      expect(
+        page.root?.querySelector('.modus-wc-alert-slot-content')
+      ).toBeNull();
+      expect(
+        page.root?.querySelector('.modus-wc-alert-content [slot="content"]')
+      ).toBeNull();
+      expect(page.root?.querySelector('.description')?.textContent).toBe(
+        'Description'
+      );
+    });
+
+    it('should render rich HTML in the content slot when contentDisplayMode is expandable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert content-display-mode="expandable"><div slot="content"><p>Line one</p><p>Line two</p><p>Line three</p></div></modus-wc-alert>',
+      });
+      await page.waitForChanges();
+
+      const slotContent = page.root?.querySelector(
+        '.modus-wc-alert-slot-content [slot="content"]'
+      );
+      expect(slotContent?.querySelectorAll('p').length).toBe(3);
+      expect(page.root?.querySelector('modus-wc-tooltip')).toBeNull();
+    });
+  });
+
   it('should render the description div when alert-description is provided', async () => {
     const page = await newSpecPage({
       components: [ModusWcAlert],
@@ -409,6 +473,532 @@ describe('modus-wc-alert', () => {
 
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.textContent?.trim()).toBe('info');
+  });
+
+  describe('contentDisplayMode', () => {
+    it('should default contentDisplayMode to default', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      expect(component.contentDisplayMode).toBe('default');
+      expect(
+        page.root?.querySelector('.modus-wc-alert-expand-toggle')
+      ).toBeNull();
+    });
+
+    it('should render with expandable contentDisplayMode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="A very long description that should be truncated when displayed in expandable mode." content-display-mode="expandable"></modus-wc-alert>',
+      });
+      expect(page.root).toMatchSnapshot();
+
+      expect(page.root?.querySelector('modus-wc-tooltip')).toBeNull();
+      expect(
+        page.root
+          ?.querySelector('.modus-wc-alert-content')
+          ?.classList.contains('modus-wc-alert-content--expandable')
+      ).toBe(true);
+      expect(
+        page.root
+          ?.querySelector('.modus-wc-alert')
+          ?.classList.contains('modus-wc-alert--expandable')
+      ).toBe(true);
+      expect(page.root?.querySelector('.description')).not.toBeNull();
+    });
+
+    it('should not render expand toggle when contentDisplayMode is default', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="default"></modus-wc-alert>',
+      });
+
+      expect(
+        page.root?.querySelector('.modus-wc-alert-expand-toggle')
+      ).toBeNull();
+      expect(
+        page.root?.querySelector('.modus-wc-alert-body-text--collapsed')
+      ).toBeNull();
+    });
+
+    it('should keep title outside collapsed body when expandable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const title = page.root?.querySelector('.title');
+      const description = page.root?.querySelector('.description');
+
+      expect(title).not.toBeNull();
+      expect(description).not.toBeNull();
+      expect(
+        description?.classList.contains('modus-wc-alert-body-text--collapsed')
+      ).toBe(true);
+      expect(
+        title?.classList.contains('modus-wc-alert-body-text--collapsed')
+      ).toBe(false);
+    });
+
+    it('should wrap slot content in expandable body when expandable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert content-display-mode="expandable"><div slot="content">Custom slot content that is long enough to truncate</div></modus-wc-alert>',
+      });
+      expect(page.root).toMatchSnapshot();
+
+      expect(page.root?.querySelector('modus-wc-tooltip')).toBeNull();
+      expect(
+        page.root?.querySelector('.modus-wc-alert-slot-content')
+      ).not.toBeNull();
+    });
+
+    it('should not show expand toggle when content does not overflow', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Short" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 20,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 20,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      await page.waitForChanges();
+
+      expect(
+        page.root?.querySelector('.modus-wc-alert-expand-toggle')
+      ).toBeNull();
+    });
+
+    it('should show expand toggle when content overflows', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="A very long description that overflows the two line clamp limit." content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 60,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      await page.waitForChanges();
+
+      const toggle = page.root?.querySelector('.modus-wc-alert-expand-toggle');
+      expect(toggle).not.toBeNull();
+      expect(toggle?.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('should expand and collapse body content when toggle is clicked', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Overflowing description text" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 60,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      await page.waitForChanges();
+
+      const expandSpy = jest.fn();
+      page.root?.addEventListener('contentExpandedChange', expandSpy);
+
+      const toggleButton = page.root?.querySelector(
+        '.modus-wc-alert-expand-toggle'
+      ) as HTMLButtonElement;
+      expect(toggleButton).not.toBeNull();
+      toggleButton?.click();
+      await page.waitForChanges();
+
+      expect(
+        bodyElement.classList.contains('modus-wc-alert-body-text--collapsed')
+      ).toBe(false);
+      expect(expandSpy).toHaveBeenCalled();
+      expect(expandSpy.mock.calls[0][0].detail).toEqual({ expanded: true });
+      expect(toggleButton.getAttribute('aria-expanded')).toBe('true');
+      expect(toggleButton.getAttribute('aria-controls')).toBe(bodyElement.id);
+
+      toggleButton?.click();
+      await page.waitForChanges();
+
+      expect(
+        bodyElement.classList.contains('modus-wc-alert-body-text--collapsed')
+      ).toBe(true);
+      expect(expandSpy.mock.calls[1][0].detail).toEqual({ expanded: false });
+      expect(toggleButton.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('should render slot content without a wrapper in default mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon],
+        html: '<modus-wc-alert content-display-mode="default"><div slot="content">Only slot</div></modus-wc-alert>',
+      });
+
+      expect(
+        page.root?.querySelector('.modus-wc-alert-slot-content')
+      ).toBeNull();
+      expect(page.root?.querySelector('[slot="content"]')?.textContent).toBe(
+        'Only slot'
+      );
+    });
+
+    it('should not schedule overflow check when contentDisplayMode is default', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="default"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const requestAnimationFrameSpy = jest.spyOn(
+        globalThis,
+        'requestAnimationFrame'
+      );
+
+      // @ts-expect-error - testing private method
+      component.scheduleOverflowCheck();
+
+      expect(requestAnimationFrameSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not update overflow state when overflow is unchanged', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Short" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 20,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 20,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(false);
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(false);
+    });
+
+    it('should skip overflow state update when content is expanded', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Overflowing description text" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 60,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      await page.waitForChanges();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(true);
+
+      // @ts-expect-error - Access private property for testing
+      component.isContentExpanded = true;
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 20,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(true);
+    });
+
+    it('should treat overflow as false when expandable content ref is missing', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      // @ts-expect-error - testing missing ref branch
+      component.expandableContentRef = undefined;
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(false);
+    });
+
+    it('should update expandable content ref when the ref callback is invoked', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const description = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      // @ts-expect-error - testing private ref callback
+      component.setExpandableContentRef(description);
+      // @ts-expect-error - testing private ref callback
+      component.setExpandableContentRef(undefined);
+    });
+
+    it('should evaluate overflow inside requestAnimationFrame', async () => {
+      const animationFrameCallbacks: FrameRequestCallback[] = [];
+      const requestAnimationFrameSpy = jest
+        .spyOn(globalThis, 'requestAnimationFrame')
+        .mockImplementation((callback: FrameRequestCallback) => {
+          animationFrameCallbacks.push(callback);
+          return animationFrameCallbacks.length;
+        });
+
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Overflowing description text" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 60,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      // @ts-expect-error - testing private method
+      component.scheduleOverflowCheck();
+      animationFrameCallbacks.forEach((callback) => callback(0));
+
+      expect(requestAnimationFrameSpy).toHaveBeenCalled();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(true);
+    });
+
+    describe('expandable resize observer', () => {
+      let resizeCallback: ResizeObserverCallback;
+      let observeSpy: jest.Mock;
+      let disconnectSpy: jest.Mock;
+      const originalResizeObserver = globalThis.ResizeObserver;
+
+      beforeEach(() => {
+        observeSpy = jest.fn();
+        disconnectSpy = jest.fn();
+        globalThis.ResizeObserver = jest.fn(
+          (callback: ResizeObserverCallback) => {
+            resizeCallback = callback;
+            return {
+              observe: observeSpy,
+              disconnect: disconnectSpy,
+              unobserve: jest.fn(),
+            };
+          }
+        );
+      });
+
+      afterEach(() => {
+        globalThis.ResizeObserver = originalResizeObserver;
+      });
+
+      it('should observe expandable content when contentDisplayMode is expandable', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        const bodyElement = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        expect(globalThis.ResizeObserver).toHaveBeenCalled();
+        expect(observeSpy).toHaveBeenCalledWith(bodyElement);
+      });
+
+      it('should update overflow state when resize observer fires', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Short" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const bodyElement = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        Object.defineProperty(bodyElement, 'scrollHeight', {
+          configurable: true,
+          value: 20,
+        });
+        Object.defineProperty(bodyElement, 'clientHeight', {
+          configurable: true,
+          value: 20,
+        });
+
+        // @ts-expect-error - testing private overflow state update
+        component.updateOverflowState();
+        // @ts-expect-error - Access private property for testing
+        expect(component.isContentOverflowing).toBe(false);
+
+        Object.defineProperty(bodyElement, 'scrollHeight', {
+          configurable: true,
+          value: 60,
+        });
+        Object.defineProperty(bodyElement, 'clientHeight', {
+          configurable: true,
+          value: 40,
+        });
+
+        resizeCallback([], {} as ResizeObserver);
+        // @ts-expect-error - Access private property for testing
+        expect(component.isContentOverflowing).toBe(true);
+      });
+
+      it('should disconnect resize observer when the component is disconnected', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        page.root?.remove();
+        await page.waitForChanges();
+
+        expect(disconnectSpy).toHaveBeenCalled();
+      });
+
+      it('should disconnect resize observer when contentDisplayMode changes to default', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        page.root?.setAttribute('content-display-mode', 'default');
+        await page.waitForChanges();
+
+        expect(disconnectSpy).toHaveBeenCalled();
+      });
+
+      it('should observe slot content when expandable mode uses the content slot', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert content-display-mode="expandable"><div slot="content">Slot content</div></modus-wc-alert>',
+        });
+        await page.waitForChanges();
+
+        const slotContent = page.root?.querySelector(
+          '.modus-wc-alert-slot-content'
+        ) as HTMLElement;
+
+        expect(observeSpy).toHaveBeenCalledWith(slotContent);
+      });
+
+      it('should not create resize observer when ResizeObserver is unavailable', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const description = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        globalThis.ResizeObserver =
+          undefined as unknown as typeof ResizeObserver;
+        observeSpy.mockClear();
+
+        // @ts-expect-error - testing private ref callback
+        component.setExpandableContentRef(description);
+
+        expect(observeSpy).not.toHaveBeenCalled();
+      });
+
+      it('should schedule overflow check when contentDisplayMode changes to expandable', async () => {
+        const animationFrameCallbacks: FrameRequestCallback[] = [];
+        jest
+          .spyOn(globalThis, 'requestAnimationFrame')
+          .mockImplementation((callback: FrameRequestCallback) => {
+            animationFrameCallbacks.push(callback);
+            return animationFrameCallbacks.length;
+          });
+
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="default"></modus-wc-alert>',
+        });
+
+        page.root?.setAttribute('content-display-mode', 'expandable');
+        await page.waitForChanges();
+
+        expect(animationFrameCallbacks.length).toBeGreaterThan(0);
+      });
+    });
   });
 
   describe('convertPropsToClasses', () => {

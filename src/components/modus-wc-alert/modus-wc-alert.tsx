@@ -8,11 +8,14 @@ import {
   Host,
   Listen,
   Prop,
+  State,
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
+
+let alertBodyContentIdSequence = 0;
 
 /**
  * A customizable alert component used to inform the user about important events.
@@ -26,6 +29,9 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcAlert {
   private inheritedAttributes: Attributes = {};
+  private expandableContentRef?: HTMLElement;
+  private contentResizeObserver?: ResizeObserver;
+  private readonly bodyContentId = `modus-wc-alert-body-${++alertBodyContentIdSequence}`;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -35,6 +41,9 @@ export class ModusWcAlert {
 
   /** The title of the alert. */
   @Prop() alertTitle!: string;
+
+  /** Controls body display: full text (default) or expandable two-line preview with Show more. */
+  @Prop() contentDisplayMode?: 'default' | 'expandable' = 'default';
 
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
@@ -58,15 +67,24 @@ export class ModusWcAlert {
   /** An event that fires when the alert is dismissed */
   @Event() dismissClick!: EventEmitter;
 
+  /** Fires when expandable body content is expanded or collapsed. */
+  @Event() contentExpandedChange!: EventEmitter<{ expanded: boolean }>;
+
+  @State() private isContentExpanded = false;
+
+  @State() private isContentOverflowing = false;
+
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-    // Set default role if none provided
     if (!this.el.hasAttribute('role')) {
       this.el.setAttribute('role', 'status');
     }
 
-    // Then inherit all ARIA attributes normally
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  private isExpandableMode(): boolean {
+    return this.contentDisplayMode === 'expandable';
   }
 
   private getClasses(): string {
@@ -75,11 +93,167 @@ export class ModusWcAlert {
       variant: this.variant,
     });
 
-    // The order CSS classes are added matters to CSS specificity
     if (propClasses) classList.push(propClasses);
     if (this.customClass) classList.push(this.customClass);
+    if (this.isExpandableMode()) {
+      classList.push('modus-wc-alert--expandable');
+    }
 
     return classList.join(' ');
+  }
+
+  private getContentClasses(): string {
+    const classList = ['modus-wc-alert-content'];
+
+    if (this.isExpandableMode()) {
+      classList.push('modus-wc-alert-content--expandable');
+    }
+
+    return classList.join(' ');
+  }
+
+  private getBodyTextClasses(baseClass: string): string {
+    const classList = [baseClass];
+
+    if (this.isExpandableMode() && !this.isContentExpanded) {
+      classList.push('modus-wc-alert-body-text--collapsed');
+    }
+
+    return classList.join(' ');
+  }
+
+  private scheduleOverflowCheck(): void {
+    if (!this.isExpandableMode()) {
+      return;
+    }
+
+    requestAnimationFrame(() => this.updateOverflowState());
+  }
+
+  private updateOverflowState(): void {
+    if (this.isContentExpanded) {
+      return;
+    }
+
+    const element = this.expandableContentRef;
+    const isOverflowing =
+      !!element && element.scrollHeight > element.clientHeight;
+
+    if (isOverflowing !== this.isContentOverflowing) {
+      this.isContentOverflowing = isOverflowing;
+    }
+  }
+
+  private disconnectContentResizeObserver(): void {
+    this.contentResizeObserver?.disconnect();
+    this.contentResizeObserver = undefined;
+  }
+
+  private syncContentResizeObserver(): void {
+    this.disconnectContentResizeObserver();
+
+    if (
+      !this.isExpandableMode() ||
+      !this.expandableContentRef ||
+      typeof ResizeObserver === 'undefined'
+    ) {
+      return;
+    }
+
+    this.contentResizeObserver = new ResizeObserver(() => {
+      this.updateOverflowState();
+    });
+    this.contentResizeObserver.observe(this.expandableContentRef);
+  }
+
+  private setExpandableContentRef = (el: HTMLElement | undefined) => {
+    this.expandableContentRef = el;
+    this.syncContentResizeObserver();
+  };
+
+  private toggleContentExpanded(): void {
+    const expanded = !this.isContentExpanded;
+    this.isContentExpanded = expanded;
+    this.contentExpandedChange.emit({ expanded });
+
+    if (!expanded) {
+      this.scheduleOverflowCheck();
+    }
+  }
+
+  // modus-wc-button inherits host ARIA attributes only on load, so the
+  // expanded state is written straight to its inner button after each render.
+  private syncExpandToggleAria(): void {
+    const toggle = this.el.querySelector<HTMLButtonElement>(
+      'button.modus-wc-alert-expand-toggle'
+    );
+
+    if (!toggle) {
+      return;
+    }
+
+    toggle.setAttribute('aria-controls', this.bodyContentId);
+    toggle.setAttribute(
+      'aria-expanded',
+      this.isContentExpanded ? 'true' : 'false'
+    );
+  }
+
+  private shouldShowExpandToggle(): boolean {
+    return (
+      this.isExpandableMode() &&
+      (this.isContentOverflowing || this.isContentExpanded)
+    );
+  }
+
+  private renderExpandToggle() {
+    if (!this.shouldShowExpandToggle()) {
+      return null;
+    }
+
+    const expanded = this.isContentExpanded;
+
+    return (
+      <modus-wc-button
+        color="tertiary"
+        customClass="modus-wc-alert-expand-toggle"
+        size="xs"
+        variant="borderless"
+        onButtonClick={() => this.toggleContentExpanded()}
+      >
+        <span class="modus-wc-alert-expand-toggle-label">
+          {expanded ? 'Show less' : 'Show more'}
+        </span>
+        <modus-wc-icon
+          custom-class="modus-wc-alert-expand-toggle-icon"
+          decorative
+          name={expanded ? 'expand_less' : 'expand_more'}
+          size="xs"
+          variant="outlined"
+        />
+      </modus-wc-button>
+    );
+  }
+
+  private renderBodyContent(className: string, children: unknown) {
+    if (!this.isExpandableMode()) {
+      return className ? <div class={className}>{children}</div> : children;
+    }
+
+    const contentClass = className || 'modus-wc-alert-slot-content';
+
+    return (
+      <div class="modus-wc-alert-expandable-body">
+        <div
+          class={this.getBodyTextClasses(contentClass)}
+          id={this.bodyContentId}
+          ref={this.setExpandableContentRef}
+        >
+          {children}
+        </div>
+        {this.renderExpandToggle()}
+      </div>
+    );
   }
 
   private getLeadingIcon(): FunctionalComponent {
@@ -129,7 +303,6 @@ export class ModusWcAlert {
     }
   }
 
-  // Handle delay
   private timerId!: ReturnType<typeof setTimeout>;
 
   @Watch('delay')
@@ -138,6 +311,14 @@ export class ModusWcAlert {
     this.timerId = setTimeout(() => {
       this.dismissElement();
     }, newDelay);
+  }
+
+  @Watch('contentDisplayMode')
+  expandableConfigChanged(): void {
+    this.isContentExpanded = false;
+    this.isContentOverflowing = false;
+    this.syncContentResizeObserver();
+    this.scheduleOverflowCheck();
   }
 
   dismissElement() {
@@ -153,36 +334,38 @@ export class ModusWcAlert {
     }
   }
 
+  componentDidRender(): void {
+    this.syncExpandToggleAria();
+    this.scheduleOverflowCheck();
+  }
+
   disconnectedCallback(): void {
     clearTimeout(this.timerId);
+    this.disconnectContentResizeObserver();
   }
 
   @Listen('keyup')
   elementKeyupHandler(event: KeyboardEvent): void {
-    switch (event.code) {
-      case 'Escape':
-        if (!this.dismissible) {
-          return;
-        }
-
-        this.dismissElement();
-        break;
+    if (event.code === 'Escape' && this.dismissible) {
+      this.dismissElement();
     }
   }
 
   render() {
+    const hasTitle = Boolean(this.alertTitle);
+    const hasDescription = Boolean(this.alertDescription);
+    const usesContentSlot = !hasTitle && !hasDescription;
+
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
           {!this.disableIcon && this.getLeadingIcon()}
-          <div class="modus-wc-alert-content">
-            <div class="title">{this.alertTitle}</div>
-            {this.alertDescription && (
-              <div class="description">{this.alertDescription}</div>
-            )}
-            {!this.alertTitle && !this.alertDescription && (
-              <slot name="content" />
-            )}
+          <div class={this.getContentClasses()}>
+            {hasTitle && <div class="title">{this.alertTitle}</div>}
+            {hasDescription &&
+              this.renderBodyContent('description', this.alertDescription)}
+            {usesContentSlot &&
+              this.renderBodyContent('', <slot name="content" />)}
           </div>
           <slot name="button" />
           {this.dismissible && (
