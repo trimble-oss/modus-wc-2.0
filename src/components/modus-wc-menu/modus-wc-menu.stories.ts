@@ -20,7 +20,6 @@ const meta: Meta<MenuArgs> = {
   args: {
     orientation: 'vertical',
     'selection-mode': 'single',
-    size: 'md',
   },
   argTypes: {
     orientation: {
@@ -63,42 +62,50 @@ export const Default: Story = {
   <modus-wc-menu-item
     label="Extra Small"
     value="xs"
-    size="xs"
+    size=${args.size ?? 'xs'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Small"
     value="1"
-    size="sm"
+    size=${args.size ?? 'sm'}
   ></modus-wc-menu-item>
-  <modus-wc-menu-item label="Medium" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Medium"
+    value="2"
+    size=${args.size ?? 'md'}
+  ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Large"
     value="3"
-    size="lg"
+    size=${args.size ?? 'lg'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Extra Large"
     value="xl"
-    size="xl"
+    size=${args.size ?? 'xl'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Bordered"
     value="3"
     bordered="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="With Sub-label"
     value="3"
     sub-label="Sub-label"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Selected"
     value="3"
     selected="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="With Start Icon"
     value="3"
+    size=${args.size ?? 'md'}
   >
     <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
   </modus-wc-menu-item>
@@ -106,6 +113,7 @@ export const Default: Story = {
     label="Disabled"
     value="3"
     disabled="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
 </modus-wc-menu>
     `;

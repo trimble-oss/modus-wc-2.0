@@ -26,7 +26,6 @@ const meta: Meta<TreeMenuArgs> = {
   args: {
     orientation: 'vertical',
     'selection-mode': 'single',
-    size: 'md',
   },
   argTypes: {
     orientation: {
@@ -72,43 +71,50 @@ export const Default: Story = {
   <modus-wc-tree-item
     label="Extra Small"
     value="xs"
-    size="xs"
+    size=${args.size ?? 'xs'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Small"
     value="1"
-    size="sm"
+    size=${args.size ?? 'sm'}
   ></modus-wc-tree-item>
-  <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Medium"
+    value="2"
+    size=${args.size ?? 'md'}
+  ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Large"
     value="3"
-    size="lg"
+    size=${args.size ?? 'lg'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Extra Large"
     value="xl"
-    size="xl"
+    size=${args.size ?? 'xl'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Bordered"
     value="4"
     bordered="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="With Sub-label"
     value="5"
     sub-label="Sub-label"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Selected"
     value="6"
     selected="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
-  <modus-wc-tree-item label="With Start Icon" value="7">
+  <modus-wc-tree-item label="With Start Icon" value="7" size=${args.size ?? 'md'}>
     <modus-wc-icon slot="start" name="info"></modus-wc-icon>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="With End Action" value="8">
+  <modus-wc-tree-item label="With End Action" value="8" size=${args.size ?? 'md'}>
     <div slot="end" style="display: flex; align-items: center;">
       <modus-wc-button
         variant="borderless"
@@ -125,6 +131,7 @@ export const Default: Story = {
     label="Disabled"
     value="9"
     disabled="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
 </modus-wc-tree-menu>
     `;
@@ -191,15 +198,10 @@ export const CollapsibleMenu: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
-      <style>
-        .tree-menu-width {
-          width: 400px;
-        }
-      </style>
       <modus-wc-tree-menu
         aria-label="Tree menu"
         ?bordered=${args.bordered}
-        custom-class=${args['custom-class'] || 'tree-menu-width'}
+        custom-class=${ifDefined(args['custom-class'])}
         orientation=${ifDefined(args.orientation)}
         selection-mode=${ifDefined(args['selection-mode'])}
         size=${ifDefined(args.size)}

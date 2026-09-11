@@ -7,16 +7,16 @@ export const treeMenuDefaultSourceCode = `
 >
   <modus-wc-tree-item label="Extra Small" value="xs" size="xs"></modus-wc-tree-item>
   <modus-wc-tree-item label="Small" value="1" size="sm"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Medium" value="2" size="md"></modus-wc-tree-item>
   <modus-wc-tree-item label="Large" value="3" size="lg"></modus-wc-tree-item>
   <modus-wc-tree-item label="Extra Large" value="xl" size="xl"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Bordered" value="4" bordered="true"></modus-wc-tree-item>
-  <modus-wc-tree-item label="With Sub-label" value="5" sub-label="Sub-label"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Selected" value="6" selected="true"></modus-wc-tree-item>
-  <modus-wc-tree-item label="With Start Icon" value="7">
+  <modus-wc-tree-item label="Bordered" value="4" bordered="true" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="With Sub-label" value="5" sub-label="Sub-label" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Selected" value="6" selected="true" size="md"></modus-wc-tree-item>
+  <modus-wc-tree-item label="With Start Icon" value="7" size="md">
     <modus-wc-icon slot="start" name="info"></modus-wc-icon>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="With End Action" value="8">
+  <modus-wc-tree-item label="With End Action" value="8" size="md">
     <div slot="end" style="display: flex; align-items: center;">
       <modus-wc-button
         variant="borderless"
@@ -29,7 +29,7 @@ export const treeMenuDefaultSourceCode = `
       </modus-wc-button>
     </div>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="Disabled" value="9" disabled="true"></modus-wc-tree-item>
+  <modus-wc-tree-item label="Disabled" value="9" disabled="true" size="md"></modus-wc-tree-item>
 </modus-wc-tree-menu>
 `;
 
@@ -60,14 +60,8 @@ export const treeMenuMultiSelectSourceCode = `
 `;
 
 export const treeMenuCollapsibleMenuSourceCode = `
-<style>
-  .tree-menu-width {
-    width: 400px;
-  }
-</style>
 <modus-wc-tree-menu
   aria-label="Tree menu"
-  custom-class="tree-menu-width"
   orientation="vertical"
   selection-mode="single"
 >
