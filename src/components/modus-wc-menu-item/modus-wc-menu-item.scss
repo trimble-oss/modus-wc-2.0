@@ -3,11 +3,15 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
+@use '../../styles/menu-item-row-sizes' as row;
+
 modus-wc-menu-item .modus-wc-menu-item {
   button {
     align-items: center;
     border-radius: inherit;
+    box-sizing: border-box;
     display: flex;
+    gap: var(--modus-wc-spacing-xs);
     width: 100%;
 
     &:hover {
@@ -23,16 +27,17 @@ modus-wc-menu-item .modus-wc-menu-item {
       color: var(--modus-wc-color-base-content);
       display: inline-flex;
       flex-shrink: 0;
-      height: 20px;
+      height: var(--modus-wc-font-size-2xl);
       justify-content: center;
-      margin-inline-end: calc(-1 * var(--modus-wc-spacing-sm));
+      line-height: 1;
       margin-inline-start: auto;
+      overflow: hidden;
       pointer-events: none;
       transform: rotate(0deg);
       transition-duration: 0.2s;
       transition-property: transform;
       transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      width: 20px;
+      width: var(--modus-wc-font-size-2xl);
     }
 
     &.modus-wc-menu-dropdown-show .modus-wc-menu-submenu-chevron {
@@ -43,21 +48,33 @@ modus-wc-menu-item .modus-wc-menu-item {
       align-items: center;
       display: flex;
       flex: 1;
+      gap: var(--modus-wc-spacing-md);
       min-width: 0;
       width: 100%;
 
       [slot='start-icon'] {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        align-items: center;
+        display: inline-flex;
+        flex-shrink: 0;
+        line-height: 1;
       }
 
       modus-wc-checkbox {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        padding-inline-end: 0;
       }
 
       .modus-wc-menu-item-labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-md);
         white-space: nowrap;
+      }
+
+      &:has([slot='start-icon']) .modus-wc-menu-item-labels,
+      &:has(modus-wc-checkbox) .modus-wc-menu-item-labels {
+        padding-inline-start: 0;
       }
 
       .modus-wc-menu-item-sublabel {
@@ -71,33 +88,57 @@ modus-wc-menu-item .modus-wc-menu-item {
     }
   }
 
+  &.modus-wc-menu-item-xs {
+    button {
+      @include row.menu-item-row-size-xs-content;
+
+      [slot='start-icon'] {
+        height: var(--modus-wc-font-size-md);
+        width: var(--modus-wc-font-size-md);
+
+        modus-wc-icon,
+        i {
+          font-size: var(--modus-wc-font-size-md);
+          height: var(--modus-wc-font-size-md);
+          width: var(--modus-wc-font-size-md);
+        }
+      }
+    }
+  }
+
   &.modus-wc-menu-item-sm {
     button {
-      font-size: var(--modus-wc-font-size-sm);
+      @include row.menu-item-row-size-sm-content;
 
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-xs);
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-lg);
       }
     }
   }
 
   &.modus-wc-menu-item-md {
     button {
-      font-size: var(--modus-wc-font-size-md);
+      @include row.menu-item-row-size-md-content;
 
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-sm);
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-xl);
       }
     }
   }
 
   &.modus-wc-menu-item-lg {
     button {
-      font-size: var(--modus-wc-font-size-lg);
+      @include row.menu-item-row-size-lg-content;
 
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-md);
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-2xl);
       }
+    }
+  }
+
+  &.modus-wc-menu-item-xl {
+    button {
+      @include row.menu-item-row-size-xl-content;
     }
   }
 

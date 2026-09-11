@@ -14,7 +14,7 @@ interface MenuItemArgs {
   'has-submenu'?: boolean;
   label: string;
   selected?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
   'sub-label'?: string;
   'tooltip-content'?: string;
   'tooltip-position'?: 'auto' | 'top' | 'right' | 'bottom' | 'left';
@@ -32,7 +32,7 @@ const meta: Meta<MenuItemArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     'tooltip-position': {
       control: { type: 'select' },
@@ -203,7 +203,7 @@ export const ShadowDomParent: Story = {
           menuItemEl.focused = Boolean(v.focused);
           menuItemEl.label = v.label;
           menuItemEl.selected = Boolean(v.selected);
-          menuItemEl.size = v.size || 'md';
+          menuItemEl.size = v.size ?? 'md';
           menuItemEl.subLabel = v['sub-label'] || '';
           menuItemEl.tooltipContent = v['tooltip-content'] || '';
           menuItemEl.tooltipPosition = v['tooltip-position'] || 'auto';

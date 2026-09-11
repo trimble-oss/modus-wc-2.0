@@ -17,7 +17,7 @@ interface TreeMenuArgs {
   'custom-class'?: string;
   orientation?: Orientation;
   'selection-mode'?: SelectionMode;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }
 
 const meta: Meta<TreeMenuArgs> = {
@@ -26,7 +26,6 @@ const meta: Meta<TreeMenuArgs> = {
   args: {
     orientation: 'vertical',
     'selection-mode': 'single',
-    size: 'md',
   },
   argTypes: {
     orientation: {
@@ -39,7 +38,7 @@ const meta: Meta<TreeMenuArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -70,35 +69,52 @@ export const Default: Story = {
   size=${ifDefined(args.size)}
 >
   <modus-wc-tree-item
+    label="Extra Small"
+    value="xs"
+    size=${args.size ?? 'xs'}
+  ></modus-wc-tree-item>
+  <modus-wc-tree-item
     label="Small"
     value="1"
-    size="sm"
+    size=${args.size ?? 'sm'}
   ></modus-wc-tree-item>
-  <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Medium"
+    value="2"
+    size=${args.size ?? 'md'}
+  ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Large"
     value="3"
-    size="lg"
+    size=${args.size ?? 'lg'}
+  ></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Extra Large"
+    value="xl"
+    size=${args.size ?? 'xl'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Bordered"
     value="4"
     bordered="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="With Sub-label"
     value="5"
     sub-label="Sub-label"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
   <modus-wc-tree-item
     label="Selected"
     value="6"
     selected="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
-  <modus-wc-tree-item label="With Start Icon" value="7">
+  <modus-wc-tree-item label="With Start Icon" value="7" size=${args.size ?? 'md'}>
     <modus-wc-icon slot="start" name="info"></modus-wc-icon>
   </modus-wc-tree-item>
-  <modus-wc-tree-item label="With End Action" value="8">
+  <modus-wc-tree-item label="With End Action" value="8" size=${args.size ?? 'md'}>
     <div slot="end" style="display: flex; align-items: center;">
       <modus-wc-button
         variant="borderless"
@@ -115,6 +131,7 @@ export const Default: Story = {
     label="Disabled"
     value="9"
     disabled="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-tree-item>
 </modus-wc-tree-menu>
     `;
@@ -146,12 +163,28 @@ export const MultiSelect: Story = {
     return html`
 <modus-wc-tree-menu
   aria-label="Tree menu"
+  ?bordered=${args.bordered}
+  custom-class=${ifDefined(args['custom-class'])}
+  orientation=${ifDefined(args.orientation)}
   selection-mode=${ifDefined(args['selection-mode'])}
+  size=${ifDefined(args.size)}
   @menuSelectionChange=${handleSelectionChange}
 >
-  <modus-wc-tree-item label="Item 1" value="1"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Item 2" value="2"></modus-wc-tree-item>
-  <modus-wc-tree-item label="Item 3" value="3"></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Item 1"
+    size=${ifDefined(args.size)}
+    value="1"
+  ></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Item 2"
+    size=${ifDefined(args.size)}
+    value="2"
+  ></modus-wc-tree-item>
+  <modus-wc-tree-item
+    label="Item 3"
+    size=${ifDefined(args.size)}
+    value="3"
+  ></modus-wc-tree-item>
 </modus-wc-tree-menu>
 <p ${ref((el) => (outputEl = el ?? undefined))}>Selected: none</p>
     `;
@@ -162,18 +195,42 @@ export const CollapsibleMenu: Story = {
   parameters: {
     docs: { source: { code: treeMenuCollapsibleMenuSourceCode } },
   },
-  render: () => {
+  render: (args) => {
     // prettier-ignore
     return html`
-<modus-wc-tree-menu aria-label="Tree menu">
-  <modus-wc-tree-item label="Parent Item" value="parent" has-submenu="true">
-    <modus-wc-tree-menu is-sub-menu="true">
-      <modus-wc-tree-item label="Child 1" value="child-1"></modus-wc-tree-item>
-      <modus-wc-tree-item label="Child 2" value="child-2"></modus-wc-tree-item>
-    </modus-wc-tree-menu>
-  </modus-wc-tree-item>
-  <modus-wc-tree-item label="Sibling Item" value="sibling"></modus-wc-tree-item>
-</modus-wc-tree-menu>
+      <modus-wc-tree-menu
+        aria-label="Tree menu"
+        ?bordered=${args.bordered}
+        custom-class=${ifDefined(args['custom-class'])}
+        orientation=${ifDefined(args.orientation)}
+        selection-mode=${ifDefined(args['selection-mode'])}
+        size=${ifDefined(args.size)}
+      >
+        <modus-wc-tree-item
+          label="Parent Item"
+          .hasSubmenu=${true}
+          size=${ifDefined(args.size)}
+          value="parent"
+        >
+          <modus-wc-tree-menu .isSubMenu=${true}>
+            <modus-wc-tree-item
+              label="Child 1"
+              size=${ifDefined(args.size)}
+              value="child-1"
+            ></modus-wc-tree-item>
+            <modus-wc-tree-item
+              label="Child 2"
+              size=${ifDefined(args.size)}
+              value="child-2"
+            ></modus-wc-tree-item>
+          </modus-wc-tree-menu>
+        </modus-wc-tree-item>
+        <modus-wc-tree-item
+          label="Sibling Item"
+          size=${ifDefined(args.size)}
+          value="sibling"
+        ></modus-wc-tree-item>
+      </modus-wc-tree-menu>
     `;
   },
 };
@@ -204,9 +261,11 @@ export const ShadowDomParent: Story = {
 
           if (!el.querySelector('modus-wc-tree-item')) {
             el.innerHTML = `
+              <modus-wc-tree-item label="Extra Small" value="xs" size="xs"></modus-wc-tree-item>
               <modus-wc-tree-item label="Small" value="1" size="sm"></modus-wc-tree-item>
               <modus-wc-tree-item label="Medium" value="2"></modus-wc-tree-item>
               <modus-wc-tree-item label="Large" value="3" size="lg"></modus-wc-tree-item>
+              <modus-wc-tree-item label="Extra Large" value="xl" size="xl"></modus-wc-tree-item>
               <modus-wc-tree-item label="Bordered" value="4" bordered="true"></modus-wc-tree-item>
               <modus-wc-tree-item label="With Sub-label" value="5" sub-label="Sub-label"></modus-wc-tree-item>
               <modus-wc-tree-item label="Selected" value="6" selected="true"></modus-wc-tree-item>
