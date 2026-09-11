@@ -2,11 +2,9 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-badge.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import {
-  Attributes,
-  inheritAriaAttributes,
-  protectLightDomSlotContent,
-} from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
+import { protectLightDomSlotContent } from '../../utils';
+
 
 const ALERT_COLORS = ['success', 'warning', 'danger'];
 

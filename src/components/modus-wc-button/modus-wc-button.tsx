@@ -13,9 +13,9 @@ import { DaisySize } from '../types';
 import {
   Attributes,
   inheritAriaAttributes,
-  KEY,
-  protectLightDomSlotContent,
+  KEY
 } from '../utils';
+import { protectLightDomSlotContent } from '../../utils';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 
 /**
