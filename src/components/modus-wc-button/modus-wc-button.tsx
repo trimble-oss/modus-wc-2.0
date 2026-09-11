@@ -10,7 +10,12 @@ import {
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import { DaisySize } from '../types';
-import { Attributes, inheritAriaAttributes, KEY } from '../utils';
+import {
+  Attributes,
+  inheritAriaAttributes,
+  KEY
+} from '../utils';
+import { protectLightDomSlotContent } from '../../utils';
 import { convertPropsToClasses } from './modus-wc-button.tailwind';
 
 /**
@@ -25,6 +30,7 @@ import { convertPropsToClasses } from './modus-wc-button.tailwind';
 })
 export class ModusWcButton {
   private inheritedAttributes: Attributes = {};
+  private releaseSlotProtection?: () => void;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -82,6 +88,18 @@ export class ModusWcButton {
       'aria-current',
       'aria-label',
     ]);
+  }
+
+  componentDidLoad() {
+    this.releaseSlotProtection = protectLightDomSlotContent({
+      host: this.el,
+      getInner: () => this.el.querySelector('button.modus-wc-btn'),
+    });
+  }
+
+  disconnectedCallback() {
+    this.releaseSlotProtection?.();
+    this.releaseSlotProtection = undefined;
   }
 
   private getClasses(): string {
