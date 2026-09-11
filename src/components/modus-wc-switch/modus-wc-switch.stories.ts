@@ -53,7 +53,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-switch
-        aria-label="Toggle"
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         .indeterminate=${args.indeterminate}

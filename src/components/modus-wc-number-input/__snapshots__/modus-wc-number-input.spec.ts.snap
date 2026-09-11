@@ -15,7 +15,7 @@ exports[`modus-wc-number-input should render with custom props 1`] = `
 exports[`modus-wc-number-input should render with default props 1`] = `
 <modus-wc-number-input inputmode="numeric" value="">
   <div class="modus-wc-number-input-container">
-    <input aria-label="Default input" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" id="mwc_id_0" placeholder="" type="number" value="">
+    <input class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-number-input modus-wc-w-full" id="mwc_id_0" placeholder="" type="number" value="">
   </div>
 </modus-wc-number-input>
 `;

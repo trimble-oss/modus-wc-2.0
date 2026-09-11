@@ -17,6 +17,7 @@ const meta: Meta<ProgressArgs> = {
   component: 'modus-wc-progress',
   args: {
     indeterminate: false,
+    label: 'Progress',
     max: 100,
     value: 70,
     variant: 'default',
@@ -40,7 +41,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-progress
-        aria-label="Progress bar"
         custom-class="${ifDefined(args['custom-class'])}"
         ?indeterminate=${args.indeterminate}
         label=${ifDefined(args.label)}
@@ -54,7 +54,12 @@ export const Default: Story = {
 
 export const Indeterminate: Story = {
   render: () => {
-    return html` <modus-wc-progress indeterminate="true"></modus-wc-progress> `;
+    return html`
+      <modus-wc-progress
+        aria-label="Loading progress"
+        indeterminate="true"
+      ></modus-wc-progress>
+    `;
   },
 };
 
@@ -73,11 +78,15 @@ export const SizeVariations: Story = {
 <div>
   <div>
     Default size
-    <modus-wc-progress value=${args.value}></modus-wc-progress>
+    <modus-wc-progress
+      aria-label="Progress"
+      value=${args.value}
+    ></modus-wc-progress>
   </div>
   <div>
     Small size
     <modus-wc-progress
+      aria-label="Progress"
       value=${args.value}
       custom-class="size-small"
     ></modus-wc-progress>
@@ -85,6 +94,7 @@ export const SizeVariations: Story = {
   <div>
     Compact size
     <modus-wc-progress
+      aria-label="Progress"
       value=${args.value}
       custom-class="size-compact"
     ></modus-wc-progress>
@@ -129,6 +139,7 @@ export const CustomBarColor: Story = {
   }
 </style>
 <modus-wc-progress
+  aria-label="Progress"
   value=${args.value}
   custom-class="custom-bar-color"
 ></modus-wc-progress>
@@ -146,6 +157,7 @@ export const CustomBackgroundColor: Story = {
   }
 </style>
 <modus-wc-progress
+  aria-label="Progress"
   value=${args.value}
   custom-class="custom-bg-color"
 ></modus-wc-progress>

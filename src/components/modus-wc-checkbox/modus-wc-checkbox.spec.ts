@@ -7,7 +7,7 @@ describe('modus-wc-checkbox', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcCheckbox],
-      html: '<modus-wc-checkbox aria-label="Default checkbox"></modus-wc-checkbox>',
+      html: '<modus-wc-checkbox></modus-wc-checkbox>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -36,10 +36,15 @@ describe('modus-wc-checkbox', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcCheckbox, ModusWcInputLabel],
-      html: '<modus-wc-checkbox label="Email alerts" aria-label="Email alerts"></modus-wc-checkbox>',
+      html: '<modus-wc-checkbox label="Email alerts"></modus-wc-checkbox>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
+
+    const input = page.root!.querySelector(
+      'input[type="checkbox"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should retain the same generated id across re-renders', async () => {

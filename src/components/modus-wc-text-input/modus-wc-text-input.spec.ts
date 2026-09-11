@@ -11,7 +11,7 @@ describe('modus-wc-text-input', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput],
-      html: '<modus-wc-text-input aria-label="Default input"></modus-wc-text-input>',
+      html: '<modus-wc-text-input></modus-wc-text-input>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -54,10 +54,13 @@ describe('modus-wc-text-input', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput, ModusWcInputLabel],
-      html: '<modus-wc-text-input label="Email" aria-label="Email"></modus-wc-text-input>',
+      html: '<modus-wc-text-input label="Email"></modus-wc-text-input>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input');
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {

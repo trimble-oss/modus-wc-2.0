@@ -9,7 +9,7 @@ describe('modus-wc-textarea', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea],
-      html: '<modus-wc-textarea aria-label="Default textarea"></modus-wc-textarea>',
+      html: '<modus-wc-textarea></modus-wc-textarea>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -45,10 +45,15 @@ describe('modus-wc-textarea', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextarea, ModusWcInputLabel],
-      html: '<modus-wc-textarea label="Notes" aria-label="Notes"></modus-wc-textarea>',
+      html: '<modus-wc-textarea label="Notes"></modus-wc-textarea>',
     });
 
     expectLabelLinkedToControl(page.root!, 'textarea');
+
+    const textarea = page.root!.querySelector(
+      'textarea'
+    ) as HTMLTextAreaElement;
+    expect(textarea.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {

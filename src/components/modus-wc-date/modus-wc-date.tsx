@@ -41,6 +41,7 @@ import {
   getRangeDayCellClasses,
   isInHighlightRun,
 } from './utils/range-utils';
+import { resolveReferencedAriaText } from './utils/resolve-referenced-aria-text';
 
 /**
  * A customizable date picker component used to create date inputs.
@@ -342,9 +343,6 @@ export class ModusWcDate {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Date input';
-    }
     this.inheritedAttributes = inheritAriaAttributes(this.el);
 
     try {
@@ -2170,12 +2168,28 @@ export class ModusWcDate {
   private get endInputAttributes(): Attributes {
     const attrs = { ...this.inheritedAttributes };
     const ariaLabel = attrs['aria-label'];
+    const labelledBy = attrs['aria-labelledby'];
     delete attrs['aria-labelledby'];
+    delete attrs['aria-label'];
 
-    return {
-      ...attrs,
-      'aria-label': ariaLabel ? `${ariaLabel} end` : 'End date',
-    };
+    let endAccessibleName: string | undefined;
+    if (ariaLabel) {
+      endAccessibleName = `${ariaLabel} end`;
+    } else if (labelledBy) {
+      const referencedName = resolveReferencedAriaText(this.el, labelledBy);
+      endAccessibleName = referencedName ? `${referencedName} end` : undefined;
+    } else if (this.label) {
+      endAccessibleName = `${this.label} end`;
+    }
+
+    if (endAccessibleName) {
+      return {
+        ...attrs,
+        'aria-label': endAccessibleName,
+      };
+    }
+
+    return attrs;
   }
 
   render() {

@@ -102,10 +102,6 @@ export class ModusWcNumberInput {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = this.placeholder || 'Number input';
-    }
-
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
       ...inheritAttributes(this.el, ['inputmode']),

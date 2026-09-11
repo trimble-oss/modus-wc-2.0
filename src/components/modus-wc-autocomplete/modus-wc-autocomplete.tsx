@@ -259,10 +259,6 @@ export class ModusWcAutocomplete {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Autocomplete input';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     document.addEventListener('click', this.handleOutsideClick);
 

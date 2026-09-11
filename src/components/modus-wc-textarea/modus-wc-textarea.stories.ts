@@ -104,7 +104,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-textarea
-        aria-label="Textarea input"
         auto-correct=${ifDefined(args['auto-correct'])}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
@@ -138,7 +137,6 @@ const errorFeedback: IInputFeedbackProp = {
 export const WithErrorFeedback: Story = {
   render: (args) => html`
     <modus-wc-textarea
-      aria-label="Textarea input"
       .feedback=${errorFeedback}
       id="error-input"
       label=${ifDefined(args.label)}
