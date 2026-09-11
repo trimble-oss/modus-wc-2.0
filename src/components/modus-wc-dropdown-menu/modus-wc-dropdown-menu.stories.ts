@@ -426,6 +426,19 @@ export const LazyLoading: Story = {
       source: {
         code: `
 <style>
+  main {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-block-size: 100vh;
+  }
+
+  [slot='button'] {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+  }
+
   .lazy-menu-loading {
     align-items: center;
     display: flex;
@@ -452,75 +465,79 @@ export const LazyLoading: Story = {
 </modus-wc-dropdown-menu>
 
 <script>
-  const dropdown = document.getElementById('lazy-dropdown');
-  let status = 'idle';
-  let pendingLoad = false;
+  customElements.whenDefined('modus-wc-dropdown-menu').then(() => {
+    const dropdown = document.getElementById('lazy-dropdown');
+    if (!dropdown) return;
 
-  const getMenuSlot = () => {
-    const slot = dropdown.querySelector('[slot="menu"]');
-    if (!(slot instanceof HTMLDivElement)) {
-      throw new Error('Expected a stable div[slot="menu"].');
-    }
-    return slot;
-  };
+    let status = 'idle';
+    let pendingLoad = false;
 
-  const resetMenuSlot = (slot) => {
-    slot.replaceChildren();
-    slot.removeAttribute('aria-busy');
-    slot.removeAttribute('aria-live');
-    slot.className = '';
-  };
+    const getMenuSlot = () => {
+      const slot = dropdown.querySelector('[slot="menu"]');
+      if (!(slot instanceof HTMLDivElement)) {
+        throw new Error('Expected a stable div[slot="menu"].');
+      }
+      return slot;
+    };
 
-  const showLoader = () => {
-    const slot = getMenuSlot();
-    resetMenuSlot(slot);
-    slot.className = 'lazy-menu-loading';
-    slot.setAttribute('aria-busy', 'true');
-    slot.setAttribute('aria-live', 'polite');
-    const loader = document.createElement('modus-wc-loader');
-    loader.setAttribute('variant', 'spinner');
-    loader.setAttribute('size', 'sm');
-    slot.appendChild(loader);
-  };
+    const resetMenuSlot = (slot) => {
+      slot.replaceChildren();
+      slot.removeAttribute('aria-busy');
+      slot.removeAttribute('aria-live');
+      slot.className = '';
+    };
 
-  const showMenuItems = (items) => {
-    const slot = getMenuSlot();
-    resetMenuSlot(slot);
-    items.forEach(({ label, value }) => {
-      const item = document.createElement('modus-wc-menu-item');
-      item.setAttribute('label', label);
-      item.setAttribute('value', value);
-      slot.appendChild(item);
-    });
-  };
+    const showLoader = () => {
+      const slot = getMenuSlot();
+      resetMenuSlot(slot);
+      slot.className = 'lazy-menu-loading';
+      slot.setAttribute('aria-busy', 'true');
+      slot.setAttribute('aria-live', 'polite');
+      const loader = document.createElement('modus-wc-loader');
+      loader.setAttribute('variant', 'spinner');
+      loader.setAttribute('size', 'sm');
+      slot.appendChild(loader);
+    };
 
-  let loadTimeoutId;
+    const showMenuItems = (items) => {
+      const slot = getMenuSlot();
+      resetMenuSlot(slot);
+      items.forEach(({ label, value }) => {
+        const item = document.createElement('modus-wc-menu-item');
+        item.setAttribute('label', label);
+        item.setAttribute('value', value);
+        slot.appendChild(item);
+      });
+    };
 
-  const clearLoadTimeout = () => {
-    if (loadTimeoutId === undefined) return;
-    window.clearTimeout(loadTimeoutId);
-    loadTimeoutId = undefined;
-  };
+    let loadTimeoutId;
 
-  // Fetch on first open. Keep div[slot="menu"] mounted; swap its contents only.
-  dropdown.addEventListener('menuVisibilityChange', (e) => {
-    if (!e.detail.isVisible || status !== 'idle' || pendingLoad) return;
-
-    pendingLoad = true;
-    status = 'loading';
-    showLoader();
-
-    clearLoadTimeout();
-    loadTimeoutId = window.setTimeout(() => {
+    const clearLoadTimeout = () => {
+      if (loadTimeoutId === undefined) return;
+      window.clearTimeout(loadTimeoutId);
       loadTimeoutId = undefined;
-      showMenuItems([
-        { label: 'Fetched One', value: '1' },
-        { label: 'Fetched Two', value: '2' },
-        { label: 'Fetched Three', value: '3' },
-      ]);
-      status = 'ready';
-      pendingLoad = false;
-    }, 1200);
+    };
+
+    // Fetch on first open. Keep div[slot="menu"] mounted; swap its contents only.
+    dropdown.addEventListener('menuVisibilityChange', (e) => {
+      if (!e.detail.isVisible || status !== 'idle' || pendingLoad) return;
+
+      pendingLoad = true;
+      status = 'loading';
+      showLoader();
+
+      clearLoadTimeout();
+      loadTimeoutId = window.setTimeout(() => {
+        loadTimeoutId = undefined;
+        showMenuItems([
+          { label: 'Fetched One', value: '1' },
+          { label: 'Fetched Two', value: '2' },
+          { label: 'Fetched Three', value: '3' },
+        ]);
+        status = 'ready';
+        pendingLoad = false;
+      }, 1200);
+    });
   });
 </script>
 `,
@@ -568,14 +585,15 @@ export const LazyLoading: Story = {
     return html`
 <style>
   div[id^='story--components-dropdown-menu--lazy-loading'] {
-    display: flex;
     align-items: center;
-    height: 240px;
+    display: flex;
+    justify-content: center;
+    min-block-size: 100vh;
   }
 
   [slot='button'] {
-    display: flex;
     align-items: center;
+    display: flex;
     gap: 4px;
   }
 
@@ -591,9 +609,10 @@ export const LazyLoading: Story = {
 </style>
 
 <modus-wc-dropdown-menu
+  id="lazy-dropdown"
   button-aria-label="Open lazy menu"
   button-color="primary"
-  button-size="sm"
+  button-size="lg"
   button-variant="filled"
   @menuVisibilityChange=${handleVisibilityChange}
   ${ref((el) => {
