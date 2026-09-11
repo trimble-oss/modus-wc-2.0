@@ -103,7 +103,8 @@
               "name": "el",
               "type": {
                 "text": "HTMLElement"
-              }
+              },
+              "description": "Reference to the host element"
             },
             {
               "kind": "method",
@@ -148,6 +149,7 @@
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
+              "description": "Custom CSS class to apply to the outer div element.",
               "type": {
                 "text": "string"
               }
@@ -9034,11 +9036,7 @@
             },
             {
               "kind": "method",
-              "name": "handlePointerCancel"
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerDown",
+              "name": "handlePointerEnter",
               "parameters": [
                 {
                   "name": "event",
@@ -9048,22 +9046,6 @@
                 }
               ],
               "description": "Fires before the emulated mouseenter on touch, so mouseenter knows its source."
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerEnter",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "PointerEvent"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handlePointerUp"
             },
             {
               "kind": "method",

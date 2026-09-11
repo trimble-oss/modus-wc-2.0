@@ -77,11 +77,6 @@ export namespace Components {
          */
         "alertTitle": string;
         /**
-          * Controls body display: full text (default) or expandable two-line preview with Show more.
-          * @default 'default'
-         */
-        "contentDisplayMode"?: 'default' | 'expandable';
-        /**
           * Custom CSS class to apply to the outer div element.
           * @default ''
          */
@@ -2053,7 +2048,7 @@ export namespace Components {
           * Whether the dot displays a pulsing halo animation.
           * @default true
          */
-        "pulse": boolean;
+        "pulse"?: boolean;
         /**
           * The semantic status variant.
           * @default 'active'
@@ -3021,7 +3016,6 @@ declare global {
     };
     interface HTMLModusWcAlertElementEventMap {
         "dismissClick": any;
-        "contentExpandedChange": { expanded: boolean };
     }
     /**
      * A customizable alert component used to inform the user about important events.
@@ -4246,11 +4240,6 @@ declare namespace LocalJSX {
          */
         "alertTitle": string;
         /**
-          * Controls body display: full text (default) or expandable two-line preview with Show more.
-          * @default 'default'
-         */
-        "contentDisplayMode"?: 'default' | 'expandable';
-        /**
           * Custom CSS class to apply to the outer div element.
           * @default ''
          */
@@ -4273,10 +4262,6 @@ declare namespace LocalJSX {
           * The Modus icon to render.
          */
         "icon"?: string;
-        /**
-          * Fires when expandable body content is expanded or collapsed.
-         */
-        "onContentExpandedChange"?: (event: ModusWcAlertCustomEvent<{ expanded: boolean }>) => void;
         /**
           * An event that fires when the alert is dismissed
          */
