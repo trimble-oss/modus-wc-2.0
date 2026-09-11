@@ -48,6 +48,7 @@ export class ModusWcTooltip {
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
   private lastPointerType = '';
+  private suppressNextFocus = false;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -387,6 +388,28 @@ export class ModusWcTooltip {
   }
 
   /** Fires before the emulated mouseenter on touch, so mouseenter knows its source. */
+  @Listen('pointerdown')
+  handlePointerDown(event: PointerEvent) {
+    this.lastPointerType = event.pointerType;
+    this.suppressNextFocus = event.pointerType === 'mouse';
+
+    if (event.pointerType === 'touch') {
+      this.escapeDismissed = false;
+      this.isHovered = true;
+      this.showTooltip();
+    }
+  }
+
+  @Listen('pointerup')
+  handlePointerUp() {
+    this.suppressNextFocus = false;
+  }
+
+  @Listen('pointercancel')
+  handlePointerCancel() {
+    this.suppressNextFocus = false;
+  }
+
   @Listen('pointerenter')
   handlePointerEnter(event: PointerEvent) {
     this.lastPointerType = event.pointerType;
@@ -408,6 +431,11 @@ export class ModusWcTooltip {
 
   @Listen('focusin')
   handleFocusIn() {
+    if (this.suppressNextFocus) {
+      this.suppressNextFocus = false;
+      return;
+    }
+
     // Focus shows immediately; drop any pending hover show so it can't re-fire
     clearTimeout(this.showDelayTimer);
     this.escapeDismissed = false;
