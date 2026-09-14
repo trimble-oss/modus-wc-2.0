@@ -181,10 +181,11 @@ export class ModusWcTextInput {
     const classList = [
       'modus-wc-text-input',
       'modus-wc-input',
-      'modus-wc-w-full',
-      'modus-wc-flex',
-      'modus-wc-items-center',
-      'modus-wc-gap-1',
+      'moduswc:input',
+      'moduswc:w-full',
+      'moduswc:flex',
+      'moduswc:items-center',
+      'moduswc:gap-1',
     ];
 
     const propClasses = convertPropsToClasses({

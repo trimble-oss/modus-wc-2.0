@@ -1,0 +1,8 @@
+/**
+ * SPIKE: Tailwind CSS v4 + DaisyUI v5 entry for Wireit CLI (modus-modern-light only).
+ * Full migration replaces tailwind.css; see docs/SPIKE-tailwind-v4-daisyui-v5.md.
+ */
+@import './global.css';
+@import './variables.css';
+@import './fonts.css';
+@import './tailwind-v4-core.css';

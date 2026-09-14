@@ -85,7 +85,7 @@ export class ModusWcButton {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-btn'];
+    const classList = ['modus-wc-btn', 'moduswc:btn'];
     const propClasses = convertPropsToClasses({
       color: this.color,
       disabled: this.disabled,
