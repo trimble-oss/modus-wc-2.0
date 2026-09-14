@@ -1,0 +1,91 @@
+/**
+ * Shared Tailwind v4 + DaisyUI v5 core (no relative @imports).
+ * Imported by tailwind-v4.css (CLI) and tailwind-v4-stencil.css (Stencil plugin).
+ */
+@import 'tailwindcss' prefix(moduswc);
+
+/* SPIKE: four components only */
+@source '../components/modus-wc-button/**/*.{ts,tsx,scss}';
+@source '../components/modus-wc-text-input/**/*.{ts,tsx,scss}';
+@source '../components/modus-wc-card/**/*.{ts,tsx,scss}';
+@source '../components/modus-wc-tabs/**/*.{ts,tsx,scss}';
+@source './tailwind-v4-themeable.ts';
+
+@plugin 'daisyui' {
+  themes: modus-modern-light --default;
+  root: ':root';
+  logs: true;
+}
+
+@plugin 'daisyui/theme' {
+  name: 'modus-modern-light';
+  default: true;
+  color-scheme: light;
+
+  --color-primary: #0063a3;
+  --color-primary-content: #ffffff;
+  --color-secondary: #fbad26;
+  --color-secondary-content: #000000;
+  --color-accent: #6a6e79;
+  --color-accent-content: #ffffff;
+  --color-neutral: #cbcdd6;
+  --color-neutral-content: #252a2e;
+  --color-base-100: #ffffff;
+  --color-base-200: #cbcdd6;
+  --color-base-300: #b7b9c3;
+  --color-base-content: #252a2e;
+  --color-info: #0063a3;
+  --color-info-content: #ffffff;
+  --color-success: #006638;
+  --color-success-content: #ffffff;
+  --color-warning: #e49325;
+  --color-warning-content: #252a2e;
+  --color-error: #da212c;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+  --depth: 0;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+}
+
+@layer base {
+  h1 {
+    font-size: var(--modus-wc-font-size-3xl);
+    font-weight: var(--modus-wc-font-weight-normal);
+    line-height: var(--modus-wc-line-height-h1);
+  }
+
+  h2 {
+    font-size: var(--modus-wc-font-size-2xl);
+    font-weight: var(--modus-wc-font-weight-normal);
+    line-height: var(--modus-wc-line-height-h2);
+  }
+
+  h3 {
+    font-size: var(--modus-wc-font-size-xl);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-h3);
+  }
+
+  h4 {
+    font-size: var(--modus-wc-font-size-lg);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  h5 {
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: var(--modus-wc-font-weight-bold);
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  h6 {
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-bold);
+    line-height: var(--modus-wc-line-height-h6);
+  }
+}

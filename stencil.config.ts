@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Config } from '@stencil/core';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
@@ -6,15 +8,18 @@ import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
 } from 'stencil-tailwind-plugin';
-import tailwindConfig from './tailwind.config';
 import { vueOutputTarget } from '@stencil/vue-output-target';
+
+const tailwindV4CoreCss = readFileSync(
+  join(__dirname, 'src/styles/tailwind-v4-core.css'),
+  'utf8'
+);
 
 const tailwindOpts = {
   // enableDebug: true,
   minify: false,
   stripComments: true,
-  tailwindConf: tailwindConfig,
-  tailwindCssPath: './src/styles/tailwind.css',
+  injectTailwindConfiguration: () => tailwindV4CoreCss,
 };
 
 setPluginConfigurationDefaults(tailwindOpts);
