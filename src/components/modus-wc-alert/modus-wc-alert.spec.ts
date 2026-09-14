@@ -788,6 +788,34 @@ describe('modus-wc-alert', () => {
       expect(component.isContentOverflowing).toBe(false);
     });
 
+    it('should skip overflow state update when the host is not connected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Overflowing description text" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+      const bodyElement = page.root?.querySelector(
+        '.description'
+      ) as HTMLElement;
+
+      Object.defineProperty(bodyElement, 'scrollHeight', {
+        configurable: true,
+        value: 60,
+      });
+      Object.defineProperty(bodyElement, 'clientHeight', {
+        configurable: true,
+        value: 40,
+      });
+
+      page.root?.remove();
+
+      // @ts-expect-error - testing private overflow state update
+      component.updateOverflowState();
+      // @ts-expect-error - Access private property for testing
+      expect(component.isContentOverflowing).toBe(false);
+    });
+
     it('should update expandable content ref when the ref callback is invoked', async () => {
       const page = await newSpecPage({
         components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
@@ -803,6 +831,81 @@ describe('modus-wc-alert', () => {
       component.setExpandableContentRef(description);
       // @ts-expect-error - testing private ref callback
       component.setExpandableContentRef(undefined);
+    });
+
+    it('should cancel pending overflow check when disconnected', async () => {
+      const animationFrameCallbacks: FrameRequestCallback[] = [];
+      const cancelAnimationFrameSpy = jest.spyOn(
+        globalThis,
+        'cancelAnimationFrame'
+      );
+      jest
+        .spyOn(globalThis, 'requestAnimationFrame')
+        .mockImplementation((callback: FrameRequestCallback) => {
+          animationFrameCallbacks.push(callback);
+          return animationFrameCallbacks.length;
+        });
+
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      animationFrameCallbacks.length = 0;
+
+      const component = page.rootInstance as ModusWcAlert;
+      // @ts-expect-error - testing private method
+      component.scheduleOverflowCheck();
+
+      expect(animationFrameCallbacks.length).toBe(1);
+
+      page.root?.remove();
+      await page.waitForChanges();
+
+      expect(cancelAnimationFrameSpy).toHaveBeenCalled();
+    });
+
+    it('should use host id for expandable body content id when provided', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert id="export-alert" alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const bodyElement = page.root?.querySelector('.description');
+
+      expect(bodyElement?.id).toBe('export-alert-content');
+    });
+
+    it('should generate body content id when host id is whitespace only', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert id="   " alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const bodyElement = page.root?.querySelector('.description');
+
+      expect(bodyElement?.id).toBeTruthy();
+      expect(bodyElement?.id).not.toContain('-content');
+    });
+
+    it('should resolve body content id when the host has no id attribute', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+      });
+
+      const component = page.rootInstance as ModusWcAlert;
+
+      Object.defineProperty(component.el, 'id', {
+        configurable: true,
+        get: () => undefined as unknown as string,
+      });
+
+      // @ts-expect-error - testing private method
+      const bodyContentId = component.getBodyContentId();
+
+      expect(bodyContentId).toBeTruthy();
+      expect(bodyContentId).not.toContain('-content');
     });
 
     it('should evaluate overflow inside requestAnimationFrame', async () => {
@@ -974,9 +1077,48 @@ describe('modus-wc-alert', () => {
         observeSpy.mockClear();
 
         // @ts-expect-error - testing private ref callback
+        component.setExpandableContentRef(undefined);
+        // @ts-expect-error - testing private ref callback
         component.setExpandableContentRef(description);
 
         expect(observeSpy).not.toHaveBeenCalled();
+      });
+
+      it('should reuse a single ResizeObserver instance across ref updates', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const description = page.root?.querySelector(
+          '.description'
+        ) as HTMLElement;
+
+        expect(globalThis.ResizeObserver).toHaveBeenCalledTimes(1);
+
+        // @ts-expect-error - testing private ref callback
+        component.setExpandableContentRef(description);
+
+        expect(globalThis.ResizeObserver).toHaveBeenCalledTimes(1);
+      });
+
+      it('should disconnect existing resize observer before observing a new content ref', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+          html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable"></modus-wc-alert>',
+        });
+
+        const component = page.rootInstance as ModusWcAlert;
+        const newElement = document.createElement('div');
+
+        disconnectSpy.mockClear();
+
+        // @ts-expect-error - testing private ref callback
+        component.setExpandableContentRef(newElement);
+
+        expect(disconnectSpy).toHaveBeenCalled();
+        expect(observeSpy).toHaveBeenCalledWith(newElement);
       });
 
       it('should schedule overflow check when contentDisplayMode changes to expandable', async () => {

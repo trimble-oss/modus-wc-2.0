@@ -13,9 +13,11 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-alert.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
-
-let alertBodyContentIdSequence = 0;
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable alert component used to inform the user about important events.
@@ -31,7 +33,8 @@ export class ModusWcAlert {
   private inheritedAttributes: Attributes = {};
   private expandableContentRef?: HTMLElement;
   private contentResizeObserver?: ResizeObserver;
-  private readonly bodyContentId = `modus-wc-alert-body-${++alertBodyContentIdSequence}`;
+  private overflowCheckFrameId?: number;
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -87,6 +90,12 @@ export class ModusWcAlert {
     return this.contentDisplayMode === 'expandable';
   }
 
+  private getBodyContentId(): string {
+    const hostId = this.el.id?.trim();
+
+    return this.resolveEffectiveId(hostId ? `${hostId}-content` : undefined);
+  }
+
   private getClasses(): string {
     const classList = ['modus-wc-alert'];
     const propClasses = convertPropsToClasses({
@@ -122,15 +131,30 @@ export class ModusWcAlert {
     return classList.join(' ');
   }
 
+  private cancelOverflowCheck(): void {
+    if (this.overflowCheckFrameId !== undefined) {
+      cancelAnimationFrame(this.overflowCheckFrameId);
+      this.overflowCheckFrameId = undefined;
+    }
+  }
+
   private scheduleOverflowCheck(): void {
     if (!this.isExpandableMode()) {
       return;
     }
 
-    requestAnimationFrame(() => this.updateOverflowState());
+    this.cancelOverflowCheck();
+    this.overflowCheckFrameId = requestAnimationFrame(() => {
+      this.overflowCheckFrameId = undefined;
+      this.updateOverflowState();
+    });
   }
 
   private updateOverflowState(): void {
+    if (!this.el.isConnected) {
+      return;
+    }
+
     if (this.isContentExpanded) {
       return;
     }
@@ -150,25 +174,37 @@ export class ModusWcAlert {
   }
 
   private syncContentResizeObserver(): void {
-    this.disconnectContentResizeObserver();
-
     if (
       !this.isExpandableMode() ||
       !this.expandableContentRef ||
       typeof ResizeObserver === 'undefined'
     ) {
+      this.contentResizeObserver?.disconnect();
       return;
     }
 
-    this.contentResizeObserver = new ResizeObserver(() => {
-      this.updateOverflowState();
-    });
+    if (!this.contentResizeObserver) {
+      this.contentResizeObserver = new ResizeObserver(() => {
+        this.updateOverflowState();
+      });
+    } else {
+      this.contentResizeObserver.disconnect();
+    }
+
     this.contentResizeObserver.observe(this.expandableContentRef);
   }
 
   private setExpandableContentRef = (el: HTMLElement | undefined) => {
+    if (el === this.expandableContentRef) {
+      return;
+    }
+
     this.expandableContentRef = el;
     this.syncContentResizeObserver();
+  };
+
+  private handleExpandToggleClick = (): void => {
+    this.toggleContentExpanded();
   };
 
   private toggleContentExpanded(): void {
@@ -192,7 +228,7 @@ export class ModusWcAlert {
       return;
     }
 
-    toggle.setAttribute('aria-controls', this.bodyContentId);
+    toggle.setAttribute('aria-controls', this.getBodyContentId());
     toggle.setAttribute(
       'aria-expanded',
       this.isContentExpanded ? 'true' : 'false'
@@ -219,7 +255,7 @@ export class ModusWcAlert {
         customClass="modus-wc-alert-expand-toggle"
         size="xs"
         variant="borderless"
-        onButtonClick={() => this.toggleContentExpanded()}
+        onButtonClick={this.handleExpandToggleClick}
       >
         <span class="modus-wc-alert-expand-toggle-label">
           {expanded ? 'Show less' : 'Show more'}
@@ -246,7 +282,7 @@ export class ModusWcAlert {
       <div class="modus-wc-alert-expandable-body">
         <div
           class={this.getBodyTextClasses(contentClass)}
-          id={this.bodyContentId}
+          id={this.getBodyContentId()}
           ref={this.setExpandableContentRef}
         >
           {children}
@@ -341,6 +377,7 @@ export class ModusWcAlert {
 
   disconnectedCallback(): void {
     clearTimeout(this.timerId);
+    this.cancelOverflowCheck();
     this.disconnectContentResizeObserver();
   }
 

@@ -14,7 +14,7 @@ exports[`modus-wc-alert contentDisplayMode should render with expandable content
         Title
       </div>
       <div class="modus-wc-alert-expandable-body">
-        <div class="description modus-wc-alert-body-text--collapsed" id="modus-wc-alert-body-37">
+        <div class="description modus-wc-alert-body-text--collapsed" id="mwc_id_1">
           A very long description that should be truncated when displayed in expandable mode.
         </div>
       </div>
@@ -34,7 +34,7 @@ exports[`modus-wc-alert contentDisplayMode should wrap slot content in expandabl
     </modus-wc-icon>
     <div class="modus-wc-alert-content modus-wc-alert-content--expandable">
       <div class="modus-wc-alert-expandable-body">
-        <div class="modus-wc-alert-body-text--collapsed modus-wc-alert-slot-content" id="modus-wc-alert-body-40">
+        <div class="modus-wc-alert-body-text--collapsed modus-wc-alert-slot-content" id="mwc_id_3">
           <div slot="content">
             Custom slot content that is long enough to truncate
           </div>
