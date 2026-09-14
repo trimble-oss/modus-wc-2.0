@@ -29,57 +29,57 @@ export const convertPropsToClasses = ({
   if (color) {
     switch (color) {
       case 'primary':
-        classes = `${classes} modus-wc-btn-primary`;
+        classes = `${classes} moduswc:btn-primary`;
         break;
       case 'secondary':
-        classes = `${classes} modus-wc-btn-secondary`;
+        classes = `${classes} moduswc:btn-secondary`;
         break;
       case 'tertiary':
-        classes = `${classes} modus-wc-btn-neutral`;
+        classes = `${classes} moduswc:btn-neutral`;
         break;
       case 'warning':
-        classes = `${classes} modus-wc-btn-warning`;
+        classes = `${classes} moduswc:btn-warning`;
         break;
       case 'danger':
-        classes = `${classes} modus-wc-btn-error`;
+        classes = `${classes} moduswc:btn-error`;
         break;
       case 'neutral':
-        classes = `${classes} modus-wc-btn-base-inverted`;
+        classes = `${classes} moduswc:btn-base-inverted`;
         break;
       case 'success':
-        classes = `${classes} modus-wc-btn-success`;
+        classes = `${classes} moduswc:btn-success`;
         break;
     }
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-btn-disabled`;
+    classes = `${classes} moduswc:btn-disabled`;
   }
 
   if (fullWidth) {
-    classes = `${classes} modus-wc-btn-block`;
+    classes = `${classes} moduswc:btn-block`;
   }
 
   if (pressed) {
-    classes = `${classes} modus-wc-btn-active`;
+    classes = `${classes} moduswc:btn-active`;
   }
 
   if (shape) {
     switch (shape) {
       case 'circle':
-        classes = `${classes} modus-wc-btn-circle`;
+        classes = `${classes} moduswc:btn-circle`;
         break;
       case 'ellipse':
         classes = `${classes} modus-wc-btn-ellipse`;
         break;
       case 'square':
-        classes = `${classes} modus-wc-btn-square`;
+        classes = `${classes} moduswc:btn-square`;
         break;
     }
   }
 
   if (size) {
-    classes = `${classes} modus-wc-btn-${size}`;
+    classes = `${classes} moduswc:btn-${size}`;
   }
 
   if (variant) {
@@ -91,7 +91,7 @@ export const convertPropsToClasses = ({
         classes = `${classes} modus-wc-btn-filled`;
         break;
       case 'outlined':
-        classes = `${classes} modus-wc-btn-outline`;
+        classes = `${classes} moduswc:btn-outline`;
         break;
     }
   }
