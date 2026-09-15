@@ -50,6 +50,7 @@ body {
   )
 ) {
   overflow: auto !important;
+  scrollbar-gutter: auto !important;
 }
 
 .modus-wc-border {
