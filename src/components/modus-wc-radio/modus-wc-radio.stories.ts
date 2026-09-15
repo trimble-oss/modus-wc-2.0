@@ -51,7 +51,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-radio
-        aria-label="Radio"
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}
         input-id=${ifDefined(args['input-id'])}

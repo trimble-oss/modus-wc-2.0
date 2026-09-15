@@ -2,7 +2,7 @@
 
 exports[`modus-wc-checkbox renders with default props 1`] = `
 <modus-wc-checkbox class="modus-wc-checkbox-host">
-  <input aria-label="Default checkbox" class="modus-wc-checkbox modus-wc-checkbox-md" id="mwc_id_0" type="checkbox">
+  <input class="modus-wc-checkbox modus-wc-checkbox-md" id="mwc_id_0" type="checkbox">
 </modus-wc-checkbox>
 `;
 

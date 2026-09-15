@@ -2,7 +2,7 @@
 
 exports[`modus-wc-switch renders with default props 1`] = `
 <modus-wc-switch class="modus-wc-switch-host">
-  <input aria-label="Default toggle" class="modus-wc-toggle modus-wc-toggle-md" id="mwc_id_0" role="switch" type="checkbox">
+  <input class="modus-wc-toggle modus-wc-toggle-md" id="mwc_id_0" role="switch" type="checkbox">
 </modus-wc-switch>
 `;
 
@@ -21,7 +21,7 @@ exports[`modus-wc-switch should render with custom props 1`] = `
 
 exports[`modus-wc-switch should render with size xs 1`] = `
 <modus-wc-switch class="modus-wc-switch-host" label="XS label" size="xs">
-  <input aria-label="XS toggle" class="modus-wc-toggle modus-wc-toggle-xs" id="mwc_id_1" role="switch" type="checkbox">
+  <input class="modus-wc-toggle modus-wc-toggle-xs" id="mwc_id_1" role="switch" type="checkbox">
   <modus-wc-input-label class="modus-wc-input-label-host">
     <!---->
     <label class="modus-wc-input-label modus-wc-input-label-size-sm" htmlfor="mwc_id_1">

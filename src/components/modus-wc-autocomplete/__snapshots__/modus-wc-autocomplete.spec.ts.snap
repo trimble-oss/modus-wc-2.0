@@ -531,7 +531,7 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
+      <input class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
     </label>
   </modus-wc-text-input>
 </modus-wc-autocomplete>
