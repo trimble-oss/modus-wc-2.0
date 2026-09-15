@@ -2,6 +2,8 @@
 * Only add styles here that should not be applied by Tailwind or the theme.
 */
 
+@use '../../styles/menu-item-row-sizes' as row;
+
 modus-wc-tree-item .modus-wc-menu-item {
   display: flex;
   flex-direction: column;
@@ -10,6 +12,7 @@ modus-wc-tree-item .modus-wc-menu-item {
   .modus-wc-menu-item-interactive {
     align-items: center;
     border-radius: inherit;
+    box-sizing: border-box;
     display: flex;
     width: 100%;
 
@@ -22,31 +25,37 @@ modus-wc-tree-item .modus-wc-menu-item {
       color: var(--modus-wc-color-base-content);
       display: inline-flex;
       flex-shrink: 0;
-      height: 20px;
+      height: var(--modus-wc-font-size-2xl);
       justify-content: center;
+      line-height: 1;
       margin-inline-start: auto;
+      overflow: hidden;
       pointer-events: none;
       transform: rotate(0deg);
       transition-duration: 0.2s;
       transition-property: transform;
       transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      width: 20px;
+      width: var(--modus-wc-font-size-2xl);
     }
 
     .modus-wc-menu-item-content {
       align-items: center;
       display: flex;
       flex: 1;
+      gap: var(--modus-wc-spacing-md);
       min-width: 0;
       width: 100%;
 
       [slot='start'] {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        align-items: center;
+        display: inline-flex;
+        flex-shrink: 0;
+        line-height: 0;
       }
 
       [slot='end'] {
         margin-inline-start: auto;
-        padding-inline-start: var(--modus-wc-spacing-sm);
+        padding-inline-start: 0;
 
         &:is(modus-wc-dropdown-menu) {
           background-color: transparent;
@@ -55,10 +64,13 @@ modus-wc-tree-item .modus-wc-menu-item {
       }
 
       modus-wc-checkbox {
-        padding-inline-end: var(--modus-wc-spacing-sm);
+        padding-inline-end: 0;
       }
 
       .modus-wc-menu-item-labels {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-md);
         white-space: nowrap;
@@ -71,32 +83,49 @@ modus-wc-tree-item .modus-wc-menu-item {
     }
   }
 
+  &.modus-wc-menu-item-xs {
+    .modus-wc-menu-item-interactive {
+      @include row.menu-item-row-size-xs-content;
+
+      [slot='start'],
+      [slot='start-icon'] {
+        height: var(--modus-wc-font-size-md);
+        width: var(--modus-wc-font-size-md);
+
+        modus-wc-icon {
+          font-size: var(--modus-wc-font-size-md);
+          height: var(--modus-wc-font-size-md);
+          width: var(--modus-wc-font-size-md);
+        }
+      }
+    }
+  }
+
   &.modus-wc-menu-item-sm {
     .modus-wc-menu-item-interactive {
-      font-size: var(--modus-wc-font-size-sm);
-
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-xs);
-      }
+      @include row.menu-item-row-size-sm-content;
     }
   }
 
   &.modus-wc-menu-item-md {
     .modus-wc-menu-item-interactive {
-      font-size: var(--modus-wc-font-size-md);
-
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-sm);
-      }
+      @include row.menu-item-row-size-md-content;
     }
   }
 
   &.modus-wc-menu-item-lg {
     .modus-wc-menu-item-interactive {
-      font-size: var(--modus-wc-font-size-lg);
+      @include row.menu-item-row-size-lg-content;
+    }
+  }
 
-      .modus-wc-menu-item-sublabel {
-        font-size: var(--modus-wc-font-size-md);
+  &.modus-wc-menu-item-xl {
+    .modus-wc-menu-item-interactive {
+      @include row.menu-item-row-size-xl-content;
+
+      .modus-wc-menu-item-labels div {
+        font-size: var(--modus-wc-font-size-2xl);
+        line-height: var(--modus-wc-line-height-lg);
       }
     }
   }

@@ -11,7 +11,7 @@ interface MenuArgs {
   'custom-class'?: string;
   orientation?: Orientation;
   'selection-mode'?: SelectionMode;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }
 
 const meta: Meta<MenuArgs> = {
@@ -20,7 +20,6 @@ const meta: Meta<MenuArgs> = {
   args: {
     orientation: 'vertical',
     'selection-mode': 'single',
-    size: 'md',
   },
   argTypes: {
     orientation: {
@@ -33,7 +32,7 @@ const meta: Meta<MenuArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -61,34 +60,52 @@ export const Default: Story = {
   size=${ifDefined(args.size)}
 >
   <modus-wc-menu-item
+    label="Extra Small"
+    value="xs"
+    size=${args.size ?? 'xs'}
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
     label="Small"
     value="1"
-    size="sm"
+    size=${args.size ?? 'sm'}
   ></modus-wc-menu-item>
-  <modus-wc-menu-item label="Medium" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Medium"
+    value="2"
+    size=${args.size ?? 'md'}
+  ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Large"
     value="3"
-    size="lg"
+    size=${args.size ?? 'lg'}
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Extra Large"
+    value="xl"
+    size=${args.size ?? 'xl'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Bordered"
     value="3"
     bordered="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="With Sub-label"
     value="3"
     sub-label="Sub-label"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Selected"
     value="3"
     selected="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="With Start Icon"
     value="3"
+    size=${args.size ?? 'md'}
   >
     <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
   </modus-wc-menu-item>
@@ -96,6 +113,7 @@ export const Default: Story = {
     label="Disabled"
     value="3"
     disabled="true"
+    size=${args.size ?? 'md'}
   ></modus-wc-menu-item>
 </modus-wc-menu>
     `;
@@ -134,21 +152,29 @@ export const MultiSelect: Story = {
   <modus-wc-menu-item
     label="Menu Item 1"
     value="1"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
-  <modus-wc-menu-item label="Menu Item 2" value="2"></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Menu Item 2"
+    value="2"
+    size=${ifDefined(args.size)}
+  ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 3"
     value="3"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 4"
     value="4"
     bordered="true"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Menu Item 5"
     value="5"
     sub-label="Menu Item 5 Sub-label"
+    size=${ifDefined(args.size)}
   ></modus-wc-menu-item>
 </modus-wc-menu>
 <p ${ref((el) => { outputEl = el; })} style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--modus-wc-color-gray-6);">Selected: none</p>
@@ -251,18 +277,27 @@ export const CustomMenu: Story = {
 };
 
 export const CollapsibleMenu: Story = {
-  render: () => {
+  render: (args) => {
+    // prettier-ignore
     return html`
       <style>
         .menu-width {
           width: 400px;
         }
       </style>
-      <modus-wc-menu custom-class="menu-width">
+      <modus-wc-menu
+        aria-label="Collapsible menu"
+        ?bordered=${args.bordered}
+        custom-class=${args['custom-class'] || 'menu-width'}
+        orientation=${ifDefined(args.orientation)}
+        selection-mode=${ifDefined(args['selection-mode'])}
+        size=${ifDefined(args.size)}
+      >
         <modus-wc-menu-item
           label="Charts"
           .hasSubmenu=${true}
           id="charts-menu"
+          size=${ifDefined(args.size)}
           value="charts"
         >
           <modus-wc-icon
@@ -271,14 +306,26 @@ export const CollapsibleMenu: Story = {
             name="bar_graph"
           ></modus-wc-icon>
           <modus-wc-menu .isSubMenu=${true} id="charts-submenu">
-            <modus-wc-menu-item label="Bar Chart" value="bar-chart">
+            <modus-wc-menu-item
+              label="Bar Chart"
+              size=${ifDefined(args.size)}
+              value="bar-chart"
+            >
             </modus-wc-menu-item>
-            <modus-wc-menu-item label="Line Chart" value="line-chart">
+            <modus-wc-menu-item
+              label="Line Chart"
+              size=${ifDefined(args.size)}
+              value="line-chart"
+            >
             </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
 
-        <modus-wc-menu-item label="Calendar" value="calendar">
+        <modus-wc-menu-item
+          label="Calendar"
+          size=${ifDefined(args.size)}
+          value="calendar"
+        >
           <modus-wc-icon
             slot="start-icon"
             decorative="true"
@@ -290,6 +337,7 @@ export const CollapsibleMenu: Story = {
           label="Reports"
           .hasSubmenu=${true}
           id="reports-menu"
+          size=${ifDefined(args.size)}
           value="reports"
         >
           <modus-wc-icon
@@ -298,9 +346,17 @@ export const CollapsibleMenu: Story = {
             name="master_data"
           ></modus-wc-icon>
           <modus-wc-menu .isSubMenu=${true} id="reports-submenu">
-            <modus-wc-menu-item label="Monthly Report" value="monthly-report">
+            <modus-wc-menu-item
+              label="Monthly Report"
+              size=${ifDefined(args.size)}
+              value="monthly-report"
+            >
             </modus-wc-menu-item>
-            <modus-wc-menu-item label="Annual Report" value="annual-report">
+            <modus-wc-menu-item
+              label="Annual Report"
+              size=${ifDefined(args.size)}
+              value="annual-report"
+            >
             </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
@@ -353,10 +409,14 @@ export const ShadowDomParent: Story = {
           menuEl.orientation = v.orientation || 'vertical';
           menuEl.size = v.size || 'md';
 
-          // Only set innerHTML once on initial creation
           if (!el.querySelector('modus-wc-menu-item')) {
             el.innerHTML = `
               <modus-wc-menu-item
+    label="Extra Small"
+    value="xs"
+    size="xs"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
     label="Small"
     value="1"
     size="sm"
@@ -366,6 +426,11 @@ export const ShadowDomParent: Story = {
     label="Large"
     value="3"
     size="lg"
+  ></modus-wc-menu-item>
+  <modus-wc-menu-item
+    label="Extra Large"
+    value="xl"
+    size="xl"
   ></modus-wc-menu-item>
   <modus-wc-menu-item
     label="Bordered"
