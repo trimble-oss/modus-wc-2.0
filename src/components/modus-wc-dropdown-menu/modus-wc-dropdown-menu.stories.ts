@@ -545,7 +545,6 @@ export const LazyLoading: Story = {
     },
   },
   render: () => {
-    let dropdownEl: DropdownMenuElement | undefined;
     let loadTimeoutId: number | undefined;
     const state = lazyLoadingStoryState;
 
@@ -555,27 +554,47 @@ export const LazyLoading: Story = {
       loadTimeoutId = undefined;
     };
 
+    const resetLazyLoadStoryState = () => {
+      clearLoadTimeout();
+      state.pendingLoad = false;
+      state.status = 'idle';
+    };
+
     const handleVisibilityChange = (
       event: CustomEvent<{ isVisible: boolean }>
     ) => {
-      if (
-        !event.detail.isVisible ||
-        state.status !== 'idle' ||
-        state.pendingLoad ||
-        !dropdownEl
-      ) {
+      const dropdown = event.currentTarget as DropdownMenuElement;
+      if (!event.detail.isVisible) return;
+
+      if (state.status === 'ready') {
+        const slot = getMenuSlot(dropdown);
+        if (!slot.childElementCount) {
+          showMenuItems(dropdown, lazyLoadMenuItems());
+        }
+        return;
+      }
+
+      if (state.status === 'loading' && state.pendingLoad) {
+        showLoader(dropdown);
+        return;
+      }
+
+      if (state.status !== 'idle' || state.pendingLoad) {
         return;
       }
 
       state.pendingLoad = true;
       state.status = 'loading';
-      showLoader(dropdownEl);
+      showLoader(dropdown);
 
       clearLoadTimeout();
       loadTimeoutId = window.setTimeout(() => {
         loadTimeoutId = undefined;
-        if (!dropdownEl) return;
-        showMenuItems(dropdownEl, lazyLoadMenuItems());
+        if (!dropdown.isConnected) {
+          resetLazyLoadStoryState();
+          return;
+        }
+        showMenuItems(dropdown, lazyLoadMenuItems());
         state.status = 'ready';
         state.pendingLoad = false;
       }, 1200);
@@ -612,20 +631,18 @@ export const LazyLoading: Story = {
   id="lazy-dropdown"
   button-aria-label="Open lazy menu"
   button-color="primary"
-  button-size="lg"
+  button-size="sm"
   button-variant="filled"
   @menuVisibilityChange=${handleVisibilityChange}
   ${ref((el) => {
     if (!el) {
-      clearLoadTimeout();
-      dropdownEl = undefined;
-      if (state.pendingLoad || state.status === 'loading') {
-        state.pendingLoad = false;
-        state.status = 'idle';
-      }
+      resetLazyLoadStoryState();
       return;
     }
-    dropdownEl = el as DropdownMenuElement;
+    const dropdown = el as DropdownMenuElement;
+    if (state.status === 'ready') {
+      showMenuItems(dropdown, lazyLoadMenuItems());
+    }
   })}
 >
   <div slot="button">
