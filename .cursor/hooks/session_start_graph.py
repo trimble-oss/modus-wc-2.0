@@ -19,25 +19,23 @@ def emit(payload: dict) -> None:
 
 
 def tags_from_diff() -> list[str]:
-    try:
-        out = subprocess.check_output(
-            ["git", "diff", "--name-only", "origin/main...HEAD"],
-            stderr=subprocess.DEVNULL,
-            text=True,
-        )
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    names: set[str] = set()
+    commands = [
+        ["git", "diff", "--name-only", "origin/main...HEAD"],
+        ["git", "diff", "--name-only"],
+        ["git", "diff", "--name-only", "--cached"],
+        ["git", "diff", "--name-only", "HEAD~1..HEAD"],
+    ]
+    for cmd in commands:
         try:
-            out = subprocess.check_output(
-                ["git", "diff", "--name-only", "HEAD~1..HEAD"],
-                stderr=subprocess.DEVNULL,
-                text=True,
-            )
+            out = subprocess.check_output(cmd, stderr=subprocess.DEVNULL, text=True)
         except (subprocess.CalledProcessError, FileNotFoundError):
-            return []
+            continue
+        names.update(line for line in out.splitlines() if line.strip())
 
     tags: list[str] = []
     seen: set[str] = set()
-    for line in out.splitlines():
+    for line in sorted(names):
         match = TAG_RE.search(line)
         if match and match.group(1) not in seen:
             seen.add(match.group(1))
@@ -97,7 +95,8 @@ def main() -> None:
     context = (
         "Modus graph slice (sessionStart hook):\n"
         f"{json.dumps(slice_data, indent=2)}\n"
-        "Use graph-impact + storybook-smoke subagents for Storybook targets."
+        "Use graph-impact + storybook-smoke subagents for Storybook targets. "
+        "Checked-in reverseImpact is transitive; cap browser parents at 3."
     )
     emit({"env": env, "additional_context": context})
 

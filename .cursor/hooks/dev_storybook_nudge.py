@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Nudge Dev to run storybook-smoke after visual file edits; track visual work for QA hook."""
+"""Nudge Dev to run storybook-smoke after visual file edits."""
 
 import json
 import re
@@ -7,10 +7,12 @@ import sys
 from pathlib import Path
 
 STATE_DIR = Path(".cursor/hooks/state")
-VISUAL_FLAG = STATE_DIR / "visual_edits.flag"
+DEV_VISUAL_FLAG = STATE_DIR / "dev_visual_edits.flag"
 
 VISUAL_RE = re.compile(
-    r"(\.scss$|\.tailwind\.ts$|/src/components/modus-wc-[^/]+\.tsx$|\.stories\.ts$)"
+    r"(\.scss$|\.tailwind\.ts$|"
+    r"/src/components/modus-wc-[^/]+/[^/]+\.tsx$|"
+    r"\.stories\.tsx?$)"
 )
 
 
@@ -30,11 +32,12 @@ def main() -> None:
                 or tool_input.get("target_file")
                 or ""
             )
-    if not VISUAL_RE.search(file_path.replace("\\", "/")):
+    normalized = file_path.replace("\\", "/")
+    if not VISUAL_RE.search(normalized):
         sys.exit(0)
 
     STATE_DIR.mkdir(parents=True, exist_ok=True)
-    VISUAL_FLAG.write_text(file_path, encoding="utf-8")
+    DEV_VISUAL_FLAG.write_text(file_path, encoding="utf-8")
 
     print(
         json.dumps(

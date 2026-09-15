@@ -13,8 +13,8 @@ You map code changes to component-graph Storybook targets for Dev self-check and
 
 ## Inputs
 
-- List of changed file paths from the parent (or read `git diff --name-only origin/main...HEAD`).
-- [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) on the current branch.
+- List of changed file paths from the parent (or `git diff --name-only origin/main...HEAD` plus unstaged/cached paths).
+- [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) on the current branch (checked-in transitive `reverseImpact`; cap browser parents at 3).
 
 ## Steps
 

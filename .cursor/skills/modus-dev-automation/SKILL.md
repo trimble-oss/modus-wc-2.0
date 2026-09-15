@@ -14,7 +14,7 @@ Also follow `modus-qa-source` for design-source rules and `.cursor/rules/code-gu
 
 GitHub MCP **cannot** add, remove, or create labels on `trimble-oss/modus-wc-2.0` (403). Do not run `gh label create`.
 
-Workflow [`.github/workflows/automation-label-router.yml`](../../.github/workflows/automation-label-router.yml) attaches labels when **you** (`ElishaSamPeterPrabhu`) or `cursor[bot]` post exact signal lines on the PR.
+Workflow [`.github/workflows/automation-label-router.yml`](../../../.github/workflows/automation-label-router.yml) attaches labels when **you** (`ElishaSamPeterPrabhu`) or `cursor[bot]` post exact signal lines on the PR.
 
 **Canonical surface: PR conversation comment** (GitHub MCP `add_issue_comment`). Review bodies are a fallback.
 
@@ -45,7 +45,7 @@ QA-graph: none | tag → dependents
 
 - New feature or variant: `QA-source` **must** be a URL, not `none`.
 - `QA-verify`: numbered scenarios QA must execute. Include hover/disabled/pressed when those states exist.
-- `QA-graph`: from [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (runtime edges only, depth 1). Empty → `none`.
+- `QA-graph`: from [`docs/component-graph/component-graph.json`](../../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (transitive runtime dependents on `main`; cap browser targets at 3). Empty → `none`.
 
 After `/refine` or `qa-failed` repair: conversation-comment `QA-rerun: add` plus updated routing block. **Never** also post `Routing: qa-full` on `/refine` (that starts a second QA run).
 
@@ -65,7 +65,7 @@ Post Routing / QA-\* / `QA-rerun: add` as PR **conversation** comments only — 
 
 Extract AC, technical notes, design links. Feasibility gate: `## NEED CLARIFICATION` or `## NOT FEASIBLE` on correct surface and STOP if blocked.
 
-Branch `exp/<issue-number>-<short-slug>` from `main`. Commit per AC. Before Open PR: `npm run tailwind:build`, `embed:css`, `embed:component-css`, `npm test`, `npm run lint`.
+Branch `exp/<issue-number>-<short-slug>` from `main`. Commit per AC. Before Open PR: `npm run tailwind:build`, `npm run embed:css`, `npm run embed:component-css`, `npm test`, `npm run lint`.
 
 PR body: repo template; Work Item `Closes #<n>`. Routing comment after Open PR. **STOP.** No subscribe.
 

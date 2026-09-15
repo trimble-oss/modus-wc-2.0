@@ -6,7 +6,8 @@ import re
 import sys
 
 DENY_RE = re.compile(
-    r"(git\s+clone[^\n]*modus-blueprint|npm\s+install[^\n]*modus-blueprint|"
+    r"(git(?:\s+-C\s+\S+)?\s+clone[^\n]*modus-blueprint|"
+    r"(?:npm\s+(?:i|install)|pnpm\s+(?:add|install)|yarn\s+add)[^\n]*modus-blueprint|"
     r"curl[^\n]*modus\.trimble\.com|wget[^\n]*modus\.trimble\.com)",
     re.IGNORECASE,
 )

@@ -27,12 +27,6 @@
         "command": ".cursor/hooks/dev_storybook_nudge.py"
       }
     ],
-    "postToolUse": [
-      {
-        "command": ".cursor/hooks/dev_storybook_nudge.py",
-        "matcher": "Write"
-      }
-    ],
     "beforeShellExecution": [
       {
         "command": ".cursor/hooks/deny_blueprint_clone.py"

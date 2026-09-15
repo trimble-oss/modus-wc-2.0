@@ -7,14 +7,35 @@ import sys
 from pathlib import Path
 
 STATE_DIR = Path(".cursor/hooks/state")
-RESPONSE_FILE = STATE_DIR / "last_agent_response.txt"
-VISUAL_FLAG = STATE_DIR / "visual_edits.flag"
-
+GRAPH_SLICE = STATE_DIR / "graph_slice.json"
+QA_CONTEXT_RE = re.compile(r"modus-qa-automation|Modus WC 2\.0 QA agent", re.IGNORECASE)
 VERDICT_RE = re.compile(
     r"^## QA (PASSED|FAILED|BLOCKED|SKIPPED|PASSED WITH CONCERNS)",
     re.MULTILINE,
 )
 STORYBOOK_RE = re.compile(r"storybook|SMOKE:|screenshot|/opt/cursor/artifacts", re.IGNORECASE)
+
+
+def session_state_dir(payload: dict) -> Path:
+    session_id = str(
+        payload.get("conversation_id")
+        or payload.get("session_id")
+        or payload.get("parent_conversation_id")
+        or "default"
+    )
+    safe_id = re.sub(r"[^A-Za-z0-9._-]", "_", session_id)
+    return STATE_DIR / safe_id
+
+
+def visual_scope() -> bool:
+    if not GRAPH_SLICE.is_file():
+        return False
+    try:
+        data = json.loads(GRAPH_SLICE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    changed = data.get("changedTags") or []
+    return bool(changed)
 
 
 def main() -> None:
@@ -25,23 +46,26 @@ def main() -> None:
 
     status = payload.get("status")
     loop_count = int(payload.get("loop_count") or 0)
+    state_dir = session_state_dir(payload)
+    response_file = state_dir / "last_agent_response.txt"
 
-    if status != "completed" or loop_count >= 1:
+    if loop_count >= 1:
+        sys.exit(0)
+
+    if status != "completed":
         sys.exit(0)
 
     response = ""
-    if RESPONSE_FILE.is_file():
-        response = RESPONSE_FILE.read_text(encoding="utf-8")
+    if response_file.is_file():
+        response = response_file.read_text(encoding="utf-8")
 
-    has_verdict = bool(VERDICT_RE.search(response))
-    visual_work = VISUAL_FLAG.is_file()
-
-    if has_verdict:
-        if VISUAL_FLAG.is_file():
-            VISUAL_FLAG.unlink(missing_ok=True)
+    if not QA_CONTEXT_RE.search(response):
         sys.exit(0)
 
-    if not visual_work:
+    if VERDICT_RE.search(response):
+        sys.exit(0)
+
+    if not (visual_scope() or STORYBOOK_RE.search(response)):
         sys.exit(0)
 
     if STORYBOOK_RE.search(response):

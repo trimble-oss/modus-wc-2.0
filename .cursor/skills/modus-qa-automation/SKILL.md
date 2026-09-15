@@ -29,7 +29,7 @@ QA wakes on **label added** only (`qa-full`, `qa-rerun`, `qa-skip`). Independent
 
 Always invoke **`graph-impact`** then **`storybook-smoke`** when the gate is green and visual QA applies.
 
-Read [`docs/component-graph/component-graph.json`](../../docs/component-graph/component-graph.json) on the PR branch.
+Read [`docs/component-graph/component-graph.json`](../../../docs/component-graph/component-graph.json) on the PR branch.
 
 For each changed tag from the PR diff:
 
@@ -88,7 +88,7 @@ Overall headers (**exact first line**):
 | `## QA BLOCKED`              | Cannot verify (env, missing source)                              |
 | `## QA SKIPPED`              | Copy/docs only                                                   |
 
-Never GitHub MCP or `gh label create`. Comment exact headers; the Action attaches labels.
+Never use GitHub MCP to add/create labels or run `gh label create`. Blueprint reads via GitHub MCP `get_file_contents` are allowed. Comment exact headers; the Action attaches labels.
 
 ## Subagents (Composer 2.5 only)
 
