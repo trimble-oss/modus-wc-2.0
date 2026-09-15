@@ -15,15 +15,15 @@ Validate that Modus WC 2.0 can move from Tailwind CSS 3.4 + DaisyUI 4.12 to Tail
 
 ## Versions exercised
 
-| Package | Spike version |
-| --- | --- |
-| `tailwindcss` | 4.3.3 |
-| `@tailwindcss/cli` | 4.3.3 |
-| `@tailwindcss/postcss` | 4.3.3 |
-| `daisyui` | 5.7.37 |
-| `stencil-tailwind-plugin` | 2.0.6 |
-| `typescript` | 5.9.3 |
-| `@stencil/core` | 4.35.3 (unchanged) |
+| Package                   | Spike version      |
+| ------------------------- | ------------------ |
+| `tailwindcss`             | 4.3.3              |
+| `@tailwindcss/cli`        | 4.3.3              |
+| `@tailwindcss/postcss`    | 4.3.3              |
+| `daisyui`                 | 5.7.37             |
+| `stencil-tailwind-plugin` | 2.0.6              |
+| `typescript`              | 5.9.3              |
+| `@stencil/core`           | 4.35.3 (unchanged) |
 
 ## What was changed (spike scope)
 
@@ -35,12 +35,12 @@ Validate that Modus WC 2.0 can move from Tailwind CSS 3.4 + DaisyUI 4.12 to Tail
 
 ### CSS architecture
 
-| File | Role |
-| --- | --- |
-| `src/styles/tailwind-v4.css` | Wireit entry: global imports + core |
-| `src/styles/tailwind-v4-core.css` | Shared Tailwind 4 + DaisyUI 5 theme (no relative imports) |
-| `src/styles/tailwind-v4-themeable.ts` | Safelist for spike utilities |
-| `src/styles/tailwind.css` | **Unchanged** — v3 reference until full migration |
+| File                                  | Role                                                      |
+| ------------------------------------- | --------------------------------------------------------- |
+| `src/styles/tailwind-v4.css`          | Wireit entry: global imports + core                       |
+| `src/styles/tailwind-v4-core.css`     | Shared Tailwind 4 + DaisyUI 5 theme (no relative imports) |
+| `src/styles/tailwind-v4-themeable.ts` | Safelist for spike utilities                              |
+| `src/styles/tailwind.css`             | **Unchanged** — v3 reference until full migration         |
 
 ### Components (dual-class pattern)
 
@@ -48,14 +48,14 @@ Daisy/Tailwind utilities use the v4 **variant prefix** (`moduswc:btn-primary`). 
 
 DaisyUI v5 renames applied in spike components:
 
-| v4 (prefixed) | v5 spike class |
-| --- | --- |
+| v4 (prefixed)             | v5 spike class                                          |
+| ------------------------- | ------------------------------------------------------- |
 | `modus-wc-input-bordered` | default `input` / `moduswc:input-ghost` when borderless |
-| `modus-wc-card-bordered` | `moduswc:card-border` + SCSS hook |
-| `modus-wc-card-compact` | `moduswc:card-sm` + SCSS hook |
-| `modus-wc-tabs-bordered` | `moduswc:tabs-border` |
-| `modus-wc-tabs-lifted` | `moduswc:tabs-lift` |
-| `modus-wc-tabs-boxed` | `moduswc:tabs-box` |
+| `modus-wc-card-bordered`  | `moduswc:card-border` + SCSS hook                       |
+| `modus-wc-card-compact`   | `moduswc:card-sm` + SCSS hook                           |
+| `modus-wc-tabs-bordered`  | `moduswc:tabs-border`                                   |
+| `modus-wc-tabs-lifted`    | `moduswc:tabs-lift`                                     |
+| `modus-wc-tabs-boxed`     | `moduswc:tabs-box`                                      |
 
 ## Results
 
@@ -68,25 +68,25 @@ DaisyUI v5 renames applied in spike components:
 
 ### Spike CSS size
 
-**66 KB is not a linear “4 components out of 40” slice.** Most of the file is fixed overhead and DaisyUI shipping whole component *families*, not one utility per Modus component.
+**66 KB is not a linear “4 components out of 40” slice.** Most of the file is fixed overhead and DaisyUI shipping whole component _families_, not one utility per Modus component.
 
 #### Summary comparison
 
-| Build | Approx. size (minified) | What it represents |
-| --- | --- | --- |
-| Spike `output.css` (Wireit entry) | **~66 KB** | `global.css` + `variables.css` + `fonts.css` + 1 theme + 4 Daisy families |
-| Spike `tailwind-v4-core.css` only | **~45 KB** | 1 theme + 4 Daisy families (no global imports) |
-| Full v3 `output.css` (estimated) | **~250–300 KB** | 6 themes + all components + `tailwind.css` overrides |
+| Build                             | Approx. size (minified) | What it represents                                                        |
+| --------------------------------- | ----------------------- | ------------------------------------------------------------------------- |
+| Spike `output.css` (Wireit entry) | **~66 KB**              | `global.css` + `variables.css` + `fonts.css` + 1 theme + 4 Daisy families |
+| Spike `tailwind-v4-core.css` only | **~45 KB**              | 1 theme + 4 Daisy families (no global imports)                            |
+| Full v3 `output.css` (estimated)  | **~250–300 KB**         | 6 themes + all components + `tailwind.css` overrides                      |
 
 The full v3 figure is an **estimate** — `src/styles/output.css` is gitignored and not checked into the repo. It is included for directional comparison only.
 
 #### Breakdown of spike `output.css` (~65 KB minified)
 
-| Chunk | ~Size | What it is |
-| --- | --- | --- |
+| Chunk                                                       | ~Size      | What it is                                                                                                                               |
+| ----------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | Global imports (`global.css`, `variables.css`, `fonts.css`) | **~20 KB** | OkLCH fallbacks, resets, `@font-face`, modal scrollbar rules, input background hacks — **same whether the spike has 1 or 40 components** |
-| Tailwind `@layer base` | **~7 KB** | Preflight + heading overrides |
-| Daisy + `@layer utilities` | **~38 KB** | Daisy component CSS under `moduswc:*` |
+| Tailwind `@layer base`                                      | **~7 KB**  | Preflight + heading overrides                                                                                                            |
+| Daisy + `@layer utilities`                                  | **~38 KB** | Daisy component CSS under `moduswc:*`                                                                                                    |
 
 Building only `tailwind-v4-core.css` (no global `@import`s) yields **~45 KB**, so roughly **one third of the spike bundle is not attributable to the four migrated components**.
 
@@ -94,12 +94,12 @@ Building only `tailwind-v4-core.css` (no global `@import`s) yields **~45 KB**, s
 
 Using `moduswc:btn` pulls the **entire btn family** (sizes, outline, disabled, etc.). Using `moduswc:tabs` pulls the full tabs subsystem. Approximate selector hits in the core-only bundle:
 
-| Daisy family | Selector hits (core-only) |
-| --- | --- |
-| `tab` / `tabs` | ~246 |
-| `input` | ~87 |
-| `btn` | ~79 |
-| `card` | ~24 |
+| Daisy family   | Selector hits (core-only) |
+| -------------- | ------------------------- |
+| `tab` / `tabs` | ~246                      |
+| `input`        | ~87                       |
+| `btn`          | ~79                       |
+| `card`         | ~24                       |
 
 The spike also pulls related Daisy dependencies (e.g. `label`, `select`, `filter`, `alert` stubs) even though those Modus components were not migrated.
 
@@ -141,9 +141,9 @@ Error: The prefix "modus-wc" is invalid. Prefixes must be lowercase ASCII letter
 
 ### 2. Dual build pipelines must stay aligned
 
-| Pipeline | Entry | Purpose |
-| --- | --- | --- |
-| Wireit CLI | `tailwind-v4.css` | `output.css` → theme provider embed |
+| Pipeline       | Entry                                                  | Purpose                                       |
+| -------------- | ------------------------------------------------------ | --------------------------------------------- |
+| Wireit CLI     | `tailwind-v4.css`                                      | `output.css` → theme provider embed           |
 | Stencil plugin | `injectTailwindConfiguration` → `tailwind-v4-core.css` | Per-component SCSS `@apply` / scanned classes |
 
 **Gotcha:** `@import './global.css'` inside the Stencil plugin entry resolves **relative to each component file**, not the CSS file path. Fix: inject core CSS via `readFileSync` (implemented) or `tailwindGlobal()` with care.
@@ -166,17 +166,17 @@ Not carried into v5 theme blocks. Modus SCSS already implements button hover/act
 
 ## Recommendation
 
-| Area | Recommendation |
-| --- | --- |
-| **Proceed?** | Yes, with a **major version** and dedicated migration project (~8–12 engineer-weeks). |
-| **Prefix** | ADR required; spike proves `moduswc:` works technically but is a breaking public API change. |
-| **Next steps** | Port remaining themes; migrate all `*.tailwind.ts` + `tailwind-themeable.ts`; port `tailwind.css` overrides; update snapshots; Storybook visual QA; consumer migration guide. |
-| **Do not merge spike as-is** | Branch is intentionally partial. |
+| Area                         | Recommendation                                                                                                                                                                |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Proceed?**                 | Yes, with a **major version** and dedicated migration project (~8–12 engineer-weeks).                                                                                         |
+| **Prefix**                   | ADR required; spike proves `moduswc:` works technically but is a breaking public API change.                                                                                  |
+| **Next steps**               | Port remaining themes; migrate all `*.tailwind.ts` + `tailwind-themeable.ts`; port `tailwind.css` overrides; update snapshots; Storybook visual QA; consumer migration guide. |
+| **Do not merge spike as-is** | Branch is intentionally partial.                                                                                                                                              |
 
 ## Commands used in spike
 
 ```bash
-npx @tailwindcss/cli -i src/styles/tailwind-v4.css -o src/styles/output.css --minify
+npx tailwindcss -i src/styles/tailwind-v4.css -o src/styles/output.css --minify
 npx stencil build --prod
 ```
 
