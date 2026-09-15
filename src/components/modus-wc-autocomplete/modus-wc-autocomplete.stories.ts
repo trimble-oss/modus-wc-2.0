@@ -1514,16 +1514,22 @@ export const CustomEventHandlers: Story = {
           ...item,
           visibleInMenu: visible,
           focused: false,
-          selected: item.selected && visible,
+          // Single select: the selection is only valid while the input still
+          // holds the selected label, so editing the text clears it.
+          selected:
+            item.selected &&
+            visible &&
+            item.label.toLowerCase() === value.toLowerCase(),
           // Add score as part of label for demonstration (you can remove this in production)
           label: item.label,
         }));
       } else {
-        // No search text, show all items
+        // No search text, show all items and drop the stale selection
         args.items = args.items.map((item) => ({
           ...item,
           visibleInMenu: true,
           focused: false,
+          selected: false,
         }));
       }
 
@@ -1770,16 +1776,22 @@ export const CustomEventHandlers: Story = {
         //       ...item,
         //       visibleInMenu: visible,
         //       focused: false,
-        //       selected: item.selected && visible,
+        //       // Single select: the selection is only valid while the input still
+        //       // holds the selected label, so editing the text clears it.
+        //       selected:
+        //         item.selected &&
+        //         visible &&
+        //         item.label.toLowerCase() === value.toLowerCase(),
         //       // Add score as part of label for demonstration (you can remove this in production)
         //       label: item.label,
         //     }));
         //   } else {
-        //     // No search text, show all items
+        //     // No search text, show all items and drop the stale selection
         //     autocomplete.items = autocomplete.items.map((item) => ({
         //       ...item,
         //       visibleInMenu: true,
         //       focused: false,
+        //       selected: false,
         //     }));
         //   }
 
