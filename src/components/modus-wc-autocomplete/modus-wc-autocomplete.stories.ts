@@ -1558,7 +1558,18 @@ export const CustomEventHandlers: Story = {
 
       autocomplete.items = [...args.items];
       autocomplete.value = item.label;
-      void autocomplete.closeMenu();
+
+      if (!args['leave-menu-open']) {
+        void autocomplete.closeMenu();
+      } else {
+        args.items = args.items.map((menuItem) => ({
+          ...menuItem,
+          visibleInMenu: true,
+          focused: false,
+        }));
+        autocomplete.items = [...args.items];
+        void autocomplete.openMenu();
+      }
     };
     // prettier-ignore
     return html`

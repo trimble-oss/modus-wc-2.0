@@ -1538,6 +1538,62 @@ describe('modus-wc-autocomplete', () => {
     expect(customInputChangeSpy).toHaveBeenCalledWith('test');
   });
 
+  it('should emit inputChange when customInputChange is provided without debounce', async () => {
+    const customInputChangeSpy = jest.fn();
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete debounce-ms="0" aria-label="Custom input change emit test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    const inputChangeSpy = jest.fn();
+    page.root?.addEventListener('inputChange', inputChangeSpy);
+    autocomplete.customInputChange = customInputChangeSpy;
+
+    const inputElement = document.createElement('input');
+    inputElement.value = 'async';
+    const changeEvent = new Event('change');
+    Object.defineProperty(changeEvent, 'target', { value: inputElement });
+    const customEvent = new CustomEvent('inputChange', { detail: changeEvent });
+    autocomplete['handleChange'](customEvent);
+
+    expect(customInputChangeSpy).toHaveBeenCalledWith('async');
+    expect(inputChangeSpy).toHaveBeenCalledTimes(1);
+    expect(inputChangeSpy.mock.calls[0][0].detail).toBe(changeEvent);
+  });
+
+  it('should sync filteredItems when customInputChange updates visibleInMenu on the host', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput],
+      html: `<modus-wc-autocomplete aria-label="Custom input visibleInMenu sync"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    autocomplete.items = [
+      { label: 'Apple', value: 'apple', visibleInMenu: true },
+      { label: 'Banana', value: 'banana', visibleInMenu: true },
+    ];
+    await page.waitForChanges();
+
+    autocomplete.customInputChange = (value: string) => {
+      autocomplete.items = autocomplete.items!.map((item) => ({
+        ...item,
+        visibleInMenu: item.label.toLowerCase().includes(value.toLowerCase()),
+      }));
+    };
+
+    const inputElement = document.createElement('input');
+    inputElement.value = 'ban';
+    const changeEvent = new Event('change');
+    Object.defineProperty(changeEvent, 'target', { value: inputElement });
+    const customEvent = new CustomEvent('inputChange', { detail: changeEvent });
+    autocomplete['handleChange'](customEvent);
+    await page.waitForChanges();
+
+    expect(autocomplete['filteredItems'].length).toBe(1);
+    expect(autocomplete['filteredItems'][0].value).toBe('banana');
+  });
+
   it('should call customKeyDown when provided', async () => {
     const customKeyDownSpy = jest.fn();
     const page = await newSpecPage({

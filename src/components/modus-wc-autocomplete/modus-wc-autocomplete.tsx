@@ -226,6 +226,7 @@ export class ModusWcAutocomplete {
           value: i.value,
           selected: i.selected,
           focused: i.focused,
+          visibleInMenu: i.visibleInMenu,
         }))
       ) !==
         JSON.stringify(
@@ -233,6 +234,7 @@ export class ModusWcAutocomplete {
             value: i.value,
             selected: i.selected,
             focused: i.focused,
+            visibleInMenu: i.visibleInMenu,
           }))
         )
     ) {
@@ -309,6 +311,11 @@ export class ModusWcAutocomplete {
       this.searchText,
       this.customInputChange
     );
+  }
+
+  /** Remount menu when the visible option set changes (avoids orphan menu-item nodes). */
+  private getMenuItemsListKey(): string {
+    return (this.filteredItems ?? []).map((item) => item.value).join('|');
   }
 
   /** Multi-select + open menu: menu uses single-select clicks; sync from `items[]`. */
@@ -578,6 +585,18 @@ export class ModusWcAutocomplete {
       multiSelect: this.multiSelect,
       debounceMs: this.debounceMs,
     });
+
+    // `customInputChange` overrides default search filtering, so the default
+    // filtering and menu-visibility logic below must not run.
+    if (this.customInputChange) {
+      this.value = result.inputValue;
+
+      if (!this.debounceMs) {
+        this.inputChange.emit(event.detail);
+      }
+
+      return;
+    }
 
     if (!result.inputValue && !result.shouldShowMenu) {
       return;
@@ -1052,6 +1071,7 @@ export class ModusWcAutocomplete {
             aria-label="Autocomplete menu"
             bordered={this.bordered}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
+            key={this.getMenuItemsListKey()}
             onMenuFocusout={this.handleMenuFocusout}
             onMouseDown={(e) => e.preventDefault()}
             size={this.size}
@@ -1074,6 +1094,7 @@ export class ModusWcAutocomplete {
               aria-label="Autocomplete menu"
               bordered={this.bordered}
               class="menu-visible"
+              key={this.getMenuItemsListKey()}
               onMenuFocusout={this.handleMenuFocusout}
               onMouseDown={(e) => e.preventDefault()}
               size={this.size}
