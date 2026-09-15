@@ -47,6 +47,7 @@ import {
   renderMenuItems,
   renderMoreChipsIndicator,
   syncFilteredItems,
+  syncMenuItemSelection,
   updateItemFocus,
 } from './modus-wc-autocomplete-core';
 
@@ -72,6 +73,7 @@ export class ModusWcAutocomplete {
   private readonly resolveEffectiveId = createEffectiveIdResolver();
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
+  private programmaticOpenTimer?: number;
   private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
 
   /** Reference to the host element */
@@ -225,6 +227,7 @@ export class ModusWcAutocomplete {
           value: i.value,
           selected: i.selected,
           focused: i.focused,
+          visibleInMenu: i.visibleInMenu,
         }))
       ) !==
         JSON.stringify(
@@ -232,6 +235,7 @@ export class ModusWcAutocomplete {
             value: i.value,
             selected: i.selected,
             focused: i.focused,
+            visibleInMenu: i.visibleInMenu,
           }))
         )
     ) {
@@ -276,7 +280,30 @@ export class ModusWcAutocomplete {
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
+    this.clearProgrammaticOpen();
     document.removeEventListener('click', this.handleOutsideClick);
+  }
+
+  /**
+   * `openMenu()` is often called from a click handler, so the same click must not
+   * immediately close the menu again. The flag only guards that originating click;
+   * holding it longer would swallow the user's next outside click.
+   */
+  private markProgrammaticOpen(): void {
+    this.clearProgrammaticOpen();
+    this.programmaticOpen = true;
+    this.programmaticOpenTimer = window.setTimeout(() => {
+      this.programmaticOpen = false;
+      this.programmaticOpenTimer = undefined;
+    });
+  }
+
+  private clearProgrammaticOpen(): void {
+    if (this.programmaticOpenTimer !== undefined) {
+      window.clearTimeout(this.programmaticOpenTimer);
+      this.programmaticOpenTimer = undefined;
+    }
+    this.programmaticOpen = false;
   }
 
   private getClasses(): string {
@@ -302,9 +329,20 @@ export class ModusWcAutocomplete {
     this.filteredItems = syncFilteredItems(
       this.items,
       this.searchText,
-      this.leaveMenuOpen,
       this.customInputChange
     );
+  }
+
+  /** Remount menu when the visible option set changes (avoids orphan menu-item nodes). */
+  private getMenuItemsListKey(): string {
+    return (this.filteredItems ?? []).map((item) => item.value).join('|');
+  }
+
+  /** Multi-select + open menu: menu uses single-select clicks; sync from `items[]`. */
+  private reconcileMenuItemSelection(): void {
+    if (this.multiSelect && this.menuVisible) {
+      syncMenuItemSelection(this.el, this.items);
+    }
   }
 
   private updateItemFocus(targetValue: string): void {
@@ -568,6 +606,18 @@ export class ModusWcAutocomplete {
       debounceMs: this.debounceMs,
     });
 
+    // `customInputChange` overrides default search filtering, so the default
+    // filtering and menu-visibility logic below must not run.
+    if (this.customInputChange) {
+      this.value = result.inputValue;
+
+      if (!this.debounceMs) {
+        this.inputChange.emit(event.detail);
+      }
+
+      return;
+    }
+
     if (!result.inputValue && !result.shouldShowMenu) {
       return;
     }
@@ -711,7 +761,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async openMenu() {
-    this.programmaticOpen = true;
+    this.markProgrammaticOpen();
     this.menuVisible = true;
     return Promise.resolve();
   }
@@ -721,7 +771,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async closeMenu() {
-    this.programmaticOpen = false;
+    this.clearProgrammaticOpen();
     this.menuVisible = false;
     this.showFeedback = true;
     return Promise.resolve();
@@ -733,9 +783,9 @@ export class ModusWcAutocomplete {
   @Method()
   async toggleMenu() {
     if (!this.menuVisible) {
-      this.programmaticOpen = true;
+      this.markProgrammaticOpen();
     } else {
-      this.programmaticOpen = false;
+      this.clearProgrammaticOpen();
     }
     this.menuVisible = !this.menuVisible;
     return Promise.resolve();
@@ -828,6 +878,8 @@ export class ModusWcAutocomplete {
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
     }
 
+    this.reconcileMenuItemSelection();
+
     // Only emit event and update navigation if not disabled/readonly
     if (!this.disabled && !this.readOnly && this.items) {
       this.initialNavigation = true;
@@ -853,6 +905,10 @@ export class ModusWcAutocomplete {
       this.selectionOrder = result.updatedSelectionOrder;
       // When removing chips, show all items instead of applying text filtering
       this.filteredItems = this.items.filter((item) => item.visibleInMenu);
+
+      if (this.menuVisible) {
+        this.reconcileMenuItemSelection();
+      }
     }
 
     // Emit event for external handlers who want to know about the removal
@@ -893,7 +949,7 @@ export class ModusWcAutocomplete {
 
     // Reset programmaticOpen flag after handling the click
     if (this.programmaticOpen) {
-      this.programmaticOpen = false;
+      this.clearProgrammaticOpen();
     }
   };
 
@@ -1035,6 +1091,7 @@ export class ModusWcAutocomplete {
             aria-label="Autocomplete menu"
             bordered={this.bordered}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
+            key={this.getMenuItemsListKey()}
             onMenuFocusout={this.handleMenuFocusout}
             onMouseDown={(e) => e.preventDefault()}
             size={this.size}
@@ -1057,6 +1114,7 @@ export class ModusWcAutocomplete {
               aria-label="Autocomplete menu"
               bordered={this.bordered}
               class="menu-visible"
+              key={this.getMenuItemsListKey()}
               onMenuFocusout={this.handleMenuFocusout}
               onMouseDown={(e) => e.preventDefault()}
               size={this.size}
