@@ -112,7 +112,7 @@ export const WithDatalist: Story = {
     // prettier-ignore
     return html`
 <modus-wc-time-input
-  aria-label="Example time input"
+  label="Example time input"
   datalist-id="datalist-id-1"
 ></modus-wc-time-input>
 <datalist id="datalist-id-1">
@@ -136,7 +136,7 @@ export const WithDatalistOptions: Story = {
   });
 </script>
 <modus-wc-time-input
-  aria-label="Example time input"
+  label="Example time input"
   id="time-input-with-options"
 ></modus-wc-time-input>
     `;

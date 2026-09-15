@@ -199,7 +199,6 @@ export const WithCustomIconSlot: Story = {
   // prettier-ignore
   render: (args) => html`
 <modus-wc-text-input
-  aria-label="Text input with custom icon"
   auto-capitalize=${ifDefined(args['auto-capitalize'])}
   auto-complete=${ifDefined(args['auto-complete'])}
   auto-correct=${ifDefined(args['auto-correct'])}
@@ -231,6 +230,7 @@ export const WithCustomIconSlot: Story = {
 </modus-wc-text-input>
   `,
   args: {
+    label: 'Text input with custom icon',
     placeholder: 'Enter text here...',
   },
 };
