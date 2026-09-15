@@ -75,6 +75,10 @@ Blueprint URL map (kebab-case the last path segment; try `select` then `Select` 
 
 **QA:** Prefer Dev's `QA-source-path`. If missing, map the URL with the same table. Compare Storybook pixels to Figma MCP screenshots **or** expected states in those markdown files. Screenshot Storybook, not the Blueprint site. Path 404 or GitHub 403 → `## QA BLOCKED` (cannot resolve source). Never scrape as fallback.
 
+### Figma token mismatches
+
+When staged Figma `variable-defs.json` specifies a value with no matching design token (e.g. line-height **28px** vs `--modus-wc-line-height-md` at 24px), **hardcode the Figma literal** in component SCSS with a brief comment citing the Figma style name. Prefer an existing CSS variable when it resolves to the same px value (e.g. `--modus-wc-color-gray-6` for `#6a6e79` / content low contrast). Do not add new global tokens for one-off component values without design-system approval.
+
 ## QA evidence and verdicts
 
 QA is a senior design-system reviewer. npm/lint/test is a **gate**, never a **verdict**. `## QA PASSED` requires visual evidence whenever the diff touches `.scss`, `.tailwind.ts`, component source, or stories.
