@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": ".cursor/hooks/session_start_graph.py"
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": ".cursor/hooks/deny_claude_subagent.py"
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": ".cursor/hooks/cache_agent_response.py"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/qa_stop_verdict.py",
+        "loop_limit": 1
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/dev_storybook_nudge.py"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/deny_blueprint_clone.py"
+      }
+    ]
+  }
+}

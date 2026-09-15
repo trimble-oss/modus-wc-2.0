@@ -18,6 +18,7 @@ import {
   shouldApplyRangeCapLeft,
   shouldApplyRangeCapRight,
 } from './utils/range-utils';
+import { resolveReferencedAriaText } from './utils/resolve-referenced-aria-text';
 
 async function createDatePage(html: string) {
   const page = await newSpecPage({
@@ -44,7 +45,7 @@ describe('modus-wc-date', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],
-      html: '<modus-wc-date aria-label="Default date" format="dd/mm/yyyy"></modus-wc-date>',
+      html: '<modus-wc-date format="dd/mm/yyyy"></modus-wc-date>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -79,10 +80,15 @@ describe('modus-wc-date', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate, ModusWcInputLabel],
-      html: '<modus-wc-date label="Birth date" aria-label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
+      html: '<modus-wc-date label="Birth date" format="dd/mm/yyyy"></modus-wc-date>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input[type="text"]');
+
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {
@@ -4770,11 +4776,55 @@ describe('modus-wc-date', () => {
         expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
       });
 
-      it('should default the end input accessible name when aria-label is absent', async () => {
+      it('should not inject a default end input accessible name when aria-label is absent', async () => {
         const { component } = await createRangePage();
         component['inheritedAttributes'] = { 'aria-describedby': 'desc' };
 
-        expect(component['endInputAttributes']['aria-label']).toBe('End date');
+        expect(component['endInputAttributes']['aria-label']).toBeUndefined();
+      });
+
+      it('should derive the end input accessible name from the label prop', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate, ModusWcInputLabel],
+          html: '<modus-wc-date type="range" label="Trip dates"></modus-wc-date>',
+        });
+        const inputs = page.root!.querySelectorAll('input');
+
+        expect(inputs[0].hasAttribute('aria-label')).toBe(false);
+        expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
+      });
+
+      it('should derive the end input accessible name from aria-labelledby', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: `
+            <span id="trip-range-label">Trip dates</span>
+            <modus-wc-date type="range" aria-labelledby="trip-range-label"></modus-wc-date>
+          `,
+        });
+        const inputs = page.root!.querySelectorAll('input');
+
+        expect(inputs[1].getAttribute('aria-label')).toBe('Trip dates end');
+      });
+
+      it('should leave the end input without an accessible name when aria-labelledby references are missing', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date type="range" aria-labelledby="missing-label-id"></modus-wc-date>',
+        });
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        expect(endInput.hasAttribute('aria-label')).toBe(false);
+      });
+
+      it('should leave the end input without an accessible name when neither aria-label nor label is provided', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcDate],
+          html: '<modus-wc-date type="range"></modus-wc-date>',
+        });
+        const endInput = page.root!.querySelectorAll('input')[1];
+
+        expect(endInput.hasAttribute('aria-label')).toBe(false);
       });
 
       it('should emit inputChange with field end on end input', async () => {
@@ -5887,5 +5937,75 @@ describe('modus-wc-date', () => {
     expect(
       page.root!.querySelector('.calendar-container.dynamic-height')
     ).not.toBeNull();
+  });
+});
+
+describe('resolveReferencedAriaText', () => {
+  it('should resolve label text from a document context', () => {
+    const label = document.createElement('span');
+    label.id = 'doc-context-label';
+    label.textContent = 'Trip dates';
+    document.body.appendChild(label);
+
+    expect(resolveReferencedAriaText(document, 'doc-context-label')).toBe(
+      'Trip dates'
+    );
+
+    document.body.removeChild(label);
+  });
+
+  it('should resolve label text from an element owner document', () => {
+    const label = document.createElement('span');
+    label.id = 'host-context-label';
+    label.textContent = 'Departure';
+    document.body.appendChild(label);
+
+    const host = document.createElement('div');
+    expect(resolveReferencedAriaText(host, 'host-context-label')).toBe(
+      'Departure'
+    );
+
+    document.body.removeChild(label);
+  });
+
+  it('should join multiple referenced labels and skip missing or blank ids', () => {
+    const first = document.createElement('span');
+    first.id = 'range-label-a';
+    first.textContent = 'Start';
+    const blank = document.createElement('span');
+    blank.id = 'range-label-blank';
+    blank.textContent = '   ';
+    document.body.append(first, blank);
+
+    const host = document.createElement('div');
+    expect(
+      resolveReferencedAriaText(
+        host,
+        'missing-id range-label-a range-label-blank'
+      )
+    ).toBe('Start');
+
+    document.body.removeChild(first);
+    document.body.removeChild(blank);
+  });
+
+  it('should return an empty string when getElementById is unavailable', () => {
+    const host = document.createElement('div');
+    Object.defineProperty(host, 'ownerDocument', {
+      configurable: true,
+      value: { getElementById: undefined },
+    });
+
+    expect(resolveReferencedAriaText(host, 'any-id')).toBe('');
+  });
+
+  it('should return an empty string when ownerDocument is null', () => {
+    const host = document.createElement('div');
+    Object.defineProperty(host, 'ownerDocument', {
+      configurable: true,
+      value: null,
+    });
+
+    expect(resolveReferencedAriaText(host, 'any-id')).toBe('');
   });
 });
