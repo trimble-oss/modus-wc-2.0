@@ -33,11 +33,11 @@ Read [`docs/component-graph/component-graph.json`](../../docs/component-graph/co
 
 For each changed tag from the PR diff:
 
-| Target | Stories |
-|--------|---------|
-| **Changed component** | Stories covering changed props/sizes (`QA-verify` if present). If empty, **all remaining stories** for that tag (default + variants), not the whole library. |
-| **Children it composes** (`edges` where `source` is changed tag, type `composes`/`slot`/`hosts`) | **Default story only**, and only if the change can show through the child (label, feedback, icon). |
-| **Parents in `reverseImpact[tag]`** | **Default story only** (e.g. select → date, table). |
+| Target                                                                                           | Stories                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Changed component**                                                                            | Stories covering changed props/sizes (`QA-verify` if present). If empty, **all remaining stories** for that tag (default + variants), not the whole library. |
+| **Children it composes** (`edges` where `source` is changed tag, type `composes`/`slot`/`hosts`) | **Default story only**, and only if the change can show through the child (label, feedback, icon).                                                           |
+| **Parents in `reverseImpact[tag]`**                                                              | **Default story only** (e.g. select → date, table).                                                                                                          |
 
 Cap browser **parent** targets at 3 unless human AC names more. Never walk every component in Storybook.
 
@@ -79,14 +79,14 @@ Per-scenario table: scenario | state | result | evidence.
 
 Overall headers (**exact first line**):
 
-| Header | Meaning |
-|--------|---------|
-| `## QA PASSED` | All dimensions pass; every scenario has evidence |
-| `## QA PASSED WITH CONCERNS` | Ships-safe; named issues |
-| `## QA FAILED — visual` | Gate green; Storybook scenario failed (screenshot pair required) |
-| `## QA FAILED — functional` | Gate/tests failed; visual = not-evaluated |
-| `## QA BLOCKED` | Cannot verify (env, missing source) |
-| `## QA SKIPPED` | Copy/docs only |
+| Header                       | Meaning                                                          |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `## QA PASSED`               | All dimensions pass; every scenario has evidence                 |
+| `## QA PASSED WITH CONCERNS` | Ships-safe; named issues                                         |
+| `## QA FAILED — visual`      | Gate green; Storybook scenario failed (screenshot pair required) |
+| `## QA FAILED — functional`  | Gate/tests failed; visual = not-evaluated                        |
+| `## QA BLOCKED`              | Cannot verify (env, missing source)                              |
+| `## QA SKIPPED`              | Copy/docs only                                                   |
 
 Never GitHub MCP or `gh label create`. Comment exact headers; the Action attaches labels.
 

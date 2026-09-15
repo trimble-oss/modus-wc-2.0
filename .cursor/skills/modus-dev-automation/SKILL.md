@@ -18,12 +18,12 @@ Workflow [`.github/workflows/automation-label-router.yml`](../../.github/workflo
 
 **Canonical surface: PR conversation comment** (GitHub MCP `add_issue_comment`). Review bodies are a fallback.
 
-| Comment first line | Label |
-|---------|--------|
-| `Routing: qa-full` | `qa-full` |
-| `Routing: qa-skip` | `qa-skip` |
-| `QA-rerun: add` or `Routing: qa-rerun` | `qa-rerun` |
-| `## QA FAILED` | `qa-failed` |
+| Comment first line                                                                           | Label         |
+| -------------------------------------------------------------------------------------------- | ------------- |
+| `Routing: qa-full`                                                                           | `qa-full`     |
+| `Routing: qa-skip`                                                                           | `qa-skip`     |
+| `QA-rerun: add` or `Routing: qa-rerun`                                                       | `qa-rerun`    |
+| `## QA FAILED`                                                                               | `qa-failed`   |
 | `## QA PASSED WITH CONCERNS` / `## QA BLOCKED` / `## NEED CLARIFICATION` / `## NOT FEASIBLE` | `needs-human` |
 
 Do **not** claim you attached the label. If missing after ~1 minute, ask the human once. Do not retry GitHub MCP.
@@ -59,7 +59,7 @@ If from Me but not `/approve` `/ask` `/clarify` `/refine`: **STOP**.
 
 Do not patch for bot reviews (copilot, github-actions, etc.). Copilot suggestions are NOT a `/refine`.
 
-Post Routing / QA-* / `QA-rerun: add` as PR **conversation** comments only — not walkthrough-only reviews.
+Post Routing / QA-\* / `QA-rerun: add` as PR **conversation** comments only — not walkthrough-only reviews.
 
 ### `/approve` on an issue
 
@@ -75,7 +75,7 @@ Reply on same surface (PR if exists). No patch, no push, no QA-rerun. STOP.
 
 ### `/refine`
 
-Patch same branch. Conversation comment: what changed + `QA-rerun: add` + updated QA-* fields. Do not claim QA passed. Do not run Playwright as QA substitute. STOP.
+Patch same branch. Conversation comment: what changed + `QA-rerun: add` + updated QA-\* fields. Do not claim QA passed. Do not run Playwright as QA substitute. STOP.
 
 ### `qa-failed` label
 
@@ -106,11 +106,11 @@ When opening a PR from `/approve`, Work Item must be `Closes #<issue-number>`.
 
 ## Reply surface
 
-| Command | Effect |
-|---------|--------|
-| `/approve` | implement, open PR, STOP (no subscribe) |
-| `/ask` `/clarify` | Q&A only |
-| `/refine` | patch + QA-rerun comment |
-| `qa-failed` | repair latest QA failure |
+| Command           | Effect                                  |
+| ----------------- | --------------------------------------- |
+| `/approve`        | implement, open PR, STOP (no subscribe) |
+| `/ask` `/clarify` | Q&A only                                |
+| `/refine`         | patch + QA-rerun comment                |
+| `qa-failed`       | repair latest QA failure                |
 
 Do not create `.cursor/rules/architecture.mdc`.

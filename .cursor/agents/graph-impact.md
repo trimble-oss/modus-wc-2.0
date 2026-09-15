@@ -23,11 +23,11 @@ You map code changes to component-graph Storybook targets for Dev self-check and
 3. **Compose children:** From `edges`, where `source` is a changed tag and `type` is `composes`, `slot`, or `hosts`, list `target` tags. Ignore `storybook` demo edges.
 4. **Story targets** (for parent agent / storybook-smoke):
 
-| Target kind | Stories |
-|-------------|---------|
-| Changed component | QA-verify scenarios if parent provides; else default + all variant stories for that tag |
-| Compose child | Default story only, when change can show through child chrome |
-| reverseImpact parent | Default story only |
+| Target kind          | Stories                                                                                 |
+| -------------------- | --------------------------------------------------------------------------------------- |
+| Changed component    | QA-verify scenarios if parent provides; else default + all variant stories for that tag |
+| Compose child        | Default story only, when change can show through child chrome                           |
+| reverseImpact parent | Default story only                                                                      |
 
 5. Cap **parent** browser targets at 3 unless parent AC names more.
 
