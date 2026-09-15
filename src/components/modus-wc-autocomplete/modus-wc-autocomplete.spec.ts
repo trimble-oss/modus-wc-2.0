@@ -3675,6 +3675,74 @@ describe('modus-wc-autocomplete', () => {
     document.body.removeChild(outsideElement);
   });
 
+  it('should stop guarding outside clicks once the click that opened the menu is over', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Programmatic open expiry test" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    await autocomplete.openMenu();
+    expect(autocomplete['programmaticOpen']).toBe(true);
+
+    // The guard only covers the originating click, not later interactions.
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(autocomplete['programmaticOpen']).toBe(false);
+
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    Object.defineProperty(clickEvent, 'target', {
+      value: outsideElement,
+      configurable: true,
+    });
+
+    autocomplete['handleOutsideClick'](clickEvent);
+
+    expect(autocomplete['menuVisible']).toBe(false);
+
+    document.body.removeChild(outsideElement);
+  });
+
+  it('should hide the menu on focus out after a programmatic open', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Programmatic open focusout test" leave-menu-open="true"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    await autocomplete.openMenu();
+    await new Promise((resolve) => setTimeout(resolve));
+
+    autocomplete['handleFocusOutside'](new FocusEvent('focusout'));
+
+    expect(autocomplete['menuVisible']).toBe(false);
+    expect(autocomplete['showFeedback']).toBe(true);
+  });
+
+  it('should cancel the programmatic open guard when the menu is closed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Programmatic open cancel test"></modus-wc-autocomplete>`,
+    });
+
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+
+    await autocomplete.toggleMenu();
+    expect(autocomplete['programmaticOpen']).toBe(true);
+
+    await autocomplete.toggleMenu();
+    expect(autocomplete['programmaticOpen']).toBe(false);
+    expect(autocomplete['programmaticOpenTimer']).toBeUndefined();
+  });
+
   // Test to ensure selection is cleared when input is cleared in single select mode
   it('should clear selection when input is cleared in single select mode', async () => {
     const page = await newSpecPage({

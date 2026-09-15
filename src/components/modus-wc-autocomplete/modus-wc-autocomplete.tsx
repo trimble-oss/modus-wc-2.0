@@ -73,6 +73,7 @@ export class ModusWcAutocomplete {
   private readonly resolveEffectiveId = createEffectiveIdResolver();
   private inheritedAttributes: Attributes = {};
   private programmaticOpen: boolean = false;
+  private programmaticOpenTimer?: number;
   private isNavigating: boolean = false; // Flag to prevent re-filtering during navigation
 
   /** Reference to the host element */
@@ -283,7 +284,30 @@ export class ModusWcAutocomplete {
     if (this.debounceTimer) {
       window.clearTimeout(this.debounceTimer);
     }
+    this.clearProgrammaticOpen();
     document.removeEventListener('click', this.handleOutsideClick);
+  }
+
+  /**
+   * `openMenu()` is often called from a click handler, so the same click must not
+   * immediately close the menu again. The flag only guards that originating click;
+   * holding it longer would swallow the user's next outside click.
+   */
+  private markProgrammaticOpen(): void {
+    this.clearProgrammaticOpen();
+    this.programmaticOpen = true;
+    this.programmaticOpenTimer = window.setTimeout(() => {
+      this.programmaticOpen = false;
+      this.programmaticOpenTimer = undefined;
+    });
+  }
+
+  private clearProgrammaticOpen(): void {
+    if (this.programmaticOpenTimer !== undefined) {
+      window.clearTimeout(this.programmaticOpenTimer);
+      this.programmaticOpenTimer = undefined;
+    }
+    this.programmaticOpen = false;
   }
 
   private getClasses(): string {
@@ -741,7 +765,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async openMenu() {
-    this.programmaticOpen = true;
+    this.markProgrammaticOpen();
     this.menuVisible = true;
     return Promise.resolve();
   }
@@ -751,7 +775,7 @@ export class ModusWcAutocomplete {
    */
   @Method()
   async closeMenu() {
-    this.programmaticOpen = false;
+    this.clearProgrammaticOpen();
     this.menuVisible = false;
     this.showFeedback = true;
     return Promise.resolve();
@@ -763,9 +787,9 @@ export class ModusWcAutocomplete {
   @Method()
   async toggleMenu() {
     if (!this.menuVisible) {
-      this.programmaticOpen = true;
+      this.markProgrammaticOpen();
     } else {
-      this.programmaticOpen = false;
+      this.clearProgrammaticOpen();
     }
     this.menuVisible = !this.menuVisible;
     return Promise.resolve();
@@ -929,7 +953,7 @@ export class ModusWcAutocomplete {
 
     // Reset programmaticOpen flag after handling the click
     if (this.programmaticOpen) {
-      this.programmaticOpen = false;
+      this.clearProgrammaticOpen();
     }
   };
 
