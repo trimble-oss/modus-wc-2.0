@@ -439,7 +439,6 @@ const Template: Story = {
   }
 </style>
 <modus-wc-autocomplete
-  aria-label="Fruit autocomplete"
   auto-complete=${ifDefined(args['auto-complete'])}
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
@@ -490,7 +489,6 @@ export const WithCustomIconSlot: Story = {
   }
 </style>
 <modus-wc-autocomplete
-  aria-label="Autocomplete with custom icon"
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -527,6 +525,7 @@ ${Items}
 </script>
   `,
   args: {
+    label: 'Autocomplete with custom icon',
     placeholder: 'Search fruits...',
   },
 };
@@ -539,7 +538,6 @@ export const WithFeedback: Story = {
       }
     </style>
     <modus-wc-autocomplete
-      aria-label="Fruit autocomplete with feedback"
       ?bordered=${args.bordered}
       .items=${args.items}
       .feedback=${args.feedback}
@@ -560,7 +558,6 @@ export const WithFeedback: Story = {
       source: {
         code: `
 <modus-wc-autocomplete
-  aria-label="Fruit autocomplete with feedback"
   label="With Feedback"
   required
 ></modus-wc-autocomplete>
@@ -634,7 +631,7 @@ const tooltipItems = [
 ];
 </script>
 <modus-wc-autocomplete
-  aria-label="Fruits with tooltips"
+  label="Fruits with tooltips"
   leave-menu-open="true"
   placeholder="Search fruits"
   min-chars="0"
@@ -700,7 +697,7 @@ const tooltipItems = [
       </style>
       <div style="width: 300px;">
         <modus-wc-autocomplete
-          aria-label="Fruits with tooltips"
+          label="Fruits with tooltips"
           leave-menu-open="true"
           placeholder="Search fruits"
           .items=${tooltipItems}
@@ -735,7 +732,6 @@ export const MultiSelect: Story = {
         }
       </style>
       <modus-wc-autocomplete
-        aria-label="Fruit autocomplete"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -830,7 +826,6 @@ export const WithSpinner: Story = {
         }
       </style>
       <modus-wc-autocomplete
-        aria-label="Fruit autocomplete with spinner"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -1135,7 +1130,6 @@ modus-wc-menu-item.hidden {
 
 </style>
 <modus-wc-autocomplete
-  aria-label="Custom menu items example"
   ?bordered=${args.bordered}
   custom-class=${ifDefined(args['custom-class'])}
   debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -1581,7 +1575,6 @@ export const CustomEventHandlers: Story = {
       </style>
 
       <modus-wc-autocomplete
-        aria-label="Custom handlers autocomplete"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${0}
@@ -2046,7 +2039,6 @@ export const WithProgrammaticControl: Story = {
       </modus-wc-card>
       <modus-wc-autocomplete
         id="programmatic-autocomplete"
-        aria-label="Programmatic control demo"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}
@@ -2294,7 +2286,6 @@ export const DynamicOptions: Story = {
         }
       </style>
       <modus-wc-autocomplete
-        aria-label="Dynamic fruits autocomplete"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         debounce-ms=${ifDefined(args['debounce-ms'])}

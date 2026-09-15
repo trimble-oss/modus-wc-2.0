@@ -4246,6 +4246,127 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-image/modus-wc-image.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A resilient atomic image component that wraps native <img> tags with consistent sizing,\naspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.",
+          "name": "ModusWcImage",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "onSrcChange"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "description": "Accessible text description. Omit or leave empty for decorative images.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the inner container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "fit",
+              "fieldName": "fit",
+              "default": "'default'",
+              "description": "Controls containment, cropping, and aspect ratio preservation.",
+              "type": {
+                "text": "ImageFit"
+              }
+            },
+            {
+              "name": "shape",
+              "fieldName": "shape",
+              "default": "'square'",
+              "description": "Sets corner radius styling.",
+              "type": {
+                "text": "ImageShape"
+              }
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'md'",
+              "description": "Determines dimensional size tokens.",
+              "type": {
+                "text": "ImageSize"
+              }
+            },
+            {
+              "name": "src",
+              "fieldName": "src",
+              "description": "The source URL of the image asset.",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "modus-wc-image",
+          "events": [
+            {
+              "kind": "field",
+              "name": "imageError",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the image fails to load."
+            },
+            {
+              "kind": "field",
+              "name": "imageLoad",
+              "type": {
+                "text": "EventEmitter<Event>"
+              },
+              "description": "Event emitted when the image loads successfully."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcImage",
+          "declaration": {
+            "name": "ModusWcImage",
+            "module": "src/components/modus-wc-image/modus-wc-image.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-image",
+          "declaration": {
+            "name": "ModusWcImage",
+            "module": "src/components/modus-wc-image/modus-wc-image.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx",
       "declarations": [
         {
@@ -7004,6 +7125,90 @@
           "declaration": {
             "name": "ModusWcSlider",
             "module": "src/components/modus-wc-slider/modus-wc-slider.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-status/modus-wc-status.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A status indicator with a pulsing dot and semantic label for conveying system state.",
+          "name": "ModusWcStatus",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the status container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "default": "''",
+              "description": "The visible status label. Defaults to the variant name when omitted.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "pulse",
+              "fieldName": "pulse",
+              "default": "true",
+              "description": "Whether the dot displays a pulsing halo animation.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "default": "'active'",
+              "description": "The semantic status variant.",
+              "type": {
+                "text": "'active' | 'warning' | 'danger'"
+              }
+            }
+          ],
+          "tagName": "modus-wc-status",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcStatus",
+          "declaration": {
+            "name": "ModusWcStatus",
+            "module": "src/components/modus-wc-status/modus-wc-status.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-status",
+          "declaration": {
+            "name": "ModusWcStatus",
+            "module": "src/components/modus-wc-status/modus-wc-status.tsx"
           }
         }
       ]

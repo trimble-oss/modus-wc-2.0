@@ -1,0 +1,122 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+@keyframes modus-wc-status-alpha-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+modus-wc-status .modus-wc-status {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--modus-wc-spacing-sm);
+
+  .modus-wc-status-dot-wrapper {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    height: var(--modus-wc-spacing-sm);
+    position: relative;
+    width: var(--modus-wc-spacing-sm);
+  }
+
+  .modus-wc-status-dot {
+    border-radius: 50%;
+    flex-shrink: 0;
+    height: var(--modus-wc-spacing-sm);
+    width: var(--modus-wc-spacing-sm);
+  }
+
+  .modus-wc-status-pulse {
+    animation: modus-wc-status-alpha-pulse 2s ease-out infinite;
+    border-radius: 50%;
+    inset: 0;
+    position: absolute;
+  }
+
+  .modus-wc-status-label {
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-md);
+    margin: 0;
+  }
+
+  &.modus-wc-status--active {
+    .modus-wc-status-dot {
+      background-color: var(--modus-wc-color-success);
+    }
+
+    .modus-wc-status-pulse {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-success) 30%,
+        transparent
+      );
+    }
+
+    .modus-wc-status-label {
+      color: var(--modus-wc-color-success);
+    }
+  }
+
+  &.modus-wc-status--warning {
+    .modus-wc-status-dot {
+      background-color: var(--modus-wc-color-warning);
+    }
+
+    .modus-wc-status-pulse {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-warning) 30%,
+        transparent
+      );
+    }
+
+    .modus-wc-status-label {
+      color: var(--modus-wc-color-warning);
+    }
+  }
+
+  &.modus-wc-status--danger {
+    .modus-wc-status-dot {
+      background-color: var(--modus-wc-color-error);
+    }
+
+    .modus-wc-status-pulse {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-error) 30%,
+        transparent
+      );
+    }
+
+    .modus-wc-status-label {
+      color: var(--modus-wc-color-error);
+    }
+  }
+
+  &.modus-wc-status--no-pulse .modus-wc-status-pulse {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modus-wc-status-pulse {
+      animation: none;
+      display: none;
+    }
+  }
+}

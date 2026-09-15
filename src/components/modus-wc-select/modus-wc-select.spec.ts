@@ -16,7 +16,7 @@ describe('modus-wc-select', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcInputLabel],
-      html: '<modus-wc-select label="Label" aria-label="Default select"></modus-wc-select>',
+      html: '<modus-wc-select label="Label"></modus-wc-select>',
     });
 
     const component = page.rootInstance as ModusWcSelect;
@@ -60,10 +60,13 @@ describe('modus-wc-select', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcInputLabel],
-      html: '<modus-wc-select label="Country" aria-label="Country"></modus-wc-select>',
+      html: '<modus-wc-select label="Country"></modus-wc-select>',
     });
 
     expectLabelLinkedToControl(page.root!, 'select');
+
+    const select = page.root!.querySelector('select') as HTMLSelectElement;
+    expect(select.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {
