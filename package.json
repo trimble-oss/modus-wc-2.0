@@ -392,7 +392,7 @@
       ]
     },
     "tailwind:build": {
-      "command": "@tailwindcss/cli -i src/styles/tailwind-v4.css -o src/styles/output.css --minify",
+      "command": "tailwindcss -i src/styles/tailwind-v4.css -o src/styles/output.css --minify",
       "files": [
         "src/**/*.scss",
         "src/styles/fonts.css",
@@ -472,7 +472,7 @@
       ]
     },
     "tailwind:watch": {
-      "command": "@tailwindcss/cli -i src/styles/tailwind-v4.css -o src/styles/output.css --minify --watch",
+      "command": "tailwindcss -i src/styles/tailwind-v4.css -o src/styles/output.css --minify --watch",
       "service": true,
       "files": [
         "src/**/*.scss",
