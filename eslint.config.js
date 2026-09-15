@@ -77,6 +77,7 @@ export default [
   {
     ignores: [
       '**/*.config.ts',
+      'docs/legacy/**',
       '.wireit/**',
       '.storybook/**',
       'dist/**',
