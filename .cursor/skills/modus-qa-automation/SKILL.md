@@ -71,7 +71,15 @@ Diff must include tests and/or stories for new props, sizes, or AC behavior.
 
 Required when gate green AND diff is visual OR QA-depth is visual-slice/composition OR QA-verify non-empty OR latest `/refine` has UI screenshots.
 
-Walk QA-verify scenarios. For each: open Storybook, set theme from QA-themes, screenshot, compare to **QA-source** (comparison-doc images/tokens, staged screenshot, or blueprint — not Storybook alone).
+Walk QA-verify scenarios. For each: open Storybook, set theme from QA-themes, screenshot, compare to **QA-source** per `QA-source-kind`:
+
+| Kind               | Compare against                                                  |
+| ------------------ | ---------------------------------------------------------------- |
+| `comparison-doc`   | Doc embedded images and token tables (Drive MCP)                 |
+| `figma-staged`     | Staged `screenshot.png` + `variable-defs.json`                   |
+| `blueprint`        | Blueprint markdown + Storybook                                   |
+| `issue-screenshot` | Attached PNGs from the issue/PR                                  |
+| `none`             | Storybook on **main** vs PR branch (existing component baseline) |
 
 When `QA-source-kind: comparison-doc`, cite the doc's expected token/color per theme in the evidence table. Dark-theme header selects matching light-theme colors (e.g. white pills on dark) = **fail** unless the doc says otherwise.
 

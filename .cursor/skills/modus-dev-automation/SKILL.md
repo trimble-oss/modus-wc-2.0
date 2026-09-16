@@ -47,7 +47,7 @@ QA-graph: none | tag → dependents
 - `QA-verify`: numbered scenarios QA must execute. Include hover/disabled/pressed when those states exist.
 - `QA-graph`: from [`docs/component-graph/component-graph.json`](../../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (transitive runtime dependents on `main`; cap browser targets at 3). Empty → `none`.
 
-After `/refine` or `qa-failed` repair: conversation-comment `QA-rerun: add` plus updated routing block. **Never** also post `Routing: qa-full` on `/refine` (that starts a second QA run).
+After `/refine` or `qa-failed` repair: post **`QA-rerun: add` alone** on the PR conversation comment, plus updated `QA-*` fields **only when they changed**. **Never** include `Routing: qa-full` or `Routing: qa-skip` in that comment (label stacking starts a second QA run).
 
 ## Routing signal discipline (label router)
 
@@ -58,19 +58,21 @@ The label-router **pulses every matching line** in a comment. Multiple signals i
 | **Open PR** (`/approve`)        | Full routing block **including** `Routing: qa-full` or `Routing: qa-skip` (once)                                         |
 | **`/refine`**                   | What changed + updated `QA-*` fields **only if they changed** + **`QA-rerun: add` alone** — **never** `Routing: qa-full` |
 | **`qa-failed` repair**          | `Fix applied: [one sentence]` + **`QA-rerun: add` alone** — **never** `Routing: qa-full`                                 |
-| **Prettier/lint/gate-only fix** | Same as repair: **`QA-rerun: add` only** — do **not** repost the full routing block                                      |
+| **Prettier/lint/gate-only fix** | Same as repair: **`QA-rerun: add` only** — do **not** post the full routing block again                                  |
 
-Do **not** copy-paste the entire routing block on every small fix. Re-post full `QA-*` fields only when `QA-source`, `QA-verify`, or `QA-assert` materially changed.
+Do **not** copy-paste the entire routing block on every small fix. Post full `QA-*` fields again only when `QA-source`, `QA-verify`, or `QA-assert` materially changed.
 
-## `/refine` with comparison doc or images
+## `/refine` with design source or comparison images
 
-When the human links `docs.google.com/document/…`, a Drive folder, or attaches comparison screenshots:
+Classify the human's link per `modus-qa-source` **before** patching:
 
-1. Read the doc via **Drive MCP** (`read_file_content` / export) **before** patching.
-2. Extract token values and theme-specific expectations (e.g. dark header select = `gray-10`, not white).
-3. Set `QA-source` to that doc URL and `QA-source-kind: comparison-doc` (not `blueprint` unless the URL is modus.trimble.com).
-4. Update `QA-verify` to include themes/states named in the doc.
-5. Invoke **graph-impact** → **storybook-smoke** against doc expectations before push.
+| Human provides                     | Read first                                      | Set on routing comment                                                                |
+| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `docs.google.com/document/…`       | Drive MCP: read the Google Doc                  | `QA-source`: doc URL; `QA-source-kind: comparison-doc`                                |
+| `drive.google.com/drive/folders/…` | Drive MCP: `manifest.json` then matched variant | `QA-source`: folder URL; `QA-source-kind: figma-staged`; `QA-source-path`: variant id |
+| Issue/PR screenshot attachments    | View attached PNGs                              | `QA-source`: issue URL; `QA-source-kind: issue-screenshot`; `QA-source-path: none`    |
+
+For `comparison-doc`: extract token values and theme-specific expectations (e.g. dark header select = `gray-10`, not white). Update `QA-verify` to include themes/states named in the doc or images. Invoke **graph-impact** → **storybook-smoke** against those expectations before push.
 
 ## Dispatch rules
 

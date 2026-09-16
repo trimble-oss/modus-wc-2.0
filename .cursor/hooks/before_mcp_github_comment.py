@@ -63,7 +63,7 @@ def main() -> None:
                     "agent_message": (
                         "Split the routing signal: on /refine or qa-failed repair post "
                         "QA-rerun: add only (plus Fix applied / what changed). "
-                        "Routing: qa-full belongs on Open PR only. Repost without "
+                        "Routing: qa-full belongs on Open PR only. Post again without "
                         "Routing: qa-full."
                     ),
                 }

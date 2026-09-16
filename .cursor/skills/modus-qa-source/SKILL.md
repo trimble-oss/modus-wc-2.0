@@ -42,7 +42,7 @@ Kebab-case the last path segment; try `select` then `Select` on 404.
 - `blueprint` → blueprint markdown + Storybook.
 - `issue-screenshot` → attached PNGs.
 
-If Storybook contradicts the comparison doc, **`## QA FAILED — visual`**, not PASSED. Path 404 or Drive 403 → `## QA BLOCKED`. Never scrape as fallback.
+If Storybook contradicts the comparison doc, **`## QA FAILED — visual`**, not PASSED. Path 404, Drive 403, or GitHub MCP 403 on blueprint reads → `## QA BLOCKED`. Never scrape as fallback.
 
 ### Figma token mismatches
 
