@@ -53,28 +53,6 @@ modus-wc-image-grid {
   &.modus-wc-image-grid--count-4 {
     .modus-wc-image-grid-container {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-    }
-
-    &.modus-wc-image-grid--rectangle {
-      .modus-wc-image-grid-container {
-        // Figma: 4 images + rectangle — fixed height 534px
-        height: 534px;
-      }
-
-      modus-wc-image .modus-wc-image-grid-cell {
-        aspect-ratio: unset;
-        height: 100%;
-      }
-
-      modus-wc-image .modus-wc-image-container.modus-wc-image-grid-cell {
-        &.modus-wc-image--default.modus-wc-image--sm,
-        &.modus-wc-image--default.modus-wc-image--md,
-        &.modus-wc-image--default.modus-wc-image--lg,
-        &.modus-wc-image--default.modus-wc-image--xl {
-          height: 100%;
-        }
-      }
     }
   }
 
