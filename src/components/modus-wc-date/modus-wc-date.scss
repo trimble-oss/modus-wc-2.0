@@ -454,7 +454,11 @@ modus-wc-date {
 
 [data-theme='modus-modern-light'] modus-wc-date,
 [data-theme='modus-classic-light'] modus-wc-date {
-  .calendar-container .calendar-header .calendar-selects modus-wc-select select.modus-wc-select {
+  .calendar-container
+    .calendar-header
+    .calendar-selects
+    modus-wc-select
+    select.modus-wc-select {
     background-color: var(--modus-wc-color-white);
     color: var(--modus-wc-color-gray-10);
   }
@@ -462,7 +466,11 @@ modus-wc-date {
 
 [data-theme='modus-modern-dark'] modus-wc-date,
 [data-theme='modus-classic-dark'] modus-wc-date {
-  .calendar-container .calendar-header .calendar-selects modus-wc-select select.modus-wc-select {
+  .calendar-container
+    .calendar-header
+    .calendar-selects
+    modus-wc-select
+    select.modus-wc-select {
     background-color: var(--modus-wc-color-gray-10);
     color: var(--modus-wc-color-base-content);
   }
