@@ -109,7 +109,7 @@ export class ModusWcImage {
   };
 
   private getImageStyles(): { objectPosition: string } {
-    return { objectPosition: this.cropPosition ?? 'center' };
+    return { objectPosition: this.cropPosition };
   }
 
   private renderFallback(altText: string) {
