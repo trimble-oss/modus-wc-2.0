@@ -125,6 +125,15 @@
             },
             {
               "kind": "method",
+              "name": "expandableConfigChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -143,6 +152,15 @@
               "description": "The title of the alert.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "content-display-mode",
+              "fieldName": "contentDisplayMode",
+              "default": "'default'",
+              "description": "Controls body display: full text (default) or expandable two-line preview with Show more.",
+              "type": {
+                "text": "'default' | 'expandable'"
               }
             },
             {
@@ -200,6 +218,13 @@
           ],
           "tagName": "modus-wc-alert",
           "events": [
+            {
+              "name": "contentExpandedChange",
+              "type": {
+                "text": "EventEmitter<{ expanded: boolean }>"
+              },
+              "description": "Fires when expandable body content is expanded or collapsed."
+            },
             {
               "name": "dismissClick",
               "type": {
@@ -4246,6 +4271,90 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A responsive image grid that displays 1 to 4 images in rectangle or square layouts.\n\nEach cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.",
+          "name": "ModusWcImageGrid",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the grid container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "image-shape",
+              "fieldName": "imageShape",
+              "default": "'rectangle'",
+              "description": "Sets the cell aspect ratio layout.",
+              "type": {
+                "text": "ImageGridShape"
+              }
+            },
+            {
+              "name": "images",
+              "fieldName": "images",
+              "default": "[]",
+              "description": "Images to display in the grid. Only the first N images are shown based on `imagesPerView`.",
+              "type": {
+                "text": "IImageGridImage[]"
+              }
+            },
+            {
+              "name": "images-per-view",
+              "fieldName": "imagesPerView",
+              "default": "'4 images'",
+              "description": "Maximum number of images to display in the grid.",
+              "type": {
+                "text": "ImagesPerView"
+              }
+            }
+          ],
+          "tagName": "modus-wc-image-grid",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcImageGrid",
+          "declaration": {
+            "name": "ModusWcImageGrid",
+            "module": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-image-grid",
+          "declaration": {
+            "name": "ModusWcImageGrid",
+            "module": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/modus-wc-image/modus-wc-image.tsx",
       "declarations": [
         {
@@ -4493,6 +4602,14 @@
               "name": "for-id",
               "fieldName": "forId",
               "description": "The `for` attribute of the label, matching the `id` of the associated input.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "label-id",
+              "fieldName": "labelId",
+              "description": "The `id` of the label element (for `aria-labelledby` on non-labelable controls).",
               "type": {
                 "text": "string"
               }
@@ -9036,7 +9153,11 @@
             },
             {
               "kind": "method",
-              "name": "handlePointerEnter",
+              "name": "handlePointerCancel"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerDown",
               "parameters": [
                 {
                   "name": "event",
@@ -9046,6 +9167,22 @@
                 }
               ],
               "description": "Fires before the emulated mouseenter on touch, so mouseenter knows its source."
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerUp"
             },
             {
               "kind": "method",
