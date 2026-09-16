@@ -77,10 +77,6 @@ modus-wc-date {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-xl);
 
       .nav-btn {
-        align-self: center;
-        display: inline-flex;
-        flex-shrink: 0;
-
         i {
           color: var(--modus-wc-color-primary-content);
         }
@@ -97,17 +93,14 @@ modus-wc-date {
         display: flex;
         gap: var(--modus-wc-spacing-xs);
 
-        modus-wc-select {
-          align-self: center;
-          display: inline-flex;
+        select {
+          box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+          color: var(--modus-wc-color-base-content);
+        }
 
-          select.modus-wc-select {
-            background-color: var(--modus-wc-color-white);
-            border-radius: var(--modus-wc-border-radius-input);
-            box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
-            color: var(--modus-wc-color-gray-10);
-            font-weight: var(--modus-wc-font-weight-semibold);
-          }
+        .month-select,
+        .year-select {
+          border-radius: var(--modus-wc-border-radius-input);
         }
 
         select option {
@@ -422,15 +415,48 @@ modus-wc-date {
   @include connect-input-styles;
 }
 
+[data-theme='modus-modern-light'] modus-wc-date,
+[data-theme='modus-modern-dark'] modus-wc-date,
+[data-theme='modus-classic-light'] modus-wc-date,
+[data-theme='modus-classic-dark'] modus-wc-date {
+  .calendar-container {
+    border-radius: var(--modus-wc-border-radius-box);
+    box-shadow:
+      0 2px 4px -2px rgb(0 0 0 / 0.1),
+      0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+    .calendar-header {
+      min-height: 55px;
+
+      .nav-btn {
+        align-self: center;
+        display: inline-flex;
+        flex-shrink: 0;
+      }
+
+      .calendar-selects {
+        modus-wc-select {
+          align-self: center;
+          display: inline-flex;
+
+          select.modus-wc-select {
+            background-color: var(--modus-wc-color-white);
+            border-radius: var(--modus-wc-border-radius-input);
+            box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+            color: var(--modus-wc-color-gray-10);
+            font-size: var(--modus-wc-font-size-md);
+            font-weight: var(--modus-wc-font-weight-semibold);
+            line-height: var(--modus-wc-line-height-md);
+          }
+        }
+      }
+    }
+  }
+}
+
 [data-theme='modus-modern-dark'] modus-wc-date,
 [data-theme='modus-classic-dark'] modus-wc-date {
   .calendar-container .calendar-header {
-    .nav-btn {
-      i {
-        color: var(--modus-wc-color-primary-content);
-      }
-    }
-
     .calendar-selects select option {
       background-color: var(--modus-wc-color-black);
       color: var(--modus-wc-color-white);
