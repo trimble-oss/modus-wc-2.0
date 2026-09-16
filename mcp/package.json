@@ -19,7 +19,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.2"
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "hono": "4.13.8"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
