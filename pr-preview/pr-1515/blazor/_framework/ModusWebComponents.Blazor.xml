@@ -1676,7 +1676,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ImagesPerView">
             <summary>
-            Maximum number of images to display in the grid.
+            Maximum number of images to display in the grid (1–4).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.Images">
