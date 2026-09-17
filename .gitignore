@@ -27,6 +27,7 @@ coverage/
 
 # IDE and editor files
 .idea/
+.DS_Store
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
