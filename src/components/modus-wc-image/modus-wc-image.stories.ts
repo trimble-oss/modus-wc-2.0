@@ -233,7 +233,7 @@ export const CropPosition: Story = {
     docs: {
       description: {
         story:
-          '`crop-position` maps to CSS `object-position` and controls which part of the image stays visible when it is cropped (`fit="default"`) or letterboxed (`fit="contain"`). Defaults to `center` for backward compatibility. Use the **crop-position** control to try `top`, `bottom`, `left`, `right`, and compound values such as `top left`.',
+          '`crop-position` maps to CSS `object-position` and controls which part of the image stays visible when it is cropped (`fit="default"`) or letterboxed (`fit="contain"`). Defaults to `center` for backward compatibility. Use the **crop-position** control to try `top`, `bottom`, `left`, `right`, and compound values such as `top left`.\n\n> **Note:** For custom offsets (e.g. percentage values), set `custom-class` and target `.modus-wc-image-img` with `object-position` in your stylesheet.',
       },
     },
   },
