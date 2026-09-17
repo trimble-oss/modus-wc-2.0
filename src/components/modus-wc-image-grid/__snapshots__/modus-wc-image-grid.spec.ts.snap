@@ -5,22 +5,22 @@ exports[`modus-wc-image-grid should render four images by default 1`] = `
   <div class="modus-wc-image-grid-container" role="group">
     <modus-wc-image custom-class="modus-wc-image-grid-cell">
       <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
-        <img alt="Image 1" class="modus-wc-image-img" src="https://example.com/1.jpg">
+        <img alt="Image 1" class="modus-wc-image-img" src="https://example.com/1.jpg" style="object-position: center;">
       </div>
     </modus-wc-image>
     <modus-wc-image custom-class="modus-wc-image-grid-cell">
       <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
-        <img alt="Image 2" class="modus-wc-image-img" src="https://example.com/2.jpg">
+        <img alt="Image 2" class="modus-wc-image-img" src="https://example.com/2.jpg" style="object-position: center;">
       </div>
     </modus-wc-image>
     <modus-wc-image custom-class="modus-wc-image-grid-cell">
       <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
-        <img alt="Image 3" class="modus-wc-image-img" src="https://example.com/3.jpg">
+        <img alt="Image 3" class="modus-wc-image-img" src="https://example.com/3.jpg" style="object-position: center;">
       </div>
     </modus-wc-image>
     <modus-wc-image custom-class="modus-wc-image-grid-cell">
       <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
-        <img alt="Image 4" class="modus-wc-image-img" src="https://example.com/4.jpg">
+        <img alt="Image 4" class="modus-wc-image-img" src="https://example.com/4.jpg" style="object-position: center;">
       </div>
     </modus-wc-image>
   </div>
