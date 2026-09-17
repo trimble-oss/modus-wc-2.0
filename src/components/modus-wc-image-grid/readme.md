@@ -13,12 +13,12 @@ Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and
 
 ## Properties
 
-| Property        | Attribute         | Description                                                                                | Type                                                               | Default       |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------- |
-| `customClass`   | `custom-class`    | Custom CSS class to apply to the grid container.                                           | `string \| undefined`                                              | `''`          |
-| `imageShape`    | `image-shape`     | Sets the cell aspect ratio layout.                                                         | `"rectangle" \| "square" \| undefined`                             | `'rectangle'` |
-| `images`        | `images`          | Images to display in the grid. Only the first N images are shown based on `imagesPerView`. | `IImageGridImage[]`                                                | `[]`          |
-| `imagesPerView` | `images-per-view` | Maximum number of images to display in the grid.                                           | `"1 image" \| "2 images" \| "3 images" \| "4 images" \| undefined` | `'4 images'`  |
+| Property        | Attribute         | Description                                                                                | Type                                   | Default       |
+| --------------- | ----------------- | ------------------------------------------------------------------------------------------ | -------------------------------------- | ------------- |
+| `customClass`   | `custom-class`    | Custom CSS class to apply to the grid container.                                           | `string \| undefined`                  | `''`          |
+| `imageShape`    | `image-shape`     | Sets the cell aspect ratio layout.                                                         | `"rectangle" \| "square" \| undefined` | `'rectangle'` |
+| `images`        | `images`          | Images to display in the grid. Only the first N images are shown based on `imagesPerView`. | `IImageGridImage[]`                    | `[]`          |
+| `imagesPerView` | `images-per-view` | Maximum number of images to display in the grid (1–4).                                     | `number \| undefined`                  | `4`           |
 
 
 ## Dependencies

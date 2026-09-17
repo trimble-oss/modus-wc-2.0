@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { IImageGridImage } from './modus-wc-image-grid';
-import { ImageGridShape, ImagesPerView } from './modus-wc-image-grid.tailwind';
+import { ImageGridShape } from './modus-wc-image-grid.tailwind';
 
 const SAMPLE_IMAGE =
   'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg';
@@ -17,7 +17,7 @@ const SAMPLE_IMAGES: IImageGridImage[] = [
 interface ImageGridArgs {
   images: IImageGridImage[];
   imageShape?: ImageGridShape;
-  imagesPerView?: ImagesPerView;
+  imagesPerView?: number;
   'custom-class'?: string;
 }
 
@@ -27,7 +27,7 @@ const meta: Meta<ImageGridArgs> = {
   args: {
     images: SAMPLE_IMAGES,
     imageShape: 'rectangle',
-    imagesPerView: '4 images',
+    imagesPerView: 4,
   },
   argTypes: {
     imageShape: {
@@ -36,7 +36,7 @@ const meta: Meta<ImageGridArgs> = {
     },
     imagesPerView: {
       control: { type: 'select' },
-      options: ['1 image', '2 images', '3 images', '4 images'],
+      options: [1, 2, 3, 4],
     },
   },
   parameters: {
@@ -77,83 +77,6 @@ export const Default: Story = {
   },
 };
 
-export const FourImagesSquare: Story = {
-  ...Template,
-  args: {
-    imageShape: 'square',
-    imagesPerView: '4 images',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Four square images in a 2×2 grid.',
-      },
-    },
-  },
-};
-
-export const ThreeImagesRectangle: Story = {
-  ...Template,
-  args: {
-    imageShape: 'rectangle',
-    imagesPerView: '3 images',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Three rectangle images in a single row.',
-      },
-    },
-  },
-};
-
-export const TwoImagesSquare: Story = {
-  ...Template,
-  args: {
-    imageShape: 'square',
-    imagesPerView: '2 images',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Two square images in a single row.',
-      },
-    },
-  },
-};
-
-export const OneImageRectangle: Story = {
-  ...Template,
-  args: {
-    imageShape: 'rectangle',
-    imagesPerView: '1 image',
-    images: [SAMPLE_IMAGES[0]],
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Single full-width rectangle image.',
-      },
-    },
-  },
-};
-
-export const OneImageSquare: Story = {
-  ...Template,
-  args: {
-    imageShape: 'square',
-    imagesPerView: '1 image',
-    images: [SAMPLE_IMAGES[0]],
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Single full-width square image (max 932px).',
-      },
-    },
-  },
-};
-
 export const AllVariants: Story = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 48px;">
@@ -162,7 +85,7 @@ export const AllVariants: Story = {
         <modus-wc-image-grid
           .images=${SAMPLE_IMAGES}
           image-shape="rectangle"
-          images-per-view="4 images"
+          images-per-view="4"
         ></modus-wc-image-grid>
       </section>
       <section>
@@ -170,7 +93,7 @@ export const AllVariants: Story = {
         <modus-wc-image-grid
           .images=${SAMPLE_IMAGES}
           image-shape="square"
-          images-per-view="4 images"
+          images-per-view="4"
         ></modus-wc-image-grid>
       </section>
       <section>
@@ -178,7 +101,7 @@ export const AllVariants: Story = {
         <modus-wc-image-grid
           .images=${SAMPLE_IMAGES}
           image-shape="rectangle"
-          images-per-view="3 images"
+          images-per-view="3"
         ></modus-wc-image-grid>
       </section>
       <section>
@@ -186,7 +109,7 @@ export const AllVariants: Story = {
         <modus-wc-image-grid
           .images=${SAMPLE_IMAGES}
           image-shape="square"
-          images-per-view="2 images"
+          images-per-view="2"
         ></modus-wc-image-grid>
       </section>
       <section>
@@ -194,7 +117,7 @@ export const AllVariants: Story = {
         <modus-wc-image-grid
           .images=${[SAMPLE_IMAGES[0]]}
           image-shape="rectangle"
-          images-per-view="1 image"
+          images-per-view="1"
         ></modus-wc-image-grid>
       </section>
     </div>
