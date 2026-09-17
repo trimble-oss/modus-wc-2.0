@@ -463,6 +463,14 @@ modus-wc-date {
     select.modus-wc-select {
     background-color: var(--modus-wc-color-gray-10);
     color: var(--modus-wc-color-base-content);
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:focus-visible {
+      background-color: transparent;
+      color: var(--modus-wc-color-base-content);
+    }
   }
 
   .calendar-container .calendar-header .calendar-selects select option {
