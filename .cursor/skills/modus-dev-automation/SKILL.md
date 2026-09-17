@@ -86,11 +86,25 @@ Do not patch for bot reviews (copilot, github-actions, etc.). Copilot suggestion
 
 Post Routing / QA-\* / `QA-rerun: add` as PR **conversation** comments only — not walkthrough-only reviews.
 
+## Merge-gate checklist
+
+Run before **Open PR** (`/approve`), **push** on `/refine`, and **push** on `qa-failed` repair. Fix failures before push — do not rely on CI to catch them.
+
+```
+npm run tailwind:build
+npm run embed:css
+npm run embed:component-css
+npm run test:coverage
+npm run lint
+```
+
+[`npm run test:coverage`](../../../package.json) is what [merge-gate](../../../.github/workflows/merge-gate.yml) runs (not bare `npm test`). Each changed component needs **100% unit test coverage** per [CONTRIBUTING.md](../../../CONTRIBUTING.md).
+
 ### `/approve` on an issue
 
 Extract AC, technical notes, design links. Feasibility gate: `## NEED CLARIFICATION` or `## NOT FEASIBLE` on correct surface and STOP if blocked.
 
-Branch `exp/<issue-number>-<short-slug>` from `main`. Commit per AC. Before Open PR: `npm run tailwind:build`, `npm run embed:css`, `npm run embed:component-css`, `npm test`, `npm run lint`.
+Branch `exp/<issue-number>-<short-slug>` from `main`. Commit per AC. Before Open PR: run the **merge-gate checklist** above.
 
 PR body: repo template; Work Item `Closes #<n>`. Routing comment after Open PR. **STOP.** No subscribe.
 
@@ -100,11 +114,11 @@ Reply on same surface (PR if exists). No patch, no push, no QA-rerun. STOP.
 
 ### `/refine`
 
-Patch same branch. Conversation comment: what changed + **`QA-rerun: add` only** (no `Routing: qa-full`). Update `QA-*` fields inline only when they changed. If human linked a comparison doc, read it via Drive MCP first. Do not claim QA passed. STOP.
+Patch same branch. Run the **merge-gate checklist** before push. Conversation comment: what changed + **`QA-rerun: add` only** (no `Routing: qa-full`). Update `QA-*` fields inline only when they changed. If human linked a comparison doc, read it via Drive MCP first. Do not claim QA passed. STOP.
 
 ### `qa-failed` label
 
-Repair only latest `## QA FAILED`. Max 3 attempts. Push + `Fix applied:` + **`QA-rerun: add` only** (no `Routing: qa-full`, no full routing block unless QA-\* materially changed). STOP.
+Repair only latest `## QA FAILED`. Max 3 attempts. Run the **merge-gate checklist** before push. Push + `Fix applied:` + **`QA-rerun: add` only** (no `Routing: qa-full`, no full routing block unless QA-\* materially changed). STOP.
 
 ## Developer visual self-check
 

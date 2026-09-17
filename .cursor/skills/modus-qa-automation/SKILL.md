@@ -18,7 +18,7 @@ QA wakes on **label added** only (`qa-full`, `qa-rerun`, `qa-skip`). Independent
 
 ## Mindset
 
-- npm/lint/test is a **gate**, never a **verdict**.
+- npm/lint/`test:coverage` is a **gate**, never a **verdict**.
 - `## QA PASSED` requires visual evidence when the diff touches `.scss`, `.tailwind.ts`, component `.tsx/.ts`, or stories.
 - Never mark a scenario pass without a screenshot.
 - Max **3 browser targets** unless human AC names more.
@@ -51,21 +51,26 @@ If Routing missing: infer from diff. `QA-graph` from `reverseImpact`.
 
 **Source fetch (mandatory before visual verdict):** When `QA-source` is a URL, read it now via Drive MCP (`comparison-doc`, `figma-staged`) or GitHub MCP (`blueprint`). If the human's `/refine` linked a Google Doc, that doc overrides stale Dev `QA-source-kind: blueprint` mislabels.
 
-## Gates (unless qa-skip + depth none + no visual files)
+## Gates
+
+**Always on `qa-full` and `qa-rerun`.** Skip only on `qa-skip` + `QA-depth: none` + no visual files in the diff.
 
 ```
 npm run tailwind:build
 npm run embed:css
 npm run embed:component-css
-npm test
+npm run test:coverage
 npm run lint
 ```
 
-Gate fail → `## QA FAILED — functional`. Table: visual = not-evaluated. STOP.
+Use [`npm run test:coverage`](../../../package.json) — same command [merge-gate](../../../.github/workflows/merge-gate.yml) runs. Gate fail (lint, coverage threshold, or test failure) → `## QA FAILED — functional`. Table: visual = not-evaluated. STOP.
 
 ## Coverage
 
-Diff must include tests and/or stories for new props, sizes, or AC behavior.
+Two checks:
+
+1. **Gate:** `npm run test:coverage` passes (100% per changed component per [CONTRIBUTING.md](../../../CONTRIBUTING.md)).
+2. **Diff:** PR includes tests and/or stories for new props, sizes, or AC behavior.
 
 ## Visual
 
