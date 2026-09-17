@@ -1614,6 +1614,11 @@
             Accessible text description. Omit or leave empty for decorative images.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.CropPosition">
+            <summary>
+            Sets the focal point when the image is cropped or letterboxed. Maps to CSS object-position (e.g. center, top, bottom left).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
             <summary>
             Custom CSS class to apply to the inner container.
