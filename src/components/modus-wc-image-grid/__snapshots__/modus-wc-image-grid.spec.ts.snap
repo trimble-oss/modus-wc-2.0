@@ -28,7 +28,7 @@ exports[`modus-wc-image-grid should render four images by default 1`] = `
 `;
 
 exports[`modus-wc-image-grid should render with default props 1`] = `
-<modus-wc-image-grid class="modus-wc-image-grid modus-wc-image-grid--count-4 modus-wc-image-grid--rectangle">
+<modus-wc-image-grid class="modus-wc-image-grid modus-wc-image-grid--count-1 modus-wc-image-grid--rectangle">
   <div class="modus-wc-image-grid-container" role="group"></div>
 </modus-wc-image-grid>
 `;

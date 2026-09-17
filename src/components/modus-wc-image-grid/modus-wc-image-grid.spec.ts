@@ -35,7 +35,7 @@ describe('modus-wc-image-grid', () => {
   it('should limit visible images based on imagesPerView', async () => {
     const page = await newSpecPage({
       components: [ModusWcImageGrid, ModusWcImage],
-      html: '<modus-wc-image-grid images-per-view="2 images"></modus-wc-image-grid>',
+      html: '<modus-wc-image-grid images-per-view="2"></modus-wc-image-grid>',
     });
     const component = page.rootInstance as ModusWcImageGrid;
     component.images = SAMPLE_IMAGES;
@@ -48,8 +48,12 @@ describe('modus-wc-image-grid', () => {
   it('should apply rectangle layout classes', async () => {
     const page = await newSpecPage({
       components: [ModusWcImageGrid, ModusWcImage],
-      html: '<modus-wc-image-grid image-shape="rectangle" images-per-view="4 images"></modus-wc-image-grid>',
+      html: '<modus-wc-image-grid image-shape="rectangle" images-per-view="4"></modus-wc-image-grid>',
     });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = SAMPLE_IMAGES;
+    await page.waitForChanges();
+
     expect(
       page.root?.classList.contains('modus-wc-image-grid--rectangle')
     ).toBe(true);
@@ -61,8 +65,12 @@ describe('modus-wc-image-grid', () => {
   it('should apply square layout classes', async () => {
     const page = await newSpecPage({
       components: [ModusWcImageGrid, ModusWcImage],
-      html: '<modus-wc-image-grid image-shape="square" images-per-view="3 images"></modus-wc-image-grid>',
+      html: '<modus-wc-image-grid image-shape="square" images-per-view="3"></modus-wc-image-grid>',
     });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = SAMPLE_IMAGES;
+    await page.waitForChanges();
+
     expect(page.root?.classList.contains('modus-wc-image-grid--square')).toBe(
       true
     );
@@ -85,7 +93,7 @@ describe('modus-wc-image-grid', () => {
   it('should render modus-wc-image cells with rounded shape and grid cell class', async () => {
     const page = await newSpecPage({
       components: [ModusWcImageGrid, ModusWcImage],
-      html: '<modus-wc-image-grid images-per-view="1 image"></modus-wc-image-grid>',
+      html: '<modus-wc-image-grid images-per-view="1"></modus-wc-image-grid>',
     });
     const component = page.rootInstance as ModusWcImageGrid;
     component.images = [SAMPLE_IMAGES[0]];
@@ -97,5 +105,91 @@ describe('modus-wc-image-grid', () => {
     expect(container?.classList.contains('modus-wc-image-grid-cell')).toBe(
       true
     );
+  });
+
+  it('should derive count class from visible images not imagesPerView', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="4"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [SAMPLE_IMAGES[0]];
+    await page.waitForChanges();
+
+    expect(page.root?.classList.contains('modus-wc-image-grid--count-1')).toBe(
+      true
+    );
+    expect(page.root?.classList.contains('modus-wc-image-grid--count-4')).toBe(
+      false
+    );
+  });
+
+  it('should apply default layout classes when props are unset via assignment', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.imageShape = undefined;
+    component.imagesPerView = undefined;
+    component.images = SAMPLE_IMAGES;
+    await page.waitForChanges();
+
+    expect(
+      page.root?.classList.contains('modus-wc-image-grid--rectangle')
+    ).toBe(true);
+    expect(page.root?.classList.contains('modus-wc-image-grid--count-4')).toBe(
+      true
+    );
+  });
+
+  it('should render duplicate image sources without key collision', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="4"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [
+      { src: 'https://example.com/same.jpg', alt: 'A' },
+      { src: 'https://example.com/same.jpg', alt: 'B' },
+      { src: 'https://example.com/same.jpg', alt: 'C' },
+      { src: 'https://example.com/same.jpg', alt: 'D' },
+    ];
+    await page.waitForChanges();
+
+    const images = page.root?.querySelectorAll('modus-wc-image');
+    expect(images?.length).toBe(4);
+  });
+
+  it('should clamp imagesPerView below 1 to a single column', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="0"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = SAMPLE_IMAGES;
+    await page.waitForChanges();
+
+    const images = page.root?.querySelectorAll('modus-wc-image');
+    expect(images?.length).toBe(1);
+    expect(page.root?.classList.contains('modus-wc-image-grid--count-1')).toBe(
+      true
+    );
+  });
+
+  it('should clamp imagesPerView above 4 to four images', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="10"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [
+      ...SAMPLE_IMAGES,
+      { src: 'https://example.com/5.jpg', alt: 'Image 5' },
+    ];
+    await page.waitForChanges();
+
+    const images = page.root?.querySelectorAll('modus-wc-image');
+    expect(images?.length).toBe(4);
   });
 });

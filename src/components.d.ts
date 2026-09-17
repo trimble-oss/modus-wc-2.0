@@ -15,7 +15,7 @@ import { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 import { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 import { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 import { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
-import { ImageGridShape, ImagesPerView } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
+import { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -40,7 +40,7 @@ export { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 export { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 export { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 export { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
-export { ImageGridShape, ImagesPerView } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
+export { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -1218,10 +1218,10 @@ export namespace Components {
          */
         "images": IImageGridImage[];
         /**
-          * Maximum number of images to display in the grid.
-          * @default '4 images'
+          * Maximum number of images to display in the grid (1–4).
+          * @default 4
          */
-        "imagesPerView"?: ImagesPerView;
+        "imagesPerView"?: number;
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -5641,10 +5641,10 @@ declare namespace LocalJSX {
          */
         "images"?: IImageGridImage[];
         /**
-          * Maximum number of images to display in the grid.
-          * @default '4 images'
+          * Maximum number of images to display in the grid (1–4).
+          * @default 4
          */
-        "imagesPerView"?: ImagesPerView;
+        "imagesPerView"?: number;
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.

@@ -2,7 +2,6 @@ import { Component, Element, h, Host, Prop } from '@stencil/core';
 import {
   convertPropsToClasses,
   ImageGridShape,
-  ImagesPerView,
 } from './modus-wc-image-grid.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
@@ -36,8 +35,8 @@ export class ModusWcImageGrid {
   /** Sets the cell aspect ratio layout. */
   @Prop() imageShape?: ImageGridShape = 'rectangle';
 
-  /** Maximum number of images to display in the grid. */
-  @Prop() imagesPerView?: ImagesPerView = '4 images';
+  /** Maximum number of images to display in the grid (1–4). */
+  @Prop() imagesPerView?: number = 4;
 
   /** Custom CSS class to apply to the grid container. */
   @Prop() customClass?: string = '';
@@ -48,10 +47,9 @@ export class ModusWcImageGrid {
   }
 
   private getImageCount(): number {
-    const value = this.imagesPerView?.split(' ')[0] ?? '4';
-    const count = Number.parseInt(value, 10);
+    const count = this.imagesPerView ?? 4;
 
-    if (Number.isNaN(count) || count < 1) {
+    if (count < 1) {
       return 1;
     }
 
@@ -73,34 +71,33 @@ export class ModusWcImageGrid {
     return classList.join(' ');
   }
 
-  private getHostClasses(): string {
+  private getHostClasses(visibleCount: number): string {
     const classList = ['modus-wc-image-grid'];
 
     const propClasses = convertPropsToClasses({
-      imageShape: this.imageShape,
-      imagesPerView: this.imagesPerView,
+      imageShape: this.imageShape ?? 'rectangle',
+      imageCount: visibleCount,
     });
 
-    if (propClasses) {
-      classList.push(propClasses);
-    }
+    classList.push(propClasses);
 
     return classList.join(' ');
   }
 
   render() {
     const visibleImages = this.getVisibleImages();
+    const visibleCount = Math.max(visibleImages.length, 1);
 
     return (
-      <Host class={this.getHostClasses()}>
+      <Host class={this.getHostClasses(visibleCount)}>
         <div
           class={this.getContainerClasses()}
           role="group"
           {...this.inheritedAttributes}
         >
-          {visibleImages.map((image) => (
+          {visibleImages.map((image, index) => (
             <modus-wc-image
-              key={image.src}
+              key={`${image.src}-${index}`}
               src={image.src}
               alt={image.alt}
               shape="rounded"

@@ -4322,10 +4322,10 @@
             {
               "name": "images-per-view",
               "fieldName": "imagesPerView",
-              "default": "'4 images'",
-              "description": "Maximum number of images to display in the grid.",
+              "default": "4",
+              "description": "Maximum number of images to display in the grid (1–4).",
               "type": {
-                "text": "ImagesPerView"
+                "text": "number"
               }
             }
           ],
