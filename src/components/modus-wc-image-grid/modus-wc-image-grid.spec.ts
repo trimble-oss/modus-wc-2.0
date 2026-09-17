@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcImageGrid } from './modus-wc-image-grid';
+import { IImageGridImage, ModusWcImageGrid } from './modus-wc-image-grid';
 import { ModusWcImage } from '../modus-wc-image/modus-wc-image';
 
 const SAMPLE_IMAGES = [
@@ -183,7 +183,7 @@ describe('modus-wc-image-grid', () => {
       html: '<modus-wc-image-grid></modus-wc-image-grid>',
     });
     const component = page.rootInstance as ModusWcImageGrid;
-    component.images = undefined;
+    component.images = undefined as unknown as IImageGridImage[];
     await page.waitForChanges();
 
     const images = page.root?.querySelectorAll('modus-wc-image');
