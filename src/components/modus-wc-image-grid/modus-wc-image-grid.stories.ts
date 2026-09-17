@@ -14,6 +14,9 @@ const SAMPLE_IMAGES: IImageGridImage[] = [
   { src: SAMPLE_IMAGE, alt: 'Zebra at a watering hole' },
 ];
 
+const resolveImages = (images?: IImageGridImage[]) =>
+  Array.isArray(images) && images.length > 0 ? images : SAMPLE_IMAGES;
+
 interface ImageGridArgs {
   images: IImageGridImage[];
   'image-shape'?: ImageGridShape;
@@ -50,6 +53,7 @@ const meta: Meta<ImageGridArgs> = {
   },
   argTypes: {
     images: {
+      control: 'object',
       description: 'Images to display in the grid',
       table: {
         type: {
@@ -83,6 +87,7 @@ const meta: Meta<ImageGridArgs> = {
     },
   },
   parameters: {
+    layout: 'padded',
     docs: {
       description: {
         component: `
@@ -107,7 +112,7 @@ const Template: Story = {
   },
   render: (args) => html`
     <modus-wc-image-grid
-      .images=${args.images}
+      .images=${resolveImages(args.images)}
       image-shape=${ifDefined(args['image-shape'])}
       images-per-view=${ifDefined(args['images-per-view'])}
       custom-class=${ifDefined(args['custom-class'])}
@@ -117,6 +122,11 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
+  args: {
+    images: SAMPLE_IMAGES,
+    'image-shape': 'rectangle',
+    'images-per-view': 4,
+  },
   parameters: {
     docs: {
       source: {
