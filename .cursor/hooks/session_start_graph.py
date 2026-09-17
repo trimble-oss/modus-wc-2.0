@@ -31,6 +31,7 @@ def write_prettier_json(path: Path, data: dict) -> str:
             timeout=60,
         )
     except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        # Formatting is best-effort; keep fail-open behavior if Prettier is unavailable or times out.
         pass
     return path.read_text(encoding="utf-8")
 
