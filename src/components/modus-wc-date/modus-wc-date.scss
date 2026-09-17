@@ -417,36 +417,23 @@ modus-wc-date {
 
 [data-theme='modus-modern-dark'] modus-wc-date {
   .calendar-container .calendar-header {
-    gap: var(--modus-wc-spacing-xs);
-    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-xl);
-
     .nav-btn {
       align-self: center;
       display: inline-flex;
       flex-shrink: 0;
+      i {
+        color: var(--modus-wc-color-primary-content);
+      }
     }
 
     .calendar-selects {
       modus-wc-select {
-        align-self: center;
-        display: inline-flex;
 
         select.modus-wc-select {
           background-color: var(--modus-wc-color-gray-10);
           border-radius: var(--modus-wc-border-radius-input);
-          box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
           color: var(--modus-wc-color-base-content);
-          font-size: var(--modus-wc-font-size-sm);
-          font-weight: var(--modus-wc-font-weight-semibold);
-          line-height: var(--modus-wc-line-height-md);
 
-          &:hover,
-          &:focus,
-          &:active,
-          &:focus-visible {
-            background-color: transparent;
-            color: var(--modus-wc-color-base-content);
-          }
         }
       }
 
