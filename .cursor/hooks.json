@@ -11,12 +11,26 @@
         "command": ".cursor/hooks/deny_claude_subagent.py"
       }
     ],
+    "beforeMCPExecution": [
+      {
+        "command": ".cursor/hooks/before_mcp_github_comment.py"
+      }
+    ],
+    "afterMCPExecution": [
+      {
+        "command": ".cursor/hooks/after_mcp_drive_read.py"
+      }
+    ],
     "afterAgentResponse": [
       {
         "command": ".cursor/hooks/cache_agent_response.py"
       }
     ],
     "stop": [
+      {
+        "command": ".cursor/hooks/qa_comparison_guard.py",
+        "loop_limit": 1
+      },
       {
         "command": ".cursor/hooks/qa_stop_verdict.py",
         "loop_limit": 1

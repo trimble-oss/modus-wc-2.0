@@ -1173,6 +1173,11 @@ export namespace Components {
          */
         "alt"?: string;
         /**
+          * Sets the focal point when the image is cropped or letterboxed. Maps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).
+          * @default 'center'
+         */
+        "cropPosition"?: string;
+        /**
           * Custom CSS class to apply to the inner container.
           * @default ''
          */
@@ -5587,6 +5592,11 @@ declare namespace LocalJSX {
           * Accessible text description. Omit or leave empty for decorative images.
          */
         "alt"?: string;
+        /**
+          * Sets the focal point when the image is cropped or letterboxed. Maps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).
+          * @default 'center'
+         */
+        "cropPosition"?: string;
         /**
           * Custom CSS class to apply to the inner container.
           * @default ''

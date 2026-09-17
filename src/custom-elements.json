@@ -4389,6 +4389,15 @@
               }
             },
             {
+              "name": "crop-position",
+              "fieldName": "cropPosition",
+              "default": "'center'",
+              "description": "Sets the focal point when the image is cropped or letterboxed.\nMaps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
