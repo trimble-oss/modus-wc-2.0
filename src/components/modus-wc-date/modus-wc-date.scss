@@ -415,7 +415,6 @@ modus-wc-date {
   @include connect-input-styles;
 }
 
-[data-theme='modus-modern-light'] modus-wc-date,
 [data-theme='modus-modern-dark'] modus-wc-date {
   .calendar-container .calendar-header {
     gap: var(--modus-wc-spacing-xs);
@@ -433,49 +432,29 @@ modus-wc-date {
         display: inline-flex;
 
         select.modus-wc-select {
+          background-color: var(--modus-wc-color-gray-10);
           border-radius: var(--modus-wc-border-radius-input);
           box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.05);
+          color: var(--modus-wc-color-base-content);
           font-size: var(--modus-wc-font-size-sm);
           font-weight: var(--modus-wc-font-weight-semibold);
           line-height: var(--modus-wc-line-height-md);
+
+          &:hover,
+          &:focus,
+          &:active,
+          &:focus-visible {
+            background-color: transparent;
+            color: var(--modus-wc-color-base-content);
+          }
         }
       }
+
+      select option {
+        background-color: var(--modus-wc-color-black);
+        color: var(--modus-wc-color-white);
+      }
     }
-  }
-}
-
-[data-theme='modus-modern-light'] modus-wc-date {
-  .calendar-container
-    .calendar-header
-    .calendar-selects
-    modus-wc-select
-    select.modus-wc-select {
-    background-color: var(--modus-wc-color-white);
-    color: var(--modus-wc-color-gray-10);
-  }
-}
-
-[data-theme='modus-modern-dark'] modus-wc-date {
-  .calendar-container
-    .calendar-header
-    .calendar-selects
-    modus-wc-select
-    select.modus-wc-select {
-    background-color: var(--modus-wc-color-gray-10);
-    color: var(--modus-wc-color-base-content);
-
-    &:hover,
-    &:focus,
-    &:active,
-    &:focus-visible {
-      background-color: transparent;
-      color: var(--modus-wc-color-base-content);
-    }
-  }
-
-  .calendar-container .calendar-header .calendar-selects select option {
-    background-color: var(--modus-wc-color-black);
-    color: var(--modus-wc-color-white);
   }
 }
 
