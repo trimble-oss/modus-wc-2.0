@@ -177,6 +177,22 @@ describe('modus-wc-image-grid', () => {
     );
   });
 
+  it('should handle undefined images array', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = undefined;
+    await page.waitForChanges();
+
+    const images = page.root?.querySelectorAll('modus-wc-image');
+    expect(images?.length).toBe(0);
+    expect(page.root?.classList.contains('modus-wc-image-grid--count-1')).toBe(
+      true
+    );
+  });
+
   it('should clamp imagesPerView above 4 to four images', async () => {
     const page = await newSpecPage({
       components: [ModusWcImageGrid, ModusWcImage],

@@ -21,24 +21,24 @@ modus-wc-image-grid {
   modus-wc-image {
     display: block;
     min-width: 0;
+    overflow: hidden;
+    position: relative;
     width: 100%;
   }
 
-  // Override modus-wc-image fixed size tokens so grid cells can size fluidly.
+  // Fill the aspect-ratio box so loaded image intrinsic size cannot expand the cell.
   modus-wc-image .modus-wc-image-container.modus-wc-image-grid-cell {
     border-radius: var(--modus-wc-image-grid-radius);
     height: 100%;
+    inset: 0;
+    position: absolute;
     width: 100%;
 
+    // Override modus-wc-image fixed size tokens so grid cells size fluidly.
     &.modus-wc-image--default.modus-wc-image--sm,
     &.modus-wc-image--default.modus-wc-image--md,
     &.modus-wc-image--default.modus-wc-image--lg,
-    &.modus-wc-image--default.modus-wc-image--xl {
-      height: auto;
-      width: 100%;
-    }
-
-    // Error containers keep fit="default" classes; override with higher specificity.
+    &.modus-wc-image--default.modus-wc-image--xl,
     &.modus-wc-image--default.modus-wc-image--error.modus-wc-image--sm,
     &.modus-wc-image--default.modus-wc-image--error.modus-wc-image--md,
     &.modus-wc-image--default.modus-wc-image--error.modus-wc-image--lg,
