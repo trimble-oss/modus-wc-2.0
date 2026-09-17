@@ -16,27 +16,70 @@ const SAMPLE_IMAGES: IImageGridImage[] = [
 
 interface ImageGridArgs {
   images: IImageGridImage[];
-  imageShape?: ImageGridShape;
-  imagesPerView?: number;
+  'image-shape'?: ImageGridShape;
+  'images-per-view'?: number;
   'custom-class'?: string;
 }
+
+const defaultSourceCode = `
+<modus-wc-image-grid
+  image-shape="rectangle"
+  images-per-view="4"
+  id="image-grid"
+></modus-wc-image-grid>
+
+<script>
+  const images = [
+    { src: 'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg', alt: 'Zebra at a watering hole' },
+    { src: 'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg', alt: 'Zebra at a watering hole' },
+    { src: 'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg', alt: 'Zebra at a watering hole' },
+    { src: 'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg', alt: 'Zebra at a watering hole' },
+  ];
+  const imageGrid = document.getElementById('image-grid');
+  imageGrid.images = images;
+</script>
+`;
 
 const meta: Meta<ImageGridArgs> = {
   title: 'Components/Image Grid',
   component: 'modus-wc-image-grid',
   args: {
     images: SAMPLE_IMAGES,
-    imageShape: 'rectangle',
-    imagesPerView: 4,
+    'image-shape': 'rectangle',
+    'images-per-view': 4,
   },
   argTypes: {
-    imageShape: {
+    images: {
+      description: 'Images to display in the grid',
+      table: {
+        type: {
+          detail: `
+            Interface: IImageGridImage
+            Properties:
+            - src (string): The source URL of the image asset
+            - alt (string, optional): Accessible text description for the image
+          `,
+        },
+      },
+    },
+    'image-shape': {
       control: { type: 'select' },
       options: ['rectangle', 'square'],
+      table: {
+        category: 'attributes',
+      },
     },
-    imagesPerView: {
+    'images-per-view': {
       control: { type: 'select' },
       options: [1, 2, 3, 4],
+      table: {
+        category: 'attributes',
+      },
+    },
+    'custom-class': {
+      table: {
+        category: 'attributes',
+      },
     },
   },
   parameters: {
@@ -55,11 +98,18 @@ export default meta;
 type Story = StoryObj<ImageGridArgs>;
 
 const Template: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: defaultSourceCode,
+      },
+    },
+  },
   render: (args) => html`
     <modus-wc-image-grid
       .images=${args.images}
-      image-shape=${ifDefined(args.imageShape)}
-      images-per-view=${ifDefined(args.imagesPerView)}
+      image-shape=${ifDefined(args['image-shape'])}
+      images-per-view=${ifDefined(args['images-per-view'])}
       custom-class=${ifDefined(args['custom-class'])}
     ></modus-wc-image-grid>
   `,
@@ -69,6 +119,9 @@ export const Default: Story = {
   ...Template,
   parameters: {
     docs: {
+      source: {
+        code: defaultSourceCode,
+      },
       description: {
         story:
           'Default layout: four rectangle images in a 2×2 grid with 24px gap and 16px corner radius.',
