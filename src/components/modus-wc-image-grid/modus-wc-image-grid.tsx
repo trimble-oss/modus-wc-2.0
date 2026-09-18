@@ -1,9 +1,22 @@
-import { Component, Element, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  Event as StencilEvent,
+} from '@stencil/core';
+import { handleShadowDOMStyles } from '../base-component';
 import {
   convertPropsToClasses,
   ImageGridShape,
 } from './modus-wc-image-grid.tailwind';
-import { handleShadowDOMStyles } from '../base-component';
+import {
+  ImageFit,
+  ImageShape,
+  ImageSize,
+} from '../modus-wc-image/modus-wc-image.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 export interface IImageGridImage {
@@ -11,6 +24,19 @@ export interface IImageGridImage {
   src: string;
   /** Accessible text description for the image. */
   alt?: string;
+  /** Determines dimensional size tokens. */
+  size?: ImageSize;
+  /** Sets corner radius styling. */
+  shape?: ImageShape;
+  /** Controls containment, cropping, and aspect ratio preservation. */
+  fit?: ImageFit;
+  /**
+   * Sets the focal point when the image is cropped or letterboxed.
+   * Maps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).
+   */
+  cropPosition?: string;
+  /** Custom CSS class to apply to the inner image container. */
+  customClass?: string;
 }
 
 /**
@@ -40,6 +66,20 @@ export class ModusWcImageGrid {
 
   /** Custom CSS class to apply to the grid container. */
   @Prop() customClass?: string = '';
+
+  /** Event emitted when an image in the grid loads successfully. */
+  @StencilEvent() imageLoad!: EventEmitter<{
+    index: number;
+    image: IImageGridImage;
+    originalEvent: Event;
+  }>;
+
+  /** Event emitted when an image in the grid fails to load. */
+  @StencilEvent() imageError!: EventEmitter<{
+    index: number;
+    image: IImageGridImage;
+    originalEvent: Event;
+  }>;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -84,6 +124,42 @@ export class ModusWcImageGrid {
     return classList.join(' ');
   }
 
+  private getImageCustomClass(image: IImageGridImage): string {
+    const classList = ['modus-wc-image-grid-cell'];
+
+    if (image.customClass) {
+      classList.push(image.customClass);
+    }
+
+    return classList.join(' ');
+  }
+
+  private handleImageLoad = (
+    index: number,
+    image: IImageGridImage,
+    event: CustomEvent<Event>
+  ) => {
+    event.stopPropagation();
+    this.imageLoad.emit({
+      index,
+      image,
+      originalEvent: event.detail,
+    });
+  };
+
+  private handleImageError = (
+    index: number,
+    image: IImageGridImage,
+    event: CustomEvent<Event>
+  ) => {
+    event.stopPropagation();
+    this.imageError.emit({
+      index,
+      image,
+      originalEvent: event.detail,
+    });
+  };
+
   render() {
     const visibleImages = this.getVisibleImages();
     const visibleCount = Math.max(visibleImages.length, 1);
@@ -100,9 +176,17 @@ export class ModusWcImageGrid {
               key={`${image.src}-${index}`}
               src={image.src}
               alt={image.alt}
-              shape="rounded"
-              fit="default"
-              custom-class="modus-wc-image-grid-cell"
+              size={image.size}
+              shape={image.shape ?? 'rounded'}
+              fit={image.fit ?? 'default'}
+              crop-position={image.cropPosition ?? 'center'}
+              custom-class={this.getImageCustomClass(image)}
+              onImageLoad={(event: CustomEvent<Event>) =>
+                this.handleImageLoad(index, image, event)
+              }
+              onImageError={(event: CustomEvent<Event>) =>
+                this.handleImageError(index, image, event)
+              }
             />
           ))}
         </div>

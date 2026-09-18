@@ -208,4 +208,82 @@ describe('modus-wc-image-grid', () => {
     const images = page.root?.querySelectorAll('modus-wc-image');
     expect(images?.length).toBe(4);
   });
+
+  it('should pass per-image modus-wc-image properties to grid cells', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="1"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [
+      {
+        src: 'https://example.com/custom.jpg',
+        alt: 'Custom image',
+        size: 'lg',
+        shape: 'square',
+        fit: 'contain',
+        cropPosition: 'top left',
+        customClass: 'my-cell',
+      },
+    ];
+    await page.waitForChanges();
+
+    const imageElement = page.root?.querySelector('modus-wc-image');
+    expect(imageElement?.getAttribute('crop-position')).toBe('top left');
+
+    const container = page.root?.querySelector('.modus-wc-image-container');
+    expect(container?.classList.contains('modus-wc-image--lg')).toBe(true);
+    expect(container?.classList.contains('modus-wc-image--square')).toBe(true);
+    expect(container?.classList.contains('modus-wc-image--contain')).toBe(true);
+    expect(container?.classList.contains('modus-wc-image-grid-cell')).toBe(
+      true
+    );
+    expect(container?.classList.contains('my-cell')).toBe(true);
+  });
+
+  it('should emit imageLoad with index and image detail when a grid cell loads', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="1"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [SAMPLE_IMAGES[0]];
+    await page.waitForChanges();
+
+    const imageLoadSpy = jest.fn();
+    page.root?.addEventListener('imageLoad', imageLoadSpy);
+
+    const img = page.root?.querySelector('img');
+    img?.dispatchEvent(new Event('load'));
+
+    expect(imageLoadSpy).toHaveBeenCalledTimes(1);
+    expect(imageLoadSpy.mock.calls[0][0].detail).toEqual({
+      index: 0,
+      image: SAMPLE_IMAGES[0],
+      originalEvent: expect.any(Event),
+    });
+  });
+
+  it('should emit imageError with index and image detail when a grid cell fails', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImageGrid, ModusWcImage],
+      html: '<modus-wc-image-grid images-per-view="1"></modus-wc-image-grid>',
+    });
+    const component = page.rootInstance as ModusWcImageGrid;
+    component.images = [SAMPLE_IMAGES[0]];
+    await page.waitForChanges();
+
+    const imageErrorSpy = jest.fn();
+    page.root?.addEventListener('imageError', imageErrorSpy);
+
+    const img = page.root?.querySelector('img');
+    img?.dispatchEvent(new Event('error'));
+
+    expect(imageErrorSpy).toHaveBeenCalledTimes(1);
+    expect(imageErrorSpy.mock.calls[0][0].detail).toEqual({
+      index: 0,
+      image: SAMPLE_IMAGES[0],
+      originalEvent: expect.any(Event),
+    });
+  });
 });

@@ -66,11 +66,11 @@ const defaultSourceCode = `
   imageGrid.images = images;
 
   imageGrid.addEventListener('imageLoad', (event) => {
-    console.log('Image loaded', event);
+    console.log('Image loaded', event.detail.index, event.detail.image.src);
   });
 
   imageGrid.addEventListener('imageError', (event) => {
-    console.log('Image failed to load', event);
+    console.log('Image failed to load', event.detail.index, event.detail.image.src);
   });
 </script>
 `;
@@ -159,6 +159,11 @@ const meta: Meta<ImageGridArgs> = {
             Properties:
             - src (string): The source URL of the image asset
             - alt (string, optional): Accessible text description for the image
+            - size ('sm' | 'md' | 'lg' | 'xl', optional): Dimensional size token
+            - shape ('square' | 'rounded', optional): Corner radius styling
+            - fit ('default' | 'contain' | 'scale-down' | 'none', optional): Containment and cropping behavior
+            - cropPosition (string, optional): Focal point when cropped (maps to object-position)
+            - customClass (string, optional): Additional CSS class for the cell image container
           `,
         },
       },
