@@ -66,11 +66,17 @@ const defaultSourceCode = `
   imageGrid.images = images;
 
   imageGrid.addEventListener('imageLoad', (event) => {
-    console.log('Image loaded', event.detail.index, event.detail.image.src);
+    const image = event.target;
+    if (image.tagName === 'MODUS-WC-IMAGE') {
+      console.log('Image loaded', image.src);
+    }
   });
 
   imageGrid.addEventListener('imageError', (event) => {
-    console.log('Image failed to load', event.detail.index, event.detail.image.src);
+    const image = event.target;
+    if (image.tagName === 'MODUS-WC-IMAGE') {
+      console.log('Image failed to load', image.src);
+    }
   });
 </script>
 `;

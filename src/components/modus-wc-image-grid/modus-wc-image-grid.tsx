@@ -1,12 +1,4 @@
-import {
-  Component,
-  Element,
-  EventEmitter,
-  h,
-  Host,
-  Prop,
-  Event as StencilEvent,
-} from '@stencil/core';
+import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
 import {
   convertPropsToClasses,
@@ -67,20 +59,6 @@ export class ModusWcImageGrid {
   /** Custom CSS class to apply to the grid container. */
   @Prop() customClass?: string = '';
 
-  /** Event emitted when an image in the grid loads successfully. */
-  @StencilEvent() imageLoad!: EventEmitter<{
-    index: number;
-    image: IImageGridImage;
-    originalEvent: Event;
-  }>;
-
-  /** Event emitted when an image in the grid fails to load. */
-  @StencilEvent() imageError!: EventEmitter<{
-    index: number;
-    image: IImageGridImage;
-    originalEvent: Event;
-  }>;
-
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
@@ -134,32 +112,6 @@ export class ModusWcImageGrid {
     return classList.join(' ');
   }
 
-  private handleImageLoad = (
-    index: number,
-    image: IImageGridImage,
-    event: CustomEvent<Event>
-  ) => {
-    event.stopPropagation();
-    this.imageLoad.emit({
-      index,
-      image,
-      originalEvent: event.detail,
-    });
-  };
-
-  private handleImageError = (
-    index: number,
-    image: IImageGridImage,
-    event: CustomEvent<Event>
-  ) => {
-    event.stopPropagation();
-    this.imageError.emit({
-      index,
-      image,
-      originalEvent: event.detail,
-    });
-  };
-
   render() {
     const visibleImages = this.getVisibleImages();
     const visibleCount = Math.max(visibleImages.length, 1);
@@ -181,12 +133,6 @@ export class ModusWcImageGrid {
               fit={image.fit ?? 'default'}
               crop-position={image.cropPosition ?? 'center'}
               custom-class={this.getImageCustomClass(image)}
-              onImageLoad={(event: CustomEvent<Event>) =>
-                this.handleImageLoad(index, image, event)
-              }
-              onImageError={(event: CustomEvent<Event>) =>
-                this.handleImageError(index, image, event)
-              }
             />
           ))}
         </div>
