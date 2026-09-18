@@ -12,6 +12,10 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-tree-item.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import {
+  MENU_ITEM_SIZE_TO_CHECKBOX_SIZE,
+  MENU_ITEM_SIZE_TO_CHEVRON_SIZE,
+} from '../constants';
 import { ModusSize, SelectionMode } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -53,7 +57,7 @@ export class ModusWcTreeItem {
   @Prop() focused?: boolean;
 
   /** The size of the tree item. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
@@ -365,7 +369,7 @@ export class ModusWcTreeItem {
                 <modus-wc-checkbox
                   aria-label="Checkbox"
                   disabled={this.disabled}
-                  size={this.size}
+                  size={MENU_ITEM_SIZE_TO_CHECKBOX_SIZE[this.size ?? 'md']}
                   value={!!this.selected}
                 />
               )}
@@ -393,7 +397,7 @@ export class ModusWcTreeItem {
                 class="modus-wc-menu-submenu-chevron"
                 decorative
                 name="expand_more"
-                size="md"
+                size={MENU_ITEM_SIZE_TO_CHEVRON_SIZE[this.size ?? 'md']}
               ></modus-wc-icon>
             )}
           </div>
