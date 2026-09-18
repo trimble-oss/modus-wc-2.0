@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "sourceManifest": "src/custom-elements.json",
-  "sourceCommit": "bbe9fb763265d31a1f56c580a314723f76bf1a4f",
-  "generatedAt": "2026-08-27T07:38:58.000Z",
+  "sourceCommit": "e6ca5db0f0972c4f2dbffcaf662b38614912796c",
+  "generatedAt": "2026-08-13T12:19:12.000Z",
   "components": {
     "modus-wc-accordion": {
       "tag": "modus-wc-accordion",

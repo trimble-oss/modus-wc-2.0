@@ -42,7 +42,11 @@ function generatedAt(repoRoot) {
   if (process.env.SOURCE_DATE_EPOCH) {
     return new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString();
   }
-  return gitValue(repoRoot, ['show', '-s', '--format=%cI', 'HEAD'], new Date(0).toISOString());
+  return gitValue(
+    repoRoot,
+    ['log', '-1', '--format=%cI', '--', 'src/custom-elements.json'],
+    new Date(0).toISOString(),
+  );
 }
 
 function tagFor(declaration) {
@@ -200,7 +204,11 @@ function buildContext(repoRoot) {
   return {
     schemaVersion: '1.0',
     sourceManifest: 'src/custom-elements.json',
-    sourceCommit: process.env.SOURCE_COMMIT || gitValue(repoRoot, ['rev-parse', 'HEAD'], 'unknown'),
+    sourceCommit: process.env.SOURCE_COMMIT || gitValue(
+      repoRoot,
+      ['log', '-1', '--format=%H', '--', 'src/custom-elements.json'],
+      'unknown',
+    ),
     generatedAt: generatedAt(repoRoot),
     components,
     sharedTypes: sharedTypes(repoRoot),
