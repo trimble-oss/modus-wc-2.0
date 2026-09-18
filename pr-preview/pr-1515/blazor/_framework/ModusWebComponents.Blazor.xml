@@ -1699,6 +1699,16 @@
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.OnImageError">
+            <summary>
+            Event emitted when an image in the grid fails to load.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.OnImageLoad">
+            <summary>
+            Event emitted when an image in the grid loads successfully.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
             <summary>
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
