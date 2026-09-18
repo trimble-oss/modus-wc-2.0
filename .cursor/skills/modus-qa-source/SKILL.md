@@ -17,6 +17,7 @@ Fetch **only** the mapped files with GitHub MCP `get_file_contents` (`owner=trim
 | `QA-source` host                                  | Kind               | What to read                                                                                                                                                                                                                                                                                                                |
 | ------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `drive.google.com/drive/folders/`                 | `figma-staged`     | Drive MCP: `parentId=folderId` only. Read `manifest.json` first. Stop. Match AC/QA-verify/QA-source-path; if none: `md-default` only. Load only that variant's `variable-defs.json` + `design-context.md` (+ `screenshot.png` for QA). Optional `code-connect.json` if markup. Do not list/download the rest of the folder. |
+| `docs.google.com/document/`                       | `comparison-doc`   | Drive MCP: read the Google Doc by document ID. Extract token tables, theme notes (light/dark/classic/connect), and **embedded comparison images**. Dev uses this to patch; QA compares Storybook screenshots to doc images/tokens. Do not classify as `blueprint`.                                                          |
 | `figma.com` / `embed.figma.com` (no Drive folder) | blocked in cloud   | `/approve` → issue comment `## NEED CLARIFICATION` asking for staged Drive folder URL. QA → `## QA BLOCKED`. Do **not** use live Figma MCP in cloud automations.                                                                                                                                                            |
 | `modus.trimble.com`                               | `blueprint`        | GitHub files in modus-blueprint (see map). Do not open the live site.                                                                                                                                                                                                                                                       |
 | Issue image attachments                           | `issue-screenshot` | Those PNGs. `QA-source-path: none`.                                                                                                                                                                                                                                                                                         |
@@ -32,9 +33,16 @@ Kebab-case the last path segment; try `select` then `Select` on 404.
 | `/patterns/:id`              | `public/modus-llm/patterns/<slug>/` and `patterns/<slug>/`                                                                         |
 | Optional Figma for that name | `src/components/FigmaEmbedMapping.ts` then Figma MCP if a figma URL is listed (local only; not cloud automations)                  |
 
-**Dev:** On `/approve` and `/refine`, classify issue/PR links, fetch blueprint files so the patch matches tokens/anatomy, and set `QA-source`, `QA-source-kind`, `QA-source-path`. Do not tell QA to open the website.
+**Dev:** On `/approve` and `/refine`, classify issue/PR links, fetch blueprint files or comparison docs so the patch matches tokens/anatomy, and set `QA-source`, `QA-source-kind`, `QA-source-path`. Do not tell QA to open the website.
 
-**QA:** Prefer Dev's `QA-source-path`. If missing, map the URL with the same table. Compare Storybook pixels to staged screenshot **or** expected states in markdown files. Screenshot Storybook, not the Blueprint site. Path 404 or GitHub 403 → `## QA BLOCKED`. Never scrape as fallback.
+**QA:** Prefer Dev's `QA-source-path` and `QA-source-kind`. **Before any `## QA PASSED` on visual work**, fetch the declared source:
+
+- `comparison-doc` → read Google Doc via Drive MCP; compare Storybook screenshots to **doc embedded images and token tables** (cite expected values, e.g. `gray-10` vs white).
+- `figma-staged` → staged screenshot + variable-defs.
+- `blueprint` → blueprint markdown + Storybook.
+- `issue-screenshot` → attached PNGs.
+
+If Storybook contradicts the comparison doc, **`## QA FAILED — visual`**, not PASSED. Path 404, Drive 403, or GitHub MCP 403 on blueprint reads → `## QA BLOCKED`. Never scrape as fallback.
 
 ### Figma token mismatches
 

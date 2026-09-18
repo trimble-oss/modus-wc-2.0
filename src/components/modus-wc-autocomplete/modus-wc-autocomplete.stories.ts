@@ -1366,6 +1366,19 @@ export const CustomEventHandlers: Story = {
       closeMenu(): Promise<void>;
     }
 
+    // The component owns menu visibility and exposes no accessor for it, so
+    // mirror the last requested state to avoid re-issuing openMenu() on every
+    // keystroke. `inputBlur` re-syncs it, since the component closes the menu
+    // itself when focus leaves.
+    let menuRequestedOpen = false;
+
+    const requestMenu = (autocomplete: AutocompleteElement, open: boolean) => {
+      if (open === menuRequestedOpen) return;
+
+      menuRequestedOpen = open;
+      void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
+    };
+
     // Custom keydown handler with skip navigation and escape animation
     const customKeyDown = (e: KeyboardEvent) => {
       const autocomplete = document.getElementById(
@@ -1389,7 +1402,7 @@ export const CustomEventHandlers: Story = {
             focused: false,
           }));
           autocomplete.items = [...args.items];
-          void autocomplete.closeMenu();
+          requestMenu(autocomplete, false);
           // Custom: Show escape animation
           autocomplete.style.transform = 'scale(0.98)';
           setTimeout(() => {
@@ -1399,7 +1412,7 @@ export const CustomEventHandlers: Story = {
 
         case 'ArrowDown': {
           // Open menu if not already open
-          void autocomplete.openMenu();
+          requestMenu(autocomplete, true);
 
           const currentIndex = visibleItems.findIndex((item) => item.focused);
           const nextIndex =
@@ -1445,7 +1458,7 @@ export const CustomEventHandlers: Story = {
               focused: false,
             }));
             autocomplete.value = focusedItem.label;
-            void autocomplete.closeMenu();
+            requestMenu(autocomplete, false);
           }
           break;
         }
@@ -1508,16 +1521,22 @@ export const CustomEventHandlers: Story = {
           ...item,
           visibleInMenu: visible,
           focused: false,
-          selected: item.selected && visible,
+          // Single select: the selection is only valid while the input still
+          // holds the selected label, so editing the text clears it.
+          selected:
+            item.selected &&
+            visible &&
+            item.label.toLowerCase() === value.toLowerCase(),
           // Add score as part of label for demonstration (you can remove this in production)
           label: item.label,
         }));
       } else {
-        // No search text, show all items
+        // No search text, show all items and drop the stale selection
         args.items = args.items.map((item) => ({
           ...item,
           visibleInMenu: true,
           focused: false,
+          selected: false,
         }));
       }
 
@@ -1529,11 +1548,10 @@ export const CustomEventHandlers: Story = {
 
       // Show menu if there are visible items
       const hasVisibleItems = args.items.some((item) => item.visibleInMenu);
-      if (hasVisibleItems && value.length >= args['min-chars']) {
-        void autocomplete.openMenu();
-      } else {
-        void autocomplete.closeMenu();
-      }
+      requestMenu(
+        autocomplete,
+        hasVisibleItems && value.length >= args['min-chars']
+      );
     };
 
     // Custom item select handler
@@ -1552,7 +1570,18 @@ export const CustomEventHandlers: Story = {
 
       autocomplete.items = [...args.items];
       autocomplete.value = item.label;
-      void autocomplete.closeMenu();
+
+      if (!args['leave-menu-open']) {
+        requestMenu(autocomplete, false);
+      } else {
+        args.items = args.items.map((menuItem) => ({
+          ...menuItem,
+          visibleInMenu: true,
+          focused: false,
+        }));
+        autocomplete.items = [...args.items];
+        requestMenu(autocomplete, true);
+      }
     };
     // prettier-ignore
     return html`
@@ -1601,205 +1630,168 @@ export const CustomEventHandlers: Story = {
         .customKeyDown=${customKeyDown}
         .customInputChange=${customInputChange}
         .customItemSelect=${customItemSelect}
+        @inputBlur=${() => { menuRequestedOpen = false; }}
       ></modus-wc-autocomplete>
       <script>
-        //Commenting out the scripts to avoid duplicate declaration in storybook code
-        // Add Autocomplete items
+        // Commented out so Storybook does not run this twice; mirrors the live handlers above.
         ${Items}
         // const autocomplete = document.getElementById('autocomplete-custom-event-handlers');
         // autocomplete.items = autocompleteItems;
-
-        // // Custom keydown handler with skip navigation and escape animation
+        //
+        // let menuRequestedOpen = false;
+        // const requestMenu = (open) => {
+        //   if (open === menuRequestedOpen) return;
+        //   menuRequestedOpen = open;
+        //   void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
+        // };
+        //
         // const customKeyDown = (e) => {
-        //   const autocomplete = document.getElementById(
-        //     'autocomplete-custom-event-handlers'
-        //   );
         //   if (!autocomplete) return;
-
-        //   // Prevent default for navigation keys
         //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
         //     e.preventDefault();
         //   }
-
         //   const visibleItems = autocomplete.items.filter(
         //     (item) => item.visibleInMenu && !item.disabled
         //   );
-
         //   switch (e.key) {
         //     case 'Escape':
         //       autocomplete.items = autocomplete.items.map((item) => ({
         //         ...item,
         //         focused: false,
         //       }));
-        //       void autocomplete.closeMenu();
-        //       // Custom: Show escape animation
+        //       requestMenu(false);
         //       autocomplete.style.transform = 'scale(0.98)';
         //       setTimeout(() => {
         //         autocomplete.style.transform = '';
         //       }, 200);
         //       break;
-
         //     case 'ArrowDown': {
-        //       // Open menu if not already open
-        //       void autocomplete.openMenu();
-
-        //       const currentIndex = visibleItems.findIndex(
-        //         (item) => item.focused
-        //       );
+        //       requestMenu(true);
+        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
         //       const nextIndex =
         //         currentIndex < 0
         //           ? 0
         //           : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-        //       // Custom: Skip every other item for faster navigation
         //       const skipIndex =
         //         nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-
         //       autocomplete.items = autocomplete.items.map((item) => ({
         //         ...item,
         //         focused: visibleItems[skipIndex]?.value === item.value,
         //       }));
         //       break;
         //     }
-
         //     case 'ArrowUp': {
-        //       const currentIndex = visibleItems.findIndex(
-        //         (item) => item.focused
-        //       );
+        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
         //       const prevIndex =
         //         currentIndex < 0
         //           ? visibleItems.length - 1
         //           : Math.max(currentIndex - 1, 0);
-
-        //       // Custom: Skip every other item for faster navigation
         //       const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-
         //       autocomplete.items = autocomplete.items.map((item) => ({
         //         ...item,
         //         focused: visibleItems[skipIndex]?.value === item.value,
         //       }));
         //       break;
         //     }
-
         //     case 'Enter': {
         //       const focusedItem = visibleItems.find((item) => item.focused);
         //       if (focusedItem) {
-        //         // For single select, clear previous selection
         //         autocomplete.items = autocomplete.items.map((item) => ({
         //           ...item,
         //           selected: item.value === focusedItem.value,
         //           focused: false,
         //         }));
         //         autocomplete.value = focusedItem.label;
-        //         void autocomplete.closeMenu();
+        //         requestMenu(false);
         //       }
         //       break;
         //     }
-
         //     default:
         //       return;
         //   }
         // };
-
-        // // Custom input change handler with fuzzy character matching
+        //
         // const customInputChange = (value) => {
-        //   const autocomplete = document.getElementById(
-        //     'autocomplete-custom-event-handlers'
-        //   );
         //   if (!autocomplete) return;
-
         //   const searchChars = value.toLowerCase().split('');
-
-        //   // Custom fuzzy search: Match items that contain ALL typed characters (in any order)
+        //   const minChars = autocomplete.minChars ?? 0;
         //   if (value.length > 0) {
-        //     // Calculate match score for each item
         //     const scoredItems = autocomplete.items.map((item) => {
         //       const itemLower = item.label.toLowerCase();
         //       let score = 0;
         //       let allCharsFound = true;
-
-        //       // Check if all search characters exist in the item
         //       for (const char of searchChars) {
         //         if (itemLower.includes(char)) {
-        //           // Bonus points for consecutive characters
         //           const charIndex = itemLower.indexOf(char);
-        //           if (charIndex === 0)
-        //             score += 3; // Start of word bonus
-        //           else if (itemLower[charIndex - 1] === ' ')
-        //             score += 2; // Start of any word
+        //           if (charIndex === 0) score += 3;
+        //           else if (itemLower[charIndex - 1] === ' ') score += 2;
         //           else score += 1;
         //         } else {
         //           allCharsFound = false;
         //           break;
         //         }
         //       }
-
-        //       // Additional bonus for exact substring match
         //       if (allCharsFound && itemLower.includes(value.toLowerCase())) {
         //         score += 10;
         //       }
-
         //       return {
         //         item,
         //         score: allCharsFound ? score : -1,
         //         visible: allCharsFound,
         //       };
         //     });
-
-        //     // Sort by score (highest first) and update items
         //     scoredItems.sort((a, b) => b.score - a.score);
         //     autocomplete.items = scoredItems.map(({ item, visible }) => ({
         //       ...item,
         //       visibleInMenu: visible,
         //       focused: false,
-        //       selected: item.selected && visible,
-        //       // Add score as part of label for demonstration (you can remove this in production)
+        //       selected:
+        //         item.selected &&
+        //         visible &&
+        //         item.label.toLowerCase() === value.toLowerCase(),
         //       label: item.label,
         //     }));
         //   } else {
-        //     // No search text, show all items
         //     autocomplete.items = autocomplete.items.map((item) => ({
         //       ...item,
         //       visibleInMenu: true,
         //       focused: false,
+        //       selected: false,
         //     }));
         //   }
-
         //   autocomplete.value = value;
-
-        //   // Show menu if there are visible items
         //   const hasVisibleItems = autocomplete.items.some(
         //     (item) => item.visibleInMenu
         //   );
-        //   if (hasVisibleItems && value.length >= 0) {
-        //     void autocomplete.openMenu();
-        //   } else {
-        //     void autocomplete.closeMenu();
-        //   }
+        //   requestMenu(hasVisibleItems && value.length >= minChars);
         // };
-
-        // // Custom item select handler
+        //
         // const customItemSelect = (item) => {
-        //   const autocomplete = document.getElementById(
-        //     'autocomplete-custom-event-handlers'
-        //   );
         //   if (!autocomplete) return;
-
-        //   // Clear previous selections for single select
         //   autocomplete.items = autocomplete.items.map((menuItem) => ({
         //     ...menuItem,
         //     selected: menuItem.value === item.value,
         //     focused: false,
         //   }));
-
         //   autocomplete.value = item.label;
-        //   void autocomplete.closeMenu();
+        //   if (!autocomplete.leaveMenuOpen) {
+        //     requestMenu(false);
+        //   } else {
+        //     autocomplete.items = autocomplete.items.map((menuItem) => ({
+        //       ...menuItem,
+        //       visibleInMenu: true,
+        //       focused: false,
+        //     }));
+        //     requestMenu(true);
+        //   }
         // };
-
-        // Attach the custom handlers to the autocomplete component
+        //
         // autocomplete.customKeyDown = customKeyDown;
         // autocomplete.customInputChange = customInputChange;
         // autocomplete.customItemSelect = customItemSelect;
+        // autocomplete.addEventListener('inputBlur', () => {
+        //   menuRequestedOpen = false;
+        // });
       </script>
     `;
   },

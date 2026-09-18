@@ -10,12 +10,12 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^21.2.19",
-    "@angular/compiler": "^21.2.19",
-    "@angular/core": "^21.2.19",
-    "@angular/forms": "^21.2.19",
-    "@angular/platform-browser": "^21.2.19",
-    "@angular/router": "^21.2.19",
+    "@angular/common": "^21.2.23",
+    "@angular/compiler": "^21.2.23",
+    "@angular/core": "^21.2.23",
+    "@angular/forms": "^21.2.23",
+    "@angular/platform-browser": "^21.2.23",
+    "@angular/router": "^21.2.23",
     "@trimble-oss/moduswebcomponents": "file:../../../dist",
     "@trimble-oss/moduswebcomponents-angular": "file:../ng21/dist/trimble-oss/moduswebcomponents-angular",
     "rxjs": "~7.8.0",
@@ -23,11 +23,14 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.19",
-    "@angular/cli": "^21.2.19",
-    "@angular/compiler-cli": "^21.2.19",
-    "typescript": "~5.9.2",
-    "ng-packagr": "^21.2.0"
+    "@angular/build": "^21.2.24",
+    "@angular/cli": "^21.2.24",
+    "@angular/compiler-cli": "^21.2.23",
+    "@emnapi/core": "1.11.3",
+    "@emnapi/runtime": "1.11.3",
+    "@emnapi/wasi-threads": "1.2.3",
+    "ng-packagr": "^21.2.7",
+    "typescript": "~5.9.2"
   },
   "overrides": {
     "@babel/core": "^7.29.6",
@@ -36,7 +39,7 @@
     "vite": "^7.3.5",
     "piscina": "^5.2.0",
     "undici": "^7.28.0",
-    "hono": "4.12.34",
+    "hono": "4.13.8",
     "@hono/node-server": "2.0.12",
     "brace-expansion@1": "1.1.18",
     "brace-expansion@2": "2.1.4",
