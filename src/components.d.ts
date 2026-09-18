@@ -1172,7 +1172,7 @@ export namespace Components {
           * Sets the focal point when the image is cropped or letterboxed. Maps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).
           * @default 'center'
          */
-        "cropPosition"?: string;
+        "cropPosition": string;
         /**
           * Custom CSS class to apply to the inner container.
           * @default ''
