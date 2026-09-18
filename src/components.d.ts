@@ -14,6 +14,8 @@ import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collap
 import { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 import { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 import { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
+import { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
+import { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
 import { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 import { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 import { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -37,6 +39,8 @@ export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collap
 export { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 export { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
 export { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
+export { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
+export { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
 export { IInputFeedbackLevel } from "./components/modus-wc-input-feedback/modus-wc-input-feedback";
 export { LoaderColor, LoaderVariant } from "./components/modus-wc-loader/modus-wc-loader";
 export { INavbarTextOverrides, INavbarUserCard, INavbarVisibility } from "./components/modus-wc-navbar/modus-wc-navbar";
@@ -1197,6 +1201,32 @@ export namespace Components {
           * The source URL of the image asset.
          */
         "src": string;
+    }
+    /**
+     * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
+     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     */
+    interface ModusWcImageGrid {
+        /**
+          * Custom CSS class to apply to the grid container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Sets the cell aspect ratio layout.
+          * @default 'rectangle'
+         */
+        "imageShape"?: ImageGridShape;
+        /**
+          * Images to display in the grid. Only the first N images are shown based on `imagesPerView`.
+          * @default []
+         */
+        "images": IImageGridImage[];
+        /**
+          * Maximum number of images to display in the grid (1–4).
+          * @default 4
+         */
+        "imagesPerView"?: number;
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -3489,6 +3519,16 @@ declare global {
         new (): HTMLModusWcImageElement;
     };
     /**
+     * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
+     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     */
+    interface HTMLModusWcImageGridElement extends Components.ModusWcImageGrid, HTMLStencilElement {
+    }
+    var HTMLModusWcImageGridElement: {
+        prototype: HTMLModusWcImageGridElement;
+        new (): HTMLModusWcImageGridElement;
+    };
+    /**
      * A customizable feedback component used to provide additional context related to form input interactions.
      * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
      */
@@ -4183,6 +4223,7 @@ declare global {
         "modus-wc-handle": HTMLModusWcHandleElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-image": HTMLModusWcImageElement;
+        "modus-wc-image-grid": HTMLModusWcImageGridElement;
         "modus-wc-input-feedback": HTMLModusWcInputFeedbackElement;
         "modus-wc-input-label": HTMLModusWcInputLabelElement;
         "modus-wc-link": HTMLModusWcLinkElement;
@@ -5588,6 +5629,32 @@ declare namespace LocalJSX {
           * The source URL of the image asset.
          */
         "src": string;
+    }
+    /**
+     * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
+     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     */
+    interface ModusWcImageGrid {
+        /**
+          * Custom CSS class to apply to the grid container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Sets the cell aspect ratio layout.
+          * @default 'rectangle'
+         */
+        "imageShape"?: ImageGridShape;
+        /**
+          * Images to display in the grid. Only the first N images are shown based on `imagesPerView`.
+          * @default []
+         */
+        "images"?: IImageGridImage[];
+        /**
+          * Maximum number of images to display in the grid (1–4).
+          * @default 4
+         */
+        "imagesPerView"?: number;
     }
     /**
      * A customizable feedback component used to provide additional context related to form input interactions.
@@ -7520,6 +7587,7 @@ declare namespace LocalJSX {
         "modus-wc-handle": ModusWcHandle;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-image": ModusWcImage;
+        "modus-wc-image-grid": ModusWcImageGrid;
         "modus-wc-input-feedback": ModusWcInputFeedback;
         "modus-wc-input-label": ModusWcInputLabel;
         "modus-wc-link": ModusWcLink;
@@ -7669,6 +7737,11 @@ declare module "@stencil/core" {
              * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
              */
             "modus-wc-image": LocalJSX.ModusWcImage & JSXBase.HTMLAttributes<HTMLModusWcImageElement>;
+            /**
+             * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
+             * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+             */
+            "modus-wc-image-grid": LocalJSX.ModusWcImageGrid & JSXBase.HTMLAttributes<HTMLModusWcImageGridElement>;
             /**
              * A customizable feedback component used to provide additional context related to form input interactions.
              * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>

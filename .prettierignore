@@ -8,5 +8,6 @@ src/providers/**/readme.md
 src/styles/output.css
 docs/component-graph/component-graph.json
 docs/component-graph/component-graph.mmd
+.cursor/hooks/state/**
 .playwright-mcp
 *.snap
