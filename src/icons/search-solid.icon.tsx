@@ -2,13 +2,18 @@ import { FunctionalComponent, h } from '@stencil/core';
 
 interface Props {
   className?: string;
+  onMouseDown?: (event: MouseEvent) => void;
 }
 
-export const SearchSolidIcon: FunctionalComponent<Props> = ({ className }) => (
+export const SearchSolidIcon: FunctionalComponent<Props> = ({
+  className,
+  onMouseDown,
+}) => (
   <svg
     aria-hidden="true"
     class={className || ''}
     fill="currentColor"
+    {...(onMouseDown ? { onMouseDown } : {})}
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
   >

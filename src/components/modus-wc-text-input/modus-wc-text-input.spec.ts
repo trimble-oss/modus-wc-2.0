@@ -136,6 +136,64 @@ describe('modus-wc-text-input', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
+  it('should not emit blur and focus when clicking search icon while input is focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input include-search="true" aria-label="Search icon focus test"></modus-wc-text-input>',
+    });
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const searchIcon = page.root!.querySelector(
+      '.modus-wc-text-input-icon-search'
+    );
+    const blurSpy = jest.fn();
+    const focusSpy = jest.fn();
+
+    page.root!.addEventListener('inputBlur', blurSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
+
+    input.focus();
+    await page.waitForChanges();
+    blurSpy.mockClear();
+    focusSpy.mockClear();
+
+    searchIcon!.dispatchEvent(
+      new MouseEvent('mousedown', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(blurSpy).not.toHaveBeenCalled();
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit blur and focus when clicking password key icon while input is focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcIcon],
+      html: '<modus-wc-text-input type="password" aria-label="Password key icon focus test"></modus-wc-text-input>',
+    });
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const keyIcon = page.root!.querySelector(
+      '.modus-wc-text-input-icon-password'
+    );
+    const blurSpy = jest.fn();
+    const focusSpy = jest.fn();
+
+    page.root!.addEventListener('inputBlur', blurSpy);
+    page.root!.addEventListener('inputFocus', focusSpy);
+
+    input.focus();
+    await page.waitForChanges();
+    blurSpy.mockClear();
+    focusSpy.mockClear();
+
+    keyIcon!.dispatchEvent(
+      new MouseEvent('mousedown', { bubbles: true, cancelable: true })
+    );
+    await page.waitForChanges();
+
+    expect(blurSpy).not.toHaveBeenCalled();
+    expect(focusSpy).not.toHaveBeenCalled();
+  });
+
   it('should clear text when clear button is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput],
@@ -186,6 +244,38 @@ describe('modus-wc-text-input', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(component.value).toBe('');
     expect(changeSpy).toHaveBeenCalled();
+  });
+
+  it('should keep focus on input when Enter key is pressed on clear button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: '<modus-wc-text-input include-clear="true" value="Test Value" aria-label="Clear test"></modus-wc-text-input>',
+    });
+
+    const component = page.rootInstance as ModusWcTextInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const clearButton = page.root!.querySelector(
+      '.modus-wc-text-input-icon-clear'
+    ) as HTMLElement;
+
+    expect(input).not.toBeNull();
+    expect(clearButton).not.toBeNull();
+
+    input.focus();
+    await page.waitForChanges();
+    clearButton.focus();
+    await page.waitForChanges();
+
+    const focusSpy = jest.spyOn(input, 'focus');
+
+    clearButton.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(component.value).toBe('');
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
   });
 
   it('should clear text when Space key is pressed on clear button', async () => {
