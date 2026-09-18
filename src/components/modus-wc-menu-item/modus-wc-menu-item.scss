@@ -20,7 +20,7 @@ modus-wc-menu-item .modus-wc-menu-item {
 
     .modus-wc-menu-submenu-chevron {
       align-items: center;
-      color: var(--modus-wc-color-base-content);
+      color: currentColor;
       display: inline-flex;
       flex-shrink: 0;
       height: 20px;
@@ -245,12 +245,6 @@ modus-wc-menu-item .modus-wc-menu-item {
       color: var(--modus-wc-color-gray-light);
     }
 
-    button {
-      .modus-wc-menu-submenu-chevron {
-        color: var(--modus-wc-color-gray-3);
-      }
-    }
-
     // Hover state for all items. The `:not(.modus-wc-menu-item-focused)` guard
     // keeps the keyboard focus outline (and its border-radius) visible when the
     // user hovers over a programmatically focused item.
@@ -309,11 +303,10 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-[data-theme='connect-light'],
-[data-theme='connect-dark'] {
+[data-theme='modus-classic-dark'] {
   modus-wc-menu-item .modus-wc-menu-item {
-    & > button .modus-wc-menu-submenu-chevron {
-      color: var(--modus-wc-color-white);
+    button .modus-wc-menu-submenu-chevron {
+      color: var(--modus-wc-color-gray-3);
     }
   }
 }
