@@ -42,7 +42,7 @@ describe('resolveIcon', () => {
     });
     expect(resolveIcon('warning', '2.0')).toEqual({
       version: '2.0',
-      slug: 'warning',
+      slug: 'warning-circle',
     });
   });
 
@@ -108,6 +108,61 @@ describe('resolveIcon', () => {
     expect(resolveIcon('not-a-real-icon', '2.0')).toEqual({
       version: '1.0',
       ligature: 'not-a-real-icon',
+    });
+  });
+
+  it('should resolve QA-approved names to their 2.0 slugs', () => {
+    const mappings = {
+      alarm_add: 'alarm-plus',
+      alarm_off: 'alarm-slash',
+      alarm_on: 'alarm-check',
+      arrow_expand_diagonal_left: 'arrow-expand-diagonal-left',
+      arrow_expand_diagonal_right: 'arrow-expand-diagonal-right',
+      backup_restore_cloud: 'backup-cloud-arrows-counter-clockwise',
+      backup_restore_file: 'backup-file-arrows-counter-clockwise',
+      bar_graph_square: 'bar-graph-square',
+      bug_report: 'bug-report-window',
+      calendar_time_slot: 'calendar-time-slot',
+      cell_merge: 'cell-merge',
+      cell_split: 'cell-split',
+      clipboard_check: 'clipboard-check',
+      column_delete: 'column-x',
+      data_transfer_off: 'arrows-down-up-slash',
+      day_partly_cloudy: 'sun-partly-cloudy',
+      edit_combination: 'edit-combination',
+      folder_public: 'folder-public',
+      hail_light: 'cloud-hail-light',
+      form_send: 'file-arrow-up',
+      inspect: 'inspect-chat-teardrop',
+      invoice_euro: 'invoice-file-euro',
+      lightbulb_on: 'lightbulb-on',
+      location_arrow: 'location-arrow',
+      night_partly_cloudy: 'night-partly-cloudy',
+      person: 'user',
+      pin_add: 'pin-plus',
+      rain: 'rain',
+      row_delete: 'row-x',
+      row_highlighted: 'row-highlighted',
+      shopping_cart_minus: 'shopping-cart-x',
+      star_locked: 'star-lock',
+      switch_account: 'switch-user-account',
+      sync_off: 'arrows-clockwise-slash',
+      tag_disabled: 'tag-slash',
+      ticket_plane: 'ticket-plane',
+      timesheet: 'timesheet-file-clock',
+      warning: 'warning-circle',
+      warning_outlined: 'warning-circle',
+    };
+
+    for (const [name, slug] of Object.entries(mappings)) {
+      expect(resolveIcon(name, '2.0')).toEqual({ version: '2.0', slug });
+    }
+  });
+
+  it('should keep not_synced_bold on the 1.0 ligature', () => {
+    expect(resolveIcon('not_synced_bold', '2.0')).toEqual({
+      version: '1.0',
+      ligature: 'not_synced_bold',
     });
   });
 });
@@ -205,7 +260,7 @@ describe('convertPropsToClasses', () => {
 
 describe('modus-wc-icon', () => {
   it('should export the 1.0 and 2.0 icon name catalogs', () => {
-    expect(MODUS_ICONS_CSS_VERSION).toBe('0.10.0');
+    expect(MODUS_ICONS_CSS_VERSION).toBe('0.11.0');
     expect(MODUS_ICON_V1_NAMES).toContain('add');
     expect(MODUS_ICON_V1_NAMES).toContain('address');
     expect(MODUS_ICON_V2_NAMES).toContain('ship');
