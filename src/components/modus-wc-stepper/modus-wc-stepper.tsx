@@ -29,6 +29,8 @@ export interface IStepperItem {
   customClass?: string;
   /** Text label for the step */
   label?: string;
+  /** Secondary text rendered beneath the step label */
+  subLabel?: string;
 }
 
 /**
@@ -87,7 +89,11 @@ export class ModusWcStepper {
   private getStepAriaLabel(step: IStepperItem, index: number): string {
     const stepLabel = this.getStepLabel(step);
 
-    return stepLabel || `Step ${index + 1}`;
+    if (stepLabel && step.subLabel) {
+      return `${stepLabel}, ${step.subLabel}`;
+    }
+
+    return stepLabel || step.subLabel || `Step ${index + 1}`;
   }
 
   private getClassesForStep(step: IStepperItem): string {
@@ -130,7 +136,20 @@ export class ModusWcStepper {
                     onClick={() => this.handleStepActivate(index)}
                   ></button>
                 )}
-                {stepLabel}
+                {(stepLabel || step.subLabel) && (
+                  <div class="modus-wc-stepper-step-text">
+                    {stepLabel && (
+                      <span class="modus-wc-stepper-step-label">
+                        {stepLabel}
+                      </span>
+                    )}
+                    {step.subLabel && (
+                      <span class="modus-wc-stepper-step-sublabel">
+                        {step.subLabel}
+                      </span>
+                    )}
+                  </div>
+                )}
               </li>
             );
           })}

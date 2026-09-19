@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
@@ -35,70 +35,68 @@ jobs:
 
       - name: Run accessibility tests
         run: |
-          node << EOF
-          const puppeteer = require('puppeteer');
-          const axeCore = require('axe-core');
-          const fs = require('fs');
-          const path = require('path');
+          node --input-type=module << 'EOF'
+          import puppeteer from 'puppeteer';
+          import axeCore from 'axe-core';
+          import fs from 'fs';
+          import path from 'path';
 
-          (async () => {
-            try {
-              const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-              const page = await browser.newPage();
+          try {
+            const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+            const page = await browser.newPage();
 
-              const componentsDir = './dist/components';
-              const files = fs.readdirSync(componentsDir);
+            const componentsDir = './dist/components';
+            const files = fs.readdirSync(componentsDir);
 
-              let hasViolations = false;
+            let hasViolations = false;
 
-              // Configure axe-core to disable specific rules
-              const axeConfig = {
-                runOnly: {
-                  type: 'tag',
-                  values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa', 'best-practice']
-                },
-                rules: {
-                  'document-title': { enabled: false },
-                  'html-has-lang': { enabled: false },
-                  'landmark-one-main': { enabled: false },
-                  'page-has-heading-one': { enabled: false },
-                  'region': { enabled: false }
-                }
-              };
+            // Configure axe-core to disable specific rules
+            const axeConfig = {
+              runOnly: {
+                type: 'tag',
+                values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa', 'best-practice']
+              },
+              rules: {
+                'document-title': { enabled: false },
+                'html-has-lang': { enabled: false },
+                'landmark-one-main': { enabled: false },
+                'page-has-heading-one': { enabled: false },
+                'region': { enabled: false }
+              }
+            };
 
-              for (const file of files) {
-                if (file.startsWith('modus-wc-') && file.endsWith('.js')) {
-                  const filePath = 'file://' + path.resolve(componentsDir, file);
-                  console.log(\`Checking file: \${file}\`);
-                  await page.goto(filePath);
+            for (const file of files) {
+              if (file.startsWith('modus-wc-') && file.endsWith('.js')) {
+                const filePath = 'file://' + path.resolve(componentsDir, file);
+                console.log(`Checking file: ${file}`);
+                await page.goto(filePath);
 
-                  await page.evaluate(axeCore.source);
-                  const results = await page.evaluate((config) => {
-                    return axe.run(document, config);
-                  }, axeConfig);
+                await page.evaluate(axeCore.source);
+                const results = await page.evaluate((config) => {
+                  return axe.run(document, config);
+                }, axeConfig);
 
-                  if (results.violations.length > 0) {
-                    console.error(\`Accessibility violations found in \${file}:\`);
-                    console.error(JSON.stringify(results.violations, null, 2));
-                    hasViolations = true;
-                  } else {
-                    console.log(\`No violations found in \${file}\`);
-                  }
+                if (results.violations.length > 0) {
+                  console.error(`Accessibility violations found in ${file}:`);
+                  console.error(JSON.stringify(results.violations, null, 2));
+                  hasViolations = true;
+                } else {
+                  console.log(`No violations found in ${file}`);
                 }
               }
-
-              await browser.close();
-
-              if (hasViolations) {
-                process.exit(1);
-              } else {
-                console.log('All checked files pass accessibility tests.');
-              }
-            } catch (error) {
-              console.error('An error occurred:', error);
-              process.exit(1);
             }
-          })();
+
+            await browser.close();
+
+            if (hasViolations) {
+              process.exit(1);
+            } else {
+              console.log('All checked files pass accessibility tests.');
+            }
+          } catch (error) {
+            console.error('An error occurred:', error);
+            process.exit(1);
+          }
           EOF
 
       - name: Check test results

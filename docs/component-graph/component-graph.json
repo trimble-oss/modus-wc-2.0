@@ -1,0 +1,5873 @@
+{
+  "description": "Auto-generated component dependency graph for QA automations. Regenerate with `npm run build:graph`. Do not edit by hand.",
+  "nodes": [
+    {
+      "tag": "modus-wc-accordion",
+      "sourceFile": "src/components/modus-wc-accordion/modus-wc-accordion.tsx",
+      "description": "A customizable accordion component used for showing and hiding related groups of content.\r\n\r\nThe component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        }
+      ],
+      "events": [
+        {
+          "name": "expandedChange",
+          "type": "EventEmitter<{\r\n    expanded: boolean;\r\n    index: number;\r\n  }>",
+          "description": "When a collapse expanded state is changed, this event outputs the relevant index and state"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-alert",
+      "sourceFile": "src/components/modus-wc-alert/modus-wc-alert.tsx",
+      "description": "A customizable alert component used to inform the user about important events.\n\nThe component supports `<slot>` elements for injecting custom content and buttons.",
+      "props": [
+        {
+          "name": "alertDescription",
+          "attribute": "alert-description",
+          "type": "string",
+          "description": "The description of the alert."
+        },
+        {
+          "name": "alertTitle",
+          "attribute": "alert-title",
+          "type": "string",
+          "description": "The title of the alert."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div element."
+        },
+        {
+          "name": "delay",
+          "attribute": "delay",
+          "type": "number",
+          "description": "Time taken to dismiss the alert in milliseconds"
+        },
+        {
+          "name": "disableIcon",
+          "attribute": "disable-icon",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether to disable the icon"
+        },
+        {
+          "name": "dismissible",
+          "attribute": "dismissible",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the alert has a dismiss button"
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "string",
+          "description": "The Modus icon to render."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'error' | 'info' | 'neutral' | 'success' | 'warning'",
+          "default": "'info'",
+          "description": "The variant of the alert."
+        }
+      ],
+      "events": [
+        {
+          "name": "dismissClick",
+          "type": "EventEmitter",
+          "description": "An event that fires when the alert is dismissed"
+        }
+      ],
+      "methods": [
+        "delayChanged",
+        "dismissElement",
+        "elementKeyupHandler"
+      ]
+    },
+    {
+      "tag": "modus-wc-app-menu",
+      "sourceFile": "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx",
+      "props": [
+        {
+          "name": "apps",
+          "attribute": "apps",
+          "type": "IAppMenuItem[]",
+          "default": "[]",
+          "description": "The apps to display in the menu."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "custom class to apply to the menu"
+        },
+        {
+          "name": "layout",
+          "attribute": "layout",
+          "type": "'list' | 'grid'",
+          "default": "'list'",
+          "description": "The layout of the menu."
+        }
+      ],
+      "events": [
+        {
+          "name": "itemClick",
+          "type": "EventEmitter<{ appName: AppName }>",
+          "description": "Emitted when an item is clicked"
+        },
+        {
+          "name": "itemsOrderChange",
+          "type": "EventEmitter<IAppMenuItem[]>",
+          "description": "Emitted when reordering is confirmed via \"Done\" and the order differs from when edit started"
+        },
+        {
+          "name": "layoutChange",
+          "type": "EventEmitter<{\n    layout: 'list' | 'grid';\n  }>",
+          "description": "Emit event when the layout changes"
+        }
+      ],
+      "methods": [
+        "onAppsChange",
+        "onLayoutChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-autocomplete",
+      "sourceFile": "src/components/modus-wc-autocomplete/modus-wc-autocomplete.tsx",
+      "description": "A customizable autocomplete component used to create searchable text inputs.\n\nThe component supports a `<slot>` for injecting custom content.",
+      "props": [
+        {
+          "name": "autoComplete",
+          "attribute": "auto-complete",
+          "type": "AutocompleteTypes",
+          "description": "Hint for form autofill feature."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the autocomplete should have a border."
+        },
+        {
+          "name": "customBlur",
+          "attribute": "custom-blur",
+          "type": "(event: FocusEvent) => void",
+          "description": "Custom blur handler - if provided, overrides default blur behavior"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to host element."
+        },
+        {
+          "name": "customInputChange",
+          "attribute": "custom-input-change",
+          "type": "(value: string) => void",
+          "description": "Custom input change handler - if provided, overrides default search filtering"
+        },
+        {
+          "name": "customItemSelect",
+          "attribute": "custom-item-select",
+          "type": "(item: IAutocompleteItem) => void",
+          "description": "Custom item selection handler - if provided, overrides default selection logic"
+        },
+        {
+          "name": "customKeyDown",
+          "attribute": "custom-key-down",
+          "type": "(event: KeyboardEvent) => void",
+          "description": "Custom key down handler - if provided, overrides default keyboard navigation"
+        },
+        {
+          "name": "debounceMs",
+          "attribute": "debounce-ms",
+          "type": "number",
+          "default": "300",
+          "description": "The debounce timeout in milliseconds.\nSet to 0 to disable debouncing."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback state for the input field."
+        },
+        {
+          "name": "includeClear",
+          "attribute": "include-clear",
+          "type": "boolean",
+          "default": "false",
+          "description": "Show the clear button within the input field."
+        },
+        {
+          "name": "includeSearch",
+          "attribute": "include-search",
+          "type": "boolean",
+          "default": "false",
+          "description": "Show the search icon within the input field."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "items",
+          "attribute": "items",
+          "type": "IAutocompleteItem[]",
+          "default": "[]",
+          "description": "The items to display in the menu.\nCreating a new array of items will ensure proper component re-render."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "leaveMenuOpen",
+          "attribute": "leave-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the menu should remain open after an item is selected."
+        },
+        {
+          "name": "maxChips",
+          "attribute": "max-chips",
+          "type": "number",
+          "default": "-1",
+          "description": "Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit."
+        },
+        {
+          "name": "minChars",
+          "attribute": "min-chars",
+          "type": "number",
+          "default": "0",
+          "description": "The minimum number of characters required to render the menu."
+        },
+        {
+          "name": "minInputWidth",
+          "attribute": "min-input-width",
+          "type": "number",
+          "default": "10",
+          "description": "Minimum width for the text input in pixels. When chips would make input smaller, container height increases instead."
+        },
+        {
+          "name": "multiSelect",
+          "attribute": "multi-select",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the input allows multiple items to be selected."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "noResults",
+          "attribute": "no-results",
+          "type": "IAutocompleteNoResults",
+          "default": "{ ariaLabel: 'No results found', label: 'No results found', subLabel: 'Check spelling or try a different keyword', }",
+          "description": "The content to display when no results are found."
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string",
+          "default": "''",
+          "description": "Text that appears in the form control when it has no value set."
+        },
+        {
+          "name": "readOnly",
+          "attribute": "read-only",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the value is editable."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "showMenuOnFocus",
+          "attribute": "show-menu-on-focus",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether to show the menu whenever the input has focus, regardless of input value."
+        },
+        {
+          "name": "showSpinner",
+          "attribute": "show-spinner",
+          "type": "boolean",
+          "default": "false",
+          "description": "A spinner that appears when set to true"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the autocomplete (input and menu)."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the control."
+        }
+      ],
+      "events": [
+        {
+          "name": "chipRemove",
+          "type": "EventEmitter<IAutocompleteItem>",
+          "description": "Event emitted when a selected item chip is removed."
+        },
+        {
+          "name": "chipsExpansionChange",
+          "type": "EventEmitter<{ expanded: boolean }>",
+          "description": "Event emitted when chips expansion state changes."
+        },
+        {
+          "name": "clearClick",
+          "type": "EventEmitter<void>",
+          "description": "Event emitted when the clear button is clicked."
+        },
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<Event>",
+          "description": "Event emitted when the input value changes.\nThis event is debounced based on the debounceMs prop."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus."
+        },
+        {
+          "name": "itemSelect",
+          "type": "EventEmitter<IAutocompleteItem>",
+          "description": "Event emitted when a menu item is selected."
+        }
+      ],
+      "methods": [
+        "clearInput",
+        "closeMenu",
+        "focusInput",
+        "handleItemsChange",
+        "handleKeyDown",
+        "handleMenuVisibilityChange",
+        "openMenu",
+        "selectItem",
+        "toggleMenu"
+      ]
+    },
+    {
+      "tag": "modus-wc-avatar",
+      "sourceFile": "src/components/modus-wc-avatar/modus-wc-avatar.tsx",
+      "description": "A customizable avatar component used to create avatars with different images or user initials.\nWhen no image is provided, the component can display initials (up to 3 characters) from the initials prop.\nThe component will extract the first letter of each word in the initials string.",
+      "props": [
+        {
+          "name": "alt",
+          "attribute": "alt",
+          "type": "string",
+          "description": "The image alt attribute for accessibility."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "imgSrc",
+          "attribute": "img-src",
+          "type": "string",
+          "default": "''",
+          "description": "The location of the image."
+        },
+        {
+          "name": "initials",
+          "attribute": "initials",
+          "type": "string",
+          "default": "''",
+          "description": "The initials to display when no image is provided."
+        },
+        {
+          "name": "shape",
+          "attribute": "shape",
+          "type": "'circle' | 'square'",
+          "default": "'circle'",
+          "description": "The shape of the avatar."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "DaisySize | 'xl'",
+          "default": "'md'",
+          "description": "The size of the avatar."
+        }
+      ],
+      "events": [
+        {
+          "name": "imageLoadError",
+          "type": "EventEmitter<IAvatarImageLoadError>",
+          "description": "Event emitted when the avatar image fails to load."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-badge",
+      "sourceFile": "src/components/modus-wc-badge/modus-wc-badge.tsx",
+      "description": "A customizable badge component used to create badges with different sizes, types, and colors.\n\nThe component supports a `<slot>` for injecting content within the badge.",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "| 'default'\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'",
+          "default": "'primary'",
+          "description": "The color variant of the badge."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the span element."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the badge."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'counter' | 'filled' | 'outlined' | 'text'",
+          "default": "'filled'",
+          "description": "The variant of the badge."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-bottom-sheet",
+      "sourceFile": "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div."
+        },
+        {
+          "name": "displayMode",
+          "attribute": "display-mode",
+          "type": "TBottomSheetDisplayMode",
+          "default": "'default'",
+          "description": "Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop."
+        },
+        {
+          "name": "dragStepThreshold",
+          "attribute": "drag-step-threshold",
+          "type": "number",
+          "default": "0.4",
+          "description": "Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level."
+        },
+        {
+          "name": "header",
+          "attribute": "header",
+          "type": "IBottomSheetHeader",
+          "description": "Configuration for the built-in header layout.\nDo not set this prop if you intend to use the 'header' slot."
+        },
+        {
+          "name": "visible",
+          "attribute": "visible",
+          "type": "boolean",
+          "default": "false",
+          "description": "Controls whether the bottom sheet is visible."
+        }
+      ],
+      "events": [
+        {
+          "name": "displayModeChange",
+          "type": "EventEmitter<{\n    displayMode: TBottomSheetDisplayMode;\n  }>",
+          "description": "Event emitted when the display mode changes, whether from a drag/keyboard\ninteraction or from setting the `displayMode` prop. The new mode is in\n`detail.displayMode`."
+        },
+        {
+          "name": "headerBackClick",
+          "type": "EventEmitter<void>",
+          "description": "Event emitted when the header back button is clicked. Does not change sheet state."
+        },
+        {
+          "name": "headerCloseClick",
+          "type": "EventEmitter<void>",
+          "description": "Event emitted when the header dismiss button is clicked.\nThe sheet is also closed automatically (`visible` is set to `false`)."
+        },
+        {
+          "name": "sheetVisibilityChange",
+          "type": "EventEmitter<{ visible: boolean }>",
+          "description": "Event emitted when the visibility of the bottom sheet changes."
+        }
+      ],
+      "methods": [
+        "handleDisplayModeChange",
+        "handleVisibleChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-breadcrumbs",
+      "sourceFile": "src/components/modus-wc-breadcrumbs/modus-wc-breadcrumbs.tsx",
+      "description": "A customizable breadcrumbs component used to help users navigate through a website.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "items",
+          "attribute": "items",
+          "type": "IBreadcrumb[]",
+          "default": "[]",
+          "description": "The breadcrumbs to render."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the breadcrumbs."
+        }
+      ],
+      "events": [
+        {
+          "name": "breadcrumbClick",
+          "type": "EventEmitter<IBreadcrumb>",
+          "description": "Event emitted when a breadcrumb is clicked."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-button",
+      "sourceFile": "src/components/modus-wc-button/modus-wc-button.tsx",
+      "description": "A customizable button component used to create buttons with different sizes, variants, and types.\n\nThe component supports a `<slot>` for injecting content within the button, similar to a native HTML button.",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'\n    | 'neutral'\n    | 'success'",
+          "default": "'primary'",
+          "description": "The color variant of the button."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the button element."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "If true, the button will be disabled."
+        },
+        {
+          "name": "fullWidth",
+          "attribute": "full-width",
+          "type": "boolean",
+          "default": "false",
+          "description": "If true, the button will take the full width of its container."
+        },
+        {
+          "name": "pressed",
+          "attribute": "pressed",
+          "type": "boolean",
+          "default": "false",
+          "description": "If true, the button will be in a pressed state (for toggle buttons)."
+        },
+        {
+          "name": "shape",
+          "attribute": "shape",
+          "type": "'circle' | 'ellipse' | 'rectangle' | 'square'",
+          "default": "'rectangle'",
+          "description": "The shape of the button."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "DaisySize | 'xl'",
+          "default": "'md'",
+          "description": "The size of the button."
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "default": "'button'",
+          "description": "The type of the button."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'borderless' | 'filled' | 'outlined'",
+          "default": "'filled'",
+          "description": "The variant of the button."
+        }
+      ],
+      "events": [
+        {
+          "name": "buttonClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the button is clicked or activated via keyboard."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-button-group",
+      "sourceFile": "src/components/modus-wc-button-group/modus-wc-button-group.tsx",
+      "description": "A customizable buttongroup component that groups multiple Modus buttons together.\n\nThe component supports a `<slot>` for injecting content within the buttongroup.",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'\n    | 'neutral'\n    | 'success'",
+          "description": "Color to apply to all buttons within the button group"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Disables all buttons within the button group"
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "default": "'horizontal'",
+          "description": "Orientation of the button group: horizontal or vertical"
+        },
+        {
+          "name": "selectionType",
+          "attribute": "selection-type",
+          "type": "'default' | 'single' | 'multiple'",
+          "default": "'default'",
+          "description": "Selection type for button group"
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'borderless' | 'filled' | 'outlined'",
+          "default": "'outlined'",
+          "description": "Style variant to apply to all buttons within the button group"
+        }
+      ],
+      "events": [
+        {
+          "name": "buttonGroupClick",
+          "type": "EventEmitter<{\n    button: HTMLElement;\n    isSelected: boolean;\n  }>",
+          "description": "Event emitted when any button in the group is clicked"
+        },
+        {
+          "name": "buttonSelectionChange",
+          "type": "EventEmitter<{\n    selectedButtons: HTMLElement[];\n  }>",
+          "description": "Event emitted when button selection changes"
+        }
+      ],
+      "methods": [
+        "handleButtonClick",
+        "handlePropChange",
+        "handleSelectionTypeChange",
+        "handleSlotChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-card",
+      "sourceFile": "src/components/modus-wc-card/modus-wc-card.tsx",
+      "description": "A customizable card component used to group and display content in a way that is easily readable.\n\nThis component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.",
+      "props": [
+        {
+          "name": "backgroundFigure",
+          "attribute": "background-figure",
+          "type": "boolean",
+          "default": "false",
+          "description": "Makes any \\<figure> in the 'header' slot cover the background"
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "false",
+          "description": "Adds a hard border to the card"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply"
+        },
+        {
+          "name": "layout",
+          "attribute": "layout",
+          "type": "'vertical' | 'horizontal'",
+          "default": "'vertical'",
+          "description": "Determines how the card is laid out"
+        },
+        {
+          "name": "padding",
+          "attribute": "padding",
+          "type": "'compact' | 'comfortable'",
+          "default": "'compact'",
+          "description": "Determines the interior padding size"
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-checkbox",
+      "sourceFile": "src/components/modus-wc-checkbox/modus-wc-checkbox.tsx",
+      "description": "A customizable checkbox component",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The disabled state of the checkbox."
+        },
+        {
+          "name": "indeterminate",
+          "attribute": "indeterminate",
+          "type": "boolean",
+          "default": "false",
+          "description": "The indeterminate state of the checkbox."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "The tabindex of the input."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "default": "''",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "boolean",
+          "default": "false",
+          "description": "The value of the checkbox."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-chip",
+      "sourceFile": "src/components/modus-wc-chip/modus-wc-chip.tsx",
+      "description": "A customizable chip component used to display information in a compact area\n\nThe component supports a `<slot>` for injecting custom content such as avatar and icons.",
+      "props": [
+        {
+          "name": "active",
+          "attribute": "active",
+          "type": "boolean",
+          "default": "false",
+          "description": "Active state of chip."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the chip is disabled."
+        },
+        {
+          "name": "hasError",
+          "attribute": "has-error",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the chip has an error."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "default": "''",
+          "description": "The label to display in the chip."
+        },
+        {
+          "name": "multiline",
+          "attribute": "multiline",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the chip height can grow and its content can wrap across multiple lines."
+        },
+        {
+          "name": "shape",
+          "attribute": "shape",
+          "type": "'rectangle' | 'circle'",
+          "default": "'rectangle'",
+          "description": "The shape of the chip: 'rectangle' (default) or 'circle'."
+        },
+        {
+          "name": "showRemove",
+          "attribute": "show-remove",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether to show the close icon on right side of the chip."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the chip."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'filled' | 'outline'",
+          "default": "'filled'",
+          "description": "The variant of the chip."
+        }
+      ],
+      "events": [
+        {
+          "name": "chipClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the chip is clicked or activated via keyboard."
+        },
+        {
+          "name": "chipRemove",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the close chip icon button is clicked."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-collapse",
+      "sourceFile": "src/components/modus-wc-collapse/modus-wc-collapse.tsx",
+      "description": "A customizable collapse component used for showing and hiding content.\n\nThe component supports a 'header' and 'content' `<slot>` for injecting custom HTML.",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "false",
+          "description": "When true, renders a border-bottom on the collapse component."
+        },
+        {
+          "name": "chevronPosition",
+          "attribute": "chevron-position",
+          "type": "'left' | 'right'",
+          "default": "'right'",
+          "description": "Controls chevron placement."
+        },
+        {
+          "name": "collapseId",
+          "attribute": "collapse-id",
+          "type": "string",
+          "description": "A unique identifier used to set the id attributes of various elements."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div."
+        },
+        {
+          "name": "expanded",
+          "attribute": "expanded",
+          "type": "boolean",
+          "default": "false",
+          "description": "Controls whether the collapse is expanded or not."
+        },
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "ICollapseOptions",
+          "description": "Configuration options for rendering the pre-laid out collapse component.\nDo not set this prop if you intend to use the 'header' slot."
+        }
+      ],
+      "events": [
+        {
+          "name": "expandedChange",
+          "type": "EventEmitter<{ expanded: boolean }>",
+          "description": "Event emitted when the expanded prop is internally changed."
+        }
+      ],
+      "methods": [
+        "expandedChanged"
+      ]
+    },
+    {
+      "tag": "modus-wc-content-tree",
+      "sourceFile": "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx",
+      "description": "A data-driven, stateless/controlled tree component. The consuming application\nowns the `nodes` data (the single source of truth) and the controlled\n`selectedNodeId` / `expandedNodeIds` state. The component renders the tree and\nemits `nodeSelect` / `nodeExpandChange`; the application decides whether to\napply the change and passes the updated state back in.",
+      "props": [
+        {
+          "name": "allowDragDrop",
+          "attribute": "allow-drag-drop",
+          "type": "boolean",
+          "description": "Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "description": "Indicates that the content tree should have a border."
+        },
+        {
+          "name": "checkedNodeIds",
+          "attribute": "checked-node-ids",
+          "type": "string[]",
+          "description": "The ids of the checked leaf nodes (multi-select). Controlled by the consuming application."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the host element."
+        },
+        {
+          "name": "editingNodeId",
+          "attribute": "editing-node-id",
+          "type": "string",
+          "description": "The id of the node currently rendered as an inline editable input. Controlled by the consuming application (typically set in response to `nodeEdit`, `nodeAdd`, or `nodeDuplicate`)."
+        },
+        {
+          "name": "expandedNodeIds",
+          "attribute": "expanded-node-ids",
+          "type": "string[]",
+          "description": "The ids of the currently expanded nodes. Controlled by the consuming application."
+        },
+        {
+          "name": "filter",
+          "attribute": "filter",
+          "type": "string",
+          "default": "''",
+          "description": "When set, only nodes whose label matches (and their ancestors) are shown. Matching is a case-insensitive substring; matched parents reveal their full subtree. When `searchable` is enabled, this only seeds the built-in search box's initial value."
+        },
+        {
+          "name": "nodes",
+          "attribute": "nodes",
+          "type": "ITreeNode[]",
+          "description": "The tree data. The single source of truth, owned by the consuming application."
+        },
+        {
+          "name": "searchable",
+          "attribute": "searchable",
+          "type": "boolean",
+          "description": "Shows a built-in search box above the tree that filters nodes internally (self-managed). When enabled, the search box owns the active filter and the `filter` prop is used only to seed its initial value."
+        },
+        {
+          "name": "selectedNodeId",
+          "attribute": "selected-node-id",
+          "type": "string",
+          "description": "The id of the currently selected (active) node. Controlled by the consuming application."
+        },
+        {
+          "name": "selectionMode",
+          "attribute": "selection-mode",
+          "type": "SelectionMode",
+          "default": "'single'",
+          "description": "The selection mode of the content tree."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the content tree items."
+        },
+        {
+          "name": "toolbar",
+          "attribute": "toolbar",
+          "type": "IContentTreeToolbar",
+          "description": "Configures the optional toolbar rendered above the tree. When set, a toolbar is shown with the enabled controls: an expand-all / collapse-all toggle and a delete button (enabled only when nodes are checked in multi-select)."
+        }
+      ],
+      "events": [
+        {
+          "name": "expandAllChange",
+          "type": "EventEmitter<{ expanded: boolean }>",
+          "description": "Event emitted when the toolbar's expand-all / collapse-all toggle is clicked. The app should set `expandedNodeIds` to every expandable id (e.g. via `getExpandableNodeIds`) when `expanded` is `true`, or to `[]` when `false`."
+        },
+        {
+          "name": "nodeAdd",
+          "type": "EventEmitter<{\n    referenceId: string;\n    position: 'above' | 'below' | 'child';\n  }>",
+          "description": "Event emitted when \"Add New Above/Below\" or \"Add Child Node\" is chosen. The app should insert a node at the requested position and set `editingNodeId` to the new id."
+        },
+        {
+          "name": "nodeCheckChange",
+          "type": "EventEmitter<{\n    id: string;\n    checked: boolean;\n  }>",
+          "description": "Event emitted when a checkbox is toggled (multi-select). The consuming application should update `checkedNodeIds`."
+        },
+        {
+          "name": "nodeDelete",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted after the user confirms deletion. The app should remove the node from `nodes`."
+        },
+        {
+          "name": "nodeDuplicate",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted when \"Duplicate\" is chosen. The app should clone the node below it and set `editingNodeId` to the new id."
+        },
+        {
+          "name": "nodeEdit",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted when \"Edit name\" is chosen. The app should set `editingNodeId` to this id."
+        },
+        {
+          "name": "nodeEditCancel",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted when an inline edit ends without an effective change — via Escape, or Enter/blur while the draft matches the original label. The app should clear `editingNodeId` (and discard a freshly added node if its name is still empty)."
+        },
+        {
+          "name": "nodeExpandChange",
+          "type": "EventEmitter<{\n    id: string;\n    expanded: boolean;\n  }>",
+          "description": "Event emitted when a node's expansion is toggled. The consuming application should update `expandedNodeIds`."
+        },
+        {
+          "name": "nodeLoadChildren",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted the first time a lazy node (`hasChildren: true` with no `children` yet) is expanded. The app should fetch the node's children and assign them to `nodes` (use `[]` when there are none); the component shows a spinner until `children` is defined."
+        },
+        {
+          "name": "nodeMove",
+          "type": "EventEmitter<{\n    id: string;\n    targetId: string;\n    position: 'before' | 'after' | 'inside';\n  }>",
+          "description": "Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child."
+        },
+        {
+          "name": "nodeRename",
+          "type": "EventEmitter<{ id: string; label: string }>",
+          "description": "Event emitted when an inline edit is committed with an effective label change (via Enter or losing focus). The app should apply the new label and clear `editingNodeId`."
+        },
+        {
+          "name": "nodesDelete",
+          "type": "EventEmitter<{ ids: string[] }>",
+          "description": "Event emitted when the toolbar's delete button is confirmed. `ids` are the top-most checked nodes; the app should remove them (e.g. via `deleteNodes`)."
+        },
+        {
+          "name": "nodeSelect",
+          "type": "EventEmitter<{ id: string }>",
+          "description": "Event emitted when a node is selected. The consuming application should update `selectedNodeId`."
+        },
+        {
+          "name": "nodeVisibilityChange",
+          "type": "EventEmitter<{\n    id: string;\n    disabled: boolean;\n  }>",
+          "description": "Event emitted when a node's visibility (eye) toggle is clicked. `disabled` is the new state. The app should update the node's own `disabled` state (e.g. via `setNodeDisabled`); descendants become effectively disabled via ancestor inheritance."
+        }
+      ],
+      "methods": [
+        "handleItemSelect",
+        "onEditingNodeIdChange",
+        "onExpandedNodeIdsChange",
+        "onFilterChange",
+        "onNodesChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-date",
+      "sourceFile": "src/components/modus-wc-date/modus-wc-date.tsx",
+      "description": "A customizable date picker component used to create date inputs.\n\nAdheres to WCAG 2.2 standards.",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the input."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "endValue",
+          "attribute": "end-value",
+          "type": "string",
+          "default": "''",
+          "description": "The end date in range mode (`type=\"range\"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "format",
+          "attribute": "format",
+          "type": "| 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY'",
+          "description": "The date format for display and input."
+        },
+        {
+          "name": "hideOverflowDates",
+          "attribute": "hide-overflow-dates",
+          "type": "boolean",
+          "description": "When omitted, defaults to `true` in range mode and `false` in single mode."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "string",
+          "description": "Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`)."
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "string",
+          "description": "Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`)."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name."
+        },
+        {
+          "name": "readOnly",
+          "attribute": "read-only",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the value is editable."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required or must be checked for the form to be submittable."
+        },
+        {
+          "name": "showWeekNumbers",
+          "attribute": "show-week-numbers",
+          "type": "boolean",
+          "default": "false",
+          "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'single' | 'range'",
+          "default": "'single'",
+          "description": "Activates range mode. `value` is the start date; `endValue` is the end date."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The selected date in single mode. In range mode (`type=\"range\"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset."
+        },
+        {
+          "name": "weekStartDay",
+          "attribute": "week-start-day",
+          "type": "WeekStartDay",
+          "default": "'sunday'",
+          "description": "The first day of the week for the calendar display"
+        }
+      ],
+      "events": [
+        {
+          "name": "calendarMonthChange",
+          "type": "EventEmitter<number>",
+          "description": "Event emitted when the start (or single-mode) calendar month selection changes."
+        },
+        {
+          "name": "calendarYearChange",
+          "type": "EventEmitter<number>",
+          "description": "Event emitted when the start (or single-mode) calendar year selection changes."
+        },
+        {
+          "name": "endCalendarMonthChange",
+          "type": "EventEmitter<number>",
+          "description": "Event emitted when the end calendar month selection changes in range mode."
+        },
+        {
+          "name": "endCalendarYearChange",
+          "type": "EventEmitter<number>",
+          "description": "Event emitted when the end calendar year selection changes in range mode."
+        },
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus. In range mode, `detail.field` is `'start'` or `'end'`."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, `detail.field` is `'start'` or `'end'`."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus. In range mode, `detail.field` is `'start'` or `'end'`."
+        },
+        {
+          "name": "rangeChange",
+          "type": "EventEmitter<IDateRange>",
+          "description": "Event emitted when a complete date range is selected in range mode."
+        }
+      ],
+      "methods": [
+        "handleArrowKeys",
+        "handleCalendarFocusIn",
+        "handleClickOutside",
+        "handleEndValueChange",
+        "handleEscapeKey",
+        "handleFormatChange",
+        "handleMaxChange",
+        "handleMinChange",
+        "handleValueChange",
+        "handleWeekStartDayChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-divider",
+      "sourceFile": "src/components/modus-wc-divider/modus-wc-divider.tsx",
+      "description": "A customizable divider component used to separate content horizontally or vertically",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'high-contrast'\n    | 'success'\n    | 'warning'\n    | 'danger'",
+          "default": "'tertiary'",
+          "description": "The color of the divider line."
+        },
+        {
+          "name": "content",
+          "attribute": "content",
+          "type": "string",
+          "default": "''",
+          "description": "The content to display in the divider."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the divider element."
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "default": "'vertical'",
+          "description": "The orientation of the divider. This is in reference to how content will be rendered around the divider."
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "'center' | 'end' | 'start'",
+          "default": "'center'",
+          "description": "The position of the divider."
+        },
+        {
+          "name": "responsive",
+          "attribute": "responsive",
+          "type": "boolean",
+          "default": "true",
+          "description": "Whether the divider is responsive or not."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-dock",
+      "sourceFile": "src/components/modus-wc-dock/modus-wc-dock.tsx",
+      "description": "Dock navigation bar for navigating between primary screens.",
+      "props": [
+        {
+          "name": "activeItemIndex",
+          "attribute": "active-item-index",
+          "type": "unknown",
+          "default": "0",
+          "description": "The currently active dock item index."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "unknown",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner nav element."
+        },
+        {
+          "name": "items",
+          "attribute": "items",
+          "type": "IDockItem[]",
+          "default": "[]",
+          "description": "The dock items to display."
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "DockPosition",
+          "default": "'bottom'",
+          "description": "The edge the dock is anchored to. Controls layout and active indicator orientation."
+        },
+        {
+          "name": "showLabels",
+          "attribute": "show-labels",
+          "type": "unknown",
+          "default": "true",
+          "description": "If true, text labels are shown below icons."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the dock items."
+        }
+      ],
+      "events": [
+        {
+          "name": "itemSelect",
+          "type": "EventEmitter<{ index: number; item: IDockItem }>",
+          "description": "Emitted when a dock item is selected."
+        }
+      ],
+      "methods": [
+        "handleItemsChange",
+        "handleKeyDown"
+      ]
+    },
+    {
+      "tag": "modus-wc-dropdown-menu",
+      "sourceFile": "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx",
+      "description": "A customizable dropdown menu component used to render a button and toggleable menu.\n\nThe component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.",
+      "props": [
+        {
+          "name": "buttonAriaLabel",
+          "attribute": "button-aria-label",
+          "type": "string",
+          "description": "The aria-label for the dropdown button."
+        },
+        {
+          "name": "buttonColor",
+          "attribute": "button-color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'",
+          "default": "'primary'",
+          "description": "The color variant of the button."
+        },
+        {
+          "name": "buttonShape",
+          "attribute": "button-shape",
+          "type": "'circle' | 'ellipse' | 'rectangle' | 'square'",
+          "default": "'rectangle'",
+          "description": "The shape of the button."
+        },
+        {
+          "name": "buttonSize",
+          "attribute": "button-size",
+          "type": "DaisySize | 'xl'",
+          "default": "'md'",
+          "description": "The size of the button."
+        },
+        {
+          "name": "buttonVariant",
+          "attribute": "button-variant",
+          "type": "'borderless' | 'filled' | 'outlined'",
+          "default": "'filled'",
+          "description": "The variant of the button."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the host element."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "If true, the button will be disabled."
+        },
+        {
+          "name": "menuBordered",
+          "attribute": "menu-bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the menu should have a border."
+        },
+        {
+          "name": "menuOffset",
+          "attribute": "menu-offset",
+          "type": "number",
+          "default": "10",
+          "description": "Distance between the button and menu in pixels."
+        },
+        {
+          "name": "menuPlacement",
+          "attribute": "menu-placement",
+          "type": "PopoverPlacement",
+          "default": "'bottom-start'",
+          "description": "The placement of the menu relative to the button."
+        },
+        {
+          "name": "menuSize",
+          "attribute": "menu-size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the menu."
+        },
+        {
+          "name": "menuStrategy",
+          "attribute": "menu-strategy",
+          "type": "'absolute' | 'fixed'",
+          "default": "'absolute'",
+          "description": "The positioning strategy for the menu. Use 'fixed' when the dropdown is\ninside a clipping ancestor (e.g. overflow:hidden) so the menu escapes to\nthe viewport coordinate space."
+        },
+        {
+          "name": "menuVisible",
+          "attribute": "menu-visible",
+          "type": "boolean",
+          "default": "false",
+          "description": "Indicates that the menu is visible."
+        }
+      ],
+      "events": [
+        {
+          "name": "menuVisibilityChange",
+          "type": "EventEmitter<{ isVisible: boolean }>",
+          "description": "Event emitted when the menuVisible prop changes."
+        }
+      ],
+      "methods": [
+        "handleDocumentClick",
+        "handleKeyDown",
+        "onMenuVisibilityChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-file-dropzone",
+      "sourceFile": "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx",
+      "description": "File dropzone component that allows users to drag and drop files for upload.\n\nThe component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.",
+      "props": [
+        {
+          "name": "acceptFileTypes",
+          "attribute": "accept-file-types",
+          "type": "string",
+          "description": "Accepted file types (e.g. '.jpg,.png' or 'image/*')"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the file dropzone element"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "description": "Disable the file input"
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IFileDropzoneFeedback",
+          "description": "External feedback to display info, success, or error state with optional custom icon and message"
+        },
+        {
+          "name": "fileDraggedOverInstructions",
+          "attribute": "file-dragged-over-instructions",
+          "type": "string",
+          "description": "Custom instructions shown when files are dragged over the dropzone"
+        },
+        {
+          "name": "includeStateIcon",
+          "attribute": "include-state-icon",
+          "type": "boolean",
+          "default": "true",
+          "description": "Include state icon for default, validation, upload, and feedback states"
+        },
+        {
+          "name": "instructions",
+          "attribute": "instructions",
+          "type": "string",
+          "description": "Custom instructions shown as the default dropzone message"
+        },
+        {
+          "name": "invalidFileTypeMessage",
+          "attribute": "invalid-file-type-message",
+          "type": "string",
+          "description": "Custom error message displayed when an invalid file type is selected"
+        },
+        {
+          "name": "maxFileCount",
+          "attribute": "max-file-count",
+          "type": "number",
+          "description": "Maximum number of files allowed, will show error if exceeded"
+        },
+        {
+          "name": "maxFileNameLength",
+          "attribute": "max-file-name-length",
+          "type": "number",
+          "description": "Maximum allowed length of filename, will show error if exceeded"
+        },
+        {
+          "name": "maxTotalFileSizeBytes",
+          "attribute": "max-total-file-size-bytes",
+          "type": "number",
+          "description": "Maximum total file size in bytes allowed, will show error if exceeded"
+        },
+        {
+          "name": "multiple",
+          "attribute": "multiple",
+          "type": "boolean",
+          "description": "Allow multiple file selection"
+        },
+        {
+          "name": "successMessage",
+          "attribute": "success-message",
+          "type": "string",
+          "description": "Success message displayed when files are uploaded successfully"
+        }
+      ],
+      "events": [
+        {
+          "name": "fileSelect",
+          "type": "EventEmitter<FileList>",
+          "description": "Event emitted when files are selected"
+        }
+      ],
+      "methods": [
+        "handleFileChange",
+        "reset"
+      ]
+    },
+    {
+      "tag": "modus-wc-handle",
+      "sourceFile": "src/components/modus-wc-handle/modus-wc-handle.tsx",
+      "description": "A draggable handle component for resizing adjacent elements",
+      "props": [
+        {
+          "name": "buttonColor",
+          "attribute": "button-color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'warning'\n    | 'danger'",
+          "default": "'tertiary'",
+          "description": "The color of the button."
+        },
+        {
+          "name": "buttonSize",
+          "attribute": "button-size",
+          "type": "DaisySize | 'xl'",
+          "default": "'md'",
+          "description": "The size of the button."
+        },
+        {
+          "name": "buttonVariant",
+          "attribute": "button-variant",
+          "type": "'borderless' | 'filled' | 'outlined'",
+          "default": "'filled'",
+          "description": "The variant of the button."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the handle element."
+        },
+        {
+          "name": "defaultSplit",
+          "attribute": "default-split",
+          "type": "number",
+          "default": "50",
+          "description": "The initial split percentage for the left/top panel (1-100). The right/bottom panel gets the remaining percentage."
+        },
+        {
+          "name": "density",
+          "attribute": "density",
+          "type": "'compact' | 'comfortable' | 'relaxed'",
+          "default": "'comfortable'",
+          "description": "The density/spacing of the handle container (compact: 8px, comfortable: 12px, relaxed: 16px)."
+        },
+        {
+          "name": "leftTarget",
+          "attribute": "left-target",
+          "type": "string | HTMLElement",
+          "description": "The left target element to resize (CSS selector or HTMLElement)"
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "default": "'horizontal'",
+          "description": "The orientation of the handle."
+        },
+        {
+          "name": "rightTarget",
+          "attribute": "right-target",
+          "type": "string | HTMLElement",
+          "description": "The right target element to resize (CSS selector or HTMLElement)"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "'default' | 'lg' | 'xl' | '2xl'",
+          "default": "'default'",
+          "description": "The size of the handle."
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'bar' | 'button'",
+          "default": "'bar'",
+          "description": "The type of handle to display."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-icon",
+      "sourceFile": "src/components/modus-wc-icon/modus-wc-icon.tsx",
+      "description": "A customizable icon component used to render Modus icons.\r\n\r\n<b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the i element."
+        },
+        {
+          "name": "decorative",
+          "attribute": "decorative",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "The icon name, should match the CSS class in the icon font."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "DaisySize",
+          "default": "'md'",
+          "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'outlined' | 'solid'",
+          "description": "The icon variant, can be \"outlined\" or \"solid\"."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-input-feedback",
+      "sourceFile": "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx",
+      "description": "A customizable feedback component used to provide additional context related to form input interactions.\n\n<b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div element."
+        },
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "type": "string",
+          "default": "''",
+          "description": "The Modus icon to use instead of the pre-defined icons."
+        },
+        {
+          "name": "level",
+          "attribute": "level",
+          "type": "IInputFeedbackLevel",
+          "description": "The level informs which icon and color that will be rendered."
+        },
+        {
+          "name": "message",
+          "attribute": "message",
+          "type": "string",
+          "default": "''",
+          "description": "The message."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the feedback component."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-input-label",
+      "sourceFile": "src/components/modus-wc-input-label/modus-wc-input-label.tsx",
+      "description": "A customizable input label component.\r\n\r\nThe component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Additional classes for custom styling."
+        },
+        {
+          "name": "forId",
+          "attribute": "for-id",
+          "type": "string",
+          "description": "The `for` attribute of the label, matching the `id` of the associated input."
+        },
+        {
+          "name": "labelText",
+          "attribute": "label-text",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the label indicates a required field."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the label."
+        },
+        {
+          "name": "subLabelText",
+          "attribute": "sub-label-text",
+          "type": "string",
+          "description": "The text rendered beneath the label."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-link",
+      "sourceFile": "src/components/modus-wc-link/modus-wc-link.tsx",
+      "description": "A customizable link component used to navigate to URLs.",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "| 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'inherit'\n    | 'success'\n    | 'info'\n    | 'warning'\n    | 'danger'",
+          "default": "'primary'",
+          "description": "The color of the link."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the link element."
+        },
+        {
+          "name": "href",
+          "attribute": "href",
+          "type": "string",
+          "description": "The URL to navigate to when the link is activated."
+        },
+        {
+          "name": "rel",
+          "attribute": "rel",
+          "type": "string",
+          "description": "The relationship attribute for the link."
+        },
+        {
+          "name": "target",
+          "attribute": "target",
+          "type": "string",
+          "description": "The browsing context for the link."
+        },
+        {
+          "name": "underline",
+          "attribute": "underline",
+          "type": "'always' | 'hover' | 'none'",
+          "default": "'always'",
+          "description": "The underline behavior of the link."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-loader",
+      "sourceFile": "src/components/modus-wc-loader/modus-wc-loader.tsx",
+      "description": "A customizable loader component used to indicate the loading of content",
+      "props": [
+        {
+          "name": "color",
+          "attribute": "color",
+          "type": "LoaderColor",
+          "default": "'primary'",
+          "description": "The color of the loader."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the loader element."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "DaisySize",
+          "default": "'md'",
+          "description": "The size of the loader."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "LoaderVariant",
+          "default": "'spinner'",
+          "description": "The variant of the loader."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-logo",
+      "sourceFile": "src/components/modus-wc-logo/modus-wc-logo.tsx",
+      "description": "A component for displaying Trimble product logos with support for both fixed and scalable sizing.\nProvides consistent branding across applications with various product logo options.\nLogo colors automatically adapt to the active Modus theme via CSS variables.",
+      "props": [
+        {
+          "name": "alt",
+          "attribute": "alt",
+          "type": "string",
+          "description": "The alt text for accessibility. If not provided, defaults to the logo name."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the logo container."
+        },
+        {
+          "name": "emblem",
+          "attribute": "emblem",
+          "type": "boolean",
+          "default": "false",
+          "description": "Show emblem version (icon only) instead of full logo"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "LogoName",
+          "description": "The name of the logo to display. Accepts values like 'trimble', 'viewpoint_field_view', etc."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-menu",
+      "sourceFile": "src/components/modus-wc-menu/modus-wc-menu.tsx",
+      "description": "A customizable menu component used to display a list of li elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom li elements inside the ul element.",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "description": "Indicates that the menu should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the ul element."
+        },
+        {
+          "name": "isSubMenu",
+          "attribute": "is-sub-menu",
+          "type": "boolean",
+          "description": "Indicates that this menu is a submenu (dropdown)."
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "default": "'vertical'",
+          "description": "The orientation of the menu."
+        },
+        {
+          "name": "selectionMode",
+          "attribute": "selection-mode",
+          "type": "SelectionMode",
+          "default": "'single'",
+          "description": "The selection mode of the menu."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the menu."
+        }
+      ],
+      "events": [
+        {
+          "name": "menuFocusout",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the menu loses focus."
+        },
+        {
+          "name": "menuSelectionChange",
+          "type": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>",
+          "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements."
+        }
+      ],
+      "methods": [
+        "handleFocusout",
+        "handleItemSelect",
+        "handleKeyDown",
+        "onSelectionModeChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-menu-item",
+      "sourceFile": "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx",
+      "description": "A customizable menu item component used to display the item portion of a menu.\n\nThis component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean"
+        },
+        {
+          "name": "checkbox",
+          "attribute": "checkbox",
+          "type": "boolean",
+          "description": "If true, renders a checkbox at the start of the menu item."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the li element."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "description": "The disabled state of the menu item."
+        },
+        {
+          "name": "focused",
+          "attribute": "focused",
+          "type": "boolean",
+          "description": "The focused state of the menu item."
+        },
+        {
+          "name": "hasSubmenu",
+          "attribute": "has-submenu",
+          "type": "boolean",
+          "description": "Whether this menu item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "default": "''",
+          "description": "The text rendered in the menu item."
+        },
+        {
+          "name": "selected",
+          "attribute": "selected",
+          "type": "boolean",
+          "description": "The selected state of the menu item."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the menu item."
+        },
+        {
+          "name": "subLabel",
+          "attribute": "sub-label",
+          "type": "string",
+          "description": "The text rendered beneath the label."
+        },
+        {
+          "name": "tooltipContent",
+          "attribute": "tooltip-content",
+          "type": "string",
+          "description": "The tooltip text to display when hovering over the menu item."
+        },
+        {
+          "name": "tooltipPosition",
+          "attribute": "tooltip-position",
+          "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+          "default": "'auto'",
+          "description": "The position of the tooltip relative to the menu item."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The unique identifying value of the menu item."
+        }
+      ],
+      "events": [
+        {
+          "name": "itemSelect",
+          "type": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>",
+          "description": "Event emitted when a menu item is selected."
+        }
+      ],
+      "methods": [
+        "collapseSubmenu",
+        "handleKeyDown"
+      ]
+    },
+    {
+      "tag": "modus-wc-modal",
+      "sourceFile": "src/components/modus-wc-modal/modus-wc-modal.tsx",
+      "description": "A customizable modal component used to display content in a dialog.\n\nThis component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.",
+      "props": [
+        {
+          "name": "backdrop",
+          "attribute": "backdrop",
+          "type": "'default' | 'static'",
+          "default": "'default'",
+          "description": "The modal's backdrop.\nSpecify 'static' for a backdrop that doesn't close the modal when clicked outside the modal content."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply"
+        },
+        {
+          "name": "fullscreen",
+          "attribute": "fullscreen",
+          "type": "boolean",
+          "default": "false",
+          "description": "Specifies whether the modal should be displayed full-screen"
+        },
+        {
+          "name": "modalId",
+          "attribute": "modal-id",
+          "type": "string",
+          "description": "The ID of the inner dialog element"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "'bottom' | 'center' | 'top'",
+          "default": "'center'",
+          "description": "Specifies the position of the modal"
+        },
+        {
+          "name": "showClose",
+          "attribute": "show-close",
+          "type": "boolean",
+          "default": "true",
+          "description": "Specifies whether to show the close icon button at the top right of modal"
+        },
+        {
+          "name": "showFullscreenToggle",
+          "attribute": "show-fullscreen-toggle",
+          "type": "boolean",
+          "default": "false",
+          "description": "Specifies whether to show the fullscreen toggle icon button"
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-navbar",
+      "sourceFile": "src/components/modus-wc-navbar/modus-wc-navbar.tsx",
+      "description": "A customizable navbar component used for top level navigation of all Trimble applications.",
+      "props": [
+        {
+          "name": "appsMenuOpen",
+          "attribute": "apps-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the apps menu."
+        },
+        {
+          "name": "condensed",
+          "attribute": "condensed",
+          "type": "boolean",
+          "default": "false",
+          "description": "Applies condensed layout and styling."
+        },
+        {
+          "name": "condensedMenuOpen",
+          "attribute": "condensed-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the condensed menu."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the host element."
+        },
+        {
+          "name": "logoName",
+          "attribute": "logo-name",
+          "type": "LogoName",
+          "default": "'trimble'",
+          "description": "The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'."
+        },
+        {
+          "name": "mainMenuOpen",
+          "attribute": "main-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the main menu."
+        },
+        {
+          "name": "notificationsMenuOpen",
+          "attribute": "notifications-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the notifications menu."
+        },
+        {
+          "name": "searchDebounceMs",
+          "attribute": "search-debounce-ms",
+          "type": "number",
+          "default": "300",
+          "description": "Debounce time in milliseconds for search input changes. Default is 300ms."
+        },
+        {
+          "name": "searchInputOpen",
+          "attribute": "search-input-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the search input."
+        },
+        {
+          "name": "textOverrides",
+          "attribute": "text-overrides",
+          "type": "INavbarTextOverrides",
+          "description": "Text replacements for the navbar."
+        },
+        {
+          "name": "userCard",
+          "attribute": "user-card",
+          "type": "INavbarUserCard",
+          "description": "User information used to render the user card."
+        },
+        {
+          "name": "userMenuOpen",
+          "attribute": "user-menu-open",
+          "type": "boolean",
+          "default": "false",
+          "description": "The open state of the user menu."
+        },
+        {
+          "name": "visibility",
+          "attribute": "visibility",
+          "type": "INavbarVisibility",
+          "default": "{ ai: false, apps: false, help: false, logo: true, mainMenu: false, notifications: false, search: false, searchInput: false, user: true, }",
+          "description": "The visibility of individual navbar buttons. Default is user profile visible, others hidden."
+        }
+      ],
+      "events": [
+        {
+          "name": "aiClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the AI button is clicked or activated via keyboard."
+        },
+        {
+          "name": "appsClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the apps button is clicked or activated via keyboard."
+        },
+        {
+          "name": "appsMenuOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the apps menu open state changes."
+        },
+        {
+          "name": "condensedMenuOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the condensed menu open state changes."
+        },
+        {
+          "name": "helpClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the help button is clicked or activated via keyboard."
+        },
+        {
+          "name": "mainMenuOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the main menu open state changes."
+        },
+        {
+          "name": "myTrimbleClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the user profile Access MyTrimble button is clicked or activated via keyboard."
+        },
+        {
+          "name": "notificationsClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the notifications button is clicked or activated via keyboard."
+        },
+        {
+          "name": "notificationsMenuOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the notifications menu open state changes."
+        },
+        {
+          "name": "searchChange",
+          "type": "EventEmitter<{ value: string }>",
+          "description": "Event emitted when the search input value is changed."
+        },
+        {
+          "name": "searchClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the search button is clicked or activated via keyboard."
+        },
+        {
+          "name": "searchInputOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the search input open state changes."
+        },
+        {
+          "name": "signOutClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the user profile sign out button is clicked or activated via keyboard."
+        },
+        {
+          "name": "trimbleLogoClick",
+          "type": "EventEmitter<MouseEvent | KeyboardEvent>",
+          "description": "Event emitted when the logo button is clicked or activated via keyboard,regardless of the `logoName` prop value."
+        },
+        {
+          "name": "userMenuOpenChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the user menu open state changes."
+        }
+      ],
+      "methods": [
+        "handleClickOutside"
+      ]
+    },
+    {
+      "tag": "modus-wc-number-input",
+      "sourceFile": "src/components/modus-wc-number-input/modus-wc-number-input.tsx",
+      "description": "A customizable input component used to create number inputs with types",
+      "props": [
+        {
+          "name": "autoComplete",
+          "attribute": "auto-complete",
+          "type": "'on' | 'off'",
+          "description": "Hint for form autofill feature."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "currencySymbol",
+          "attribute": "currency-symbol",
+          "type": "string",
+          "default": "''",
+          "description": "The currency symbol to display."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the input."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "number",
+          "description": "The input's maximum value."
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "number",
+          "description": "The input's minimum value."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string",
+          "default": "''",
+          "description": "Text that appears in the form control when it has no value set."
+        },
+        {
+          "name": "readOnly",
+          "attribute": "read-only",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the value is editable."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "step",
+          "attribute": "step",
+          "type": "number",
+          "description": "The granularity that the value adheres to."
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "'number' | 'range'",
+          "default": "'number'",
+          "description": "Type of form control."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the control."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Event emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-pagination",
+      "sourceFile": "src/components/modus-wc-pagination/modus-wc-pagination.tsx",
+      "description": "Pagination component to navigate through pages of content",
+      "props": [
+        {
+          "name": "ariaLabelValues",
+          "attribute": "aria-label-values",
+          "type": "IAriaLabelValues",
+          "description": "Aria label values for pagination buttons"
+        },
+        {
+          "name": "count",
+          "attribute": "count",
+          "type": "number",
+          "default": "1",
+          "description": "Total number of pages"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply"
+        },
+        {
+          "name": "nextButtonText",
+          "attribute": "next-button-text",
+          "type": "string",
+          "description": "The next page button text. If not set, an icon control will be used."
+        },
+        {
+          "name": "page",
+          "attribute": "page",
+          "type": "number",
+          "default": "1",
+          "description": "The current page number"
+        },
+        {
+          "name": "prevButtonText",
+          "attribute": "prev-button-text",
+          "type": "string",
+          "description": "The previous page button text. If not set, an icon control will be used."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize | 'xs' | 'xl'",
+          "default": "'md'",
+          "description": "Size of the pagination buttons"
+        }
+      ],
+      "events": [
+        {
+          "name": "pageChange",
+          "type": "EventEmitter<IPageChange>",
+          "description": "Event emitted when page changes"
+        }
+      ],
+      "methods": [
+        "calculateVisiblePages"
+      ]
+    },
+    {
+      "tag": "modus-wc-panel",
+      "sourceFile": "src/components/modus-wc-panel/modus-wc-panel.tsx",
+      "description": "A customizable panel component used to organize content in a structured layout.\n\nThis component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div."
+        },
+        {
+          "name": "floating",
+          "attribute": "floating",
+          "type": "boolean",
+          "default": "false",
+          "description": "Enable floating mode with elevated shadow."
+        },
+        {
+          "name": "height",
+          "attribute": "height",
+          "type": "string",
+          "default": "'700px'",
+          "description": "Height of the panel in pixels."
+        },
+        {
+          "name": "width",
+          "attribute": "width",
+          "type": "string",
+          "default": "'350px'",
+          "description": "Width of the panel in pixels."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-profile-menu",
+      "sourceFile": "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx",
+      "props": [
+        {
+          "name": "mainMenu",
+          "attribute": "main-menu",
+          "type": "IMainMenu",
+          "description": "Configuration for the default main menu section.\nWhen omitted, all built-in items render in the default order.\nWhen provided, boolean flags control each built-in item and `items` appends custom entries."
+        },
+        {
+          "name": "menuOne",
+          "attribute": "menu-one",
+          "type": "ISubMenu",
+          "description": "Configuration for the first menu including title and items"
+        },
+        {
+          "name": "menuTwo",
+          "attribute": "menu-two",
+          "type": "ISubMenu",
+          "description": "Configuration for the second menu including title and items"
+        },
+        {
+          "name": "profileProps",
+          "attribute": "profile-props",
+          "type": "IProfileMenuProps",
+          "description": "Profile menu properties containing user information"
+        },
+        {
+          "name": "showSignOut",
+          "attribute": "show-sign-out",
+          "type": "boolean",
+          "default": "true",
+          "description": "Controls visibility of the Sign Out menu item in the footer. Defaults to true when omitted."
+        }
+      ],
+      "events": [
+        {
+          "name": "menuItemClick",
+          "type": "EventEmitter<string>",
+          "description": "Emitted when any menu item is clicked, passing back the item value or label"
+        },
+        {
+          "name": "signOutClick",
+          "type": "EventEmitter<void>",
+          "description": "Emitted when the Sign Out menu item is clicked"
+        }
+      ],
+      "methods": [
+        "handleItemSelect",
+        "handleMainMenuChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-progress",
+      "sourceFile": "src/components/modus-wc-progress/modus-wc-progress.tsx",
+      "description": "A customizable progress component used to show the progress of a task or show the passing of time.\n\nThe radial variant supports slotting in custom HTML to be displayed within the progress circle.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the progress element."
+        },
+        {
+          "name": "indeterminate",
+          "attribute": "indeterminate",
+          "type": "boolean",
+          "default": "false",
+          "description": "The indeterminate state of the progress component."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "A text label to render within the progress bar"
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "number",
+          "default": "100",
+          "description": "The progress component's maximum value."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "number",
+          "default": "0",
+          "description": "The value of the progress component."
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "'default' | 'radial'",
+          "default": "'default'",
+          "description": "The variant of the progress component."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-radio",
+      "sourceFile": "src/components/modus-wc-radio/modus-wc-radio.tsx",
+      "description": "A customizable radio button component.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The disabled state of the radio."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "The tabindex of the input."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "default": "''",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "boolean",
+          "default": "false",
+          "description": "The value of the radio."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-rating",
+      "sourceFile": "src/components/modus-wc-rating/modus-wc-rating.tsx",
+      "description": "A rating component that allows users to choose a rating from predefined options",
+      "props": [
+        {
+          "name": "allowHalf",
+          "attribute": "allow-half",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether to allow half-ratings. Only applies to star and heart variants."
+        },
+        {
+          "name": "count",
+          "attribute": "count",
+          "type": "number",
+          "default": "5",
+          "description": "The number of rating items to display"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the rating component is disabled"
+        },
+        {
+          "name": "getAriaLabelText",
+          "attribute": "get-aria-label-text",
+          "type": "(ratingValue: number) => string",
+          "description": "Function to provide aria-label text for a given rating-item index"
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the rating component"
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "number",
+          "default": "0",
+          "description": "The current value of the rating"
+        },
+        {
+          "name": "variant",
+          "attribute": "variant",
+          "type": "ModusWcRatingVariant",
+          "default": "'smiley'",
+          "description": "The variant of the rating scale"
+        }
+      ],
+      "events": [
+        {
+          "name": "ratingChange",
+          "type": "EventEmitter<IRatingChange>",
+          "description": "Event emitted when the rating changes"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-select",
+      "sourceFile": "src/components/modus-wc-select/modus-wc-select.tsx",
+      "description": "A customizable select component used to pick a value from a list of options",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "options",
+          "attribute": "options",
+          "type": "ISelectOption[]",
+          "default": "[]",
+          "description": "The options to display in the select dropdown."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the control."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Event emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-side-navigation",
+      "sourceFile": "src/components/modus-wc-side-navigation/modus-wc-side-navigation.tsx",
+      "description": "A customizable side navigation component for organizing primary navigation and content areas in an application.\n\nThe component supports a `<slot>` for injecting custom content inside the side navigation panel.",
+      "props": [
+        {
+          "name": "collapseOnClickOutside",
+          "attribute": "collapse-on-click-outside",
+          "type": "unknown",
+          "default": "true",
+          "description": "Whether the side navigation should collapse when clicking outside of it."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "expanded",
+          "attribute": "expanded",
+          "type": "unknown",
+          "default": "false",
+          "description": "Whether the side navigation is expanded."
+        },
+        {
+          "name": "maxWidth",
+          "attribute": "max-width",
+          "type": "unknown",
+          "default": "'256px'",
+          "description": "Maximum width of the side navigation panel in an expanded state."
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "'overlay' | 'push'",
+          "default": "'overlay'",
+          "description": "Mode to make side navigation either overlay or push the content for the selector specified in targetContent"
+        },
+        {
+          "name": "targetContent",
+          "attribute": "target-content",
+          "type": "string",
+          "default": "''",
+          "description": "(optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode."
+        }
+      ],
+      "events": [
+        {
+          "name": "expandedChange",
+          "type": "EventEmitter<boolean>",
+          "description": "Event emitted when the expanded state changes (expanded/collapsed)."
+        }
+      ],
+      "methods": [
+        "handleExpandedChange",
+        "handleModeChange",
+        "handleTargetContentChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-skeleton",
+      "sourceFile": "src/components/modus-wc-skeleton/modus-wc-skeleton.tsx",
+      "description": "A customizable skeleton component used to create skeletons of various sizes and shapes",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "height",
+          "attribute": "height",
+          "type": "string",
+          "default": "'var(--modus-wc-line-height-md)'",
+          "description": "The height of the skeleton."
+        },
+        {
+          "name": "shape",
+          "attribute": "shape",
+          "type": "'circle' | 'rectangle'",
+          "default": "'rectangle'",
+          "description": "The shape of the skeleton."
+        },
+        {
+          "name": "width",
+          "attribute": "width",
+          "type": "string",
+          "default": "'100%'",
+          "description": "The width of the skeleton."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-slider",
+      "sourceFile": "src/components/modus-wc-slider/modus-wc-slider.tsx",
+      "description": "A customizable slider component",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The disabled state of the slider."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "The tabindex of the input."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "number",
+          "description": "The maximum slider value."
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "number",
+          "description": "The minimum slider value."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "default": "''",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "step",
+          "attribute": "step",
+          "type": "number",
+          "description": "The increment of the slider."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "number",
+          "default": "0",
+          "description": "The value of the slider."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-stepper",
+      "sourceFile": "src/components/modus-wc-stepper/modus-wc-stepper.tsx",
+      "description": "Used to show a list of steps in a process.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the steps element."
+        },
+        {
+          "name": "interactive",
+          "attribute": "interactive",
+          "type": "boolean",
+          "default": "false",
+          "description": "If true, steps will be rendered as buttons and emit `stepClick` when activated."
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "description": "The orientation of the steps."
+        },
+        {
+          "name": "steps",
+          "attribute": "steps",
+          "type": "IStepperItem[]",
+          "default": "[]",
+          "description": "The steps to display."
+        }
+      ],
+      "events": [
+        {
+          "name": "stepClick",
+          "type": "EventEmitter<{ index: number }>",
+          "description": "Emitted with the 0-based step index when a step is activated and `interactive` is true."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-switch",
+      "sourceFile": "src/components/modus-wc-switch/modus-wc-switch.tsx",
+      "description": "A customizable switch component",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The disabled state of the switch."
+        },
+        {
+          "name": "indeterminate",
+          "attribute": "indeterminate",
+          "type": "boolean",
+          "default": "false",
+          "description": "The indeterminate state of the switch."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "The tabindex of the input."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "default": "''",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize | 'xs'",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "boolean",
+          "default": "false",
+          "description": "The value of the switch."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-table",
+      "sourceFile": "src/components/modus-wc-table/modus-wc-table.tsx",
+      "props": [
+        {
+          "name": "caption",
+          "attribute": "caption",
+          "type": "string",
+          "description": "Accessibility caption for the table (visually hidden but available to screen readers)."
+        },
+        {
+          "name": "columnDefs",
+          "attribute": "column-defs",
+          "type": "ColumnDef<Record<string, unknown>, unknown>[]",
+          "description": "TanStack column definitions. Required in advanced mode."
+        },
+        {
+          "name": "columns",
+          "attribute": "columns",
+          "type": "ITableColumn[]",
+          "description": "An array of column definitions. Required in simple mode."
+        },
+        {
+          "name": "currentPage",
+          "attribute": "current-page",
+          "type": "number",
+          "default": "1",
+          "description": "The current page number in pagination (1-based index)."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "data",
+          "attribute": "data",
+          "type": "Record<string, unknown>[]",
+          "description": "An array of data objects."
+        },
+        {
+          "name": "density",
+          "attribute": "density",
+          "type": "Density",
+          "default": "'comfortable'",
+          "description": "The density of the table, used to save space or increase readability."
+        },
+        {
+          "name": "editable",
+          "attribute": "editable",
+          "type": "boolean | ((row: Record<string, unknown>) => boolean)",
+          "default": "false",
+          "description": "Enable cell editing. Either a boolean (all rows) or a predicate per row."
+        },
+        {
+          "name": "hover",
+          "attribute": "hover",
+          "type": "boolean",
+          "default": "true",
+          "description": "Enable hover effect on table rows."
+        },
+        {
+          "name": "isRowSelectable",
+          "attribute": "is-row-selectable",
+          "type": "(row: Record<string, unknown>) => boolean",
+          "description": "Per-row predicate function controlling row selection eligibility."
+        },
+        {
+          "name": "mode",
+          "attribute": "mode",
+          "type": "'simple' | 'advanced'",
+          "default": "'simple'",
+          "description": "Table mode: simple uses ITableColumn; advanced uses TanStack ColumnDef passthrough."
+        },
+        {
+          "name": "pageSizeOptions",
+          "attribute": "page-size-options",
+          "type": "number[]",
+          "default": "[5, 10, 15]",
+          "description": "Available options for the number of rows per page."
+        },
+        {
+          "name": "paginated",
+          "attribute": "paginated",
+          "type": "boolean",
+          "default": "false",
+          "description": "Enable pagination for the table."
+        },
+        {
+          "name": "selectable",
+          "attribute": "selectable",
+          "type": "'none' | 'single' | 'multi'",
+          "default": "'none'",
+          "description": "Row selection mode: 'none' for no selection, 'single' for single row, 'multi' for multiple rows."
+        },
+        {
+          "name": "selectedRowIds",
+          "attribute": "selected-row-ids",
+          "type": "string[]",
+          "description": "Array of selected row IDs. Used for controlled selection state."
+        },
+        {
+          "name": "showPageSizeSelector",
+          "attribute": "show-page-size-selector",
+          "type": "boolean",
+          "default": "true",
+          "description": "Show/hide the page size selector in pagination."
+        },
+        {
+          "name": "sortable",
+          "attribute": "sortable",
+          "type": "boolean",
+          "default": "true",
+          "description": "Enable sorting functionality for sortable columns."
+        },
+        {
+          "name": "tableOptions",
+          "attribute": "table-options",
+          "type": "Partial<TableOptions<Record<string, unknown>>>",
+          "description": "Passthrough TanStack table options (getSubRows, getExpandedRowModel, etc.)."
+        },
+        {
+          "name": "zebra",
+          "attribute": "zebra",
+          "type": "boolean",
+          "default": "false",
+          "description": "Zebra striped tables differentiate rows by styling them in an alternating fashion."
+        }
+      ],
+      "events": [
+        {
+          "name": "cellEditCommit",
+          "type": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n    newValue: unknown;\n    updatedRow: Record<string, unknown>;\n  }>",
+          "description": "Emits when cell editing is committed with the new value."
+        },
+        {
+          "name": "cellEditStart",
+          "type": "EventEmitter<{\n    rowIndex: number;\n    colId: string;\n  }>",
+          "description": "Emits when cell editing starts."
+        },
+        {
+          "name": "paginationChange",
+          "type": "EventEmitter<IPaginationChangeEventDetail>",
+          "description": "Emits when pagination changes with the new pagination state."
+        },
+        {
+          "name": "rowClick",
+          "type": "EventEmitter<{\n    row: Record<string, unknown>;\n    index: number;\n  }>",
+          "description": "Emits when a row is clicked."
+        },
+        {
+          "name": "rowSelectionChange",
+          "type": "EventEmitter<{\n    selectedRows: Record<string, unknown>[];\n    selectedRowIds: string[];\n  }>",
+          "description": "Emits when row selection changes with the selected rows and their IDs."
+        },
+        {
+          "name": "sortChange",
+          "type": "EventEmitter<SortingState>",
+          "description": "Emits when sorting changes with the new sorting state."
+        }
+      ],
+      "methods": [
+        "getTableInstance",
+        "handleColumnDefsChange",
+        "handleColumnsChange",
+        "handleCurrentPageChange",
+        "handleDataChange",
+        "handleIsRowSelectableChange",
+        "handleModeChange",
+        "handlePaginatedChange",
+        "handleSelectedRowIdsChange",
+        "handleSortableChange",
+        "handleTableOptionsChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-tabs",
+      "sourceFile": "src/components/modus-wc-tabs/modus-wc-tabs.tsx",
+      "description": "A customizable tabs component used to create groups of tabs.\n\nThe component supports a `<slot>` for injecting custom tab content.",
+      "props": [
+        {
+          "name": "activeTabIndex",
+          "attribute": "active-tab-index",
+          "type": "unknown",
+          "default": "0",
+          "description": "The current active tab"
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the tabs."
+        },
+        {
+          "name": "tabs",
+          "attribute": "tabs",
+          "type": "ITab[]",
+          "default": "[]",
+          "description": "The tabs to display."
+        },
+        {
+          "name": "tabStyle",
+          "attribute": "tab-style",
+          "type": "'boxed' | 'bordered' | 'lifted' | 'none'",
+          "default": "'bordered'",
+          "description": "Additional styling for the tabs."
+        }
+      ],
+      "events": [
+        {
+          "name": "tabChange",
+          "type": "EventEmitter<{\n    previousTab: number;\n    newTab: number;\n  }>",
+          "description": "When a tab is switched to, this event outputs the relevant indices"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-text-input",
+      "sourceFile": "src/components/modus-wc-text-input/modus-wc-text-input.tsx",
+      "description": "A customizable input component used to create text inputs with types.\n\nThe component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.",
+      "props": [
+        {
+          "name": "autoCapitalize",
+          "attribute": "auto-capitalize",
+          "type": "| 'off'\n    | 'none'\n    | 'on'\n    | 'sentences'\n    | 'words'\n    | 'characters'",
+          "description": "Controls automatic capitalization in inputted text."
+        },
+        {
+          "name": "autoComplete",
+          "attribute": "auto-complete",
+          "type": "AutocompleteTypes",
+          "description": "Hint for form autofill feature."
+        },
+        {
+          "name": "autoCorrect",
+          "attribute": "auto-correct",
+          "type": "'on' | 'off'",
+          "description": "Controls automatic correction in inputted text. Support by browser varies."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "clearAriaLabel",
+          "attribute": "clear-aria-label",
+          "type": "string",
+          "default": "'Clear text'",
+          "description": "Aria label for the clear icon button."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the input."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "enterkeyhint",
+          "attribute": "enterkeyhint",
+          "type": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'",
+          "description": "A hint to the browser for which enter key to display."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "includeClear",
+          "attribute": "include-clear",
+          "type": "boolean",
+          "default": "false",
+          "description": "Show the clear button within the input field."
+        },
+        {
+          "name": "includeSearch",
+          "attribute": "include-search",
+          "type": "boolean",
+          "default": "false",
+          "description": "Show the search icon within the input field."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "maxLength",
+          "attribute": "max-length",
+          "type": "number",
+          "description": "Maximum length (number of characters) of value."
+        },
+        {
+          "name": "minLength",
+          "attribute": "min-length",
+          "type": "number",
+          "description": "Minimum length (number of characters) of value."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "pattern",
+          "attribute": "pattern",
+          "type": "string",
+          "description": "Pattern the value must match to be valid"
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string",
+          "default": "''",
+          "description": "Text that appears in the form control when it has no value set."
+        },
+        {
+          "name": "readOnly",
+          "attribute": "read-only",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the value is editable."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "type",
+          "attribute": "type",
+          "type": "TextFieldTypes",
+          "default": "'text'",
+          "description": "Type of form control."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the control."
+        }
+      ],
+      "events": [
+        {
+          "name": "clearClick",
+          "type": "EventEmitter<void>",
+          "description": "Event emitted when the clear button is clicked."
+        },
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Event emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-textarea",
+      "sourceFile": "src/components/modus-wc-textarea/modus-wc-textarea.tsx",
+      "description": "A customizable textarea component.",
+      "props": [
+        {
+          "name": "autoCorrect",
+          "attribute": "auto-correct",
+          "type": "'on' | 'off'",
+          "description": "Controls automatic correction in inputted text. Support by browser varies."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the textarea (supports DaisyUI)."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The disabled state of the textarea."
+        },
+        {
+          "name": "enterkeyhint",
+          "attribute": "enterkeyhint",
+          "type": "| 'enter'\n    | 'done'\n    | 'go'\n    | 'next'\n    | 'previous'\n    | 'search'\n    | 'send'",
+          "description": "A hint to the browser for which enter key to display."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "The tabindex of the input."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "maxLength",
+          "attribute": "max-length",
+          "type": "number",
+          "description": "The maximum number of characters allowed in the textarea."
+        },
+        {
+          "name": "minLength",
+          "attribute": "min-length",
+          "type": "number",
+          "description": "The minimum number of characters required in the textarea."
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "placeholder",
+          "attribute": "placeholder",
+          "type": "string",
+          "default": "''",
+          "description": "The placeholder text for the textarea."
+        },
+        {
+          "name": "readonly",
+          "attribute": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "description": "The readonly state of the textarea."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "rows",
+          "attribute": "rows",
+          "type": "number",
+          "description": "The number of visible text lines for the textarea."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the textarea."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<InputEvent>",
+          "description": "Emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-theme-switcher",
+      "sourceFile": "src/components/modus-wc-theme-switcher/modus-wc-theme-switcher.tsx",
+      "description": "A theme switcher component used to toggle the application theme and/or mode.\n\nAllows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the theme switcher element."
+        }
+      ],
+      "events": [
+        {
+          "name": "themeChange",
+          "type": "EventEmitter<IThemeConfig>",
+          "description": "An event that fires when the theme is changed."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-time-input",
+      "sourceFile": "src/components/modus-wc-time-input/modus-wc-time-input.tsx",
+      "description": "A customizable input component used to create time inputs.",
+      "props": [
+        {
+          "name": "autoComplete",
+          "attribute": "auto-complete",
+          "type": "'on' | 'off'",
+          "description": "Hint for form autofill feature."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "default": "true",
+          "description": "Indicates that the input should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the input."
+        },
+        {
+          "name": "datalistId",
+          "attribute": "datalist-id",
+          "type": "string",
+          "description": "ID of a `<datalist>` element that contains pre-defined time options.\nThe value must be the ID of a `<datalist>` element in the same document."
+        },
+        {
+          "name": "datalistOptions",
+          "attribute": "datalist-options",
+          "type": "string[]",
+          "default": "[]",
+          "description": "The options to display in the time input dropdown. Options must be in `HH:mm` or `HH:mm:ss` format."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the form control is disabled."
+        },
+        {
+          "name": "feedback",
+          "attribute": "feedback",
+          "type": "IInputFeedbackProp",
+          "description": "Feedback to render below the input."
+        },
+        {
+          "name": "inputId",
+          "attribute": "input-id",
+          "type": "string",
+          "description": "The ID of the input element."
+        },
+        {
+          "name": "inputTabIndex",
+          "attribute": "input-tab-index",
+          "type": "number",
+          "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key)."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text to display within the label."
+        },
+        {
+          "name": "max",
+          "attribute": "max",
+          "type": "string",
+          "description": "Maximum value. Format: `HH:mm`, `HH:mm:ss`."
+        },
+        {
+          "name": "min",
+          "attribute": "min",
+          "type": "string",
+          "description": "Minimum value. Format: `HH:mm`, `HH:mm:ss.`"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "type": "string",
+          "description": "Name of the form control. Submitted with the form as part of a name/value pair."
+        },
+        {
+          "name": "readOnly",
+          "attribute": "read-only",
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether the value is editable."
+        },
+        {
+          "name": "required",
+          "attribute": "required",
+          "type": "boolean",
+          "default": "false",
+          "description": "A value is required for the form to be submittable."
+        },
+        {
+          "name": "showSeconds",
+          "attribute": "show-seconds",
+          "type": "boolean",
+          "default": "false",
+          "description": "Displays the time input format as `HH:mm:ss` if `true`.\nInternally sets the `step` to 1 second.\nIf a `step` value is provided, it will override this attribute."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the input."
+        },
+        {
+          "name": "step",
+          "attribute": "step",
+          "type": "number",
+          "description": "Specifies the granularity that the `value` must adhere to.\nValue of step given in seconds. Default value is 60 seconds.\nOverrides the `seconds` attribute if both are provided."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The value of the time input.\nAlways in 24-hour format that includes leading zeros:\n`HH:mm` or `HH:mm:ss`, regardless of input format which is likely\nto be selected based on user's locale (or by the user agent).\nIf time includes seconds the format is always `HH:mm:ss`."
+        }
+      ],
+      "events": [
+        {
+          "name": "inputBlur",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input loses focus."
+        },
+        {
+          "name": "inputChange",
+          "type": "EventEmitter<Event>",
+          "description": "Event emitted when the input value changes."
+        },
+        {
+          "name": "inputFocus",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the input gains focus."
+        }
+      ],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-toast",
+      "sourceFile": "src/components/modus-wc-toast/modus-wc-toast.tsx",
+      "description": "A customizable toast component used to stack elements, positioned on the corner of a page.\n\nThe component supports a `<slot>` for injecting additional custom content inside the toast.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Additional classes for custom styling."
+        },
+        {
+          "name": "delay",
+          "attribute": "delay",
+          "type": "number",
+          "description": "Time taken to dismiss the toast in milliseconds"
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "ToastPosition",
+          "default": "'top-end'",
+          "description": "The position of the toast in the parent container."
+        }
+      ],
+      "events": [],
+      "methods": [
+        "delayChanged",
+        "dismissElement"
+      ]
+    },
+    {
+      "tag": "modus-wc-toolbar",
+      "sourceFile": "src/components/modus-wc-toolbar/modus-wc-toolbar.tsx",
+      "description": "A customizable toolbar component used to organize content across the entire page.\n\nThis component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-tooltip",
+      "sourceFile": "src/components/modus-wc-tooltip/modus-wc-tooltip.tsx",
+      "description": "A customizable tooltip component used to create tooltips with different content.\n\nThe tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on\npointer leave, focus leave, or Escape (without moving focus). When forceOpen is enabled,\nthe tooltip remains open and Escape does not dismiss it.\nUse the contentElement prop to supply rich HTML content to the tooltip such as multiline text.\nFor plain dynamic text, prefer the content prop instead. When contentElement is set, it takes precedence over the content prop.\n\nFor screen reader support, set `tooltip-id` on this component and matching `aria-describedby`\non the trigger (e.g. modus-wc-button).",
+      "props": [
+        {
+          "name": "content",
+          "attribute": "content",
+          "type": "string",
+          "default": "''",
+          "description": "The text content of the tooltip. When contentElement is also set, contentElement takes precedence."
+        },
+        {
+          "name": "contentElement",
+          "attribute": "content-element",
+          "type": "HTMLElement",
+          "description": "An optional rich HTML element to render as the tooltip body.\nWhen set, this takes precedence over the `content` string prop.\nThe element is deep-cloned into the tooltip container."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the inner div."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Disables displaying the tooltip on hover and focus"
+        },
+        {
+          "name": "forceOpen",
+          "attribute": "force-open",
+          "type": "boolean",
+          "description": "Use this attribute to force the tooltip to remain open."
+        },
+        {
+          "name": "position",
+          "attribute": "position",
+          "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+          "default": "'auto'",
+          "description": "The position that the tooltip will render in relation to the element."
+        },
+        {
+          "name": "tooltipId",
+          "attribute": "tooltip-id",
+          "type": "string",
+          "description": "The ID of the tooltip tip element (`role=\"tooltip\"`).\nFor screen reader support, add `aria-describedby` with this value to your trigger element."
+        }
+      ],
+      "events": [
+        {
+          "name": "dismissEscape",
+          "type": "EventEmitter",
+          "description": "An event that fires when the tooltip is dismissed via Escape key"
+        }
+      ],
+      "methods": [
+        "elementKeyupHandler",
+        "handleContentChange",
+        "handleContentElementChange",
+        "handleDisabledChange",
+        "handleFocusIn",
+        "handleFocusOut",
+        "handleForceOpenChange",
+        "handleMouseEnter",
+        "handleMouseLeave",
+        "handlePositionChange",
+        "handleTooltipIdChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-tree-item",
+      "sourceFile": "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx",
+      "description": "A customizable tree item component used to display the item portion of a tree menu.\n\nThis component supports `start` and `end` slots for custom content at the beginning and end of the item.",
+      "props": [
+        {
+          "name": "blockExpand",
+          "attribute": "block-expand",
+          "type": "boolean",
+          "description": "When true, prevents the built-in inline submenu toggle on click. The item will only emit `itemSelect` so the consumer can handle the expansion externally (e.g. show a flyout panel). Only has an effect when `hasSubmenu` is also true."
+        },
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean"
+        },
+        {
+          "name": "checkbox",
+          "attribute": "checkbox",
+          "type": "boolean",
+          "description": "If true, renders a checkbox at the start of the tree item."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the li element."
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "type": "boolean",
+          "description": "The disabled state of the tree item."
+        },
+        {
+          "name": "focused",
+          "attribute": "focused",
+          "type": "boolean",
+          "description": "The focused state of the tree item."
+        },
+        {
+          "name": "hasSubmenu",
+          "attribute": "has-submenu",
+          "type": "boolean",
+          "description": "Whether this tree item has a collapsible submenu. When true, the item will show a caret and handle toggle behavior."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "default": "''",
+          "description": "The text rendered in the tree item."
+        },
+        {
+          "name": "selected",
+          "attribute": "selected",
+          "type": "boolean",
+          "description": "The selected state of the tree item."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the tree item."
+        },
+        {
+          "name": "subLabel",
+          "attribute": "sub-label",
+          "type": "string",
+          "description": "The text rendered beneath the label."
+        },
+        {
+          "name": "tooltipContent",
+          "attribute": "tooltip-content",
+          "type": "string",
+          "description": "The tooltip text to display when hovering over the tree item."
+        },
+        {
+          "name": "tooltipPosition",
+          "attribute": "tooltip-position",
+          "type": "'auto' | 'top' | 'right' | 'bottom' | 'left'",
+          "default": "'auto'",
+          "description": "The position of the tooltip relative to the tree item."
+        },
+        {
+          "name": "value",
+          "attribute": "value",
+          "type": "string",
+          "default": "''",
+          "description": "The unique identifying value of the tree item."
+        }
+      ],
+      "events": [
+        {
+          "name": "itemSelect",
+          "type": "EventEmitter<{\n    value: string;\n    selected?: boolean;\n  }>",
+          "description": "Event emitted when a tree item is selected."
+        }
+      ],
+      "methods": [
+        "collapseSubmenu",
+        "handleKeyDown"
+      ]
+    },
+    {
+      "tag": "modus-wc-tree-menu",
+      "sourceFile": "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx",
+      "description": "A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.\n\nThe component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.",
+      "props": [
+        {
+          "name": "bordered",
+          "attribute": "bordered",
+          "type": "boolean",
+          "description": "Indicates that the tree menu should have a border."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the ul element."
+        },
+        {
+          "name": "isSubMenu",
+          "attribute": "is-sub-menu",
+          "type": "boolean",
+          "description": "Indicates that this tree menu is a submenu (dropdown)."
+        },
+        {
+          "name": "orientation",
+          "attribute": "orientation",
+          "type": "Orientation",
+          "default": "'vertical'",
+          "description": "The orientation of the tree menu."
+        },
+        {
+          "name": "selectionMode",
+          "attribute": "selection-mode",
+          "type": "SelectionMode",
+          "default": "'single'",
+          "description": "The selection mode of the tree menu."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "ModusSize",
+          "default": "'md'",
+          "description": "The size of the tree menu."
+        }
+      ],
+      "events": [
+        {
+          "name": "menuFocusout",
+          "type": "EventEmitter<FocusEvent>",
+          "description": "Event emitted when the tree menu loses focus."
+        },
+        {
+          "name": "menuSelectionChange",
+          "type": "EventEmitter<{\n    selectedItems: HTMLElement[];\n  }>",
+          "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements."
+        }
+      ],
+      "methods": [
+        "handleFocusout",
+        "handleItemSelect",
+        "handleKeyDown",
+        "onSelectionModeChange"
+      ]
+    },
+    {
+      "tag": "modus-wc-typography",
+      "sourceFile": "src/components/modus-wc-typography/modus-wc-typography.tsx",
+      "description": "A customizable typography component used to render text with different sizes, hierarchy, and weights.\n\nNote:\n- When using heading elements (h1-h6), the default heading CSS styling can be accessed without modifying\nthe default size (size=\"md\") and weight (weight=\"normal\") properties. Default styling can be overridden by\nproviding your own custom values for the size or weight properties from the available options.\n\n\n- If both slot content and `label` are provided, only the slot content will be rendered\n- Use the `label` prop when you need to dynamically update the text.",
+      "props": [
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the typography element."
+        },
+        {
+          "name": "hierarchy",
+          "attribute": "hierarchy",
+          "type": "TypographyHierarchy",
+          "default": "'p'",
+          "description": "The hierarchy of the typography component."
+        },
+        {
+          "name": "label",
+          "attribute": "label",
+          "type": "string",
+          "description": "The text label to display."
+        },
+        {
+          "name": "size",
+          "attribute": "size",
+          "type": "TypographySize",
+          "default": "'md'",
+          "description": "The size of the font."
+        },
+        {
+          "name": "weight",
+          "attribute": "weight",
+          "type": "TypographyWeight",
+          "default": "'normal'",
+          "description": "The weight of the text."
+        }
+      ],
+      "events": [],
+      "methods": []
+    },
+    {
+      "tag": "modus-wc-utility-panel",
+      "sourceFile": "src/components/modus-wc-utility-panel/modus-wc-utility-panel.tsx",
+      "props": [
+        {
+          "name": "backgroundOverlay",
+          "attribute": "background-overlay",
+          "type": "unknown",
+          "default": "false",
+          "description": "When true, dims the area behind the panel while it is expanded.\nIf `targetElement` is set, the overlay is scoped to that element only;\notherwise it covers the full viewport."
+        },
+        {
+          "name": "collapseOnClickOutside",
+          "attribute": "collapse-on-click-outside",
+          "type": "unknown",
+          "default": "false",
+          "description": "Whether the panel should collapse when clicking outside of it."
+        },
+        {
+          "name": "customClass",
+          "attribute": "custom-class",
+          "type": "string",
+          "default": "''",
+          "description": "Custom CSS class to apply to the outer div."
+        },
+        {
+          "name": "expanded",
+          "attribute": "expanded",
+          "type": "unknown",
+          "default": "false",
+          "description": "The panel is expanded or closed"
+        },
+        {
+          "name": "pushContent",
+          "attribute": "push-content",
+          "type": "unknown",
+          "default": "false",
+          "description": "Determines if the panel pushes content or displays an overlay."
+        },
+        {
+          "name": "targetElement",
+          "attribute": "target-element",
+          "type": "HTMLElement",
+          "description": "Target element reference to push content when panel opens"
+        }
+      ],
+      "events": [
+        {
+          "name": "panelClosed",
+          "type": "EventEmitter<void>",
+          "description": "An event that fires when the panel is closed."
+        },
+        {
+          "name": "panelOpened",
+          "type": "EventEmitter<void>",
+          "description": "An event that fires when the panel is opened."
+        }
+      ],
+      "methods": [
+        "adjustContent",
+        "closePanel",
+        "handleBackgroundOverlayChange",
+        "handleCollapseOnClickOutsideChange",
+        "handleExpandedChange",
+        "handleTargetChange",
+        "hasSlotContent",
+        "openPanel",
+        "syncBackgroundOverlay"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "modus-wc-accordion",
+      "target": "modus-wc-collapse",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-accordion/modus-wc-accordion.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-accordion",
+      "target": "modus-wc-collapse",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-accordion/modus-wc-accordion.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-alert",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-alert/modus-wc-alert.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-alert",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-alert/modus-wc-alert.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-logo",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-menu-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-panel",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-tooltip",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-app-menu",
+      "target": "modus-wc-typography",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-app-menu/modus-wc-app-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-avatar",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-chip",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-loader",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-menu-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-autocomplete",
+      "target": "modus-wc-text-input",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-avatar",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-avatar/modus-wc-avatar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-badge",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-badge/modus-wc-badge.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-bottom-sheet",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-bottom-sheet",
+      "target": "modus-wc-handle",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-bottom-sheet",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-bottom-sheet",
+      "target": "modus-wc-panel",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-bottom-sheet",
+      "target": "modus-wc-typography",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-bottom-sheet/modus-wc-bottom-sheet.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-button",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-button/modus-wc-button.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-button",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-dropdown-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-button-group",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-button-group/modus-wc-button-group.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-card",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-card/modus-wc-card.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-checkbox",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-checkbox/modus-wc-checkbox.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-chip",
+      "target": "modus-wc-avatar",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-chip/modus-wc-chip.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-chip",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-chip/modus-wc-chip.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-collapse",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-collapse/modus-wc-collapse.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-collapse",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-collapse/modus-wc-collapse.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-checkbox",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-dropdown-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-loader",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-menu-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-modal",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-text-input",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-toolbar",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-tree-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-tree-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-content-tree",
+      "target": "modus-wc-typography",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-content-tree/modus-wc-content-tree.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-date",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-date/modus-wc-date.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-date",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-date/modus-wc-date.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-date",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-date/modus-wc-date.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-date",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-date/modus-wc-date.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-date",
+      "target": "modus-wc-select",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-date/modus-wc-date.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dock",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-dock/modus-wc-dock.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dock",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-dock/modus-wc-dock.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-tree-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-dropdown-menu",
+      "target": "modus-wc-tree-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-dropdown-menu/modus-wc-dropdown-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-file-dropzone",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-file-dropzone",
+      "target": "modus-wc-progress",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-file-dropzone/modus-wc-file-dropzone.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-handle",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-handle/modus-wc-handle.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-handle",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-handle/modus-wc-handle.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-input-feedback",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-input-feedback/modus-wc-input-feedback.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-menu-item",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-menu",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-menu/modus-wc-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-menu-item",
+      "target": "modus-wc-checkbox",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-menu-item",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-menu-item",
+      "target": "modus-wc-tooltip",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-menu-item/modus-wc-menu-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-modal",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-modal/modus-wc-modal.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-avatar",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-card",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-logo",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-menu-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-text-input",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-navbar",
+      "target": "modus-wc-toolbar",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-navbar/modus-wc-navbar.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-number-input",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-number-input/modus-wc-number-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-number-input",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-number-input/modus-wc-number-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-pagination",
+      "target": "modus-wc-tooltip",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-pagination/modus-wc-pagination.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-panel",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-panel/modus-wc-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-avatar",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-menu",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-menu-item",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-panel",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-profile-menu",
+      "target": "modus-wc-typography",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-profile-menu/modus-wc-profile-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-progress",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-progress/modus-wc-progress.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-progress",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-progress/modus-wc-progress.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-radio",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-radio/modus-wc-radio.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-select",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-select/modus-wc-select.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-select",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-select/modus-wc-select.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-dropdown-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-tree-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-side-navigation",
+      "target": "modus-wc-tree-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-side-navigation/modus-wc-side-navigation.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-slider",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-slider/modus-wc-slider.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-switch",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-switch/modus-wc-switch.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-table",
+      "target": "modus-wc-checkbox",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-table/modus-wc-table.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-table",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-table/modus-wc-table.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-table",
+      "target": "modus-wc-pagination",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-table/modus-wc-table.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-table",
+      "target": "modus-wc-select",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-table/modus-wc-table.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tabs",
+      "target": "modus-wc-badge",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tabs/modus-wc-tabs.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tabs",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-tabs/modus-wc-tabs.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-text-input",
+      "target": "modus-wc-button",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-text-input/modus-wc-text-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-text-input",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-text-input/modus-wc-text-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-text-input",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-text-input/modus-wc-text-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-text-input",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-text-input/modus-wc-text-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-textarea",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-textarea/modus-wc-textarea.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-textarea",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-textarea/modus-wc-textarea.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-time-input",
+      "target": "modus-wc-input-feedback",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-time-input/modus-wc-time-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-time-input",
+      "target": "modus-wc-input-label",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-time-input/modus-wc-time-input.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-toast",
+      "target": "modus-wc-alert",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-toast/modus-wc-toast.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tooltip",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tooltip/modus-wc-tooltip.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-checkbox",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-dropdown-menu",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-icon",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-menu-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-item",
+      "target": "modus-wc-tooltip",
+      "type": "composes",
+      "files": [
+        "src/components/modus-wc-tree-item/modus-wc-tree-item.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-icon",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-tree-item",
+      "type": "hosts",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-tree-item",
+      "type": "slot",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.tsx"
+      ]
+    },
+    {
+      "source": "modus-wc-tree-menu",
+      "target": "modus-wc-tree-item",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-tree-menu/modus-wc-tree-menu.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-utility-panel",
+      "target": "modus-wc-button",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
+      ]
+    },
+    {
+      "source": "modus-wc-utility-panel",
+      "target": "modus-wc-text-input",
+      "type": "storybook",
+      "files": [
+        "src/components/modus-wc-utility-panel/modus-wc-utility-panel.stories.ts"
+      ]
+    }
+  ],
+  "reverseImpact": {
+    "modus-wc-accordion": [],
+    "modus-wc-alert": [],
+    "modus-wc-app-menu": [],
+    "modus-wc-autocomplete": [],
+    "modus-wc-avatar": [
+      "modus-wc-navbar",
+      "modus-wc-profile-menu"
+    ],
+    "modus-wc-badge": [],
+    "modus-wc-bottom-sheet": [],
+    "modus-wc-breadcrumbs": [],
+    "modus-wc-button": [
+      "modus-wc-alert",
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-bottom-sheet",
+      "modus-wc-button-group",
+      "modus-wc-content-tree",
+      "modus-wc-date",
+      "modus-wc-dock",
+      "modus-wc-dropdown-menu",
+      "modus-wc-handle",
+      "modus-wc-modal",
+      "modus-wc-navbar",
+      "modus-wc-text-input"
+    ],
+    "modus-wc-button-group": [],
+    "modus-wc-card": [
+      "modus-wc-navbar"
+    ],
+    "modus-wc-checkbox": [
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-menu",
+      "modus-wc-menu-item",
+      "modus-wc-navbar",
+      "modus-wc-profile-menu",
+      "modus-wc-table",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
+    ],
+    "modus-wc-chip": [
+      "modus-wc-autocomplete"
+    ],
+    "modus-wc-collapse": [
+      "modus-wc-accordion"
+    ],
+    "modus-wc-content-tree": [],
+    "modus-wc-date": [],
+    "modus-wc-divider": [],
+    "modus-wc-dock": [],
+    "modus-wc-dropdown-menu": [
+      "modus-wc-content-tree"
+    ],
+    "modus-wc-file-dropzone": [],
+    "modus-wc-handle": [
+      "modus-wc-bottom-sheet"
+    ],
+    "modus-wc-icon": [
+      "modus-wc-accordion",
+      "modus-wc-alert",
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-avatar",
+      "modus-wc-bottom-sheet",
+      "modus-wc-chip",
+      "modus-wc-collapse",
+      "modus-wc-content-tree",
+      "modus-wc-date",
+      "modus-wc-dock",
+      "modus-wc-dropdown-menu",
+      "modus-wc-file-dropzone",
+      "modus-wc-handle",
+      "modus-wc-input-feedback",
+      "modus-wc-menu",
+      "modus-wc-menu-item",
+      "modus-wc-navbar",
+      "modus-wc-number-input",
+      "modus-wc-profile-menu",
+      "modus-wc-select",
+      "modus-wc-table",
+      "modus-wc-tabs",
+      "modus-wc-text-input",
+      "modus-wc-textarea",
+      "modus-wc-time-input",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
+    ],
+    "modus-wc-input-feedback": [
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-date",
+      "modus-wc-navbar",
+      "modus-wc-number-input",
+      "modus-wc-select",
+      "modus-wc-table",
+      "modus-wc-text-input",
+      "modus-wc-textarea",
+      "modus-wc-time-input"
+    ],
+    "modus-wc-input-label": [
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-checkbox",
+      "modus-wc-content-tree",
+      "modus-wc-date",
+      "modus-wc-dropdown-menu",
+      "modus-wc-menu",
+      "modus-wc-menu-item",
+      "modus-wc-navbar",
+      "modus-wc-number-input",
+      "modus-wc-profile-menu",
+      "modus-wc-progress",
+      "modus-wc-radio",
+      "modus-wc-select",
+      "modus-wc-slider",
+      "modus-wc-switch",
+      "modus-wc-table",
+      "modus-wc-text-input",
+      "modus-wc-textarea",
+      "modus-wc-time-input",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
+    ],
+    "modus-wc-link": [],
+    "modus-wc-loader": [
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree"
+    ],
+    "modus-wc-logo": [
+      "modus-wc-app-menu",
+      "modus-wc-navbar"
+    ],
+    "modus-wc-menu": [
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-navbar",
+      "modus-wc-profile-menu"
+    ],
+    "modus-wc-menu-item": [
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-menu",
+      "modus-wc-navbar",
+      "modus-wc-profile-menu"
+    ],
+    "modus-wc-modal": [
+      "modus-wc-content-tree"
+    ],
+    "modus-wc-navbar": [],
+    "modus-wc-number-input": [],
+    "modus-wc-pagination": [
+      "modus-wc-table"
+    ],
+    "modus-wc-panel": [
+      "modus-wc-app-menu",
+      "modus-wc-bottom-sheet",
+      "modus-wc-profile-menu"
+    ],
+    "modus-wc-profile-menu": [],
+    "modus-wc-progress": [],
+    "modus-wc-radio": [],
+    "modus-wc-rating": [],
+    "modus-wc-select": [
+      "modus-wc-date",
+      "modus-wc-table"
+    ],
+    "modus-wc-side-navigation": [],
+    "modus-wc-skeleton": [],
+    "modus-wc-slider": [],
+    "modus-wc-stepper": [],
+    "modus-wc-switch": [],
+    "modus-wc-table": [],
+    "modus-wc-tabs": [],
+    "modus-wc-text-input": [
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-navbar"
+    ],
+    "modus-wc-textarea": [],
+    "modus-wc-theme-switcher": [],
+    "modus-wc-time-input": [],
+    "modus-wc-toast": [],
+    "modus-wc-toolbar": [
+      "modus-wc-content-tree",
+      "modus-wc-navbar"
+    ],
+    "modus-wc-tooltip": [
+      "modus-wc-app-menu",
+      "modus-wc-autocomplete",
+      "modus-wc-content-tree",
+      "modus-wc-dropdown-menu",
+      "modus-wc-menu",
+      "modus-wc-menu-item",
+      "modus-wc-navbar",
+      "modus-wc-pagination",
+      "modus-wc-profile-menu",
+      "modus-wc-table",
+      "modus-wc-tree-item",
+      "modus-wc-tree-menu"
+    ],
+    "modus-wc-tree-item": [
+      "modus-wc-content-tree",
+      "modus-wc-tree-menu"
+    ],
+    "modus-wc-tree-menu": [
+      "modus-wc-content-tree"
+    ],
+    "modus-wc-typography": [
+      "modus-wc-app-menu",
+      "modus-wc-bottom-sheet",
+      "modus-wc-content-tree",
+      "modus-wc-profile-menu"
+    ],
+    "modus-wc-utility-panel": []
+  }
+}

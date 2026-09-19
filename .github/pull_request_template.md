@@ -27,4 +27,4 @@ PR authors and reviewers, please verify that all of these items have been comple
 
 ### :link: Work Item
 
-Issue #
+Closes #

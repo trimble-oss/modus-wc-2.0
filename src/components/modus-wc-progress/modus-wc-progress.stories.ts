@@ -17,6 +17,7 @@ const meta: Meta<ProgressArgs> = {
   component: 'modus-wc-progress',
   args: {
     indeterminate: false,
+    label: 'Progress',
     max: 100,
     value: 70,
     variant: 'default',
@@ -40,7 +41,6 @@ export const Default: Story = {
   render: (args) => {
     return html`
       <modus-wc-progress
-        aria-label="Progress bar"
         custom-class="${ifDefined(args['custom-class'])}"
         ?indeterminate=${args.indeterminate}
         label=${ifDefined(args.label)}
@@ -54,7 +54,12 @@ export const Default: Story = {
 
 export const Indeterminate: Story = {
   render: () => {
-    return html` <modus-wc-progress indeterminate="true"></modus-wc-progress> `;
+    return html`
+      <modus-wc-progress
+        label="Loading progress"
+        indeterminate="true"
+      ></modus-wc-progress>
+    `;
   },
 };
 
@@ -73,11 +78,15 @@ export const SizeVariations: Story = {
 <div>
   <div>
     Default size
-    <modus-wc-progress value=${args.value}></modus-wc-progress>
+    <modus-wc-progress
+      label="Progress"
+      value=${args.value}
+    ></modus-wc-progress>
   </div>
   <div>
     Small size
     <modus-wc-progress
+      label="Progress"
       value=${args.value}
       custom-class="size-small"
     ></modus-wc-progress>
@@ -85,6 +94,7 @@ export const SizeVariations: Story = {
   <div>
     Compact size
     <modus-wc-progress
+      label="Progress"
       value=${args.value}
       custom-class="size-compact"
     ></modus-wc-progress>
@@ -129,6 +139,7 @@ export const CustomBarColor: Story = {
   }
 </style>
 <modus-wc-progress
+  label="Progress"
   value=${args.value}
   custom-class="custom-bar-color"
 ></modus-wc-progress>
@@ -146,6 +157,7 @@ export const CustomBackgroundColor: Story = {
   }
 </style>
 <modus-wc-progress
+  label="Progress"
   value=${args.value}
   custom-class="custom-bg-color"
 ></modus-wc-progress>
@@ -162,8 +174,12 @@ export const RadialWithSlottedContent: Story = {
     justify-content: center;
   }
 </style>
+<modus-wc-input-label
+  label-id="radial-slotted-progress-label"
+  label-text="Progress"
+></modus-wc-input-label>
 <modus-wc-progress
-  aria-label="progress radial"
+  aria-labelledby="radial-slotted-progress-label"
   ?indeterminate=${args.indeterminate}
   max=${ifDefined(args.max)}
   variant="radial"
@@ -191,8 +207,12 @@ export const RadialWithCustomSizeAndThickness: Story = {
     --thickness: 0.5rem;
   }
 </style>
+<modus-wc-input-label
+  label-id="radial-custom-size-progress-label"
+  label-text="Progress"
+></modus-wc-input-label>
 <modus-wc-progress
-  aria-label="progress radial"
+  aria-labelledby="radial-custom-size-progress-label"
   custom-class="radial-progress--lg"
   ?indeterminate=${args.indeterminate}
   max=${ifDefined(args.max)}
@@ -202,7 +222,7 @@ export const RadialWithCustomSizeAndThickness: Story = {
   ${args.value}%
 </modus-wc-progress>
 <modus-wc-progress
-  aria-label="progress radial"
+  aria-labelledby="radial-custom-size-progress-label"
   custom-class="radial-progress--lg radial-progress--thin"
   ?indeterminate=${args.indeterminate}
   max=${ifDefined(args.max)}

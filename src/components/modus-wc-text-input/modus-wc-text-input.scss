@@ -11,10 +11,20 @@ modus-wc-text-input .modus-wc-input {
 
   & input {
     background-color: var(--modus-wc-color-base-page);
+
+    &[type='search']::-webkit-search-cancel-button {
+      display: none;
+    }
+
+    color: var(--modus-wc-color-base-inverted);
   }
 
   &:has(> input[disabled]) > input[disabled] {
     background-color: var(--modus-wc-color-base-200);
+  }
+
+  &:has(> input[readonly]) > input[readonly] {
+    background-color: var(--modus-wc-color-base-100);
   }
 }
 
@@ -59,6 +69,26 @@ modus-wc-text-input {
         }
       }
 
+      &.modus-wc-input-xs {
+        padding: 0 var(--modus-wc-spacing-sm);
+
+        input {
+          max-height: var(--modus-wc-size-xs);
+        }
+
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+          height: var(--modus-wc-line-height-sm);
+          width: var(--modus-wc-line-height-sm);
+        }
+      }
+
+      &.modus-wc-input-xl {
+        .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+          height: var(--modus-wc-line-height-lg);
+          width: var(--modus-wc-line-height-lg);
+        }
+      }
+
       .modus-wc-text-input-icon {
         &.modus-wc-text-input-icon-clear {
           cursor: pointer;
@@ -81,6 +111,10 @@ modus-wc-text-input {
         .modus-wc-text-input-icon-password {
           opacity: 0.5;
         }
+      }
+
+      &.modus-wc-text-input--readonly {
+        background-color: var(--modus-wc-color-base-100);
       }
 
       .modus-wc-clear-icon-container {
@@ -164,15 +198,206 @@ modus-wc-text-input {
         box-shadow: none;
         outline: none;
       }
+    }
+  }
+}
 
-      &.modus-wc-input-sm .modus-wc-clear-icon-container {
-        min-width: var(--modus-wc-line-height-sm);
+[data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-input-label,
+[data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-input-label {
+  color: var(--modus-wc-color-accent); // Figma label color (#6a6e79)
+  padding-bottom: var(--modus-wc-spacing-xs); // Figma t-spacing/1 (4px)
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-xs)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-xs)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-sm)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-sm)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-md);
+  line-height: var(--modus-wc-line-height-md);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-md)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-md)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-lg);
+  line-height: var(--modus-wc-line-height-md);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-lg)
+  .modus-wc-input-label,
+[data-theme='modus-modern-light']
+  modus-wc-text-input:has(.modus-wc-input-xl)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-text-input:has(.modus-wc-input-xl)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: var(--modus-wc-line-height-lg);
+}
+
+[data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-text-input,
+[data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-text-input {
+  &.modus-wc-input {
+    gap: var(--modus-wc-spacing-sm);
+
+    &.modus-wc-input-xs {
+      font-size: var(--modus-wc-font-size-sm);
+      height: var(--modus-wc-size-xs);
+      line-height: 1.25rem;
+      min-height: var(--modus-wc-size-xs);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+
+      input,
+      input::placeholder {
+        line-height: 1.25rem;
       }
 
-      &.modus-wc-input-lg .modus-wc-clear-icon-container {
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+    }
+
+    &.modus-wc-input-sm {
+      font-size: var(--modus-wc-font-size-md);
+      height: var(--modus-wc-size-sm);
+      line-height: var(--modus-wc-line-height-md);
+      min-height: var(--modus-wc-size-sm);
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-md);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-md);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+    }
+
+    &.modus-wc-input-md {
+      font-size: var(--modus-wc-font-size-lg);
+      height: var(--modus-wc-size-md);
+      line-height: var(--modus-wc-line-height-md);
+      min-height: var(--modus-wc-size-md);
+      padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-lg);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-md);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-md);
+        width: var(--modus-wc-line-height-md);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-md);
+      }
+    }
+
+    &.modus-wc-input-lg {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-size-lg);
+      line-height: var(--modus-wc-line-height-lg);
+      min-height: var(--modus-wc-size-lg);
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-clear-icon-container {
         min-width: var(--modus-wc-line-height-lg);
       }
     }
+
+    &.modus-wc-input-xl {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+      min-height: var(--modus-wc-size-xl);
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-lg);
+      }
+    }
+  }
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered {
+  // Fallback for Chrome <111: --modus-wc-color-gray-10 (#171c1e) at 20% opacity
+  border-color: rgb(23 28 30 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-10) 20%,
+      transparent
+    );
+  }
+}
+
+[data-theme='modus-modern-dark']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input.modus-wc-input-bordered {
+  // Fallback for Chrome <111: --modus-wc-color-gray-light (#f1f1f6) at 20% opacity
+  border-color: rgb(241 241 246 / 0.2);
+
+  @supports (background-color: color-mix(in sRGB, red 50%, blue)) {
+    border-color: color-mix(
+      in sRGB,
+      var(--modus-wc-color-gray-light) 20%,
+      transparent
+    );
   }
 }
 
@@ -182,7 +407,26 @@ modus-wc-text-input {
   &.modus-wc-input {
     border-radius: var(--modus-wc-border-radius-md);
 
-    // TODO - add support for xs and xl once added to Modus Figma
+    &.modus-wc-input-xs {
+      font-size: var(--modus-wc-font-size-sm);
+      height: var(--modus-wc-size-xs);
+      line-height: 1.25rem;
+      padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+
+      input,
+      input::placeholder {
+        line-height: 1.25rem;
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-sm);
+        width: var(--modus-wc-line-height-sm);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-sm);
+      }
+    }
 
     &.modus-wc-input-sm {
       font-size: var(--modus-wc-font-size-sm);
@@ -203,6 +447,27 @@ modus-wc-text-input {
       height: var(--modus-wc-input-height-lg);
       line-height: var(--modus-wc-line-height-lg);
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
+    }
+
+    &.modus-wc-input-xl {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-size-xl);
+      line-height: var(--modus-wc-line-height-lg);
+      padding: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xl);
+
+      input,
+      input::placeholder {
+        line-height: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-text-input-icon:not(.modus-wc-text-input-icon-custom) {
+        height: var(--modus-wc-line-height-lg);
+        width: var(--modus-wc-line-height-lg);
+      }
+
+      .modus-wc-clear-icon-container {
+        min-width: var(--modus-wc-line-height-lg);
+      }
     }
 
     &:focus-within {

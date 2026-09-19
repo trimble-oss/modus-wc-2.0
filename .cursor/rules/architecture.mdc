@@ -1,0 +1,39 @@
+# Architecture
+
+## Framework
+
+Modus Web Components 2.0 — Stencil JS component library with Tailwind CSS and DaisyUI theming.
+
+## Key Commands
+
+| Command | Purpose |
+|---------|---------|
+| `npm start` | Stencil watch + Storybook (port 6006) + lint |
+| `npm run build` | Full production build (Stencil + Storybook + CEM) |
+| `npm run build:ci` | Stencil library build only |
+| `npm test` | Jest unit tests (`stencil test --spec`) |
+| `npm run lint` | ESLint + Prettier + Stylelint |
+| `npm run tailwind:build` | Compile Tailwind/DaisyUI CSS |
+| `npm run embed:css` | Embed global CSS into components |
+| `npm run embed:component-css` | Embed per-component CSS |
+
+## Structure
+
+```
+src/
+├── components/          # One directory per component (tsx, scss, spec, stories)
+├── styles/              # Global CSS, themes, mixins, Tailwind config
+├── utils/               # Shared utilities
+└── custom-elements.json # CEM manifest
+integrations/            # React, Angular, Vue, Blazor, MAUI wrappers
+.storybook/              # Storybook configuration
+```
+
+## Theming
+
+Six DaisyUI themes: `modus-classic-light/dark`, `modus-modern-light/dark`, `connect-light/dark`.
+Design tokens live in `src/styles/themes/` and `src/styles/modus-wc-variables.css`.
+
+## Testing
+
+100% Jest coverage threshold. Snapshot tests per component. Storybook for visual docs.

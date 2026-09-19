@@ -16,7 +16,7 @@ describe('modus-wc-select', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcInputLabel],
-      html: '<modus-wc-select label="Label" aria-label="Default select"></modus-wc-select>',
+      html: '<modus-wc-select label="Label"></modus-wc-select>',
     });
 
     const component = page.rootInstance as ModusWcSelect;
@@ -60,10 +60,13 @@ describe('modus-wc-select', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect, ModusWcInputLabel],
-      html: '<modus-wc-select label="Country" aria-label="Country"></modus-wc-select>',
+      html: '<modus-wc-select label="Country"></modus-wc-select>',
     });
 
     expectLabelLinkedToControl(page.root!, 'select');
+
+    const select = page.root!.querySelector('select') as HTMLSelectElement;
+    expect(select.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {
@@ -214,5 +217,85 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.length).toBe(2);
     expect(renderedOptions?.[0]).not.toHaveAttribute('selected');
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
+  });
+
+  it('should apply xs size class when size is xs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select size="xs" aria-label="Extra small select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select');
+    expect(select).toHaveClass('modus-wc-select-xs');
+  });
+
+  it('should apply xl size class when size is xl', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect],
+      html: '<modus-wc-select size="xl" aria-label="Extra large select"></modus-wc-select>',
+    });
+
+    const select = page.root!.querySelector('select');
+    expect(select).toHaveClass('modus-wc-select-xl');
+  });
+
+  it('should map xs select size to sm label and feedback sizes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-select size="xs" label="Country" aria-label="Extra small select"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.feedback = { level: 'error', message: 'Required' };
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & { size?: string };
+    const feedback = page.root!.querySelector(
+      'modus-wc-input-feedback'
+    ) as HTMLElement & { size?: string };
+
+    expect(label?.size).toBe('sm');
+    expect(feedback?.size).toBe('sm');
+  });
+
+  it('should map xl select size to lg label and feedback sizes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-select size="xl" label="Country" aria-label="Extra large select"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.feedback = { level: 'error', message: 'Required' };
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & { size?: string };
+    const feedback = page.root!.querySelector(
+      'modus-wc-input-feedback'
+    ) as HTMLElement & { size?: string };
+
+    expect(label?.size).toBe('lg');
+    expect(feedback?.size).toBe('lg');
+  });
+
+  it('should use md label size when size is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSelect, ModusWcInputLabel],
+      html: '<modus-wc-select label="Country" aria-label="Country"></modus-wc-select>',
+    });
+
+    const component = page.rootInstance as ModusWcSelect;
+    component.size = undefined;
+    await page.waitForChanges();
+
+    const label = page.root!.querySelector(
+      'modus-wc-input-label'
+    ) as HTMLElement & {
+      size?: string;
+    };
+    expect(label?.size).toBe('md');
   });
 });

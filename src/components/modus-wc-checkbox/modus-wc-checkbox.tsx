@@ -83,10 +83,6 @@ export class ModusWcCheckbox {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Checkbox';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
 
@@ -139,7 +135,6 @@ export class ModusWcCheckbox {
             forId={effectiveId}
             labelText={this.label}
             required={this.required}
-            size={this.size}
           />
         )}
       </Host>

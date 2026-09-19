@@ -1,0 +1,275 @@
+{
+  "description": "A customizable date picker component used to create date inputs. Adheres to WCAG 2.2 standards.",
+  "properties": [
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Indicates that the input should have a border.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 111
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the input.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 114
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Whether the form control is disabled.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 117
+    },
+    {
+      "name": "feedback",
+      "type": "IInputFeedbackProp",
+      "description": "Feedback to render below the input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 120
+    },
+    {
+      "name": "inputId",
+      "type": "string",
+      "description": "The ID of the start input in single mode. In range mode, the end input id is `{inputId}-end` (or `{generated-id}-end` when omitted). There is no separate prop for the end input id.",
+      "default": null,
+      "mutable": false,
+      "end_line": 123
+    },
+    {
+      "name": "inputTabIndex",
+      "type": "number",
+      "description": "Determine the control's relative ordering for sequential focus navigation (typically with the Tab key).",
+      "default": null,
+      "mutable": false,
+      "end_line": 126
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "The text to display within the label.",
+      "default": null,
+      "mutable": false,
+      "end_line": 129
+    },
+    {
+      "name": "max",
+      "type": "string",
+      "description": "Maximum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).",
+      "default": null,
+      "mutable": false,
+      "end_line": 132
+    },
+    {
+      "name": "min",
+      "type": "string",
+      "description": "Minimum date value. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`).",
+      "default": null,
+      "mutable": false,
+      "end_line": 135
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the form control. In range mode, the end input name is `{name}-end`. There is no separate prop for the end input name.",
+      "default": null,
+      "mutable": false,
+      "end_line": 138
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Whether the value is editable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 141
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "A value is required or must be checked for the form to be submittable.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 144
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the input.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 147
+    },
+    {
+      "name": "format",
+      "type": "| 'yyyy-mm-dd'     | 'dd-mm-yyyy'     | 'mm-dd-yyyy'     | 'yyyy/mm/dd'     | 'dd/mm/yyyy'     | 'mm/dd/yyyy'     | 'MMM DD, YYYY'",
+      "description": "The date format for display and input.",
+      "default": null,
+      "mutable": false,
+      "end_line": 157
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "The selected date in single mode. In range mode (`type=\"range\"`), the start date of the range. Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset.",
+      "default": "''",
+      "mutable": true,
+      "end_line": 160
+    },
+    {
+      "name": "weekStartDay",
+      "type": "WeekStartDay",
+      "description": "The first day of the week for the calendar display",
+      "default": "'sunday'",
+      "mutable": false,
+      "end_line": 163
+    },
+    {
+      "name": "showWeekNumbers",
+      "type": "boolean",
+      "description": "Displays ISO 8601 week numbers in the calendar. Week numbers are calculated with Monday as the first day of the week.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 166
+    },
+    {
+      "name": "hideOverflowDates",
+      "type": "boolean",
+      "description": "When omitted, defaults to `true` in range mode and `false` in single mode.",
+      "default": null,
+      "mutable": false,
+      "end_line": 169
+    },
+    {
+      "name": "type",
+      "type": "'single' | 'range'",
+      "description": "Activates range mode. `value` is the start date; `endValue` is the end date.",
+      "default": "'single'",
+      "mutable": false,
+      "end_line": 172
+    },
+    {
+      "name": "endValue",
+      "type": "string",
+      "description": "The end date in range mode (`type=\"range\"`). Must match the `format` prop pattern (or the locale-derived format when unset) or ISO 8601 (`YYYY-MM-DD`). Empty string when unset. Ignored in single mode.",
+      "default": "''",
+      "mutable": true,
+      "end_line": 175
+    }
+  ],
+  "events": [
+    {
+      "name": "inputBlur",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the input loses focus. In range mode, `detail.field` is `'start'` or `'end'`.",
+      "end_line": 178
+    },
+    {
+      "name": "inputChange",
+      "detail": "InputEvent",
+      "description": "Event emitted when the input value changes. `target.value` is always ISO 8601 (YYYY-MM-DD), or empty string when incomplete or invalid. In range mode, `detail.field` is `'start'` or `'end'`.",
+      "end_line": 181
+    },
+    {
+      "name": "inputFocus",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the input gains focus. In range mode, `detail.field` is `'start'` or `'end'`.",
+      "end_line": 184
+    },
+    {
+      "name": "calendarMonthChange",
+      "detail": "number",
+      "description": "Event emitted when the start (or single-mode) calendar month selection changes.",
+      "end_line": 187
+    },
+    {
+      "name": "calendarYearChange",
+      "detail": "number",
+      "description": "Event emitted when the start (or single-mode) calendar year selection changes.",
+      "end_line": 190
+    },
+    {
+      "name": "endCalendarMonthChange",
+      "detail": "number",
+      "description": "Event emitted when the end calendar month selection changes in range mode.",
+      "end_line": 193
+    },
+    {
+      "name": "endCalendarYearChange",
+      "detail": "number",
+      "description": "Event emitted when the end calendar year selection changes in range mode.",
+      "end_line": 196
+    },
+    {
+      "name": "rangeChange",
+      "detail": "IDateRange",
+      "description": "Event emitted when a complete date range is selected in range mode.",
+      "end_line": 199
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<style>\n        div[id^='story--components-forms-date--default'] {\n          min-height: 400px;\n          width: 300px;\n        }\n      </style>\n      <modus-wc-date\n        aria-label=\"Date input\"\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        end-value=${ifDefined(args['end-value'])}\n        .feedback=${args.feedback}\n        format=${ifDefined(args.format)}\n        .hideOverflowDates=${args['hide-overflow-dates']}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?read-only=${args['read-only']}\n        ?required=${args.required}\n        ?show-week-numbers=${args['show-week-numbers']}\n        size=${ifDefined(args.size)}\n        type=${ifDefined(args.type)}\n        .value=${args.value}\n        week-start-day=${ifDefined(args['week-start-day'])}\n      ></modus-wc-date>",
+    "variations": [],
+    "args": {
+      "bordered": "true",
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "read-only": "false",
+      "required": "false",
+      "show-week-numbers": "false",
+      "size": "'md'",
+      "value": "''",
+      "week-start-day": "'sunday'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus",
+      "calendarMonthChange",
+      "calendarYearChange",
+      "endCalendarMonthChange",
+      "endCalendarYearChange",
+      "rangeChange",
+      ""
+    ]
+  },
+  "tag": "modus-wc-date",
+  "storyExample": {
+    "template": "<style>\n        div[id^='story--components-forms-date--default'] {\n          min-height: 400px;\n          width: 300px;\n        }\n      </style>\n      <modus-wc-date\n        aria-label=\"Date input\"\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        end-value=${ifDefined(args['end-value'])}\n        .feedback=${args.feedback}\n        format=${ifDefined(args.format)}\n        .hideOverflowDates=${args['hide-overflow-dates']}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?read-only=${args['read-only']}\n        ?required=${args.required}\n        ?show-week-numbers=${args['show-week-numbers']}\n        size=${ifDefined(args.size)}\n        type=${ifDefined(args.type)}\n        .value=${args.value}\n        week-start-day=${ifDefined(args['week-start-day'])}\n      ></modus-wc-date>",
+    "args": {
+      "bordered": "true",
+      "custom-class": "''",
+      "disabled": "false",
+      "label": "'Label'",
+      "read-only": "false",
+      "required": "false",
+      "show-week-numbers": "false",
+      "size": "'md'",
+      "value": "''",
+      "week-start-day": "'sunday'"
+    },
+    "argTypes": {},
+    "events": [
+      "inputBlur",
+      "inputChange",
+      "inputFocus",
+      "calendarMonthChange",
+      "calendarYearChange",
+      "endCalendarMonthChange",
+      "endCalendarYearChange",
+      "rangeChange",
+      ""
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { IInputFeedbackProp, ModusSize, WeekStartDay } from '../types';\nimport { dateRangeSourceCode } from './modus-wc-date.story-source';\n\ninterface DateArgs {\n  bordered?: boolean;\n  'custom-class'?: string;\n  disabled?: boolean;\n  'end-value'?: string;\n  feedback?: IInputFeedbackProp;\n  format?:\n    | 'yyyy-mm-dd'\n    | 'dd-mm-yyyy'\n    | 'mm-dd-yyyy'\n    | 'yyyy/mm/dd'\n    | 'dd/mm/yyyy'\n    | 'mm/dd/yyyy'\n    | 'MMM DD, YYYY';\n  'hide-overflow-dates'?: boolean;\n  'input-id'?: string;\n  'input-tab-index'?: number;\n  label?: string;\n  max?: string;\n  min?: string;\n  name?: string;\n  'read-only'?: boolean;\n  required?: boolean;\n  'show-week-numbers'?: boolean;\n  size?: ModusSize;\n  type?: 'single' | 'range';\n  value: string;\n  'week-start-day'?: WeekStartDay;\n}\n\nconst meta: Meta<DateArgs> = {\n  title: 'Components/Forms/Date',\n  component: 'modus-wc-date',\n  args: {\n    bordered: true,\n    'custom-class': '',\n    disabled: false,\n    label: 'Label',\n    'read-only': false,\n    required: false,\n    'show-week-numbers': false,\n    size: 'md',\n    value: '',\n    'week-start-day': 'sunday',\n  },\n  argTypes: {\n    feedback: {\n      table: {\n        type: {\n          detail: `\n            Interface: IInputFeedbackProp\n            Properties:\n            - level ('error' | 'info' | 'success' | 'warning'): The feedback level\n            - message (string, optional): The feedback message\n          `,\n        },\n      },\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg'],\n    },\n    type: {\n      control: { type: 'select' },\n      options: ['single', 'range'],\n    },\n    format: {\n      control: { type: 'select' },\n      options: [\n        undefined,\n        'yyyy-mm-dd',\n        'dd-mm-yyyy',\n        'mm-dd-yyyy',\n        'yyyy/mm/dd',\n        'dd/mm/yyyy',\n        'mm/dd/yyyy',\n        'MMM DD, YYYY',\n      ],\n    },\n    'week-start-day': {\n      control: { type: 'select' },\n      options: [\n        'sunday',\n        'monday',\n        'tuesday',\n        'wednesday',\n        'thursday',\n        'friday',\n        'saturday',\n      ],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: [\n        'inputBlur',\n        'inputChange',\n        'inputFocus',\n        'calendarMonthChange',\n        'calendarYearChange',\n        'endCalendarMonthChange',\n        'endCalendarYearChange',\n        'rangeChange',\n      ],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<DateArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html`\n      <style>\n        div[id^='story--components-forms-date--default'] {\n          min-height: 400px;\n          width: 300px;\n        }\n      </style>\n      <modus-wc-date\n        aria-label=\"Date input\"\n        ?bordered=${args.bordered}\n        custom-class=${ifDefined(args['custom-class'])}\n        ?disabled=${args.disabled}\n        end-value=${ifDefined(args['end-value'])}\n        .feedback=${args.feedback}\n        format=${ifDefined(args.format)}\n        .hideOverflowDates=${args['hide-overflow-dates']}\n        input-id=${ifDefined(args['input-id'])}\n        input-tab-index=${ifDefined(args['input-tab-index'])}\n        label=${ifDefined(args.label)}\n        max=${ifDefined(args.max)}\n        min=${ifDefined(args.min)}\n        name=${ifDefined(args.name)}\n        ?read-only=${args['read-only']}\n        ?required=${args.required}\n        ?show-week-numbers=${args['show-week-numbers']}\n        size=${ifDefined(args.size)}\n        type=${ifDefined(args.type)}\n        .value=${args.value}\n        week-start-day=${ifDefined(args['week-start-day'])}\n      ></modus-wc-date>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nconst errorFeedback: IInputFeedbackProp = {\n  level: 'error',\n  message: 'Value is required.',\n};\n\nexport const WithErrorFeedback: Story = {\n  ...Template,\n  args: { feedback: errorFeedback, required: true },\n  parameters: {\n    docs: {\n      source: {\n        transform: (src) => `${src}\n<script>\n  const dateInputElement = document.querySelector('modus-wc-date');\n  dateInputElement.feedback = {\n    level: 'error',\n    message: 'Value is required.'\n  };\n</script>`,\n      },\n    },\n  },\n};\n\nexport const Range: Story = {\n  parameters: {\n    layout: 'fullscreen',\n    docs: {\n      source: { code: dateRangeSourceCode },\n      description: {\n        story: `\nRange mode uses \\`value\\` as the **start date** and \\`end-value\\` as the **end date**. Both must match the \\`format\\` prop pattern (or the locale-derived format when unset) or ISO 8601 (\\`YYYY-MM-DD\\`).\n\n**Hover preview (anchor model):** After both dates are selected, the anchor defaults to the end date. Dashed hover preview only extends in the clickable direction — forward past the end requires clicking the start date to swap the anchor to \\`start\\`. Hovering inside the confirmed range shows no preview.\n\n**IDs and names:** \\`input-id\\` and \\`name\\` apply to the start input only. In range mode the end input uses \\`{input-id}-end\\` and \\`{name}-end\\` (or \\`{generated-id}-end\\` when \\`input-id\\` is omitted). There are no separate props for the end input id or name.\n\n**Events in range mode:** \\`inputChange\\`, \\`inputFocus\\`, and \\`inputBlur\\` include \\`detail.field\\` (\\`'start'\\` or \\`'end'\\`). End calendar navigation emits \\`endCalendarMonthChange\\` / \\`endCalendarYearChange\\`. Completing a range emits \\`rangeChange\\` with \\`{ startDate, endDate }\\`.\n        `,\n      },\n    },\n  },\n  argTypes: {\n    type: { control: false, table: { disable: true } },\n  },\n  render: (args) => {\n    return html`\n      <div class=\"modus-wc-date-range-story-layout\">\n        <style>\n          .modus-wc-date-range-story-layout {\n            align-items: flex-start;\n            display: flex;\n            justify-content: center;\n            min-height: 450px;\n            padding-top: var(--modus-wc-spacing-xl, 2rem);\n            width: 100%;\n          }\n\n          .modus-wc-date-range-story {\n            width: 780px;\n          }\n\n          .modus-wc-date-range-story modus-wc-date {\n            display: block;\n            width: 100%;\n          }\n        </style>\n        <div class=\"modus-wc-date-range-story\">\n          <modus-wc-date\n            aria-label=\"Date range input\"\n            ?bordered=${args.bordered}\n            custom-class=${ifDefined(args['custom-class'])}\n            ?disabled=${args.disabled}\n            end-value=${ifDefined(args['end-value'])}\n            .feedback=${args.feedback}\n            format=${ifDefined(args.format)}\n            .hideOverflowDates=${args['hide-overflow-dates']}\n            input-id=${ifDefined(args['input-id'])}\n            input-tab-index=${ifDefined(args['input-tab-index'])}\n            label=${ifDefined(args.label)}\n            max=${ifDefined(args.max)}\n            min=${ifDefined(args.min)}\n            name=${ifDefined(args.name)}\n            ?read-only=${args['read-only']}\n            ?required=${args.required}\n            ?show-week-numbers=${args['show-week-numbers']}\n            size=${ifDefined(args.size)}\n            type=\"range\"\n            .value=${args.value}\n            week-start-day=${ifDefined(args['week-start-day'])}\n          ></modus-wc-date>\n        </div>\n      </div>\n    `;\n  },\n  args: {\n    label: 'Select Date',\n    value: '2026-06-10',\n    'end-value': '2026-07-08',\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for date component\n    if (!customElements.get('date-shadow-host')) {\n      const DateShadowHost = createShadowHostClass<DateArgs>({\n        componentTag: 'modus-wc-date',\n        propsMapper: (v: DateArgs, el: HTMLElement) => {\n          const dateEl = el as unknown as {\n            bordered: boolean;\n            customClass: string;\n            disabled: boolean;\n            feedback: IInputFeedbackProp;\n            format?:\n              | 'yyyy-mm-dd'\n              | 'dd-mm-yyyy'\n              | 'mm-dd-yyyy'\n              | 'yyyy/mm/dd'\n              | 'dd/mm/yyyy'\n              | 'mm/dd/yyyy'\n              | 'MMM DD, YYYY';\n            hideOverflowDates: boolean;\n            inputId: string;\n            inputTabIndex: number;\n            label: string;\n            max: string;\n            min: string;\n            name: string;\n            readOnly: boolean;\n            required: boolean;\n            showWeekNumbers: boolean;\n            size: string;\n            value: string;\n            weekStartDay: string;\n          };\n          dateEl.bordered = Boolean(v.bordered);\n          dateEl.customClass = v['custom-class'] || '';\n          dateEl.disabled = Boolean(v.disabled);\n          dateEl.format = v.format;\n          if (v['hide-overflow-dates'] !== undefined) {\n            dateEl.hideOverflowDates = v['hide-overflow-dates'];\n          }\n          dateEl.inputId = v['input-id'] ?? '';\n          dateEl.inputTabIndex = v['input-tab-index'] ?? -1;\n          dateEl.label = v.label ?? '';\n          dateEl.max = v.max ?? '';\n          dateEl.min = v.min ?? '';\n          dateEl.name = v.name ?? '';\n          dateEl.readOnly = Boolean(v['read-only']);\n          dateEl.required = Boolean(v.required);\n          dateEl.showWeekNumbers = Boolean(v['show-week-numbers']);\n          dateEl.size = v.size ?? '';\n          dateEl.value = v.value ?? '';\n          dateEl.weekStartDay = v['week-start-day'] ?? '';\n        },\n      });\n      customElements.define('date-shadow-host', DateShadowHost);\n    }\n\n    return html`<date-shadow-host .props=${{ ...args }}></date-shadow-host>`;\n  },\n};\n\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled\n  input model. See the Form Inputs [documentation]([Angular](?path=/docs/documentation-form-inputs--docs) for\n  additional info and examples.\n  - Size values have changed from verbose names (\\`medium\\`, \\`large\\`) to abbreviations (\\`sm\\`, \\`md\\`, \\`lg\\`).\n  - The \\`value\\` and \\`end-value\\` props accept the \\`format\\` pattern (or locale-derived format when unset) or ISO 8601 (\\`YYYY-MM-DD\\`). User interactions and \\`inputChange\\` / \\`rangeChange\\` events still emit ISO 8601.\n  Previously, \\`value\\` matched only the display format (e.g. \\`dd-mm-yyyy\\`) and did not accept ISO.\n  - The \\`format\\` prop is now automatically derived from the user's locale when not explicitly set.\n  Previously, it defaulted to \\`dd-mm-yyyy\\`. The accepted values remain the same fixed union\n  (\\`'yyyy-mm-dd'\\`, \\`'dd-mm-yyyy'\\`, \\`'mm-dd-yyyy'\\`, \\`'yyyy/mm/dd'\\`, \\`'dd/mm/yyyy'\\`, \\`'mm/dd/yyyy'\\`, \\`'MMM DD, YYYY'\\`).\n\n#### Prop Mapping\n\n| 1.0 Prop           | 2.0 Prop         | Notes                                   |\n|--------------------|------------------|-----------------------------------------|\n| allow-chars-regex  |                  | Not carried over                        |\n| alt-formats        |                  | Not carried over                        |\n| aria-label         | aria-label       |                                         |\n| auto-focus-input   |                  | Not carried over                        |\n| disabled           | disabled         |                                         |\n| disable-validation |                  | Not carried over                        |\n| error-text         | feedback.message | Use \\`feedback\\` level                  |\n| filler-date        |                  | Not carried over                        |\n| format             | format           | Auto-derived from locale when not set; union type unchanged |\n| helper-text        |                  | Not carried over                        |\n| label              | label            |                                         |\n| max                | max              |                                         |\n| min                | min              |                                         |\n| placeholder        |                  | Not carried over                        |\n| read-only          | read-only        |                                         |\n| required           | required         |                                         |\n| show-calendar-icon |                  | Not carried over                        |\n| size               | size             | \\`medium\\` → \\`md\\`, \\`large\\` → \\`lg\\` |\n| type               |                  | Not carried over                        |\n| valid-text         | feedback.message | Use \\`feedback\\` level                  |\n| value              | value            | Accepts \\`format\\` pattern or ISO 8601; start date in range mode |\n|                    | end-value        | Accepts \\`format\\` pattern or ISO 8601; end date in range mode |\n|                    | input-id (end)   | Range mode only: \\`{input-id}-end\\`; no separate prop |\n|                    | name (end)       | Range mode only: \\`{name}-end\\`; no separate prop |\n|                    | type             | \\`'single'\\` (default) or \\`'range'\\` |\n|                    | hide-overflow-dates | Defaults to \\`true\\` in range mode |\n\n#### Event Mapping\n\n| 1.0 Event           | 2.0 Event   | Notes            |\n|---------------------|-------------|------------------|\n| calendarIconClicked |             | Not carried over |\n| dateInputBlur       | inputBlur   | Range mode: \\`detail.field\\` is \\`'start'\\` or \\`'end'\\` |\n| valueChange         | inputChange | Range mode: \\`detail.field\\` is \\`'start'\\` or \\`'end'\\` |\n| valueError          |             | Not carried over |\n|                     | rangeChange | Range mode only: \\`{ startDate, endDate }\\` |\n|                     | endCalendarMonthChange | Range mode: end calendar month nav |\n|                     | endCalendarYearChange  | Range mode: end calendar year nav |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}

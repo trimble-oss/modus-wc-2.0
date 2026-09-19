@@ -13,6 +13,7 @@ import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { handleShadowDOMStyles } from '../base-component';
+import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
 import {
   AutocompleteTypes,
   DaisySize,
@@ -121,7 +122,7 @@ export class ModusWcTextInput {
   @Prop() required?: boolean = false;
 
   /** The size of the input. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** Type of form control. */
   @Prop() type?: TextFieldTypes = 'text';
@@ -156,10 +157,6 @@ export class ModusWcTextInput {
   componentWillLoad() {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
-
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = this.placeholder || 'Text input';
-    }
 
     this.inheritedAttributes = {
       ...inheritAriaAttributes(this.el),
@@ -243,13 +240,21 @@ export class ModusWcTextInput {
   /** Maps input `size` to atom scale for the password-toggle button and its icon. */
   private getPasswordToggleSize(): DaisySize {
     switch (this.size) {
+      case 'xs':
+        return 'xs';
       case 'sm':
         return 'xs';
       case 'lg':
         return 'md';
+      case 'xl':
+        return 'lg';
       default:
         return 'sm';
     }
+  }
+
+  private getLabelSize(): ModusSize {
+    return INPUT_SIZE_TO_LABEL_SIZE[this.size ?? 'md'];
   }
 
   private syncPasswordToggleAriaLabel() {
@@ -293,7 +298,7 @@ export class ModusWcTextInput {
             forId={effectiveId}
             labelText={this.label}
             required={this.required}
-            size={this.size}
+            size={this.getLabelSize()}
           />
         )}
         <label class={this.getClasses()}>
@@ -377,7 +382,7 @@ export class ModusWcTextInput {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
-            size={this.size}
+            size={this.getLabelSize()}
           />
         )}
       </Host>

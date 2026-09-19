@@ -25,7 +25,7 @@ interface SelectArgs {
   name?: string;
   options: ISelectOption[];
   required?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
   value: string;
 }
 
@@ -75,7 +75,7 @@ const meta: Meta<SelectArgs> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
   decorators: [withActions],
@@ -93,7 +93,6 @@ type Story = StoryObj<SelectArgs>;
 export const Default: Story = {
   render: (args) => html`
     <modus-wc-select
-      aria-label="Select input"
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
@@ -130,7 +129,6 @@ const errorFeedback: IInputFeedbackProp = {
 export const WithErrorFeedback: Story = {
   render: (args) => html`
     <modus-wc-select
-      aria-label="Select input"
       .feedback=${errorFeedback}
       id="error-select"
       label=${ifDefined(args.label)}

@@ -18,9 +18,63 @@ modus-wc-select .modus-wc-select {
   padding-bottom: var(--modus-wc-spacing-sm);
 }
 
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xs)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-sm);
+  line-height: 1.25rem;
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label,
+[data-theme='modus-modern-dark']
+  modus-wc-select:has(.modus-wc-select-xl)
+  .modus-wc-input-label {
+  font-size: var(--modus-wc-font-size-xl);
+  line-height: var(--modus-wc-line-height-lg);
+  padding-bottom: var(--modus-wc-spacing-xs);
+}
+
+[data-theme='modus-modern-light'] modus-wc-select .modus-wc-select,
+[data-theme='modus-modern-dark'] modus-wc-select .modus-wc-select {
+  &.modus-wc-select-xs {
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-size-xs);
+    line-height: 1.25rem;
+    min-height: var(--modus-wc-size-xs);
+    padding-block: 0;
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-line-height-sm)
+    );
+    padding-inline-start: var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-select-xl {
+    font-size: var(--modus-wc-font-size-xl);
+    height: var(--modus-wc-size-xl);
+    line-height: var(--modus-wc-line-height-lg);
+    min-height: var(--modus-wc-size-xl);
+    padding-block: 0;
+    padding-inline-end: calc(
+      var(--modus-wc-spacing-lg) + var(--modus-wc-size-sm)
+    );
+    padding-inline-start: var(--modus-wc-spacing-xl);
+  }
+}
+
 [data-theme='modus-classic-light'] modus-wc-select .modus-wc-select,
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select {
-  // TODO - add support for xs and xl once added to Modus Figma
+  &.modus-wc-select-xs {
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-size-xs);
+    line-height: 1.25rem;
+    min-height: var(--modus-wc-size-xs);
+  }
 
   &.modus-wc-select-sm {
     font-size: var(--modus-wc-font-size-sm);
@@ -41,6 +95,13 @@ modus-wc-select .modus-wc-select {
     height: var(--modus-wc-input-height-lg);
     line-height: var(--modus-wc-font-size-lg);
     min-height: var(--modus-wc-font-size-lg);
+  }
+
+  &.modus-wc-select-xl {
+    font-size: var(--modus-wc-font-size-xl);
+    height: var(--modus-wc-size-xl);
+    line-height: var(--modus-wc-line-height-lg);
+    min-height: var(--modus-wc-size-xl);
   }
 
   &:focus {

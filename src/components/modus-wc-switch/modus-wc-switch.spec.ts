@@ -7,7 +7,7 @@ describe('modus-wc-switch', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcSwitch],
-      html: '<modus-wc-switch aria-label="Default toggle"></modus-wc-switch>',
+      html: '<modus-wc-switch></modus-wc-switch>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -36,14 +36,15 @@ describe('modus-wc-switch', () => {
   it('should render with size xs', async () => {
     const page = await newSpecPage({
       components: [ModusWcSwitch, ModusWcInputLabel],
-      html: `<modus-wc-switch
-        aria-label="XS toggle"
-        label="XS label"
-        size="xs"
-      ></modus-wc-switch>`,
+      html: `<modus-wc-switch label="XS label" size="xs"></modus-wc-switch>`,
     });
     expect(page.root).toMatchSnapshot();
     expectLabelLinkedToControl(page.root!, 'input[type="checkbox"]');
+
+    const input = page.root!.querySelector(
+      'input[type="checkbox"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should retain the same generated id across re-renders', async () => {

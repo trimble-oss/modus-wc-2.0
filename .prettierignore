@@ -11,4 +11,7 @@ src/styles/modus-icons-regular.css
 src/styles/modus-icons-fill.css
 src/styles/modus-icons-2-font
 src/components/modus-wc-icon/icon-data.ts
+docs/component-graph/component-graph.json
+docs/component-graph/component-graph.mmd
+.playwright-mcp
 *.snap

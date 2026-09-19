@@ -129,7 +129,6 @@ const Template: Story = {
         }
       </style>
       <modus-wc-date
-        aria-label="Date input"
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         ?disabled=${args.disabled}

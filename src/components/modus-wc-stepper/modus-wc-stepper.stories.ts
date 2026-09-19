@@ -25,6 +25,7 @@ interface IStepperItem {
   content?: string;
   customClass?: string;
   label?: string;
+  subLabel?: string;
 }
 
 const meta: Meta<StepperArgs> = {
@@ -62,6 +63,7 @@ const meta: Meta<StepperArgs> = {
             - content (string, optional): Custom content to display in the step indicator
             - customClass (string, optional): Custom CSS class to apply to the step
             - label (string, optional): Text label for the step
+            - subLabel (string, optional): Secondary text rendered beneath the step label
           `,
         },
       },
@@ -105,6 +107,18 @@ const Template: Story = {
 };
 
 export const Default: Story = { ...Template };
+
+export const WithSubLabels: Story = {
+  ...Template,
+  args: {
+    steps: [
+      { label: 'Scale', subLabel: 'Team details', color: 'primary' },
+      { label: 'Belong', subLabel: 'Invite team members', color: 'primary' },
+      { label: 'Grow', subLabel: 'Review progress', color: 'warning' },
+      { label: 'Innovate', subLabel: 'Share results', content: '🚀' },
+    ],
+  },
+};
 
 export const Interactive: Story = {
   args: {

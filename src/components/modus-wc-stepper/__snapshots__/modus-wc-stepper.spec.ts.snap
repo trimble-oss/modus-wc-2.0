@@ -4,16 +4,35 @@ exports[`modus-wc-stepper should render with custom props 1`] = `
 <modus-wc-stepper custom-class="custom-class" orientation="vertical">
   <ul class="custom-class modus-wc-steps modus-wc-steps-vertical">
     <li class="modus-wc-step modus-wc-step-primary">
-      Scale
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Scale
+        </span>
+        <span class="modus-wc-stepper-step-sublabel">
+          Confirm details
+        </span>
+      </div>
     </li>
     <li class="custom-class modus-wc-step modus-wc-step-primary">
-      Belong
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Belong
+        </span>
+      </div>
     </li>
     <li class="modus-wc-step modus-wc-step-warning">
-      Grow
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Grow
+        </span>
+      </div>
     </li>
     <li class="modus-wc-step" data-content="🚀">
-      Innovate
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Innovate
+        </span>
+      </div>
     </li>
   </ul>
 </modus-wc-stepper>
@@ -23,16 +42,35 @@ exports[`modus-wc-stepper should render with default props 1`] = `
 <modus-wc-stepper>
   <ul class="modus-wc-steps">
     <li class="modus-wc-step modus-wc-step-primary">
-      Scale
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Scale
+        </span>
+        <span class="modus-wc-stepper-step-sublabel">
+          Confirm details
+        </span>
+      </div>
     </li>
     <li class="custom-class modus-wc-step modus-wc-step-primary">
-      Belong
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Belong
+        </span>
+      </div>
     </li>
     <li class="modus-wc-step modus-wc-step-warning">
-      Grow
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Grow
+        </span>
+      </div>
     </li>
     <li class="modus-wc-step" data-content="🚀">
-      Innovate
+      <div class="modus-wc-stepper-step-text">
+        <span class="modus-wc-stepper-step-label">
+          Innovate
+        </span>
+      </div>
     </li>
   </ul>
 </modus-wc-stepper>

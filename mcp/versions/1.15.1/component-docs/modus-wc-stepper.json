@@ -1,0 +1,71 @@
+{
+  "description": "Used to show a list of steps in a process.",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the steps element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the steps.",
+      "default": null,
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "steps",
+      "type": "IStepperItem[]",
+      "description": "The steps to display.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 54
+    },
+    {
+      "name": "interactive",
+      "type": "boolean",
+      "description": "If true, steps will be rendered as buttons and emit `stepClick` when activated.",
+      "default": "false",
+      "mutable": false,
+      "end_line": 57
+    }
+  ],
+  "events": [
+    {
+      "name": "stepClick",
+      "detail": "{ index: number }",
+      "description": "Emitted with the 0-based step index when a step is activated and `interactive` is true.",
+      "end_line": 60
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-stepper\n        id=\"interactive-stepper\"\n        orientation=\"horizontal\"\n        ?interactive=\"${args.interactive ?? false}\"\n        .steps=\"${getInteractiveSteps(initialActiveIndex)}\"\n        @stepClick=${handleInteractiveStepClick}\n      ></modus-wc-stepper>",
+    "variations": [],
+    "args": {
+      "interactive": "false"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "stepClick"
+    ]
+  },
+  "tag": "modus-wc-stepper",
+  "storyExample": {
+    "template": "<modus-wc-stepper\n        id=\"interactive-stepper\"\n        orientation=\"horizontal\"\n        ?interactive=\"${args.interactive ?? false}\"\n        .steps=\"${getInteractiveSteps(initialActiveIndex)}\"\n        @stepClick=${handleInteractiveStepClick}\n      ></modus-wc-stepper>",
+    "args": {
+      "interactive": "false"
+    },
+    "argTypes": {},
+    "events": [
+      "stepClick"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { Orientation } from '../types';\n\ninterface StepperArgs {\n  'custom-class'?: string;\n  interactive?: boolean;\n  orientation: Orientation;\n  steps?: IStepperItem[];\n}\n\ninterface IStepperItem {\n  color?:\n    | 'primary'\n    | 'secondary'\n    | 'accent'\n    | 'info'\n    | 'success'\n    | 'warning'\n    | 'error'\n    | 'neutral';\n  content?: string;\n  customClass?: string;\n  label?: string;\n}\n\nconst meta: Meta<StepperArgs> = {\n  title: 'Components/Stepper',\n  component: 'modus-wc-stepper',\n  args: {\n    interactive: false,\n    steps: [\n      { label: 'Scale', color: 'primary' },\n      { label: 'Belong', color: 'primary' },\n      { label: 'Grow', color: 'warning' },\n      { label: 'Innovate', content: '🚀' },\n    ],\n  },\n  decorators: [withActions],\n  argTypes: {\n    'custom-class': {\n      control: 'text',\n    },\n    interactive: {\n      control: 'boolean',\n    },\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    steps: {\n      description: 'Array of step objects defining the steps to display',\n      table: {\n        type: {\n          detail: `\n            Interface: IStepperItem\n            Properties:\n            - color ('primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'neutral', optional): The color theme of the step\n            - content (string, optional): Custom content to display in the step indicator\n            - customClass (string, optional): Custom CSS class to apply to the step\n            - label (string, optional): Text label for the step\n          `,\n        },\n      },\n    },\n  },\n  parameters: {\n    actions: {\n      handles: ['stepClick'],\n    },\n    layout: 'padded',\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<StepperArgs>;\n\nconst Template: Story = {\n  // prettier-ignore\n  render: (args) => html`\n<modus-wc-stepper\n  custom-class=\"${ifDefined(args['custom-class'])}\"\n  orientation=\"${ifDefined(args.orientation)}\"\n  ?interactive=\"${args.interactive ?? false}\"\n  .steps=\"${args.steps}\"\n>\n</modus-wc-stepper>\n<script>\n// Adding this block to show how to set stepper steps via JS.    \n// const steps = [\n//   { label: 'Scale', color: 'primary' },\n//   { label: 'Belong', color: 'primary' },\n//   { label: 'Grow', color: 'warning' },\n//   { label: 'Innovate', content: '🚀' }\n//   ];      \n// const stepper = document.querySelector('modus-wc-stepper');  \n// stepper.steps = steps;\n</script>\n\n  `,\n};\n\nexport const Default: Story = { ...Template };\n\nexport const Interactive: Story = {\n  args: {\n    interactive: true,\n  },\n  parameters: {\n    docs: {\n      source: {\n        code: `\n<modus-wc-stepper\n  id=\"interactive-stepper\"\n  orientation=\"horizontal\"\n  interactive\n></modus-wc-stepper>\n<script>\n  const activeIndex = 1;\n  const steps = [\n    { label: 'Scale' },\n    { label: 'Belong' },\n    { label: 'Grow' },\n    { label: 'Innovate', content: '🚀' },\n  ];\n\n  const getSteps = (selectedIndex) =>\n    steps.map((step, index) =>\n      index <= selectedIndex ? { ...step, color: 'primary' } : { ...step }\n    );\n\n  const stepper = document.getElementById('interactive-stepper');\n  stepper.steps = getSteps(activeIndex);\n\n  stepper.addEventListener('stepClick', (event) => {\n    stepper.steps = getSteps(event.detail.index);\n  });\n</script>\n        `,\n      },\n    },\n  },\n  // prettier-ignore\n  render: (args) => {\n    const initialActiveIndex = 1;\n    const interactiveSteps: IStepperItem[] = [\n      { label: 'Scale' },\n      { label: 'Belong' },\n      { label: 'Grow' },\n      { label: 'Innovate', content: '🚀' },\n    ];\n\n    const getInteractiveSteps = (activeIndex: number): IStepperItem[] =>\n      interactiveSteps.map((step, index) =>\n        index <= activeIndex ? { ...step, color: 'primary' } : { ...step }\n      );\n\n    const handleInteractiveStepClick = (\n      event: CustomEvent<{ index: number }>,\n    ) => {\n      const stepper = event.target as HTMLElement & {\n        steps: IStepperItem[];\n      };\n      stepper.steps = getInteractiveSteps(event.detail.index);\n    };\n\n    return html`\n      <modus-wc-stepper\n        id=\"interactive-stepper\"\n        orientation=\"horizontal\"\n        ?interactive=\"${args.interactive ?? false}\"\n        .steps=\"${getInteractiveSteps(initialActiveIndex)}\"\n        @stepClick=${handleInteractiveStepClick}\n      ></modus-wc-stepper>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    if (!customElements.get('stepper-shadow-host')) {\n      const StepperShadowHost = createShadowHostClass<StepperArgs>({\n        componentTag: 'modus-wc-stepper',\n        propsMapper: (v: StepperArgs, el: HTMLElement) => {\n          const stepperEl = el as unknown as {\n            customClass: string;\n            interactive: boolean;\n            orientation: string;\n            steps: IStepperItem[];\n          };\n          stepperEl.customClass = v['custom-class'] || '';\n          stepperEl.interactive = v.interactive ?? false;\n          stepperEl.orientation = v.orientation ?? 'horizontal';\n          stepperEl.steps = v.steps ?? [];\n        },\n      });\n      customElements.define('stepper-shadow-host', StepperShadowHost);\n    }\n\n    return html`<stepper-shadow-host\n      .props=${{ ...args }}\n    ></stepper-shadow-host>`;\n  },\n};\n"
+  }
+}

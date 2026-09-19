@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-status should render active variant 1`] = `
+<modus-wc-status variant="active">
+  <div class="modus-wc-status modus-wc-status--active" role="status">
+    <div class="modus-wc-status-dot-wrapper" role="presentation">
+      <div class="modus-wc-status-dot"></div>
+      <div class="modus-wc-status-pulse"></div>
+    </div>
+    <span class="modus-wc-status-label">
+      Active
+    </span>
+  </div>
+</modus-wc-status>
+`;
+
+exports[`modus-wc-status should render danger variant 1`] = `
+<modus-wc-status variant="danger">
+  <div class="modus-wc-status modus-wc-status--danger" role="status">
+    <div class="modus-wc-status-dot-wrapper" role="presentation">
+      <div class="modus-wc-status-dot"></div>
+      <div class="modus-wc-status-pulse"></div>
+    </div>
+    <span class="modus-wc-status-label">
+      Danger
+    </span>
+  </div>
+</modus-wc-status>
+`;
+
+exports[`modus-wc-status should render warning variant 1`] = `
+<modus-wc-status variant="warning">
+  <div class="modus-wc-status modus-wc-status--warning" role="status">
+    <div class="modus-wc-status-dot-wrapper" role="presentation">
+      <div class="modus-wc-status-dot"></div>
+      <div class="modus-wc-status-pulse"></div>
+    </div>
+    <span class="modus-wc-status-label">
+      Warning
+    </span>
+  </div>
+</modus-wc-status>
+`;
+
+exports[`modus-wc-status should render with custom props 1`] = `
+<modus-wc-status custom-class="test-class" label="Online" pulse="false" variant="warning">
+  <div class="modus-wc-status modus-wc-status--no-pulse modus-wc-status--warning test-class" role="status">
+    <div class="modus-wc-status-dot-wrapper" role="presentation">
+      <div class="modus-wc-status-dot"></div>
+    </div>
+    <span class="modus-wc-status-label">
+      Online
+    </span>
+  </div>
+</modus-wc-status>
+`;
+
+exports[`modus-wc-status should render with default props 1`] = `
+<modus-wc-status>
+  <div class="modus-wc-status modus-wc-status--active" role="status">
+    <div class="modus-wc-status-dot-wrapper" role="presentation">
+      <div class="modus-wc-status-dot"></div>
+      <div class="modus-wc-status-pulse"></div>
+    </div>
+    <span class="modus-wc-status-label">
+      Active
+    </span>
+  </div>
+</modus-wc-status>
+`;

@@ -7,7 +7,7 @@ type IPrivateStepperMethods = {
 
 describe('modus-wc-stepper', () => {
   const defaultSteps: IStepperItem[] = [
-    { label: 'Scale', color: 'primary' },
+    { label: 'Scale', subLabel: 'Confirm details', color: 'primary' },
     { label: 'Belong', color: 'primary', customClass: 'custom-class' },
     { label: 'Grow', color: 'warning' },
     { label: 'Innovate', content: '🚀' },
@@ -138,5 +138,59 @@ describe('modus-wc-stepper', () => {
     // Falls back to "Step N" when both are missing
     expect(lis[2].textContent?.trim()).toBe('');
     expect(buttons[2].getAttribute('aria-label')).toBe('Step 3');
+  });
+
+  it('should render a sublabel when provided and omit it when missing', async () => {
+    const steps: IStepperItem[] = [
+      { label: 'Scale', subLabel: 'Confirm details' },
+      { label: 'Belong' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = steps;
+
+    await page.waitForChanges();
+
+    const sublabels = page.root!.querySelectorAll(
+      '.modus-wc-stepper-step-sublabel'
+    );
+
+    expect(sublabels.length).toBe(1);
+    expect(sublabels[0].textContent).toBe('Confirm details');
+
+    const stepsWithoutSublabel =
+      page.root!.querySelectorAll('li.modus-wc-step')[1];
+    expect(stepsWithoutSublabel.textContent?.trim()).toBe('Belong');
+  });
+
+  it('should include the sublabel in the interactive step aria-label', async () => {
+    const steps: IStepperItem[] = [
+      { label: 'Scale', subLabel: 'Confirm details' },
+      { subLabel: 'Invite your team' },
+    ];
+
+    const page = await newSpecPage({
+      components: [ModusWcStepper],
+      html: '<modus-wc-stepper interactive></modus-wc-stepper>',
+    });
+
+    const component = page.rootInstance as ModusWcStepper;
+    component.steps = steps;
+
+    await page.waitForChanges();
+
+    const buttons = page.root!.querySelectorAll(
+      'button.modus-wc-stepper-step-button'
+    );
+
+    expect(buttons[0].getAttribute('aria-label')).toBe(
+      'Scale, Confirm details'
+    );
+    expect(buttons[1].getAttribute('aria-label')).toBe('Invite your team');
   });
 });
