@@ -117,6 +117,10 @@ After visual/markup changes, when `reverseImpact` is non-empty:
 
 Hooks may remind you to run storybook-smoke after SCSS/Tailwind/component edits.
 
+### Consumer overrides on `modus-wc-select`
+
+When a parent component (e.g. `modus-wc-date` calendar header) overrides the inner `select.modus-wc-select`, set only the properties that differ from the Select defaults (background, color, border). Do **not** re-declare `border-radius: var(--modus-wc-border-radius-input)` — Select already uses the input radius token (8px / `--modus-wc-border-radius-lg`) via DaisyUI/Tailwind.
+
 ## Subagents (Composer 2.5 only)
 
 Use custom subagents **`storybook-smoke`** and **`graph-impact`** only. Do **not** spawn built-in `explore` / `generalPurpose` Task subagents (Claude). Do not pass an inline `model` override to Task.
