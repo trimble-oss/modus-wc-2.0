@@ -49,7 +49,6 @@ The component supports a `<slot>` for injecting content within the button, simil
  - [modus-wc-modal](../modus-wc-modal)
  - [modus-wc-navbar](../modus-wc-navbar)
  - [modus-wc-text-input](../modus-wc-text-input)
- - [modus-wc-time-input](../modus-wc-time-input)
 
 ### Graph
 ```mermaid
@@ -66,7 +65,6 @@ graph TD;
   modus-wc-modal --> modus-wc-button
   modus-wc-navbar --> modus-wc-button
   modus-wc-text-input --> modus-wc-button
-  modus-wc-time-input --> modus-wc-button
   style modus-wc-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

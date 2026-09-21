@@ -7,7 +7,7 @@ describe('modus-wc-slider', () => {
   it('renders with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcSlider],
-      html: '<modus-wc-slider aria-label="Default slider"></modus-wc-slider>',
+      html: '<modus-wc-slider></modus-wc-slider>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -39,10 +39,15 @@ describe('modus-wc-slider', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcSlider, ModusWcInputLabel],
-      html: '<modus-wc-slider label="Volume" aria-label="Volume"></modus-wc-slider>',
+      html: '<modus-wc-slider label="Volume"></modus-wc-slider>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input[type="range"]');
+
+    const input = page.root!.querySelector(
+      'input[type="range"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should retain the same generated id across re-renders', async () => {

@@ -1,0 +1,103 @@
+{
+  "description": "A resilient atomic image component that wraps native <img> tags with consistent sizing, aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.",
+  "properties": [
+    {
+      "name": "src",
+      "type": "string",
+      "description": "The source URL of the image asset.",
+      "default": null,
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "Accessible text description. Omit or leave empty for decorative images.",
+      "default": null,
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "size",
+      "type": "ImageSize",
+      "description": "Determines dimensional size tokens.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "shape",
+      "type": "ImageShape",
+      "description": "Sets corner radius styling.",
+      "default": "'square'",
+      "mutable": false,
+      "end_line": 45
+    },
+    {
+      "name": "fit",
+      "type": "ImageFit",
+      "description": "Controls containment, cropping, and aspect ratio preservation.",
+      "default": "'default'",
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner container.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 51
+    }
+  ],
+  "events": [
+    {
+      "name": "imageLoad",
+      "detail": "Event",
+      "description": "Event emitted when the image loads successfully.",
+      "end_line": 57
+    },
+    {
+      "name": "imageError",
+      "detail": "Event",
+      "description": "Event emitted when the image fails to load.",
+      "end_line": 60
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "src": "SAMPLE_IMAGE",
+      "alt": "'A zebra drinks from a pond'",
+      "fit": "'default'",
+      "shape": "'square'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "imageLoad",
+      "imageError"
+    ]
+  },
+  "tag": "modus-wc-image",
+  "storyExample": {
+    "template": "",
+    "args": {
+      "src": "SAMPLE_IMAGE",
+      "alt": "'A zebra drinks from a pond'",
+      "fit": "'default'",
+      "shape": "'square'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "imageLoad",
+      "imageError"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface ImageArgs {\n  src: string;\n  alt?: string;\n  size?: 'sm' | 'md' | 'lg' | 'xl';\n  shape?: 'square' | 'rounded';\n  fit?: 'default' | 'contain' | 'scale-down' | 'none';\n  'custom-class'?: string;\n}\n\nconst SAMPLE_IMAGE =\n  'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg';\n\nconst meta: Meta<ImageArgs> = {\n  title: 'Components/Image',\n  component: 'modus-wc-image',\n  args: {\n    src: SAMPLE_IMAGE,\n    alt: 'A zebra drinks from a pond',\n    fit: 'default',\n    shape: 'square',\n    size: 'md',\n  },\n  argTypes: {\n    fit: {\n      control: { type: 'select' },\n      options: ['default', 'contain', 'scale-down', 'none'],\n    },\n    shape: {\n      control: { type: 'select' },\n      options: ['square', 'rounded'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['sm', 'md', 'lg', 'xl'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['imageLoad', 'imageError'],\n    },\n    docs: {\n      description: {\n        component: `\nA resilient atomic image component wrapping the native \\`<img>\\` tag with consistent sizing tokens,\naspect-ratio control, an accessible error fallback, and WCAG 2.2 compliance.`,\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ImageArgs>;\n\nconst Template: Story = {\n  render: (args) => html`\n    <modus-wc-image\n      src=${args.src}\n      alt=${ifDefined(args.alt)}\n      size=${ifDefined(args.size)}\n      shape=${ifDefined(args.shape)}\n      fit=${ifDefined(args.fit)}\n      custom-class=${ifDefined(args['custom-class'])}\n    ></modus-wc-image>\n  `,\n};\n\nexport const Default: Story = {\n  ...Template,\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Default rendering with `fit=\"default\"` and `size=\"md\"` (288×192 px). The image fills the fixed box completely — non-matching aspect ratios are **cropped** equally from the center edges with no distortion.',\n      },\n    },\n  },\n};\n\nexport const FitContain: Story = {\n  ...Template,\n  args: { fit: 'contain' },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          '`fit=\"contain\"` — the image scales down to fit **entirely** inside the hard-locked box while preserving its original aspect ratio. Areas not covered by the image show the background (letterbox/pillarbox effect).',\n      },\n    },\n  },\n};\n\nexport const FitScaleDown: Story = {\n  ...Template,\n  args: { fit: 'scale-down' },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          '`fit=\"scale-down\"` — the container uses `max-width / max-height` from the `size` token instead of hard-locked dimensions. If the image is larger than the target it is scaled down proportionally; if smaller it renders at its intrinsic size. The box shrinks to fit the image.',\n      },\n    },\n  },\n};\n\nexport const FitNone: Story = {\n  ...Template,\n  args: { fit: 'none' },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          '`fit=\"none\"` — the image renders at its **intrinsic pixel size** with no scaling applied. The container is still hard-locked to the `size` token dimensions, so any part of the image that exceeds the box is clipped by `overflow: hidden`.',\n      },\n    },\n  },\n};\n\nexport const Rounded: Story = {\n  ...Template,\n  args: { shape: 'rounded' },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'Applies a `16 px` border-radius to the image container via `shape=\"rounded\"`. All size variants use the same radius value.',\n      },\n    },\n  },\n};\n\nexport const AllSizes: Story = {\n  render: () => html`\n    <div\n      style=\"display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;\"\n    >\n      <div>\n        <p style=\"margin: 0 0 8px; font-size: 12px; font-weight: 600;\">\n          sm — 128×128 px\n        </p>\n        <modus-wc-image\n          src=${SAMPLE_IMAGE}\n          alt=\"Small\"\n          size=\"sm\"\n          fit=\"default\"\n        ></modus-wc-image>\n      </div>\n      <div>\n        <p style=\"margin: 0 0 8px; font-size: 12px; font-weight: 600;\">\n          md — 288×192 px (default)\n        </p>\n        <modus-wc-image\n          src=${SAMPLE_IMAGE}\n          alt=\"Medium\"\n          size=\"md\"\n          fit=\"default\"\n        ></modus-wc-image>\n      </div>\n      <div>\n        <p style=\"margin: 0 0 8px; font-size: 12px; font-weight: 600;\">\n          lg — 384×256 px\n        </p>\n        <modus-wc-image\n          src=${SAMPLE_IMAGE}\n          alt=\"Large\"\n          size=\"lg\"\n          fit=\"default\"\n        ></modus-wc-image>\n      </div>\n    </div>\n  `,\n  parameters: {\n    docs: {\n      description: {\n        story: `\nAll available size tokens side by side (xl omitted for layout reasons — it is 1486×384 px).\nFor \\`fit=\"scale-down\"\\` these values act as \\`max-width / max-height\\` constraints rather than fixed dimensions.\n\n| \\`size\\` | Width | Height |\n|---------|-------|--------|\n| \\`sm\\` | 128 px | 128 px |\n| \\`md\\` *(default)* | 288 px | 192 px |\n| \\`lg\\` | 384 px | 256 px |\n| \\`xl\\` | 1486 px | 384 px |\n        `,\n      },\n    },\n  },\n};\n\nexport const DecorativeImage: Story = {\n  ...Template,\n  args: { alt: '' },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'When `alt` is empty or whitespace-only the image is treated as decorative: an empty `alt` attribute is set so screen readers skip it.',\n      },\n    },\n  },\n};\n\nexport const ErrorFallback: Story = {\n  ...Template,\n  args: {\n    src: 'https://example.com/this-image-does-not-exist.png',\n    alt: 'A missing image',\n  },\n  parameters: {\n    docs: {\n      description: {\n        story:\n          'When the image URL fails to load the broken image icon is hidden and a `modus-wc-icon` fallback (`image_disabled`) is rendered; the container keeps the accessible name from `alt`.',\n      },\n    },\n  },\n};\n"
+  }
+}

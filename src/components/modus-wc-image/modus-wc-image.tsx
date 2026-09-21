@@ -48,6 +48,12 @@ export class ModusWcImage {
   /** Controls containment, cropping, and aspect ratio preservation. */
   @Prop() fit?: ImageFit = 'default';
 
+  /**
+   * Sets the focal point when the image is cropped or letterboxed.
+   * Maps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).
+   */
+  @Prop() cropPosition?: string = 'center';
+
   /** Custom CSS class to apply to the inner container. */
   @Prop() customClass?: string = '';
 
@@ -102,6 +108,10 @@ export class ModusWcImage {
     this.imageLoad.emit(event);
   };
 
+  private getImageStyles(): { objectPosition: string } {
+    return { objectPosition: this.cropPosition };
+  }
+
   private renderFallback(altText: string) {
     const label = altText || 'Image unavailable';
 
@@ -139,6 +149,7 @@ export class ModusWcImage {
             src={this.src}
             alt={isDecorative ? '' : altText}
             class="modus-wc-image-img"
+            style={this.getImageStyles()}
             onError={this.handleError}
             onLoad={this.handleLoad}
           />
