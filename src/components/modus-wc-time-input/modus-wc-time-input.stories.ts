@@ -88,7 +88,6 @@ type Story = StoryObj<TimeInputArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-time-input
-      aria-label="Time input"
       auto-complete=${ifDefined(args['auto-complete'])}
       ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
@@ -175,6 +174,42 @@ export const WithSeconds: Story = {
   args: {
     'show-seconds': true,
     value: '09:45:00',
+  },
+};
+
+export const WithDatalist: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<modus-wc-time-input
+  label="Example time input"
+  datalist-id="datalist-id-1"
+></modus-wc-time-input>
+<datalist id="datalist-id-1">
+  <option value="06:00"></option>
+  <option value="12:00"></option>
+  <option value="17:00"></option>
+</datalist>
+    `;
+  },
+};
+
+export const WithDatalistOptions: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Example of programmatically adding 'datalistOptions'
+    const preferredTimes = ['09:30', '12:00', '17:30'];
+    document.querySelector('#time-input-with-options').datalistOptions = preferredTimes;
+  });
+</script>
+<modus-wc-time-input
+  label="Example time input"
+  id="time-input-with-options"
+></modus-wc-time-input>
+    `;
   },
 };
 

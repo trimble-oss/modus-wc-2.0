@@ -17,10 +17,10 @@ exports[`modus-wc-time-input should render with custom props 1`] = `
 `;
 
 exports[`modus-wc-time-input should render with default props 1`] = `
-<modus-wc-time-input value="">
+<modus-wc-time-input datalist-id="test-list" value="">
   <div class="time-input-container time-input-container--md">
-    <input aria-autocomplete="none" aria-expanded="false" aria-haspopup="dialog" aria-keyshortcuts="Alt+ArrowDown" aria-label="Default input" autocomplete="off" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_0" inputmode="numeric" type="text" value="--:--">
-    <button aria-expanded="false" aria-haspopup="dialog" aria-label="Toggle time picker" class="clock-icon-trigger" type="button">
+    <input aria-autocomplete="none" aria-expanded="false" aria-haspopup="listbox" aria-keyshortcuts="Alt+ArrowDown" autocomplete="off" class="modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_0" inputmode="numeric" role="combobox" type="text" value="--:--">
+    <button aria-expanded="false" aria-haspopup="listbox" aria-label="Toggle time picker" class="clock-icon-trigger" type="button">
       <modus-wc-icon decorative="" name="clock" size="xs"></modus-wc-icon>
     </button>
   </div>

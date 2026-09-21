@@ -257,10 +257,6 @@ export class ModusWcTimeInput {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Time input';
-    }
-
     this.inheritedAttributes = inheritAriaAttributes(this.el);
     this.syncDisplayValue();
   }

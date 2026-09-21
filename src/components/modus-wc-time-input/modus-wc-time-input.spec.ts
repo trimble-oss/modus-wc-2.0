@@ -289,7 +289,7 @@ describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Default input"></modus-wc-time-input>',
+      html: '<modus-wc-time-input datalist-id="test-list"></modus-wc-time-input>',
     });
     expect(page.root).toMatchSnapshot();
   });
@@ -324,10 +324,15 @@ describe('modus-wc-time-input', () => {
   it('should link label to input when input-id is omitted', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcInputLabel],
-      html: '<modus-wc-time-input label="Start time" aria-label="Start time"></modus-wc-time-input>',
+      html: '<modus-wc-time-input label="Start time"></modus-wc-time-input>',
     });
 
     expectLabelLinkedToControl(page.root!, 'input[type="text"]');
+
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
   it('should render with error feedback', async () => {
