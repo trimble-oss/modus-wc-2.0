@@ -117,9 +117,9 @@ After visual/markup changes, when `reverseImpact` is non-empty:
 
 Hooks may remind you to run storybook-smoke after SCSS/Tailwind/component edits.
 
-### Consumer overrides on `modus-wc-select`
+### Nested component style overrides
 
-When a parent component (e.g. `modus-wc-date` calendar header) overrides the inner `select.modus-wc-select`, set only the properties that differ from the Select defaults (background, color, border). Do **not** re-declare `border-radius: var(--modus-wc-border-radius-input)` — Select already uses the input radius token (8px / `--modus-wc-border-radius-lg`) via DaisyUI/Tailwind.
+When a parent styles a nested child (inner component, part, or slotted element), set **only** properties that must differ from that child's defaults (background, color, border, spacing, etc.). Do **not** re-declare design tokens or rules the child already applies — duplicates drift with theme updates and fight cascade layers. Repeat a token only when the design explicitly requires a different value in that parent context.
 
 ## Subagents (Composer 2.5 only)
 
