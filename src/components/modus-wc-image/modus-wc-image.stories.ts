@@ -9,8 +9,21 @@ interface ImageArgs {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   shape?: 'square' | 'rounded';
   fit?: 'default' | 'contain' | 'scale-down' | 'none';
+  'crop-position'?: string;
   'custom-class'?: string;
 }
+
+const CROP_POSITION_OPTIONS = [
+  'center',
+  'top',
+  'bottom',
+  'left',
+  'right',
+  'top left',
+  'top right',
+  'bottom left',
+  'bottom right',
+];
 
 const SAMPLE_IMAGE =
   'https://images.pexels.com/photos/5146774/pexels-photo-5146774.jpeg';
@@ -24,8 +37,13 @@ const meta: Meta<ImageArgs> = {
     fit: 'default',
     shape: 'square',
     size: 'md',
+    'crop-position': 'center',
   },
   argTypes: {
+    'crop-position': {
+      control: { type: 'select' },
+      options: CROP_POSITION_OPTIONS,
+    },
     fit: {
       control: { type: 'select' },
       options: ['default', 'contain', 'scale-down', 'none'],
@@ -66,6 +84,7 @@ const Template: Story = {
       size=${ifDefined(args.size)}
       shape=${ifDefined(args.shape)}
       fit=${ifDefined(args.fit)}
+      crop-position=${ifDefined(args['crop-position'])}
       custom-class=${ifDefined(args['custom-class'])}
     ></modus-wc-image>
   `,
@@ -202,6 +221,19 @@ export const DecorativeImage: Story = {
       description: {
         story:
           'When `alt` is empty or whitespace-only the image is treated as decorative: an empty `alt` attribute is set so screen readers skip it.',
+      },
+    },
+  },
+};
+
+export const CropPosition: Story = {
+  ...Template,
+  args: { 'crop-position': 'top' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`crop-position` maps to CSS `object-position` and controls which part of the image stays visible when it is cropped (`fit="default"`) or letterboxed (`fit="contain"`). Defaults to `center` for backward compatibility. Use the **crop-position** control to try `top`, `bottom`, `left`, `right`, and compound values such as `top left`.\n\n**Note:** For custom offsets (e.g. percentage values), set `custom-class` and target `.modus-wc-image-img` with `object-position` in your stylesheet.',
       },
     },
   },

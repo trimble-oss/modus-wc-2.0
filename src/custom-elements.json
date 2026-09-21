@@ -125,6 +125,15 @@
             },
             {
               "kind": "method",
+              "name": "expandableConfigChanged",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
               "name": "render"
             }
           ],
@@ -143,6 +152,15 @@
               "description": "The title of the alert.",
               "type": {
                 "text": "string"
+              }
+            },
+            {
+              "name": "content-display-mode",
+              "fieldName": "contentDisplayMode",
+              "default": "'default'",
+              "description": "Controls body display: full text (default) or expandable two-line preview with Show more.",
+              "type": {
+                "text": "'default' | 'expandable'"
               }
             },
             {
@@ -200,6 +218,13 @@
           ],
           "tagName": "modus-wc-alert",
           "events": [
+            {
+              "name": "contentExpandedChange",
+              "type": {
+                "text": "EventEmitter<{ expanded: boolean }>"
+              },
+              "description": "Fires when expandable body content is expanded or collapsed."
+            },
             {
               "name": "dismissClick",
               "type": {
@@ -4280,6 +4305,15 @@
               }
             },
             {
+              "name": "crop-position",
+              "fieldName": "cropPosition",
+              "default": "'center'",
+              "description": "Sets the focal point when the image is cropped or letterboxed.\nMaps to CSS `object-position` (e.g. `center`, `top`, `bottom left`).",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
               "name": "custom-class",
               "fieldName": "customClass",
               "default": "''",
@@ -4493,6 +4527,14 @@
               "name": "for-id",
               "fieldName": "forId",
               "description": "The `for` attribute of the label, matching the `id` of the associated input.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "label-id",
+              "fieldName": "labelId",
+              "description": "The `id` of the label element (for `aria-labelledby` on non-labelable controls).",
               "type": {
                 "text": "string"
               }
@@ -9036,7 +9078,11 @@
             },
             {
               "kind": "method",
-              "name": "handlePointerEnter",
+              "name": "handlePointerCancel"
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerDown",
               "parameters": [
                 {
                   "name": "event",
@@ -9046,6 +9092,22 @@
                 }
               ],
               "description": "Fires before the emulated mouseenter on touch, so mouseenter knows its source."
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerEnter",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "PointerEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handlePointerUp"
             },
             {
               "kind": "method",

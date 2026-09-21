@@ -19,7 +19,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.2"
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "hono": "4.13.8"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
@@ -28,7 +29,7 @@
   },
   "overrides": {
     "fast-uri": "3.1.7",
-    "hono": "4.12.34",
+    "hono": "4.13.8",
     "@hono/node-server": "2.0.12",
     "ip-address": "10.4.0",
     "qs": "6.16.0",
