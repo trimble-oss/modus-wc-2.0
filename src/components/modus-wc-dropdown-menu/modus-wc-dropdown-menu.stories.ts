@@ -17,7 +17,7 @@ interface DropdownMenuArgs {
   'menu-bordered'?: boolean;
   'menu-offset'?: number;
   'menu-placement'?: PopoverPlacement;
-  'menu-size'?: ModusSize;
+  'menu-size'?: ModusSize | 'xs' | 'xl';
   'menu-strategy'?: 'absolute' | 'fixed';
   'menu-visible': boolean;
 }
@@ -75,7 +75,7 @@ const meta: Meta<DropdownMenuArgs> = {
     },
     'menu-size': {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     'menu-strategy': {
       control: { type: 'select' },
@@ -160,9 +160,9 @@ const Template: Story = {
   </div>
 
   <div slot="menu">
-    <modus-wc-menu-item label="Item One" value="1" @itemSelect=${handleItemSelect}></modus-wc-menu-item>
-    <modus-wc-menu-item label="Item Two" value="2" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
-    <modus-wc-menu-item label="Item Three" value="3" @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
+    <modus-wc-menu-item label="Item One" value="1" size=${ifDefined(args['menu-size'])} @itemSelect=${handleItemSelect}></modus-wc-menu-item>
+    <modus-wc-menu-item label="Item Two" value="2" size=${ifDefined(args['menu-size'])} @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
+    <modus-wc-menu-item label="Item Three" value="3" size=${ifDefined(args['menu-size'])} @itemSelect=${handleItemSelect} /></modus-wc-menu-item>
   </div>
 </modus-wc-dropdown-menu>
 <script>
@@ -203,7 +203,7 @@ const Template: Story = {
 export const Default: Story = { ...Template };
 
 export const IconOnlyDropdownMenu: Story = {
-  render: () => {
+  render: (args) => {
     // prettier-ignore
     return html`
 <style>
@@ -213,12 +213,15 @@ export const IconOnlyDropdownMenu: Story = {
   }
 </style>
 
-<modus-wc-dropdown-menu button-shape="square">
+<modus-wc-dropdown-menu
+  button-shape="square"
+  menu-size=${ifDefined(args['menu-size'])}
+>
   <div slot="button">
     <modus-wc-icon decorative name="more_vertical"></modus-wc-icon>
   </div>
   <div slot="menu">
-    <modus-wc-menu-item label="Item One"></modus-wc-menu-item>
+    <modus-wc-menu-item label="Item One" size=${ifDefined(args['menu-size'])}></modus-wc-menu-item>
   </div>
 </modus-wc-dropdown-menu>
     `;
@@ -353,8 +356,12 @@ export const WithTreeMenu: Story = {
 };
 
 type DropdownMenuElement = HTMLElement & {
+  menuSize?: ModusSize | 'xs' | 'xl';
   menuVisible: boolean;
 };
+
+const getDropdownMenuSize = (dropdown: DropdownMenuElement): string =>
+  dropdown.menuSize ?? dropdown.getAttribute('menu-size') ?? 'md';
 
 type LazyLoadStatus = 'idle' | 'loading' | 'ready';
 
@@ -406,10 +413,13 @@ const showMenuItems = (
   const slot = getMenuSlot(dropdown);
   resetMenuSlot(slot);
 
+  const menuSize = getDropdownMenuSize(dropdown);
+
   items.forEach(({ label, value }) => {
     const item = document.createElement('modus-wc-menu-item');
     item.setAttribute('label', label);
     item.setAttribute('value', value);
+    item.setAttribute('size', menuSize);
     item.addEventListener('itemSelect', () => {
       dropdown.menuVisible = false;
     });
@@ -502,10 +512,12 @@ export const LazyLoading: Story = {
     const showMenuItems = (items) => {
       const slot = getMenuSlot();
       resetMenuSlot(slot);
+      const menuSize = dropdown.getAttribute('menu-size') ?? 'md';
       items.forEach(({ label, value }) => {
         const item = document.createElement('modus-wc-menu-item');
         item.setAttribute('label', label);
         item.setAttribute('value', value);
+        item.setAttribute('size', menuSize);
         slot.appendChild(item);
       });
     };
@@ -686,9 +698,14 @@ export const ShadowDomParent: Story = {
           dropdownEl.menuBordered = Boolean(v['menu-bordered']);
           dropdownEl.menuOffset = v['menu-offset'] ?? 10;
           dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
-          dropdownEl.menuSize = v['menu-size'] as ModusSize;
+          const menuItemSize = v['menu-size'] ?? 'md';
+          dropdownEl.menuSize = menuItemSize as ModusSize;
           dropdownEl.menuStrategy = v['menu-strategy'] || 'absolute';
           dropdownEl.menuVisible = Boolean(v['menu-visible']);
+
+          el.querySelectorAll('modus-wc-menu-item').forEach((item) => {
+            item.setAttribute('size', menuItemSize);
+          });
 
           // On first render: add slot content and append the Selected Value
           // display as a sibling of el inside the helper's display:contents
@@ -718,6 +735,7 @@ export const ShadowDomParent: Story = {
               const item = document.createElement('modus-wc-menu-item');
               item.setAttribute('label', label);
               item.setAttribute('value', value);
+              item.setAttribute('size', menuItemSize);
               menuSlot.appendChild(item);
             });
 

@@ -2,7 +2,14 @@
 // Icon+Text padding-block + label line-height (text is flex-centered in that strut).
 // Type/icon sizes map to Figma, not the WC size name.
 // Consumers (side nav, content tree, custom height) can still override.
-// Sublabel rows grow with content.
+// Sublabel: 12px / 20px line-height for all sizes; row grows with label stack content.
+
+@mixin menu-item-sublabel-typography {
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 20px;
+  }
+}
 
 @mixin menu-item-row-size-xs-content {
   font-size: var(--modus-wc-font-size-sm);
@@ -17,6 +24,13 @@
   .modus-wc-menu-submenu-chevron {
     height: var(--modus-wc-spacing-lg);
     width: var(--modus-wc-spacing-lg);
+  }
+
+  @include menu-item-sublabel-typography;
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-xs);
   }
 }
 
@@ -34,9 +48,7 @@
     width: var(--modus-wc-spacing-lg);
   }
 
-  .modus-wc-menu-item-sublabel {
-    font-size: var(--modus-wc-font-size-xs);
-  }
+  @include menu-item-sublabel-typography;
 }
 
 @mixin menu-item-row-size-md-content {
@@ -52,9 +64,7 @@
     width: var(--modus-wc-font-size-xl);
   }
 
-  .modus-wc-menu-item-sublabel {
-    font-size: var(--modus-wc-font-size-sm);
-  }
+  @include menu-item-sublabel-typography;
 }
 
 @mixin menu-item-row-size-lg-content {
@@ -70,9 +80,7 @@
     width: var(--modus-wc-font-size-2xl);
   }
 
-  .modus-wc-menu-item-sublabel {
-    font-size: var(--modus-wc-font-size-md);
-  }
+  @include menu-item-sublabel-typography;
 }
 
 @mixin menu-item-row-size-xl-content {
@@ -88,5 +96,12 @@
   .modus-wc-menu-submenu-chevron {
     height: var(--modus-wc-spacing-xl);
     width: var(--modus-wc-spacing-xl);
+  }
+
+  @include menu-item-sublabel-typography;
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-xl);
   }
 }
