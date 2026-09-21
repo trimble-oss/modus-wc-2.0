@@ -37,6 +37,7 @@ import {
   ITimeInputKeyboardContext,
   unbindBeforeInputListener,
 } from './utils/time-input-keyboard';
+import { scheduleWheelSelectionFocus } from './utils/time-listbox-keyboard';
 import { resolveWheelState, valueFromWheelState } from './utils/time-options';
 import {
   IWheelSelectionPartial,
@@ -87,10 +88,15 @@ export class ModusWcTimeInput {
   private inputRef?: HTMLInputElement;
   private dropdownRef?: HTMLElement;
   private hasFocus = false;
-  /** True when focus is from a pointer down on the field (click/tap). */
-  private focusFromPointer = false;
-  /** True after Tab moves focus from the input to the clock button. */
-  private returnedFromClock = false;
+  /** True while focus sits anywhere inside the control, picker included. */
+  private hasComponentFocus = false;
+  /** True while the control is about to move focus back onto itself. */
+  private pendingInternalRefocus = false;
+  /**
+   * Frame handle for the segment selection queued on focus. A click cancels it
+   * so the caret the user aimed at wins over the default entry segment.
+   */
+  private focusSelectFrame: number | null = null;
   private suppressBlurCommit = false;
   private readonly circularScrollLock: ICircularScrollLock = { current: false };
   private wheelScrollCleanups: Array<() => void> = [];
@@ -98,6 +104,11 @@ export class ModusWcTimeInput {
   private pendingScrollToSelection = false;
   /** Move focus onto the selected hour when the picker first opens */
   private pendingFocusPickerOnOpen = false;
+  /**
+   * `value` as it stood when the dropdown opened. Escape restores it before
+   * closing, so a picker session can be abandoned without keeping its edits.
+   */
+  private valueAtDropdownOpen: string | null = null;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
   private segmentDigitBuffer = '';
@@ -271,10 +282,6 @@ export class ModusWcTimeInput {
       }
       this.pendingSegmentSelect = null;
     }
-
-    if (this.inputRef && this.inputRef.value !== this.displayValue) {
-      this.inputRef.value = this.displayValue;
-    }
   }
 
   componentDidUpdate() {
@@ -317,6 +324,7 @@ export class ModusWcTimeInput {
       this.wheelScrollCleanups = [];
       this.pendingScrollToSelection = false;
       this.pendingFocusPickerOnOpen = false;
+      this.valueAtDropdownOpen = null;
       this.wheelScrollPositions.clear();
       if (this.popperInstance) {
         this.popperInstance.destroy();
@@ -328,6 +336,7 @@ export class ModusWcTimeInput {
   disconnectedCallback() {
     unbindCircularWheelListeners(this.wheelScrollCleanups);
     this.wheelScrollCleanups = [];
+    this.cancelFocusSelect();
     unbindBeforeInputListener(this.inputRef, this.handleBeforeInput);
     if (this.popperInstance) {
       this.popperInstance.destroy();
@@ -335,8 +344,10 @@ export class ModusWcTimeInput {
     }
   }
 
-  @Listen('click', { target: 'document' })
-  handleClickOutside(event: MouseEvent) {
+  // Capture-phase pointerdown: closes on press (not every press yields a
+  // click) and cannot be hidden by a downstream `stopPropagation`.
+  @Listen('pointerdown', { target: 'document', capture: true })
+  handleClickOutside(event: PointerEvent) {
     if (!this.showDropdown) {
       return;
     }
@@ -349,12 +360,32 @@ export class ModusWcTimeInput {
     }
   }
 
+  // Host-level so the clock button and picker rows count as the same control
+  // as the text field; the field's own focus / blur delegate here too.
+  @Listen('focusin')
+  handleComponentFocusIn(event: FocusEvent) {
+    this.enterComponentFocus(event);
+  }
+
+  @Listen('focusout')
+  handleComponentFocusOut(event: FocusEvent) {
+    this.handleComponentFocusExit(event);
+  }
+
   @Listen('keydown', { target: 'document' })
   handleEscapeKey(event: KeyboardEvent) {
-    if (event.key === 'Escape' && this.showDropdown) {
-      this.closeDropdown();
-      event.preventDefault();
+    if (event.key !== 'Escape' || !this.showDropdown) {
+      return;
     }
+    event.preventDefault();
+    const revertValue = this.getPickerRevertValue();
+    if (revertValue !== null) {
+      this.revertToValueAtOpen(revertValue);
+      return;
+    }
+    // Like Enter, dismissing the picker hands focus back to the clock button
+    // rather than dropping the caret into the hour segment.
+    this.closeDropdown('clock');
   }
 
   private get resolvedFormat(): TimeFormat {
@@ -439,14 +470,72 @@ export class ModusWcTimeInput {
     this.popperInstance = createPopper(anchor, dropdown, options);
   }
 
-  private closeDropdown() {
+  /** `value` in comparable storage form; unparsable or empty becomes `''`. */
+  private normalizeValue(raw: string): string {
+    const parsed = parse24h(raw);
+    return parsed ? format24h(parsed, this.effectiveShowSeconds) : '';
+  }
+
+  /**
+   * The value to restore when Escape abandons the current picker session, or
+   * `null` when the dropdown is closed or nothing has been picked yet.
+   */
+  private getPickerRevertValue(): string | null {
+    if (this.valueAtDropdownOpen === null) {
+      return null;
+    }
+    const atOpen = this.normalizeValue(this.valueAtDropdownOpen);
+    return atOpen === this.normalizeValue(this.value) ? null : atOpen;
+  }
+
+  /** Restore the value the field had when the picker opened, keeping it open. */
+  private revertToValueAtOpen(restored: string) {
+    const focusedListbox = this.getFocusedWheelListbox();
+    this.isInvalid = false;
+    this.emitChange(restored);
+    this.pendingScrollToSelection = true;
+    if (focusedListbox) {
+      scheduleWheelSelectionFocus(focusedListbox);
+    }
+  }
+
+  private getFocusedWheelListbox(): Element | null {
+    const active = document.activeElement;
+    if (!active || this.dropdownRef == null) {
+      return null;
+    }
+    return this.dropdownRef.contains(active)
+      ? active.closest('[role="listbox"]')
+      : null;
+  }
+
+  private getClockTrigger(): HTMLButtonElement | null {
+    return this.el.querySelector<HTMLButtonElement>('.clock-icon-trigger');
+  }
+
+  /**
+   * `returnFocusTo` decides where focus lands when the dropdown closes while
+   * focus is still inside it. Confirming a row with Enter returns to the clock
+   * button; every other close returns to the field so segment editing can continue.
+   */
+  private closeDropdown(returnFocusTo: 'input' | 'clock' = 'input') {
     const focusInDropdown =
       this.dropdownRef != null &&
       document.activeElement != null &&
       this.dropdownRef.contains(document.activeElement);
     this.showDropdown = false;
     if (focusInDropdown) {
-      requestAnimationFrame(() => this.inputRef?.focus());
+      this.pendingInternalRefocus = true;
+      requestAnimationFrame(() => {
+        const clockTrigger =
+          returnFocusTo === 'clock' ? this.getClockTrigger() : null;
+        if (clockTrigger) {
+          clockTrigger.focus();
+        } else {
+          this.inputRef?.focus();
+        }
+        this.pendingInternalRefocus = false;
+      });
     }
   }
 
@@ -457,6 +546,7 @@ export class ModusWcTimeInput {
     if (!this.showDropdown) {
       this.pendingScrollToSelection = true;
       this.pendingFocusPickerOnOpen = true;
+      this.valueAtDropdownOpen = this.value;
     }
     this.showDropdown = !this.showDropdown;
   };
@@ -466,19 +556,13 @@ export class ModusWcTimeInput {
     event.preventDefault();
   };
 
-  private handleClockBlur = (event: FocusEvent) => {
-    const relatedTarget = event.relatedTarget as Node | null;
-    if (relatedTarget !== this.inputRef) {
-      this.returnedFromClock = false;
-    }
-  };
-
   private openDropdown() {
     if (this.disabled || this.readOnly) {
       return;
     }
     this.pendingScrollToSelection = true;
     this.pendingFocusPickerOnOpen = true;
+    this.valueAtDropdownOpen = this.value;
     this.showDropdown = true;
   }
 
@@ -612,23 +696,11 @@ export class ModusWcTimeInput {
     return (element as Element).classList.contains('clock-icon-trigger');
   }
 
-  private handleBlur = (event: FocusEvent) => {
-    const relatedTarget = event.relatedTarget as Node | null;
-    if (relatedTarget && this.el.contains(relatedTarget)) {
-      if (this.isClockTrigger(relatedTarget)) {
-        this.returnedFromClock = true;
-        this.hasFocus = false;
-        this.focusFromPointer = false;
-        this.segmentDigitBuffer = '';
-      }
-      return;
-    }
-
+  /** Parse, clamp and validate the typed display once the control is left. */
+  private commitFieldOnExit() {
     if (this.suppressBlurCommit) {
       this.suppressBlurCommit = false;
-      this.hasFocus = false;
       this.syncDisplayValue();
-      this.inputBlur.emit(event);
       return;
     }
 
@@ -660,53 +732,73 @@ export class ModusWcTimeInput {
       } else {
         this.isInvalid = true;
       }
-    } else if (
-      this.displayValue !==
-      getSkeleton(this.effectiveShowSeconds, this.resolvedFormat)
-    ) {
-      this.isInvalid = true;
-    } else {
-      this.isInvalid = false;
+      return;
     }
 
+    this.isInvalid =
+      this.displayValue !==
+      getSkeleton(this.effectiveShowSeconds, this.resolvedFormat);
+  }
+
+  /**
+   * `inputFocus` / `inputBlur` describe the whole control, not the text field:
+   * they fire once when focus enters and once when it leaves. Moving between
+   * the field, the clock button and the picker rows is internal and silent.
+   */
+  private enterComponentFocus(event: FocusEvent) {
+    if (this.hasComponentFocus) {
+      return;
+    }
+    this.hasComponentFocus = true;
+    this.inputFocus.emit(event);
+  }
+
+  private handleComponentFocusExit(event: FocusEvent) {
+    if (!this.hasComponentFocus) {
+      return;
+    }
+    const next = event.relatedTarget as Node | null;
+    if (next && this.el.contains(next)) {
+      return;
+    }
+    if (this.pendingInternalRefocus) {
+      return;
+    }
+    this.hasComponentFocus = false;
     this.hasFocus = false;
-    this.focusFromPointer = false;
+    this.cancelFocusSelect();
     this.segmentDigitBuffer = '';
+    this.commitFieldOnExit();
     this.inputBlur.emit(event);
+  }
+
+  private cancelFocusSelect() {
+    if (this.focusSelectFrame !== null) {
+      cancelAnimationFrame(this.focusSelectFrame);
+      this.focusSelectFrame = null;
+    }
+  }
+
+  private handleBlur = (event: FocusEvent) => {
+    this.hasFocus = false;
+    this.segmentDigitBuffer = '';
+    this.handleComponentFocusExit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
     const wasFocused = this.hasFocus;
-    const fromClock =
-      this.returnedFromClock ||
-      this.isClockTrigger(event.relatedTarget as Node | null);
-    this.returnedFromClock = false;
     this.hasFocus = true;
-    if (wasFocused && !fromClock) {
-      return;
-    }
-    if (!this.focusFromPointer) {
+    if (!wasFocused) {
       const segments = this.getSegments();
+      const fromClock = this.isClockTrigger(event.relatedTarget as Node | null);
       const segment = fromClock ? segments[segments.length - 1] : segments[0];
-      const applySelection = () => {
+      this.cancelFocusSelect();
+      this.focusSelectFrame = requestAnimationFrame(() => {
+        this.focusSelectFrame = null;
         this.selectSegment(segment);
-      };
-      if (fromClock) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(applySelection);
-        });
-      } else {
-        requestAnimationFrame(applySelection);
-      }
+      });
     }
-    this.inputFocus.emit(event);
-  };
-
-  private handleInputMouseDown = () => {
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-    this.focusFromPointer = true;
+    this.enterComponentFocus(event);
   };
 
   private selectSegmentAtCaret() {
@@ -722,24 +814,12 @@ export class ModusWcTimeInput {
     this.selectSegment(seg);
   }
 
-  private handleInputClick = (event?: MouseEvent) => {
+  private handleInputClick = () => {
     if (this.disabled || this.readOnly || !this.inputRef) {
       return;
     }
-    event?.preventDefault?.();
-    const fromPointer = this.focusFromPointer;
-    this.focusFromPointer = false;
-    const applySelection = () => {
-      this.selectSegmentAtCaret();
-    };
-    if (fromPointer) {
-      // Caret is not always at the click position until after focus + click paint.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(applySelection);
-      });
-      return;
-    }
-    requestAnimationFrame(applySelection);
+    this.cancelFocusSelect();
+    this.selectSegmentAtCaret();
   };
 
   private handlePaste = (event: ClipboardEvent) => {
@@ -835,9 +915,11 @@ export class ModusWcTimeInput {
     }
     this.closeDropdown();
     this.suppressBlurCommit = true;
+    this.pendingInternalRefocus = true;
     requestAnimationFrame(() => {
       this.inputRef?.focus();
       this.suppressBlurCommit = false;
+      this.pendingInternalRefocus = false;
     });
   };
 
@@ -867,7 +949,7 @@ export class ModusWcTimeInput {
       max: this.max,
       onWheelSelect: (partial: IWheelSelectionPartial) =>
         this.applyWheelSelection(partial),
-      onWheelCommit: () => this.closeDropdown(),
+      onWheelCommit: () => this.closeDropdown('clock'),
       onDatalistSelect: (value24h: string) =>
         this.handleDatalistSelect(value24h),
       onOtherSelect: this.handleOtherSelect,
@@ -901,7 +983,6 @@ export class ModusWcTimeInput {
             onBlur={this.handleBlur}
             onClick={this.handleInputClick}
             onFocus={this.handleFocus}
-            onMouseDown={this.handleInputMouseDown}
             onInput={this.handleInput}
             onKeyDown={this.handleKeyDown}
             onPaste={this.handlePaste}
@@ -924,7 +1005,6 @@ export class ModusWcTimeInput {
             aria-haspopup={popupRole}
             aria-controls={this.showDropdown ? this.dropdownId : undefined}
             disabled={this.disabled || this.readOnly}
-            onBlur={this.handleClockBlur}
             onMouseDown={this.handleClockMouseDown}
             onClick={this.toggleDropdown}
           >

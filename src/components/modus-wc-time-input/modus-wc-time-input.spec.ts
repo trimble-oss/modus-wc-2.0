@@ -93,6 +93,21 @@ function captureRaf() {
   };
 }
 
+function stubActiveElement(element: Element | null) {
+  const descriptor = Object.getOwnPropertyDescriptor(document, 'activeElement');
+  Object.defineProperty(document, 'activeElement', {
+    get: () => element,
+    configurable: true,
+  });
+  return () => {
+    if (descriptor) {
+      Object.defineProperty(document, 'activeElement', descriptor);
+      return;
+    }
+    delete (document as unknown as Record<string, unknown>).activeElement;
+  };
+}
+
 describe('time-format utils', () => {
   it('should convert 12h to 24h hours', () => {
     expect(toHours24(12, 'AM')).toBe(0);
@@ -363,6 +378,7 @@ describe('modus-wc-time-input', () => {
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
+    input!.dispatchEvent(new FocusEvent('focus'));
     input!.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
 
@@ -629,6 +645,66 @@ describe('modus-wc-time-input', () => {
     expect(component.value).toBe('09:00');
   });
 
+  it('should close the picker on the first Escape when nothing was picked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Escape untouched" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).click();
+    await page.waitForChanges();
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+
+    expect(
+      (component as unknown as { showDropdown: boolean }).showDropdown
+    ).toBe(false);
+    expect(component.value).toBe('09:00');
+  });
+
+  it('should revert to the value at open on the first Escape and close on the second', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Escape revert" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const changeSpy = jest.fn();
+    page.root!.addEventListener('inputChange', changeSpy);
+
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).click();
+    await page.waitForChanges();
+
+    page
+      .root!.querySelector<HTMLElement>(
+        '.time-wheel-viewport--hours .time-wheel-option[data-wheel-copy="1"][data-value="14"]'
+      )!
+      .click();
+    await page.waitForChanges();
+    expect(component.value).toBe('14:00');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+
+    expect(component.value).toBe('09:00');
+    expect(changeSpy).toHaveBeenCalledTimes(2);
+    expect(
+      (component as unknown as { showDropdown: boolean }).showDropdown
+    ).toBe(true);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+
+    expect(
+      (component as unknown as { showDropdown: boolean }).showDropdown
+    ).toBe(false);
+    expect(component.value).toBe('09:00');
+  });
+
   it('should close dropdown when clicking outside the component', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
@@ -639,7 +715,7 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     document.dispatchEvent(
-      new MouseEvent('click', { bubbles: true, composed: true })
+      new MouseEvent('pointerdown', { bubbles: true, composed: true })
     );
     await page.waitForChanges();
 
@@ -716,7 +792,7 @@ describe('modus-wc-time-input', () => {
 
     expect(() =>
       document.dispatchEvent(
-        new MouseEvent('click', { bubbles: true, composed: true })
+        new MouseEvent('pointerdown', { bubbles: true, composed: true })
       )
     ).not.toThrow();
     await page.waitForChanges();
@@ -781,10 +857,11 @@ describe('modus-wc-time-input', () => {
       html: '<modus-wc-time-input aria-label="Suppress blur"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent('focus'));
     (
       component as unknown as { suppressBlurCommit: boolean }
     ).suppressBlurCommit = true;
-    const input = page.root!.querySelector('input') as HTMLInputElement;
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
@@ -1044,9 +1121,20 @@ describe('modus-wc-time-input', () => {
     (component as unknown as { showDropdown: boolean }).showDropdown = true;
     await page.waitForChanges();
 
+    const clockButton = page.root!.querySelector<HTMLButtonElement>(
+      '.clock-icon-trigger'
+    )!;
+    const clockFocus = jest.spyOn(clockButton, 'focus');
+    const inputFocus = jest.spyOn(
+      page.root!.querySelector('input') as HTMLInputElement,
+      'focus'
+    );
     const target = page.root!.querySelector<HTMLElement>(
       '.time-wheel-viewport--hours .time-wheel-option[data-wheel-copy="1"][data-value="14"]'
     );
+
+    const restoreActiveElement = stubActiveElement(target);
+    const raf = captureRaf();
     target!.dispatchEvent(
       new KeyboardEvent('keydown', {
         key: 'Enter',
@@ -1054,12 +1142,17 @@ describe('modus-wc-time-input', () => {
         cancelable: true,
       })
     );
+    raf.run();
+    raf.restore();
+    restoreActiveElement();
     await page.waitForChanges();
 
     expect(component.value).toBe('14:00');
     expect(
       (component as unknown as { showDropdown: boolean }).showDropdown
     ).toBe(false);
+    expect(clockFocus).toHaveBeenCalled();
+    expect(inputFocus).not.toHaveBeenCalled();
   });
 
   it('should keep the picker open when Space sets a wheel row', async () => {
@@ -1891,7 +1984,7 @@ describe('modus-wc-time-input', () => {
     const digitEvent = createInputEvent('insertText', '5');
     const digitPreventSpy = jest.spyOn(digitEvent, 'preventDefault');
     handleBeforeInput(digitEvent);
-    expect(digitPreventSpy).not.toHaveBeenCalled();
+    expect(digitPreventSpy).toHaveBeenCalled();
 
     const deleteEvent = createInputEvent('deleteContentBackward');
     const deletePreventSpy = jest.spyOn(deleteEvent, 'preventDefault');
@@ -2986,21 +3079,14 @@ describe('modus-wc-time-input', () => {
     const setSelectionRange = jest.fn();
     input.setSelectionRange = setSelectionRange;
 
-    (
-      component as unknown as { handleInputMouseDown: () => void }
-    ).handleInputMouseDown();
     input.dispatchEvent(new FocusEvent('focus'));
-    await page.waitForChanges();
-
     Object.defineProperty(input, 'selectionStart', {
       value: 4,
       configurable: true,
     });
     (
-      component as unknown as {
-        handleInputClick: (e?: MouseEvent) => void;
-      }
-    ).handleInputClick({ preventDefault: jest.fn() } as unknown as MouseEvent);
+      component as unknown as { handleInputClick: () => void }
+    ).handleInputClick();
 
     await new Promise<void>((resolve) =>
       requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
@@ -3141,12 +3227,14 @@ describe('modus-wc-time-input', () => {
     };
 
     harness.displayValue = '09:--';
+    input.dispatchEvent(new FocusEvent('focus'));
     input.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
     expect(harness.isInvalid).toBe(true);
 
     harness.isInvalid = false;
     harness.displayValue = '99:99';
+    input.dispatchEvent(new FocusEvent('focus'));
     input.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
     expect(harness.isInvalid).toBe(true);
@@ -3248,6 +3336,7 @@ describe('modus-wc-time-input', () => {
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
 
+    input.dispatchEvent(new FocusEvent('focus'));
     (component as unknown as { displayValue: string }).displayValue = '09:45';
     input.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
@@ -3309,27 +3398,6 @@ describe('modus-wc-time-input', () => {
     expect(component.value).toBe('21:45');
   });
 
-  it('should sync the native input value during render when it drifts from displayValue', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Render sync" value="09:00"></modus-wc-time-input>',
-    });
-    const component = page.rootInstance as ModusWcTimeInput;
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    const harness = component as unknown as {
-      inputRef: HTMLInputElement;
-      displayValue: string;
-      componentDidRender: () => void;
-    };
-
-    harness.inputRef = input;
-    harness.displayValue = '09:00';
-    input.value = 'stale';
-    harness.componentDidRender();
-
-    expect(input.value).toBe('09:00');
-  });
-
   it('should prevent default on clock button mousedown', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
@@ -3344,26 +3412,6 @@ describe('modus-wc-time-input', () => {
     ).handleClockMouseDown(event);
 
     expect(preventDefault).toHaveBeenCalled();
-  });
-
-  it('should clear returnedFromClock when clock blur target is not the input', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTimeInput],
-      html: '<modus-wc-time-input aria-label="Clock blur reset" value="09:00"></modus-wc-time-input>',
-    });
-    const component = page.rootInstance as ModusWcTimeInput;
-    const harness = component as unknown as {
-      inputRef: HTMLInputElement;
-      returnedFromClock: boolean;
-      handleClockBlur: (e: FocusEvent) => void;
-    };
-    const other = page.doc.createElement('button');
-
-    harness.inputRef = page.root!.querySelector('input') as HTMLInputElement;
-    harness.returnedFromClock = true;
-    harness.handleClockBlur(new FocusEvent('blur', { relatedTarget: other }));
-
-    expect(harness.returnedFromClock).toBe(false);
   });
 
   it('should ignore repeat focus events while already focused', async () => {
@@ -3389,31 +3437,160 @@ describe('modus-wc-time-input', () => {
     expect(setSelectionRange).toHaveBeenCalledTimes(1);
   });
 
-  it('should ignore pointer mousedown while disabled or read-only', async () => {
+  it('should emit inputFocus when focus enters at the clock button instead of the field', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Clock keyboard open" value="09:00"></modus-wc-time-input>',
+    });
+    const inputFocusSpy = jest.fn();
+    page.root!.addEventListener('inputFocus', inputFocusSpy);
+
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(inputFocusSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should ignore a blur that arrives before the control ever had focus', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Blur unfocused" value="09:00"></modus-wc-time-input>',
+    });
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+
+    (
+      page.rootInstance as unknown as {
+        handleComponentFocusOut: (e: FocusEvent) => void;
+      }
+    ).handleComponentFocusOut(new FocusEvent('focusout', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(blurSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit inputBlur while the picker hands focus back to the control', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Close refocus" value="09:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent('focus'));
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).click();
+    await page.waitForChanges();
+
+    const blurSpy = jest.fn();
+    page.root!.addEventListener('inputBlur', blurSpy);
+    const row = page.root!.querySelector<HTMLElement>(
+      '.time-wheel-viewport--hours .time-wheel-option'
+    )!;
+    const restoreActiveElement = stubActiveElement(row);
+
+    const raf = captureRaf();
+    (component as unknown as { closeDropdown: () => void }).closeDropdown();
+    row.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    raf.run();
+    raf.restore();
+    restoreActiveElement();
+    await page.waitForChanges();
+
+    expect(blurSpy).not.toHaveBeenCalled();
+  });
+
+  it('should revert to an empty value when the picker was opened on a blank field', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Escape revert blank"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).click();
+    await page.waitForChanges();
+
+    page
+      .root!.querySelector<HTMLElement>(
+        '.time-wheel-viewport--hours .time-wheel-option[data-wheel-copy="1"][data-value="14"]'
+      )!
+      .click();
+    await page.waitForChanges();
+    expect(component.value).not.toBe('');
+
+    const restoreActiveElement = stubActiveElement(
+      page.root!.querySelector('input')
+    );
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+    restoreActiveElement();
+
+    expect(component.value).toBe('');
+    expect(
+      (component as unknown as { showDropdown: boolean }).showDropdown
+    ).toBe(true);
+  });
+
+  it('should restore the roving focus to the reverted row when Escape undoes a pick', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput],
+      html: '<modus-wc-time-input aria-label="Escape revert focus" value="09:00"></modus-wc-time-input>',
+    });
+    (
+      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+    ).click();
+    await page.waitForChanges();
+
+    const picked = page.root!.querySelector<HTMLElement>(
+      '.time-wheel-viewport--hours .time-wheel-option[data-wheel-copy="1"][data-value="14"]'
+    )!;
+    picked.click();
+    await page.waitForChanges();
+
+    const restoreActiveElement = stubActiveElement(picked);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await page.waitForChanges();
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+    );
+    restoreActiveElement();
+
+    const restored = page.root!.querySelector<HTMLElement>(
+      '.time-wheel-viewport--hours .time-wheel-option.is-selected:not([aria-hidden="true"])'
+    );
+    expect(restored?.dataset.value).toBe('9');
+    expect(restored?.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('should ignore input clicks while disabled or read-only', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input disabled aria-label="Disabled pointer" value="09:00"></modus-wc-time-input>',
     });
-    const disabledComponent = page.rootInstance as ModusWcTimeInput;
-    const disabledHarness = disabledComponent as unknown as {
-      focusFromPointer: boolean;
-      handleInputMouseDown: () => void;
-    };
-
-    disabledHarness.handleInputMouseDown();
-    expect(disabledHarness.focusFromPointer).toBe(false);
+    const disabledInput = page.root!.querySelector('input') as HTMLInputElement;
+    const disabledSelect = jest.fn();
+    disabledInput.setSelectionRange = disabledSelect;
+    (
+      page.rootInstance as unknown as { handleInputClick: () => void }
+    ).handleInputClick();
+    expect(disabledSelect).not.toHaveBeenCalled();
 
     const readOnlyPage = await newSpecPage({
       components: [ModusWcTimeInput],
       html: '<modus-wc-time-input read-only aria-label="Readonly pointer" value="09:00"></modus-wc-time-input>',
     });
-    const readOnlyHarness = readOnlyPage.rootInstance as unknown as {
-      focusFromPointer: boolean;
-      handleInputMouseDown: () => void;
-    };
-
-    readOnlyHarness.handleInputMouseDown();
-    expect(readOnlyHarness.focusFromPointer).toBe(false);
+    const readOnlyInput = readOnlyPage.root!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    const readOnlySelect = jest.fn();
+    readOnlyInput.setSelectionRange = readOnlySelect;
+    (
+      readOnlyPage.rootInstance as unknown as { handleInputClick: () => void }
+    ).handleInputClick();
+    expect(readOnlySelect).not.toHaveBeenCalled();
   });
 
   it('should no-op segment selection when input ref is missing', async () => {

@@ -91,20 +91,59 @@ function isBrowserAutofillInsert(inputType: string, data: string): boolean {
   );
 }
 
+type ITypedCharacterContext = Pick<
+  ITimeInputKeyboardContext,
+  | 'displayValue'
+  | 'effectiveShowSeconds'
+  | 'resolvedFormat'
+  | 'getActiveSegment'
+  | 'getSegmentDigitBuffer'
+  | 'setSegmentDigitBuffer'
+  | 'setActiveSegmentKind'
+  | 'setPendingSegmentSelect'
+  | 'commitDisplay'
+>;
+
+/**
+ * Apply a single typed character to the active segment. Shared by `keydown`
+ * and `beforeinput`: soft keyboards report `Unidentified` on `keydown`, so
+ * `beforeinput` is the only reliable entry point for character input there.
+ */
+export function applyTypedCharacter(
+  char: string,
+  ctx: ITypedCharacterContext
+): boolean {
+  const seg = ctx.getActiveSegment();
+  if (!isAllowedInsertText(char, seg)) {
+    return false;
+  }
+
+  const result = typeDigitInSegment(
+    ctx.displayValue,
+    seg,
+    char,
+    ctx.getSegmentDigitBuffer(),
+    ctx.resolvedFormat
+  );
+  ctx.setSegmentDigitBuffer(result.buffer);
+  const nextSeg = result.advance
+    ? getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+    : seg;
+  ctx.setActiveSegmentKind(nextSeg.kind);
+  ctx.commitDisplay(result.display, nextSeg.kind);
+  if (result.advance) {
+    ctx.setPendingSegmentSelect(nextSeg.kind);
+  }
+  return true;
+}
+
 export function handleTimeInputBeforeInput(
   event: InputEvent,
   ctx: Pick<
     ITimeInputKeyboardContext,
-    | 'disabled'
-    | 'readOnly'
-    | 'getActiveSegment'
-    | 'effectiveShowSeconds'
-    | 'resolvedFormat'
-    | 'min'
-    | 'max'
-    | 'emitParsedTime'
-    | 'setPendingSegmentSelect'
-  >
+    'disabled' | 'readOnly' | 'min' | 'max' | 'emitParsedTime'
+  > &
+    ITypedCharacterContext
 ): void {
   if (ctx.disabled || ctx.readOnly) {
     return;
@@ -126,8 +165,12 @@ export function handleTimeInputBeforeInput(
   if (!data) {
     return;
   }
-  if (!isAllowedInsertText(data, ctx.getActiveSegment())) {
-    event.preventDefault();
+
+  // The segmented field never accepts a native insert; route the character
+  // through the same segment logic `keydown` uses so mobile and IME match.
+  event.preventDefault();
+  if (data.length === 1) {
+    applyTypedCharacter(data, ctx);
   }
 }
 
@@ -312,56 +355,16 @@ export function handleTimeInputKeyDown(
     return;
   }
 
-  if (/^\d$/.test(event.key)) {
-    event.preventDefault();
-    const result = typeDigitInSegment(
-      ctx.displayValue,
-      seg,
-      event.key,
-      ctx.getSegmentDigitBuffer(),
-      ctx.resolvedFormat
-    );
-    ctx.setSegmentDigitBuffer(result.buffer);
-    const nextKind = result.advance
-      ? getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat).kind
-      : seg.kind;
-    ctx.setActiveSegmentKind(nextKind);
-    ctx.commitDisplay(result.display, nextKind);
-    if (result.advance) {
-      const nextSeg = getNextSegment(
-        seg,
-        ctx.effectiveShowSeconds,
-        ctx.resolvedFormat
-      );
-      ctx.setPendingSegmentSelect(nextSeg.kind);
-    }
-    return;
-  }
-
-  if (
-    ctx.resolvedFormat === '12hrs' &&
-    seg.kind === 'period' &&
-    /^[apAP]$/.test(event.key)
-  ) {
-    event.preventDefault();
-    const result = typeDigitInSegment(
-      ctx.displayValue,
-      seg,
-      event.key,
-      '',
-      ctx.resolvedFormat
-    );
-    ctx.commitDisplay(result.display, seg.kind);
-    return;
-  }
-
   if (
     event.key.length === 1 &&
     !event.ctrlKey &&
     !event.metaKey &&
     !event.altKey
   ) {
+    // Cancel unconditionally: disallowed characters are dropped, allowed ones
+    // are written by `applyTypedCharacter`, never by the native field.
     event.preventDefault();
+    applyTypedCharacter(event.key, ctx);
   }
 }
 

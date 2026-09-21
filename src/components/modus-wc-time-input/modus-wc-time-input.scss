@@ -215,11 +215,9 @@ modus-wc-time-input {
       color: var(--modus-wc-color-base-content);
     }
 
+    // Programmatic focus after open or a pointer pick does not match
+    // :focus-visible; draw the ring whenever the row owns focus.
     &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
       outline: 2px solid var(--modus-wc-color-primary);
       outline-offset: -2px;
     }
@@ -262,10 +260,6 @@ modus-wc-time-input {
     }
 
     &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
       outline: 2px solid var(--modus-wc-color-primary);
       outline-offset: -2px;
     }
