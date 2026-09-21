@@ -163,10 +163,10 @@ describe('resolveIcon', () => {
     }
   });
 
-  it('should keep not_synced_bold on the 1.0 ligature', () => {
+  it('should resolve not_synced_bold to its 2.0 slash glyph', () => {
     expect(resolveIcon('not_synced_bold', '2.0')).toEqual({
-      version: '1.0',
-      ligature: 'not_synced_bold',
+      version: '2.0',
+      slug: 'arrows-clockwise-slash',
     });
   });
 });
