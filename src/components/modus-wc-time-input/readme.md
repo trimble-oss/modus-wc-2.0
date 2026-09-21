@@ -60,6 +60,7 @@ Adheres to WCAG 2.2 standards.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
+- [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
@@ -67,6 +68,7 @@ Adheres to WCAG 2.2 standards.
 ```mermaid
 graph TD;
   modus-wc-time-input --> modus-wc-input-label
+  modus-wc-time-input --> modus-wc-button
   modus-wc-time-input --> modus-wc-icon
   modus-wc-time-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon

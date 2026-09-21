@@ -364,7 +364,6 @@ export function typeDigitInSegment(
   }
 
   const nextBuffer = (isEmpty ? '' : buffer) + digit;
-  const width = segment.end - segment.start;
 
   if (segment.kind === 'hour' && is12hrsFormat(hourFormat)) {
     const n = Number(nextBuffer);
@@ -381,11 +380,7 @@ export function typeDigitInSegment(
       };
     }
     return {
-      display: setSegmentText(
-        display,
-        segment,
-        `${nextBuffer}${'-'.repeat(width - nextBuffer.length)}`
-      ),
+      display: setSegmentText(display, segment, padSegment(n)),
       buffer: nextBuffer,
       advance: false,
     };
@@ -402,11 +397,7 @@ export function typeDigitInSegment(
       };
     }
     return {
-      display: setSegmentText(
-        display,
-        segment,
-        `${nextBuffer}${'-'.repeat(width - nextBuffer.length)}`
-      ),
+      display: setSegmentText(display, segment, padSegment(n)),
       buffer: nextBuffer,
       advance: false,
     };
@@ -423,11 +414,7 @@ export function typeDigitInSegment(
     };
   }
   return {
-    display: setSegmentText(
-      display,
-      segment,
-      `${nextBuffer}${'-'.repeat(width - nextBuffer.length)}`
-    ),
+    display: setSegmentText(display, segment, padSegment(n)),
     buffer: nextBuffer,
     advance: false,
   };

@@ -105,35 +105,66 @@ modus-wc-time-input {
     width: 1px;
   }
 
+  modus-wc-button.clock-icon-trigger,
   .clock-icon-trigger {
-    align-items: center;
-    background: transparent;
-    border: none;
-    color: var(--modus-wc-color-base-content);
-    cursor: pointer;
+    cursor: default;
     display: inline-flex;
     height: var(--modus-wc-size-xs);
     inset-block-start: 50%;
     inset-inline-end: 0.625rem; // spacing-sm + 2px nudge
-    justify-content: center;
-    line-height: 0;
-    padding: 0;
     position: absolute;
     transform: translateY(-50%);
     width: var(--modus-wc-size-xs);
 
-    &:focus {
-      outline: none;
+    // The button is chrome inside the field, so it drops the atom's own box
+    // and state styling and only keeps the icon glyph as the hit target.
+    modus-wc-icon {
+      cursor: default;
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--modus-wc-color-primary);
-      outline-offset: -2px;
-    }
+    .modus-wc-btn {
+      align-items: center;
+      cursor: default;
+      display: inline-flex;
+      height: 100%;
+      justify-content: center;
+      line-height: 0;
+      min-height: 0;
+      padding: 0;
+      width: 100%;
 
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
+      &,
+      &:hover,
+      &:active,
+      &:focus,
+      &:focus-visible,
+      &:disabled {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: var(--modus-wc-color-base-content);
+        cursor: default;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--modus-wc-color-primary);
+        outline-offset: -2px;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+
+        &,
+        &:hover,
+        &:active {
+          cursor: not-allowed;
+        }
+      }
     }
   }
 

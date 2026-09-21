@@ -1,4 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { IInputFeedbackProp } from '../types';
@@ -262,6 +263,47 @@ describe('time-segments utils', () => {
     expect(displayFromValue('21:30', false, '12hrs')).toBe('09:30 PM');
   });
 
+  it('should pad the first typed digit to two digits without hyphen placeholders', () => {
+    const hourSeg = { kind: 'hour' as const, start: 0, end: 2 };
+    let display = getSkeleton(false, '24hrs');
+
+    let result = typeDigitInSegment(display, hourSeg, '1', '', '24hrs');
+    expect(result.display).toBe('01:--');
+    expect(result.advance).toBe(false);
+
+    result = typeDigitInSegment(
+      result.display,
+      hourSeg,
+      '2',
+      result.buffer,
+      '24hrs'
+    );
+    expect(result.display).toBe('12:--');
+    expect(result.advance).toBe(true);
+
+    display = getSkeleton(false, '24hrs');
+    result = typeDigitInSegment(display, hourSeg, '2', '', '24hrs');
+    result = typeDigitInSegment(
+      result.display,
+      hourSeg,
+      '8',
+      result.buffer,
+      '24hrs'
+    );
+    expect(result.display).toBe('23:--');
+
+    display = getSkeleton(false, '24hrs');
+    result = typeDigitInSegment(display, hourSeg, '3', '', '24hrs');
+    expect(result.display).toBe('03:--');
+    expect(result.advance).toBe(true);
+
+    const minuteSeg = { kind: 'minute' as const, start: 3, end: 5 };
+    display = '12:--';
+    result = typeDigitInSegment(display, minuteSeg, '4', '', '24hrs');
+    expect(result.display).toBe('12:04');
+    expect(result.advance).toBe(false);
+  });
+
   it('should type digits into segments with auto-advance', () => {
     let display = getSkeleton(false, '24hrs');
     const hourSeg = { kind: 'hour' as const, start: 0, end: 2 };
@@ -303,7 +345,7 @@ describe('time-segments utils', () => {
 describe('modus-wc-time-input', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input datalist-id="test-list"></modus-wc-time-input>',
     });
     expect(page.root).toMatchSnapshot();
@@ -311,7 +353,7 @@ describe('modus-wc-time-input', () => {
 
   it('should render with custom props', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: `<modus-wc-time-input
                 aria-describedby="desc"
                 aria-label="Time input"
@@ -370,7 +412,7 @@ describe('modus-wc-time-input', () => {
 
   it('should emit blur event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur test"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input');
@@ -387,7 +429,7 @@ describe('modus-wc-time-input', () => {
 
   it('should emit change event when typing a complete time', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Change test"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector(
@@ -415,7 +457,7 @@ describe('modus-wc-time-input', () => {
 
   it('should clear only the active segment without wiping the stored value', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clear segments" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -444,7 +486,7 @@ describe('modus-wc-time-input', () => {
 
   it('should emit focus event', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Focus test"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input');
@@ -460,7 +502,7 @@ describe('modus-wc-time-input', () => {
 
   it('should display 24h value by default', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Value test" value="21:30"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -469,7 +511,7 @@ describe('modus-wc-time-input', () => {
 
   it('should display formatted 12h value while keeping 24h internal value', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Value test" format="12hrs" value="21:30"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -481,7 +523,7 @@ describe('modus-wc-time-input', () => {
 
   it('should display value in 24hrs format when format is 24hrs', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Value test" value="21:30"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -490,7 +532,7 @@ describe('modus-wc-time-input', () => {
 
   it('should open picker dropdown with 2 wheels in 24h mode', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -526,7 +568,7 @@ describe('modus-wc-time-input', () => {
 
   it('should open picker dropdown with 3 wheels in 12h mode', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker 12" format="12hrs" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -539,7 +581,7 @@ describe('modus-wc-time-input', () => {
 
   it('should open picker dropdown with 3 wheels when showSeconds in 24h', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker seconds" show-seconds value="09:45:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -552,7 +594,7 @@ describe('modus-wc-time-input', () => {
 
   it('should open picker dropdown with 4 wheels when showSeconds in 12h', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker seconds 12" format="12hrs" show-seconds value="09:45:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -565,7 +607,7 @@ describe('modus-wc-time-input', () => {
 
   it('should update value when a wheel option is clicked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel click" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -591,7 +633,7 @@ describe('modus-wc-time-input', () => {
 
   it('should render datalist options and Other', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -607,7 +649,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close datalist and set value on option select', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist select"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -629,7 +671,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close dropdown on Escape', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Escape" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -647,12 +689,14 @@ describe('modus-wc-time-input', () => {
 
   it('should close the picker on the first Escape when nothing was picked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Escape untouched" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).click();
     await page.waitForChanges();
 
@@ -667,7 +711,7 @@ describe('modus-wc-time-input', () => {
 
   it('should revert to the value at open on the first Escape and close on the second', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Escape revert" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -675,7 +719,9 @@ describe('modus-wc-time-input', () => {
     page.root!.addEventListener('inputChange', changeSpy);
 
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).click();
     await page.waitForChanges();
 
@@ -707,7 +753,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close dropdown when clicking outside the component', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Outside click" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -726,7 +772,7 @@ describe('modus-wc-time-input', () => {
 
   it('should fall back to event.target when composedPath is unavailable', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="No composedPath" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -750,7 +796,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close dropdown when disabled becomes true', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Disable close" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -768,7 +814,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep the dropdown open when the window blurs', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Window blur" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -785,7 +831,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore outside click events while the dropdown is already closed', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Outside closed" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -804,7 +850,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep isInvalid unchanged while focused when the value prop changes', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Focus watch"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -824,7 +870,7 @@ describe('modus-wc-time-input', () => {
 
   it('should reset isInvalid when the value prop changes while not focused', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blurred watch"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -840,7 +886,7 @@ describe('modus-wc-time-input', () => {
 
   it('should apply the error class when isInvalid is true and no feedback is set', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Error class"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -853,7 +899,7 @@ describe('modus-wc-time-input', () => {
 
   it('should reset suppressBlurCommit and still emit inputBlur', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Suppress blur"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -877,7 +923,7 @@ describe('modus-wc-time-input', () => {
 
   it('should render the skeleton when value is empty', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Skeleton"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector(
@@ -888,7 +934,7 @@ describe('modus-wc-time-input', () => {
 
   it('should submit the canonical 24h value through a hidden input', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Hidden name" name="start" value="09:30"></modus-wc-time-input>',
     });
     const hidden = page.root!.querySelector(
@@ -901,7 +947,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not open the dropdown when the input is clicked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Click open" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -917,7 +963,7 @@ describe('modus-wc-time-input', () => {
 
   it('should default autocomplete to off', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Autocomplete default"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -926,7 +972,7 @@ describe('modus-wc-time-input', () => {
 
   it('should normalize browser autofill in beforeinput before it reaches the field', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Beforeinput autofill" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -957,7 +1003,7 @@ describe('modus-wc-time-input', () => {
 
   it('should normalize browser autofill input to the active display format', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Autofill normalize" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -979,7 +1025,7 @@ describe('modus-wc-time-input', () => {
 
   it('should revert invalid autofill input to the controlled display value', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Autofill revert" value="09:00"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -999,12 +1045,12 @@ describe('modus-wc-time-input', () => {
 
   it('should open the dropdown when the clock button is clicked', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock open" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
 
     button.click();
@@ -1017,12 +1063,12 @@ describe('modus-wc-time-input', () => {
 
   it('should not emit inputBlur when focus moves to the clock button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock blur" value="09:00"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
@@ -1038,12 +1084,12 @@ describe('modus-wc-time-input', () => {
 
   it('should focus the selected hour when the clock button opens the picker', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock focus" value="09:00"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     const focusSpy = jest.fn();
     page.root!.addEventListener('inputFocus', focusSpy);
@@ -1071,7 +1117,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not emit inputChange when re-picking the already selected wheel row', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel no-op" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1114,7 +1160,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close the picker when Enter confirms a wheel row', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel enter" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1122,7 +1168,7 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     const clockButton = page.root!.querySelector<HTMLButtonElement>(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     )!;
     const clockFocus = jest.spyOn(clockButton, 'focus');
     const inputFocus = jest.spyOn(
@@ -1157,7 +1203,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep the picker open when Space sets a wheel row', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel space" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1185,7 +1231,7 @@ describe('modus-wc-time-input', () => {
 
   it('should move focus across wheels with ArrowLeft and ArrowRight', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel columns" format="12hrs" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1236,7 +1282,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep the roving tabindex on the row picked with the mouse', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel click focus" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1263,7 +1309,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close the dropdown when the clock button is clicked while open', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock close" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1271,7 +1317,7 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     button.click();
     await page.waitForChanges();
@@ -1282,7 +1328,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep the dropdown closed when handleInputClick is called', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Click no event" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1306,7 +1352,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not toggle the dropdown on click when disabled', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Click disabled" value="09:00" disabled></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1323,7 +1369,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore direct toggle/open calls while disabled or read-only', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Direct guard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1340,7 +1386,7 @@ describe('modus-wc-time-input', () => {
 
   it('should open the dropdown when Alt+ArrowDown is pressed while closed', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Arrow open" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1365,7 +1411,7 @@ describe('modus-wc-time-input', () => {
 
   it('should step the active segment when ArrowDown is pressed without Alt', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Arrow step" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1390,7 +1436,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore ArrowDown when the dropdown is already open', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Arrow already open" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1414,7 +1460,7 @@ describe('modus-wc-time-input', () => {
 
   it('should navigate datalist options with keyboard (ArrowDown, ArrowUp)', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist keyboard nav"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1459,7 +1505,7 @@ describe('modus-wc-time-input', () => {
 
   it('should close the dropdown when Enter is pressed on the input', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Enter close" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1483,7 +1529,7 @@ describe('modus-wc-time-input', () => {
 
   it('should use the datalist dropdown when the deprecated datalistId is set', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Legacy datalist"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1496,7 +1542,7 @@ describe('modus-wc-time-input', () => {
 
   it('should use the datalist dropdown when interval-minutes is set', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Interval attr" interval-minutes="30"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1508,7 +1554,7 @@ describe('modus-wc-time-input', () => {
 
   it('should use the datalist dropdown when variant is datalist', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Variant datalist" variant="datalist"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1520,7 +1566,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep picker wheels when intervalMinutes is set only as a property', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Interval prop only"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1534,7 +1580,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore printable letter keys in the text field', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Letter guard" value="09:45"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector(
@@ -1551,7 +1597,7 @@ describe('modus-wc-time-input', () => {
 
   it('should emit inputChange with target.value in 24h format', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Emit shape"></modus-wc-time-input>',
     });
     const changeSpy = jest.fn();
@@ -1569,7 +1615,7 @@ describe('modus-wc-time-input', () => {
 
   it('should use wheels when datalistOptions is nullish', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Nullish datalist options"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1585,7 +1631,7 @@ describe('modus-wc-time-input', () => {
 
   it('should use wheels when datalistOptions is an empty array', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Empty datalist options"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1599,7 +1645,7 @@ describe('modus-wc-time-input', () => {
 
   it('should fall back to 24hrs display when format is explicitly nullish', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Nullish hour format" value="21:30"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1612,7 +1658,7 @@ describe('modus-wc-time-input', () => {
 
   it('should apply a custom minute step of 60 or more', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Minute step" step="120" value="09:00"></modus-wc-time-input>',
     });
     (page.rootInstance as unknown as { showDropdown: boolean }).showDropdown =
@@ -1627,7 +1673,7 @@ describe('modus-wc-time-input', () => {
 
   it('should apply a custom second step and reveal seconds when step is under 60', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Second step" step="15" value="09:00:00"></modus-wc-time-input>',
     });
     (page.rootInstance as unknown as { showDropdown: boolean }).showDropdown =
@@ -1642,7 +1688,7 @@ describe('modus-wc-time-input', () => {
 
   it('should update value when minutes, seconds, and period wheel options are selected', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel selectors" format="12hrs" show-seconds value="09:05:10"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1673,7 +1719,7 @@ describe('modus-wc-time-input', () => {
 
   it('should prevent default on wheel option mousedown and ignore keydown on non-a11y copies', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel keyboard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1724,7 +1770,7 @@ describe('modus-wc-time-input', () => {
 
   it('should select a datalist option and the Other item via keyboard', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist keyboard"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1780,7 +1826,7 @@ describe('modus-wc-time-input', () => {
 
   it('should navigate wheel options with keyboard (ArrowDown, ArrowUp, Home, End)', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel keyboard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1847,7 +1893,7 @@ describe('modus-wc-time-input', () => {
 
   it('should keep keyboard focus on the selected hour after wrapping past 23', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel wrap" value="23:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1883,7 +1929,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore events on non-a11y copy', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel keyboard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1905,7 +1951,7 @@ describe('modus-wc-time-input', () => {
 
   it('should handle early returns in moveListboxFocus gracefully', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Listbox guards"></modus-wc-time-input>',
     });
 
@@ -1921,7 +1967,7 @@ describe('modus-wc-time-input', () => {
 
   it('should manage beforeinput event listeners correctly when setting input ref', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Input ref"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1951,7 +1997,7 @@ describe('modus-wc-time-input', () => {
 
   it('should prevent default on beforeinput event when not disabled or readonly', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Before input"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -1994,7 +2040,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not refocus the hours wheel when the picker re-renders after open', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker refocus" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2022,7 +2068,7 @@ describe('modus-wc-time-input', () => {
 
   it('should handle early returns in keyboard option handlers when listbox is null', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input></modus-wc-time-input>',
     });
 
@@ -2047,7 +2093,7 @@ describe('modus-wc-time-input', () => {
 
   it('should handle unmatched values when rendering wheels and datalists', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input value="12:34"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2088,7 +2134,7 @@ describe('modus-wc-time-input', () => {
 
   it('should restore focus to the input if the dropdown is closed while focus is inside it', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Focus restore" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2126,7 +2172,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not throw when closing dropdown without an input ref', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Close no input ref" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2164,7 +2210,7 @@ describe('modus-wc-time-input', () => {
 
   it('should skip picker focus when opening the datalist dropdown', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist focus skip" variant="datalist"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2181,7 +2227,7 @@ describe('modus-wc-time-input', () => {
 
   it('should skip picker focus when dropdown opens without pending focus', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker no focus" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2219,7 +2265,7 @@ describe('modus-wc-time-input', () => {
 
   it('should handle picker focus RAF when focus target is missing', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker RAF guards" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2238,7 +2284,7 @@ describe('modus-wc-time-input', () => {
 
   it('should handle picker focus RAF when dropdown ref is cleared before callback', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Picker RAF no dropdown ref" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2259,7 +2305,7 @@ describe('modus-wc-time-input', () => {
 
   it('should not throw from handleOtherSelect when the input ref is unset', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Other no ref"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2281,7 +2327,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore handleOtherSelect while disabled', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Other disabled"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2300,7 +2346,7 @@ describe('modus-wc-time-input', () => {
 
   it('should destroy an existing popper instance before creating a new one', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Popper recreate" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2325,7 +2371,7 @@ describe('modus-wc-time-input', () => {
 
   it('should clean up listeners and the popper instance on disconnect', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Disconnect" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2350,7 +2396,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore wheel selection updates while disabled and when the result is unparsable', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Wheel guard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2377,7 +2423,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore datalist selection while disabled and when the value is unparsable', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist guard" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2404,7 +2450,7 @@ describe('modus-wc-time-input', () => {
 
   it('should no-op restoreWheelScrollPositions without a dropdown reference or saved positions', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Restore guard"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2420,7 +2466,7 @@ describe('modus-wc-time-input', () => {
     ).not.toThrow();
 
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     button.click();
     await page.waitForChanges();
@@ -2436,7 +2482,7 @@ describe('modus-wc-time-input', () => {
 
   it('should return an empty viewport kind when no matching class exists', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Viewport kind"></modus-wc-time-input>',
     });
     const viewport = page.doc.createElement('div');
@@ -2447,7 +2493,7 @@ describe('modus-wc-time-input', () => {
 
   it('should return the middle copy for circular wheels and the sole match otherwise', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Preferred option"></modus-wc-time-input>',
     });
     const getPreferred = getPreferredSelectedOption;
@@ -2485,7 +2531,7 @@ describe('modus-wc-time-input', () => {
 
   it('should compute the circular set height from item spacing when enough copies exist', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Set height"></modus-wc-time-input>',
     });
     const viewport = page.doc.createElement('div');
@@ -2507,7 +2553,7 @@ describe('modus-wc-time-input', () => {
 
   it('should fall back to option height times count when there are not enough copies', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Set height fallback"></modus-wc-time-input>',
     });
     const viewport = page.doc.createElement('div');
@@ -2524,7 +2570,7 @@ describe('modus-wc-time-input', () => {
 
   it('should treat a missing first item as zero height in the fallback branch', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Set height empty"></modus-wc-time-input>',
     });
     const viewport = page.doc.createElement('div');
@@ -2554,7 +2600,7 @@ describe('modus-wc-time-input', () => {
 
   it('should wrap scroll position forward and backward to stay within the circular set', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Maintain scroll"></modus-wc-time-input>',
     });
     const lock = { current: false };
@@ -2587,7 +2633,7 @@ describe('modus-wc-time-input', () => {
 
   it('should skip circular scroll maintenance while locked, with too few options, or a zero height set', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Maintain guard"></modus-wc-time-input>',
     });
     const viewport = page.doc.createElement('div');
@@ -2603,12 +2649,12 @@ describe('modus-wc-time-input', () => {
 
   it('should bind circular scroll listeners and preserve scroll position across wheel selection', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Circular integration" value="09:05"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
 
     button.click();
@@ -2642,11 +2688,11 @@ describe('modus-wc-time-input', () => {
 
   it('should skip scrolling wheels to selection when using the datalist dropdown', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Datalist integration" interval-minutes="30"></modus-wc-time-input>',
     });
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     button.click();
     await page.waitForChanges();
@@ -2659,7 +2705,7 @@ describe('modus-wc-time-input', () => {
 
   it('should save and restore wheel scroll positions keyed by viewport kind', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Scroll persist"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2711,11 +2757,11 @@ describe('modus-wc-time-input', () => {
 
   it('should skip a wheel with no selected option when scrolling to the selection', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="No selection" step="15" show-seconds value="09:00:07"></modus-wc-time-input>',
     });
     const button = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
 
     button.click();
@@ -2731,7 +2777,7 @@ describe('modus-wc-time-input', () => {
 
   it('should skip binding a circular scroll listener when the option count is too small', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Small option count" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2752,7 +2798,7 @@ describe('modus-wc-time-input', () => {
 
   it('should select a pending segment after render when focused', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Pending segment" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2777,7 +2823,7 @@ describe('modus-wc-time-input', () => {
 
   it('should resolve the active segment from the caret position', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Caret segment" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2799,7 +2845,7 @@ describe('modus-wc-time-input', () => {
 
   it('should move between segments with Tab and Shift+Tab before leaving the field', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Tab segments" value="09:45:30" step="1"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -2855,13 +2901,13 @@ describe('modus-wc-time-input', () => {
 
   it('should select the last segment when Shift+Tab returns from the clock button', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Shift tab from clock" value="09:45:30" step="1"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const clock = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     let selectionStart = 0;
     const setSelectionRange = jest.fn((start: number) => {
@@ -2901,13 +2947,13 @@ describe('modus-wc-time-input', () => {
 
   it('should select the period segment when Shift+Tab returns from the clock in 12-hour format', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Shift tab from clock 12h" format="12hrs" show-seconds value="09:45:30"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const clock = page.root!.querySelector(
-      '.clock-icon-trigger'
+      '.clock-icon-trigger button'
     ) as HTMLButtonElement;
     let selectionStart = 0;
     const setSelectionRange = jest.fn((start: number) => {
@@ -3000,7 +3046,7 @@ describe('modus-wc-time-input', () => {
 
   it('should step up with ArrowUp and navigate segments with arrow keys', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Arrow keys" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3038,7 +3084,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore keydown while disabled or read-only', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Keydown guard" value="09:00" disabled></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3071,7 +3117,7 @@ describe('modus-wc-time-input', () => {
 
   it('should select the clicked segment on first pointer focus without defaulting to hour', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Pointer segment" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3098,14 +3144,15 @@ describe('modus-wc-time-input', () => {
 
   it('should select the first segment on focus and the clicked segment on input click', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Focus click" value="09:45"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
     const setSelectionRange = jest.fn();
     input.setSelectionRange = setSelectionRange;
+    let caret = 0;
     Object.defineProperty(input, 'selectionStart', {
-      value: 3,
+      get: () => caret,
       configurable: true,
     });
 
@@ -3116,6 +3163,7 @@ describe('modus-wc-time-input', () => {
     );
     expect(setSelectionRange).toHaveBeenCalledWith(0, 2);
 
+    caret = 3;
     (
       page.rootInstance as unknown as {
         handleInputClick: (e?: MouseEvent) => void;
@@ -3127,9 +3175,32 @@ describe('modus-wc-time-input', () => {
     expect(setSelectionRange).toHaveBeenCalledWith(3, 5);
   });
 
+  it('should select the segment under the pointer when focus arrives before the click', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Pointer focus frame" value="09:45"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const setSelectionRange = jest.fn();
+    input.setSelectionRange = setSelectionRange;
+    // The browser places the caret from the pointer before the queued frame runs.
+    Object.defineProperty(input, 'selectionStart', {
+      value: 4,
+      configurable: true,
+    });
+
+    input.dispatchEvent(new FocusEvent('focus'));
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve())
+    );
+
+    expect(setSelectionRange).not.toHaveBeenCalledWith(0, 2);
+    expect(setSelectionRange).toHaveBeenCalledWith(3, 5);
+  });
+
   it('should paste a valid time and ignore invalid or empty clipboard data', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Paste"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3164,7 +3235,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore paste while disabled or read-only', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Paste guard" disabled></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3193,7 +3264,7 @@ describe('modus-wc-time-input', () => {
 
   it('should commit a matching value on blur without emitting change', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur same value" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3216,7 +3287,7 @@ describe('modus-wc-time-input', () => {
 
   it('should mark invalid on blur for partial or unparsable displays', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur invalid"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3242,7 +3313,7 @@ describe('modus-wc-time-input', () => {
 
   it('should refresh display when committing a complete time equal to the current value', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Commit same" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3260,7 +3331,7 @@ describe('modus-wc-time-input', () => {
 
   it('should fall back to the stored or first segment when caret position is unavailable', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Caret fallback" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3286,7 +3357,7 @@ describe('modus-wc-time-input', () => {
 
   it('should default to caret zero on input click when selectionStart is nullish', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Click null caret" value="09:45"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -3311,7 +3382,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore paste events without clipboard data', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Paste no data"></modus-wc-time-input>',
     });
     const input = page.root!.querySelector('input') as HTMLInputElement;
@@ -3328,7 +3399,7 @@ describe('modus-wc-time-input', () => {
 
   it('should emit change on blur when the completed display differs from the stored value', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur change" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3347,7 +3418,7 @@ describe('modus-wc-time-input', () => {
 
   it('should no-op selectSegment when the input ref is missing', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Select guard"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3368,7 +3439,7 @@ describe('modus-wc-time-input', () => {
 
   it('should type AM/PM in the period segment for 12h format', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Period key" format="12hrs" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3400,7 +3471,7 @@ describe('modus-wc-time-input', () => {
 
   it('should prevent default on clock button mousedown', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock mousedown" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3416,7 +3487,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore repeat focus events while already focused', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Repeat focus" value="09:45"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
@@ -3439,14 +3510,16 @@ describe('modus-wc-time-input', () => {
 
   it('should emit inputFocus when focus enters at the clock button instead of the field', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock keyboard open" value="09:00"></modus-wc-time-input>',
     });
     const inputFocusSpy = jest.fn();
     page.root!.addEventListener('inputFocus', inputFocusSpy);
 
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     await page.waitForChanges();
 
@@ -3455,7 +3528,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore a blur that arrives before the control ever had focus', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur unfocused" value="09:00"></modus-wc-time-input>',
     });
     const blurSpy = jest.fn();
@@ -3473,14 +3546,16 @@ describe('modus-wc-time-input', () => {
 
   it('should not emit inputBlur while the picker hands focus back to the control', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Close refocus" value="09:00"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector('input') as HTMLInputElement;
     input.dispatchEvent(new FocusEvent('focus'));
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).click();
     await page.waitForChanges();
 
@@ -3504,12 +3579,14 @@ describe('modus-wc-time-input', () => {
 
   it('should revert to an empty value when the picker was opened on a blank field', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Escape revert blank"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).click();
     await page.waitForChanges();
 
@@ -3536,11 +3613,13 @@ describe('modus-wc-time-input', () => {
 
   it('should restore the roving focus to the reverted row when Escape undoes a pick', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Escape revert focus" value="09:00"></modus-wc-time-input>',
     });
     (
-      page.root!.querySelector('.clock-icon-trigger') as HTMLButtonElement
+      page.root!.querySelector(
+        '.clock-icon-trigger button'
+      ) as HTMLButtonElement
     ).click();
     await page.waitForChanges();
 
@@ -3567,7 +3646,7 @@ describe('modus-wc-time-input', () => {
 
   it('should ignore input clicks while disabled or read-only', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input disabled aria-label="Disabled pointer" value="09:00"></modus-wc-time-input>',
     });
     const disabledInput = page.root!.querySelector('input') as HTMLInputElement;
@@ -3579,7 +3658,7 @@ describe('modus-wc-time-input', () => {
     expect(disabledSelect).not.toHaveBeenCalled();
 
     const readOnlyPage = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input read-only aria-label="Readonly pointer" value="09:00"></modus-wc-time-input>',
     });
     const readOnlyInput = readOnlyPage.root!.querySelector(
@@ -3595,7 +3674,7 @@ describe('modus-wc-time-input', () => {
 
   it('should no-op segment selection when input ref is missing', async () => {
     const page = await newSpecPage({
-      components: [ModusWcTimeInput],
+      components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Missing input ref" value="09:00"></modus-wc-time-input>',
     });
     const harness = page.rootInstance as unknown as {

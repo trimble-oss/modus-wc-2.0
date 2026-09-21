@@ -282,6 +282,7 @@ export class ModusWcTimeInput {
       }
       this.pendingSegmentSelect = null;
     }
+    this.syncClockTriggerAria();
   }
 
   componentDidUpdate() {
@@ -455,11 +456,14 @@ export class ModusWcTimeInput {
     if (!this.inputRef) {
       return;
     }
+    const segmentChanged = this.activeSegmentKind !== segment.kind;
     this.activeSegmentKind = segment.kind;
     if (typeof this.inputRef.setSelectionRange === 'function') {
       this.inputRef.setSelectionRange(segment.start, segment.end);
     }
-    this.segmentDigitBuffer = '';
+    if (segmentChanged) {
+      this.segmentDigitBuffer = '';
+    }
   }
 
   private setupPopper(anchor: HTMLElement, dropdown: HTMLElement) {
@@ -510,7 +514,30 @@ export class ModusWcTimeInput {
   }
 
   private getClockTrigger(): HTMLButtonElement | null {
-    return this.el.querySelector<HTMLButtonElement>('.clock-icon-trigger');
+    return this.el.querySelector<HTMLButtonElement>(
+      '.clock-icon-trigger button'
+    );
+  }
+
+  /**
+   * `modus-wc-button` only inherits host ARIA in componentWillLoad, so the
+   * popup state has to be written onto the inner button on every render.
+   */
+  private syncClockTriggerAria() {
+    const trigger = this.getClockTrigger();
+    if (!trigger) {
+      return;
+    }
+    trigger.setAttribute('aria-expanded', String(this.showDropdown));
+    trigger.setAttribute(
+      'aria-haspopup',
+      this.useDatalist ? 'listbox' : 'dialog'
+    );
+    if (this.showDropdown) {
+      trigger.setAttribute('aria-controls', this.dropdownId);
+    } else {
+      trigger.removeAttribute('aria-controls');
+    }
   }
 
   /**
@@ -693,7 +720,7 @@ export class ModusWcTimeInput {
     if (!element || !('classList' in element)) {
       return false;
     }
-    return (element as Element).classList.contains('clock-icon-trigger');
+    return (element as Element).closest('.clock-icon-trigger') !== null;
   }
 
   /** Parse, clamp and validate the typed display once the control is left. */
@@ -791,11 +818,17 @@ export class ModusWcTimeInput {
     if (!wasFocused) {
       const segments = this.getSegments();
       const fromClock = this.isClockTrigger(event.relatedTarget as Node | null);
-      const segment = fromClock ? segments[segments.length - 1] : segments[0];
       this.cancelFocusSelect();
+      // The pointer places the caret after this event, so resolve the segment
+      // a frame later: a click lands on the segment the user aimed at, while
+      // tabbing in leaves the caret at 0 and enters on the first segment.
       this.focusSelectFrame = requestAnimationFrame(() => {
         this.focusSelectFrame = null;
-        this.selectSegment(segment);
+        if (fromClock) {
+          this.selectSegment(segments[segments.length - 1]);
+        } else {
+          this.selectSegmentAtCaret();
+        }
       });
     }
     this.enterComponentFocus(event);
@@ -997,23 +1030,23 @@ export class ModusWcTimeInput {
           {this.name && (
             <input type="hidden" name={this.name} value={this.value} />
           )}
-          <button
-            type="button"
-            class="clock-icon-trigger"
+          <modus-wc-button
             aria-label="Toggle time picker"
-            aria-expanded={String(this.showDropdown)}
-            aria-haspopup={popupRole}
-            aria-controls={this.showDropdown ? this.dropdownId : undefined}
+            class="clock-icon-trigger"
+            color="tertiary"
             disabled={this.disabled || this.readOnly}
+            shape="square"
+            size={this.size === 'lg' ? 'sm' : 'xs'}
+            variant="borderless"
             onMouseDown={this.handleClockMouseDown}
-            onClick={this.toggleDropdown}
+            onButtonClick={this.toggleDropdown}
           >
             <modus-wc-icon
               name="clock"
               size={this.size === 'lg' ? 'sm' : 'xs'}
               decorative
             />
-          </button>
+          </modus-wc-button>
         </div>
 
         <span
