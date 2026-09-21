@@ -108,10 +108,6 @@ export class ModusWcImage {
     this.imageLoad.emit(event);
   };
 
-  private getImageStyles(): { objectPosition: string } {
-    return { objectPosition: this.cropPosition };
-  }
-
   private renderFallback(altText: string) {
     const label = altText || 'Image unavailable';
 
@@ -149,7 +145,7 @@ export class ModusWcImage {
             src={this.src}
             alt={isDecorative ? '' : altText}
             class="modus-wc-image-img"
-            style={this.getImageStyles()}
+            style={{ objectPosition: this.cropPosition ?? 'center' }}
             onError={this.handleError}
             onLoad={this.handleLoad}
           />
