@@ -122,11 +122,6 @@ modus-wc-profile-menu {
       line-height: 1.25rem;
     }
 
-    .modus-wc-menu-item-sublabel {
-      font-size: var(--modus-wc-font-size-sm);
-      line-height: 20px;
-    }
-
     &:has(.modus-wc-menu-item-sublabel) {
       height: auto;
       min-height: unset;

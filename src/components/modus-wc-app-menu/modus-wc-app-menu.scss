@@ -149,11 +149,6 @@ modus-wc-app-menu.modus-wc-app-menu {
           line-height: var(--modus-wc-line-height-md);
         }
 
-        .modus-wc-menu-item-sublabel {
-          font-size: var(--modus-wc-font-size-sm);
-          line-height: 20px;
-        }
-
         &:has(.modus-wc-menu-item-sublabel) {
           height: auto;
           min-height: unset;

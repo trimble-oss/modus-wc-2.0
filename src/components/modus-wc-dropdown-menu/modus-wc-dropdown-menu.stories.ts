@@ -684,7 +684,7 @@ export const ShadowDomParent: Story = {
             menuBordered: boolean;
             menuOffset: number;
             menuPlacement: PopoverPlacement;
-            menuSize: ModusSize;
+            menuSize: ModusSize | 'xs' | 'xl';
             menuStrategy: 'absolute' | 'fixed';
             menuVisible: boolean;
           };
@@ -699,7 +699,7 @@ export const ShadowDomParent: Story = {
           dropdownEl.menuOffset = v['menu-offset'] ?? 10;
           dropdownEl.menuPlacement = v['menu-placement'] as PopoverPlacement;
           const menuItemSize = v['menu-size'] ?? 'md';
-          dropdownEl.menuSize = menuItemSize as ModusSize;
+          dropdownEl.menuSize = menuItemSize;
           dropdownEl.menuStrategy = v['menu-strategy'] || 'absolute';
           dropdownEl.menuVisible = Boolean(v['menu-visible']);
 

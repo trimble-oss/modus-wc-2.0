@@ -44,6 +44,22 @@ describe('modus-wc-dropdown-menu', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should pass xs and xl menu sizes to modus-wc-menu', async () => {
+    for (const size of ['xs', 'xl'] as const) {
+      const page = await newSpecPage({
+        components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
+        html: `<modus-wc-dropdown-menu menu-size="${size}">
+                  <div slot="button">Button</div>
+               </modus-wc-dropdown-menu>`,
+      });
+
+      const menu = page.root?.querySelector(
+        'modus-wc-menu'
+      ) as unknown as ModusWcMenu | null;
+      expect(menu?.size).toBe(size);
+    }
+  });
+
   it('should render with menu items', async () => {
     const page = await newSpecPage({
       components: [
