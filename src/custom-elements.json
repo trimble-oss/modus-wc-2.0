@@ -782,13 +782,6 @@
               }
             },
             {
-              "name": "leaveMenuOpen",
-              "optional": true,
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "customInputChange",
               "optional": true,
               "type": {
@@ -796,6 +789,30 @@
               }
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "syncMenuItemSelection",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "hostElement",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "IAutocompleteItem[] | undefined"
+              }
+            }
+          ],
+          "description": "Reconcile menu-item `selected` props from autocomplete `items` state.\nUsed for multi-select while the menu stays open: `modus-wc-menu` defaults to\nsingle selection, so each click deselects siblings before `items[]` updates,\nand Stencil may not re-push unchanged `selected={true}` props to siblings.\nSingle-select filter churn is handled by stable `key={item.value}` on menu\nitems so list changes do not reuse the wrong host and inherit stale `selected`."
         },
         {
           "kind": "function",
@@ -851,6 +868,14 @@
           "name": "getVisibleItems",
           "declaration": {
             "name": "getVisibleItems",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "syncMenuItemSelection",
+          "declaration": {
+            "name": "syncMenuItemSelection",
             "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
           }
         },
@@ -4275,7 +4300,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A responsive image grid that displays 1 to 4 images in rectangle or square layouts.\n\nEach cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.",
+          "description": "A responsive image grid that displays 1 to 4 images in rectangle or square layouts.\n\nEach cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.\nGrid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.",
           "name": "ModusWcImageGrid",
           "members": [
             {

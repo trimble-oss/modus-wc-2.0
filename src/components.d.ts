@@ -1204,7 +1204,8 @@ export namespace Components {
     }
     /**
      * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
-     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+     * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
      */
     interface ModusWcImageGrid {
         /**
@@ -3520,7 +3521,8 @@ declare global {
     };
     /**
      * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
-     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+     * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
      */
     interface HTMLModusWcImageGridElement extends Components.ModusWcImageGrid, HTMLStencilElement {
     }
@@ -5632,7 +5634,8 @@ declare namespace LocalJSX {
     }
     /**
      * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
-     * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+     * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+     * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
      */
     interface ModusWcImageGrid {
         /**
@@ -7739,7 +7742,8 @@ declare module "@stencil/core" {
             "modus-wc-image": LocalJSX.ModusWcImage & JSXBase.HTMLAttributes<HTMLModusWcImageElement>;
             /**
              * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
-             * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+             * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+             * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
              */
             "modus-wc-image-grid": LocalJSX.ModusWcImageGrid & JSXBase.HTMLAttributes<HTMLModusWcImageGridElement>;
             /**

@@ -219,7 +219,6 @@ describe('modus-wc-image-grid', () => {
       {
         src: 'https://example.com/custom.jpg',
         alt: 'Custom image',
-        size: 'lg',
         shape: 'square',
         fit: 'contain',
         cropPosition: 'top left',
@@ -232,7 +231,6 @@ describe('modus-wc-image-grid', () => {
     expect(imageElement?.getAttribute('crop-position')).toBe('top left');
 
     const container = page.root?.querySelector('.modus-wc-image-container');
-    expect(container?.classList.contains('modus-wc-image--lg')).toBe(true);
     expect(container?.classList.contains('modus-wc-image--square')).toBe(true);
     expect(container?.classList.contains('modus-wc-image--contain')).toBe(true);
     expect(container?.classList.contains('modus-wc-image-grid-cell')).toBe(

@@ -19,8 +19,8 @@ const SAMPLE_IMAGES: IImageGridImage[] = [
     alt: 'Geospatial industry solutions with R12i and TSC7',
   },
   {
-    src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',
-    alt: 'Geospatial field work with Trimble equipment',
+    src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',
+    alt: 'Government geospatial industry solutions',
   },
 ];
 
@@ -58,8 +58,8 @@ const defaultSourceCode = `
       alt: 'Geospatial industry solutions with R12i and TSC7',
     },
     {
-      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',
-      alt: 'Geospatial field work with Trimble equipment',
+      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',
+      alt: 'Government geospatial industry solutions',
     },
   ];
   const imageGrid = document.getElementById('image-grid');
@@ -82,40 +82,53 @@ const defaultSourceCode = `
 `;
 
 const allVariantsSourceCode = `
-<modus-wc-image-grid
-  aria-label="Four rectangle product images"
-  image-shape="rectangle"
-  images-per-view="4"
-  id="image-grid-rectangle-four"
-></modus-wc-image-grid>
-
-<modus-wc-image-grid
-  aria-label="Four square product images"
-  image-shape="square"
-  images-per-view="4"
-  id="image-grid-square-four"
-></modus-wc-image-grid>
-
-<modus-wc-image-grid
-  aria-label="Three rectangle product images"
-  image-shape="rectangle"
-  images-per-view="3"
-  id="image-grid-rectangle-three"
-></modus-wc-image-grid>
-
-<modus-wc-image-grid
-  aria-label="Two square product images"
-  image-shape="square"
-  images-per-view="2"
-  id="image-grid-square-two"
-></modus-wc-image-grid>
-
-<modus-wc-image-grid
-  aria-label="Single rectangle product image"
-  image-shape="rectangle"
-  images-per-view="1"
-  id="image-grid-rectangle-one"
-></modus-wc-image-grid>
+<div style="display: flex; flex-direction: column; gap: 48px;">
+  <section>
+    <h3 style="margin: 0 0 16px;">4 images — rectangle</h3>
+    <modus-wc-image-grid
+      aria-label="Four rectangle product images"
+      image-shape="rectangle"
+      images-per-view="4"
+      id="image-grid-rectangle-four"
+    ></modus-wc-image-grid>
+  </section>
+  <section>
+    <h3 style="margin: 0 0 16px;">4 images — square</h3>
+    <modus-wc-image-grid
+      aria-label="Four square product images"
+      image-shape="square"
+      images-per-view="4"
+      id="image-grid-square-four"
+    ></modus-wc-image-grid>
+  </section>
+  <section>
+    <h3 style="margin: 0 0 16px;">3 images — rectangle</h3>
+    <modus-wc-image-grid
+      aria-label="Three rectangle product images"
+      image-shape="rectangle"
+      images-per-view="3"
+      id="image-grid-rectangle-three"
+    ></modus-wc-image-grid>
+  </section>
+  <section>
+    <h3 style="margin: 0 0 16px;">2 images — square</h3>
+    <modus-wc-image-grid
+      aria-label="Two square product images"
+      image-shape="square"
+      images-per-view="2"
+      id="image-grid-square-two"
+    ></modus-wc-image-grid>
+  </section>
+  <section>
+    <h3 style="margin: 0 0 16px;">1 image — rectangle</h3>
+    <modus-wc-image-grid
+      aria-label="Single rectangle product image"
+      image-shape="rectangle"
+      images-per-view="1"
+      id="image-grid-rectangle-one"
+    ></modus-wc-image-grid>
+  </section>
+</div>
 
 <script>
   const images = [
@@ -132,8 +145,8 @@ const allVariantsSourceCode = `
       alt: 'Geospatial industry solutions with R12i and TSC7',
     },
     {
-      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',
-      alt: 'Geospatial field work with Trimble equipment',
+      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',
+      alt: 'Government geospatial industry solutions',
     },
   ];
 
@@ -165,7 +178,6 @@ const meta: Meta<ImageGridArgs> = {
             Properties:
             - src (string): The source URL of the image asset
             - alt (string, optional): Accessible text description for the image
-            - size ('sm' | 'md' | 'lg' | 'xl', optional): Dimensional size token
             - shape ('square' | 'rounded', optional): Corner radius styling
             - fit ('default' | 'contain' | 'scale-down' | 'none', optional): Containment and cropping behavior
             - cropPosition (string, optional): Focal point when cropped (maps to object-position)
@@ -209,7 +221,9 @@ const meta: Meta<ImageGridArgs> = {
       description: {
         component: `
 Responsive image grid that displays 1 to 4 images in rectangle or square layouts.
-Each cell uses \`modus-wc-image\` for cropping, rounded corners, and error fallback.`,
+Each cell uses \`modus-wc-image\` for cropping, rounded corners, and error fallback.
+
+Per-image \`size\` is not part of \`IImageGridImage\`: grid layout CSS fills each cell and overrides \`modus-wc-image\` dimensional size tokens.`,
       },
     },
   },

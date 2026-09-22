@@ -9,7 +9,8 @@
 
 A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
 
-Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
 
 ## Properties
 

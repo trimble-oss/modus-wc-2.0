@@ -7,7 +7,6 @@ import {
 import {
   ImageFit,
   ImageShape,
-  ImageSize,
 } from '../modus-wc-image/modus-wc-image.tailwind';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
@@ -16,8 +15,6 @@ export interface IImageGridImage {
   src: string;
   /** Accessible text description for the image. */
   alt?: string;
-  /** Determines dimensional size tokens. */
-  size?: ImageSize;
   /** Sets corner radius styling. */
   shape?: ImageShape;
   /** Controls containment, cropping, and aspect ratio preservation. */
@@ -34,7 +31,8 @@ export interface IImageGridImage {
 /**
  * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
  *
- * Each cell is rendered with `modus-wc-image` for consistent sizing, cropping, and fallback behavior.
+ * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
+ * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
  */
 @Component({
   tag: 'modus-wc-image-grid',
@@ -128,7 +126,6 @@ export class ModusWcImageGrid {
               key={`${image.src}-${index}`}
               src={image.src}
               alt={image.alt}
-              size={image.size}
               shape={image.shape ?? 'rounded'}
               fit={image.fit ?? 'default'}
               crop-position={image.cropPosition ?? 'center'}
