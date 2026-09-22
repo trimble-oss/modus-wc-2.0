@@ -1666,7 +1666,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcImageGrid">
             <summary>
-            A responsive image grid that displays 1 to 4 images in rectangle or square layouts.  Each cell is rendered with modus-wc-image for consistent sizing, cropping, and fallback behavior.
+            A responsive image grid that displays 1 to 4 images in rectangle or square layouts.  Each cell is rendered with modus-wc-image for consistent cropping, rounded corners, and fallback behavior. Grid layout CSS fills each cell; per-image dimensional size tokens on modus-wc-image are not exposed on IImageGridImage.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.CustomClass">
