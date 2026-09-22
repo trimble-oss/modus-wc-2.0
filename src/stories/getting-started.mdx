@@ -194,6 +194,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="modus-modern-light">
       <head>
         <link rel="stylesheet" href="/modus-wc-styles.css" />
+        <link rel="stylesheet" href="/modus-icons-2.css" />
         <link rel="stylesheet" href="/modus-icons.css" />
       </head>
       <body>
@@ -257,7 +258,7 @@ Modus CSS references font files via relative paths and must be served statically
 ```json
 {
   "scripts": {
-    "postinstall": "cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/ && cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/"
+    "postinstall": "cp node_modules/@trimble-oss/moduswebcomponents/modus-wc-styles.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons-2.css public/ && cp node_modules/@trimble-oss/moduswebcomponents/modus-icons.css public/ && cp -r node_modules/@trimble-oss/moduswebcomponents/assets public/"
   }
 }
 ```

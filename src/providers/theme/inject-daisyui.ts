@@ -34,7 +34,7 @@ export async function ensureDaisyUIInShadow(
     // Combine the CSS content including per-component SCSS
     // outputCSS contains Tailwind/DaisyUI utility classes
     // globalCSS contains base styles and references to CSS variables
-    // iconsCSS contains @font-face declarations for Modus icons
+    // iconsCSS contains @font-face declarations for Modus icons plus 2.0 mask paint
     // componentCSS contains compiled per-component SCSS for all modus components
     // CSS variables themselves inherit from :root automatically
     const cssContent =
@@ -85,7 +85,7 @@ export async function ensureDaisyUIInShadow(
     // Combine the CSS content
     // outputCSS contains Tailwind/DaisyUI utility classes
     // globalCSS contains base styles and references to CSS variables
-    // iconsCSS contains @font-face declarations for Modus icons
+    // iconsCSS contains @font-face declarations for Modus icons plus 2.0 mask paint
     // CSS variables themselves inherit from :root automatically
     const cssContent = outputCSS + '\n' + globalCSS + '\n' + iconsCSS;
 
