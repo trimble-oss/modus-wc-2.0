@@ -1,5 +1,10 @@
 import { FunctionalComponent, h } from '@stencil/core';
-import { is12hrsFormat, TimeFormat } from './time-format';
+import {
+  is12hrsFormat,
+  parse24h,
+  TimeFormat,
+  toTotalSeconds,
+} from './time-format';
 import {
   handleDatalistOptionKeyDown,
   handleWheelOptionKeyDown,
@@ -11,6 +16,7 @@ import {
   getHourOptions,
   getPeriodOptions,
   getUnitOptions,
+  IDatalistOption,
   isWheelOptionInRange,
   resolveWheelState,
   TIME_WHEEL_LOOP_COPIES,
@@ -40,6 +46,40 @@ export interface ITimePickerDropdownProps {
   onWheelCommit: () => void;
   onDatalistSelect: (value24h: string) => void;
   onOtherSelect: () => void;
+}
+
+/**
+ * Row the datalist opens on. An exact match wins; a value off the interval
+ * grid (typed, or left over from another `interval-minutes`) falls back to the
+ * closest option so the list still opens next to the field instead of at 00:00.
+ */
+export function resolveFocusableDatalistValue(
+  options: IDatalistOption[],
+  value: string
+): string | undefined {
+  if (options.length === 0) {
+    return undefined;
+  }
+  const exact = options.find((opt) => opt.value === value);
+  if (exact) {
+    return exact.value;
+  }
+  const parsed = parse24h(value);
+  if (!parsed) {
+    return options[0].value;
+  }
+  const target = toTotalSeconds(parsed);
+  return options.reduce((closest, opt) => {
+    const optParsed = parse24h(opt.value);
+    const closestParsed = parse24h(closest);
+    if (!optParsed || !closestParsed) {
+      return closest;
+    }
+    return Math.abs(toTotalSeconds(optParsed) - target) <
+      Math.abs(toTotalSeconds(closestParsed) - target)
+      ? opt.value
+      : closest;
+  }, options[0].value);
 }
 
 export function resolveFocusableWheelKey(
@@ -284,9 +324,7 @@ export const TimeDatalistDropdown: FunctionalComponent<
     format: props.resolvedFormat,
   });
 
-  const focusableValue =
-    options.find((opt) => opt.value === props.value)?.value ??
-    options[0]?.value;
+  const focusableValue = resolveFocusableDatalistValue(options, props.value);
 
   return (
     <div

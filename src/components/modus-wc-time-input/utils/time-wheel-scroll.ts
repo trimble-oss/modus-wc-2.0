@@ -126,6 +126,30 @@ export function scrollWheelOptionIntoView(
   }
 }
 
+/** Scroll a datalist row into view inside its own scroller. */
+export function scrollDatalistOptionIntoView(option: HTMLElement): void {
+  const scroller = option.closest<HTMLElement>('.time-datalist');
+  if (scroller) {
+    scrollWheelOptionIntoView(scroller, option);
+  }
+}
+
+/**
+ * Open the datalist on the row the field already holds. Focus uses
+ * `preventScroll`, so without this the list stays parked at the first option
+ * with the selected row below the fold.
+ */
+export function scrollDatalistToSelection(
+  dropdownRef: HTMLElement | undefined
+): void {
+  const target = dropdownRef?.querySelector<HTMLElement>(
+    '.time-datalist-option.is-selected, .time-datalist-option[tabindex="0"]'
+  );
+  if (target) {
+    scrollDatalistOptionIntoView(target);
+  }
+}
+
 export function scrollWheelsToSelection(
   dropdownRef: HTMLElement | undefined
 ): void {

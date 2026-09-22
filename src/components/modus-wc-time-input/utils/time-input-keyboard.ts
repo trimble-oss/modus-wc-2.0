@@ -108,9 +108,9 @@ type ITypedCharacterContext = Pick<
 >;
 
 /**
- * Apply a single typed character to the active segment. Shared by `keydown`
- * and `beforeinput`: soft keyboards report `Unidentified` on `keydown`, so
- * `beforeinput` is the only reliable entry point for character input there.
+ * Apply a single typed character to the active segment. `beforeinput` is the
+ * only caller: soft keyboards report `Unidentified` on `keydown`, and letting
+ * both events write would insert a desktop keystroke twice.
  */
 export function applyTypedCharacter(
   char: string,
@@ -169,8 +169,8 @@ export function handleTimeInputBeforeInput(
     return;
   }
 
-  // The segmented field never accepts a native insert; route the character
-  // through the same segment logic `keydown` uses so mobile and IME match.
+  // The segmented field never accepts a native insert; every character is
+  // written here so desktop, mobile and IME all take the same path.
   event.preventDefault();
   if (data.length === 1) {
     applyTypedCharacter(data, ctx);
@@ -369,17 +369,8 @@ export function handleTimeInputKeyDown(
     return;
   }
 
-  if (
-    event.key.length === 1 &&
-    !event.ctrlKey &&
-    !event.metaKey &&
-    !event.altKey
-  ) {
-    // Cancel unconditionally: disallowed characters are dropped, allowed ones
-    // are written by `applyTypedCharacter`, never by the native field.
-    event.preventDefault();
-    applyTypedCharacter(event.key, ctx);
-  }
+  // Printable keys deliberately fall through: `beforeinput` owns character
+  // input, and cancelling here would stop that event from ever firing.
 }
 
 export function bindBeforeInputListener(

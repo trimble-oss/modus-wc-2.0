@@ -61,6 +61,7 @@ import {
   ICircularScrollLock,
   restoreWheelScrollPositions,
   saveWheelScrollPositions,
+  scrollDatalistToSelection,
   scrollWheelsToSelection,
   unbindCircularWheelListeners,
 } from './utils/time-wheel-scroll';
@@ -299,7 +300,11 @@ export class ModusWcTimeInput {
         const focusPickerOnOpen = this.pendingFocusPickerOnOpen;
         this.pendingFocusPickerOnOpen = false;
         if (this.pendingScrollToSelection) {
-          scrollWheelsToSelection(this.dropdownRef);
+          if (this.useDatalist) {
+            scrollDatalistToSelection(this.dropdownRef);
+          } else {
+            scrollWheelsToSelection(this.dropdownRef);
+          }
           this.pendingScrollToSelection = false;
         } else {
           restoreWheelScrollPositions(

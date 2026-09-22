@@ -32,7 +32,10 @@ import {
   TIME_WHEEL_LOOP_COPIES,
   valueFromWheelState,
 } from './utils/time-options';
-import { resolveFocusableWheelKey } from './utils/time-picker-dropdown';
+import {
+  resolveFocusableDatalistValue,
+  resolveFocusableWheelKey,
+} from './utils/time-picker-dropdown';
 import {
   applyStepToSegment,
   displayFromValue,
@@ -501,6 +504,17 @@ describe('time-segments utils', () => {
  * Pin the wall clock without fake timers, which would stall Stencil's
  * `waitForChanges`.
  */
+/** `beforeinput` is the only writer for typed characters. */
+function createInsertTextEvent(data: string): InputEvent {
+  const event = new Event('beforeinput', {
+    bubbles: true,
+    cancelable: true,
+  }) as InputEvent;
+  Object.defineProperty(event, 'inputType', { value: 'insertText' });
+  Object.defineProperty(event, 'data', { value: data });
+  return event;
+}
+
 function mockNow(hours: number, minutes: number, seconds = 0): () => void {
   const spies = [
     jest.spyOn(Date.prototype, 'getHours').mockReturnValue(hours),
@@ -607,14 +621,8 @@ describe('modus-wc-time-input', () => {
     const changeSpy = jest.fn();
     page.root!.addEventListener('inputChange', changeSpy);
 
-    for (const key of ['0', '9', '4', '5']) {
-      input.dispatchEvent(
-        new KeyboardEvent('keydown', {
-          key,
-          bubbles: true,
-          cancelable: true,
-        })
-      );
+    for (const digit of ['0', '9', '4', '5']) {
+      input.dispatchEvent(createInsertTextEvent(digit));
       await page.waitForChanges();
     }
 
@@ -959,6 +967,140 @@ describe('modus-wc-time-input', () => {
     ) as HTMLElement;
     expect(lateHour.classList.contains('is-disabled')).toBe(true);
     expect(lateHour.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('should let the keyboard leave a wheel row that sits outside min and max', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Disabled row escape" value="23:00" max="18:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const raf = captureRaf();
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+
+    const selectedHour = page.root!.querySelector(
+      '.time-wheel--hours .time-wheel-option[data-wheel-copy="1"][data-value="23"]'
+    ) as HTMLElement;
+    expect(selectedHour.getAttribute('aria-disabled')).toBe('true');
+
+    const arrowUp = new KeyboardEvent('keydown', {
+      key: 'ArrowUp',
+      bubbles: true,
+      cancelable: true,
+    });
+    selectedHour.dispatchEvent(arrowUp);
+    raf.run();
+    raf.restore();
+    await page.waitForChanges();
+
+    // 18 is the closest hour still inside max.
+    expect(arrowUp.defaultPrevented).toBe(true);
+    expect(component.value).toBe('18:00');
+  });
+
+  it('should keep a disabled wheel row from committing with Enter', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Disabled row enter" value="23:00" max="18:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+
+    const selectedHour = page.root!.querySelector(
+      '.time-wheel--hours .time-wheel-option[data-wheel-copy="1"][data-value="23"]'
+    ) as HTMLElement;
+    selectedHour.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+
+    expect(component.value).toBe('23:00');
+    expect(
+      (component as unknown as { showDropdown: boolean }).showDropdown
+    ).toBe(true);
+  });
+
+  it('should move across wheels and to the edges from a disabled row', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Disabled row edges" value="23:00" max="18:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const raf = captureRaf();
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+
+    const selectedHour = page.root!.querySelector(
+      '.time-wheel--hours .time-wheel-option[data-wheel-copy="1"][data-value="23"]'
+    ) as HTMLElement;
+    const keydown = (key: string) => {
+      const event = new KeyboardEvent('keydown', {
+        key,
+        bubbles: true,
+        cancelable: true,
+      });
+      selectedHour.dispatchEvent(event);
+      return event;
+    };
+
+    expect(keydown('ArrowRight').defaultPrevented).toBe(true);
+    expect(keydown('ArrowLeft').defaultPrevented).toBe(true);
+
+    const home = keydown('Home');
+    raf.run();
+    raf.restore();
+    await page.waitForChanges();
+
+    expect(home.defaultPrevented).toBe(true);
+    expect(component.value).toBe('00:00');
+  });
+
+  it('should scroll the datalist to the selected option when it opens', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Datalist scroll" variant="datalist" interval-minutes="15" value="08:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const raf = captureRaf();
+    (component as unknown as { openDropdown: () => void }).openDropdown();
+    await page.waitForChanges();
+
+    const scroller = page.root!.querySelector('.time-datalist') as HTMLElement;
+    const selected = page.root!.querySelector(
+      '.time-datalist-option.is-selected'
+    ) as HTMLElement;
+    expect(selected.textContent?.trim()).toBe('08:00');
+
+    // Selected row sits below the fold of the 16rem scroller.
+    scroller.getBoundingClientRect = (): DOMRect =>
+      ({ top: 0, bottom: 100 }) as DOMRect;
+    selected.getBoundingClientRect = (): DOMRect =>
+      ({ top: 260, bottom: 284 }) as DOMRect;
+    scroller.scrollTop = 0;
+
+    raf.run();
+    raf.restore();
+
+    expect(scroller.scrollTop).toBe(184);
+  });
+
+  it('should anchor the datalist on the nearest option when the value is off-grid', () => {
+    const options = [
+      { value: '08:00', label: '08:00' },
+      { value: '08:15', label: '08:15' },
+      { value: '08:30', label: '08:30' },
+    ];
+    expect(resolveFocusableDatalistValue(options, '08:15')).toBe('08:15');
+    // 08:22 is not on the interval grid, so the closest row wins.
+    expect(resolveFocusableDatalistValue(options, '08:22')).toBe('08:15');
+    expect(resolveFocusableDatalistValue(options, '')).toBe('08:00');
+    expect(resolveFocusableDatalistValue([], '08:00')).toBeUndefined();
   });
 
   it('should update value when a wheel option is clicked', async () => {
@@ -2089,16 +2231,49 @@ describe('modus-wc-time-input', () => {
       components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Letter guard" value="09:45"></modus-wc-time-input>',
     });
+    const component = page.rootInstance as ModusWcTimeInput;
     const input = page.root!.querySelector(
       'input[type="text"]'
     ) as HTMLInputElement;
-    const event = new KeyboardEvent('keydown', {
-      key: 'x',
-      bubbles: true,
-      cancelable: true,
-    });
+
+    const event = createInsertTextEvent('x');
     input.dispatchEvent(event);
+    await page.waitForChanges();
+
     expect(event.defaultPrevented).toBe(true);
+    expect(component.value).toBe('09:45');
+  });
+
+  it('should leave printable keydown to beforeinput so a digit is written once', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Single writer"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    input.setSelectionRange = jest.fn();
+    input.focus();
+    await page.waitForChanges();
+
+    // Both events fire for one key in a real browser; only beforeinput writes.
+    for (const digit of ['4', '5']) {
+      const keydown = new KeyboardEvent('keydown', {
+        key: digit,
+        bubbles: true,
+        cancelable: true,
+      });
+      input.dispatchEvent(keydown);
+      // keydown must not cancel the key, or beforeinput would never fire.
+      expect(keydown.defaultPrevented).toBe(false);
+
+      input.dispatchEvent(createInsertTextEvent(digit));
+      await page.waitForChanges();
+    }
+
+    // One write per key: 04:05, not 44 or 55 in a segment.
+    expect(component.value).toBe('04:05');
   });
 
   it('should emit inputChange with target.value in 24h format', async () => {
@@ -2613,7 +2788,8 @@ describe('modus-wc-time-input', () => {
     let options = page.root!.querySelectorAll(
       '.time-datalist-option:not(.time-datalist-option--other)'
     );
-    expect(options[0].getAttribute('tabindex')).toBe('0'); // Fallback to first
+    // 12:34 is not in the list, so the closest option takes the roving focus.
+    expect(options[1].getAttribute('tabindex')).toBe('0');
 
     // Unmatched value with empty datalist options (should focus Other)
     component.datalistOptions = [];
@@ -3966,13 +4142,7 @@ describe('modus-wc-time-input', () => {
     harness.inputRef = input;
     harness.activeSegmentKind = 'period';
 
-    input.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'p',
-        bubbles: true,
-        cancelable: true,
-      })
-    );
+    input.dispatchEvent(createInsertTextEvent('p'));
     await page.waitForChanges();
 
     expect(component.value).toBe('21:45');

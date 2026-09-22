@@ -1,6 +1,7 @@
 import {
   ICircularScrollLock,
   maintainCircularScroll,
+  scrollDatalistOptionIntoView,
   scrollWheelOptionIntoView,
 } from './time-wheel-scroll';
 
@@ -19,13 +20,6 @@ function getEnabledListboxItems(
       el.getAttribute('aria-hidden') !== 'true' &&
       el.getAttribute('aria-disabled') !== 'true'
   );
-}
-
-function scrollDatalistOptionIntoView(option: HTMLElement): void {
-  const scroller = option.closest<HTMLElement>('.time-datalist');
-  if (scroller) {
-    scrollWheelOptionIntoView(scroller, option);
-  }
 }
 
 function focusListboxItem(current: HTMLElement, target: HTMLElement): void {
@@ -94,9 +88,12 @@ export function focusSelectedWheelOption(listbox: Element | null): void {
     return;
   }
   const viewport = listbox.closest<HTMLElement>('.time-wheel-viewport');
-  const selected = listbox.querySelector<HTMLElement>(
-    '.time-wheel-option.is-selected:not([aria-hidden="true"]):not([aria-disabled="true"])'
-  );
+  // The selected row can be out of min/max, so fall back to the first row the
+  // wheel accepts rather than leaving focus on an unusable option.
+  const selected =
+    listbox.querySelector<HTMLElement>(
+      '.time-wheel-option.is-selected:not([aria-hidden="true"]):not([aria-disabled="true"])'
+    ) ?? getWheelA11yItems(listbox)[0];
   if (!selected || !viewport) {
     return;
   }
@@ -173,6 +170,38 @@ function selectAdjacentWheelValue(
   scheduleWheelSelectionFocus(listbox);
 }
 
+/**
+ * Escape hatch for a focused row that sits outside min / max: jump to the
+ * closest row the wheel will accept instead of refusing every arrow key.
+ */
+function selectNearestEnabledWheelValue(
+  target: HTMLElement,
+  currentValue: string,
+  onSelect: (value: string) => void
+): void {
+  const listbox = target.closest('[role="listbox"]');
+  const items = getWheelA11yItems(listbox);
+  if (items.length === 0) {
+    return;
+  }
+  const current = Number(currentValue);
+  const nearest = Number.isNaN(current)
+    ? items[0]
+    : items.reduce((closest, item) => {
+        const distance = Math.abs(Number(item.dataset.value) - current);
+        const closestDistance = Math.abs(
+          Number(closest.dataset.value) - current
+        );
+        return distance < closestDistance ? item : closest;
+      }, items[0]);
+  const nextValue = nearest.dataset.value;
+  if (!nextValue) {
+    return;
+  }
+  onSelect(nextValue);
+  scheduleWheelSelectionFocus(listbox);
+}
+
 function selectWheelEdgeValue(
   target: HTMLElement,
   edge: 'start' | 'end',
@@ -192,6 +221,34 @@ function selectWheelEdgeValue(
   }
 }
 
+/** Navigation-only handling for a row that is outside min / max. */
+function handleDisabledWheelOptionKeyDown(
+  event: KeyboardEvent,
+  target: HTMLElement,
+  value: string,
+  onSelect: (value: string) => void
+): void {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    focusAdjacentWheel(target, event.key === 'ArrowRight' ? 1 : -1);
+    return;
+  }
+  if (event.key === 'Home' || event.key === 'End') {
+    event.preventDefault();
+    selectWheelEdgeValue(
+      target,
+      event.key === 'Home' ? 'start' : 'end',
+      value,
+      onSelect
+    );
+    return;
+  }
+  if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+    event.preventDefault();
+    selectNearestEnabledWheelValue(target, value, onSelect);
+  }
+}
+
 export function handleWheelOptionKeyDown(
   event: KeyboardEvent,
   isA11yCopy: boolean,
@@ -203,9 +260,10 @@ export function handleWheelOptionKeyDown(
     return;
   }
   const target = event.currentTarget as HTMLElement;
-  // A row can fall out of range while it holds focus, e.g. after the hour
-  // above it moves; ignore keys on it until focus lands somewhere valid.
   if (target.getAttribute('aria-disabled') === 'true') {
+    // A row can hold focus while out of min / max, e.g. the value predates the
+    // bounds. Commit keys stay blocked, but navigation must still get out.
+    handleDisabledWheelOptionKeyDown(event, target, value, onSelect);
     return;
   }
   if (event.key === 'Enter' || event.key === ' ') {
