@@ -11,8 +11,10 @@ import {
   getHourOptions,
   getPeriodOptions,
   getUnitOptions,
+  isWheelOptionInRange,
   resolveWheelState,
   TIME_WHEEL_LOOP_COPIES,
+  TimeWheelKind,
 } from './time-options';
 
 export interface IWheelSelectionPartial {
@@ -43,27 +45,35 @@ export interface ITimePickerDropdownProps {
 export function resolveFocusableWheelKey(
   looped: { copy: number; key: string; value: string }[],
   selectedValue: string,
-  circular: boolean
+  circular: boolean,
+  isOptionDisabled?: (value: string) => boolean
 ): string | undefined {
   const middleCopy = Math.floor(TIME_WHEEL_LOOP_COPIES / 2);
+  const isA11y = (opt: { copy: number }) =>
+    !circular || opt.copy === middleCopy;
+  const enabled = (opt: { value: string }) =>
+    !isOptionDisabled || !isOptionDisabled(opt.value);
+
   const selectedA11y = looped.find(
     (opt) =>
-      (!circular || opt.copy === middleCopy) &&
+      isA11y(opt) &&
+      enabled(opt) &&
       (opt.value === selectedValue ||
         Number(opt.value) === Number(selectedValue))
   );
   if (selectedA11y) {
     return selectedA11y.key;
   }
-  return looped.find((opt) => !circular || opt.copy === middleCopy)?.key;
+  return looped.find((opt) => isA11y(opt) && enabled(opt))?.key;
 }
 
 const TimeWheel: FunctionalComponent<{
-  kind: string;
+  kind: TimeWheelKind;
   options: { label: string; value: string }[];
   selectedValue: string;
   onSelect: (value: string) => void;
   onCommit: () => void;
+  isOptionDisabled?: (value: string) => boolean;
   circular?: boolean;
 }> = ({
   kind,
@@ -71,6 +81,7 @@ const TimeWheel: FunctionalComponent<{
   selectedValue,
   onSelect,
   onCommit,
+  isOptionDisabled,
   circular = options.length >= 2,
 }) => {
   const looped = circular
@@ -83,7 +94,8 @@ const TimeWheel: FunctionalComponent<{
   const focusableKey = resolveFocusableWheelKey(
     looped,
     selectedValue,
-    circular
+    circular,
+    isOptionDisabled
   );
   const middleCopy = Math.floor(TIME_WHEEL_LOOP_COPIES / 2);
 
@@ -107,25 +119,33 @@ const TimeWheel: FunctionalComponent<{
             opt.value === selectedValue ||
             Number(opt.value) === Number(selectedValue);
           const isA11yCopy = !circular || opt.copy === middleCopy;
+          const disabled = isOptionDisabled?.(opt.value) ?? false;
           return (
             <li
               key={opt.key}
               class={{
                 'time-wheel-option': true,
                 'is-selected': selected,
+                'is-disabled': disabled,
               }}
               data-wheel-copy={opt.copy}
               data-value={opt.value}
               role="option"
+              aria-disabled={disabled ? 'true' : undefined}
               aria-hidden={isA11yCopy ? undefined : 'true'}
               aria-selected={
                 isA11yCopy ? (selected ? 'true' : 'false') : undefined
               }
-              tabIndex={isA11yCopy && opt.key === focusableKey ? 0 : -1}
+              tabIndex={
+                isA11yCopy && !disabled && opt.key === focusableKey ? 0 : -1
+              }
               onMouseDown={(e: MouseEvent) => {
                 e.preventDefault();
               }}
               onClick={(e: MouseEvent) => {
+                if (disabled) {
+                  return;
+                }
                 onSelect(opt.value);
                 // Keep the roving tabindex on the row the pointer just picked.
                 scheduleWheelSelectionFocus(
@@ -161,6 +181,8 @@ export const TimePickerDropdown: FunctionalComponent<
     | 'resolvedFormat'
     | 'minuteStep'
     | 'secondStep'
+    | 'min'
+    | 'max'
     | 'onWheelSelect'
     | 'onWheelCommit'
   >
@@ -177,6 +199,15 @@ export const TimePickerDropdown: FunctionalComponent<
     : [];
   const periods = getPeriodOptions();
 
+  const wheelRange = {
+    showSeconds: props.effectiveShowSeconds,
+    hourFormat: props.resolvedFormat,
+    min: props.min,
+    max: props.max,
+  };
+  const isOptionDisabled = (kind: TimeWheelKind, value: string) =>
+    !isWheelOptionInRange(kind, value, state, wheelRange);
+
   return (
     <div
       class="time-dropdown time-dropdown--picker"
@@ -192,6 +223,7 @@ export const TimePickerDropdown: FunctionalComponent<
           selectedValue={String(state.hour)}
           onSelect={(v) => props.onWheelSelect({ hour: Number(v) })}
           onCommit={props.onWheelCommit}
+          isOptionDisabled={(v) => isOptionDisabled('hours', v)}
         />
         <TimeWheel
           kind="minutes"
@@ -199,6 +231,7 @@ export const TimePickerDropdown: FunctionalComponent<
           selectedValue={String(state.minutes)}
           onSelect={(v) => props.onWheelSelect({ minutes: Number(v) })}
           onCommit={props.onWheelCommit}
+          isOptionDisabled={(v) => isOptionDisabled('minutes', v)}
         />
         {props.effectiveShowSeconds && (
           <TimeWheel
@@ -207,6 +240,7 @@ export const TimePickerDropdown: FunctionalComponent<
             selectedValue={String(state.seconds)}
             onSelect={(v) => props.onWheelSelect({ seconds: Number(v) })}
             onCommit={props.onWheelCommit}
+            isOptionDisabled={(v) => isOptionDisabled('seconds', v)}
           />
         )}
         {is12hrsFormat(props.resolvedFormat) && (
@@ -216,6 +250,7 @@ export const TimePickerDropdown: FunctionalComponent<
             selectedValue={state.period}
             onSelect={(v) => props.onWheelSelect({ period: v as 'AM' | 'PM' })}
             onCommit={props.onWheelCommit}
+            isOptionDisabled={(v) => isOptionDisabled('period', v)}
             circular={false}
           />
         )}

@@ -236,6 +236,39 @@ export function setSegmentText(
   return display.slice(0, segment.start) + text + display.slice(segment.end);
 }
 
+/**
+ * Step an empty segment into range instead of stepping off its base value, so
+ * the first Arrow Up lands on the lowest value (00, or 01 on a 12-hour clock)
+ * and the first Arrow Down lands on the highest.
+ */
+function stepEmptySegment(
+  time: IParsedTime,
+  segment: ITimeSegment,
+  delta: number,
+  hourFormat: TimeFormat,
+  minuteStep: number,
+  secondStep: number
+): void {
+  const up = delta > 0;
+
+  if (segment.kind === 'hour') {
+    if (is12hrsFormat(hourFormat)) {
+      const { period } = toHours12(time.hours24);
+      time.hours24 = toHours24(up ? 1 : 12, period);
+    } else {
+      time.hours24 = up ? 0 : 23;
+    }
+  } else if (segment.kind === 'minute') {
+    time.minutes = up ? 0 : Math.floor(59 / minuteStep) * minuteStep;
+  } else if (segment.kind === 'second') {
+    time.seconds = up ? 0 : Math.floor(59 / secondStep) * secondStep;
+  } else if (segment.kind === 'period') {
+    // An untouched period enters on AM rather than toggling away from it.
+    const { hour12 } = toHours12(time.hours24);
+    time.hours24 = toHours24(hour12, 'AM');
+  }
+}
+
 /** Apply stepped value to a segment and return updated display. */
 export function applyStepToSegment(
   display: string,
@@ -247,6 +280,11 @@ export function applyStepToSegment(
   secondStep = 1
 ): string {
   const time = getEffectiveTime(display, showSeconds, hourFormat);
+
+  if (isSegmentEmpty(getSegmentText(display, segment))) {
+    stepEmptySegment(time, segment, delta, hourFormat, minuteStep, secondStep);
+    return formatDisplay(time, showSeconds, hourFormat);
+  }
 
   if (segment.kind === 'hour') {
     if (is12hrsFormat(hourFormat)) {

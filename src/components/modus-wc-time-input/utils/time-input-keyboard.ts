@@ -52,6 +52,9 @@ export interface ITimeInputKeyboardContext {
   setActiveSegmentKind: (kind: SegmentKind) => void;
   setPendingSegmentSelect: (kind: SegmentKind) => void;
   emitParsedTime: (next24h: string) => void;
+  showDropdown: boolean;
+  useDatalist: boolean;
+  focusDatalistOption: () => void;
 }
 
 type IExternalTimeContext = Pick<
@@ -235,6 +238,17 @@ export function handleTimeInputKeyDown(
   ctx: ITimeInputKeyboardContext
 ): void {
   if (ctx.disabled || ctx.readOnly) {
+    return;
+  }
+
+  if (
+    ctx.showDropdown &&
+    ctx.useDatalist &&
+    event.key === 'ArrowDown' &&
+    !event.altKey
+  ) {
+    event.preventDefault();
+    ctx.focusDatalistOption();
     return;
   }
 

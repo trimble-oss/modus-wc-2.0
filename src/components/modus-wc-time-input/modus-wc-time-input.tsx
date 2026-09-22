@@ -24,6 +24,7 @@ import {
   clampTime,
   format24h,
   formatDisplay,
+  IParsedTime,
   is12hrsFormat,
   parse24h,
   TimeFormat,
@@ -109,6 +110,8 @@ export class ModusWcTimeInput {
    * closing, so a picker session can be abandoned without keeping its edits.
    */
   private valueAtDropdownOpen: string | null = null;
+  /** Current time the picker opens on while `value` is empty; never committed. */
+  private pickerSeedValue: string | null = null;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
   private segmentDigitBuffer = '';
@@ -311,12 +314,14 @@ export class ModusWcTimeInput {
             this.circularScrollLock
           );
         }
-        if (!this.useDatalist && focusPickerOnOpen) {
-          // The hours wheel renders first, so its focusable row is the selected
-          // hour already pinned to the top by scrollWheelsToSelection.
-          const focusTarget = this.dropdownRef?.querySelector<HTMLElement>(
-            '.time-wheel-viewport--hours .time-wheel-option[tabindex="0"]'
-          );
+        if (focusPickerOnOpen) {
+          const focusTarget = this.useDatalist
+            ? this.dropdownRef?.querySelector<HTMLElement>(
+                '.time-datalist-option[tabindex="0"]'
+              )
+            : this.dropdownRef?.querySelector<HTMLElement>(
+                '.time-wheel-viewport--hours .time-wheel-option[tabindex="0"]'
+              );
           focusTarget?.focus({ preventScroll: true });
         }
       });
@@ -326,6 +331,7 @@ export class ModusWcTimeInput {
       this.pendingScrollToSelection = false;
       this.pendingFocusPickerOnOpen = false;
       this.valueAtDropdownOpen = null;
+      this.pickerSeedValue = null;
       this.wheelScrollPositions.clear();
       if (this.popperInstance) {
         this.popperInstance.destroy();
@@ -574,6 +580,7 @@ export class ModusWcTimeInput {
       this.pendingScrollToSelection = true;
       this.pendingFocusPickerOnOpen = true;
       this.valueAtDropdownOpen = this.value;
+      this.seedPickerValue();
     }
     this.showDropdown = !this.showDropdown;
   };
@@ -590,7 +597,40 @@ export class ModusWcTimeInput {
     this.pendingScrollToSelection = true;
     this.pendingFocusPickerOnOpen = true;
     this.valueAtDropdownOpen = this.value;
+    this.seedPickerValue();
     this.showDropdown = true;
+  }
+
+  /**
+   * An empty field opens the picker on the current time instead of midnight.
+   * The seed only drives which rows look selected; it is never committed, so
+   * `value` stays empty until the user picks a row.
+   */
+  private seedPickerValue() {
+    if (this.value) {
+      this.pickerSeedValue = null;
+      return;
+    }
+    const now = new Date();
+    const minuteStep = this.minuteStep;
+    const secondStep = this.secondStep;
+    const seeded: IParsedTime = {
+      hours24: now.getHours(),
+      // Round down to a row the wheel actually renders.
+      minutes: Math.floor(now.getMinutes() / minuteStep) * minuteStep,
+      seconds: this.effectiveShowSeconds
+        ? Math.floor(now.getSeconds() / secondStep) * secondStep
+        : 0,
+    };
+    this.pickerSeedValue = format24h(
+      clampTime(seeded, this.min, this.max),
+      this.effectiveShowSeconds
+    );
+  }
+
+  /** `value`, or the current-time seed while the picker sits on a blank field. */
+  private get pickerValue(): string {
+    return this.value || this.pickerSeedValue || '';
   }
 
   private getContainerClasses(): string {
@@ -712,6 +752,14 @@ export class ModusWcTimeInput {
       emitParsedTime: (next24h) => {
         this.isInvalid = false;
         this.emitChange(next24h);
+      },
+      showDropdown: this.showDropdown,
+      useDatalist: this.useDatalist,
+      focusDatalistOption: () => {
+        const option = this.dropdownRef?.querySelector<HTMLElement>(
+          '.time-datalist-option[tabindex="0"]'
+        );
+        option?.focus({ preventScroll: true });
       },
     };
   }
@@ -893,7 +941,7 @@ export class ModusWcTimeInput {
     }
     saveWheelScrollPositions(this.dropdownRef, this.wheelScrollPositions);
     const current = resolveWheelState(
-      this.value,
+      this.pickerValue,
       this.effectiveShowSeconds,
       this.resolvedFormat
     );
@@ -967,11 +1015,10 @@ export class ModusWcTimeInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
-    const popupRole = this.useDatalist ? 'listbox' : 'dialog';
     const dropdownProps = {
       dropdownId: this.dropdownId,
       setDropdownRef: this.setDropdownRef,
-      value: this.value,
+      value: this.pickerValue,
       effectiveShowSeconds: this.effectiveShowSeconds,
       resolvedFormat: this.resolvedFormat,
       minuteStep: this.minuteStep,
@@ -1001,11 +1048,7 @@ export class ModusWcTimeInput {
         <div class={this.getContainerClasses()}>
           <input
             ref={this.setInputRef}
-            aria-controls={this.showDropdown ? this.dropdownId : undefined}
-            aria-expanded={this.showDropdown ? 'true' : 'false'}
-            aria-haspopup={popupRole}
             aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
-            aria-autocomplete="none"
             aria-keyshortcuts="Alt+ArrowDown"
             aria-required={this.required}
             autocomplete={this.autoComplete ?? 'off'}
@@ -1021,7 +1064,6 @@ export class ModusWcTimeInput {
             onPaste={this.handlePaste}
             readonly={this.readOnly}
             required={this.required}
-            role={this.useDatalist ? 'combobox' : undefined}
             tabIndex={this.inputTabIndex}
             type="text"
             value={this.displayValue}

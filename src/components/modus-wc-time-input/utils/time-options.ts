@@ -1,4 +1,5 @@
 import {
+  clampTime,
   format24h,
   formatDisplay,
   fromTotalSeconds,
@@ -121,7 +122,15 @@ export function buildDatalistOptions(params: {
         const parsed = parse24h(opt);
         return parsed ? toOption(parsed) : null;
       })
-      .filter((o): o is IDatalistOption => o !== null);
+      .filter((o): o is IDatalistOption => o !== null)
+      .filter((o) => {
+        const parsed = parse24h(o.value);
+        if (!parsed) {
+          return false;
+        }
+        const clamped = clampTime(parsed, min, max);
+        return format24h(clamped, showSeconds) === o.value;
+      });
   }
 
   const intervalSec = Math.max(1, intervalMinutes) * 60;
@@ -185,7 +194,90 @@ export function resolveWheelState(
   };
 }
 
-/** Build 24h value string from wheel state. */
+/**
+ * Seconds a wheel row spans once the finer wheels below it are free to move.
+ * An hour row covers its whole hour, so it stays selectable while any minute
+ * inside it is within bounds instead of being judged on the current minute.
+ */
+function getWheelOptionSpan(
+  kind: TimeWheelKind,
+  value: string,
+  state: IWheelState,
+  params: { showSeconds: boolean; hourFormat: TimeFormat }
+): { start: number; end: number } | null {
+  if (kind === 'period') {
+    // A period covers its half of the day whatever the other wheels read.
+    const start = value === 'AM' ? 0 : 12 * 3600;
+    return { start, end: start + 12 * 3600 - 1 };
+  }
+
+  const next: IWheelState = { ...state };
+  let spanSeconds = 0;
+
+  switch (kind) {
+    case 'hours':
+      next.hour = Number(value);
+      spanSeconds = 59 * 60 + 59;
+      break;
+    case 'minutes':
+      next.minutes = Number(value);
+      spanSeconds = params.showSeconds ? 59 : 0;
+      break;
+    case 'seconds':
+      next.seconds = Number(value);
+      break;
+    default:
+      break;
+  }
+
+  const parsed = parse24h(
+    valueFromWheelState(next, params.showSeconds, params.hourFormat)
+  );
+  if (!parsed) {
+    return null;
+  }
+
+  // Ignore the columns this row leaves the user free to change.
+  let start = parsed.hours24 * 3600;
+  if (kind !== 'hours') {
+    start += parsed.minutes * 60;
+  }
+  if (kind === 'seconds') {
+    start += parsed.seconds;
+  }
+
+  return { start, end: start + spanSeconds };
+}
+
+/** Whether a wheel row can still reach a value inside `min` / `max`. */
+export function isWheelOptionInRange(
+  kind: TimeWheelKind,
+  value: string,
+  state: IWheelState,
+  params: {
+    showSeconds: boolean;
+    hourFormat: TimeFormat;
+    min?: string;
+    max?: string;
+  }
+): boolean {
+  if (!params.min && !params.max) {
+    return true;
+  }
+
+  const span = getWheelOptionSpan(kind, value, state, params);
+  if (!span) {
+    return false;
+  }
+
+  const minParsed = params.min ? parse24h(params.min) : null;
+  const maxParsed = params.max ? parse24h(params.max) : null;
+  const lower = minParsed ? toTotalSeconds(minParsed) : 0;
+  const upper = maxParsed ? toTotalSeconds(maxParsed) : 24 * 3600 - 1;
+
+  return span.end >= lower && span.start <= upper;
+}
+
 export function valueFromWheelState(
   state: IWheelState,
   showSeconds: boolean,

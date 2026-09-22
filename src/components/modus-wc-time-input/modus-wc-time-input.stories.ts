@@ -41,7 +41,6 @@ const meta: Meta<TimeInputArgs> = {
     required: false,
     'show-seconds': false,
     size: 'md',
-    value: '09:45',
   },
   argTypes: {
     'auto-complete': {

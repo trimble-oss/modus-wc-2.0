@@ -6,6 +6,35 @@ import {
 
 const keyboardScrollLock: ICircularScrollLock = { current: false };
 
+/** Rows a keyboard user can land on: visible copies that are still in range. */
+function getEnabledListboxItems(
+  listbox: Element | null,
+  itemSelector: string
+): HTMLElement[] {
+  if (!listbox) {
+    return [];
+  }
+  return Array.from(listbox.querySelectorAll<HTMLElement>(itemSelector)).filter(
+    (el) =>
+      el.getAttribute('aria-hidden') !== 'true' &&
+      el.getAttribute('aria-disabled') !== 'true'
+  );
+}
+
+function scrollDatalistOptionIntoView(option: HTMLElement): void {
+  const scroller = option.closest<HTMLElement>('.time-datalist');
+  if (scroller) {
+    scrollWheelOptionIntoView(scroller, option);
+  }
+}
+
+function focusListboxItem(current: HTMLElement, target: HTMLElement): void {
+  current.tabIndex = -1;
+  target.tabIndex = 0;
+  target.focus({ preventScroll: true });
+  scrollDatalistOptionIntoView(target);
+}
+
 /** Move roving tabindex focus within a listbox. */
 export function moveListboxFocus(
   current: HTMLElement,
@@ -16,9 +45,7 @@ export function moveListboxFocus(
   if (!listbox) {
     return;
   }
-  const items = Array.from(
-    listbox.querySelectorAll<HTMLElement>(itemSelector)
-  ).filter((el) => el.getAttribute('aria-hidden') !== 'true');
+  const items = getEnabledListboxItems(listbox, itemSelector);
   const index = items.indexOf(current);
   if (index < 0 || items.length === 0) {
     return;
@@ -29,19 +56,32 @@ export function moveListboxFocus(
   } else if (nextIndex >= items.length) {
     nextIndex = 0;
   }
-  current.tabIndex = -1;
-  const target = items[nextIndex];
-  target.tabIndex = 0;
-  target.focus({ preventScroll: true });
+  focusListboxItem(current, items[nextIndex]);
+}
+
+function focusListboxEdge(
+  current: HTMLElement,
+  edge: 'start' | 'end',
+  itemSelector: string
+): void {
+  const listbox = current.closest('[role="listbox"]');
+  if (!listbox) {
+    return;
+  }
+  const items = getEnabledListboxItems(listbox, itemSelector);
+  if (items.length === 0) {
+    return;
+  }
+  const target = edge === 'start' ? items[0] : items[items.length - 1];
+  if (target === current) {
+    scrollDatalistOptionIntoView(target);
+    return;
+  }
+  focusListboxItem(current, target);
 }
 
 function getWheelA11yItems(listbox: Element | null): HTMLElement[] {
-  if (!listbox) {
-    return [];
-  }
-  return Array.from(
-    listbox.querySelectorAll<HTMLElement>('.time-wheel-option')
-  ).filter((el) => el.getAttribute('aria-hidden') !== 'true');
+  return getEnabledListboxItems(listbox, '.time-wheel-option');
 }
 
 function valuesMatch(a: string, b: string): boolean {
@@ -55,7 +95,7 @@ export function focusSelectedWheelOption(listbox: Element | null): void {
   }
   const viewport = listbox.closest<HTMLElement>('.time-wheel-viewport');
   const selected = listbox.querySelector<HTMLElement>(
-    '.time-wheel-option.is-selected:not([aria-hidden="true"])'
+    '.time-wheel-option.is-selected:not([aria-hidden="true"]):not([aria-disabled="true"])'
   );
   if (!selected || !viewport) {
     return;
@@ -122,18 +162,34 @@ function selectAdjacentWheelValue(
   if (currentIndex < 0 || items.length === 0) {
     return;
   }
-  let nextIndex = currentIndex + direction;
-  if (nextIndex < 0) {
-    nextIndex = items.length - 1;
-  } else if (nextIndex >= items.length) {
-    nextIndex = 0;
-  }
+  // getWheelA11yItems already drops out-of-range rows, so wrapping here keeps
+  // arrow keys inside the values the wheel will actually accept.
+  const nextIndex = (currentIndex + direction + items.length) % items.length;
   const nextValue = values[nextIndex];
   if (!nextValue || valuesMatch(nextValue, currentValue)) {
     return;
   }
   onSelect(nextValue);
   scheduleWheelSelectionFocus(listbox);
+}
+
+function selectWheelEdgeValue(
+  target: HTMLElement,
+  edge: 'start' | 'end',
+  currentValue: string,
+  onSelect: (value: string) => void
+): void {
+  const listbox = target.closest('[role="listbox"]');
+  const items = getWheelA11yItems(listbox);
+  if (items.length === 0) {
+    return;
+  }
+  const edgeItem = edge === 'start' ? items[0] : items[items.length - 1];
+  const edgeValue = edgeItem?.dataset.value;
+  if (edgeValue && !valuesMatch(edgeValue, currentValue)) {
+    onSelect(edgeValue);
+    scheduleWheelSelectionFocus(listbox);
+  }
 }
 
 export function handleWheelOptionKeyDown(
@@ -147,6 +203,11 @@ export function handleWheelOptionKeyDown(
     return;
   }
   const target = event.currentTarget as HTMLElement;
+  // A row can fall out of range while it holds focus, e.g. after the hour
+  // above it moves; ignore keys on it until focus lands somewhere valid.
+  if (target.getAttribute('aria-disabled') === 'true') {
+    return;
+  }
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault();
     onSelect(value);
@@ -178,25 +239,12 @@ export function handleWheelOptionKeyDown(
   }
   if (event.key === 'Home') {
     event.preventDefault();
-    const listbox = target.closest('[role="listbox"]');
-    const first = getWheelA11yItems(listbox)[0];
-    const firstValue = first?.dataset.value;
-    if (firstValue && !valuesMatch(firstValue, value)) {
-      onSelect(firstValue);
-      scheduleWheelSelectionFocus(listbox);
-    }
+    selectWheelEdgeValue(target, 'start', value, onSelect);
     return;
   }
   if (event.key === 'End') {
     event.preventDefault();
-    const listbox = target.closest('[role="listbox"]');
-    const items = getWheelA11yItems(listbox);
-    const last = items[items.length - 1];
-    const lastValue = last?.dataset.value;
-    if (lastValue && !valuesMatch(lastValue, value)) {
-      onSelect(lastValue);
-      scheduleWheelSelectionFocus(listbox);
-    }
+    selectWheelEdgeValue(target, 'end', value, onSelect);
   }
 }
 
@@ -218,5 +266,15 @@ export function handleDatalistOptionKeyDown(
   if (event.key === 'ArrowUp') {
     event.preventDefault();
     moveListboxFocus(target, -1, '.time-datalist-option');
+    return;
+  }
+  if (event.key === 'Home') {
+    event.preventDefault();
+    focusListboxEdge(target, 'start', '.time-datalist-option');
+    return;
+  }
+  if (event.key === 'End') {
+    event.preventDefault();
+    focusListboxEdge(target, 'end', '.time-datalist-option');
   }
 }
