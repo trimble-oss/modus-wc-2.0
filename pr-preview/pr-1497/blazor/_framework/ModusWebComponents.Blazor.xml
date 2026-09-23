@@ -44,6 +44,12 @@
             The title of the alert.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcAlert.ContentDisplayMode">
+            <summary>
+            Controls body display: full text (default) or expandable two-line preview with Show more.
+            Allowed values: "default", "expandable"
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcAlert.CustomClass">
             <summary>
             Custom CSS class to apply to the outer div element.
@@ -83,6 +89,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcAlert.AdditionalAttributes">
             <summary>
             Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcAlert.OnContentExpandedChange">
+            <summary>
+            Fires when expandable body content is expanded or collapsed.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcAlert.OnDismissClick">
@@ -1569,7 +1580,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Name">
             <summary>
-            The icon name, should match the CSS class in the icon font.
+            The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from @trimble-oss/modus-icons-css.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Size">
@@ -1581,6 +1592,11 @@
             <summary>
             The icon variant, can be &quot;outlined&quot; or &quot;solid&quot;.
             Allowed values: "outlined", "solid"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Version">
+            <summary>
+            The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.ChildContent">
@@ -1601,6 +1617,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.Alt">
             <summary>
             Accessible text description. Omit or leave empty for decorative images.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImage.CropPosition">
+            <summary>
+            Sets the focal point when the image is cropped or letterboxed. Maps to CSS object-position (e.g. center, top, bottom left).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.CustomClass">
@@ -1701,6 +1722,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcInputLabel.ForId">
             <summary>
             The for attribute of the label, matching the id of the associated input.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputLabel.LabelId">
+            <summary>
+            The id of the label element (for aria-labelledby on non-labelable controls).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputLabel.LabelText">
