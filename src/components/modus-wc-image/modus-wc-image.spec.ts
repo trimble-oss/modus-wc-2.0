@@ -192,6 +192,18 @@ describe('modus-wc-image', () => {
     expect(img?.style.objectPosition).toBe('center');
   });
 
+  it('should fall back to center objectPosition when cropPosition is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test" crop-position="top"></modus-wc-image>',
+    });
+    const instance = page.rootInstance as ModusWcImage;
+    instance.cropPosition = undefined;
+    await page.waitForChanges();
+    const img = page.root?.querySelector('img');
+    expect(img?.style.objectPosition).toBe('center');
+  });
+
   it.each([
     ['top', 'top'],
     ['bottom left', 'bottom left'],
