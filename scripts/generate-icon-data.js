@@ -1,0 +1,244 @@
+/* eslint-env node */
+
+/**
+ * Generate icon alias/slug tables and copy 2.0 stylesheets for dist/Storybook.
+ *
+ * Usage: node scripts/generate-icon-data.js
+ * Runs automatically as part of the prebuild step.
+ */
+
+import {
+  copyFileSync,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, '..');
+const ALIASES_PATH = join(
+  ROOT,
+  'src/components/modus-wc-icon/modus-icon-aliases.json'
+);
+const OUTPUT_PATH = join(ROOT, 'src/components/modus-wc-icon/icon-data.ts');
+const ICONS_CSS_DIR = join(ROOT, 'node_modules/@trimble-oss/modus-icons-css');
+const ICONS_1_SVG_DIR = join(
+  ROOT,
+  'node_modules/@trimble-oss/modus-icons/dist/modus-outlined/svg'
+);
+const STYLES_DIR = join(ROOT, 'src/styles');
+const FONT_OUT_DIR = join(STYLES_DIR, 'modus-icons-2-font');
+/** Alias keys that are not 1.0 ligature names. */
+const ALIAS_ONLY_KEYS = ['check_simple'];
+
+function fail(message) {
+  globalThis.console.error(`generate-icon-data: ${message}`);
+  process.exit(1);
+}
+
+function parseCssSlugs(css) {
+  const slugs = new Set();
+  const re = /^\s*--modus-icon-([a-z0-9-]+):/gm;
+  let match;
+  while ((match = re.exec(css))) {
+    slugs.add(match[1]);
+  }
+  return slugs;
+}
+
+function extractModusIconBaseCss(css, version) {
+  const match = css.match(/\[class\^="modus-icon-"\]\s*\{[^}]*\}/);
+  if (!match) {
+    fail(
+      'Could not extract [class^="modus-icon-"] paint rule from modus-icons-regular.css'
+    );
+  }
+  return `/* Generated from @trimble-oss/modus-icons-css@${version} — paint only. */\n${match[0]}\n`;
+}
+
+function quote(value) {
+  return `'${String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+}
+
+function formatRecord(obj) {
+  const lines = Object.entries(obj)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `  ${quote(key)}: ${quote(value)},`);
+  return `{\n${lines.join('\n')}\n}`;
+}
+
+function formatStringList(values) {
+  return values.map((value) => `  ${quote(value)},`).join('\n');
+}
+
+if (!existsSync(ALIASES_PATH)) {
+  fail(`Missing alias JSON at ${ALIASES_PATH}`);
+}
+
+const packageJsonPath = join(ICONS_CSS_DIR, 'package.json');
+if (!existsSync(packageJsonPath)) {
+  fail('Missing @trimble-oss/modus-icons-css. Install dependencies and retry.');
+}
+
+const iconsCssPkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+const regularCssPath = join(ICONS_CSS_DIR, 'css/modus-icons-regular.css');
+const fillCssPath = join(ICONS_CSS_DIR, 'css/modus-icons-fill.css');
+if (!existsSync(regularCssPath) || !existsSync(fillCssPath)) {
+  fail('modus-icons-css is missing regular or fill CSS sheets.');
+}
+
+const { aliases, unmapped } = JSON.parse(readFileSync(ALIASES_PATH, 'utf8'));
+if (!aliases || typeof aliases !== 'object' || !Array.isArray(unmapped)) {
+  fail('Alias JSON must contain an aliases object and an unmapped array.');
+}
+
+const regularCss = readFileSync(regularCssPath, 'utf8');
+const slugs = parseCssSlugs(regularCss);
+const unmappedSet = new Set(unmapped);
+const aliasKeys = Object.keys(aliases);
+
+const missingTargets = Object.entries(aliases)
+  .filter(([, slug]) => !slugs.has(slug))
+  .map(([legacy, slug]) => `${legacy} -> ${slug}`);
+if (missingTargets.length) {
+  fail(
+    `Alias targets missing from modus-icons-css:\n  ${missingTargets.join('\n  ')}`
+  );
+}
+
+const bothBuckets = aliasKeys.filter((key) => unmappedSet.has(key));
+if (bothBuckets.length) {
+  fail(`Names present in both aliases and unmapped: ${bothBuckets.join(', ')}`);
+}
+
+if (!existsSync(ICONS_1_SVG_DIR)) {
+  fail(
+    'Missing @trimble-oss/modus-icons outlined SVGs for the 1.0 coverage audit.'
+  );
+}
+
+const legacyNames = readdirSync(ICONS_1_SVG_DIR)
+  .filter((file) => file.endsWith('.svg'))
+  .map((file) => file.replace(/\.svg$/, '').replace(/-/g, '_'));
+const v1NameSet = new Set(legacyNames);
+const covered = new Set([...aliasKeys, ...unmapped]);
+const missingFromJson = legacyNames.filter((name) => !covered.has(name));
+if (missingFromJson.length) {
+  fail(
+    `1.0 names missing from modus-icon-aliases.json (update the JSON first):\n  ${missingFromJson.join('\n  ')}`
+  );
+}
+
+const unknownAllowlist = ALIAS_ONLY_KEYS.filter(
+  (key) => !aliasKeys.includes(key)
+);
+if (unknownAllowlist.length) {
+  fail(
+    `ALIAS_ONLY_KEYS entries missing from aliases: ${unknownAllowlist.join(', ')}`
+  );
+}
+
+const aliasKeysNotInV1 = aliasKeys.filter(
+  (key) => !v1NameSet.has(key) && !ALIAS_ONLY_KEYS.includes(key)
+);
+if (aliasKeysNotInV1.length) {
+  fail(
+    `Alias keys that are not 1.0 names and not allowlisted:\n  ${aliasKeysNotInV1.join('\n  ')}`
+  );
+}
+
+const promotionCandidates = unmapped.filter((name) =>
+  slugs.has(name.replace(/_/g, '-'))
+);
+if (promotionCandidates.length) {
+  globalThis.console.log(
+    `Unmapped 1.0 names that now exist as 2.0 slugs (do not auto-promote): ${promotionCandidates.join(', ')}`
+  );
+}
+
+const sortedSlugs = [...slugs].sort();
+const sortedUnmapped = [...unmapped].sort();
+const sortedV1Names = [...legacyNames].sort();
+
+const lines = [
+  '// Auto-generated by scripts/generate-icon-data.js',
+  '// DO NOT EDIT MANUALLY',
+  '',
+  `export const MODUS_ICONS_CSS_VERSION = ${quote(iconsCssPkg.version)};`,
+  '',
+  'export const MODUS_ICON_V1_TO_V2: Record<string, string> = ' +
+    formatRecord(aliases) +
+    ';',
+  '',
+  'export const MODUS_ICON_V1_ONLY_NAMES: ReadonlySet<string> = new Set([',
+  formatStringList(sortedUnmapped),
+  ']);',
+  '',
+  'export const MODUS_ICON_V1_NAMES = [',
+  formatStringList(sortedV1Names),
+  '] as const;',
+  '',
+  'export type ModusIconV1Name = (typeof MODUS_ICON_V1_NAMES)[number];',
+  '',
+  'export const MODUS_ICON_V1_NAME_SET: ReadonlySet<string> = new Set(MODUS_ICON_V1_NAMES);',
+  '',
+  'export const MODUS_ICON_V2_NAMES = [',
+  formatStringList(sortedSlugs),
+  '] as const;',
+  '',
+  'export type ModusIconV2Name = (typeof MODUS_ICON_V2_NAMES)[number];',
+  '',
+  'export const MODUS_ICON_V2_NAME_SET: ReadonlySet<string> = new Set(MODUS_ICON_V2_NAMES);',
+  '',
+  'export type ModusIconName = ModusIconV1Name | ModusIconV2Name;',
+  '',
+];
+
+writeFileSync(OUTPUT_PATH, lines.join('\n'), 'utf8');
+
+mkdirSync(STYLES_DIR, { recursive: true });
+writeFileSync(
+  join(STYLES_DIR, 'modus-icons-2-base.css'),
+  extractModusIconBaseCss(regularCss, iconsCssPkg.version)
+);
+copyFileSync(
+  join(ICONS_CSS_DIR, 'css/modus-icons-regular.min.css'),
+  join(STYLES_DIR, 'modus-icons-regular.css')
+);
+copyFileSync(
+  join(ICONS_CSS_DIR, 'css/modus-icons-fill.min.css'),
+  join(STYLES_DIR, 'modus-icons-fill.css')
+);
+writeFileSync(
+  join(STYLES_DIR, 'modus-icons-2.css'),
+  `${readFileSync(join(STYLES_DIR, 'modus-icons-regular.css'), 'utf8')}\n${readFileSync(join(STYLES_DIR, 'modus-icons-fill.css'), 'utf8')}\n`
+);
+
+mkdirSync(join(FONT_OUT_DIR, 'css'), { recursive: true });
+copyFileSync(
+  join(ICONS_CSS_DIR, 'css/modus-icons-font-regular.css'),
+  join(FONT_OUT_DIR, 'css/modus-icons-font-regular.css')
+);
+copyFileSync(
+  join(ICONS_CSS_DIR, 'css/modus-icons-font-fill.css'),
+  join(FONT_OUT_DIR, 'css/modus-icons-font-fill.css')
+);
+cpSync(
+  join(ICONS_CSS_DIR, 'fonts/regular'),
+  join(FONT_OUT_DIR, 'fonts/regular'),
+  {
+    recursive: true,
+  }
+);
+cpSync(join(ICONS_CSS_DIR, 'fonts/fill'), join(FONT_OUT_DIR, 'fonts/fill'), {
+  recursive: true,
+});
+
+globalThis.console.log(
+  `Generated ${aliasKeys.length} aliases, ${unmapped.length} unmapped, ${sortedV1Names.length} v1 names, ${sortedSlugs.length} v2 slugs (modus-icons-css@${iconsCssPkg.version})`
+);
