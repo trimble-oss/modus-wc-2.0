@@ -106,6 +106,14 @@ Patch same branch. Conversation comment: what changed + **`QA-rerun: add` only**
 
 Repair only latest `## QA FAILED`. Max 3 attempts. Push + `Fix applied:` + **`QA-rerun: add` only** (no `Routing: qa-full`, no full routing block unless QA-\* materially changed). STOP.
 
+## Storybook Show code
+
+Stories with custom `render` functions (multi-instance layouts, slot wiring, imperative property assignment) do **not** auto-generate useful Show code. Set explicit markup in `parameters.docs.source.code`, matching the pattern in `modus-wc-dropdown-menu.stories.ts` (`WithTreeMenu`):
+
+- Use plain HTML for the component(s) and attributes consumers set in markup.
+- Add a trailing `<script>` block when properties or event listeners are assigned imperatively (`.images = …`, `addEventListener`, etc.).
+- Apply the same `source.code` on both the shared `Template` and each story export that overrides `render` without inheriting the template (e.g. `AllVariants`).
+
 ## Developer visual self-check
 
 After visual/markup changes, when `reverseImpact` is non-empty:
@@ -116,6 +124,10 @@ After visual/markup changes, when `reverseImpact` is non-empty:
 4. Do not attach screenshots by default. After 3+ failed fix attempts or ambiguous intent: `## NEED CLARIFICATION` and STOP.
 
 Hooks may remind you to run storybook-smoke after SCSS/Tailwind/component edits.
+
+### Nested component style overrides
+
+When a parent styles a nested child (inner component, part, or slotted element), set **only** properties that must differ from that child's defaults (background, color, border, spacing, etc.). Do **not** re-declare design tokens or rules the child already applies — duplicates drift with theme updates and fight cascade layers. Repeat a token only when the design explicitly requires a different value in that parent context.
 
 ## Subagents (Composer 2.5 only)
 

@@ -33,6 +33,10 @@ aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility supp
 
 ## Dependencies
 
+### Used by
+
+ - [modus-wc-image-grid](../modus-wc-image-grid)
+
 ### Depends on
 
 - [modus-wc-icon](../modus-wc-icon)
@@ -41,6 +45,7 @@ aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility supp
 ```mermaid
 graph TD;
   modus-wc-image --> modus-wc-icon
+  modus-wc-image-grid --> modus-wc-image
   style modus-wc-image fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

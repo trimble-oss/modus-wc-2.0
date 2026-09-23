@@ -163,7 +163,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-angular.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+          inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
 
   trigger-react-publish:
     needs: publish-mcp
@@ -173,7 +173,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-react.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+          inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
 
   trigger-vue-publish:
     needs: publish-mcp
@@ -183,7 +183,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-vue.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+          inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
 
   trigger-blazor-publish:
     needs: publish-mcp
@@ -193,7 +193,32 @@ jobs:
         uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
         with:
           workflow: publish-blazor.yml
-          inputs: '{"version": "${{ github.event.inputs.version }}"}'
+          inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
+
+  wait-for-framework-publishes:
+    needs:
+      - trigger-angular-publish
+      - trigger-react-publish
+      - trigger-vue-publish
+      - trigger-blazor-publish
+    runs-on: ubuntu-latest
+    outputs:
+      framework_status: ${{ steps.wait.outputs.framework_status }}
+      failed_framework_workflows: ${{ steps.wait.outputs.failed_framework_workflows }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Wait for framework publish workflows
+        id: wait
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash .github/scripts/wait-for-framework-publish-runs.sh \
+            "${{ github.run_id }}" \
+            "${{ github.event.inputs.version }}"
 
   release-wc:
     needs: build-and-publish-wc
@@ -251,12 +276,41 @@ jobs:
     secrets: inherit
 
   notify-n8n:
-    needs: deploy-storybook
+    needs:
+      - deploy-storybook
+      - wait-for-framework-publishes
+    if: always() && !cancelled() && github.repository == 'trimble-oss/modus-wc-2.0'
     runs-on: ubuntu-latest
-    if: github.repository == 'trimble-oss/modus-wc-2.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Determine release notification status
+        id: release_status
+        run: |
+          set -euo pipefail
+          failed_parts=()
+          if [ "${{ needs.deploy-storybook.result }}" != "success" ]; then
+            failed_parts+=("deploy-storybook")
+          fi
+          if [ "${{ needs.wait-for-framework-publishes.result }}" != "success" ]; then
+            fw_failed="${{ needs.wait-for-framework-publishes.outputs.failed_framework_workflows }}"
+            if [ -n "$fw_failed" ]; then
+              failed_parts+=("$fw_failed")
+            else
+              failed_parts+=("framework publishes")
+            fi
+          fi
+          if [ "${#failed_parts[@]}" -eq 0 ]; then
+            echo "status=success" >> "$GITHUB_OUTPUT"
+            echo "failed_framework_workflows=" >> "$GITHUB_OUTPUT"
+            echo "event=publish" >> "$GITHUB_OUTPUT"
+          else
+            failed_csv="$(IFS=','; echo "${failed_parts[*]}")"
+            echo "status=failure" >> "$GITHUB_OUTPUT"
+            echo "failed_framework_workflows=${failed_csv}" >> "$GITHUB_OUTPUT"
+            echo "event=publish_failed" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Notify n8n with release notes
         env:
@@ -264,4 +318,9 @@ jobs:
           N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
           TRIMBLE_N8N_CLIENT_ID: ${{ secrets.TRIMBLE_N8N_CLIENT_ID }}
           TRIMBLE_N8N_CLIENT_SECRET: ${{ secrets.TRIMBLE_N8N_CLIENT_SECRET }}
-        run: bash .github/scripts/notify-n8n-release.sh "${{ github.event.inputs.version }}" publish
+          RELEASE_STATUS: ${{ steps.release_status.outputs.status }}
+          FAILED_FRAMEWORK_WORKFLOWS: ${{ steps.release_status.outputs.failed_framework_workflows }}
+        run: |
+          bash .github/scripts/notify-n8n-release.sh \
+            "${{ github.event.inputs.version }}" \
+            "${{ steps.release_status.outputs.event }}"
