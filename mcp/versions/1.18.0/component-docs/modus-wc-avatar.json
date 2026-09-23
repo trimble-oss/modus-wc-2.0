@@ -1,0 +1,95 @@
+{
+  "description": "A customizable avatar component used to create avatars with different images or user initials. When no image is provided, the component can display initials (up to 3 characters) from the initials prop. The component will extract the first letter of each word in the initials string.",
+  "properties": [
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "The image alt attribute for accessibility.",
+      "default": null,
+      "mutable": false,
+      "end_line": 35
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the inner div.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 38
+    },
+    {
+      "name": "imgSrc",
+      "type": "string",
+      "description": "The location of the image.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 41
+    },
+    {
+      "name": "initials",
+      "type": "string",
+      "description": "The initials to display when no image is provided.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 44
+    },
+    {
+      "name": "shape",
+      "type": "'circle' | 'square'",
+      "description": "The shape of the avatar.",
+      "default": "'circle'",
+      "mutable": false,
+      "end_line": 49
+    },
+    {
+      "name": "size",
+      "type": "DaisySize | 'xl'",
+      "description": "The size of the avatar.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 52
+    }
+  ],
+  "events": [
+    {
+      "name": "imageLoadError",
+      "detail": "IAvatarImageLoadError",
+      "description": "Event emitted when the avatar image fails to load.",
+      "end_line": 55
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>",
+    "variations": [],
+    "args": {
+      "alt": "'Example avatar'",
+      "img-src": "'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg'",
+      "shape": "'circle'",
+      "initials": "''",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "imageLoadError"
+    ]
+  },
+  "tag": "modus-wc-avatar",
+  "storyExample": {
+    "template": "<modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>",
+    "args": {
+      "alt": "'Example avatar'",
+      "img-src": "'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg'",
+      "shape": "'circle'",
+      "initials": "''",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "imageLoadError"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { DaisySize } from '../types';\n\ninterface AvatarArgs {\n  alt: string;\n  'custom-class'?: string;\n  'img-src': string;\n  initials: string;\n  shape: string;\n  size: DaisySize | 'xl';\n}\n\nconst meta: Meta<AvatarArgs> = {\n  title: 'Components/Avatar',\n  component: 'modus-wc-avatar',\n  args: {\n    alt: 'Example avatar',\n    'img-src':\n      'https://i.pinimg.com/474x/73/54/79/7354794bf3873c3ef2666f778da4bcac.jpg',\n    shape: 'circle',\n    initials: '',\n    size: 'md',\n  },\n  argTypes: {\n    shape: {\n      control: { type: 'select' },\n      options: ['circle', 'square'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg', 'xl'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['imageLoadError'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<AvatarArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-avatar\n        alt=\"${args.alt}\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        img-src=\"${args['img-src']}\"\n        initials=\"${args.initials}\"\n        shape=\"${args.shape}\"\n        size=\"${args.size}\"\n      ></modus-wc-avatar>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    if (!customElements.get('avatar-shadow-host')) {\n      const AvatarShadowHost = createShadowHostClass<AvatarArgs>({\n        componentTag: 'modus-wc-avatar',\n        propsMapper: (v: AvatarArgs, el: HTMLElement) => {\n          const avatarEl = el as unknown as {\n            alt: string;\n            customClass: string;\n            imgSrc: string;\n            initials: string;\n            shape: string;\n            size: string;\n          };\n          avatarEl.alt = v.alt;\n          avatarEl.customClass = v['custom-class'] || '';\n          avatarEl.imgSrc = v['img-src'];\n          avatarEl.initials = v.initials;\n          avatarEl.shape = v.shape;\n          avatarEl.size = v.size;\n        },\n      });\n      customElements.define('avatar-shadow-host', AvatarShadowHost);\n    }\n\n    return html`<avatar-shadow-host\n      .props=${{ ...args }}\n    ></avatar-shadow-host>`;\n  },\n};\n"
+  }
+}
