@@ -1,0 +1,141 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-empty-state .modus-wc-empty-state {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+
+  .illustration-primary {
+    fill: var(--modus-wc-color-primary);
+  }
+
+  .illustration-stroke-primary {
+    stroke: var(--modus-wc-color-primary);
+  }
+
+  .illustration-stroke-surface {
+    stroke: var(--modus-wc-color-base-100);
+  }
+
+  .illustration-fill-pale {
+    fill: var(--modus-wc-color-blue-pale);
+  }
+
+  .illustration-fill-surface {
+    fill: var(--modus-wc-color-base-100);
+    stroke: var(--modus-wc-color-primary);
+  }
+
+  .illustration-muted {
+    fill: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  svg {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  &.modus-wc-empty-state--compact {
+    gap: var(--modus-wc-spacing-xs);
+    min-height: 16rem;
+    padding: var(--modus-wc-spacing-lg);
+  }
+
+  &.modus-wc-empty-state--illustration,
+  &.modus-wc-empty-state--error {
+    gap: var(--modus-wc-spacing-lg);
+    padding-block: var(--modus-wc-spacing-lg);
+    padding-inline: var(--modus-wc-spacing-3xl);
+  }
+
+  &.modus-wc-empty-state--error .modus-wc-empty-state-subtitle {
+    color: var(--modus-wc-color-base-content);
+  }
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--compact {
+  height: 4rem;
+  opacity: 0.6;
+  width: 4rem;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--illustration {
+  max-width: 46.3125rem;
+  width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--error {
+  aspect-ratio: 1;
+  max-width: 21.375rem;
+  position: relative;
+  width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration-layer {
+  display: block;
+
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+modus-wc-empty-state
+  .modus-wc-empty-state-illustration--error
+  .modus-wc-empty-state-illustration-layer--background {
+  inset: 0;
+  position: absolute;
+}
+
+modus-wc-empty-state
+  .modus-wc-empty-state-illustration--error
+  .modus-wc-empty-state-illustration-layer--foreground {
+  inset: 28% 30% 32% 36%;
+  position: absolute;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-sm);
+  max-width: 42rem;
+  width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-title {
+  color: var(--modus-wc-color-base-content-low-contrast);
+  margin: 0;
+  text-align: center;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-subtitle {
+  -webkit-box-orient: vertical;
+  color: var(--modus-wc-color-base-content-low-contrast);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-action {
+  margin-block-start: var(--modus-wc-spacing-xs);
+}
