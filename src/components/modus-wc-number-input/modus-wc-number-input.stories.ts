@@ -91,7 +91,6 @@ type Story = StoryObj<NumberInputArgs>;
 const Template: Story = {
   render: (args) => html`
     <modus-wc-number-input
-      aria-label="Number input"
       auto-complete=${ifDefined(args['auto-complete'])}
       ?bordered=${args.bordered}
       currency-symbol=${ifDefined(args['currency-symbol'])}

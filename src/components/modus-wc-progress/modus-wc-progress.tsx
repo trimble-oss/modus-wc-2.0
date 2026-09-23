@@ -1,7 +1,11 @@
 import { Component, Element, Fragment, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-progress.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import {
+  Attributes,
+  createEffectiveIdResolver,
+  inheritAriaAttributes,
+} from '../utils';
 
 /**
  * A customizable progress component used to show the progress of a task or show the passing of time.
@@ -15,6 +19,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 })
 export class ModusWcProgress {
   private inheritedAttributes: Attributes = {};
+  private readonly resolveEffectiveId = createEffectiveIdResolver();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -39,9 +44,6 @@ export class ModusWcProgress {
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
-    if (!this.el.ariaLabel) {
-      this.el.ariaLabel = 'Progress';
-    }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
   }
@@ -66,9 +68,22 @@ export class ModusWcProgress {
     return (safeValue / this.max!) * 100;
   }
 
+  private hasAuthorAccessibleName(): boolean {
+    return (
+      Boolean(this.inheritedAttributes['aria-label']) ||
+      Boolean(this.inheritedAttributes['aria-labelledby'])
+    );
+  }
+
   render() {
+    const labelId = this.label ? this.resolveEffectiveId(undefined) : undefined;
+    const hasAccessibleName =
+      this.hasAuthorAccessibleName() || Boolean(this.label);
+
     const progressAriaAttributes = this.indeterminate
-      ? { 'aria-hidden': 'true' }
+      ? hasAccessibleName
+        ? { 'aria-busy': 'true' }
+        : { 'aria-hidden': 'true' }
       : {
           'aria-valuenow': this.value,
           'aria-valuemin': 0,
@@ -79,6 +94,11 @@ export class ModusWcProgress {
       ? {}
       : { max: this.max, value: this.value };
 
+    const labelAssociation =
+      this.label && !this.hasAuthorAccessibleName() && labelId
+        ? { 'aria-labelledby': labelId }
+        : {};
+
     return (
       <Host class="modus-wc-progress-container">
         {this.variant === 'default' ? (
@@ -87,9 +107,12 @@ export class ModusWcProgress {
               class={this.getClasses()}
               {...valueAttributes}
               {...progressAriaAttributes}
+              {...labelAssociation}
               {...this.inheritedAttributes}
             />
-            {this.label && <modus-wc-input-label labelText={this.label} />}
+            {this.label && (
+              <modus-wc-input-label labelId={labelId} labelText={this.label} />
+            )}
           </Fragment>
         ) : (
           <div
@@ -97,9 +120,12 @@ export class ModusWcProgress {
             style={{ '--value': `${this.getPercentageValue()}` }}
             role="progressbar"
             {...progressAriaAttributes}
+            {...labelAssociation}
             {...this.inheritedAttributes}
           >
-            <span class="modus-wc-radial-progress-label">{this.label}</span>
+            <span class="modus-wc-radial-progress-label" id={labelId}>
+              {this.label}
+            </span>
             <slot />
           </div>
         )}

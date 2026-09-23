@@ -59,12 +59,10 @@ modus-wc-image {
 
     &.modus-wc-image--default .modus-wc-image-img {
       object-fit: cover;
-      object-position: center;
     }
 
     &.modus-wc-image--contain .modus-wc-image-img {
       object-fit: contain;
-      object-position: center;
     }
 
     // ─────────────────────────────────────────────────────────────────────────

@@ -37,7 +37,7 @@ QA-scope: <component tags>
 QA-themes: modern-only | classic-only | both | n/a
 QA-assert: <what must hold>
 QA-source: <url> | none
-QA-source-kind: figma-staged | blueprint | issue-screenshot | none
+QA-source-kind: figma-staged | comparison-doc | blueprint | issue-screenshot | none
 QA-source-path: public/modus-llm/components/<slug>/ | variants/<id>/ | none
 QA-verify: 1) <state × size × theme> 2) …
 QA-graph: none | tag → dependents
@@ -47,7 +47,32 @@ QA-graph: none | tag → dependents
 - `QA-verify`: numbered scenarios QA must execute. Include hover/disabled/pressed when those states exist.
 - `QA-graph`: from [`docs/component-graph/component-graph.json`](../../../docs/component-graph/component-graph.json) `reverseImpact[<changed tag>]` (transitive runtime dependents on `main`; cap browser targets at 3). Empty → `none`.
 
-After `/refine` or `qa-failed` repair: conversation-comment `QA-rerun: add` plus updated routing block. **Never** also post `Routing: qa-full` on `/refine` (that starts a second QA run).
+After `/refine` or `qa-failed` repair: post **`QA-rerun: add` alone** on the PR conversation comment, plus updated `QA-*` fields **only when they changed**. **Never** include `Routing: qa-full` or `Routing: qa-skip` in that comment (label stacking starts a second QA run).
+
+## Routing signal discipline (label router)
+
+The label-router **pulses every matching line** in a comment. Multiple signals in one comment stack labels (`qa-full` + `qa-rerun` + later `qa-failed`).
+
+| When                            | Post on PR conversation                                                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Open PR** (`/approve`)        | Full routing block **including** `Routing: qa-full` or `Routing: qa-skip` (once)                                         |
+| **`/refine`**                   | What changed + updated `QA-*` fields **only if they changed** + **`QA-rerun: add` alone** — **never** `Routing: qa-full` |
+| **`qa-failed` repair**          | `Fix applied: [one sentence]` + **`QA-rerun: add` alone** — **never** `Routing: qa-full`                                 |
+| **Prettier/lint/gate-only fix** | Same as repair: **`QA-rerun: add` only** — do **not** post the full routing block again                                  |
+
+Do **not** copy-paste the entire routing block on every small fix. Post full `QA-*` fields again only when `QA-source`, `QA-verify`, or `QA-assert` materially changed.
+
+## `/refine` with design source or comparison images
+
+Classify the human's link per `modus-qa-source` **before** patching:
+
+| Human provides                     | Read first                                      | Set on routing comment                                                                |
+| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `docs.google.com/document/…`       | Drive MCP: read the Google Doc                  | `QA-source`: doc URL; `QA-source-kind: comparison-doc`                                |
+| `drive.google.com/drive/folders/…` | Drive MCP: `manifest.json` then matched variant | `QA-source`: folder URL; `QA-source-kind: figma-staged`; `QA-source-path`: variant id |
+| Issue/PR screenshot attachments    | View attached PNGs                              | `QA-source`: issue URL; `QA-source-kind: issue-screenshot`; `QA-source-path: none`    |
+
+For `comparison-doc`: extract token values and theme-specific expectations (e.g. dark header select = `gray-10`, not white). Update `QA-verify` to include themes/states named in the doc or images. Invoke **graph-impact** → **storybook-smoke** against those expectations before push.
 
 ## Dispatch rules
 
@@ -75,11 +100,11 @@ Reply on same surface (PR if exists). No patch, no push, no QA-rerun. STOP.
 
 ### `/refine`
 
-Patch same branch. Conversation comment: what changed + `QA-rerun: add` + updated QA-\* fields. Do not claim QA passed. Do not run Playwright as QA substitute. STOP.
+Patch same branch. Conversation comment: what changed + **`QA-rerun: add` only** (no `Routing: qa-full`). Update `QA-*` fields inline only when they changed. If human linked a comparison doc, read it via Drive MCP first. Do not claim QA passed. STOP.
 
 ### `qa-failed` label
 
-Repair only latest `## QA FAILED`. Max 3 attempts. Push + `Fix applied:` + `QA-rerun: add`. STOP.
+Repair only latest `## QA FAILED`. Max 3 attempts. Push + `Fix applied:` + **`QA-rerun: add` only** (no `Routing: qa-full`, no full routing block unless QA-\* materially changed). STOP.
 
 ## Developer visual self-check
 

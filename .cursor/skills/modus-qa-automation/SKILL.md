@@ -14,7 +14,7 @@ Also follow `modus-qa-source` and `.cursor/rules/code-guidelines.mdc`. Do not im
 
 QA wakes on **label added** only (`qa-full`, `qa-rerun`, `qa-skip`). Independent QA — do not trust Dev npm checklists.
 
-**ONE COMMENT:** one PR conversation comment per wake. Never a second `## QA PASSED/FAILED` (including walkthrough reviews). Tests pass + visual fail = one `## QA FAILED — visual` with dimensions table.
+**ONE COMMENT:** one PR **conversation** comment per wake (`add_issue_comment`). Never a second `## QA PASSED/FAILED` on the same wake — **not** in walkthrough reviews, **not** in a follow-up review after the human nudges you. Tests pass + visual fail = one `## QA FAILED — visual` with dimensions table.
 
 ## Mindset
 
@@ -45,9 +45,11 @@ Cap browser **parent** targets at 3 unless human AC names more. Never walk every
 
 ## Step 0 — read slice
 
-PR diff, labels, latest conversation comment (or review) with Routing / QA-depth / QA-source / QA-verify.
+PR diff, labels, latest conversation comment with Routing / QA-depth / QA-source / QA-verify.
 
 If Routing missing: infer from diff. `QA-graph` from `reverseImpact`.
+
+**Source fetch (mandatory before visual verdict):** When `QA-source` is a URL, read it now via Drive MCP (`comparison-doc`, `figma-staged`) or GitHub MCP (`blueprint`). If the human's `/refine` linked a Google Doc, that doc overrides stale Dev `QA-source-kind: blueprint` mislabels.
 
 ## Gates (unless qa-skip + depth none + no visual files)
 
@@ -69,7 +71,17 @@ Diff must include tests and/or stories for new props, sizes, or AC behavior.
 
 Required when gate green AND diff is visual OR QA-depth is visual-slice/composition OR QA-verify non-empty OR latest `/refine` has UI screenshots.
 
-Walk QA-verify scenarios. For each: open Storybook, set theme from QA-themes, screenshot, compare to staged screenshot or main baseline.
+Walk QA-verify scenarios. For each: open Storybook, set theme from QA-themes, screenshot, compare to **QA-source** per `QA-source-kind`:
+
+| Kind               | Compare against                                                  |
+| ------------------ | ---------------------------------------------------------------- |
+| `comparison-doc`   | Doc embedded images and token tables (Drive MCP)                 |
+| `figma-staged`     | Staged `screenshot.png` + `variable-defs.json`                   |
+| `blueprint`        | Blueprint markdown + Storybook                                   |
+| `issue-screenshot` | Attached PNGs from the issue/PR                                  |
+| `none`             | Storybook on **main** vs PR branch (existing component baseline) |
+
+When `QA-source-kind: comparison-doc`, cite the doc's expected token/color per theme in the evidence table. Dark-theme header selects matching light-theme colors (e.g. white pills on dark) = **fail** unless the doc says otherwise.
 
 ## Report — four dimensions, then ONE overall header
 

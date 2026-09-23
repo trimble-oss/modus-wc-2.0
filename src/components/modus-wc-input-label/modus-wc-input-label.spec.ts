@@ -25,6 +25,16 @@ describe('modus-wc-input-label', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should set id on the label element when label-id is provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcInputLabel],
+      html: '<modus-wc-input-label label-id="progress-label" label-text="Loading"></modus-wc-input-label>',
+    });
+    const label = page.root!.querySelector('label');
+
+    expect(label!.id).toBe('progress-label');
+  });
+
   it('should render with content in the primary slot', async () => {
     const page = await newSpecPage({
       components: [ModusWcInputLabel],

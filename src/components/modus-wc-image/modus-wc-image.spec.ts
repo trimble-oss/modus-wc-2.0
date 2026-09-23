@@ -183,6 +183,43 @@ describe('modus-wc-image', () => {
     }
   );
 
+  it('should apply default crop-position of center via inline style', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test"></modus-wc-image>',
+    });
+    const img = page.root?.querySelector('img');
+    expect(img?.style.objectPosition).toBe('center');
+  });
+
+  it('should fall back to center objectPosition when cropPosition is undefined', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcImage],
+      html: '<modus-wc-image src="https://example.com/image.jpg" alt="Test" crop-position="top"></modus-wc-image>',
+    });
+    const instance = page.rootInstance as ModusWcImage;
+    instance.cropPosition = undefined;
+    await page.waitForChanges();
+    const img = page.root?.querySelector('img');
+    expect(img?.style.objectPosition).toBe('center');
+  });
+
+  it.each([
+    ['top', 'top'],
+    ['bottom left', 'bottom left'],
+    ['right', 'right'],
+  ])(
+    'should apply crop-position="%s" via inline style',
+    async (cropPosition: string, expected: string) => {
+      const page = await newSpecPage({
+        components: [ModusWcImage],
+        html: `<modus-wc-image src="https://example.com/image.jpg" alt="Test" crop-position="${cropPosition}"></modus-wc-image>`,
+      });
+      const img = page.root?.querySelector('img');
+      expect(img?.style.objectPosition).toBe(expected);
+    }
+  );
+
   it('should apply the custom class to the inner container', async () => {
     const page = await newSpecPage({
       components: [ModusWcImage],

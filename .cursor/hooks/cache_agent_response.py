@@ -1,23 +1,10 @@
 #!/usr/bin/env python3
-"""Cache the latest assistant response for QA stop verdict checks."""
+"""Cache assistant responses and comparison-doc hints for stop hooks."""
 
 import json
-import re
 import sys
-from pathlib import Path
 
-STATE_DIR = Path(".cursor/hooks/state")
-
-
-def session_state_dir(payload: dict) -> Path:
-    session_id = str(
-        payload.get("conversation_id")
-        or payload.get("session_id")
-        or payload.get("parent_conversation_id")
-        or "default"
-    )
-    safe_id = re.sub(r"[^A-Za-z0-9._-]", "_", session_id)
-    return STATE_DIR / safe_id
+from hook_state import COMPARISON_DOC_RE, session_state_dir
 
 
 def main() -> None:
@@ -33,6 +20,10 @@ def main() -> None:
     state_dir = session_state_dir(payload)
     state_dir.mkdir(parents=True, exist_ok=True)
     (state_dir / "last_agent_response.txt").write_text(text, encoding="utf-8")
+
+    match = COMPARISON_DOC_RE.search(text)
+    if match:
+        (state_dir / "comparison_doc_url.txt").write_text(match.group(0), encoding="utf-8")
 
     sys.exit(0)
 
