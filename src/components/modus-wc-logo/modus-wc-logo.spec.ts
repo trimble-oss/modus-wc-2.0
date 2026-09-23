@@ -151,6 +151,16 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.querySelector('svg')).not.toBeNull();
   });
 
+  it('should render subscriptions with theme-aware accent and text classes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="subscriptions"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('.logo-accent')).not.toBeNull();
+    expect(logoSpan?.querySelector('.logo-text')).not.toBeNull();
+  });
+
   it('should render empty when logo has no svg data', async () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
     const page = await newSpecPage({
