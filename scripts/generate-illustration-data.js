@@ -51,7 +51,10 @@ function tokenizeSvg(svg) {
     .replace(/fill="#217CBB"/gi, 'class="illustration-primary"')
     .replace(/fill="#DCEDF9"/gi, 'class="illustration-fill-pale"')
     .replace(/fill="#E1F0FF"/gi, 'class="illustration-fill-pale"')
-    .replace(/fill="white"/gi, 'class="illustration-fill-surface"')
+    .replace(
+      /(<(?!mask\b)[^>]*?)\sfill="white"/gi,
+      '$1 class="illustration-fill-surface"'
+    )
     .replace(/fill="#6A6E79"/gi, 'class="illustration-muted"')
     .replace(
       /stroke="#0063A3"/gi,
