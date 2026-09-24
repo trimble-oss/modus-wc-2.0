@@ -49,6 +49,7 @@ body {
     .modus-wc-modal[open]
   )
 ) {
+  overflow: auto !important;
   scrollbar-gutter: auto !important;
 }
 
