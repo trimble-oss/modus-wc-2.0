@@ -10,7 +10,6 @@ import {
   Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-text-input.tailwind';
-import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { handleShadowDOMStyles } from '../base-component';
 import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
@@ -41,6 +40,7 @@ import {
 export class ModusWcTextInput {
   private inheritedAttributes: Attributes = {};
   private readonly resolveEffectiveId = createEffectiveIdResolver();
+  private fieldLabelEl?: HTMLLabelElement;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -171,6 +171,22 @@ export class ModusWcTextInput {
     }
   }
 
+  componentDidLoad() {
+    this.fieldLabelEl =
+      this.el.querySelector('label.modus-wc-input') ?? undefined;
+    this.fieldLabelEl?.addEventListener(
+      'mousedown',
+      this.handleFieldChromeMouseDown
+    );
+  }
+
+  disconnectedCallback() {
+    this.fieldLabelEl?.removeEventListener(
+      'mousedown',
+      this.handleFieldChromeMouseDown
+    );
+  }
+
   componentDidRender() {
     // modus-wc-button only inherits host ARIA in componentWillLoad; keep the
     // focused inner button label in sync when visibility / props change.
@@ -210,6 +226,10 @@ export class ModusWcTextInput {
     this.value = '';
     this.inputChange.emit(event as unknown as InputEvent);
     this.clearClick.emit();
+    const input = this.el.querySelector('input');
+    if (input && document.activeElement !== input) {
+      input.focus();
+    }
   };
 
   private handleFocus = (event: FocusEvent) => {
@@ -237,8 +257,8 @@ export class ModusWcTextInput {
     return this.passwordVisible ? 'Hide password' : 'Show password';
   }
 
-  /** Maps input `size` to atom scale for the password-toggle button and its icon. */
-  private getPasswordToggleSize(): DaisySize {
+  /** Maps input `size` to button/icon scale for trailing adornments (toggle, clear, icons). */
+  private getAdornmentSize(): DaisySize {
     switch (this.size) {
       case 'xs':
         return 'xs';
@@ -285,11 +305,117 @@ export class ModusWcTextInput {
     return this.type === 'password' && !this.disabled && !this.readOnly;
   }
 
-  render() {
-    const showClear = this.shouldIncludeClear();
-    const showPasswordToggle = this.shouldShowPasswordToggle();
-    const effectiveId = this.resolveEffectiveId(this.inputId);
+  private handleFieldChromeMouseDown = (event: MouseEvent) => {
+    const input = this.el.querySelector('input');
+    if (!input || document.activeElement !== input) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    if (target === input) {
+      return;
+    }
+
+    if (target.closest('button, modus-wc-button')) {
+      if (target.closest('.modus-wc-clear-icon-container')) {
+        // Keep focus in the field on mouse clear so inputBlur/inputFocus do not churn.
+        event.preventDefault();
+      }
+      return;
+    }
+
+    event.preventDefault();
+  };
+
+  private getLeftCustomIcon(): HTMLElement | undefined {
     const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
+
+    if (hasCustomIcon) {
+      return (
+        <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
+          <slot name="custom-icon" />
+        </div>
+      );
+    }
+
+    if (this.type === 'password') {
+      return (
+        <modus-wc-icon
+          class="modus-wc-text-input-icon modus-wc-text-input-icon-password"
+          decorative
+          name="key"
+          variant="solid"
+          size={this.getAdornmentSize()}
+        />
+      );
+    }
+
+    if (this.includeSearch) {
+      return (
+        <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
+      );
+    }
+
+    return undefined;
+  }
+
+  private getRightCustomIcon(): HTMLElement | undefined {
+    const showPasswordToggle = this.shouldShowPasswordToggle();
+
+    if (showPasswordToggle) {
+      return (
+        <div class="modus-wc-password-toggle-container">
+          <modus-wc-button
+            aria-label={this.getPasswordToggleAriaLabel()}
+            class="modus-wc-text-input-password-toggle"
+            color="tertiary"
+            pressed={this.passwordVisible}
+            shape="square"
+            size={this.getAdornmentSize()}
+            variant="borderless"
+            onButtonClick={this.handlePasswordToggle}
+          >
+            <modus-wc-icon
+              decorative
+              name={this.passwordVisible ? 'visibility_off' : 'visibility_on'}
+              size={this.getAdornmentSize()}
+            />
+          </modus-wc-button>
+        </div>
+      );
+    }
+
+    if (this.shouldRenderClear()) {
+      const showClear = this.shouldIncludeClear();
+
+      return (
+        <div
+          class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
+        >
+          <modus-wc-button
+            aria-label={this.clearAriaLabel}
+            color="tertiary"
+            shape="square"
+            size={this.getAdornmentSize()}
+            variant="borderless"
+            onButtonClick={(event) => this.handleClearText(event.detail)}
+          >
+            <modus-wc-icon
+              decorative
+              name="close"
+              variant="solid"
+              size={this.getAdornmentSize()}
+            />
+          </modus-wc-button>
+        </div>
+      );
+    }
+
+    return undefined;
+  }
+
+  render() {
+    const effectiveId = this.resolveEffectiveId(this.inputId);
 
     return (
       <Host>
@@ -302,23 +428,7 @@ export class ModusWcTextInput {
           />
         )}
         <label class={this.getClasses()}>
-          {hasCustomIcon ? (
-            <div class="modus-wc-text-input-icon modus-wc-text-input-icon-custom">
-              <slot name="custom-icon" />
-            </div>
-          ) : this.type === 'password' ? (
-            <modus-wc-icon
-              class="modus-wc-text-input-icon modus-wc-text-input-icon-password"
-              decorative
-              name="key"
-              variant="solid"
-              size={this.getPasswordToggleSize()}
-            />
-          ) : (
-            this.includeSearch && (
-              <SearchSolidIcon className="modus-wc-text-input-icon modus-wc-text-input-icon-search" />
-            )
-          )}
+          {this.getLeftCustomIcon()}
           <input
             aria-required={this.required}
             autocapitalize={this.autoCapitalize}
@@ -343,40 +453,7 @@ export class ModusWcTextInput {
             value={this.value}
             {...this.inheritedAttributes}
           />
-          {showPasswordToggle && (
-            <div class="modus-wc-password-toggle-container">
-              <modus-wc-button
-                aria-label={this.getPasswordToggleAriaLabel()}
-                class="modus-wc-text-input-password-toggle"
-                color="tertiary"
-                pressed={this.passwordVisible}
-                shape="square"
-                size={this.getPasswordToggleSize()}
-                variant="borderless"
-                onButtonClick={this.handlePasswordToggle}
-              >
-                <modus-wc-icon
-                  decorative
-                  name={
-                    this.passwordVisible ? 'visibility_off' : 'visibility_on'
-                  }
-                  size={this.getPasswordToggleSize()}
-                />
-              </modus-wc-button>
-            </div>
-          )}
-          {this.shouldRenderClear() && (
-            <div
-              class={`modus-wc-clear-icon-container ${showClear ? 'modus-wc-clear-icon-visible' : 'modus-wc-clear-icon-hidden'}`}
-            >
-              <CloseSolidIcon
-                ariaLabel={this.clearAriaLabel}
-                className="modus-wc-text-input-icon modus-wc-text-input-icon-clear"
-                decorative={false}
-                onClear={this.handleClearText}
-              />
-            </div>
-          )}
+          {this.getRightCustomIcon()}
         </label>
         {this.feedback && (
           <modus-wc-input-feedback

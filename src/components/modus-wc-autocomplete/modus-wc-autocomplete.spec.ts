@@ -2766,7 +2766,7 @@ describe('modus-wc-autocomplete', () => {
 
     // Find and click the clear button
     const clearButton = page.root?.querySelector(
-      'svg.modus-wc-text-input-icon-clear'
+      '.modus-wc-clear-icon-container button'
     );
     expect(clearButton).toBeTruthy();
 
@@ -3289,8 +3289,12 @@ describe('modus-wc-autocomplete', () => {
 
     await page.waitForChanges();
 
-    const clearButton = page.root?.querySelector('modus-wc-button');
-    expect(clearButton).toBeFalsy();
+    const clearContainer = page.root?.querySelector(
+      '.modus-wc-clear-icon-container'
+    );
+    expect(clearContainer).not.toBeNull();
+    expect(clearContainer).toHaveClass('modus-wc-clear-icon-hidden');
+    expect(clearContainer).not.toHaveClass('modus-wc-clear-icon-visible');
   });
 
   // Test menuItems fallback chain in getMenuItems
