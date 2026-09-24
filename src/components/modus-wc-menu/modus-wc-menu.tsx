@@ -49,7 +49,7 @@ export class ModusWcMenu {
   }
 
   /** The size of the menu. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** Indicates that this menu is a submenu (dropdown). */
   @Prop() isSubMenu?: boolean;

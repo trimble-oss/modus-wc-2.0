@@ -19,3 +19,27 @@ export const INPUT_SIZE_TO_LABEL_SIZE: Record<
   lg: 'lg',
   xl: 'lg',
 };
+
+/** Maps menu/tree item sizes to modus-wc-checkbox sizes. */
+export const MENU_ITEM_SIZE_TO_CHECKBOX_SIZE: Record<
+  ModusSize | 'xs' | 'xl',
+  ModusSize
+> = {
+  xs: 'sm',
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  xl: 'lg',
+};
+
+/** Maps menu/tree item sizes to submenu chevron (modus-wc-icon) sizes. */
+export const MENU_ITEM_SIZE_TO_CHEVRON_SIZE: Record<
+  ModusSize | 'xs' | 'xl',
+  DaisySize
+> = {
+  xs: 'xs',
+  sm: 'xs',
+  md: 'sm',
+  lg: 'md',
+  xl: 'lg',
+};

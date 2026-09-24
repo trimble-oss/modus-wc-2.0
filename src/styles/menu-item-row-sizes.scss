@@ -1,0 +1,217 @@
+// Shared Figma Menu / Item row scale for modus-wc-menu-item and modus-wc-tree-item.
+// Icon+Text padding-block + label line-height (text is flex-centered in that strut).
+// Type/icon sizes map to Figma, not the WC size name.
+// Consumers (side nav, content tree, custom height) can still override.
+// Sublabel: 12px / 20px line-height for all sizes; row grows with label stack content.
+// Bordered inner struts (1px top + bottom on li): xs 1.375rem, sm 1.875rem, md 2.375rem,
+// lg 2.875rem, xl 3.375rem — size token minus 2px at 16px root.
+
+@mixin menu-item-sublabel-typography {
+  .modus-wc-menu-item-sublabel {
+    font-size: var(--modus-wc-font-size-sm);
+    line-height: 20px;
+  }
+}
+
+@mixin menu-item-row-size-xs-content {
+  font-size: var(--modus-wc-font-size-sm);
+  height: var(--modus-wc-size-xs);
+  min-height: var(--modus-wc-size-xs);
+  padding-block: var(--modus-wc-spacing-2xs);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-xs);
+  }
+
+  @at-root {
+    modus-wc-menu-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-xs
+      > button,
+    modus-wc-tree-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-xs
+      > .modus-wc-menu-item-interactive {
+      height: 1.375rem;
+      min-height: 1.375rem;
+
+      &:has(.modus-wc-menu-item-sublabel) {
+        height: auto;
+        min-height: 1.375rem;
+      }
+    }
+  }
+
+  .modus-wc-menu-item-labels {
+    line-height: 20px;
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-lg);
+  }
+
+  @include menu-item-sublabel-typography;
+}
+
+@mixin menu-item-row-size-sm-content {
+  font-size: var(--modus-wc-font-size-md);
+  height: var(--modus-wc-size-sm);
+  min-height: var(--modus-wc-size-sm);
+  padding-block: var(--modus-wc-spacing-xs);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-sm);
+  }
+
+  @at-root {
+    modus-wc-menu-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-sm
+      > button,
+    modus-wc-tree-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-sm
+      > .modus-wc-menu-item-interactive {
+      height: 1.875rem;
+      min-height: 1.875rem;
+
+      &:has(.modus-wc-menu-item-sublabel) {
+        height: auto;
+        min-height: 1.875rem;
+      }
+    }
+  }
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-lg);
+    width: var(--modus-wc-spacing-lg);
+  }
+
+  @include menu-item-sublabel-typography;
+}
+
+@mixin menu-item-row-size-md-content {
+  font-size: var(--modus-wc-font-size-lg);
+  height: var(--modus-wc-size-md);
+  min-height: var(--modus-wc-size-md);
+  padding: var(--modus-wc-spacing-sm);
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-md);
+  }
+
+  @at-root {
+    modus-wc-menu-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-md
+      > button,
+    modus-wc-tree-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-md
+      > .modus-wc-menu-item-interactive {
+      height: 2.375rem;
+      min-height: 2.375rem;
+
+      &:has(.modus-wc-menu-item-sublabel) {
+        height: auto;
+        min-height: 2.375rem;
+      }
+    }
+  }
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-font-size-xl);
+    width: var(--modus-wc-font-size-xl);
+  }
+
+  @include menu-item-sublabel-typography;
+}
+
+@mixin menu-item-row-size-lg-content {
+  font-size: var(--modus-wc-font-size-xl);
+  height: var(--modus-wc-size-lg);
+  min-height: var(--modus-wc-size-lg);
+  padding: var(--modus-wc-spacing-sm);
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-lg);
+  }
+
+  @at-root {
+    modus-wc-menu-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-lg
+      > button,
+    modus-wc-tree-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-lg
+      > .modus-wc-menu-item-interactive {
+      height: 2.875rem;
+      min-height: 2.875rem;
+
+      &:has(.modus-wc-menu-item-sublabel) {
+        height: auto;
+        min-height: 2.875rem;
+      }
+    }
+  }
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-lg);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-font-size-2xl);
+    width: var(--modus-wc-font-size-2xl);
+  }
+
+  @include menu-item-sublabel-typography;
+}
+
+@mixin menu-item-row-size-xl-content {
+  font-size: var(--modus-wc-font-size-2xl);
+  height: var(--modus-wc-size-xl);
+  min-height: var(--modus-wc-size-xl);
+  padding-block: var(--modus-wc-spacing-md);
+  padding-inline: var(--modus-wc-spacing-sm);
+
+  &:has(.modus-wc-menu-item-sublabel) {
+    height: auto;
+    min-height: var(--modus-wc-size-xl);
+  }
+
+  @at-root {
+    modus-wc-menu-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-xl
+      > button,
+    modus-wc-tree-item
+      .modus-wc-menu-item.modus-wc-menu-item-bordered.modus-wc-menu-item-xl
+      > .modus-wc-menu-item-interactive {
+      height: 3.375rem;
+      min-height: 3.375rem;
+
+      &:has(.modus-wc-menu-item-sublabel) {
+        height: auto;
+        min-height: 3.375rem;
+      }
+    }
+  }
+
+  .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-lg);
+  }
+
+  .modus-wc-menu-submenu-chevron {
+    height: var(--modus-wc-spacing-xl);
+    width: var(--modus-wc-spacing-xl);
+  }
+
+  @include menu-item-sublabel-typography;
+}
