@@ -1,5 +1,4 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { EmptyStateIllustration } from './illustration-constants';
 import { ModusWcEmptyState } from './modus-wc-empty-state';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWCTypography } from '../modus-wc-typography/modus-wc-typography';
@@ -50,6 +49,33 @@ describe('modus-wc-empty-state', () => {
     button?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await page.waitForChanges();
     expect(handler).toHaveBeenCalled();
+  });
+
+  it('should emit actionClick when action button is activated via keyboard once', async () => {
+    const page = await newSpecPage({
+      components: childComponents,
+      html: `<modus-wc-empty-state heading="Title" action-label="Action"></modus-wc-empty-state>`,
+    });
+    const handler = jest.fn();
+    page.root?.addEventListener('actionClick', handler);
+    const button = page.root?.querySelector('modus-wc-button button');
+    button?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+    );
+    await page.waitForChanges();
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mark illustration as decorative for assistive technology', async () => {
+    const page = await newSpecPage({
+      components: childComponents,
+      html: `<modus-wc-empty-state heading="Title"></modus-wc-empty-state>`,
+    });
+    const illustration = page.root?.querySelector(
+      '.modus-wc-empty-state-illustration'
+    );
+    expect(illustration?.getAttribute('aria-hidden')).toBe('true');
+    expect(illustration?.getAttribute('role')).toBeNull();
   });
 
   it('should apply line clamp class on subtitle typography', async () => {
@@ -108,20 +134,6 @@ describe('modus-wc-empty-state', () => {
     });
     const component = page.rootInstance as ModusWcEmptyState;
     expect(component['resolveIllustrationKey']()).toBe('landscape');
-  });
-
-  it('should derive illustration aria-label from the key when display name is absent', async () => {
-    const page = await newSpecPage({
-      components: childComponents,
-      html: `<modus-wc-empty-state heading="Title"></modus-wc-empty-state>`,
-    });
-    const component = page.rootInstance as ModusWcEmptyState;
-
-    expect(
-      component['getIllustrationAriaLabel'](
-        'unknown_key' as EmptyStateIllustration
-      )
-    ).toBe('unknown key');
   });
 
   it('should warn when svg content is missing for a path', async () => {

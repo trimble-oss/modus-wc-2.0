@@ -111,6 +111,7 @@
     "install:blazor-tools": "npm ci --prefix integrations/blazor/razor-output",
     "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
     "generate:icon-data": "wireit",
+    "generate:svg-assets": "wireit",
     "stencil:build:blazor": "wireit",
     "prebuild:blazor": "node -e \"const fs=require('fs'); if(!fs.existsSync('integrations/blazor/stencil-generated/ModusWebComponents.Blazor/ModusWebComponents.Blazor.csproj')){console.error('ERROR: Generated .csproj not found. Run npm run install:blazor-tools && npm run stencil:build:blazor first to generate the Blazor RCL.');process.exit(1)}\"",
     "build:blazor": "dotnet build integrations/blazor/blazing-story/BlazingStoryApp.csproj -c Release",
@@ -294,7 +295,7 @@
         "tailwind:build",
         "embed:css",
         "embed:component-css",
-        "generate:logo-data",
+        "generate:svg-assets",
         "generate:icon-data"
       ],
       "files": [
@@ -320,7 +321,7 @@
         "tailwind:build",
         "embed:css",
         "embed:component-css",
-        "generate:logo-data",
+        "generate:svg-assets",
         "generate:icon-data"
       ],
       "files": [
@@ -351,7 +352,7 @@
       "dependencies": [
         "build:cem-json",
         "tailwind:watch",
-        "generate:logo-data",
+        "generate:svg-assets",
         "generate:icon-data"
       ],
       "files": [
@@ -435,14 +436,16 @@
         "src/providers/theme/component-css-content.ts"
       ]
     },
-    "generate:logo-data": {
-      "command": "node scripts/generate-logo-data.js",
+    "generate:svg-assets": {
+      "command": "node scripts/svg-assets/generate-all.js",
       "files": [
-        "src/components/modus-wc-logo/assets/logos/**/*.svg",
-        "scripts/generate-logo-data.js"
+        "src/svg-assets/logos/**/*.svg",
+        "src/svg-assets/illustrations/**/*.svg",
+        "scripts/svg-assets/**/*.js"
       ],
       "output": [
-        "src/components/modus-wc-logo/logo-svg-data.ts"
+        "src/svg-assets/generated/logo-svg-data.ts",
+        "src/svg-assets/generated/illustration-svg-data.ts"
       ]
     },
     "generate:icon-data": {

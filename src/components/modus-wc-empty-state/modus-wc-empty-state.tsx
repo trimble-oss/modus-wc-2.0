@@ -8,15 +8,16 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { ILLUSTRATION_SVGS } from '../../svg-assets/generated/illustration-svg-data';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, inheritAriaAttributes } from '../utils';
+import { prefixSvgFragmentIds } from '../svg-id-prefix';
+import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
 import {
   DEFAULT_ILLUSTRATION_BY_VARIANT,
   EmptyStateIllustration,
   EmptyStateVariant,
   ILLUSTRATION_VARIANTS,
 } from './illustration-constants';
-import { ILLUSTRATION_SVGS } from './illustration-svg-data';
 
 interface IllustrationSvgProps {
   svgText: string;
@@ -37,6 +38,7 @@ const IllustrationSvg: FunctionalComponent<IllustrationSvgProps> = ({
 })
 export class ModusWcEmptyState {
   private inheritedAttributes: Attributes = {};
+  private svgInstanceScope = '';
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -70,6 +72,7 @@ export class ModusWcEmptyState {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.svgInstanceScope = generateElementId();
   }
 
   private resolveIllustrationKey(): EmptyStateIllustration {
@@ -91,16 +94,19 @@ export class ModusWcEmptyState {
     return requested;
   }
 
+  private scopeForPath(path: string): string {
+    const slug = path.replace(/[^a-zA-Z0-9]+/g, '_');
+    return `${this.svgInstanceScope}_${slug}`;
+  }
+
   private getSvgContent(path: string): string {
     const content = ILLUSTRATION_SVGS[path];
     if (!content) {
       console.warn(`SVG content not found for illustration path "${path}".`);
+      return '';
     }
-    return content || '';
-  }
 
-  private getIllustrationAriaLabel(key: EmptyStateIllustration): string {
-    return ILLUSTRATION_VARIANTS[key]?.displayName || key.replace(/_/g, ' ');
+    return prefixSvgFragmentIds(content, this.scopeForPath(path));
   }
 
   private handleActionClick = (
@@ -111,7 +117,7 @@ export class ModusWcEmptyState {
 
   private renderIllustration(key: EmptyStateIllustration) {
     const info = ILLUSTRATION_VARIANTS[key];
-    const ariaLabel = this.getIllustrationAriaLabel(key);
+    const illustrationClass = `modus-wc-empty-state-illustration modus-wc-empty-state-illustration--${this.variant}`;
 
     if (info.layerPaths && info.layerPaths.length > 1) {
       const [backgroundPath, foregroundPath] = info.layerPaths;
@@ -119,11 +125,7 @@ export class ModusWcEmptyState {
       const foregroundSvg = this.getSvgContent(foregroundPath);
 
       return (
-        <div
-          class={`modus-wc-empty-state-illustration modus-wc-empty-state-illustration--${this.variant}`}
-          role="img"
-          aria-label={ariaLabel}
-        >
+        <div class={illustrationClass} aria-hidden="true">
           <span class="modus-wc-empty-state-illustration-layer modus-wc-empty-state-illustration-layer--background">
             <IllustrationSvg svgText={backgroundSvg} />
           </span>
@@ -137,11 +139,7 @@ export class ModusWcEmptyState {
     const svgContent = this.getSvgContent(info.path);
 
     return (
-      <div
-        class={`modus-wc-empty-state-illustration modus-wc-empty-state-illustration--${this.variant}`}
-        role="img"
-        aria-label={ariaLabel}
-      >
+      <div class={illustrationClass} aria-hidden="true">
         <IllustrationSvg svgText={svgContent} />
       </div>
     );

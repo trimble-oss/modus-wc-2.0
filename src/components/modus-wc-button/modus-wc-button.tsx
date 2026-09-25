@@ -5,7 +5,6 @@ import {
   EventEmitter,
   h,
   Host,
-  Listen,
   Prop,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
@@ -109,8 +108,6 @@ export class ModusWcButton {
     }
   };
 
-  // @ts-expect-error: TODO fixes linting issue, test thoroughly
-  @Listen('keydown')
   private handleKeyDown = (event: KeyboardEvent) => {
     if (
       !this.disabled &&
