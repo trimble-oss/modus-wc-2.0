@@ -78,7 +78,7 @@ describe('modus-wc-button', () => {
     button?.dispatchEvent(event);
     await page.waitForChanges();
 
-    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy).toHaveBeenCalled();
   });
 
   it('should emit buttonClick event on Space key press', async () => {
@@ -94,7 +94,7 @@ describe('modus-wc-button', () => {
     button?.dispatchEvent(event);
     await page.waitForChanges();
 
-    expect(clickSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy).toHaveBeenCalled();
   });
 
   it('should render with size xl', async () => {

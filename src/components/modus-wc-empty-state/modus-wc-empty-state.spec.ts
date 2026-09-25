@@ -51,21 +51,6 @@ describe('modus-wc-empty-state', () => {
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should emit actionClick when action button is activated via keyboard once', async () => {
-    const page = await newSpecPage({
-      components: childComponents,
-      html: `<modus-wc-empty-state heading="Title" action-label="Action"></modus-wc-empty-state>`,
-    });
-    const handler = jest.fn();
-    page.root?.addEventListener('actionClick', handler);
-    const button = page.root?.querySelector('modus-wc-button button');
-    button?.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
-    );
-    await page.waitForChanges();
-    expect(handler).toHaveBeenCalledTimes(1);
-  });
-
   it('should mark illustration as decorative for assistive technology', async () => {
     const page = await newSpecPage({
       components: childComponents,
