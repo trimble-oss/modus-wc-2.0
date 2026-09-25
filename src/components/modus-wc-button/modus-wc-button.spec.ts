@@ -249,4 +249,243 @@ describe('modus-wc-button', () => {
 
     expect(clickSpy).not.toHaveBeenCalled();
   });
+
+  it('should capture and flush early host text before first render', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<div></div>',
+    });
+
+    const button = document.createElement('modus-wc-button');
+    button.textContent = 'Early';
+    document.body.appendChild(button);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await page.waitForChanges();
+
+    const inner = button.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+    expect(inner?.textContent).toBe('Early');
+
+    button.remove();
+  });
+
+  it('should keep button chrome when textContent is set before load', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<div></div>',
+    });
+
+    const button = document.createElement('modus-wc-button');
+    document.body.appendChild(button);
+    button.textContent = 'Updated';
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await page.waitForChanges();
+
+    const inner = button.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+    expect(inner?.textContent).toBe('Updated');
+
+    button.remove();
+  });
+
+  it('should reinstall slot protection when reconnected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    const host = page.root!;
+    host.remove();
+    document.body.appendChild(host);
+    host.textContent = 'Checkout';
+    await page.waitForChanges();
+
+    const inner = host.querySelector('button.modus-wc-btn');
+    expect(inner?.textContent).toBe('Checkout');
+
+    host.remove();
+  });
+
+  it('should keep button chrome when host textContent is replaced', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="primary">Add to Cart</modus-wc-button>',
+    });
+
+    page.root!.textContent = 'Added to Cart';
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector('button.modus-wc-btn');
+    expect(button).not.toBeNull();
+    expect(button?.textContent).toBe('Added to Cart');
+    expect(button?.classList.contains('modus-wc-btn-filled')).toBe(true);
+  });
+
+  it('should keep button chrome when host innerHTML is replaced', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    page.root!.innerHTML = 'Added to Cart';
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector('button.modus-wc-btn');
+    expect(button).not.toBeNull();
+    expect(button?.textContent).toBe('Added to Cart');
+  });
+
+  it('should ignore early host text when the inner button already exists', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    page.rootInstance.captureEarlyHostText();
+    page.root!.querySelector('button.modus-wc-btn')?.remove();
+    page.root!.appendChild(document.createElement('span'));
+    page.rootInstance.captureEarlyHostText();
+    page.root!.textContent = '';
+    page.rootInstance.queuedHostText = 'Later';
+    page.rootInstance.flushEarlyHostText();
+
+    expect(page.root!.textContent).not.toContain('Later');
+  });
+
+  it('should keep patched accessors after disconnect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Initial</modus-wc-button>',
+    });
+
+    const button = page.root!;
+    page.rootInstance.disconnectedCallback();
+    button.textContent = 'After disconnect';
+    await page.waitForChanges();
+
+    const inner = button.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+    expect(inner?.textContent).toBe('After disconnect');
+  });
+
+  it('should release existing protection when connected again', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Add to Cart</modus-wc-button>',
+    });
+
+    page.rootInstance.connectedCallback();
+    page.rootInstance.connectedCallback();
+
+    const inner = page.root?.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+  });
+
+  it('should flush queued early host text onto the inner button', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button></modus-wc-button>',
+    });
+
+    page.rootInstance.queuedHostText = 'Queued';
+    page.rootInstance.flushEarlyHostText();
+
+    const inner = page.root?.querySelector('button.modus-wc-btn');
+    expect(inner?.textContent).toBe('Queued');
+  });
+
+  it('should run componentDidLoad flush for slot protection', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Label</modus-wc-button>',
+    });
+
+    page.rootInstance.componentDidLoad();
+    expect(page.root?.querySelector('button.modus-wc-btn')).not.toBeNull();
+  });
+
+  it('should tolerate componentDidLoad after disconnect', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Label</modus-wc-button>',
+    });
+
+    page.rootInstance.disconnectedCallback();
+    page.rootInstance.componentDidLoad();
+    expect(page.root?.querySelector('button.modus-wc-btn')).not.toBeNull();
+  });
+
+  it('should treat null early text node content as empty string', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button></modus-wc-button>',
+    });
+
+    while (page.root!.firstChild) {
+      page.root!.removeChild(page.root!.firstChild);
+    }
+    const text = document.createTextNode('');
+    Object.defineProperty(text, 'textContent', {
+      get: () => null,
+      set() {},
+      configurable: true,
+    });
+    page.root!.appendChild(text);
+    page.rootInstance.captureEarlyHostText();
+
+    expect(page.rootInstance.queuedHostText).toBe('');
+  });
+
+  it('should keep inner button chrome and danger styles after color prop update and host textContent', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button color="primary">Checkout</modus-wc-button>',
+    });
+
+    const inner = page.root?.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+    expect(inner?.classList.contains('modus-wc-btn-primary')).toBe(true);
+
+    page.root!.setAttribute('color', 'danger');
+    await page.waitForChanges();
+
+    const innerAfterColor = page.root?.querySelector('button.modus-wc-btn');
+    expect(innerAfterColor).not.toBeNull();
+    expect(innerAfterColor?.classList.contains('modus-wc-btn-error')).toBe(
+      true
+    );
+    expect(innerAfterColor?.classList.contains('modus-wc-btn-filled')).toBe(
+      true
+    );
+
+    page.root!.textContent = 'Delete';
+    await page.waitForChanges();
+
+    const innerAfterText = page.root?.querySelector('button.modus-wc-btn');
+    expect(innerAfterText).not.toBeNull();
+    expect(innerAfterText?.textContent).toBe('Delete');
+    expect(innerAfterText?.classList.contains('modus-wc-btn-error')).toBe(true);
+  });
+
+  it('should keep button chrome when textContent is set after re-parenting', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Initial</modus-wc-button>',
+    });
+
+    const button = page.root!;
+    const wrapper = document.createElement('div');
+
+    document.body.appendChild(wrapper);
+    wrapper.appendChild(button);
+
+    button.textContent = 'Updated';
+    await page.waitForChanges();
+
+    const inner = button.querySelector('button.modus-wc-btn');
+    expect(inner).not.toBeNull();
+    expect(inner?.textContent).toBe('Updated');
+  });
 });
