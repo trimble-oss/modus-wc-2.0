@@ -311,15 +311,6 @@ modus-wc-menu-item .modus-wc-menu-item {
   }
 }
 
-[data-theme='connect-light'],
-[data-theme='connect-dark'] {
-  modus-wc-menu-item .modus-wc-menu-item {
-    & > button .modus-wc-menu-submenu-chevron {
-      color: var(--modus-wc-color-white);
-    }
-  }
-}
-
 /* Connect side nav: never paint li with base-100 on hover (white flash on blue panel). */
 [data-theme='connect-light'] modus-wc-side-navigation {
   modus-wc-menu
