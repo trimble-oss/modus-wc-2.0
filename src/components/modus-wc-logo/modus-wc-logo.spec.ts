@@ -1,6 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import * as logoConstants from './logo-constants';
 import { ILogoInfo } from './logo-constants';
+import { LOGO_SVGS } from './logo-svg-data';
 import { ModusWcLogo } from './modus-wc-logo';
 
 describe('modus-wc-logo', () => {
@@ -149,6 +150,27 @@ describe('modus-wc-logo', () => {
     });
     const logoSpan = page.root?.querySelector('.modus-wc-logo');
     expect(logoSpan?.querySelector('svg')).not.toBeNull();
+  });
+
+  it.each(Object.entries(logoConstants.LOGO_VARIANTS))(
+    'should resolve svg data for %s logo assets',
+    (_, logoInfo) => {
+      expect(LOGO_SVGS[logoInfo.path]).toContain('<svg');
+
+      if (logoInfo.emblemPath) {
+        expect(LOGO_SVGS[logoInfo.emblemPath]).toContain('<svg');
+      }
+    }
+  );
+
+  it('should render subscriptions with theme-aware accent and text classes', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="subscriptions"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.querySelector('.logo-accent')).not.toBeNull();
+    expect(logoSpan?.querySelector('.logo-text')).not.toBeNull();
   });
 
   it('should render empty when logo has no svg data', async () => {
