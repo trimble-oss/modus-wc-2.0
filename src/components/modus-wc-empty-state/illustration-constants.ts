@@ -5,15 +5,17 @@ export type EmptyStateIllustration =
   | 'symbol_info'
   | 'add_user'
   | 'landscape'
+  | 'api'
+  | 'api_plugin'
   | 'documents_empty'
   | 'cloud_access'
   | 'store_settings'
-  | 'error_404'
-  | 'page_not_found';
+  | 'error_404';
 
 export type IllustrationCategory =
   | 'compact'
   | 'landscape'
+  | 'api'
   | 'clouds'
   | 'documents'
   | 'stores'
@@ -23,8 +25,7 @@ export interface IIllustrationInfo {
   displayName: string;
   path: string;
   category: IllustrationCategory;
-  layoutVariants: EmptyStateVariant[];
-  layerPaths?: string[];
+  layoutVariant: EmptyStateVariant;
 }
 
 export const ILLUSTRATION_VARIANTS: Record<
@@ -35,59 +36,61 @@ export const ILLUSTRATION_VARIANTS: Record<
     displayName: 'Selection plus',
     path: 'illustrations/compact/selection-plus.svg',
     category: 'compact',
-    layoutVariants: ['compact'],
+    layoutVariant: 'compact',
   },
   symbol_info: {
     displayName: 'Symbol info',
     path: 'illustrations/compact/symbol-info.svg',
     category: 'compact',
-    layoutVariants: ['compact'],
+    layoutVariant: 'compact',
   },
   add_user: {
     displayName: 'Add user',
     path: 'illustrations/compact/add-user.svg',
     category: 'compact',
-    layoutVariants: ['compact'],
+    layoutVariant: 'compact',
   },
   landscape: {
     displayName: 'Landscape',
     path: 'illustrations/landscape/landscape.svg',
     category: 'landscape',
-    layoutVariants: ['illustration'],
+    layoutVariant: 'illustration',
+  },
+  api: {
+    displayName: 'API',
+    path: 'illustrations/api/api.svg',
+    category: 'api',
+    layoutVariant: 'illustration',
+  },
+  api_plugin: {
+    displayName: 'API plugin',
+    path: 'illustrations/api/api-plugin.svg',
+    category: 'api',
+    layoutVariant: 'illustration',
   },
   documents_empty: {
     displayName: 'Documents empty',
     path: 'illustrations/documents/documents-empty.svg',
     category: 'documents',
-    layoutVariants: ['illustration'],
+    layoutVariant: 'illustration',
   },
   cloud_access: {
     displayName: 'Cloud access',
     path: 'illustrations/clouds/cloud-access.svg',
     category: 'clouds',
-    layoutVariants: ['illustration'],
+    layoutVariant: 'illustration',
   },
   store_settings: {
     displayName: 'Store settings',
     path: 'illustrations/stores/store-settings.svg',
     category: 'stores',
-    layoutVariants: ['illustration'],
+    layoutVariant: 'illustration',
   },
   error_404: {
     displayName: '404 error',
     path: 'illustrations/errors/error-404.svg',
     category: 'errors',
-    layoutVariants: ['illustration'],
-  },
-  page_not_found: {
-    displayName: 'Page not found',
-    path: 'illustrations/errors/page-not-found.svg',
-    category: 'errors',
-    layoutVariants: ['error'],
-    layerPaths: [
-      'illustrations/errors/page-not-found.svg',
-      'illustrations/errors/page-not-found-magnifying-glass.svg',
-    ],
+    layoutVariant: 'error',
   },
 };
 
@@ -97,7 +100,7 @@ export const DEFAULT_ILLUSTRATION_BY_VARIANT: Record<
 > = {
   compact: 'selection_plus',
   illustration: 'landscape',
-  error: 'page_not_found',
+  error: 'error_404',
 };
 
 export function getIllustrationsForVariant(
@@ -109,6 +112,6 @@ export function getIllustrationsForVariant(
       IIllustrationInfo,
     ][]
   )
-    .filter(([, info]) => info.layoutVariants.includes(variant))
+    .filter(([, info]) => info.layoutVariant === variant)
     .map(([name]) => name);
 }

@@ -2,11 +2,13 @@ import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { keyed } from 'lit/directives/keyed.js';
 import {
   EmptyStateIllustration,
   EmptyStateVariant,
   getIllustrationsForVariant,
 } from './illustration-constants';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface EmptyStateArgs {
   variant: EmptyStateVariant;
@@ -56,19 +58,22 @@ export default meta;
 type Story = StoryObj<EmptyStateArgs>;
 
 const Template: Story = {
-  render: (args) => {
-    return html`
-      <modus-wc-empty-state
-        variant="${args.variant}"
-        illustration="${ifDefined(args.illustration)}"
-        heading="${args.heading}"
-        subtitle="${ifDefined(args.subtitle)}"
-        action-label="${ifDefined(args['action-label'])}"
-        custom-class="${ifDefined(args['custom-class'])}"
-        @actionClick=${(e: CustomEvent) => e}
-      ></modus-wc-empty-state>
-    `;
-  },
+  // Keyed per story so Lit does not reuse the element from a previously viewed story.
+  render: (args, context) =>
+    html`${keyed(
+      context.id,
+      html`
+        <modus-wc-empty-state
+          variant="${args.variant}"
+          illustration="${ifDefined(args.illustration)}"
+          heading="${args.heading}"
+          subtitle="${ifDefined(args.subtitle)}"
+          action-label="${ifDefined(args['action-label'])}"
+          custom-class="${ifDefined(args['custom-class'])}"
+          @actionClick=${(e: CustomEvent) => e}
+        ></modus-wc-empty-state>
+      `
+    )}`,
 };
 
 export const Default: Story = {
@@ -81,12 +86,6 @@ export const Default: Story = {
       },
     },
   },
-  argTypes: {
-    illustration: {
-      control: { type: 'select' },
-      options: getIllustrationsForVariant('compact'),
-    },
-  },
 };
 
 export const Illustration: Story = {
@@ -95,7 +94,7 @@ export const Illustration: Story = {
     docs: {
       description: {
         story:
-          '`variant="illustration"`. `illustration` options: `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`. Default: `landscape`.',
+          '`variant="illustration"`. `illustration` options: `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`. Default: `landscape`.',
       },
     },
   },
@@ -108,9 +107,6 @@ export const Illustration: Story = {
   args: {
     variant: 'illustration',
     illustration: 'landscape',
-    heading: 'Title for Empty State',
-    subtitle: 'Subtitle',
-    'action-label': 'Action',
   },
 };
 
@@ -120,7 +116,7 @@ export const Error404: Story = {
     docs: {
       description: {
         story:
-          '`variant="error"`. `illustration` option: `page_not_found`. Default: `page_not_found`.',
+          '`variant="error"`. `illustration` option: `error_404`. Default: `error_404`.',
       },
     },
   },
@@ -132,11 +128,10 @@ export const Error404: Story = {
   },
   args: {
     variant: 'error',
-    illustration: 'page_not_found',
+    illustration: 'error_404',
     heading: '404 Page Not Found',
     subtitle:
       'Helpful message that conveys the purpose of the screen. (max of 3 Lines) This is where line three will be!',
-    'action-label': 'Action',
   },
 };
 
@@ -150,17 +145,41 @@ export const WithoutAction: Story = {
       },
     },
   },
-  argTypes: {
-    illustration: {
-      control: { type: 'select' },
-      options: getIllustrationsForVariant('compact'),
-    },
-  },
   args: {
-    variant: 'compact',
     illustration: 'symbol_info',
     heading: 'Nothing here yet',
     subtitle: 'Create your first item to populate this view.',
     'action-label': undefined,
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('empty-state-shadow-host')) {
+      const EmptyStateShadowHost = createShadowHostClass<EmptyStateArgs>({
+        componentTag: 'modus-wc-empty-state',
+        propsMapper: (v: EmptyStateArgs, el: HTMLElement) => {
+          const emptyStateEl = el as unknown as {
+            variant: EmptyStateVariant;
+            illustration?: EmptyStateIllustration;
+            heading: string;
+            subtitle?: string;
+            actionLabel?: string;
+            customClass: string;
+          };
+          emptyStateEl.variant = v.variant;
+          emptyStateEl.illustration = v.illustration;
+          emptyStateEl.heading = v.heading;
+          emptyStateEl.subtitle = v.subtitle;
+          emptyStateEl.actionLabel = v['action-label'];
+          emptyStateEl.customClass = v['custom-class'] || '';
+        },
+      });
+      customElements.define('empty-state-shadow-host', EmptyStateShadowHost);
+    }
+
+    return html`<empty-state-shadow-host
+      .props=${{ ...args }}
+    ></empty-state-shadow-host>`;
   },
 };

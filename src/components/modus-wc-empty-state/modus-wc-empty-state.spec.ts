@@ -22,7 +22,7 @@ describe('modus-wc-empty-state', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render error variant with page not found illustration', async () => {
+  it('should render error variant with 404 illustration', async () => {
     const page = await newSpecPage({
       components: childComponents,
       html: `<modus-wc-empty-state variant="error" heading="404 Page Not Found" subtitle="Helpful message." action-label="Action"></modus-wc-empty-state>`,

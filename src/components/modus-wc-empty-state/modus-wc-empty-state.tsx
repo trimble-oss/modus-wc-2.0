@@ -49,8 +49,8 @@ export class ModusWcEmptyState {
   /**
    * Bundled illustration name. Valid values depend on `variant`:
    * compact — `selection_plus`, `symbol_info`, `add_user`;
-   * illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`;
-   * error — `page_not_found`.
+   * illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`;
+   * error — `error_404`.
    */
   @Prop() illustration?: EmptyStateIllustration;
 
@@ -84,7 +84,7 @@ export class ModusWcEmptyState {
     }
 
     const info = ILLUSTRATION_VARIANTS[requested];
-    if (!info || !info.layoutVariants.includes(this.variant)) {
+    if (!info || info.layoutVariant !== this.variant) {
       console.warn(
         `Illustration "${requested}" is not valid for variant "${this.variant}". Using "${fallback}".`
       );
@@ -117,25 +117,7 @@ export class ModusWcEmptyState {
 
   private renderIllustration(key: EmptyStateIllustration) {
     const info = ILLUSTRATION_VARIANTS[key];
-    const illustrationClass = `modus-wc-empty-state-illustration modus-wc-empty-state-illustration--${this.variant}`;
-
-    if (info.layerPaths && info.layerPaths.length > 1) {
-      const [backgroundPath, foregroundPath] = info.layerPaths;
-      const backgroundSvg = this.getSvgContent(backgroundPath);
-      const foregroundSvg = this.getSvgContent(foregroundPath);
-
-      return (
-        <div class={illustrationClass} aria-hidden="true">
-          <span class="modus-wc-empty-state-illustration-layer modus-wc-empty-state-illustration-layer--background">
-            <IllustrationSvg svgText={backgroundSvg} />
-          </span>
-          <span class="modus-wc-empty-state-illustration-layer modus-wc-empty-state-illustration-layer--foreground">
-            <IllustrationSvg svgText={foregroundSvg} />
-          </span>
-        </div>
-      );
-    }
-
+    const illustrationClass = `modus-wc-empty-state-illustration modus-wc-empty-state-illustration--${this.variant} modus-wc-empty-state-illustration--${key.replace(/_/g, '-')}`;
     const svgContent = this.getSvgContent(info.path);
 
     return (
@@ -167,7 +149,7 @@ export class ModusWcEmptyState {
           <div class="modus-wc-empty-state-content">
             <modus-wc-typography
               hierarchy="h2"
-              size="lg"
+              size="xl"
               weight="normal"
               label={this.heading}
               customClass="modus-wc-empty-state-title"
@@ -175,7 +157,7 @@ export class ModusWcEmptyState {
             {this.subtitle ? (
               <modus-wc-typography
                 hierarchy="p"
-                size="sm"
+                size="md"
                 weight="normal"
                 label={this.subtitle}
                 customClass="modus-wc-empty-state-subtitle"
