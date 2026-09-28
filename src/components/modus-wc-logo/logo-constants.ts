@@ -290,6 +290,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/stabicad-emblem.svg',
     category: 'trimble',
   },
+  subscriptions: {
+    displayName: 'Trimble Subscriptions',
+    path: 'logos/trimble/subscriptions.svg',
+    emblemPath: 'logos/emblems/trimble-emblem.svg',
+    category: 'trimble',
+  },
   supplier_xchange: {
     displayName: 'Supplier Xchange',
     path: 'logos/trimble/supplier-xchange.svg',

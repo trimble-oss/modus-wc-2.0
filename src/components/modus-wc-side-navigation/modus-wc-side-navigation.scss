@@ -197,6 +197,10 @@ modus-wc-side-navigation {
 
   modus-wc-menu-item .modus-wc-menu-item {
     color: var(--modus-wc-color-white);
+
+    & > button .modus-wc-menu-submenu-chevron {
+      color: var(--modus-wc-color-white);
+    }
   }
 
   modus-wc-menu-item .modus-wc-menu-item button {
