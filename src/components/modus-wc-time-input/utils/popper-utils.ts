@@ -1,5 +1,6 @@
 export function createPopperOptions(
-  placement: 'bottom-start' | 'bottom-end' = 'bottom-start'
+  placement: 'bottom-start' | 'bottom-end' = 'bottom-start',
+  offsetY = 8
 ) {
   const fallbackPlacements =
     placement === 'bottom-end'
@@ -9,7 +10,7 @@ export function createPopperOptions(
     placement,
     strategy: 'fixed' as const,
     modifiers: [
-      { name: 'offset', options: { offset: [0, 8] } },
+      { name: 'offset', options: { offset: [0, offsetY] } },
       {
         name: 'flip',
         options: {

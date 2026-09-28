@@ -16,6 +16,36 @@ export function is12hrsFormat(format: TimeFormat = '24hrs'): boolean {
   return format === '12hrs';
 }
 
+/** Subset of `Intl.ResolvedDateTimeFormatOptions` used for hour-clock detection. */
+export interface ILocaleHourOptions {
+  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
+  hour12?: boolean;
+}
+
+/**
+ * Hour clock preferred by the user's locale (browser language settings).
+ * Falls back to `24hrs` when the runtime cannot report it.
+ */
+export function detectLocaleTimeFormat(locale?: string | string[]): TimeFormat {
+  try {
+    // `hourCycle` is missing from the project's TypeScript `lib` typings.
+    const options = new Intl.DateTimeFormat(locale, {
+      hour: 'numeric',
+    }).resolvedOptions() as ILocaleHourOptions;
+    if (options.hourCycle) {
+      return options.hourCycle === 'h11' || options.hourCycle === 'h12'
+        ? '12hrs'
+        : '24hrs';
+    }
+    if (typeof options.hour12 === 'boolean') {
+      return options.hour12 ? '12hrs' : '24hrs';
+    }
+  } catch {
+    // Unsupported Intl or invalid locale: use the default below.
+  }
+  return '24hrs';
+}
+
 /** @deprecated Use `is12hrsFormat`. */
 export function is12HourFormat(format: TimeFormat = '24hrs'): boolean {
   return is12hrsFormat(format);

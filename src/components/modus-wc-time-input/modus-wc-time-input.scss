@@ -16,6 +16,9 @@ modus-wc-time-input {
   }
 
   .modus-wc-input {
+    // Editing is segment-based (the active segment is highlighted), so a
+    // free-text caret between characters only misleads.
+    caret-color: transparent;
     font-variant-numeric: tabular-nums;
 
     // Native time fields separate each segment; a single text input cannot, so
@@ -71,7 +74,6 @@ modus-wc-time-input {
 
     .clock-icon-trigger {
       height: var(--modus-wc-size-sm);
-      inset-inline-end: 0.875rem; // spacing-md + 2px nudge
       width: var(--modus-wc-size-sm);
     }
 
@@ -151,7 +153,8 @@ modus-wc-time-input {
       }
 
       &:focus-visible {
-        outline: 2px solid var(--modus-wc-color-primary);
+        outline: var(--modus-wc-border-width-sm) solid
+          var(--modus-wc-color-primary);
         outline-offset: -2px;
       }
 
@@ -171,7 +174,7 @@ modus-wc-time-input {
   .time-dropdown {
     background: var(--modus-wc-color-base-page);
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
-    border-radius: var(--modus-wc-border-radius-lg);
+    border-radius: var(--modus-wc-border-radius-2xl);
     box-shadow:
       0 4px 6px -1px rgb(0, 0, 0, 0.1),
       0 2px 4px -2px rgb(0, 0, 0, 0.1);
@@ -226,7 +229,7 @@ modus-wc-time-input {
     align-items: center;
     border-radius: var(--modus-wc-border-radius-lg);
     box-sizing: border-box;
-    color: var(--modus-wc-color-base-content);
+    color: var(--modus-wc-color-base-inverted);
     cursor: pointer;
     display: flex;
     flex-shrink: 0;
@@ -243,7 +246,7 @@ modus-wc-time-input {
 
     &.is-selected {
       background-color: var(--modus-wc-color-primary-pale);
-      color: var(--modus-wc-color-base-content);
+      color: var(--modus-wc-color-base-inverted);
     }
 
     // Out of min/max: keep the row in place for context, but unselectable.
@@ -255,7 +258,8 @@ modus-wc-time-input {
     // Programmatic focus after open or a pointer pick does not match
     // :focus-visible; draw the ring whenever the row owns focus.
     &:focus {
-      outline: 2px solid var(--modus-wc-color-primary);
+      outline: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-primary);
       outline-offset: -2px;
     }
   }
@@ -297,7 +301,8 @@ modus-wc-time-input {
     }
 
     &:focus {
-      outline: 2px solid var(--modus-wc-color-primary);
+      outline: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-primary);
       outline-offset: -2px;
     }
   }

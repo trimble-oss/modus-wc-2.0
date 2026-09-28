@@ -55,6 +55,16 @@ export interface ITimeInputKeyboardContext {
   showDropdown: boolean;
   useDatalist: boolean;
   focusDatalistOption: () => void;
+  consumeSuppressedKeydownCharacter: () => boolean;
+  markCharacterHandledByBeforeInput: () => void;
+}
+
+/** Whether the runtime delivers `beforeinput` for typed characters. */
+export function supportsBeforeInputCharacterInput(): boolean {
+  if (typeof document === 'undefined') {
+    return false;
+  }
+  return 'onbeforeinput' in document.createElement('input');
 }
 
 type IExternalTimeContext = Pick<
@@ -144,7 +154,12 @@ export function handleTimeInputBeforeInput(
   event: InputEvent,
   ctx: Pick<
     ITimeInputKeyboardContext,
-    'disabled' | 'readOnly' | 'min' | 'max' | 'emitParsedTime'
+    | 'disabled'
+    | 'readOnly'
+    | 'min'
+    | 'max'
+    | 'emitParsedTime'
+    | 'markCharacterHandledByBeforeInput'
   > &
     ITypedCharacterContext
 ): void {
@@ -174,6 +189,7 @@ export function handleTimeInputBeforeInput(
   event.preventDefault();
   if (data.length === 1) {
     applyTypedCharacter(data, ctx);
+    ctx.markCharacterHandledByBeforeInput();
   }
 }
 
@@ -369,8 +385,21 @@ export function handleTimeInputKeyDown(
     return;
   }
 
-  // Printable keys deliberately fall through: `beforeinput` owns character
-  // input, and cancelling here would stop that event from ever firing.
+  if (
+    event.key.length === 1 &&
+    !event.ctrlKey &&
+    !event.metaKey &&
+    !event.altKey
+  ) {
+    if (ctx.consumeSuppressedKeydownCharacter()) {
+      event.preventDefault();
+      return;
+    }
+    if (!supportsBeforeInputCharacterInput()) {
+      event.preventDefault();
+      applyTypedCharacter(event.key, ctx);
+    }
+  }
 }
 
 export function bindBeforeInputListener(

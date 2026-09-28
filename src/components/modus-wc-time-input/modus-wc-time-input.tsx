@@ -22,10 +22,10 @@ import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { createPopperOptions } from './utils/popper-utils';
 import {
   clampTime,
+  detectLocaleTimeFormat,
   format24h,
   formatDisplay,
   IParsedTime,
-  is12hrsFormat,
   parse24h,
   TimeFormat,
 } from './utils/time-format';
@@ -51,6 +51,7 @@ import {
   getSegmentAtCaret,
   getSegments,
   getSkeleton,
+  isFieldEmptyForPicker,
   isSkeletonDisplayComplete,
   ITimeSegment,
   parseSkeletonDisplay,
@@ -61,6 +62,7 @@ import {
   ICircularScrollLock,
   restoreWheelScrollPositions,
   saveWheelScrollPositions,
+  scrollDatalistOptionIntoView,
   scrollDatalistToSelection,
   scrollWheelsToSelection,
   unbindCircularWheelListeners,
@@ -113,6 +115,10 @@ export class ModusWcTimeInput {
   private valueAtDropdownOpen: string | null = null;
   /** Current time the picker opens on while `value` is empty; never committed. */
   private pickerSeedValue: string | null = null;
+  /** Dedupes keydown when the same character was already handled in beforeinput. */
+  private suppressKeydownCharacter = false;
+  /** Set on label press before the browser focuses the field and forwards a click. */
+  private focusFromLabel = false;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
   private segmentDigitBuffer = '';
@@ -176,12 +182,15 @@ export class ModusWcTimeInput {
 
   /**
    * Hour clock for the Modus picker wheels / datalist labels and the field display.
-   * - `24hrs` (default): hours wheel 00–23
+   * - `24hrs`: hours wheel 00–23
    * - `12hrs`: hours wheel 01–12 with AM/PM
+   *
+   * When unset, follows the user's locale, falling back to `24hrs` if the
+   * locale's hour clock cannot be determined. An explicit value always wins.
    *
    * `value` / `inputChange` always stay in 24-hour storage format (`HH:mm` / `HH:mm:ss`).
    */
-  @Prop() format?: TimeFormat = '24hrs';
+  @Prop() format?: TimeFormat;
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
@@ -297,6 +306,9 @@ export class ModusWcTimeInput {
         void this.popperInstance.update();
       }
       requestAnimationFrame(() => {
+        if (!this.showDropdown) {
+          return;
+        }
         const focusPickerOnOpen = this.pendingFocusPickerOnOpen;
         this.pendingFocusPickerOnOpen = false;
         if (this.pendingScrollToSelection) {
@@ -368,7 +380,16 @@ export class ModusWcTimeInput {
       path.includes(this.el) ||
       (this.dropdownRef != null && path.includes(this.dropdownRef));
     if (!clickedInside) {
-      this.closeDropdown();
+      // Leaving the control: drop focus instead of returning it to the field,
+      // so the pick is committed and inputBlur fires on this first click.
+      const active = document.activeElement as HTMLElement | null;
+      this.closeDropdown('none');
+      if (
+        active &&
+        (this.el.contains(active) || this.dropdownRef?.contains(active))
+      ) {
+        active.blur();
+      }
     }
   }
 
@@ -401,7 +422,10 @@ export class ModusWcTimeInput {
   }
 
   private get resolvedFormat(): TimeFormat {
-    return is12hrsFormat(this.format ?? '24hrs') ? '12hrs' : '24hrs';
+    if (this.format === '12hrs' || this.format === '24hrs') {
+      return this.format;
+    }
+    return detectLocaleTimeFormat();
   }
 
   private get dropdownId(): string {
@@ -478,7 +502,7 @@ export class ModusWcTimeInput {
   }
 
   private setupPopper(anchor: HTMLElement, dropdown: HTMLElement) {
-    const options = createPopperOptions('bottom-start');
+    const options = createPopperOptions('bottom-start', 0);
     if (this.popperInstance) {
       this.popperInstance.destroy();
     }
@@ -554,10 +578,12 @@ export class ModusWcTimeInput {
   /**
    * `returnFocusTo` decides where focus lands when the dropdown closes while
    * focus is still inside it. Confirming a row with Enter returns to the clock
-   * button; every other close returns to the field so segment editing can continue.
+   * button; a click outside the control passes `none` so focus leaves with the
+   * pointer; every other close returns to the field so segment editing can continue.
    */
-  private closeDropdown(returnFocusTo: 'input' | 'clock' = 'input') {
+  private closeDropdown(returnFocusTo: 'input' | 'clock' | 'none' = 'input') {
     const focusInDropdown =
+      returnFocusTo !== 'none' &&
       this.dropdownRef != null &&
       document.activeElement != null &&
       this.dropdownRef.contains(document.activeElement);
@@ -612,7 +638,14 @@ export class ModusWcTimeInput {
    * `value` stays empty until the user picks a row.
    */
   private seedPickerValue() {
-    if (this.value) {
+    if (
+      !isFieldEmptyForPicker(
+        this.value,
+        this.displayValue,
+        this.effectiveShowSeconds,
+        this.resolvedFormat
+      )
+    ) {
       this.pickerSeedValue = null;
       return;
     }
@@ -635,7 +668,17 @@ export class ModusWcTimeInput {
 
   /** `value`, or the current-time seed while the picker sits on a blank field. */
   private get pickerValue(): string {
-    return this.value || this.pickerSeedValue || '';
+    if (
+      isFieldEmptyForPicker(
+        this.value,
+        this.displayValue,
+        this.effectiveShowSeconds,
+        this.resolvedFormat
+      )
+    ) {
+      return this.pickerSeedValue || '';
+    }
+    return this.value;
   }
 
   private getContainerClasses(): string {
@@ -764,9 +807,36 @@ export class ModusWcTimeInput {
         const option = this.dropdownRef?.querySelector<HTMLElement>(
           '.time-datalist-option[tabindex="0"]'
         );
-        option?.focus({ preventScroll: true });
+        if (option) {
+          scrollDatalistOptionIntoView(option);
+          option.focus({ preventScroll: true });
+        }
+      },
+      markCharacterHandledByBeforeInput: () => {
+        this.suppressKeydownCharacter = true;
+        requestAnimationFrame(() => {
+          this.suppressKeydownCharacter = false;
+        });
+      },
+      consumeSuppressedKeydownCharacter: () => {
+        if (this.suppressKeydownCharacter) {
+          this.suppressKeydownCharacter = false;
+          return true;
+        }
+        return false;
       },
     };
+  }
+
+  private handleLabelMouseDown = () => {
+    this.focusFromLabel = true;
+  };
+
+  private selectHourSegment() {
+    const segments = this.getSegments();
+    const hour =
+      segments.find((segment) => segment.kind === 'hour') ?? segments[0];
+    this.selectSegment(hour);
   }
 
   private isClockTrigger(element: Node | null): boolean {
@@ -879,6 +949,9 @@ export class ModusWcTimeInput {
         this.focusSelectFrame = null;
         if (fromClock) {
           this.selectSegment(segments[segments.length - 1]);
+        } else if (this.focusFromLabel) {
+          this.focusFromLabel = false;
+          this.selectHourSegment();
         } else {
           this.selectSegmentAtCaret();
         }
@@ -905,6 +978,11 @@ export class ModusWcTimeInput {
       return;
     }
     this.cancelFocusSelect();
+    if (this.focusFromLabel) {
+      this.focusFromLabel = false;
+      this.selectHourSegment();
+      return;
+    }
     this.selectSegmentAtCaret();
   };
 
@@ -1046,6 +1124,7 @@ export class ModusWcTimeInput {
           <modus-wc-input-label
             forId={effectiveId}
             labelText={this.label}
+            onMouseDown={this.handleLabelMouseDown}
             required={this.required}
             size={this.size}
           />

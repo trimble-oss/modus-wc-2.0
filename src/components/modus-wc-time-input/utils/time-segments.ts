@@ -29,6 +29,19 @@ export function getSkeleton(
 }
 
 /** Segment ranges for the fixed-width display string. */
+/** Whether the picker should seed from the current time instead of `value`. */
+export function isFieldEmptyForPicker(
+  value: string,
+  displayValue: string,
+  showSeconds = false,
+  hourFormat: TimeFormat = '24hrs'
+): boolean {
+  if (!value?.trim()) {
+    return true;
+  }
+  return !isSkeletonDisplayComplete(displayValue, showSeconds, hourFormat);
+}
+
 export function getSegments(
   showSeconds = false,
   hourFormat: TimeFormat = '24hrs'
@@ -373,11 +386,6 @@ export function typeDigitInSegment(
   existingBuffer: string,
   hourFormat: TimeFormat = '24hrs'
 ): { display: string; buffer: string; advance: boolean } {
-  const current = getSegmentText(display, segment);
-  const isEmpty = isSegmentEmpty(current);
-  const currentDigits = current.replace(/-/g, '');
-  let buffer = existingBuffer;
-
   if (segment.kind === 'period') {
     const upper = digit.toUpperCase();
     if (upper === 'A') {
@@ -394,14 +402,10 @@ export function typeDigitInSegment(
         advance: true,
       };
     }
-    return { display, buffer, advance: false };
+    return { display, buffer: existingBuffer, advance: false };
   }
 
-  if (!isEmpty && buffer === '') {
-    buffer = currentDigits;
-  }
-
-  const nextBuffer = (isEmpty ? '' : buffer) + digit;
+  const nextBuffer = existingBuffer + digit;
 
   if (segment.kind === 'hour' && is12hrsFormat(hourFormat)) {
     const n = Number(nextBuffer);

@@ -26,7 +26,7 @@ interface TimeInputArgs {
   size?: ModusSize;
   step?: number;
   variant?: 'datalist' | 'picker';
-  value: string;
+  value?: string;
 }
 
 const meta: Meta<TimeInputArgs> = {
@@ -35,7 +35,6 @@ const meta: Meta<TimeInputArgs> = {
   args: {
     bordered: true,
     disabled: false,
-    format: '24hrs',
     label: 'Time',
     'read-only': false,
     required: false,
@@ -92,7 +91,7 @@ const Template: Story = {
       custom-class=${ifDefined(args['custom-class'])}
       ?disabled=${args.disabled}
       .feedback=${args.feedback}
-      .format=${args.format ?? '24hrs'}
+      format=${ifDefined(args.format)}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
       interval-minutes=${ifDefined(args['interval-minutes'])}
@@ -107,7 +106,7 @@ const Template: Story = {
       step=${ifDefined(args.step)}
       variant=${ifDefined(args.variant)}
       .datalistOptions=${args['datalist-options']}
-      .value=${args.value}
+      value=${ifDefined(args.value)}
     ></modus-wc-time-input>
   `,
 };
@@ -173,6 +172,27 @@ export const WithSeconds: Story = {
   args: {
     'show-seconds': true,
     value: '09:45:00',
+  },
+};
+
+export const Format12HourWithSeconds: Story = {
+  ...Template,
+  args: {
+    format: '12hrs',
+    'show-seconds': true,
+    value: '21:45:30',
+  },
+};
+
+export const Format12HourWithGeneratedIntervals: Story = {
+  ...Template,
+  args: {
+    format: '12hrs',
+    variant: 'datalist',
+    'interval-minutes': 30,
+    min: '08:00',
+    max: '18:00',
+    value: '13:30',
   },
 };
 
@@ -271,7 +291,9 @@ export const ShadowDomParent: Story = {
             timeInputEl.datalistOptions = v['datalist-options'];
           }
           timeInputEl.disabled = Boolean(v.disabled);
-          timeInputEl.format = v.format ?? '24hrs';
+          if (v.format) {
+            timeInputEl.format = v.format;
+          }
           timeInputEl.inputId = v['input-id'] ?? '';
           timeInputEl.inputTabIndex = v['input-tab-index'] ?? 0;
           if (v['interval-minutes'] !== undefined) {
@@ -311,8 +333,9 @@ export const Migration: Story = {
   - The field is a custom segmented text input (native \`--:--\` skeleton) instead of the browser's \`<input type="time">\`.
   - Open the picker with the clock button or **Alt+ArrowDown** (plain Arrow keys edit segments).
   - \`value\` remains **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
-  - New \`format\` prop: \`24hrs\` (default) or \`12hrs\`.
-    Controls display, Modus picker wheels / datalist labels.
+  - New \`format\` prop: \`12hrs\` or \`24hrs\`. Controls display, Modus picker wheels / datalist labels.
+    When unset, the hour clock follows the user's locale (falls back to \`24hrs\` if it cannot be detected).
+    Set \`format\` explicitly to pin it regardless of locale.
   - New \`variant\` prop (\`picker\` default, \`datalist\` for interval / option list).
   - Dropdown mode: \`variant="datalist"\`, non-empty \`datalistOptions\`, or deprecated \`datalistId\`.
     The bare \`interval-minutes\` attribute still opts into datalist for backward compatibility.
