@@ -13,5 +13,6 @@ src/styles/modus-icons-2-font
 src/components/modus-wc-icon/icon-data.ts
 docs/component-graph/component-graph.json
 docs/component-graph/component-graph.mmd
+.cursor/hooks/state/**
 .playwright-mcp
 *.snap

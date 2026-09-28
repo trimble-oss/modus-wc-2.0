@@ -782,13 +782,6 @@
               }
             },
             {
-              "name": "leaveMenuOpen",
-              "optional": true,
-              "type": {
-                "text": "boolean"
-              }
-            },
-            {
               "name": "customInputChange",
               "optional": true,
               "type": {
@@ -796,6 +789,30 @@
               }
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "syncMenuItemSelection",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "hostElement",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "items",
+              "type": {
+                "text": "IAutocompleteItem[] | undefined"
+              }
+            }
+          ],
+          "description": "Reconcile menu-item `selected` props from autocomplete `items` state.\nUsed for multi-select while the menu stays open: `modus-wc-menu` defaults to\nsingle selection, so each click deselects siblings before `items[]` updates,\nand Stencil may not re-push unchanged `selected={true}` props to siblings.\nSingle-select filter churn is handled by stable `key={item.value}` on menu\nitems so list changes do not reuse the wrong host and inherit stale `selected`."
         },
         {
           "kind": "function",
@@ -851,6 +868,14 @@
           "name": "getVisibleItems",
           "declaration": {
             "name": "getVisibleItems",
+            "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "syncMenuItemSelection",
+          "declaration": {
+            "name": "syncMenuItemSelection",
             "module": "src/components/modus-wc-autocomplete/modus-wc-autocomplete-core.tsx"
           }
         },
@@ -4265,6 +4290,90 @@
           "declaration": {
             "name": "ModusWcIcon",
             "module": "src/components/modus-wc-icon/modus-wc-icon.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A responsive image grid that displays 1 to 4 images in rectangle or square layouts.\n\nEach cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.\nGrid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.",
+          "name": "ModusWcImageGrid",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "custom-class",
+              "fieldName": "customClass",
+              "default": "''",
+              "description": "Custom CSS class to apply to the grid container.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "image-shape",
+              "fieldName": "imageShape",
+              "default": "'rectangle'",
+              "description": "Sets the cell aspect ratio layout.",
+              "type": {
+                "text": "ImageGridShape"
+              }
+            },
+            {
+              "name": "images",
+              "fieldName": "images",
+              "default": "[]",
+              "description": "Images to display in the grid. Only the first N images are shown based on `imagesPerView`.",
+              "type": {
+                "text": "IImageGridImage[]"
+              }
+            },
+            {
+              "name": "images-per-view",
+              "fieldName": "imagesPerView",
+              "default": "4",
+              "description": "Maximum number of images to display in the grid (1–4).",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "tagName": "modus-wc-image-grid",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcImageGrid",
+          "declaration": {
+            "name": "ModusWcImageGrid",
+            "module": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-image-grid",
+          "declaration": {
+            "name": "ModusWcImageGrid",
+            "module": "src/components/modus-wc-image-grid/modus-wc-image-grid.tsx"
           }
         }
       ]

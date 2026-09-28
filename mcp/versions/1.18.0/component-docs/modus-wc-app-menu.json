@@ -1,0 +1,81 @@
+{
+  "description": "",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "custom class to apply to the menu",
+      "default": "''",
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "layout",
+      "type": "'list' | 'grid'",
+      "description": "The layout of the menu.",
+      "default": "'list'",
+      "mutable": true,
+      "end_line": 42
+    },
+    {
+      "name": "apps",
+      "type": "IAppMenuItem[]",
+      "description": "The apps to display in the menu.",
+      "default": "[]",
+      "mutable": true,
+      "end_line": 45
+    }
+  ],
+  "events": [
+    {
+      "name": "layoutChange",
+      "detail": "{ layout: 'list' | 'grid'; }",
+      "description": "Emit event when the layout changes",
+      "end_line": 50
+    },
+    {
+      "name": "itemsOrderChange",
+      "detail": "IAppMenuItem[]",
+      "description": "Emitted when reordering is confirmed via \"Done\" and the order differs from when edit started",
+      "end_line": 53
+    },
+    {
+      "name": "itemClick",
+      "detail": "{ appName: AppName }",
+      "description": "Emitted when an item is clicked",
+      "end_line": 56
+    }
+  ],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<div style=\"min-height: 400px;\">\n        <modus-wc-app-menu\n          custom-class=${ifDefined(args['custom-class'])}\n          layout=${ifDefined(args.layout)}\n          .apps=${args.apps}\n        ></modus-wc-app-menu>\n      </div>",
+    "variations": [],
+    "args": {
+      "layout": "'list'",
+      "apps": "defaultApps"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "layoutChange",
+      "itemsOrderChange",
+      "itemClick"
+    ]
+  },
+  "tag": "modus-wc-app-menu",
+  "storyExample": {
+    "template": "<div style=\"min-height: 400px;\">\n        <modus-wc-app-menu\n          custom-class=${ifDefined(args['custom-class'])}\n          layout=${ifDefined(args.layout)}\n          .apps=${args.apps}\n        ></modus-wc-app-menu>\n      </div>",
+    "args": {
+      "layout": "'list'",
+      "apps": "defaultApps"
+    },
+    "argTypes": {},
+    "events": [
+      "layoutChange",
+      "itemsOrderChange",
+      "itemClick"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IAppMenuItem } from './modus-wc-app-menu';\n\ninterface AppMenuArgs {\n  'custom-class'?: string;\n  draggedItemPos?: unknown;\n  grabbedItemPos?: unknown;\n  isEditMode?: unknown;\n  layout?: 'list' | 'grid';\n  apps?: IAppMenuItem[];\n}\n\nconst defaultApps: IAppMenuItem[] = [\n  { appName: 'trimble' },\n  { appName: 'siteworks' },\n  { appName: 'earthworks' },\n  { appName: 'worksmanager' },\n  { appName: 'connect' },\n  { appName: 'unity' },\n  { appName: 'trade_service_live' },\n  { appName: 'livecount' },\n  { appName: 'supplier_xchange' },\n  { appName: 'projectsight' },\n  { appName: 'app_xchange' },\n  { appName: 'sketchup' },\n  { appName: 'pay' },\n  { appName: 'copilot' },\n  { appName: 'stabicad' },\n];\n\nconst meta: Meta<AppMenuArgs> = {\n  title: 'Components/App Menu',\n  component: 'modus-wc-app-menu',\n  args: {\n    layout: 'list',\n    apps: defaultApps,\n  },\n  argTypes: {\n    'custom-class': {\n      control: 'text',\n    },\n    layout: {\n      control: { type: 'select' },\n      options: ['list', 'grid'],\n    },\n    apps: {\n      control: 'object',\n    },\n    draggedItemPos: {\n      table: { disable: true },\n    },\n    grabbedItemPos: {\n      table: { disable: true },\n    },\n    isEditMode: {\n      table: { disable: true },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['layoutChange', 'itemsOrderChange', 'itemClick'],\n    },\n    docs: {\n      description: {\n        component: `\nA customizable app menu component that displays application links in list or grid layout.\n\\nThe component uses the modus-wc-panel component for layout , supports dual viewing (List and Grid) modes and allows reordering via drag-and-drop and keyboard in edit mode.\n        `,\n      },\n    },\n  },\n};\nexport default meta;\n\ntype Story = StoryObj<AppMenuArgs>;\n\nconst getSourceCode = (args: AppMenuArgs) => {\n  const appsCode = `const apps = ${JSON.stringify(args.apps, null, 2)};`;\n\n  return `<modus-wc-app-menu></modus-wc-app-menu>\n\n<script>\n  ${appsCode}\n\n  const element = document.querySelector('modus-wc-app-menu');\n  element.apps = apps;${args.layout ? `\\n  element.layout = '${args.layout}';` : ''}\n\n  element.addEventListener('layoutChange', (event) => {\n    console.log('Layout changed:', event.detail);\n  });\n  element.addEventListener('itemsOrderChange', (event) => {\n    console.log('Items order changed:', event.detail);\n  });\n  element.addEventListener('itemClick', (event) => {\n    console.log('Item clicked:', event.detail);\n  });\n</script>\n`;\n};\n\nconst Template: Story = {\n  parameters: {\n    docs: {\n      source: {\n        transform: (_src, { args }: { args: AppMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n      <div style=\"min-height: 400px;\">\n        <modus-wc-app-menu\n          custom-class=${ifDefined(args['custom-class'])}\n          layout=${ifDefined(args.layout)}\n          .apps=${args.apps}\n        ></modus-wc-app-menu>\n      </div>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n  parameters: {\n    docs: {\n      description: {\n        story: 'App menu displayed in list layout.',\n      },\n      source: {\n        transform: (_src, { args }: { args: AppMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n};\n\nexport const GridLayout: Story = {\n  ...Template,\n  args: {\n    layout: 'grid',\n  },\n  parameters: {\n    docs: {\n      description: {\n        story: 'App menu in grid layout showing all app emblems.',\n      },\n      source: {\n        transform: (_src, { args }: { args: AppMenuArgs }) =>\n          getSourceCode(args),\n      },\n    },\n  },\n};\n"
+  }
+}

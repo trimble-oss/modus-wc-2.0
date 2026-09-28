@@ -1,0 +1,94 @@
+/**
+ * Image grid layout tokens from Figma ImageGrid (border-radius/box, 24px gap, 932px max width).
+ */
+
+modus-wc-image-grid {
+  --modus-wc-image-grid-max-width: 932px;
+  --modus-wc-image-grid-gap: var(--modus-wc-spacing-xl);
+  --modus-wc-image-grid-radius: var(--modus-wc-border-radius-box);
+  --modus-wc-image-grid-rectangle-aspect-ratio: 454 / 255;
+
+  display: block;
+  max-width: var(--modus-wc-image-grid-max-width);
+  width: 100%;
+
+  .modus-wc-image-grid-container {
+    display: grid;
+    gap: var(--modus-wc-image-grid-gap);
+    width: 100%;
+  }
+
+  // Block layout + aspect-ratio so intrinsic image size cannot expand the grid cell.
+  modus-wc-image {
+    contain: layout size;
+    display: block;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  // Absolutely fill the aspect-ratio box; overrides modus-wc-image size tokens.
+  modus-wc-image .modus-wc-image-container.modus-wc-image-grid-cell {
+    border-radius: var(--modus-wc-image-grid-radius);
+    height: 100% !important;
+    inset: 0;
+    max-height: none !important;
+    max-width: none !important;
+    position: absolute;
+    width: 100% !important;
+
+    .modus-wc-image-img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      width: 100%;
+    }
+  }
+
+  &.modus-wc-image-grid--rectangle {
+    modus-wc-image {
+      aspect-ratio: var(--modus-wc-image-grid-rectangle-aspect-ratio);
+    }
+  }
+
+  &.modus-wc-image-grid--square {
+    modus-wc-image {
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  &.modus-wc-image-grid--count-4 {
+    .modus-wc-image-grid-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &.modus-wc-image-grid--count-3 {
+    .modus-wc-image-grid-container {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      @media (width <= 768px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @media (width < 480px) {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  }
+
+  &.modus-wc-image-grid--count-2 {
+    .modus-wc-image-grid-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &.modus-wc-image-grid--count-1 {
+    .modus-wc-image-grid-container {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

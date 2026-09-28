@@ -18,6 +18,24 @@ def emit(payload: dict) -> None:
     sys.exit(0)
 
 
+def write_prettier_json(path: Path, data: dict) -> str:
+    """Write JSON and format with repo Prettier (matches lint:prettier)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    try:
+        subprocess.run(
+            ["npx", "prettier", "--write", str(path)],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        # Formatting is best-effort; keep fail-open behavior if Prettier is unavailable or times out.
+        pass
+    return path.read_text(encoding="utf-8")
+
+
 def tags_from_diff() -> list[str]:
     names: set[str] = set()
     commands = [
@@ -87,14 +105,12 @@ def main() -> None:
     slice_data["reverseImpact"] = parents
     slice_data["composeChildren"] = children
 
-    STATE_DIR.mkdir(parents=True, exist_ok=True)
-    (STATE_DIR / "graph_slice.json").write_text(
-        json.dumps(slice_data, indent=2), encoding="utf-8"
-    )
+    slice_path = STATE_DIR / "graph_slice.json"
+    slice_text = write_prettier_json(slice_path, slice_data)
 
     context = (
         "Modus graph slice (sessionStart hook):\n"
-        f"{json.dumps(slice_data, indent=2)}\n"
+        f"{slice_text}\n"
         "Use graph-impact + storybook-smoke subagents for Storybook targets. "
         "Checked-in reverseImpact is transitive; cap browser parents at 3."
     )

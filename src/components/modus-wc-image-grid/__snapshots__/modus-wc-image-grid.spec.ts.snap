@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modus-wc-image-grid should render four images by default 1`] = `
+<modus-wc-image-grid class="modus-wc-image-grid modus-wc-image-grid--count-4 modus-wc-image-grid--rectangle">
+  <div class="modus-wc-image-grid-container" role="group">
+    <modus-wc-image crop-position="center" custom-class="modus-wc-image-grid-cell">
+      <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
+        <img alt="Image 1" class="modus-wc-image-img" src="https://example.com/1.jpg" style="object-position: center;">
+      </div>
+    </modus-wc-image>
+    <modus-wc-image crop-position="center" custom-class="modus-wc-image-grid-cell">
+      <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
+        <img alt="Image 2" class="modus-wc-image-img" src="https://example.com/2.jpg" style="object-position: center;">
+      </div>
+    </modus-wc-image>
+    <modus-wc-image crop-position="center" custom-class="modus-wc-image-grid-cell">
+      <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
+        <img alt="Image 3" class="modus-wc-image-img" src="https://example.com/3.jpg" style="object-position: center;">
+      </div>
+    </modus-wc-image>
+    <modus-wc-image crop-position="center" custom-class="modus-wc-image-grid-cell">
+      <div class="modus-wc-image--default modus-wc-image--loading modus-wc-image--md modus-wc-image--rounded modus-wc-image-container modus-wc-image-grid-cell">
+        <img alt="Image 4" class="modus-wc-image-img" src="https://example.com/4.jpg" style="object-position: center;">
+      </div>
+    </modus-wc-image>
+  </div>
+</modus-wc-image-grid>
+`;
+
+exports[`modus-wc-image-grid should render with default props 1`] = `
+<modus-wc-image-grid class="modus-wc-image-grid modus-wc-image-grid--count-1 modus-wc-image-grid--rectangle">
+  <div class="modus-wc-image-grid-container" role="group"></div>
+</modus-wc-image-grid>
+`;
