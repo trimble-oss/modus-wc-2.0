@@ -115,9 +115,7 @@ export class ModusWcTimeInput {
   private valueAtDropdownOpen: string | null = null;
   /** Current time the picker opens on while `value` is empty; never committed. */
   private pickerSeedValue: string | null = null;
-  /** Dedupes keydown when the same character was already handled in beforeinput. */
-  private suppressKeydownCharacter = false;
-  /** Set on label press before the browser focuses the field and forwards a click. */
+  /** Set on label click, before the browser focuses the field and forwards a click. */
   private focusFromLabel = false;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
@@ -812,24 +810,16 @@ export class ModusWcTimeInput {
           option.focus({ preventScroll: true });
         }
       },
-      markCharacterHandledByBeforeInput: () => {
-        this.suppressKeydownCharacter = true;
-        requestAnimationFrame(() => {
-          this.suppressKeydownCharacter = false;
-        });
-      },
-      consumeSuppressedKeydownCharacter: () => {
-        if (this.suppressKeydownCharacter) {
-          this.suppressKeydownCharacter = false;
-          return true;
-        }
-        return false;
-      },
     };
   }
 
-  private handleLabelMouseDown = () => {
+  private handleLabelClick = () => {
     this.focusFromLabel = true;
+    // Label activation focuses and clicks the field in this same task, which
+    // consumes the flag; clear it afterwards if nothing did (disabled field).
+    requestAnimationFrame(() => {
+      this.focusFromLabel = false;
+    });
   };
 
   private selectHourSegment() {
@@ -1124,7 +1114,7 @@ export class ModusWcTimeInput {
           <modus-wc-input-label
             forId={effectiveId}
             labelText={this.label}
-            onMouseDown={this.handleLabelMouseDown}
+            onClick={this.handleLabelClick}
             required={this.required}
             size={this.size}
           />

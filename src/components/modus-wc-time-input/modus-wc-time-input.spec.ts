@@ -664,7 +664,7 @@ describe('modus-wc-time-input', () => {
     expect(input.hasAttribute('aria-label')).toBe(false);
   });
 
-  it('should select the hour segment when the label is pressed', async () => {
+  it('should select the hour segment when the label is clicked', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcButton],
       html: '<modus-wc-time-input label="Start time" value="09:45"></modus-wc-time-input>',
@@ -677,16 +677,64 @@ describe('modus-wc-time-input', () => {
     input.setSelectionRange = setSelectionRange;
     const raf = captureRaf();
 
+    // Label activation: click on the label, then the browser focuses and
+    // clicks the field within the same task.
+    label.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    input.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
+    input.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(setSelectionRange).toHaveBeenLastCalledWith(0, 2);
+
+    raf.run();
+    raf.restore();
+    await page.waitForChanges();
+    expect(
+      (page.rootInstance as { focusFromLabel: boolean }).focusFromLabel
+    ).toBe(false);
+  });
+
+  it('should clear the label flag when the label click does not reach the field', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcButton],
+      html: '<modus-wc-time-input label="Start time" value="09:45" disabled></modus-wc-time-input>',
+    });
+    const label = page.root!.querySelector('label') as HTMLLabelElement;
+    const raf = captureRaf();
+
+    label.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(
+      (page.rootInstance as { focusFromLabel: boolean }).focusFromLabel
+    ).toBe(true);
+
+    raf.run();
+    raf.restore();
+    expect(
+      (page.rootInstance as { focusFromLabel: boolean }).focusFromLabel
+    ).toBe(false);
+  });
+
+  it('should keep caret-based selection when a label press is dragged off', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcButton],
+      html: '<modus-wc-time-input label="Start time" value="09:45"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    const label = page.root!.querySelector('label') as HTMLLabelElement;
+    const setSelectionRange = jest.fn();
+    input.setSelectionRange = setSelectionRange;
+    Object.defineProperty(input, 'selectionStart', {
+      value: 3,
+      configurable: true,
+    });
+
+    // Press without release on the label: no label click is dispatched.
     label.dispatchEvent(
       new MouseEvent('mousedown', { bubbles: true, cancelable: true })
     );
-    input.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
     input.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    await page.waitForChanges();
-    raf.run();
-    raf.restore();
 
-    expect(setSelectionRange).toHaveBeenCalledWith(0, 2);
+    expect(setSelectionRange).toHaveBeenLastCalledWith(3, 5);
   });
 
   it('should select the hour segment when focus follows a label press before click', async () => {
@@ -711,6 +759,36 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     expect(setSelectionRange).toHaveBeenCalledWith(0, 2);
+  });
+
+  it('should select the hour segment on focus when the label flag is still set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcButton],
+      html: '<modus-wc-time-input label="Start time" value="09:45"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    const setSelectionRange = jest.fn();
+    input.setSelectionRange = setSelectionRange;
+    const raf = captureRaf();
+
+    const harness = component as unknown as {
+      focusFromLabel: boolean;
+      hasFocus: boolean;
+      handleFocus: (event: FocusEvent) => void;
+    };
+    harness.focusFromLabel = true;
+    harness.hasFocus = false;
+
+    harness.handleFocus(new FocusEvent('focus', { bubbles: true }));
+    raf.run();
+    raf.restore();
+    await page.waitForChanges();
+
+    expect(setSelectionRange).toHaveBeenCalledWith(0, 2);
+    expect(harness.focusFromLabel).toBe(false);
   });
 
   it('should render with error feedback', async () => {
@@ -2479,50 +2557,41 @@ describe('modus-wc-time-input', () => {
     focusSpy.mockRestore();
   });
 
-  it('should clear the beforeinput keydown guard after animation frame', async () => {
+  it('should write every digit when keys arrive faster than an animation frame', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcButton],
-      html: '<modus-wc-time-input aria-label="Suppress guard raf" value="09:00"></modus-wc-time-input>',
+      html: '<modus-wc-time-input aria-label="Fast typing"></modus-wc-time-input>',
     });
     const component = page.rootInstance as ModusWcTimeInput;
-    const ctx = (
-      component as unknown as {
-        getKeyboardContext: () => ITimeInputKeyboardContext;
-        suppressKeydownCharacter: boolean;
-      }
-    ).getKeyboardContext();
+    const input = page.root!.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
+    input.setSelectionRange = jest.fn();
+    // Behave like a browser that supports `beforeinput`.
+    const inputProto = Object.getPrototypeOf(document.createElement('input'));
+    Object.defineProperty(inputProto, 'onbeforeinput', {
+      value: null,
+      writable: true,
+      configurable: true,
+    });
     const raf = captureRaf();
 
-    ctx.markCharacterHandledByBeforeInput();
-    expect(
-      (component as unknown as { suppressKeydownCharacter: boolean })
-        .suppressKeydownCharacter
-    ).toBe(true);
-
-    raf.run();
+    // keydown then beforeinput per key, with no frame in between keys.
+    for (const digit of ['1', '4', '3', '0']) {
+      const keydown = new KeyboardEvent('keydown', {
+        key: digit,
+        bubbles: true,
+        cancelable: true,
+      });
+      input.dispatchEvent(keydown);
+      expect(keydown.defaultPrevented).toBe(false);
+      input.dispatchEvent(createInsertTextEvent(digit));
+      await page.waitForChanges();
+    }
     raf.restore();
+    delete inputProto.onbeforeinput;
 
-    expect(
-      (component as unknown as { suppressKeydownCharacter: boolean })
-        .suppressKeydownCharacter
-    ).toBe(false);
-  });
-
-  it('should consume a suppressed keydown character once on the keyboard context', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcTimeInput, ModusWcButton],
-      html: '<modus-wc-time-input aria-label="Consume suppressed" value="09:00"></modus-wc-time-input>',
-    });
-    const component = page.rootInstance as ModusWcTimeInput;
-    const ctx = (
-      component as unknown as {
-        getKeyboardContext: () => ITimeInputKeyboardContext;
-      }
-    ).getKeyboardContext();
-
-    ctx.markCharacterHandledByBeforeInput();
-    expect(ctx.consumeSuppressedKeydownCharacter()).toBe(true);
-    expect(ctx.consumeSuppressedKeydownCharacter()).toBe(false);
+    expect(component.value).toBe('14:30');
   });
 
   it('should move datalist focus to the first and last options with Home and End', async () => {
@@ -4104,8 +4173,6 @@ describe('modus-wc-time-input', () => {
       showDropdown: false,
       useDatalist: false,
       focusDatalistOption: jest.fn(),
-      markCharacterHandledByBeforeInput: jest.fn(),
-      consumeSuppressedKeydownCharacter: () => false,
     };
 
     const tabEvent = new KeyboardEvent('keydown', {

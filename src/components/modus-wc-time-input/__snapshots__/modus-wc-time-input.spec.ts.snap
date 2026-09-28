@@ -39,7 +39,7 @@ exports[`modus-wc-time-input should render with default props 1`] = `
 exports[`modus-wc-time-input should render with error feedback 1`] = `
 <modus-wc-time-input value="">
   <div class="time-input-container time-input-container--md">
-    <input aria-invalid="" aria-keyshortcuts="Alt+ArrowDown" aria-label="Error input" autocomplete="off" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_6" inputmode="numeric" type="text" value="--:--">
+    <input aria-invalid="" aria-keyshortcuts="Alt+ArrowDown" aria-label="Error input" autocomplete="off" class="modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-time-input" id="mwc_id_9" inputmode="numeric" type="text" value="--:--">
     <modus-wc-button aria-label="Toggle time picker" class="clock-icon-trigger" color="tertiary" shape="square" size="xs" variant="borderless">
       <modus-wc-icon decorative="" name="clock" size="xs"></modus-wc-icon>
     </modus-wc-button>
