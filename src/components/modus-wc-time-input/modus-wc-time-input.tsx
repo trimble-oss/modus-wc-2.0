@@ -39,7 +39,11 @@ import {
   unbindBeforeInputListener,
 } from './utils/time-input-keyboard';
 import { scheduleWheelSelectionFocus } from './utils/time-listbox-keyboard';
-import { resolveWheelState, valueFromWheelState } from './utils/time-options';
+import {
+  IWheelState,
+  resolveWheelState,
+  valueFromWheelState,
+} from './utils/time-options';
 import {
   IWheelSelectionPartial,
   TimeDatalistDropdown,
@@ -115,8 +119,12 @@ export class ModusWcTimeInput {
   private valueAtDropdownOpen: string | null = null;
   /** Current time the picker opens on while `value` is empty; never committed. */
   private pickerSeedValue: string | null = null;
-  /** Set on label click, before the browser focuses the field and forwards a click. */
-  private focusFromLabel = false;
+  /** Set by a label click so the focus that follows lands on the hour. */
+  private selectHourOnFocus = false;
+  /** Set by a clock press so the focus that follows highlights no segment. */
+  private skipSegmentSelectOnFocus = false;
+  /** Set on clock mousedown so the following buttonClick knows it came from a pointer. */
+  private clockPointerActivation = false;
   private wheelScrollPositions = new Map<string, number>();
   private pendingSegmentSelect: SegmentKind | null = null;
   private segmentDigitBuffer = '';
@@ -359,6 +367,10 @@ export class ModusWcTimeInput {
     unbindCircularWheelListeners(this.wheelScrollCleanups);
     this.wheelScrollCleanups = [];
     this.cancelFocusSelect();
+    this.dropdownRef?.removeEventListener(
+      'mousedown',
+      this.handlePickerPointerDown
+    );
     unbindBeforeInputListener(this.inputRef, this.handleBeforeInput);
     if (this.popperInstance) {
       this.popperInstance.destroy();
@@ -602,21 +614,41 @@ export class ModusWcTimeInput {
   }
 
   private toggleDropdown = () => {
+    const fromPointer = this.clockPointerActivation;
+    this.clockPointerActivation = false;
     if (this.disabled || this.readOnly) {
       return;
     }
-    if (!this.showDropdown) {
-      this.pendingScrollToSelection = true;
-      this.pendingFocusPickerOnOpen = true;
-      this.valueAtDropdownOpen = this.value;
-      this.seedPickerValue();
+    if (this.showDropdown) {
+      this.closeDropdown();
+      return;
     }
-    this.showDropdown = !this.showDropdown;
+    this.pendingScrollToSelection = true;
+    // A pointer open keeps focus (and the focus border) on the field; only a
+    // keyboard open hands focus to the picker rows.
+    this.pendingFocusPickerOnOpen = !fromPointer;
+    this.valueAtDropdownOpen = this.value;
+    this.seedPickerValue();
+    this.showDropdown = true;
   };
 
   private handleClockMouseDown = (event: MouseEvent) => {
     // Keep focus on the text field; the clock control is chrome inside the input.
     event.preventDefault();
+    this.clockPointerActivation = true;
+    // Cancelling mousedown also cancels the browser's own focus change, so a
+    // first press on the clock would leave the control unfocused.
+    if (
+      !this.disabled &&
+      !this.readOnly &&
+      this.inputRef &&
+      document.activeElement !== this.inputRef
+    ) {
+      // The clock opens the picker, so show the focus border without
+      // highlighting a segment.
+      this.skipSegmentSelectOnFocus = true;
+      this.inputRef.focus({ preventScroll: true });
+    }
   };
 
   private openDropdown() {
@@ -814,11 +846,11 @@ export class ModusWcTimeInput {
   }
 
   private handleLabelClick = () => {
-    this.focusFromLabel = true;
+    this.selectHourOnFocus = true;
     // Label activation focuses and clicks the field in this same task, which
     // consumes the flag; clear it afterwards if nothing did (disabled field).
     requestAnimationFrame(() => {
-      this.focusFromLabel = false;
+      this.selectHourOnFocus = false;
     });
   };
 
@@ -939,8 +971,11 @@ export class ModusWcTimeInput {
         this.focusSelectFrame = null;
         if (fromClock) {
           this.selectSegment(segments[segments.length - 1]);
-        } else if (this.focusFromLabel) {
-          this.focusFromLabel = false;
+        } else if (this.skipSegmentSelectOnFocus) {
+          this.skipSegmentSelectOnFocus = false;
+          this.placeCaretAtStart();
+        } else if (this.selectHourOnFocus) {
+          this.selectHourOnFocus = false;
           this.selectHourSegment();
         } else {
           this.selectSegmentAtCaret();
@@ -949,6 +984,18 @@ export class ModusWcTimeInput {
     }
     this.enterComponentFocus(event);
   };
+
+  /** Collapse the caret before the hour so typing enters it, with nothing highlighted. */
+  private placeCaretAtStart() {
+    if (!this.inputRef) {
+      return;
+    }
+    this.activeSegmentKind = 'hour';
+    this.segmentDigitBuffer = '';
+    if (typeof this.inputRef.setSelectionRange === 'function') {
+      this.inputRef.setSelectionRange(0, 0);
+    }
+  }
 
   private selectSegmentAtCaret() {
     if (!this.inputRef) {
@@ -968,8 +1015,8 @@ export class ModusWcTimeInput {
       return;
     }
     this.cancelFocusSelect();
-    if (this.focusFromLabel) {
-      this.focusFromLabel = false;
+    if (this.selectHourOnFocus) {
+      this.selectHourOnFocus = false;
       this.selectHourSegment();
       return;
     }
@@ -1004,7 +1051,23 @@ export class ModusWcTimeInput {
     this.inputRef = el;
   };
 
+  /**
+   * Pressing anywhere in the dropdown must not pull focus off the field; clicks
+   * still fire, so picking works as normal.
+   */
+  private readonly handlePickerPointerDown = (event: MouseEvent): void => {
+    event.preventDefault();
+  };
+
   private setDropdownRef = (el: HTMLElement | undefined) => {
+    if (this.dropdownRef === el) {
+      return;
+    }
+    this.dropdownRef?.removeEventListener(
+      'mousedown',
+      this.handlePickerPointerDown
+    );
+    el?.addEventListener('mousedown', this.handlePickerPointerDown);
     this.dropdownRef = el;
   };
 
@@ -1013,12 +1076,12 @@ export class ModusWcTimeInput {
       return;
     }
     saveWheelScrollPositions(this.dropdownRef, this.wheelScrollPositions);
-    const current = resolveWheelState(
+    const current: IWheelState = resolveWheelState(
       this.pickerValue,
       this.effectiveShowSeconds,
       this.resolvedFormat
     );
-    const nextState = { ...current, ...partial };
+    const nextState: IWheelState = { ...current, ...partial };
     const next24h = valueFromWheelState(
       nextState,
       this.effectiveShowSeconds,

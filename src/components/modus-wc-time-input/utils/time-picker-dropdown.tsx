@@ -187,10 +187,14 @@ const TimeWheel: FunctionalComponent<{
                   return;
                 }
                 onSelect(opt.value);
-                // Keep the roving tabindex on the row the pointer just picked.
-                scheduleWheelSelectionFocus(
-                  (e.currentTarget as HTMLElement).closest('[role="listbox"]')
+                // Follow the pick with focus only during a keyboard session in
+                // the wheel; a pointer pick leaves focus on the field.
+                const listbox = (e.currentTarget as HTMLElement).closest(
+                  '[role="listbox"]'
                 );
+                if (listbox?.contains(document.activeElement)) {
+                  scheduleWheelSelectionFocus(listbox);
+                }
               }}
               onKeyDown={(e: KeyboardEvent) =>
                 handleWheelOptionKeyDown(
