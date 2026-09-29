@@ -193,33 +193,43 @@ export interface IKeyboardDropSlot {
   position: TreeDropPosition;
 }
 
-const isInvalidKeyboardTarget = (
-  nodes: ITreeNode[],
-  moveId: string,
-  node: ITreeNode
-): boolean =>
-  !!node.disabled || node.id === moveId || isDescendant(nodes, moveId, node.id);
+interface IIndexedNode {
+  parentId?: string;
+  index: number;
+  // Own `disabled` or any ancestor's `disabled`.
+  locked: boolean;
+  // Inside the moved node's subtree (including the node itself).
+  moving: boolean;
+}
 
-/**
- * Whether applying `slot` would leave `moveId` in place. `before` the next
- * sibling and `after` the previous sibling are the node's current location.
- */
-const isNoOpKeyboardSlot = (
+// One walk that records every node's location and state, so slot building
+// does constant-time lookups instead of re-searching the tree per node.
+const indexForMove = (
   nodes: ITreeNode[],
-  moveId: string,
-  slot: IKeyboardDropSlot
-): boolean => {
-  const from = getNodeLocation(nodes, moveId)!;
-  if (slot.position === 'inside') {
-    return from.parentId === slot.targetId && from.index === 0;
-  }
-
-  const targetLoc = getNodeLocation(nodes, slot.targetId)!;
-  let destIndex = targetLoc.index + (slot.position === 'after' ? 1 : 0);
-  if (targetLoc.parentId === from.parentId && targetLoc.index > from.index) {
-    destIndex -= 1;
-  }
-  return targetLoc.parentId === from.parentId && destIndex === from.index;
+  moveId: string
+): Map<string, IIndexedNode> => {
+  const index = new Map<string, IIndexedNode>();
+  const walk = (
+    list: ITreeNode[],
+    parentId: string | undefined,
+    locked: boolean,
+    moving: boolean
+  ): void => {
+    list.forEach((node, i) => {
+      const entry = {
+        parentId,
+        index: i,
+        locked: locked || !!node.disabled,
+        moving: moving || node.id === moveId,
+      };
+      index.set(node.id, entry);
+      if (node.children?.length) {
+        walk(node.children, node.id, entry.locked, entry.moving);
+      }
+    });
+  };
+  walk(nodes, undefined, false, false);
+  return index;
 };
 
 /**
@@ -228,35 +238,49 @@ const isNoOpKeyboardSlot = (
  * valid sibling. `inside` an expanded parent is omitted when it is the same
  * point as `before` its first valid child. The node's current location is
  * omitted. Invalid targets match pointer drag: self, descendants, and
- * `disabled` nodes.
+ * disabled nodes (own or inherited from an ancestor).
  */
 export const getKeyboardDropSlots = (
   nodes: ITreeNode[],
   moveId: string,
   isExpanded: (id: string) => boolean
 ): IKeyboardDropSlot[] => {
-  if (!findNode(nodes, moveId)) return [];
+  const index = indexForMove(nodes, moveId);
+  const from = index.get(moveId);
+  if (!from) return [];
+
+  const isTarget = (node?: ITreeNode): boolean => {
+    const entry = node && index.get(node.id);
+    return !!entry && !entry.locked && !entry.moving;
+  };
+
+  // A slot is a no-op when applying it would leave `moveId` in place.
+  const isNoOp = ({ targetId, position }: IKeyboardDropSlot): boolean => {
+    if (position === 'inside') {
+      return from.parentId === targetId && from.index === 0;
+    }
+    const target = index.get(targetId)!;
+    if (target.parentId !== from.parentId) return false;
+    let destIndex = target.index + (position === 'after' ? 1 : 0);
+    if (target.index > from.index) destIndex -= 1;
+    return destIndex === from.index;
+  };
 
   const slots: IKeyboardDropSlot[] = [];
   const push = (slot: IKeyboardDropSlot): void => {
-    if (isNoOpKeyboardSlot(nodes, moveId, slot)) return;
-    slots.push(slot);
+    if (!isNoOp(slot)) slots.push(slot);
   };
 
   const visit = (list: ITreeNode[]): void => {
-    list.forEach((node, index) => {
-      const valid = !isInvalidKeyboardTarget(nodes, moveId, node);
+    list.forEach((node, i) => {
+      const valid = isTarget(node);
       const expanded = isExpanded(node.id) && !!node.children?.length;
-      const next = list[index + 1];
-      const nextCoversAfter =
-        !!next && !isInvalidKeyboardTarget(nodes, moveId, next);
+      const nextCoversAfter = isTarget(list[i + 1]);
 
       if (valid) push({ targetId: node.id, position: 'before' });
 
       if (expanded) {
-        const first = node.children![0];
-        const firstBeforeExists =
-          !!first && !isInvalidKeyboardTarget(nodes, moveId, first);
+        const firstBeforeExists = isTarget(node.children![0]);
         // `inside` is the first-child line. Emit it (before the children, to
         // keep visual order) only when the first child cannot represent it.
         if (valid && !firstBeforeExists) {

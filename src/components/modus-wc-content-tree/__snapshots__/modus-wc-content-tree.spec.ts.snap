@@ -2,10 +2,6 @@
 
 exports[`modus-wc-content-tree should render with custom props and sample nodes 1`] = `
 <modus-wc-content-tree class="my-tree">
-  <div class="modus-wc-sr-only" id="content-tree-drag-instructions-2">
-    Press Space or Enter to pick up. Use the arrow keys to choose a position, Space or Enter to drop, and Escape to cancel.
-  </div>
-  <div aria-atomic="true" aria-live="polite" class="modus-wc-sr-only" role="status"></div>
   <modus-wc-tree-menu selection-mode="single">
     <!---->
     <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-lg modus-wc-w-full" role="menu">
@@ -996,10 +992,6 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
 
 exports[`modus-wc-content-tree should render with default props 1`] = `
 <modus-wc-content-tree>
-  <div class="modus-wc-sr-only" id="content-tree-drag-instructions-0">
-    Press Space or Enter to pick up. Use the arrow keys to choose a position, Space or Enter to drop, and Escape to cancel.
-  </div>
-  <div aria-atomic="true" aria-live="polite" class="modus-wc-sr-only" role="status"></div>
   <modus-wc-tree-menu selection-mode="single">
     <!---->
     <ul aria-label="Content tree" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>

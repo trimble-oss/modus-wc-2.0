@@ -197,8 +197,10 @@ export class ModusWcContentTree {
   // Off-document clone passed to setDragImage; removed on drop / drag end.
   private dragGhost?: HTMLElement;
 
-  // Focus the moved (or cancelled) row's reorder handle after render. Kept
-  // across one `nodes` update so a recreated row receives focus.
+  // Focus the moved (or cancelled) row's reorder handle after render. After a
+  // drop, `handleFocusId` also carries focus across the app's `nodes` update so
+  // a recreated row receives it; it expires one frame after the drop renders so
+  // a later, unrelated update never steals focus.
   private pendingHandleFocusId?: string;
   private handleFocusId?: string;
 
@@ -228,9 +230,9 @@ export class ModusWcContentTree {
 
   @Watch('allowDragDrop')
   onAllowDragDropChange(enabled?: boolean): void {
-    if (!enabled && this.keyboardGrabId) {
-      this.cancelKeyboardGrab({ silent: true });
-    }
+    if (enabled) return;
+    if (this.keyboardGrabId) this.cancelKeyboardGrab({ silent: true });
+    this.liveMessage = '';
   }
 
   @Watch('editingNodeId')
@@ -337,7 +339,10 @@ export class ModusWcContentTree {
     const focusId = this.pendingHandleFocusId;
     if (focusId) {
       this.pendingHandleFocusId = undefined;
-      requestAnimationFrame(() => this.focusDragHandle(focusId));
+      requestAnimationFrame(() => {
+        this.focusDragHandle(focusId);
+        if (this.handleFocusId === focusId) this.handleFocusId = undefined;
+      });
     }
 
     if (!this.editFocusPending || !this.editingNodeId) return;
@@ -412,8 +417,7 @@ export class ModusWcContentTree {
       !!this.allowDragDrop &&
       !this.isFiltering() &&
       this.editingNodeId !== node.id &&
-      !node.disabled &&
-      !hasDisabledAncestor(this.getNodes(), node.id)
+      !this.isLocked(node)
     );
   }
 
@@ -422,50 +426,38 @@ export class ModusWcContentTree {
     const initial = this.initialKeyboardSlot(slots, node.id);
     const label = node.label || 'item';
     if (!initial) {
-      this.liveMessage = `Cannot move ${label}.`;
+      this.announce(`Cannot move ${label}.`);
       return;
     }
     this.keyboardGrabId = node.id;
     this.draggingId = node.id;
     this.setKeyboardSlot(initial);
-    this.liveMessage = `Grabbed ${label}. Use arrow keys to move, Space or Enter to drop, Escape to cancel. ${this.slotAnnouncement(initial)}`;
+    this.announce(
+      `Grabbed ${label}. Use arrow keys to move, Space or Enter to drop, Escape to cancel. ${this.slotAnnouncement(initial)}`
+    );
   }
 
+  private readonly grabbedKeyActions: Record<string, () => void> = {
+    Escape: () => this.cancelKeyboardGrab(),
+    ' ': () => this.commitKeyboardGrab(),
+    Enter: () => this.commitKeyboardGrab(),
+    ArrowDown: () => this.moveKeyboardDrop(1),
+    ArrowUp: () => this.moveKeyboardDrop(-1),
+    ArrowRight: () => this.nestKeyboardDrop(),
+    ArrowLeft: () => this.promoteKeyboardDrop(),
+  };
+
   private handleGrabbedKey(event: KeyboardEvent): void {
+    // Tab cancels but keeps its default so focus follows normal tab order.
     if (event.key === 'Tab') {
       this.cancelKeyboardGrab({ restoreFocus: false });
       return;
     }
-
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.cancelKeyboardGrab();
-      return;
-    }
-    if (event.key === ' ' || event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.commitKeyboardGrab();
-      return;
-    }
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.moveKeyboardDrop(event.key === 'ArrowDown' ? 1 : -1);
-      return;
-    }
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.nestKeyboardDrop();
-      return;
-    }
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.promoteKeyboardDrop();
-    }
+    const action = this.grabbedKeyActions[event.key];
+    if (!action) return;
+    event.preventDefault();
+    event.stopPropagation();
+    action();
   }
 
   private moveKeyboardDrop(direction: 1 | -1): void {
@@ -483,11 +475,11 @@ export class ModusWcContentTree {
     }
     const next = index + direction;
     if (next < 0) {
-      this.liveMessage = 'Start of the tree.';
+      this.announce('Start of the tree.');
       return;
     }
     if (next >= slots.length) {
-      this.liveMessage = 'End of the tree.';
+      this.announce('End of the tree.');
       return;
     }
     this.setKeyboardSlot(slots[next]);
@@ -624,7 +616,7 @@ export class ModusWcContentTree {
   ): void {
     this.dragOverId = slot.targetId;
     this.dropPosition = slot.position;
-    this.liveMessage = announcement ?? this.slotAnnouncement(slot);
+    this.announce(announcement ?? this.slotAnnouncement(slot));
     this.scrollDropTargetIntoView(slot.targetId);
   }
 
@@ -674,7 +666,7 @@ export class ModusWcContentTree {
     this.keyboardGrabId = undefined;
     this.draggingId = undefined;
     this.clearDropState();
-    this.liveMessage = `Dropped ${label} ${position} ${target.label || 'item'}.`;
+    this.announce(`Dropped ${label} ${position} ${target.label || 'item'}.`);
   }
 
   private cancelKeyboardGrab(options?: {
@@ -690,8 +682,18 @@ export class ModusWcContentTree {
       this.pendingHandleFocusId = undefined;
       return;
     }
-    this.liveMessage = 'Drag canceled.';
-    if (id && options?.restoreFocus !== false) this.queueHandleFocus(id);
+    this.announce('Drag canceled.');
+    // No `nodes` update follows a cancel, so focus is restored on this render
+    // only and never carried to a later update.
+    this.handleFocusId = undefined;
+    if (id && options?.restoreFocus !== false) this.pendingHandleFocusId = id;
+  }
+
+  // Screen readers skip a live region whose text did not change, so a repeated
+  // message alternates a trailing no-break space to be announced again.
+  private announce(message: string): void {
+    this.liveMessage =
+      this.liveMessage === message ? `${message}\u00a0` : message;
   }
 
   private queueHandleFocus(id: string): void {
@@ -714,6 +716,25 @@ export class ModusWcContentTree {
     return Array.from(this.el.querySelectorAll('modus-wc-tree-item')).find(
       (item) => (item as HTMLElement & { value?: string }).value === id
     );
+  }
+
+  // Handle description (referenced by aria-describedby) and the live region
+  // for keyboard drag announcements.
+  private renderKeyboardDragText(): VNode[] {
+    return [
+      <div class="modus-wc-sr-only" id={this.dragInstructionsId}>
+        Press Space or Enter to pick up. Use the arrow keys to choose a
+        position, Space or Enter to drop, and Escape to cancel.
+      </div>,
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        class="modus-wc-sr-only"
+        role="status"
+      >
+        {this.liveMessage}
+      </div>,
+    ];
   }
 
   // Remove the native keydown listener bound to the inline-edit input and clear
@@ -816,7 +837,7 @@ export class ModusWcContentTree {
   // `moveNodeRelative`) without tearing down the drag source mid-gesture.
 
   private handleDragStart = (e: DragEvent, node: ITreeNode) => {
-    if (!this.allowDragDrop || node.disabled) return;
+    if (!this.allowDragDrop || this.isLocked(node)) return;
     if (this.keyboardGrabId) {
       this.cancelKeyboardGrab({ silent: true });
     }
@@ -1009,14 +1030,20 @@ export class ModusWcContentTree {
   }
 
   // A node cannot be dropped onto itself, into its own subtree (would orphan the
-  // branch), or onto a disabled row.
+  // branch), or onto a disabled row (own or inherited lock).
   private isInvalidDropTarget(
     node: ITreeNode,
     moveId = this.draggingId
   ): boolean {
     if (!moveId) return true;
-    if (node.disabled || node.id === moveId) return true;
+    if (this.isLocked(node) || node.id === moveId) return true;
     return isDescendant(this.getNodes(), moveId, node.id);
+  }
+
+  // Disabled directly or through an ancestor. One rule for drag sources and
+  // drop targets, pointer and keyboard alike.
+  private isLocked(node: ITreeNode): boolean {
+    return !!node.disabled || hasDisabledAncestor(this.getNodes(), node.id);
   }
 
   // Split the target row into three zones by pointer position: the top edge
@@ -1850,18 +1877,7 @@ export class ModusWcContentTree {
 
     return (
       <Host class={this.customClass || undefined}>
-        <div class="modus-wc-sr-only" id={this.dragInstructionsId}>
-          Press Space or Enter to pick up. Use the arrow keys to choose a
-          position, Space or Enter to drop, and Escape to cancel.
-        </div>
-        <div
-          aria-atomic="true"
-          aria-live="polite"
-          class="modus-wc-sr-only"
-          role="status"
-        >
-          {this.liveMessage}
-        </div>
+        {this.allowDragDrop ? this.renderKeyboardDragText() : null}
         {this.renderControls()}
         {/* The inner menu stays in 'single' mode so a row click only sets the
             active node. Multi-select is handled by our own checkboxes (rendered
