@@ -86,7 +86,7 @@ export const hiddenScrollLockExampleSourceCode = `
         <modus-wc-typography hierarchy="p" size="md">
           Default Modus styles keep the page scrollable while a dialog is open. This
           demo applies the optional pattern from
-          <code>wireDialogScrollLockExample</code> in the story source.
+          <code>wireDialogScrollLock</code> in the script below.
         </modus-wc-typography>
         <modus-wc-alert
           variant="info"
