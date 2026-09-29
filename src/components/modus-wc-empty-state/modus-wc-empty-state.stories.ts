@@ -204,7 +204,7 @@ export const WithoutAction: Story = {
   },
   args: {
     variant: 'compact',
-    illustration: 'symbol_info',
+    illustration: 'selection_plus',
     heading: 'Nothing here yet',
     subtitle: 'Create your first item to populate this view.',
     'action-label': undefined,
