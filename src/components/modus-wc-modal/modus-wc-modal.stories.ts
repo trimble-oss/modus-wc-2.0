@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { generateRandomId } from '../utils';
+import { hiddenScrollLockExampleSourceCode } from './modus-wc-modal.story-source';
 
 interface ModalArgs {
   backdrop: 'default' | 'static';
@@ -64,6 +65,19 @@ const measureScrollbarWidth = (): number =>
     getScrollbarWidth(),
     window.innerWidth - document.documentElement.clientWidth
   );
+
+const resolveModalDialog = (modalId: string): HTMLDialogElement | null => {
+  const byId = document.getElementById(modalId);
+  if (byId instanceof HTMLDialogElement) {
+    return byId;
+  }
+
+  const host = document.querySelector(
+    `modus-wc-modal[modal-id="${CSS.escape(modalId)}"]`
+  );
+  const nested = host?.querySelector('dialog');
+  return nested instanceof HTMLDialogElement ? nested : null;
+};
 
 /** Story-only: hide page scroll and compensate with body padding-right (not default Modus CSS). */
 const wireDialogScrollLockExample = (
@@ -284,7 +298,7 @@ See \`wireDialogScrollLockExample\` in this story source file.
         `,
       },
       source: {
-        type: 'code',
+        code: hiddenScrollLockExampleSourceCode,
       },
     },
   },
@@ -292,25 +306,32 @@ See \`wireDialogScrollLockExample\` in this story source file.
     const modalId = `body-padding-demo-${generateRandomId(4)}`;
     let teardown: (() => void) | undefined;
 
-    const getDialog = (): HTMLDialogElement | null =>
-      document.getElementById(modalId) as HTMLDialogElement | null;
+    const ensureWired = async (): Promise<HTMLDialogElement | null> => {
+      if (!customElements.get('modus-wc-modal')) {
+        await customElements.whenDefined('modus-wc-modal');
+      }
 
-    const ensureWired = (): HTMLDialogElement | null => {
-      const dialog = getDialog();
       document.documentElement.classList.add(
         'modus-wc-modal-scroll-lock-story'
       );
-      if (!dialog || dialog.dataset.bodyPaddingWired === 'true') {
+
+      const dialog = resolveModalDialog(modalId);
+      if (!dialog) {
+        return null;
+      }
+
+      if (dialog.dataset.bodyPaddingWired === 'true') {
         return dialog;
       }
+
       teardown?.();
       teardown = wireDialogScrollLockExample(dialog);
       dialog.dataset.bodyPaddingWired = 'true';
       return dialog;
     };
 
-    const handleModalVisibility = (action: 'show' | 'hide') => {
-      const dialog = ensureWired();
+    const handleModalVisibility = async (action: 'show' | 'hide') => {
+      const dialog = await ensureWired();
       if (!dialog) {
         return;
       }
