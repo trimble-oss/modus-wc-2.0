@@ -52,7 +52,7 @@ export class ModusWcEmptyState {
    * illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`;
    * error — `error_404`, `error_404_page`.
    */
-  @Prop() illustration?: string;
+  @Prop() illustration?: EmptyStateIllustration;
 
   /** Primary heading text. */
   @Prop() heading!: string;
@@ -83,22 +83,12 @@ export class ModusWcEmptyState {
       return fallback;
     }
 
-    if (!(requested in ILLUSTRATION_VARIANTS)) {
-      console.warn(
-        `Illustration "${requested}" is not valid for variant "${this.variant}". Using "${fallback}".`
-      );
+    const info = ILLUSTRATION_VARIANTS[requested];
+    if (!info || info.layoutVariant !== this.variant) {
       return fallback;
     }
 
-    const info = ILLUSTRATION_VARIANTS[requested as EmptyStateIllustration];
-    if (info.layoutVariant !== this.variant) {
-      console.warn(
-        `Illustration "${requested}" is not valid for variant "${this.variant}". Using "${fallback}".`
-      );
-      return fallback;
-    }
-
-    return requested as EmptyStateIllustration;
+    return requested;
   }
 
   private scopeForPath(path: string): string {

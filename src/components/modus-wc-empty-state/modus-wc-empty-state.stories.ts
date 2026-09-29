@@ -5,13 +5,24 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { keyed } from 'lit/directives/keyed.js';
 import {
   DEFAULT_ILLUSTRATION_BY_VARIANT,
+  EmptyStateIllustration,
   EmptyStateVariant,
+  getIllustrationsForVariant,
+  ILLUSTRATION_VARIANTS,
 } from './illustration-constants';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
+const ALL_ILLUSTRATION_OPTIONS = Object.keys(
+  ILLUSTRATION_VARIANTS
+) as EmptyStateIllustration[];
+
+const COMPACT_ILLUSTRATION_OPTIONS = getIllustrationsForVariant('compact');
+const ILLUSTRATION_LAYOUT_OPTIONS = getIllustrationsForVariant('illustration');
+const ERROR_ILLUSTRATION_OPTIONS = getIllustrationsForVariant('error');
+
 interface EmptyStateArgs {
   variant: EmptyStateVariant;
-  illustration?: string;
+  illustration?: EmptyStateIllustration;
   heading: string;
   subtitle?: string;
   'action-label'?: string;
@@ -35,9 +46,10 @@ const meta: Meta<EmptyStateArgs> = {
       options: ['compact', 'illustration', 'error'],
     },
     illustration: {
-      control: 'text',
+      control: { type: 'select' },
+      options: ALL_ILLUSTRATION_OPTIONS,
       table: {
-        type: { summary: 'string' },
+        type: { summary: 'EmptyStateIllustration' },
       },
     },
   },
@@ -48,7 +60,7 @@ const meta: Meta<EmptyStateArgs> = {
     docs: {
       description: {
         component:
-          'Use the `illustration` prop to choose a bundled graphic. Allowed values depend on `variant`. **Default** covers compact; see **Illustration** and **Error404** for the other layouts.',
+          'Use the `illustration` prop to choose a bundled graphic. Allowed values depend on `variant`. **Default** exposes all layout variants; **Compact**, **Illustration**, and **Error404** stories limit controls to that variant’s illustrations.',
       },
     },
   },
@@ -83,14 +95,50 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'Default `variant="compact"`. `illustration` options: `selection_plus`, `symbol_info`, `add_user`. Default illustration: `selection_plus`.',
+          'Playground with `variant` (`compact`, `illustration`, `error`) and the full illustration list. Pick a layout variant, then choose any bundled illustration (mismatches fall back to that variant’s default).',
       },
     },
   },
 };
 
+export const Compact: Story = {
+  ...Template,
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+    illustration: {
+      control: { type: 'select' },
+      options: COMPACT_ILLUSTRATION_OPTIONS,
+      table: {
+        type: { summary: 'EmptyStateIllustration' },
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`variant="compact"`. `illustration` options: `selection_plus`, `symbol_info`, `add_user`. Default illustration: `selection_plus`.',
+      },
+    },
+  },
+  args: {
+    variant: 'compact',
+    illustration: DEFAULT_ILLUSTRATION_BY_VARIANT.compact,
+  },
+};
+
 export const Illustration: Story = {
   ...Template,
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+    illustration: {
+      control: { type: 'select' },
+      options: ILLUSTRATION_LAYOUT_OPTIONS,
+      table: {
+        type: { summary: 'EmptyStateIllustration' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -107,6 +155,16 @@ export const Illustration: Story = {
 
 export const Error404: Story = {
   ...Template,
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+    illustration: {
+      control: { type: 'select' },
+      options: ERROR_ILLUSTRATION_OPTIONS,
+      table: {
+        type: { summary: 'EmptyStateIllustration' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -126,15 +184,26 @@ export const Error404: Story = {
 
 export const WithoutAction: Story = {
   ...Template,
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+    illustration: {
+      control: { type: 'select' },
+      options: COMPACT_ILLUSTRATION_OPTIONS,
+      table: {
+        type: { summary: 'EmptyStateIllustration' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
         story:
-          'Compact layout without an action button. `illustration` options match **Default**.',
+          'Compact layout without an action button. `illustration` options match **Compact**.',
       },
     },
   },
   args: {
+    variant: 'compact',
     illustration: 'symbol_info',
     heading: 'Nothing here yet',
     subtitle: 'Create your first item to populate this view.',
@@ -150,7 +219,7 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: EmptyStateArgs, el: HTMLElement) => {
           const emptyStateEl = el as unknown as {
             variant: EmptyStateVariant;
-            illustration?: string;
+            illustration?: EmptyStateIllustration;
             heading: string;
             subtitle?: string;
             actionLabel?: string;

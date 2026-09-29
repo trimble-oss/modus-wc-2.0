@@ -72,32 +72,27 @@ describe('modus-wc-empty-state', () => {
     expect(subtitle).not.toBeNull();
   });
 
-  it('should warn and fall back when illustration does not match variant', async () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  it('should fall back when illustration does not match variant', async () => {
     const page = await newSpecPage({
       components: childComponents,
       html: `<modus-wc-empty-state variant="compact" illustration="landscape" heading="Title"></modus-wc-empty-state>`,
     });
-    expect(warnSpy).toHaveBeenCalled();
+    expect(
+      (page.rootInstance as ModusWcEmptyState)['resolveIllustrationKey']()
+    ).toBe('selection_plus');
     expect(
       page.root?.querySelector('.modus-wc-empty-state-illustration--compact')
     ).not.toBeNull();
-    warnSpy.mockRestore();
   });
 
-  it('should warn and fall back when illustration is not a known key', async () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  it('should fall back when illustration is not a known key', async () => {
     const page = await newSpecPage({
       components: childComponents,
       html: `<modus-wc-empty-state variant="compact" illustration="unknown_illustration" heading="Title"></modus-wc-empty-state>`,
     });
-    expect(warnSpy).toHaveBeenCalledWith(
-      'Illustration "unknown_illustration" is not valid for variant "compact". Using "selection_plus".'
-    );
     expect(
       (page.rootInstance as ModusWcEmptyState)['resolveIllustrationKey']()
     ).toBe('selection_plus');
-    warnSpy.mockRestore();
   });
 
   it('should apply customClass on the root container', async () => {
