@@ -1669,6 +1669,41 @@
             Event emitted when the image loads successfully.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcImageGrid">
+            <summary>
+            A responsive image grid that displays 1 to 4 images in rectangle or square layouts.  Each cell is rendered with modus-wc-image for consistent cropping, rounded corners, and fallback behavior. Grid layout CSS fills each cell; per-image dimensional size tokens on modus-wc-image are not exposed on IImageGridImage.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.CustomClass">
+            <summary>
+            Custom CSS class to apply to the grid container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ImageShape">
+            <summary>
+            Sets the cell aspect ratio layout.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ImagesPerView">
+            <summary>
+            Maximum number of images to display in the grid (1–4).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.Images">
+            <summary>
+            Images to display in the grid. Only the first N images are shown based on imagesPerView.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
             <summary>
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
