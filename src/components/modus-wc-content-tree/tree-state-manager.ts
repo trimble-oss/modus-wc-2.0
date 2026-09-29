@@ -187,6 +187,96 @@ export const moveNodeRelative = (
   return addNode(without, node, { parentId: location.parentId, index });
 };
 
+/** One keyboard drop preview: the same relative positions pointer drag emits. */
+export interface IKeyboardDropSlot {
+  targetId: string;
+  position: TreeDropPosition;
+}
+
+const isInvalidKeyboardTarget = (
+  nodes: ITreeNode[],
+  moveId: string,
+  node: ITreeNode
+): boolean =>
+  !!node.disabled || node.id === moveId || isDescendant(nodes, moveId, node.id);
+
+/**
+ * Whether applying `slot` would leave `moveId` in place. `before` the next
+ * sibling and `after` the previous sibling are the node's current location.
+ */
+const isNoOpKeyboardSlot = (
+  nodes: ITreeNode[],
+  moveId: string,
+  slot: IKeyboardDropSlot
+): boolean => {
+  const from = getNodeLocation(nodes, moveId)!;
+  if (slot.position === 'inside') {
+    return from.parentId === slot.targetId && from.index === 0;
+  }
+
+  const targetLoc = getNodeLocation(nodes, slot.targetId)!;
+  let destIndex = targetLoc.index + (slot.position === 'after' ? 1 : 0);
+  if (targetLoc.parentId === from.parentId && targetLoc.index > from.index) {
+    destIndex -= 1;
+  }
+  return targetLoc.parentId === from.parentId && destIndex === from.index;
+};
+
+/**
+ * Ordered keyboard drop slots for `moveId`. Walks only expanded branches.
+ * `after` a node is omitted when it is the same point as `before` the next
+ * valid sibling. `inside` an expanded parent is omitted when it is the same
+ * point as `before` its first valid child. The node's current location is
+ * omitted. Invalid targets match pointer drag: self, descendants, and
+ * `disabled` nodes.
+ */
+export const getKeyboardDropSlots = (
+  nodes: ITreeNode[],
+  moveId: string,
+  isExpanded: (id: string) => boolean
+): IKeyboardDropSlot[] => {
+  if (!findNode(nodes, moveId)) return [];
+
+  const slots: IKeyboardDropSlot[] = [];
+  const push = (slot: IKeyboardDropSlot): void => {
+    if (isNoOpKeyboardSlot(nodes, moveId, slot)) return;
+    slots.push(slot);
+  };
+
+  const visit = (list: ITreeNode[]): void => {
+    list.forEach((node, index) => {
+      const valid = !isInvalidKeyboardTarget(nodes, moveId, node);
+      const expanded = isExpanded(node.id) && !!node.children?.length;
+      const next = list[index + 1];
+      const nextCoversAfter =
+        !!next && !isInvalidKeyboardTarget(nodes, moveId, next);
+
+      if (valid) push({ targetId: node.id, position: 'before' });
+
+      if (expanded) {
+        const first = node.children![0];
+        const firstBeforeExists =
+          !!first && !isInvalidKeyboardTarget(nodes, moveId, first);
+        visit(node.children!);
+        // `inside` is the first-child line. Emit it only when that line was
+        // not produced (the first child is not a valid target).
+        if (valid && !firstBeforeExists) {
+          push({ targetId: node.id, position: 'inside' });
+        }
+      } else if (valid) {
+        push({ targetId: node.id, position: 'inside' });
+      }
+
+      if (valid && !nextCoversAfter) {
+        push({ targetId: node.id, position: 'after' });
+      }
+    });
+  };
+
+  visit(nodes);
+  return slots;
+};
+
 /** Deep-clone a node and its subtree, assigning a fresh id to every node via `makeId`. */
 const cloneSubtree = (node: ITreeNode, makeId: () => string): ITreeNode => ({
   ...node,

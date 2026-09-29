@@ -937,6 +937,17 @@ export const DragAndDrop: Story = {
   },
   parameters: {
     docs: {
+      description: {
+        story: `
+Keyboard reordering uses the same drop rules as pointer drag.
+
+1. Tab to a row's reorder handle.
+2. Press Space or Enter to grab. The row fades and a drop indicator appears.
+3. Arrow Up and Arrow Down move the indicator. Arrow Right nests into the target (or into an expanded folder's first child). Arrow Left promotes the preview one level.
+4. Press Space or Enter to drop. The tree emits \`nodeMove\`.
+5. Press Escape to cancel, or Tab to cancel and move focus on.
+        `,
+      },
       source: {
         code: contentTreeDragAndDropSourceCode,
       },

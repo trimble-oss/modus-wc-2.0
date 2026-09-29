@@ -5,6 +5,7 @@ import {
   collectLeafIds,
   findNode,
   getExpandableNodeIds,
+  getKeyboardDropSlots,
   hasDisabledAncestor,
   isDescendant,
   isLazyUnloaded,
@@ -49,6 +50,15 @@ interface ContentTreeHarness {
   };
   dragOverId?: string;
   dropPosition?: 'before' | 'after' | 'inside';
+  keyboardGrabId?: string;
+  isKeyboardDraggable: (node: ITreeNode) => boolean;
+  nestKeyboardDrop: () => void;
+  promoteKeyboardDrop: () => void;
+  focusDragHandle: (id: string) => void;
+  keyboardSlotsFor: (
+    moveId: string,
+    expandedId?: string
+  ) => { targetId: string; position: 'before' | 'after' | 'inside' }[];
   springLoadId?: string;
   loadingIds?: Set<string>;
   onNodesChange: () => void;
@@ -2289,6 +2299,75 @@ describe('modus-wc-content-tree', () => {
     ]);
   });
 
+  it('getKeyboardDropSlots dedupes equivalent positions and skips invalid or no-op slots', () => {
+    const nodes: ITreeNode[] = [
+      {
+        id: 'a',
+        label: 'A',
+        children: [
+          { id: 'a1', label: 'A1' },
+          {
+            id: 'a2',
+            label: 'A2',
+            children: [{ id: 'a2a', label: 'A2a' }],
+          },
+        ],
+      },
+      { id: 'b', label: 'B' },
+      { id: 'c', label: 'C', disabled: true },
+    ];
+    const expanded = (id: string) => id === 'a';
+
+    expect(getKeyboardDropSlots(nodes, 'missing', expanded)).toEqual([]);
+    expect(getKeyboardDropSlots(nodes, 'a1', expanded)).toEqual([
+      { targetId: 'a', position: 'before' },
+      { targetId: 'a2', position: 'inside' },
+      { targetId: 'a2', position: 'after' },
+      { targetId: 'b', position: 'before' },
+      { targetId: 'b', position: 'inside' },
+      { targetId: 'b', position: 'after' },
+    ]);
+    // A is already immediately before B, so that slot is the current location.
+    // A collapsed branch stays out of the list; descendants of the move are invalid.
+    expect(getKeyboardDropSlots(nodes, 'a', expanded)).toEqual([
+      { targetId: 'b', position: 'inside' },
+      { targetId: 'b', position: 'after' },
+    ]);
+    expect(
+      getKeyboardDropSlots(nodes, 'a', () => false).some(
+        (slot) => slot.targetId === 'a2a'
+      )
+    ).toBe(false);
+  });
+
+  it('getKeyboardDropSlots keeps inside when an expanded parent has no valid first child', () => {
+    const nodes: ITreeNode[] = [
+      {
+        id: 'p',
+        label: 'P',
+        children: [
+          { id: 'd', label: 'D', disabled: true },
+          { id: 'ok', label: 'Ok' },
+        ],
+      },
+      { id: 'm', label: 'Move' },
+    ];
+    const slots = getKeyboardDropSlots(nodes, 'm', (id) => id === 'p');
+    expect(slots).toContainEqual({ targetId: 'p', position: 'inside' });
+    expect(slots).not.toContainEqual({ targetId: 'd', position: 'before' });
+  });
+
+  it('getKeyboardDropSlots keeps inside on a lazy unloaded node', () => {
+    const nodes: ITreeNode[] = [
+      { id: 'lazy', label: 'Lazy', hasChildren: true },
+      { id: 'leaf', label: 'Leaf' },
+    ];
+    expect(getKeyboardDropSlots(nodes, 'leaf', () => false)).toEqual([
+      { targetId: 'lazy', position: 'before' },
+      { targetId: 'lazy', position: 'inside' },
+    ]);
+  });
+
   it('moveNodeRelative rejects invalid moves and returns the input unchanged', () => {
     expect(moveNodeRelative(sampleNodes, 'root-1', 'root-1', 'before')).toBe(
       sampleNodes
@@ -3406,5 +3485,734 @@ describe('modus-wc-content-tree', () => {
     const { component } = await createTreePage({ expandedNodeIds: ['root-1'] });
 
     expect(() => component.renderNode(getNode('leaf-a'))).not.toThrow();
+  });
+
+  const dragHandle = (page: SpecPage, id: string) =>
+    findTreeItem(page, id)?.querySelector<HTMLButtonElement>(
+      'modus-wc-button.modus-wc-content-tree-drag-handle button'
+    );
+
+  const statusText = (page: SpecPage) =>
+    page.root?.querySelector('[role="status"]')?.textContent ?? '';
+
+  const pressKey = async (
+    page: SpecPage,
+    component: ContentTreeHarness,
+    key: string,
+    target?: Element | null,
+    extras: Partial<KeyboardEvent> = {}
+  ) => {
+    const event = {
+      key,
+      target:
+        target === undefined
+          ? (dragHandle(page, 'leaf-a') ?? page.root)
+          : target,
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+      metaKey: false,
+      ctrlKey: false,
+      altKey: false,
+      ...extras,
+    };
+    (component as unknown as ModusWcContentTree).handleTreeKeyDown(
+      event as unknown as KeyboardEvent
+    );
+    await page.waitForChanges();
+    return event;
+  };
+
+  const flushFrame = () =>
+    new Promise((resolve) => {
+      requestAnimationFrame(() => resolve(undefined));
+    });
+
+  it('should describe each reorder handle and ignore Space on the row', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    const instructions = page.root?.querySelector(
+      '[id^="content-tree-drag-instructions"]'
+    );
+    expect(handle?.getAttribute('aria-describedby')).toBe(instructions?.id);
+    expect(instructions?.textContent).toContain('Space or Enter to pick up');
+
+    const row = findTreeItem(page, 'leaf-a')?.querySelector('li');
+    await pressKey(page, component, ' ', row);
+    await pressKey(page, component, 'Enter', row);
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+    expect(statusText(page)).toBe('');
+  });
+
+  it('should grab from the handle, move the indicator, nest, and drop', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeMove = jest.fn();
+    const nodeExpandChange = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+    page.root?.addEventListener('nodeExpandChange', nodeExpandChange);
+    const targetRow = findTreeItem(page, 'parent-b')?.querySelector(
+      '.modus-wc-menu-item-interactive'
+    ) as HTMLElement;
+    targetRow.scrollIntoView = jest.fn();
+
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, 'Enter', handle);
+
+    expect(statusText(page)).toContain('Grabbed Overview');
+    expect(statusText(page)).toContain('Space or Enter to drop');
+    expect(statusText(page)).toContain('Before Resources');
+    expect(handle?.getAttribute('aria-pressed')).toBe('true');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeTruthy();
+    expect(targetRow.scrollIntoView).toHaveBeenCalledWith({
+      block: 'nearest',
+    });
+
+    await pressKey(page, component, 'ArrowUp', handle);
+    expect(statusText(page)).toContain('Before Project Files');
+    await pressKey(page, component, 'ArrowUp', handle);
+    expect(statusText(page)).toBe('Start of the tree');
+
+    await pressKey(page, component, 'ArrowDown', handle);
+    expect(statusText(page)).toContain('Before Resources');
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Resources');
+    expect(
+      findTreeItem(page, 'parent-b')
+        ?.querySelector('li')
+        ?.classList.contains('modus-wc-content-tree-drop-inside')
+    ).toBe(true);
+
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(nodeExpandChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'parent-b', expanded: true },
+      })
+    );
+
+    await pressKey(page, component, 'ArrowLeft', handle);
+    expect(statusText(page)).toContain('After Resources');
+
+    const focusHandle = jest.spyOn(
+      component as unknown as { focusDragHandle: (id: string) => void },
+      'focusDragHandle'
+    );
+    await pressKey(page, component, 'ArrowRight', handle);
+    await pressKey(page, component, ' ', handle);
+    expect(nodeMove).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          id: 'leaf-a',
+          targetId: 'parent-b',
+          position: 'inside',
+        },
+      })
+    );
+    expect(nodeExpandChange).toHaveBeenCalledTimes(2);
+    expect(statusText(page)).toBe('Dropped Overview inside Resources.');
+    await flushFrame();
+    expect(focusHandle).toHaveBeenCalledWith('leaf-a');
+  });
+
+  it('should announce the end of the tree and nest into an expanded folder', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+    const handle = dragHandle(page, 'leaf-b2');
+    await pressKey(page, component, ' ', handle);
+    for (
+      let step = 0;
+      step < 12 && statusText(page) !== 'End of the tree';
+      step += 1
+    ) {
+      await pressKey(page, component, 'ArrowDown', handle);
+    }
+    expect(statusText(page)).toBe('End of the tree');
+
+    const folderHandle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, 'Escape', handle);
+    await pressKey(page, component, 'Enter', folderHandle);
+    for (
+      let step = 0;
+      step < 12 && !statusText(page).includes('Before Resources');
+      step += 1
+    ) {
+      await pressKey(page, component, 'ArrowDown', folderHandle);
+    }
+    await pressKey(page, component, 'ArrowRight', folderHandle);
+    expect(statusText(page)).toContain('Nesting inside Resources');
+    expect(
+      findTreeItem(page, 'leaf-b1')
+        ?.querySelector('li')
+        ?.classList.contains('modus-wc-content-tree-drop-before')
+    ).toBe(true);
+  });
+
+  it('should cancel a keyboard drag with Escape or Tab and restore the handle on Escape', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+    const handle = dragHandle(page, 'leaf-a');
+
+    const escape = await pressKey(page, component, 'Escape', handle);
+    expect(escape.preventDefault).not.toHaveBeenCalled();
+
+    await pressKey(page, component, ' ', handle);
+    const tab = await pressKey(page, component, 'Tab', handle);
+    expect(tab.preventDefault).not.toHaveBeenCalled();
+    expect(nodeMove).not.toHaveBeenCalled();
+    expect(statusText(page)).toBe('Drag canceled.');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    const focusHandle = jest.spyOn(
+      component as unknown as { focusDragHandle: (id: string) => void },
+      'focusDragHandle'
+    );
+    await pressKey(page, component, ' ', handle);
+    focusHandle.mockClear();
+    await pressKey(page, component, 'Escape', handle);
+    expect(statusText(page)).toBe('Drag canceled.');
+    await flushFrame();
+    expect(focusHandle).toHaveBeenCalledWith('leaf-a');
+  });
+
+  it('should refuse a grab when the node has nowhere to move', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      nodes: [{ id: 'only', label: 'Only' }],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'only'));
+    expect(statusText(page)).toBe('Cannot move Only.');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+  });
+
+  it('should not grab when drag-and-drop is off, the row is locked, or a modifier is held', async () => {
+    const off = await createTreePage({ expandedNodeIds: ['root-1'] });
+    await pressKey(
+      off.page,
+      off.component,
+      ' ',
+      off.page.root?.querySelector('li')
+    );
+    expect(
+      off.page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeFalsy();
+
+    const locked = await createTreePage({
+      allowDragDrop: true,
+      nodes: [{ id: 'locked', label: 'Locked', disabled: true }],
+    });
+    await pressKey(
+      locked.page,
+      locked.component,
+      ' ',
+      dragHandle(locked.page, 'locked')
+    );
+    expect(
+      locked.page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeFalsy();
+
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle, { ctrlKey: true });
+    await pressKey(page, component, ' ', handle, { altKey: true });
+    await pressKey(page, component, ' ', handle, { metaKey: true });
+    await pressKey(page, component, 'ArrowDown', handle);
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+  });
+
+  it('should ignore keyboard drag keys from outside the tree, from inputs, and from the dialog', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    await pressKey(page, component, ' ', document.body);
+    await pressKey(page, component, ' ', null);
+    const input = document.createElement('input');
+    page.root?.appendChild(input);
+    await pressKey(page, component, ' ', input);
+    const modal = page.root?.querySelector('modus-wc-modal');
+    const modalButton = document.createElement('button');
+    modal?.appendChild(modalButton);
+    await pressKey(page, component, ' ', modalButton);
+    expect(statusText(page)).toBe('');
+  });
+
+  it('should silently cancel a grab when filtering, editing, drag-and-drop, or the node goes away', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    expect(statusText(page)).toContain('Grabbed Overview');
+
+    component.filter = 'Overview';
+    await page.waitForChanges();
+    expect(statusText(page)).not.toContain('Drag canceled.');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    component.filter = '';
+    await page.waitForChanges();
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.editingNodeId = 'root-2';
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    component.editingNodeId = undefined;
+    await page.waitForChanges();
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.allowDragDrop = false;
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    component.allowDragDrop = true;
+    await page.waitForChanges();
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.setSearchQuery('files');
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    component.setSearchQuery('');
+    await page.waitForChanges();
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.nodes = [{ id: 'root-2', label: 'Settings' }];
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+    expect(statusText(page)).not.toContain('Drag canceled.');
+  });
+
+  it('should cancel a keyboard grab when a pointer drag starts', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.handleDragStart(
+      makeDragEvent({
+        dataTransfer: { setData: jest.fn(), effectAllowed: '' },
+      }),
+      getNode('root-2')
+    );
+    await page.waitForChanges();
+    expect(component.draggingId).toBe('root-2');
+    expect(statusText(page)).not.toContain('Drag canceled.');
+    expect(
+      findTreeItem(page, 'leaf-a')?.classList.contains(
+        'modus-wc-content-tree-dragging'
+      )
+    ).toBe(false);
+  });
+
+  it('should skip keyboard moves that are invalid and ignore unrelated keys while grabbed', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    const grabbed = statusText(page);
+
+    component.dragOverId = 'missing';
+    await pressKey(page, component, 'ArrowRight', handle);
+    await pressKey(page, component, 'ArrowLeft', handle);
+    await pressKey(page, component, 'x', handle);
+    expect(statusText(page)).toBe(grabbed);
+
+    component.dragOverId = 'root-2';
+    component.dropPosition = 'before';
+    await pressKey(page, component, 'ArrowLeft', handle);
+    expect(statusText(page)).toBe(grabbed);
+
+    component.dropPosition = undefined;
+    await pressKey(page, component, 'ArrowRight', handle);
+    await pressKey(page, component, 'ArrowLeft', handle);
+    expect(statusText(page)).toBe(grabbed);
+    const dropped = await pressKey(page, component, ' ', handle);
+    expect(dropped.preventDefault).toHaveBeenCalled();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+  });
+
+  it('should grab the last row on the nearest earlier slot', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'root-2'));
+    expect(statusText(page)).toContain('Grabbed Settings');
+    expect(statusText(page)).toContain('After Resources');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeTruthy();
+  });
+
+  it('should announce moving after the parent when that is the only later slot', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root'],
+      nodes: [
+        {
+          id: 'root',
+          label: 'Root',
+          children: [{ id: 'child', label: 'Child' }],
+        },
+      ],
+    });
+    await pressKey(page, component, 'Enter', dragHandle(page, 'child'));
+    expect(statusText(page)).toContain('Grabbed Child');
+    expect(statusText(page)).toContain('After Root');
+  });
+
+  it('should call an unlabeled node item in grab and drop announcements', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      nodes: [
+        { id: 'a', label: '' },
+        { id: 'b', label: 'Named' },
+      ],
+    });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+    await pressKey(page, component, ' ', dragHandle(page, 'a'));
+    expect(statusText(page)).toContain('Grabbed item.');
+    expect(statusText(page)).toContain('Nesting inside Named');
+    await pressKey(page, component, 'Enter', dragHandle(page, 'a'));
+    expect(nodeMove).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'a', targetId: 'b', position: 'inside' },
+      })
+    );
+    expect(statusText(page)).toBe('Dropped item inside Named.');
+  });
+
+  it('should move to the first or last slot when the current indicator is gone', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    component.dragOverId = 'missing';
+    await pressKey(page, component, 'ArrowDown', handle);
+    expect(statusText(page)).toContain('Before Project Files');
+
+    component.dragOverId = 'missing';
+    await pressKey(page, component, 'ArrowUp', handle);
+    expect(statusText(page)).toContain('After Settings');
+
+    component.nodes = [{ id: 'leaf-a', label: 'Overview' }];
+    await page.waitForChanges();
+    const stayed = statusText(page);
+    await pressKey(page, component, 'ArrowDown', dragHandle(page, 'leaf-a'));
+    expect(statusText(page)).toBe(stayed);
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeTruthy();
+  });
+
+  it('should keep an inside preview on a leaf when Right is pressed again', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    for (
+      let step = 0;
+      step < 12 && !statusText(page).includes('Before Settings');
+      step += 1
+    ) {
+      await pressKey(page, component, 'ArrowDown', handle);
+    }
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Settings');
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Settings');
+    expect(
+      findTreeItem(page, 'root-2')
+        ?.querySelector('li')
+        ?.classList.contains('modus-wc-content-tree-drop-inside')
+    ).toBe(true);
+    await pressKey(page, component, ' ', handle);
+    expect(statusText(page)).toBe('Dropped Overview inside Settings.');
+  });
+
+  it('should promote an inside preview to the next sibling', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    await pressKey(page, component, 'ArrowRight', handle);
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Specifications');
+    await pressKey(page, component, 'ArrowLeft', handle);
+    expect(statusText(page)).toContain('Before Search Index');
+  });
+
+  it('should silently cancel when the reorder handle is removed', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    page.root
+      ?.querySelector(
+        'modus-wc-button.modus-wc-content-tree-drag-handle[data-node-id="leaf-a"]'
+      )
+      ?.remove();
+    component.componentDidRender();
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+    expect(statusText(page)).not.toContain('Drag canceled.');
+  });
+
+  it('should focus the moved handle after the application updates the tree', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    page.root?.addEventListener('nodeMove', ((event: CustomEvent) => {
+      const move = event.detail as {
+        id: string;
+        targetId: string;
+        position: 'before' | 'after' | 'inside';
+      };
+      component.nodes = moveNodeRelative(
+        component.nodes,
+        move.id,
+        move.targetId,
+        move.position
+      );
+    }) as EventListener);
+    const focusHandle = jest.spyOn(
+      component as unknown as { focusDragHandle: (id: string) => void },
+      'focusDragHandle'
+    );
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    focusHandle.mockClear();
+    await pressKey(page, component, 'Enter', handle);
+    await flushFrame();
+    expect(focusHandle).toHaveBeenCalledWith('leaf-a');
+  });
+
+  it('should not treat a locked row or a row in edit as keyboard draggable', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['p'],
+      nodes: [
+        {
+          id: 'p',
+          label: 'Parent',
+          disabled: true,
+          children: [{ id: 'c', label: 'Child' }],
+        },
+      ],
+    });
+    const child = findNode(component.nodes, 'c')!;
+    expect(component.isKeyboardDraggable(child)).toBe(false);
+
+    component.nodes = sampleNodes;
+    component.editingNodeId = 'leaf-a';
+    expect(component.isKeyboardDraggable(getNode('leaf-a'))).toBe(false);
+  });
+
+  it('should grab a node whose id contains a quote', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      nodes: [
+        { id: 'a"b', label: 'Quoted' },
+        { id: 'c', label: 'Other' },
+      ],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'a"b'));
+    expect(statusText(page)).toContain('Grabbed Quoted');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeTruthy();
+  });
+
+  it('should ignore Space on a handle with no node id and while that row is editing', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const host = page.root?.querySelector(
+      'modus-wc-button.modus-wc-content-tree-drag-handle'
+    );
+    host?.removeAttribute('data-node-id');
+    await pressKey(page, component, ' ', host?.querySelector('button'));
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+
+    const handle = dragHandle(page, 'leaf-a');
+    component.editingNodeId = 'leaf-a';
+    await pressKey(page, component, ' ', handle);
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
+  });
+
+  it('should announce an unlabeled drop target as item', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      nodes: [
+        { id: 'a', label: 'A' },
+        { id: 'b', label: '' },
+      ],
+    });
+    const handle = dragHandle(page, 'a');
+    await pressKey(page, component, ' ', handle);
+    expect(statusText(page)).toContain('Nesting inside item');
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside item');
+    await pressKey(page, component, 'ArrowDown', handle);
+    expect(statusText(page)).toContain('After item');
+    await pressKey(page, component, ' ', handle);
+    expect(statusText(page)).toBe('Dropped A after item.');
+  });
+
+  it('should not nest into a collapsed folder whose first child cannot be a target', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      nodes: [
+        { id: 'mover', label: 'Mover' },
+        {
+          id: 'folder',
+          label: 'Folder',
+          children: [
+            { id: 'locked', label: 'Locked', disabled: true },
+            { id: 'ok', label: 'Ok' },
+          ],
+        },
+      ],
+    });
+    const handle = dragHandle(page, 'mover');
+    await pressKey(page, component, ' ', handle);
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Folder');
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Nesting inside Folder');
+    expect(
+      findTreeItem(page, 'folder')
+        ?.querySelector('li')
+        ?.classList.contains('modus-wc-content-tree-drop-inside')
+    ).toBe(true);
+  });
+
+  it('should not nest into an expanded folder when that would not move the row', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'leaf-a'],
+    });
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    await pressKey(page, component, 'ArrowUp', handle);
+    expect(statusText(page)).toContain('Before Project Files');
+    await pressKey(page, component, 'ArrowRight', handle);
+    expect(statusText(page)).toContain('Before Project Files');
+  });
+
+  it('should ignore a nest preview that is the row current position', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    component.dragOverId = 'root-1';
+    component.dropPosition = 'before';
+    component.expandedNodeIds = [];
+    const message = statusText(page);
+    component.nestKeyboardDrop();
+    expect(statusText(page)).toBe(message);
+  });
+
+  it('should ignore promote previews that do not match a slot', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1', 'parent-b'],
+    });
+    await pressKey(page, component, ' ', dragHandle(page, 'leaf-a'));
+    const slots = jest.spyOn(component, 'keyboardSlotsFor').mockReturnValue([]);
+    const message = statusText(page);
+
+    component.dragOverId = 'ghost';
+    component.dropPosition = 'inside';
+    component.promoteKeyboardDrop();
+
+    component.dragOverId = 'leaf-b1';
+    component.dropPosition = 'before';
+    component.promoteKeyboardDrop();
+
+    component.dragOverId = 'root-1';
+    component.dropPosition = 'inside';
+    component.promoteKeyboardDrop();
+
+    slots.mockRestore();
+    expect(statusText(page)).toBe(message);
+  });
+
+  it('should drop against a missing target and focus a handle when one is present', async () => {
+    const { page, component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+    const handle = dragHandle(page, 'leaf-a');
+    await pressKey(page, component, ' ', handle);
+    component.dragOverId = 'missing';
+    component.dropPosition = 'inside';
+    await pressKey(page, component, ' ', handle);
+    expect(nodeMove).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { id: 'leaf-a', targetId: 'missing', position: 'inside' },
+      })
+    );
+    expect(statusText(page)).toBe('Dropped Overview inside item.');
+
+    const focus = jest.fn();
+    handle!.focus = focus;
+    component.focusDragHandle('leaf-a');
+    expect(focus).toHaveBeenCalled();
+    component.focusDragHandle('missing');
   });
 });
