@@ -272,70 +272,6 @@ ${illustrativeScript}
   },
 };
 
-export const ShadowDomParent: Story = {
-  render: (args) => {
-    const modalId = `shadow-dom-modal`;
-
-    const handleModalVisibility = (action: 'show' | 'hide') => {
-      // The dialog lives inside the shadow host's shadowRoot, not in document
-      const host = document.querySelector(
-        'modal-shadow-host'
-      ) as HTMLElement & {
-        shadowRoot: ShadowRoot;
-      };
-      const modal = host?.shadowRoot?.getElementById(
-        modalId
-      ) as HTMLDialogElement;
-      if (modal) {
-        if (action === 'show') modal.showModal();
-        else modal.close();
-      }
-    };
-
-    if (!customElements.get('modal-shadow-host')) {
-      const ModalShadowHost = createShadowHostClass<ModalArgs>({
-        componentTag: 'modus-wc-modal',
-        propsMapper: (v: ModalArgs, el: HTMLElement) => {
-          const modalEl = el as unknown as {
-            backdrop: string;
-            customClass: string;
-            fullscreen: boolean;
-            modalId: string;
-            position: string;
-            showClose: boolean;
-            showFullscreenToggle: boolean;
-          };
-          modalEl.backdrop = v.backdrop;
-          modalEl.customClass = v['custom-class'] || '';
-          modalEl.fullscreen = Boolean(v.fullscreen);
-          modalEl.modalId = modalId;
-          modalEl.position = v.position;
-          modalEl.showClose = Boolean(v['show-close']);
-          modalEl.showFullscreenToggle = Boolean(v['show-fullscreen-toggle']);
-          if (!el.hasChildNodes()) {
-            el.innerHTML = `<span slot="header">Modal Title</span><span slot="content">This is sample modal content.</span><modus-wc-button slot="footer">Close</modus-wc-button>`;
-            // Wire the footer close button to close the dialog
-            const closeBtn = el.querySelector('modus-wc-button[slot="footer"]');
-            closeBtn?.addEventListener('buttonClick', () => {
-              const dialog = el.querySelector('dialog') as HTMLDialogElement;
-              dialog?.close();
-            });
-          }
-        },
-      });
-      customElements.define('modal-shadow-host', ModalShadowHost);
-    }
-
-    // prettier-ignore
-    return html`
-<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
-  Open modal
-</modus-wc-button>
-<modal-shadow-host .props=${{ ...args }}></modal-shadow-host>
-    `;
-  },
-};
-
 export const HiddenScrollLockExample: Story = {
   parameters: {
     layout: 'fullscreen',
@@ -573,6 +509,70 @@ See \`wireDialogScrollLockExample\` in this story source file.
     width: 100%;
   }
 </style>
+    `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    const modalId = `shadow-dom-modal`;
+
+    const handleModalVisibility = (action: 'show' | 'hide') => {
+      // The dialog lives inside the shadow host's shadowRoot, not in document
+      const host = document.querySelector(
+        'modal-shadow-host'
+      ) as HTMLElement & {
+        shadowRoot: ShadowRoot;
+      };
+      const modal = host?.shadowRoot?.getElementById(
+        modalId
+      ) as HTMLDialogElement;
+      if (modal) {
+        if (action === 'show') modal.showModal();
+        else modal.close();
+      }
+    };
+
+    if (!customElements.get('modal-shadow-host')) {
+      const ModalShadowHost = createShadowHostClass<ModalArgs>({
+        componentTag: 'modus-wc-modal',
+        propsMapper: (v: ModalArgs, el: HTMLElement) => {
+          const modalEl = el as unknown as {
+            backdrop: string;
+            customClass: string;
+            fullscreen: boolean;
+            modalId: string;
+            position: string;
+            showClose: boolean;
+            showFullscreenToggle: boolean;
+          };
+          modalEl.backdrop = v.backdrop;
+          modalEl.customClass = v['custom-class'] || '';
+          modalEl.fullscreen = Boolean(v.fullscreen);
+          modalEl.modalId = modalId;
+          modalEl.position = v.position;
+          modalEl.showClose = Boolean(v['show-close']);
+          modalEl.showFullscreenToggle = Boolean(v['show-fullscreen-toggle']);
+          if (!el.hasChildNodes()) {
+            el.innerHTML = `<span slot="header">Modal Title</span><span slot="content">This is sample modal content.</span><modus-wc-button slot="footer">Close</modus-wc-button>`;
+            // Wire the footer close button to close the dialog
+            const closeBtn = el.querySelector('modus-wc-button[slot="footer"]');
+            closeBtn?.addEventListener('buttonClick', () => {
+              const dialog = el.querySelector('dialog') as HTMLDialogElement;
+              dialog?.close();
+            });
+          }
+        },
+      });
+      customElements.define('modal-shadow-host', ModalShadowHost);
+    }
+
+    // prettier-ignore
+    return html`
+<modus-wc-button @buttonClick=${() => handleModalVisibility('show')}>
+  Open modal
+</modus-wc-button>
+<modal-shadow-host .props=${{ ...args }}></modal-shadow-host>
     `;
   },
 };
