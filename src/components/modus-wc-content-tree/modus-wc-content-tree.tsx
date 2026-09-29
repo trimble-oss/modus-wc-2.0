@@ -433,7 +433,7 @@ export class ModusWcContentTree {
 
   private handleGrabbedKey(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
-      this.cancelKeyboardGrab();
+      this.cancelKeyboardGrab({ restoreFocus: false });
       return;
     }
 
@@ -483,11 +483,11 @@ export class ModusWcContentTree {
     }
     const next = index + direction;
     if (next < 0) {
-      this.liveMessage = 'Start of the tree';
+      this.liveMessage = 'Start of the tree.';
       return;
     }
     if (next >= slots.length) {
-      this.liveMessage = 'End of the tree';
+      this.liveMessage = 'End of the tree.';
       return;
     }
     this.setKeyboardSlot(slots[next]);
@@ -652,11 +652,19 @@ export class ModusWcContentTree {
       this.cancelKeyboardGrab({ silent: true });
       return;
     }
+    // The preview can go stale (target removed or hidden) while grabbed.
+    const stillValid = this.keyboardSlotsFor(id).some(
+      (slot) => slot.targetId === targetId && slot.position === position
+    );
+    if (!stillValid) {
+      this.cancelKeyboardGrab();
+      return;
+    }
     const label = findNode(this.getNodes(), id)!.label || 'item';
-    const target = findNode(this.getNodes(), targetId);
+    const target = findNode(this.getNodes(), targetId)!;
     if (
       position === 'inside' &&
-      !!target?.children?.length &&
+      !!target.children?.length &&
       !this.isExpanded(target.id)
     ) {
       this.nodeExpandChange.emit({ id: target.id, expanded: true });
@@ -666,10 +674,13 @@ export class ModusWcContentTree {
     this.keyboardGrabId = undefined;
     this.draggingId = undefined;
     this.clearDropState();
-    this.liveMessage = `Dropped ${label} ${position} ${target?.label || 'item'}.`;
+    this.liveMessage = `Dropped ${label} ${position} ${target.label || 'item'}.`;
   }
 
-  private cancelKeyboardGrab(options?: { silent?: boolean }): void {
+  private cancelKeyboardGrab(options?: {
+    silent?: boolean;
+    restoreFocus?: boolean;
+  }): void {
     const id = this.keyboardGrabId;
     this.keyboardGrabId = undefined;
     if (id && this.draggingId === id) this.draggingId = undefined;
@@ -680,7 +691,7 @@ export class ModusWcContentTree {
       return;
     }
     this.liveMessage = 'Drag canceled.';
-    if (id) this.queueHandleFocus(id);
+    if (id && options?.restoreFocus !== false) this.queueHandleFocus(id);
   }
 
   private queueHandleFocus(id: string): void {
@@ -1839,14 +1850,14 @@ export class ModusWcContentTree {
 
     return (
       <Host class={this.customClass || undefined}>
-        <div class="modus-wc-content-tree-live" id={this.dragInstructionsId}>
+        <div class="modus-wc-sr-only" id={this.dragInstructionsId}>
           Press Space or Enter to pick up. Use the arrow keys to choose a
           position, Space or Enter to drop, and Escape to cancel.
         </div>
         <div
           aria-atomic="true"
           aria-live="polite"
-          class="modus-wc-content-tree-live"
+          class="modus-wc-sr-only"
           role="status"
         >
           {this.liveMessage}

@@ -2353,7 +2353,11 @@ describe('modus-wc-content-tree', () => {
       { id: 'm', label: 'Move' },
     ];
     const slots = getKeyboardDropSlots(nodes, 'm', (id) => id === 'p');
-    expect(slots).toContainEqual({ targetId: 'p', position: 'inside' });
+    expect(slots.slice(0, 3)).toEqual([
+      { targetId: 'p', position: 'before' },
+      { targetId: 'p', position: 'inside' },
+      { targetId: 'ok', position: 'before' },
+    ]);
     expect(slots).not.toContainEqual({ targetId: 'd', position: 'before' });
   });
 
@@ -3579,7 +3583,7 @@ describe('modus-wc-content-tree', () => {
     await pressKey(page, component, 'ArrowUp', handle);
     expect(statusText(page)).toContain('Before Project Files');
     await pressKey(page, component, 'ArrowUp', handle);
-    expect(statusText(page)).toBe('Start of the tree');
+    expect(statusText(page)).toBe('Start of the tree.');
 
     await pressKey(page, component, 'ArrowDown', handle);
     expect(statusText(page)).toContain('Before Resources');
@@ -3631,12 +3635,12 @@ describe('modus-wc-content-tree', () => {
     await pressKey(page, component, ' ', handle);
     for (
       let step = 0;
-      step < 12 && statusText(page) !== 'End of the tree';
+      step < 12 && statusText(page) !== 'End of the tree.';
       step += 1
     ) {
       await pressKey(page, component, 'ArrowDown', handle);
     }
-    expect(statusText(page)).toBe('End of the tree');
+    expect(statusText(page)).toBe('End of the tree.');
 
     const folderHandle = dragHandle(page, 'leaf-a');
     await pressKey(page, component, 'Escape', handle);
@@ -3669,8 +3673,16 @@ describe('modus-wc-content-tree', () => {
     const escape = await pressKey(page, component, 'Escape', handle);
     expect(escape.preventDefault).not.toHaveBeenCalled();
 
+    const tabFocus = jest.spyOn(
+      component as unknown as { focusDragHandle: (id: string) => void },
+      'focusDragHandle'
+    );
     await pressKey(page, component, ' ', handle);
+    tabFocus.mockClear();
     const tab = await pressKey(page, component, 'Tab', handle);
+    await flushFrame();
+    expect(tabFocus).not.toHaveBeenCalled();
+    tabFocus.mockRestore();
     expect(tab.preventDefault).not.toHaveBeenCalled();
     expect(nodeMove).not.toHaveBeenCalled();
     expect(statusText(page)).toBe('Drag canceled.');
@@ -4190,7 +4202,7 @@ describe('modus-wc-content-tree', () => {
     expect(statusText(page)).toBe(message);
   });
 
-  it('should drop against a missing target and focus a handle when one is present', async () => {
+  it('should cancel instead of dropping on a stale target and focus a handle when one is present', async () => {
     const { page, component } = await createTreePage({
       allowDragDrop: true,
       expandedNodeIds: ['root-1'],
@@ -4202,12 +4214,11 @@ describe('modus-wc-content-tree', () => {
     component.dragOverId = 'missing';
     component.dropPosition = 'inside';
     await pressKey(page, component, ' ', handle);
-    expect(nodeMove).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: { id: 'leaf-a', targetId: 'missing', position: 'inside' },
-      })
-    );
-    expect(statusText(page)).toBe('Dropped Overview inside item.');
+    expect(nodeMove).not.toHaveBeenCalled();
+    expect(statusText(page)).toBe('Drag canceled.');
+    expect(
+      page.root?.querySelector('.modus-wc-content-tree-dragging')
+    ).toBeNull();
 
     const focus = jest.fn();
     handle!.focus = focus;

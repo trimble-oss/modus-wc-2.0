@@ -257,12 +257,12 @@ export const getKeyboardDropSlots = (
         const first = node.children![0];
         const firstBeforeExists =
           !!first && !isInvalidKeyboardTarget(nodes, moveId, first);
-        visit(node.children!);
-        // `inside` is the first-child line. Emit it only when that line was
-        // not produced (the first child is not a valid target).
+        // `inside` is the first-child line. Emit it (before the children, to
+        // keep visual order) only when the first child cannot represent it.
         if (valid && !firstBeforeExists) {
           push({ targetId: node.id, position: 'inside' });
         }
+        visit(node.children!);
       } else if (valid) {
         push({ targetId: node.id, position: 'inside' });
       }
