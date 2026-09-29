@@ -50,9 +50,9 @@ export class ModusWcEmptyState {
    * Bundled illustration name. Valid values depend on `variant`:
    * compact — `selection_plus`, `symbol_info`, `add_user`;
    * illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`;
-   * error — `error_404`.
+   * error — `error_404`, `error_404_page`.
    */
-  @Prop() illustration?: EmptyStateIllustration;
+  @Prop() illustration?: string;
 
   /** Primary heading text. */
   @Prop() heading!: string;
@@ -83,15 +83,22 @@ export class ModusWcEmptyState {
       return fallback;
     }
 
-    const info = ILLUSTRATION_VARIANTS[requested];
-    if (!info || info.layoutVariant !== this.variant) {
+    if (!(requested in ILLUSTRATION_VARIANTS)) {
       console.warn(
         `Illustration "${requested}" is not valid for variant "${this.variant}". Using "${fallback}".`
       );
       return fallback;
     }
 
-    return requested;
+    const info = ILLUSTRATION_VARIANTS[requested as EmptyStateIllustration];
+    if (info.layoutVariant !== this.variant) {
+      console.warn(
+        `Illustration "${requested}" is not valid for variant "${this.variant}". Using "${fallback}".`
+      );
+      return fallback;
+    }
+
+    return requested as EmptyStateIllustration;
   }
 
   private scopeForPath(path: string): string {
@@ -149,7 +156,7 @@ export class ModusWcEmptyState {
           <div class="modus-wc-empty-state-content">
             <modus-wc-typography
               hierarchy="h2"
-              size="xl"
+              size="3xl"
               weight="normal"
               label={this.heading}
               customClass="modus-wc-empty-state-title"
@@ -157,7 +164,7 @@ export class ModusWcEmptyState {
             {this.subtitle ? (
               <modus-wc-typography
                 hierarchy="p"
-                size="md"
+                size="xl"
                 weight="normal"
                 label={this.subtitle}
                 customClass="modus-wc-empty-state-subtitle"

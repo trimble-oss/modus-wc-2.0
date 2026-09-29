@@ -10,7 +10,8 @@ export type EmptyStateIllustration =
   | 'documents_empty'
   | 'cloud_access'
   | 'store_settings'
-  | 'error_404';
+  | 'error_404'
+  | 'error_404_page';
 
 export type IllustrationCategory =
   | 'compact'
@@ -89,6 +90,12 @@ export const ILLUSTRATION_VARIANTS: Record<
   error_404: {
     displayName: '404 error',
     path: 'illustrations/errors/error-404.svg',
+    category: 'errors',
+    layoutVariant: 'error',
+  },
+  error_404_page: {
+    displayName: '404 page',
+    path: 'illustrations/errors/error-404-page.svg',
     category: 'errors',
     layoutVariant: 'error',
   },

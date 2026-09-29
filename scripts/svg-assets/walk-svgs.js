@@ -14,6 +14,9 @@ export function walkSvgs(dir, prefix = '') {
     const full = join(dir, entry);
     const rel = prefix ? `${prefix}/${entry}` : entry;
     if (statSync(full).isDirectory()) {
+      if (entry.startsWith('_')) {
+        continue;
+      }
       result.push(...walkSvgs(full, rel));
     } else if (entry.endsWith('.svg')) {
       result.push({ rel, full });

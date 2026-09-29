@@ -4,15 +4,14 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { keyed } from 'lit/directives/keyed.js';
 import {
-  EmptyStateIllustration,
+  DEFAULT_ILLUSTRATION_BY_VARIANT,
   EmptyStateVariant,
-  getIllustrationsForVariant,
 } from './illustration-constants';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface EmptyStateArgs {
   variant: EmptyStateVariant;
-  illustration?: EmptyStateIllustration;
+  illustration?: string;
   heading: string;
   subtitle?: string;
   'action-label'?: string;
@@ -25,7 +24,7 @@ const meta: Meta<EmptyStateArgs> = {
   decorators: [withActions],
   args: {
     variant: 'compact',
-    illustration: 'selection_plus',
+    illustration: DEFAULT_ILLUSTRATION_BY_VARIANT.compact,
     heading: 'Title for Empty State',
     subtitle: 'Subtitle',
     'action-label': 'Action',
@@ -36,8 +35,10 @@ const meta: Meta<EmptyStateArgs> = {
       options: ['compact', 'illustration', 'error'],
     },
     illustration: {
-      control: { type: 'select' },
-      options: getIllustrationsForVariant('compact'),
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+      },
     },
   },
   parameters: {
@@ -65,7 +66,7 @@ const Template: Story = {
       html`
         <modus-wc-empty-state
           variant="${args.variant}"
-          illustration="${ifDefined(args.illustration)}"
+          .illustration=${args.illustration}
           heading="${args.heading}"
           subtitle="${ifDefined(args.subtitle)}"
           action-label="${ifDefined(args['action-label'])}"
@@ -98,15 +99,9 @@ export const Illustration: Story = {
       },
     },
   },
-  argTypes: {
-    illustration: {
-      control: { type: 'select' },
-      options: getIllustrationsForVariant('illustration'),
-    },
-  },
   args: {
     variant: 'illustration',
-    illustration: 'landscape',
+    illustration: DEFAULT_ILLUSTRATION_BY_VARIANT.illustration,
   },
 };
 
@@ -116,19 +111,13 @@ export const Error404: Story = {
     docs: {
       description: {
         story:
-          '`variant="error"`. `illustration` option: `error_404`. Default: `error_404`.',
+          '`variant="error"`. `illustration` options: `error_404`, `error_404_page`. Default: `error_404`.',
       },
-    },
-  },
-  argTypes: {
-    illustration: {
-      control: { type: 'select' },
-      options: getIllustrationsForVariant('error'),
     },
   },
   args: {
     variant: 'error',
-    illustration: 'error_404',
+    illustration: DEFAULT_ILLUSTRATION_BY_VARIANT.error,
     heading: '404 Page Not Found',
     subtitle:
       'Helpful message that conveys the purpose of the screen. (max of 3 Lines) This is where line three will be!',
@@ -161,7 +150,7 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: EmptyStateArgs, el: HTMLElement) => {
           const emptyStateEl = el as unknown as {
             variant: EmptyStateVariant;
-            illustration?: EmptyStateIllustration;
+            illustration?: string;
             heading: string;
             subtitle?: string;
             actionLabel?: string;

@@ -133,8 +133,7 @@ modus-wc-empty-state .modus-wc-empty-state-content {
 }
 
 modus-wc-empty-state .modus-wc-empty-state-title {
-  color: var(--modus-wc-color-base-content-low-contrast);
-  font-size: var(--modus-wc-font-size-xl);
+  color: var(--modus-wc-color-gray-6);
   line-height: var(--modus-wc-line-height-lg);
   margin: 0;
   text-align: center;
@@ -142,9 +141,8 @@ modus-wc-empty-state .modus-wc-empty-state-title {
 
 modus-wc-empty-state .modus-wc-empty-state-subtitle {
   -webkit-box-orient: vertical;
-  color: var(--modus-wc-color-base-content-low-contrast);
+  color: var(--modus-wc-color-gray-6);
   display: -webkit-box;
-  font-size: var(--modus-wc-font-size-md);
   -webkit-line-clamp: 3;
   line-clamp: 3;
   line-height: var(--modus-wc-line-height-md);
@@ -156,31 +154,38 @@ modus-wc-empty-state .modus-wc-empty-state-subtitle {
   text-overflow: ellipsis;
 }
 
-// Dark theme illustration pairs: #0063a3 → highlight blue, #dcedf9 → highlight blue at 30%, white → gray-10.
-[data-theme='modus-classic-dark'] modus-wc-empty-state .modus-wc-empty-state,
-[data-theme='modus-modern-dark'] modus-wc-empty-state .modus-wc-empty-state,
-[data-theme='connect-dark'] modus-wc-empty-state .modus-wc-empty-state {
-  .illustration-primary {
-    fill: var(--modus-wc-color-highlight-blue);
+// Dark theme: illustration pairs (#0063a3 → highlight blue, etc.) and gray-3 title/subtitle.
+[data-theme='modus-classic-dark'] modus-wc-empty-state,
+[data-theme='modus-modern-dark'] modus-wc-empty-state,
+[data-theme='connect-dark'] modus-wc-empty-state {
+  .modus-wc-empty-state {
+    .illustration-primary {
+      fill: var(--modus-wc-color-highlight-blue);
+    }
+
+    .illustration-stroke-primary {
+      stroke: var(--modus-wc-color-highlight-blue);
+    }
+
+    .illustration-fill-pale {
+      fill: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
+
+    .illustration-fill-surface {
+      fill: var(--modus-wc-color-gray-10);
+    }
+
+    .illustration-stroke-surface {
+      stroke: var(--modus-wc-color-gray-10);
+    }
   }
 
-  .illustration-stroke-primary {
-    stroke: var(--modus-wc-color-highlight-blue);
-  }
-
-  .illustration-fill-pale {
-    fill: color-mix(
-      in sRGB,
-      var(--modus-wc-color-highlight-blue) 30%,
-      transparent
-    );
-  }
-
-  .illustration-fill-surface {
-    fill: var(--modus-wc-color-gray-10);
-  }
-
-  .illustration-stroke-surface {
-    stroke: var(--modus-wc-color-gray-10);
+  .modus-wc-empty-state-title,
+  .modus-wc-empty-state-subtitle {
+    color: var(--modus-wc-color-gray-3);
   }
 }

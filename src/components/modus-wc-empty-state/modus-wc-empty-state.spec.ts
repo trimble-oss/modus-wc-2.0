@@ -85,6 +85,21 @@ describe('modus-wc-empty-state', () => {
     warnSpy.mockRestore();
   });
 
+  it('should warn and fall back when illustration is not a known key', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const page = await newSpecPage({
+      components: childComponents,
+      html: `<modus-wc-empty-state variant="compact" illustration="unknown_illustration" heading="Title"></modus-wc-empty-state>`,
+    });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Illustration "unknown_illustration" is not valid for variant "compact". Using "selection_plus".'
+    );
+    expect(
+      (page.rootInstance as ModusWcEmptyState)['resolveIllustrationKey']()
+    ).toBe('selection_plus');
+    warnSpy.mockRestore();
+  });
+
   it('should apply customClass on the root container', async () => {
     const page = await newSpecPage({
       components: childComponents,
