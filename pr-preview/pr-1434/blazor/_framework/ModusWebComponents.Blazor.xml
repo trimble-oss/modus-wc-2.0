@@ -1399,6 +1399,56 @@
             Event emitted when the menuVisible prop changes.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcEmptyState">
+            <summary>
+            Presents a centered empty, error, or placeholder state with bundled illustrations, heading, optional subtitle, and an optional call-to-action.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.ActionLabel">
+            <summary>
+            When set, renders a centered primary action button with this label.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.CustomClass">
+            <summary>
+            Custom CSS class for the root container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Heading">
+            <summary>
+            Primary heading text.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Illustration">
+            <summary>
+            Bundled illustration name. Valid values depend on variant: compact — selection_plus, symbol_info, add_user; illustration — landscape, api, api_plugin, documents_empty, cloud_access, store_settings; error — error_404, error_404_page.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Subtitle">
+            <summary>
+            Secondary descriptive text (clamped to three lines in the layout).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Variant">
+            <summary>
+            Layout variant: compact icon, full illustration, or dedicated error (404) treatment.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.OnActionClick">
+            <summary>
+            Fires when the optional action button is activated.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcFileDropzone">
             <summary>
             File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
@@ -1580,7 +1630,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Name">
             <summary>
-            The icon name, should match the CSS class in the icon font.
+            The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from @trimble-oss/modus-icons-css.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Size">
@@ -1592,6 +1642,11 @@
             <summary>
             The icon variant, can be &quot;outlined&quot; or &quot;solid&quot;.
             Allowed values: "outlined", "solid"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcIcon.Version">
+            <summary>
+            The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcIcon.ChildContent">
@@ -1662,6 +1717,41 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcImage.OnImageLoad">
             <summary>
             Event emitted when the image loads successfully.
+            </summary>
+        </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcImageGrid">
+            <summary>
+            A responsive image grid that displays 1 to 4 images in rectangle or square layouts.  Each cell is rendered with modus-wc-image for consistent cropping, rounded corners, and fallback behavior. Grid layout CSS fills each cell; per-image dimensional size tokens on modus-wc-image are not exposed on IImageGridImage.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.CustomClass">
+            <summary>
+            Custom CSS class to apply to the grid container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ImageShape">
+            <summary>
+            Sets the cell aspect ratio layout.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ImagesPerView">
+            <summary>
+            Maximum number of images to display in the grid (1–4).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.Images">
+            <summary>
+            Images to display in the grid. Only the first N images are shown based on imagesPerView.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcImageGrid.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcInputFeedback">
