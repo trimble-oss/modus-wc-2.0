@@ -11,6 +11,12 @@ on:
         description: 'Version to publish'
         required: true
         type: string
+      orchestrator_run_id:
+        description: 'Parent Publish & Release workflow run id (for orchestration polling)'
+        required: false
+        type: string
+
+run-name: Publish Vue ${{ inputs.version }} (orchestrator ${{ inputs.orchestrator_run_id || 'manual' }})
 
 permissions:
   contents: write
@@ -62,16 +68,17 @@ jobs:
           TARBALL=$(npm pack)
           echo "TARBALL=${TARBALL}" >> $GITHUB_ENV
 
-      - name: Update to use new WebComponent version
+      - name: Install local WebComponent dependency (for build)
+        run: npm install file:../../../dist/${TARBALL} --no-save
+
+      - name: Install integration dependencies
+        run: bash ../../../.github/scripts/npm-install-with-retry.sh npm install
+
+      - name: Set published WebComponent peer dependency version
         run: |
           jq --arg version "${{ github.event.inputs.version }}" \
           '.peerDependencies["@trimble-oss/moduswebcomponents"] = $version' package.json > package.json.tmp && \
           mv package.json.tmp package.json
-
-      - run: npm i
-
-      - name: Install local WebComponent dependency (for build)
-        run: npm install file:../../../dist/${TARBALL} --no-save
 
       - name: Update package.json version
         run: |

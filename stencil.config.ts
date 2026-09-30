@@ -47,6 +47,19 @@ export const config: Config = {
           dest: 'dist/modus-wc-variables.css',
         },
         { src: './styles/modus-icons.css', dest: 'dist/modus-icons.css' },
+        { src: './styles/modus-icons-2.css', dest: 'dist/modus-icons-2.css' },
+        {
+          src: './styles/modus-icons-regular.css',
+          dest: 'dist/modus-icons-regular.css',
+        },
+        {
+          src: './styles/modus-icons-fill.css',
+          dest: 'dist/modus-icons-fill.css',
+        },
+        {
+          src: './styles/modus-icons-2-font',
+          dest: 'dist/modus-icons-2-font',
+        },
         { src: './styles/assets', dest: 'dist/styles/assets' },
         { src: './styles/assets', dest: 'dist/assets' },
         { src: '../README.md', dest: 'dist/README.md' },

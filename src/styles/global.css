@@ -35,11 +35,10 @@ body {
 }
 
 /*
-  Modal Scrollbar Behavior Override
-  Tailwind/DaisyUI applies `scrollbar-gutter: stable` to :root when a modal is open
-  (e.g., `:root:has(.modus-wc-modal-open, ...)`). This reserves space for the
-  scrollbar, leaving a visible empty gutter beside the content. We override it to
-  `auto` so the layout reflows naturally and the gutter disappears.
+  DaisyUI sets overflow: hidden and scrollbar-gutter: stable on :root while a modal is open,
+  which reserves an empty gutter and can reflow on close. Default library behavior keeps page
+  scroll available (overflow: auto) and normal gutter (scrollbar-gutter: auto). To hide page
+  scroll behind the dialog, copy wireDialogScrollLockExample from modus-wc-modal.stories.ts.
 */
 :root:has(
   :is(
@@ -49,6 +48,7 @@ body {
     .modus-wc-modal[open]
   )
 ) {
+  overflow: auto !important;
   scrollbar-gutter: auto !important;
 }
 

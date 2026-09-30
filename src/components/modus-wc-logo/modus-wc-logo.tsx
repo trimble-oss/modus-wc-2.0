@@ -9,7 +9,7 @@ import {
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS } from './logo-constants';
-import { LOGO_SVGS } from './logo-svg-data';
+import { LOGO_SVGS } from '../../svg-assets/generated/logo-svg-data';
 import { LogoName } from '../types';
 
 interface LogoSvgProps {

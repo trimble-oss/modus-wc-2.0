@@ -12,6 +12,8 @@ set -euo pipefail
 
 VERSION_HINT="${1:-}"
 EVENT="${2:-publish}"
+RELEASE_STATUS="${RELEASE_STATUS:-success}"
+FAILED_FRAMEWORK_WORKFLOWS="${FAILED_FRAMEWORK_WORKFLOWS:-}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY is required}"
 N8N_WEBHOOK_URL="${N8N_WEBHOOK_URL:-}"
 TAG_PREFIX="moduswebcomponents-"
@@ -97,6 +99,13 @@ if [ -z "$body" ]; then
   exit 0
 fi
 
+if [ "$RELEASE_STATUS" = "failure" ] && [ -n "$FAILED_FRAMEWORK_WORKFLOWS" ]; then
+  body="${body}
+
+---
+Release orchestration failures: ${FAILED_FRAMEWORK_WORKFLOWS}"
+fi
+
 N8N_WEBHOOK_TOKEN="$(bash "${script_dir}/resolve-trimble-n8n-token.sh")"
 
 if [[ "$N8N_WEBHOOK_URL" == *"trimble-ai.com"* ]] && [ -z "$N8N_WEBHOOK_TOKEN" ]; then
@@ -121,7 +130,9 @@ jq -n \
   --arg body "$body" \
   --arg repo "$REPO" \
   --arg event "$EVENT" \
-  '{version: $version, tag: $tag, name: $name, body: $body, repo: $repo, event: $event}' | \
+  --arg status "$RELEASE_STATUS" \
+  --arg failedFrameworkWorkflows "$FAILED_FRAMEWORK_WORKFLOWS" \
+  '{version: $version, tag: $tag, name: $name, body: $body, repo: $repo, event: $event, status: $status, failedFrameworkWorkflows: $failedFrameworkWorkflows}' | \
   curl "${curl_args[@]}" -d @-
 
-echo "Notified n8n for ${TAG} (${EVENT}, version ${VERSION} from GitHub release)."
+echo "Notified n8n for ${TAG} (${EVENT}, status ${RELEASE_STATUS}, version ${VERSION} from GitHub release)."

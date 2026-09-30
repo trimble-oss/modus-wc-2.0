@@ -153,14 +153,51 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   modus-wc-input-label .modus-wc-input-label {
     min-height: unset;
   }
+}
 
-  .modus-wc-checkbox {
-    --check-bg: var(--modus-wc-color-highlight-blue);
-    --fallback-bc: var(--modus-wc-color-gray-4);
+[data-theme='connect-light'] modus-wc-checkbox.modus-wc-checkbox-host,
+[data-theme='connect-dark'] modus-wc-checkbox.modus-wc-checkbox-host {
+  --connect-checkbox-size: 1rem;
+
+  position: relative;
+
+  &:has(.modus-wc-checkbox-sm) {
+    --connect-checkbox-size: 0.75rem;
+  }
+
+  &:has(.modus-wc-checkbox-lg) {
+    --connect-checkbox-size: 1.25rem;
+  }
+
+  &::before {
+    background-color: transparent;
+    border-radius: var(--modus-wc-border-radius-rounded);
+    content: '';
+    height: calc(var(--connect-checkbox-size) + 2 * var(--modus-wc-spacing-sm));
+    inset-inline-start: calc(-1 * var(--modus-wc-spacing-sm));
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(var(--connect-checkbox-size) + 2 * var(--modus-wc-spacing-sm));
+    z-index: 0;
+  }
+
+  &:has(.modus-wc-checkbox:hover:not(:disabled))::before {
+    background-color: #cfe1ee;
+  }
+
+  [type='checkbox'].modus-wc-checkbox {
+    --check-bg: #005f9e;
+    --fallback-bc: #aeaeb6;
     --check-content: var(--modus-wc-color-white);
 
+    border-color: #aeaeb6;
     border-radius: var(--modus-wc-border-radius-sm);
+    border-style: solid;
     border-width: var(--modus-wc-border-width-sm);
+    position: relative;
+    z-index: 1;
 
     // Sizes
     &.modus-wc-checkbox-sm {
@@ -179,16 +216,22 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     }
 
     &:checked {
-      --fallback-bc: var(--modus-wc-color-primary-color);
+      --fallback-bc: #005f9e;
+
+      border-color: #005f9e;
     }
 
     &:checked:hover {
-      --check-bg: var(--modus-wc-color-blue-light);
-      --fallback-bc: var(--modus-wc-color-blue-light);
+      --check-bg: #005f9e;
+      --fallback-bc: #005f9e;
+
+      border-color: #005f9e;
     }
 
     &:indeterminate {
-      --fallback-bc: var(--modus-wc-color-highlight-blue);
+      --fallback-bc: #005f9e;
+
+      border-color: #005f9e;
     }
 
     &:disabled {
@@ -196,51 +239,47 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
       &:not(:checked) {
         background-color: unset;
-        border: var(--modus-wc-border-width-sm) solid
-          var(--modus-wc-color-gray-4);
+        border: var(--modus-wc-border-width-sm) solid #aeaeb6;
       }
     }
 
-    &:focus {
-      // Fallback for Chrome <111: --modus-wc-color-highlight-blue (#019aeb) at 75% opacity
-      outline-color: rgb(1 154 235 / 0.75);
-
-      @supports (outline-color: color-mix(in sRGB, red 50%, blue)) {
-        outline-color: color-mix(
-          in sRGB,
-          var(--modus-wc-color-highlight-blue) 75%,
-          transparent
-        );
-      }
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
     }
 
-    &:hover {
-      --fallback-bc: var(--modus-wc-color-highlight-blue);
+    &:focus:not(:focus-visible):not(:hover):not(:checked):not(:active):not(
+        :indeterminate
+      ) {
+      --fallback-bc: #aeaeb6;
+
+      border-color: #aeaeb6;
     }
-  }
-}
 
-[data-theme='connect-light'] modus-wc-checkbox .modus-wc-checkbox {
-  --check-bg: var(--modus-wc-color-primary-color);
+    &:focus:not(:focus-visible):checked,
+    &:focus:not(:focus-visible):indeterminate {
+      --fallback-bc: #005f9e;
 
-  &:checked {
-    --fallback-bc: var(--modus-wc-color-blue-light);
-  }
+      border-color: #005f9e;
+    }
 
-  &:checked:hover {
-    --check-bg: var(--modus-wc-color-trimble-blue);
-    --fallback-bc: var(--modus-wc-color-trimble-blue);
-  }
+    &:focus-visible {
+      box-shadow: none;
+      outline: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-primary);
+      outline-offset: var(--modus-wc-border-width-sm);
+    }
 
-  &:indeterminate {
-    --fallback-bc: var(--modus-wc-color-blue-light);
-  }
+    &:hover:not(:disabled):not(:checked):not(:indeterminate) {
+      --fallback-bc: #005f9e;
 
-  &:focus {
-    outline-color: var(--modus-wc-color-highlight-blue);
-  }
+      border-color: #005f9e;
+    }
 
-  &:hover {
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    &:active:not(:disabled):not(:checked) {
+      --fallback-bc: #005f9e;
+
+      border-color: #005f9e;
+    }
   }
 }

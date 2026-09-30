@@ -8,6 +8,7 @@ import { defineCustomElements } from '../dist/loader';
 import customElements from '../src/custom-elements.json';
 import a11yConfig from './a11yConfig';
 import '../src/styles/modus-icons.css';
+import '../src/styles/modus-icons-2.css';
 
 defineCustomElements();
 setCustomElementsManifest(customElements);

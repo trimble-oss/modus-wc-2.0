@@ -53,6 +53,7 @@ export type LogoName =
   | 'sketchup_go'
   | 'smart_workflow'
   | 'stabicad'
+  | 'subscriptions'
   | 'supplier_xchange'
   | 'sysque'
   | 'tekla'
