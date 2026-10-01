@@ -1,0 +1,1 @@
+const s={xs:"sm",sm:"md",md:"lg",lg:"lg"},m={xs:"sm",sm:"sm",md:"md",lg:"lg",xl:"lg"};export{s as D,m as I};
