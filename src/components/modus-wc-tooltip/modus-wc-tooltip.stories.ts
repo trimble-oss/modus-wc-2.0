@@ -1,3 +1,4 @@
+import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -29,7 +30,11 @@ const meta: Meta<TooltipArgs> = {
         'Delay in ms before the tooltip shows on hover; 0 (default) shows immediately, 200ms is recommended so a passing cursor does not open it. Skipped if a tooltip closed within the last 300ms, on keyboard focus, and for touch',
     },
   },
+  decorators: [withActions],
   parameters: {
+    actions: {
+      handles: ['dismissEscape'],
+    },
     docs: {
       description: {
         component: `
@@ -66,11 +71,6 @@ const tooltipTrigger = (tooltipId?: string) => html`
 `;
 
 const Template: Story = {
-  parameters: {
-    actions: {
-      handles: ['dismissEscape'],
-    },
-  },
   args: {
     'tooltip-id': 'storybook-tooltip',
   },
