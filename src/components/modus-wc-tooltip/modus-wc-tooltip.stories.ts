@@ -66,6 +66,16 @@ const tooltipTrigger = (tooltipId?: string) => html`
   </modus-wc-button>
 `;
 
+/** Slotted trigger for ShadowDomParent (must exist before modus-wc-tooltip connects). */
+const createTooltipShadowTrigger = (): HTMLElement => {
+  const button = document.createElement('modus-wc-button');
+  button.setAttribute('variant', 'outlined');
+  button.setAttribute('color', 'tertiary');
+  button.setAttribute('size', 'sm');
+  button.textContent = 'Hover me';
+  return button;
+};
+
 const Template: Story = {
   parameters: {
     actions: {
@@ -175,7 +185,7 @@ export const ShadowDomParent: Story = {
     if (!customElements.get('tooltip-shadow-host')) {
       const TooltipShadowHost = createShadowHostClass<TooltipArgs>({
         componentTag: 'modus-wc-tooltip',
-        defaultInnerHTML: `<modus-wc-button variant="outlined" color="tertiary" size="sm">Hover</modus-wc-button>`,
+        defaultContent: [createTooltipShadowTrigger()],
         propsMapper: (v, el) => {
           const tooltipEl = el as unknown as {
             content: string;
