@@ -14,6 +14,13 @@ interface ShadowHostConfig<T = unknown> {
 
   /** Default content/children for the component (optional) */
   defaultContent?: string | Node[];
+
+  /**
+   * Initial innerHTML on the root Modus component (optional).
+   * Use for slotted children that must exist before the component connects
+   * (e.g. modus-wc-tooltip trigger). Prefer over defaultContent for custom elements.
+   */
+  defaultInnerHTML?: string;
 }
 
 /**
@@ -81,6 +88,10 @@ export function createShadowHostClass<T = unknown>(
       });
 
       this.componentEl = document.createElement(config.componentTag);
+
+      if (config.defaultInnerHTML) {
+        this.componentEl.innerHTML = config.defaultInnerHTML;
+      }
 
       // Add default content if provided
       if (config.defaultContent) {
