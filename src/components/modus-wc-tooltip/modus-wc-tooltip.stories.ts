@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 interface TooltipArgs {
   content?: string;
   'custom-class'?: string;
@@ -64,6 +65,16 @@ const tooltipTrigger = (tooltipId?: string) => html`
     Hover me
   </modus-wc-button>
 `;
+
+/** Slotted trigger for ShadowDomParent (must exist before modus-wc-tooltip connects). */
+const createTooltipShadowTrigger = (): HTMLElement => {
+  const button = document.createElement('modus-wc-button');
+  button.setAttribute('variant', 'outlined');
+  button.setAttribute('color', 'tertiary');
+  button.setAttribute('size', 'sm');
+  button.textContent = 'Hover me';
+  return button;
+};
 
 const Template: Story = {
   parameters: {
@@ -172,74 +183,33 @@ export const ShadowDomParent: Story = {
   },
   render: (args) => {
     if (!customElements.get('tooltip-shadow-host')) {
-      class TooltipShadowHost extends HTMLElement {
-        private sr: ShadowRoot;
-        private _props?: TooltipArgs;
-        private tooltipEl?: HTMLElement & {
-          content: string;
-          customClass: string;
-          disabled: boolean;
-          forceOpen: boolean | undefined;
-          tooltipId: string;
-          position: string;
-        };
-
-        constructor() {
-          super();
-          this.sr = this.attachShadow({ mode: 'open' });
-        }
-
-        connectedCallback() {
-          if (this.tooltipEl) return;
-          this.renderContent();
-        }
-
-        set props(v: TooltipArgs) {
-          this._props = v;
-          if (this.tooltipEl) this.applyProps();
-        }
-
-        private renderContent() {
-          this.sr.innerHTML = '';
-
-          this.tooltipEl = document.createElement(
-            'modus-wc-tooltip'
-          ) as typeof this.tooltipEl;
-
-          const button = document.createElement(
-            'modus-wc-button'
-          ) as HTMLElement & {
-            variant: string;
-            color: string;
-            size: string;
+      const TooltipShadowHost = createShadowHostClass<TooltipArgs>({
+        componentTag: 'modus-wc-tooltip',
+        defaultContent: [createTooltipShadowTrigger()],
+        propsMapper: (v, el) => {
+          const tooltipEl = el as unknown as {
+            content: string;
+            customClass: string;
+            disabled: boolean;
+            forceOpen: boolean | undefined;
+            showDelay: number | undefined;
+            tooltipId: string;
+            position: string;
           };
-          button.variant = 'outlined';
-          button.color = 'tertiary';
-          button.size = 'sm';
-          button.textContent = 'Hover';
-          this.tooltipEl!.appendChild(button);
-          this.sr.appendChild(this.tooltipEl!);
+          tooltipEl.content = v.content ?? 'Tooltip content';
+          tooltipEl.customClass = v['custom-class'] || '';
+          tooltipEl.disabled = Boolean(v.disabled);
+          tooltipEl.forceOpen = v['force-open'] ?? false;
+          tooltipEl.showDelay = v['show-delay'];
+          tooltipEl.tooltipId = v['tooltip-id'] ?? 'storybook-tooltip-shadow';
+          tooltipEl.position = v.position ?? 'auto';
 
-          void Promise.resolve().then(() => this.applyProps());
-        }
-
-        private applyProps() {
-          const v = this._props;
-          const tooltip = this.tooltipEl;
-          if (!v || !tooltip) return;
-          tooltip.content = v.content ?? 'Tooltip content';
-          tooltip.customClass = v['custom-class'] ?? '';
-          tooltip.disabled = Boolean(v.disabled);
-          tooltip.forceOpen = v['force-open'] ?? false;
-          tooltip.tooltipId = v['tooltip-id'] ?? 'storybook-tooltip-shadow';
-          tooltip.position = v.position ?? 'auto';
-
-          const trigger = tooltip.querySelector('modus-wc-button');
-          if (trigger && tooltip.tooltipId) {
-            trigger.setAttribute('aria-describedby', tooltip.tooltipId);
+          const trigger = el.querySelector('modus-wc-button');
+          if (trigger && tooltipEl.tooltipId) {
+            trigger.setAttribute('aria-describedby', tooltipEl.tooltipId);
           }
-        }
-      }
+        },
+      });
       customElements.define('tooltip-shadow-host', TooltipShadowHost);
     }
 
