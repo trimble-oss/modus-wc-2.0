@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Angular Publish Workflow
-        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
+        uses: benc-uk/workflow-dispatch@d004979be141727c7a17c28f603e2facc40d0855 # v1.3
         with:
           workflow: publish-angular.yml
           inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
@@ -170,7 +170,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger React Publish Workflow
-        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
+        uses: benc-uk/workflow-dispatch@d004979be141727c7a17c28f603e2facc40d0855 # v1.3
         with:
           workflow: publish-react.yml
           inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
@@ -180,7 +180,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Vue Publish Workflow
-        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
+        uses: benc-uk/workflow-dispatch@d004979be141727c7a17c28f603e2facc40d0855 # v1.3
         with:
           workflow: publish-vue.yml
           inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Blazor Publish Workflow
-        uses: benc-uk/workflow-dispatch@31e2b3319479a63f0ab15bf800eff9e913504e26 # v1.3
+        uses: benc-uk/workflow-dispatch@d004979be141727c7a17c28f603e2facc40d0855 # v1.3
         with:
           workflow: publish-blazor.yml
           inputs: '{"version": "${{ github.event.inputs.version }}", "orchestrator_run_id": "${{ github.run_id }}"}'
