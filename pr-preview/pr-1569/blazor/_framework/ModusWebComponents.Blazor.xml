@@ -2178,6 +2178,11 @@
             Custom CSS class to apply to the host element.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.LogoName">
+            <summary>
+            The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.MainMenuOpen">
             <summary>
             The open state of the main menu.
@@ -2201,11 +2206,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.UserMenuOpen">
             <summary>
             The open state of the user menu.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.LogoName">
-            <summary>
-            The name of the logo to display. Supports any valid 'logo-name' from the 'modus-wc-logo' component. Defaults to 'trimble'.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.TextOverrides">
