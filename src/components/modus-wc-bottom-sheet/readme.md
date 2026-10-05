@@ -12,7 +12,7 @@
 | `customClass`       | `custom-class`        | Custom CSS class to apply to the outer div.                                                                         | `string \| undefined`                                 | `''`        |
 | `displayMode`       | `display-mode`        | Resting display mode: 'minimized', 'default', or 'expanded'. Drag/keyboard interactions do not overwrite this prop. | `"default" \| "expanded" \| "minimized" \| undefined` | `'default'` |
 | `dragStepThreshold` | `drag-step-threshold` | Fraction (0-1) of the sheet height it must be dragged, in either direction, before it steps one level.              | `number \| undefined`                                 | `0.4`       |
-| `header`            | `header`              | Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.          | `IBottomSheetHeader \| undefined`                     | `undefined` |
+| `header`            | --                    | Configuration for the built-in header layout. Do not set this prop if you intend to use the 'header' slot.          | `IBottomSheetHeader \| undefined`                     | `undefined` |
 | `visible`           | `visible`             | Controls whether the bottom sheet is visible.                                                                       | `boolean \| undefined`                                | `false`     |
 
 
