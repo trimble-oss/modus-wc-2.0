@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Trimble Inc.",
   "dependencies": {
-    "@stencil/react-output-target": "1.6.2",
+    "@stencil/react-output-target": "1.2.0",
     "@trimble-oss/moduswebcomponents": "file:../../../dist"
   },
   "devDependencies": {
@@ -42,8 +42,9 @@
   },
   "overrides": {
     "ts-morph": {
+      ".": "24.0.0",
       "@ts-morph/common": {
-        "minimatch": "10.2.6"
+        "minimatch": "9.0.9"
       }
     },
     "brace-expansion@1": "1.1.21",

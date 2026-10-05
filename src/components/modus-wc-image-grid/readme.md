@@ -18,7 +18,7 @@ Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-w
 | --------------- | ----------------- | ------------------------------------------------------------------------------------------ | -------------------------------------- | ------------- |
 | `customClass`   | `custom-class`    | Custom CSS class to apply to the grid container.                                           | `string \| undefined`                  | `''`          |
 | `imageShape`    | `image-shape`     | Sets the cell aspect ratio layout.                                                         | `"rectangle" \| "square" \| undefined` | `'rectangle'` |
-| `images`        | --                | Images to display in the grid. Only the first N images are shown based on `imagesPerView`. | `IImageGridImage[]`                    | `[]`          |
+| `images`        | `images`          | Images to display in the grid. Only the first N images are shown based on `imagesPerView`. | `IImageGridImage[]`                    | `[]`          |
 | `imagesPerView` | `images-per-view` | Maximum number of images to display in the grid (1–4).                                     | `number \| undefined`                  | `4`           |
 
 

@@ -1031,7 +1031,7 @@ export namespace Components {
          */
         "heading": string;
         /**
-          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`; error — `error_404`, `error_404_page`.
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
          */
         "illustration"?: EmptyStateIllustration;
         /**
@@ -4333,8 +4333,6 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
-
     /**
      * A customizable accordion component used for showing and hiding related groups of content.
      * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
@@ -5518,7 +5516,7 @@ declare namespace LocalJSX {
          */
         "heading": string;
         /**
-          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`; error — `error_404`, `error_404_page`.
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
          */
         "illustration"?: EmptyStateIllustration;
         /**
@@ -7676,727 +7674,69 @@ declare namespace LocalJSX {
          */
         "targetElement"?: HTMLElement;
     }
-
-    interface ModusWcAccordionAttributes {
-        "customClass": string;
-    }
-    interface ModusWcAlertAttributes {
-        "alertDescription": string;
-        "alertTitle": string;
-        "contentDisplayMode": 'default' | 'expandable';
-        "customClass": string;
-        "delay": number;
-        "disableIcon": boolean;
-        "dismissible": boolean;
-        "icon": string;
-        "variant": 'error' | 'info' | 'neutral' | 'success' | 'warning';
-    }
-    interface ModusWcAppMenuAttributes {
-        "customClass": string;
-        "layout": 'list' | 'grid';
-    }
-    interface ModusWcAutocompleteAttributes {
-        "autoComplete": AutocompleteTypes;
-        "bordered": boolean;
-        "customClass": string;
-        "debounceMs": number;
-        "disabled": boolean;
-        "includeClear": boolean;
-        "includeSearch": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "leaveMenuOpen": boolean;
-        "minChars": number;
-        "multiSelect": boolean;
-        "name": string;
-        "placeholder": string;
-        "readOnly": boolean;
-        "required": boolean;
-        "showMenuOnFocus": boolean;
-        "size": ModusSize;
-        "showSpinner": boolean;
-        "value": string;
-        "maxChips": number;
-        "minInputWidth": number;
-    }
-    interface ModusWcAvatarAttributes {
-        "alt": string;
-        "customClass": string;
-        "imgSrc": string;
-        "initials": string;
-        "shape": 'circle' | 'square';
-        "size": DaisySize | 'xl';
-    }
-    interface ModusWcBadgeAttributes {
-        "color": | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'high-contrast'
-    | 'success'
-    | 'warning'
-    | 'danger';
-        "customClass": string;
-        "size": ModusSize;
-        "variant": 'counter' | 'filled' | 'outlined' | 'text';
-    }
-    interface ModusWcBottomSheetAttributes {
-        "customClass": string;
-        "visible": boolean;
-        "displayMode": TBottomSheetDisplayMode;
-        "dragStepThreshold": number;
-    }
-    interface ModusWcBreadcrumbsAttributes {
-        "customClass": string;
-        "size": ModusSize;
-    }
-    interface ModusWcButtonAttributes {
-        "currentAria": string;
-        "buttonAriaLabel": string;
-        "color": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'warning'
-    | 'danger'
-    | 'neutral'
-    | 'success';
-        "customClass": string;
-        "disabled": boolean;
-        "fullWidth": boolean;
-        "pressed": boolean;
-        "shape": 'circle' | 'ellipse' | 'rectangle' | 'square';
-        "size": DaisySize | 'xl';
-        "type": 'button' | 'submit' | 'reset';
-        "variant": 'borderless' | 'filled' | 'outlined';
-    }
-    interface ModusWcButtonGroupAttributes {
-        "variant": 'borderless' | 'filled' | 'outlined';
-        "color": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'warning'
-    | 'danger'
-    | 'neutral'
-    | 'success';
-        "disabled": boolean;
-        "orientation": Orientation;
-        "selectionType": 'default' | 'single' | 'multiple';
-    }
-    interface ModusWcCardAttributes {
-        "backgroundFigure": boolean;
-        "bordered": boolean;
-        "customClass": string;
-        "layout": 'vertical' | 'horizontal';
-        "padding": 'compact' | 'comfortable';
-    }
-    interface ModusWcCheckboxAttributes {
-        "customClass": string;
-        "disabled": boolean;
-        "indeterminate": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "name": string;
-        "required": boolean;
-        "size": ModusSize;
-        "value": boolean;
-    }
-    interface ModusWcChipAttributes {
-        "active": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "hasError": boolean;
-        "label": string;
-        "multiline": boolean;
-        "showRemove": boolean;
-        "shape": 'rectangle' | 'circle';
-        "size": ModusSize;
-        "variant": 'filled' | 'outline';
-    }
-    interface ModusWcCollapseAttributes {
-        "bordered": boolean;
-        "chevronPosition": 'left' | 'right';
-        "customClass": string;
-        "expanded": boolean;
-        "collapseId": string;
-    }
-    interface ModusWcContentTreeAttributes {
-        "allowDragDrop": boolean;
-        "bordered": boolean;
-        "customClass": string;
-        "editingNodeId": string;
-        "filter": string;
-        "searchable": boolean;
-        "selectedNodeId": string;
-        "selectionMode": SelectionMode;
-        "size": ModusSize;
-    }
-    interface ModusWcDateAttributes {
-        "bordered": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "max": string;
-        "min": string;
-        "name": string;
-        "readOnly": boolean;
-        "required": boolean;
-        "size": ModusSize;
-        "format": | 'yyyy-mm-dd'
-    | 'dd-mm-yyyy'
-    | 'mm-dd-yyyy'
-    | 'yyyy/mm/dd'
-    | 'dd/mm/yyyy'
-    | 'mm/dd/yyyy'
-    | 'MMM DD, YYYY';
-        "value": string;
-        "weekStartDay": WeekStartDay;
-        "showWeekNumbers": boolean;
-        "hideOverflowDates": boolean;
-        "type": 'single' | 'range';
-        "endValue": string;
-    }
-    interface ModusWcDividerAttributes {
-        "color": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'high-contrast'
-    | 'success'
-    | 'warning'
-    | 'danger';
-        "content": string;
-        "customClass": string;
-        "orientation": Orientation;
-        "position": 'center' | 'end' | 'start';
-        "responsive": boolean;
-    }
-    interface ModusWcDockAttributes {
-        "activeItemIndex": number;
-        "customClass": string;
-        "position": DockPosition;
-        "showLabels": boolean;
-        "size": ModusSize;
-    }
-    interface ModusWcDropdownMenuAttributes {
-        "buttonAriaLabel": string;
-        "buttonColor": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'warning'
-    | 'danger';
-        "buttonShape": 'circle' | 'ellipse' | 'rectangle' | 'square';
-        "buttonSize": DaisySize | 'xl';
-        "buttonVariant": 'borderless' | 'filled' | 'outlined';
-        "customClass": string;
-        "disabled": boolean;
-        "menuBordered": boolean;
-        "menuOffset": number;
-        "menuPlacement": PopoverPlacement;
-        "menuSize": ModusSize;
-        "menuStrategy": 'absolute' | 'fixed';
-        "menuVisible": boolean;
-    }
-    interface ModusWcEmptyStateAttributes {
-        "variant": EmptyStateVariant;
-        "illustration": EmptyStateIllustration;
-        "heading": string;
-        "subtitle": string;
-        "actionLabel": string;
-        "customClass": string;
-    }
-    interface ModusWcFileDropzoneAttributes {
-        "acceptFileTypes": string;
-        "customClass": string;
-        "disabled": boolean;
-        "fileDraggedOverInstructions": string;
-        "includeStateIcon": boolean;
-        "instructions": string;
-        "invalidFileTypeMessage": string;
-        "maxFileNameLength": number;
-        "maxFileCount": number;
-        "maxTotalFileSizeBytes": number;
-        "multiple": boolean;
-        "successMessage": string;
-    }
-    interface ModusWcHandleAttributes {
-        "customClass": string;
-        "leftTarget": string | HTMLElement;
-        "orientation": Orientation;
-        "rightTarget": string | HTMLElement;
-        "size": 'default' | 'lg' | 'xl' | '2xl';
-        "density": 'compact' | 'comfortable' | 'relaxed';
-        "defaultSplit": number;
-        "buttonSize": DaisySize | 'xl';
-        "buttonColor": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'warning'
-    | 'danger';
-        "buttonVariant": 'borderless' | 'filled' | 'outlined';
-        "type": 'bar' | 'button';
-    }
-    interface ModusWcIconAttributes {
-        "customClass": string;
-        "decorative": boolean;
-        "name": string;
-        "size": DaisySize;
-        "version": IconVersion;
-        "variant": 'outlined' | 'solid';
-    }
-    interface ModusWcImageAttributes {
-        "src": string;
-        "alt": string;
-        "size": ImageSize;
-        "shape": ImageShape;
-        "fit": ImageFit;
-        "cropPosition": string;
-        "customClass": string;
-    }
-    interface ModusWcImageGridAttributes {
-        "imageShape": ImageGridShape;
-        "imagesPerView": number;
-        "customClass": string;
-    }
-    interface ModusWcInputFeedbackAttributes {
-        "customClass": string;
-        "icon": string;
-        "level": IInputFeedbackLevel;
-        "message": string;
-        "size": ModusSize;
-    }
-    interface ModusWcInputLabelAttributes {
-        "forId": string;
-        "labelId": string;
-        "customClass": string;
-        "labelText": string;
-        "required": boolean;
-        "size": ModusSize;
-        "subLabelText": string;
-    }
-    interface ModusWcLinkAttributes {
-        "color": | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'inherit'
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger';
-        "customClass": string;
-        "href": string;
-        "rel": string;
-        "target": string;
-        "underline": 'always' | 'hover' | 'none';
-    }
-    interface ModusWcLoaderAttributes {
-        "color": LoaderColor;
-        "customClass": string;
-        "size": DaisySize;
-        "variant": LoaderVariant;
-    }
-    interface ModusWcLogoAttributes {
-        "name": LogoName;
-        "emblem": boolean;
-        "customClass": string;
-        "alt": string;
-    }
-    interface ModusWcMenuAttributes {
-        "bordered": boolean;
-        "customClass": string;
-        "orientation": Orientation;
-        "selectionMode": SelectionMode;
-        "size": ModusSize;
-        "isSubMenu": boolean;
-    }
-    interface ModusWcMenuItemAttributes {
-        "bordered": boolean;
-        "checkbox": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "label": string;
-        "selected": boolean;
-        "focused": boolean;
-        "size": ModusSize;
-        "subLabel": string;
-        "tooltipContent": string;
-        "tooltipPosition": 'auto' | 'top' | 'right' | 'bottom' | 'left';
-        "value": string;
-        "hasSubmenu": boolean;
-    }
-    interface ModusWcModalAttributes {
-        "backdrop": 'default' | 'static';
-        "customClass": string;
-        "fullscreen": boolean;
-        "modalId": string;
-        "position": 'bottom' | 'center' | 'top';
-        "showClose": boolean;
-        "showFullscreenToggle": boolean;
-    }
-    interface ModusWcNavbarAttributes {
-        "logoName": LogoName;
-        "appsMenuOpen": boolean;
-        "condensed": boolean;
-        "condensedMenuOpen": boolean;
-        "customClass": string;
-        "mainMenuOpen": boolean;
-        "notificationsMenuOpen": boolean;
-        "searchDebounceMs": number;
-        "searchInputOpen": boolean;
-        "userMenuOpen": boolean;
-    }
-    interface ModusWcNumberInputAttributes {
-        "autoComplete": 'on' | 'off';
-        "bordered": boolean;
-        "currencySymbol": string;
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "max": number;
-        "min": number;
-        "name": string;
-        "placeholder": string;
-        "readOnly": boolean;
-        "required": boolean;
-        "size": ModusSize;
-        "step": number;
-        "type": 'number' | 'range';
-        "value": string;
-    }
-    interface ModusWcPaginationAttributes {
-        "count": number;
-        "customClass": string;
-        "nextButtonText": string;
-        "page": number;
-        "prevButtonText": string;
-        "size": ModusSize | 'xs' | 'xl';
-    }
-    interface ModusWcPanelAttributes {
-        "customClass": string;
-        "width": string;
-        "height": string;
-        "floating": boolean;
-    }
-    interface ModusWcProfileMenuAttributes {
-        "showSignOut": boolean;
-    }
-    interface ModusWcProgressAttributes {
-        "customClass": string;
-        "indeterminate": boolean;
-        "label": string;
-        "max": number;
-        "value": number;
-        "variant": 'default' | 'radial';
-    }
-    interface ModusWcRadioAttributes {
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "name": string;
-        "required": boolean;
-        "size": ModusSize;
-        "value": boolean;
-    }
-    interface ModusWcRatingAttributes {
-        "allowHalf": boolean;
-        "count": number;
-        "customClass": string;
-        "disabled": boolean;
-        "size": ModusSize;
-        "variant": ModusWcRatingVariant;
-        "value": number;
-    }
-    interface ModusWcSelectAttributes {
-        "bordered": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "name": string;
-        "required": boolean;
-        "size": ModusSize | 'xs' | 'xl';
-        "value": string;
-    }
-    interface ModusWcSideNavigationAttributes {
-        "collapseOnClickOutside": boolean;
-        "customClass": string;
-        "expanded": boolean;
-        "maxWidth": string;
-        "mode": 'overlay' | 'push';
-        "targetContent": string;
-    }
-    interface ModusWcSkeletonAttributes {
-        "customClass": string;
-        "height": string;
-        "shape": 'circle' | 'rectangle';
-        "width": string;
-    }
-    interface ModusWcSliderAttributes {
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "max": number;
-        "min": number;
-        "name": string;
-        "required": boolean;
-        "size": ModusSize;
-        "step": number;
-        "value": number;
-    }
-    interface ModusWcStatusAttributes {
-        "customClass": string;
-        "label": string;
-        "pulse": boolean;
-        "variant": 'active' | 'warning' | 'danger';
-    }
-    interface ModusWcStepperAttributes {
-        "customClass": string;
-        "orientation": Orientation;
-        "interactive": boolean;
-    }
-    interface ModusWcSwitchAttributes {
-        "customClass": string;
-        "disabled": boolean;
-        "indeterminate": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "name": string;
-        "required": boolean;
-        "size": ModusSize | 'xs';
-        "value": boolean;
-    }
-    interface ModusWcTableAttributes {
-        "editable": boolean | ((row: Record<string, unknown>) => boolean);
-        "mode": 'simple' | 'advanced';
-        "customClass": string;
-        "density": Density;
-        "hover": boolean;
-        "currentPage": number;
-        "paginated": boolean;
-        "showPageSizeSelector": boolean;
-        "sortable": boolean;
-        "selectable": 'none' | 'single' | 'multi';
-        "zebra": boolean;
-        "caption": string;
-    }
-    interface ModusWcTabsAttributes {
-        "activeTabIndex": number;
-        "customClass": string;
-        "size": ModusSize;
-        "tabStyle": 'boxed' | 'bordered' | 'lifted' | 'none';
-    }
-    interface ModusWcTextInputAttributes {
-        "autoCapitalize": | 'off'
-    | 'none'
-    | 'on'
-    | 'sentences'
-    | 'words'
-    | 'characters';
-        "autoComplete": AutocompleteTypes;
-        "autoCorrect": 'on' | 'off';
-        "bordered": boolean;
-        "clearAriaLabel": string;
-        "customClass": string;
-        "disabled": boolean;
-        "enterkeyhint": | 'enter'
-    | 'done'
-    | 'go'
-    | 'next'
-    | 'previous'
-    | 'search'
-    | 'send';
-        "includeClear": boolean;
-        "includeSearch": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "maxLength": number;
-        "minLength": number;
-        "name": string;
-        "pattern": string;
-        "placeholder": string;
-        "readOnly": boolean;
-        "required": boolean;
-        "size": ModusSize | 'xs' | 'xl';
-        "type": TextFieldTypes;
-        "value": string;
-    }
-    interface ModusWcTextareaAttributes {
-        "autoCorrect": 'on' | 'off';
-        "bordered": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "enterkeyhint": | 'enter'
-    | 'done'
-    | 'go'
-    | 'next'
-    | 'previous'
-    | 'search'
-    | 'send';
-        "inputId": string;
-        "inputTabIndex": number;
-        "label": string;
-        "maxLength": number;
-        "minLength": number;
-        "name": string;
-        "placeholder": string;
-        "readonly": boolean;
-        "required": boolean;
-        "rows": number;
-        "size": ModusSize;
-        "value": string;
-    }
-    interface ModusWcThemeSwitcherAttributes {
-        "customClass": string;
-    }
-    interface ModusWcTimeInputAttributes {
-        "autoComplete": 'on' | 'off';
-        "bordered": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "inputId": string;
-        "inputTabIndex": number;
-        "datalistId": string;
-        "label": string;
-        "max": string;
-        "min": string;
-        "name": string;
-        "readOnly": boolean;
-        "required": boolean;
-        "showSeconds": boolean;
-        "size": ModusSize;
-        "step": number;
-        "value": string;
-    }
-    interface ModusWcToastAttributes {
-        "customClass": string;
-        "delay": number;
-        "position": ToastPosition;
-    }
-    interface ModusWcToolbarAttributes {
-        "customClass": string;
-    }
-    interface ModusWcTooltipAttributes {
-        "content": string;
-        "customClass": string;
-        "disabled": boolean;
-        "forceOpen": boolean;
-        "tooltipId": string;
-        "position": 'auto' | 'top' | 'right' | 'bottom' | 'left';
-        "showDelay": number;
-    }
-    interface ModusWcTreeItemAttributes {
-        "bordered": boolean;
-        "checkbox": boolean;
-        "customClass": string;
-        "disabled": boolean;
-        "label": string;
-        "selected": boolean;
-        "focused": boolean;
-        "size": ModusSize;
-        "subLabel": string;
-        "tooltipContent": string;
-        "tooltipPosition": 'auto' | 'top' | 'right' | 'bottom' | 'left';
-        "value": string;
-        "hasSubmenu": boolean;
-        "blockExpand": boolean;
-    }
-    interface ModusWcTreeMenuAttributes {
-        "bordered": boolean;
-        "customClass": string;
-        "orientation": Orientation;
-        "selectionMode": SelectionMode;
-        "size": ModusSize;
-        "isSubMenu": boolean;
-    }
-    interface ModusWcTypographyAttributes {
-        "customClass": string;
-        "hierarchy": TypographyHierarchy;
-        "label": string;
-        "size": TypographySize;
-        "weight": TypographyWeight;
-    }
-    interface ModusWcUtilityPanelAttributes {
-        "backgroundOverlay": boolean;
-        "collapseOnClickOutside": boolean;
-        "customClass": string;
-        "expanded": boolean;
-        "pushContent": boolean;
-    }
-
     interface IntrinsicElements {
-        "modus-wc-accordion": Omit<ModusWcAccordion, keyof ModusWcAccordionAttributes> & { [K in keyof ModusWcAccordion & keyof ModusWcAccordionAttributes]?: ModusWcAccordion[K] } & { [K in keyof ModusWcAccordion & keyof ModusWcAccordionAttributes as `attr:${K}`]?: ModusWcAccordionAttributes[K] } & { [K in keyof ModusWcAccordion & keyof ModusWcAccordionAttributes as `prop:${K}`]?: ModusWcAccordion[K] };
-        "modus-wc-alert": Omit<ModusWcAlert, keyof ModusWcAlertAttributes> & { [K in keyof ModusWcAlert & keyof ModusWcAlertAttributes]?: ModusWcAlert[K] } & { [K in keyof ModusWcAlert & keyof ModusWcAlertAttributes as `attr:${K}`]?: ModusWcAlertAttributes[K] } & { [K in keyof ModusWcAlert & keyof ModusWcAlertAttributes as `prop:${K}`]?: ModusWcAlert[K] } & OneOf<"alertTitle", ModusWcAlert["alertTitle"], ModusWcAlertAttributes["alertTitle"]>;
-        "modus-wc-app-menu": Omit<ModusWcAppMenu, keyof ModusWcAppMenuAttributes> & { [K in keyof ModusWcAppMenu & keyof ModusWcAppMenuAttributes]?: ModusWcAppMenu[K] } & { [K in keyof ModusWcAppMenu & keyof ModusWcAppMenuAttributes as `attr:${K}`]?: ModusWcAppMenuAttributes[K] } & { [K in keyof ModusWcAppMenu & keyof ModusWcAppMenuAttributes as `prop:${K}`]?: ModusWcAppMenu[K] };
-        "modus-wc-autocomplete": Omit<ModusWcAutocomplete, keyof ModusWcAutocompleteAttributes> & { [K in keyof ModusWcAutocomplete & keyof ModusWcAutocompleteAttributes]?: ModusWcAutocomplete[K] } & { [K in keyof ModusWcAutocomplete & keyof ModusWcAutocompleteAttributes as `attr:${K}`]?: ModusWcAutocompleteAttributes[K] } & { [K in keyof ModusWcAutocomplete & keyof ModusWcAutocompleteAttributes as `prop:${K}`]?: ModusWcAutocomplete[K] };
-        "modus-wc-avatar": Omit<ModusWcAvatar, keyof ModusWcAvatarAttributes> & { [K in keyof ModusWcAvatar & keyof ModusWcAvatarAttributes]?: ModusWcAvatar[K] } & { [K in keyof ModusWcAvatar & keyof ModusWcAvatarAttributes as `attr:${K}`]?: ModusWcAvatarAttributes[K] } & { [K in keyof ModusWcAvatar & keyof ModusWcAvatarAttributes as `prop:${K}`]?: ModusWcAvatar[K] } & OneOf<"alt", ModusWcAvatar["alt"], ModusWcAvatarAttributes["alt"]>;
-        "modus-wc-badge": Omit<ModusWcBadge, keyof ModusWcBadgeAttributes> & { [K in keyof ModusWcBadge & keyof ModusWcBadgeAttributes]?: ModusWcBadge[K] } & { [K in keyof ModusWcBadge & keyof ModusWcBadgeAttributes as `attr:${K}`]?: ModusWcBadgeAttributes[K] } & { [K in keyof ModusWcBadge & keyof ModusWcBadgeAttributes as `prop:${K}`]?: ModusWcBadge[K] };
-        "modus-wc-bottom-sheet": Omit<ModusWcBottomSheet, keyof ModusWcBottomSheetAttributes> & { [K in keyof ModusWcBottomSheet & keyof ModusWcBottomSheetAttributes]?: ModusWcBottomSheet[K] } & { [K in keyof ModusWcBottomSheet & keyof ModusWcBottomSheetAttributes as `attr:${K}`]?: ModusWcBottomSheetAttributes[K] } & { [K in keyof ModusWcBottomSheet & keyof ModusWcBottomSheetAttributes as `prop:${K}`]?: ModusWcBottomSheet[K] };
-        "modus-wc-breadcrumbs": Omit<ModusWcBreadcrumbs, keyof ModusWcBreadcrumbsAttributes> & { [K in keyof ModusWcBreadcrumbs & keyof ModusWcBreadcrumbsAttributes]?: ModusWcBreadcrumbs[K] } & { [K in keyof ModusWcBreadcrumbs & keyof ModusWcBreadcrumbsAttributes as `attr:${K}`]?: ModusWcBreadcrumbsAttributes[K] } & { [K in keyof ModusWcBreadcrumbs & keyof ModusWcBreadcrumbsAttributes as `prop:${K}`]?: ModusWcBreadcrumbs[K] };
-        "modus-wc-button": Omit<ModusWcButton, keyof ModusWcButtonAttributes> & { [K in keyof ModusWcButton & keyof ModusWcButtonAttributes]?: ModusWcButton[K] } & { [K in keyof ModusWcButton & keyof ModusWcButtonAttributes as `attr:${K}`]?: ModusWcButtonAttributes[K] } & { [K in keyof ModusWcButton & keyof ModusWcButtonAttributes as `prop:${K}`]?: ModusWcButton[K] };
-        "modus-wc-button-group": Omit<ModusWcButtonGroup, keyof ModusWcButtonGroupAttributes> & { [K in keyof ModusWcButtonGroup & keyof ModusWcButtonGroupAttributes]?: ModusWcButtonGroup[K] } & { [K in keyof ModusWcButtonGroup & keyof ModusWcButtonGroupAttributes as `attr:${K}`]?: ModusWcButtonGroupAttributes[K] } & { [K in keyof ModusWcButtonGroup & keyof ModusWcButtonGroupAttributes as `prop:${K}`]?: ModusWcButtonGroup[K] };
-        "modus-wc-card": Omit<ModusWcCard, keyof ModusWcCardAttributes> & { [K in keyof ModusWcCard & keyof ModusWcCardAttributes]?: ModusWcCard[K] } & { [K in keyof ModusWcCard & keyof ModusWcCardAttributes as `attr:${K}`]?: ModusWcCardAttributes[K] } & { [K in keyof ModusWcCard & keyof ModusWcCardAttributes as `prop:${K}`]?: ModusWcCard[K] };
-        "modus-wc-checkbox": Omit<ModusWcCheckbox, keyof ModusWcCheckboxAttributes> & { [K in keyof ModusWcCheckbox & keyof ModusWcCheckboxAttributes]?: ModusWcCheckbox[K] } & { [K in keyof ModusWcCheckbox & keyof ModusWcCheckboxAttributes as `attr:${K}`]?: ModusWcCheckboxAttributes[K] } & { [K in keyof ModusWcCheckbox & keyof ModusWcCheckboxAttributes as `prop:${K}`]?: ModusWcCheckbox[K] };
-        "modus-wc-chip": Omit<ModusWcChip, keyof ModusWcChipAttributes> & { [K in keyof ModusWcChip & keyof ModusWcChipAttributes]?: ModusWcChip[K] } & { [K in keyof ModusWcChip & keyof ModusWcChipAttributes as `attr:${K}`]?: ModusWcChipAttributes[K] } & { [K in keyof ModusWcChip & keyof ModusWcChipAttributes as `prop:${K}`]?: ModusWcChip[K] };
-        "modus-wc-collapse": Omit<ModusWcCollapse, keyof ModusWcCollapseAttributes> & { [K in keyof ModusWcCollapse & keyof ModusWcCollapseAttributes]?: ModusWcCollapse[K] } & { [K in keyof ModusWcCollapse & keyof ModusWcCollapseAttributes as `attr:${K}`]?: ModusWcCollapseAttributes[K] } & { [K in keyof ModusWcCollapse & keyof ModusWcCollapseAttributes as `prop:${K}`]?: ModusWcCollapse[K] };
-        "modus-wc-content-tree": Omit<ModusWcContentTree, keyof ModusWcContentTreeAttributes> & { [K in keyof ModusWcContentTree & keyof ModusWcContentTreeAttributes]?: ModusWcContentTree[K] } & { [K in keyof ModusWcContentTree & keyof ModusWcContentTreeAttributes as `attr:${K}`]?: ModusWcContentTreeAttributes[K] } & { [K in keyof ModusWcContentTree & keyof ModusWcContentTreeAttributes as `prop:${K}`]?: ModusWcContentTree[K] };
-        "modus-wc-date": Omit<ModusWcDate, keyof ModusWcDateAttributes> & { [K in keyof ModusWcDate & keyof ModusWcDateAttributes]?: ModusWcDate[K] } & { [K in keyof ModusWcDate & keyof ModusWcDateAttributes as `attr:${K}`]?: ModusWcDateAttributes[K] } & { [K in keyof ModusWcDate & keyof ModusWcDateAttributes as `prop:${K}`]?: ModusWcDate[K] };
-        "modus-wc-divider": Omit<ModusWcDivider, keyof ModusWcDividerAttributes> & { [K in keyof ModusWcDivider & keyof ModusWcDividerAttributes]?: ModusWcDivider[K] } & { [K in keyof ModusWcDivider & keyof ModusWcDividerAttributes as `attr:${K}`]?: ModusWcDividerAttributes[K] } & { [K in keyof ModusWcDivider & keyof ModusWcDividerAttributes as `prop:${K}`]?: ModusWcDivider[K] };
-        "modus-wc-dock": Omit<ModusWcDock, keyof ModusWcDockAttributes> & { [K in keyof ModusWcDock & keyof ModusWcDockAttributes]?: ModusWcDock[K] } & { [K in keyof ModusWcDock & keyof ModusWcDockAttributes as `attr:${K}`]?: ModusWcDockAttributes[K] } & { [K in keyof ModusWcDock & keyof ModusWcDockAttributes as `prop:${K}`]?: ModusWcDock[K] };
-        "modus-wc-dropdown-menu": Omit<ModusWcDropdownMenu, keyof ModusWcDropdownMenuAttributes> & { [K in keyof ModusWcDropdownMenu & keyof ModusWcDropdownMenuAttributes]?: ModusWcDropdownMenu[K] } & { [K in keyof ModusWcDropdownMenu & keyof ModusWcDropdownMenuAttributes as `attr:${K}`]?: ModusWcDropdownMenuAttributes[K] } & { [K in keyof ModusWcDropdownMenu & keyof ModusWcDropdownMenuAttributes as `prop:${K}`]?: ModusWcDropdownMenu[K] };
-        "modus-wc-empty-state": Omit<ModusWcEmptyState, keyof ModusWcEmptyStateAttributes> & { [K in keyof ModusWcEmptyState & keyof ModusWcEmptyStateAttributes]?: ModusWcEmptyState[K] } & { [K in keyof ModusWcEmptyState & keyof ModusWcEmptyStateAttributes as `attr:${K}`]?: ModusWcEmptyStateAttributes[K] } & { [K in keyof ModusWcEmptyState & keyof ModusWcEmptyStateAttributes as `prop:${K}`]?: ModusWcEmptyState[K] } & OneOf<"heading", ModusWcEmptyState["heading"], ModusWcEmptyStateAttributes["heading"]>;
-        "modus-wc-file-dropzone": Omit<ModusWcFileDropzone, keyof ModusWcFileDropzoneAttributes> & { [K in keyof ModusWcFileDropzone & keyof ModusWcFileDropzoneAttributes]?: ModusWcFileDropzone[K] } & { [K in keyof ModusWcFileDropzone & keyof ModusWcFileDropzoneAttributes as `attr:${K}`]?: ModusWcFileDropzoneAttributes[K] } & { [K in keyof ModusWcFileDropzone & keyof ModusWcFileDropzoneAttributes as `prop:${K}`]?: ModusWcFileDropzone[K] };
-        "modus-wc-handle": Omit<ModusWcHandle, keyof ModusWcHandleAttributes> & { [K in keyof ModusWcHandle & keyof ModusWcHandleAttributes]?: ModusWcHandle[K] } & { [K in keyof ModusWcHandle & keyof ModusWcHandleAttributes as `attr:${K}`]?: ModusWcHandleAttributes[K] } & { [K in keyof ModusWcHandle & keyof ModusWcHandleAttributes as `prop:${K}`]?: ModusWcHandle[K] };
-        "modus-wc-icon": Omit<ModusWcIcon, keyof ModusWcIconAttributes> & { [K in keyof ModusWcIcon & keyof ModusWcIconAttributes]?: ModusWcIcon[K] } & { [K in keyof ModusWcIcon & keyof ModusWcIconAttributes as `attr:${K}`]?: ModusWcIconAttributes[K] } & { [K in keyof ModusWcIcon & keyof ModusWcIconAttributes as `prop:${K}`]?: ModusWcIcon[K] } & OneOf<"name", ModusWcIcon["name"], ModusWcIconAttributes["name"]>;
-        "modus-wc-image": Omit<ModusWcImage, keyof ModusWcImageAttributes> & { [K in keyof ModusWcImage & keyof ModusWcImageAttributes]?: ModusWcImage[K] } & { [K in keyof ModusWcImage & keyof ModusWcImageAttributes as `attr:${K}`]?: ModusWcImageAttributes[K] } & { [K in keyof ModusWcImage & keyof ModusWcImageAttributes as `prop:${K}`]?: ModusWcImage[K] } & OneOf<"src", ModusWcImage["src"], ModusWcImageAttributes["src"]>;
-        "modus-wc-image-grid": Omit<ModusWcImageGrid, keyof ModusWcImageGridAttributes> & { [K in keyof ModusWcImageGrid & keyof ModusWcImageGridAttributes]?: ModusWcImageGrid[K] } & { [K in keyof ModusWcImageGrid & keyof ModusWcImageGridAttributes as `attr:${K}`]?: ModusWcImageGridAttributes[K] } & { [K in keyof ModusWcImageGrid & keyof ModusWcImageGridAttributes as `prop:${K}`]?: ModusWcImageGrid[K] };
-        "modus-wc-input-feedback": Omit<ModusWcInputFeedback, keyof ModusWcInputFeedbackAttributes> & { [K in keyof ModusWcInputFeedback & keyof ModusWcInputFeedbackAttributes]?: ModusWcInputFeedback[K] } & { [K in keyof ModusWcInputFeedback & keyof ModusWcInputFeedbackAttributes as `attr:${K}`]?: ModusWcInputFeedbackAttributes[K] } & { [K in keyof ModusWcInputFeedback & keyof ModusWcInputFeedbackAttributes as `prop:${K}`]?: ModusWcInputFeedback[K] } & OneOf<"level", ModusWcInputFeedback["level"], ModusWcInputFeedbackAttributes["level"]>;
-        "modus-wc-input-label": Omit<ModusWcInputLabel, keyof ModusWcInputLabelAttributes> & { [K in keyof ModusWcInputLabel & keyof ModusWcInputLabelAttributes]?: ModusWcInputLabel[K] } & { [K in keyof ModusWcInputLabel & keyof ModusWcInputLabelAttributes as `attr:${K}`]?: ModusWcInputLabelAttributes[K] } & { [K in keyof ModusWcInputLabel & keyof ModusWcInputLabelAttributes as `prop:${K}`]?: ModusWcInputLabel[K] };
-        "modus-wc-link": Omit<ModusWcLink, keyof ModusWcLinkAttributes> & { [K in keyof ModusWcLink & keyof ModusWcLinkAttributes]?: ModusWcLink[K] } & { [K in keyof ModusWcLink & keyof ModusWcLinkAttributes as `attr:${K}`]?: ModusWcLinkAttributes[K] } & { [K in keyof ModusWcLink & keyof ModusWcLinkAttributes as `prop:${K}`]?: ModusWcLink[K] };
-        "modus-wc-loader": Omit<ModusWcLoader, keyof ModusWcLoaderAttributes> & { [K in keyof ModusWcLoader & keyof ModusWcLoaderAttributes]?: ModusWcLoader[K] } & { [K in keyof ModusWcLoader & keyof ModusWcLoaderAttributes as `attr:${K}`]?: ModusWcLoaderAttributes[K] } & { [K in keyof ModusWcLoader & keyof ModusWcLoaderAttributes as `prop:${K}`]?: ModusWcLoader[K] };
-        "modus-wc-logo": Omit<ModusWcLogo, keyof ModusWcLogoAttributes> & { [K in keyof ModusWcLogo & keyof ModusWcLogoAttributes]?: ModusWcLogo[K] } & { [K in keyof ModusWcLogo & keyof ModusWcLogoAttributes as `attr:${K}`]?: ModusWcLogoAttributes[K] } & { [K in keyof ModusWcLogo & keyof ModusWcLogoAttributes as `prop:${K}`]?: ModusWcLogo[K] } & OneOf<"name", ModusWcLogo["name"], ModusWcLogoAttributes["name"]>;
-        "modus-wc-menu": Omit<ModusWcMenu, keyof ModusWcMenuAttributes> & { [K in keyof ModusWcMenu & keyof ModusWcMenuAttributes]?: ModusWcMenu[K] } & { [K in keyof ModusWcMenu & keyof ModusWcMenuAttributes as `attr:${K}`]?: ModusWcMenuAttributes[K] } & { [K in keyof ModusWcMenu & keyof ModusWcMenuAttributes as `prop:${K}`]?: ModusWcMenu[K] };
-        "modus-wc-menu-item": Omit<ModusWcMenuItem, keyof ModusWcMenuItemAttributes> & { [K in keyof ModusWcMenuItem & keyof ModusWcMenuItemAttributes]?: ModusWcMenuItem[K] } & { [K in keyof ModusWcMenuItem & keyof ModusWcMenuItemAttributes as `attr:${K}`]?: ModusWcMenuItemAttributes[K] } & { [K in keyof ModusWcMenuItem & keyof ModusWcMenuItemAttributes as `prop:${K}`]?: ModusWcMenuItem[K] };
-        "modus-wc-modal": Omit<ModusWcModal, keyof ModusWcModalAttributes> & { [K in keyof ModusWcModal & keyof ModusWcModalAttributes]?: ModusWcModal[K] } & { [K in keyof ModusWcModal & keyof ModusWcModalAttributes as `attr:${K}`]?: ModusWcModalAttributes[K] } & { [K in keyof ModusWcModal & keyof ModusWcModalAttributes as `prop:${K}`]?: ModusWcModal[K] } & OneOf<"modalId", ModusWcModal["modalId"], ModusWcModalAttributes["modalId"]>;
-        "modus-wc-navbar": Omit<ModusWcNavbar, keyof ModusWcNavbarAttributes> & { [K in keyof ModusWcNavbar & keyof ModusWcNavbarAttributes]?: ModusWcNavbar[K] } & { [K in keyof ModusWcNavbar & keyof ModusWcNavbarAttributes as `attr:${K}`]?: ModusWcNavbarAttributes[K] } & { [K in keyof ModusWcNavbar & keyof ModusWcNavbarAttributes as `prop:${K}`]?: ModusWcNavbar[K] };
-        "modus-wc-number-input": Omit<ModusWcNumberInput, keyof ModusWcNumberInputAttributes> & { [K in keyof ModusWcNumberInput & keyof ModusWcNumberInputAttributes]?: ModusWcNumberInput[K] } & { [K in keyof ModusWcNumberInput & keyof ModusWcNumberInputAttributes as `attr:${K}`]?: ModusWcNumberInputAttributes[K] } & { [K in keyof ModusWcNumberInput & keyof ModusWcNumberInputAttributes as `prop:${K}`]?: ModusWcNumberInput[K] };
-        "modus-wc-pagination": Omit<ModusWcPagination, keyof ModusWcPaginationAttributes> & { [K in keyof ModusWcPagination & keyof ModusWcPaginationAttributes]?: ModusWcPagination[K] } & { [K in keyof ModusWcPagination & keyof ModusWcPaginationAttributes as `attr:${K}`]?: ModusWcPaginationAttributes[K] } & { [K in keyof ModusWcPagination & keyof ModusWcPaginationAttributes as `prop:${K}`]?: ModusWcPagination[K] };
-        "modus-wc-panel": Omit<ModusWcPanel, keyof ModusWcPanelAttributes> & { [K in keyof ModusWcPanel & keyof ModusWcPanelAttributes]?: ModusWcPanel[K] } & { [K in keyof ModusWcPanel & keyof ModusWcPanelAttributes as `attr:${K}`]?: ModusWcPanelAttributes[K] } & { [K in keyof ModusWcPanel & keyof ModusWcPanelAttributes as `prop:${K}`]?: ModusWcPanel[K] };
-        "modus-wc-profile-menu": Omit<ModusWcProfileMenu, keyof ModusWcProfileMenuAttributes> & { [K in keyof ModusWcProfileMenu & keyof ModusWcProfileMenuAttributes]?: ModusWcProfileMenu[K] } & { [K in keyof ModusWcProfileMenu & keyof ModusWcProfileMenuAttributes as `attr:${K}`]?: ModusWcProfileMenuAttributes[K] } & { [K in keyof ModusWcProfileMenu & keyof ModusWcProfileMenuAttributes as `prop:${K}`]?: ModusWcProfileMenu[K] };
-        "modus-wc-progress": Omit<ModusWcProgress, keyof ModusWcProgressAttributes> & { [K in keyof ModusWcProgress & keyof ModusWcProgressAttributes]?: ModusWcProgress[K] } & { [K in keyof ModusWcProgress & keyof ModusWcProgressAttributes as `attr:${K}`]?: ModusWcProgressAttributes[K] } & { [K in keyof ModusWcProgress & keyof ModusWcProgressAttributes as `prop:${K}`]?: ModusWcProgress[K] };
-        "modus-wc-radio": Omit<ModusWcRadio, keyof ModusWcRadioAttributes> & { [K in keyof ModusWcRadio & keyof ModusWcRadioAttributes]?: ModusWcRadio[K] } & { [K in keyof ModusWcRadio & keyof ModusWcRadioAttributes as `attr:${K}`]?: ModusWcRadioAttributes[K] } & { [K in keyof ModusWcRadio & keyof ModusWcRadioAttributes as `prop:${K}`]?: ModusWcRadio[K] };
-        "modus-wc-rating": Omit<ModusWcRating, keyof ModusWcRatingAttributes> & { [K in keyof ModusWcRating & keyof ModusWcRatingAttributes]?: ModusWcRating[K] } & { [K in keyof ModusWcRating & keyof ModusWcRatingAttributes as `attr:${K}`]?: ModusWcRatingAttributes[K] } & { [K in keyof ModusWcRating & keyof ModusWcRatingAttributes as `prop:${K}`]?: ModusWcRating[K] };
-        "modus-wc-select": Omit<ModusWcSelect, keyof ModusWcSelectAttributes> & { [K in keyof ModusWcSelect & keyof ModusWcSelectAttributes]?: ModusWcSelect[K] } & { [K in keyof ModusWcSelect & keyof ModusWcSelectAttributes as `attr:${K}`]?: ModusWcSelectAttributes[K] } & { [K in keyof ModusWcSelect & keyof ModusWcSelectAttributes as `prop:${K}`]?: ModusWcSelect[K] };
-        "modus-wc-side-navigation": Omit<ModusWcSideNavigation, keyof ModusWcSideNavigationAttributes> & { [K in keyof ModusWcSideNavigation & keyof ModusWcSideNavigationAttributes]?: ModusWcSideNavigation[K] } & { [K in keyof ModusWcSideNavigation & keyof ModusWcSideNavigationAttributes as `attr:${K}`]?: ModusWcSideNavigationAttributes[K] } & { [K in keyof ModusWcSideNavigation & keyof ModusWcSideNavigationAttributes as `prop:${K}`]?: ModusWcSideNavigation[K] };
-        "modus-wc-skeleton": Omit<ModusWcSkeleton, keyof ModusWcSkeletonAttributes> & { [K in keyof ModusWcSkeleton & keyof ModusWcSkeletonAttributes]?: ModusWcSkeleton[K] } & { [K in keyof ModusWcSkeleton & keyof ModusWcSkeletonAttributes as `attr:${K}`]?: ModusWcSkeletonAttributes[K] } & { [K in keyof ModusWcSkeleton & keyof ModusWcSkeletonAttributes as `prop:${K}`]?: ModusWcSkeleton[K] };
-        "modus-wc-slider": Omit<ModusWcSlider, keyof ModusWcSliderAttributes> & { [K in keyof ModusWcSlider & keyof ModusWcSliderAttributes]?: ModusWcSlider[K] } & { [K in keyof ModusWcSlider & keyof ModusWcSliderAttributes as `attr:${K}`]?: ModusWcSliderAttributes[K] } & { [K in keyof ModusWcSlider & keyof ModusWcSliderAttributes as `prop:${K}`]?: ModusWcSlider[K] };
-        "modus-wc-status": Omit<ModusWcStatus, keyof ModusWcStatusAttributes> & { [K in keyof ModusWcStatus & keyof ModusWcStatusAttributes]?: ModusWcStatus[K] } & { [K in keyof ModusWcStatus & keyof ModusWcStatusAttributes as `attr:${K}`]?: ModusWcStatusAttributes[K] } & { [K in keyof ModusWcStatus & keyof ModusWcStatusAttributes as `prop:${K}`]?: ModusWcStatus[K] };
-        "modus-wc-stepper": Omit<ModusWcStepper, keyof ModusWcStepperAttributes> & { [K in keyof ModusWcStepper & keyof ModusWcStepperAttributes]?: ModusWcStepper[K] } & { [K in keyof ModusWcStepper & keyof ModusWcStepperAttributes as `attr:${K}`]?: ModusWcStepperAttributes[K] } & { [K in keyof ModusWcStepper & keyof ModusWcStepperAttributes as `prop:${K}`]?: ModusWcStepper[K] };
-        "modus-wc-switch": Omit<ModusWcSwitch, keyof ModusWcSwitchAttributes> & { [K in keyof ModusWcSwitch & keyof ModusWcSwitchAttributes]?: ModusWcSwitch[K] } & { [K in keyof ModusWcSwitch & keyof ModusWcSwitchAttributes as `attr:${K}`]?: ModusWcSwitchAttributes[K] } & { [K in keyof ModusWcSwitch & keyof ModusWcSwitchAttributes as `prop:${K}`]?: ModusWcSwitch[K] };
-        "modus-wc-table": Omit<ModusWcTable, keyof ModusWcTableAttributes> & { [K in keyof ModusWcTable & keyof ModusWcTableAttributes]?: ModusWcTable[K] } & { [K in keyof ModusWcTable & keyof ModusWcTableAttributes as `attr:${K}`]?: ModusWcTableAttributes[K] } & { [K in keyof ModusWcTable & keyof ModusWcTableAttributes as `prop:${K}`]?: ModusWcTable[K] };
-        "modus-wc-tabs": Omit<ModusWcTabs, keyof ModusWcTabsAttributes> & { [K in keyof ModusWcTabs & keyof ModusWcTabsAttributes]?: ModusWcTabs[K] } & { [K in keyof ModusWcTabs & keyof ModusWcTabsAttributes as `attr:${K}`]?: ModusWcTabsAttributes[K] } & { [K in keyof ModusWcTabs & keyof ModusWcTabsAttributes as `prop:${K}`]?: ModusWcTabs[K] };
-        "modus-wc-text-input": Omit<ModusWcTextInput, keyof ModusWcTextInputAttributes> & { [K in keyof ModusWcTextInput & keyof ModusWcTextInputAttributes]?: ModusWcTextInput[K] } & { [K in keyof ModusWcTextInput & keyof ModusWcTextInputAttributes as `attr:${K}`]?: ModusWcTextInputAttributes[K] } & { [K in keyof ModusWcTextInput & keyof ModusWcTextInputAttributes as `prop:${K}`]?: ModusWcTextInput[K] };
-        "modus-wc-textarea": Omit<ModusWcTextarea, keyof ModusWcTextareaAttributes> & { [K in keyof ModusWcTextarea & keyof ModusWcTextareaAttributes]?: ModusWcTextarea[K] } & { [K in keyof ModusWcTextarea & keyof ModusWcTextareaAttributes as `attr:${K}`]?: ModusWcTextareaAttributes[K] } & { [K in keyof ModusWcTextarea & keyof ModusWcTextareaAttributes as `prop:${K}`]?: ModusWcTextarea[K] };
+        "modus-wc-accordion": ModusWcAccordion;
+        "modus-wc-alert": ModusWcAlert;
+        "modus-wc-app-menu": ModusWcAppMenu;
+        "modus-wc-autocomplete": ModusWcAutocomplete;
+        "modus-wc-avatar": ModusWcAvatar;
+        "modus-wc-badge": ModusWcBadge;
+        "modus-wc-bottom-sheet": ModusWcBottomSheet;
+        "modus-wc-breadcrumbs": ModusWcBreadcrumbs;
+        "modus-wc-button": ModusWcButton;
+        "modus-wc-button-group": ModusWcButtonGroup;
+        "modus-wc-card": ModusWcCard;
+        "modus-wc-checkbox": ModusWcCheckbox;
+        "modus-wc-chip": ModusWcChip;
+        "modus-wc-collapse": ModusWcCollapse;
+        "modus-wc-content-tree": ModusWcContentTree;
+        "modus-wc-date": ModusWcDate;
+        "modus-wc-divider": ModusWcDivider;
+        "modus-wc-dock": ModusWcDock;
+        "modus-wc-dropdown-menu": ModusWcDropdownMenu;
+        "modus-wc-empty-state": ModusWcEmptyState;
+        "modus-wc-file-dropzone": ModusWcFileDropzone;
+        "modus-wc-handle": ModusWcHandle;
+        "modus-wc-icon": ModusWcIcon;
+        "modus-wc-image": ModusWcImage;
+        "modus-wc-image-grid": ModusWcImageGrid;
+        "modus-wc-input-feedback": ModusWcInputFeedback;
+        "modus-wc-input-label": ModusWcInputLabel;
+        "modus-wc-link": ModusWcLink;
+        "modus-wc-loader": ModusWcLoader;
+        "modus-wc-logo": ModusWcLogo;
+        "modus-wc-menu": ModusWcMenu;
+        "modus-wc-menu-item": ModusWcMenuItem;
+        "modus-wc-modal": ModusWcModal;
+        "modus-wc-navbar": ModusWcNavbar;
+        "modus-wc-number-input": ModusWcNumberInput;
+        "modus-wc-pagination": ModusWcPagination;
+        "modus-wc-panel": ModusWcPanel;
+        "modus-wc-profile-menu": ModusWcProfileMenu;
+        "modus-wc-progress": ModusWcProgress;
+        "modus-wc-radio": ModusWcRadio;
+        "modus-wc-rating": ModusWcRating;
+        "modus-wc-select": ModusWcSelect;
+        "modus-wc-side-navigation": ModusWcSideNavigation;
+        "modus-wc-skeleton": ModusWcSkeleton;
+        "modus-wc-slider": ModusWcSlider;
+        "modus-wc-status": ModusWcStatus;
+        "modus-wc-stepper": ModusWcStepper;
+        "modus-wc-switch": ModusWcSwitch;
+        "modus-wc-table": ModusWcTable;
+        "modus-wc-tabs": ModusWcTabs;
+        "modus-wc-text-input": ModusWcTextInput;
+        "modus-wc-textarea": ModusWcTextarea;
         "modus-wc-theme-provider": ModusWcThemeProvider;
-        "modus-wc-theme-switcher": Omit<ModusWcThemeSwitcher, keyof ModusWcThemeSwitcherAttributes> & { [K in keyof ModusWcThemeSwitcher & keyof ModusWcThemeSwitcherAttributes]?: ModusWcThemeSwitcher[K] } & { [K in keyof ModusWcThemeSwitcher & keyof ModusWcThemeSwitcherAttributes as `attr:${K}`]?: ModusWcThemeSwitcherAttributes[K] } & { [K in keyof ModusWcThemeSwitcher & keyof ModusWcThemeSwitcherAttributes as `prop:${K}`]?: ModusWcThemeSwitcher[K] };
-        "modus-wc-time-input": Omit<ModusWcTimeInput, keyof ModusWcTimeInputAttributes> & { [K in keyof ModusWcTimeInput & keyof ModusWcTimeInputAttributes]?: ModusWcTimeInput[K] } & { [K in keyof ModusWcTimeInput & keyof ModusWcTimeInputAttributes as `attr:${K}`]?: ModusWcTimeInputAttributes[K] } & { [K in keyof ModusWcTimeInput & keyof ModusWcTimeInputAttributes as `prop:${K}`]?: ModusWcTimeInput[K] };
-        "modus-wc-toast": Omit<ModusWcToast, keyof ModusWcToastAttributes> & { [K in keyof ModusWcToast & keyof ModusWcToastAttributes]?: ModusWcToast[K] } & { [K in keyof ModusWcToast & keyof ModusWcToastAttributes as `attr:${K}`]?: ModusWcToastAttributes[K] } & { [K in keyof ModusWcToast & keyof ModusWcToastAttributes as `prop:${K}`]?: ModusWcToast[K] };
-        "modus-wc-toolbar": Omit<ModusWcToolbar, keyof ModusWcToolbarAttributes> & { [K in keyof ModusWcToolbar & keyof ModusWcToolbarAttributes]?: ModusWcToolbar[K] } & { [K in keyof ModusWcToolbar & keyof ModusWcToolbarAttributes as `attr:${K}`]?: ModusWcToolbarAttributes[K] } & { [K in keyof ModusWcToolbar & keyof ModusWcToolbarAttributes as `prop:${K}`]?: ModusWcToolbar[K] };
-        "modus-wc-tooltip": Omit<ModusWcTooltip, keyof ModusWcTooltipAttributes> & { [K in keyof ModusWcTooltip & keyof ModusWcTooltipAttributes]?: ModusWcTooltip[K] } & { [K in keyof ModusWcTooltip & keyof ModusWcTooltipAttributes as `attr:${K}`]?: ModusWcTooltipAttributes[K] } & { [K in keyof ModusWcTooltip & keyof ModusWcTooltipAttributes as `prop:${K}`]?: ModusWcTooltip[K] };
-        "modus-wc-tree-item": Omit<ModusWcTreeItem, keyof ModusWcTreeItemAttributes> & { [K in keyof ModusWcTreeItem & keyof ModusWcTreeItemAttributes]?: ModusWcTreeItem[K] } & { [K in keyof ModusWcTreeItem & keyof ModusWcTreeItemAttributes as `attr:${K}`]?: ModusWcTreeItemAttributes[K] } & { [K in keyof ModusWcTreeItem & keyof ModusWcTreeItemAttributes as `prop:${K}`]?: ModusWcTreeItem[K] };
-        "modus-wc-tree-menu": Omit<ModusWcTreeMenu, keyof ModusWcTreeMenuAttributes> & { [K in keyof ModusWcTreeMenu & keyof ModusWcTreeMenuAttributes]?: ModusWcTreeMenu[K] } & { [K in keyof ModusWcTreeMenu & keyof ModusWcTreeMenuAttributes as `attr:${K}`]?: ModusWcTreeMenuAttributes[K] } & { [K in keyof ModusWcTreeMenu & keyof ModusWcTreeMenuAttributes as `prop:${K}`]?: ModusWcTreeMenu[K] };
-        "modus-wc-typography": Omit<ModusWcTypography, keyof ModusWcTypographyAttributes> & { [K in keyof ModusWcTypography & keyof ModusWcTypographyAttributes]?: ModusWcTypography[K] } & { [K in keyof ModusWcTypography & keyof ModusWcTypographyAttributes as `attr:${K}`]?: ModusWcTypographyAttributes[K] } & { [K in keyof ModusWcTypography & keyof ModusWcTypographyAttributes as `prop:${K}`]?: ModusWcTypography[K] } & OneOf<"label", ModusWcTypography["label"], ModusWcTypographyAttributes["label"]>;
-        "modus-wc-utility-panel": Omit<ModusWcUtilityPanel, keyof ModusWcUtilityPanelAttributes> & { [K in keyof ModusWcUtilityPanel & keyof ModusWcUtilityPanelAttributes]?: ModusWcUtilityPanel[K] } & { [K in keyof ModusWcUtilityPanel & keyof ModusWcUtilityPanelAttributes as `attr:${K}`]?: ModusWcUtilityPanelAttributes[K] } & { [K in keyof ModusWcUtilityPanel & keyof ModusWcUtilityPanelAttributes as `prop:${K}`]?: ModusWcUtilityPanel[K] };
+        "modus-wc-theme-switcher": ModusWcThemeSwitcher;
+        "modus-wc-time-input": ModusWcTimeInput;
+        "modus-wc-toast": ModusWcToast;
+        "modus-wc-toolbar": ModusWcToolbar;
+        "modus-wc-tooltip": ModusWcTooltip;
+        "modus-wc-tree-item": ModusWcTreeItem;
+        "modus-wc-tree-menu": ModusWcTreeMenu;
+        "modus-wc-typography": ModusWcTypography;
+        "modus-wc-utility-panel": ModusWcUtilityPanel;
     }
 }
 export { LocalJSX as JSX };
@@ -8407,63 +7747,63 @@ declare module "@stencil/core" {
              * A customizable accordion component used for showing and hiding related groups of content.
              * The component supports a `<slot>` called 'content' for injecting `<modus-wc-collapse>` elements. See [Collapse](/docs/components-collapse--docs) docs for additional info.
              */
-            "modus-wc-accordion": LocalJSX.IntrinsicElements["modus-wc-accordion"] & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
+            "modus-wc-accordion": LocalJSX.ModusWcAccordion & JSXBase.HTMLAttributes<HTMLModusWcAccordionElement>;
             /**
              * A customizable alert component used to inform the user about important events.
              * The component supports `<slot>` elements for injecting custom content and buttons.
              */
-            "modus-wc-alert": LocalJSX.IntrinsicElements["modus-wc-alert"] & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
-            "modus-wc-app-menu": LocalJSX.IntrinsicElements["modus-wc-app-menu"] & JSXBase.HTMLAttributes<HTMLModusWcAppMenuElement>;
+            "modus-wc-alert": LocalJSX.ModusWcAlert & JSXBase.HTMLAttributes<HTMLModusWcAlertElement>;
+            "modus-wc-app-menu": LocalJSX.ModusWcAppMenu & JSXBase.HTMLAttributes<HTMLModusWcAppMenuElement>;
             /**
              * A customizable autocomplete component used to create searchable text inputs.
              * The component supports a `<slot>` for injecting custom content.
              */
-            "modus-wc-autocomplete": LocalJSX.IntrinsicElements["modus-wc-autocomplete"] & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
+            "modus-wc-autocomplete": LocalJSX.ModusWcAutocomplete & JSXBase.HTMLAttributes<HTMLModusWcAutocompleteElement>;
             /**
              * A customizable avatar component used to create avatars with different images or user initials.
              * When no image is provided, the component can display initials (up to 3 characters) from the initials prop.
              * The component will extract the first letter of each word in the initials string.
              */
-            "modus-wc-avatar": LocalJSX.IntrinsicElements["modus-wc-avatar"] & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
+            "modus-wc-avatar": LocalJSX.ModusWcAvatar & JSXBase.HTMLAttributes<HTMLModusWcAvatarElement>;
             /**
              * A customizable badge component used to create badges with different sizes, types, and colors.
              * The component supports a `<slot>` for injecting content within the badge.
              */
-            "modus-wc-badge": LocalJSX.IntrinsicElements["modus-wc-badge"] & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
-            "modus-wc-bottom-sheet": LocalJSX.IntrinsicElements["modus-wc-bottom-sheet"] & JSXBase.HTMLAttributes<HTMLModusWcBottomSheetElement>;
+            "modus-wc-badge": LocalJSX.ModusWcBadge & JSXBase.HTMLAttributes<HTMLModusWcBadgeElement>;
+            "modus-wc-bottom-sheet": LocalJSX.ModusWcBottomSheet & JSXBase.HTMLAttributes<HTMLModusWcBottomSheetElement>;
             /**
              * A customizable breadcrumbs component used to help users navigate through a website.
              */
-            "modus-wc-breadcrumbs": LocalJSX.IntrinsicElements["modus-wc-breadcrumbs"] & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
+            "modus-wc-breadcrumbs": LocalJSX.ModusWcBreadcrumbs & JSXBase.HTMLAttributes<HTMLModusWcBreadcrumbsElement>;
             /**
              * A customizable button component used to create buttons with different sizes, variants, and types.
              * The component supports a `<slot>` for injecting content within the button, similar to a native HTML button.
              */
-            "modus-wc-button": LocalJSX.IntrinsicElements["modus-wc-button"] & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
+            "modus-wc-button": LocalJSX.ModusWcButton & JSXBase.HTMLAttributes<HTMLModusWcButtonElement>;
             /**
              * A customizable buttongroup component that groups multiple Modus buttons together.
              * The component supports a `<slot>` for injecting content within the buttongroup.
              */
-            "modus-wc-button-group": LocalJSX.IntrinsicElements["modus-wc-button-group"] & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
+            "modus-wc-button-group": LocalJSX.ModusWcButtonGroup & JSXBase.HTMLAttributes<HTMLModusWcButtonGroupElement>;
             /**
              * A customizable card component used to group and display content in a way that is easily readable.
              * This component supports multiple `<slot>` elements including 'header' for images or custom content, 'title', 'subtitle', a default slot for main content, 'actions' for buttons or interactive elements, and 'footer'.
              */
-            "modus-wc-card": LocalJSX.IntrinsicElements["modus-wc-card"] & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
+            "modus-wc-card": LocalJSX.ModusWcCard & JSXBase.HTMLAttributes<HTMLModusWcCardElement>;
             /**
              * A customizable checkbox component
              */
-            "modus-wc-checkbox": LocalJSX.IntrinsicElements["modus-wc-checkbox"] & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
+            "modus-wc-checkbox": LocalJSX.ModusWcCheckbox & JSXBase.HTMLAttributes<HTMLModusWcCheckboxElement>;
             /**
              * A customizable chip component used to display information in a compact area
              * The component supports a `<slot>` for injecting custom content such as avatar and icons.
              */
-            "modus-wc-chip": LocalJSX.IntrinsicElements["modus-wc-chip"] & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
+            "modus-wc-chip": LocalJSX.ModusWcChip & JSXBase.HTMLAttributes<HTMLModusWcChipElement>;
             /**
              * A customizable collapse component used for showing and hiding content.
              * The component supports a 'header' and 'content' `<slot>` for injecting custom HTML.
              */
-            "modus-wc-collapse": LocalJSX.IntrinsicElements["modus-wc-collapse"] & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
+            "modus-wc-collapse": LocalJSX.ModusWcCollapse & JSXBase.HTMLAttributes<HTMLModusWcCollapseElement>;
             /**
              * A data-driven, stateless/controlled tree component. The consuming application
              * owns the `nodes` data (the single source of truth) and the controlled
@@ -8471,189 +7811,189 @@ declare module "@stencil/core" {
              * emits `nodeSelect` / `nodeExpandChange`; the application decides whether to
              * apply the change and passes the updated state back in.
              */
-            "modus-wc-content-tree": LocalJSX.IntrinsicElements["modus-wc-content-tree"] & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
+            "modus-wc-content-tree": LocalJSX.ModusWcContentTree & JSXBase.HTMLAttributes<HTMLModusWcContentTreeElement>;
             /**
              * A customizable date picker component used to create date inputs.
              * Adheres to WCAG 2.2 standards.
              */
-            "modus-wc-date": LocalJSX.IntrinsicElements["modus-wc-date"] & JSXBase.HTMLAttributes<HTMLModusWcDateElement>;
+            "modus-wc-date": LocalJSX.ModusWcDate & JSXBase.HTMLAttributes<HTMLModusWcDateElement>;
             /**
              * A customizable divider component used to separate content horizontally or vertically
              */
-            "modus-wc-divider": LocalJSX.IntrinsicElements["modus-wc-divider"] & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
+            "modus-wc-divider": LocalJSX.ModusWcDivider & JSXBase.HTMLAttributes<HTMLModusWcDividerElement>;
             /**
              * Dock navigation bar for navigating between primary screens.
              */
-            "modus-wc-dock": LocalJSX.IntrinsicElements["modus-wc-dock"] & JSXBase.HTMLAttributes<HTMLModusWcDockElement>;
+            "modus-wc-dock": LocalJSX.ModusWcDock & JSXBase.HTMLAttributes<HTMLModusWcDockElement>;
             /**
              * A customizable dropdown menu component used to render a button and toggleable menu.
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
-            "modus-wc-dropdown-menu": LocalJSX.IntrinsicElements["modus-wc-dropdown-menu"] & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
             /**
              * Presents a centered empty, error, or placeholder state with bundled illustrations,
              * heading, optional subtitle, and an optional call-to-action.
              */
-            "modus-wc-empty-state": LocalJSX.IntrinsicElements["modus-wc-empty-state"] & JSXBase.HTMLAttributes<HTMLModusWcEmptyStateElement>;
+            "modus-wc-empty-state": LocalJSX.ModusWcEmptyState & JSXBase.HTMLAttributes<HTMLModusWcEmptyStateElement>;
             /**
              * File dropzone component that allows users to drag and drop files for upload.
              * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
              */
-            "modus-wc-file-dropzone": LocalJSX.IntrinsicElements["modus-wc-file-dropzone"] & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
+            "modus-wc-file-dropzone": LocalJSX.ModusWcFileDropzone & JSXBase.HTMLAttributes<HTMLModusWcFileDropzoneElement>;
             /**
              * A draggable handle component for resizing adjacent elements
              */
-            "modus-wc-handle": LocalJSX.IntrinsicElements["modus-wc-handle"] & JSXBase.HTMLAttributes<HTMLModusWcHandleElement>;
+            "modus-wc-handle": LocalJSX.ModusWcHandle & JSXBase.HTMLAttributes<HTMLModusWcHandleElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
              */
-            "modus-wc-icon": LocalJSX.IntrinsicElements["modus-wc-icon"] & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
+            "modus-wc-icon": LocalJSX.ModusWcIcon & JSXBase.HTMLAttributes<HTMLModusWcIconElement>;
             /**
              * A resilient atomic image component that wraps native <img> tags with consistent sizing,
              * aspect-ratio control, fallback error state, and full WCAG 2.2 accessibility support.
              */
-            "modus-wc-image": LocalJSX.IntrinsicElements["modus-wc-image"] & JSXBase.HTMLAttributes<HTMLModusWcImageElement>;
+            "modus-wc-image": LocalJSX.ModusWcImage & JSXBase.HTMLAttributes<HTMLModusWcImageElement>;
             /**
              * A responsive image grid that displays 1 to 4 images in rectangle or square layouts.
              * Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior.
              * Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.
              */
-            "modus-wc-image-grid": LocalJSX.IntrinsicElements["modus-wc-image-grid"] & JSXBase.HTMLAttributes<HTMLModusWcImageGridElement>;
+            "modus-wc-image-grid": LocalJSX.ModusWcImageGrid & JSXBase.HTMLAttributes<HTMLModusWcImageGridElement>;
             /**
              * A customizable feedback component used to provide additional context related to form input interactions.
              * <b>To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>
              */
-            "modus-wc-input-feedback": LocalJSX.IntrinsicElements["modus-wc-input-feedback"] & JSXBase.HTMLAttributes<HTMLModusWcInputFeedbackElement>;
+            "modus-wc-input-feedback": LocalJSX.ModusWcInputFeedback & JSXBase.HTMLAttributes<HTMLModusWcInputFeedbackElement>;
             /**
              * A customizable input label component.
              * The component supports a `<slot>` for injecting additional custom content inside the label, such as icons or formatted text.
              */
-            "modus-wc-input-label": LocalJSX.IntrinsicElements["modus-wc-input-label"] & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
+            "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
              * A customizable link component used to navigate to URLs.
              */
-            "modus-wc-link": LocalJSX.IntrinsicElements["modus-wc-link"] & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
+            "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**
              * A customizable loader component used to indicate the loading of content
              */
-            "modus-wc-loader": LocalJSX.IntrinsicElements["modus-wc-loader"] & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
+            "modus-wc-loader": LocalJSX.ModusWcLoader & JSXBase.HTMLAttributes<HTMLModusWcLoaderElement>;
             /**
              * A component for displaying Trimble product logos with support for both fixed and scalable sizing.
              * Provides consistent branding across applications with various product logo options.
              * Logo colors automatically adapt to the active Modus theme via CSS variables.
              */
-            "modus-wc-logo": LocalJSX.IntrinsicElements["modus-wc-logo"] & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
+            "modus-wc-logo": LocalJSX.ModusWcLogo & JSXBase.HTMLAttributes<HTMLModusWcLogoElement>;
             /**
              * A customizable menu component used to display a list of li elements vertically or horizontally.
              * The component supports a `<slot>` for injecting custom li elements inside the ul element.
              */
-            "modus-wc-menu": LocalJSX.IntrinsicElements["modus-wc-menu"] & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
+            "modus-wc-menu": LocalJSX.ModusWcMenu & JSXBase.HTMLAttributes<HTMLModusWcMenuElement>;
             /**
              * A customizable menu item component used to display the item portion of a menu.
              * This component supports a 'start-icon' `<slot>` that allows for custom icons to be placed at the beginning of the item.
              */
-            "modus-wc-menu-item": LocalJSX.IntrinsicElements["modus-wc-menu-item"] & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
+            "modus-wc-menu-item": LocalJSX.ModusWcMenuItem & JSXBase.HTMLAttributes<HTMLModusWcMenuItemElement>;
             /**
              * A customizable modal component used to display content in a dialog.
              * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
              */
-            "modus-wc-modal": LocalJSX.IntrinsicElements["modus-wc-modal"] & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
+            "modus-wc-modal": LocalJSX.ModusWcModal & JSXBase.HTMLAttributes<HTMLModusWcModalElement>;
             /**
              * A customizable navbar component used for top level navigation of all Trimble applications.
              */
-            "modus-wc-navbar": LocalJSX.IntrinsicElements["modus-wc-navbar"] & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
+            "modus-wc-navbar": LocalJSX.ModusWcNavbar & JSXBase.HTMLAttributes<HTMLModusWcNavbarElement>;
             /**
              * A customizable input component used to create number inputs with types
              */
-            "modus-wc-number-input": LocalJSX.IntrinsicElements["modus-wc-number-input"] & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
+            "modus-wc-number-input": LocalJSX.ModusWcNumberInput & JSXBase.HTMLAttributes<HTMLModusWcNumberInputElement>;
             /**
              * Pagination component to navigate through pages of content
              */
-            "modus-wc-pagination": LocalJSX.IntrinsicElements["modus-wc-pagination"] & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
+            "modus-wc-pagination": LocalJSX.ModusWcPagination & JSXBase.HTMLAttributes<HTMLModusWcPaginationElement>;
             /**
              * A customizable panel component used to organize content in a structured layout.
              * This component provides 'header', 'body', and 'footer' `<slot>` elements for inserting custom HTML.
              */
-            "modus-wc-panel": LocalJSX.IntrinsicElements["modus-wc-panel"] & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
-            "modus-wc-profile-menu": LocalJSX.IntrinsicElements["modus-wc-profile-menu"] & JSXBase.HTMLAttributes<HTMLModusWcProfileMenuElement>;
+            "modus-wc-panel": LocalJSX.ModusWcPanel & JSXBase.HTMLAttributes<HTMLModusWcPanelElement>;
+            "modus-wc-profile-menu": LocalJSX.ModusWcProfileMenu & JSXBase.HTMLAttributes<HTMLModusWcProfileMenuElement>;
             /**
              * A customizable progress component used to show the progress of a task or show the passing of time.
              * The radial variant supports slotting in custom HTML to be displayed within the progress circle.
              */
-            "modus-wc-progress": LocalJSX.IntrinsicElements["modus-wc-progress"] & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
+            "modus-wc-progress": LocalJSX.ModusWcProgress & JSXBase.HTMLAttributes<HTMLModusWcProgressElement>;
             /**
              * A customizable radio button component.
              */
-            "modus-wc-radio": LocalJSX.IntrinsicElements["modus-wc-radio"] & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
+            "modus-wc-radio": LocalJSX.ModusWcRadio & JSXBase.HTMLAttributes<HTMLModusWcRadioElement>;
             /**
              * A rating component that allows users to choose a rating from predefined options
              */
-            "modus-wc-rating": LocalJSX.IntrinsicElements["modus-wc-rating"] & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
+            "modus-wc-rating": LocalJSX.ModusWcRating & JSXBase.HTMLAttributes<HTMLModusWcRatingElement>;
             /**
              * A customizable select component used to pick a value from a list of options
              */
-            "modus-wc-select": LocalJSX.IntrinsicElements["modus-wc-select"] & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
+            "modus-wc-select": LocalJSX.ModusWcSelect & JSXBase.HTMLAttributes<HTMLModusWcSelectElement>;
             /**
              * A customizable side navigation component for organizing primary navigation and content areas in an application.
              * The component supports a `<slot>` for injecting custom content inside the side navigation panel.
              */
-            "modus-wc-side-navigation": LocalJSX.IntrinsicElements["modus-wc-side-navigation"] & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
+            "modus-wc-side-navigation": LocalJSX.ModusWcSideNavigation & JSXBase.HTMLAttributes<HTMLModusWcSideNavigationElement>;
             /**
              * A customizable skeleton component used to create skeletons of various sizes and shapes
              */
-            "modus-wc-skeleton": LocalJSX.IntrinsicElements["modus-wc-skeleton"] & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
+            "modus-wc-skeleton": LocalJSX.ModusWcSkeleton & JSXBase.HTMLAttributes<HTMLModusWcSkeletonElement>;
             /**
              * A customizable slider component
              */
-            "modus-wc-slider": LocalJSX.IntrinsicElements["modus-wc-slider"] & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
+            "modus-wc-slider": LocalJSX.ModusWcSlider & JSXBase.HTMLAttributes<HTMLModusWcSliderElement>;
             /**
              * A status indicator with a pulsing dot and semantic label for conveying system state.
              */
-            "modus-wc-status": LocalJSX.IntrinsicElements["modus-wc-status"] & JSXBase.HTMLAttributes<HTMLModusWcStatusElement>;
+            "modus-wc-status": LocalJSX.ModusWcStatus & JSXBase.HTMLAttributes<HTMLModusWcStatusElement>;
             /**
              * Used to show a list of steps in a process.
              */
-            "modus-wc-stepper": LocalJSX.IntrinsicElements["modus-wc-stepper"] & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
+            "modus-wc-stepper": LocalJSX.ModusWcStepper & JSXBase.HTMLAttributes<HTMLModusWcStepperElement>;
             /**
              * A customizable switch component
              */
-            "modus-wc-switch": LocalJSX.IntrinsicElements["modus-wc-switch"] & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
-            "modus-wc-table": LocalJSX.IntrinsicElements["modus-wc-table"] & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
+            "modus-wc-switch": LocalJSX.ModusWcSwitch & JSXBase.HTMLAttributes<HTMLModusWcSwitchElement>;
+            "modus-wc-table": LocalJSX.ModusWcTable & JSXBase.HTMLAttributes<HTMLModusWcTableElement>;
             /**
              * A customizable tabs component used to create groups of tabs.
              * The component supports a `<slot>` for injecting custom tab content.
              */
-            "modus-wc-tabs": LocalJSX.IntrinsicElements["modus-wc-tabs"] & JSXBase.HTMLAttributes<HTMLModusWcTabsElement>;
+            "modus-wc-tabs": LocalJSX.ModusWcTabs & JSXBase.HTMLAttributes<HTMLModusWcTabsElement>;
             /**
              * A customizable input component used to create text inputs with types.
              * The component supports a `<slot>` for injecting additional custom content inside the input, such as icons or formatted text.
              */
-            "modus-wc-text-input": LocalJSX.IntrinsicElements["modus-wc-text-input"] & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
+            "modus-wc-text-input": LocalJSX.ModusWcTextInput & JSXBase.HTMLAttributes<HTMLModusWcTextInputElement>;
             /**
              * A customizable textarea component.
              */
-            "modus-wc-textarea": LocalJSX.IntrinsicElements["modus-wc-textarea"] & JSXBase.HTMLAttributes<HTMLModusWcTextareaElement>;
-            "modus-wc-theme-provider": LocalJSX.IntrinsicElements["modus-wc-theme-provider"] & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
+            "modus-wc-textarea": LocalJSX.ModusWcTextarea & JSXBase.HTMLAttributes<HTMLModusWcTextareaElement>;
+            "modus-wc-theme-provider": LocalJSX.ModusWcThemeProvider & JSXBase.HTMLAttributes<HTMLModusWcThemeProviderElement>;
             /**
              * A theme switcher component used to toggle the application theme and/or mode.
              * Allows consumers to set the initial theme (Modus Classic, Modus Modern, etc.) and end-users to toggle modes (Light, Dark).
              */
-            "modus-wc-theme-switcher": LocalJSX.IntrinsicElements["modus-wc-theme-switcher"] & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
+            "modus-wc-theme-switcher": LocalJSX.ModusWcThemeSwitcher & JSXBase.HTMLAttributes<HTMLModusWcThemeSwitcherElement>;
             /**
              * A customizable input component used to create time inputs.
              */
-            "modus-wc-time-input": LocalJSX.IntrinsicElements["modus-wc-time-input"] & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
+            "modus-wc-time-input": LocalJSX.ModusWcTimeInput & JSXBase.HTMLAttributes<HTMLModusWcTimeInputElement>;
             /**
              * A customizable toast component used to stack elements, positioned on the corner of a page.
              * The component supports a `<slot>` for injecting additional custom content inside the toast.
              */
-            "modus-wc-toast": LocalJSX.IntrinsicElements["modus-wc-toast"] & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
+            "modus-wc-toast": LocalJSX.ModusWcToast & JSXBase.HTMLAttributes<HTMLModusWcToastElement>;
             /**
              * A customizable toolbar component used to organize content across the entire page.
              * This component provides 'start', 'center', and 'end' `<slot>` elements for inserting custom HTML.
              */
-            "modus-wc-toolbar": LocalJSX.IntrinsicElements["modus-wc-toolbar"] & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
+            "modus-wc-toolbar": LocalJSX.ModusWcToolbar & JSXBase.HTMLAttributes<HTMLModusWcToolbarElement>;
             /**
              * A customizable tooltip component used to create tooltips with different content.
              * The tooltip opens on hover and keyboard focus of the wrapped trigger, and closes on
@@ -8664,17 +8004,17 @@ declare module "@stencil/core" {
              * For screen reader support, set `tooltip-id` on this component and matching `aria-describedby`
              * on the trigger (e.g. modus-wc-button).
              */
-            "modus-wc-tooltip": LocalJSX.IntrinsicElements["modus-wc-tooltip"] & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
+            "modus-wc-tooltip": LocalJSX.ModusWcTooltip & JSXBase.HTMLAttributes<HTMLModusWcTooltipElement>;
             /**
              * A customizable tree item component used to display the item portion of a tree menu.
              * This component supports `start` and `end` slots for custom content at the beginning and end of the item.
              */
-            "modus-wc-tree-item": LocalJSX.IntrinsicElements["modus-wc-tree-item"] & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
+            "modus-wc-tree-item": LocalJSX.ModusWcTreeItem & JSXBase.HTMLAttributes<HTMLModusWcTreeItemElement>;
             /**
              * A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally.
              * The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.
              */
-            "modus-wc-tree-menu": LocalJSX.IntrinsicElements["modus-wc-tree-menu"] & JSXBase.HTMLAttributes<HTMLModusWcTreeMenuElement>;
+            "modus-wc-tree-menu": LocalJSX.ModusWcTreeMenu & JSXBase.HTMLAttributes<HTMLModusWcTreeMenuElement>;
             /**
              * A customizable typography component used to render text with different sizes, hierarchy, and weights.
              * Note:
@@ -8684,8 +8024,8 @@ declare module "@stencil/core" {
              * - If both slot content and `label` are provided, only the slot content will be rendered
              * - Use the `label` prop when you need to dynamically update the text.
              */
-            "modus-wc-typography": LocalJSX.IntrinsicElements["modus-wc-typography"] & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
-            "modus-wc-utility-panel": LocalJSX.IntrinsicElements["modus-wc-utility-panel"] & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;
+            "modus-wc-typography": LocalJSX.ModusWcTypography & JSXBase.HTMLAttributes<HTMLModusWcTypographyElement>;
+            "modus-wc-utility-panel": LocalJSX.ModusWcUtilityPanel & JSXBase.HTMLAttributes<HTMLModusWcUtilityPanelElement>;
         }
     }
 }

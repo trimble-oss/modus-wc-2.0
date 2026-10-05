@@ -9,7 +9,7 @@
 
 | Property      | Attribute      | Description                       | Type                            | Default  |
 | ------------- | -------------- | --------------------------------- | ------------------------------- | -------- |
-| `apps`        | --             | The apps to display in the menu.  | `IAppMenuItem[] \| undefined`   | `[]`     |
+| `apps`        | `apps`         | The apps to display in the menu.  | `IAppMenuItem[] \| undefined`   | `[]`     |
 | `customClass` | `custom-class` | custom class to apply to the menu | `string \| undefined`           | `''`     |
 | `layout`      | `layout`       | The layout of the menu.           | `"grid" \| "list" \| undefined` | `'list'` |
 

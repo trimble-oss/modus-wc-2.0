@@ -42,6 +42,7 @@
   },
   "overrides": {
     "ts-morph": {
+      ".": "24.0.0",
       "@ts-morph/common": {
         "minimatch": "9.0.9"
       }
