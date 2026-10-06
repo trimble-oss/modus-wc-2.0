@@ -30,6 +30,7 @@ import {
   IKeyboardDropSlot,
   isDescendant,
   isLazyUnloaded,
+  TreeDropPosition,
 } from './tree-state-manager';
 
 /** Aggregated checkbox state for a node and its descendants. */
@@ -493,38 +494,31 @@ export class ModusWcContentTree {
     const target = findNode(this.getNodes(), targetId);
     if (!target || this.isInvalidDropTarget(target)) return;
 
-    const label = target.label || 'item';
+    const nestAnnounce = `Nesting inside ${target.label || 'item'}.`;
     const hasLoadedChildren = !!target.children?.length;
     const expanded = hasLoadedChildren && this.isExpanded(target.id);
 
-    if (position === 'inside' && hasLoadedChildren && !expanded) {
-      const nested = this.keyboardSlotsFor(moveId, target.id).find(
-        (slot) =>
-          slot.targetId === target.children![0].id && slot.position === 'before'
-      );
-      if (!nested) return;
-      this.nodeExpandChange.emit({ id: target.id, expanded: true });
-      this.setKeyboardSlot(nested, `Nesting inside ${label}.`);
+    if (position === 'inside') {
+      if (hasLoadedChildren && !expanded) {
+        const nested = this.slotBeforeFirstChild(moveId, target, target.id);
+        if (!nested) return;
+        this.nodeExpandChange.emit({ id: target.id, expanded: true });
+        this.setKeyboardSlot(nested, nestAnnounce);
+      }
       return;
     }
-
-    if (position === 'inside') return;
 
     if (expanded) {
-      const nested = this.keyboardSlotsFor(moveId).find(
-        (slot) =>
-          slot.targetId === target.children![0].id && slot.position === 'before'
-      );
-      if (!nested) return;
-      this.setKeyboardSlot(nested, `Nesting inside ${label}.`);
+      const nested = this.slotBeforeFirstChild(moveId, target);
+      if (nested) this.setKeyboardSlot(nested, nestAnnounce);
       return;
     }
 
-    const inside = this.keyboardSlotsFor(moveId).find(
+    const inside = this.findKeyboardSlot(
+      moveId,
       (slot) => slot.targetId === target.id && slot.position === 'inside'
     );
-    if (!inside) return;
-    this.setKeyboardSlot(inside);
+    if (inside) this.setKeyboardSlot(inside);
   }
 
   private promoteKeyboardDrop(): void {
@@ -541,9 +535,7 @@ export class ModusWcContentTree {
         : getNodeLocation(nodes, targetId)?.parentId;
     if (!promotedId) return;
 
-    const after = slots.find(
-      (slot) => slot.targetId === promotedId && slot.position === 'after'
-    );
+    const after = this.findSlotIn(slots, promotedId, 'after');
     if (after) {
       this.setKeyboardSlot(after);
       return;
@@ -556,9 +548,7 @@ export class ModusWcContentTree {
       : nodes;
     const next = siblings[location.index + 1];
     if (!next) return;
-    const beforeNext = slots.find(
-      (slot) => slot.targetId === next.id && slot.position === 'before'
-    );
+    const beforeNext = this.findSlotIn(slots, next.id, 'before');
     if (beforeNext) this.setKeyboardSlot(beforeNext);
   }
 
@@ -570,6 +560,39 @@ export class ModusWcContentTree {
       this.getNodes(),
       moveId,
       (id) => this.isExpanded(id) || id === expandedId
+    );
+  }
+
+  private findKeyboardSlot(
+    moveId: string,
+    matches: (slot: IKeyboardDropSlot) => boolean,
+    treatAsExpandedId?: string
+  ): IKeyboardDropSlot | undefined {
+    return this.keyboardSlotsFor(moveId, treatAsExpandedId).find(matches);
+  }
+
+  private findSlotIn(
+    slots: IKeyboardDropSlot[],
+    targetId: string,
+    position: TreeDropPosition
+  ): IKeyboardDropSlot | undefined {
+    return slots.find(
+      (slot) => slot.targetId === targetId && slot.position === position
+    );
+  }
+
+  /** Same drop point as `inside` on a parent when its first child is visible. */
+  private slotBeforeFirstChild(
+    moveId: string,
+    parent: ITreeNode,
+    treatAsExpandedId?: string
+  ): IKeyboardDropSlot | undefined {
+    const firstChildId = parent.children?.[0]?.id;
+    if (!firstChildId) return undefined;
+    return this.findKeyboardSlot(
+      moveId,
+      (slot) => slot.targetId === firstChildId && slot.position === 'before',
+      treatAsExpandedId
     );
   }
 

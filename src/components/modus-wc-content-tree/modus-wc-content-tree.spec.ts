@@ -4177,6 +4177,45 @@ describe('modus-wc-content-tree', () => {
     expect(statusText(page)).toBe(message);
   });
 
+  it('should resolve the keyboard slot before the first visible child', async () => {
+    const { component } = await createTreePage({
+      allowDragDrop: true,
+      expandedNodeIds: ['root-1'],
+    });
+    const parent = findNode(component.getNodes(), 'parent-b')!;
+    const harness = component as unknown as {
+      slotBeforeFirstChild: (
+        moveId: string,
+        parent: ITreeNode,
+        treatAsExpandedId?: string
+      ) => { targetId: string; position: string } | undefined;
+    };
+
+    const slot = harness.slotBeforeFirstChild('leaf-a', parent, 'parent-b');
+
+    expect(slot).toEqual(
+      expect.objectContaining({ targetId: 'leaf-b1', position: 'before' })
+    );
+  });
+
+  it('should return undefined from slotBeforeFirstChild when the parent has no children', async () => {
+    const { component } = await createTreePage({ allowDragDrop: true });
+    const harness = component as unknown as {
+      slotBeforeFirstChild: (moveId: string, parent: ITreeNode) => unknown;
+    };
+
+    expect(
+      harness.slotBeforeFirstChild('leaf-a', { id: 'solo', label: 'Solo' })
+    ).toBeUndefined();
+    expect(
+      harness.slotBeforeFirstChild('leaf-a', {
+        id: 'empty',
+        label: 'Empty',
+        children: [],
+      })
+    ).toBeUndefined();
+  });
+
   it('should ignore promote previews that do not match a slot', async () => {
     const { page, component } = await createTreePage({
       allowDragDrop: true,
