@@ -1399,6 +1399,56 @@
             Event emitted when the menuVisible prop changes.
             </summary>
         </member>
+        <member name="T:ModusWebComponents.Blazor.ModusWcEmptyState">
+            <summary>
+            Presents a centered empty, error, or placeholder state with bundled illustrations, heading, optional subtitle, and an optional call-to-action.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.ActionLabel">
+            <summary>
+            When set, renders a centered primary action button with this label.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.CustomClass">
+            <summary>
+            Custom CSS class for the root container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Heading">
+            <summary>
+            Primary heading text.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Illustration">
+            <summary>
+            Bundled illustration name. Valid values depend on variant: compact — selection_plus, symbol_info, add_user; illustration — landscape, api, api_plugin, documents_empty, cloud_access, store_settings; error — error_404, error_404_page.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Subtitle">
+            <summary>
+            Secondary descriptive text (clamped to three lines in the layout).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.Variant">
+            <summary>
+            Layout variant: compact icon, full illustration, or dedicated error (404) treatment.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.ChildContent">
+            <summary>
+            Content to render inside the component (default slot).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.AdditionalAttributes">
+            <summary>
+            Additional HTML attributes to apply to the element (e.g. aria-*, data-*, id).
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcEmptyState.OnActionClick">
+            <summary>
+            Fires when the optional action button is activated.
+            </summary>
+        </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcFileDropzone">
             <summary>
             File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
