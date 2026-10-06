@@ -138,6 +138,10 @@ modus-wc-menu-item .modus-wc-menu-item {
   &.modus-wc-menu-item-xl {
     button {
       @include row.menu-item-row-size-xl-content;
+
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-2xl);
+      }
     }
   }
 

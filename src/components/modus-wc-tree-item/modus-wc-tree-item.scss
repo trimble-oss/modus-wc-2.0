@@ -55,7 +55,7 @@ modus-wc-tree-item .modus-wc-menu-item {
 
       [slot='end'] {
         margin-inline-start: auto;
-        padding-inline-start: 0;
+        padding-inline-start: var(--modus-wc-spacing-sm);
 
         &:is(modus-wc-dropdown-menu) {
           background-color: transparent;
@@ -64,7 +64,7 @@ modus-wc-tree-item .modus-wc-menu-item {
       }
 
       modus-wc-checkbox {
-        padding-inline-end: 0;
+        padding-inline-end: var(--modus-wc-spacing-sm);
       }
 
       .modus-wc-menu-item-labels {
@@ -74,6 +74,11 @@ modus-wc-tree-item .modus-wc-menu-item {
         padding-inline-end: var(--modus-wc-spacing-xs);
         padding-inline-start: var(--modus-wc-spacing-md);
         white-space: nowrap;
+      }
+
+      &:has([slot='start']) .modus-wc-menu-item-labels,
+      &:has(modus-wc-checkbox) .modus-wc-menu-item-labels {
+        padding-inline-start: 0;
       }
 
       .modus-wc-menu-item-sublabel {
@@ -91,7 +96,8 @@ modus-wc-tree-item .modus-wc-menu-item {
         height: var(--modus-wc-font-size-md);
         width: var(--modus-wc-font-size-md);
 
-        modus-wc-icon {
+        modus-wc-icon,
+        i {
           font-size: var(--modus-wc-font-size-md);
           height: var(--modus-wc-font-size-md);
           width: var(--modus-wc-font-size-md);
@@ -103,18 +109,33 @@ modus-wc-tree-item .modus-wc-menu-item {
   &.modus-wc-menu-item-sm {
     .modus-wc-menu-item-interactive {
       @include row.menu-item-row-size-sm-content;
+
+      [slot='start'] i,
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-lg);
+      }
     }
   }
 
   &.modus-wc-menu-item-md {
     .modus-wc-menu-item-interactive {
       @include row.menu-item-row-size-md-content;
+
+      [slot='start'] i,
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-xl);
+      }
     }
   }
 
   &.modus-wc-menu-item-lg {
     .modus-wc-menu-item-interactive {
       @include row.menu-item-row-size-lg-content;
+
+      [slot='start'] i,
+      [slot='start-icon'] i {
+        font-size: var(--modus-wc-font-size-2xl);
+      }
     }
   }
 
@@ -122,9 +143,9 @@ modus-wc-tree-item .modus-wc-menu-item {
     .modus-wc-menu-item-interactive {
       @include row.menu-item-row-size-xl-content;
 
-      .modus-wc-menu-item-labels div {
+      [slot='start'] i,
+      [slot='start-icon'] i {
         font-size: var(--modus-wc-font-size-2xl);
-        line-height: var(--modus-wc-line-height-lg);
       }
     }
   }

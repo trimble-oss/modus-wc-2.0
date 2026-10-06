@@ -98,7 +98,6 @@
 @mixin menu-item-row-size-md-content {
   font-size: var(--modus-wc-font-size-lg);
   height: var(--modus-wc-size-md);
-  min-height: var(--modus-wc-size-md);
   padding: var(--modus-wc-spacing-sm);
 
   &:has(.modus-wc-menu-item-sublabel) {

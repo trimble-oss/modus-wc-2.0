@@ -140,6 +140,17 @@ modus-wc-side-navigation {
           white-space: nowrap;
         }
       }
+
+      .modus-wc-menu-submenu-chevron {
+        height: var(--modus-wc-font-size-2xl);
+        width: var(--modus-wc-font-size-2xl);
+
+        i {
+          font-size: var(--modus-wc-font-size-md);
+          height: var(--modus-wc-font-size-md);
+          width: var(--modus-wc-font-size-md);
+        }
+      }
     }
 
     &.modus-wc-menu-item-sm .modus-wc-menu-item-interactive {
@@ -281,6 +292,14 @@ modus-wc-side-navigation {
 
 [data-theme='modus-classic-light'] modus-wc-side-navigation,
 [data-theme='modus-classic-dark'] modus-wc-side-navigation {
+  modus-wc-menu-item
+    .modus-wc-menu-item
+    > button
+    .modus-wc-menu-item-content
+    .modus-wc-menu-item-labels {
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+
   modus-wc-menu-item .modus-wc-menu-item button {
     background-color: transparent;
     padding: var(--modus-wc-spacing-md) 1.25rem;
@@ -313,6 +332,14 @@ modus-wc-side-navigation {
 
 [data-theme='connect-light'] modus-wc-side-navigation,
 [data-theme='connect-dark'] modus-wc-side-navigation {
+  modus-wc-menu-item
+    .modus-wc-menu-item
+    > button
+    .modus-wc-menu-item-content
+    .modus-wc-menu-item-labels {
+    padding-inline-start: var(--modus-wc-spacing-md);
+  }
+
   .modus-wc-side-navigation {
     background: transparent;
     box-shadow: none;
