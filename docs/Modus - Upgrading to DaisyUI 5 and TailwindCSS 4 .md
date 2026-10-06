@@ -1,302 +1,528 @@
-# Proposal
+# Upgrading to DaisyUI 5 and Tailwind CSS 4
 
-# Upgrading DaisyUI 5 and Tailwind 4 Research
+Plan and spike brief for moving Modus Web Components 2.0 from Tailwind CSS 3 + DaisyUI 4 to Tailwind CSS 4 + DaisyUI 5.
 
-Research into upgrading to DaisyUI 5 and Tailwind 4; current state, relevant changes, constraints and how to proceed.
+DaisyUI 5 requires Tailwind 4. DaisyUI 4 is a Tailwind 3 plugin. Upgrade both together, or do not upgrade.
+
+This investigates production on `main` (v1.19.0) and plans the work from that tree. The spike below is the first implementation. It has to prove the gates in §6 before any migration PR is treated as a pass.
 
 ---
 
-## 1\. Current State
+## 1. Current state
 
-* Tailwind: `3.4.17` version  
-* DaisyUI: `4.12.13` version as a JS plugin in `tailwind.config.ts`.  
-* Prefix: currently we use the prefix `‘modus-wc-’` like `modus-wc-btn`, `modus-wc-flex`  
-* Themes: we use 6 themes as JS Objects: (modern | classic | connect) x light / dark  
-* Pipelines: Two: Wireit CLI (`tailwindcss -i … -o output.css`) and `stencil-tailwind-plugin` 1.8.0  
-* Public CSS: `output.css` → `dist/modus-wc-styles.css` \+ embedded into shadow via `ensureDaisyUIInShadow`  
-* Class mapping: \~40 `*.tailwind.ts` files \+ `tailwind-themeable.ts` safelist  
-* Theme tokens in CSS: Daisy v4 channels: `oklch(var(--p))`, `--fallback-p`, Chrome \<111 blocks  
-* Tests: 100% coverage, 56 snapshot files
+| Area                | Today                                                                                                                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tailwind            | `3.4.17` (range `^3.4.14`)                                                                                                                                                                      |
+| DaisyUI             | `4.12.24` (range `^4.12.13`), JS plugin in `tailwind.config.ts`                                                                                                                                 |
+| Prefix              | `modus-wc-` → `modus-wc-btn`, `modus-wc-flex`                                                                                                                                                   |
+| Themes              | Six JS objects: (modern \| classic \| connect) × light / dark                                                                                                                                   |
+| Pipelines           | Wireit CLI (`tailwindcss -i … -o output.css`) and `stencil-tailwind-plugin` 1.8.0                                                                                                               |
+| Public CSS          | `output.css` → `dist/modus-wc-styles.css`, and injected into shadow roots by `ensureDaisyUIInShadow` (`src/providers/theme/inject-daisyui.ts`) via `adoptedStyleSheets`                         |
+| Class mapping       | 45 `*.tailwind.ts` files + `tailwind-themeable.ts` safelist                                                                                                                                     |
+| Theme tokens        | Daisy v4 channels: `oklch(var(--p))`, `--fallback-*`                                                                                                                                            |
+| Published variables | `modus-wc-variables.css` is exported from `package.json` and copied to `dist`. Each theme publishes 33 DaisyUI custom properties: 20 color channels (`--p`, `--b1`, …) and 13 component tokens (`--rounded-btn`, `--btn-focus-scale`, `--animation-btn`, …) |
+| Tests               | 100% coverage, 60 snapshot files                                                                                                                                                                |
+| Theme switching     | `theme.store.ts` resolves mode (explicit config, then `localStorage`, then `prefers-color-scheme`). `theme-provider.tsx` sets `data-theme="${theme}-${mode}"` (for example `modus-modern-dark`) |
 
-**Scope rule:** DaisyUI 5 requires Tailwind 4\. DaisyUI 4 is a Tailwind 3 plugin. Upgrade both together as one atomic change.
+---
 
-## 2\. Impact and how to proceed
+## 2. Go / no-go (lock these before more implementation)
 
-***See Relevant changes tab to more context.***
+Three decisions stop the project. They are not implementation options.
 
-**1\. Prefix is the make-or-break public API**  
-v3: `modus-wc-flex, hover:modus-wc-bg-primary`  
-v4: prefixes are variants: `modus-wc:flex, modus-wc:hover:bg-primary`  
-DaisyUI 5 has a separate prefix. Combining both incorrectly yields `modus-wc:modus-wc-btn`.
+### 2.1 Browser floor — go or no-go
 
-| Strategy | Daisy classes (btn) | Utilities (flex) | Verdict |
-| ----- | ----- | ----- | ----- |
-| A. Tailwind `prefix(modus-wc)` only | `modus-wc:btn` | `modus-wc:flex` | Consistent namespace; breaks every class string |
-| B. Daisy `prefix: "modus-wc-`" only | `modus-wc-btn` | `flex` (unprefixed) | Preserves Daisy names; pollutes consumer Tailwind |
-| C. Both prefixes | `modus-wc:modus-wc-btn` | `modus-wc:flex` | Do not do this |
-| D. Stay on v3/v4 | `modus-wc-btn` | `modus-wc-flex` | Only way to keep today’s strings |
+Tailwind CSS **4.0** targets Chrome 111+, Safari 16.4+, and Firefox 128+ and depends on modern CSS (`@property`, `color-mix()`, OKLCH). **Tailwind 4.1+** adds [framework-generated fallbacks](https://tailwindcss.com/docs/compatibility) so many utilities still render in older browsers (for example Safari 15): OKLCH colors, opacity modifiers, and several `@property`-driven features get inlined or alternate declarations. That is **not** parity with v3 on every utility; shadows and gradients can still differ.
 
-Recommendation: Adopt strategy A (`modus-wc:` everywhere). Do not try to preserve hyphenated prefixes — Tailwind will not generate `modus-wc-flex` anymore.  
-If a product cannot accept a class-name break, **do not upgrade**.
+**DaisyUI 5 does not ship that story.** Theme and component CSS stay on full OKLCH and `color-mix()`. Tailwind’s 4.1 fallbacks apply to **Tailwind-generated** rules in `output.css`, not automatically to every Daisy class.
 
-**2\. \`stencil-tailwind-plugin\` is a hard gate**  
-v1.x (current) → Tailwind 3 only  
-v2.x → Tailwind 4; requires `@tailwindcss/postcss` ≥ 4.1.1, **TypeScript ≥ 5.8.2** (repo is `^5.6.2`)  
-v2 drops `tailwindConf` (the JS config you pass today). Config moves into CSS (`injectTailwindConfiguration`).
+**Modus already has a separate layer:** hex **`--modus-wc-color-*`** tokens in `variables.css` and per-theme semantic aliases (`--modus-wc-color-primary`, `base-100`, and the rest) in `modus-wc-variables.css`. Component SCSS in §4.1 can target those instead of Daisy channels. That is independent of Daisy and is the right anchor for **product-critical** fallbacks after upgrade.
 
-**Blocker:** plugin [issue \#43](https://github.com/Poimen/stencil-tailwind-plugin/issues/43) — broken on `@stencil/core` ≥ 4.39.0. You are on `^4.35.3` today. Do not bump Stencil past 4.38.x in the same PR until the plugin is patched.
+#### Combined strategy (recommended if Support wants broader reach than 4.0’s strict floor)
 
-### **3\. Dual CSS pipeline must stay in lockstep**
+| Layer | Role on v4 + Daisy 5 |
+| ----- | -------------------- |
+| **Tailwind ≥ 4.1** | Fallbacks for prefixed utilities (`moduswc:*`) in the compiled sheet |
+| **Daisy 5 themes** | Modern path: `--color-*` full colors on `[data-theme]` |
+| **Modus `--modus-wc-color-*`** | Hex backstop for Modus-owned rules (buttons, forms, §4.1 SCSS) inside `@supports not (color: oklch(0% 0 0))` and, where needed, `@supports not (background-color: color-mix(in srgb, red, blue))` |
+| **Shadow DOM (§4.2)** | `:host` (or equivalent) for `@property` utilities; Tailwind 4.1 helps in light DOM but does not replace this inside adopted stylesheets |
 
-1. CLI → `src/styles/output.css` → `embed-css.js` → `css-content.ts` (shadow injection) and `dist/modus-wc-styles.css`  
-2. Stencil plugin → per-component class processing during `stencil build`
+Do **not** port the v3 **569-line** Daisy v4 channel matrix (`--fallback-p` tied to `--p`). Generate or map hex fallbacks **from the same theme TS** into `--modus-wc-color-*` / small `@supports not` blocks for surfaces Modus owns. Keep bundle impact in the §6 gate.
 
-v4 CLI is a new package: `@tailwindcss/cli`. Wireit still lists `tailwind.config.js` while the file is `tailwind.config.ts` — fix that during the move.  
-`npx @tailwindcss/upgrade` is unsafe to run blindly here: it rewrites prefixes and templates. Remove Daisy from the JS config first, then run it on a throwaway branch and diff by hand.
+**Decision:** the upgrade does not reach any browser older than Tailwind 3 already does. The sheet applies at Chrome and Edge **99**, Firefox **97**, and Safari **15.4**. Full fidelity on Tailwind 4 starts at Chrome and Edge **111**, Safari **16.4**, and Firefox **128**. Anything below the `@layer` line is unsupported, including Chrome 66. The bands are in §4.0.
 
-### **4\. Theme system is a rewrite, not a port**
+#### What production ships today (v3 + Daisy 4)
 
-Today, themes are JS objects consumed by Daisy’s plugin `(primary, primary-focus, --rounded-btn, --animation-btn`).
+`tailwind.css` is 1,029 lines. Legacy fallbacks are **569 lines** in three `@supports not (color: oklch(0% 0 0))` blocks:
 
-DaisyUI 5:
+| Block                            | Lines   | What it is                                                                                          |
+| -------------------------------- | ------- | --------------------------------------------------------------------------------------------------- |
+| Fallback color table             | 185–324 | `--fallback-p` and the rest, per theme, for browsers without `oklch()`                              |
+| Button hover / active hex matrix | 357–748 | Modus Modern hover and pressed colors for those same browsers. Modern browsers never apply this block |
+| Disabled button token remap      | 808–844 | `--_btn-*` from `--fallback-*`, again only inside `@supports not`                                   |
 
-* Config lives in CSS: `@plugin "daisyui"` \+ `@plugin "daisyui/theme" { name: "modus-modern-light"; … }`  
-* Color vars: `--p` → `--color-primary` (full colors, not OKLCH channels)  
-* Radius: `--rounded-btn` / `--tab-radius` → `--radius-field; --rounded-badge` → `--radius-selector; --rounded-box → --radius-box`  
-* Removed: `*-focus, --animation-btn, --btn-focus-scale,` auto `*-content` generation  
-* `darkTheme` → `--prefersdark; themeRoot` → `root; styled / base / utils` → `include / exclude`
+`global.css` lines 1–23 are a separate `@supports (color: oklch())` block. That one aliases `--fallback-*` to `--modus-wc-color-*` for browsers that **do** support OKLCH. It is not a Chrome &lt;111 fallback.
 
-`docs/custom-themes.md` and the theme TS files become obsolete in their current form.
+On upgrade, **remove** the 569-line v4 Daisy-channel fallback layer. **Replace** Modus-owned behavior with the combined strategy above—not a line-for-line rewrite of the old table.
 
-### **5\. Chrome \<111 fallbacks become a product decision**
+That removal does not touch modern-browser button colors. The live rules are the rest of `tailwind.css` after the fallback table: color channels around lines 765–805 (`oklch(var(--p))`), then disabled, pressed, and opacity rules from line 846 through the end of the file (1029). Those rules read `--_btn-*`, which is filled from the channel tokens. Port that whole span to `--color-*` and `color-mix()`, and skip only the `@supports not` block at 808–844. Leaving the channel assignments in place after the upgrade paints nothing useful.
 
-`tailwind.css` has a large `@supports not (color: oklch())` layer (`--fallback-p`, hover hex matrices, `oklch(var(--p) / 1)` on disabled buttons). That matches Daisy 4 channel tokens.  
-Daisy 5 stores complete colors in `--color-primary. oklch(var(--p) / 1)` stops working. Opacity uses `color-mix()`.  
-Either:
+### 2.2 Class prefix — breaking public API
 
-* Drop Chrome \<111 (and document the new floor), delete \~600 lines of fallbacks, or  
-* Rewrite fallbacks against `--color-*` / `--fallback-*` — high cost, easy to get wrong
+Tailwind v4 prefixes must be **lowercase ASCII letters only**. `prefix(modus-wc)` is invalid. Tailwind rejects it with: prefixes must be lowercase ASCII letters (a-z) only. Classes like `modus-wc:flex` are not possible. Uppercase (`modusWc`) is also rejected.
 
-Staff recommendation: raise the browser floor and delete the fallbacks. Keeping them is a second project.
+| Strategy                            | Daisy (`btn`)          | Utilities (`flex`)  | Verdict                                                                |
+| ----------------------------------- | ---------------------- | ------------------- | ---------------------------------------------------------------------- |
+| A. Tailwind `prefix(moduswc)` only  | `moduswc:btn`          | `moduswc:flex`      | Works. Breaks every hyphenated utility string                          |
+| B. Daisy `prefix: "modus-wc-"` only | `modus-wc-btn`         | `flex` (unprefixed) | Keeps Daisy names. Unprefixed utilities collide with consumer Tailwind |
+| C. Both prefixes                    | `moduswc:modus-wc-btn` | `moduswc:flex`      | Do not do this                                                         |
+| D. Stay on Tailwind 3 + DaisyUI 4   | `modus-wc-btn`         | `modus-wc-flex`     | Only way to keep today's strings                                       |
 
-### **6\. Daisy class remaps you actually use**
+**Recommendation:** strategy A, prefix `moduswc`. Ship as a **major version**. The tag names stay (`modus-wc-button`). The public class strings do not. `customClass`, app CSS, and selectors such as `.modus-wc-flex` and `.modus-wc-w-full` stop matching the published stylesheet. If a product cannot accept that break, do not upgrade.
 
-These are wired in `*.tailwind.ts` / SCSS today:
+The major must ship a **migration script**, not only a guide. A changelog table does not scale to every utility and Daisy remap in consumer CSS and markup. Do not ship a runtime shim that emits both prefixes: it spends the §6 bundle budget and still cannot satisfy both class syntaxes.
 
-| Current (prefixed) | Daisy 5 |
-| :---- | :---- |
-| `modus-wc-input-bordered / select-bordered / textarea-bordered` | Removed — bordered is default; ghost \= borderless |
-| `modus-wc-card-bordered` | `card-border` |
-| `modus-wc-card-compact` | `card-sm` (collides with size) |
-| `modus-wc-tabs-bordered / lifted / boxed` | `tabs-border / tabs-lift / tabs-box` |
-| `menu disabled / active / focus` | `menu-disabled / menu-active / menu-focus` |
+SCSS inside this repo keeps stable Modus hook classes (`modus-wc-btn`, `modus-wc-btn-filled`). Tailwind/Daisy classes are the `moduswc:*` utilities. Emit both from `*.tailwind.ts` where SCSS still selects the hook. Do not rename SCSS selectors to `moduswc\:btn` — the colon has to be escaped and the hooks are referenced from navbar, content-tree, button-group, and elsewhere.
 
-Public props (`bordered, padding="compact"`, `tabStyle="bordered"`) should stay. Only the internal Daisy class should change, plus SCSS selectors.  
-Also: Daisy 5 shrinks default `btn / input / select / checkbox / radio / toggle`. Lock `--size-field` and `--size-selector` in every Modus theme or visual QA will fail across the catalog.
+The script rewrites utility strings (`modus-wc-flex` → `moduswc:flex`, plus the §4.4 Daisy remaps). It must not rewrite SCSS hooks (`modus-wc-btn`, `modus-wc-btn-filled`) or tag names (`modus-wc-button`). A global replace of `modus-wc-` is wrong. Scope, inputs, and what stays out of the spike gates are in §7.
 
-### **7\. Preflight, layers, and consumer cascade**
+### 2.3 `stencil-tailwind-plugin` v2
 
-`src/styles/tailwind.css` replaces `@tailwind base/components/utilities` with `@import "tailwindcss"`. Your `@layer base` heading/form/list overrides must be re-validated — v4 preflight and default border color changed.  
-Consumer pitfalls you already document (unlayered Daisy `ul/li` beating Tailwind utilities) may change with v4 layers. Re-test that after upgrading; it might get better or worse.  
-`@tailwindcss/typography` is only in `tailwind.config.ts` (no `prose` usage found). Confirm you still need it; v4 loads it via `@plugin`.
+|              |                                                                                                               |
+| ------------ | ------------------------------------------------------------------------------------------------------------- |
+| v1.x (today) | Tailwind 3 only                                                                                               |
+| v2.x         | Tailwind 4. Needs `@tailwindcss/postcss` and TypeScript ≥ 5.8.2. Production is `^5.6.2`, so the spike bumps TypeScript |
+| Config       | v2 drops `tailwindConf`. Config is CSS, injected with `injectTailwindConfiguration`                           |
 
-### **8\. Downstream blast radius**
+**Stencil ceiling:** [stencil-tailwind-plugin#43](https://github.com/Poimen/stencil-tailwind-plugin/issues/43) — the plugin breaks on `@stencil/core` ≥ 4.39. Stay on ≤ 4.38.x until that issue is fixed. Production is 4.35.3, which is inside that range. Do not bump Stencil in the same change.
 
-* 56 snapshots will churn  
-* Shadow injection ships the full `output.css` into consumer shadow roots — watch bundle size (Daisy 5 is smaller; Tailwind 4 \+ prefix \+ six themes may not be)  
-* React / Angular / Vue / Blazor / Storybook all consume `modus-wc-styles.css`  
-* Agent rules and MCP examples use v3-style classes (`bg-(--modus-wc-color-base-page)` is already v4-ish in *app* docs, but this *library* still generates v3 prefixed utilities)  
-* `customClass` on hosts is a consumer API: anyone passing `modus-wc-flex / modus-wc-w-full` breaks unless you major-version and publish a migration table
+**Injection risk:** v2 injects one CSS config into every component compile. A relative `@import './global.css'` in that entry resolves from each component directory, not from `src/styles/`. Plan on a core CSS file with no relative imports, read with `readFileSync` and passed to `injectTailwindConfiguration`. The Wireit CLI entry can stay separate and import `global.css`, `variables.css`, and `fonts.css`. The spike has to show both pipelines emit the same utilities.
 
-## 3\. Recommended approach
+---
 
-Ship as one major. Do not half-upgrade. Do not keep `tailwind.config.ts` as the source of truth.  
-Prefix: Tailwind `prefix(modus-wc)` \+ Daisy `prefix` empty → `modus-wc:btn`, `modus-wc:flex`.  
-Themes: CSS `@plugin "daisyui/theme"` per theme; TS files become optional generators or go away. Keep `data-theme="modus-modern-light"` (that contract can stay).  
-Browser floor: drop Chrome \<111 oklch fallbacks unless Support explicitly requires them.  
-Stencil: plugin 2.x \+ TypeScript ≥ 5.8.2; freeze Stencil \< 4.39 until the plugin issue is resolved.  
-Classes: keep Modus props stable; remap internal Daisy classes; rewrite SCSS that targets old names.
+## 3. Framework changes that drive the work
 
-## 4\. Phased plan
+### Tailwind CSS v4
 
-### **Phase 0 — Decision (1–2 days)**
+| Area          | v3 (today)                            | v4 (target)                                                                                                                                   | Modus impact                                                                                                   |
+| ------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Configuration | `tailwind.config.ts`                  | CSS-first: `@import "tailwindcss"`, `@theme`, `@plugin`                                                                                       | Retire the JS config as source of truth                                                                        |
+| Entry         | `@tailwind base/components/utilities` | `@import "tailwindcss"`                                                                                                                       | Re-validate `@layer base` heading, form, and list overrides. v4 preflight and the default border color changed |
+| CLI           | `tailwindcss` package                 | Bin is still `tailwindcss` (from `@tailwindcss/cli`). Do not invoke `@tailwindcss/cli` as a shell command — Wireit/`/bin/sh` will not find it | Update `tailwind:build` and `tailwind:watch`                                                                   |
+| PostCSS       | `tailwindcss` plugin                  | `@tailwindcss/postcss`                                                                                                                        | New devDependency for the Stencil plugin                                                                       |
+| Prefix        | `prefix: 'modus-wc-'`                 | `prefix(moduswc)` → `moduswc:flex`                                                                                                            | Breaking. See §2.2                                                                                             |
+| Content       | `content: [...]` in JS                | `@source`. Default scan is the whole project                                                                                                  | Start from `@import "tailwindcss" source(none)` and an explicit `@source` list. Otherwise Storybook, docs, and `node_modules` inflate `output.css` past the §6 ceiling. Dynamic classes still need `tailwind-themeable.ts` |
+| Theme tokens  | `theme.extend`                        | `@theme`                                                                                                                                      | Keep `--modus-wc-*` as the Modus token layer                                                                   |
+| `@property`   | Not used for internal utilities       | Shadows, rings, transforms, and gradients declare defaults with `@property`                                                                   | **Blocker.** Browsers ignore `@property` inside shadow roots. See §4.2                                         |
+| Upgrade tool  | Manual                                | `npx @tailwindcss/upgrade`                                                                                                                    | Throwaway branch only, after Daisy is removed from the JS config. Review every class rewrite                   |
 
-Lock with design \+ product:
+### DaisyUI v5
 
-1. Major version vs “try to keep class strings” (if the latter: stop).  
-2. Browser floor (`oklch` / `color-mix`).  
-3. Whether `customClass` with Tailwind utilities is supported public API.
+| Area            | v4 (today)                                                          | v5 (target)                                                        | Modus impact                                                                                                                           |
+| --------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Install         | `plugins: [daisyui]`                                                | `@plugin "daisyui"` in CSS                                         | Remove Daisy from `tailwind.config.ts`                                                                                                 |
+| Themes          | JS objects in `modus-modern.ts`, `modus-classic.ts`, `connect.ts`   | `@plugin "daisyui/theme"` for Modern. Other themes are external CSS | Modern is the default compiled theme. Classic, Connect, and community themes load separately. See §4.5 |
+| Color variables | `--p`, `--b1`, `oklch(var(--p))`                                    | `--color-primary`, `--color-base-100` (full colors)                | Breaks `tailwind.css`, `global.css` fallbacks, `modus-wc-input-label.scss`, and component SCSS listed in §4.1                          |
+| Theme list keys | `darkTheme`, `themeRoot`, `styled`, `base`, `utils`                 | `themes`, `root`, `include` / `exclude`                            | Do **not** map `darkTheme` to `--prefersdark`. See §4.3                                                                                |
+| Removed tokens  | `*-focus`, `--animation-btn`, `--btn-focus-scale`, auto `*-content` | Gone. Set `--color-*-content` explicitly                           | Focus and hover stay in Modus SCSS. Reimplement Connect `--btn-focus-scale: 1` in Modus CSS if that product still needs no press-scale |
+| Radius          | `--rounded-btn`, `--rounded-badge`, `--rounded-box`, `--border-btn` | `--radius-field`, `--radius-selector`, `--radius-box`, `--border`  | `common.ts`, `modus-classic.ts`, `connect.ts`, and component SCSS in §4.1                                                              |
+| Default sizes   | Current density                                                     | Smaller btn, input, select, checkbox, radio, toggle                | Lock `--size-field` and `--size-selector` in every theme                                                                               |
+| Prefix          | Inherited Tailwind `modus-wc-`                                      | Daisy has its own `prefix`. Do not stack it on the Tailwind prefix | Tailwind-only prefix: `moduswc:btn`                                                                                                    |
+| Class renames   | See §4.4                                                            | Daisy 5 names                                                      | `*.tailwind.ts` + SCSS selectors. Public props stay                                                                                    |
 
-Exit: written ADR.
+---
 
-### **Phase 1 — Spike, throwaway branch (1–2 weeks)**
+## 4. Constraints
 
-Do not merge. Prove the toolchain:
+### 4.0 Browsers below the `@layer` floor are unsupported
 
-1. Bump TypeScript to ≥ 5.8.2.  
-2. Install `tailwindcss@4`, `@tailwindcss/cli`, `@tailwindcss/postcss`, `daisyui@5`, `stencil-tailwind-plugin@2`.  
-3. Replace `tailwind.css` directives with:
+Utilities and Daisy component CSS are emitted inside `@layer`. A browser that does not understand `@layer` drops that whole sheet. The 569-line `@supports not (color: oklch())` block only swaps colors, and only after the sheet has applied. It does not restore layout, utilities, or Daisy classes. Tailwind 4.1's fallbacks rewrite colors, opacity, shadows, and gradients inside that sheet. They do not unwrap `@layer`, expand `:is()`, or rewrite logical properties. Doing that would be a second compiler, and it is out of scope.
 
-```css
-@import "tailwindcss" prefix(modus-wc);
-@plugin "@tailwindcss/typography"; /* only if still needed */
-@plugin "daisyui" {
- themes: false;
- logs: false;
- root: ":root";
-}
-@plugin "daisyui/theme" {
- name: "modus-modern-light";
- default: true;
- color-scheme: light;
- --color-primary: #0063a3;
- /* …full token set */
-}
+`@layer` arrived in Chrome and Edge 99, Firefox 97, and Safari 15.4. That floor does not move in this upgrade. No bugfix commitment and no visual QA below it. Custom elements can still upgrade. Their Tailwind and Daisy styling will not.
 
+Opera and Samsung Internet follow the Chrome version they embed, not their own version number. Chromium Edge uses Chrome's version numbers. Legacy EdgeHTML (Edge 18 and earlier) is below the floor.
+
+| Browser | Tailwind 3, oldest that works | Tailwind 4, oldest that works | Tailwind 3, full | Tailwind 4, full |
+| --- | --- | --- | --- | --- |
+| Chrome, Edge | 99 | 99 | 111 | 111 |
+| Firefox | 97 | 97 | 113 | 128 |
+| Safari | 15.4 | 15.4 | 15.4 for color. Hover that uses `color-mix()` needs 16.2, because the hover hex matrix only runs when `oklch()` is missing, and Safari 15.4 already has `oklch()`. | 16.4 |
+
+The Tailwind 4 "full" column is higher for Firefox and Safari because shadows, rings, and gradients use `@property` (Firefox 128, Safari 16.4). Chrome has had `@property` since 85, so Chrome's full line stays at `oklch()` / `color-mix()` (111).
+
+#### Chrome and Edge
+
+| Chrome, Edge | Support on Tailwind 4 | What the fallback covers |
+| --- | --- | --- |
+| **111+** | Full. Design target. | None required. `oklch()` and `color-mix()` run natively. |
+| **99–110** | Degraded. This is the older edge. | `@layer` works, so utilities and Daisy classes apply. There is no `oklch()` or `color-mix()`. Today the hex `--fallback-*` block covers Daisy colors. On Tailwind 4, 4.1 inlines utility colors, shadows, and opacity when the color is static at build time. Daisy theme colors (`--color-primary` and the rest, switched with `data-theme`) stay OKLCH unless Modus hex tokens (`--modus-wc-color-*`) back them per theme. Shadows can differ. Pass means usable, not a pixel match. Spike this once on a real Chrome in this band. |
+| **88–98** | Unsupported. | `:is()` exists from 88. `@layer` does not until 99, so the utility and Daisy sheet is discarded. |
+| **66–87** | Unsupported. Chrome 66 is in this band. | Same `@layer` drop, plus missing `:is()`, logical properties, flex `gap` (84), and `@property` (85). `adoptedStyleSheets` is also missing below Chrome 73 (the `<style>` path in `inject-daisyui.ts` is the only injection that runs). The OKLCH hex table does not bring utilities back. |
+
+#### Firefox
+
+| Firefox | Support on Tailwind 4 | What the fallback covers |
+| --- | --- | --- |
+| **128+** | Full. Design target. | None required. `@property`, `oklch()`, and `color-mix()` all exist. |
+| **113–127** | Degraded. This band is fine on Tailwind 3 and is not fine on Tailwind 4. | `oklch()` and `color-mix()` work, so theme colors do not need the hex table. `@property` does not, until 128. Tailwind 3 does not use `@property`. Tailwind 4 does, for shadows, rings, and gradients. 4.1 supplies utility fallbacks; those effects can still differ. Daisy-owned chrome is not covered by that fallback. |
+| **97–112** | Degraded. Same color gap as Chrome 99–110. | `@layer` works. There is no `oklch()` until 113. Today's hex block covers Daisy colors. On Tailwind 4, use the same Modus hex tokens plus 4.1 for utilities. |
+| **Below 97** | Unsupported. | No `@layer`. The utility and Daisy sheet is discarded. |
+
+#### Safari
+
+| Safari | Support on Tailwind 4 | What the fallback covers |
+| --- | --- | --- |
+| **16.4+** | Full. Design target. | None required. `@property` arrived in 16.4, `color-mix()` in 16.2, `oklch()` and `@layer` in 15.4. |
+| **15.4–16.3** | Degraded. This band is closer to full on Tailwind 3. | `@layer` and `oklch()` both exist, so the current hex color block does not run, and Daisy theme colors parse. `color-mix()` is missing until 16.2, and `@property` is missing until 16.4. Tailwind 4.1 is aimed at this Safari: utility colors, opacity, shadows, and gradients get compile-time fallbacks and can still differ. |
+| **Below 15.4** | Unsupported. | No `@layer` and no `oklch()`. Same drop as Chrome below 99. |
+
+### 4.1 Old tokens are not only in `tailwind.css`
+
+Color channel usage (`--p`, `--b1`, `oklch(var(--p))`, `--fallback-*`) also shows up in component SCSS, including stepper, card, checkbox, button, tabs, radio, and switch, plus `modus-wc-input-label.scss`.
+
+Radius tokens (`--rounded-btn` and related) are in `common.ts`, `modus-classic.ts`, `connect.ts`, and component SCSS including button, card, chip, switch, slider, date, modal, panel, bottom-sheet, and profile-menu.
+
+Phase 2 has to touch those files. Prefer **`var(--modus-wc-color-*)`** (and semantic theme aliases) for colors in SCSS; add narrow `@supports not` only where Daisy utilities do not reach. Deleting the `tailwind.css` fallback blocks is not the whole token migration.
+
+### 4.2 Shadow DOM and `@property` (spike blocker)
+
+`inject-daisyui.ts` installs `output.css` with `adoptedStyleSheets` on the shadow root (with a `<style>` fallback). Tailwind 4 registers internal variables for shadow, ring, transform, and gradient utilities with `@property`. Browsers ignore `@property` inside a shadow root, so those utilities can compute as unset unless the defaults are also set on `:host`.
+
+This is a **pass/fail check** for the spike, not a note for later:
+
+- Render a control that uses shadow, ring, or transform utilities inside a real shadow root.
+- Confirm the same control in the React, Angular, and Vue test apps.
+- If it fails, either redeclare the defaults on `:host` or stop using those utilities inside shadow CSS. Do not ship the upgrade with broken elevation or focus rings.
+
+### 4.3 Dark theme is already owned by `theme.store.ts`
+
+DaisyUI 5 can define as many named themes as we want. Six `@plugin "daisyui/theme"` blocks still work, and `data-theme` still selects one of them. That is the same contract as today: `modus-modern-light`, `modus-modern-dark`, and the classic and connect pairs.
+
+`prefersdark: true` is a different feature. It marks **one** theme as the operating-system dark theme, and it applies only when the page has not set `data-theme`. It cannot say "this user is on Classic, so the dark palette is `modus-classic-dark`."
+
+`theme.store.ts` resolves `mode` from explicit config, then stored `modus-theme-config`, then `matchMedia('(prefers-color-scheme: dark)')`. `watchSystemTheme()` updates mode only when `preferred-mode` is absent from `localStorage`. `theme-provider.tsx` writes the attribute the CSS actually uses:
+
+```ts
+root.setAttribute('data-theme', `${theme}-${mode}`);
 ```
 
-4. Point Wireit at `@tailwindcss/cli`.  
-5. Rewire `stencil.config.ts` (drop `tailwindConf`; use CSS-first inject).  
-6. Compile one theme \+ button / input / card / tabs.  
-7. Measure `output.css` size vs today; inject into a shadow root; check Storybook.
+#### Team discussion — store vs Daisy `prefersdark`
 
-Kill criteria: plugin cannot process Stencil JSX, prefix doubles, or themes do not apply via `data-theme`.
+| Behavior | Theme store (today) | DaisyUI `prefersdark` only |
+| -------- | ------------------- | -------------------------- |
+| Modern, Classic, and Connect | The `theme` half of `data-theme`. Six themes stay | Collapses to one light theme and one dark theme |
+| User picks light while the OS is dark | `data-theme="modus-modern-light"` stays | Only if something still sets `data-theme`, which is the store again |
+| User picks "follow the OS" | `watchSystemTheme()` updates the attribute | Free, in CSS, with no JavaScript |
+| Theme before JavaScript runs | Needs the FOUC script that sets `data-theme` | The media query applies as soon as the CSS loads, for that one dark theme |
+| Stored preference | `modus-theme-config` survives the next visit | None. The next visit follows the OS |
+| Shadow DOM | The ancestor `data-theme` is visible to adopted stylesheets | Same, if the theme CSS is in the adopted sheet. The media query still cannot express six themes |
 
-### **Phase 2 — Theme \+ token migration (1–2 weeks)**
+The OS-following media query is the only thing DaisyUI does better: no flash while the store initializes, and no listener to keep in sync. It only works for a single light theme plus a single dark theme.
 
-* Port all 6 themes; map `*-focus` into hover/active in Modus SCSS (Daisy will not do it).  
-* Map radius / border / size tokens (`--size-field` to preserve control height).  
-* Replace `oklch(var(--p)`) / `--fallback-p` / `--fallback-b1` in `tailwind.css`, `global.css, modus-wc-input-label.scss`, button disabled rules.  
-* Update `generate-variables-css.js` if it assumes Daisy v4 names.  
-* Rewrite `docs/custom-themes.md`.
+A hybrid (family on `data-theme="modus-modern"`, mode from a media query) is not what `prefersdark` does. That flag is one theme for the whole page. Per-family dark tokens would be our own `@media (prefers-color-scheme: dark)` blocks, and the store would still be required the moment a user overrides the OS.
 
-### **Phase 3 — Class and component pass (2–4 weeks)**
+**Recommendation for the discussion:** keep the store and the six named themes. Do not add `--prefersdark`. It would switch themes beside the store and can fight a user who picked light or dark explicitly. Reopen this only if the product drops Classic and Connect, or drops explicit light/dark in favor of "always follow the OS."
 
-Work component-by-component (buttons → forms → tabs/card → menu → rest):
+### 4.4 Class renames vs classes whose names survive
 
-* Update `*.tailwind.ts` and `tailwind-themeable.ts` for v4 prefix \+ Daisy remaps.  
-* Fix SCSS selectors (`input-bordered`, `tabs-lifted`, `card-compact`, …).  
-* Re-map `bordered={false}` → Daisy `*-ghost` where needed.  
-* Re-check `join` / button-group (v4 `btn-group` is gone; you already use `join`).  
-* Visual pass: all sizes, variants, disabled, pressed, 6 themes, RTL.
+Renames already wired in `*.tailwind.ts` / SCSS. Public props stay (`bordered`, `padding="compact"`, `tabStyle`). Only the internal Daisy class changes.
 
-Highest risk: button (huge oklch/fallback/disabled matrix), form bordered, tabs, card compact vs sm.
+| Current prefixed class                                            | DaisyUI 5                                                       |
+| ----------------------------------------------------------------- | --------------------------------------------------------------- |
+| `modus-wc-input-bordered`, `select-bordered`, `textarea-bordered` | Removed. Border is the default. Borderless uses `*-ghost`       |
+| `modus-wc-card-bordered`                                          | `card-border`                                                   |
+| `modus-wc-card-compact`                                           | `card-sm` (this is a size, not a padding alias — check density) |
+| `modus-wc-tabs-bordered` / `lifted` / `boxed`                     | `tabs-border` / `tabs-lift` / `tabs-box`                        |
+| Menu `disabled` / `active` / `focus`                              | `menu-disabled` / `menu-active` / `menu-focus`                  |
 
-### **Phase 4 — Tooling and consumers (1 week)**
+These names still exist in DaisyUI 5, but size or chrome changed. They are visual-QA items, not rename items:
 
-* Wireit `files/output` for the new CSS graph.  
-* Storybook (Vite 7 can use `@tailwindcss/vite` if Storybook stops depending on the Stencil CSS copy — today it uses `dist`).  
-* Framework test apps: styles still load, no unprefixed Preflight leaking.  
-* Snapshot refresh (`npm run test:update-snapshot`) after visuals are signed off, not before.
+- `modus-wc-tab-active`
+- `modus-wc-toggle-*` sizes
+- `modus-wc-mask-*`
+- `modus-wc-join-item`
+- Badge sizes (`modus-wc-badge-xs` through `lg`)
 
-### **Phase 5 — Docs and release (1 week)**
+### 4.5 `modus-wc-variables.css` and where themes live
 
-* Migration guide: class prefix `modus-wc-flex` → `modus-wc:flex;` Daisy remaps; token names; browser floor.  
-* Changelog / semver major.  
-* Update Cursor rules that mention Daisy v4 channel tokens or hyphenated utilities in this library.  
-* Call out: consumers on Tailwind 3 can still *use* Modus; they must not assume Modus utilities share their Tailwind major.
+`package.json` exports `./modus-wc-variables.css`, and the Stencil build copies it to `dist`. Today the file publishes every built-in theme, including DaisyUI v4 channels (`--p`, `--b1`, `--rounded-btn`, and the rest). Consumers may read them.
 
-## 5\. Effort (honest)
+The name change is a **breaking change**, next to the class prefix. The break is the **value shape**, not only the name. v4 `--p` is an OKLCH channel (`48.6221% 0.128075 247.07`). Consumers write `oklch(var(--p) / 0.2)`. v5 `--color-primary` is a full color (`#0063a3` or any CSS color). Renaming the custom property and leaving the `oklch(var(--…))` wrapper produces invalid CSS. The replacement for channel alpha is `color-mix()`. Do not silently rename tokens inside a file consumers already import.
 
-| Work | Calendar | Notes |
-| :---- | :---- | :---- |
-| Spike | 1–2 weeks | Can fail; budget it |
-| Implementation | 4–6 weeks | One engineer who knows this CSS stack |
-| Visual QA | 2–3 weeks | 50+ components × 6 themes × light/dark; cannot skip |
-| Docs / major release | \~1 week |  |
-| Total | \~2–3 months | \~8–12 engineer-weeks |
+That same value-shape change is what the community-themes work was blocked on. DaisyUI v4 compiled hex into channels at build time, so a consumer could not add a theme without forking the library and rebuilding. DaisyUI v5 takes a full color in CSS. An external stylesheet can define a theme with no oklch math and no Tailwind rebuild:
 
-This is larger than a typical dependency PR because the class string is the product.
+```css
+[data-theme='acme-light']:root {
+  --color-primary: #0063a3;
+  --color-base-100: #ffffff;
+  --modus-wc-color-primary: #0063a3;
+  --modus-wc-color-base-page: #ffffff;
+}
+```
 
-## 6\. What not to do
+**Direction:** change CSS generation instead of porting all six themes into the default bundle.
 
-* Upgrade DaisyUI 5 on Tailwind 3 (unsupported).  
-* Upgrade Tailwind 4 and leave Daisy 4 (plugin API is gone).  
-* Run `@tailwindcss/upgrade` on `main` without isolating Daisy and reviewing every class rewrite.  
-* Mix Tailwind prefix and Daisy `modus-wc-` prefix.  
-* Bump Stencil to ≥ 4.39 in the same change.  
-* Refresh snapshots first and “fix visuals later.”  
-* Keep Chrome \<111 fallbacks “just in case” without rewriting them — they will be wrong.
+- **Modern** (light and dark) is the default theme compiled into `modus-wc-styles.css` and `modus-wc-variables.css`.
+- **Classic, Connect, and community themes** are external CSS. The app loads that file and the theme store still sets `data-theme`. `ThemeName` has to accept names outside the current closed union.
+- The public contract is the curated `--modus-wc-*` semantic tokens plus the Daisy v5 `--color-*` names components actually read. Stop publishing the full Daisy channel dump for every theme. Primitives (`--modus-wc-color-trimble-blue` and the raw palette) stay internal.
+- Connect moving out of the core build is the proof that an external theme works. Classic can follow the same path. The community-themes research currently keeps Classic in the box; this upgrade is the point to decide that, because v5 removes the reason to generate channels inside the library.
 
-# Relevant changes on DaisyUI 5 and Tailwind 4
+`generate-variables-css.js` then emits the Modern v5 tokens only, or stops copying Daisy channels entirely and documents the semantic set. The §6 gate that sizes `output.css` with all six themes is the old assumption. Re-measure against Modern in the library CSS, and treat extra themes as separate stylesheets that must not be required for the default bundle.
 
-These are the framework deltas that most directly affect Modus — not an exhaustive changelog, but the items that will drive design decisions, file rewrites, and QA scope.
+This does not replace §4.3. Six names can still exist. Only Modern is compiled in. The store still selects the active name. `prefersdark` still does not.
 
-### **Tailwind CSS v4**
+### 4.6 Everything else that moves
 
-| Area | v3 (today) | v4 (target) | Modus impact |
-| :---: | :---: | :---: | :---: |
-| **Configuration** | tailwind.config.ts with content, plugins, theme.extend | CSS-first: @import "tailwindcss" \+ @theme \+ @plugin in src/styles/tailwind.css | Retire or demote tailwind.config.ts; themes and Daisy move into CSS |
-| **Entry directives** | @tailwind base/components/utilities | Single @import "tailwindcss" | Rewrite tailwind.css and validate @layer base overrides (headings, forms, lists) |
-| **CLI** | tailwindcss package includes CLI | CLI is @tailwindcss/cli | Update Wireit tailwind:build / tailwind:watch in package.json |
-| **PostCSS** | tailwindcss as PostCSS plugin | @tailwindcss/postcss (required for Stencil plugin v2) | New devDependency; autoprefixer / postcss-import often removable |
-| **Prefix** | prefix: 'modus-wc-' → modus-wc-flex | prefix(modus-wc) → modus-wc:flex (variant syntax) | **Breaking:** every utility string in TS/SCSS, tailwind-themeable.ts, and consumer customClass values |
-| **Content detection** | Explicit content: \[...\] in config | Automatic source discovery (with @source if needed) | Re-verify safelist in tailwind-themeable.ts still emits dynamic classes |
-| **Theme tokens** | theme.extend in JS | @theme { \--color-\*: … } registers design tokens | Align with existing \--modus-wc-\* variable strategy |
-| **Preflight / defaults** | v3 reset behavior | Updated preflight; default border color behavior changed | Re-test form controls, tables, lists; cascade vs unlayered Modus overrides |
-| **Upgrade tooling** | Manual | npx @tailwindcss/upgrade | Use only on a spike branch after removing Daisy from JS config; review every diff |
+- 60 snapshots will change. Refresh them after visual sign-off, not before.
+- React, Angular, Vue, Blazor, MAUI, and Storybook all load `modus-wc-styles.css`. The shadow-root check belongs in the React, Angular, and Vue test apps (real custom elements in CI). Blazor and MAUI are a Phase 4 smoke of that same stylesheet, not a second spike gate.
+- Consumers who use Tailwind next to Modus move to Tailwind 4 with this major. Do not document Tailwind 3 as a supported consumer toolchain. `moduswc:` is a Tailwind 4 prefix, and a Tailwind 3 build will not emit it or honor `@apply moduswc:flex`. Precompiled `modus-wc-styles.css` means an app can render Modus without running Tailwind at all. It does not mean a Tailwind 3 app is a supported way to extend those classes.
+- `@tailwindcss/typography` is only referenced from `tailwind.config.ts` (no `prose` usage found). Drop it unless a consumer story needs it. v4 would load it with `@plugin`.
+- Unlayered Daisy `ul` / `li` rules can still beat consumer utilities. Re-test that cascade after the upgrade.
+- `npx @tailwindcss/upgrade` is unsafe on this repo until Daisy is out of the JS config. Run it on a throwaway branch and diff by hand.
 
-### **DaisyUI v5**
+---
 
-| Area | v4 (today) | v5 (target) | Modus impact |
-| :---: | ----- | ----- | ----- |
-| **Installation** | `plugins: [daisyui]` in JS config | `@plugin "daisyui"` in CSS | Remove Daisy from `tailwind.config.ts`; configure in `tailwind.css` |
-| **Custom themes** | JS objects in `modus-modern.ts]`etc., registered in `daisyui.themes` | `@plugin "daisyui/theme" { name: "…"; --color-primary: … }` per theme | Rewrite theme authoring; update `custom-themes.md` |
-| **Color variables** | Channel tokens: `--p`, `--b1`, `oklch(var(--p))` | Full colors: `--color-primary`, `--color-base-100` | Breaks `tailwind.css` button disabled rules, `global.css` fallbacks, `modus-wc-input-label.scss` |
-| **Theme config keys** | `darkTheme`, `themeRoot`, `styled`, `base`, `utils` | `themes: … --prefersdark`, `root`, `include` / `exclude` | Map `darkTheme: 'modus-modern-dark'` → `modus-modern-dark --prefersdark` in theme list |
-| **Removed theme tokens** | `primary-focus`, `--animation-btn`, `--btn-focus-scale`, auto `*-content` | Gone; explicit `--color-*-content` required | Move focus/hover semantics into Modus SCSS (already partially done for classic buttons) |
-| **Radius / border tokens** | `--rounded-btn`, `--rounded-badge`, `--rounded-box`, `--border-btn` | `--radius-field`, `--radius-selector`, `--radius-box`, `--border` | Update `common.ts` and per-theme overrides |
-| **Default component sizes** | Current density | Smaller defaults for btn/input/select/checkbox/radio/toggle | Lock `--size-field` / `--size-selector` in each Modus theme or accept visual drift |
-| **Prefix** | Inherited from Tailwind `modus-wc-` on Daisy classes | Separate Daisy `prefix` option; must not stack with Tailwind prefix | Prefer Tailwind-only prefix: `modus-wc:btn` not `modus-wc:modus-wc-btn` |
-| **Class renames (in use)** | See table below | Daisy 5 names | Update `*.tailwind.ts` \+ SCSS selectors |
+## 5. Recommended approach
 
-### **Daisy class renames Modus already depends on** (from `*.tailwind.ts` and SCSS):
+- One major version. No half upgrade.
+- Prefix: `prefix(moduswc)`, Daisy prefix empty.
+- Dual class on components: `moduswc:*` for Daisy/Tailwind, `modus-wc-*` hooks for existing SCSS until those selectors are deliberately rewritten.
+- Themes: Modern light and dark ship in the library CSS. Classic, Connect, and community themes are external stylesheets selected with `data-theme`. See §4.5.
+- Browser: **Tailwind 4.1+**. Full support is Chrome and Edge 111+, Safari 16.4+, Firefox 128+. The older edge matches Tailwind 3: Chrome and Edge 99, Firefox 97, Safari 15.4, all degraded (§4.0). Below that `@layer` floor is unsupported. Remove v3’s 569-line Daisy-channel fallbacks; add Modus hex backstops for the bands that lack `oklch()` (Chrome and Edge 99–110, Firefox 97–112).
+- Stencil: plugin 2.x, TypeScript ≥ 5.8.2, `@stencil/core` ≤ 4.38 until issue 43 is fixed.
+- Bundle budget and rollback plan are part of the decision, not follow-up work. See §6 and §12.
+- Phases are pull-request slices on the major branch. Publish once, in Phase 5, after every component emits `moduswc:` utilities. A release that migrates half the catalog leaves the other half unstyled.
 
-| Current prefixed class | DaisyUI 5 |
-| ----- | ----- |
-| `modus-wc-input-bordered`, `select-bordered`, `textarea-bordered` | Removed — border is default; use `*-ghost` for borderless |
-| `modus-wc-card-bordered` | `card-border` |
-| `modus-wc-card-compact` | `card-sm` |
-| `modus-wc-tabs-bordered` / `lifted` / `boxed` | `tabs-border` / `tabs-lift` / `tabs-box` |
-| Menu `disabled` / `active` / `focus` modifiers | `menu-disabled` / `menu-active` / `menu-focus` |
+---
 
-**Public props stay stable** (`bordered`, `padding="compact"`, `tabStyle`) — only internal Daisy class strings change.
+## 6. Pass / fail for the spike
 
-**Cross-cutting changes (both frameworks)**  
-![][image1]
+Write these down before implementation. Proposed numbers below are the gates to lock in Phase 0; change them in the ADR, not ad hoc during the spike.
 
-* **Browser support:** Large `@supports not (color: oklch())` blocks in `tailwind.css` (\~750+ lines) assume Daisy v4 channel tokens. Daisy v5 full-color variables require rewriting or **dropping Chrome \<111** support.  
-* **Shadow DOM:** `ensureDaisyUIInShadow (src/providers/theme/inject-daisyui.ts)` embeds full `output.css` — any prefix/token change ships to every consumer shadow root.  
-* **Consumer apps:** Apps passing Tailwind utilities via `customClass` (e.g. `modus-wc-flex`) break when prefix becomes `modus-wc:flex` — treat as **semver major**.
+### Measured v3 baseline
 
-### 
+Recorded from `origin/main` at `d02eeeed7` (v1.19.0) after `tailwindcss -i src/styles/tailwind.css -o src/styles/output.css --minify`. Gzip is `gzip -9` equivalent (`zlib.gzipSync`).
 
-See more notes:  
-[https://tailwindcss.com/blog/tailwindcss-v4](https://tailwindcss.com/blog/tailwindcss-v4)  
-[https://daisyui.com/docs/v5/?lang=en](https://daisyui.com/docs/v5/?lang=en)
+| Artifact                   | Uncompressed             | Gzipped                |
+| -------------------------- | ------------------------ | ---------------------- |
+| `src/styles/output.css`    | 161,556 bytes (157.8 KB) | 22,394 bytes (21.9 KB) |
+| `dist/modus-wc-styles.css` | 161,556 bytes (157.8 KB) | 22,394 bytes (21.9 KB) |
 
-# Comments v1
+`dist/modus-wc-styles.css` is a straight copy of `output.css` in `stencil.config.ts`, so the two files match byte for byte.
 
-**Comments for the doc**
+`modus-wc-button` is `shadow: false`, so the button does not adopt a stylesheet of its own. A consumer shadow root that calls `ensureDaisyUIInShadow(root)` (the default path, not the container path) adopts one shared sheet: `output.css` + `global.css` + `modus-icons.css`.
 
-1. **On section 5 ("Chrome \<111 fallbacks become a product decision"):** Tailwind 4 officially supports only Chrome 111+, Safari 16.4+ and Firefox 128+. Tailwind 4.1 degrades gracefully for its own utilities, but DaisyUI 5 colors (full OKLCH values plus `color-mix()`) and the Modus themes don't. Rewriting the fallbacks can't restore support, so this is a go or no-go decision, not a choice between two options.  
-2. **On section 5, "delete \~600 lines of fallbacks":** The cross-cutting section says about 750+ lines. `tailwind.css` is 1,029 lines, with three `@supports not` blocks plus another block in `global.css`. Pick one number.  
-3. **On section 3, "drop Chrome \<111 oklch fallbacks unless Support explicitly requires them":** If Support requires Chrome below 111, the answer is to not upgrade, not to keep the fallbacks.  
-4. **On section 8 ("Shadow injection ships the full output.css"):** Tailwind 4 declares its internal variables (for shadows, rings, transforms, gradients) with `@property`, and browsers ignore `@property` inside shadow roots. Those utilities can break unless the defaults are put back on `:host`. We inject `output.css` into shadow roots through `adoptedStyleSheets` in `inject-daisyui.ts`, so this is a blocker to check in the spike.  
-5. **On the Phase 2 bullet "Update generate-variables-css.js":** `modus-wc-variables.css` is published (exported from `package.json` and copied to `dist`) and contains 24 DaisyUI v4 variables (`--p`, `--b1`, `--rounded-btn` and so on). Consumers may rely on them. List it as a break in the migration guide.  
-6. **On the class rename table in section 6:** `modus-wc-tab-active`, `modus-wc-toggle-*` sizes, `modus-wc-mask-*`, `modus-wc-join-item` and the badge sizes are all in use. Their names survive in DaisyUI 5, but their sizes and styles changed, so add them to visual QA.  
-7. **On the section 4 list of old color variables:** They are also used in the SCSS for stepper, card, checkbox, button, tabs, radio and switch. Old radius variables such as `--rounded-btn` also appear in `modus-classic.ts`, `connect.ts` and about 12 component SCSS files.  
-8. **On Theme config keys (the "darkTheme → \--prefersdark" line):** Check this against how `theme.store.ts` picks a theme using `prefers-color-scheme`.  
-9. **On the DaisyUI v5 table:** Formatting problems: the cells start with literal `###`, some headers show escaped `**`, and one cell reads `modus-modern.ts\]etc.`  
-10. **On Phase 1, "Compile one theme \+ button / input / card / tabs":** The numbered steps restart at 1 after the code block.  
-11. **On section 6 ("What not to do"):** Add: "Don't upgrade without a rollback plan and a bundle-size budget."
+| Adopted sheet (default path)                    | Uncompressed             | Gzipped                |
+| ----------------------------------------------- | ------------------------ | ---------------------- |
+| `output.css` + `global.css` + `modus-icons.css` | 169,194 bytes (165.2 KB) | 23,745 bytes (23.2 KB) |
 
-**Taking the spike to the next level**
+The minified production file is 157.8 KB. Compare the v4 build to this table, not to a partial theme or a subset of Daisy families.
 
-- **Write pass or fail criteria before starting.** Examples: `output.css` grows by no more than X%, pixel differences stay under Y% on the Storybook stories that matter, and the shadow DOM works in the React, Angular and Vue test apps.  
-- **Test on one component from each high-risk group:** button (the disabled and old-Chrome states), text input (bordered and ghost), card (compact versus the new small size), tabs and menu.  
-- **Generate the new themes from the existing TypeScript theme files.** Write a script that outputs the CSS `@plugin "daisyui/theme"` blocks, so the six themes can't drift apart.  
-- **Measure file sizes:** `output.css` before and after, gzipped and uncompressed, plus the per-component bundle size once styles are injected.  
-- **Can the pull requests be submitted directly to the primary repository** to simplify code review especially with UI changes.
+### Gates
 
-[image1]: <data:image/png;base64,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>
+| Gate             | Pass                                                                                                                                                                                                                    | Fail                                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Bundle           | Uncompressed `output.css` ≤ **185,789 bytes** and gzipped ≤ **25,753 bytes** (115% of the v3 baseline), after all six themes are included                                                                               | Over either ceiling                                                                                                |
+| Shadow injection | Default adopted sheet ≤ **194,573 bytes** uncompressed and ≤ **27,307 bytes** gzipped (115% of 169,194 / 23,745). `@property` utilities still paint inside a shadow root, or a `:host` fallback restores them           | Over either ceiling, the sheet is injected twice, or shadow / ring / transform utilities break with no `:host` fix |
+| Frameworks       | Button, text input, card, tabs, and menu render with the correct theme in the **React, Angular, and Vue** test apps, including a shadow-root host                                                                       | Any of those apps loses theme, prefix, or elevation                                                                |
+| Visual           | On the stories in §7, no unintended layout shift. Where a pixel tool exists, changed pixels ≤ **2%** per story after an allowlist of intentional Daisy 5 deltas. Without a pixel tool, design sign-off on that same set | Unreviewed color, size, or radius changes, especially disabled buttons and `card-sm` vs today's compact            |
+| Themes           | All six themes come from one script over the TS theme files. `data-theme="modus-modern-dark"` (and the other five names) still switches via `theme-provider`                                                            | Hand-copied CSS, or `--prefersdark` fighting the store                                                             |
+| Toolchain        | `tailwindcss` CLI and `stencil build` both succeed. Prefix is `moduswc`. No doubled prefix                                                                                                                              | Plugin cannot see JSX classes, Stencil ≥ 4.39 is required, or `npm start` / Wireit fails                           |
+| Rollback         | The spike PR points at §12 (revert path, last 1.x pin, and that `output.css` is generated)                                                                                                                              | No rollback notes, or a plan that depends on `npm unpublish` or a dual-prefix stylesheet                           |
+
+Kill the upgrade if the shadow-root `@property` check fails with no practical `:host` fix, if the bundle gate fails after a real six-theme build, or if Support rejects the browser floor.
+
+---
+
+## 7. Spike scope
+
+Not a full catalog migration. One component from each high-risk group, all six themes generated, measured, and checked in real framework apps.
+
+| Component  | What to prove                                                                                                                                                              |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Button     | Disabled, pressed, filled / outline / borderless. Do not try to keep Chrome &lt;111. Port the disabled-color rules that sit outside the `@supports not` blocks. Deleting the fallback layer does not change those rules; leaving them on v4 channel tokens will |
+| Text input | `bordered` (Daisy default border) and borderless (`input-ghost`)                                                                                                           |
+| Card       | Today's `padding="compact"` vs Daisy `card-sm` — density must stay a Modus decision                                                                                        |
+| Tabs       | `bordered` / `lifted` / `boxed` remaps, plus `tab-active` chrome (name survives, style may not)                                                                            |
+| Menu       | `menu-disabled` / `menu-active` / `menu-focus`                                                                                                                             |
+
+Also screenshot, even if those components are not fully migrated yet: toggle sizes, `mask-*`, `join-item`, badge sizes.
+
+Theme generation: a script reads `modus-modern.ts`, `modus-classic.ts`, and `connect.ts` and writes the six `@plugin "daisyui/theme"` blocks (`--color-*`, `--radius-*`, `--size-field`, `--size-selector`). Do not maintain a second hand-written copy.
+
+### Future scope — consumer migration toolkit
+
+Not a §6 gate. The spike proves the new class strings. The toolkit ships with the major (Phase 5), once the Daisy remap table is stable. A spike may prototype the parser on the five components above. It must not block the toolchain gates.
+
+The toolkit is a script (CLI) plus the migration guide. It rewrites consumer source. It does not patch `modus-wc-styles.css` at runtime.
+
+| Rewrite | Leave unchanged |
+| ------- | --------------- |
+| Utilities: `modus-wc-flex` → `moduswc:flex`, including `customClass` and `class` / `className` strings | Tag names: `modus-wc-button` |
+| Daisy remaps from §4.4 (`modus-wc-card-bordered` → `moduswc:card-border`, and the rest) | SCSS hooks that are not utilities: `modus-wc-btn`, `modus-wc-btn-filled` |
+| CSS selectors that target those utilities (`.modus-wc-w-full`, `[class~="modus-wc-flex"]`) | `--modus-wc-*` custom properties that are not Daisy channel renames (those are the variables-file guide, not this script) |
+
+Inputs: `.css`, `.scss`, `.html`, `.tsx`, `.jsx`, `.vue`, `.ts` string literals that are clearly class lists. Report every hit it refuses (dynamic concatenation, a class that is both a hook and a utility) instead of guessing. Dry-run by default. A global replace of `modus-wc-` is a failed toolkit.
+
+---
+
+## 8. Phased plan
+
+For copy-paste **agent prompts** and per-phase **verification checklists** (Phases 1–5), see [Modus - Tailwind 4 and DaisyUI 5 - Build sequence.md](./Modus%20-%20Tailwind%204%20and%20DaisyUI%205%20-%20Build%20sequence.md).
+
+### Phase 0 — Decision (1–2 days)
+
+1. Browser floor from §4.0: full support Chrome and Edge 111+ / Safari 16.4+ / Firefox 128+. Older edge Chrome and Edge 99, Firefox 97, Safari 15.4, degraded. Below the `@layer` floor, including Chrome 66, is unsupported.
+2. Prefix `moduswc` and a major version, or stop.
+3. Lock the §6 budgets (115% bundle, 2% pixels or design sign-off).
+4. Confirm `customClass` Tailwind utilities are a supported public API that will break.
+5. Write the ADR. Rollback is §12, not a sentence in the ADR.
+
+Exit: ADR merged or explicitly accepted. No Phase 1 code without it.
+
+### Phase 1 — Spike (1–2 weeks, draft PR)
+
+1. Reconfirm the §6 v3 size baseline if `tailwind.css` on `main` has moved since `d02eeeed7`. Do not invent a new ceiling during the spike.
+2. Keep TypeScript ≥ 5.8.2, Tailwind 4, `@tailwindcss/cli`, `@tailwindcss/postcss`, DaisyUI 5, `stencil-tailwind-plugin` 2, Stencil ≤ 4.38.
+3. Generate all six themes from the TS files.
+4. Wire the CLI with the `tailwindcss` bin, and the Stencil plugin with `injectTailwindConfiguration` (no relative `@import` in the injected CSS).
+5. Migrate button, text input, card, tabs, and menu using the dual-class pattern.
+6. Run the §6 gates, including React, Angular, and Vue, and the shadow `@property` check.
+7. Publish the size table and screenshots on the PR. Do not commit image files into the repo.
+
+Nothing in this phase is a pass until every §6 gate is met. A compile that succeeds with one theme, or without the framework apps, is not evidence for the migration.
+
+### Phase 2 — Tokens and variables (1–2 weeks)
+
+1. Land the generated themes as the only theme source.
+2. Map removed `*-focus` / `--btn-focus-scale` behavior into Modus SCSS where products still need it.
+3. Lock `--size-field` and `--size-selector`.
+4. Remove the 569-line v4 `@supports not` layer. Port modern rules (channels ~765–805, disabled/pressed ~846–end) to `--color-*` / `color-mix()`. Add **generated or mapped** `--modus-wc-color-*` fallbacks for Modus-owned surfaces per §2.1. Update `global.css` and every SCSS file in §4.1 to use semantic Modus tokens with `@supports not` only where needed.
+5. Change `generate-variables-css.js` per §4.5: Modern only in the published variables file, v5 full-color names (`--color-primary`, `--radius-field`). Document the break (`--p` channel → full color). `oklch(var(--p) / <alpha>)` does not survive a rename. Classic, Connect, and community themes are external CSS, not more rows in that file.
+6. Rewrite `docs/custom-themes.md`.
+
+### Phase 3 — Remaining components (2–4 weeks)
+
+Component by component: remaining buttons and groups, forms, then the rest of the catalog.
+
+1. Update `*.tailwind.ts` and `tailwind-themeable.ts` for `moduswc:` plus Daisy remaps. Keep SCSS hooks until selectors are updated.
+2. `bordered={false}` → `*-ghost` where Daisy removed `*-bordered`.
+3. Re-check `join`. DaisyUI 4 already replaced `btn-group` with `join`, and Modus uses `join`. Confirm DaisyUI 5 did not change the join classes Modus emits.
+4. Visual pass: sizes, variants, disabled, pressed, six themes, RTL.
+5. Explicit QA for classes whose names survived: `tab-active`, toggle sizes, `mask-*`, `join-item`, badge sizes.
+
+Highest risk remains button disabled states, form bordered vs ghost, tabs, card compact vs `card-sm`, and menu.
+
+### Phase 4 — Tooling and consumers (1 week)
+
+1. Wireit `files` / `output` for the new CSS graph.
+2. Storybook still consumes the Stencil CSS copy unless that pipeline is intentionally changed.
+3. Framework test apps: styles load, no unprefixed preflight leak, shadow roots still theme.
+4. Snapshot refresh only after visual sign-off.
+
+### Phase 5 — Docs and release (1 week)
+
+Migration guide must include:
+
+1. Prefix: `modus-wc-flex` → `moduswc:flex` (and the same for every utility).
+2. Daisy class remaps from §4.4.
+3. `modus-wc-variables.css` token renames.
+4. Browser floor.
+5. Consumers who use Tailwind upgrade to Tailwind 4. Tailwind 3 is not a supported way to extend `moduswc:` classes. Apps that only consume `modus-wc-styles.css` and do not run Tailwind are unaffected.
+6. The migration script from §7 (future scope), published with the major. Dry-run, remap table, and a fixture that proves hooks and tag names are left alone.
+
+Also: changelog, semver major, Cursor rules that still mention Daisy v4 channels or hyphenated utilities.
+
+---
+
+## 9. Effort
+
+| Work                                      | Calendar    | Notes                                  |
+| ----------------------------------------- | ----------- | -------------------------------------- |
+| Spike                                 | 1–2 weeks   | Can fail the §6 gates                  |
+| Implementation                            | 4–6 weeks   | One engineer who knows this CSS stack  |
+| Visual QA                                 | 2–3 weeks   | 50+ components × 6 themes; cannot skip |
+| Docs / major                              | ~1 week     | Includes the variables-file break      |
+| Total                                     | ~2–3 months | ~8–12 engineer-weeks                   |
+
+The class string is the product. This is not a dependency bump.
+
+---
+
+## 10. What not to do
+
+- Upgrade DaisyUI 5 on Tailwind 3.
+- Upgrade Tailwind 4 and leave DaisyUI 4.
+- Run `@tailwindcss/upgrade` on `main` without isolating Daisy and reviewing every rewrite.
+- Stack a Daisy `modus-wc-` prefix on the Tailwind prefix.
+- Use `prefix(modus-wc)` or `modusWc`. Tailwind rejects both.
+- Map `darkTheme` to `--prefersdark` and ignore `theme.store.ts`.
+- Bump Stencil to ≥ 4.39 in the same change.
+- Refresh snapshots first and fix visuals later.
+- Hand-maintain the v3 569-line `--fallback-p` / Daisy-channel table on v5. Use theme-driven `--modus-wc-color-*` backstops instead (§2.1).
+- Pin Tailwind 4.0 when 4.1 fallbacks are required for the degraded bands in §4.0.
+- Promise any browser below the `@layer` floor (Chrome and Edge below 99, Firefox below 97, Safari below 15.4), including Chrome 66. The utility sheet is dropped there, and we are not building a second compiler to unwrap it (§4.0).
+- Upgrade without a rollback plan and a bundle-size budget.
+- Publish a major that still emits `modus-wc-*` utilities from unmigrated components.
+- Roll back with `npm unpublish`, or by shipping both prefixes in one stylesheet.
+- Global-replace `modus-wc-` in consumer apps. That rewrites hooks and tag names along with utilities.
+- Document Tailwind 3 as a supported consumer of the Tailwind 4 stylesheet.
+
+---
+
+## 11. Where to open pull requests
+
+Open spike and migration PRs on `trimble-oss/modus-wc-2.0`. Screenshots, theme switches, and framework-app review need to stay on the repository that will ship the major.
+
+Use **draft** until the §6 gates pass. Put screenshots in the PR conversation (GitHub-hosted images). Do not commit them under `.github/pr-assets` or similar.
+
+---
+
+## 12. Rollback
+
+Rollback is a release decision. It is not a feature flag. The prefix and the token value shape live in the published CSS. One build cannot serve `modus-wc-flex` and `moduswc:flex` without paying for both, and that fails the §6 budget. Do not plan on `npm unpublish`.
+
+### Before the major is published
+
+| State | What to do |
+| ----- | ---------- |
+| Spike PR, not merged | Close it. `main` stays on Tailwind 3.4.17 and DaisyUI 4.12.24. |
+| Merged to `main`, not tagged | Revert the merge commit (`git revert -m 1`). The revert restores the v3 lockfile (`tailwindcss@3.4.17`, `daisyui@4.12.24`, `stencil-tailwind-plugin@1.8.0`, TypeScript 5.6). Rebuild. Do not hand-edit `output.css` (gitignored) or `dist/`. |
+
+`modus-wc-variables.css` is tracked and regenerated by the Stencil build. The revert has to restore the v4 channel tokens (`--p`, `--rounded-btn`). A v5 variables file left next to a v3 lockfile is a broken release candidate.
+
+Cut the migration as one merge commit, or a short stack that merges as one, with no unrelated features. That is what makes the revert real.
+
+`data-theme` names and `modus-theme-config` do not change in this plan, so a stored theme preference survives a revert. Component props (`bordered`, `padding`, `tabStyle`) also stay.
+
+### After the major is published
+
+Consumers roll back by pinning the last 1.x release and the matching framework package. Record that pin in the migration guide before publish. Today the pin is `1.19.0`, plus the React, Angular, and Vue packages built from that same version (`@trimble-oss/moduswebcomponents-react@1.19.0-react19`, and the Angular and Vue dist-tags for 1.19.0). A 2.x stylesheet with a 1.x component build, or the reverse, mixes class strings and tokens.
+
+Keep a `release/1.x` branch at that tag for patches. Do not backport Tailwind 4 onto it.
+
+| Failure | Response |
+| ------- | -------- |
+| A token, a density choice, or one component looks wrong, and the fix does not change the class string again | Fix forward on the major. |
+| Shadow `@property` is still broken, the published CSS is over either §6 ceiling, or Support rejects the browser floor | Stop further 2.x feature work. Tell consumers to pin 1.x. The structural fix is a later release, not an unpublish. |
+| A product rewrote `customClass` to `moduswc:*` and then pins 1.x | They revert those strings, and any `color-mix()` or full-color variables they wrote against v5. On 1.x, channel alpha is `oklch(var(--p) / <alpha>)`. |
+
+There is no partial rollback. Tailwind 4 without DaisyUI 5 does not compile. DaisyUI 5 without Tailwind 4 does not compile. Reverting one component to `modus-wc-btn-primary` while the stylesheet is `moduswc:` leaves that component unstyled.
+
+### How we notice
+
+- Disabled buttons, card density (`card-sm` versus today's compact), or focus rings and elevation inside a shadow root.
+- `modus-wc-styles.css` over either §6 ceiling.
+- Reports from Chrome &lt;111, Safari &lt;16.4, or Firefox &lt;128.
+- The React, Angular, or Vue test apps lose theme or prefix.
+
+Forward-fix is the default through the first minor after the major. A structural failure (the kill list in §6) is a pin to 1.x, agreed by the engineer who owns the major and Support.
+
+---
+
+## References
+
+- [Tailwind CSS v4](https://tailwindcss.com/blog/tailwindcss-v4)
+- [DaisyUI v5 upgrade](https://daisyui.com/docs/v5/?lang=en)
+- [Tailwind CSS v4 upgrade guide](https://tailwindcss.com/docs/upgrade-guide)
+- [stencil-tailwind-plugin issue 43](https://github.com/Poimen/stencil-tailwind-plugin/issues/43)
