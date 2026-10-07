@@ -1,8 +1,8 @@
 import { newSpecPage } from '@stencil/core/testing';
 import * as logoConstants from './logo-constants';
 import { ILogoInfo } from './logo-constants';
-import { LOGO_SVGS } from './logo-svg-data';
 import { ModusWcLogo } from './modus-wc-logo';
+import { LOGO_SVGS } from '../../svg-assets/generated/logo-svg-data';
 
 describe('modus-wc-logo', () => {
   it('should render with default props', async () => {
