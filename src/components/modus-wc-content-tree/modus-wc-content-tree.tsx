@@ -388,6 +388,38 @@ export class ModusWcContentTree {
       });
   }
 
+  private pointerIsOnGrabHandle(target: Node | null): boolean {
+    if (!this.keyboardGrabId || !target) {
+      return false;
+    }
+    const handle = this.findDragHandleHost(this.keyboardGrabId);
+    return Boolean(handle?.contains(target));
+  }
+
+  @Listen('pointerdown', { capture: true })
+  handleTreePointerDown(event: PointerEvent) {
+    if (!this.keyboardGrabId) return;
+    if (this.pointerIsOnGrabHandle(event.target as Node | null)) return;
+    // A click on a row label or toolbar does not always move focus, so the
+    // fade and drop line would otherwise stay up with no way to drop.
+    this.cancelKeyboardGrab({ restoreFocus: false });
+  }
+
+  @Listen('focusout')
+  handleTreeFocusOut() {
+    if (!this.keyboardGrabId) return;
+    const grabId = this.keyboardGrabId;
+    // Wait a frame so a re-render that recreates the handle can settle.
+    // Cancel only when focus is actually no longer inside that handle.
+    requestAnimationFrame(() => {
+      if (this.keyboardGrabId !== grabId) return;
+      const handle = this.findDragHandleHost(grabId);
+      const active = document.activeElement;
+      if (handle && active && handle.contains(active)) return;
+      this.cancelKeyboardGrab({ restoreFocus: false });
+    });
+  }
+
   @Listen('keydown', { capture: true })
   handleTreeKeyDown(event: KeyboardEvent) {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
@@ -396,6 +428,14 @@ export class ModusWcContentTree {
     if (target.closest('modus-wc-modal, input, textarea')) return;
 
     if (this.keyboardGrabId) {
+      // Grab only owns keys while the reorder handle still has focus. A click
+      // on another row (or a key that arrives after focus has moved) ends the
+      // grab instead of dropping the node.
+      const handle = this.findDragHandleHost(this.keyboardGrabId);
+      if (!handle?.contains(target)) {
+        this.cancelKeyboardGrab({ restoreFocus: false });
+        return;
+      }
       this.handleGrabbedKey(event);
       return;
     }
@@ -1088,6 +1128,9 @@ export class ModusWcContentTree {
     }
 
     const ratio = (e.clientY - rect.top) / rect.height;
+    // Nesting into a node whose children have not loaded would make it look
+    // loaded with only the dropped node, so only reorder around it.
+    if (isLazyUnloaded(node)) return ratio < 0.5 ? 'before' : 'after';
     if (ratio < 0.3) return 'before';
     if (ratio > 0.7) return 'after';
     return 'inside';

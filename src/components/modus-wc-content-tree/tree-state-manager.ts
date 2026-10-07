@@ -174,6 +174,9 @@ export const moveNodeRelative = (
   if (isDescendant(nodes, id, targetId)) return nodes;
 
   if (position === 'inside') {
+    // Nesting into an unloaded lazy node would define its `children` with only
+    // the moved node, so its real children would never load.
+    if (isLazyUnloaded(findNode(nodes, targetId)!)) return nodes;
     return moveNode(nodes, id, { parentId: targetId, index: 0 });
   }
 
@@ -287,7 +290,7 @@ export const getKeyboardDropSlots = (
           push({ targetId: node.id, position: 'inside' });
         }
         visit(node.children!);
-      } else if (valid) {
+      } else if (valid && !isLazyUnloaded(node)) {
         push({ targetId: node.id, position: 'inside' });
       }
 
