@@ -28,11 +28,11 @@ jobs:
 
       # - uses: google/wireit@setup-github-actions-caching/v2
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Stencil components
-        run: npm run build:ci
+      - name: Download prebuilt Stencil dist
+        uses: actions/download-artifact@v8
+        with:
+          name: modus-wc-dist
+          path: dist
 
       - name: Pack modus-webcomponents
         id: npm_pack

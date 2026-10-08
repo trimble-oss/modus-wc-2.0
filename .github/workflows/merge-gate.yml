@@ -57,17 +57,48 @@ jobs:
             exit 1
           fi
 
+  build-dist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Stencil components
+        run: npm run build:ci
+
+      - name: Upload dist for integration builds
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: modus-wc-dist
+          path: dist
+          retention-days: 1
+
   build-angular-integration:
+    needs: build-dist
     uses: ./.github/workflows/build-angular.yml
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   build-react-integration:
+    needs: build-dist
     uses: ./.github/workflows/build-react.yml
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   build-vue-integration:
+    needs: build-dist
     uses: ./.github/workflows/build-vue.yml
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
