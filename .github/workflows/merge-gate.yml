@@ -35,6 +35,48 @@ jobs:
         run: npm run lint
 
   unit-tests:
+    name: unit-tests (shard ${{ matrix.shard }}/3)
+    runs-on: ubuntu-latest
+    env:
+      COVERAGE_SHARD: '1'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate files required by unit tests
+        run: npm run test:prepare
+
+      - name: Run unit tests (shard ${{ matrix.shard }}/3)
+        run: npx stencil test --spec --coverage --shard=${{ matrix.shard }}/3
+
+      - name: Upload shard coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-shard-${{ matrix.shard }}
+          path: coverage/coverage-final.json
+          if-no-files-found: ignore
+          retention-days: 1
+
+  coverage:
+    needs: unit-tests
     runs-on: ubuntu-latest
 
     steps:
@@ -52,8 +94,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run unit tests and check code coverage
-        run: npm run test:coverage
+      - name: Download shard coverage
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: coverage-shard-*
+          path: coverage-shards
+
+      - name: Check merged coverage threshold
+        run: npm run test:coverage:merge -- coverage-shards
 
   build-dist:
     runs-on: ubuntu-latest
@@ -113,6 +161,7 @@ jobs:
     needs:
       - lint
       - unit-tests
+      - coverage
       - build-dist
       - build-angular-integration
       - build-react-integration
