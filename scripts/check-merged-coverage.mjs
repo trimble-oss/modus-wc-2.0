@@ -9,7 +9,7 @@ const THRESHOLD = 100;
 
 const map = libCoverage.createCoverageMap({});
 const files = readdirSync(dir, { recursive: true }).filter((f) =>
-  String(f).endsWith('coverage-final.json'),
+  String(f).endsWith('coverage-final.json')
 );
 
 if (files.length === 0) {
@@ -29,7 +29,7 @@ for (const metric of ['statements', 'branches', 'functions', 'lines']) {
   const ok = pct >= THRESHOLD;
   failed ||= !ok;
   console.log(
-    `${ok ? 'OK  ' : 'FAIL'} ${metric}: ${pct}% (${covered}/${total}), required ${THRESHOLD}%`,
+    `${ok ? 'OK  ' : 'FAIL'} ${metric}: ${pct}% (${covered}/${total}), required ${THRESHOLD}%`
   );
 }
 
