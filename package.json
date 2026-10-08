@@ -314,6 +314,7 @@
         "src/components.d.ts",
         "dist/**",
         "integrations/react/stencil-generated/**",
+        "integrations/vue/stencil-generated/**",
         "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
       ]
