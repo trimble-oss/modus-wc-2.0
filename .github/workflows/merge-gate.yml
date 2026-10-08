@@ -8,12 +8,13 @@ permissions:
   contents: read
   packages: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  merge-gate:
+  lint:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -27,35 +28,32 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
           cache: 'npm'
 
-      # - uses: google/wireit@setup-github-actions-caching/v2
-
       - name: Install dependencies
         run: npm ci
 
       - name: Run ESLint
-        id: lint
         run: npm run lint
-        continue-on-error: true
 
-      - name: Build Storybook & Stencil
-        id: build
-        run: npm run build:ci
-        continue-on-error: true
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run unit tests and check code coverage
-        id: tests
         run: npm run test:coverage
-        continue-on-error: true
-
-      - name: Check for step failures
-        if: always()
-        run: |
-          if [ "${{ steps.lint.outcome }}" == "failure" ] || \
-             [ "${{ steps.build.outcome }}" == "failure" ] || \
-             [ "${{ steps.tests.outcome }}" == "failure" ]; then
-            echo "One or more steps have failed. Please review the logs and fix the issues before merging."
-            exit 1
-          fi
 
   build-dist:
     runs-on: ubuntu-latest
@@ -109,3 +107,27 @@ jobs:
     uses: ./.github/workflows/build-blazor.yml
     with:
       pr_number: ${{ github.event.pull_request.number }}
+
+  merge-gate:
+    if: always()
+    needs:
+      - lint
+      - unit-tests
+      - build-dist
+      - build-angular-integration
+      - build-react-integration
+      - build-vue-integration
+      - build-blazor-integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for job failures
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for r in $RESULTS; do
+            if [ "$r" != "success" ]; then
+              echo "One or more jobs have failed or were cancelled. Please review the logs and fix the issues before merging."
+              exit 1
+            fi
+          done
