@@ -49,7 +49,7 @@ export class ModusWcTreeMenu {
   }
 
   /** The size of the tree menu. */
-  @Prop() size?: ModusSize = 'md';
+  @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
   /** Indicates that this tree menu is a submenu (dropdown). */
   @Prop() isSubMenu?: boolean;
