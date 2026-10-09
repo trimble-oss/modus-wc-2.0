@@ -1,0 +1,72 @@
+{
+  "description": "A responsive image grid that displays 1 to 4 images in rectangle or square layouts. Each cell is rendered with `modus-wc-image` for consistent cropping, rounded corners, and fallback behavior. Grid layout CSS fills each cell; per-image dimensional `size` tokens on `modus-wc-image` are not exposed on `IImageGridImage`.",
+  "properties": [
+    {
+      "name": "images",
+      "type": "IImageGridImage[]",
+      "description": "Images to display in the grid. Only the first N images are shown based on `imagesPerView`.",
+      "default": "[]",
+      "mutable": false,
+      "end_line": 48
+    },
+    {
+      "name": "imageShape",
+      "type": "ImageGridShape",
+      "description": "Sets the cell aspect ratio layout.",
+      "default": "'rectangle'",
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "imagesPerView",
+      "type": "number",
+      "description": "Maximum number of images to display in the grid (1–4).",
+      "default": "4",
+      "mutable": false,
+      "end_line": 54
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the grid container.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 57
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": null,
+    "variations": [],
+    "args": {
+      "images": "SAMPLE_IMAGES",
+      "aria-label": "'Product image gallery'",
+      "image-shape": "'rectangle'",
+      "images-per-view": "4"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "imageLoad",
+      "imageError"
+    ]
+  },
+  "tag": "modus-wc-image-grid",
+  "storyExample": {
+    "template": "",
+    "args": {
+      "images": "SAMPLE_IMAGES",
+      "aria-label": "'Product image gallery'",
+      "image-shape": "'rectangle'",
+      "images-per-view": "4"
+    },
+    "argTypes": {},
+    "events": [
+      "imageLoad",
+      "imageError"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { IImageGridImage } from './modus-wc-image-grid';\nimport { ImageGridShape } from './modus-wc-image-grid.tailwind';\n\nconst SAMPLE_IMAGES: IImageGridImage[] = [\n  {\n    src: 'https://news.trimble.com/file.php/178313/%5BCFS%5D+Viewing+3D+models+on+site+in+augmented+reality.jpg?thumbnail=modal',\n    alt: 'Viewing 3D models on site in augmented reality',\n  },\n  {\n    src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4fdlIWCc7WJCGm2DH3KErp%2Fcf92ca036ce00501c67ee4c897c9e802%2Findustry-solutions-utilities-r2-electric-1280x704.jpg%3Ff%3Dright&w=828&q=80',\n    alt: 'Utilities industry solutions with R2 electric equipment',\n  },\n  {\n    src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',\n    alt: 'Geospatial industry solutions with R12i and TSC7',\n  },\n  {\n    src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',\n    alt: 'Government geospatial industry solutions',\n  },\n];\n\nconst resolveImages = (images?: IImageGridImage[]) =>\n  Array.isArray(images) && images.length > 0 ? images : [];\n\ninterface ImageGridArgs {\n  images: IImageGridImage[];\n  'aria-label'?: string;\n  'image-shape'?: ImageGridShape;\n  'images-per-view'?: number;\n  'custom-class'?: string;\n}\n\nconst defaultSourceCode = `\n<modus-wc-image-grid\n  aria-label=\"Product image gallery\"\n  image-shape=\"rectangle\"\n  images-per-view=\"4\"\n  id=\"image-grid\"\n></modus-wc-image-grid>\n\n<script>\n  const images = [\n    {\n      src: 'https://news.trimble.com/file.php/178313/%5BCFS%5D+Viewing+3D+models+on+site+in+augmented+reality.jpg?thumbnail=modal',\n      alt: 'Viewing 3D models on site in augmented reality',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4fdlIWCc7WJCGm2DH3KErp%2Fcf92ca036ce00501c67ee4c897c9e802%2Findustry-solutions-utilities-r2-electric-1280x704.jpg%3Ff%3Dright&w=828&q=80',\n      alt: 'Utilities industry solutions with R2 electric equipment',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',\n      alt: 'Geospatial industry solutions with R12i and TSC7',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',\n      alt: 'Government geospatial industry solutions',\n    },\n  ];\n  const imageGrid = document.getElementById('image-grid');\n  imageGrid.images = images;\n\n  imageGrid.addEventListener('imageLoad', (event) => {\n    const image = event.target;\n    if (image.tagName === 'MODUS-WC-IMAGE') {\n      console.log('Image loaded', image.src);\n    }\n  });\n\n  imageGrid.addEventListener('imageError', (event) => {\n    const image = event.target;\n    if (image.tagName === 'MODUS-WC-IMAGE') {\n      console.log('Image failed to load', image.src);\n    }\n  });\n</script>\n`;\n\nconst allVariantsSourceCode = `\n<div style=\"display: flex; flex-direction: column; gap: 48px;\">\n  <section>\n    <h3 style=\"margin: 0 0 16px;\">4 images — rectangle</h3>\n    <modus-wc-image-grid\n      aria-label=\"Four rectangle product images\"\n      image-shape=\"rectangle\"\n      images-per-view=\"4\"\n      id=\"image-grid-rectangle-four\"\n    ></modus-wc-image-grid>\n  </section>\n  <section>\n    <h3 style=\"margin: 0 0 16px;\">4 images — square</h3>\n    <modus-wc-image-grid\n      aria-label=\"Four square product images\"\n      image-shape=\"square\"\n      images-per-view=\"4\"\n      id=\"image-grid-square-four\"\n    ></modus-wc-image-grid>\n  </section>\n  <section>\n    <h3 style=\"margin: 0 0 16px;\">3 images — rectangle</h3>\n    <modus-wc-image-grid\n      aria-label=\"Three rectangle product images\"\n      image-shape=\"rectangle\"\n      images-per-view=\"3\"\n      id=\"image-grid-rectangle-three\"\n    ></modus-wc-image-grid>\n  </section>\n  <section>\n    <h3 style=\"margin: 0 0 16px;\">2 images — square</h3>\n    <modus-wc-image-grid\n      aria-label=\"Two square product images\"\n      image-shape=\"square\"\n      images-per-view=\"2\"\n      id=\"image-grid-square-two\"\n    ></modus-wc-image-grid>\n  </section>\n  <section>\n    <h3 style=\"margin: 0 0 16px;\">1 image — rectangle</h3>\n    <modus-wc-image-grid\n      aria-label=\"Single rectangle product image\"\n      image-shape=\"rectangle\"\n      images-per-view=\"1\"\n      id=\"image-grid-rectangle-one\"\n    ></modus-wc-image-grid>\n  </section>\n</div>\n\n<script>\n  const images = [\n    {\n      src: 'https://news.trimble.com/file.php/178313/%5BCFS%5D+Viewing+3D+models+on+site+in+augmented+reality.jpg?thumbnail=modal',\n      alt: 'Viewing 3D models on site in augmented reality',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4fdlIWCc7WJCGm2DH3KErp%2Fcf92ca036ce00501c67ee4c897c9e802%2Findustry-solutions-utilities-r2-electric-1280x704.jpg%3Ff%3Dright&w=828&q=80',\n      alt: 'Utilities industry solutions with R2 electric equipment',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F2l678flQCv7FTIPRREpHpo%2Fed5eba100e1f4f2519963101e47e06de%2Findustry-solutions-geospatial-r12i-tsc7-1280x704.jpg%3Ff%3Dcenter&w=828&q=80',\n      alt: 'Geospatial industry solutions with R12i and TSC7',\n    },\n    {\n      src: 'https://www.trimble.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fcitn2sn5tdjr%2F4vmvFNmvbLZ7WYzAy9TVEU%2F048f8db7b63f61032ab28236f0d59589%2Findustries-government-geo-631x354-050125.jpg%3Ff%3Dcenter&w=828&q=80',\n      alt: 'Government geospatial industry solutions',\n    },\n  ];\n\n  document.getElementById('image-grid-rectangle-four').images = images;\n  document.getElementById('image-grid-square-four').images = images;\n  document.getElementById('image-grid-rectangle-three').images = images;\n  document.getElementById('image-grid-square-two').images = images;\n  document.getElementById('image-grid-rectangle-one').images = [images[0]];\n</script>\n`;\n\nconst meta: Meta<ImageGridArgs> = {\n  title: 'Components/Image Grid',\n  component: 'modus-wc-image-grid',\n  args: {\n    images: SAMPLE_IMAGES,\n    'aria-label': 'Product image gallery',\n    'image-shape': 'rectangle',\n    'images-per-view': 4,\n  },\n  argTypes: {\n    images: {\n      control: 'object',\n      description: 'Images to display in the grid',\n      table: {\n        type: {\n          detail: `\n            Interface: IImageGridImage\n            Properties:\n            - src (string): The source URL of the image asset\n            - alt (string, optional): Accessible text description for the image\n            - shape ('square' | 'rounded', optional): Corner radius styling\n            - fit ('default' | 'contain' | 'scale-down' | 'none', optional): Containment and cropping behavior\n            - cropPosition (string, optional): Focal point when cropped (maps to object-position)\n            - customClass (string, optional): Additional CSS class for the cell image container\n          `,\n        },\n      },\n    },\n    'aria-label': {\n      table: {\n        category: 'attributes',\n      },\n    },\n    'image-shape': {\n      control: { type: 'select' },\n      options: ['rectangle', 'square'],\n      table: {\n        category: 'attributes',\n      },\n    },\n    'images-per-view': {\n      control: { type: 'select' },\n      options: [1, 2, 3, 4],\n      table: {\n        category: 'attributes',\n      },\n    },\n    'custom-class': {\n      table: {\n        category: 'attributes',\n      },\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    layout: 'padded',\n    actions: {\n      handles: ['imageLoad', 'imageError'],\n    },\n    docs: {\n      description: {\n        component: `\nResponsive image grid that displays 1 to 4 images in rectangle or square layouts.\nEach cell uses \\`modus-wc-image\\` for cropping, rounded corners, and error fallback.\n\nPer-image \\`size\\` is not part of \\`IImageGridImage\\`: grid layout CSS fills each cell and overrides \\`modus-wc-image\\` dimensional size tokens.`,\n      },\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<ImageGridArgs>;\n\nconst Template: Story = {\n  parameters: {\n    docs: {\n      source: {\n        code: defaultSourceCode,\n      },\n    },\n  },\n  render: (args) => html`\n    <modus-wc-image-grid\n      aria-label=${ifDefined(args['aria-label'])}\n      .images=${resolveImages(args.images)}\n      image-shape=${ifDefined(args['image-shape'])}\n      images-per-view=${ifDefined(args['images-per-view'])}\n      custom-class=${ifDefined(args['custom-class'])}\n    ></modus-wc-image-grid>\n  `,\n};\n\nexport const Default: Story = {\n  ...Template,\n  args: {\n    images: SAMPLE_IMAGES,\n    'aria-label': 'Product image gallery',\n    'image-shape': 'rectangle',\n    'images-per-view': 4,\n  },\n  parameters: {\n    docs: {\n      source: {\n        code: defaultSourceCode,\n      },\n      description: {\n        story:\n          'Default layout: four rectangle images in a 2×2 grid with 24px gap and 16px corner radius.',\n      },\n    },\n  },\n};\n\nexport const AllVariants: Story = {\n  render: () => html`\n    <div style=\"display: flex; flex-direction: column; gap: 48px;\">\n      <section>\n        <h3 style=\"margin: 0 0 16px;\">4 images — rectangle</h3>\n        <modus-wc-image-grid\n          aria-label=\"Four rectangle product images\"\n          .images=${SAMPLE_IMAGES}\n          image-shape=\"rectangle\"\n          images-per-view=\"4\"\n        ></modus-wc-image-grid>\n      </section>\n      <section>\n        <h3 style=\"margin: 0 0 16px;\">4 images — square</h3>\n        <modus-wc-image-grid\n          aria-label=\"Four square product images\"\n          .images=${SAMPLE_IMAGES}\n          image-shape=\"square\"\n          images-per-view=\"4\"\n        ></modus-wc-image-grid>\n      </section>\n      <section>\n        <h3 style=\"margin: 0 0 16px;\">3 images — rectangle</h3>\n        <modus-wc-image-grid\n          aria-label=\"Three rectangle product images\"\n          .images=${SAMPLE_IMAGES}\n          image-shape=\"rectangle\"\n          images-per-view=\"3\"\n        ></modus-wc-image-grid>\n      </section>\n      <section>\n        <h3 style=\"margin: 0 0 16px;\">2 images — square</h3>\n        <modus-wc-image-grid\n          aria-label=\"Two square product images\"\n          .images=${SAMPLE_IMAGES}\n          image-shape=\"square\"\n          images-per-view=\"2\"\n        ></modus-wc-image-grid>\n      </section>\n      <section>\n        <h3 style=\"margin: 0 0 16px;\">1 image — rectangle</h3>\n        <modus-wc-image-grid\n          aria-label=\"Single rectangle product image\"\n          .images=${[SAMPLE_IMAGES[0]]}\n          image-shape=\"rectangle\"\n          images-per-view=\"1\"\n        ></modus-wc-image-grid>\n      </section>\n    </div>\n  `,\n  parameters: {\n    docs: {\n      source: {\n        code: allVariantsSourceCode,\n      },\n      description: {\n        story: 'All layout variants from the Figma ImageGrid design.',\n      },\n    },\n  },\n};\n"
+  }
+}

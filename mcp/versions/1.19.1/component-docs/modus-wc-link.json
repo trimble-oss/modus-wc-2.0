@@ -1,0 +1,82 @@
+{
+  "description": "A customizable link component used to navigate to URLs.",
+  "properties": [
+    {
+      "name": "color",
+      "type": "| 'primary'     | 'secondary'     | 'tertiary'     | 'inherit'     | 'success'     | 'info'     | 'warning'     | 'danger'",
+      "description": "The color of the link.",
+      "default": "'primary'",
+      "mutable": false,
+      "end_line": 33
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the link element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 36
+    },
+    {
+      "name": "href",
+      "type": "string",
+      "description": "The URL to navigate to when the link is activated.",
+      "default": null,
+      "mutable": false,
+      "end_line": 39
+    },
+    {
+      "name": "rel",
+      "type": "string",
+      "description": "The relationship attribute for the link.",
+      "default": null,
+      "mutable": false,
+      "end_line": 42
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "description": "The browsing context for the link.",
+      "default": null,
+      "mutable": false,
+      "end_line": 45
+    },
+    {
+      "name": "underline",
+      "type": "'always' | 'hover' | 'none'",
+      "description": "The underline behavior of the link.",
+      "default": "'always'",
+      "mutable": false,
+      "end_line": 48
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-link\n  color=\"${args.color}\"\n  custom-class=${ifDefined(args['custom-class'])}\n  href=${ifDefined(args.href)}\n  rel=${ifDefined(args.rel)}\n  target=${ifDefined(args.target)}\n  title=${ifDefined(args.title)}\n  underline=\"${args.underline}\"\n>Click me</modus-wc-link>",
+    "variations": [],
+    "args": {
+      "color": "'primary'",
+      "underline": "'always'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-link",
+  "storyExample": {
+    "template": "<modus-wc-link\n  color=\"${args.color}\"\n  custom-class=${ifDefined(args['custom-class'])}\n  href=${ifDefined(args.href)}\n  rel=${ifDefined(args.rel)}\n  target=${ifDefined(args.target)}\n  title=${ifDefined(args.title)}\n  underline=\"${args.underline}\"\n>Click me</modus-wc-link>",
+    "args": {
+      "color": "'primary'",
+      "underline": "'always'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\n\ninterface LinkArgs {\n  color:\n    | 'primary'\n    | 'secondary'\n    | 'tertiary'\n    | 'inherit'\n    | 'success'\n    | 'info'\n    | 'warning'\n    | 'danger';\n  'custom-class'?: string;\n  href?: string;\n  rel?: string;\n  target?: string;\n  title?: string;\n  underline: 'always' | 'hover' | 'none';\n}\n\nconst meta: Meta<LinkArgs> = {\n  title: 'Components/Link',\n  component: 'modus-wc-link',\n  args: {\n    color: 'primary',\n    underline: 'always',\n  },\n  argTypes: {\n    color: {\n      control: { type: 'select' },\n      options: [\n        'primary',\n        'secondary',\n        'tertiary',\n        'inherit',\n        'success',\n        'info',\n        'warning',\n        'danger',\n      ],\n    },\n    underline: {\n      control: { type: 'select' },\n      options: ['always', 'hover', 'none'],\n    },\n    target: {\n      control: { type: 'select' },\n      options: ['_blank', '_self', '_parent', '_top'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<LinkArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-link\n  color=\"${args.color}\"\n  custom-class=${ifDefined(args['custom-class'])}\n  href=${ifDefined(args.href)}\n  rel=${ifDefined(args.rel)}\n  target=${ifDefined(args.target)}\n  title=${ifDefined(args.title)}\n  underline=\"${args.underline}\"\n>Click me</modus-wc-link>\n    `;\n  },\n};\n\nexport const Default: Story = {\n  ...Template,\n};\n\nexport const Underline: Story = {\n  render: () => {\n    const underlines: LinkArgs['underline'][] = ['always', 'hover', 'none'];\n\n    // prettier-ignore\n    return html`\n<div style=\"display: flex; flex-direction: column; gap: 8px;\">\n  ${underlines.map(\n    (underline) => html`\n  <modus-wc-link underline=\"${underline}\">${underline}</modus-wc-link>\n  `\n  )}\n</div>\n    `;\n  },\n};\n\nexport const ExternalLink: Story = {\n  args: {\n    href: 'https://www.trimble.com',\n    target: '_blank',\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-link\n  href=${ifDefined(args.href)}\n  target=${ifDefined(args.target)}\n  aria-label=\"Visit Trimble website, opens in a new window\"\n>Trimble.com</modus-wc-link>\n    `;\n  },\n};\n\nexport const InheritColor: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<p style=\"color: var(--modus-wc-color-base-content);\">\n  Body text with an\n  <modus-wc-link color=\"inherit\">inherit color link</modus-wc-link>\n  inline.\n</p>\n    `;\n  },\n};\n"
+  }
+}
