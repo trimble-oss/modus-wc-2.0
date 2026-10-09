@@ -37,10 +37,7 @@ modus-wc-help-menu {
     min-width: 0;
     padding-block: 0.5rem;
     padding-inline-end: var(--modus-wc-spacing-xs);
-    padding-inline-start: calc(
-      var(--modus-wc-spacing-md) + 1.25rem + var(--modus-wc-spacing-sm) +
-        var(--modus-wc-spacing-md)
-    );
+    padding-inline-start: calc(var(--modus-wc-spacing-md) + 1.25rem + var(--modus-wc-spacing-sm) + var(--modus-wc-spacing-md));
   }
 
   modus-wc-menu-item.modus-wc-help-menu-stack-parent > li {
