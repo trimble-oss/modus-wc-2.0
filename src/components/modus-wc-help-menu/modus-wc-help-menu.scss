@@ -1,0 +1,119 @@
+/**
+ * This component uses Tailwind CSS and DaisyUI.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+modus-wc-help-menu {
+  display: block;
+  min-width: 11.25rem;
+
+  .modus-wc-help-menu {
+    overflow: hidden;
+  }
+
+  .modus-wc-help-menu-status {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .modus-wc-help-menu-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modus-wc-help-menu-header-menu {
+    display: block;
+  }
+
+  .modus-wc-help-menu-title {
+    color: var(--modus-wc-color-base-content);
+    font-size: var(--modus-wc-font-size-sm, 0.875rem);
+    font-weight: 600;
+    line-height: var(--modus-wc-line-height-md, 1.5rem);
+    min-width: 0;
+    padding-block: 0.5rem;
+    padding-inline-end: var(--modus-wc-spacing-xs);
+    padding-inline-start: calc(
+      var(--modus-wc-spacing-md) + 1.25rem + var(--modus-wc-spacing-sm) +
+        var(--modus-wc-spacing-md)
+    );
+  }
+
+  modus-wc-menu-item.modus-wc-help-menu-stack-parent > li {
+    display: none;
+  }
+
+  &.modus-wc-help-menu--drilled {
+    .modus-wc-help-menu-header-menu,
+    .modus-wc-help-menu-track [slot='panel']:not([hidden]) {
+      display: block;
+      margin-inline-start: 0;
+      padding-inline-start: 0;
+    }
+
+    .modus-wc-help-menu-header-menu .modus-wc-menu,
+    .modus-wc-help-menu-track [slot='panel']:not([hidden]) .modus-wc-menu {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    modus-wc-dropdown-menu & {
+      .modus-wc-help-menu-back .modus-wc-menu-item > button,
+      .modus-wc-help-menu-track
+        [slot='panel']:not([hidden])
+        modus-wc-menu-item
+        .modus-wc-menu-item
+        > button {
+        border-radius: 0;
+      }
+    }
+  }
+
+  .modus-wc-help-menu-chevron {
+    margin-inline-start: auto;
+  }
+
+  .modus-wc-help-menu-forward {
+    animation: modus-wc-help-menu-forward 300ms ease;
+  }
+
+  .modus-wc-help-menu-back-motion {
+    animation: modus-wc-help-menu-back 300ms ease;
+  }
+}
+
+@keyframes modus-wc-help-menu-forward {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes modus-wc-help-menu-back {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  modus-wc-help-menu {
+    .modus-wc-help-menu-forward,
+    .modus-wc-help-menu-back-motion {
+      animation: none;
+    }
+  }
+}
