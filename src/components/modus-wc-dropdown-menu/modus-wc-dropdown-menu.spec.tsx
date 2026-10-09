@@ -2,6 +2,8 @@ import { Component, h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcDropdownMenu } from './modus-wc-dropdown-menu';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { ModusWcHelpMenu } from '../modus-wc-help-menu/modus-wc-help-menu';
+import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 
@@ -227,5 +229,56 @@ describe('modus-wc-dropdown-menu', () => {
     expect(visibilitySpy).toHaveBeenLastCalledWith(
       expect.objectContaining({ detail: { isVisible: false } })
     );
+  });
+
+  it('should reset an embedded help menu when the dropdown closes', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcHelpMenu,
+        ModusWcIcon,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-help-menu>
+                    <modus-wc-menu-item label="Help" value="help">
+                      <modus-wc-menu slot="panel">
+                        <modus-wc-menu-item label="Guide" value="guide"></modus-wc-menu-item>
+                      </modus-wc-menu>
+                    </modus-wc-menu-item>
+                  </modus-wc-help-menu>
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    page.root?.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    const helpMenu = page.root!.querySelector('modus-wc-help-menu')!;
+    const helpItem = Array.from(
+      helpMenu.querySelectorAll('modus-wc-menu-item')
+    ).find(
+      (item) => (item as HTMLElement & { label?: string }).label === 'Help'
+    ) as HTMLElement;
+    const row = Array.from(helpItem.children).find(
+      (child) => child.tagName === 'LI'
+    );
+    row?.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(
+      helpMenu.querySelector('.modus-wc-help-menu-title')?.textContent
+    ).toBe('Help');
+
+    page.root!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(helpMenu.querySelector('.modus-wc-help-menu-title')).toBeNull();
   });
 });

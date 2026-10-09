@@ -110,7 +110,11 @@ export class ModusWcDropdownMenu {
   async onMenuVisibilityChange(newValue: boolean) {
     if (newValue) {
       await this.updateMenuPosition();
+      return;
     }
+
+    const helpMenu = this.el.querySelector('modus-wc-help-menu');
+    await helpMenu?.reset();
   }
 
   componentDidLoad() {
