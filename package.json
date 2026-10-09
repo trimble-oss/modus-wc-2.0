@@ -104,6 +104,8 @@
     "start": "wireit",
     "test": "stencil test --spec",
     "test:coverage": "stencil test --spec --coverage",
+    "test:prepare": "wireit",
+    "test:coverage:merge": "node scripts/check-merged-coverage.mjs",
     "test:update-snapshot": "stencil test --spec --update-snapshot",
     "test:watch": "stencil test --spec --watchAll",
     "test:vue": "npm -C integrations/vue/v-latest run dev",
@@ -158,6 +160,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "eslint-plugin-prettier": "^5.5.6",
     "globals": "^16.2.0",
+    "istanbul-lib-coverage": "^3.2.2",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
     "lit": "^3.3.3",
@@ -311,6 +314,7 @@
         "src/components.d.ts",
         "dist/**",
         "integrations/react/stencil-generated/**",
+        "integrations/vue/stencil-generated/**",
         "integrations/angular/ng20/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**",
         "integrations/angular/ng21/projects/trimble-oss/moduswebcomponents-angular/src/lib/stencil-generated/**"
       ]
@@ -401,6 +405,12 @@
       ],
       "output": [
         "src/styles/output.css"
+      ]
+    },
+    "test:prepare": {
+      "dependencies": [
+        "embed:css",
+        "embed:component-css"
       ]
     },
     "embed:css": {
