@@ -174,6 +174,9 @@ export const moveNodeRelative = (
   if (isDescendant(nodes, id, targetId)) return nodes;
 
   if (position === 'inside') {
+    // Nesting into an unloaded lazy node would define its `children` with only
+    // the moved node, so its real children would never load.
+    if (isLazyUnloaded(findNode(nodes, targetId)!)) return nodes;
     return moveNode(nodes, id, { parentId: targetId, index: 0 });
   }
 
@@ -185,6 +188,120 @@ export const moveNodeRelative = (
 
   const index = location.index + (position === 'after' ? 1 : 0);
   return addNode(without, node, { parentId: location.parentId, index });
+};
+
+/** One keyboard drop preview: the same relative positions pointer drag emits. */
+export interface IKeyboardDropSlot {
+  targetId: string;
+  position: TreeDropPosition;
+}
+
+interface IIndexedNode {
+  parentId?: string;
+  index: number;
+  // Own `disabled` or any ancestor's `disabled`.
+  locked: boolean;
+  // Inside the moved node's subtree (including the node itself).
+  moving: boolean;
+}
+
+// One walk that records every node's location and state, so slot building
+// does constant-time lookups instead of re-searching the tree per node.
+const indexForMove = (
+  nodes: ITreeNode[],
+  moveId: string
+): Map<string, IIndexedNode> => {
+  const index = new Map<string, IIndexedNode>();
+  const walk = (
+    list: ITreeNode[],
+    parentId: string | undefined,
+    locked: boolean,
+    moving: boolean
+  ): void => {
+    list.forEach((node, i) => {
+      const entry = {
+        parentId,
+        index: i,
+        locked: locked || !!node.disabled,
+        moving: moving || node.id === moveId,
+      };
+      index.set(node.id, entry);
+      if (node.children?.length) {
+        walk(node.children, node.id, entry.locked, entry.moving);
+      }
+    });
+  };
+  walk(nodes, undefined, false, false);
+  return index;
+};
+
+/**
+ * Ordered keyboard drop slots for `moveId`. Walks only expanded branches.
+ * `after` a node is omitted when it is the same point as `before` the next
+ * valid sibling. `inside` an expanded parent is omitted when it is the same
+ * point as `before` its first valid child. The node's current location is
+ * omitted. Invalid targets match pointer drag: self, descendants, and
+ * disabled nodes (own or inherited from an ancestor).
+ */
+export const getKeyboardDropSlots = (
+  nodes: ITreeNode[],
+  moveId: string,
+  isExpanded: (id: string) => boolean
+): IKeyboardDropSlot[] => {
+  const index = indexForMove(nodes, moveId);
+  const from = index.get(moveId);
+  if (!from) return [];
+
+  const isTarget = (node?: ITreeNode): boolean => {
+    const entry = node && index.get(node.id);
+    return !!entry && !entry.locked && !entry.moving;
+  };
+
+  // A slot is a no-op when applying it would leave `moveId` in place.
+  const isNoOp = ({ targetId, position }: IKeyboardDropSlot): boolean => {
+    if (position === 'inside') {
+      return from.parentId === targetId && from.index === 0;
+    }
+    const target = index.get(targetId)!;
+    if (target.parentId !== from.parentId) return false;
+    let destIndex = target.index + (position === 'after' ? 1 : 0);
+    if (target.index > from.index) destIndex -= 1;
+    return destIndex === from.index;
+  };
+
+  const slots: IKeyboardDropSlot[] = [];
+  const push = (slot: IKeyboardDropSlot): void => {
+    if (!isNoOp(slot)) slots.push(slot);
+  };
+
+  const visit = (list: ITreeNode[]): void => {
+    list.forEach((node, i) => {
+      const valid = isTarget(node);
+      const expanded = isExpanded(node.id) && !!node.children?.length;
+      const nextCoversAfter = isTarget(list[i + 1]);
+
+      if (valid) push({ targetId: node.id, position: 'before' });
+
+      if (expanded) {
+        const firstBeforeExists = isTarget(node.children![0]);
+        // `inside` is the first-child line. Emit it (before the children, to
+        // keep visual order) only when the first child cannot represent it.
+        if (valid && !firstBeforeExists) {
+          push({ targetId: node.id, position: 'inside' });
+        }
+        visit(node.children!);
+      } else if (valid && !isLazyUnloaded(node)) {
+        push({ targetId: node.id, position: 'inside' });
+      }
+
+      if (valid && !nextCoversAfter) {
+        push({ targetId: node.id, position: 'after' });
+      }
+    });
+  };
+
+  visit(nodes);
+  return slots;
 };
 
 /** Deep-clone a node and its subtree, assigning a fresh id to every node via `makeId`. */

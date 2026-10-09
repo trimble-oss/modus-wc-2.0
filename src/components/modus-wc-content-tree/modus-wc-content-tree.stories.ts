@@ -937,6 +937,17 @@ export const DragAndDrop: Story = {
   },
   parameters: {
     docs: {
+      description: {
+        story: `
+Keyboard reordering uses the same drop rules as pointer drag.
+
+1. Tab to a row's reorder handle.
+2. Press Space or Enter to grab. The row fades and a drop indicator appears.
+3. Arrow Up and Arrow Down move the indicator. Arrow Right nests into the target (or into an expanded folder's first child). Arrow Left promotes the preview one level.
+4. Press Space or Enter to drop. The tree emits \`nodeMove\`.
+5. Press Escape to cancel, or Tab to cancel and move focus on.
+        `,
+      },
       source: {
         code: contentTreeDragAndDropSourceCode,
       },
@@ -1137,6 +1148,128 @@ export const LazyLoading: Story = {
       @nodeSelect=${handleSelect}
       @nodeExpandChange=${handleExpandChange}
       @nodeLoadChildren=${handleLoadChildren}
+    ></modus-wc-content-tree>`;
+  },
+};
+
+/** Isolated state for Lazy Loading + drag-and-drop repro (do not share with Lazy Loading). */
+const lazyDragInsideStoryState = {
+  nodes: lazyLoadingStoryNodes(),
+  selectedNodeId: 'readme',
+  expandedNodeIds: [] as string[],
+  pendingLoadIds: new Set<string>(),
+};
+
+export const LazyLoadingDragDropInside: Story = {
+  args: {
+    'allow-drag-drop': true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Folders whose children have not loaded yet (\`hasChildren: true\`, no \`children\`) can be reordered around but not nested into. Nesting would give the folder a \`children\` array with only the dropped node, so its real children would never load.
+
+1. Leave **Documents** collapsed and grab **Read Me** (pointer or keyboard).
+2. Over **Documents**, only the before/after indicators appear. Keyboard never announces "Nesting inside Documents".
+3. Expand **Documents**: \`nodeLoadChildren\` fires and its children load. Once loaded, nesting into it works.
+
+The story applies \`moveNodeRelative\` on \`nodeMove\` the same way as **Drag and drop**.
+        `,
+      },
+    },
+  },
+  render: (args) => {
+    let treeEl: ContentTreeElement | undefined;
+    const state = lazyDragInsideStoryState;
+
+    const sync = () => {
+      if (!treeEl) return;
+      treeEl.nodes = state.nodes;
+      treeEl.selectedNodeId = state.selectedNodeId;
+      syncExpandedNodeIds(treeEl, state.expandedNodeIds);
+      applyControlArgs(treeEl, args);
+    };
+
+    const handleSelect = withStoryAction(
+      'nodeSelect',
+      (e: CustomEvent<{ id: string }>) => {
+        state.selectedNodeId = e.detail.id;
+        sync();
+      }
+    );
+
+    const handleExpandChange = withStoryAction(
+      'nodeExpandChange',
+      (e: CustomEvent<{ id: string; expanded: boolean }>) => {
+        const { id, expanded } = e.detail;
+        state.expandedNodeIds = expanded
+          ? [...new Set([...state.expandedNodeIds, id])]
+          : state.expandedNodeIds.filter((x) => x !== id);
+        sync();
+      }
+    );
+
+    const handleLoadChildren = withStoryAction(
+      'nodeLoadChildren',
+      (e: CustomEvent<{ id: string }>) => {
+        const { id } = e.detail;
+        if (state.pendingLoadIds.has(id)) return;
+        state.pendingLoadIds.add(id);
+        window.setTimeout(() => {
+          state.nodes = updateNode(state.nodes, id, {
+            children: lazyLoadChildren(id),
+          });
+          state.pendingLoadIds.delete(id);
+          sync();
+        }, 1200);
+      }
+    );
+
+    const handleMove = withStoryAction(
+      'nodeMove',
+      (
+        e: CustomEvent<{
+          id: string;
+          targetId: string;
+          position: 'before' | 'after' | 'inside';
+        }>
+      ) => {
+        const { id, targetId, position } = e.detail;
+        state.nodes = moveNodeRelative(state.nodes, id, targetId, position);
+        if (
+          position === 'inside' &&
+          !state.expandedNodeIds.includes(targetId)
+        ) {
+          state.expandedNodeIds = [...state.expandedNodeIds, targetId];
+        }
+        sync();
+      }
+    );
+
+    // prettier-ignore
+    return html`
+    <modus-wc-content-tree
+      ${ref((el) => {
+        if (!el) {
+          treeEl = undefined;
+          return;
+        }
+        const next = el as ContentTreeElement;
+        if (treeEl !== next) {
+          treeEl = next;
+          sync();
+        }
+      })}
+      aria-label="Content tree"
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      selection-mode=${ifDefined(args['selection-mode'])}
+      size=${ifDefined(args.size)}
+      @nodeSelect=${handleSelect}
+      @nodeExpandChange=${handleExpandChange}
+      @nodeLoadChildren=${handleLoadChildren}
+      @nodeMove=${handleMove}
     ></modus-wc-content-tree>`;
   },
 };
