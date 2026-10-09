@@ -201,7 +201,7 @@ export class ModusWcHelpMenu {
     );
   }
 
-  /** Resolves drill path from stack state so DOM updates cannot desync stored nodes. */
+  /** Resolves drill path from stack state so DOM updates cannot leave stored nodes stale. */
   private stackElements(): HTMLElement[] {
     const path: HTMLElement[] = [];
     let panel: HTMLElement | null = null;
