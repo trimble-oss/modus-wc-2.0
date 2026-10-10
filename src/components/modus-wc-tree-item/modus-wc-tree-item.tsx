@@ -58,7 +58,7 @@ export class ModusWcTreeItem {
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
 
-  /** The tooltip text to display when hovering over the tree item. */
+  /** The tooltip text to display when the tree item is hovered or receives keyboard focus. */
   @Prop() tooltipContent?: string;
 
   /** The position of the tooltip relative to the tree item. */

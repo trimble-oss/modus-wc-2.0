@@ -21,6 +21,16 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 const WARM_WINDOW_MS = 300;
 let lastTooltipCloseTime = -Infinity;
 
+const NATIVE_FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
+const FOCUSABLE_SELECTOR = `${NATIVE_FOCUSABLE_SELECTOR}, [tabindex]:not([tabindex="-1"])`;
+
+const isKeyboardFocusable = (el: Element): boolean => {
+  const tabIndex = el.getAttribute('tabindex');
+  if (tabIndex !== null) return parseInt(tabIndex, 10) >= 0;
+  return el.matches(NATIVE_FOCUSABLE_SELECTOR);
+};
+
 /**
  * A customizable tooltip component used to create tooltips with different content.
  *
@@ -44,6 +54,7 @@ export class ModusWcTooltip {
   private popperInstance: PopperInstance | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
+  private focusOwner: HTMLElement | null = null;
   private isHovered = false;
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
@@ -187,6 +198,8 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
+    this.attachFocusOwner();
+
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
@@ -213,7 +226,43 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+    this.detachFocusOwner();
   }
+
+  /**
+   * When the slotted content has no keyboard-focusable element, keyboard focus lands on
+   * an ancestor instead (e.g. a menu item `li`, a grid cell, or a button wrapping the
+   * tooltip). Listen on that ancestor so focus shows the tooltip just like hover does.
+   */
+  private attachFocusOwner() {
+    if (this.el.querySelector(FOCUSABLE_SELECTOR)) return;
+
+    let node = this.el.parentElement;
+    while (node && !isKeyboardFocusable(node)) {
+      node = node.parentElement;
+    }
+    if (!node) return;
+
+    this.focusOwner = node;
+    node.addEventListener('focus', this.handleOwnerFocus);
+    node.addEventListener('blur', this.handleOwnerBlur);
+  }
+
+  private detachFocusOwner() {
+    if (!this.focusOwner) return;
+    this.focusOwner.removeEventListener('focus', this.handleOwnerFocus);
+    this.focusOwner.removeEventListener('blur', this.handleOwnerBlur);
+    this.focusOwner = null;
+  }
+
+  private handleOwnerFocus = () => {
+    this.handleFocusIn();
+  };
+
+  private handleOwnerBlur = () => {
+    this.isFocused = false;
+    this.maybeHideTooltip();
+  };
 
   private applyTooltipId() {
     if (!this.tooltipElement) return;

@@ -582,7 +582,7 @@ export const WithTooltips: Story = {
     docs: {
       description: {
         story:
-          'This example demonstrates menu items with tooltips. Hover over the items to see the tooltips.',
+          'This example demonstrates menu items with tooltips. Hover over the items or move keyboard focus to them to see the tooltips; press Escape to dismiss.',
       },
       source: {
         code: `

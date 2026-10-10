@@ -1,4 +1,4 @@
-import { newSpecPage } from '@stencil/core/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { ModusWcTooltip } from './modus-wc-tooltip';
 
 interface TooltipPrivateHarness {
@@ -1620,6 +1620,87 @@ describe('modus-wc-tooltip', () => {
       // Give the cancelled 20ms timer time to have fired if it survived
       await new Promise((resolve) => globalThis.setTimeout(resolve, 50));
       expect(page.rootInstance.isVisible).toBe(false);
+    });
+  });
+
+  describe('focusable ancestor', () => {
+    const getTooltip = (page: SpecPage) =>
+      page.body.querySelector('modus-wc-tooltip') as HTMLElement;
+    it('should show on ancestor focus and hide on ancestor blur when the slot has no focusable element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<ul><li tabindex="0"><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></li></ul>`,
+      });
+      const li = page.body.querySelector('li') as HTMLElement;
+      const instance = page.rootInstance;
+      li.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+
+      document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+
+      li.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+
+      li.dispatchEvent(new Event('blur'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+    });
+
+    it('should show when a wrapping button receives focus', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<button type="button"><modus-wc-tooltip content="12345"><span>1…</span></modus-wc-tooltip></button>`,
+      });
+      const button = page.body.querySelector('button') as HTMLElement;
+
+      button.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should skip ancestors with tabindex="-1"', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><button type="button" tabindex="-1"><modus-wc-tooltip content="Tip"><div>Label</div></modus-wc-tooltip></button></div>`,
+      });
+      expect(page.rootInstance.focusOwner?.id).toBe('owner');
+    });
+
+    it('should not attach to an ancestor when the slot contains a focusable element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0"><modus-wc-tooltip content="Tip"><button type="button">Trigger</button></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner).toBeNull();
+    });
+
+    it('should not attach when no focusable ancestor exists', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner).toBeNull();
+    });
+
+    it('should remove ancestor listeners on disconnect', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<button type="button"><modus-wc-tooltip content="Tip"><span>1…</span></modus-wc-tooltip></button>`,
+      });
+      const instance = page.rootInstance;
+      const button = page.body.querySelector('button') as HTMLElement;
+      const removeSpy = jest.spyOn(button, 'removeEventListener');
+
+      getTooltip(page).remove();
+      await page.waitForChanges();
+
+      expect(removeSpy).toHaveBeenCalledWith('focus', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith('blur', expect.any(Function));
+      expect(instance.focusOwner).toBeNull();
     });
   });
 });
