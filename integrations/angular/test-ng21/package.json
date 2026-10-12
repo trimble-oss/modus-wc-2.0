@@ -16,7 +16,7 @@
     "@angular/forms": "^21.2.25",
     "@angular/platform-browser": "^21.2.25",
     "@angular/router": "^21.2.25",
-    "@trimble-oss/moduswebcomponents": "file:../../../dist",
+    "@trimble-oss/moduswebcomponents": "file:../../..",
     "@trimble-oss/moduswebcomponents-angular": "file:../ng21/dist/trimble-oss/moduswebcomponents-angular",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -46,7 +46,8 @@
     "brace-expansion@2": "2.1.7",
     "brace-expansion@5": "5.0.12",
     "fast-uri": "3.1.8",
-    "nanoid": "3.3.18"
+    "nanoid": "3.3.18",
+    "@modelcontextprotocol/sdk": "1.31.0"
   },
   "engines": {
     "node": ">=20"

@@ -19,7 +19,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.10.2",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "@trimble-oss/moduswebcomponents": "file:..",
     "hono": "4.13.8"
   },
   "devDependencies": {
@@ -34,7 +35,8 @@
     "ip-address": "10.7.3",
     "qs": "6.16.0",
     "body-parser": "2.3.0",
-    "esbuild": "^0.28.1"
+    "esbuild": "^0.28.1",
+    "proxy-addr": "2.0.8"
   },
   "engines": {
     "node": ">=20"
