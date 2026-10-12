@@ -1,7 +1,8 @@
-import { withActions } from '@storybook/addon-actions/decorator';
+﻿import { withActions } from '@storybook/addon-actions/decorator';
 import { Meta, StoryObj } from '@storybook/web-components';
-import { html } from 'lit';
+import { html, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { ModusSize, PopoverPlacement } from '../types';
 
 interface HelpMenuArgs {
@@ -20,7 +21,6 @@ const meta: Meta<HelpMenuArgs> = {
     'menu-offset': 8,
     'menu-placement': 'bottom-start',
     'menu-size': 'md',
-    'menu-visible': true,
   },
   argTypes: {
     'menu-bordered': { control: 'boolean' },
@@ -68,54 +68,86 @@ type Story = StoryObj<HelpMenuArgs>;
 
 const helpMenuItems = () => html`
   <modus-wc-menu-item label="Getting Started" value="getting-started">
-    <modus-wc-icon slot="start-icon" name="apps"></modus-wc-icon>
+    <modus-wc-icon decorative name="apps" slot="start-icon"></modus-wc-icon>
     <modus-wc-menu slot="panel">
-      <modus-wc-menu-item
-        label="Overview"
-        value="overview"
-      ></modus-wc-menu-item>
+      <modus-wc-menu-item label="Overview" value="overview">
+        <modus-wc-icon
+          decorative
+          name="bar_graph"
+          slot="start-icon"
+        ></modus-wc-icon>
+      </modus-wc-menu-item>
     </modus-wc-menu>
   </modus-wc-menu-item>
   <modus-wc-menu-item label="Help" value="help">
-    <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
+    <modus-wc-icon decorative name="help" slot="start-icon"></modus-wc-icon>
     <modus-wc-menu slot="panel">
       <modus-wc-menu-item label="Trimble Help" value="trimble-help">
-        <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
+        <modus-wc-icon decorative name="help" slot="start-icon"></modus-wc-icon>
       </modus-wc-menu-item>
       <modus-wc-menu-item label="Product Guides" value="product-guides">
-        <modus-wc-icon slot="start-icon" name="menu_book"></modus-wc-icon>
+        <modus-wc-icon
+          decorative
+          name="user_guide"
+          slot="start-icon"
+        ></modus-wc-icon>
         <modus-wc-menu slot="panel">
-          <modus-wc-menu-item
-            label="Installation"
-            value="installation"
-          ></modus-wc-menu-item>
+          <modus-wc-menu-item label="Installation" value="installation">
+            <modus-wc-icon
+              decorative
+              name="download"
+              slot="start-icon"
+            ></modus-wc-icon>
+          </modus-wc-menu-item>
         </modus-wc-menu>
       </modus-wc-menu-item>
       <modus-wc-menu-item label="Support Articles" value="support-articles">
-        <modus-wc-icon slot="start-icon" name="article"></modus-wc-icon>
+        <modus-wc-icon
+          decorative
+          name="article"
+          slot="start-icon"
+        ></modus-wc-icon>
       </modus-wc-menu-item>
     </modus-wc-menu>
   </modus-wc-menu-item>
   <modus-wc-menu-item label="Community" value="community">
-    <modus-wc-icon slot="start-icon" name="group"></modus-wc-icon>
+    <modus-wc-icon
+      decorative
+      name="people_group"
+      slot="start-icon"
+    ></modus-wc-icon>
     <modus-wc-menu slot="panel">
-      <modus-wc-menu-item label="Forums" value="forums"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Forums" value="forums">
+        <modus-wc-icon decorative name="chat" slot="start-icon"></modus-wc-icon>
+      </modus-wc-menu-item>
     </modus-wc-menu>
   </modus-wc-menu-item>
   <modus-wc-menu-item label="Learning" value="learning">
-    <modus-wc-icon slot="start-icon" name="school"></modus-wc-icon>
+    <modus-wc-icon decorative name="learn" slot="start-icon"></modus-wc-icon>
     <modus-wc-menu slot="panel">
-      <modus-wc-menu-item label="Courses" value="courses"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Courses" value="courses">
+        <modus-wc-icon
+          decorative
+          name="learn"
+          slot="start-icon"
+        ></modus-wc-icon>
+      </modus-wc-menu-item>
     </modus-wc-menu>
   </modus-wc-menu-item>
   <modus-wc-menu-item label="Support" value="support">
-    <modus-wc-icon slot="start-icon" name="support"></modus-wc-icon>
+    <modus-wc-icon decorative name="headset" slot="start-icon"></modus-wc-icon>
     <modus-wc-menu slot="panel">
-      <modus-wc-menu-item label="Contact" value="contact"></modus-wc-menu-item>
+      <modus-wc-menu-item label="Contact" value="contact">
+        <modus-wc-icon
+          decorative
+          name="person"
+          slot="start-icon"
+        ></modus-wc-icon>
+      </modus-wc-menu-item>
     </modus-wc-menu>
   </modus-wc-menu-item>
   <modus-wc-menu-item label="About" value="about">
-    <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
+    <modus-wc-icon decorative name="info" slot="start-icon"></modus-wc-icon>
   </modus-wc-menu-item>
 `;
 
@@ -153,7 +185,6 @@ export const Default: Story = {
     layout: 'centered',
   },
 };
-
 export const WithSideNavigationAndNavbar: Story = {
   args: {
     'menu-offset': 4,
@@ -305,5 +336,51 @@ export const WithSideNavigationAndNavbar: Story = {
         </div>
       </div>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  parameters: {
+    layout: 'centered',
+  },
+  render: (args) => {
+    if (!customElements.get('help-menu-shadow-host')) {
+      const HelpMenuShadowHost = createShadowHostClass<HelpMenuArgs>({
+        componentTag: 'modus-wc-dropdown-menu',
+        propsMapper: (v: HelpMenuArgs, el: HTMLElement) => {
+          const menu = dropdownMenuProps(v);
+          const dropdownEl = el as unknown as {
+            buttonAriaLabel: string;
+            menuBordered: boolean;
+            menuOffset: number;
+            menuPlacement: PopoverPlacement;
+            menuSize: ModusSize;
+            menuVisible: boolean;
+          };
+          dropdownEl.buttonAriaLabel = 'Help menu';
+          dropdownEl.menuBordered = Boolean(menu.bordered);
+          dropdownEl.menuOffset = menu.offset ?? 10;
+          dropdownEl.menuPlacement = menu.placement ?? 'bottom-start';
+          dropdownEl.menuSize = menu.size ?? 'md';
+          dropdownEl.menuVisible = Boolean(menu.visible);
+
+          if (!el.hasAttribute('data-layout-built')) {
+            el.setAttribute('data-layout-built', '');
+            render(
+              html`<span slot="button">Help menu</span>
+                <modus-wc-help-menu slot="menu"
+                  >${helpMenuItems()}</modus-wc-help-menu
+                >`,
+              el
+            );
+          }
+        },
+      });
+      customElements.define('help-menu-shadow-host', HelpMenuShadowHost);
+    }
+
+    return html`<div style="min-height: 28rem; padding: 1.5rem;">
+      <help-menu-shadow-host .props=${{ ...args }}></help-menu-shadow-host>
+    </div>`;
   },
 };

@@ -246,8 +246,14 @@ describe('modus-wc-dropdown-menu', () => {
                 <div slot="menu">
                   <modus-wc-help-menu>
                     <modus-wc-menu-item label="Help" value="help">
+                      <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
                       <modus-wc-menu slot="panel">
-                        <modus-wc-menu-item label="Guide" value="guide"></modus-wc-menu-item>
+                        <modus-wc-menu-item label="Guide" value="guide">
+                          <modus-wc-icon
+                            slot="start-icon"
+                            name="user_guide"
+                          ></modus-wc-icon>
+                        </modus-wc-menu-item>
                       </modus-wc-menu>
                     </modus-wc-menu-item>
                   </modus-wc-help-menu>

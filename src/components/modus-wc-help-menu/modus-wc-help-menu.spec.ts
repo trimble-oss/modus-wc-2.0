@@ -9,16 +9,24 @@ const markup = `
     <modus-wc-menu-item label="Help" value="help">
       <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
       <modus-wc-menu slot="panel">
-        <modus-wc-menu-item label="Trimble Help" value="trimble-help"></modus-wc-menu-item>
+        <modus-wc-menu-item label="Trimble Help" value="trimble-help">
+          <modus-wc-icon slot="start-icon" name="help"></modus-wc-icon>
+        </modus-wc-menu-item>
         <modus-wc-menu-item label="Product Guides" value="product-guides">
+          <modus-wc-icon slot="start-icon" name="user_guide"></modus-wc-icon>
           <modus-wc-menu slot="panel">
-            <modus-wc-menu-item label="Installation" value="installation"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Installation" value="installation">
+              <modus-wc-icon slot="start-icon" name="download"></modus-wc-icon>
+            </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
       </modus-wc-menu>
     </modus-wc-menu-item>
-    <modus-wc-menu-item label="About" value="about"></modus-wc-menu-item>
+    <modus-wc-menu-item label="About" value="about">
+      <modus-wc-icon slot="start-icon" name="info"></modus-wc-icon>
+    </modus-wc-menu-item>
     <modus-wc-menu-item has-submenu label="More" value="more">
+      <modus-wc-icon slot="start-icon" name="more_vertical"></modus-wc-icon>
       <div class="modus-wc-menu-dropdown"></div>
     </modus-wc-menu-item>
   </modus-wc-help-menu>
@@ -35,6 +43,18 @@ const rowButton = (item: HTMLElement) => {
   const li = Array.from(item.children).find((child) => child.tagName === 'LI');
   return li?.querySelector('button') as HTMLButtonElement;
 };
+
+const mockPrefersReducedMotionMedia = (matches: boolean): MediaQueryList =>
+  ({
+    matches,
+    media: '(prefers-reduced-motion: reduce)',
+    onchange: null,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }) as MediaQueryList;
 
 const rowLi = (item: HTMLElement) =>
   Array.from(item.children).find((child) => child.tagName === 'LI') as
@@ -125,8 +145,11 @@ describe('modus-wc-help-menu', () => {
       html: `
       <modus-wc-help-menu>
         <modus-wc-menu-item label="Getting Started" value="getting-started">
+          <modus-wc-icon slot="start-icon" name="apps"></modus-wc-icon>
           <modus-wc-menu slot="panel">
-            <modus-wc-menu-item label="Overview" value="overview"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Overview" value="overview">
+              <modus-wc-icon slot="start-icon" name="bar_graph"></modus-wc-icon>
+            </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
       </modus-wc-help-menu>
@@ -173,6 +196,12 @@ describe('modus-wc-help-menu', () => {
     await page.waitForChanges();
 
     expect(selected).toHaveBeenCalled();
+    expect((about as HTMLElement & { selected?: boolean }).selected).toBe(
+      false
+    );
+    expect(rowLi(about)?.classList.contains('modus-wc-menu-item-active')).toBe(
+      false
+    );
     expect(page.root!.querySelector('.modus-wc-help-menu-title')).toBeNull();
     expect(about.querySelector('.modus-wc-help-menu-chevron')).toBeNull();
   });
@@ -350,7 +379,9 @@ describe('modus-wc-help-menu', () => {
       html: `<modus-wc-help-menu>
         <modus-wc-menu-item>
           <modus-wc-menu slot="panel">
-            <modus-wc-menu-item label="Child" value="child"></modus-wc-menu-item>
+            <modus-wc-menu-item label="Child" value="child">
+              <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+            </modus-wc-menu-item>
           </modus-wc-menu>
         </modus-wc-menu-item>
       </modus-wc-help-menu>`,
@@ -417,6 +448,81 @@ describe('modus-wc-help-menu', () => {
     );
   });
 
+  it('should open the clicked panel when sibling drill items share label and value', async () => {
+    const page = await newSpecPage({
+      components,
+      html: `<modus-wc-help-menu>
+        <modus-wc-menu-item label="Docs" value="docs">
+          <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+          <modus-wc-menu slot="panel">
+            <modus-wc-menu-item label="First child" value="first">
+              <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item label="Docs" value="docs">
+          <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+          <modus-wc-menu slot="panel">
+            <modus-wc-menu-item label="Second child" value="second">
+              <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+            </modus-wc-menu-item>
+          </modus-wc-menu>
+        </modus-wc-menu-item>
+      </modus-wc-help-menu>`,
+    });
+    const [, secondDocs] = Array.from(
+      page.root!.querySelectorAll<HTMLElement>(
+        'modus-wc-menu-item[value="docs"]'
+      )
+    );
+
+    rowButton(secondDocs).click();
+    await page.waitForChanges();
+
+    expect(itemByLabel(page.root!, 'Second child').hidden).toBe(false);
+    expect(itemByLabel(page.root!, 'First child').hidden).toBe(true);
+  });
+
+  it('should not open a drill item that is outside the current level', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const panelChange = jest.fn();
+    page.root!.addEventListener('panelChange', panelChange);
+
+    (
+      page.rootInstance as unknown as { openItem: (item: HTMLElement) => void }
+    ).openItem.call(
+      page.rootInstance,
+      itemByLabel(page.root!, 'Product Guides')
+    );
+
+    expect(panelChange).not.toHaveBeenCalled();
+  });
+
+  it('should skip disabled items during arrow-key navigation', async () => {
+    const page = await newSpecPage({
+      components,
+      html: `<modus-wc-help-menu>
+        <modus-wc-menu-item label="One" value="one">
+          <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item disabled label="Two" value="two">
+          <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item label="Three" value="three">
+          <modus-wc-icon slot="start-icon" name="document"></modus-wc-icon>
+        </modus-wc-menu-item>
+      </modus-wc-help-menu>`,
+    });
+    const focusables = (
+      page.rootInstance as unknown as { focusables: () => HTMLElement[] }
+    ).focusables.call(page.rootInstance);
+
+    expect(focusables).toEqual([
+      rowLi(itemByLabel(page.root!, 'One')),
+      rowLi(itemByLabel(page.root!, 'Three')),
+    ]);
+  });
+
   it('should skip non-element panel nodes when syncing visibility', async () => {
     const page = await newSpecPage({ components, html: markup });
     const component = page.rootInstance as ModusWcHelpMenu;
@@ -457,6 +563,150 @@ describe('modus-wc-help-menu', () => {
     ).not.toThrow();
   });
 
+  it('should animate panel transitions when motion is allowed', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = page.rootInstance as unknown as {
+      pendingMotion: 'forward' | 'back' | null;
+      applyPendingMotion: () => void;
+    };
+    const list = page.root!.querySelector(
+      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+    ) as HTMLElement;
+    const cancel = jest.fn();
+    const animate = jest.fn().mockReturnValue({ cancel });
+    list.animate = animate;
+
+    const matchMediaMock = jest
+      .spyOn(window, 'matchMedia')
+      .mockReturnValue(mockPrefersReducedMotionMedia(false));
+
+    motion.pendingMotion = null;
+    motion.applyPendingMotion();
+    expect(animate).not.toHaveBeenCalled();
+
+    motion.pendingMotion = 'forward';
+    motion.applyPendingMotion();
+    expect(animate).toHaveBeenCalledWith(
+      [
+        { opacity: 0, transform: 'translateX(0.75rem)' },
+        { opacity: 1, transform: 'translateX(0)' },
+      ],
+      { duration: 200, easing: 'ease-out' }
+    );
+
+    motion.pendingMotion = 'back';
+    motion.applyPendingMotion();
+    expect(animate).toHaveBeenLastCalledWith(
+      [
+        { opacity: 0, transform: 'translateX(-0.75rem)' },
+        { opacity: 1, transform: 'translateX(0)' },
+      ],
+      { duration: 200, easing: 'ease-out' }
+    );
+
+    matchMediaMock.mockRestore();
+  });
+
+  it('should clear selected state when a menu item emits itemSelect', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const component = page.rootInstance as ModusWcHelpMenu;
+    const menuItem = page.root!.querySelector(
+      'modus-wc-menu-item'
+    ) as HTMLElement & { selected?: boolean };
+    menuItem.selected = true;
+
+    const event = new CustomEvent('itemSelect');
+    Object.defineProperty(event, 'target', { value: menuItem });
+    component.handleItemSelect(event);
+
+    expect(menuItem.selected).toBe(false);
+
+    const noop = new CustomEvent('itemSelect');
+    Object.defineProperty(noop, 'target', { value: null });
+    expect(() => component.handleItemSelect(noop)).not.toThrow();
+  });
+
+  it('should animate when matchMedia is unavailable', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = page.rootInstance as unknown as {
+      pendingMotion: 'forward' | 'back' | null;
+      applyPendingMotion: () => void;
+    };
+    const list = page.root!.querySelector(
+      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+    ) as HTMLElement;
+    const animateMock = jest.fn().mockReturnValue({ cancel: jest.fn() });
+    list.animate = animateMock;
+
+    const originalMatchMedia = window.matchMedia;
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: undefined,
+    });
+
+    motion.pendingMotion = 'forward';
+    motion.applyPendingMotion();
+    expect(animateMock).toHaveBeenCalled();
+
+    Object.defineProperty(window, 'matchMedia', {
+      configurable: true,
+      writable: true,
+      value: originalMatchMedia,
+    });
+  });
+
+  it('should skip panel motion when reduced motion is preferred', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = page.rootInstance as unknown as {
+      pendingMotion: 'forward' | 'back' | null;
+      applyPendingMotion: () => void;
+    };
+    const list = page.root!.querySelector(
+      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+    ) as HTMLElement;
+    const animateMock = jest.fn();
+    list.animate = animateMock;
+
+    const matchMediaMock = jest
+      .spyOn(window, 'matchMedia')
+      .mockReturnValue(mockPrefersReducedMotionMedia(true));
+
+    motion.pendingMotion = 'forward';
+    motion.applyPendingMotion();
+    expect(animateMock).not.toHaveBeenCalled();
+
+    matchMediaMock.mockRestore();
+  });
+
+  it('should skip panel motion when the list cannot animate', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = page.rootInstance as unknown as {
+      pendingMotion: 'forward' | 'back' | null;
+      applyPendingMotion: () => void;
+    };
+    const host = page.root as HTMLElement;
+    const querySpy = jest.spyOn(host, 'querySelector');
+    querySpy.mockImplementation((selector) => {
+      if (
+        selector === 'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+      ) {
+        return {} as Element;
+      }
+      return HTMLElement.prototype.querySelector.call(host, selector);
+    });
+
+    const matchMediaMock = jest
+      .spyOn(window, 'matchMedia')
+      .mockReturnValue(mockPrefersReducedMotionMedia(false));
+
+    motion.pendingMotion = 'forward';
+    expect(() => motion.applyPendingMotion()).not.toThrow();
+
+    querySpy.mockRestore();
+    matchMediaMock.mockRestore();
+  });
+
   it('should guard drill detection, focus restoration, and panel sync helpers', async () => {
     const page = await newSpecPage({ components, html: markup });
     const component = page.rootInstance as ModusWcHelpMenu;
@@ -470,7 +720,7 @@ describe('modus-wc-help-menu', () => {
       openItem: (item: HTMLElement) => void;
       applyPendingFocus: () => void;
       pendingFocus: 'back' | 'root' | null;
-      stack: { value: string; label: string }[];
+      stack: { index: number; label: string }[];
       stackElements: () => HTMLElement[];
       isInsidePanel: (node: HTMLElement, item: HTMLElement) => boolean;
       scheduleSyncPanels: () => void;
@@ -555,7 +805,7 @@ describe('modus-wc-help-menu', () => {
     call(harness.syncChevron, about);
     expect(about.querySelector('.modus-wc-help-menu-chevron')).toBeNull();
 
-    harness.stack = [{ value: 'missing', label: 'Missing' }];
+    harness.stack = [{ index: 99, label: 'Missing' }];
     expect(call(harness.stackElements)).toEqual([]);
 
     expect(call(harness.isInsidePanel, trimbleInPanel, help)).toBe(true);

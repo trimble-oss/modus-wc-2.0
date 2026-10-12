@@ -4,11 +4,16 @@
  */
 
 modus-wc-help-menu {
+  background-color: var(--modus-wc-color-base-page);
   display: block;
   min-width: 11.25rem;
+  width: 100%;
 
   .modus-wc-help-menu {
-    overflow: hidden;
+    background-color: var(--modus-wc-color-base-page);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .modus-wc-help-menu-status {
@@ -20,43 +25,103 @@ modus-wc-help-menu {
     white-space: nowrap;
   }
 
-  .modus-wc-help-menu-header {
+  .modus-wc-help-menu-track {
+    background-color: var(--modus-wc-color-base-page);
+    min-width: 0;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu {
+    background-color: var(--modus-wc-color-base-page);
+    border: none;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
-  }
-
-  .modus-wc-help-menu-header-menu {
-    display: block;
-  }
-
-  .modus-wc-help-menu-title {
-    color: var(--modus-wc-color-base-content);
-    font-size: var(--modus-wc-font-size-sm);
-    font-weight: 600;
-    line-height: var(--modus-wc-line-height-md);
+    margin: 0;
     min-width: 0;
-    padding-block: var(--modus-wc-spacing-sm);
-    padding-inline-end: var(--modus-wc-spacing-xs);
-    padding-inline-start: 3.25rem;
+    padding: 0;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu > modus-wc-menu-item,
+  modus-wc-menu.modus-wc-help-menu-list
+    > .modus-wc-menu
+    > li.modus-wc-help-menu-title-item {
+    min-width: 0;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list {
+    li.modus-wc-menu-item:active,
+    li.modus-wc-menu-item > button:active {
+      background-color: transparent;
+      color: inherit;
+    }
+  }
+
+  /* Drill/back moves focus programmatically; only keyboard focus (:focus-visible) is painted.
+     Anchored on the inner wrapper to outrank the menu-item and Connect dropdown focus rules. */
+  .modus-wc-help-menu modus-wc-menu.modus-wc-help-menu-list {
+    modus-wc-menu-item
+      .modus-wc-menu-item:not(.modus-wc-menu-item-active):not(
+        .modus-wc-menu-item-disabled
+      ):focus:not(:focus-visible) {
+      background-color: transparent;
+      color: var(--modus-wc-color-base-content);
+
+      &:hover {
+        background-color: var(--modus-wc-color-base-100);
+      }
+    }
+  }
+
+  modus-wc-menu-item.modus-wc-help-menu-back .modus-wc-menu-item-labels {
+    color: var(--modus-wc-color-primary);
+  }
+
+  modus-wc-menu-item[hidden] {
+    display: none !important;
   }
 
   modus-wc-menu-item.modus-wc-help-menu-stack-parent > li {
     display: none;
   }
 
+  li.modus-wc-help-menu-title-item {
+    background-color: transparent;
+    cursor: default;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .modus-wc-help-menu-title {
+    color: var(--modus-wc-color-base-content);
+    cursor: default;
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-md);
+    min-width: 0;
+    padding-block: var(--modus-wc-spacing-sm);
+    padding-inline-end: var(--modus-wc-spacing-xs);
+    padding-inline-start: 3.25rem;
+    text-decoration: none;
+  }
+
   &.modus-wc-help-menu--drilled {
-    .modus-wc-help-menu-header-menu,
-    .modus-wc-help-menu-track [slot='panel']:not([hidden]) {
-      display: block;
-      margin-inline-start: 0;
-      padding-inline-start: 0;
+    /* Flatten open panels into the same list row as Back and title. */
+    modus-wc-menu-item.modus-wc-help-menu-stack-parent {
+      display: contents;
     }
 
-    .modus-wc-help-menu-header-menu .modus-wc-menu,
-    .modus-wc-help-menu-track [slot='panel']:not([hidden]) .modus-wc-menu {
-      background: transparent;
-      border: none;
-      border-radius: 0;
+    modus-wc-menu[slot='panel']:not([hidden]) {
+      display: contents;
+    }
+
+    modus-wc-menu[slot='panel']:not([hidden]) > .modus-wc-menu {
+      background-color: transparent;
+      display: contents;
       margin: 0;
       padding: 0;
     }
@@ -75,42 +140,5 @@ modus-wc-help-menu {
 
   .modus-wc-help-menu-chevron {
     margin-inline-start: auto;
-  }
-
-  .modus-wc-help-menu-forward {
-    animation: modus-wc-help-menu-forward 300ms ease;
-  }
-
-  .modus-wc-help-menu-back-motion {
-    animation: modus-wc-help-menu-back 300ms ease;
-  }
-}
-
-@keyframes modus-wc-help-menu-forward {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes modus-wc-help-menu-back {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  modus-wc-help-menu {
-    .modus-wc-help-menu-forward,
-    .modus-wc-help-menu-back-motion {
-      animation: none;
-    }
   }
 }

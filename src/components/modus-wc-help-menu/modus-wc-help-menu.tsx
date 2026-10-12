@@ -14,7 +14,8 @@ import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 interface PanelFrame {
-  value: string;
+  /** Position of the opened item among its level's items; `value`/`label` are not unique. */
+  index: number;
   label: string;
 }
 
@@ -31,13 +32,13 @@ interface PanelFrame {
 export class ModusWcHelpMenu {
   private inheritedAttributes: Attributes = {};
   private pendingFocus: 'back' | 'root' | null = null;
+  private pendingMotion: 'forward' | 'back' | null = null;
+  private listAnimation?: Animation;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
   @State() private stack: PanelFrame[] = [];
-
-  @State() private motion: 'forward' | 'back' | 'none' = 'none';
 
   @State() private announcement = '';
 
@@ -67,6 +68,7 @@ export class ModusWcHelpMenu {
 
   componentDidRender() {
     this.scheduleSyncPanels();
+    this.applyPendingMotion();
     this.applyPendingFocus();
   }
 
@@ -76,7 +78,7 @@ export class ModusWcHelpMenu {
   @Method()
   reset(): Promise<void> {
     if (this.stack.length) {
-      this.motion = 'none';
+      this.pendingMotion = null;
       this.announcement = '';
       this.stack = [];
       this.panelChange.emit({ depth: 0, label: '' });
@@ -85,7 +87,13 @@ export class ModusWcHelpMenu {
   }
 
   @Listen('itemSelect')
-  handleItemSelect() {
+  handleItemSelect(event: Event) {
+    // Navigation rows never keep a selected (active) state.
+    const item = event.target as HTMLElement & { selected?: boolean };
+    if (item?.tagName === 'MODUS-WC-MENU-ITEM' && item.selected) {
+      item.selected = false;
+    }
+
     // Menu items re-render on select; reconcile visibility without a drill change.
     this.scheduleSyncPanels();
   }
@@ -129,12 +137,11 @@ export class ModusWcHelpMenu {
   private applyPendingFocus() {
     if (!this.pendingFocus) return;
     const target =
-      this.pendingFocus === 'back'
+      (this.pendingFocus === 'back'
         ? this.el.querySelector('.modus-wc-help-menu-back button')
-        : this.focusables()[0];
+        : this.focusables()[0]) ?? null;
     this.pendingFocus = null;
-    const node = target ?? null;
-    if (this.isHtmlElement(node)) node.focus();
+    if (this.isHtmlElement(target)) target.focus();
   }
 
   private isHtmlElement(node: Element | null): node is HTMLElement {
@@ -159,10 +166,14 @@ export class ModusWcHelpMenu {
     const back = this.el.querySelector('.modus-wc-help-menu-back button');
     if (this.isHtmlElement(back)) list.push(back);
 
-    this.levelItems().forEach((item) => {
-      const li = item.querySelector('li');
-      if (this.isHtmlElement(li)) list.push(li);
-    });
+    this.levelItems()
+      .filter(
+        (item) => !(item as HTMLElement & { disabled?: boolean }).disabled
+      )
+      .forEach((item) => {
+        const li = this.rowLi(item);
+        if (li) list.push(li);
+      });
 
     return list;
   }
@@ -188,11 +199,6 @@ export class ModusWcHelpMenu {
     return this.panelChildItems(panel).length > 0;
   }
 
-  private matchesFrame(item: HTMLElement, frame: PanelFrame): boolean {
-    const host = item as HTMLElement & { label?: string; value?: string };
-    return host.value === frame.value && host.label === frame.label;
-  }
-
   private rootItems(): HTMLElement[] {
     return Array.from(this.el.querySelectorAll('modus-wc-menu-item')).filter(
       (item) =>
@@ -208,9 +214,7 @@ export class ModusWcHelpMenu {
 
     for (const frame of this.stack) {
       const level = panel ? this.panelChildItems(panel) : this.rootItems();
-      const item = level.find((candidate) =>
-        this.matchesFrame(candidate, frame)
-      );
+      const item = level[frame.index];
       if (!item) break;
       path.push(item);
       panel = this.directPanel(item);
@@ -274,23 +278,48 @@ export class ModusWcHelpMenu {
     next.focus();
   }
 
+  private applyPendingMotion() {
+    const direction = this.pendingMotion;
+    this.pendingMotion = null;
+    if (!direction) return;
+
+    const list = this.el.querySelector(
+      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+    );
+    if (!list || typeof list.animate !== 'function') return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const shift = direction === 'forward' ? '0.75rem' : '-0.75rem';
+    this.listAnimation?.cancel();
+    this.listAnimation = list.animate(
+      [
+        { opacity: 0, transform: `translateX(${shift})` },
+        { opacity: 1, transform: 'translateX(0)' },
+      ],
+      { duration: 200, easing: 'ease-out' }
+    );
+  }
+
   private openItem(item: HTMLElement) {
     if (!this.isDrill(item)) return;
 
-    const host = item as HTMLElement & { label?: string; value?: string };
-    const label = host.label ?? '';
-    const value = host.value ?? '';
+    const index = this.levelItems().indexOf(item);
+    if (index === -1) return;
 
-    this.motion = 'forward';
+    const label = (item as HTMLElement & { label?: string }).label ?? '';
+
+    this.pendingMotion = 'forward';
     this.announcement = label;
     this.pendingFocus = 'back';
-    this.stack = [...this.stack, { value, label }];
+    this.stack = [...this.stack, { index, label }];
     this.panelChange.emit({ depth: this.stack.length, label });
   }
 
   private pop() {
     const nextStack = this.stack.slice(0, -1);
-    this.motion = 'back';
+    this.pendingMotion = 'back';
     this.pendingFocus = nextStack.length ? 'back' : 'root';
     this.announcement = nextStack.length
       ? nextStack[nextStack.length - 1].label
@@ -318,9 +347,7 @@ export class ModusWcHelpMenu {
   }
 
   private syncAria(item: HTMLElement, expanded: boolean) {
-    const li = Array.from(item.children).find(
-      (child) => child.tagName === 'LI'
-    );
+    const li = this.rowLi(item);
     if (!li || !this.isDrill(item)) return;
 
     li.setAttribute('aria-haspopup', 'menu');
@@ -414,12 +441,12 @@ export class ModusWcHelpMenu {
           <div aria-live="polite" class="modus-wc-help-menu-status">
             {this.announcement}
           </div>
-          {this.stack.length > 0 && (
-            <div class="modus-wc-help-menu-header">
-              <modus-wc-menu
-                class="modus-wc-help-menu-header-menu"
-                size={this.surfaceMenuSize}
-              >
+          <div class="modus-wc-help-menu-track">
+            <modus-wc-menu
+              class="modus-wc-help-menu-list"
+              size={this.surfaceMenuSize}
+            >
+              {this.stack.length > 0 && (
                 <modus-wc-menu-item
                   class="modus-wc-help-menu-back"
                   label="Back"
@@ -434,24 +461,20 @@ export class ModusWcHelpMenu {
                     slot="start-icon"
                   ></modus-wc-icon>
                 </modus-wc-menu-item>
-              </modus-wc-menu>
-              <div
-                aria-level="2"
-                class="modus-wc-help-menu-title"
-                role="heading"
-              >
-                {title}
-              </div>
-            </div>
-          )}
-          <div
-            class={{
-              'modus-wc-help-menu-track': true,
-              'modus-wc-help-menu-forward': this.motion === 'forward',
-              'modus-wc-help-menu-back-motion': this.motion === 'back',
-            }}
-          >
-            <slot />
+              )}
+              {this.stack.length > 0 && (
+                <li class="modus-wc-help-menu-title-item" role="presentation">
+                  <div
+                    aria-level="2"
+                    class="modus-wc-help-menu-title"
+                    role="heading"
+                  >
+                    {title}
+                  </div>
+                </li>
+              )}
+              <slot />
+            </modus-wc-menu>
           </div>
         </div>
       </Host>
