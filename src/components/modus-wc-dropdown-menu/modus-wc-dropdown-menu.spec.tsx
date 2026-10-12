@@ -14,6 +14,11 @@ class TestHostComponent {
   }
 }
 
+type DropdownMenuKeydownHarness = {
+  handleKeyDown: (event: KeyboardEvent) => void;
+  buttonRef?: HTMLElement;
+};
+
 describe('modus-wc-dropdown-menu', () => {
   it('should render with default props', async () => {
     const page = await newSpecPage({
@@ -286,5 +291,177 @@ describe('modus-wc-dropdown-menu', () => {
     await page.waitForChanges();
 
     expect(helpMenu.querySelector('.modus-wc-help-menu-title')).toBeNull();
+  });
+
+  it('should close and focus the trigger when Tab is pressed inside a help menu', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcHelpMenu,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-help-menu>
+                    <modus-wc-menu-item label="About" value="about"></modus-wc-menu-item>
+                  </modus-wc-help-menu>
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    const trigger = page.root!.querySelector('button')!;
+    const focusSpy = jest.spyOn(trigger, 'focus');
+    trigger.click();
+    await page.waitForChanges();
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+    page.root!.querySelector('modus-wc-help-menu')!.dispatchEvent(event);
+    await page.waitForChanges();
+
+    expect(page.root!.menuVisible).toBe(false);
+    expect(event.defaultPrevented).toBe(true);
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('should leave the menu open when Tab is pressed outside a help menu', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-menu-item label="Item One" value="1" />
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+
+    page.root!.querySelector('button')!.click();
+    await page.waitForChanges();
+
+    page.root!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(page.root!.menuVisible).toBe(true);
+  });
+
+  it('should ignore keydown when the menu is closed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+             </modus-wc-dropdown-menu>`,
+    });
+    const harness = page.rootInstance as unknown as DropdownMenuKeydownHarness;
+
+    harness.handleKeyDown(new KeyboardEvent('keydown', { key: 'Escape' }));
+
+    expect(page.root!.menuVisible).toBe(false);
+  });
+
+  it('should ignore Tab when the event target is outside a help menu', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-menu-item label="Item One" value="1" />
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+    const harness = page.rootInstance as unknown as DropdownMenuKeydownHarness;
+    page.root!.menuVisible = true;
+
+    const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+    Object.defineProperty(event, 'target', { value: null });
+
+    harness.handleKeyDown(event);
+
+    expect(page.root!.menuVisible).toBe(true);
+  });
+
+  it('should close on Escape and focus the slotted trigger button', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcDropdownMenu,
+        ModusWcButton,
+        ModusWcMenu,
+        ModusWcMenuItem,
+      ],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+                <div slot="menu">
+                  <modus-wc-menu-item label="Item One" value="1" />
+                </div>
+             </modus-wc-dropdown-menu>`,
+    });
+    const harness = page.rootInstance as unknown as DropdownMenuKeydownHarness;
+    const trigger = page.root!.querySelector('button')!;
+    const focusSpy = jest.spyOn(trigger, 'focus');
+
+    page.root!.menuVisible = true;
+    harness.handleKeyDown(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+
+    expect(page.root!.menuVisible).toBe(false);
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+  });
+
+  it('should close on Escape when the button wrapper cannot be focused', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+             </modus-wc-dropdown-menu>`,
+    });
+    const harness = page.rootInstance as unknown as DropdownMenuKeydownHarness;
+
+    page.root!.menuVisible = true;
+    harness.buttonRef = document.createElement('div');
+
+    harness.handleKeyDown(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+
+    expect(page.root!.menuVisible).toBe(false);
+  });
+
+  it('should close on Escape when the button ref is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDropdownMenu, ModusWcButton, ModusWcMenu],
+      html: `<modus-wc-dropdown-menu>
+                <div slot="button">Button</div>
+             </modus-wc-dropdown-menu>`,
+    });
+    const harness = page.rootInstance as unknown as DropdownMenuKeydownHarness;
+
+    page.root!.menuVisible = true;
+    harness.buttonRef = undefined;
+
+    expect(() =>
+      harness.handleKeyDown(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+      )
+    ).not.toThrow();
+    expect(page.root!.menuVisible).toBe(false);
   });
 });

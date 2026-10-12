@@ -13,6 +13,63 @@ import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
+/**
+ * Visual properties inlined on the outgoing-panel snapshot. Copying every computed
+ * property (thousands once theme custom properties are counted) blocks the click.
+ */
+const SNAPSHOT_PROPERTIES = [
+  'align-items',
+  'background-color',
+  'border-bottom',
+  'border-left',
+  'border-radius',
+  'border-right',
+  'border-top',
+  'box-sizing',
+  'color',
+  'column-gap',
+  'display',
+  'fill',
+  'flex-basis',
+  'flex-direction',
+  'flex-grow',
+  'flex-shrink',
+  'flex-wrap',
+  'font-family',
+  'font-feature-settings',
+  'font-size',
+  'font-style',
+  'font-weight',
+  'height',
+  'justify-content',
+  'letter-spacing',
+  'line-height',
+  'list-style',
+  'margin-bottom',
+  'margin-left',
+  'margin-right',
+  'margin-top',
+  'max-width',
+  'min-height',
+  'min-width',
+  'opacity',
+  'overflow',
+  'padding-bottom',
+  'padding-left',
+  'padding-right',
+  'padding-top',
+  'row-gap',
+  'stroke',
+  'text-align',
+  'text-decoration',
+  'text-overflow',
+  'text-transform',
+  'vertical-align',
+  'visibility',
+  'white-space',
+  'width',
+];
+
 interface PanelFrame {
   /** Position of the opened item among its level's items; `value`/`label` are not unique. */
   index: number;
@@ -33,7 +90,8 @@ export class ModusWcHelpMenu {
   private inheritedAttributes: Attributes = {};
   private pendingFocus: 'back' | 'root' | null = null;
   private pendingMotion: 'forward' | 'back' | null = null;
-  private listAnimation?: Animation;
+  private outgoing?: { node: Element; height: number };
+  private animations: Animation[] = [];
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -78,7 +136,9 @@ export class ModusWcHelpMenu {
   @Method()
   reset(): Promise<void> {
     if (this.stack.length) {
+      this.stopMotion();
       this.pendingMotion = null;
+      this.outgoing = undefined;
       this.announcement = '';
       this.stack = [];
       this.panelChange.emit({ depth: 0, label: '' });
@@ -278,28 +338,155 @@ export class ModusWcHelpMenu {
     next.focus();
   }
 
-  private applyPendingMotion() {
-    const direction = this.pendingMotion;
-    this.pendingMotion = null;
-    if (!direction) return;
-
-    const list = this.el.querySelector(
+  private listEl(): HTMLElement | null {
+    return this.el.querySelector(
       'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
     );
-    if (!list || typeof list.animate !== 'function') return;
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-      return;
+  }
+
+  private trackEl(): HTMLElement | null {
+    return this.el.querySelector('.modus-wc-help-menu-track');
+  }
+
+  private canAnimate(list: HTMLElement | null): list is HTMLElement {
+    if (!list || typeof list.animate !== 'function') return false;
+    return !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  private stopMotion() {
+    const running = this.animations;
+    this.animations = [];
+    running.forEach((animation) => animation.cancel());
+  }
+
+  /** Snapshots the visible panel so it can slide out while the next one slides in. */
+  private captureOutgoing() {
+    this.stopMotion();
+    const list = this.listEl();
+    const track = this.trackEl();
+    this.outgoing =
+      track && this.canAnimate(list)
+        ? {
+            node: this.staticCopy(list) as Element,
+            height: track.offsetHeight,
+          }
+        : undefined;
+  }
+
+  /**
+   * Copies rendered markup as plain elements with inlined computed styles, so the
+   * snapshot keeps its look without re-upgrading the custom elements inside it.
+   */
+  private staticCopy(node: Node): Node | null {
+    if (node.nodeType === Node.TEXT_NODE) return node.cloneNode();
+    if (node.nodeType !== Node.ELEMENT_NODE) return null;
+
+    const el = node as HTMLElement;
+    if (el.hidden) return null;
+
+    const isSvg = el.namespaceURI === 'http://www.w3.org/2000/svg';
+    const copy = (
+      isSvg ? el.cloneNode(true) : document.createElement('div')
+    ) as HTMLElement;
+    const styles = window.getComputedStyle(el);
+    copy.style.cssText = SNAPSHOT_PROPERTIES.map(
+      (property) => `${property}:${styles.getPropertyValue(property)}`
+    ).join(';');
+    if (isSvg) return copy;
+
+    el.childNodes.forEach((child) => {
+      const childCopy = this.staticCopy(child);
+      if (childCopy) copy.appendChild(childCopy);
+    });
+    return copy;
+  }
+
+  private applyPendingMotion() {
+    const direction = this.pendingMotion;
+    const outgoing = this.outgoing;
+    this.pendingMotion = null;
+    this.outgoing = undefined;
+    if (!direction) return;
+
+    const list = this.listEl();
+    const track = this.trackEl();
+    if (!track || !this.canAnimate(list)) return;
+
+    const sign = direction === 'forward' ? 1 : -1;
+    const distance = Math.max(Math.round(list.offsetWidth * 0.6), 12);
+    const timing: KeyframeAnimationOptions = {
+      duration: 300,
+      easing: 'cubic-bezier(0.2, 0, 0, 1)',
+    };
+
+    const incoming = this.trackAnimation(
+      list.animate(
+        [
+          { opacity: 0, transform: `translateX(${sign * distance}px)` },
+          { opacity: 1, transform: 'translateX(0)' },
+        ],
+        timing
+      )
+    );
+    if (!incoming || !outgoing) return;
+
+    const ghost = outgoing.node as HTMLElement;
+    Object.assign(ghost.style, {
+      left: '0',
+      margin: '0',
+      pointerEvents: 'none',
+      position: 'absolute',
+      top: '0',
+      width: `${list.offsetWidth}px`,
+    });
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.setAttribute('inert', '');
+    track.style.overflow = 'hidden';
+    track.appendChild(ghost);
+
+    const cleanup = () => {
+      ghost.remove();
+      track.style.overflow = '';
+    };
+    incoming.onfinish = cleanup;
+    incoming.oncancel = cleanup;
+
+    if (typeof ghost.animate === 'function') {
+      this.trackAnimation(
+        ghost.animate(
+          [
+            { opacity: 1, transform: 'translateX(0)' },
+            { opacity: 0, transform: `translateX(${-sign * distance}px)` },
+          ],
+          { ...timing, fill: 'forwards' }
+        )
+      );
     }
 
-    const shift = direction === 'forward' ? '0.75rem' : '-0.75rem';
-    this.listAnimation?.cancel();
-    this.listAnimation = list.animate(
-      [
-        { opacity: 0, transform: `translateX(${shift})` },
-        { opacity: 1, transform: 'translateX(0)' },
-      ],
-      { duration: 200, easing: 'ease-out' }
-    );
+    if (typeof requestAnimationFrame === 'undefined') return;
+    // Measured a frame later: nested menu items (e.g. Back) render after this host.
+    requestAnimationFrame(() => {
+      const height = track.offsetHeight;
+      if (
+        !track.contains(ghost) ||
+        !outgoing.height ||
+        outgoing.height === height ||
+        typeof track.animate !== 'function'
+      ) {
+        return;
+      }
+      this.trackAnimation(
+        track.animate(
+          [{ height: `${outgoing.height}px` }, { height: `${height}px` }],
+          timing
+        )
+      );
+    });
+  }
+
+  private trackAnimation(animation?: Animation): Animation | undefined {
+    if (animation) this.animations.push(animation);
+    return animation;
   }
 
   private openItem(item: HTMLElement) {
@@ -310,6 +497,7 @@ export class ModusWcHelpMenu {
 
     const label = (item as HTMLElement & { label?: string }).label ?? '';
 
+    this.captureOutgoing();
     this.pendingMotion = 'forward';
     this.announcement = label;
     this.pendingFocus = 'back';
@@ -319,6 +507,7 @@ export class ModusWcHelpMenu {
 
   private pop() {
     const nextStack = this.stack.slice(0, -1);
+    this.captureOutgoing();
     this.pendingMotion = 'back';
     this.pendingFocus = nextStack.length ? 'back' : 'root';
     this.announcement = nextStack.length

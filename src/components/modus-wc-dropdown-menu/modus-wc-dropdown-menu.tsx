@@ -99,10 +99,16 @@ export class ModusWcDropdownMenu {
 
   @Listen('keydown')
   handleKeyDown(event: KeyboardEvent) {
-    // Close the menu when the user clicks escape
-    if (event.key === 'Escape' && this.menuVisible) {
+    if (!this.menuVisible) return;
+
+    const target = event.target as Partial<Element> | null;
+    const fromHelpMenu = !!target?.closest?.('modus-wc-help-menu');
+
+    if (event.key === 'Escape' || (event.key === 'Tab' && fromHelpMenu)) {
+      event.preventDefault();
       this.menuVisible = false;
       this.menuVisibilityChange.emit({ isVisible: false });
+      this.buttonRef?.querySelector('button')?.focus();
     }
   }
 

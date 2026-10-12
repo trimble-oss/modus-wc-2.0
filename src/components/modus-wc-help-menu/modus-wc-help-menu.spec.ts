@@ -572,6 +572,7 @@ describe('modus-wc-help-menu', () => {
     const list = page.root!.querySelector(
       'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
     ) as HTMLElement;
+    Object.defineProperty(list, 'offsetWidth', { value: 0 });
     const cancel = jest.fn();
     const animate = jest.fn().mockReturnValue({ cancel });
     list.animate = animate;
@@ -584,25 +585,139 @@ describe('modus-wc-help-menu', () => {
     motion.applyPendingMotion();
     expect(animate).not.toHaveBeenCalled();
 
+    const timing = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0, 1)' };
+
     motion.pendingMotion = 'forward';
     motion.applyPendingMotion();
     expect(animate).toHaveBeenCalledWith(
       [
-        { opacity: 0, transform: 'translateX(0.75rem)' },
+        { opacity: 0, transform: 'translateX(12px)' },
         { opacity: 1, transform: 'translateX(0)' },
       ],
-      { duration: 200, easing: 'ease-out' }
+      timing
     );
 
     motion.pendingMotion = 'back';
     motion.applyPendingMotion();
     expect(animate).toHaveBeenLastCalledWith(
       [
-        { opacity: 0, transform: 'translateX(-0.75rem)' },
+        { opacity: 0, transform: 'translateX(-12px)' },
         { opacity: 1, transform: 'translateX(0)' },
       ],
-      { duration: 200, easing: 'ease-out' }
+      timing
     );
+
+    matchMediaMock.mockRestore();
+  });
+
+  it('should slide a static snapshot of the previous panel out while drilling', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = page.rootInstance as unknown as {
+      captureOutgoing: () => void;
+      applyPendingMotion: () => void;
+      stopMotion: () => void;
+      staticCopy: (node: Node) => Node | null;
+      pendingMotion: 'forward' | 'back' | null;
+    };
+    const list = page.root!.querySelector(
+      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
+    ) as HTMLElement;
+    const track = page.root!.querySelector(
+      '.modus-wc-help-menu-track'
+    ) as HTMLElement;
+
+    Object.defineProperty(list, 'offsetWidth', { value: 200 });
+    const incoming = {
+      cancel: jest.fn(),
+      onfinish: null as (() => void) | null,
+    };
+    list.animate = jest.fn().mockReturnValue(incoming);
+    const trackAnimate = jest.fn().mockReturnValue({ cancel: jest.fn() });
+    track.animate = trackAnimate;
+    const ghostAnimate = jest.fn().mockReturnValue({ cancel: jest.fn() });
+    const createElement = document.createElement.bind(document);
+    const createSpy = jest
+      .spyOn(document, 'createElement')
+      .mockImplementation((tag: string) => {
+        const el = createElement(tag);
+        if (tag === 'div') el.animate = ghostAnimate;
+        return el;
+      });
+    let heights = [240, 196];
+    Object.defineProperty(track, 'offsetHeight', {
+      configurable: true,
+      get: () => heights[0],
+    });
+    const originalRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+      heights = heights.slice(1);
+      cb(0);
+      return 0;
+    };
+    const matchMediaMock = jest
+      .spyOn(window, 'matchMedia')
+      .mockReturnValue(mockPrefersReducedMotionMedia(false));
+
+    motion.captureOutgoing();
+    createSpy.mockRestore();
+    motion.pendingMotion = 'forward';
+    motion.applyPendingMotion();
+
+    const ghost = track.lastElementChild as HTMLElement;
+    expect(ghost.getAttribute('aria-hidden')).toBe('true');
+    expect(ghost.hasAttribute('inert')).toBe(true);
+    expect(track.style.overflow).toBe('hidden');
+    expect(ghostAnimate).toHaveBeenCalled();
+    expect(trackAnimate).toHaveBeenCalledWith(
+      [{ height: '240px' }, { height: '196px' }],
+      expect.anything()
+    );
+
+    incoming.onfinish?.();
+    expect(track.contains(ghost)).toBe(false);
+    expect(track.style.overflow).toBe('');
+
+    // Same height and no animate support on the snapshot: no extra animations.
+    heights = [196, 196];
+    trackAnimate.mockClear();
+    motion.captureOutgoing();
+    motion.pendingMotion = 'back';
+    motion.applyPendingMotion();
+    expect(trackAnimate).not.toHaveBeenCalled();
+    motion.stopMotion();
+
+    // Without requestAnimationFrame the height step is skipped.
+    globalThis.requestAnimationFrame =
+      undefined as unknown as typeof requestAnimationFrame;
+    motion.captureOutgoing();
+    motion.pendingMotion = 'forward';
+    expect(() => motion.applyPendingMotion()).not.toThrow();
+    expect(trackAnimate).not.toHaveBeenCalled();
+    motion.stopMotion();
+    globalThis.requestAnimationFrame = originalRaf;
+
+    // Without a track there is nothing to snapshot.
+    track.remove();
+    motion.captureOutgoing();
+    expect((motion as unknown as { outgoing?: unknown }).outgoing).toBe(
+      undefined
+    );
+
+    const hidden = document.createElement('div');
+    hidden.hidden = true;
+    expect(motion.staticCopy(hidden)).toBeNull();
+    expect(motion.staticCopy(document.createComment('x'))).toBeNull();
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    expect(motion.staticCopy(svg)).not.toBe(svg);
+
+    const styleSpy = jest.spyOn(window, 'getComputedStyle').mockReturnValue({
+      0: 'color',
+      length: 1,
+      getPropertyValue: () => 'red',
+    } as unknown as CSSStyleDeclaration);
+    const copy = motion.staticCopy(document.createElement('span'));
+    expect((copy as HTMLElement).style.getPropertyValue('color')).toBe('red');
+    styleSpy.mockRestore();
 
     matchMediaMock.mockRestore();
   });

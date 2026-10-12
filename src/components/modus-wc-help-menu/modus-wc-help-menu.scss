@@ -28,6 +28,7 @@ modus-wc-help-menu {
   .modus-wc-help-menu-track {
     background-color: var(--modus-wc-color-base-page);
     min-width: 0;
+    position: relative;
     width: 100%;
   }
 
@@ -99,13 +100,12 @@ modus-wc-help-menu {
   .modus-wc-help-menu-title {
     color: var(--modus-wc-color-base-content);
     cursor: default;
-    font-size: var(--modus-wc-font-size-sm);
+    font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-semibold);
     line-height: var(--modus-wc-line-height-md);
     min-width: 0;
     padding-block: var(--modus-wc-spacing-sm);
-    padding-inline-end: var(--modus-wc-spacing-xs);
-    padding-inline-start: 3.25rem;
+    padding-inline: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xs);
     text-decoration: none;
   }
 
