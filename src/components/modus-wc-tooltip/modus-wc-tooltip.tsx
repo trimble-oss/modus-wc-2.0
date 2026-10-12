@@ -55,6 +55,7 @@ export class ModusWcTooltip {
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
   private focusOwner: HTMLElement | null = null;
+  private contentObserver?: MutationObserver;
   private isHovered = false;
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
@@ -199,6 +200,7 @@ export class ModusWcTooltip {
     }
 
     this.attachFocusOwner();
+    this.observeContent();
 
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
@@ -226,6 +228,8 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+    this.contentObserver?.disconnect();
+    this.contentObserver = undefined;
     this.detachFocusOwner();
   }
 
@@ -251,6 +255,20 @@ export class ModusWcTooltip {
     node.addEventListener('blur', this.handleOwnerBlur);
   }
 
+  /** Light DOM has no `slotchange`, so re-resolve the owner when slotted content changes. */
+  private observeContent() {
+    if (typeof MutationObserver === 'undefined') return;
+    this.contentObserver = new MutationObserver(() => {
+      this.detachFocusOwner();
+      this.attachFocusOwner();
+    });
+    this.contentObserver.observe(this.el, {
+      attributeFilter: ['disabled', 'href', 'tabindex'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
   private detachFocusOwner() {
     if (!this.focusOwner) return;
     this.focusOwner.removeEventListener('focus', this.handleOwnerFocus);
@@ -263,9 +281,13 @@ export class ModusWcTooltip {
   };
 
   private handleOwnerBlur = () => {
+    this.clearFocus();
+  };
+
+  private clearFocus() {
     this.isFocused = false;
     this.maybeHideTooltip();
-  };
+  }
 
   private applyTooltipId() {
     if (!this.tooltipElement) return;
@@ -501,8 +523,7 @@ export class ModusWcTooltip {
     if (related && this.el.contains(related)) {
       return;
     }
-    this.isFocused = false;
-    this.maybeHideTooltip();
+    this.clearFocus();
   }
 
   render() {

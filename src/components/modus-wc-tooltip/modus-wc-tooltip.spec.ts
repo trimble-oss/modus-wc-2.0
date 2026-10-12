@@ -1710,5 +1710,65 @@ describe('modus-wc-tooltip', () => {
       expect(removeSpy).toHaveBeenCalledWith('blur', expect.any(Function));
       expect(instance.focusOwner).toBeNull();
     });
+
+    describe('when slotted content changes', () => {
+      let originalMutationObserver: typeof MutationObserver;
+      let observerCallback: MutationCallback | undefined;
+      const observe = jest.fn();
+      const disconnect = jest.fn();
+
+      beforeEach(() => {
+        originalMutationObserver = globalThis.MutationObserver;
+        observerCallback = undefined;
+        observe.mockClear();
+        disconnect.mockClear();
+        globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+          observerCallback = cb;
+          return { observe, disconnect, takeRecords: jest.fn() };
+        });
+      });
+
+      afterEach(() => {
+        globalThis.MutationObserver = originalMutationObserver;
+      });
+
+      it('should re-resolve the focus owner when a focusable element is added or removed', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+        });
+        const instance = page.rootInstance;
+        const tooltip = getTooltip(page);
+        expect(observe).toHaveBeenCalledWith(tooltip, {
+          attributeFilter: ['disabled', 'href', 'tabindex'],
+          childList: true,
+          subtree: true,
+        });
+        expect(instance.focusOwner?.id).toBe('owner');
+
+        const button = document.createElement('button');
+        tooltip.querySelector('span')?.appendChild(button);
+        observerCallback?.([], {} as MutationObserver);
+        expect(instance.focusOwner).toBeNull();
+
+        button.remove();
+        observerCallback?.([], {} as MutationObserver);
+        expect(instance.focusOwner?.id).toBe('owner');
+      });
+
+      it('should disconnect the content observer on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip>`,
+        });
+        const instance = page.rootInstance;
+
+        getTooltip(page).remove();
+        await page.waitForChanges();
+
+        expect(disconnect).toHaveBeenCalled();
+        expect(instance.contentObserver).toBeUndefined();
+      });
+    });
   });
 });
