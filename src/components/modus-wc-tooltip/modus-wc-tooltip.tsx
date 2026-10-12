@@ -23,7 +23,7 @@ let lastTooltipCloseTime = -Infinity;
 
 const NATIVE_FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
-const FOCUSABLE_SELECTOR = `${NATIVE_FOCUSABLE_SELECTOR}, [tabindex]:not([tabindex="-1"])`;
+const FOCUSABLE_CANDIDATE_SELECTOR = `${NATIVE_FOCUSABLE_SELECTOR}, [tabindex]`;
 
 const isKeyboardFocusable = (el: Element): boolean => {
   const tabIndex = el.getAttribute('tabindex');
@@ -235,7 +235,10 @@ export class ModusWcTooltip {
    * tooltip). Listen on that ancestor so focus shows the tooltip just like hover does.
    */
   private attachFocusOwner() {
-    if (this.el.querySelector(FOCUSABLE_SELECTOR)) return;
+    const hasFocusableDescendant = Array.from(
+      this.el.querySelectorAll(FOCUSABLE_CANDIDATE_SELECTOR)
+    ).some(isKeyboardFocusable);
+    if (hasFocusableDescendant) return;
 
     let node = this.el.parentElement;
     while (node && !isKeyboardFocusable(node)) {

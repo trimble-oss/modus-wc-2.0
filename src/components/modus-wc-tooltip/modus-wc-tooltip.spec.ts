@@ -1678,6 +1678,14 @@ describe('modus-wc-tooltip', () => {
       expect(page.rootInstance.focusOwner).toBeNull();
     });
 
+    it('should attach to the ancestor when slotted controls have a negative tabindex', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><button type="button" tabindex="-1">A</button><span tabindex="-2">B</span></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner?.id).toBe('owner');
+    });
+
     it('should not attach when no focusable ancestor exists', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
