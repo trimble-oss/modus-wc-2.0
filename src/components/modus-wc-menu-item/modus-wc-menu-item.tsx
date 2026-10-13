@@ -58,7 +58,7 @@ export class ModusWcMenuItem {
   /** The text rendered beneath the label. */
   @Prop() subLabel?: string;
 
-  /** The tooltip text to display when hovering over the menu item. */
+  /** The tooltip text to display when the menu item is hovered or receives keyboard focus. */
   @Prop() tooltipContent?: string;
 
   /** The position of the tooltip relative to the menu item. */

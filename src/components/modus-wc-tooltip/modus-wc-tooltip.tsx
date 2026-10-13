@@ -21,6 +21,16 @@ import { Attributes, inheritAriaAttributes } from '../utils';
 const WARM_WINDOW_MS = 300;
 let lastTooltipCloseTime = -Infinity;
 
+const NATIVE_FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
+const FOCUSABLE_CANDIDATE_SELECTOR = `${NATIVE_FOCUSABLE_SELECTOR}, [tabindex]`;
+
+const isKeyboardFocusable = (el: Element): boolean => {
+  const tabIndex = el.getAttribute('tabindex');
+  if (tabIndex !== null) return parseInt(tabIndex, 10) >= 0;
+  return el.matches(NATIVE_FOCUSABLE_SELECTOR);
+};
+
 /**
  * A customizable tooltip component used to create tooltips with different content.
  *
@@ -44,6 +54,9 @@ export class ModusWcTooltip {
   private popperInstance: PopperInstance | null = null;
   private tooltipElement: HTMLDivElement | null = null;
   private triggerElement: HTMLElement | null = null;
+  private focusOwner: HTMLElement | null = null;
+  private contentObserver?: MutationObserver;
+  private contentFrame?: number;
   private isHovered = false;
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
@@ -187,6 +200,9 @@ export class ModusWcTooltip {
       this.initializePopper();
     }
 
+    this.attachFocusOwner();
+    this.observeContent();
+
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
@@ -213,6 +229,102 @@ export class ModusWcTooltip {
 
     window.removeEventListener('resize', this.handleWindowResize);
     window.removeEventListener('scroll', this.handleWindowScroll, true);
+    this.contentObserver?.disconnect();
+    this.contentObserver = undefined;
+    if (this.contentFrame !== undefined) {
+      cancelAnimationFrame(this.contentFrame);
+      this.contentFrame = undefined;
+    }
+    this.detachFocusOwner();
+  }
+
+  /**
+   * When the slotted content has no keyboard-focusable element, keyboard focus lands on
+   * an ancestor instead (e.g. a menu item `li`, a grid cell, or a button wrapping the
+   * tooltip). Listen on that ancestor so focus shows the tooltip just like hover does.
+   */
+  private attachFocusOwner() {
+    const hasFocusableDescendant = Array.from(
+      this.el.querySelectorAll(FOCUSABLE_CANDIDATE_SELECTOR)
+    ).some(isKeyboardFocusable);
+    if (hasFocusableDescendant) return;
+
+    let node = this.el.parentElement;
+    while (node && !isKeyboardFocusable(node)) {
+      node = node.parentElement;
+    }
+    if (!node) return;
+
+    this.focusOwner = node;
+    node.addEventListener('pointerdown', this.handleOwnerPointerDown);
+    node.addEventListener('pointerup', this.handleOwnerPointerUp);
+    node.addEventListener('pointercancel', this.handleOwnerPointerUp);
+    node.addEventListener('focus', this.handleOwnerFocus);
+    node.addEventListener('blur', this.handleOwnerBlur);
+  }
+
+  /**
+   * Light DOM has no `slotchange`, so re-resolve the owner when slotted content changes.
+   * Re-evaluation is batched to one per animation frame so mutation bursts (e.g. rendering
+   * a list) don't repeat the descendant query and ancestor walk.
+   * The re-resolve must stay read-only on observed nodes (no `disabled`/`href`/`tabindex`
+   * writes inside the subtree), otherwise the observer would retrigger itself.
+   */
+  private observeContent() {
+    if (typeof MutationObserver === 'undefined') return;
+    this.contentObserver = new MutationObserver(() => {
+      if (this.contentFrame !== undefined) return;
+      this.contentFrame = requestAnimationFrame(() => {
+        this.contentFrame = undefined;
+        this.detachFocusOwner();
+        this.attachFocusOwner();
+      });
+    });
+    this.contentObserver.observe(this.el, {
+      attributeFilter: ['disabled', 'href', 'tabindex'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  private detachFocusOwner() {
+    if (!this.focusOwner) return;
+    this.focusOwner.removeEventListener(
+      'pointerdown',
+      this.handleOwnerPointerDown
+    );
+    this.focusOwner.removeEventListener('pointerup', this.handleOwnerPointerUp);
+    this.focusOwner.removeEventListener(
+      'pointercancel',
+      this.handleOwnerPointerUp
+    );
+    this.focusOwner.removeEventListener('focus', this.handleOwnerFocus);
+    this.focusOwner.removeEventListener('blur', this.handleOwnerBlur);
+    this.focusOwner = null;
+  }
+
+  /** A mouse press anywhere on the owner (not only on the tooltip) must not count as keyboard focus. */
+  private handleOwnerPointerDown = (event: PointerEvent) => {
+    if (event.pointerType === 'mouse') {
+      this.suppressNextFocus = true;
+    }
+  };
+
+  private handleOwnerPointerUp = () => {
+    this.suppressNextFocus = false;
+  };
+
+  private handleOwnerFocus = () => {
+    this.handleFocusIn();
+  };
+
+  private handleOwnerBlur = () => {
+    this.clearFocus();
+  };
+
+  private clearFocus() {
+    this.isFocused = false;
+    this.maybeHideTooltip();
   }
 
   private applyTooltipId() {
@@ -449,8 +561,7 @@ export class ModusWcTooltip {
     if (related && this.el.contains(related)) {
       return;
     }
-    this.isFocused = false;
-    this.maybeHideTooltip();
+    this.clearFocus();
   }
 
   render() {

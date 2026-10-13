@@ -12,8 +12,12 @@ interface ShadowHostConfig<T = unknown> {
   /** Function to map story args to component properties */
   propsMapper: (args: T, element: HTMLElement) => void;
 
-  /** Default content/children for the component (optional) */
-  defaultContent?: string | Node[];
+  /**
+   * Default content/children for the component (optional).
+   * Use a factory when nodes must be fresh per host instance (e.g. slotted Stencil components):
+   * a shared node moves between hosts, and clones of a rendered Stencil element carry its internals.
+   */
+  defaultContent?: string | Node[] | (() => Node[]);
 }
 
 /**
@@ -87,7 +91,11 @@ export function createShadowHostClass<T = unknown>(
         if (typeof config.defaultContent === 'string') {
           this.componentEl.textContent = config.defaultContent;
         } else {
-          config.defaultContent.forEach((node) => {
+          const nodes =
+            typeof config.defaultContent === 'function'
+              ? config.defaultContent()
+              : config.defaultContent;
+          nodes.forEach((node) => {
             this.componentEl.appendChild(node);
           });
         }

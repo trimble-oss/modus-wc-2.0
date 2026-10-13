@@ -25,7 +25,7 @@ This component supports a 'start-icon' `<slot>` that allows for custom icons to 
 | `selected`        | `selected`         | The selected state of the menu item.                                                                                | `boolean \| undefined`                                          | `undefined` |
 | `size`            | `size`             | The size of the menu item.                                                                                          | `"lg" \| "md" \| "sm" \| undefined`                             | `'md'`      |
 | `subLabel`        | `sub-label`        | The text rendered beneath the label.                                                                                | `string \| undefined`                                           | `undefined` |
-| `tooltipContent`  | `tooltip-content`  | The tooltip text to display when hovering over the menu item.                                                       | `string \| undefined`                                           | `undefined` |
+| `tooltipContent`  | `tooltip-content`  | The tooltip text to display when the menu item is hovered or receives keyboard focus.                               | `string \| undefined`                                           | `undefined` |
 | `tooltipPosition` | `tooltip-position` | The position of the tooltip relative to the menu item.                                                              | `"auto" \| "bottom" \| "left" \| "right" \| "top" \| undefined` | `'auto'`    |
 | `value`           | `value`            | The unique identifying value of the menu item.                                                                      | `string`                                                        | `''`        |
 
@@ -57,6 +57,7 @@ Type: `Promise<void>`
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-content-tree](../modus-wc-content-tree)
+ - [modus-wc-help-menu](../modus-wc-help-menu)
  - [modus-wc-navbar](../modus-wc-navbar)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
@@ -76,6 +77,7 @@ graph TD;
   modus-wc-app-menu --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-content-tree --> modus-wc-menu-item
+  modus-wc-help-menu --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
   modus-wc-profile-menu --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px

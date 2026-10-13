@@ -3929,7 +3929,7 @@
             {
               "name": "illustration",
               "fieldName": "illustration",
-              "description": "Bundled illustration name. Valid values depend on `variant`:\ncompact — `selection_plus`, `symbol_info`, `add_user`;\nillustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`;\nerror — `page_not_found`.",
+              "description": "Bundled illustration name. Valid values depend on `variant`:\ncompact — `selection_plus`, `symbol_info`, `add_user`;\nillustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`;\nerror — `error_404`, `error_404_page`.",
               "type": {
                 "text": "EmptyStateIllustration"
               }
@@ -4305,6 +4305,107 @@
           "declaration": {
             "name": "ModusWcHandle",
             "module": "src/components/modus-wc-handle/modus-wc-handle.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/modus-wc-help-menu/modus-wc-help-menu.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A drill-down menu used inside a dropdown. Items that contain a `slot=\"panel\"`\nmenu show a right-pointing chevron and slide to that panel. A Back control\nand the parent item's label (without its icon) head each nested panel.",
+          "name": "ModusWcHelpMenu",
+          "members": [
+            {
+              "kind": "field",
+              "name": "el",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "description": "Reference to the host element"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "MouseEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleItemSelect",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleKeyDown",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Clears the panel stack and returns to the root items."
+            }
+          ],
+          "tagName": "modus-wc-help-menu",
+          "events": [
+            {
+              "kind": "field",
+              "name": "panelChange",
+              "type": {
+                "text": "EventEmitter<{\n    depth: number;\n    label: string;\n  }>"
+              },
+              "description": "Emitted when the visible panel changes."
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ModusWcHelpMenu",
+          "declaration": {
+            "name": "ModusWcHelpMenu",
+            "module": "src/components/modus-wc-help-menu/modus-wc-help-menu.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "modus-wc-help-menu",
+          "declaration": {
+            "name": "ModusWcHelpMenu",
+            "module": "src/components/modus-wc-help-menu/modus-wc-help-menu.tsx"
           }
         }
       ]
