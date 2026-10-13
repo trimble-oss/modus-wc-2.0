@@ -94,9 +94,9 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
 /* Kept after the Connect block so equal-specificity radius overrides win. */
 modus-wc-dropdown-menu.modus-wc-dropdown-menu
   .menu-wrapper:has(.modus-wc-help-menu) {
-  border-radius: var(--modus-wc-border-radius-2xl);
+  border-radius: var(--rounded-box);
 
   .modus-wc-menu {
-    border-radius: var(--modus-wc-border-radius-2xl);
+    border-radius: var(--rounded-box);
   }
 }

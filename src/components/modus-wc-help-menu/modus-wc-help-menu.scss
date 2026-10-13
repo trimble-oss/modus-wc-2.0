@@ -3,12 +3,18 @@
  * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
  */
 
+/* Inner menu wrappers clip overflow, so the shadow goes on the dropdown surface that holds
+   the help menu. The repeated class outranks the Connect theme's own menu shadow. */
+modus-wc-dropdown-menu.modus-wc-dropdown-menu
+  .menu-wrapper.menu-wrapper:has(.modus-wc-help-menu) {
+  box-shadow:
+    0 4px 6px -1px var(--modus-wc-color-base-200),
+    0 2px 4px -2px var(--modus-wc-color-base-200);
+}
+
 modus-wc-help-menu {
   background-color: var(--modus-wc-color-base-page);
-  border-radius: var(--modus-wc-border-radius-2xl);
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-radius: var(--rounded-box);
   display: block;
   min-width: 11.25rem;
   width: 100%;
@@ -152,16 +158,16 @@ modus-wc-help-menu {
     modus-wc-menu-item.modus-wc-help-menu-item-first
       .modus-wc-menu-item
       > button {
-      border-start-end-radius: var(--modus-wc-border-radius-2xl);
-      border-start-start-radius: var(--modus-wc-border-radius-2xl);
+      border-start-end-radius: var(--rounded-box);
+      border-start-start-radius: var(--rounded-box);
     }
 
     modus-wc-menu-item.modus-wc-help-menu-item-last .modus-wc-menu-item,
     modus-wc-menu-item.modus-wc-help-menu-item-last
       .modus-wc-menu-item
       > button {
-      border-end-end-radius: var(--modus-wc-border-radius-2xl);
-      border-end-start-radius: var(--modus-wc-border-radius-2xl);
+      border-end-end-radius: var(--rounded-box);
+      border-end-start-radius: var(--rounded-box);
     }
   }
 
