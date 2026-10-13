@@ -1,4 +1,4 @@
-import { newSpecPage } from '@stencil/core/testing';
+import { newSpecPage, SpecPage } from '@stencil/core/testing';
 import { ModusWcTooltip } from './modus-wc-tooltip';
 
 interface TooltipPrivateHarness {
@@ -1620,6 +1620,276 @@ describe('modus-wc-tooltip', () => {
       // Give the cancelled 20ms timer time to have fired if it survived
       await new Promise((resolve) => globalThis.setTimeout(resolve, 50));
       expect(page.rootInstance.isVisible).toBe(false);
+    });
+  });
+
+  describe('focusable ancestor', () => {
+    const getTooltip = (page: SpecPage) =>
+      page.body.querySelector('modus-wc-tooltip') as HTMLElement;
+    it('should show on ancestor focus and hide on ancestor blur when the slot has no focusable element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<ul><li tabindex="0"><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></li></ul>`,
+      });
+      const li = page.body.querySelector('li') as HTMLElement;
+      const instance = page.rootInstance;
+      li.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+
+      document.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+
+      li.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+
+      li.dispatchEvent(new Event('blur'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+    });
+
+    it('should not show when a mouse click outside the tooltip focuses the ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      logo.dispatchEvent(pointerDown);
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+    });
+
+    it('should still show on keyboard focus after a mouse press on an already focused ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      logo.dispatchEvent(pointerDown);
+      logo.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+    });
+
+    it('should keep the focus suppression for non-mouse presses on the ancestor unchanged', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'pen' });
+      logo.dispatchEvent(pointerDown);
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+    });
+
+    it('should show when a wrapping button receives focus', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<button type="button"><modus-wc-tooltip content="12345"><span>1…</span></modus-wc-tooltip></button>`,
+      });
+      const button = page.body.querySelector('button') as HTMLElement;
+
+      button.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should skip ancestors with tabindex="-1"', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><button type="button" tabindex="-1"><modus-wc-tooltip content="Tip"><div>Label</div></modus-wc-tooltip></button></div>`,
+      });
+      expect(page.rootInstance.focusOwner?.id).toBe('owner');
+    });
+
+    it('should not attach to an ancestor when the slot contains a focusable element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0"><modus-wc-tooltip content="Tip"><button type="button">Trigger</button></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner).toBeNull();
+    });
+
+    it('should attach to the ancestor when slotted controls have a negative tabindex', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><button type="button" tabindex="-1">A</button><span tabindex="-2">B</span></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner?.id).toBe('owner');
+    });
+
+    it('should not attach when no focusable ancestor exists', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+      });
+      expect(page.rootInstance.focusOwner).toBeNull();
+    });
+
+    it('should remove ancestor listeners on disconnect', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<button type="button"><modus-wc-tooltip content="Tip"><span>1…</span></modus-wc-tooltip></button>`,
+      });
+      const instance = page.rootInstance;
+      const button = page.body.querySelector('button') as HTMLElement;
+      const removeSpy = jest.spyOn(button, 'removeEventListener');
+
+      getTooltip(page).remove();
+      await page.waitForChanges();
+
+      expect(removeSpy).toHaveBeenCalledWith('focus', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith('blur', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith(
+        'pointerdown',
+        expect.any(Function)
+      );
+      expect(removeSpy).toHaveBeenCalledWith('pointerup', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith(
+        'pointercancel',
+        expect.any(Function)
+      );
+      expect(instance.focusOwner).toBeNull();
+    });
+
+    describe('when slotted content changes', () => {
+      let originalMutationObserver: typeof MutationObserver;
+      let observerCallback: MutationCallback | undefined;
+      const observe = jest.fn();
+      const disconnect = jest.fn();
+      let frameCallbacks: FrameRequestCallback[];
+      let rafSpy: jest.SpyInstance;
+      let cancelRafSpy: jest.SpyInstance;
+      const flushFrames = () => {
+        const callbacks = frameCallbacks;
+        frameCallbacks = [];
+        callbacks.forEach((cb) => cb(0));
+      };
+
+      beforeEach(() => {
+        originalMutationObserver = globalThis.MutationObserver;
+        observerCallback = undefined;
+        observe.mockClear();
+        disconnect.mockClear();
+        globalThis.MutationObserver = jest.fn((cb: MutationCallback) => {
+          observerCallback = cb;
+          return { observe, disconnect, takeRecords: jest.fn() };
+        });
+        frameCallbacks = [];
+        rafSpy = jest
+          .spyOn(globalThis, 'requestAnimationFrame')
+          .mockImplementation((cb: FrameRequestCallback) => {
+            frameCallbacks.push(cb);
+            return frameCallbacks.length;
+          });
+        cancelRafSpy = jest
+          .spyOn(globalThis, 'cancelAnimationFrame')
+          .mockImplementation(() => undefined);
+      });
+
+      afterEach(() => {
+        globalThis.MutationObserver = originalMutationObserver;
+        rafSpy.mockRestore();
+        cancelRafSpy.mockRestore();
+      });
+
+      it('should re-resolve the focus owner when a focusable element is added or removed', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+        });
+        const instance = page.rootInstance;
+        const tooltip = getTooltip(page);
+        expect(observe).toHaveBeenCalledWith(tooltip, {
+          attributeFilter: ['disabled', 'href', 'tabindex'],
+          childList: true,
+          subtree: true,
+        });
+        expect(instance.focusOwner?.id).toBe('owner');
+
+        const button = document.createElement('button');
+        tooltip.querySelector('span')?.appendChild(button);
+        observerCallback?.([], {} as MutationObserver);
+        flushFrames();
+        expect(instance.focusOwner).toBeNull();
+
+        button.remove();
+        observerCallback?.([], {} as MutationObserver);
+        flushFrames();
+        expect(instance.focusOwner?.id).toBe('owner');
+      });
+
+      it('should re-resolve the focus owner once per frame when mutations arrive in a burst', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+        });
+        const instance = page.rootInstance;
+        const attachSpy = jest.spyOn(instance, 'attachFocusOwner');
+        rafSpy.mockClear();
+
+        observerCallback?.([], {} as MutationObserver);
+        observerCallback?.([], {} as MutationObserver);
+        observerCallback?.([], {} as MutationObserver);
+        expect(rafSpy).toHaveBeenCalledTimes(1);
+        expect(attachSpy).not.toHaveBeenCalled();
+
+        flushFrames();
+        expect(attachSpy).toHaveBeenCalledTimes(1);
+        expect(instance.contentFrame).toBeUndefined();
+      });
+
+      it('should cancel a pending re-resolve on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip>`,
+        });
+        const instance = page.rootInstance;
+
+        observerCallback?.([], {} as MutationObserver);
+        const frame = instance.contentFrame;
+        expect(frame).toBeDefined();
+
+        getTooltip(page).remove();
+        await page.waitForChanges();
+
+        expect(cancelRafSpy).toHaveBeenCalledWith(frame);
+        expect(instance.contentFrame).toBeUndefined();
+      });
+
+      it('should disconnect the content observer on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip>`,
+        });
+        const instance = page.rootInstance;
+
+        getTooltip(page).remove();
+        await page.waitForChanges();
+
+        expect(disconnect).toHaveBeenCalled();
+        expect(instance.contentObserver).toBeUndefined();
+      });
     });
   });
 });

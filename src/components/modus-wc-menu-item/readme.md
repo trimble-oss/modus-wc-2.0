@@ -25,7 +25,7 @@ This component supports a 'start-icon' `<slot>` that allows for custom icons to 
 | `selected`        | `selected`         | The selected state of the menu item.                                                                                | `boolean \| undefined`                                          | `undefined` |
 | `size`            | `size`             | The size of the menu item.                                                                                          | `"lg" \| "md" \| "sm" \| undefined`                             | `'md'`      |
 | `subLabel`        | `sub-label`        | The text rendered beneath the label.                                                                                | `string \| undefined`                                           | `undefined` |
-| `tooltipContent`  | `tooltip-content`  | The tooltip text to display when hovering over the menu item.                                                       | `string \| undefined`                                           | `undefined` |
+| `tooltipContent`  | `tooltip-content`  | The tooltip text to display when the menu item is hovered or receives keyboard focus.                               | `string \| undefined`                                           | `undefined` |
 | `tooltipPosition` | `tooltip-position` | The position of the tooltip relative to the menu item.                                                              | `"auto" \| "bottom" \| "left" \| "right" \| "top" \| undefined` | `'auto'`    |
 | `value`           | `value`            | The unique identifying value of the menu item.                                                                      | `string`                                                        | `''`        |
 
