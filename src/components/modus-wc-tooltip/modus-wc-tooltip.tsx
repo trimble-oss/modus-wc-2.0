@@ -256,6 +256,9 @@ export class ModusWcTooltip {
     if (!node) return;
 
     this.focusOwner = node;
+    node.addEventListener('pointerdown', this.handleOwnerPointerDown);
+    node.addEventListener('pointerup', this.handleOwnerPointerUp);
+    node.addEventListener('pointercancel', this.handleOwnerPointerUp);
     node.addEventListener('focus', this.handleOwnerFocus);
     node.addEventListener('blur', this.handleOwnerBlur);
   }
@@ -286,10 +289,30 @@ export class ModusWcTooltip {
 
   private detachFocusOwner() {
     if (!this.focusOwner) return;
+    this.focusOwner.removeEventListener(
+      'pointerdown',
+      this.handleOwnerPointerDown
+    );
+    this.focusOwner.removeEventListener('pointerup', this.handleOwnerPointerUp);
+    this.focusOwner.removeEventListener(
+      'pointercancel',
+      this.handleOwnerPointerUp
+    );
     this.focusOwner.removeEventListener('focus', this.handleOwnerFocus);
     this.focusOwner.removeEventListener('blur', this.handleOwnerBlur);
     this.focusOwner = null;
   }
+
+  /** A mouse press anywhere on the owner (not only on the tooltip) must not count as keyboard focus. */
+  private handleOwnerPointerDown = (event: PointerEvent) => {
+    if (event.pointerType === 'mouse') {
+      this.suppressNextFocus = true;
+    }
+  };
+
+  private handleOwnerPointerUp = () => {
+    this.suppressNextFocus = false;
+  };
 
   private handleOwnerFocus = () => {
     this.handleFocusIn();

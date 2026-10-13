@@ -1650,6 +1650,58 @@ describe('modus-wc-tooltip', () => {
       expect(instance.isVisible).toBe(false);
     });
 
+    it('should not show when a mouse click outside the tooltip focuses the ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      logo.dispatchEvent(pointerDown);
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(false);
+    });
+
+    it('should still show on keyboard focus after a mouse press on an already focused ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      logo.dispatchEvent(pointerDown);
+      logo.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+    });
+
+    it('should keep the focus suppression for non-mouse presses on the ancestor unchanged', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div tabindex="0" id="owner"><span id="logo">Logo</span><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const logo = page.body.querySelector('#logo') as HTMLElement;
+      const instance = page.rootInstance;
+
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'pen' });
+      logo.dispatchEvent(pointerDown);
+      owner.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(instance.isVisible).toBe(true);
+    });
+
     it('should show when a wrapping button receives focus', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
@@ -1708,6 +1760,15 @@ describe('modus-wc-tooltip', () => {
 
       expect(removeSpy).toHaveBeenCalledWith('focus', expect.any(Function));
       expect(removeSpy).toHaveBeenCalledWith('blur', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith(
+        'pointerdown',
+        expect.any(Function)
+      );
+      expect(removeSpy).toHaveBeenCalledWith('pointerup', expect.any(Function));
+      expect(removeSpy).toHaveBeenCalledWith(
+        'pointercancel',
+        expect.any(Function)
+      );
       expect(instance.focusOwner).toBeNull();
     });
 
