@@ -1716,6 +1716,14 @@ describe('modus-wc-tooltip', () => {
       let observerCallback: MutationCallback | undefined;
       const observe = jest.fn();
       const disconnect = jest.fn();
+      let frameCallbacks: FrameRequestCallback[];
+      let rafSpy: jest.SpyInstance;
+      let cancelRafSpy: jest.SpyInstance;
+      const flushFrames = () => {
+        const callbacks = frameCallbacks;
+        frameCallbacks = [];
+        callbacks.forEach((cb) => cb(0));
+      };
 
       beforeEach(() => {
         originalMutationObserver = globalThis.MutationObserver;
@@ -1726,10 +1734,22 @@ describe('modus-wc-tooltip', () => {
           observerCallback = cb;
           return { observe, disconnect, takeRecords: jest.fn() };
         });
+        frameCallbacks = [];
+        rafSpy = jest
+          .spyOn(globalThis, 'requestAnimationFrame')
+          .mockImplementation((cb: FrameRequestCallback) => {
+            frameCallbacks.push(cb);
+            return frameCallbacks.length;
+          });
+        cancelRafSpy = jest
+          .spyOn(globalThis, 'cancelAnimationFrame')
+          .mockImplementation(() => undefined);
       });
 
       afterEach(() => {
         globalThis.MutationObserver = originalMutationObserver;
+        rafSpy.mockRestore();
+        cancelRafSpy.mockRestore();
       });
 
       it('should re-resolve the focus owner when a focusable element is added or removed', async () => {
@@ -1749,11 +1769,51 @@ describe('modus-wc-tooltip', () => {
         const button = document.createElement('button');
         tooltip.querySelector('span')?.appendChild(button);
         observerCallback?.([], {} as MutationObserver);
+        flushFrames();
         expect(instance.focusOwner).toBeNull();
 
         button.remove();
         observerCallback?.([], {} as MutationObserver);
+        flushFrames();
         expect(instance.focusOwner?.id).toBe('owner');
+      });
+
+      it('should re-resolve the focus owner once per frame when mutations arrive in a burst', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<div tabindex="0" id="owner"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div>`,
+        });
+        const instance = page.rootInstance;
+        const attachSpy = jest.spyOn(instance, 'attachFocusOwner');
+        rafSpy.mockClear();
+
+        observerCallback?.([], {} as MutationObserver);
+        observerCallback?.([], {} as MutationObserver);
+        observerCallback?.([], {} as MutationObserver);
+        expect(rafSpy).toHaveBeenCalledTimes(1);
+        expect(attachSpy).not.toHaveBeenCalled();
+
+        flushFrames();
+        expect(attachSpy).toHaveBeenCalledTimes(1);
+        expect(instance.contentFrame).toBeUndefined();
+      });
+
+      it('should cancel a pending re-resolve on disconnect', async () => {
+        const page = await newSpecPage({
+          components: [ModusWcTooltip],
+          html: `<modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip>`,
+        });
+        const instance = page.rootInstance;
+
+        observerCallback?.([], {} as MutationObserver);
+        const frame = instance.contentFrame;
+        expect(frame).toBeDefined();
+
+        getTooltip(page).remove();
+        await page.waitForChanges();
+
+        expect(cancelRafSpy).toHaveBeenCalledWith(frame);
+        expect(instance.contentFrame).toBeUndefined();
       });
 
       it('should disconnect the content observer on disconnect', async () => {

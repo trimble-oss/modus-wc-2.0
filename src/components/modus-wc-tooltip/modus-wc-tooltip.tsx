@@ -56,6 +56,7 @@ export class ModusWcTooltip {
   private triggerElement: HTMLElement | null = null;
   private focusOwner: HTMLElement | null = null;
   private contentObserver?: MutationObserver;
+  private contentFrame?: number;
   private isHovered = false;
   private isFocused = false;
   private showDelayTimer?: ReturnType<typeof setTimeout>;
@@ -230,6 +231,10 @@ export class ModusWcTooltip {
     window.removeEventListener('scroll', this.handleWindowScroll, true);
     this.contentObserver?.disconnect();
     this.contentObserver = undefined;
+    if (this.contentFrame !== undefined) {
+      cancelAnimationFrame(this.contentFrame);
+      this.contentFrame = undefined;
+    }
     this.detachFocusOwner();
   }
 
@@ -255,12 +260,22 @@ export class ModusWcTooltip {
     node.addEventListener('blur', this.handleOwnerBlur);
   }
 
-  /** Light DOM has no `slotchange`, so re-resolve the owner when slotted content changes. */
+  /**
+   * Light DOM has no `slotchange`, so re-resolve the owner when slotted content changes.
+   * Re-evaluation is batched to one per animation frame so mutation bursts (e.g. rendering
+   * a list) don't repeat the descendant query and ancestor walk.
+   * The re-resolve must stay read-only on observed nodes (no `disabled`/`href`/`tabindex`
+   * writes inside the subtree), otherwise the observer would retrigger itself.
+   */
   private observeContent() {
     if (typeof MutationObserver === 'undefined') return;
     this.contentObserver = new MutationObserver(() => {
-      this.detachFocusOwner();
-      this.attachFocusOwner();
+      if (this.contentFrame !== undefined) return;
+      this.contentFrame = requestAnimationFrame(() => {
+        this.contentFrame = undefined;
+        this.detachFocusOwner();
+        this.attachFocusOwner();
+      });
     });
     this.contentObserver.observe(this.el, {
       attributeFilter: ['disabled', 'href', 'tabindex'],
