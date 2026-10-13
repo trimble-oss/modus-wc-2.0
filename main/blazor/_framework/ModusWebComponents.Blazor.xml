@@ -2067,7 +2067,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenuItem.TooltipContent">
             <summary>
-            The tooltip text to display when hovering over the menu item.
+            The tooltip text to display when the menu item is hovered or receives keyboard focus.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenuItem.TooltipPosition">
@@ -3958,7 +3958,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTreeItem.TooltipContent">
             <summary>
-            The tooltip text to display when hovering over the tree item.
+            The tooltip text to display when the tree item is hovered or receives keyboard focus.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTreeItem.TooltipPosition">
