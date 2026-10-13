@@ -214,8 +214,10 @@ describe('modus-wc-help-menu', () => {
     rowButton(itemByLabel(page.root!, 'Help')).click();
     await page.waitForChanges();
 
-    await helpMenu.reset();
+    const done = helpMenu.reset();
     await page.waitForChanges();
+    await page.waitForChanges();
+    await done;
 
     expect(page.root!.querySelector('.modus-wc-help-menu-title')).toBeNull();
     expect(itemByLabel(page.root!, 'About').hidden).toBe(false);
@@ -551,73 +553,188 @@ describe('modus-wc-help-menu', () => {
     querySpy.mockRestore();
   });
 
-  it('should no-op pending back focus when the header is not rendered', async () => {
+  it('should no-op back focus when the header is not rendered', async () => {
     const page = await newSpecPage({ components, html: markup });
     const harness = page.rootInstance as unknown as {
-      applyPendingFocus: () => void;
-      pendingFocus: 'back' | 'root' | null;
+      applyFocus: (focus: 'back' | 'root') => void;
     };
-    harness.pendingFocus = 'back';
     expect(() =>
-      harness.applyPendingFocus.call(page.rootInstance)
+      harness.applyFocus.call(page.rootInstance, 'back')
     ).not.toThrow();
+  });
+
+  it('should move focus to the next row on Tab inside the menu', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const helpLi = rowLi(itemByLabel(page.root!, 'Help'))!;
+    const aboutLi = rowLi(itemByLabel(page.root!, 'About'))!;
+    const moreLi = rowLi(itemByLabel(page.root!, 'More'))!;
+    const aboutFocus = jest.spyOn(aboutLi, 'focus');
+
+    Object.defineProperty(document, 'activeElement', {
+      configurable: true,
+      get: () => helpLi,
+    });
+    const tab = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+    helpLi.dispatchEvent(tab);
+    expect(aboutFocus).toHaveBeenCalled();
+    expect(tab.defaultPrevented).toBe(true);
+
+    // Shift+Tab before the first row and Tab past the last row leave the menu.
+    const shiftTab = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      shiftKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    helpLi.dispatchEvent(shiftTab);
+    expect(shiftTab.defaultPrevented).toBe(false);
+
+    Object.defineProperty(document, 'activeElement', {
+      configurable: true,
+      get: () => moreLi,
+    });
+    const lastTab = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+    moreLi.dispatchEvent(lastTab);
+    expect(lastTab.defaultPrevented).toBe(false);
+
+    // Focus outside the rows is left to the browser.
+    Object.defineProperty(document, 'activeElement', {
+      configurable: true,
+      get: () => document.body,
+    });
+    const outside = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+    page.root!.dispatchEvent(outside);
+    expect(outside.defaultPrevented).toBe(false);
+
+    delete (document as unknown as { activeElement?: unknown }).activeElement;
+  });
+
+  it('should not leave Back selected when returning to a parent panel', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+    rowButton(itemByLabel(page.root!, 'Product Guides')).click();
+    await page.waitForChanges();
+
+    const back = page.root!.querySelector(
+      '.modus-wc-help-menu-back'
+    ) as HTMLElement & { selected?: boolean };
+    rowButton(back).click();
+    await page.waitForChanges();
+
+    const parentBack = page.root!.querySelector(
+      '.modus-wc-help-menu-back'
+    ) as HTMLElement & { selected?: boolean };
+    expect(
+      page.root!.querySelector('.modus-wc-help-menu-title')?.textContent
+    ).toBe('Help');
+    expect(parentBack.selected).toBe(false);
+    expect(
+      rowButton(parentBack).classList.contains('modus-wc-menu-item-selected')
+    ).toBe(false);
+  });
+
+  it('should resolve reset only after the root level has rendered', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+
+    let resolved = false;
+    const done = (page.rootInstance as ModusWcHelpMenu)
+      .reset()
+      .then(() => (resolved = true));
+    await Promise.resolve();
+    expect(resolved).toBe(false);
+
+    await page.waitForChanges();
+    await done;
+    expect(page.root!.querySelector('.modus-wc-help-menu-title')).toBeNull();
+    expect(itemByLabel(page.root!, 'About').hidden).toBe(false);
+  });
+
+  it('should re-sync when slotted markup changes and stop observing on disconnect', async () => {
+    const callbacks: MutationCallback[] = [];
+    const disconnect = jest.fn();
+    const original = globalThis.MutationObserver;
+    globalThis.MutationObserver = class {
+      constructor(callback: MutationCallback) {
+        callbacks.push(callback);
+      }
+      observe() {}
+      disconnect() {
+        disconnect();
+      }
+      takeRecords() {
+        return [];
+      }
+    };
+
+    const page = await newSpecPage({ components, html: markup });
+    const about = itemByLabel(page.root!, 'About');
+    about.hidden = true;
+    callbacks.forEach((callback) => callback([], {} as MutationObserver));
+    expect(about.hidden).toBe(false);
+
+    // A reset pending when the host detaches still settles.
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+    const instance = page.rootInstance as ModusWcHelpMenu & {
+      disconnectedCallback: () => void;
+    };
+    const pending = instance.reset();
+    instance.disconnectedCallback();
+    await pending;
+    expect(disconnect).toHaveBeenCalled();
+    expect(() => instance.disconnectedCallback()).not.toThrow();
+    globalThis.MutationObserver = original;
+  });
+
+  it('should fall back to a frame sync without MutationObserver', async () => {
+    const original = globalThis.MutationObserver;
+    const raf = globalThis.requestAnimationFrame;
+    // @ts-expect-error exercising environments without MutationObserver
+    globalThis.MutationObserver = undefined;
+    const frames: FrameRequestCallback[] = [];
+    globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
+      frames.push(cb);
+      return 0;
+    };
+
+    const page = await newSpecPage({ components, html: markup });
+    expect(frames.length).toBeGreaterThan(0);
+    frames.forEach((cb) => cb(0));
+
+    // @ts-expect-error exercising environments without animation frames
+    globalThis.requestAnimationFrame = undefined;
+    const second = await newSpecPage({ components, html: markup });
+    expect(second.root).toBeTruthy();
+
+    globalThis.requestAnimationFrame = raf;
+    globalThis.MutationObserver = original;
+    expect(page.root).toBeTruthy();
   });
 
   it('should animate panel transitions when motion is allowed', async () => {
     const page = await newSpecPage({ components, html: markup });
     const motion = page.rootInstance as unknown as {
-      pendingMotion: 'forward' | 'back' | null;
-      applyPendingMotion: () => void;
-    };
-    const list = page.root!.querySelector(
-      'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
-    ) as HTMLElement;
-    Object.defineProperty(list, 'offsetWidth', { value: 0 });
-    const cancel = jest.fn();
-    const animate = jest.fn().mockReturnValue({ cancel });
-    list.animate = animate;
-
-    const matchMediaMock = jest
-      .spyOn(window, 'matchMedia')
-      .mockReturnValue(mockPrefersReducedMotionMedia(false));
-
-    motion.pendingMotion = null;
-    motion.applyPendingMotion();
-    expect(animate).not.toHaveBeenCalled();
-
-    const timing = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0, 1)' };
-
-    motion.pendingMotion = 'forward';
-    motion.applyPendingMotion();
-    expect(animate).toHaveBeenCalledWith(
-      [
-        { opacity: 0, transform: 'translateX(12px)' },
-        { opacity: 1, transform: 'translateX(0)' },
-      ],
-      timing
-    );
-
-    motion.pendingMotion = 'back';
-    motion.applyPendingMotion();
-    expect(animate).toHaveBeenLastCalledWith(
-      [
-        { opacity: 0, transform: 'translateX(-12px)' },
-        { opacity: 1, transform: 'translateX(0)' },
-      ],
-      timing
-    );
-
-    matchMediaMock.mockRestore();
-  });
-
-  it('should slide a static snapshot of the previous panel out while drilling', async () => {
-    const page = await newSpecPage({ components, html: markup });
-    const motion = page.rootInstance as unknown as {
-      captureOutgoing: () => void;
-      applyPendingMotion: () => void;
+      runMotion: (transition: {
+        direction: 'forward' | 'back';
+        focus: 'back' | 'root';
+        fromHeight: number;
+      }) => void;
       stopMotion: () => void;
-      staticCopy: (node: Node) => Node | null;
-      pendingMotion: 'forward' | 'back' | null;
     };
     const list = page.root!.querySelector(
       'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
@@ -625,32 +742,17 @@ describe('modus-wc-help-menu', () => {
     const track = page.root!.querySelector(
       '.modus-wc-help-menu-track'
     ) as HTMLElement;
-
-    Object.defineProperty(list, 'offsetWidth', { value: 200 });
-    const incoming = {
-      cancel: jest.fn(),
-      onfinish: null as (() => void) | null,
-    };
-    list.animate = jest.fn().mockReturnValue(incoming);
+    Object.defineProperty(list, 'offsetWidth', { value: 0 });
+    const animate = jest.fn().mockReturnValue({ cancel: jest.fn() });
+    list.animate = animate;
     const trackAnimate = jest.fn().mockReturnValue({ cancel: jest.fn() });
     track.animate = trackAnimate;
-    const ghostAnimate = jest.fn().mockReturnValue({ cancel: jest.fn() });
-    const createElement = document.createElement.bind(document);
-    const createSpy = jest
-      .spyOn(document, 'createElement')
-      .mockImplementation((tag: string) => {
-        const el = createElement(tag);
-        if (tag === 'div') el.animate = ghostAnimate;
-        return el;
-      });
-    let heights = [240, 196];
     Object.defineProperty(track, 'offsetHeight', {
       configurable: true,
-      get: () => heights[0],
+      get: () => 196,
     });
     const originalRaf = globalThis.requestAnimationFrame;
     globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
-      heights = heights.slice(1);
       cb(0);
       return 0;
     };
@@ -658,67 +760,48 @@ describe('modus-wc-help-menu', () => {
       .spyOn(window, 'matchMedia')
       .mockReturnValue(mockPrefersReducedMotionMedia(false));
 
-    motion.captureOutgoing();
-    createSpy.mockRestore();
-    motion.pendingMotion = 'forward';
-    motion.applyPendingMotion();
+    const timing = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0, 1)' };
 
-    const ghost = track.lastElementChild as HTMLElement;
-    expect(ghost.getAttribute('aria-hidden')).toBe('true');
-    expect(ghost.hasAttribute('inert')).toBe(true);
-    expect(track.style.overflow).toBe('hidden');
-    expect(ghostAnimate).toHaveBeenCalled();
+    motion.runMotion({ direction: 'forward', focus: 'back', fromHeight: 240 });
+    expect(animate).toHaveBeenCalledWith(
+      [
+        { opacity: 0, transform: 'translateX(12px)' },
+        { opacity: 1, transform: 'translateX(0)' },
+      ],
+      timing
+    );
     expect(trackAnimate).toHaveBeenCalledWith(
       [{ height: '240px' }, { height: '196px' }],
-      expect.anything()
+      timing
     );
 
-    incoming.onfinish?.();
-    expect(track.contains(ghost)).toBe(false);
-    expect(track.style.overflow).toBe('');
-
-    // Same height and no animate support on the snapshot: no extra animations.
-    heights = [196, 196];
     trackAnimate.mockClear();
-    motion.captureOutgoing();
-    motion.pendingMotion = 'back';
-    motion.applyPendingMotion();
+    motion.runMotion({ direction: 'back', focus: 'root', fromHeight: 196 });
+    expect(animate).toHaveBeenLastCalledWith(
+      [
+        { opacity: 0, transform: 'translateX(-12px)' },
+        { opacity: 1, transform: 'translateX(0)' },
+      ],
+      timing
+    );
     expect(trackAnimate).not.toHaveBeenCalled();
-    motion.stopMotion();
+
+    motion.runMotion({ direction: 'back', focus: 'root', fromHeight: 0 });
+    expect(trackAnimate).not.toHaveBeenCalled();
+
+    // @ts-expect-error track without Web Animations support
+    track.animate = undefined;
+    motion.runMotion({ direction: 'back', focus: 'root', fromHeight: 240 });
 
     // Without requestAnimationFrame the height step is skipped.
-    globalThis.requestAnimationFrame =
-      undefined as unknown as typeof requestAnimationFrame;
-    motion.captureOutgoing();
-    motion.pendingMotion = 'forward';
-    expect(() => motion.applyPendingMotion()).not.toThrow();
-    expect(trackAnimate).not.toHaveBeenCalled();
+    // @ts-expect-error exercising environments without animation frames
+    globalThis.requestAnimationFrame = undefined;
+    expect(() =>
+      motion.runMotion({ direction: 'forward', focus: 'back', fromHeight: 240 })
+    ).not.toThrow();
     motion.stopMotion();
+
     globalThis.requestAnimationFrame = originalRaf;
-
-    // Without a track there is nothing to snapshot.
-    track.remove();
-    motion.captureOutgoing();
-    expect((motion as unknown as { outgoing?: unknown }).outgoing).toBe(
-      undefined
-    );
-
-    const hidden = document.createElement('div');
-    hidden.hidden = true;
-    expect(motion.staticCopy(hidden)).toBeNull();
-    expect(motion.staticCopy(document.createComment('x'))).toBeNull();
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    expect(motion.staticCopy(svg)).not.toBe(svg);
-
-    const styleSpy = jest.spyOn(window, 'getComputedStyle').mockReturnValue({
-      0: 'color',
-      length: 1,
-      getPropertyValue: () => 'red',
-    } as unknown as CSSStyleDeclaration);
-    const copy = motion.staticCopy(document.createElement('span'));
-    expect((copy as HTMLElement).style.getPropertyValue('color')).toBe('red');
-    styleSpy.mockRestore();
-
     matchMediaMock.mockRestore();
   });
 
@@ -744,8 +827,7 @@ describe('modus-wc-help-menu', () => {
   it('should animate when matchMedia is unavailable', async () => {
     const page = await newSpecPage({ components, html: markup });
     const motion = page.rootInstance as unknown as {
-      pendingMotion: 'forward' | 'back' | null;
-      applyPendingMotion: () => void;
+      runMotion: (transition: object) => void;
     };
     const list = page.root!.querySelector(
       'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
@@ -760,8 +842,7 @@ describe('modus-wc-help-menu', () => {
       value: undefined,
     });
 
-    motion.pendingMotion = 'forward';
-    motion.applyPendingMotion();
+    motion.runMotion({ direction: 'forward', focus: 'back', fromHeight: 0 });
     expect(animateMock).toHaveBeenCalled();
 
     Object.defineProperty(window, 'matchMedia', {
@@ -774,8 +855,7 @@ describe('modus-wc-help-menu', () => {
   it('should skip panel motion when reduced motion is preferred', async () => {
     const page = await newSpecPage({ components, html: markup });
     const motion = page.rootInstance as unknown as {
-      pendingMotion: 'forward' | 'back' | null;
-      applyPendingMotion: () => void;
+      runMotion: (transition: object) => void;
     };
     const list = page.root!.querySelector(
       'modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu'
@@ -787,8 +867,7 @@ describe('modus-wc-help-menu', () => {
       .spyOn(window, 'matchMedia')
       .mockReturnValue(mockPrefersReducedMotionMedia(true));
 
-    motion.pendingMotion = 'forward';
-    motion.applyPendingMotion();
+    motion.runMotion({ direction: 'forward', focus: 'back', fromHeight: 0 });
     expect(animateMock).not.toHaveBeenCalled();
 
     matchMediaMock.mockRestore();
@@ -797,8 +876,7 @@ describe('modus-wc-help-menu', () => {
   it('should skip panel motion when the list cannot animate', async () => {
     const page = await newSpecPage({ components, html: markup });
     const motion = page.rootInstance as unknown as {
-      pendingMotion: 'forward' | 'back' | null;
-      applyPendingMotion: () => void;
+      runMotion: (transition: object) => void;
     };
     const host = page.root as HTMLElement;
     const querySpy = jest.spyOn(host, 'querySelector');
@@ -815,8 +893,9 @@ describe('modus-wc-help-menu', () => {
       .spyOn(window, 'matchMedia')
       .mockReturnValue(mockPrefersReducedMotionMedia(false));
 
-    motion.pendingMotion = 'forward';
-    expect(() => motion.applyPendingMotion()).not.toThrow();
+    expect(() =>
+      motion.runMotion({ direction: 'forward', focus: 'back', fromHeight: 0 })
+    ).not.toThrow();
 
     querySpy.mockRestore();
     matchMediaMock.mockRestore();
@@ -833,14 +912,12 @@ describe('modus-wc-help-menu', () => {
     const harness = component as unknown as {
       drillItemFromEvent: (event: Event) => HTMLElement | null;
       openItem: (item: HTMLElement) => void;
-      applyPendingFocus: () => void;
-      pendingFocus: 'back' | 'root' | null;
+      applyFocus: (focus: 'back' | 'root') => void;
       stack: { index: number; label: string }[];
       stackElements: () => HTMLElement[];
       isInsidePanel: (node: HTMLElement, item: HTMLElement) => boolean;
-      scheduleSyncPanels: () => void;
       syncPanels: () => void;
-      syncChevron: (item: HTMLElement) => void;
+      syncChevron: (item: HTMLElement, isDrill: boolean) => void;
       rowButton: (item: HTMLElement) => HTMLButtonElement | null;
       handleKeyDown: (event: KeyboardEvent) => void;
     };
@@ -898,44 +975,68 @@ describe('modus-wc-help-menu', () => {
     const backButton = page.root!.querySelector(
       '.modus-wc-help-menu-back button'
     ) as HTMLButtonElement;
-    harness.pendingFocus = 'back';
     const backFocus = jest.spyOn(backButton, 'focus');
-    call(harness.applyPendingFocus);
+    call(harness.applyFocus, 'back');
     expect(backFocus).toHaveBeenCalled();
     backFocus.mockRestore();
 
-    await (page.rootInstance as ModusWcHelpMenu).reset();
+    const resetting = (page.rootInstance as ModusWcHelpMenu).reset();
     await page.waitForChanges();
-    harness.pendingFocus = 'root';
-    call(harness.applyPendingFocus);
+    await resetting;
+    await (page.rootInstance as ModusWcHelpMenu).reset();
+    call(harness.applyFocus, 'root');
 
     const bareItem = document.createElement('modus-wc-menu-item');
     page.root!.appendChild(bareItem);
     expect(call(harness.rowButton, bareItem)).toBeNull();
-    call(harness.syncChevron, bareItem);
+    call(harness.syncChevron, bareItem, true);
 
     const chevron = document.createElement('span');
     chevron.className = 'modus-wc-help-menu-chevron';
     rowButton(about).appendChild(chevron);
-    call(harness.syncChevron, about);
+    call(harness.syncChevron, about, false);
     expect(about.querySelector('.modus-wc-help-menu-chevron')).toBeNull();
 
     harness.stack = [{ index: 99, label: 'Missing' }];
     expect(call(harness.stackElements)).toEqual([]);
 
+    // A stacked item whose panel has no items yields an empty level.
+    const emptyDrill = document.createElement('modus-wc-menu-item');
+    const emptyPanel = document.createElement('div');
+    emptyPanel.setAttribute('slot', 'panel');
+    emptyDrill.appendChild(emptyPanel);
+    page.root!.appendChild(emptyDrill);
+    harness.stack = [];
+    const rootIndex = Array.from(
+      page.root!.querySelectorAll('modus-wc-menu-item')
+    )
+      .filter(
+        (item) =>
+          !item.classList.contains('modus-wc-help-menu-back') &&
+          !item.closest('[slot="panel"]')
+      )
+      .indexOf(emptyDrill);
+    harness.stack = [
+      { index: rootIndex, label: 'Empty' },
+      { index: 0, label: 'Deeper' },
+    ];
+    expect(call(harness.stackElements)).toEqual([emptyDrill]);
+    call(harness.syncPanels);
+
     expect(call(harness.isInsidePanel, trimbleInPanel, help)).toBe(true);
 
-    const raf = globalThis.requestAnimationFrame;
-    // @ts-expect-error exercising sync without animation frames
-    globalThis.requestAnimationFrame = undefined;
-    call(harness.scheduleSyncPanels);
-    globalThis.requestAnimationFrame = raf;
-
-    call(harness.scheduleSyncPanels);
-    await new Promise<void>((resolve) =>
-      requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
-    );
-
-    call(harness.syncPanels);
+    // Navigating before the track exists starts without a height to ease from.
+    harness.stack = [];
+    await page.waitForChanges();
+    const trackless = component as unknown as {
+      trackEl: () => HTMLElement | null;
+      transition?: { fromHeight?: number };
+    };
+    const trackSpy = jest.spyOn(trackless, 'trackEl').mockReturnValue(null);
+    call(harness.openItem, itemByLabel(page.root!, 'About'));
+    call(harness.openItem, trimbleInPanel.closest('modus-wc-menu-item')!);
+    rowButton(help).click();
+    expect(trackless.transition?.fromHeight).toBeUndefined();
+    trackSpy.mockRestore();
   });
 });

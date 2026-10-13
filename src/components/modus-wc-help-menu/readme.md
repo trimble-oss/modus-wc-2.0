@@ -22,7 +22,8 @@ and the parent item's label (without its icon) head each nested panel.
 
 ### `reset() => Promise<void>`
 
-Clears the panel stack and returns to the root items.
+Clears the panel stack and returns to the root items. Resolves after the root
+level has rendered.
 
 #### Returns
 
