@@ -1635,7 +1635,7 @@
         </member>
         <member name="M:ModusWebComponents.Blazor.ModusWcHelpMenu.Reset">
             <summary>
-            Clears the panel stack and returns to the root items.
+            Clears the panel stack and returns to the root items. Resolves after the root level has rendered.
             </summary>
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcIcon">
