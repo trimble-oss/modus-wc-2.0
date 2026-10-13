@@ -480,19 +480,6 @@ export class ModusWcContentTree {
     this.handleExpandToggle(event, node);
   }
 
-  // Screen readers in browse/scan mode (Narrator, NVDA, JAWS) activate a
-  // button with a synthesized click (`detail` 0) instead of sending Space or
-  // Enter keydowns, so that click grabs and drops too. Real pointer clicks
-  // (`detail` >= 1) are ignored; the pointer drags the handle instead.
-  private handleDragHandleClick(event: Event, node: ITreeNode): void {
-    if (!(event instanceof MouseEvent) || event.detail !== 0) return;
-    if (this.keyboardGrabId === node.id) {
-      this.commitKeyboardGrab();
-    } else if (!this.keyboardGrabId && this.isKeyboardDraggable(node)) {
-      this.beginKeyboardGrab(node);
-    }
-  }
-
   private isKeyboardDraggable(node: ITreeNode): boolean {
     return (
       !!this.allowDragDrop &&
@@ -1767,9 +1754,6 @@ export class ModusWcContentTree {
             shape="square"
             size={this.getControlButtonSize()}
             variant="borderless"
-            onButtonClick={(e: CustomEvent<Event>) =>
-              this.handleDragHandleClick(e.detail, node)
-            }
             onDragStart={(e: DragEvent) => this.handleDragStart(e, node)}
             onDragEnd={this.handleDragEnd}
           >
@@ -1994,12 +1978,7 @@ export class ModusWcContentTree {
     const nodes = this.getRenderNodes();
 
     return (
-      <Host
-        class={this.customClass || undefined}
-        // While grabbed, screen readers must pass arrow keys through to the
-        // tree instead of moving their reading cursor to the next item.
-        role={this.keyboardGrabId ? 'application' : undefined}
-      >
+      <Host class={this.customClass || undefined}>
         {this.allowDragDrop ? this.renderKeyboardDragText() : null}
         {this.renderControls()}
         {/* The inner menu stays in 'single' mode so a row click only sets the

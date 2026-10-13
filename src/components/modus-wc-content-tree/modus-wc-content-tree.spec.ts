@@ -3665,7 +3665,7 @@ describe('modus-wc-content-tree', () => {
     expect(statusText(page)).toContain('Space or Enter to drop');
     expect(statusText(page)).toContain('Original position.');
     expect(handle?.getAttribute('aria-pressed')).toBe('true');
-    expect(page.root?.getAttribute('role')).toBe('application');
+    expect(page.root?.hasAttribute('role')).toBe(false);
     expect(
       findTreeItem(page, 'leaf-a')
         ?.querySelector('li')
@@ -4462,49 +4462,6 @@ describe('modus-wc-content-tree', () => {
     slots.mockRestore();
   });
 
-  it('should grab and drop from a screen reader click on the handle but ignore pointer clicks', async () => {
-    const { page, component } = await createTreePage({
-      allowDragDrop: true,
-      expandedNodeIds: ['root-1'],
-    });
-    const nodeMove = jest.fn();
-    page.root?.addEventListener('nodeMove', nodeMove);
-    const harness = component as unknown as {
-      handleDragHandleClick: (event: Event, node: ITreeNode) => void;
-    };
-    const click = (detail: number) => new MouseEvent('click', { detail });
-
-    harness.handleDragHandleClick(click(1), getNode('leaf-a'));
-    harness.handleDragHandleClick(
-      new KeyboardEvent('keydown', { key: 'Enter' }),
-      getNode('leaf-a')
-    );
-    await page.waitForChanges();
-    expect(component.keyboardGrabId).toBeUndefined();
-
-    harness.handleDragHandleClick(click(0), getNode('leaf-a'));
-    await page.waitForChanges();
-    expect(component.keyboardGrabId).toBe('leaf-a');
-    expect(statusText(page)).toContain('Grabbed Overview');
-
-    // A click on another handle while grabbed does nothing.
-    harness.handleDragHandleClick(click(0), getNode('root-2'));
-    expect(component.keyboardGrabId).toBe('leaf-a');
-
-    await pressKey(page, component, 'ArrowDown', dragHandle(page, 'leaf-a'));
-    harness.handleDragHandleClick(click(0), getNode('leaf-a'));
-    await page.waitForChanges();
-    expect(nodeMove).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: { id: 'leaf-a', targetId: 'parent-b', position: 'before' },
-      })
-    );
-
-    component.editingNodeId = 'root-2';
-    harness.handleDragHandleClick(click(0), getNode('root-2'));
-    expect(component.keyboardGrabId).toBeUndefined();
-  });
-
   it('should skip scrolling when the drop target row is not rendered', async () => {
     const { component } = await createTreePage({ allowDragDrop: true });
     const harness = component as unknown as {
@@ -4513,21 +4470,34 @@ describe('modus-wc-content-tree', () => {
     expect(() => harness.scrollDropTargetIntoView('missing')).not.toThrow();
   });
 
-  it('should route the drag handle buttonClick to the screen reader grab', async () => {
+  it('should not grab or drop when the handle receives a click without keydown', async () => {
     const { page, component } = await createTreePage({
       allowDragDrop: true,
       expandedNodeIds: ['root-1'],
     });
-    const host = page.root?.querySelector(
+    const nodeMove = jest.fn();
+    page.root?.addEventListener('nodeMove', nodeMove);
+    const handleHost = page.root?.querySelector(
       'modus-wc-button.modus-wc-content-tree-drag-handle[data-node-id="leaf-a"]'
     );
-    host?.dispatchEvent(
-      new CustomEvent('buttonClick', {
-        detail: new MouseEvent('click', { detail: 0 }),
-      })
-    );
+    const syntheticClick = () =>
+      handleHost?.dispatchEvent(
+        new CustomEvent('buttonClick', {
+          bubbles: true,
+          detail: new MouseEvent('click', { detail: 0 }),
+        })
+      );
+
+    syntheticClick();
+    await page.waitForChanges();
+    expect(component.keyboardGrabId).toBeUndefined();
+
+    await pressKey(page, component, 'Enter', dragHandle(page, 'leaf-a'));
+    await pressKey(page, component, 'ArrowDown', dragHandle(page, 'leaf-a'));
+    syntheticClick();
     await page.waitForChanges();
     expect(component.keyboardGrabId).toBe('leaf-a');
+    expect(nodeMove).not.toHaveBeenCalled();
   });
 
   it('should cancel instead of dropping on a stale target and focus a handle when one is present', async () => {
