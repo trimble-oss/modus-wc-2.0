@@ -619,6 +619,58 @@ describe('modus-wc-help-menu', () => {
     focusSpy.mockRestore();
   });
 
+  it('should jump with Home and End and open a panel with ArrowRight', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const help = itemByLabel(page.root!, 'Help');
+    const helpFocus = jest.spyOn(rowLi(help)!, 'focus');
+    const moreFocus = jest.spyOn(
+      rowLi(itemByLabel(page.root!, 'More'))!,
+      'focus'
+    );
+
+    keydown(page.root!, 'End');
+    expect(moreFocus).toHaveBeenCalled();
+    keydown(page.root!, 'Home');
+    expect(helpFocus).toHaveBeenCalled();
+
+    keydown(page.root!, 'ArrowRight', rowLi(help));
+    await page.waitForChanges();
+    expect(
+      page.root!.querySelector('.modus-wc-help-menu-title')?.textContent
+    ).toBe('Help');
+
+    // Home/End are ignored when nothing is focusable.
+    const empty = await newSpecPage({
+      components,
+      html: '<modus-wc-help-menu></modus-wc-help-menu>',
+    });
+    const event = new KeyboardEvent('keydown', {
+      key: 'Home',
+      bubbles: true,
+      cancelable: true,
+    });
+    empty.root!.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('should only apply focus for the latest navigation', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const harness = page.rootInstance as unknown as {
+      applyFocus: (focus: HTMLElement) => Promise<void>;
+    };
+    const help = itemByLabel(page.root!, 'Help');
+    const about = itemByLabel(page.root!, 'About');
+    const helpFocus = jest.spyOn(rowLi(help)!, 'focus');
+    const aboutFocus = jest.spyOn(rowLi(about)!, 'focus');
+
+    const stale = harness.applyFocus.call(page.rootInstance, help);
+    const latest = harness.applyFocus.call(page.rootInstance, about);
+    await Promise.all([stale, latest]);
+
+    expect(helpFocus).not.toHaveBeenCalled();
+    expect(aboutFocus).toHaveBeenCalled();
+  });
+
   it('should move focus to the next row on Tab inside the menu', async () => {
     const page = await newSpecPage({ components, html: markup });
     const helpLi = rowLi(itemByLabel(page.root!, 'Help'))!;

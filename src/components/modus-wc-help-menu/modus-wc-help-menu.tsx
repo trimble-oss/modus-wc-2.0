@@ -49,6 +49,7 @@ export class ModusWcHelpMenu {
   private animations: Animation[] = [];
   private observer?: MutationObserver;
   private renderWaiters: (() => void)[] = [];
+  private focusToken = 0;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -172,6 +173,15 @@ export class ModusWcHelpMenu {
       return;
     }
 
+    if (event.key === 'Home' || event.key === 'End') {
+      const items = this.focusables();
+      if (!items.length) return;
+      event.preventDefault();
+      event.stopPropagation();
+      items[event.key === 'Home' ? 0 : items.length - 1].focus();
+      return;
+    }
+
     if (event.key === 'Tab') {
       // Tab walks the rows; only leaving past either end reaches the dropdown, which closes.
       const next = this.adjacentFocusable(event.shiftKey ? -1 : 1);
@@ -182,7 +192,11 @@ export class ModusWcHelpMenu {
       return;
     }
 
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (
+      event.key === 'Enter' ||
+      event.key === ' ' ||
+      event.key === 'ArrowRight'
+    ) {
       const item = this.drillItemFromEvent(event);
       if (!item) return;
       event.preventDefault();
@@ -212,11 +226,15 @@ export class ModusWcHelpMenu {
         : focus;
     if (!item) return;
 
+    // A newer navigation may start while this item is still rendering; only the latest wins.
+    const token = ++this.focusToken;
     await (
       item as HTMLElement & {
         componentOnReady?: () => Promise<unknown>;
       }
     ).componentOnReady?.();
+
+    if (token !== this.focusToken) return;
 
     const row = this.rowLi(item);
     if (row && this.el.contains(row)) row.focus();

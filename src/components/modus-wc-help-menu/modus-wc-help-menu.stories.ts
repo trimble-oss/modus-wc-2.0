@@ -56,7 +56,7 @@ const meta: Meta<HelpMenuArgs> = {
     docs: {
       description: {
         component:
-          'Drill-down menu for a dropdown. A menu item with a nested `slot="panel"` shows a right chevron and slides to that panel. The panel title is the parent label without its icon. In apps, compose `modus-wc-help-menu` inside `modus-wc-dropdown-menu` (`slot="menu"`). Story controls adjust the **dropdown** (`menu-bordered`, `menu-offset`, `menu-placement`, `menu-size`, `menu-visible`), not props on `modus-wc-help-menu` itself.',
+          'Drill-down menu for a dropdown. A menu item with a nested `slot="panel"` shows a right chevron and slides to that panel. The panel title is the parent label without its icon. In apps, compose `modus-wc-help-menu` inside `modus-wc-dropdown-menu` (`slot="menu"`). Story controls adjust the **dropdown** (`menu-bordered`, `menu-offset`, `menu-placement`, `menu-size`, `menu-visible`), not props on `modus-wc-help-menu` itself.\n\n**Keyboard:** ArrowUp/ArrowDown move between rows, Home/End jump to the first/last row, Enter/Space/ArrowRight open a panel (focus moves to Back), Escape/ArrowLeft/Back return to the parent (focus returns to the opened item). Tab/Shift+Tab move between rows; leaving past either end closes the dropdown and focuses its trigger.',
       },
     },
     layout: 'padded',
