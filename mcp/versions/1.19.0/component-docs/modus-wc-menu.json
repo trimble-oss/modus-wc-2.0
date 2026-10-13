@@ -1,0 +1,106 @@
+{
+  "description": "A customizable menu component used to display a list of li elements vertically or horizontally. The component supports a `<slot>` for injecting custom li elements inside the ul element.",
+  "properties": [
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Indicates that the menu should have a border.",
+      "default": null,
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the ul element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the menu.",
+      "default": "'vertical'",
+      "mutable": false,
+      "end_line": 40
+    },
+    {
+      "name": "selectionMode",
+      "type": "SelectionMode",
+      "description": "The selection mode of the menu.",
+      "default": "'single'",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the menu.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "isSubMenu",
+      "type": "boolean",
+      "description": "Indicates that this menu is a submenu (dropdown).",
+      "default": null,
+      "mutable": false,
+      "end_line": 54
+    }
+  ],
+  "events": [
+    {
+      "name": "menuFocusout",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the menu loses focus.",
+      "end_line": 57
+    },
+    {
+      "name": "menuSelectionChange",
+      "detail": "{ selectedItems: HTMLElement[]; }",
+      "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected menu item elements.",
+      "end_line": 62
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-menu\n  aria-label=\"Menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-menu-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item label=\"Medium\" value=\"2\"></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Bordered\"\n    value=\"3\"\n    bordered=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Sub-label\"\n    value=\"3\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Selected\"\n    value=\"3\"\n    selected=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Start Icon\"\n    value=\"3\"\n  >\n    <modus-wc-icon slot=\"start-icon\" name=\"info\"></modus-wc-icon>\n  </modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Disabled\"\n    value=\"3\"\n    disabled=\"true\"\n  ></modus-wc-menu-item>\n</modus-wc-menu>",
+    "variations": [],
+    "args": {
+      "orientation": "'vertical'",
+      "selection-mode": "'single'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "menuFocusout",
+      "menuSelectionChange",
+      "itemSelect"
+    ]
+  },
+  "tag": "modus-wc-menu",
+  "storyExample": {
+    "template": "<modus-wc-menu\n  aria-label=\"Menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-menu-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item label=\"Medium\" value=\"2\"></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Bordered\"\n    value=\"3\"\n    bordered=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Sub-label\"\n    value=\"3\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Selected\"\n    value=\"3\"\n    selected=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Start Icon\"\n    value=\"3\"\n  >\n    <modus-wc-icon slot=\"start-icon\" name=\"info\"></modus-wc-icon>\n  </modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Disabled\"\n    value=\"3\"\n    disabled=\"true\"\n  ></modus-wc-menu-item>\n</modus-wc-menu>",
+    "args": {
+      "orientation": "'vertical'",
+      "selection-mode": "'single'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "menuFocusout",
+      "menuSelectionChange",
+      "itemSelect"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ref } from 'lit/directives/ref.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize, Orientation, SelectionMode } from '../types';\n\ninterface MenuArgs {\n  bordered?: boolean;\n  'custom-class'?: string;\n  orientation?: Orientation;\n  'selection-mode'?: SelectionMode;\n  size?: ModusSize;\n}\n\nconst meta: Meta<MenuArgs> = {\n  title: 'Components/Menu',\n  component: 'modus-wc-menu',\n  args: {\n    orientation: 'vertical',\n    'selection-mode': 'single',\n    size: 'md',\n  },\n  argTypes: {\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    'selection-mode': {\n      control: { type: 'select' },\n      options: ['single', 'multiple'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['menuFocusout', 'menuSelectionChange', 'itemSelect'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<MenuArgs>;\n\nexport const Default: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-menu\n  aria-label=\"Menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-menu-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item label=\"Medium\" value=\"2\"></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Bordered\"\n    value=\"3\"\n    bordered=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Sub-label\"\n    value=\"3\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Selected\"\n    value=\"3\"\n    selected=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Start Icon\"\n    value=\"3\"\n  >\n    <modus-wc-icon slot=\"start-icon\" name=\"info\"></modus-wc-icon>\n  </modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Disabled\"\n    value=\"3\"\n    disabled=\"true\"\n  ></modus-wc-menu-item>\n</modus-wc-menu>\n    `;\n  },\n};\n\nexport const MultiSelect: Story = {\n  args: {\n    'selection-mode': 'multiple',\n  },\n  render: (args) => {\n    let outputEl: Element | undefined;\n\n    const handleSelectionChange = (\n      e: CustomEvent<{ selectedItems: HTMLElement[] }>\n    ) => {\n      if (!outputEl) return;\n      const { selectedItems } = e.detail;\n      outputEl.textContent =\n        selectedItems.length > 0\n          ? `Selected: ${selectedItems.map((i) => i.getAttribute('value')).join(', ')}`\n          : 'Selected: none';\n    };\n\n    // prettier-ignore\n    return html`\n<modus-wc-menu\n  aria-label=\"Menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n  @menuSelectionChange=${handleSelectionChange}\n>\n  <modus-wc-menu-item\n    label=\"Menu Item 1\"\n    value=\"1\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item label=\"Menu Item 2\" value=\"2\"></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Menu Item 3\"\n    value=\"3\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Menu Item 4\"\n    value=\"4\"\n    bordered=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Menu Item 5\"\n    value=\"5\"\n    sub-label=\"Menu Item 5 Sub-label\"\n  ></modus-wc-menu-item>\n</modus-wc-menu>\n<p ${ref((el) => { outputEl = el; })} style=\"font-size: 0.875rem; margin-top: 0.5rem; color: var(--modus-wc-color-gray-6);\">Selected: none</p>\n    `;\n  },\n};\n\nexport const CustomMenu: Story = {\n  render: () => {\n    // prettier-ignore\n    return html`\n<style>\n  .custom-menu-width {\n    width: 400px;\n  }\n  .custom-flex-row {\n    display: flex;\n    align-items: center;\n  }\n  .custom-nested-row {\n    padding-inline-start: 3rem;\n  }\n  .custom-justify-end {\n    margin-left: auto;\n  }\n  .green-square {\n    height: 18px;\n    width: 18px;\n    background-color: green;\n  }\n  .red-square {\n    height: 18px;\n    width: 18px;\n    background-color: red;\n  }\n</style>\n<modus-wc-menu\n  aria-label=\"Custom menu\"\n  custom-class=\"custom-menu-width\"\n>\n  <li>\n    <div class=\"custom-flex-row\">\n      <modus-wc-icon decorative=\"true\" name=\"expand_more\"></modus-wc-icon>\n      <modus-wc-button aria-label=\"Visible button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n        <modus-wc-icon aria-label=\"Visible icon\" name=\"visibility_on\"></modus-wc-icon>\n      </modus-wc-button>\n      <div>Parent</div>\n      <div class=\"custom-justify-end\">\n        <modus-wc-button aria-label=\"Actions button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n          <modus-wc-icon aria-label=\"Actions icon\" name=\"more_vertical\"></modus-wc-icon>\n        </modus-wc-button>\n      </div>\n    </div>\n  </li>\n  <li>\n    <div class=\"custom-flex-row custom-nested-row\">\n      <modus-wc-button aria-label=\"Visible button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n        <modus-wc-icon aria-label=\"Visible icon\" name=\"visibility_on\"></modus-wc-icon>\n      </modus-wc-button>\n      <div class=\"green-square\"></div>\n      <div>Child</div>\n      <div class=\"custom-justify-end\">\n        <modus-wc-button aria-label=\"Actions button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n          <modus-wc-icon aria-label=\"Actions icon\" name=\"more_vertical\"></modus-wc-icon>\n        </modus-wc-button>\n      </div>\n    </div>\n  </li>\n  <li>\n    <div class=\"custom-flex-row custom-nested-row\">\n      <modus-wc-button aria-label=\"Visible button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n        <modus-wc-icon aria-label=\"Invisible icon\" name=\"visibility_off\"></modus-wc-icon>\n      </modus-wc-button>\n      <div class=\"red-square\"></div>\n      <div>Child</div>\n      <div class=\"custom-justify-end\">\n        <modus-wc-button aria-label=\"Actions button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n          <modus-wc-icon aria-label=\"Actions icon\" name=\"more_vertical\"></modus-wc-icon>\n        </modus-wc-button>\n      </div>\n    </div>\n  </li>\n  <li>\n    <div class=\"custom-flex-row\">\n      <modus-wc-icon decorative=\"true\" name=\"chevron_right\"></modus-wc-icon>\n      <modus-wc-button aria-label=\"Visible button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n        <modus-wc-icon aria-label=\"Visible icon\" name=\"visibility_on\"></modus-wc-icon>\n      </modus-wc-button>\n      <div>Parent</div>\n      <div class=\"custom-justify-end\">\n        <modus-wc-button aria-label=\"Actions button\" size=\"sm\" shape=\"circle\" variant=\"borderless\">\n          <modus-wc-icon aria-label=\"Actions icon\" name=\"more_vertical\"></modus-wc-icon>\n        </modus-wc-button>\n      </div>\n    </div>\n  </li>\n</modus-wc-menu>\n    `;\n  },\n};\n\nexport const CollapsibleMenu: Story = {\n  render: () => {\n    return html`\n      <style>\n        .menu-width {\n          width: 400px;\n        }\n      </style>\n      <modus-wc-menu custom-class=\"menu-width\">\n        <modus-wc-menu-item\n          label=\"Charts\"\n          .hasSubmenu=${true}\n          id=\"charts-menu\"\n          value=\"charts\"\n        >\n          <modus-wc-icon\n            slot=\"start-icon\"\n            decorative=\"true\"\n            name=\"bar_graph\"\n          ></modus-wc-icon>\n          <modus-wc-menu .isSubMenu=${true} id=\"charts-submenu\">\n            <modus-wc-menu-item label=\"Bar Chart\" value=\"bar-chart\">\n            </modus-wc-menu-item>\n            <modus-wc-menu-item label=\"Line Chart\" value=\"line-chart\">\n            </modus-wc-menu-item>\n          </modus-wc-menu>\n        </modus-wc-menu-item>\n\n        <modus-wc-menu-item label=\"Calendar\" value=\"calendar\">\n          <modus-wc-icon\n            slot=\"start-icon\"\n            decorative=\"true\"\n            name=\"calendar\"\n          ></modus-wc-icon>\n        </modus-wc-menu-item>\n\n        <modus-wc-menu-item\n          label=\"Reports\"\n          .hasSubmenu=${true}\n          id=\"reports-menu\"\n          value=\"reports\"\n        >\n          <modus-wc-icon\n            slot=\"start-icon\"\n            decorative=\"true\"\n            name=\"master_data\"\n          ></modus-wc-icon>\n          <modus-wc-menu .isSubMenu=${true} id=\"reports-submenu\">\n            <modus-wc-menu-item label=\"Monthly Report\" value=\"monthly-report\">\n            </modus-wc-menu-item>\n            <modus-wc-menu-item label=\"Annual Report\" value=\"annual-report\">\n            </modus-wc-menu-item>\n          </modus-wc-menu>\n        </modus-wc-menu-item>\n      </modus-wc-menu>\n\n      <script>\n        // Adding this block to show how to set submenu properties via JS\n        // document.addEventListener('DOMContentLoaded', () => {\n        //   const chartsMenu = document.querySelector('#charts-menu');\n        //   const reportsMenu = document.querySelector('#reports-menu');\n        //   const chartsSubMenu = document.querySelector('#charts-submenu');\n        //   const reportsSubMenu = document.querySelector('#reports-submenu');\n\n        //   // Set hasSubmenu property for menu items with submenus\n        //   [chartsMenu, reportsMenu].forEach((menuItem) => {\n        //     if (menuItem) {\n        //       menuItem.hasSubmenu = true;\n        //     }\n        //   });\n\n        //   // Set isSubMenu for all submenu elements\n        //   [chartsSubMenu, reportsSubMenu].forEach((submenu) => {\n        //     if (submenu) {\n        //       submenu.isSubMenu = true;\n        //     }\n        //   });\n        // });\n      </script>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for menu component\n    if (!customElements.get('menu-shadow-host')) {\n      const MenuShadowHost = createShadowHostClass<MenuArgs>({\n        componentTag: 'modus-wc-menu',\n        propsMapper: (v: MenuArgs, el: HTMLElement) => {\n          const menuEl = el as unknown as {\n            ariaLabel: string;\n            bordered: boolean;\n            customClass: string;\n            orientation: string;\n            size: string;\n          };\n          menuEl.ariaLabel = 'Shadow DOM Menu';\n          menuEl.bordered = Boolean(v.bordered);\n          menuEl.customClass = v['custom-class'] || '';\n          menuEl.orientation = v.orientation || 'vertical';\n          menuEl.size = v.size || 'md';\n\n          // Only set innerHTML once on initial creation\n          if (!el.querySelector('modus-wc-menu-item')) {\n            el.innerHTML = `\n              <modus-wc-menu-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item label=\"Medium\" value=\"2\"></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Bordered\"\n    value=\"3\"\n    bordered=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Sub-label\"\n    value=\"3\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Selected\"\n    value=\"3\"\n    selected=\"true\"\n  ></modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"With Start Icon\"\n    value=\"3\"\n  >\n    <modus-wc-icon slot=\"start-icon\" name=\"info\"></modus-wc-icon>\n  </modus-wc-menu-item>\n  <modus-wc-menu-item\n    label=\"Disabled\"\n    value=\"3\"\n    disabled=\"true\"\n  ></modus-wc-menu-item>\n          `;\n          }\n        },\n      });\n      customElements.define('menu-shadow-host', MenuShadowHost);\n    }\n\n    return html`<menu-shadow-host .props=${{ ...args }}></menu-shadow-host>`;\n  },\n};\n"
+  }
+}

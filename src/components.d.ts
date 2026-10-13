@@ -13,6 +13,8 @@ import { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 import { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 import { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 import { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
+import { EmptyStateIllustration, EmptyStateVariant } from "./components/modus-wc-empty-state/illustration-constants";
+import { IconVersion } from "./components/modus-wc-icon/resolve-icon";
 import { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 import { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
 import { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
@@ -38,6 +40,8 @@ export { IBreadcrumb } from "./components/modus-wc-breadcrumbs/modus-wc-breadcru
 export { ICollapseOptions } from "./components/modus-wc-collapse/modus-wc-collapse";
 export { IDockItem } from "./components/modus-wc-dock/modus-wc-dock";
 export { DockPosition } from "./components/modus-wc-dock/modus-wc-dock.tailwind";
+export { EmptyStateIllustration, EmptyStateVariant } from "./components/modus-wc-empty-state/illustration-constants";
+export { IconVersion } from "./components/modus-wc-icon/resolve-icon";
 export { ImageFit, ImageShape, ImageSize } from "./components/modus-wc-image/modus-wc-image.tailwind";
 export { IImageGridImage } from "./components/modus-wc-image-grid/modus-wc-image-grid";
 export { ImageGridShape } from "./components/modus-wc-image-grid/modus-wc-image-grid.tailwind";
@@ -1009,6 +1013,38 @@ export namespace Components {
         "menuVisible": boolean;
     }
     /**
+     * Presents a centered empty, error, or placeholder state with bundled illustrations,
+     * heading, optional subtitle, and an optional call-to-action.
+     */
+    interface ModusWcEmptyState {
+        /**
+          * When set, renders a centered primary action button with this label.
+         */
+        "actionLabel"?: string;
+        /**
+          * Custom CSS class for the root container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Primary heading text.
+         */
+        "heading": string;
+        /**
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
+         */
+        "illustration"?: EmptyStateIllustration;
+        /**
+          * Secondary descriptive text (clamped to three lines in the layout).
+         */
+        "subtitle"?: string;
+        /**
+          * Layout variant: compact icon, full illustration, or dedicated error (404) treatment.
+          * @default 'compact'
+         */
+        "variant": EmptyStateVariant;
+    }
+    /**
      * File dropzone component that allows users to drag and drop files for upload.
      * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
      */
@@ -1150,7 +1186,7 @@ export namespace Components {
          */
         "decorative"?: boolean;
         /**
-          * The icon name, should match the CSS class in the icon font.
+          * The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.
          */
         "name": string;
         /**
@@ -1162,6 +1198,11 @@ export namespace Components {
           * The icon variant, can be "outlined" or "solid".
          */
         "variant"?: 'outlined' | 'solid';
+        /**
+          * The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.
+          * @default '1.0'
+         */
+        "version"?: IconVersion;
     }
     /**
      * A resilient atomic image component that wraps native <img> tags with consistent sizing,
@@ -2934,6 +2975,10 @@ export interface ModusWcDropdownMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcDropdownMenuElement;
 }
+export interface ModusWcEmptyStateCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcEmptyStateElement;
+}
 export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcFileDropzoneElement;
@@ -3456,6 +3501,27 @@ declare global {
     var HTMLModusWcDropdownMenuElement: {
         prototype: HTMLModusWcDropdownMenuElement;
         new (): HTMLModusWcDropdownMenuElement;
+    };
+    interface HTMLModusWcEmptyStateElementEventMap {
+        "actionClick": MouseEvent | KeyboardEvent;
+    }
+    /**
+     * Presents a centered empty, error, or placeholder state with bundled illustrations,
+     * heading, optional subtitle, and an optional call-to-action.
+     */
+    interface HTMLModusWcEmptyStateElement extends Components.ModusWcEmptyState, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcEmptyStateElementEventMap>(type: K, listener: (this: HTMLModusWcEmptyStateElement, ev: ModusWcEmptyStateCustomEvent<HTMLModusWcEmptyStateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcEmptyStateElementEventMap>(type: K, listener: (this: HTMLModusWcEmptyStateElement, ev: ModusWcEmptyStateCustomEvent<HTMLModusWcEmptyStateElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcEmptyStateElement: {
+        prototype: HTMLModusWcEmptyStateElement;
+        new (): HTMLModusWcEmptyStateElement;
     };
     interface HTMLModusWcFileDropzoneElementEventMap {
         "fileSelect": FileList;
@@ -4221,6 +4287,7 @@ declare global {
         "modus-wc-divider": HTMLModusWcDividerElement;
         "modus-wc-dock": HTMLModusWcDockElement;
         "modus-wc-dropdown-menu": HTMLModusWcDropdownMenuElement;
+        "modus-wc-empty-state": HTMLModusWcEmptyStateElement;
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-handle": HTMLModusWcHandleElement;
         "modus-wc-icon": HTMLModusWcIconElement;
@@ -5431,6 +5498,42 @@ declare namespace LocalJSX {
         "onMenuVisibilityChange"?: (event: ModusWcDropdownMenuCustomEvent<{ isVisible: boolean }>) => void;
     }
     /**
+     * Presents a centered empty, error, or placeholder state with bundled illustrations,
+     * heading, optional subtitle, and an optional call-to-action.
+     */
+    interface ModusWcEmptyState {
+        /**
+          * When set, renders a centered primary action button with this label.
+         */
+        "actionLabel"?: string;
+        /**
+          * Custom CSS class for the root container.
+          * @default ''
+         */
+        "customClass"?: string;
+        /**
+          * Primary heading text.
+         */
+        "heading": string;
+        /**
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
+         */
+        "illustration"?: EmptyStateIllustration;
+        /**
+          * Fires when the optional action button is activated.
+         */
+        "onActionClick"?: (event: ModusWcEmptyStateCustomEvent<MouseEvent | KeyboardEvent>) => void;
+        /**
+          * Secondary descriptive text (clamped to three lines in the layout).
+         */
+        "subtitle"?: string;
+        /**
+          * Layout variant: compact icon, full illustration, or dedicated error (404) treatment.
+          * @default 'compact'
+         */
+        "variant"?: EmptyStateVariant;
+    }
+    /**
      * File dropzone component that allows users to drag and drop files for upload.
      * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
      */
@@ -5572,7 +5675,7 @@ declare namespace LocalJSX {
          */
         "decorative"?: boolean;
         /**
-          * The icon name, should match the CSS class in the icon font.
+          * The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.
          */
         "name": string;
         /**
@@ -5584,6 +5687,11 @@ declare namespace LocalJSX {
           * The icon variant, can be "outlined" or "solid".
          */
         "variant"?: 'outlined' | 'solid';
+        /**
+          * The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.
+          * @default '1.0'
+         */
+        "version"?: IconVersion;
     }
     /**
      * A resilient atomic image component that wraps native <img> tags with consistent sizing,
@@ -7586,6 +7694,7 @@ declare namespace LocalJSX {
         "modus-wc-divider": ModusWcDivider;
         "modus-wc-dock": ModusWcDock;
         "modus-wc-dropdown-menu": ModusWcDropdownMenu;
+        "modus-wc-empty-state": ModusWcEmptyState;
         "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-handle": ModusWcHandle;
         "modus-wc-icon": ModusWcIcon;
@@ -7721,6 +7830,11 @@ declare module "@stencil/core" {
              * The component supports a 'button' and 'menu' `<slot>` for injecting custom HTML content.
              */
             "modus-wc-dropdown-menu": LocalJSX.ModusWcDropdownMenu & JSXBase.HTMLAttributes<HTMLModusWcDropdownMenuElement>;
+            /**
+             * Presents a centered empty, error, or placeholder state with bundled illustrations,
+             * heading, optional subtitle, and an optional call-to-action.
+             */
+            "modus-wc-empty-state": LocalJSX.ModusWcEmptyState & JSXBase.HTMLAttributes<HTMLModusWcEmptyStateElement>;
             /**
              * File dropzone component that allows users to drag and drop files for upload.
              * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.

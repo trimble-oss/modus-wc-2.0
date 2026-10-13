@@ -1,0 +1,191 @@
+/**
+* This component uses Tailwind CSS and DaisyUI.
+* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+*/
+
+modus-wc-empty-state .modus-wc-empty-state {
+  align-items: center;
+  background-color: var(--modus-wc-color-base-100);
+  border-radius: var(--modus-wc-border-radius-box);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+
+  .illustration-primary {
+    fill: var(--modus-wc-color-primary);
+  }
+
+  .illustration-stroke-primary {
+    stroke: var(--modus-wc-color-primary);
+  }
+
+  .illustration-stroke-surface {
+    stroke: var(--modus-wc-color-base-page);
+  }
+
+  .illustration-fill-pale {
+    fill: var(--modus-wc-color-blue-pale);
+  }
+
+  .illustration-fill-surface {
+    fill: var(--modus-wc-color-base-page);
+  }
+
+  .illustration-muted {
+    fill: var(--modus-wc-color-base-content-low-contrast);
+  }
+
+  svg {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  &.modus-wc-empty-state--compact {
+    gap: var(--modus-wc-spacing-xs);
+    min-height: 16rem;
+    padding: var(--modus-wc-spacing-xl);
+  }
+
+  &.modus-wc-empty-state--illustration,
+  &.modus-wc-empty-state--error {
+    gap: var(--modus-wc-spacing-xl);
+    padding-block: var(--modus-wc-spacing-xl);
+    padding-inline: 5rem;
+  }
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--compact {
+  height: 4rem;
+  width: 4rem;
+
+  > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  svg {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--selection-plus {
+  opacity: var(--modus-wc-opacity-overlay);
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--illustration {
+  height: 22rem;
+  max-width: 46.3125rem;
+  width: 100%;
+
+  > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  svg {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+modus-wc-empty-state .modus-wc-empty-state-illustration--error {
+  height: 21.375rem;
+  max-width: 21.375rem;
+  width: 100%;
+
+  > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  svg {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+modus-wc-empty-state .modus-wc-empty-state-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-md);
+  max-width: 42rem;
+  width: 100%;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-title {
+  color: var(--modus-wc-color-gray-6);
+  line-height: var(--modus-wc-line-height-lg);
+  margin: 0;
+  text-align: center;
+}
+
+modus-wc-empty-state .modus-wc-empty-state-subtitle {
+  -webkit-box-orient: vertical;
+  color: var(--modus-wc-color-gray-6);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  line-height: var(--modus-wc-line-height-md);
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+// Dark theme: illustration pairs (#0063a3 → highlight blue, etc.) and gray-3 title/subtitle.
+[data-theme='modus-classic-dark'] modus-wc-empty-state,
+[data-theme='modus-modern-dark'] modus-wc-empty-state,
+[data-theme='connect-dark'] modus-wc-empty-state {
+  .modus-wc-empty-state {
+    .illustration-primary {
+      fill: var(--modus-wc-color-highlight-blue);
+    }
+
+    .illustration-stroke-primary {
+      stroke: var(--modus-wc-color-highlight-blue);
+    }
+
+    .illustration-fill-pale {
+      fill: color-mix(
+        in sRGB,
+        var(--modus-wc-color-highlight-blue) 30%,
+        transparent
+      );
+    }
+
+    .illustration-fill-surface {
+      fill: var(--modus-wc-color-gray-10);
+    }
+
+    .illustration-stroke-surface {
+      stroke: var(--modus-wc-color-gray-10);
+    }
+  }
+
+  .modus-wc-empty-state-title,
+  .modus-wc-empty-state-subtitle {
+    color: var(--modus-wc-color-gray-3);
+  }
+}

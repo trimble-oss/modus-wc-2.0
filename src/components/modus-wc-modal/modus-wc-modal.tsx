@@ -93,6 +93,7 @@ export class ModusWcModal {
                 {this.showFullscreenToggle && (
                   <modus-wc-button
                     aria-label="Fullscreen toggle"
+                    color="tertiary"
                     onButtonClick={() => (this.fullscreen = !this.fullscreen)}
                     shape="square"
                     size="sm"
@@ -108,6 +109,7 @@ export class ModusWcModal {
                 {this.showClose && (
                   <modus-wc-button
                     aria-label="Close modal"
+                    color="tertiary"
                     onButtonClick={() => this.closeDialog()}
                     shape="square"
                     size="sm"
