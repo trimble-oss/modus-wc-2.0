@@ -576,6 +576,10 @@ export const contentTreeDragAndDropSourceCode = `
   let selectedNodeId = '1-1';
   let expandedNodeIds = ['1', '1-2'];
 
+  // Keyboard: focus a reorder handle, then Space or Enter to grab. Arrow keys
+  // move the drop indicator (Right nests, Left promotes). Space or Enter drops
+  // and emits \`nodeMove\`. Escape cancels; Tab cancels and continues tab order.
+  //
   // Push every controlled prop from app state on each update (including
   // \`allowDragDrop\`, so it is not lost if sync runs before upgrade completes).
   const sync = () => {
