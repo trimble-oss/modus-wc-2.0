@@ -188,6 +188,10 @@ export class ModusWcContentTree {
   // sync so the source row uses the same fade as a pointer drag.
   @State() private keyboardGrabId?: string;
 
+  // The keyboard preview is the grabbed node's own spot. No indicator is drawn
+  // there; the faded row already marks it.
+  @State() private dropIsCurrent = false;
+
   @State() private liveMessage = '';
 
   // Spring-load: auto-expand a collapsed parent after a short dwell while the
@@ -440,6 +444,11 @@ export class ModusWcContentTree {
       return;
     }
 
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      this.handleRowExpandKey(event, target);
+      return;
+    }
+
     if (event.key !== ' ' && event.key !== 'Enter') return;
     const handle = target.closest(
       'modus-wc-button.modus-wc-content-tree-drag-handle'
@@ -451,6 +460,37 @@ export class ModusWcContentTree {
     event.preventDefault();
     event.stopPropagation();
     this.beginKeyboardGrab(node);
+  }
+
+  // On a focused parent row, Right expands and Left collapses. Keys on the
+  // row's own controls (reorder handle, chevron, actions) are left alone.
+  private handleRowExpandKey(event: KeyboardEvent, target: HTMLElement): void {
+    const item = target.closest('modus-wc-tree-item') as
+      | (HTMLElement & { value?: string })
+      | null;
+    if (!item || target !== item.querySelector('li')) return;
+    const node = findNode(this.getNodes(), String(item.value));
+    if (!node || this.isLocked(node)) return;
+    const hasChildren =
+      !!node.children?.length || (!this.isFiltering() && isLazyUnloaded(node));
+    if (!hasChildren) return;
+    const expand = event.key === 'ArrowRight';
+    if (this.isExpanded(node.id) === expand) return;
+    event.preventDefault();
+    this.handleExpandToggle(event, node);
+  }
+
+  // Screen readers in browse/scan mode (Narrator, NVDA, JAWS) activate a
+  // button with a synthesized click (`detail` 0) instead of sending Space or
+  // Enter keydowns, so that click grabs and drops too. Real pointer clicks
+  // (`detail` >= 1) are ignored; the pointer drags the handle instead.
+  private handleDragHandleClick(event: Event, node: ITreeNode): void {
+    if (!(event instanceof MouseEvent) || event.detail !== 0) return;
+    if (this.keyboardGrabId === node.id) {
+      this.commitKeyboardGrab();
+    } else if (!this.keyboardGrabId && this.isKeyboardDraggable(node)) {
+      this.beginKeyboardGrab(node);
+    }
   }
 
   private isKeyboardDraggable(node: ITreeNode): boolean {
@@ -526,89 +566,100 @@ export class ModusWcContentTree {
     this.setKeyboardSlot(slots[next]);
   }
 
+  // Left/Right change the depth of the drop line, the way an outline indents:
+  // the line sits under a parent (`parentId`) right below `aboveId`.
+  private keyboardDropGap():
+    | { parentId?: string; aboveId?: string }
+    | undefined {
+    const moveId = this.keyboardGrabId;
+    const targetId = this.dragOverId;
+    if (!moveId || !targetId || !this.dropPosition) return undefined;
+    const location = getNodeLocation(this.getNodes(), targetId);
+    if (!location) return undefined;
+    if (this.dropPosition === 'inside') return { parentId: targetId };
+    const { parentId, index } = location;
+    if (this.dropPosition === 'after') return { parentId, aboveId: targetId };
+    const above = this.siblingsOf(parentId)
+      .slice(0, index)
+      .reverse()
+      .find((node) => node.id !== moveId);
+    return { parentId, aboveId: above?.id };
+  }
+
+  /** Right: make the node a child of the item just above the drop line. */
   private nestKeyboardDrop(): void {
-    const moveId = this.keyboardGrabId;
-    const targetId = this.dragOverId;
-    const position = this.dropPosition;
-    if (!moveId || !targetId || !position) return;
-    const target = findNode(this.getNodes(), targetId);
-    if (!target || this.isInvalidDropTarget(target)) return;
-
-    const nestAnnounce = `Nesting inside ${target.label || 'item'}.`;
-    const hasLoadedChildren = !!target.children?.length;
-    const expanded = hasLoadedChildren && this.isExpanded(target.id);
-
-    if (position === 'inside') {
-      if (hasLoadedChildren && !expanded) {
-        const nested = this.slotBeforeFirstChild(moveId, target, target.id);
-        if (!nested) return;
-        this.nodeExpandChange.emit({ id: target.id, expanded: true });
-        this.setKeyboardSlot(nested, nestAnnounce);
-      }
-      return;
-    }
-
-    if (expanded) {
-      const nested = this.slotBeforeFirstChild(moveId, target);
-      if (nested) this.setKeyboardSlot(nested, nestAnnounce);
-      return;
-    }
-
-    const inside = this.findKeyboardSlot(
-      moveId,
-      (slot) => slot.targetId === target.id && slot.position === 'inside'
-    );
-    if (inside) this.setKeyboardSlot(inside);
-  }
-
-  private promoteKeyboardDrop(): void {
-    const moveId = this.keyboardGrabId;
-    const targetId = this.dragOverId;
-    const position = this.dropPosition;
-    if (!moveId || !targetId || !position) return;
-
-    const nodes = this.getNodes();
+    const gap = this.keyboardDropGap();
+    if (!gap) return;
+    const moveId = this.keyboardGrabId!;
+    const above = gap.aboveId
+      ? findNode(this.getNodes(), gap.aboveId)
+      : undefined;
     const slots = this.keyboardSlotsFor(moveId);
-    const promotedId =
-      position === 'inside'
-        ? targetId
-        : getNodeLocation(nodes, targetId)?.parentId;
-    if (!promotedId) return;
-
-    const after = this.findSlotIn(slots, promotedId, 'after');
-    if (after) {
-      this.setKeyboardSlot(after);
+    const lastChild =
+      above && this.isExpanded(above.id)
+        ? above.children?.filter((child) => child.id !== moveId).pop()
+        : undefined;
+    const slot = !above
+      ? undefined
+      : lastChild
+        ? this.slotAfter(slots, lastChild.id)
+        : this.findSlotIn(slots, above.id, 'inside');
+    if (!above || !slot) {
+      this.announce('Cannot nest here.');
       return;
     }
-
-    const location = getNodeLocation(nodes, promotedId);
-    if (!location) return;
-    const siblings = location.parentId
-      ? findNode(nodes, location.parentId)!.children!
-      : nodes;
-    const next = siblings[location.index + 1];
-    if (!next) return;
-    const beforeNext = this.findSlotIn(slots, next.id, 'before');
-    if (beforeNext) this.setKeyboardSlot(beforeNext);
-  }
-
-  private keyboardSlotsFor(
-    moveId: string,
-    expandedId?: string
-  ): IKeyboardDropSlot[] {
-    return getKeyboardDropSlots(
-      this.getNodes(),
-      moveId,
-      (id) => this.isExpanded(id) || id === expandedId
+    this.setKeyboardSlot(
+      slot,
+      slot.current
+        ? this.slotAnnouncement(slot)
+        : `Nesting inside ${above.label || 'item'}.`
     );
   }
 
-  private findKeyboardSlot(
-    moveId: string,
-    matches: (slot: IKeyboardDropSlot) => boolean,
-    treatAsExpandedId?: string
+  /** Left: move the drop line out to the level of its parent. */
+  private promoteKeyboardDrop(): void {
+    const gap = this.keyboardDropGap();
+    if (!gap) return;
+    const { parentId } = gap;
+    if (!parentId) {
+      this.announce('Already at the top level.');
+      return;
+    }
+    const slot = this.slotAfter(
+      this.keyboardSlotsFor(this.keyboardGrabId!),
+      parentId
+    );
+    if (!slot) {
+      this.announce('Cannot move out here.');
+      return;
+    }
+    this.setKeyboardSlot(slot);
+  }
+
+  private siblingsOf(parentId: string | undefined): ITreeNode[] {
+    const nodes = this.getNodes();
+    return parentId ? findNode(nodes, parentId)!.children! : nodes;
+  }
+
+  // The slot list keeps one entry per drop point, so `after X` may be listed
+  // as `before` the next sibling instead.
+  private slotAfter(
+    slots: IKeyboardDropSlot[],
+    targetId: string
   ): IKeyboardDropSlot | undefined {
-    return this.keyboardSlotsFor(moveId, treatAsExpandedId).find(matches);
+    const direct = this.findSlotIn(slots, targetId, 'after');
+    if (direct) return direct;
+    const { parentId, index } = getNodeLocation(this.getNodes(), targetId)!;
+    const next = this.siblingsOf(parentId)
+      .slice(index + 1)
+      .find((node) => node.id !== this.keyboardGrabId);
+    return next ? this.findSlotIn(slots, next.id, 'before') : undefined;
+  }
+
+  private keyboardSlotsFor(moveId: string): IKeyboardDropSlot[] {
+    return getKeyboardDropSlots(this.getNodes(), moveId, (id: string) =>
+      this.isExpanded(id)
+    );
   }
 
   private findSlotIn(
@@ -621,25 +672,12 @@ export class ModusWcContentTree {
     );
   }
 
-  /** Same drop point as `inside` on a parent when its first child is visible. */
-  private slotBeforeFirstChild(
-    moveId: string,
-    parent: ITreeNode,
-    treatAsExpandedId?: string
-  ): IKeyboardDropSlot | undefined {
-    const firstChildId = parent.children?.[0]?.id;
-    if (!firstChildId) return undefined;
-    return this.findKeyboardSlot(
-      moveId,
-      (slot) => slot.targetId === firstChildId && slot.position === 'before',
-      treatAsExpandedId
-    );
-  }
-
   private initialKeyboardSlot(
     slots: IKeyboardDropSlot[],
     moveId: string
   ): IKeyboardDropSlot | undefined {
+    const current = slots.find((slot) => slot.current);
+    if (current) return current;
     const after = slots.find((slot) => this.slotIsAfterNode(moveId, slot));
     return after ?? slots[slots.length - 1];
   }
@@ -679,11 +717,13 @@ export class ModusWcContentTree {
   ): void {
     this.dragOverId = slot.targetId;
     this.dropPosition = slot.position;
+    this.dropIsCurrent = !!slot.current;
     this.announce(announcement ?? this.slotAnnouncement(slot));
-    this.scrollDropTargetIntoView(slot.targetId);
+    if (!slot.current) this.scrollDropTargetIntoView(slot.targetId);
   }
 
   private slotAnnouncement(slot: IKeyboardDropSlot): string {
+    if (slot.current) return 'Original position.';
     const name = findNode(this.getNodes(), slot.targetId)!.label || 'item';
     if (slot.position === 'inside') return `Nesting inside ${name}.`;
     if (slot.position === 'before') return `Before ${name}.`;
@@ -708,14 +748,18 @@ export class ModusWcContentTree {
       return;
     }
     // The preview can go stale (target removed or hidden) while grabbed.
-    const stillValid = this.keyboardSlotsFor(id).some(
-      (slot) => slot.targetId === targetId && slot.position === position
-    );
-    if (!stillValid) {
+    const slot = this.findSlotIn(this.keyboardSlotsFor(id), targetId, position);
+    if (!slot) {
       this.cancelKeyboardGrab();
       return;
     }
     const label = findNode(this.getNodes(), id)!.label || 'item';
+    if (slot.current) {
+      this.cancelKeyboardGrab({ silent: true });
+      this.pendingHandleFocusId = id;
+      this.announce(`${label} stays in its original position.`);
+      return;
+    }
     const target = findNode(this.getNodes(), targetId)!;
     if (
       position === 'inside' &&
@@ -846,8 +890,8 @@ export class ModusWcContentTree {
     this.nodeSelect.emit({ id });
   }
 
-  private handleExpandToggle = (e: CustomEvent, node: ITreeNode) => {
-    (e as unknown as Event).stopPropagation?.();
+  private handleExpandToggle = (e: Event, node: ITreeNode) => {
+    e.stopPropagation?.();
 
     // During filtering the toggle is transient and visual only: flip the local
     // override and re-render, but DO NOT emit so the controlled
@@ -1082,6 +1126,7 @@ export class ModusWcContentTree {
   private clearDropState(): void {
     this.dragOverId = undefined;
     this.dropPosition = undefined;
+    this.dropIsCurrent = false;
   }
 
   private clearSpringLoad(): void {
@@ -1658,7 +1703,11 @@ export class ModusWcContentTree {
       if (this.draggingId === node.id) {
         classes.push('modus-wc-content-tree-dragging');
       }
-      if (this.dragOverId === node.id && this.dropPosition) {
+      if (
+        this.dragOverId === node.id &&
+        this.dropPosition &&
+        !this.dropIsCurrent
+      ) {
         classes.push(`modus-wc-content-tree-drop-${this.dropPosition}`);
       }
     }
@@ -1718,6 +1767,9 @@ export class ModusWcContentTree {
             shape="square"
             size={this.getControlButtonSize()}
             variant="borderless"
+            onButtonClick={(e: CustomEvent<Event>) =>
+              this.handleDragHandleClick(e.detail, node)
+            }
             onDragStart={(e: DragEvent) => this.handleDragStart(e, node)}
             onDragEnd={this.handleDragEnd}
           >
@@ -1942,7 +1994,12 @@ export class ModusWcContentTree {
     const nodes = this.getRenderNodes();
 
     return (
-      <Host class={this.customClass || undefined}>
+      <Host
+        class={this.customClass || undefined}
+        // While grabbed, screen readers must pass arrow keys through to the
+        // tree instead of moving their reading cursor to the next item.
+        role={this.keyboardGrabId ? 'application' : undefined}
+      >
         {this.allowDragDrop ? this.renderKeyboardDragText() : null}
         {this.renderControls()}
         {/* The inner menu stays in 'single' mode so a row click only sets the

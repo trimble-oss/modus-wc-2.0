@@ -194,6 +194,8 @@ export const moveNodeRelative = (
 export interface IKeyboardDropSlot {
   targetId: string;
   position: TreeDropPosition;
+  // Dropping here leaves the node where it already is.
+  current?: boolean;
 }
 
 interface IIndexedNode {
@@ -239,9 +241,9 @@ const indexForMove = (
  * Ordered keyboard drop slots for `moveId`. Walks only expanded branches.
  * `after` a node is omitted when it is the same point as `before` the next
  * valid sibling. `inside` an expanded parent is omitted when it is the same
- * point as `before` its first valid child. The node's current location is
- * omitted. Invalid targets match pointer drag: self, descendants, and
- * disabled nodes (own or inherited from an ancestor).
+ * point as `before` its first valid child. The node's own location appears
+ * once, flagged `current`. Invalid targets match pointer drag: self,
+ * descendants, and disabled nodes (own or inherited from an ancestor).
  */
 export const getKeyboardDropSlots = (
   nodes: ITreeNode[],
@@ -271,19 +273,23 @@ export const getKeyboardDropSlots = (
 
   const slots: IKeyboardDropSlot[] = [];
   const push = (slot: IKeyboardDropSlot): void => {
-    if (!isNoOp(slot)) slots.push(slot);
+    slots.push(isNoOp(slot) ? { ...slot, current: true } : slot);
   };
+  // The moved node is not a target, so skip it when looking for the sibling
+  // whose `before` line is the same point.
+  const firstNotMoving = (list: ITreeNode[], start: number) =>
+    list.slice(start).find((node) => node.id !== moveId);
 
   const visit = (list: ITreeNode[]): void => {
     list.forEach((node, i) => {
       const valid = isTarget(node);
       const expanded = isExpanded(node.id) && !!node.children?.length;
-      const nextCoversAfter = isTarget(list[i + 1]);
+      const nextCoversAfter = isTarget(firstNotMoving(list, i + 1));
 
       if (valid) push({ targetId: node.id, position: 'before' });
 
       if (expanded) {
-        const firstBeforeExists = isTarget(node.children![0]);
+        const firstBeforeExists = isTarget(firstNotMoving(node.children!, 0));
         // `inside` is the first-child line. Emit it (before the children, to
         // keep visual order) only when the first child cannot represent it.
         if (valid && !firstBeforeExists) {

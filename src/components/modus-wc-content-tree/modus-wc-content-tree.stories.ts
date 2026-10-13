@@ -942,10 +942,12 @@ export const DragAndDrop: Story = {
 Keyboard reordering uses the same drop rules as pointer drag.
 
 1. Tab to a row's reorder handle.
-2. Press Space or Enter to grab. The row fades and a drop indicator appears.
-3. Arrow Up and Arrow Down move the indicator. Arrow Right nests into the target (or into an expanded folder's first child). Arrow Left promotes the preview one level.
-4. Press Space or Enter to drop. The tree emits \`nodeMove\`.
+2. Press Space or Enter to grab. The row fades, as with pointer drag, and the indicator starts at its original position.
+3. Arrow Up and Arrow Down move the indicator. Arrow Right nests into the row above the indicator. Arrow Left moves the indicator out one level.
+4. Press Space or Enter to drop. The tree emits \`nodeMove\` (nothing moves when dropped on the original position).
 5. Press Escape to cancel, or Tab to cancel and move focus on.
+
+When a parent row has focus (not grabbed), Arrow Right expands it and Arrow Left collapses it.
         `,
       },
       source: {
