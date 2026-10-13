@@ -93,8 +93,8 @@ modus-wc-navbar .modus-wc-navbar {
       padding: 3px 0 3px 3px;
     }
 
-    // Condensed menu
-    modus-wc-menu {
+    // Condensed menu; direct child only so menus inside slotted dropdowns are untouched
+    > modus-wc-menu {
       @extend %dropdown-menu;
 
       right: var(--modus-wc-spacing-2xl);

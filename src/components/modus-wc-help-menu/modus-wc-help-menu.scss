@@ -1,0 +1,177 @@
+/**
+ * This component uses Tailwind CSS and DaisyUI.
+ * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+ */
+
+/* Inner menu wrappers clip overflow, so the shadow goes on the dropdown surface that holds
+   the help menu. The repeated class outranks the Connect theme's own menu shadow. */
+modus-wc-dropdown-menu.modus-wc-dropdown-menu
+  .menu-wrapper.menu-wrapper:has(.modus-wc-help-menu) {
+  box-shadow:
+    0 4px 6px -1px var(--modus-wc-color-base-200),
+    0 2px 4px -2px var(--modus-wc-color-base-200);
+}
+
+modus-wc-help-menu {
+  background-color: var(--modus-wc-color-base-page);
+  border-radius: var(--rounded-box);
+  display: block;
+  min-width: 11.25rem;
+  width: 100%;
+
+  .modus-wc-help-menu {
+    background-color: var(--modus-wc-color-base-page);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .modus-wc-help-menu-status {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .modus-wc-help-menu-track {
+    background-color: var(--modus-wc-color-base-page);
+    min-width: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu {
+    background-color: var(--modus-wc-color-base-page);
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list > .modus-wc-menu > modus-wc-menu-item,
+  modus-wc-menu.modus-wc-help-menu-list
+    > .modus-wc-menu
+    > li.modus-wc-help-menu-title-item {
+    min-width: 0;
+    width: 100%;
+  }
+
+  modus-wc-menu.modus-wc-help-menu-list {
+    li.modus-wc-menu-item:active,
+    li.modus-wc-menu-item > button:active {
+      background-color: transparent;
+      color: inherit;
+    }
+  }
+
+  /* Drill/back moves focus programmatically; only keyboard focus (:focus-visible) is painted.
+     Anchored on the inner wrapper to outrank the menu-item and Connect dropdown focus rules. */
+  .modus-wc-help-menu modus-wc-menu.modus-wc-help-menu-list {
+    modus-wc-menu-item
+      .modus-wc-menu-item:not(.modus-wc-menu-item-active):not(
+        .modus-wc-menu-item-disabled
+      ):focus:not(:focus-visible) {
+      background-color: transparent;
+      color: var(--modus-wc-color-base-content);
+
+      &:hover {
+        background-color: var(--modus-wc-color-base-100);
+      }
+    }
+  }
+
+  modus-wc-menu-item .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  modus-wc-menu-item.modus-wc-help-menu-back .modus-wc-menu-item-labels {
+    color: var(--modus-wc-color-primary);
+  }
+
+  modus-wc-menu-item[hidden] {
+    display: none !important;
+  }
+
+  modus-wc-menu-item.modus-wc-help-menu-stack-parent > li {
+    display: none;
+  }
+
+  li.modus-wc-help-menu-title-item {
+    background-color: transparent;
+    cursor: default;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .modus-wc-help-menu-title {
+    color: var(--modus-wc-color-base-content);
+    cursor: default;
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-md);
+    min-width: 0;
+    padding-block: var(--modus-wc-spacing-sm);
+    padding-inline: var(--modus-wc-spacing-lg) var(--modus-wc-spacing-xs);
+    text-decoration: none;
+  }
+
+  &.modus-wc-help-menu--drilled {
+    /* Flatten open panels into the same list row as Back and title. */
+    modus-wc-menu-item.modus-wc-help-menu-stack-parent {
+      display: contents;
+    }
+
+    modus-wc-menu[slot='panel']:not([hidden]) {
+      display: contents;
+    }
+
+    modus-wc-menu[slot='panel']:not([hidden]) > .modus-wc-menu {
+      background-color: transparent;
+      display: contents;
+      margin: 0;
+      padding: 0;
+    }
+
+    modus-wc-dropdown-menu & {
+      .modus-wc-help-menu-back .modus-wc-menu-item > button,
+      .modus-wc-help-menu-track
+        [slot='panel']:not([hidden])
+        modus-wc-menu-item:not(.modus-wc-help-menu-item-last)
+        .modus-wc-menu-item
+        > button {
+        border-radius: 0;
+      }
+    }
+  }
+
+  /* Edge rows follow the dropdown's rounded corners so hover and focus outlines fit inside them. */
+  modus-wc-dropdown-menu & .modus-wc-help-menu-track {
+    modus-wc-menu-item.modus-wc-help-menu-item-first .modus-wc-menu-item,
+    modus-wc-menu-item.modus-wc-help-menu-item-first
+      .modus-wc-menu-item
+      > button {
+      border-start-end-radius: var(--rounded-box);
+      border-start-start-radius: var(--rounded-box);
+    }
+
+    modus-wc-menu-item.modus-wc-help-menu-item-last .modus-wc-menu-item,
+    modus-wc-menu-item.modus-wc-help-menu-item-last
+      .modus-wc-menu-item
+      > button {
+      border-end-end-radius: var(--rounded-box);
+      border-end-start-radius: var(--rounded-box);
+    }
+  }
+
+  .modus-wc-help-menu-chevron {
+    margin-inline-start: auto;
+  }
+}

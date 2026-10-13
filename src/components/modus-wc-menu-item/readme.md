@@ -57,6 +57,7 @@ Type: `Promise<void>`
  - [modus-wc-app-menu](../modus-wc-app-menu)
  - [modus-wc-autocomplete](../modus-wc-autocomplete)
  - [modus-wc-content-tree](../modus-wc-content-tree)
+ - [modus-wc-help-menu](../modus-wc-help-menu)
  - [modus-wc-navbar](../modus-wc-navbar)
  - [modus-wc-profile-menu](../modus-wc-profile-menu)
 
@@ -76,6 +77,7 @@ graph TD;
   modus-wc-app-menu --> modus-wc-menu-item
   modus-wc-autocomplete --> modus-wc-menu-item
   modus-wc-content-tree --> modus-wc-menu-item
+  modus-wc-help-menu --> modus-wc-menu-item
   modus-wc-navbar --> modus-wc-menu-item
   modus-wc-profile-menu --> modus-wc-menu-item
   style modus-wc-menu-item fill:#f9f,stroke:#333,stroke-width:4px
