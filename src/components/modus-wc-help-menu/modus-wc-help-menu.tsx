@@ -2,6 +2,7 @@ import {
   Component,
   Element,
   EventEmitter,
+  forceUpdate,
   h,
   Host,
   Listen,
@@ -45,16 +46,25 @@ interface PanelTransition {
 })
 export class ModusWcHelpMenu {
   private inheritedAttributes: Attributes = {};
-  private transition?: PanelTransition;
   private animations: Animation[] = [];
   private observer?: MutationObserver;
+  /** The last transition whose motion and focus ran; re-renders must not replay it. */
+  private appliedTransition?: PanelTransition;
+  /** `reset()` callers waiting for the next completed render. */
   private renderWaiters: (() => void)[] = [];
+  /**
+   * Incremented per focus request. `applyFocus` awaits the target item's render, so a
+   * quick second navigation could otherwise be overtaken by the stale earlier request.
+   */
   private focusToken = 0;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
   @State() private stack: PanelFrame[] = [];
+
+  /** Set together with `stack`, so the render that shows a panel also carries its motion and focus. */
+  @State() private transition?: PanelTransition;
 
   @State() private announcement = '';
 
@@ -79,18 +89,17 @@ export class ModusWcHelpMenu {
   }
 
   componentDidLoad() {
-    // Slotted items render their rows after this host and consumers may re-render them,
-    // so any light-DOM change re-applies panel visibility. Writes are diffed, so this settles.
+    // Consumers may re-render slotted items and reset what syncPanels wrote. Rather than
+    // writing here, request a render so componentDidRender stays the only writer.
+    // Writes are diffed, so the observer settles once the DOM matches the stack.
     if (typeof MutationObserver !== 'undefined') {
-      this.observer = new MutationObserver(() => this.syncPanels());
+      this.observer = new MutationObserver(() => forceUpdate(this));
       this.observer.observe(this.el, {
         attributeFilter: ['hidden', 'inert'],
         attributes: true,
         childList: true,
         subtree: true,
       });
-    } else if (typeof requestAnimationFrame !== 'undefined') {
-      requestAnimationFrame(() => this.syncPanels());
     }
   }
 
@@ -111,8 +120,8 @@ export class ModusWcHelpMenu {
     this.syncPanels();
 
     const transition = this.transition;
-    this.transition = undefined;
-    if (transition) {
+    if (transition && transition !== this.appliedTransition) {
+      this.appliedTransition = transition;
       this.runMotion(transition);
       void this.applyFocus(transition.focus);
     }
@@ -142,8 +151,8 @@ export class ModusWcHelpMenu {
   @Listen('itemSelect')
   handleItemSelect(event: Event) {
     this.clearSelected(event.target);
-    // Menu items re-render on select; reconcile visibility without a drill change.
-    this.syncPanels();
+    // Menu items re-render on select; re-render so componentDidRender reconciles them.
+    forceUpdate(this);
   }
 
   @Listen('click', { capture: true })
@@ -183,12 +192,11 @@ export class ModusWcHelpMenu {
     }
 
     if (event.key === 'Tab') {
-      // Tab walks the rows; only leaving past either end reaches the dropdown, which closes.
-      const next = this.adjacentFocusable(event.shiftKey ? -1 : 1);
-      if (!next) return;
+      // Tab walks the rows and wraps at either end, like the arrow keys; Escape closes.
+      if (this.focusedIndex(this.focusables()) === -1) return;
       event.preventDefault();
       event.stopPropagation();
-      next.focus();
+      this.moveFocus(event.shiftKey ? -1 : 1);
       return;
     }
 
@@ -284,13 +292,6 @@ export class ModusWcHelpMenu {
     return items.findIndex(
       (item) => item === current || item.contains(current)
     );
-  }
-
-  private adjacentFocusable(direction: 1 | -1): HTMLElement | undefined {
-    const items = this.focusables();
-    const index = this.focusedIndex(items);
-    if (index === -1) return undefined;
-    return items[index + direction];
   }
 
   private directPanel(item: HTMLElement): HTMLElement | null {
@@ -558,7 +559,8 @@ export class ModusWcHelpMenu {
 
   /**
    * Applies stack-driven visibility, ARIA, and chevrons to slotted items. Slotted
-   * markup is consumer-owned, so this cannot live in JSX; it is the only writer.
+   * markup is consumer-owned, so this cannot live in JSX. Called only from
+   * componentDidRender, so the DOM always reflects the stack of the latest render.
    */
   private syncPanels() {
     const index = this.buildIndex();

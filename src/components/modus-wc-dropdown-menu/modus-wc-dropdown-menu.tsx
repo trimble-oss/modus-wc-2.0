@@ -101,10 +101,7 @@ export class ModusWcDropdownMenu {
   handleKeyDown(event: KeyboardEvent) {
     if (!this.menuVisible) return;
 
-    const target = event.target as Partial<Element> | null;
-    const fromHelpMenu = !!target?.closest?.('modus-wc-help-menu');
-
-    if (event.key === 'Escape' || (event.key === 'Tab' && fromHelpMenu)) {
+    if (event.key === 'Escape') {
       event.preventDefault();
       this.menuVisible = false;
       this.menuVisibilityChange.emit({ isVisible: false });

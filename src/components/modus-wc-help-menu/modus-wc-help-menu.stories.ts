@@ -18,7 +18,7 @@ const meta: Meta<HelpMenuArgs> = {
   component: 'modus-wc-help-menu',
   args: {
     'menu-bordered': true,
-    'menu-offset': 8,
+    'menu-offset': 14,
     'menu-placement': 'bottom-start',
     'menu-size': 'md',
   },
@@ -104,7 +104,7 @@ const helpMenuItems = () => html`
       <modus-wc-menu-item label="Support Articles" value="support-articles">
         <modus-wc-icon
           decorative
-          name="article"
+          name="document"
           slot="start-icon"
         ></modus-wc-icon>
       </modus-wc-menu-item>
@@ -185,6 +185,90 @@ export const Default: Story = {
     layout: 'centered',
   },
 };
+const indent = (markup: string, spaces: number) =>
+  markup
+    .trim()
+    .split('\n')
+    .map((line) => (line.trim() ? ' '.repeat(spaces) + line.trim() : line))
+    .join('\n');
+
+// Lit property bindings (.visibility, .userCard) are dropped from the generated
+// source, so the snippet sets them in a script like a consumer would.
+const withSideNavigationSourceCode = `
+<div class="layout-with-navbar">
+  <modus-wc-navbar app-title="Modus App" class="navbar" style="z-index: 2;">
+    <modus-wc-dropdown-menu
+      slot="end"
+      button-aria-label="Help"
+      button-color="tertiary"
+      button-shape="square"
+      button-size="sm"
+      button-variant="borderless"
+      menu-offset="4"
+      menu-placement="bottom-end"
+      menu-strategy="fixed"
+    >
+      <modus-wc-icon slot="button" name="help" decorative size="sm"></modus-wc-icon>
+      <modus-wc-help-menu slot="menu">
+${indent(helpMenuItems().strings.join(''), 8)}
+      </modus-wc-help-menu>
+    </modus-wc-dropdown-menu>
+  </modus-wc-navbar>
+
+  <div class="main-content-row">
+    <modus-wc-side-navigation
+      class="side-navigation"
+      collapse-on-click-outside="true"
+      expanded="false"
+      max-width="256px"
+      mode="push"
+      target-content=".panel-content"
+    >
+      <modus-wc-menu size="lg">
+        <modus-wc-menu-item label="home" selected>
+          <modus-wc-icon slot="start-icon" name="home"></modus-wc-icon>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item label="profile">
+          <modus-wc-icon slot="start-icon" name="person"></modus-wc-icon>
+        </modus-wc-menu-item>
+        <modus-wc-menu-item label="settings">
+          <modus-wc-icon slot="start-icon" name="gears"></modus-wc-icon>
+        </modus-wc-menu-item>
+      </modus-wc-menu>
+    </modus-wc-side-navigation>
+    <div class="panel-content">...</div>
+  </div>
+</div>
+
+<script>
+  const navbar = document.querySelector('modus-wc-navbar');
+  const sideNav = document.querySelector('modus-wc-side-navigation');
+
+  navbar.visibility = {
+    ai: true,
+    apps: true,
+    help: false,
+    logo: true,
+    mainMenu: true,
+    notifications: true,
+    search: true,
+    searchInput: false,
+    user: true,
+  };
+  navbar.userCard = {
+    avatarAlt: 'User Avatar',
+    avatarSrc: 'https://i1.sndcdn.com/artworks-000405996468-wmh3uv-t500x500.jpg',
+    email: 'user@trimble.com',
+    name: 'Sonic the Hedgehog',
+  };
+
+  // The navbar hamburger drives the side navigation rail.
+  navbar.addEventListener('mainMenuOpenChange', (e) => {
+    sideNav.expanded = e.detail;
+  });
+</script>
+`;
+
 export const WithSideNavigationAndNavbar: Story = {
   args: {
     'menu-offset': 4,
@@ -193,6 +277,7 @@ export const WithSideNavigationAndNavbar: Story = {
   },
   parameters: {
     docs: {
+      source: { code: withSideNavigationSourceCode },
       description: {
         story:
           'Same shell as **Side Navigation → Default**: navbar hamburger drives the rail; set `visibility.help` to `false` and place `modus-wc-dropdown-menu` + `modus-wc-help-menu` in `slot="end"`.',

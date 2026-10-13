@@ -293,7 +293,7 @@ describe('modus-wc-dropdown-menu', () => {
     expect(helpMenu.querySelector('.modus-wc-help-menu-title')).toBeNull();
   });
 
-  it('should close and focus the trigger when Tab is pressed inside a help menu', async () => {
+  it('should stay open when Tab wraps past the last row of a help menu', async () => {
     const page = await newSpecPage({
       components: [
         ModusWcDropdownMenu,
@@ -312,22 +312,27 @@ describe('modus-wc-dropdown-menu', () => {
              </modus-wc-dropdown-menu>`,
     });
 
-    const trigger = page.root!.querySelector('button')!;
-    const focusSpy = jest.spyOn(trigger, 'focus');
-    trigger.click();
+    page.root!.querySelector('button')!.click();
     await page.waitForChanges();
 
+    const row = page.root!.querySelector(
+      'modus-wc-help-menu modus-wc-menu-item li'
+    ) as HTMLElement;
+    Object.defineProperty(document, 'activeElement', {
+      configurable: true,
+      get: () => row,
+    });
     const event = new KeyboardEvent('keydown', {
       key: 'Tab',
       bubbles: true,
       cancelable: true,
     });
-    page.root!.querySelector('modus-wc-help-menu')!.dispatchEvent(event);
+    row.dispatchEvent(event);
     await page.waitForChanges();
+    delete (document as unknown as { activeElement?: unknown }).activeElement;
 
-    expect(page.root!.menuVisible).toBe(false);
+    expect(page.root!.menuVisible).toBe(true);
     expect(event.defaultPrevented).toBe(true);
-    expect(focusSpy).toHaveBeenCalled();
   });
 
   it('should leave the menu open when Tab is pressed outside a help menu', async () => {

@@ -1,3 +1,4 @@
+import { forceUpdate } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcHelpMenu } from './modus-wc-help-menu';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -175,8 +176,6 @@ describe('modus-wc-help-menu', () => {
     `,
     });
     rowButton(itemByLabel(page.root!, 'Getting Started')).click();
-    await page.waitForChanges();
-    await new Promise((resolve) => requestAnimationFrame(resolve));
     await page.waitForChanges();
 
     const overview = itemByLabel(page.root!, 'Overview');
@@ -691,7 +690,9 @@ describe('modus-wc-help-menu', () => {
     expect(aboutFocus).toHaveBeenCalled();
     expect(tab.defaultPrevented).toBe(true);
 
-    // Shift+Tab before the first row and Tab past the last row leave the menu.
+    // Shift+Tab on the first row and Tab on the last row wrap instead of leaving the menu.
+    const moreFocus = jest.spyOn(moreLi, 'focus');
+    const helpFocus = jest.spyOn(helpLi, 'focus');
     const shiftTab = new KeyboardEvent('keydown', {
       key: 'Tab',
       shiftKey: true,
@@ -699,7 +700,8 @@ describe('modus-wc-help-menu', () => {
       cancelable: true,
     });
     helpLi.dispatchEvent(shiftTab);
-    expect(shiftTab.defaultPrevented).toBe(false);
+    expect(shiftTab.defaultPrevented).toBe(true);
+    expect(moreFocus).toHaveBeenCalled();
 
     Object.defineProperty(document, 'activeElement', {
       configurable: true,
@@ -711,7 +713,8 @@ describe('modus-wc-help-menu', () => {
       cancelable: true,
     });
     moreLi.dispatchEvent(lastTab);
-    expect(lastTab.defaultPrevented).toBe(false);
+    expect(lastTab.defaultPrevented).toBe(true);
+    expect(helpFocus).toHaveBeenCalled();
 
     // Focus outside the rows is left to the browser.
     Object.defineProperty(document, 'activeElement', {
@@ -793,6 +796,9 @@ describe('modus-wc-help-menu', () => {
     const about = itemByLabel(page.root!, 'About');
     about.hidden = true;
     callbacks.forEach((callback) => callback([], {} as MutationObserver));
+    // The observer only requests a render; the render's sync restores visibility.
+    expect(about.hidden).toBe(true);
+    await page.waitForChanges();
     expect(about.hidden).toBe(false);
 
     // A reset pending when the host detaches still settles.
@@ -809,29 +815,45 @@ describe('modus-wc-help-menu', () => {
     globalThis.MutationObserver = original;
   });
 
-  it('should fall back to a frame sync without MutationObserver', async () => {
+  it('should sync panels from render alone without MutationObserver', async () => {
     const original = globalThis.MutationObserver;
-    const raf = globalThis.requestAnimationFrame;
     // @ts-expect-error exercising environments without MutationObserver
     globalThis.MutationObserver = undefined;
-    const frames: FrameRequestCallback[] = [];
-    globalThis.requestAnimationFrame = (cb: FrameRequestCallback) => {
-      frames.push(cb);
-      return 0;
-    };
 
     const page = await newSpecPage({ components, html: markup });
-    expect(frames.length).toBeGreaterThan(0);
-    frames.forEach((cb) => cb(0));
+    const trimbleHelp = itemByLabel(page.root!, 'Trimble Help');
+    expect(trimbleHelp.closest('[slot="panel"]')!.hasAttribute('hidden')).toBe(
+      true
+    );
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+    expect(trimbleHelp.hidden).toBe(false);
 
-    // @ts-expect-error exercising environments without animation frames
-    globalThis.requestAnimationFrame = undefined;
-    const second = await newSpecPage({ components, html: markup });
-    expect(second.root).toBeTruthy();
-
-    globalThis.requestAnimationFrame = raf;
     globalThis.MutationObserver = original;
-    expect(page.root).toBeTruthy();
+  });
+
+  it('should re-sync after a menu item is selected', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const about = itemByLabel(page.root!, 'About');
+    about.hidden = true;
+    about.dispatchEvent(new CustomEvent('itemSelect', { bubbles: true }));
+    await page.waitForChanges();
+    expect(about.hidden).toBe(false);
+  });
+
+  it('should not replay a transition when the host re-renders', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const motion = jest.spyOn(
+      page.rootInstance as unknown as { runMotion: () => void },
+      'runMotion'
+    );
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+    expect(motion).toHaveBeenCalledTimes(1);
+
+    forceUpdate(page.rootInstance);
+    await page.waitForChanges();
+    expect(motion).toHaveBeenCalledTimes(1);
   });
 
   it('should animate panel transitions when motion is allowed', async () => {

@@ -5,6 +5,10 @@
 
 modus-wc-help-menu {
   background-color: var(--modus-wc-color-base-page);
+  border-radius: var(--modus-wc-border-radius-2xl);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
   display: block;
   min-width: 11.25rem;
   width: 100%;
@@ -74,6 +78,10 @@ modus-wc-help-menu {
         background-color: var(--modus-wc-color-base-100);
       }
     }
+  }
+
+  modus-wc-menu-item .modus-wc-menu-item-labels {
+    line-height: var(--modus-wc-line-height-md);
   }
 
   modus-wc-menu-item.modus-wc-help-menu-back .modus-wc-menu-item-labels {
