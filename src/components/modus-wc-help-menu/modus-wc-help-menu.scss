@@ -130,11 +130,30 @@ modus-wc-help-menu {
       .modus-wc-help-menu-back .modus-wc-menu-item > button,
       .modus-wc-help-menu-track
         [slot='panel']:not([hidden])
-        modus-wc-menu-item
+        modus-wc-menu-item:not(.modus-wc-help-menu-item-last)
         .modus-wc-menu-item
         > button {
         border-radius: 0;
       }
+    }
+  }
+
+  /* Edge rows follow the dropdown's rounded corners so hover and focus outlines fit inside them. */
+  modus-wc-dropdown-menu & .modus-wc-help-menu-track {
+    modus-wc-menu-item.modus-wc-help-menu-item-first .modus-wc-menu-item,
+    modus-wc-menu-item.modus-wc-help-menu-item-first
+      .modus-wc-menu-item
+      > button {
+      border-start-end-radius: var(--modus-wc-border-radius-2xl);
+      border-start-start-radius: var(--modus-wc-border-radius-2xl);
+    }
+
+    modus-wc-menu-item.modus-wc-help-menu-item-last .modus-wc-menu-item,
+    modus-wc-menu-item.modus-wc-help-menu-item-last
+      .modus-wc-menu-item
+      > button {
+      border-end-end-radius: var(--modus-wc-border-radius-2xl);
+      border-end-start-radius: var(--modus-wc-border-radius-2xl);
     }
   }
 

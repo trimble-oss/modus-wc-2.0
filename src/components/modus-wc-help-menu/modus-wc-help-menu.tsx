@@ -28,7 +28,8 @@ interface MenuIndex {
 /** Everything the next render needs to finish a navigation. */
 interface PanelTransition {
   direction: 'forward' | 'back';
-  focus: 'back' | 'root';
+  /** `back` focuses the Back row; an element focuses that item's row (the one that was closed). */
+  focus: 'back' | HTMLElement;
   fromHeight?: number;
 }
 
@@ -112,7 +113,7 @@ export class ModusWcHelpMenu {
     this.transition = undefined;
     if (transition) {
       this.runMotion(transition);
-      this.applyFocus(transition.focus);
+      void this.applyFocus(transition.focus);
     }
 
     this.flushRenderWaiters();
@@ -198,12 +199,27 @@ export class ModusWcHelpMenu {
     }
   }
 
-  private applyFocus(focus: 'back' | 'root') {
-    const target =
-      (focus === 'back'
-        ? this.el.querySelector('.modus-wc-help-menu-back button')
-        : this.focusables()[0]) ?? null;
-    if (this.isHtmlElement(target)) target.focus();
+  /**
+   * Focuses the target row once its menu item has rendered. The Back item is created by
+   * the same render that opens a panel, so its row does not exist yet when this host renders.
+   */
+  private async applyFocus(focus: PanelTransition['focus']) {
+    const item =
+      focus === 'back'
+        ? this.el.querySelector<HTMLElement>(
+            'modus-wc-menu-item.modus-wc-help-menu-back'
+          )
+        : focus;
+    if (!item) return;
+
+    await (
+      item as HTMLElement & {
+        componentOnReady?: () => Promise<unknown>;
+      }
+    ).componentOnReady?.();
+
+    const row = this.rowLi(item);
+    if (row && this.el.contains(row)) row.focus();
   }
 
   private isHtmlElement(node: Element | null): node is HTMLElement {
@@ -227,8 +243,11 @@ export class ModusWcHelpMenu {
 
   private focusables(index = this.buildIndex()): HTMLElement[] {
     const list: HTMLElement[] = [];
-    const back = this.el.querySelector('.modus-wc-help-menu-back button');
-    if (this.isHtmlElement(back)) list.push(back);
+    const back = this.el.querySelector<HTMLElement>(
+      'modus-wc-menu-item.modus-wc-help-menu-back'
+    );
+    const backRow = back && this.rowLi(back);
+    if (backRow) list.push(backRow);
 
     this.levelItems(index)
       .filter(
@@ -447,12 +466,14 @@ export class ModusWcHelpMenu {
   }
 
   private pop() {
+    const path = this.stackElements();
+    const closing = path[path.length - 1];
     const nextStack = this.stack.slice(0, -1);
     const top = nextStack[nextStack.length - 1];
     this.navigate(
       nextStack,
       'back',
-      top ? 'back' : 'root',
+      closing ?? 'back',
       top ? top.label : 'Back'
     );
   }
@@ -476,6 +497,12 @@ export class ModusWcHelpMenu {
     if (node.getAttribute(name) === value) return;
     if (value === null) node.removeAttribute(name);
     else node.setAttribute(name, value);
+  }
+
+  private setClass(node: HTMLElement, name: string, on: boolean) {
+    if (node.classList.contains(name) === on) return;
+    if (on) node.classList.add(name);
+    else node.classList.remove(name);
   }
 
   private setShown(node: HTMLElement, show: boolean) {
@@ -528,17 +555,19 @@ export class ModusWcHelpMenu {
       }
     });
 
+    const levelItems = Array.from(visible);
+    // When drilled, the Back row is always the first visible row.
+    const firstItem = path.length ? undefined : levelItems[0];
+    const lastItem = levelItems[levelItems.length - 1];
+
     const items = [index.root, ...index.byPanel.values()].flat();
     items.forEach((item) => {
       const onStack = stackSet.has(item);
       this.setShown(item, visible.has(item) || onStack);
+      this.setClass(item, 'modus-wc-help-menu-item-first', item === firstItem);
+      this.setClass(item, 'modus-wc-help-menu-item-last', item === lastItem);
 
-      if (
-        item.classList.contains('modus-wc-help-menu-stack-parent') !== onStack
-      ) {
-        if (onStack) item.classList.add('modus-wc-help-menu-stack-parent');
-        else item.classList.remove('modus-wc-help-menu-stack-parent');
-      }
+      this.setClass(item, 'modus-wc-help-menu-stack-parent', onStack);
 
       const isDrill = this.isDrill(item, index);
       this.syncChevron(item, isDrill);
@@ -576,7 +605,7 @@ export class ModusWcHelpMenu {
             >
               {this.stack.length > 0 && (
                 <modus-wc-menu-item
-                  class="modus-wc-help-menu-back"
+                  class="modus-wc-help-menu-back modus-wc-help-menu-item-first"
                   label="Back"
                   onItemSelect={this.handleBack}
                   size={this.surfaceMenuSize}

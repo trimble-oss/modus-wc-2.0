@@ -139,6 +139,25 @@ describe('modus-wc-help-menu', () => {
     ).toBe('Help');
   });
 
+  it('should mark the first and last visible rows when the level changes', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const labelsWith = (className: string) =>
+      Array.from(page.root!.querySelectorAll(`.${className}`)).map(
+        (item) => (item as HTMLElement & { label?: string }).label
+      );
+
+    expect(labelsWith('modus-wc-help-menu-item-first')).toEqual(['Help']);
+    expect(labelsWith('modus-wc-help-menu-item-last')).toEqual(['More']);
+
+    rowButton(itemByLabel(page.root!, 'Help')).click();
+    await page.waitForChanges();
+
+    expect(labelsWith('modus-wc-help-menu-item-first')).toEqual(['Back']);
+    expect(labelsWith('modus-wc-help-menu-item-last')).toEqual([
+      'Product Guides',
+    ]);
+  });
+
   it('should show panel children immediately after the first drill', async () => {
     const page = await newSpecPage({
       components,
@@ -283,9 +302,9 @@ describe('modus-wc-help-menu', () => {
           moveFocus: (direction: 1 | -1) => void;
         }
       ).moveFocus.call(component, direction);
-    const backButton = page.root!.querySelector(
-      '.modus-wc-help-menu-back button'
-    ) as HTMLButtonElement;
+    const backButton = rowLi(
+      page.root!.querySelector('.modus-wc-help-menu-back') as HTMLElement
+    )!;
     const trimbleLi = rowLi(itemByLabel(page.root!, 'Trimble Help'))!;
     const backFocus = jest.spyOn(backButton, 'focus');
     const trimbleFocus = jest.spyOn(trimbleLi, 'focus');
@@ -556,11 +575,48 @@ describe('modus-wc-help-menu', () => {
   it('should no-op back focus when the header is not rendered', async () => {
     const page = await newSpecPage({ components, html: markup });
     const harness = page.rootInstance as unknown as {
-      applyFocus: (focus: 'back' | 'root') => void;
+      applyFocus: (focus: 'back' | HTMLElement) => Promise<void>;
     };
-    expect(() =>
+    await expect(
       harness.applyFocus.call(page.rootInstance, 'back')
-    ).not.toThrow();
+    ).resolves.toBeUndefined();
+  });
+
+  it('should focus Back after drilling in and the opened item after going back', async () => {
+    const page = await newSpecPage({ components, html: markup });
+    const help = itemByLabel(page.root!, 'Help');
+    const guides = itemByLabel(page.root!, 'Product Guides');
+    const backRow = () =>
+      rowLi(
+        page.root!.querySelector('.modus-wc-help-menu-back') as HTMLElement
+      )!;
+    const flush = async () => {
+      await page.waitForChanges();
+      await new Promise((resolve) => setTimeout(resolve));
+    };
+    // Rows share the mock <li> prototype, including the Back row created mid-test.
+    const focusSpy = jest.spyOn(
+      Object.getPrototypeOf(rowLi(help)!) as HTMLElement,
+      'focus'
+    );
+
+    keydown(page.root!, 'Enter', rowButton(help));
+    await flush();
+    expect(focusSpy.mock.contexts.at(-1)).toBe(backRow());
+
+    keydown(page.root!, 'Enter', rowButton(guides));
+    await flush();
+    expect(focusSpy.mock.contexts.at(-1)).toBe(backRow());
+
+    keydown(page.root!, 'Escape');
+    await flush();
+    expect(focusSpy.mock.contexts.at(-1)).toBe(rowLi(guides));
+
+    keydown(page.root!, 'ArrowLeft');
+    await flush();
+    expect(focusSpy.mock.contexts.at(-1)).toBe(rowLi(help));
+
+    focusSpy.mockRestore();
   });
 
   it('should move focus to the next row on Tab inside the menu', async () => {
@@ -912,7 +968,7 @@ describe('modus-wc-help-menu', () => {
     const harness = component as unknown as {
       drillItemFromEvent: (event: Event) => HTMLElement | null;
       openItem: (item: HTMLElement) => void;
-      applyFocus: (focus: 'back' | 'root') => void;
+      applyFocus: (focus: 'back' | HTMLElement) => Promise<void>;
       stack: { index: number; label: string }[];
       stackElements: () => HTMLElement[];
       isInsidePanel: (node: HTMLElement, item: HTMLElement) => boolean;
@@ -972,11 +1028,11 @@ describe('modus-wc-help-menu', () => {
     Object.defineProperty(aboutOffLevel, 'target', { value: rowButton(about) });
     expect(call(harness.drillItemFromEvent, aboutOffLevel)).toBeNull();
 
-    const backButton = page.root!.querySelector(
-      '.modus-wc-help-menu-back button'
-    ) as HTMLButtonElement;
+    const backButton = rowLi(
+      page.root!.querySelector('.modus-wc-help-menu-back') as HTMLElement
+    )!;
     const backFocus = jest.spyOn(backButton, 'focus');
-    call(harness.applyFocus, 'back');
+    await call(harness.applyFocus, 'back');
     expect(backFocus).toHaveBeenCalled();
     backFocus.mockRestore();
 
@@ -984,7 +1040,8 @@ describe('modus-wc-help-menu', () => {
     await page.waitForChanges();
     await resetting;
     await (page.rootInstance as ModusWcHelpMenu).reset();
-    call(harness.applyFocus, 'root');
+    // A bare item with no rendered row, or one outside the host, is skipped.
+    await call(harness.applyFocus, document.createElement('div'));
 
     const bareItem = document.createElement('modus-wc-menu-item');
     page.root!.appendChild(bareItem);
@@ -999,6 +1056,13 @@ describe('modus-wc-help-menu', () => {
 
     harness.stack = [{ index: 99, label: 'Missing' }];
     expect(call(harness.stackElements)).toEqual([]);
+    // Popping a stale frame has no item to return to, so focus falls back to Back.
+    (component as unknown as { pop: () => void }).pop.call(component);
+    expect(
+      (component as unknown as { transition?: { focus: unknown } }).transition
+        ?.focus
+    ).toBe('back');
+    await page.waitForChanges();
 
     // A stacked item whose panel has no items yields an empty level.
     const emptyDrill = document.createElement('modus-wc-menu-item');
