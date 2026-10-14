@@ -33,6 +33,29 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.classList.contains('logo-full')).toBe(true);
   });
 
+  it('should render the bundled custom mark with unique SVG fragment IDs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="custom_mark"></modus-wc-logo><modus-wc-logo name="custom_mark"></modus-wc-logo>',
+    });
+    const svgs = page.root?.querySelectorAll('svg');
+    const masks = Array.from(svgs ?? []).map(
+      (svg) => svg.querySelector('mask')?.id
+    );
+    const gradientIds = masks.map((id) =>
+      id?.replace('mask0_46678_96576', 'paint0_radial_46678_96576')
+    );
+
+    expect(svgs).toHaveLength(2);
+    expect(masks[0]).not.toBe(masks[1]);
+    expect(
+      Array.from(svgs ?? []).map(
+        (svg) => svg.querySelector('rect')?.getAttribute('fill')
+      )
+    ).toEqual(gradientIds.map((id) => `url(#${id})`));
+    expect(LOGO_SVGS['logos/trimble/custom-mark.svg']).toContain('<radialGradient');
+  });
+
   it('should render combined emblem and wordmark for product logos', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
