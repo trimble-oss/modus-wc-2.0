@@ -125,14 +125,18 @@ export const config: Config = {
       'src/utils/**/*.ts',
     ],
     coverageDirectory: 'coverage',
-    coverageReporters: ['lcov', 'text', 'html'],
-    coverageThreshold: {
-      global: {
-        branches: 100,
-        functions: 100,
-        lines: 100,
-        statements: 100,
-      },
-    },
+    coverageReporters: ['lcov', 'text', 'html', 'json'],
+    // Sharded CI runs only see part of the suite, so the threshold is
+    // enforced on the merged report instead (npm run test:coverage:merge).
+    coverageThreshold: process.env.COVERAGE_SHARD
+      ? undefined
+      : {
+          global: {
+            branches: 100,
+            functions: 100,
+            lines: 100,
+            statements: 100,
+          },
+        },
   },
 };
