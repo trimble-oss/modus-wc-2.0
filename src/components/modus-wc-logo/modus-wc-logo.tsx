@@ -7,8 +7,7 @@ import {
   Prop,
 } from '@stencil/core';
 import { handleShadowDOMStyles } from '../base-component';
-import { prefixSvgFragmentIds } from '../svg-id-prefix';
-import { Attributes, generateElementId, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS } from './logo-constants';
 import { LOGO_SVGS } from '../../svg-assets/generated/logo-svg-data';
 import { LogoName } from '../types';
@@ -33,7 +32,6 @@ const LogoSvg: FunctionalComponent<LogoSvgProps> = ({ svgText }) => (
 })
 export class ModusWcLogo {
   private inheritedAttributes: Attributes = {};
-  private svgInstanceScope = '';
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -53,15 +51,6 @@ export class ModusWcLogo {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
     this.inheritedAttributes = inheritAriaAttributes(this.el);
-    this.svgInstanceScope = generateElementId();
-  }
-
-  private scopeSvgContent(content: string, filePath: string): string {
-    const pathScope = filePath.replace(/[^a-zA-Z0-9]+/g, '_');
-    return prefixSvgFragmentIds(
-      content,
-      `${this.svgInstanceScope}_${pathScope}`
-    );
   }
 
   private getSvgContent(): string {
@@ -95,7 +84,7 @@ export class ModusWcLogo {
       return '';
     }
 
-    return this.scopeSvgContent(svgContent, filePath);
+    return svgContent;
   }
 
   private getEmblemSvgContent(): string {
@@ -109,10 +98,7 @@ export class ModusWcLogo {
       logoInfo.category !== 'trimble_brand' &&
       !logoInfo.selfContained
     ) {
-      const svgContent = LOGO_SVGS[logoInfo.emblemPath];
-      return svgContent
-        ? this.scopeSvgContent(svgContent, logoInfo.emblemPath)
-        : '';
+      return LOGO_SVGS[logoInfo.emblemPath] || '';
     }
 
     return '';
