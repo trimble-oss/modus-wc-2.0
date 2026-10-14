@@ -104,9 +104,9 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/copilot-emblem.svg',
     category: 'trimble',
   },
-  custom_mark: {
-    displayName: 'Custom Mark',
-    path: 'logos/trimble/custom-mark.svg',
+  trimble_ai: {
+    displayName: 'Trimble AI',
+    path: 'logos/trimble/trimble-ai.svg',
     category: 'trimble',
   },
   demand_planning: {

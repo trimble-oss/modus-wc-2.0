@@ -22,7 +22,7 @@ export type LogoName =
   | 'connect'
   | 'connect2fab'
   | 'copilot'
-  | 'custom_mark'
+  | 'trimble_ai'
   | 'demand_planning'
   | 'earthworks'
   | 'estimation_construct'

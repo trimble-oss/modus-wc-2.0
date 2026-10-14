@@ -36,7 +36,7 @@ describe('modus-wc-logo', () => {
   it('should render the bundled custom mark with unique SVG fragment IDs', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
-      html: '<div><modus-wc-logo name="custom_mark"></modus-wc-logo><modus-wc-logo name="custom_mark"></modus-wc-logo></div>',
+      html: '<div><modus-wc-logo name="trimble_ai"></modus-wc-logo><modus-wc-logo name="trimble_ai"></modus-wc-logo></div>',
     });
     const svgs = page.doc.querySelectorAll('svg');
     const firstSvg = svgs[0];
@@ -50,7 +50,7 @@ describe('modus-wc-logo', () => {
     expect(firstSvg?.querySelector('rect')?.getAttribute('fill')).toBe(
       `url(#${firstGradientId})`
     );
-    expect(LOGO_SVGS['logos/trimble/custom-mark.svg']).toContain(
+    expect(LOGO_SVGS['logos/trimble/trimble-ai.svg']).toContain(
       '<radialGradient'
     );
   });
