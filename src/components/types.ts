@@ -22,6 +22,7 @@ export type LogoName =
   | 'connect'
   | 'connect2fab'
   | 'copilot'
+  | 'trimble_ai'
   | 'demand_planning'
   | 'earthworks'
   | 'estimation_construct'
@@ -290,10 +291,7 @@ type AutocompleteWebAuthnBase =
  *   - `username webauthn` / `current-password webauthn` (credential + passkey contexts only)
  */
 export type AutocompleteTypes =
-  | 'on'
-  | 'off'
-  | AutocompleteBase
-  | `${AutocompleteWebAuthnBase} webauthn`;
+  'on' | 'off' | AutocompleteBase | `${AutocompleteWebAuthnBase} webauthn`;
 
 /** For `input`, from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types */
 export type TextFieldTypes =

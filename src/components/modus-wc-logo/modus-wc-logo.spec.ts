@@ -33,6 +33,26 @@ describe('modus-wc-logo', () => {
     expect(logoSpan?.classList.contains('logo-full')).toBe(true);
   });
 
+  it('should render Trimble AI with unique mask and gradient IDs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<div><modus-wc-logo name="trimble_ai"></modus-wc-logo><modus-wc-logo name="trimble_ai"></modus-wc-logo></div>',
+    });
+    const svgs = page.doc.querySelectorAll('svg');
+    const firstSvg = svgs[0];
+    const secondSvg = svgs[1];
+    const firstMaskId = firstSvg?.querySelector('mask')?.id;
+    const secondMaskId = secondSvg?.querySelector('mask')?.id;
+    const firstGradientId = firstSvg?.querySelector('radialGradient')?.id;
+
+    expect(svgs).toHaveLength(2);
+    expect(firstMaskId).toBeTruthy();
+    expect(firstMaskId).not.toBe(secondMaskId);
+    expect(firstSvg?.querySelector('rect')?.getAttribute('fill')).toBe(
+      `url(#${firstGradientId})`
+    );
+  });
+
   it('should render combined emblem and wordmark for product logos', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
