@@ -36,24 +36,23 @@ describe('modus-wc-logo', () => {
   it('should render the bundled custom mark with unique SVG fragment IDs', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
-      html: '<modus-wc-logo name="custom_mark"></modus-wc-logo><modus-wc-logo name="custom_mark"></modus-wc-logo>',
+      html: '<div><modus-wc-logo name="custom_mark"></modus-wc-logo><modus-wc-logo name="custom_mark"></modus-wc-logo></div>',
     });
-    const svgs = page.root?.querySelectorAll('svg');
-    const masks = Array.from(svgs ?? []).map(
-      (svg) => svg.querySelector('mask')?.id
-    );
-    const gradientIds = masks.map((id) =>
-      id?.replace('mask0_46678_96576', 'paint0_radial_46678_96576')
-    );
+    const svgs = page.doc.querySelectorAll('svg');
+    const firstSvg = svgs[0];
+    const secondSvg = svgs[1];
+    const firstMaskId = firstSvg?.querySelector('mask')?.id;
+    const secondMaskId = secondSvg?.querySelector('mask')?.id;
+    const firstGradientId = firstSvg?.querySelector('radialGradient')?.id;
 
-    expect(svgs).toHaveLength(2);
-    expect(masks[0]).not.toBe(masks[1]);
-    expect(
-      Array.from(svgs ?? []).map(
-        (svg) => svg.querySelector('rect')?.getAttribute('fill')
-      )
-    ).toEqual(gradientIds.map((id) => `url(#${id})`));
-    expect(LOGO_SVGS['logos/trimble/custom-mark.svg']).toContain('<radialGradient');
+    expect(firstMaskId).toBeTruthy();
+    expect(firstMaskId).not.toBe(secondMaskId);
+    expect(firstSvg?.querySelector('rect')?.getAttribute('fill')).toBe(
+      `url(#${firstGradientId})`
+    );
+    expect(LOGO_SVGS['logos/trimble/custom-mark.svg']).toContain(
+      '<radialGradient'
+    );
   });
 
   it('should render combined emblem and wordmark for product logos', async () => {

@@ -58,7 +58,10 @@ export class ModusWcLogo {
 
   private scopeSvgContent(content: string, filePath: string): string {
     const pathScope = filePath.replace(/[^a-zA-Z0-9]+/g, '_');
-    return prefixSvgFragmentIds(content, `${this.svgInstanceScope}_${pathScope}`);
+    return prefixSvgFragmentIds(
+      content,
+      `${this.svgInstanceScope}_${pathScope}`
+    );
   }
 
   private getSvgContent(): string {
