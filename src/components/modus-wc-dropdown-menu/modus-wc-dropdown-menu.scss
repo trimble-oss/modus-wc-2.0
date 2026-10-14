@@ -91,6 +91,55 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-dropdown-menu.modus-wc-dropdown-menu,
+[data-theme='modus-modern-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
+  /* Inner menu wrappers clip overflow; shadow on the wrapper (same as help menu). */
+  .menu-wrapper.menu-wrapper:not(:has(.modus-wc-help-menu)) {
+    border-radius: var(--rounded-box);
+    box-shadow:
+      0 4px 6px -1px var(--modus-wc-color-base-200),
+      0 2px 4px -2px var(--modus-wc-color-base-200);
+
+    .modus-wc-menu {
+      border-radius: var(--rounded-box);
+    }
+
+    /* Menu and tree rows. First gets the top corners, last the bottom.
+       A single row matches both, so all four corners stay rounded. */
+    :is(modus-wc-menu, modus-wc-tree-menu)
+      .modus-wc-menu:not(.modus-wc-menu-dropdown) {
+      :is(modus-wc-menu-item, modus-wc-tree-item):not(:last-of-type)
+        :is(.modus-wc-menu-item > button, .modus-wc-menu-item-interactive) {
+        border-radius: 0;
+      }
+
+      :is(modus-wc-menu-item, modus-wc-tree-item):first-of-type
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item:focus-visible,
+          .modus-wc-menu-item.modus-wc-menu-item-focused,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
+        border-start-end-radius: var(--rounded-box);
+        border-start-start-radius: var(--rounded-box);
+      }
+
+      :is(modus-wc-menu-item, modus-wc-tree-item):last-of-type
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item:focus-visible,
+          .modus-wc-menu-item.modus-wc-menu-item-focused,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
+        border-end-end-radius: var(--rounded-box);
+        border-end-start-radius: var(--rounded-box);
+      }
+    }
+  }
+}
+
 /* Kept after the Connect block so equal-specificity radius overrides win. */
 modus-wc-dropdown-menu.modus-wc-dropdown-menu
   .menu-wrapper:has(.modus-wc-help-menu) {
