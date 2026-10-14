@@ -10,7 +10,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
         <div slot="start">
           <modus-wc-button aria-label="Trimble logo">
             <!---->
-            <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+            <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
               <modus-wc-logo name="trimble"></modus-wc-logo>
             </button>
           </modus-wc-button>
@@ -33,7 +33,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           </div>
           <modus-wc-button aria-label="User profile">
             <!---->
-            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
+            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-circle moduswc:btn-primary moduswc:btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="sm"></modus-wc-avatar>
             </button>
           </modus-wc-button>
@@ -47,7 +47,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
               <div slot="actions">
                 <modus-wc-button>
                   <!---->
-                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary my-trimble" tabindex="0" type="button">
+                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary my-trimble" tabindex="0" type="button">
                     Access MyTrimble
                   </button>
                 </modus-wc-button>
@@ -55,7 +55,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
               <div slot="footer">
                 <modus-wc-button>
                   <!---->
-                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary sign-out" tabindex="0" type="button">
+                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary sign-out" tabindex="0" type="button">
                     Sign out
                   </button>
                 </modus-wc-button>
@@ -79,7 +79,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
         <div slot="start">
           <modus-wc-button aria-label="Trimble logo">
             <!---->
-            <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+            <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
               <modus-wc-logo name="trimble"></modus-wc-logo>
             </button>
           </modus-wc-button>
@@ -92,7 +92,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
         <div slot="end">
           <modus-wc-button aria-label="User profile">
             <!---->
-            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm user-button" tabindex="0" type="button">
+            <button aria-label="User profile" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-circle modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-circle moduswc:btn-primary moduswc:btn-sm user-button" tabindex="0" type="button">
               <modus-wc-avatar alt="" size="sm"></modus-wc-avatar>
             </button>
           </modus-wc-button>
@@ -106,7 +106,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
               <div slot="actions">
                 <modus-wc-button>
                   <!---->
-                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary my-trimble" tabindex="0" type="button">
+                  <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary my-trimble" tabindex="0" type="button">
                     Access MyTrimble
                   </button>
                 </modus-wc-button>
@@ -114,7 +114,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
               <div slot="footer">
                 <modus-wc-button>
                   <!---->
-                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary sign-out" tabindex="0" type="button">
+                  <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary sign-out" tabindex="0" type="button">
                     Sign out
                   </button>
                 </modus-wc-button>

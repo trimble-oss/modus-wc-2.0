@@ -80,13 +80,13 @@ exports[`modus-wc-button-group should render with success color 1`] = `
   <!---->
   <modus-wc-button color="success" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success moduswc:btn moduswc:btn-md moduswc:btn-outline moduswc:btn-success" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
   <modus-wc-button color="success" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-success moduswc:btn moduswc:btn-md moduswc:btn-outline moduswc:btn-success" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -110,13 +110,13 @@ exports[`modus-wc-button-group should update child buttons selection when select
   <!---->
   <modus-wc-button variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-outline moduswc:btn-primary" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
   <modus-wc-button variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-outline moduswc:btn-primary" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -128,13 +128,13 @@ exports[`modus-wc-button-group should update the color of child buttons when col
   <!---->
   <modus-wc-button color="danger" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline moduswc:btn moduswc:btn-error moduswc:btn-md moduswc:btn-outline" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
   <modus-wc-button color="danger" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-error modus-wc-btn-md modus-wc-btn-outline moduswc:btn moduswc:btn-error moduswc:btn-md moduswc:btn-outline" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -146,13 +146,13 @@ exports[`modus-wc-button-group should update the disabled state of child buttons
   <!---->
   <modus-wc-button disabled="true" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
+    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary moduswc:btn moduswc:btn-disabled moduswc:btn-md moduswc:btn-outline moduswc:btn-primary" disabled="" tabindex="-1" type="button">
       Button 1
     </button>
   </modus-wc-button>
   <modus-wc-button disabled="true" variant="outlined">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary" disabled="" tabindex="-1" type="button">
+    <button class="modus-wc-btn modus-wc-btn-disabled modus-wc-btn-md modus-wc-btn-outline modus-wc-btn-primary moduswc:btn moduswc:btn-disabled moduswc:btn-md moduswc:btn-outline moduswc:btn-primary" disabled="" tabindex="-1" type="button">
       Button 2
     </button>
   </modus-wc-button>
@@ -164,13 +164,13 @@ exports[`modus-wc-button-group should update the variant of child buttons when v
   <!---->
   <modus-wc-button variant="filled">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary" tabindex="0" type="button">
       Button 1
     </button>
   </modus-wc-button>
   <modus-wc-button variant="filled">
     <!---->
-    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
+    <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary" tabindex="0" type="button">
       Button 2
     </button>
   </modus-wc-button>
