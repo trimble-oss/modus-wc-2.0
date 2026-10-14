@@ -80,7 +80,11 @@ export class ModusWcMenu {
     }
 
     // For regular menus, add all the standard classes
-    const classList: string[] = ['modus-wc-menu modus-wc-w-full'];
+    const classList: string[] = [
+      'modus-wc-menu',
+      'moduswc:menu',
+      'moduswc:w-full',
+    ];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

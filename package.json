@@ -110,6 +110,10 @@
     "setup:auth": "bash scripts/setup-npm-auth.sh",
     "install:blazor-tools": "npm ci --prefix integrations/blazor/razor-output",
     "generate:blazor-stories": "node scripts/generate-blazor-stories.js",
+    "generate:daisyui-themes": "wireit",
+    "measure:css-bundle": "node scripts/measure-css-bundle.mjs",
+    "measure:css-bundle:v3": "node scripts/measure-css-bundle.mjs --v3-baseline",
+    "check:shadow-property": "node scripts/shadow-property-check.mjs",
     "generate:icon-data": "wireit",
     "generate:svg-assets": "wireit",
     "stencil:build:blazor": "wireit",
@@ -391,15 +395,33 @@
         "stencil:watch"
       ]
     },
+    "generate:daisyui-themes": {
+      "command": "node scripts/generate-daisyui-themes.mjs",
+      "files": [
+        "scripts/generate-daisyui-themes.mjs",
+        "src/styles/themes/common.ts",
+        "src/styles/themes/modus-modern.ts",
+        "src/styles/themes/modus-classic.ts",
+        "src/styles/themes/connect.ts"
+      ],
+      "output": [
+        "src/styles/generated/daisyui-themes.css"
+      ]
+    },
     "tailwind:build": {
       "command": "tailwindcss -i src/styles/tailwind-v4.css -o src/styles/output.css --minify",
+      "dependencies": [
+        "generate:daisyui-themes"
+      ],
       "files": [
         "src/**/*.scss",
         "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind-v4.css",
         "src/styles/tailwind-v4-core.css",
+        "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"
       ],
@@ -474,13 +496,18 @@
     "tailwind:watch": {
       "command": "tailwindcss -i src/styles/tailwind-v4.css -o src/styles/output.css --minify --watch",
       "service": true,
+      "dependencies": [
+        "generate:daisyui-themes"
+      ],
       "files": [
         "src/**/*.scss",
         "src/styles/fonts.css",
         "src/styles/global.css",
         "src/styles/tailwind-v4.css",
         "src/styles/tailwind-v4-core.css",
+        "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"
       ]

@@ -1,5 +1,5 @@
 /**
- * SPIKE: Tailwind v4 / DaisyUI v5 safelist for four migrated components.
+ * SPIKE: Tailwind v4 / DaisyUI v5 safelist for five migrated component groups.
  * Uses colon prefix syntax (strategy A): moduswc:flex, moduswc:btn-primary, etc.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,4 +56,13 @@ const themeableV4 = [
   'moduswc:items-center',
   'moduswc:gap-1',
   'moduswc:rounded-box',
+  // Menu
+  'moduswc:menu',
+  'moduswc:menu-horizontal',
+  'moduswc:menu-sm',
+  'moduswc:menu-md',
+  'moduswc:menu-lg',
+  'moduswc:menu-disabled',
+  'moduswc:menu-active',
+  'moduswc:menu-focus',
 ];

@@ -6,3 +6,4 @@
 @import './variables.css';
 @import './fonts.css';
 @import './tailwind-v4-core.css';
+@import './tailwind-v4-button-overrides.css';

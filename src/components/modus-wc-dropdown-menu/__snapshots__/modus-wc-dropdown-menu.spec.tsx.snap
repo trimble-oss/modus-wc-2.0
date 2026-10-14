@@ -5,7 +5,7 @@ exports[`modus-wc-dropdown-menu should render with custom props 1`] = `
   <!---->
   <modus-wc-button>
     <!---->
-    <button aria-expanded="true" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
+    <button aria-expanded="true" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-primary modus-wc-btn-sm modus-wc-btn-square moduswc:btn moduswc:btn-disabled moduswc:btn-primary moduswc:btn-sm moduswc:btn-square" disabled="" tabindex="-1" type="button">
       <div slot="button">
         Button
       </div>
@@ -14,7 +14,7 @@ exports[`modus-wc-dropdown-menu should render with custom props 1`] = `
   <div class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
     <modus-wc-menu selection-mode="single">
       <!---->
-      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-sm modus-wc-w-full" role="menu">
+      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-sm moduswc:menu moduswc:menu-sm moduswc:w-full" role="menu">
       </ul>
     </modus-wc-menu>
   </div>
@@ -26,7 +26,7 @@ exports[`modus-wc-dropdown-menu should render with default props 1`] = `
   <!---->
   <modus-wc-button>
     <!---->
-    <button aria-expanded="false" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
+    <button aria-expanded="false" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary" tabindex="0" type="button">
       <div slot="button">
         Button
       </div>
@@ -35,7 +35,7 @@ exports[`modus-wc-dropdown-menu should render with default props 1`] = `
   <div aria-hidden="" class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: hidden; opacity: 0; pointer-events: none;">
     <modus-wc-menu selection-mode="single">
       <!---->
-      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
+      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md moduswc:menu moduswc:menu-md moduswc:w-full" role="menu">
       </ul>
     </modus-wc-menu>
   </div>
@@ -47,7 +47,7 @@ exports[`modus-wc-dropdown-menu should render with menu items 1`] = `
   <!---->
   <modus-wc-button>
     <!---->
-    <button aria-expanded="true" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary" tabindex="0" type="button">
+    <button aria-expanded="true" aria-haspopup="true" class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-md modus-wc-btn-primary moduswc:btn moduswc:btn-md moduswc:btn-primary" tabindex="0" type="button">
       <div slot="button">
         Button
       </div>
@@ -56,7 +56,7 @@ exports[`modus-wc-dropdown-menu should render with menu items 1`] = `
   <div class="menu-wrapper" style="position: absolute; top: 0px; left: 0px; z-index: 1000; visibility: visible; opacity: 1; pointer-events: auto;">
     <modus-wc-menu selection-mode="single">
       <!---->
-      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
+      <ul aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md moduswc:menu moduswc:menu-md moduswc:w-full" role="menu">
         <div slot="menu">
           <modus-wc-menu-item label="Item One" value="1">
             <!---->
