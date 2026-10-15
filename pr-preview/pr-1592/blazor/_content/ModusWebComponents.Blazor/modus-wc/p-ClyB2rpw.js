@@ -1,0 +1,1 @@
+function n(n,e){const t=/\bid="([^"]+)"/g,o=new Set;let $=t.exec(n);for(;null!==$;)o.add($[1]),$=t.exec(n);const r=[...o].sort(((n,e)=>e.length-n.length));let g=n;for(const n of r){const t=`${e}__${n}`,o=n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");g=g.replace(new RegExp(`id="${o}"`,"g"),`id="${t}"`),g=g.replace(new RegExp(`url\\(#${o}\\)`,"g"),`url(#${t})`)}return g}export{n as p}
