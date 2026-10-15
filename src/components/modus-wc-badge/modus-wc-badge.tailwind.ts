@@ -2,6 +2,7 @@ import { DaisySize } from '../types';
 
 export const convertPropsToClasses = ({
   color,
+  shape,
   size,
   variant,
 }: {
@@ -14,6 +15,7 @@ export const convertPropsToClasses = ({
     | 'success'
     | 'warning'
     | 'danger';
+  shape?: 'ellipse' | 'rectangle';
   size?: DaisySize;
   variant?: 'counter' | 'filled' | 'outlined' | 'text';
 }): string => {
@@ -64,6 +66,11 @@ export const convertPropsToClasses = ({
         classes = `${classes} modus-wc-badge-text`;
         break;
     }
+  }
+
+  // Text badges have no background or border, so shape does not apply
+  if (shape && variant !== 'text') {
+    classes = `${classes} modus-wc-badge-${shape}`;
   }
 
   return classes.trim();
