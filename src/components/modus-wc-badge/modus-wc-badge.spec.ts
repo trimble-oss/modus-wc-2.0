@@ -59,4 +59,43 @@ describe('modus-wc-badge', () => {
     const span = page.root?.querySelector('span');
     expect(span?.getAttribute('role')).toBe('');
   });
+
+  it('should apply ellipse class when shape is ellipse', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge shape="ellipse" variant="filled">Badge</modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span).toHaveClass('modus-wc-badge-ellipse');
+  });
+
+  it('should apply rectangle class to counter when shape is rectangle', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge shape="rectangle" variant="counter">5</modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span).toHaveClass('modus-wc-badge-counter');
+    expect(span).toHaveClass('modus-wc-badge-rectangle');
+  });
+
+  it('should not apply shape class for text variant', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge shape="rectangle" variant="text">Badge</modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span).not.toHaveClass('modus-wc-badge-rectangle');
+    expect(span).not.toHaveClass('modus-wc-badge-ellipse');
+  });
+
+  it('should not apply shape class when shape is unset', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcBadge],
+      html: '<modus-wc-badge variant="outlined">Badge</modus-wc-badge>',
+    });
+    const span = page.root?.querySelector('span');
+    expect(span).not.toHaveClass('modus-wc-badge-rectangle');
+    expect(span).not.toHaveClass('modus-wc-badge-ellipse');
+  });
 });
