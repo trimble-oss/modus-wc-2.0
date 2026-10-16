@@ -368,12 +368,6 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/trimble-emblem.svg',
     category: 'trimble_brand',
   },
-  trimble_ai: {
-    displayName: 'Trimble AI',
-    path: 'logos/trimble/trimble-ai.svg',
-    emblemPath: 'logos/trimble/trimble-ai.svg',
-    category: 'trimble',
-  },
   truckmate: {
     displayName: 'TruckMate',
     path: 'logos/trimble/truckmate.svg',
