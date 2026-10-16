@@ -44,6 +44,30 @@ describe('modus-wc-navbar', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it.each([
+    { isLight: true, theme: 'light' },
+    { isLight: false, theme: 'dark' },
+  ])(
+    'should render the Trimble AI icon in $theme theme',
+    async ({ isLight }) => {
+      const page = await newSpecPage({
+        components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],
+        html: '<modus-wc-navbar></modus-wc-navbar>',
+      });
+      page.rootInstance.visibility = {
+        ...page.rootInstance.visibility,
+        ai: true,
+      };
+      page.rootInstance.isLight = isLight;
+      await page.waitForChanges();
+
+      const icon = page.root?.querySelector('.ai svg');
+      expect(icon?.getAttribute('viewBox')).toBe('0 0 32 32');
+      expect(icon?.querySelector('mask')).not.toBeNull();
+      expect(icon?.querySelector('radialGradient')).not.toBeNull();
+    }
+  );
+
   it('should not render logo when visibility.logo is false', async () => {
     const page = await newSpecPage({
       components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],
