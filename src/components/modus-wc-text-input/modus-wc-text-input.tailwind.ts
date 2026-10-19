@@ -17,7 +17,7 @@ export const convertPropsToClasses = ({
 
   if (bordered === false) {
     classes = `${classes} moduswc:input-ghost`;
-  } else if (bordered !== false) {
+  } else {
     classes = `${classes} modus-wc-input-bordered`;
   }
 
