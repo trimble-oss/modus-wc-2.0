@@ -479,6 +479,77 @@ describe('modus-wc-tooltip', () => {
     expect(page.root).toBeTruthy();
   });
 
+  describe('lazy popper initialization', () => {
+    it('should not create popper or global listeners on load', async () => {
+      const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).toBeNull();
+      expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+        'resize',
+        expect.any(Function)
+      );
+      expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+        'scroll',
+        expect.any(Function),
+        true
+      );
+      addEventListenerSpy.mockRestore();
+    });
+
+    it('should create popper on first hover', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).not.toBeNull();
+    });
+
+    it('should not create popper when there is no trigger element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      tooltipComponent.triggerElement = null;
+      // @ts-expect-error - Access private method for testing
+      tooltipComponent.initializePopper();
+
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).toBeNull();
+    });
+
+    it('should destroy popper when the tooltip hides', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+
+      page.root?.dispatchEvent(new MouseEvent('mouseleave'));
+      await page.waitForChanges();
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).toBeNull();
+    });
+  });
+
   it('should update popper instance on window resize', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],
