@@ -532,6 +532,54 @@ describe('modus-wc-tooltip', () => {
       expect(tooltipComponent.popperInstance).toBeNull();
     });
 
+    it('should use the configured position as popper placement', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip" position="bottom"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).not.toBeNull();
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance.state.placement).toBe('bottom');
+    });
+
+    it('should not create popper when there is no trigger element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      tooltipComponent.triggerElement = null;
+      // @ts-expect-error - Access private method for testing
+      tooltipComponent.initializePopper();
+
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).toBeNull();
+    });
+
+    it('should not create popper when there is no tooltip element', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: '<modus-wc-tooltip content="Test tooltip"><button>Trigger</button></modus-wc-tooltip>',
+      });
+
+      const tooltipComponent = page.rootInstance as ModusWcTooltip;
+      // @ts-expect-error - Access private property for testing
+      tooltipComponent.tooltipElement = null;
+      // @ts-expect-error - Access private method for testing
+      tooltipComponent.initializePopper();
+
+      // @ts-expect-error - Access private property for testing
+      expect(tooltipComponent.popperInstance).toBeNull();
+    });
+
     it('should destroy popper when the tooltip hides', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
