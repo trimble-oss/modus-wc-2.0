@@ -172,7 +172,7 @@ export const Migration: Story = {
 
 #### New (non-breaking)
 
-  - \`shape\` (\`ellipse\` | \`rectangle\`) is optional. When unset, each variant keeps its existing geometry. It has no visual effect on the \`text\` variant.
+  - \`shape\` (\`ellipse\` | \`rectangle\`) is optional. When unset, each variant keeps its existing geometry. It is ignored for the \`text\` variant.
         `,
       },
     },

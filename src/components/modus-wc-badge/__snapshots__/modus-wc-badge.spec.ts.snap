@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-badge should render text variant without background or border when shape is set 1`] = `
-<modus-wc-badge shape="rectangle" variant="text">
-  <!---->
-  <span class="modus-wc-badge modus-wc-badge-md modus-wc-badge-primary modus-wc-badge-rectangle modus-wc-badge-text" role="status">
-    Badge
-  </span>
-</modus-wc-badge>
-`;
-
 exports[`modus-wc-badge should render with alert role for warning color 1`] = `
 <modus-wc-badge color="warning">
   <!---->
