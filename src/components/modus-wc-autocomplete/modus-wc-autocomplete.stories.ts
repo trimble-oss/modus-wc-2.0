@@ -1395,6 +1395,70 @@ export const CustomEventHandlers: Story = {
         (item) => item.visibleInMenu && !item.disabled
       );
 
+      const menuItemFor = (value: string) =>
+        Array.from(autocomplete.querySelectorAll('modus-wc-menu-item')).find(
+          (el) => (el as HTMLElement & { value?: string }).value === value
+        );
+
+      // Read the row that received the key. The menu moves DOM focus one step
+      // before this handler runs, so document.activeElement is already wrong.
+      const indexFromKeyTarget = () => {
+        const host = (e.target as HTMLElement | null)?.closest(
+          'modus-wc-menu-item'
+        ) as (HTMLElement & { value?: string }) | null;
+        if (!host) return -1;
+        return visibleItems.findIndex((item) => item.value === host.value);
+      };
+
+      const focusOption = (value: string) => {
+        menuItemFor(value)?.querySelector('li')?.focus();
+      };
+
+      // Same skip the arrow keys use: step one, then jump one more when possible.
+      const skipIndex = (direction: 1 | -1, currentIndex: number) => {
+        if (direction > 0) {
+          const nextIndex =
+            currentIndex < 0
+              ? 0
+              : Math.min(currentIndex + 1, visibleItems.length - 1);
+          return nextIndex + 1 < visibleItems.length
+            ? nextIndex + 1
+            : nextIndex;
+        }
+
+        const prevIndex =
+          currentIndex < 0
+            ? visibleItems.length - 1
+            : Math.max(currentIndex - 1, 0);
+        return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+      };
+
+      const highlightSkip = (direction: 1 | -1) => {
+        if (!visibleItems.length) return;
+
+        const fromRow = indexFromKeyTarget();
+        const fromFlag = visibleItems.findIndex((item) => item.focused);
+        const currentIndex = fromRow >= 0 ? fromRow : fromFlag;
+        const next = skipIndex(direction, currentIndex);
+        // The menu wraps one row at a time. Stay on this row when the skip
+        // cannot move further so Tab and arrows keep the same item.
+        if (next === currentIndex && fromRow >= 0) {
+          const stay = visibleItems[currentIndex];
+          if (stay) focusOption(stay.value);
+          return;
+        }
+
+        const target = visibleItems[next];
+        if (!target) return;
+
+        args.items = args.items.map((item) => ({
+          ...item,
+          focused: item.value === target.value,
+        }));
+        autocomplete.items = [...args.items];
+        focusOption(target.value);
+      };
+
       switch (e.key) {
         case 'Escape':
           args.items = args.items.map((item) => ({
@@ -1413,43 +1477,20 @@ export const CustomEventHandlers: Story = {
         case 'ArrowDown': {
           // Open menu if not already open
           requestMenu(autocomplete, true);
-
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const nextIndex =
-            currentIndex < 0
-              ? 0
-              : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-          // Custom: Skip every other item for faster navigation
-          const skipIndex =
-            nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
+          highlightSkip(1);
+          return;
         }
 
         case 'ArrowUp': {
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const prevIndex =
-            currentIndex < 0
-              ? visibleItems.length - 1
-              : Math.max(currentIndex - 1, 0);
-
-          // Custom: Skip every other item for faster navigation
-          const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
+          highlightSkip(-1);
+          return;
         }
 
         case 'Enter': {
-          const focusedItem = visibleItems.find((item) => item.focused);
+          const fromRow = indexFromKeyTarget();
+          const focusedItem =
+            (fromRow >= 0 ? visibleItems[fromRow] : undefined) ??
+            visibleItems.find((item) => item.focused);
           if (focusedItem) {
             // For single select, clear previous selection
             args.items = args.items.map((item) => ({
@@ -1461,6 +1502,31 @@ export const CustomEventHandlers: Story = {
             requestMenu(autocomplete, false);
           }
           break;
+        }
+
+        case 'Tab': {
+          // Shift+Tab from the input leaves the field. From a row, Tab and
+          // Shift+Tab use the same skip as the arrow keys. At either end,
+          // let the browser move focus out.
+          const onRow = indexFromKeyTarget() >= 0;
+          if (!onRow && e.shiftKey) return;
+          if (!visibleItems.length) return;
+
+          if (!onRow) {
+            const flagged = visibleItems.find((item) => item.focused);
+            if (!flagged) return;
+            e.preventDefault();
+            focusOption(flagged.value);
+            return;
+          }
+
+          const currentIndex = indexFromKeyTarget();
+          const next = skipIndex(e.shiftKey ? -1 : 1, currentIndex);
+          if (next === currentIndex) return;
+
+          e.preventDefault();
+          highlightSkip(e.shiftKey ? -1 : 1);
+          return;
         }
 
         default:
@@ -1653,6 +1719,53 @@ export const CustomEventHandlers: Story = {
         //   const visibleItems = autocomplete.items.filter(
         //     (item) => item.visibleInMenu && !item.disabled
         //   );
+        //   const menuItemFor = (value) =>
+        //     Array.from(autocomplete.querySelectorAll('modus-wc-menu-item')).find(
+        //       (el) => el.value === value
+        //     );
+        //   // The menu moves DOM focus one step before this handler runs, so read
+        //   // the row that received the key instead of document.activeElement.
+        //   const indexFromKeyTarget = () => {
+        //     const host = e.target?.closest?.('modus-wc-menu-item');
+        //     if (!host) return -1;
+        //     return visibleItems.findIndex((item) => item.value === host.value);
+        //   };
+        //   const focusOption = (value) => {
+        //     menuItemFor(value)?.querySelector('li')?.focus();
+        //   };
+        //   const skipFrom = (direction, currentIndex) => {
+        //     if (direction > 0) {
+        //       const nextIndex =
+        //         currentIndex < 0
+        //           ? 0
+        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
+        //       return nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+        //     }
+        //     const prevIndex =
+        //       currentIndex < 0
+        //         ? visibleItems.length - 1
+        //         : Math.max(currentIndex - 1, 0);
+        //     return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+        //   };
+        //   const highlightSkip = (direction) => {
+        //     if (!visibleItems.length) return;
+        //     const fromRow = indexFromKeyTarget();
+        //     const fromFlag = visibleItems.findIndex((item) => item.focused);
+        //     const currentIndex = fromRow >= 0 ? fromRow : fromFlag;
+        //     const next = skipFrom(direction, currentIndex);
+        //     if (next === currentIndex && fromRow >= 0) {
+        //       const stay = visibleItems[currentIndex];
+        //       if (stay) focusOption(stay.value);
+        //       return;
+        //     }
+        //     const target = visibleItems[next];
+        //     if (!target) return;
+        //     autocomplete.items = autocomplete.items.map((item) => ({
+        //       ...item,
+        //       focused: item.value === target.value,
+        //     }));
+        //     focusOption(target.value);
+        //   };
         //   switch (e.key) {
         //     case 'Escape':
         //       autocomplete.items = autocomplete.items.map((item) => ({
@@ -1665,36 +1778,18 @@ export const CustomEventHandlers: Story = {
         //         autocomplete.style.transform = '';
         //       }, 200);
         //       break;
-        //     case 'ArrowDown': {
+        //     case 'ArrowDown':
         //       requestMenu(true);
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const nextIndex =
-        //         currentIndex < 0
-        //           ? 0
-        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
-        //       const skipIndex =
-        //         nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
-        //     }
-        //     case 'ArrowUp': {
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const prevIndex =
-        //         currentIndex < 0
-        //           ? visibleItems.length - 1
-        //           : Math.max(currentIndex - 1, 0);
-        //       const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
-        //     }
+        //       highlightSkip(1);
+        //       return;
+        //     case 'ArrowUp':
+        //       highlightSkip(-1);
+        //       return;
         //     case 'Enter': {
-        //       const focusedItem = visibleItems.find((item) => item.focused);
+        //       const fromRow = indexFromKeyTarget();
+        //       const focusedItem =
+        //         (fromRow >= 0 ? visibleItems[fromRow] : undefined) ??
+        //         visibleItems.find((item) => item.focused);
         //       if (focusedItem) {
         //         autocomplete.items = autocomplete.items.map((item) => ({
         //           ...item,
@@ -1705,6 +1800,24 @@ export const CustomEventHandlers: Story = {
         //         requestMenu(false);
         //       }
         //       break;
+        //     }
+        //     case 'Tab': {
+        //       const onRow = indexFromKeyTarget() >= 0;
+        //       if (!onRow && e.shiftKey) return;
+        //       if (!visibleItems.length) return;
+        //       if (!onRow) {
+        //         const flagged = visibleItems.find((item) => item.focused);
+        //         if (!flagged) return;
+        //         e.preventDefault();
+        //         focusOption(flagged.value);
+        //         return;
+        //       }
+        //       const currentIndex = indexFromKeyTarget();
+        //       const next = skipFrom(e.shiftKey ? -1 : 1, currentIndex);
+        //       if (next === currentIndex) return;
+        //       e.preventDefault();
+        //       highlightSkip(e.shiftKey ? -1 : 1);
+        //       return;
         //     }
         //     default:
         //       return;
