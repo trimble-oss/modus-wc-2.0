@@ -1031,7 +1031,7 @@ export namespace Components {
          */
         "heading": string;
         /**
-          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`; error — `error_404`, `error_404_page`.
          */
         "illustration"?: EmptyStateIllustration;
         /**
@@ -1169,6 +1169,17 @@ export namespace Components {
           * @default 'bar'
          */
         "type"?: 'bar' | 'button';
+    }
+    /**
+     * A drill-down menu used inside a dropdown. Items that contain a `slot="panel"`
+     * menu show a right-pointing chevron and slide to that panel. A Back control
+     * and the parent item's label (without its icon) head each nested panel.
+     */
+    interface ModusWcHelpMenu {
+        /**
+          * Clears the panel stack and returns to the root items.
+         */
+        "reset": () => Promise<void>;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -2983,6 +2994,10 @@ export interface ModusWcFileDropzoneCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcFileDropzoneElement;
 }
+export interface ModusWcHelpMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModusWcHelpMenuElement;
+}
 export interface ModusWcImageCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLModusWcImageElement;
@@ -3552,6 +3567,31 @@ declare global {
     var HTMLModusWcHandleElement: {
         prototype: HTMLModusWcHandleElement;
         new (): HTMLModusWcHandleElement;
+    };
+    interface HTMLModusWcHelpMenuElementEventMap {
+        "panelChange": {
+    depth: number;
+    label: string;
+  };
+    }
+    /**
+     * A drill-down menu used inside a dropdown. Items that contain a `slot="panel"`
+     * menu show a right-pointing chevron and slide to that panel. A Back control
+     * and the parent item's label (without its icon) head each nested panel.
+     */
+    interface HTMLModusWcHelpMenuElement extends Components.ModusWcHelpMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLModusWcHelpMenuElementEventMap>(type: K, listener: (this: HTMLModusWcHelpMenuElement, ev: ModusWcHelpMenuCustomEvent<HTMLModusWcHelpMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLModusWcHelpMenuElementEventMap>(type: K, listener: (this: HTMLModusWcHelpMenuElement, ev: ModusWcHelpMenuCustomEvent<HTMLModusWcHelpMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLModusWcHelpMenuElement: {
+        prototype: HTMLModusWcHelpMenuElement;
+        new (): HTMLModusWcHelpMenuElement;
     };
     /**
      * A customizable icon component used to render Modus icons.
@@ -4290,6 +4330,7 @@ declare global {
         "modus-wc-empty-state": HTMLModusWcEmptyStateElement;
         "modus-wc-file-dropzone": HTMLModusWcFileDropzoneElement;
         "modus-wc-handle": HTMLModusWcHandleElement;
+        "modus-wc-help-menu": HTMLModusWcHelpMenuElement;
         "modus-wc-icon": HTMLModusWcIconElement;
         "modus-wc-image": HTMLModusWcImageElement;
         "modus-wc-image-grid": HTMLModusWcImageGridElement;
@@ -5516,7 +5557,7 @@ declare namespace LocalJSX {
          */
         "heading": string;
         /**
-          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `documents_empty`, `cloud_access`, `store_settings`, `error_404`; error — `page_not_found`.
+          * Bundled illustration name. Valid values depend on `variant`: compact — `selection_plus`, `symbol_info`, `add_user`; illustration — `landscape`, `api`, `api_plugin`, `documents_empty`, `cloud_access`, `store_settings`; error — `error_404`, `error_404_page`.
          */
         "illustration"?: EmptyStateIllustration;
         /**
@@ -5658,6 +5699,20 @@ declare namespace LocalJSX {
           * @default 'bar'
          */
         "type"?: 'bar' | 'button';
+    }
+    /**
+     * A drill-down menu used inside a dropdown. Items that contain a `slot="panel"`
+     * menu show a right-pointing chevron and slide to that panel. A Back control
+     * and the parent item's label (without its icon) head each nested panel.
+     */
+    interface ModusWcHelpMenu {
+        /**
+          * Emitted when the visible panel changes.
+         */
+        "onPanelChange"?: (event: ModusWcHelpMenuCustomEvent<{
+    depth: number;
+    label: string;
+  }>) => void;
     }
     /**
      * A customizable icon component used to render Modus icons.
@@ -7697,6 +7752,7 @@ declare namespace LocalJSX {
         "modus-wc-empty-state": ModusWcEmptyState;
         "modus-wc-file-dropzone": ModusWcFileDropzone;
         "modus-wc-handle": ModusWcHandle;
+        "modus-wc-help-menu": ModusWcHelpMenu;
         "modus-wc-icon": ModusWcIcon;
         "modus-wc-image": ModusWcImage;
         "modus-wc-image-grid": ModusWcImageGrid;
@@ -7844,6 +7900,12 @@ declare module "@stencil/core" {
              * A draggable handle component for resizing adjacent elements
              */
             "modus-wc-handle": LocalJSX.ModusWcHandle & JSXBase.HTMLAttributes<HTMLModusWcHandleElement>;
+            /**
+             * A drill-down menu used inside a dropdown. Items that contain a `slot="panel"`
+             * menu show a right-pointing chevron and slide to that panel. A Back control
+             * and the parent item's label (without its icon) head each nested panel.
+             */
+            "modus-wc-help-menu": LocalJSX.ModusWcHelpMenu & JSXBase.HTMLAttributes<HTMLModusWcHelpMenuElement>;
             /**
              * A customizable icon component used to render Modus icons.
              * <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>

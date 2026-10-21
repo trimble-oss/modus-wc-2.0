@@ -185,7 +185,7 @@ export const ShadowDomParent: Story = {
     if (!customElements.get('tooltip-shadow-host')) {
       const TooltipShadowHost = createShadowHostClass<TooltipArgs>({
         componentTag: 'modus-wc-tooltip',
-        defaultContent: [createTooltipShadowTrigger()],
+        defaultContent: () => [createTooltipShadowTrigger()],
         propsMapper: (v, el) => {
           const tooltipEl = el as unknown as {
             content: string;
