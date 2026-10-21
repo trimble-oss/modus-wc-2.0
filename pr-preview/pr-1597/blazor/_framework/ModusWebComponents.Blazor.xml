@@ -420,7 +420,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcBadge.Shape">
             <summary>
-            The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Ignored for the text variant.
+            The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Has no visual effect on the text variant.
             Allowed values: "ellipse", "rectangle"
             </summary>
         </member>
