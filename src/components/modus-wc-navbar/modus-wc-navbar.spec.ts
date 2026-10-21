@@ -62,7 +62,7 @@ describe('modus-wc-navbar', () => {
       await page.waitForChanges();
 
       const icon = page.root?.querySelector('.ai svg');
-      expect(icon?.getAttribute('viewBox')).toBe('0 0 32 32');
+      expect(icon?.getAttribute('viewBox')).toBe('1.5 2.5 27.5 27.5');
       expect(icon?.querySelector('mask')).not.toBeNull();
       expect(icon?.querySelector('radialGradient')).not.toBeNull();
     }
