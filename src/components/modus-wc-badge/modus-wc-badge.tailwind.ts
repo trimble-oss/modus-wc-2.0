@@ -50,6 +50,17 @@ export const convertPropsToClasses = ({
     }
   }
 
+  if (shape) {
+    switch (shape) {
+      case 'ellipse':
+        classes = `${classes} modus-wc-badge-ellipse`;
+        break;
+      case 'rectangle':
+        classes = `${classes} modus-wc-badge-rectangle`;
+        break;
+    }
+  }
+
   if (size) {
     classes = `${classes} modus-wc-badge-${size}`;
   }
@@ -66,11 +77,6 @@ export const convertPropsToClasses = ({
         classes = `${classes} modus-wc-badge-text`;
         break;
     }
-  }
-
-  // Text badges have no background or border, so shape does not apply
-  if (shape && variant !== 'text') {
-    classes = `${classes} modus-wc-badge-${shape}`;
   }
 
   return classes.trim();

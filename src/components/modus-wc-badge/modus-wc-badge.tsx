@@ -36,7 +36,7 @@ export class ModusWcBadge {
   /** Custom CSS class to apply to the span element. */
   @Prop() customClass: string = '';
 
-  /** The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Ignored for the text variant. */
+  /** The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Has no visual effect on the text variant. */
   @Prop() shape?: 'ellipse' | 'rectangle';
 
   /** The size of the badge. */

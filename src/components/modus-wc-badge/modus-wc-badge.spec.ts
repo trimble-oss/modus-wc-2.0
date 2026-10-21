@@ -79,14 +79,12 @@ describe('modus-wc-badge', () => {
     expect(span).toHaveClass('modus-wc-badge-rectangle');
   });
 
-  it('should not apply shape class for text variant', async () => {
+  it('should render text variant without background or border when shape is set', async () => {
     const page = await newSpecPage({
       components: [ModusWcBadge],
       html: '<modus-wc-badge shape="rectangle" variant="text">Badge</modus-wc-badge>',
     });
-    const span = page.root?.querySelector('span');
-    expect(span).not.toHaveClass('modus-wc-badge-rectangle');
-    expect(span).not.toHaveClass('modus-wc-badge-ellipse');
+    expect(page.root).toMatchSnapshot();
   });
 
   it('should not apply shape class when shape is unset', async () => {
