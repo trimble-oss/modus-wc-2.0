@@ -2259,7 +2259,7 @@ describe('modus-wc-autocomplete', () => {
 
   it('should toggle chip expansion when the expand button handler runs', () => {
     const onToggleExpansion = jest.fn();
-    const vnode = renderExpandCollapseButton({
+    const expandButtonElement = renderExpandCollapseButton({
       selectionOrder: ['1', '2', '3'],
       maxChips: 2,
       isChipsExpanded: false,
@@ -2269,10 +2269,10 @@ describe('modus-wc-autocomplete', () => {
     const event = new Event('click', { bubbles: true });
     const stopPropagation = jest.spyOn(event, 'stopPropagation');
 
-    vnode.$attrs$.onButtonClick(event);
+    expandButtonElement.$attrs$.onButtonClick(event);
 
     expect(stopPropagation).toHaveBeenCalled();
-    expect(onToggleExpansion).toHaveBeenCalled();
+    expect(onToggleExpansion).toHaveBeenCalledTimes(1);
   });
 
   // Test expanded state rendering

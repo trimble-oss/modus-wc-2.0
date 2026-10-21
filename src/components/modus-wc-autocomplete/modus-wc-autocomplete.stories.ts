@@ -1459,6 +1459,10 @@ export const CustomEventHandlers: Story = {
         focusOption(target.value);
       };
 
+      const focusInput = () => {
+        autocomplete.querySelector('input')?.focus();
+      };
+
       switch (e.key) {
         case 'Escape':
           args.items = args.items.map((item) => ({
@@ -1466,6 +1470,7 @@ export const CustomEventHandlers: Story = {
             focused: false,
           }));
           autocomplete.items = [...args.items];
+          focusInput();
           requestMenu(autocomplete, false);
           // Custom: Show escape animation
           autocomplete.style.transform = 'scale(0.98)';
@@ -1487,10 +1492,10 @@ export const CustomEventHandlers: Story = {
         }
 
         case 'Enter': {
-          const fromRow = indexFromKeyTarget();
-          const focusedItem =
-            (fromRow >= 0 ? visibleItems[fromRow] : undefined) ??
-            visibleItems.find((item) => item.focused);
+          // A row already selects through customItemSelect, which honors
+          // leave-menu-open. Handling it again would close that menu.
+          if (indexFromKeyTarget() >= 0) return;
+          const focusedItem = visibleItems.find((item) => item.focused);
           if (focusedItem) {
             // For single select, clear previous selection
             args.items = args.items.map((item) => ({
@@ -1499,6 +1504,7 @@ export const CustomEventHandlers: Story = {
               focused: false,
             }));
             autocomplete.value = focusedItem.label;
+            focusInput();
             requestMenu(autocomplete, false);
           }
           break;
@@ -1522,7 +1528,14 @@ export const CustomEventHandlers: Story = {
 
           const currentIndex = indexFromKeyTarget();
           const next = skipIndex(e.shiftKey ? -1 : 1, currentIndex);
-          if (next === currentIndex) return;
+          if (next === currentIndex) {
+            args.items = args.items.map((item) => ({
+              ...item,
+              focused: false,
+            }));
+            autocomplete.items = [...args.items];
+            return;
+          }
 
           e.preventDefault();
           highlightSkip(e.shiftKey ? -1 : 1);
@@ -1766,12 +1779,16 @@ export const CustomEventHandlers: Story = {
         //     }));
         //     focusOption(target.value);
         //   };
+        //   const focusInput = () => {
+        //     autocomplete.querySelector('input')?.focus();
+        //   };
         //   switch (e.key) {
         //     case 'Escape':
         //       autocomplete.items = autocomplete.items.map((item) => ({
         //         ...item,
         //         focused: false,
         //       }));
+        //       focusInput();
         //       requestMenu(false);
         //       autocomplete.style.transform = 'scale(0.98)';
         //       setTimeout(() => {
@@ -1786,10 +1803,8 @@ export const CustomEventHandlers: Story = {
         //       highlightSkip(-1);
         //       return;
         //     case 'Enter': {
-        //       const fromRow = indexFromKeyTarget();
-        //       const focusedItem =
-        //         (fromRow >= 0 ? visibleItems[fromRow] : undefined) ??
-        //         visibleItems.find((item) => item.focused);
+        //       if (indexFromKeyTarget() >= 0) return;
+        //       const focusedItem = visibleItems.find((item) => item.focused);
         //       if (focusedItem) {
         //         autocomplete.items = autocomplete.items.map((item) => ({
         //           ...item,
@@ -1797,6 +1812,7 @@ export const CustomEventHandlers: Story = {
         //           focused: false,
         //         }));
         //         autocomplete.value = focusedItem.label;
+        //         focusInput();
         //         requestMenu(false);
         //       }
         //       break;
@@ -1814,7 +1830,13 @@ export const CustomEventHandlers: Story = {
         //       }
         //       const currentIndex = indexFromKeyTarget();
         //       const next = skipFrom(e.shiftKey ? -1 : 1, currentIndex);
-        //       if (next === currentIndex) return;
+        //       if (next === currentIndex) {
+        //         autocomplete.items = autocomplete.items.map((item) => ({
+        //           ...item,
+        //           focused: false,
+        //         }));
+        //         return;
+        //       }
         //       e.preventDefault();
         //       highlightSkip(e.shiftKey ? -1 : 1);
         //       return;
