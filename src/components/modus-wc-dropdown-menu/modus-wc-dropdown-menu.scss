@@ -8,10 +8,15 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
 
   .menu-wrapper {
     background-color: var(--modus-wc-color-base-page);
+    border-radius: var(--rounded-box);
     left: 0;
     position: absolute;
     top: 0;
     width: max-content;
+
+    .modus-wc-menu {
+      border-radius: var(--rounded-box);
+    }
   }
 
   /* Popover menu — not a nested collapsible submenu. Suppress DaisyUI's
@@ -28,16 +33,50 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   .modus-wc-menu-item > button:hover {
     border-radius: 0;
   }
+
+  /* Help menu paints its own edge rows; other menus match the wrapper corners. */
+  .menu-wrapper:not(:has(.modus-wc-help-menu)) {
+    :is(modus-wc-menu, modus-wc-tree-menu)
+      .modus-wc-menu:not(.modus-wc-menu-dropdown) {
+      :is(modus-wc-menu-item, modus-wc-tree-item)
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
+        border-radius: 0;
+      }
+
+      :is(modus-wc-menu-item, modus-wc-tree-item):first-of-type
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item:focus-visible,
+          .modus-wc-menu-item.modus-wc-menu-item-focused,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
+        border-start-end-radius: var(--rounded-box);
+        border-start-start-radius: var(--rounded-box);
+      }
+
+      :is(modus-wc-menu-item, modus-wc-tree-item):last-of-type
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item:focus-visible,
+          .modus-wc-menu-item.modus-wc-menu-item-focused,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
+        border-end-end-radius: var(--rounded-box);
+        border-end-start-radius: var(--rounded-box);
+      }
+    }
+  }
 }
 
 [data-theme='connect-light'] modus-wc-dropdown-menu.modus-wc-dropdown-menu,
 [data-theme='connect-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
-  .modus-wc-menu {
-    border-radius: var(--modus-wc-border-radius-sm);
-  }
-
   .menu-wrapper {
-    border-radius: var(--modus-wc-border-radius-sm);
     box-shadow: 0 0 0.375rem #aeaeb6;
   }
 
@@ -95,61 +134,8 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
 [data-theme='modus-modern-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   /* Inner menu wrappers clip overflow; shadow on the wrapper (same as help menu). */
   .menu-wrapper.menu-wrapper:not(:has(.modus-wc-help-menu)) {
-    border-radius: var(--rounded-box);
     box-shadow:
       0 4px 6px -1px var(--modus-wc-color-base-200),
       0 2px 4px -2px var(--modus-wc-color-base-200);
-
-    .modus-wc-menu {
-      border-radius: var(--rounded-box);
-    }
-
-    /* Menu and tree rows. First gets the top corners, last the bottom.
-       A single row matches both, so all four corners stay rounded. */
-    :is(modus-wc-menu, modus-wc-tree-menu)
-      .modus-wc-menu:not(.modus-wc-menu-dropdown) {
-      :is(modus-wc-menu-item, modus-wc-tree-item)
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-radius: 0;
-      }
-
-      :is(modus-wc-menu-item, modus-wc-tree-item):first-of-type
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item:focus-visible,
-          .modus-wc-menu-item.modus-wc-menu-item-focused,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-start-end-radius: var(--rounded-box);
-        border-start-start-radius: var(--rounded-box);
-      }
-
-      :is(modus-wc-menu-item, modus-wc-tree-item):last-of-type
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item:focus-visible,
-          .modus-wc-menu-item.modus-wc-menu-item-focused,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-end-end-radius: var(--rounded-box);
-        border-end-start-radius: var(--rounded-box);
-      }
-    }
-  }
-}
-
-/* Kept after the Connect block so equal-specificity radius overrides win. */
-modus-wc-dropdown-menu.modus-wc-dropdown-menu
-  .menu-wrapper:has(.modus-wc-help-menu) {
-  border-radius: var(--rounded-box);
-
-  .modus-wc-menu {
-    border-radius: var(--rounded-box);
   }
 }
