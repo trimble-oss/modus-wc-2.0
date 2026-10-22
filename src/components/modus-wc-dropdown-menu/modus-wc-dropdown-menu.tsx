@@ -70,7 +70,7 @@ export class ModusWcDropdownMenu {
   @Prop() menuPlacement?: PopoverPlacement = 'bottom-start';
 
   /** The size of the menu. */
-  @Prop() menuSize?: ModusSize = 'md';
+  @Prop() menuSize?: ModusSize | 'xs' | 'xl' = 'md';
 
   /**
    * The positioning strategy for the menu. Use 'fixed' when the dropdown is
