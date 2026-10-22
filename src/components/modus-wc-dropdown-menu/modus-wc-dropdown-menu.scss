@@ -108,8 +108,12 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
        A single row matches both, so all four corners stay rounded. */
     :is(modus-wc-menu, modus-wc-tree-menu)
       .modus-wc-menu:not(.modus-wc-menu-dropdown) {
-      :is(modus-wc-menu-item, modus-wc-tree-item):not(:last-of-type)
-        :is(.modus-wc-menu-item > button, .modus-wc-menu-item-interactive) {
+      :is(modus-wc-menu-item, modus-wc-tree-item)
+        :is(
+          .modus-wc-menu-item,
+          .modus-wc-menu-item > button,
+          .modus-wc-menu-item-interactive
+        ) {
         border-radius: 0;
       }
 
