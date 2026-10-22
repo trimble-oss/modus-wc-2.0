@@ -1386,8 +1386,20 @@ export const CustomEventHandlers: Story = {
       ) as AutocompleteElement;
       if (!autocomplete) return;
 
+      // Shift+Tab is key "Tab" plus shiftKey, not a separate key string.
+      const key = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : e.key;
+
       // Prevent default for navigation keys
-      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+      if (
+        [
+          'ArrowDown',
+          'ArrowUp',
+          'Enter',
+          'Escape',
+          'Tab',
+          'Shift+Tab',
+        ].includes(key)
+      ) {
         e.preventDefault();
       }
 
@@ -1395,7 +1407,7 @@ export const CustomEventHandlers: Story = {
         (item) => item.visibleInMenu && !item.disabled
       );
 
-      switch (e.key) {
+      switch (key) {
         case 'Escape':
           args.items = args.items.map((item) => ({
             ...item,
@@ -1410,7 +1422,8 @@ export const CustomEventHandlers: Story = {
           }, 200);
           break;
 
-        case 'ArrowDown': {
+        case 'ArrowDown':
+        case 'Tab': {
           // Open menu if not already open
           requestMenu(autocomplete, true);
 
@@ -1431,7 +1444,8 @@ export const CustomEventHandlers: Story = {
           break;
         }
 
-        case 'ArrowUp': {
+        case 'ArrowUp':
+        case 'Shift+Tab': {
           const currentIndex = visibleItems.findIndex((item) => item.focused);
           const prevIndex =
             currentIndex < 0
