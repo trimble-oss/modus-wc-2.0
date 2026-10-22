@@ -52,7 +52,7 @@ exports[`modus-wc-tree-item should render with an end slot 1`] = `
         </div>
         <modus-wc-button size="sm" slot="end" variant="borderless">
           <!---->
-          <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+          <button class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
             Action
           </button>
         </modus-wc-button>

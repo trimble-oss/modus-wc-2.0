@@ -16,11 +16,11 @@ export const convertPropsToClasses = ({
   }
 
   if (orientation === 'horizontal') {
-    classes = `${classes} modus-wc-menu-horizontal`;
+    classes = `${classes} modus-wc-menu-horizontal moduswc:menu-horizontal`;
   }
 
   if (size) {
-    classes = `${classes} modus-wc-menu-${size}`;
+    classes = `${classes} modus-wc-menu-${size} moduswc:menu-${size}`;
   }
 
   return classes.trim();

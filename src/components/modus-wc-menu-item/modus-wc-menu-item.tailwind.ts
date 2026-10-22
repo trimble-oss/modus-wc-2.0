@@ -20,15 +20,15 @@ export const convertPropsToClasses = ({
   }
 
   if (disabled) {
-    classes = `${classes} modus-wc-menu-item-disabled`;
+    classes = `${classes} modus-wc-menu-item-disabled moduswc:menu-disabled`;
   }
 
   if (active) {
-    classes = `${classes} modus-wc-menu-item-active`;
+    classes = `${classes} modus-wc-menu-item-active moduswc:menu-active`;
   }
 
   if (focused) {
-    classes = `${classes} modus-wc-menu-item-focused`;
+    classes = `${classes} modus-wc-menu-item-focused moduswc:menu-focus`;
   }
 
   if (size) {

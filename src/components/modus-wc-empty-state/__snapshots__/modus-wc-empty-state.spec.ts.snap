@@ -56,7 +56,7 @@ exports[`modus-wc-empty-state should render error variant with 404 illustration 
       <div class="modus-wc-empty-state-action">
         <modus-wc-button>
           <!---->
-          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
             Action
           </button>
         </modus-wc-button>
@@ -152,7 +152,7 @@ exports[`modus-wc-empty-state should render illustration variant with landscape 
       <div class="modus-wc-empty-state-action">
         <modus-wc-button>
           <!---->
-          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
             Action
           </button>
         </modus-wc-button>
@@ -194,7 +194,7 @@ exports[`modus-wc-empty-state should render with default props 1`] = `
       <div class="modus-wc-empty-state-action">
         <modus-wc-button>
           <!---->
-          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
+          <button class="modus-wc-btn modus-wc-btn-filled modus-wc-btn-primary modus-wc-btn-sm moduswc:btn moduswc:btn-primary moduswc:btn-sm" tabindex="0" type="button">
             Action
           </button>
         </modus-wc-button>
