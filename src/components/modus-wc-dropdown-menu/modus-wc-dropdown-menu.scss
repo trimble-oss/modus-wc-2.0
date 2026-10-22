@@ -30,46 +30,23 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
     }
   }
 
-  .modus-wc-menu-item > button:hover {
-    border-radius: 0;
-  }
+  /* Help menu paints its own edge rows; other menus match the wrapper corners.
+     The button and tree interactive inherit this radius from the li. */
+  .menu-wrapper:not(:has(.modus-wc-help-menu))
+    .modus-wc-menu:not(.modus-wc-menu-dropdown)
+    :is(modus-wc-menu-item, modus-wc-tree-item) {
+    > li {
+      border-radius: 0;
+    }
 
-  /* Help menu paints its own edge rows; other menus match the wrapper corners. */
-  .menu-wrapper:not(:has(.modus-wc-help-menu)) {
-    :is(modus-wc-menu, modus-wc-tree-menu)
-      .modus-wc-menu:not(.modus-wc-menu-dropdown) {
-      :is(modus-wc-menu-item, modus-wc-tree-item)
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-radius: 0;
-      }
+    &:first-of-type > li {
+      border-start-end-radius: var(--rounded-box);
+      border-start-start-radius: var(--rounded-box);
+    }
 
-      :is(modus-wc-menu-item, modus-wc-tree-item):first-of-type
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item:focus-visible,
-          .modus-wc-menu-item.modus-wc-menu-item-focused,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-start-end-radius: var(--rounded-box);
-        border-start-start-radius: var(--rounded-box);
-      }
-
-      :is(modus-wc-menu-item, modus-wc-tree-item):last-of-type
-        :is(
-          .modus-wc-menu-item,
-          .modus-wc-menu-item:focus-visible,
-          .modus-wc-menu-item.modus-wc-menu-item-focused,
-          .modus-wc-menu-item > button,
-          .modus-wc-menu-item-interactive
-        ) {
-        border-end-end-radius: var(--rounded-box);
-        border-end-start-radius: var(--rounded-box);
-      }
+    &:last-of-type > li {
+      border-end-end-radius: var(--rounded-box);
+      border-end-start-radius: var(--rounded-box);
     }
   }
 }
