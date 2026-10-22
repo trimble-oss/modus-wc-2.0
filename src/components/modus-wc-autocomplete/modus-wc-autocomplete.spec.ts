@@ -2266,12 +2266,8 @@ describe('modus-wc-autocomplete', () => {
       onToggleExpansion,
     }) as { $attrs$: { onButtonClick: (event: Event) => void } };
 
-    const event = new Event('click', { bubbles: true });
-    const stopPropagation = jest.spyOn(event, 'stopPropagation');
+    expandButtonElement.$attrs$.onButtonClick(new Event('click'));
 
-    expandButtonElement.$attrs$.onButtonClick(event);
-
-    expect(stopPropagation).toHaveBeenCalled();
     expect(onToggleExpansion).toHaveBeenCalledTimes(1);
   });
 

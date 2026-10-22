@@ -636,8 +636,7 @@ export function renderClearButton(
 
   return (
     <modus-wc-button
-      onButtonClick={(event) => {
-        event.stopPropagation();
+      onButtonClick={() => {
         params.onClearAll();
       }}
       variant="borderless"
@@ -681,8 +680,7 @@ export function renderExpandCollapseButton(
   return (
     <modus-wc-button
       custom-class={`modus-wc-autocomplete-expand-button ${params.isChipsExpanded ? 'expanded' : ''}`}
-      onButtonClick={(event) => {
-        event.stopPropagation();
+      onButtonClick={() => {
         params.onToggleExpansion();
       }}
       variant="borderless"
