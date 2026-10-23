@@ -5,18 +5,23 @@
 
 modus-wc-text-input .modus-wc-input {
   border-bottom-width: var(--input-bottom-border-width);
+  max-width: 100%;
+  min-width: 0;
+  overflow: clip;
+  overflow-clip-margin: 2px;
 
   @include feedback-levels;
   @include sizing-tokens;
 
   & input {
     background-color: var(--modus-wc-color-base-page);
+    color: var(--modus-wc-color-base-inverted);
+    max-width: 100%;
+    min-width: 0;
 
     &[type='search']::-webkit-search-cancel-button {
       display: none;
     }
-
-    color: var(--modus-wc-color-base-inverted);
   }
 
   &:has(> input[disabled]) > input[disabled] {
@@ -29,6 +34,9 @@ modus-wc-text-input .modus-wc-input {
 }
 
 modus-wc-text-input {
+  max-width: 100%;
+  min-width: 0;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
@@ -90,6 +98,8 @@ modus-wc-text-input {
       }
 
       .modus-wc-text-input-icon {
+        flex-shrink: 0;
+
         &.modus-wc-text-input-icon-clear {
           cursor: pointer;
         }
@@ -100,7 +110,6 @@ modus-wc-text-input {
           align-self: center;
           color: var(--modus-wc-color-base-content);
           display: inline-flex;
-          flex-shrink: 0;
           justify-content: center;
           line-height: 0;
         }
