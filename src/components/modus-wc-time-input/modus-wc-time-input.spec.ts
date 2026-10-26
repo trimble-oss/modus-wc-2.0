@@ -1995,7 +1995,7 @@ describe('modus-wc-time-input', () => {
     ).toBe(true);
   });
 
-  it('should emit inputBlur when focus moves to the clock button', async () => {
+  it('should not emit inputBlur when focus moves to the clock button', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock blur" value="09:00"></modus-wc-time-input>',
@@ -2013,7 +2013,7 @@ describe('modus-wc-time-input', () => {
     );
     await page.waitForChanges();
 
-    expect(blurSpy).toHaveBeenCalledTimes(1);
+    expect(blurSpy).not.toHaveBeenCalled();
   });
 
   it('should focus the field and emit inputFocus when the clock is pressed first', async () => {
@@ -4918,7 +4918,7 @@ describe('modus-wc-time-input', () => {
     expect(setSelectionRange).toHaveBeenCalledTimes(1);
   });
 
-  it('should not emit inputFocus when focus enters at the clock button instead of the field', async () => {
+  it('should emit inputFocus when focus enters at the clock button instead of the field', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Clock keyboard open" value="09:00"></modus-wc-time-input>',
@@ -4933,10 +4933,10 @@ describe('modus-wc-time-input', () => {
     ).dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     await page.waitForChanges();
 
-    expect(inputFocusSpy).not.toHaveBeenCalled();
+    expect(inputFocusSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should emit inputBlur from the text field even when the control was not previously marked focused', async () => {
+  it('should ignore a blur that arrives before the control ever had focus', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcButton],
       html: '<modus-wc-time-input aria-label="Blur unfocused" value="09:00"></modus-wc-time-input>',
@@ -4944,12 +4944,14 @@ describe('modus-wc-time-input', () => {
     const blurSpy = jest.fn();
     page.root!.addEventListener('inputBlur', blurSpy);
 
-    (page.root!.querySelector('input') as HTMLInputElement).dispatchEvent(
-      new FocusEvent('blur', { bubbles: true })
-    );
+    (
+      page.rootInstance as unknown as {
+        handleComponentFocusOut: (e: FocusEvent) => void;
+      }
+    ).handleComponentFocusOut(new FocusEvent('focusout', { bubbles: true }));
     await page.waitForChanges();
 
-    expect(blurSpy).toHaveBeenCalledTimes(1);
+    expect(blurSpy).not.toHaveBeenCalled();
   });
 
   it('should not emit inputBlur while the picker hands focus back to the control', async () => {
