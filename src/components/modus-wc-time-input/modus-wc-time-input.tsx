@@ -96,10 +96,6 @@ export class ModusWcTimeInput {
   private inputRef?: HTMLInputElement;
   private dropdownRef?: HTMLElement;
   private hasFocus = false;
-  /** True while focus sits anywhere inside the control, picker included. */
-  private hasComponentFocus = false;
-  /** True while the control is about to move focus back onto itself. */
-  private pendingInternalRefocus = false;
   /**
    * Frame handle for the segment selection queued on focus. A click cancels it
    * so the caret the user aimed at wins over the default entry segment.
@@ -403,18 +399,6 @@ export class ModusWcTimeInput {
     }
   }
 
-  // Host-level so the clock button and picker rows count as the same control
-  // as the text field; the field's own focus / blur delegate here too.
-  @Listen('focusin')
-  handleComponentFocusIn(event: FocusEvent) {
-    this.enterComponentFocus(event);
-  }
-
-  @Listen('focusout')
-  handleComponentFocusOut(event: FocusEvent) {
-    this.handleComponentFocusExit(event);
-  }
-
   @Listen('keydown', { target: 'document' })
   handleEscapeKey(event: KeyboardEvent) {
     if (event.key !== 'Escape' || !this.showDropdown) {
@@ -599,7 +583,6 @@ export class ModusWcTimeInput {
       this.dropdownRef.contains(document.activeElement);
     this.showDropdown = false;
     if (focusInDropdown) {
-      this.pendingInternalRefocus = true;
       requestAnimationFrame(() => {
         const clockTrigger =
           returnFocusTo === 'clock' ? this.getClockTrigger() : null;
@@ -608,7 +591,6 @@ export class ModusWcTimeInput {
         } else {
           this.inputRef?.focus();
         }
-        this.pendingInternalRefocus = false;
       });
     }
   }
@@ -912,38 +894,6 @@ export class ModusWcTimeInput {
       getSkeleton(this.effectiveShowSeconds, this.resolvedFormat);
   }
 
-  /**
-   * `inputFocus` / `inputBlur` describe the whole control, not the text field:
-   * they fire once when focus enters and once when it leaves. Moving between
-   * the field, the clock button and the picker rows is internal and silent.
-   */
-  private enterComponentFocus(event: FocusEvent) {
-    if (this.hasComponentFocus) {
-      return;
-    }
-    this.hasComponentFocus = true;
-    this.inputFocus.emit(event);
-  }
-
-  private handleComponentFocusExit(event: FocusEvent) {
-    if (!this.hasComponentFocus) {
-      return;
-    }
-    const next = event.relatedTarget as Node | null;
-    if (next && this.el.contains(next)) {
-      return;
-    }
-    if (this.pendingInternalRefocus) {
-      return;
-    }
-    this.hasComponentFocus = false;
-    this.hasFocus = false;
-    this.cancelFocusSelect();
-    this.segmentDigitBuffer = '';
-    this.commitFieldOnExit();
-    this.inputBlur.emit(event);
-  }
-
   private cancelFocusSelect() {
     if (this.focusSelectFrame !== null) {
       cancelAnimationFrame(this.focusSelectFrame);
@@ -953,8 +903,10 @@ export class ModusWcTimeInput {
 
   private handleBlur = (event: FocusEvent) => {
     this.hasFocus = false;
+    this.cancelFocusSelect();
     this.segmentDigitBuffer = '';
-    this.handleComponentFocusExit(event);
+    this.commitFieldOnExit();
+    this.inputBlur.emit(event);
   };
 
   private handleFocus = (event: FocusEvent) => {
@@ -982,7 +934,7 @@ export class ModusWcTimeInput {
         }
       });
     }
-    this.enterComponentFocus(event);
+    this.inputFocus.emit(event);
   };
 
   /** Collapse the caret before the hour so typing enters it, with nothing highlighted. */
@@ -1132,11 +1084,9 @@ export class ModusWcTimeInput {
     }
     this.closeDropdown();
     this.suppressBlurCommit = true;
-    this.pendingInternalRefocus = true;
     requestAnimationFrame(() => {
       this.inputRef?.focus();
       this.suppressBlurCommit = false;
-      this.pendingInternalRefocus = false;
     });
   };
 
